@@ -12,9 +12,9 @@ https://mcreator.net/ - MCreator is a software used to make Minecraft Java Editi
 
 It is used worldwide by Minecraft players, aspiring mod developers, for education, online classes, and STEM workshops.
 
-## Download and support
+## Download, community, and support
 
-This repository page is for people looking to contribute to MCreator. Visit https://mcreator.net/ to download MCreator as a user and check https://mcreator.net/support to find the support, forums, knowledge base and more.
+This repository page is for people looking to contribute to MCreator. Visit https://mcreator.net/ to download MCreator distribution and to engage in the community. Check https://mcreator.net/support to find the support, forums, knowledge base, and more.
 
 ➡️ Download MCreator binary distributions on https://mcreator.net/download.
 
@@ -31,7 +31,7 @@ To clone this repository, run `git clone --recursive https://github.com/MCreator
 
 MCreator uses Gradle build system to manage the building and exporting. Use `runMCreator` task to run test MCreator.
 
-It is recommended to use Intellij IDEA for development and testing. Learn more about the development process and 
+It is recommended to use Intellij IDEA for development and testing. Learn more about the development process, and 
 tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).
 
 ## License and trademark
