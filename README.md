@@ -1,7 +1,7 @@
 [![MCreator](https://mcreator.net/image/brand/mcreator300s.png)](https://mcreator.net/)
 
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/MCreator/MCreator/blob/master/LICENSE)
-[![Download](https://img.shields.io/badge/Releases-download-%2393c54b)](https://mcreator.net/download)
+[![Download](https://img.shields.io/badge/Download-release-%2393c54b)](https://mcreator.net/download)
 [![Donate](https://img.shields.io/badge/Donate-%E2%99%A1-%23ea4aaa)](https://mcreator.net/donate)
 
 # MCreator - Minecraft Mod Maker
