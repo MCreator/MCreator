@@ -18,7 +18,7 @@ Download MCreator binary distributions on https://mcreator.net/download.
 
 ## Contributing
 
-You are welcome to support this project by opening pull requests.
+You are welcome to support this project by opening pull requests. Read more about contributing in our [contributing guidelines](CONTRIBUTING.md).
 
 Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/MCreator/MCreator), which you can do online. The CLA is necessary mainly because you own the copyright to your changes, even after your contribution becomes part of our codebase, so we need your permission to use and distribute your code. We also need to be sure of various other things—for instance that you'll tell us if you know that your code infringes on other people's patents. You don't have to sign the CLA until after you've submitted your code for review and we approved it, but you must do it before we can put your code into our codebase.
 
@@ -31,6 +31,8 @@ To clone this repository, run `git clone --recursive https://github.com/MCreator
 MCreator uses Gradle build system to manage the building and exporting. Use `runMCreator` task to run test MCreator.
 
 It is recommended to use Intellij IDEA for development and testing. When used with IDEA, _use provided run configurations to test and export MCreator_. For the compilation to work properly, add new SDK called `mcreator_sdk` and point it to `<MCreator workspace root>\jdk\jdk8_win_64` (in case of 64-bit Windows environment).
+
+Learn more about the development process and tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).
 
 ## License and trademark
 
