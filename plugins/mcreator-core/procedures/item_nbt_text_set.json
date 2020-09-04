@@ -1,0 +1,36 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "tagName",
+      "check": "String"
+    },
+    {
+      "type": "input_value",
+      "name": "tagValue",
+      "check": "String"
+    },
+    {
+      "type": "input_value",
+      "name": "item",
+      "check": "MCItem"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": "%{BKY_TEXTS_HUE}",
+  "mcreator": {
+    "toolbox_id": "itemmanagement",
+    "toolbox_init": [
+      "<value name=\"item\"><block type=\"itemstack_to_mcitem\"></block></value>",
+      "<value name=\"tagName\"><block type=\"text\"><field name=\"TEXT\">tagName</field></block></value>",
+      "<value name=\"tagValue\"><block type=\"text\"><field name=\"TEXT\">tagValue</field></block></value>"
+    ],
+    "inputs": [
+      "tagName",
+      "tagValue",
+      "item"
+    ]
+  }
+}

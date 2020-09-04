@@ -1,0 +1,56 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "level",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "duration",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "ambient",
+      "check": "Boolean"
+    },
+    {
+      "type": "input_value",
+      "name": "particles",
+      "check": "Boolean"
+    },
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    }
+  ],
+  "extensions": [
+    "potion_list_provider"
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 195,
+  "mcreator": {
+    "toolbox_id": "entitymanagement",
+    "toolbox_init": [
+      "<value name=\"level\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
+      "<value name=\"duration\"><block type=\"math_number\"><field name=\"NUM\">60</field></block></value>",
+      "<value name=\"ambient\"><block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block></value>",
+      "<value name=\"particles\"><block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block></value>",
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "fields": [
+      "potion"
+    ],
+    "inputs": [
+      "level",
+      "duration",
+      "ambient",
+      "particles",
+      "entity"
+    ]
+  }
+}

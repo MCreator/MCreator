@@ -1,0 +1,18 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "direction",
+      "check": "Direction"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Direction",
+  "colour": 20,
+  "mcreator": {
+    "toolbox_id": "mcelements",
+    "inputs": [
+      "direction"
+    ]
+  }
+}

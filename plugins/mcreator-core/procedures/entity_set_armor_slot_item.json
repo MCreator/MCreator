@@ -1,0 +1,36 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "slotid",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "item",
+      "check": "MCItem"
+    },
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    }
+  ],
+  "colour": 175,
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "mcreator": {
+    "toolbox_id": "playermanagement",
+    "toolbox_init": [
+      "<value name=\"slotid\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "inputs": [
+      "slotid",
+      "item",
+      "entity"
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+- GROUND:
+  texture: DIRT
+- WOOD:
+  texture: PLANKS#0
+- PLANT:
+  texture: RED_FLOWER#0
+- STONE:
+  texture: STONE
+- METAL:
+  texture: IRON_BLOCK
+- GLASS:
+  texture: GLASS
+- CLOTH:
+  texture: WOOL#0
+- SAND:
+  texture: SAND#0
+- SNOW:
+  texture: SNOW
+- LADDER:
+  texture: LADDER
+- ANVIL:
+  texture: ANVIL
+- SLIME:
+  texture: SLIME_BLOCK
+- WET_GRASS:
+  texture: GRASS
+- CORAL:
+  texture: BUBBLE_CORAL_FAN
+- BAMBOO:
+  texture: BAMBOO
+- BAMBOO_SAPLING:
+  texture: BAMBOO_SAPLING
+- SCAFFOLDING:
+  texture: SCAFFOLDING
+- SWEET_BERRY_BUSH:
+  texture: SWEET_BERRIES
+- CROP:
+  texture: WHEAT
+- STEM:
+  texture: MELON_STEM
+- NETHER_WART:
+  texture: NETHER_WART
+- LANTERN:
+  texture: LANTERN
+- HONEY:
+  texture: HONEY_BLOCK

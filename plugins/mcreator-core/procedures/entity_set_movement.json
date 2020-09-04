@@ -1,0 +1,43 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "vx",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "vy",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "vz",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 195,
+  "mcreator": {
+    "toolbox_id": "entitymanagement",
+    "toolbox_init": [
+      "<value name=\"vx\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"vy\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"vz\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "inputs": [
+      "vx",
+      "vy",
+      "vz",
+      "entity"
+    ]
+  }
+}

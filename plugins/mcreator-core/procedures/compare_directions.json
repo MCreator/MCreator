@@ -1,0 +1,24 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "a",
+      "check": "Direction"
+    },
+    {
+      "type": "input_value",
+      "name": "b",
+      "check": "Direction"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": 20,
+  "mcreator": {
+    "toolbox_id": "logicoperations",
+    "inputs": [
+      "a",
+      "b"
+    ]
+  }
+}

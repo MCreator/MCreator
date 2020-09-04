@@ -1,0 +1,69 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "x",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "y",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "z",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "xs",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "ys",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "zs",
+      "check": "Number"
+    }
+  ],
+  "extensions": [
+    "particle_list_provider"
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 35,
+  "mcreator": {
+    "toolbox_id": "worldmanagement",
+    "toolbox_init": [
+      "<value name=\"x\"><block type=\"coord_x\"></block></value>",
+      "<value name=\"y\"><block type=\"coord_y\"></block></value>",
+      "<value name=\"z\"><block type=\"coord_z\"></block></value>",
+      "<value name=\"xs\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"ys\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
+      "<value name=\"zs\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+    ],
+    "fields": [
+      "particle"
+    ],
+    "inputs": [
+      "x",
+      "y",
+      "z",
+      "xs",
+      "ys",
+      "zs"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}

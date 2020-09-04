@@ -1,0 +1,15 @@
+{
+  "args0": [],
+  "extensions": [
+    "biome_list_provider"
+  ],
+  "inputsInline": true,
+  "nextStatement": null,
+  "colour": 35,
+  "mcreator": {
+    "toolbox_id": "world",
+    "fields": [
+      "biome"
+    ]
+  }
+}

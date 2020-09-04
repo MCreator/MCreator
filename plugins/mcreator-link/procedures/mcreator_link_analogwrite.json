@@ -1,0 +1,32 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "pin",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "value",
+      "check": "Number"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": "78",
+  "mcreator": {
+    "toolbox_id": "mcreatorlink",
+    "toolbox_init": [
+      "<value name=\"pin\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+    ],
+    "inputs": [
+      "pin",
+      "value"
+    ],
+    "required_apis": [
+      "mcreator_link"
+    ]
+  }
+}

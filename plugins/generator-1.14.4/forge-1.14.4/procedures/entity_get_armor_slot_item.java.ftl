@@ -1,0 +1,1 @@
+/*@ItemStack*/((${input$entity} instanceof PlayerEntity)?((PlayerEntity)${input$entity}).inventory.armorInventory.get(${input$slotid}):ItemStack.EMPTY)

@@ -1,0 +1,84 @@
+- ROCK:
+  texture: STONE
+- EARTH:
+  texture: DIRT
+- GRASS:
+  texture: GRASS
+- WOOD:
+  texture: PLANKS#0
+- IRON:
+  texture: IRON_BLOCK
+- ANVIL:
+  texture: ANVIL
+- WATER:
+  texture: WATER
+- LAVA:
+  texture: LAVA
+- LEAVES:
+  texture: LEAVES
+- PLANTS:
+  texture: RED_FLOWER#0
+- TALL_PLANTS:
+  texture: DOUBLE_PLANT#0
+- SPONGE:
+  texture: SPONGE
+- CLOTH:
+  texture: WOOL#0
+- FIRE:
+  texture: FIRE
+- SAND:
+  texture: SAND#0
+- MISCELLANEOUS:
+  texture: END_GATEWAY
+- CARPET:
+  texture: CARPET#3
+- GLASS:
+  texture: GLASS
+- REDSTONE_LIGHT:
+  texture: LIT_REDSTONE_LAMP
+- TNT:
+  texture: TNT
+- CORAL:
+  texture: WATERLILY
+- ICE:
+  texture: ICE
+- PACKED_ICE:
+  texture: PACKED_ICE
+- SNOW:
+  texture: SNOW
+- CRAFTED_SNOW:
+  texture: SNOWBALL
+- CACTUS:
+  texture: CACTUS
+- CLAY:
+  texture: CLAY
+- GOURD:
+  texture: PUMPKIN
+- DRAGON_EGG:
+  texture: DRAGON_EGG
+- PORTAL:
+  texture: PORTAL
+- CAKE:
+  texture: CAKE
+- WEB:
+  texture: WEB
+- AIR:
+  texture: AIR
+- STRUCTURE_VOID:
+  texture: STRUCTURE_VOID
+- OCEAN_PLANT:
+  texture: KELP_PLANT
+- SEA_GRASS:
+  texture: SEAGRASS
+- BUBBLE_COLUMN:
+  texture: BUBBLE_COLUMN
+- SHULKER:
+  texture: PURPLE_SHULKER_BOX
+- BAMBOO_SAPLING:
+  texture: BAMBOO_SAPLING
+- BAMBOO:
+  texture: BAMBOO
+- BARRIER:
+  texture: BARRIER
+- PISTON:
+  texture: PISTON

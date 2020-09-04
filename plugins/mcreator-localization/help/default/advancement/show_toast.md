@@ -1,0 +1,1 @@
+Show the advancement top right of the screen when the player completes the advancement.

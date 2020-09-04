@@ -1,0 +1,62 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "x",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "y",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "z",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "level",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "pitch",
+      "check": "Number"
+    }
+  ],
+  "extensions": [
+    "sound_list_provider"
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 35,
+  "mcreator": {
+    "toolbox_id": "worldmanagement",
+    "toolbox_init": [
+      "<value name=\"x\"><block type=\"coord_x\"></block></value>",
+      "<value name=\"y\"><block type=\"coord_y\"></block></value>",
+      "<value name=\"z\"><block type=\"coord_z\"></block></value>",
+      "<value name=\"level\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
+      "<value name=\"pitch\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
+    ],
+    "fields": [
+      "sound"
+    ],
+    "inputs": [
+      "x",
+      "y",
+      "z",
+      "level",
+      "pitch"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "a",
+      "check": "MCItemBlock"
+    },
+    {
+      "type": "input_value",
+      "name": "b",
+      "check": "MCItemBlock"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/b.png",
+      "width": 8,
+      "height": 36
+    },
+    {
+      "type": "field_image",
+      "src": "./res/b.png",
+      "width": 8,
+      "height": 36
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": 60,
+  "mcreator": {
+    "inputs": [
+      "a",
+      "b"
+    ]
+  }
+}

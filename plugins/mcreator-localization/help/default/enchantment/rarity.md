@@ -1,0 +1,1 @@
+It is the rarity of the enchantment to appear on an item (inside the enchanting table and for loot tables).

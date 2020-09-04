@@ -1,0 +1,37 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "radius",
+      "value": 6.0
+    },
+    {
+      "type": "field_number",
+      "name": "farspeed",
+      "value": 1.0
+    },
+    {
+      "type": "field_number",
+      "name": "nearspeed",
+      "value": 1.2
+    }
+  ],
+  "extensions": [
+    "entity_list_provider",
+    "ai_condition_selector"
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 20,
+  "mcreator": {
+    "toolbox_id": "targettasks",
+    "fields": [
+      "entity",
+      "radius",
+      "farspeed",
+      "nearspeed",
+      "condition"
+    ]
+  }
+}

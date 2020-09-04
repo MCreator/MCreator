@@ -1,0 +1,24 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "message",
+      "check": "String"
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": "78",
+  "mcreator": {
+    "toolbox_id": "mcreatorlink",
+    "toolbox_init": [
+      "<value name=\"message\"><block type=\"text\"><field name=\"TEXT\">message</field></block></value>"
+    ],
+    "inputs": [
+      "message"
+    ],
+    "required_apis": [
+      "mcreator_link"
+    ]
+  }
+}

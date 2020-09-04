@@ -1,0 +1,1 @@
+If your advancement is the first of a new path, you can choose the background of the advancement tab with this option.

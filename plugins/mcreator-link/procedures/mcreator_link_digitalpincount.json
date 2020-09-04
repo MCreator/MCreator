@@ -1,0 +1,10 @@
+{
+  "output": "Number",
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "toolbox_id": "mcreatorlink",
+    "required_apis": [
+      "mcreator_link"
+    ]
+  }
+}

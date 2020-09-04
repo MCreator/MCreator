@@ -1,0 +1,28 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "a",
+      "check": "MCItemBlock"
+    },
+    {
+      "type": "input_value",
+      "name": "b",
+      "check": "String"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "blockactions",
+    "toolbox_init": [
+      "<value name=\"b\"><block type=\"text\"><field name=\"TEXT\">logs</field></block></value>",
+      "<value name=\"a\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+    ],
+    "inputs": [
+      "a",
+      "b"
+    ]
+  }
+}

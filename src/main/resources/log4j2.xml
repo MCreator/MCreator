@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%style{%d{yyyy-MM-dd-HH:mm:ss}}{white} %highlight{[%t/%p]} %style{[%c]}{blue} %m%n"
+                    disableAnsi="${sys:log_disable_ansi}"/>
+        </Console>
+        <RollingFile name="ROLLINGFILE" fileName="${sys:log_directory}/logs/mcreator.log"
+                     filePattern="${sys:log_directory}/logs/mcreator_%d{yyyy_MM_dd}-%i.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd-HH:mm:ss} [%t/%p] [%c] %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <OnStartupTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="net.mcreator" level="ALL"/>
+        <Root level="ALL">
+            <AppenderRef ref="CONSOLE" level="ALL"/>
+            <AppenderRef ref="ROLLINGFILE" level="ALL"/>
+        </Root>
+    </Loggers>
+</Configuration>

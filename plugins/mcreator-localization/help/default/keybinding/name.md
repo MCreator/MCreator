@@ -1,0 +1,1 @@
+This parameter controls the name of the key shown inside the Controls tab in Minecraft settings.

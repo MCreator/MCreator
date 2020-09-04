@@ -1,0 +1,14 @@
+_default: ItemGroup.MISC
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template: "@NAMEItemGroup.tab"
+No creative tab entry: null
+BUILDING_BLOCKS: ItemGroup.BUILDING_BLOCKS
+DECORATIONS: ItemGroup.DECORATIONS
+REDSTONE: ItemGroup.REDSTONE
+TRANSPORTATION: ItemGroup.TRANSPORTATION
+MISC: ItemGroup.MISC
+FOOD: ItemGroup.FOOD
+TOOLS: ItemGroup.TOOLS
+COMBAT: ItemGroup.COMBAT
+BREWING: ItemGroup.BREWING
+MATERIALS: ItemGroup.MATERIALS

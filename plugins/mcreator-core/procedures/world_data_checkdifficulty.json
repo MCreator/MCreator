@@ -1,0 +1,40 @@
+{
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "difficulty",
+      "options": [
+        [
+          "PEACEFUL",
+          "PEACEFUL"
+        ],
+        [
+          "EASY",
+          "EASY"
+        ],
+        [
+          "NORMAL",
+          "NORMAL"
+        ],
+        [
+          "HARD",
+          "HARD"
+        ]
+      ]
+    }
+  ],
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "worlddata",
+    "fields": [
+      "difficulty"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}

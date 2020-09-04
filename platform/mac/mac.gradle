@@ -1,0 +1,66 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, obfuscateMCreatorJar, exportPlugins]) {
+    def exportPath = 'build/export/mac64/MCreator.app/Contents/'
+    into exportPath
+    into('') {
+        from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
+            line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
+        }
+        from file('LICENSE.txt')
+    }
+    into('Resources') {
+        from file('platform/mac/mcreatorapp.icns')
+        from file('platform/mac/mcreator.icns')
+    }
+    into('MacOS') {
+        from file('platform/mac/mcreator') rename('mcreator', 'mcreatordos')
+        from file('LICENSE.txt')
+    }
+    into('MacOS/plugins') {from 'build/plugins/'}
+    into('MacOS/license') { with copySpec { from 'license' } }
+    into('MacOS/lib') {
+        with copySpec {
+            from 'build/libs' exclude 'mcreator.jar' rename('mcreator.jar', 'mcreator.jar')
+            from configurations.runtimeClasspath
+        }
+    }
+    into('MacOS/jdk/Contents/Home') { with copySpec { from 'jdk/jdk8_mac_64/' } exclude "jre/lib/tools.jar" }
+    doLast {
+        convertCRLF(file(exportPath + '/Info.plistdos'), file(exportPath + '/Info.plist'))
+        convertCRLF(file(exportPath + '/MacOS/mcreatordos'), file(exportPath + '/MacOS/mcreator'))
+        delete exportPath + '/Info.plistdos'
+        delete exportPath + '/MacOS/mcreatordos'
+    }
+}
+
+task dmgMac64(dependsOn: [downloadMKISOFS, exportMac64]) {
+    doLast {
+        ant.exec(executable: 'build/tools/mkisofs/Sample/mkisofs', failonerror: true) {
+            arg(value: '-r')
+            arg(value: '-D')
+            arg(value: '-o')
+            arg(value: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg')
+            arg(value: '-mac-name')
+            arg(value: '-V')
+            arg(value: 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
+            arg(value: '-apple')
+            arg(value: '-v')
+            arg(value: new File(buildDir, 'export/mac64'))
+        }
+    }
+}
+
+static void convertCRLF(File input, File out) {
+    out << input.text.replaceAll('\r\n', '\n')
+}
+
+task exportMac(type: DefaultTask, group: 'export') {
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        dependsOn dmgMac64
+    }
+
+    doLast {
+        delete 'build/export/mac64'
+    }
+}

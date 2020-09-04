@@ -1,0 +1,1 @@
+CurrentDevice.analogWrite((int)${input$pin},(short)${input$value});

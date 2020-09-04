@@ -1,0 +1,27 @@
+#FILES FOR INTELLIJ IDEA
+#=======================
+**/.idea/workspace.xml 
+**/.idea/tasks.xml
+**/.idea/uiDesigner.xml
+**/.idea/gradle.xml
+**/.idea/modules.xml
+**/.idea/deployment.xml
+**/.idea/discord.xml
+**/.idea/shelf
+
+#FILES FOR GRADLE
+#=======================
+.gradle
+/build/
+**/build/
+
+#FILES FOR MCREATOR DEV WORKSPACE
+#===============================
+/jdk/
+/src/main/resources/snapshot.conf
+
+#SYSTEM AND JAVA FILES
+#=====================
+Thumbs.db
+debug.log
+hs_err_pid*

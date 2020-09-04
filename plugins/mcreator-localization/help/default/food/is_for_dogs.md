@@ -1,0 +1,1 @@
+This parameter controls if this food is food for dogs and other animals that eat meat.

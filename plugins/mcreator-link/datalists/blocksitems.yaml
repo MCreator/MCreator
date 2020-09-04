@@ -1,0 +1,6 @@
+- MCreatorLink.LINK_BLOCK:
+  readable_name: "MCreator Link Block"
+  type: block
+  texture: LINK_BLOCK
+  required_apis:
+    - mcreator_link

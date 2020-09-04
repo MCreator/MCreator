@@ -1,0 +1,8 @@
+{
+  "id": "core",
+  "weight": 10,
+  "minversion": 202000400000,
+  "info": {
+    "name": "MCreator core plugin"
+  }
+}

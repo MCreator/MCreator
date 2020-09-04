@@ -1,0 +1,30 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "a",
+      "check": "MCItemBlock"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/b.png",
+      "width": 8,
+      "height": 36
+    }
+  ],
+  "extensions": [
+    "material_list_provider"
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "blockactions",
+    "fields": [
+      "material"
+    ],
+    "inputs": [
+      "a"
+    ]
+  }
+}

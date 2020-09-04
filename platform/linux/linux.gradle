@@ -1,0 +1,95 @@
+task exportLinux32(type: Copy, dependsOn: [downloadJDKLinux32, obfuscateMCreatorJar, exportPlugins]) {
+    into 'build/export/linux32'
+    into('') {
+        with copySpec {
+            from file('LICENSE.txt')
+            from file('platform/linux/mcreator.sh') rename('mcreator.sh', 'mcreator.shdos')
+        }
+    }
+    into('') {
+        with copySpec {
+            from file('src/main/resources/net/mcreator/ui/res/icon.png')
+        }
+    }
+    into('lib') {
+        with copySpec {
+            from 'build/libs' exclude 'mcreator.jar' rename('mcreator.jar', 'mcreator.jar')
+            from configurations.runtimeClasspath
+        }
+    }
+    into('plugins') {from 'build/plugins/'}
+    into('license') { with copySpec { from 'license' } }
+    into('jdk') { with copySpec { from 'jdk/jdk8_linux_32' } exclude "jre/lib/tools.jar" }
+    doLast {
+        convertCRLF(file('build/export/linux32/mcreator.shdos'), file('build/export/linux32/mcreator.sh'))
+        delete 'build/export/linux32/mcreator.shdos'
+    }
+}
+
+task tarLinux32(type: Tar, dependsOn: exportLinux32) {
+    with copySpec {
+        from('build/export/linux32/') { exclude "mcreator.sh", "jdk/jre/bin/*", "jdk/bin*" }
+        from('build/export/linux32/mcreator.sh') { fileMode = 0775 }
+        from('build/export/linux32/jdk/jre/bin/') { fileMode = 0775 } into 'jdk/jre/bin/'
+        from('build/export/linux32/jdk/bin/') { fileMode = 0775 } into 'jdk/bin/'
+    }
+    into 'MCreator' + (String) project.mcreatorconf.getProperty('mcreator').replace(".", "").replace(" ", "")
+    destinationDirectory = file('build/export/')
+    compression = Compression.GZIP
+    archiveFileName = 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Linux 32bit.tar.gz'
+}
+
+task exportLinux64(type: Copy, dependsOn: [downloadJDKLinux64, obfuscateMCreatorJar, exportPlugins]) {
+    into 'build/export/linux64'
+    into('') {
+        with copySpec {
+            from file('LICENSE.txt')
+            from file('platform/linux/mcreator.sh') rename('mcreator.sh', 'mcreator.shdos')
+        }
+    }
+    into('') {
+        with copySpec {
+            from file('src/main/resources/net/mcreator/ui/res/icon.png')
+        }
+    }
+    into('lib') {
+        with copySpec {
+            from 'build/libs' exclude 'mcreator.jar' rename('mcreator.jar', 'mcreator.jar')
+            from configurations.runtimeClasspath
+        }
+    }
+    into('plugins') {from 'build/plugins/'}
+    into('license') { with copySpec { from 'license' } }
+    into('jdk') { with copySpec { from 'jdk/jdk8_linux_64' } exclude "jre/lib/tools.jar" }
+    doLast {
+        convertCRLF(file('build/export/linux64/mcreator.shdos'), file('build/export/linux64/mcreator.sh'))
+        delete 'build/export/linux64/mcreator.shdos'
+    }
+}
+
+task tarLinux64(type: Tar, dependsOn: exportLinux64) {
+    with copySpec {
+        from('build/export/linux64/') { exclude "mcreator.sh", "jdk/jre/bin/*", "jdk/bin*" }
+        from('build/export/linux64/mcreator.sh') { fileMode = 0775 }
+        from('build/export/linux64/jdk/jre/bin/') { fileMode = 0775 } into 'jdk/jre/bin/'
+        from('build/export/linux64/jdk/bin/') { fileMode = 0775 } into 'jdk/bin/'
+    }
+    into 'MCreator' + (String) project.mcreatorconf.getProperty('mcreator').replace(".", "").replace(" ", "")
+    destinationDirectory = file('build/export/')
+    compression = Compression.GZIP
+    archiveFileName = 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Linux 64bit.tar.gz'
+}
+
+static void convertCRLF(File input, File out) {
+    out << input.text.replaceAll('\r\n', '\n')
+}
+
+task exportLinux(type: DefaultTask, group: 'export') {
+    dependsOn tarLinux32
+    dependsOn tarLinux64
+
+    doLast {
+        delete 'build/export/linux32'
+        delete 'build/export/linux64'
+    }
+}

@@ -1,0 +1,113 @@
+/*
+ * MCreator (https://mcreator.net/)
+ * Copyright (C) 2020 Pylo and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package net.mcreator.ui.dialogs.wysiwyg;
+
+import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.element.parts.gui.TextField;
+import net.mcreator.io.Transliteration;
+import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
+import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class TextFieldDialog extends MCreatorDialog {
+
+	public TextFieldDialog(WYSIWYGEditor editor, @Nullable TextField textField) {
+		super(editor.mcreator);
+		setModal(true);
+		setSize(480, 150);
+		setLocationRelativeTo(editor.mcreator);
+
+		VTextField nameField = new VTextField(20);
+		nameField.setPreferredSize(new Dimension(200, 28));
+		nameField.enableRealtimeValidation();
+		Validator validator = new JavaMemeberNameValidator(nameField, false);
+		nameField.setValidator(() -> {
+			String textname = Transliteration.transliterateString(nameField.getText());
+			for (int i = 0; i < editor.list.getModel().getSize(); i++) {
+				GUIComponent component = editor.list.getModel().getElementAt(i);
+				if (textField != null && component.name.equals(textField.name)) // skip current element if edit mode
+					continue;
+				if (component instanceof TextField && component.name.equals(textname))
+					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+							"This name already exists");
+			}
+			return validator.validate();
+		});
+		JTextField deft = new JTextField(20);
+		JPanel options = new JPanel();
+
+		if (textField == null)
+			add("North", PanelUtils
+					.centerInPanel(new JLabel("After you click OK, right-click with the mouse to change text field width")));
+		else
+			add("North", PanelUtils.centerInPanel(
+					new JLabel("To resize the text field, use move tool and right-click with the mouse when moving")));
+
+		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
+		options.add(PanelUtils.join(new JLabel("Text input name: "), nameField));
+		add("Center", options);
+		setTitle("Add text field");
+		options.add(PanelUtils.join(new JLabel("Initial text: "), deft));
+
+		JButton ok = new JButton("OK");
+		JButton cancel = new JButton("Cancel");
+		add("South", PanelUtils.join(ok, cancel));
+
+		getRootPane().setDefaultButton(ok);
+
+		if (textField != null) {
+			ok.setText("Save changes");
+			nameField.setText(textField.name);
+			deft.setText(textField.placeholder);
+		}
+
+		cancel.addActionListener(arg01 -> setVisible(false));
+		ok.addActionListener(arg01 -> {
+			if (nameField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+				setVisible(false);
+				String text = Transliteration.transliterateString(nameField.getText());
+				if (!text.equals("")) {
+					if (textField == null) {
+						editor.editor.setPositioningMode(120, 20);
+						editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(
+								new TextField(text, editor.editor.newlyAddedComponentPosX,
+										editor.editor.newlyAddedComponentPosY, editor.editor.ow, editor.editor.oh,
+										deft.getText())));
+					} else {
+						int idx = editor.components.indexOf(textField);
+						editor.components.remove(textField);
+						TextField textfieldNew = new TextField(text, textField.getX(), textField.getY(),
+								textField.width, textField.height, deft.getText());
+						editor.components.add(idx, textfieldNew);
+					}
+				}
+			}
+		});
+
+		setVisible(true);
+	}
+
+}

@@ -1,0 +1,1 @@
+Writes a message in the chat when the player completes the advancement.

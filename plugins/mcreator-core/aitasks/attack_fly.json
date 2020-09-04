@@ -1,0 +1,29 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "speed",
+      "value": 1
+    },
+    {
+      "type": "field_number",
+      "name": "radius",
+      "value": 16
+    }
+  ],
+  "extensions": [
+    "ai_condition_selector"
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 200,
+  "mcreator": {
+    "toolbox_id": "combattasks",
+    "fields": [
+      "speed",
+      "radius",
+      "condition"
+    ]
+  }
+}

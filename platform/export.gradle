@@ -1,0 +1,77 @@
+import groovy.io.FileType
+
+buildscript {
+    repositories { jcenter() }
+}
+
+task cleanupPlugins(type: DefaultTask) {
+    doFirst {
+        delete 'build/plugins/'
+    }
+}
+
+// export  all plugins
+file('plugins').traverse([maxDepth: 0, type: FileType.DIRECTORIES]) {
+    tasks.create(name: 'export_plugin_' + it.getName().replace('.', ''), type: Zip) { task ->
+        task.archiveName = it.getName() + '.zip'
+        task.destinationDir = file('build/plugins/')
+        task.from 'plugins/' + it.getName()
+        task.group "mcreatorplugins"
+        task.mustRunAfter cleanupPlugins
+    }
+}
+
+task exportPlugins(type: DefaultTask) {
+    dependsOn tasks.matching { Task t -> t.name.startsWith("export_plugin_") }
+    dependsOn cleanupPlugins
+}
+
+task exportReleasePreTask(type: DefaultTask, dependsOn: testClasses) {
+    doFirst {
+        delete 'build/export/'
+        mkdir 'build/export/'
+    }
+}
+
+// definition of main export task
+task exportRelease(type: DefaultTask, group: 'export') {
+    doLast {
+        copy {
+            from file('LICENSE.txt') into 'build/export' rename("LICENSE.txt", "LICENSE")
+        }
+
+        project.logger.lifecycle('\nFinished export for MCREATOR ' +
+                (String) project.mcreatorconf.getProperty('mcreator') + "." + new Date().format("wwuHH"))
+    }
+}
+
+// definition of main export task
+task exportSnapshot(type: DefaultTask, group: 'export') {
+    if (gradle.startParameter.taskNames.contains(name)) { // only run this if the task started was this one
+        project.mcreatorconf.setProperty('mcreator', "EAP " + (String) project.mcreatorconf.getProperty('mcreator') + new Date().format(" 'b'wwuHH"))
+        file('src/main/resources/snapshot.conf') << (String) project.mcreatorconf.getProperty('mcreator')
+    }
+
+    doLast {
+        copy {
+            from file('LICENSE.txt') into 'build/export' rename("LICENSE.txt", "LICENSE")
+        }
+
+        delete 'src/main/resources/snapshot.conf'
+
+        project.logger.lifecycle('\nFinished export for MCREATOR EAP ' +
+                (String) project.mcreatorconf.getProperty('mcreator') + "." + new Date().format("wwuHH"))
+    }
+}
+
+apply from: 'platform/windows/windows.gradle'
+apply from: 'platform/linux/linux.gradle'
+apply from: 'platform/mac/mac.gradle'
+
+exportRelease.dependsOn(exportWindowsAll)
+exportRelease.dependsOn(exportMac)
+exportRelease.dependsOn(exportLinux)
+
+exportSnapshot.dependsOn(exportWindowsZIP)
+exportSnapshot.dependsOn(exportMac)
+exportSnapshot.dependsOn(exportLinux)

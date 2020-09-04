@@ -1,0 +1,155 @@
+* {
+    font-family: sans-serif;
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: #505050;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #323232;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #424242;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    overflow: hidden;
+}
+
+#toolbox {
+    display: none;
+}
+
+#area {
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+}
+
+#blockly {
+    position: absolute;
+    background: transparent;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.blocklySvg {
+    background-color: transparent !important;
+}
+
+.blocklyTreeLabel {
+    font-family: sans-serif;
+    font-size: 13px;
+}
+
+.blocklyText {
+    font-family: sans-serif;
+}
+
+.blocklyMainBackground {
+    fill: rgba(85, 85, 85, 0.66) !important;
+    stroke-width: 0;
+}
+
+.blocklyToolboxDiv {
+    background-color: #323232;
+    color: white;
+}
+
+.blocklyTreeRow:not(.blocklyTreeSelected):hover {
+    background-color: #e4e4e4 !important;
+    color: #323232 !important;
+}
+
+.blocklyTreeSeparator {
+    border-bottom: solid #505050 1px;
+}
+
+.blocklyFlyoutBackground {
+    fill-opacity: 0;
+}
+
+.blocklyFlyout {
+    background-color: #323232c2;
+}
+
+.blocklyScrollbarVertical .blocklyScrollbarHandle {
+    fill: #323232;
+    rx: 0;
+    ry: 0;
+    width: 7px;
+}
+
+.blocklyScrollbarVertical:hover .blocklyScrollbarHandle {
+    fill: #3e3d3d;
+}
+
+.blocklyScrollbarHorizontal .blocklyScrollbarHandle {
+    fill: #323232;
+    rx: 0;
+    ry: 0;
+    height: 7px;
+}
+
+.blocklyScrollbarHorizontal:hover .blocklyScrollbarHandle {
+    fill: #3e3d3d;
+}
+
+.blocklySelected > .blocklyPath {
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+.whlab > .blocklyFlyoutLabelText {
+    fill: white;
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+.small-text {
+    font-size: 12px;
+}
+
+.blocklyDropDownDiv {
+    background: #505050 !important;
+    border-color: #1e1e1e !important;
+}
+
+.blocklyDropDownDiv .goog-menuitem-content {
+    color: white !important;
+}
+
+.blocklyTooltipDiv {
+    background-color: #323232;
+    color: white;
+}
+
+.blocklyWidgetDiv .goog-menu {
+    background: #323232 !important;
+    border-color: #505050 !important;
+    border-radius: 0;
+}
+
+.blocklyWidgetDiv .goog-menuitem-content {
+    color: white;
+}
+
+.blocklyCommentTextarea {
+    background: #3e3e3e;
+    color: white;
+}
+
+.condition-label {
+    font-size: 13px !important;
+}

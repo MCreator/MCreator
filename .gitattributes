@@ -1,0 +1,3 @@
+#prevent git from changing line endings
+* -text
+* -crlf

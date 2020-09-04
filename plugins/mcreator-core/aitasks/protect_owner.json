@@ -1,0 +1,15 @@
+{
+  "extensions": [
+    "ai_condition_selector"
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 170,
+  "mcreator": {
+    "toolbox_id": "parentownertasks",
+    "fields": [
+      "condition"
+    ]
+  }
+}

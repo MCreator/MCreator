@@ -1,0 +1,19 @@
+{
+  "dependencies_provided": [
+    {
+      "name": "pin",
+      "type": "number"
+    },
+    {
+      "name": "value",
+      "type": "number"
+    },
+    {
+      "name": "risingEdge",
+      "type": "boolean"
+    }
+  ],
+  "required_apis": [
+    "mcreator_link"
+  ]
+}

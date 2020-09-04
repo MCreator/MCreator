@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ MCreator (https://mcreator.net/)
+  ~ Copyright (C) 2020 Pylo and contributors
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<TokenMakerDefinition>
+    <general>
+        <package>net.mcreator.ui.ide</package>
+        <className>MinecraftCommandsTokenMaker</className>
+        <extendedClass>AbstractJFlexTokenMaker</extendedClass>
+        <classComment/>
+        <ignoreCase>false</ignoreCase>
+        <booleanLiterals>true</booleanLiterals>
+    </general>
+    <comments>
+        <lineComments enabled="true" start="#"/>
+        <multiLineComments enabled="false" end="" start=""/>
+        <docComments enabled="false" end="" start=""/>
+    </comments>
+    <keywords>
+        <keyword>achievement</keyword>
+        <keyword>ban</keyword>
+        <keyword>ban-ip</keyword>
+        <keyword>banlist</keyword>
+        <keyword>clear</keyword>
+        <keyword>clone</keyword>
+        <keyword>data</keyword>
+        <keyword>debug</keyword>
+        <keyword>defaultgamemode</keyword>
+        <keyword>deop</keyword>
+        <keyword>difficulty</keyword>
+        <keyword>effect</keyword>
+        <keyword>enchant</keyword>
+        <keyword>execute</keyword>
+        <keyword>experience</keyword>
+        <keyword>fill</keyword>
+        <keyword>function</keyword>
+        <keyword>gamemode</keyword>
+        <keyword>gamerule</keyword>
+        <keyword>give</keyword>
+        <keyword>kick</keyword>
+        <keyword>kill</keyword>
+        <keyword>list</keyword>
+        <keyword>locate</keyword>
+        <keyword>op</keyword>
+        <keyword>pardon</keyword>
+        <keyword>pardon-ip</keyword>
+        <keyword>playsound</keyword>
+        <keyword>publish</keyword>
+        <keyword>replaceitem block</keyword>
+        <keyword>replaceitem entity</keyword>
+        <keyword>save-all</keyword>
+        <keyword>save-off</keyword>
+        <keyword>save-on</keyword>
+        <keyword>say</keyword>
+        <keyword>scoreboard objectives</keyword>
+        <keyword>scoreboard players</keyword>
+        <keyword>seed</keyword>
+        <keyword>setblock</keyword>
+        <keyword>setidletimeout</keyword>
+        <keyword>setworldspawn</keyword>
+        <keyword>spawnpoint</keyword>
+        <keyword>spreadplayers</keyword>
+        <keyword>stop</keyword>
+        <keyword>summon</keyword>
+        <keyword>tag</keyword>
+        <keyword>teams</keyword>
+        <keyword>tellraw</keyword>
+        <keyword>time add</keyword>
+        <keyword>time set</keyword>
+        <keyword>tp</keyword>
+        <keyword>weather</keyword>
+        <keyword>whitelist</keyword>
+        <keyword>xp</keyword>
+    </keywords>
+    <keywords2/>
+    <dataTypes>
+        <dataType>@a</dataType>
+        <dataType>@e</dataType>
+        <dataType>@p</dataType>
+        <dataType>@r</dataType>
+        <dataType>@s</dataType>
+        <dataType>\n</dataType>
+        <dataType>^</dataType>
+        <dataType>add</dataType>
+        <dataType>advancements</dataType>
+        <dataType>anchored</dataType>
+        <dataType>aqua</dataType>
+        <dataType>arbitrary</dataType>
+        <dataType>as</dataType>
+        <dataType>at</dataType>
+        <dataType>black</dataType>
+        <dataType>blue</dataType>
+        <dataType>bold</dataType>
+        <dataType>byte</dataType>
+        <dataType>color&lt;/Keywords&gt;</dataType>
+        <dataType>creative</dataType>
+        <dataType>dark_aqua</dataType>
+        <dataType>dark_blue</dataType>
+        <dataType>dark_gray</dataType>
+        <dataType>dark_green</dataType>
+        <dataType>dark_purple</dataType>
+        <dataType>dark_red</dataType>
+        <dataType>distance</dataType>
+        <dataType>double</dataType>
+        <dataType>dx</dataType>
+        <dataType>dy</dataType>
+        <dataType>dz</dataType>
+        <dataType>extra</dataType>
+        <dataType>eyes</dataType>
+        <dataType>false</dataType>
+        <dataType>feet</dataType>
+        <dataType>float</dataType>
+        <dataType>furthest</dataType>
+        <dataType>gamemode</dataType>
+        <dataType>gold</dataType>
+        <dataType>gray</dataType>
+        <dataType>green</dataType>
+        <dataType>if</dataType>
+        <dataType>int</dataType>
+        <dataType>italic</dataType>
+        <dataType>level</dataType>
+        <dataType>light_purple</dataType>
+        <dataType>limit</dataType>
+        <dataType>list</dataType>
+        <dataType>long</dataType>
+        <dataType>name</dataType>
+        <dataType>nbt</dataType>
+        <dataType>nearest</dataType>
+        <dataType>obfuscated</dataType>
+        <dataType>offset</dataType>
+        <dataType>positioned</dataType>
+        <dataType>random</dataType>
+        <dataType>red</dataType>
+        <dataType>remove</dataType>
+        <dataType>replace</dataType>
+        <dataType>reset</dataType>
+        <dataType>result</dataType>
+        <dataType>run</dataType>
+        <dataType>scores</dataType>
+        <dataType>short</dataType>
+        <dataType>sort</dataType>
+        <dataType>spectator</dataType>
+        <dataType>store</dataType>
+        <dataType>strikethrough</dataType>
+        <dataType>success</dataType>
+        <dataType>survival</dataType>
+        <dataType>tag</dataType>
+        <dataType>tag</dataType>
+        <dataType>team</dataType>
+        <dataType>text</dataType>
+        <dataType>true</dataType>
+        <dataType>type</dataType>
+        <dataType>underline</dataType>
+        <dataType>unless</dataType>
+        <dataType>values</dataType>
+        <dataType>white</dataType>
+        <dataType>x</dataType>
+        <dataType>x_rotation</dataType>
+        <dataType>y</dataType>
+        <dataType>y_rotation</dataType>
+        <dataType>yellow</dataType>
+        <dataType>z</dataType>
+        <dataType>~</dataType>
+    </dataTypes>
+    <functions/>
+    <numbers>
+        <hexLiteral/>
+        <intLiteral>{Digit}+</intLiteral>
+        <floatLiteral>({Digit}+)("."{Digit}+)?(e[+-]?{Digit}+)? | ({Digit}+)?("."{Digit}+)(e[+-]?{Digit}+)?
+        </floatLiteral>
+    </numbers>
+    <stringLiterals enabled="true" multiLine="false"/>
+    <charLiterals enabled="false" multiLine="false"/>
+    <backtickLiterals enabled="false"/>
+    <operators>
+        <operator>%=</operator>
+        <operator>*=</operator>
+        <operator>+=</operator>
+        <operator>,</operator>
+        <operator>-=</operator>
+        <operator>/=</operator>
+        <operator>&lt;</operator>
+        <operator>&lt;=</operator>
+        <operator>&lt;&gt;</operator>
+        <operator>=</operator>
+        <operator>&gt;</operator>
+        <operator>&gt;=</operator>
+    </operators>
+</TokenMakerDefinition>

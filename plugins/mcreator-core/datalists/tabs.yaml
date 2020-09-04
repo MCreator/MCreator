@@ -1,0 +1,22 @@
+- BUILDING_BLOCKS:
+  texture: BRICK_BLOCK
+- DECORATIONS:
+  texture: RED_FLOWER#0
+- REDSTONE:
+  texture: REDSTONE
+- TRANSPORTATION:
+  texture: GOLDEN_RAIL
+- MISC:
+  texture: LAVA_BUCKET
+- FOOD:
+  texture: APPLE
+- TOOLS:
+  texture: IRON_AXE
+- COMBAT:
+  texture: GOLDEN_SWORD
+- BREWING:
+  texture: POTIONITEM
+- MATERIALS:
+  texture: STICK
+- No creative tab entry:
+  texture: BARRIER

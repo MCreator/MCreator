@@ -1,0 +1,103 @@
+<xml id="toolbox">
+    <custom-other/>
+    <sep/>
+    <category name="${t:blockly.category.minecraft_components}" colour="360">
+        <block type="coord_x"/>
+        <block type="coord_y"/>
+        <block type="coord_z"/>
+        <block type="mcitem_allblocks"/>
+        <block type="mcitem_all"/>
+        <block type="entity_from_deps"/>
+        <block type="source_entity_from_deps"/>
+        <block type="direction_constant"/>
+        <block type="direction_from_deps"/>
+        <custom-mcelements/>
+    </category>
+    <sep/>
+    <category name="${t:blockly.category.custom_variables}" colour="150">
+        <block type="variables_get_logic"/>
+        <block type="variables_set_logic"/>
+        <block type="variables_get_number"/>
+        <block type="variables_set_number"/>
+        <block type="variables_get_text"/>
+        <block type="variables_set_text"/>
+        <block type="variables_get_itemstack"/>
+        <block type="variables_set_itemstack"/>
+        <custom-customvariables/>
+    </category>
+    <sep/>
+    <category name="${t:blockly.category.logic_and_loops}" colour="120">
+        <block type="controls_if"/>
+        <block type="controls_if">
+            <mutation else="1"/>
+        </block>
+        <block type="controls_if">
+            <mutation elseif="1"/>
+        </block>
+        <block type="return_logic"/>
+        <block type="return_number"/>
+        <block type="return_text"/>
+        <block type="controls_repeat_ext"/>
+        <block type="controls_while"/>
+        <block type="controls_flow_statements"/>
+        <custom-logicloops/>
+    </category>
+    <category name="${t:blockly.category.logic}" colour="%{BKY_LOGIC_HUE}">
+        <block type="logic_negate"/>
+        <block type="logic_boolean"/>
+        <block type="logic_binary_ops"/>
+        <block type="math_binary_ops"/>
+        <block type="text_binary_ops"/>
+        <custom-logicoperations/>
+    </category>
+    <category name="${t:blockly.category.math}" colour="%{BKY_MATH_HUE}">
+        <block type="math_number"/>
+        <block type="math_java_constants"/>
+        <block type="math_dual_ops"/>
+        <block type="math_singular_ops"/>
+        <block type="math_from_text"/>
+        <custom-math/>
+    </category>
+    <category name="${t:blockly.category.text}" colour="%{BKY_TEXTS_HUE}">
+        <block type="text"/>
+        <block type="text_join"/>
+        <block type="text_length"/>
+        <block type="text_replace"/>
+        <block type="text_substring"/>
+        <block type="text_contains"/>
+        <block type="text_format_number">
+            <value name="format">
+                <block type="text">
+                    <field name="TEXT">##.##</field>
+                </block>
+            </value>
+        </block>
+        <block type="text_print"/>
+        <custom-text/>
+    </category>
+    <sep/>
+    <custom-apis/>
+    <category name="${t:blockly.category.advanced}" colour="250">
+        <block type="cancel_event"/>
+        <block type="call_procedure"/>
+        <block type="call_procedure_at">
+            <value name="x">
+                <block type="coord_x"/>
+            </value>
+            <value name="y">
+                <block type="coord_y"/>
+            </value>
+            <value name="z">
+                <block type="coord_z"/>
+            </value>
+        </block>
+        <block type="procedure_retval_logic"/>
+        <block type="procedure_retval_number"/>
+        <block type="procedure_retval_string"/>
+        <block type="custom_dependency_logic"/>
+        <block type="custom_dependency_number"/>
+        <block type="custom_dependency_text"/>
+        <block type="java_code"/>
+        <custom-advanced/>
+    </category>
+</xml>

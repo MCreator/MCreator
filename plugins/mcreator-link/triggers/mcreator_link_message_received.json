@@ -1,0 +1,11 @@
+{
+  "dependencies_provided": [
+    {
+      "name": "message",
+      "type": "string"
+    }
+  ],
+  "required_apis": [
+    "mcreator_link"
+  ]
+}

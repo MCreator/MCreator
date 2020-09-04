@@ -1,0 +1,83 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "x",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "y",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "z",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "yaw",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "pitch",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "vx",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "vy",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "vz",
+      "check": "Number"
+    }
+  ],
+  "extensions": [
+    "entity_list_provider"
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 35,
+  "mcreator": {
+    "toolbox_id": "worldmanagement",
+    "toolbox_init": [
+      "<value name=\"x\"><block type=\"coord_x\"></block></value>",
+      "<value name=\"y\"><block type=\"coord_y\"></block></value>",
+      "<value name=\"z\"><block type=\"coord_z\"></block></value>",
+      "<value name=\"yaw\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"pitch\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"vx\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"vy\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"vz\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+    ],
+    "fields": [
+      "entity"
+    ],
+    "inputs": [
+      "x",
+      "y",
+      "z",
+      "yaw",
+      "pitch",
+      "vx",
+      "vy",
+      "vz"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}

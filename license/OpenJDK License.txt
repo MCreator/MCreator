@@ -1,0 +1,1 @@
+License for the OpenJDK distribution provided with MCreator is located in the subdirectory jdk of MCreator's installation in a file called LICENSE.

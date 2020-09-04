@@ -1,0 +1,8 @@
+{
+  "id": "localization",
+  "weight": 10,
+  "minversion": 202000400000,
+  "info": {
+    "name": "MCreator localization plugin"
+  }
+}
