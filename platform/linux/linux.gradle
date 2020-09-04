@@ -1,4 +1,4 @@
-task exportLinux32(type: Copy, dependsOn: [downloadJDKLinux32, obfuscateMCreatorJar, exportPlugins]) {
+task exportLinux32(type: Copy, dependsOn: [downloadJDKLinux32, jar, exportPlugins]) {
     into 'build/export/linux32'
     into('') {
         with copySpec {
@@ -39,7 +39,7 @@ task tarLinux32(type: Tar, dependsOn: exportLinux32) {
     archiveFileName = 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Linux 32bit.tar.gz'
 }
 
-task exportLinux64(type: Copy, dependsOn: [downloadJDKLinux64, obfuscateMCreatorJar, exportPlugins]) {
+task exportLinux64(type: Copy, dependsOn: [downloadJDKLinux64, jar, exportPlugins]) {
     into 'build/export/linux64'
     into('') {
         with copySpec {

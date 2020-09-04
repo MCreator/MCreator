@@ -1,6 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, obfuscateMCreatorJar, exportPlugins]) {
+task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) {
     def exportPath = 'build/export/mac64/MCreator.app/Contents/'
     into exportPath
     into('') {
