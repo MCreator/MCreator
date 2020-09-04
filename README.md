@@ -1,6 +1,6 @@
 [![MCreator](https://mcreator.net/image/brand/mcreator300s.png)](https://mcreator.net/)
 
-[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Pylo/MCreator/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/MCreator/MCreator/blob/master/LICENSE)
 
 # MCreator - Minecraft Mod Maker
 
@@ -20,13 +20,13 @@ Download MCreator binary distributions on https://mcreator.net/download.
 
 You are welcome to support this project by opening pull requests.
 
-Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/Pylo/MCreator), which you can do online. The CLA is necessary mainly because you own the copyright to your changes, even after your contribution becomes part of our codebase, so we need your permission to use and distribute your code. We also need to be sure of various other things—for instance that you'll tell us if you know that your code infringes on other people's patents. You don't have to sign the CLA until after you've submitted your code for review and we approved it, but you must do it before we can put your code into our codebase.
+Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/MCreator/MCreator), which you can do online. The CLA is necessary mainly because you own the copyright to your changes, even after your contribution becomes part of our codebase, so we need your permission to use and distribute your code. We also need to be sure of various other things—for instance that you'll tell us if you know that your code infringes on other people's patents. You don't have to sign the CLA until after you've submitted your code for review and we approved it, but you must do it before we can put your code into our codebase.
 
 Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contributors) who already contributed to MCreator!
 
 ## Development
 
-To clone this repository, run `git clone --recursive https://github.com/Pylo/MCreator.git`.
+To clone this repository, run `git clone --recursive https://github.com/MCreator/MCreator.git`.
 
 MCreator uses Gradle build system to manage the building and exporting. Use `runMCreator` task to run test MCreator.
 
