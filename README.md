@@ -14,7 +14,7 @@ It is used worldwide by Minecraft players, aspiring mod developers, for educatio
 
 This repository page is for people looking to contribute to MCreator. Visit https://mcreator.net/ to download MCreator as a user and check https://mcreator.net/support to find the support, forums, knowledge base and more.
 
-Download MCreator binary distributions on https://mcreator.net/download.
+➡️ Download MCreator binary distributions on https://mcreator.net/download.
 
 ## Contributing
 
@@ -22,7 +22,7 @@ You are welcome to support this project by opening pull requests. Read more abou
 
 Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/MCreator/MCreator), which you can do online. The CLA is necessary mainly because you own the copyright to your changes, even after your contribution becomes part of our codebase, so we need your permission to use and distribute your code. We also need to be sure of various other things—for instance that you'll tell us if you know that your code infringes on other people's patents. You don't have to sign the CLA until after you've submitted your code for review and we approved it, but you must do it before we can put your code into our codebase.
 
-Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contributors) who already contributed to MCreator!
+Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contributors) who already contributed to MCreator! 💚
 
 ## Development
 
