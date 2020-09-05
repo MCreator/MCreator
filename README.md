@@ -16,7 +16,7 @@ It is used worldwide by Minecraft players, aspiring mod developers, for educatio
 
 This repository page is for people looking to contribute to MCreator. Visit https://mcreator.net/ to download MCreator distribution and to engage in the community. Check https://mcreator.net/support to find the support, forums, knowledge base, and more.
 
-➡️ Download MCreator binary distributions on https://mcreator.net/download.
+Download MCreator binary distributions on https://mcreator.net/download.
 
 ## Contributing
 

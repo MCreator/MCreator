@@ -13,7 +13,7 @@ changes, and the way how to implement them to fit the existing code base and UX 
 * Make sure to update files with license headers
 * Be human, we are humans too, keep the community positive when colaborating with contributors and maintainers :)
 
-Learn more about the development process and tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).
+*Learn more about the development process and tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).*
 
 # Pull requests
 
