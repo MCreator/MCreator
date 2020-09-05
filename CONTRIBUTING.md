@@ -11,6 +11,20 @@ changes, and the way how to implement them to fit the existing code base and UX 
 * When committing, make sure to reference the issue by #ID in the commit message to link commits to the issue
 * Reference potential issues the pull request relates to when an issue(s) related to the pull request exists
 * Make sure to update files with license headers
+* Be human, we are humans too, keep the community positive when colaborating with contributors and maintainers :)
+
+Learn more about the development process and tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).
+
+# Pull requests
+
+Once you complete your feature and are sure you followed the tips and tried to make the code blend in as much as possible, we will review the code.
+
+The contributed code must pass all tests and be mergeable into the master branch. Expect comments on code after the code review. You will likely
+need to change some code parts based on the maintainer's suggestions.
+
+Some features might not be accepted into the core if they do not follow or guidelines, are low quality, or steer MCreator away from its roadmap 
+or do not fit the current UX flow of the application. Too specific features that would make UI more complex, but would not be benefitical to the
+most of the users might be rejected too, or suggested to be distributed in a plugin format.
 
 # CLA
 

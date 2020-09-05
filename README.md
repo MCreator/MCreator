@@ -1,6 +1,8 @@
 [![MCreator](https://mcreator.net/image/brand/mcreator300s.png)](https://mcreator.net/)
 
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/MCreator/MCreator/blob/master/LICENSE)
+[![Download](https://img.shields.io/badge/Download-release-%2393c54b)](https://mcreator.net/download)
+[![Donate](https://img.shields.io/badge/Donate-%E2%99%A1-%23ff7c00)](https://mcreator.net/donate)
 
 # MCreator - Minecraft Mod Maker
 
@@ -10,19 +12,18 @@ https://mcreator.net/ - MCreator is a software used to make Minecraft Java Editi
 
 It is used worldwide by Minecraft players, aspiring mod developers, for education, online classes, and STEM workshops.
 
-## Download and support
+## Download, community, and support
 
-This repository page is for people looking to contribute to MCreator. Visit https://mcreator.net/ to download MCreator as a user and check https://mcreator.net/support to find the support, forums, knowledge base and more.
+This repository page is for people looking to contribute to MCreator. Visit https://mcreator.net/ to download MCreator distribution and to engage in the community. Check https://mcreator.net/support to find the support, forums, knowledge base, and more.
 
-Download MCreator binary distributions on https://mcreator.net/download.
+➡️ Download MCreator binary distributions on https://mcreator.net/download.
 
 ## Contributing
 
-You are welcome to support this project by opening pull requests.
+You are welcome to support this project by opening pull requests. Read more about contributing in our [contributing guidelines](CONTRIBUTING.md).
+Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/MCreator/MCreator).
 
-Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/MCreator/MCreator), which you can do online. The CLA is necessary mainly because you own the copyright to your changes, even after your contribution becomes part of our codebase, so we need your permission to use and distribute your code. We also need to be sure of various other things—for instance that you'll tell us if you know that your code infringes on other people's patents. You don't have to sign the CLA until after you've submitted your code for review and we approved it, but you must do it before we can put your code into our codebase.
-
-Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contributors) who already contributed to MCreator!
+Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contributors) who already contributed to MCreator! 💚
 
 ## Development
 
@@ -30,7 +31,8 @@ To clone this repository, run `git clone --recursive https://github.com/MCreator
 
 MCreator uses Gradle build system to manage the building and exporting. Use `runMCreator` task to run test MCreator.
 
-It is recommended to use Intellij IDEA for development and testing. When used with IDEA, _use provided run configurations to test and export MCreator_. For the compilation to work properly, add new SDK called `mcreator_sdk` and point it to `<MCreator workspace root>\jdk\jdk8_win_64` (in case of 64-bit Windows environment).
+It is recommended to use Intellij IDEA for development and testing. Learn more about the development process, and 
+tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).
 
 ## License and trademark
 
