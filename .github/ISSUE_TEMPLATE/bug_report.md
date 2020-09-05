@@ -24,9 +24,9 @@ Please specify which mod elements to check in your workspace too, if applicable.
 If applicable, add screenshots to help explain your problem.
 
 **Details**
- - OS: [e.g. Windows]
- - MCreator version [e.g. 2020.5]
+ - MCreator version: [e.g. 2020.5]
  - Generator type: [e.g. forge-2020.5]
+ - OS: [e.g. Windows]
 
 **Minimal reproducible example workspace**
 
