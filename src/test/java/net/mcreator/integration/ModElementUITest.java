@@ -25,6 +25,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.integration.javafx.JavaFXThreadingRule;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.workspace.Workspace;
@@ -84,6 +85,9 @@ public class ModElementUITest {
 		mcreator = new MCreator(null, workspace);
 
 		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
+
+		// reduce autosave interval for tests
+		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 1000;
 	}
 
 	@Test public void testModElements() throws Exception {

@@ -24,6 +24,7 @@ import net.mcreator.gradle.GradleErrorCodes;
 import net.mcreator.integration.TestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.ConsolePane;
 import net.mcreator.workspace.Workspace;
@@ -60,6 +61,9 @@ import static org.junit.Assert.fail;
 
 		// enable logging of HTML panes (gradle console)
 		ConsolePane.DEBUG_CONTENTS_TO_LOG = true;
+
+		// reduce autosave interval for tests
+		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 1000;
 	}
 
 	@Test public void testGenerators() throws InterruptedException, IOException, TimeoutException {
