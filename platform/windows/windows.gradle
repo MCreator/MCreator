@@ -35,7 +35,7 @@ task exportWin64(type: Copy, dependsOn: [downloadJDKWin64, createExe, jar, expor
     }
     into('lib') {
         with copySpec {
-            from 'build/libs' exclude 'mcreator.jar' rename('mcreator.jar', 'mcreator.jar')
+            from 'build/libs'
             from configurations.runtimeClasspath
         }
     }
@@ -60,7 +60,7 @@ task exportWin32(type: Copy, dependsOn: [downloadJDKWin32, createExe, jar, expor
     }
     into('lib') {
         with copySpec {
-            from 'build/libs' exclude 'mcreator.jar' rename('mcreator.jar', 'mcreator.jar')
+            from 'build/libs'
             from configurations.runtimeClasspath
         }
     }

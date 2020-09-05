@@ -13,7 +13,7 @@ task exportLinux32(type: Copy, dependsOn: [downloadJDKLinux32, jar, exportPlugin
     }
     into('lib') {
         with copySpec {
-            from 'build/libs' exclude 'mcreator.jar' rename('mcreator.jar', 'mcreator.jar')
+            from 'build/libs'
             from configurations.runtimeClasspath
         }
     }
@@ -54,7 +54,7 @@ task exportLinux64(type: Copy, dependsOn: [downloadJDKLinux64, jar, exportPlugin
     }
     into('lib') {
         with copySpec {
-            from 'build/libs' exclude 'mcreator.jar' rename('mcreator.jar', 'mcreator.jar')
+            from 'build/libs'
             from configurations.runtimeClasspath
         }
     }

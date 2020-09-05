@@ -21,7 +21,7 @@ task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) 
     into('MacOS/license') { with copySpec { from 'license' } }
     into('MacOS/lib') {
         with copySpec {
-            from 'build/libs' exclude 'mcreator.jar' rename('mcreator.jar', 'mcreator.jar')
+            from 'build/libs'
             from configurations.runtimeClasspath
         }
     }
