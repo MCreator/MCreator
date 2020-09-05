@@ -73,6 +73,7 @@ import java.util.List;
 	public boolean spawnStronghold;
 	public boolean spawnMineshaft;
 	public boolean spawnPillagerOutpost;
+	public String villageType;
 	public int biomeWeight;
 	public String biomeType;
 
@@ -97,6 +98,7 @@ import java.util.List;
 		// DEFAULT VALUES
 		name = "";
 		vanillaTreeType = "Default";
+		villageType = "none";
 		biomeCategory = "NONE";
 		biomeDictionaryTypes = new ArrayList<>();
 		spawnEntries = new ArrayList<>();

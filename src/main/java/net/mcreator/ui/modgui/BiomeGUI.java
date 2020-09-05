@@ -103,6 +103,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner biomeWeight = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 1));
 	private final JComboBox<String> biomeType = new JComboBox<>(new String[] { "WARM", "DESERT", "COOL", "ICY" });
 
+	private final JComboBox<String> villageType = new JComboBox<>(
+			new String[] {"none", "desert", "plains", "savanna", "snowy", "taiga"});
+
 	private final JComboBox<String> biomeCategory = new JComboBox<>(
 			new String[] { "NONE", "TAIGA", "EXTREME_HILLS", "JUNGLE", "MESA", "PLAINS", "SAVANNA", "ICY", "THEEND",
 					"BEACH", "FOREST", "OCEAN", "DESERT", "RIVER", "SWAMP", "MUSHROOM", "NETHER" });
@@ -235,7 +238,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		JPanel allmost = new JPanel(new BorderLayout(60, 10));
 		allmost.setOpaque(false);
 
-		JPanel spawnproperties = new JPanel(new GridLayout(9, 2, 5, 2));
+		JPanel spawnproperties = new JPanel(new GridLayout(10, 2, 5, 2));
 		spawnproperties.setOpaque(false);
 
 		spawnproperties.setBorder(BorderFactory.createTitledBorder(
@@ -261,11 +264,15 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnMineshaft.setSelected(true);
 		spawnMineshaft.setOpaque(false);
 
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_pillager_outpostss"),
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_pillager_outposts"),
 				new JLabel("Generate Pillager Outposts in the biome?")));
 		spawnproperties.add(spawnPillagerOutpost);
 		spawnPillagerOutpost.setSelected(true);
 		spawnPillagerOutpost.setOpaque(false);
+
+		spawnproperties
+				.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/village"), new JLabel("Generate Villages of type: ")));
+		spawnproperties.add(villageType);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/weight"),
 				new JLabel("<html>Biome weight:<br><small>Smaller is rarer biome")));
@@ -501,6 +508,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		gravelPatchesPerChunk.setValue(biome.gravelPatchesPerChunk);
 		biomeWeight.setValue(biome.biomeWeight);
 		biomeType.setSelectedItem(biome.biomeType);
+		villageType.setSelectedItem(biome.villageType);
 		biomeCategory.setSelectedItem(biome.biomeCategory);
 		parent.setSelectedItem(biome.parent);
 		biomeDictionaryTypes.setListElements(biome.biomeDictionaryTypes);
@@ -539,6 +547,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.temperature = (double) temperature.getValue();
 		biome.biomeWeight = (int) biomeWeight.getValue();
 		biome.biomeType = (String) biomeType.getSelectedItem();
+		biome.villageType = (String) villageType.getSelectedItem();
 		biome.biomeCategory = (String) biomeCategory.getSelectedItem();
 		biome.parent = new BiomeEntry(mcreator.getWorkspace(), parent.getSelectedItem());
 		biome.biomeDictionaryTypes = biomeDictionaryTypes.getListElements();

@@ -110,6 +110,10 @@ import net.minecraft.block.material.Material;
 			this.addStructure(Feature.PILLAGER_OUTPOST.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
 			</#if>
 
+			<#if data.villageType != "none">
+			this.addStructure(Feature.VILLAGE.withConfiguration(new VillageConfig("village/${data.villageType}/town_centers", 6)));
+			</#if>
+
 			<#if (data.flowersPerChunk > 0)>
 			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.FLOWER.withConfiguration(DefaultBiomeFeatures.DEFAULT_FLOWER_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(${data.flowersPerChunk}))));
 			</#if>
