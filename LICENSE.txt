@@ -5,6 +5,8 @@ files or other files of this project.
 MCreator is a trademark of Pylo. Custom distributions of this software may 
 not include Pylo or MCreator trademark (trademark name and logo) to not 
 confuse the software with the official distribution of MCreator project.
+Custom distributions can (and should) still note that they are a variant
+of original MCreator project.
 
 Some files (especially *.ftl templates) might not contain the license header,
 but this does not mean they are not covered by this license.
