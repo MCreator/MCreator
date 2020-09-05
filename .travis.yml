@@ -1,9 +1,26 @@
 dist: trusty
+
+env:
+  - GRADLE_OPTS="-Xmx5500m -Dorg.gradle.daemon=false"
+
+before_cache:
+  - rm -f  $HOME/.mcreator/gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.mcreator/gradle/caches/*/plugin-resolution/
+  - rm -f  $HOME/.mcreator/gradle/caches/minecraft/deobfedDeps/providedDummy.jar
+  - rm -f  $HOME/.mcreator/gradle/caches/minecraft/deobfedDeps/compileDummy.jar
+cache:
+  directories:
+    - $HOME/.mcreator/gradle/caches/
+    - $HOME/.mcreator/gradle/wrapper/
+
 language: java
+
 jdk:
   - oraclejdk8
+
 before_install:
   - chmod +x gradlew
+
 script:
   - chmod +x gradlew
   - xvfb-run ./gradlew test
