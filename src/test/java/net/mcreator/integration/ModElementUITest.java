@@ -87,7 +87,7 @@ public class ModElementUITest {
 		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
 
 		// reduce autosave interval for tests
-		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 1000;
+		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 2000;
 	}
 
 	@Test public void testModElements() throws Exception {

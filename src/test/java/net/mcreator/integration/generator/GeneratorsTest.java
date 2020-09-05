@@ -63,7 +63,7 @@ import static org.junit.Assert.fail;
 		ConsolePane.DEBUG_CONTENTS_TO_LOG = true;
 
 		// reduce autosave interval for tests
-		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 1000;
+		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 2000;
 	}
 
 	@Test public void testGenerators() throws InterruptedException, IOException, TimeoutException {

@@ -1,7 +1,7 @@
 dist: trusty
 
 env:
-  - GRADLE_OPTS="-Xmx5500m -Dorg.gradle.daemon=false"
+  - GRADLE_OPTS="-Xmx4096m"
 
 before_cache:
   - rm -f  $HOME/.mcreator/gradle/caches/modules-2/modules-2.lock

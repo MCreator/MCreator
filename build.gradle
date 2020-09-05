@@ -80,6 +80,7 @@ dependencies {
 test {
     testLogging.showStandardStreams = true
     testLogging.exceptionFormat = 'full'
+    maxHeapSize = "1024m"
 }
 
 jar {
