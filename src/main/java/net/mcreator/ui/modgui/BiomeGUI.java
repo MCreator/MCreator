@@ -79,6 +79,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final JCheckBox spawnVines = new JCheckBox("Spawn vines");
 	private final JCheckBox spawnBiome = new JCheckBox();
+	private final JCheckBox spawnStronghold = new JCheckBox();
+	private final JCheckBox spawnMineshaft = new JCheckBox();
+	private final JCheckBox spawnPillagerOutpost = new JCheckBox();
 
 	private final JSpawnEntriesList spawnEntriesList = new JSpawnEntriesList(mcreator);
 
@@ -232,7 +235,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		JPanel allmost = new JPanel(new BorderLayout(60, 10));
 		allmost.setOpaque(false);
 
-		JPanel spawnproperties = new JPanel(new GridLayout(6, 2, 5, 2));
+		JPanel spawnproperties = new JPanel(new GridLayout(9, 2, 5, 2));
 		spawnproperties.setOpaque(false);
 
 		spawnproperties.setBorder(BorderFactory.createTitledBorder(
@@ -243,10 +246,26 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld"),
 				new JLabel("Generate biome in overworld?")));
 		spawnproperties.add(spawnBiome);
-
 		spawnBiome.setSelected(true);
-
 		spawnBiome.setOpaque(false);
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_strongholds"),
+				new JLabel("Generate Strongholds in the biome?")));
+		spawnproperties.add(spawnStronghold);
+		spawnStronghold.setSelected(true);
+		spawnStronghold.setOpaque(false);
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_mineshafts"),
+				new JLabel("Generate Mineshafts in the biome?")));
+		spawnproperties.add(spawnMineshaft);
+		spawnMineshaft.setSelected(true);
+		spawnMineshaft.setOpaque(false);
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_pillager_outpostss"),
+				new JLabel("Generate Pillager Outposts in the biome?")));
+		spawnproperties.add(spawnPillagerOutpost);
+		spawnPillagerOutpost.setSelected(true);
+		spawnPillagerOutpost.setOpaque(false);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/weight"),
 				new JLabel("<html>Biome weight:<br><small>Smaller is rarer biome")));
@@ -473,6 +492,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		baseHeight.setValue(biome.baseHeight);
 		heightVariation.setValue(biome.heightVariation);
 		spawnBiome.setSelected(biome.spawnBiome);
+		spawnStronghold.setSelected(biome.spawnStronghold);
+		spawnMineshaft.setSelected(biome.spawnMineshaft);
+		spawnPillagerOutpost.setSelected(biome.spawnPillagerOutpost);
+
 		temperature.setValue(biome.temperature);
 		bigMushroomsChunk.setValue(biome.bigMushroomsChunk);
 		gravelPatchesPerChunk.setValue(biome.gravelPatchesPerChunk);
@@ -528,6 +551,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.treeBranch = treeBranch.getBlock();
 		biome.treeFruits = treeFruits.getBlock();
 		biome.spawnBiome = spawnBiome.isSelected();
+		biome.spawnMineshaft = spawnMineshaft.isSelected();
+		biome.spawnStronghold = spawnStronghold.isSelected();
+		biome.spawnPillagerOutpost = spawnPillagerOutpost.isSelected();
 		return biome;
 	}
 

@@ -96,6 +96,18 @@ package ${package}.world.biome;
 			DefaultBiomeFeatures.addLakes(this);
 			</#if>
 
+			<#if data.spawnStronghold>
+			this.addStructure(Feature.STRONGHOLD, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnMineshaft>
+			this.addStructure(Feature.MINESHAFT, new MineshaftConfig(0.004D, MineshaftStructure.Type.NORMAL));
+			</#if>
+
+			<#if data.spawnPillagerOutpost>
+			this.addStructure(Feature.PILLAGER_OUTPOST, new PillagerOutpostConfig(0.004D));
+			</#if>
+
 			<#if (data.flowersPerChunk > 0)>
 			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.DEFAULT_FLOWER, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(${data.flowersPerChunk})));
 			</#if>

@@ -70,6 +70,9 @@ import java.util.List;
 	public double heightVariation;
 
 	public boolean spawnBiome;
+	public boolean spawnStronghold;
+	public boolean spawnMineshaft;
+	public boolean spawnPillagerOutpost;
 	public int biomeWeight;
 	public String biomeType;
 
