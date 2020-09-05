@@ -27,6 +27,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComboBoxUtil;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.UIRES;
@@ -37,7 +38,9 @@ import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
+import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
 import org.jetbrains.annotations.Nullable;
@@ -53,6 +56,8 @@ import java.util.Collections;
 public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final JLabel laba = new JLabel();
+
+	private VTextField name = new VTextField(20);
 
 	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(3, 0, 256, 1));
 	private final JSpinner grassPerChunk = new JSpinner(new SpinnerNumberModel(4, 0, 256, 1));
@@ -88,6 +93,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JColor airColor = new JColor(mcreator, true);
 	private final JColor grassColor = new JColor(mcreator, true);
 	private final JColor waterColor = new JColor(mcreator, true);
+	private final JColor waterFogColor = new JColor(mcreator, true);
 
 	private final JCheckBox generateLakes = new JCheckBox("Select to enable");
 
@@ -135,9 +141,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 
+		name.setOpaque(true);
 		airColor.setOpaque(false);
 		grassColor.setOpaque(false);
 		waterColor.setOpaque(false);
+		waterFogColor.setOpaque(false);
 
 		laba.setBorder(BorderFactory
 				.createTitledBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")),
@@ -265,8 +273,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		pane2.add("Center", PanelUtils.totalCenterInPanel(allmost));
 
-		JPanel sbbp3 = new JPanel(new GridLayout(7, 2, 0, 5));
+		JPanel sbbp3 = new JPanel(new GridLayout(9, 2, 0, 5));
 		generateLakes.setOpaque(false);
+
+		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/name"), new JLabel("Name:")));
+		sbbp3.add(name);
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ground_block"),
 				new JLabel("<html>Ground block:<br><small>Tip: Ground block should use GRASS for material"),
@@ -290,6 +301,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/water_color"), new JLabel("Water color:")));
 		sbbp3.add(waterColor);
+
+		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/water_fog_color"), new JLabel("Water fog color:")));
+		sbbp3.add(waterFogColor);
 
 		sbbp3.add(vanillaTrees);
 		sbbp3.add(PanelUtils.join(vanillaTreeType));
@@ -368,6 +382,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		pane1.setOpaque(false);
 
+		page1group.addValidationElement(name);
 		page1group.addValidationElement(groundBlock);
 		page1group.addValidationElement(undergroundBlock);
 		page1group.addValidationElement(treeVines);
@@ -375,6 +390,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		page1group.addValidationElement(treeBranch);
 		page1group.addValidationElement(treeFruits);
 
+		name.setValidator(new TextFieldValidator(name, "Biome needs a name"));
 		groundBlock.setValidator(new MCItemHolderValidator(groundBlock));
 		undergroundBlock.setValidator(new MCItemHolderValidator(undergroundBlock));
 		treeVines.setValidator(new MCItemHolderValidator(treeVines, customTrees));
@@ -423,6 +439,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	}
 
 	@Override public void openInEditingMode(Biome biome) {
+		name.setText(biome.name);
 		groundBlock.setBlock(biome.groundBlock);
 		undergroundBlock.setBlock(biome.undergroundBlock);
 		treeVines.setBlock(biome.treeVines);
@@ -444,6 +461,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		airColor.setColor(biome.airColor);
 		grassColor.setColor(biome.grassColor);
 		waterColor.setColor(biome.waterColor);
+		waterFogColor.setColor(biome.waterFogColor);
 		treesPerChunk.setValue(biome.treesPerChunk);
 		grassPerChunk.setValue(biome.grassPerChunk);
 		flowersPerChunk.setValue(biome.flowersPerChunk);
@@ -471,6 +489,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	@Override public Biome getElementFromGUI() {
 		Biome biome = new Biome(modElement);
+		biome.name = name.getText();
 		biome.groundBlock = groundBlock.getBlock();
 		biome.undergroundBlock = undergroundBlock.getBlock();
 		biome.generateLakes = generateLakes.isSelected();
@@ -481,6 +500,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.airColor = airColor.getColor();
 		biome.grassColor = grassColor.getColor();
 		biome.waterColor = waterColor.getColor();
+		biome.waterFogColor = waterFogColor.getColor();
 		biome.treesPerChunk = (int) treesPerChunk.getValue();
 		biome.grassPerChunk = (int) grassPerChunk.getValue();
 		biome.flowersPerChunk = (int) flowersPerChunk.getValue();

@@ -35,6 +35,7 @@ import java.util.List;
 	public final transient int TREES_VANILLA;
 	public final transient int TREES_CUSTOM;
 
+	public String name;
 	public MItemBlock groundBlock;
 	public MItemBlock undergroundBlock;
 	public boolean generateLakes;
@@ -51,6 +52,7 @@ import java.util.List;
 	public Color airColor;
 	public Color grassColor;
 	public Color waterColor;
+	public Color waterFogColor;
 
 	public int treesPerChunk;
 	public int grassPerChunk;
@@ -90,6 +92,7 @@ import java.util.List;
 		TREES_CUSTOM = 1;
 
 		// DEFAULT VALUES
+		name = "";
 		vanillaTreeType = "Default";
 		biomeCategory = "NONE";
 		biomeDictionaryTypes = new ArrayList<>();

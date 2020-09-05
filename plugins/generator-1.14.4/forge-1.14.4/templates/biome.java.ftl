@@ -1,29 +1,29 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2020 Pylo and contributors
- # 
+ #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
  # the Free Software Foundation, either version 3 of the License, or
  # (at your option) any later version.
- # 
+ #
  # This program is distributed in the hope that it will be useful,
  # but WITHOUT ANY WARRANTY; without even the implied warranty of
  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  # GNU General Public License for more details.
- # 
+ #
  # You should have received a copy of the GNU General Public License
  # along with this program.  If not, see <https://www.gnu.org/licenses/>.
- # 
+ #
  # Additional permission for code generator templates (*.ftl files)
- # 
- # As a special exception, you may create a larger work that contains part or 
- # all of the MCreator code generator templates (*.ftl files) and distribute 
- # that work under terms of your choice, so long as that work isn't itself a 
- # template for code generation. Alternatively, if you modify or redistribute 
- # the template itself, you may (at your option) remove this special exception, 
- # which will cause the template and the resulting code generator output files 
- # to be licensed under the GNU General Public License without this special 
+ #
+ # As a special exception, you may create a larger work that contains part or
+ # all of the MCreator code generator templates (*.ftl files) and distribute
+ # that work under terms of your choice, so long as that work isn't itself a
+ # template for code generation. Alternatively, if you modify or redistribute
+ # the template itself, you may (at your option) remove this special exception,
+ # which will cause the template and the resulting code generator output files
+ # to be licensed under the GNU General Public License without this special
  # exception.
 -->
 
@@ -69,9 +69,14 @@ package ${package}.world.biome;
 				.precipitation(Biome.RainType.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
 				.category(Biome.Category.${data.biomeCategory})
 				<#if data.waterColor?has_content>
-				.waterColor(${data.waterColor.getRGB()}).waterFogColor(${data.waterColor.getRGB()})
+				.waterColor(${data.waterColor.getRGB()})
 				<#else>
-				.waterColor(4159204).waterFogColor(329011)
+				.waterColor(4159204)
+				</#if>
+				<#if data.waterFogColor?has_content>
+				.waterFogColor(${data.waterFogColor.getRGB()})
+				<#else>
+				.waterFogColor(329011)
 				</#if>
 				<#if data.parent?? && data.parent.getUnmappedValue() != "No parent">
 				.parent("${data.parent}")
@@ -182,7 +187,7 @@ package ${package}.world.biome;
 		@Override public boolean place(Set<BlockPos> changedBlocks, IWorldGenerationReader worldgen, Random rand, BlockPos position, MutableBoundingBox bbox) {
 			if (!(worldgen instanceof IWorld))
 				return false;
-			
+
 			IWorld world = (IWorld) worldgen;
 
 			int height = rand.nextInt(5) + ${data.minHeight};
@@ -358,7 +363,7 @@ package ${package}.world.biome;
 			BlockState state = world.getBlockState(pos);
         	return state.getBlock().isAir(state, world, pos) || canGrowInto(state.getBlock()) || !state.getMaterial().blocksMovement();
 		}
-		
+
 		private void setTreeBlockState(Set<BlockPos> changedBlocks, IWorldWriter world, BlockPos pos, BlockState state, MutableBoundingBox mbb) {
 			super.setLogState(changedBlocks, world, pos, state, mbb);
 			changedBlocks.add(pos.toImmutable());

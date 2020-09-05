@@ -202,6 +202,7 @@ public class TestWorkspaceDataProvider {
 			return fuel;
 		case BIOME:
 			Biome biome = new Biome(modElement);
+			biome.name = "";
 			biome.groundBlock = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
