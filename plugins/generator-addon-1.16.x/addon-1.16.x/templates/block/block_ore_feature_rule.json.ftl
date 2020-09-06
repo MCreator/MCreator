@@ -4,7 +4,7 @@
   "minecraft:feature_rules": {
     "description": {
       "identifier": "${modid}_${registryname}_ore_feature_rule",
-      "places_feature": "${modid}_${registryname}_ore_feature"
+      "places_feature": "${modid}:${modid}_${registryname}_ore_feature"
     },
     "conditions": {
       "placement_pass": "underground_pass",
