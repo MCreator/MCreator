@@ -80,7 +80,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		</#if>
 
 		@Override public UseAction getUseAction(ItemStack par1ItemStack) {
-			return UseAction.${generator.map(animation, "actionanimations")};
+			return UseAction.${data.animation};
 		}
 
 		<#if hasProcedure(data.onRightClicked)>
