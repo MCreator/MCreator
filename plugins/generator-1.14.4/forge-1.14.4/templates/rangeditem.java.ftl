@@ -72,10 +72,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			setRegistryName("${registryname}");
 		}
 
-		@Override public UseAction getUseAction(ItemStack par1ItemStack) {
-            return UseAction.${data.animation};
-        }
-
 		<#if data.specialInfo?has_content>
 		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
@@ -97,9 +93,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 		</#if>
 
-		@Override public UseAction getUseAction(ItemStack stack) {
-      		return UseAction.BOW;
-   		}
+		@Override public UseAction getUseAction(ItemStack par1ItemStack) {
+		    return UseAction.${data.animation};
+        }
 
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
 			entity.setActiveHand(hand);
