@@ -72,6 +72,10 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			setRegistryName("${registryname}");
 		}
 
+		@Override public UseAction getUseAction(ItemStack par1ItemStack) {
+            return UseAction.${data.animation};
+        }
+
 		<#if data.specialInfo?has_content>
 		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);

@@ -188,7 +188,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/eating_speed"), new JLabel("Eating speed:")));
 		selp.add(eatingSpeed);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/animation"), new JLabel("Food animation: ")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/animation"), new JLabel("Food animation: ")));
 		selp.add(animation);
 
 		pane4.setOpaque(false);

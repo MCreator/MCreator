@@ -74,7 +74,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			return UseAction.${data.animation};
 		}
 
-		<#if data.animation == "drink">
+		<#if data.animation == "DRINK">
 		@Override public net.minecraft.util.SoundEvent getEatSound() {
 			return net.minecraft.util.SoundEvents.ENTITY_GENERIC_DRINK;
 		}
