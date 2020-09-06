@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.Dependency;
-import net.mcreator.element.parts.ActionAnimation;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.RangedItem;
 import net.mcreator.minecraft.DataListEntry;
@@ -434,7 +433,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		rangedItem.shootConstantly = shootConstantly.isSelected();
 		rangedItem.usageCount = (int) usageCount.getValue();
 		rangedItem.actionSound = shootSound.getSound();
-		rangedItem.animation = new ActionAnimation(mcreator.getWorkspace(), animation.getSelectedItem());
+		rangedItem.animation = animation.getSelectedItem().toString();
 		rangedItem.bulletPower = (double) bulletPower.getValue();
 		rangedItem.bulletDamage = (double) bulletDamage.getValue();
 		rangedItem.bulletKnockback = (int) bulletKnockback.getValue();

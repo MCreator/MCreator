@@ -22,7 +22,6 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.IItemWithModel;
 import net.mcreator.element.IItemWithTexture;
 import net.mcreator.element.ITabContainedElement;
-import net.mcreator.element.parts.ActionAnimation;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.util.image.ImageUtils;
@@ -53,7 +52,7 @@ import java.util.Map;
 	public int eatingSpeed;
 	public boolean forDogs;
 	public boolean isAlwaysEdible;
-	public ActionAnimation animation;
+	public String animation;
 	public boolean hasGlow;
 
 	public Procedure onRightClicked;

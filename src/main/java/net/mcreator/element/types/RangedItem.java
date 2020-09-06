@@ -21,7 +21,6 @@ package net.mcreator.element.types;
 import net.mcreator.element.*;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.Procedure;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
@@ -66,7 +65,7 @@ import java.util.Map;
 	public Procedure onBulletHitsPlayer;
 	public Procedure onBulletHitsEntity;
 	public Procedure onBulletFlyingTick;
-	public ActionAnimation animation;
+	public String animation;
 
 	private RangedItem() {
 		this(null);

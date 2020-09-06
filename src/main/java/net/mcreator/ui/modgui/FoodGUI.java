@@ -19,9 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.Dependency;
-import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.ActionAnimation;
-import net.mcreator.element.parts.Material;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Food;
 import net.mcreator.minecraft.DataListEntry;
@@ -35,7 +32,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
-import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.ProcedureSelector;
@@ -288,7 +284,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		food.saturation = (double) saturation.getValue();
 		food.forDogs = forDogs.isSelected();
 		food.isAlwaysEdible = isAlwaysEdible.isSelected();
-		food.animation = new ActionAnimation(mcreator.getWorkspace(), animation.getSelectedItem());
+		food.animation = animation.getSelectedItem().toString();
 		food.onRightClicked = onRightClicked.getSelectedProcedure();
 		food.onEaten = onEaten.getSelectedProcedure();
 		food.onCrafted = onCrafted.getSelectedProcedure();
