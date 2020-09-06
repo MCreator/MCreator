@@ -110,6 +110,22 @@ package ${package}.world.biome;
 
 			<#if data.villageType != "none">
 			this.addStructure(Feature.VILLAGE, new VillageConfig("village/${data.villageType}/town_centers", 6));
+			</#if>>
+
+			<#if data.spawnWoodlandMansion>
+			this.addStructure(Feature.WOODLAND_MANSION, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnOceanMonument>
+			this.addStructure(Feature.OCEAN_MONUMENT, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnShipwreck>
+			this.addStructure(Feature.SHIPWRECK, new ShipwreckConfig(false));
+			</#if>
+
+			<#if data.oceanRuinType != "NONE">
+			this.addStructure(Feature.OCEAN_RUIN, new OceanRuinConfig(OceanRuinStructure.Type.${data.oceanRuinType}, 0.3F, 0.9F));
 			</#if>
 
 			<#if (data.flowersPerChunk > 0)>

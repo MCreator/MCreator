@@ -70,15 +70,20 @@ import java.util.List;
 	public double heightVariation;
 
 	public boolean spawnBiome;
-	public boolean spawnStronghold;
-	public boolean spawnMineshaft;
-	public boolean spawnPillagerOutpost;
-	public String villageType;
 	public int biomeWeight;
 	public String biomeType;
 
 	public String biomeCategory;
 	public BiomeEntry parent;
+
+	public boolean spawnStronghold;
+	public boolean spawnMineshaft;
+	public boolean spawnPillagerOutpost;
+	public String villageType;
+	public boolean spawnWoodlandMansion;
+	public boolean spawnOceanMonument;
+	public boolean spawnShipwreck;
+	public String oceanRuinType;
 
 	public List<String> biomeDictionaryTypes;
 
@@ -99,6 +104,7 @@ import java.util.List;
 		name = "";
 		vanillaTreeType = "Default";
 		villageType = "none";
+		oceanRuinType = "NONE";
 		biomeCategory = "NONE";
 		biomeDictionaryTypes = new ArrayList<>();
 		spawnEntries = new ArrayList<>();

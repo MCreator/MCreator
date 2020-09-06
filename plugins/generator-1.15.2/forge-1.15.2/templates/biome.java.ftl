@@ -114,6 +114,22 @@ import net.minecraft.block.material.Material;
 			this.addStructure(Feature.VILLAGE.withConfiguration(new VillageConfig("village/${data.villageType}/town_centers", 6)));
 			</#if>
 
+			<#if data.spawnWoodlandMansion>
+			this.addStructure(Feature.WOODLAND_MANSION.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			</#if>
+
+			<#if data.spawnOceanMonument>
+			this.addStructure(Feature.OCEAN_MONUMENT.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			</#if>
+
+			<#if data.spawnShipwreck>
+			this.addStructure(Feature.SHIPWRECK.withConfiguration(new ShipwreckConfig(false)));
+			</#if>
+
+			<#if data.oceanRuinType != "NONE">
+			this.addStructure(Feature.OCEAN_RUIN.withConfiguration(new OceanRuinConfig(OceanRuinStructure.Type.${data.oceanRuinType}, 0.3F, 0.9F)));
+			</#if>
+
 			<#if (data.flowersPerChunk > 0)>
 			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.FLOWER.withConfiguration(DefaultBiomeFeatures.DEFAULT_FLOWER_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(${data.flowersPerChunk}))));
 			</#if>
