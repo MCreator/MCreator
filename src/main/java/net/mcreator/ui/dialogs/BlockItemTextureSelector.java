@@ -134,6 +134,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		importTx.setFont(naprej.getFont());
 		importTx.setIcon(UIRES.get("18px.add"));
 		importTx.addActionListener(event -> {
+
 			TextureImportDialogs.importTexturesBlockOrItem(mcreator, type.toLowerCase(Locale.ENGLISH) + "s");
 			List<File> block1;
 			if (type.equalsIgnoreCase("block")) {
