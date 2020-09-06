@@ -476,6 +476,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		addPage("Entity spawning", pane1);
 
 		updateBiomeTreesForm();
+		
+		if (!isEditingMode()) {
+			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
+			name.setText(readableNameFromModElement);
+		}
 	}
 
 	@Override public void reloadDataLists() {
