@@ -80,7 +80,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
 
-	private final JComboBox<String> animation = new JComboBox<>(new String[] { "eat", "drink" });
+	private final JComboBox<String> animation = new JComboBox<>(new String[] {"block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
