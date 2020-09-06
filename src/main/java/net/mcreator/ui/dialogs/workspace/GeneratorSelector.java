@@ -109,6 +109,7 @@ public class GeneratorSelector {
 
 			JPanel supportedElements = new JPanel(new GridLayout(-1, 6, 7, 3));
 
+			addStatsBar("Action Animations", "actionanimations", supportedElements, stats);
 			addStatsBar("Blocks and items", "blocksitems", supportedElements, stats);
 			addStatsBar("Entities", "entities", supportedElements, stats);
 			addStatsBar("Biomes", "biomes", supportedElements, stats);
