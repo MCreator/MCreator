@@ -194,6 +194,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final Model normal = new Model.BuiltInModel("Normal");
 	private final Model singleTexture = new Model.BuiltInModel("Single texture");
 	private final Model cross = new Model.BuiltInModel("Cross model");
+	private final Model crop = new Model.BuiltInModel("Crop model");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
 
 	private final JComboBox<String> transparencyType = new JComboBox<>(
@@ -1127,7 +1128,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		particleCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(normal, singleTexture, cross),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
@@ -1408,6 +1409,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			block.renderType = 11;
 		else if (model.equals(cross))
 			block.renderType = 12;
+		else if (model.equals(crop))
+			block.renderType = 13;
 		block.customModelName = model.getReadableName();
 
 		return block;
