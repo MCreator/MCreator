@@ -1179,7 +1179,7 @@ public class TestWorkspaceDataProvider {
 			return block;
 		case TAG:
 			Tag tag = new Tag(modElement);
-			tag.namespace = ListUtils.getRandomItem(random, new String[] { "forge", "minecraft" });
+			tag.namespace = ListUtils.getRandomItem(random, new String[] { "forge", "minecraft", "test1", "test2" });
 			tag.type = ListUtils.getRandomItem(random, new String[] { "Items", "Blocks" });
 			tag.name = modElement.getName();
 			tag.items = new ArrayList<>();
