@@ -211,6 +211,7 @@ public class TestWorkspaceDataProvider {
 			biome.airColor = Color.red;
 			if (!emptyLists) {
 				biome.grassColor = Color.green;
+				biome.foliageColor = Color.magenta;
 				biome.waterColor = Color.blue;
 			}
 			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];
