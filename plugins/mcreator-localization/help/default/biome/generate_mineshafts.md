@@ -1,0 +1,1 @@
+Select this setting to have Mineshafts in your biome.

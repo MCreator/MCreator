@@ -108,9 +108,14 @@ class PluginsPanel {
 
 			ComponentUtils.deriveFont(this, 12);
 
-			if (value.getInfo().getAuthor() != null)
+			if((value.getInfo().getAuthor() != null) &&
+					(value.getInfo().getName() != null) &&
+					(value.getInfo().getCredits() == "None")){
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
 						.getPluginVersion() + ", author: " + value.getInfo().getAuthor());
+			}else if (value.getInfo().getAuthor() != null)
+				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
+						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", credit: " + value.getInfo().getCredits());
 			else
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
 						.getPluginVersion());

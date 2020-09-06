@@ -71,9 +71,14 @@ import net.minecraft.block.material.Material;
 				.precipitation(Biome.RainType.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
 				.category(Biome.Category.${data.biomeCategory})
 				<#if data.waterColor?has_content>
-				.waterColor(${data.waterColor.getRGB()}).waterFogColor(${data.waterColor.getRGB()})
+				.waterColor(${data.waterColor.getRGB()})
 				<#else>
-				.waterColor(4159204).waterFogColor(329011)
+				.waterColor(4159204)
+				</#if>
+				<#if data.waterFogColor?has_content>
+				.waterFogColor(${data.waterFogColor.getRGB()})
+				<#else>
+				.waterFogColor(329011)
 				</#if>
 				<#if data.parent?? && data.parent.getUnmappedValue() != "No parent">
 				.parent("${data.parent}")
@@ -91,6 +96,38 @@ import net.minecraft.block.material.Material;
 
 			<#if data.generateLakes>
 			DefaultBiomeFeatures.addLakes(this);
+			</#if>
+
+			<#if data.spawnStronghold>
+			this.addStructure(Feature.STRONGHOLD.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			</#if>
+
+			<#if data.spawnMineshaft>
+			this.addStructure(Feature.MINESHAFT.withConfiguration(new MineshaftConfig(0.004D, MineshaftStructure.Type.NORMAL)));
+			</#if>
+
+			<#if data.spawnPillagerOutpost>
+			this.addStructure(Feature.PILLAGER_OUTPOST.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			</#if>
+
+			<#if data.villageType != "none">
+			this.addStructure(Feature.VILLAGE.withConfiguration(new VillageConfig("village/${data.villageType}/town_centers", 6)));
+			</#if>
+
+			<#if data.spawnWoodlandMansion>
+			this.addStructure(Feature.WOODLAND_MANSION.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			</#if>
+
+			<#if data.spawnOceanMonument>
+			this.addStructure(Feature.OCEAN_MONUMENT.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			</#if>
+
+			<#if data.spawnShipwreck>
+			this.addStructure(Feature.SHIPWRECK.withConfiguration(new ShipwreckConfig(false)));
+			</#if>
+
+			<#if data.oceanRuinType != "NONE">
+			this.addStructure(Feature.OCEAN_RUIN.withConfiguration(new OceanRuinConfig(OceanRuinStructure.Type.${data.oceanRuinType}, 0.3F, 0.9F)));
 			</#if>
 
 			<#if (data.flowersPerChunk > 0)>
@@ -160,6 +197,7 @@ import net.minecraft.block.material.Material;
 		<#if data.grassColor?has_content>
 		@OnlyIn(Dist.CLIENT) @Override public int getGrassColor(double posX, double posZ) {
 			return ${data.grassColor.getRGB()};
+		}
 		}
 		</#if>
 

@@ -69,9 +69,14 @@ package ${package}.world.biome;
 				.precipitation(Biome.RainType.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
 				.category(Biome.Category.${data.biomeCategory})
 				<#if data.waterColor?has_content>
-				.waterColor(${data.waterColor.getRGB()}).waterFogColor(${data.waterColor.getRGB()})
+				.waterColor(${data.waterColor.getRGB()})
 				<#else>
-				.waterColor(4159204).waterFogColor(329011)
+				.waterColor(4159204)
+				</#if>
+				<#if data.waterFogColor?has_content>
+				.waterFogColor(${data.waterFogColor.getRGB()})
+				<#else>
+				.waterFogColor(329011)
 				</#if>
 				<#if data.parent?? && data.parent.getUnmappedValue() != "No parent">
 				.parent("${data.parent}")
@@ -89,6 +94,38 @@ package ${package}.world.biome;
 
 			<#if data.generateLakes>
 			DefaultBiomeFeatures.addLakes(this);
+			</#if>
+
+			<#if data.spawnStronghold>
+			this.addStructure(Feature.STRONGHOLD, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnMineshaft>
+			this.addStructure(Feature.MINESHAFT, new MineshaftConfig(0.004D, MineshaftStructure.Type.NORMAL));
+			</#if>
+
+			<#if data.spawnPillagerOutpost>
+			this.addStructure(Feature.PILLAGER_OUTPOST, new PillagerOutpostConfig(0.004D));
+			</#if>
+
+			<#if data.villageType != "none">
+			this.addStructure(Feature.VILLAGE, new VillageConfig("village/${data.villageType}/town_centers", 6));
+			</#if>>
+
+			<#if data.spawnWoodlandMansion>
+			this.addStructure(Feature.WOODLAND_MANSION, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnOceanMonument>
+			this.addStructure(Feature.OCEAN_MONUMENT, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnShipwreck>
+			this.addStructure(Feature.SHIPWRECK, new ShipwreckConfig(false));
+			</#if>
+
+			<#if data.oceanRuinType != "NONE">
+			this.addStructure(Feature.OCEAN_RUIN, new OceanRuinConfig(OceanRuinStructure.Type.${data.oceanRuinType}, 0.3F, 0.9F));
 			</#if>
 
 			<#if (data.flowersPerChunk > 0)>
@@ -158,13 +195,13 @@ package ${package}.world.biome;
 		@OnlyIn(Dist.CLIENT) @Override public int getGrassColor(BlockPos pos) {
 			return ${data.grassColor.getRGB()};
 		}
-		</#if>
+        </#if>
 
 		<#if data.foliageColor?has_content>
-			@OnlyIn(Dist.CLIENT) @Override public int getFoliageColor(BlockPos pos) {
-			return ${data.foliageColor.getRGB()};
-		}
-		</#if>
+        @OnlyIn(Dist.CLIENT) @Override public int getFoliageColor(BlockPos pos) {
+        	return ${data.foliageColor.getRGB()};
+        }
+        </#if>
 
 		<#if data.airColor?has_content>
 		@OnlyIn(Dist.CLIENT) @Override public int getSkyColorByTemp(float currentTemperature) {
