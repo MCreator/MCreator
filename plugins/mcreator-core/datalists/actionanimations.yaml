@@ -1,0 +1,13 @@
+- BLOCK:
+  texture: GRASS
+- BOW:
+  texture: BOW
+- CROSSBOW:
+  texture: CROSSBOW
+- DRINK:
+  texture: POTIONITEM
+- EAT:
+  texture: COOKED_BEEF
+- NONE:
+  texture: BARRIER
+- SPEAR:

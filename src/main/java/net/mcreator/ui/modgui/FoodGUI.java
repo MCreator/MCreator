@@ -20,6 +20,8 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.Dependency;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.ActionAnimation;
+import net.mcreator.element.parts.Material;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Food;
 import net.mcreator.minecraft.DataListEntry;
@@ -80,7 +82,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
 
-	private final JComboBox<String> animation = new JComboBox<>(new String[] {"block", "bow", "crossbow", "drink", "eat", "none", "spear" });
+	private final DataListComboBox animation = new DataListComboBox(mcreator, ElementUtil.loadActionAnimations());
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
@@ -105,7 +107,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 				"When entity swings item",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		animation.setRenderer(new ItemTexturesComboBoxRenderer());
+		animation.setEnabled(true);
 
 		JPanel pane1 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
@@ -286,7 +288,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		food.saturation = (double) saturation.getValue();
 		food.forDogs = forDogs.isSelected();
 		food.isAlwaysEdible = isAlwaysEdible.isSelected();
-		food.animation = (String) animation.getSelectedItem();
+		food.animation = new ActionAnimation(mcreator.getWorkspace(), animation.getSelectedItem());
 		food.onRightClicked = onRightClicked.getSelectedProcedure();
 		food.onEaten = onEaten.getSelectedProcedure();
 		food.onCrafted = onCrafted.getSelectedProcedure();

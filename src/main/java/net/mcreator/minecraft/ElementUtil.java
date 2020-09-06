@@ -83,6 +83,7 @@ public class ElementUtil {
 		return achievements;
 	}
 
+
 	public static List<DataListEntry> loadAllTabs(Workspace workspace) {
 		List<DataListEntry> tabs = getCustomElementsOfType(workspace, ModElementType.BaseType.TAB);
 		tabs.addAll(DataListLoader.loadDataList("tabs"));
@@ -103,6 +104,10 @@ public class ElementUtil {
 
 	public static List<DataListEntry> loadMaterials() {
 		return DataListLoader.loadDataList("materials");
+	}
+
+	public static List<DataListEntry> loadActionAnimations() {
+		return DataListLoader.loadDataList("actionanimations");
 	}
 
 	public static List<DataListEntry> loadEnchantmentTypes() {
