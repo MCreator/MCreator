@@ -202,6 +202,7 @@ public class TestWorkspaceDataProvider {
 			return fuel;
 		case BIOME:
 			Biome biome = new Biome(modElement);
+			biome.name = "";
 			biome.groundBlock = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
@@ -211,7 +212,6 @@ public class TestWorkspaceDataProvider {
 			biome.airColor = Color.red;
 			if (!emptyLists) {
 				biome.grassColor = Color.green;
-				biome.foliageColor = Color.magenta;
 				biome.waterColor = Color.blue;
 			}
 			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];

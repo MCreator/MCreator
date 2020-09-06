@@ -27,6 +27,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComboBoxUtil;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.UIRES;
@@ -37,7 +38,9 @@ import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
+import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
 import org.jetbrains.annotations.Nullable;
@@ -53,6 +56,8 @@ import java.util.Collections;
 public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final JLabel laba = new JLabel();
+
+	private VTextField name = new VTextField(20);
 
 	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(3, 0, 256, 1));
 	private final JSpinner grassPerChunk = new JSpinner(new SpinnerNumberModel(4, 0, 256, 1));
@@ -74,6 +79,16 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final JCheckBox spawnVines = new JCheckBox("Spawn vines");
 	private final JCheckBox spawnBiome = new JCheckBox();
+	private final JCheckBox spawnStronghold = new JCheckBox();
+	private final JCheckBox spawnMineshaft = new JCheckBox();
+	private final JCheckBox spawnPillagerOutpost = new JCheckBox();
+	private final JComboBox<String> villageType = new JComboBox<>(
+			new String[] {"none", "desert", "plains", "savanna", "snowy", "taiga"});
+	private final JCheckBox spawnWoodlandMansion = new JCheckBox();
+	private final JCheckBox spawnOceanMonument = new JCheckBox();
+	private final JCheckBox spawnShipwreck = new JCheckBox();
+	private final JComboBox<String> oceanRuinType = new JComboBox<>(
+			new String[]{ "NONE", "COLD", "WARM"});
 
 	private final JSpawnEntriesList spawnEntriesList = new JSpawnEntriesList(mcreator);
 
@@ -87,8 +102,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final JColor airColor = new JColor(mcreator, true);
 	private final JColor grassColor = new JColor(mcreator, true);
-	private final JColor foliageColor = new JColor(mcreator, true);
 	private final JColor waterColor = new JColor(mcreator, true);
+	private final JColor waterFogColor = new JColor(mcreator, true);
 
 	private final JCheckBox generateLakes = new JCheckBox("Select to enable");
 
@@ -99,11 +114,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			new String[] { "NONE", "TAIGA", "EXTREME_HILLS", "JUNGLE", "MESA", "PLAINS", "SAVANNA", "ICY", "THEEND",
 					"BEACH", "FOREST", "OCEAN", "DESERT", "RIVER", "SWAMP", "MUSHROOM", "NETHER" });
 
-	private final DataListComboBox parent = new DataListComboBox(mcreator);
-
 	private final JComboBox<String> vanillaTreeType = new JComboBox<>(
 			new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
 					"Mega spruce trees" });
+
+	private final DataListComboBox parent = new DataListComboBox(mcreator);
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -136,10 +151,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 
+		name.setOpaque(true);
 		airColor.setOpaque(false);
 		grassColor.setOpaque(false);
-		foliageColor.setOpaque(false);
 		waterColor.setOpaque(false);
+		waterFogColor.setOpaque(false);
 
 		laba.setBorder(BorderFactory
 				.createTitledBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")),
@@ -226,6 +242,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		JPanel allmost = new JPanel(new BorderLayout(60, 10));
 		allmost.setOpaque(false);
 
+		JPanel jpanelEast = new JPanel (new GridLayout(2, 1, 5, 2));
+		jpanelEast.setOpaque(false);
+
 		JPanel spawnproperties = new JPanel(new GridLayout(6, 2, 5, 2));
 		spawnproperties.setOpaque(false);
 
@@ -237,9 +256,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld"),
 				new JLabel("Generate biome in overworld?")));
 		spawnproperties.add(spawnBiome);
-
 		spawnBiome.setSelected(true);
-
 		spawnBiome.setOpaque(false);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/weight"),
@@ -262,13 +279,73 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 						+ "Used by some mods to identify biome types for spawning")));
 		spawnproperties.add(biomeDictionaryTypes);
 
-		allmost.add("East", PanelUtils.pullElementUp(spawnproperties));
+
+		JPanel spawnstructures = new JPanel(new GridLayout(8, 2, 5, 2));
+		spawnstructures.setOpaque(false);
+
+		spawnstructures.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				"Biome structures", 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		spawnstructures.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_strongholds"),
+				new JLabel("Generate Strongholds in the biome?")));
+		spawnstructures.add(spawnStronghold);
+		spawnStronghold.setSelected(false);
+		spawnStronghold.setOpaque(false);
+
+		spawnstructures.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_mineshafts"),
+				new JLabel("Generate Mineshafts in the biome?")));
+		spawnstructures.add(spawnMineshaft);
+		spawnMineshaft.setSelected(false);
+		spawnMineshaft.setOpaque(false);
+
+		spawnstructures.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_pillager_outposts"),
+				new JLabel("Generate Pillager Outposts in the biome?")));
+		spawnstructures.add(spawnPillagerOutpost);
+		spawnPillagerOutpost.setSelected(false);
+		spawnPillagerOutpost.setOpaque(false);
+
+		spawnstructures.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/village"),
+				new JLabel("Generate Villages of type: ")));
+		spawnstructures.add(villageType);
+
+		spawnstructures.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_woodland_mansions"),
+				new JLabel("Generate Woodland Mansions in the biome?")));
+		spawnstructures.add(spawnWoodlandMansion);
+		spawnWoodlandMansion.setSelected(false);
+		spawnWoodlandMansion.setOpaque(false);
+
+		spawnstructures.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ocean_monuments"),
+				new JLabel("Generate Ocean Monuments in the biome?")));
+		spawnstructures.add(spawnOceanMonument);
+		spawnOceanMonument.setSelected(false);
+		spawnOceanMonument.setOpaque(false);
+
+		spawnstructures.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_shipwrecks"),
+				new JLabel("Generate Shipwrecks in the biome?")));
+
+		spawnstructures.add(spawnShipwreck);
+		spawnShipwreck.setSelected(false);
+		spawnShipwreck.setOpaque(false);
+
+		spawnstructures.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ocean_ruins"),
+				new JLabel("Generate Ocean Ruins in the biome? ")));
+		spawnstructures.add(oceanRuinType);
+
+		jpanelEast.add(PanelUtils.pullElementUp(spawnproperties));
+		jpanelEast.add(PanelUtils.pullElementUp(spawnstructures));
+
+		allmost.add("East", PanelUtils.pullElementUp(jpanelEast));
 		allmost.add("Center", sbbp2);
 
 		pane2.add("Center", PanelUtils.totalCenterInPanel(allmost));
 
-		JPanel sbbp3 = new JPanel(new GridLayout(8, 2, 0, 5));
+		JPanel sbbp3 = new JPanel(new GridLayout(9, 2, 0, 5));
 		generateLakes.setOpaque(false);
+
+		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/name"), new JLabel("Name:")));
+		sbbp3.add(name);
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ground_block"),
 				new JLabel("<html>Ground block:<br><small>Tip: Ground block should use GRASS for material"),
@@ -290,11 +367,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/grass_color"), new JLabel("Grass color:")));
 		sbbp3.add(grassColor);
 
-		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/foliage_color"), new JLabel("Foliage color:")));
-		sbbp3.add(foliageColor);
-
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/water_color"), new JLabel("Water color:")));
 		sbbp3.add(waterColor);
+
+		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/water_fog_color"), new JLabel("Water fog color:")));
+		sbbp3.add(waterFogColor);
 
 		sbbp3.add(vanillaTrees);
 		sbbp3.add(PanelUtils.join(vanillaTreeType));
@@ -373,6 +450,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		pane1.setOpaque(false);
 
+		page1group.addValidationElement(name);
 		page1group.addValidationElement(groundBlock);
 		page1group.addValidationElement(undergroundBlock);
 		page1group.addValidationElement(treeVines);
@@ -380,6 +458,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		page1group.addValidationElement(treeBranch);
 		page1group.addValidationElement(treeFruits);
 
+		name.setValidator(new TextFieldValidator(name, "Biome needs a name"));
 		groundBlock.setValidator(new MCItemHolderValidator(groundBlock));
 		undergroundBlock.setValidator(new MCItemHolderValidator(undergroundBlock));
 		treeVines.setValidator(new MCItemHolderValidator(treeVines, customTrees));
@@ -428,6 +507,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	}
 
 	@Override public void openInEditingMode(Biome biome) {
+		name.setText(biome.name);
 		groundBlock.setBlock(biome.groundBlock);
 		undergroundBlock.setBlock(biome.undergroundBlock);
 		treeVines.setBlock(biome.treeVines);
@@ -448,8 +528,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		minHeight.setValue(biome.minHeight);
 		airColor.setColor(biome.airColor);
 		grassColor.setColor(biome.grassColor);
-		foliageColor.setColor(biome.foliageColor);
 		waterColor.setColor(biome.waterColor);
+		waterFogColor.setColor(biome.waterFogColor);
 		treesPerChunk.setValue(biome.treesPerChunk);
 		grassPerChunk.setValue(biome.grassPerChunk);
 		flowersPerChunk.setValue(biome.flowersPerChunk);
@@ -461,6 +541,15 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		baseHeight.setValue(biome.baseHeight);
 		heightVariation.setValue(biome.heightVariation);
 		spawnBiome.setSelected(biome.spawnBiome);
+		spawnStronghold.setSelected(biome.spawnStronghold);
+		spawnMineshaft.setSelected(biome.spawnMineshaft);
+		spawnPillagerOutpost.setSelected(biome.spawnPillagerOutpost);
+		villageType.setSelectedItem(biome.villageType);
+		spawnWoodlandMansion.setSelected(biome.spawnWoodlandMansion);
+		spawnOceanMonument.setSelected(biome.spawnOceanMonument);
+		spawnShipwreck.setSelected(biome.spawnShipwreck);
+		oceanRuinType.setSelectedItem(biome.oceanRuinType);
+
 		temperature.setValue(biome.temperature);
 		bigMushroomsChunk.setValue(biome.bigMushroomsChunk);
 		gravelPatchesPerChunk.setValue(biome.gravelPatchesPerChunk);
@@ -477,6 +566,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	@Override public Biome getElementFromGUI() {
 		Biome biome = new Biome(modElement);
+		biome.name = name.getText();
 		biome.groundBlock = groundBlock.getBlock();
 		biome.undergroundBlock = undergroundBlock.getBlock();
 		biome.generateLakes = generateLakes.isSelected();
@@ -486,8 +576,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			biome.treeType = biome.TREES_VANILLA;
 		biome.airColor = airColor.getColor();
 		biome.grassColor = grassColor.getColor();
-		biome.foliageColor = foliageColor.getColor();
 		biome.waterColor = waterColor.getColor();
+		biome.waterFogColor = waterFogColor.getColor();
 		biome.treesPerChunk = (int) treesPerChunk.getValue();
 		biome.grassPerChunk = (int) grassPerChunk.getValue();
 		biome.flowersPerChunk = (int) flowersPerChunk.getValue();
@@ -515,6 +605,14 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.treeBranch = treeBranch.getBlock();
 		biome.treeFruits = treeFruits.getBlock();
 		biome.spawnBiome = spawnBiome.isSelected();
+		biome.spawnMineshaft = spawnMineshaft.isSelected();
+		biome.spawnStronghold = spawnStronghold.isSelected();
+		biome.spawnPillagerOutpost = spawnPillagerOutpost.isSelected();
+		biome.villageType = (String) villageType.getSelectedItem();
+		biome.spawnWoodlandMansion = spawnWoodlandMansion.isSelected();
+		biome.spawnOceanMonument = spawnOceanMonument.isSelected();
+		biome.spawnShipwreck = spawnShipwreck.isSelected();
+		biome.oceanRuinType = (String) oceanRuinType.getSelectedItem();
 		return biome;
 	}
 

@@ -110,7 +110,7 @@ class PluginsPanel {
 
 			if (value.getInfo().getAuthor() != null)
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion() + ", author: " + value.getInfo().getAuthor());
+						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", credit: " + value.getInfo().getCredit());
 			else
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
 						.getPluginVersion());
