@@ -31,6 +31,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.DefaultFeaturesListField;
 import net.mcreator.util.StringUtils;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.BiomeDictionaryTypeListField;
@@ -129,6 +130,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	private final BiomeDictionaryTypeListField biomeDictionaryTypes = new BiomeDictionaryTypeListField(mcreator);
+	private final DefaultFeaturesListField defaultFeatures = new DefaultFeaturesListField(mcreator);
 
 	private final DataListEntry.Dummy noparent = new DataListEntry.Dummy("No parent");
 
@@ -292,7 +294,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane2.add("Center", PanelUtils.totalCenterInPanel(allmost));
 
 
-		JPanel sbbp3 = new JPanel(new GridLayout(12, 2, 4, 4));
+		JPanel sbbp3 = new JPanel(new GridLayout(13, 2, 10, 10));
 
 		sbbp3.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("biome/trees_per_chunk"), new JLabel("Trees per chunk:")));
@@ -340,6 +342,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/temperature"), new JLabel("Biome temperature:")));
 		sbbp3.add(temperature);
+
+
+		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/default_features"), new JLabel(
+				"<html>Biome default features:<br><small>")));
+		sbbp3.add(defaultFeatures);
 
 		sbbp3.setOpaque(false);
 		pane3.setOpaque(false);
@@ -600,6 +607,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biomeCategory.setSelectedItem(biome.biomeCategory);
 		parent.setSelectedItem(biome.parent);
 		biomeDictionaryTypes.setListElements(biome.biomeDictionaryTypes);
+		defaultFeatures.setListElements(biome.defaultFeatures);
 		vanillaTreeType.setSelectedItem(biome.vanillaTreeType);
 		spawnEntriesList.setSpawns(biome.spawnEntries);
 
@@ -640,6 +648,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.biomeCategory = (String) biomeCategory.getSelectedItem();
 		biome.parent = new BiomeEntry(mcreator.getWorkspace(), parent.getSelectedItem());
 		biome.biomeDictionaryTypes = biomeDictionaryTypes.getListElements();
+		biome.defaultFeatures = defaultFeatures.getListElements();
 		biome.vanillaTreeType = (String) vanillaTreeType.getSelectedItem();
 		biome.spawnEntries = spawnEntriesList.getSpawns();
 		biome.minHeight = (int) minHeight.getValue();

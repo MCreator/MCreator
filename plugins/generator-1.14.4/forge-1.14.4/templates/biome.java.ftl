@@ -87,10 +87,9 @@ package ${package}.world.biome;
 
 			setRegistryName("${registryname}");
 
-			DefaultBiomeFeatures.addCarvers(this);
-			DefaultBiomeFeatures.addStructures(this);
-			DefaultBiomeFeatures.addMonsterRooms(this);
-			DefaultBiomeFeatures.addOres(this);
+			<#list data.defaultFeatures as defaultFeature>
+			DefaultBiomeFeatures.add${generator.map(defaultFeature, "defaultfeatures")}(this);
+			</#list>
 
 			<#if data.generateLakes>
 			DefaultBiomeFeatures.addLakes(this);

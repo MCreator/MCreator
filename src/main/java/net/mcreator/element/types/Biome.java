@@ -91,6 +91,7 @@ import java.util.List;
 	public String oceanRuinType;
 
 	public List<String> biomeDictionaryTypes;
+	public List<String> defaultFeatures;
 
 	public List<SpawnEntry> spawnEntries;
 

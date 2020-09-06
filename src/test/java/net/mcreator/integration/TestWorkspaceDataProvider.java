@@ -286,6 +286,17 @@ public class TestWorkspaceDataProvider {
 				biomeDictTypes.add(ListUtils.getRandomItem(random, ElementUtil.loadBiomeDictionaryTypes()));
 			}
 			biome.biomeDictionaryTypes = biomeDictTypes;
+			List<String> biomeDefaultFeatures = new ArrayList<>();
+			if (!emptyLists) {
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+			}
+			biome.defaultFeatures = biomeDefaultFeatures;
 			biome.spawnVines = _true;
 			biome.treeVines = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
