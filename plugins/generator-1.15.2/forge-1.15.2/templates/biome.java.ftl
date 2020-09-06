@@ -118,6 +118,18 @@ import net.minecraft.block.material.Material;
 			this.addStructure(Feature.WOODLAND_MANSION.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
 			</#if>
 
+			<#if data.spawnJungleTemple>
+			this.addStructure(Feature.JUNGLE_TEMPLE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			</#if>
+
+			<#if data.spawnDesertPyramid>
+			this.addStructure(Feature.DESERT_PYRAMID.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			</#if>
+
+			<#if data.spawnIgloo>
+			this.addStructure(Feature.IGLOO.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			</#if>
+
 			<#if data.spawnOceanMonument>
 			this.addStructure(Feature.OCEAN_MONUMENT.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
 			</#if>

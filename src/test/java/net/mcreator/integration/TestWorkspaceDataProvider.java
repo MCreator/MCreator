@@ -233,6 +233,9 @@ public class TestWorkspaceDataProvider {
 			biome.oceanRuinType = "NONE";
 			biome.spawnOceanMonument = !_true;
 			biome.spawnWoodlandMansion =  _true;
+			biome.spawnJungleTemple = !_true;
+			biome.spawnDesertPyramid = !_true;
+			biome.spawnIgloo = !_true;
 			biome.spawnPillagerOutpost =  !_true;
 			biome.spawnStronghold =  _true;
 			biome.spawnMineshaft =  !_true;

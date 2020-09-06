@@ -116,6 +116,18 @@ package ${package}.world.biome;
 			this.addStructure(Feature.WOODLAND_MANSION, IFeatureConfig.NO_FEATURE_CONFIG);
 			</#if>
 
+			<#if data.spawnJungleTemple>
+			this.addStructure(Feature.JUNGLE_TEMPLE, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnDesertPyramid>
+			this.addStructure(Feature.DESERT_PYRAMID, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnIgloo>
+			this.addStructure(Feature.IGLOO, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
 			<#if data.spawnOceanMonument>
 			this.addStructure(Feature.OCEAN_MONUMENT, IFeatureConfig.NO_FEATURE_CONFIG);
 			</#if>

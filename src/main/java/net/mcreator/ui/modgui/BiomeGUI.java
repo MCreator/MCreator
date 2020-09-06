@@ -86,6 +86,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JComboBox<String> villageType = new JComboBox<>(
 			new String[] {"none", "desert", "plains", "savanna", "snowy", "taiga"});
 	private final JCheckBox spawnWoodlandMansion = new JCheckBox();
+	private final JCheckBox spawnJungleTemple = new JCheckBox();
+	private final JCheckBox spawnDesertPyramid = new JCheckBox();
+	private final JCheckBox spawnIgloo = new JCheckBox();
 	private final JCheckBox spawnOceanMonument = new JCheckBox();
 	private final JCheckBox spawnShipwreck = new JCheckBox();
 	private final JComboBox<String> oceanRuinType = new JComboBox<>(
@@ -165,7 +168,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				.createTitledBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")),
 						"Preview of biome colors", 0, 0, getFont(), Color.white));
 
-		JPanel sbbp2 = new JPanel(new GridLayout(8, 2, 4, 4));
+		JPanel sbbp2 = new JPanel(new GridLayout(11, 2, 4, 4));
 
 		sbbp2.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
@@ -199,6 +202,24 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp2.add(spawnWoodlandMansion);
 		spawnWoodlandMansion.setSelected(false);
 		spawnWoodlandMansion.setOpaque(false);
+
+		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_jungle_temples"),
+				new JLabel("Generate Jungle Temples in the biome?")));
+		sbbp2.add(spawnJungleTemple);
+		spawnJungleTemple.setSelected(false);
+		spawnJungleTemple.setOpaque(false);
+
+		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_desert_pyramids"),
+				new JLabel("Generate Desert Pyramids in the biome?")));
+		sbbp2.add(spawnDesertPyramid);
+		spawnDesertPyramid.setSelected(false);
+		spawnDesertPyramid.setOpaque(false);
+
+		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_igloo"),
+				new JLabel("Generate Igloos in the biome?")));
+		sbbp2.add(spawnIgloo);
+		spawnIgloo.setSelected(false);
+		spawnIgloo.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ocean_monuments"),
 				new JLabel("Generate Ocean Monuments in the biome?")));
@@ -558,6 +579,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnPillagerOutpost.setSelected(biome.spawnPillagerOutpost);
 		villageType.setSelectedItem(biome.villageType);
 		spawnWoodlandMansion.setSelected(biome.spawnWoodlandMansion);
+		spawnJungleTemple.setSelected(biome.spawnJungleTemple);
+		spawnDesertPyramid.setSelected(biome.spawnDesertPyramid);
+		spawnIgloo.setSelected(biome.spawnIgloo);
 		spawnOceanMonument.setSelected(biome.spawnOceanMonument);
 		spawnShipwreck.setSelected(biome.spawnShipwreck);
 		oceanRuinType.setSelectedItem(biome.oceanRuinType);
@@ -623,6 +647,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.spawnPillagerOutpost = spawnPillagerOutpost.isSelected();
 		biome.villageType = (String) villageType.getSelectedItem();
 		biome.spawnWoodlandMansion = spawnWoodlandMansion.isSelected();
+		biome.spawnJungleTemple = spawnJungleTemple.isSelected();
+		biome.spawnDesertPyramid = spawnDesertPyramid.isSelected();
+		biome.spawnIgloo = spawnIgloo.isSelected();
 		biome.spawnOceanMonument = spawnOceanMonument.isSelected();
 		biome.spawnShipwreck = spawnShipwreck.isSelected();
 		biome.oceanRuinType = (String) oceanRuinType.getSelectedItem();
