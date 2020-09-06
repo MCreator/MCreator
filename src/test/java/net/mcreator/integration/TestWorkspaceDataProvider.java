@@ -202,7 +202,7 @@ public class TestWorkspaceDataProvider {
 			return fuel;
 		case BIOME:
 			Biome biome = new Biome(modElement);
-			biome.name = "";
+			biome.name = modElement.getName();
 			biome.groundBlock = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
@@ -231,11 +231,11 @@ public class TestWorkspaceDataProvider {
 			biome.temperature = 4.0;
 			biome.spawnShipwreck = _true;
 			biome.oceanRuinType = "NONE";
-			biome.spawnOceanMonument = _true;
+			biome.spawnOceanMonument = !_true;
 			biome.spawnWoodlandMansion =  _true;
-			biome.spawnPillagerOutpost =  _true;
+			biome.spawnPillagerOutpost =  !_true;
 			biome.spawnStronghold =  _true;
-			biome.spawnMineshaft =  _true;
+			biome.spawnMineshaft =  !_true;
 			biome.villageType = "desert";
 			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
 			biome.biomeType = ListUtils.getRandomItem(random, new String[] { "WARM", "DESERT", "COOL", "ICY" });
