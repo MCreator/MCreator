@@ -28,6 +28,10 @@ Some features might not be accepted into the core if they do not follow or guide
 or do not fit the current UX flow of the application. Too specific features that would make UI more complex, but would not be benefitical to the
 most of the users might be rejected too, or suggested to be distributed in a plugin format.
 
+# Localization (translation)
+
+If you would like to contribute to the translations, make Crowdin user account and visit https://crowdin.com/project/mcreator. If you would like a brand new language added, open an issue or contact us otherwise and we will add it to the list of languages.
+
 # CLA
 
 Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/Pylo/MCreator), which you can do online.
