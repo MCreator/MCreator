@@ -28,6 +28,16 @@
 - nether/create_beacon
 - nether/all_effects
 - nether/create_full_beacon
+- nether/find_bastion
+- nether/obtain_ancient_debris
+- nether/obtain_crying_obsidian
+- nether/distract_piglin
+- nether/ride_strider
+- nether/loot_bastion
+- nether/use_lodestone
+- nether/netherite_armor
+- nether/charge_respawn_anchor
+- nether/explore_nether
 - end/root
 - end/kill_dragon
 - end/dragon_egg
@@ -56,6 +66,7 @@
 - adventure/adventuring_time
 - adventure/very_very_frightening
 - adventure/sniper_duel
+- adventure/bullseye
 - husbandry/root
 - husbandry/safely_harvest_honey
 - husbandry/breed_an_animal
@@ -68,3 +79,4 @@
 - husbandry/tactical_fishing
 - husbandry/balanced_diet
 - husbandry/break_diamond_hoe
+- husbandry/obtain_netherite_hoe
