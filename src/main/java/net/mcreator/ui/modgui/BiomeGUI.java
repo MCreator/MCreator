@@ -62,6 +62,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(3, 0, 256, 1));
 	private final JSpinner grassPerChunk = new JSpinner(new SpinnerNumberModel(4, 0, 256, 1));
+	private final JSpinner seaGrassPerChunk = new JSpinner(new SpinnerNumberModel(20, 0, 256, 1));
 	private final JSpinner flowersPerChunk = new JSpinner(new SpinnerNumberModel(4, 0, 256, 1));
 	private final JSpinner mushroomsPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner bigMushroomsChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
@@ -291,7 +292,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane2.add("Center", PanelUtils.totalCenterInPanel(allmost));
 
 
-		JPanel sbbp3 = new JPanel(new GridLayout(11, 2, 4, 4));
+		JPanel sbbp3 = new JPanel(new GridLayout(12, 2, 4, 4));
 
 		sbbp3.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("biome/trees_per_chunk"), new JLabel("Trees per chunk:")));
@@ -300,6 +301,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp3.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("biome/grass_per_chunk"), new JLabel("Grass per chunk:")));
 		sbbp3.add(grassPerChunk);
+
+		sbbp3.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("biome/sea_grass_per_chunk"), new JLabel("Sea grass per chunk:")));
+		sbbp3.add(seaGrassPerChunk);
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/flowers_per_chunk"),
 				new JLabel("<html>Vanilla flowers per chunk:")));
@@ -565,6 +570,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		waterFogColor.setColor(biome.waterFogColor);
 		treesPerChunk.setValue(biome.treesPerChunk);
 		grassPerChunk.setValue(biome.grassPerChunk);
+		seaGrassPerChunk.setValue(biome.seaGrassPerChunk);
 		flowersPerChunk.setValue(biome.flowersPerChunk);
 		mushroomsPerChunk.setValue(biome.mushroomsPerChunk);
 		sandPathcesPerChunk.setValue(biome.sandPathcesPerChunk);
@@ -617,6 +623,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.waterFogColor = waterFogColor.getColor();
 		biome.treesPerChunk = (int) treesPerChunk.getValue();
 		biome.grassPerChunk = (int) grassPerChunk.getValue();
+		biome.seaGrassPerChunk = (int) seaGrassPerChunk.getValue();
 		biome.flowersPerChunk = (int) flowersPerChunk.getValue();
 		biome.mushroomsPerChunk = (int) mushroomsPerChunk.getValue();
 		biome.bigMushroomsChunk = (int) bigMushroomsChunk.getValue();

@@ -218,13 +218,14 @@ public class TestWorkspaceDataProvider {
 			}
 			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];
 			biome.grassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 1;
-			biome.flowersPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 2;
-			biome.mushroomsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 3;
-			biome.bigMushroomsChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 4;
-			biome.sandPathcesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 5;
-			biome.gravelPatchesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 6;
-			biome.reedsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 7;
-			biome.cactiPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 8;
+			biome.seaGrassPerChunk = new int[] { 0, 5, 10, 16}[valueIndex] + 2;
+			biome.flowersPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 3;
+			biome.mushroomsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 4;
+			biome.bigMushroomsChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 5;
+			biome.sandPathcesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 6;
+			biome.gravelPatchesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 7;
+			biome.reedsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 8;
+			biome.cactiPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 9;
 			biome.rainingPossibility = 3.5;
 			biome.baseHeight = -0.3;
 			biome.heightVariation = 0.7;
