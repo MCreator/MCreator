@@ -81,7 +81,7 @@
 - BARRIER:
   texture: BARRIER
 - PISTON:
-  texture:
+  texture: PISTON
 - SOIL:
   texture: SOUL_SOIL
 - NETHER_WOOD:
