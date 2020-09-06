@@ -15,6 +15,8 @@ changes, and the way how to implement them to fit the existing code base and UX 
 
 *Learn more about the development process and tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).*
 
+If you are looking for a good issues for a starter, check [good first issue candidates](https://github.com/MCreator/MCreator/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+
 # Pull requests
 
 Once you complete your feature and are sure you followed the tips and tried to make the code blend in as much as possible, we will review the code.
