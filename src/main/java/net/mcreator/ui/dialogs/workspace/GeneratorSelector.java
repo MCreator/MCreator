@@ -110,11 +110,11 @@ public class GeneratorSelector {
 			JPanel supportedElements = new JPanel(new GridLayout(-1, 6, 7, 3));
 
 			addStatsBar("Achievements", "achievements", supportedElements, stats);
-			addStatsBar("Biome Default Features", "defaultfeatures", supportedElements, stats);
 			addStatsBar("Biomes", "biomes", supportedElements, stats);
 			addStatsBar("Blocks and items", "blocksitems", supportedElements, stats);
 			addStatsBar("Creative tabs", "tabs", supportedElements, stats);
 			addStatsBar("Damage sources", "damagesources", supportedElements, stats);
+			addStatsBar("Default Biome Features", "defaultfeatures", supportedElements, stats);
 			addStatsBar("Enchantment", "enchantments", supportedElements, stats);
 			addStatsBar("Enchantment types", "enchantmenttypes", supportedElements, stats);
 			addStatsBar("Entities", "entities", supportedElements, stats);
