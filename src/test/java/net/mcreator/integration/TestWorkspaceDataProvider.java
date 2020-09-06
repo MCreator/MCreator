@@ -213,6 +213,7 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				biome.grassColor = Color.green;
 				biome.waterColor = Color.blue;
+				biome.waterFogColor = Color.cyan;
 			}
 			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];
 			biome.grassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 1;
@@ -227,6 +228,14 @@ public class TestWorkspaceDataProvider {
 			biome.baseHeight = -0.3;
 			biome.heightVariation = 0.7;
 			biome.temperature = 4.0;
+			biome.spawnShipwreck = _true;
+			biome.oceanRuinType = "NONE";
+			biome.spawnOceanMonument = _true;
+			biome.spawnWoodlandMansion =  _true;
+			biome.spawnPillagerOutpost =  _true;
+			biome.spawnStronghold =  _true;
+			biome.spawnMineshaft =  _true;
+			biome.villageType = "desert";
 			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
 			biome.biomeType = ListUtils.getRandomItem(random, new String[] { "WARM", "DESERT", "COOL", "ICY" });
 			biome.biomeCategory = ListUtils.getRandomItem(random,
