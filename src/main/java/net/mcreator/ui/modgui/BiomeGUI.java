@@ -31,6 +31,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.StringUtils;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.BiomeDictionaryTypeListField;
 import net.mcreator.ui.minecraft.DataListComboBox;
