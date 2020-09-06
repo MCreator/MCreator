@@ -51,6 +51,7 @@ import java.util.List;
 
 	public Color airColor;
 	public Color grassColor;
+	public Color foliageColor;
 	public Color waterColor;
 	public Color waterFogColor;
 

@@ -212,6 +212,7 @@ public class TestWorkspaceDataProvider {
 			biome.airColor = Color.red;
 			if (!emptyLists) {
 				biome.grassColor = Color.green;
+				biome.foliageColor = Color.magenta;
 				biome.waterColor = Color.blue;
 				biome.waterFogColor = Color.cyan;
 			}

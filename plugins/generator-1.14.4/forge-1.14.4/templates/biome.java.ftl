@@ -195,11 +195,13 @@ package ${package}.world.biome;
 		@OnlyIn(Dist.CLIENT) @Override public int getGrassColor(BlockPos pos) {
 			return ${data.grassColor.getRGB()};
 		}
+        </#if>
 
-		@OnlyIn(Dist.CLIENT) @Override public int getFoliageColor(BlockPos pos) {
-			return ${data.grassColor.getRGB()};
-		}
-		</#if>
+		<#if data.foliageColor?has_content>
+        @OnlyIn(Dist.CLIENT) @Override public int getFoliageColor(BlockPos pos) {
+        	return ${data.foliageColor.getRGB()};
+        }
+        </#if>
 
 		<#if data.airColor?has_content>
 		@OnlyIn(Dist.CLIENT) @Override public int getSkyColorByTemp(float currentTemperature) {

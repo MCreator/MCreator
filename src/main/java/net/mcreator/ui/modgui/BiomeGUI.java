@@ -102,6 +102,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final JColor airColor = new JColor(mcreator, true);
 	private final JColor grassColor = new JColor(mcreator, true);
+	private final JColor foliageColor = new JColor(mcreator, true);
 	private final JColor waterColor = new JColor(mcreator, true);
 	private final JColor waterFogColor = new JColor(mcreator, true);
 
@@ -154,6 +155,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		name.setOpaque(true);
 		airColor.setOpaque(false);
 		grassColor.setOpaque(false);
+		foliageColor.setOpaque(false);
 		waterColor.setOpaque(false);
 		waterFogColor.setOpaque(false);
 
@@ -341,7 +343,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		pane2.add("Center", PanelUtils.totalCenterInPanel(allmost));
 
-		JPanel sbbp3 = new JPanel(new GridLayout(9, 2, 0, 5));
+		JPanel sbbp3 = new JPanel(new GridLayout(10, 2, 0, 5));
 		generateLakes.setOpaque(false);
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/name"), new JLabel("Name:")));
@@ -366,6 +368,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/grass_color"), new JLabel("Grass color:")));
 		sbbp3.add(grassColor);
+
+		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/foliage_color"), new JLabel("Foliage color:")));
+		sbbp3.add(foliageColor);
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/water_color"), new JLabel("Water color:")));
 		sbbp3.add(waterColor);
@@ -528,6 +533,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		minHeight.setValue(biome.minHeight);
 		airColor.setColor(biome.airColor);
 		grassColor.setColor(biome.grassColor);
+		foliageColor.setColor(biome.foliageColor);
 		waterColor.setColor(biome.waterColor);
 		waterFogColor.setColor(biome.waterFogColor);
 		treesPerChunk.setValue(biome.treesPerChunk);
@@ -576,6 +582,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			biome.treeType = biome.TREES_VANILLA;
 		biome.airColor = airColor.getColor();
 		biome.grassColor = grassColor.getColor();
+		biome.foliageColor = foliageColor.getColor();
 		biome.waterColor = waterColor.getColor();
 		biome.waterFogColor = waterFogColor.getColor();
 		biome.treesPerChunk = (int) treesPerChunk.getValue();
