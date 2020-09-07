@@ -18,6 +18,7 @@
 
 package net.mcreator.plugin;
 
+import java.util.List;
 
 public class PluginInfo {
 
@@ -25,7 +26,7 @@ public class PluginInfo {
 	private String description;
 	private String author;
 	private String version;
-	private String dependency;
+	private List<String> dependencies;
 
 	public String getName() {
 		return name;
@@ -45,7 +46,7 @@ public class PluginInfo {
 		return version;
 	}
 
-	public String getDependency() {
-		return dependency;
+	public List<String> getDependencies() {
+		return dependencies;
 	}
 }

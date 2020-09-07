@@ -103,8 +103,8 @@ public class PluginLoader extends URLClassLoader {
 		Collections.sort(loadList);
 
 		for (Plugin plugin : loadList) {
-			if(plugin.getInfo().getDependency() != null) {
-				if (idList.contains(plugin.getInfo().getDependency())) {
+			if(plugin.getInfo().getDependencies() != null) {
+				if (idList.containsAll(plugin.getInfo().getDependencies())) {
 					try {
 						LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile());
 						if (plugin.getFile().isDirectory()) {
@@ -117,7 +117,7 @@ public class PluginLoader extends URLClassLoader {
 						LOG.error("Failed to add plugin to the loader", e);
 					}
 				} else {
-					LOG.warn(plugin.getInfo().getName() + " can not be loaded.   " + plugin.getInfo().getDependency());
+					LOG.warn(plugin.getInfo().getName() + " can not be loaded. The plugin needs " + plugin.getInfo().getDependencies());
 					plugin.loaded = false;
 
 				}
