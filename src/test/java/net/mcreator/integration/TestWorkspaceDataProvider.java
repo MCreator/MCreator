@@ -330,7 +330,6 @@ public class TestWorkspaceDataProvider {
 		case FOOD:
 			Food food = new Food(modElement);
 			food.name = modElement.getName();
-			food.rarity = "RARE";
 			food.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
 				food.specialInfo = StringUtils
@@ -347,7 +346,7 @@ public class TestWorkspaceDataProvider {
 			food.saturation = 0.8f;
 			food.forDogs = _true;
 			food.isAlwaysEdible = _true;
-			food.animation = "EAT";
+			food.animation = "eat";
 			food.hasGlow = _true;
 			food.onRightClicked = new Procedure("procedure1");
 			food.onEaten = new Procedure("procedure2");
@@ -874,7 +873,6 @@ public class TestWorkspaceDataProvider {
 		case ITEM:
 			Item item = new Item(modElement);
 			item.name = modElement.getName();
-			item.rarity = "EPIC";
 			item.creativeTab = new TabEntry(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			item.stackSize = 52;
@@ -928,7 +926,6 @@ public class TestWorkspaceDataProvider {
 			rangedItem.stackSize = 41;
 			rangedItem.actionSound = new Sound(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			rangedItem.animation = "CROSSBOW";
 			rangedItem.bulletPower = 1.5;
 			rangedItem.bulletDamage = 2.3;
 			rangedItem.bulletKnockback = 5;

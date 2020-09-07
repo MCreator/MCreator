@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.Dependency;
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Food;
 import net.mcreator.minecraft.DataListEntry;
@@ -32,6 +33,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.ProcedureSelector;
@@ -65,8 +67,6 @@ public class FoodGUI extends ModElementGUI<Food> {
 	private final JSpinner eatingSpeed = new JSpinner(new SpinnerNumberModel(32, 0, 9999, 1));
 
 	private final VTextField name = new VTextField(20);
-	private final JComboBox<String> rarity = new JComboBox<>(
-			new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC"});
 
 	private final JTextField specialInfo = new JTextField(20);
 
@@ -80,7 +80,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
 
-	private final DataListComboBox animation = new DataListComboBox(mcreator, ElementUtil.loadActionAnimations());
+	private final JComboBox<String> animation = new JComboBox<>(new String[] { "eat", "drink" });
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
@@ -105,7 +105,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 				"When entity swings item",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		animation.setEnabled(true);
+		animation.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		JPanel pane1 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
@@ -144,7 +144,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 										"<html>Special information about the food:<br><small>Separate entries with comma, to use comma in description use \\,")),
 						specialInfo))));
 
-		JPanel selp = new JPanel(new GridLayout(11, 2, 10, 10));
+		JPanel selp = new JPanel(new GridLayout(10, 2, 10, 10));
 		selp.setOpaque(false);
 
 		name.setPreferredSize(new Dimension(120, 31));
@@ -158,9 +158,6 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), new JLabel("Name in GUI:")));
 		selp.add(name);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), new JLabel("Rarity:")));
-		selp.add(rarity);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel("Creative inventory tab:")));
@@ -189,7 +186,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/eating_speed"), new JLabel("Eating speed:")));
 		selp.add(eatingSpeed);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/animation"), new JLabel("Food animation: ")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/animation"), new JLabel("Food animation: ")));
 		selp.add(animation);
 
 		pane4.setOpaque(false);
@@ -256,7 +253,6 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 	@Override public void openInEditingMode(Food food) {
 		name.setText(food.name);
-		rarity.setSelectedItem(food.rarity);
 		texture.setTextureFromTextureName(food.texture);
 		forDogs.setSelected(food.forDogs);
 		isAlwaysEdible.setSelected(food.isAlwaysEdible);
@@ -282,7 +278,6 @@ public class FoodGUI extends ModElementGUI<Food> {
 	@Override public Food getElementFromGUI() {
 		Food food = new Food(modElement);
 		food.name = name.getText();
-		food.rarity = (String) rarity.getSelectedItem();
 		food.texture = texture.getID();
 		food.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		food.stackSize = (int) stackSize.getValue();
@@ -291,7 +286,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		food.saturation = (double) saturation.getValue();
 		food.forDogs = forDogs.isSelected();
 		food.isAlwaysEdible = isAlwaysEdible.isSelected();
-		food.animation = animation.getSelectedItem().toString();
+		food.animation = (String) animation.getSelectedItem();
 		food.onRightClicked = onRightClicked.getSelectedProcedure();
 		food.onEaten = onEaten.getSelectedProcedure();
 		food.onCrafted = onCrafted.getSelectedProcedure();

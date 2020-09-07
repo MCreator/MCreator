@@ -90,7 +90,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final Model cross = new Model.BuiltInModel("Cross model");
-	private final Model crop = new Model.BuiltInModel("Crop model");
 	private final JRadioButton normalType = new JRadioButton("<html><b>Use static plant type");
 	private final JComboBox<String> growapableSpawnType = new JComboBox<>(
 			new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
@@ -436,7 +435,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.loadMapColors()), "DEFAULT");
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(cross, crop),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(cross),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
@@ -558,10 +557,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			plant.renderType = 2;
 		else if (model.getType() == Model.Type.OBJ)
 			plant.renderType = 3;
-		else if (model.equals(cross))
-			plant.renderType = 12;
-		else if (model.equals(crop))
-			plant.renderType = 13;
 		plant.customModelName = model.getReadableName();
 
 		return plant;

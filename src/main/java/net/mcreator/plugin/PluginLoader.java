@@ -32,7 +32,10 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -102,7 +105,6 @@ public class PluginLoader extends URLClassLoader {
 
 	synchronized private List<Plugin> listPluginsFromFolder(File folder, boolean builtin) {
 		List<Plugin> loadList = new ArrayList<>();
-		List idList = new ArrayList<>();
 		File[] pluginFiles = folder.listFiles();
 		for (File pluginFile : pluginFiles != null ? pluginFiles : new File[0]) {
 			Plugin plugin = loadPlugin(pluginFile, builtin);
@@ -113,46 +115,9 @@ public class PluginLoader extends URLClassLoader {
 				}
 				plugins.add(plugin);
 				loadList.add(plugin);
-				idList.add(plugin.getID());
 			}
 		}
 
-		Collections.sort(loadList);
-
-		for (Plugin plugin : loadList) {
-			if (plugin.getInfo().getDependencies() != null) {
-				if (idList.containsAll(plugin.getInfo().getDependencies())) {
-					try {
-						LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile());
-						if (plugin.getFile().isDirectory()) {
-							addURL(plugin.getFile().toURI().toURL());
-						} else {
-							addURL(new URL("jar:file:" + plugin.getFile().getAbsolutePath() + "!/"));
-						}
-						plugin.loaded = true;
-					} catch (MalformedURLException e) {
-						LOG.error("Failed to add plugin to the loader", e);
-					}
-				} else {
-					LOG.warn(plugin.getInfo().getName() + " can not be loaded. The plugin needs " + plugin.getInfo().getDependencies());
-					plugin.loaded = false;
-
-				}
-			} else {
-				try {
-					LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile());
-					if (plugin.getFile().isDirectory()) {
-						addURL(plugin.getFile().toURI().toURL());
-					} else {
-						addURL(new URL("jar:file:" + plugin.getFile().getAbsolutePath() + "!/"));
-					}
-					plugin.loaded = true;
-				} catch (MalformedURLException e) {
-					LOG.error("Failed to add plugin to the loader", e);
-				}
-			}
-
-		}
 		return loadList;
 	}
 
