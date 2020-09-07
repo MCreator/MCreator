@@ -57,7 +57,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 	}
 
 	@Override protected void initGUI() {
-		onCommandExecuted = new ProcedureSelector(this.withEntry(L10N.t("command/when_executed")), mcreator,
+		onCommandExecuted = new ProcedureSelector(this.withEntry("command/when_executed"), mcreator,
 				L10N.t("elementgui.command.when_command_executed"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/cmdparams:map"));
 
@@ -93,7 +93,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(merge)));
 
-		commandName.setValidator(new TextFieldValidator(commandName, L10N.t("elementgui.command.cant_empyt_string")));
+		commandName.setValidator(new TextFieldValidator(commandName, L10N.t("elementgui.command.warning.empty_string")));
 		commandName.enableRealtimeValidation();
 
 		page1group.addValidationElement(commandName);
