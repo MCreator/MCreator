@@ -27,7 +27,6 @@ public class Plugin implements Comparable<Plugin> {
 
 	transient File file;
 	transient boolean builtin;
-	transient boolean loaded;
 
 	private String id;
 	private int weight = 0;
@@ -43,10 +42,6 @@ public class Plugin implements Comparable<Plugin> {
 
 	public boolean isBuiltin() {
 		return builtin;
-	}
-
-	public boolean isLoaded(){
-		return loaded;
 	}
 
 	public String getID() {

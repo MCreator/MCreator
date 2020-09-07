@@ -18,15 +18,12 @@
 
 package net.mcreator.plugin;
 
-import java.util.List;
-
 public class PluginInfo {
 
 	private String name;
 	private String description;
 	private String author;
 	private String version;
-	private List<String> dependencies;
 	private String credits;
 
 	public String getName() {
@@ -47,15 +44,10 @@ public class PluginInfo {
 		return version;
 	}
 
-	public List<String> getDependencies() {
-		return dependencies;
-	}
-
 	public String getCredits() {
-		if (credits == null) {
+		if(credits == null){
 			return "None";
 		}
 		return credits;
-
 	}
 }

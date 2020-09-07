@@ -72,9 +72,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			setRegistryName("${registryname}");
 		}
 
-		@Override public UseAction getUseAction(ItemStack par1ItemStack) {
-		    return UseAction.${data.animation};
-        }
+		@Override public UseAction getUseAction(ItemStack stack) {
+      		return UseAction.BOW;
+   		}
 
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
 			entity.setActiveHand(hand);
