@@ -35,6 +35,8 @@ package ${package}.world.structure;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Structure extends ${JavaModName}Elements.ModElement{
 
+	public static Template template = null;
+
 	public ${name}Structure (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 	}
@@ -113,10 +115,12 @@ package ${package}.world.structure;
 							continue;
 						</#if>
 
-						Template template = ((ServerWorld) world.getWorld()).getSaveHandler().getStructureTemplateManager().getTemplateDefaulted(new ResourceLocation("${modid}" ,"${data.structure}"));
+						TemplateManager templatemanager = ((ServerWorld) world.getWorld()).getSaveHandler().getStructureTemplateManager();
 
-						if (template == null)
+						if (template == null){
+						    template = templatemanager.getTemplate(new ResourceLocation("${modid}" ,"${data.structure}"));
 							return false;
+						}
 
 						template.addBlocksToWorld(world, spawnTo,
 							new PlacementSettings()

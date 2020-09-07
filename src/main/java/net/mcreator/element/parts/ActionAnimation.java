@@ -16,46 +16,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.plugin;
+package net.mcreator.element.parts;
 
-import java.util.List;
+import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.workspace.Workspace;
+import org.jetbrains.annotations.NotNull;
 
-public class PluginInfo {
+public class ActionAnimation extends MappableElement {
 
-	private String name;
-	private String description;
-	private String author;
-	private String version;
-	private List<String> dependencies;
-	private String credits;
-
-	public String getName() {
-		return name;
+	private ActionAnimation() {
+		super(new NameMapper(null, "actionanimations"));
 	}
 
-	public String getDescription() {
-		return description;
+	public ActionAnimation(@NotNull Workspace owner, String name) {
+		this();
+		mapper.setWorkspace(owner);
+		setValue(name);
 	}
 
-	public String getAuthor() {
-		return author;
+	public ActionAnimation(@NotNull Workspace owner, DataListEntry name) {
+		this(owner, name.getName());
 	}
 
-	public String getVersion() {
-		if (version == null)
-			return "not specified";
-		return version;
-	}
-
-	public List<String> getDependencies() {
-		return dependencies;
-	}
-
-	public String getCredits() {
-		if (credits == null) {
-			return "None";
-		}
-		return credits;
-
-	}
 }
