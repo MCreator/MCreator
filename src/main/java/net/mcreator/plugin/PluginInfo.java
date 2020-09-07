@@ -47,12 +47,12 @@ public class PluginInfo {
 		return version;
 	}
 
-
-public List<String> getDependencies() {
-	return dependencies;
+	public List<String> getDependencies() {
+		return dependencies;
+	}
 
 	public String getCredits() {
-		if(credits == null){
+		if (credits == null) {
 			return "None";
 		}
 		return credits;
