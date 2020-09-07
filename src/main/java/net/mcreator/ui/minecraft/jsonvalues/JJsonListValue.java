@@ -28,6 +28,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.spawntypes.JSpawnListEntry;
+import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -35,9 +36,9 @@ import java.awt.*;
 import java.util.List;
 
 public class JJsonListValue extends JPanel {
-	private final JSpinner name = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
+	private final VTextField name = new VTextField(10);
 	private final JComboBox<String> type = new JComboBox<>(
-			new String[] { "boolean", "Direction", "double", "int", "Itemstack", "String"});
+			new String[] { "boolean", "Direction", "double", "int", "ItemStack", "String"});
 
 	private final Workspace workspace;
 
@@ -51,7 +52,7 @@ public class JJsonListValue extends JPanel {
 		parent.add(container);
 		valueList.add(this);
 
-		add(new JLabel("Value: "));
+		add(new JLabel("Name: "));
 		add(name);
 
 		add(new JLabel("Type: "));
@@ -74,13 +75,13 @@ public class JJsonListValue extends JPanel {
 
 	public Json.Value getValue() {
 		Json.Value value = new Json.Value();
-		value.name = (String) name.getValue();
+		value.name = name.getText().toString();
 		value.type = (String) type.getSelectedItem();
 		return value;
 	}
 
 	public void setValue(Json.Value v) {
-		name.setValue(v.name);
+		name.setText(v.name);
 		type.setSelectedItem(v.type);
 	}
 }

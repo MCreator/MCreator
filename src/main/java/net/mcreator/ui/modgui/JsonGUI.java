@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.types.Json;
-import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -34,8 +33,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class JsonGUI extends ModElementGUI<Json>{
 
@@ -61,11 +58,11 @@ public class JsonGUI extends ModElementGUI<Json>{
 		pane1.add(component);
 		pane1.setOpaque(false);
 
-		addPage("Values", pane1);
+		addPage("Value", pane1);
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		return null;
+		return new AggregatedValidationResult.PASS();
 	}
 
 	/**

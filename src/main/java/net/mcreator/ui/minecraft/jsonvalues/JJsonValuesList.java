@@ -36,12 +36,10 @@
 
 package net.mcreator.ui.minecraft.jsonvalues;
 
-import net.mcreator.element.types.Biome;
 import net.mcreator.element.types.Json;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.minecraft.spawntypes.JSpawnListEntry;
 
 import javax.swing.*;
 import java.awt.*;
