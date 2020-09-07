@@ -41,6 +41,7 @@ import java.util.Map;
 	public String customModelName;
 
 	public String name;
+	public String rarity;
 	public TabEntry creativeTab;
 	public int stackSize;
 	public int enchantability;
@@ -78,6 +79,7 @@ import java.util.Map;
 	public Item(ModElement element) {
 		super(element);
 
+		this.rarity = "COMMON";
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
 	}

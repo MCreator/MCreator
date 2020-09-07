@@ -81,6 +81,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	private ProcedureSelector onEntitySwing;
 
 	private final SoundSelector shootSound = new SoundSelector(mcreator);
+	private final DataListComboBox animation = new DataListComboBox(mcreator, ElementUtil.loadActionAnimations());
 
 	private final JTextField specialInfo = new JTextField(20);
 
@@ -153,6 +154,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		ComponentUtils.deriveFont(bulletModel, 16);
 		ComponentUtils.deriveFont(specialInfo, 16);
 
+		animation.setEnabled(true);
+
 		JPanel pane1 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 
@@ -175,7 +178,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
-		JPanel selp = new JPanel(new GridLayout(11, 2, 5, 2));
+		JPanel selp = new JPanel(new GridLayout(12, 2, 5, 2));
 		selp.setOpaque(false);
 
 		JPanel selp2 = new JPanel(new GridLayout(8, 2, 10, 2));
@@ -257,6 +260,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("rangeditem/action_sound"), new JLabel("Ranged action sound: ")));
 		selp.add(shootSound);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/animation"), new JLabel("Ranged action animation: ")));
+		selp.add(animation);
 
 		usageCount.setOpaque(false);
 		bulletPower.setOpaque(false);
@@ -384,6 +390,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		shootConstantly.setSelected(rangedItem.shootConstantly);
 		name.setText(rangedItem.name);
 		shootSound.setSound(rangedItem.actionSound);
+		animation.setSelectedItem(rangedItem.animation);
 		stackSize.setValue(rangedItem.stackSize);
 		texture.setTextureFromTextureName(rangedItem.texture);
 		bulletItemTexture.setBlock(rangedItem.bulletItemTexture);
@@ -426,6 +433,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		rangedItem.shootConstantly = shootConstantly.isSelected();
 		rangedItem.usageCount = (int) usageCount.getValue();
 		rangedItem.actionSound = shootSound.getSound();
+		rangedItem.animation = animation.getSelectedItem().toString();
 		rangedItem.bulletPower = (double) bulletPower.getValue();
 		rangedItem.bulletDamage = (double) bulletDamage.getValue();
 		rangedItem.bulletKnockback = (int) bulletKnockback.getValue();
