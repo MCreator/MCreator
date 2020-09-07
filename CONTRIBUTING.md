@@ -28,6 +28,14 @@ Some features might not be accepted into the core if they do not follow or guide
 or do not fit the current UX flow of the application. Too specific features that would make UI more complex, but would not be benefitical to the
 most of the users might be rejected too, or suggested to be distributed in a plugin format.
 
+If maintainers are busy, it can take a few days (or more) to properly review your PR so please be patient ;)
+
+Some pull request tips and standards:
+* Please separate different features in different pull requests
+* If possible, prepare a changelog of your pull request that is ready to be used in the final MCreator changelog
+* When adding features to generator, make sure to cover all generators currently supported
+* Add tests for features you added with the PR, if new fields were added to mod elements, update TestWorkspaceDataProvider
+
 # Localization (translation)
 
 If you would like to contribute to the translations, make Crowdin user account and visit https://crowdin.com/project/mcreator. If you would like a brand new language added, open an issue or contact us otherwise and we will add it to the list of languages.
