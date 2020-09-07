@@ -198,7 +198,10 @@ import net.minecraft.block.material.Material;
 		@OnlyIn(Dist.CLIENT) @Override public int getGrassColor(double posX, double posZ) {
 			return ${data.grassColor.getRGB()};
 		}
+<<<<<<< HEAD
+=======
 		</#if>
+>>>>>>> refs/remotes/origin/master
 
 		<#if data.foliageColor?has_content>
 		@OnlyIn(Dist.CLIENT) @Override public int getFoliageColor() {
@@ -212,7 +215,9 @@ import net.minecraft.block.material.Material;
 		}
         </#if>
 
-	}
+		}
+		</#if>
+
 
     <#if data.treeType == data.TREES_CUSTOM && (data.treesPerChunk > 0)>
 	static class CustomTreeFeature extends AbstractTreeFeature<BaseTreeFeatureConfig> {
