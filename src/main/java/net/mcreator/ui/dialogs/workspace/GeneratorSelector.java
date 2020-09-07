@@ -114,7 +114,7 @@ public class GeneratorSelector {
 			addStatsBar("Blocks and items", "blocksitems", supportedElements, stats);
 			addStatsBar("Creative tabs", "tabs", supportedElements, stats);
 			addStatsBar("Damage sources", "damagesources", supportedElements, stats);
-			addStatsBar("Default Biome Features", "defaultfeatures", supportedElements, stats);
+			addStatsBar("Def. biome features", "defaultfeatures", supportedElements, stats);
 			addStatsBar("Enchantment", "enchantments", supportedElements, stats);
 			addStatsBar("Enchantment types", "enchantmenttypes", supportedElements, stats);
 			addStatsBar("Entities", "entities", supportedElements, stats);
