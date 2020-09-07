@@ -347,7 +347,7 @@ public class TestWorkspaceDataProvider {
 			food.saturation = 0.8f;
 			food.forDogs = _true;
 			food.isAlwaysEdible = _true;
-			food.animation = String.valueOf(ElementUtil.loadActionAnimations());
+			food.animation = "EAT";
 			food.hasGlow = _true;
 			food.onRightClicked = new Procedure("procedure1");
 			food.onEaten = new Procedure("procedure2");
@@ -928,7 +928,7 @@ public class TestWorkspaceDataProvider {
 			rangedItem.stackSize = 41;
 			rangedItem.actionSound = new Sound(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			rangedItem.animation = String.valueOf(ElementUtil.loadActionAnimations());
+			rangedItem.animation = "CROSSBOW";
 			rangedItem.bulletPower = 1.5;
 			rangedItem.bulletDamage = 2.3;
 			rangedItem.bulletKnockback = 5;
