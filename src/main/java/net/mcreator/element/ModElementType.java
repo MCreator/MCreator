@@ -81,9 +81,7 @@ public enum ModElementType {
 
 	@SerializedName("function") FUNCTION(BaseType.DATAPACK, RecipeElementType.NONE),
 
-	////////////////////////////////////////FEDER DID THIS!!!
 	@SerializedName("painting") PAINTING(BaseType.OTHER, RecipeElementType.NONE);
-	////////////////////////////////////////
 
 	private final BaseType baseType;
 	private final String description;
