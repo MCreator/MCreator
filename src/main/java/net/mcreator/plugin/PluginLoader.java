@@ -120,7 +120,7 @@ public class PluginLoader extends URLClassLoader {
 		Collections.sort(loadList);
 
 		for (Plugin plugin : loadList) {
-			if(plugin.getInfo().getDependencies() != null) {
+			if (plugin.getInfo().getDependencies() != null) {
 				if (idList.containsAll(plugin.getInfo().getDependencies())) {
 					try {
 						LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile());
@@ -138,7 +138,7 @@ public class PluginLoader extends URLClassLoader {
 					plugin.loaded = false;
 
 				}
-			} else{
+			} else {
 				try {
 					LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile());
 					if (plugin.getFile().isDirectory()) {
@@ -153,6 +153,7 @@ public class PluginLoader extends URLClassLoader {
 			}
 
 		}
+		return loadList;
 	}
 
 	@Nullable synchronized private Plugin loadPlugin(File pluginFile, boolean builtin) {
