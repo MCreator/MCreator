@@ -77,6 +77,8 @@ public class TagGUI extends ModElementGUI<Tag> {
 		name.setEditable(true);
 		name.setOpaque(false);
 
+		namespace.setEditable(true);
+
 		CardLayout valuesLayout = new CardLayout();
 		JPanel valuesPan = new JPanel(valuesLayout);
 
@@ -128,8 +130,8 @@ public class TagGUI extends ModElementGUI<Tag> {
 	}
 
 	@Override public void openInEditingMode(Tag tag) {
-		namespace.setSelectedItem(tag.namespace);
 		type.setSelectedItem(tag.type);
+		namespace.getEditor().setItem(tag.namespace);
 		name.getEditor().setItem(tag.name);
 
 		items.setListElements(tag.items);
@@ -140,7 +142,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 	@Override public Tag getElementFromGUI() {
 		Tag tag = new Tag(modElement);
-		tag.namespace = (String) namespace.getSelectedItem();
+		tag.namespace = namespace.getEditor().getItem().toString();
 		tag.type = (String) type.getSelectedItem();
 
 		tag.items = items.getListElements();
