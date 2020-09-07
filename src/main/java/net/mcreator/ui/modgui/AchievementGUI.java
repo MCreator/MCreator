@@ -194,7 +194,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 
 		achievementName.setValidator(new TextFieldValidator(achievementName, L10N.t("elementgui.advancement.cant_be_empty")));
 		achievementDescription
-				.setValidator(new TextFieldValidator(achievementDescription, L10N.t("elementgui.advancement.must_have_description=")));
+				.setValidator(new TextFieldValidator(achievementDescription, L10N.t("elementgui.advancement.must_have_description")));
 		achievementIcon.setValidator(new MCItemHolderValidator(achievementIcon));
 		achievementName.enableRealtimeValidation();
 		achievementDescription.enableRealtimeValidation();
