@@ -18,7 +18,6 @@
 
 package net.mcreator.plugin;
 
-import java.util.ArrayList;
 
 public class PluginInfo {
 
