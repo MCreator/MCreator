@@ -1,0 +1,40 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+    {
+      "type": "input_value",
+      "name": "tag",
+      "check": "String"
+    },
+    {
+      "type": "input_value",
+      "name": "increase",
+      "check": "Number"
+    }
+  ],
+  "inputsInline": true,
+  "colour": "%{BKY_MATH_HUE}",
+  "previousStatement": null,
+  "nextStatement": null,
+  "mcreator": {
+    "toolbox_id": "entitymanagement",
+    "toolbox_init": [
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
+      "<value name=\"tag\"><block type=\"text\"><field name=\"TEXT\">tagName</field></block></value>",
+      "<value name=\"increase\"><block type=\"math_number\"></block></value>"
+    ],
+    "inputs": [
+      "entity",
+      "tag",
+      "increase"
+    ],
+    "dependencies": [{
+      "name": "world",
+      "type": "world"
+    }]
+  }
+}

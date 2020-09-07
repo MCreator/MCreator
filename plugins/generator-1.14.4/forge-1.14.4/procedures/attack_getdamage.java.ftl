@@ -1,0 +1,1 @@
+(((LivingAttackEvent)dependencies.get("event" )).getAmount())

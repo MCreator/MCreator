@@ -1,0 +1,81 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "projectile_type",
+      "options": [
+        [
+          "Arrow",
+          "ArrowEntity"
+        ],
+        [
+          "Dragon Fireball",
+          "DragonFireballEntity"
+        ],
+        [
+          "Egg",
+          "EggEntity"
+        ],
+        [
+          "Evoker Fangs",
+          "EvokerFangsEntity"
+        ],
+        [
+          "Fireball",
+          "FireballEntity"
+        ],
+        [
+          "Fishing Bobber",
+          "FishingBobberEntity"
+        ],
+        [
+          "Llama Spit",
+          "LlamaSpitEntity"
+        ],
+        [
+          "Potion",
+          "PotionEntity"
+        ],
+        [
+          "Shulker Bullet",
+          "ShulkerBulletEntity"
+        ],
+        [
+          "Snowball",
+          "SnowballEntity"
+        ],
+        [
+          "Spectral Arrow",
+          "SpectralArrowEntity"
+        ],
+        [
+          "Trident",
+          "TridentEntity"
+        ],
+        [
+          "Wither Skull",
+          "WitherSkullEntity"
+        ]
+      ]
+    }
+  ],
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "entitymanagement",
+    "toolbox_init": [
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "inputs": [
+      "entity"
+    ],
+    "fields": [
+      "projectile_type"
+    ]
+  }
+}

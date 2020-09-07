@@ -1,0 +1,1 @@
+((LivingEntity) ${input$entity}).removePotionEffect(${generator.map(field$potion, "potions")});
