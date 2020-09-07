@@ -11,6 +11,7 @@ changes, and the way how to implement them to fit the existing code base and UX 
 * When committing, make sure to reference the issue by #ID in the commit message to link commits to the issue
 * Reference potential issues the pull request relates to when an issue(s) related to the pull request exists
 * Make sure to update files with license headers
+* Check existing issues and consider fixing one before considering adding a brand new feature not discussed before
 * Be human, we are humans too, keep the community positive when colaborating with contributors and maintainers :)
 
 *Learn more about the development process and tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).*
@@ -42,7 +43,7 @@ If you would like to contribute to the translations, make Crowdin user account a
 
 # CLA
 
-Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/Pylo/MCreator), which you can do online.
+Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/MCreator/MCreator), which you can do online.
 The CLA is necessary mainly because you own the copyright to your changes, even after your contribution 
 becomes part of our codebase, so we need your permission to use and distribute your code. We also need to be sure 
 of various other things—for instance that you'll tell us if you know that your code infringes on other people's patents. 
