@@ -433,7 +433,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enderpanel.add(equipSound);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/max_damage_absorbed"),
-				new JLabel(L10N.t("elementgui.armor.maximal_damages"))));
+				new JLabel(L10N.t("elementgui.armor.max_damage_absorption"))));
 		enderpanel.add(maxDamage);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/damage_values"),
