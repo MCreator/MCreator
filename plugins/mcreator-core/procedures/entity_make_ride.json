@@ -18,12 +18,22 @@
   "mcreator": {
     "toolbox_id": "entitymanagement",
     "toolbox_init": [
-      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
+      "<value name=\"sourceentity\"><block type=\"source_entity_from_deps\"></block></value>",
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "inputs": [
       "sourceentity",
       "entity"
+    ],
+    "dependencies": [
+      {
+        "name": "entity",
+        "type": "entity"
+      },
+      {
+        "name": "sourceentity",
+        "type": "entity"
+      }
     ]
   }
 }
