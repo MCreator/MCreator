@@ -25,7 +25,7 @@ Once you complete your feature and are sure you followed the tips and tried to m
 The contributed code must pass all tests and be mergeable into the master branch. Expect comments on code after the code review. You will likely
 need to change some code parts based on the maintainer's suggestions.
 
-Some features might not be accepted into the core if they do not follow or guidelines, are low quality, or steer MCreator away from its roadmap 
+Some features might not be accepted into the core if they do not follow our guidelines, are low quality, or steer MCreator away from its roadmap 
 or do not fit the current UX flow of the application. Too specific features that would make UI more complex, but would not be benefitical to the
 most of the users might be rejected too, or suggested to be distributed in a plugin format.
 
