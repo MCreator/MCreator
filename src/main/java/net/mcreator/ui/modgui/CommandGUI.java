@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -56,8 +57,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 	}
 
 	@Override protected void initGUI() {
-		onCommandExecuted = new ProcedureSelector(this.withEntry("command/when_executed"), mcreator,
-				"When command executed",
+		onCommandExecuted = new ProcedureSelector(this.withEntry(L10N.t("command/when_executed")), mcreator,
+				L10N.t("elementgui.command.when_command_executed"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/cmdparams:map"));
 
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
@@ -67,11 +68,11 @@ public class CommandGUI extends ModElementGUI<Command> {
 		JPanel enderpanel = new JPanel(new GridLayout(2, 2, 10, 2));
 
 		enderpanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("command/name"), new JLabel("Command name (without /): ")));
+				.wrapWithHelpButton(this.withEntry("command/name"), new JLabel(L10N.t("elementgui.command.name"))));
 		enderpanel.add(commandName);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("command/permission_level"),
-				new JLabel("<html>Execution permission level:" + "<br><small>Minimal level for the command to run")));
+				new JLabel(L10N.t("elementgui.command.permission_level"))));
 		enderpanel.add(permissionLevel);
 
 		enderpanel.setOpaque(false);
@@ -81,7 +82,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 		evente.setOpaque(false);
 		evente.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				"Command executed procedure trigger", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.command.on_command_executed"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		evente.add(onCommandExecuted);
 
@@ -92,7 +93,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(merge)));
 
-		commandName.setValidator(new TextFieldValidator(commandName, "Command can't be empty string"));
+		commandName.setValidator(new TextFieldValidator(commandName, L10N.t("elementgui.command.cant_empyt_string")));
 		commandName.enableRealtimeValidation();
 
 		page1group.addValidationElement(commandName);
