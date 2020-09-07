@@ -110,10 +110,10 @@ class PluginsPanel {
 
 			if (value.getInfo().getAuthor() != null)
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion() + ", author: " + value.getInfo().getAuthor());
+						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", loaded: " + value.isLoaded());
 			else
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion());
+						.getPluginVersion() + ", loaded: " + value.isLoaded());
 
 			setToolTipText(value.getInfo().getDescription());
 			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));

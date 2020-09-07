@@ -105,33 +105,35 @@ public class PluginLoader extends URLClassLoader {
 
 		System.out.println(idList);
 		for (Plugin plugin : loadList) {
-			boolean canLoad = false;
-			if(plugin.getInfo().getDependency() != null) {
-				if (idList.contains(plugin.getInfo().getDependency())) {
+			if(plugin.getInfo().getDependencies() != null) {
+				if (idList.contains(plugin.getInfo().getDependencies())) {
 					try {
 						LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile() + " can not find "
-								+ plugin.getInfo().getDependency());
+								+ plugin.getInfo().getDependencies());
 						if (plugin.getFile().isDirectory()) {
 							addURL(plugin.getFile().toURI().toURL());
 						} else {
 							addURL(new URL("jar:file:" + plugin.getFile().getAbsolutePath() + "!/"));
 						}
+						plugin.loaded = true;
 					} catch (MalformedURLException e) {
 						LOG.error("Failed to add plugin to the loader", e);
 					}
 				} else {
 					LOG.warn(plugin.getInfo().getName() + " can not be loaded.");
+					plugin.loaded = false;
 
 				}
 			} else{
 				try {
 					LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile() + " can not find "
-							+ plugin.getInfo().getDependency());
+							+ plugin.getInfo().getDependencies());
 					if (plugin.getFile().isDirectory()) {
 						addURL(plugin.getFile().toURI().toURL());
 					} else {
 						addURL(new URL("jar:file:" + plugin.getFile().getAbsolutePath() + "!/"));
 					}
+					plugin.loaded = true;
 				} catch (MalformedURLException e) {
 					LOG.error("Failed to add plugin to the loader", e);
 				}

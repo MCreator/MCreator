@@ -26,7 +26,7 @@ public class PluginInfo {
 	private String description;
 	private String author;
 	private String version;
-	private String[] dependency;
+	private String[] dependencies;
 
 	public String getName() {
 		return name;
@@ -46,7 +46,7 @@ public class PluginInfo {
 		return version;
 	}
 
-	public String[] getDependency() {
-		return dependency;
+	public String[] getDependencies() {
+		return dependencies;
 	}
 }
