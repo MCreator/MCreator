@@ -109,24 +109,26 @@ public class GeneratorSelector {
 
 			JPanel supportedElements = new JPanel(new GridLayout(-1, 6, 7, 3));
 
-			addStatsBar("Action Animations", "actionanimations", supportedElements, stats);
-			addStatsBar("Blocks and items", "blocksitems", supportedElements, stats);
-			addStatsBar("Entities", "entities", supportedElements, stats);
-			addStatsBar("Biomes", "biomes", supportedElements, stats);
 			addStatsBar("Achievements", "achievements", supportedElements, stats);
+      addStatsBar("Action Animations", "actionanimations", supportedElements, stats);
+			addStatsBar("Biomes", "biomes", supportedElements, stats);
+			addStatsBar("Blocks and items", "blocksitems", supportedElements, stats);
 			addStatsBar("Creative tabs", "tabs", supportedElements, stats);
-			addStatsBar("Sounds", "sounds", supportedElements, stats);
-			addStatsBar("Fluids", "fluids", supportedElements, stats);
-			addStatsBar("Step sounds", "stepsounds", supportedElements, stats);
-			addStatsBar("Enchantment", "enchantments", supportedElements, stats);
-			addStatsBar("Materials", "materials", supportedElements, stats);
-			addStatsBar("Potions", "potions", supportedElements, stats);
-			addStatsBar("Particles", "particles", supportedElements, stats);
-			addStatsBar("Game modes", "gamemodes", supportedElements, stats);
 			addStatsBar("Damage sources", "damagesources", supportedElements, stats);
+			addStatsBar("Def. biome features", "defaultfeatures", supportedElements, stats);
+			addStatsBar("Enchantment", "enchantments", supportedElements, stats);
 			addStatsBar("Enchantment types", "enchantmenttypes", supportedElements, stats);
+			addStatsBar("Entities", "entities", supportedElements, stats);
+			addStatsBar("Fluids", "fluids", supportedElements, stats);
+			addStatsBar("Game modes", "gamemodes", supportedElements, stats);
 			addStatsBar("Map colors", "mapcolors", supportedElements, stats);
+			addStatsBar("Materials", "materials", supportedElements, stats);
+			addStatsBar("Particles", "particles", supportedElements, stats);
 			addStatsBar("Path node types", "pathnodetypes", supportedElements, stats);
+			addStatsBar("Potions", "potions", supportedElements, stats);
+			addStatsBar("Sounds", "sounds", supportedElements, stats);
+			addStatsBar("Step sounds", "stepsounds", supportedElements, stats);
+		
 
 			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
 				addStatsBar("Biome dictionary", "biomedictionarytypes", supportedElements, stats);

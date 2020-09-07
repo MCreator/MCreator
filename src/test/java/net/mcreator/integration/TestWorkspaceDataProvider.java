@@ -202,6 +202,7 @@ public class TestWorkspaceDataProvider {
 			return fuel;
 		case BIOME:
 			Biome biome = new Biome(modElement);
+			biome.name = modElement.getName();
 			biome.groundBlock = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
@@ -211,21 +212,35 @@ public class TestWorkspaceDataProvider {
 			biome.airColor = Color.red;
 			if (!emptyLists) {
 				biome.grassColor = Color.green;
+				biome.foliageColor = Color.magenta;
 				biome.waterColor = Color.blue;
+				biome.waterFogColor = Color.cyan;
 			}
 			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];
 			biome.grassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 1;
-			biome.flowersPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 2;
-			biome.mushroomsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 3;
-			biome.bigMushroomsChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 4;
-			biome.sandPathcesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 5;
-			biome.gravelPatchesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 6;
-			biome.reedsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 7;
-			biome.cactiPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 8;
+			biome.seagrassPerChunk = new int[] { 0, 5, 10, 16}[valueIndex] + 2;
+			biome.flowersPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 3;
+			biome.mushroomsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 4;
+			biome.bigMushroomsChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 5;
+			biome.sandPathcesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 6;
+			biome.gravelPatchesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 7;
+			biome.reedsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 8;
+			biome.cactiPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 9;
 			biome.rainingPossibility = 3.5;
 			biome.baseHeight = -0.3;
 			biome.heightVariation = 0.7;
 			biome.temperature = 4.0;
+			biome.spawnShipwreck = _true;
+			biome.oceanRuinType = "NONE";
+			biome.spawnOceanMonument = !_true;
+			biome.spawnWoodlandMansion =  _true;
+			biome.spawnJungleTemple = !_true;
+			biome.spawnDesertPyramid = !_true;
+			biome.spawnIgloo = !_true;
+			biome.spawnPillagerOutpost =  !_true;
+			biome.spawnStronghold =  _true;
+			biome.spawnMineshaft =  !_true;
+			biome.villageType = "desert";
 			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
 			biome.biomeType = ListUtils.getRandomItem(random, new String[] { "WARM", "DESERT", "COOL", "ICY" });
 			biome.biomeCategory = ListUtils.getRandomItem(random,
@@ -271,6 +286,17 @@ public class TestWorkspaceDataProvider {
 				biomeDictTypes.add(ListUtils.getRandomItem(random, ElementUtil.loadBiomeDictionaryTypes()));
 			}
 			biome.biomeDictionaryTypes = biomeDictTypes;
+			List<String> biomeDefaultFeatures = new ArrayList<>();
+			if (!emptyLists) {
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+			}
+			biome.defaultFeatures = biomeDefaultFeatures;
 			biome.spawnVines = _true;
 			biome.treeVines = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
@@ -1171,7 +1197,7 @@ public class TestWorkspaceDataProvider {
 			return block;
 		case TAG:
 			Tag tag = new Tag(modElement);
-			tag.namespace = ListUtils.getRandomItem(random, new String[] { "forge", "minecraft" });
+			tag.namespace = ListUtils.getRandomItem(random, new String[] { "forge", "minecraft", "test1", "test2" });
 			tag.type = ListUtils.getRandomItem(random, new String[] { "Items", "Blocks" });
 			tag.name = modElement.getName();
 			tag.items = new ArrayList<>();
