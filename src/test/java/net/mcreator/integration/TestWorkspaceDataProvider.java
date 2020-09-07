@@ -1317,6 +1317,16 @@ public class TestWorkspaceDataProvider {
 								.getRandomItem(random, ElementUtil.loadAllEnchantments(modElement.getWorkspace()))));
 			}
 			return enchantment;
+		case JSON:
+			Json json = new Json(modElement);
+			json.values = new ArrayList<>();
+			Json.Value value = new Json.Value();
+
+			value.type = "String";
+			value.name = "type";
+			json.values.add(value);
+
+			return json;
 		default:
 			return null;
 		}

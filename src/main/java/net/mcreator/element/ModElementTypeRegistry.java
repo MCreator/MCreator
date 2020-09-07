@@ -58,6 +58,7 @@ public final class ModElementTypeRegistry {
 		put(ModElementType.LOOTTABLE, new ModTypeRegistration<>('q', 26, LootTableGUI::new, LootTable.class));
 		put(ModElementType.FUNCTION, new ModTypeRegistration<>('u', 27, FunctionGUI::new, Function.class));
 		put(ModElementType.MUSICDISC, new ModTypeRegistration<>(null, 28, MusicDiscGUI::new, MusicDisc.class));
+		put(ModElementType.JSON, new ModTypeRegistration<>(null, 29, JsonGUI::new, Json.class));
 	}};
 
 	public static class ModTypeRegistration<GE extends GeneratableElement> {

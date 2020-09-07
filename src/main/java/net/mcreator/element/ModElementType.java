@@ -79,7 +79,9 @@ public enum ModElementType {
 
 	@SerializedName("loottable") LOOTTABLE(BaseType.DATAPACK, RecipeElementType.NONE),
 
-	@SerializedName("function") FUNCTION(BaseType.DATAPACK, RecipeElementType.NONE);
+	@SerializedName("function") FUNCTION(BaseType.DATAPACK, RecipeElementType.NONE),
+
+	@SerializedName("json") JSON(BaseType.OTHER, RecipeElementType.NONE);
 
 	private final BaseType baseType;
 	private final String description;
