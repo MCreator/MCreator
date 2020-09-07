@@ -1330,7 +1330,7 @@ public class TestWorkspaceDataProvider {
 			return enchantment;
 		case PAINTING:
 			Painting painting = new Painting(modElement);
-			painting.texture = "test";
+			painting.texture = "test.png";
 			painting.width = 16;
 			painting.height = 16;
 			return painting;
