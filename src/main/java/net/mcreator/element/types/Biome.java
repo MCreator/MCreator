@@ -114,6 +114,7 @@ import java.util.List;
 		biomeCategory = "NONE";
 		biomeDictionaryTypes = new ArrayList<>();
 		spawnEntries = new ArrayList<>();
+		defaultFeatures = new ArrayList<>();
 	}
 
 	public static class SpawnEntry {
