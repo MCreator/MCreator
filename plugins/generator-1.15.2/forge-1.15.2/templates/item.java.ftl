@@ -71,6 +71,9 @@ package ${package}.item;
 					<#else>
 					.maxStackSize(${data.stackSize})
 					</#if>
+					<#if data.recipeRemainder?? && !data.recipeRemainder.isEmpty()>
+                    .containerItem(${data.recipeRemainder?replace("Blocks", "Items")})
+                    </#if>
 			);
 			setRegistryName("${registryname}");
 		}

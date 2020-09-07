@@ -1,32 +1,3 @@
-<#--
- # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
- # 
- # This program is free software: you can redistribute it and/or modify
- # it under the terms of the GNU General Public License as published by
- # the Free Software Foundation, either version 3 of the License, or
- # (at your option) any later version.
- # 
- # This program is distributed in the hope that it will be useful,
- # but WITHOUT ANY WARRANTY; without even the implied warranty of
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- # GNU General Public License for more details.
- # 
- # You should have received a copy of the GNU General Public License
- # along with this program.  If not, see <https://www.gnu.org/licenses/>.
- # 
- # Additional permission for code generator templates (*.ftl files)
- # 
- # As a special exception, you may create a larger work that contains part or 
- # all of the MCreator code generator templates (*.ftl files) and distribute 
- # that work under terms of your choice, so long as that work isn't itself a 
- # template for code generation. Alternatively, if you modify or redistribute 
- # the template itself, you may (at your option) remove this special exception, 
- # which will cause the template and the resulting code generator output files 
- # to be licensed under the GNU General Public License without this special 
- # exception.
--->
-
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
@@ -55,7 +26,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 	@Override public void initElements() {
 		elements.blocks.add(() -> new CustomBlock());
-		elements.items.add(() -> new BlockItem(block, new Item.Properties().group(${data.creativeTab})).setRegistryName(block.getRegistryName()));
+		elements.items.add(() -> new BlockItem(block, new Item.Properties()
+		                             .group(${data.creativeTab})
+		                             <#if data.recipeRemainder?? && !data.recipeRemainder.isEmpty()>
+                                     .containerItem(${data.recipeRemainder?replace("Blocks", "Items")})
+                                     </#if>
+		                             ).setRegistryName(block.getRegistryName()));
 	}
 
 	<#if data.hasInventory>
@@ -71,7 +47,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				${data.blockBase}Block
 			<#else>
 				Block
-			</#if> {
+			</#if>
+			<#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+            implements IWaterLoggable
+            </#if> {
 
 		<#if data.rotationMode == 1 || data.rotationMode == 3>
 		public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
@@ -256,7 +235,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.rotationMode != 0>
 		@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-      		builder.add(FACING);
+      		<#if !data.isWaterloggable>
+                builder.add(FACING);
+            <#else>
+                builder.add(FACING, WATERLOGGED);
+            </#if>
    		}
 
 			<#if data.rotationMode != 5>
@@ -282,27 +265,61 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		@Override
 		public BlockState getStateForPlacement(BlockItemUseContext context) {
-			<#if data.rotationMode == 1>
-			return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
-			<#elseif data.rotationMode == 2>
-			return this.getDefaultState().with(FACING, context.getNearestLookingDirection().getOpposite());
-            <#elseif data.rotationMode == 3>
-			if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
-				return this.getDefaultState().with(FACING, Direction.NORTH);
-			return this.getDefaultState().with(FACING, context.getFace());
-            <#elseif data.rotationMode == 4>
-			return this.getDefaultState().with(FACING, context.getFace());
-			<#elseif data.rotationMode == 5>
-			Direction facing = context.getFace();
-			if (facing == Direction.WEST || facing == Direction.EAST)
-				facing = Direction.UP;
-			else if (facing == Direction.NORTH || facing == Direction.SOUTH)
-				facing = Direction.EAST;
-			else
-				facing = Direction.SOUTH;
-			return this.getDefaultState().with(FACING, facing);
-			</#if>
+		    <#if data.rotationMode == 4>
+            Direction facing = context.getFace();
+            </#if>
+            <#if data.rotationMode == 5>
+            Direction facing = context.getFace();
+            if (facing == Direction.WEST || facing == Direction.EAST)
+                facing = Direction.UP;
+            else if (facing == Direction.NORTH || facing == Direction.SOUTH)
+                facing = Direction.EAST;
+            else
+                facing = Direction.SOUTH;
+            </#if>
+			<#if data.rotationMode != 3>
+            return this.getDefaultState()
+                #if data.rotationMode == 1>
+            	.with(FACING, context.getPlacementHorizontalFacing().getOpposite())
+            	<#elseif data.rotationMode == 2>
+            	.with(FACING, context.getNearestLookingDirection().getOpposite())
+                <#elseif data.rotationMode == 4 || data.rotationMode == 5>
+            	.with(FACING, facing)
+            	</#if>
+            	<#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+            	.with(WATERLOGGED, false)
+            	</#if>
+            	<#elseif data.rotationMode == 3>
+                if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
+                    return this.getDefaultState()
+                               .with(FACING, Direction.NORTH)
+                               <#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+                               .with(WATERLOGGED, false)
+                               </#if>;
+                return this.getDefaultState()
+                            .with(FACING, context.getFace())
+                            <#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+                            .with(WATERLOGGED, false)
+                            </#if>
+            	</#if>;
 		}
+        </#if>
+
+        <#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+            <#if data.rotationMode ==0>
+            @Override
+            public BlockState getStateForPlacement(BlockItemUseContext context) {
+            BlockState blockstate = context.getWorld().getBlockState(context.getPos());
+                return blockstate.with(WATERLOGGED, false);
+            }
+            @Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+                builder.add(WATERLOGGED);
+            }
+            </#if>
+
+        @Override public IFluidState getFluidState(BlockState state) {
+            return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        }
         </#if>
 
 		<#if data.isBeaconBase>
@@ -604,7 +621,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			@Override public boolean hasTileEntity(BlockState state) {
 				return true;
 			}
-			
+
 			@Override public TileEntity createTileEntity(BlockState state, IBlockReader world) {
     		    return new CustomTileEntity();
     		}
@@ -624,7 +641,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
    			         InventoryHelper.dropInventoryItems(world, pos, (CustomTileEntity) tileentity);
    			         world.updateComparatorOutputLevel(pos, this);
    			      }
-			
+
    			      super.onReplaced(state, world, pos, newState, isMoving);
    			   }
    			}

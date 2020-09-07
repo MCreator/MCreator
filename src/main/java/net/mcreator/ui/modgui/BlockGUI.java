@@ -121,6 +121,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JColor beaconColorModifier = new JColor(mcreator, true);
 
 	private final JCheckBox hasGravity = new JCheckBox("Check to enable");
+	private final JCheckBox isWaterloggable = new JCheckBox("Check to enable");
 	private final JCheckBox tickRandomly = new JCheckBox("Check to enable");
 	private final JCheckBox unbreakable = new JCheckBox("Check to enable");
 	private final JCheckBox isNotColidable = new JCheckBox("Check to enable");
@@ -147,6 +148,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+
+	private final MCItemHolder recipeRemainder = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final JSpinner minGenerateHeight = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner maxGenerateHeight = new JSpinner(new SpinnerNumberModel(64, 0, 256, 1));
@@ -585,10 +588,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
-		JPanel selp = new JPanel(new GridLayout(12, 2, 0, 2));
+		JPanel selp = new JPanel(new GridLayout(13, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 
-		JPanel advancedProperties = new JPanel(new GridLayout(14, 2, 0, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(15, 2, 0, 2));
 
 		hasGravity.setOpaque(false);
 		tickRandomly.setOpaque(false);
@@ -633,6 +636,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/light_opacity"), new JLabel("Light opacity:")));
 		selp.add(lightOpacity);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/recipe_remainder"), new JLabel("Recipe remainder:")));
+		selp.add(PanelUtils.centerInPanel(recipeRemainder));
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_gravity"), new JLabel("Has gravity?")));
 		selp.add(hasGravity);
@@ -703,6 +709,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 				new JLabel("Can this block be beacon base?")));
 		advancedProperties.add(isBeaconBase);
 
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_waterloggable"),
+				new JLabel("<html>Is block waterloggable?:<br><small>Block must not be full for this to work")));
+		advancedProperties.add(isWaterloggable);
+
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_ladder"),
 				new JLabel("<html>Does block act like ladder?<br><small>Block must not be full for this to work")));
 		advancedProperties.add(isLadder);
@@ -735,6 +745,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				.wrapWithHelpButton(this.withEntry("block/offset_type"), new JLabel("Random model offset:")));
 		advancedProperties.add(offsetType);
 
+		isWaterloggable.setOpaque(false);
 		canProvidePower.setOpaque(false);
 		isLadder.setOpaque(false);
 
@@ -1213,7 +1224,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		particleAmount.setValue(block.particleAmount);
 		hardness.setValue(block.hardness);
 		resistance.setValue(block.resistance);
+		recipeRemainder.setBlock(block.recipeRemainder);
 		hasGravity.setSelected(block.hasGravity);
+		isWaterloggable.setSelected(block.isWaterloggable);
 		emissiveRendering.setSelected(block.emissiveRendering);
 		tickRandomly.setSelected(block.tickRandomly);
 		creativeTab.setSelectedItem(block.creativeTab);
@@ -1299,7 +1312,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.enchantPowerBonus = (double) enchantPowerBonus.getValue();
 		block.hardness = (double) hardness.getValue();
 		block.resistance = (double) resistance.getValue();
+		block.recipeRemainder = recipeRemainder.getBlock();
 		block.hasGravity = hasGravity.isSelected();
+		block.isWaterloggable = isWaterloggable.isSelected();
 		block.emissiveRendering = emissiveRendering.isSelected();
 		block.tickRandomly = tickRandomly.isSelected();
 		block.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
