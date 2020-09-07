@@ -85,7 +85,7 @@ public class PluginLoader extends URLClassLoader {
 
 	synchronized private void loadPluginsFromFolder(File folder, boolean builtin) {
 		List<Plugin> loadList = new ArrayList<>();
-		List<String> idList = new ArrayList<>();
+		List idList = new ArrayList<>();
 		File[] pluginFiles = folder.listFiles();
 		for (File pluginFile : pluginFiles != null ? pluginFiles : new File[0]) {
 			Plugin plugin = loadPlugin(pluginFile, builtin);
@@ -101,15 +101,12 @@ public class PluginLoader extends URLClassLoader {
 		}
 
 		Collections.sort(loadList);
-		Collections.sort(idList);
 
-		System.out.println(idList);
 		for (Plugin plugin : loadList) {
-			if(plugin.getInfo().getDependencies() != null) {
-				if (idList.contains(plugin.getInfo().getDependencies())) {
+			if(plugin.getInfo().getDependency() != null) {
+				if (idList.contains(plugin.getInfo().getDependency())) {
 					try {
-						LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile() + " can not find "
-								+ plugin.getInfo().getDependencies());
+						LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile());
 						if (plugin.getFile().isDirectory()) {
 							addURL(plugin.getFile().toURI().toURL());
 						} else {
@@ -120,14 +117,13 @@ public class PluginLoader extends URLClassLoader {
 						LOG.error("Failed to add plugin to the loader", e);
 					}
 				} else {
-					LOG.warn(plugin.getInfo().getName() + " can not be loaded.");
+					LOG.warn(plugin.getInfo().getName() + " can not be loaded.   " + plugin.getInfo().getDependency());
 					plugin.loaded = false;
 
 				}
 			} else{
 				try {
-					LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile() + " can not find "
-							+ plugin.getInfo().getDependencies());
+					LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile());
 					if (plugin.getFile().isDirectory()) {
 						addURL(plugin.getFile().toURI().toURL());
 					} else {

@@ -108,12 +108,20 @@ class PluginsPanel {
 
 			ComponentUtils.deriveFont(this, 12);
 
+			String loaded;
+			if(value.isLoaded()){
+				loaded = "true";
+			} else {
+				loaded = "false";
+			}
+
 			if (value.getInfo().getAuthor() != null)
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", loaded: " + value.isLoaded());
+						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", loaded: " +
+						(value.isLoaded() ?  loaded :  loaded));
 			else
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion() + ", loaded: " + value.isLoaded());
+						.getPluginVersion() + ", loaded: " + (value.isLoaded() ? loaded :  loaded));
 
 			setToolTipText(value.getInfo().getDescription());
 			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
