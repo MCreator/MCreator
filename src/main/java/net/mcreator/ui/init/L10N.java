@@ -57,11 +57,12 @@ public class L10N {
 
 	public static Locale getLocale() {
 		if (locale == null) { // lazy-load locale
-			Locale suggested = Locale.getDefault();
+			// TODO: uncomment this once localizations are complete
+			/*Locale suggested = Locale.getDefault();
 			if (getSupportedLocales().contains(suggested))
 				locale = suggested;
-			else
-				locale = defaultLocale;
+			else*/
+			locale = defaultLocale;
 		}
 
 		return locale;

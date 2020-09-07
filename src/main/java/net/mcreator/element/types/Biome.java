@@ -35,6 +35,7 @@ import java.util.List;
 	public final transient int TREES_VANILLA;
 	public final transient int TREES_CUSTOM;
 
+	public String name;
 	public MItemBlock groundBlock;
 	public MItemBlock undergroundBlock;
 	public boolean generateLakes;
@@ -50,10 +51,13 @@ import java.util.List;
 
 	public Color airColor;
 	public Color grassColor;
+	public Color foliageColor;
 	public Color waterColor;
+	public Color waterFogColor;
 
 	public int treesPerChunk;
 	public int grassPerChunk;
+	public int seagrassPerChunk;
 	public int flowersPerChunk;
 	public int mushroomsPerChunk;
 	public int bigMushroomsChunk;
@@ -74,7 +78,20 @@ import java.util.List;
 	public String biomeCategory;
 	public BiomeEntry parent;
 
+	public boolean spawnStronghold;
+	public boolean spawnMineshaft;
+	public boolean spawnPillagerOutpost;
+	public String villageType;
+	public boolean spawnWoodlandMansion;
+	public boolean spawnJungleTemple;
+	public boolean spawnDesertPyramid;
+	public boolean spawnIgloo;
+	public boolean spawnOceanMonument;
+	public boolean spawnShipwreck;
+	public String oceanRuinType;
+
 	public List<String> biomeDictionaryTypes;
+	public List<String> defaultFeatures;
 
 	public List<SpawnEntry> spawnEntries;
 
@@ -90,10 +107,14 @@ import java.util.List;
 		TREES_CUSTOM = 1;
 
 		// DEFAULT VALUES
+		name = "";
 		vanillaTreeType = "Default";
+		villageType = "none";
+		oceanRuinType = "NONE";
 		biomeCategory = "NONE";
 		biomeDictionaryTypes = new ArrayList<>();
 		spawnEntries = new ArrayList<>();
+		defaultFeatures = new ArrayList<>();
 	}
 
 	public static class SpawnEntry {

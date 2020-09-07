@@ -27,6 +27,7 @@ public class PluginInfo {
 	private String author;
 	private String version;
 	private List<String> dependencies;
+	private String credits;
 
 	public String getName() {
 		return name;
@@ -46,7 +47,15 @@ public class PluginInfo {
 		return version;
 	}
 
-	public List<String> getDependencies() {
-		return dependencies;
+
+public List<String> getDependencies() {
+	return dependencies;
+
+	public String getCredits() {
+		if(credits == null){
+			return "None";
+		}
+		return credits;
+
 	}
 }

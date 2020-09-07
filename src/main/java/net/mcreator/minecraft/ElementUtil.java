@@ -179,6 +179,11 @@ public class ElementUtil {
 				.toArray(String[]::new);
 	}
 
+	public static String[] loadDefaultFeatures(){
+		return DataListLoader.loadDataList("defaultfeatures").stream().map(DataListEntry::getName)
+				.toArray(String[]::new);
+	}
+
 	public static String[] loadPathNodeTypes() {
 		return DataListLoader.loadDataList("pathnodetypes").stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
