@@ -25,7 +25,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Details**
  - MCreator version: [e.g. 2020.5]
- - Generator type: [e.g. forge-2020.5]
+ - Generator type: [e.g. forge-1.15.2]
  - OS: [e.g. Windows]
 
 **Minimal reproducible example workspace**

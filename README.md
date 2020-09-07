@@ -11,7 +11,7 @@
 
 https://mcreator.net/ - MCreator is a software used to make Minecraft Java Edition mods, Minecraft Bedrock Edition Add-Ons, and data packs using an intuitive easy-to-learn interface or with an integrated code editor. 
 
-It is used worldwide by Minecraft players, aspiring mod developers, for education, online classes, and STEM workshops.
+It is used worldwide by Minecraft players, aspiring mod developers, [for education, online classes, and STEM workshops](https://mcreator.net/education).
 
 ## Download, community, and support
 
