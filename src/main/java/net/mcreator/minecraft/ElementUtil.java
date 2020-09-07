@@ -40,7 +40,8 @@ public class ElementUtil {
 		List<MCItem> elements = new ArrayList<>();
 		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
 		elements.addAll(
-				DataListLoader.loadDataList("blocksitems").stream().map(e -> (MCItem) e).collect(Collectors.toList()));
+				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
+						.map(e -> (MCItem) e).collect(Collectors.toList()));
 		return elements;
 	}
 
@@ -55,8 +56,8 @@ public class ElementUtil {
 		List<MCItem> elements = new ArrayList<>();
 		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
 		elements.addAll(
-				DataListLoader.loadDataList("blocksitems").stream().map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
-						.collect(Collectors.toList()));
+				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
+						.map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes).collect(Collectors.toList()));
 		return elements;
 	}
 
@@ -72,8 +73,10 @@ public class ElementUtil {
 		workspace.getModElements().stream()
 				.filter(element -> element.getType().getBaseType() == ModElementType.BaseType.BLOCK)
 				.forEach(modElement -> elements.addAll(modElement.getMCItems()));
-		elements.addAll(DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.getType().equals("block"))
-				.map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes).collect(Collectors.toList()));
+		elements.addAll(
+				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
+						.filter(e -> e.getType().equals("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
+						.collect(Collectors.toList()));
 		return elements;
 	}
 
@@ -179,7 +182,7 @@ public class ElementUtil {
 				.toArray(String[]::new);
 	}
 
-	public static String[] loadDefaultFeatures(){
+	public static String[] loadDefaultFeatures() {
 		return DataListLoader.loadDataList("defaultfeatures").stream().map(DataListEntry::getName)
 				.toArray(String[]::new);
 	}

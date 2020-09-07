@@ -109,7 +109,7 @@ package ${package}.world.biome;
 
 			<#if data.villageType != "none">
 			this.addStructure(Feature.VILLAGE, new VillageConfig("village/${data.villageType}/town_centers", 6));
-			</#if>>
+			</#if>
 
 			<#if data.spawnWoodlandMansion>
 			this.addStructure(Feature.WOODLAND_MANSION, IFeatureConfig.NO_FEATURE_CONFIG);

@@ -11,9 +11,12 @@ changes, and the way how to implement them to fit the existing code base and UX 
 * When committing, make sure to reference the issue by #ID in the commit message to link commits to the issue
 * Reference potential issues the pull request relates to when an issue(s) related to the pull request exists
 * Make sure to update files with license headers
+* Check existing issues and consider fixing one before considering adding a brand new feature not discussed before
 * Be human, we are humans too, keep the community positive when colaborating with contributors and maintainers :)
 
 *Learn more about the development process and tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).*
+
+If you are looking for a good issues for a starter, check [good first issue candidates](https://github.com/MCreator/MCreator/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
 # Pull requests
 
@@ -22,13 +25,25 @@ Once you complete your feature and are sure you followed the tips and tried to m
 The contributed code must pass all tests and be mergeable into the master branch. Expect comments on code after the code review. You will likely
 need to change some code parts based on the maintainer's suggestions.
 
-Some features might not be accepted into the core if they do not follow or guidelines, are low quality, or steer MCreator away from its roadmap 
+Some features might not be accepted into the core if they do not follow our guidelines, are low quality, or steer MCreator away from its roadmap 
 or do not fit the current UX flow of the application. Too specific features that would make UI more complex, but would not be benefitical to the
 most of the users might be rejected too, or suggested to be distributed in a plugin format.
 
+If maintainers are busy, it can take a few days (or more) to properly review your PR so please be patient ;)
+
+Some pull request tips and standards:
+* Please separate different features in different pull requests
+* If possible, prepare a changelog of your pull request that is ready to be used in the final MCreator changelog
+* When adding features to generator, make sure to cover all generators currently supported
+* Add tests for features you added with the PR, if new fields were added to mod elements, update TestWorkspaceDataProvider
+
+# Localization (translation)
+
+If you would like to contribute to the translations, make Crowdin user account and visit https://crowdin.com/project/mcreator. If you would like a brand new language added, open an issue or contact us otherwise and we will add it to the list of languages.
+
 # CLA
 
-Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/Pylo/MCreator), which you can do online.
+Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/MCreator/MCreator), which you can do online.
 The CLA is necessary mainly because you own the copyright to your changes, even after your contribution 
 becomes part of our codebase, so we need your permission to use and distribute your code. We also need to be sure 
 of various other things—for instance that you'll tell us if you know that your code infringes on other people's patents. 

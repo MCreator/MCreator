@@ -214,7 +214,6 @@ import net.minecraft.block.material.Material;
 		@OnlyIn(Dist.CLIENT) @Override public int getGrassColor(double posX, double posZ) {
 			return ${data.grassColor.getRGB()};
 		}
-		}
 		</#if>
 
 		<#if data.foliageColor?has_content>
