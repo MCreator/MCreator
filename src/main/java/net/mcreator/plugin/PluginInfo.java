@@ -18,12 +18,15 @@
 
 package net.mcreator.plugin;
 
+import java.util.ArrayList;
+
 public class PluginInfo {
 
 	private String name;
 	private String description;
 	private String author;
 	private String version;
+	private String[] dependency;
 
 	public String getName() {
 		return name;
@@ -43,4 +46,7 @@ public class PluginInfo {
 		return version;
 	}
 
+	public String[] getDependency() {
+		return dependency;
+	}
 }
