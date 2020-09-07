@@ -65,8 +65,6 @@ public class FoodGUI extends ModElementGUI<Food> {
 	private final JSpinner eatingSpeed = new JSpinner(new SpinnerNumberModel(32, 0, 9999, 1));
 
 	private final VTextField name = new VTextField(20);
-	private final JComboBox<String> rarity = new JComboBox<>(
-			new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC"});
 
 	private final JTextField specialInfo = new JTextField(20);
 
@@ -144,7 +142,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 										"<html>Special information about the food:<br><small>Separate entries with comma, to use comma in description use \\,")),
 						specialInfo))));
 
-		JPanel selp = new JPanel(new GridLayout(11, 2, 10, 10));
+		JPanel selp = new JPanel(new GridLayout(10, 2, 10, 10));
 		selp.setOpaque(false);
 
 		name.setPreferredSize(new Dimension(120, 31));
@@ -158,9 +156,6 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), new JLabel("Name in GUI:")));
 		selp.add(name);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), new JLabel("Rarity:")));
-		selp.add(rarity);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel("Creative inventory tab:")));
@@ -256,7 +251,6 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 	@Override public void openInEditingMode(Food food) {
 		name.setText(food.name);
-		rarity.setSelectedItem(food.rarity);
 		texture.setTextureFromTextureName(food.texture);
 		forDogs.setSelected(food.forDogs);
 		isAlwaysEdible.setSelected(food.isAlwaysEdible);
@@ -282,7 +276,6 @@ public class FoodGUI extends ModElementGUI<Food> {
 	@Override public Food getElementFromGUI() {
 		Food food = new Food(modElement);
 		food.name = name.getText();
-		food.rarity = (String) rarity.getSelectedItem();
 		food.texture = texture.getID();
 		food.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		food.stackSize = (int) stackSize.getValue();
