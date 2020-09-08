@@ -66,7 +66,6 @@ import java.util.Map;
 	public boolean hasGravity;
 	public boolean isWaterloggable;
 	public TabEntry creativeTab;
-	public MItemBlock recipeRemainder;
 
 	public String destroyTool;
 	public MItemBlock customDrop;

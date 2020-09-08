@@ -267,6 +267,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
 
+		recipeRemainder.addActionListener(e -> {
+			stayInGridWhenCrafting.setSelected(!recipeRemainder.containsItem());
+			damageOnCrafting.setEnabled(recipeRemainder.containsItem());
+			damageOnCrafting.setSelected(false);
+		});
+
 		subpane2.setOpaque(false);
 
 		pane3.setOpaque(false);

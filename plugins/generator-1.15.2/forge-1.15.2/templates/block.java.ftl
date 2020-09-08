@@ -59,9 +59,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		elements.blocks.add(() -> new CustomBlock());
 		elements.items.add(() -> new BlockItem(block, new Item.Properties()
 		                             .group(${data.creativeTab})
-		                             <#if data.recipeRemainder?? && !data.recipeRemainder.isEmpty()>
-                                     .containerItem(${data.recipeRemainder?replace("Blocks", "Items")})
-                                     </#if>
 		                             ).setRegistryName(block.getRegistryName()));
 	}
 

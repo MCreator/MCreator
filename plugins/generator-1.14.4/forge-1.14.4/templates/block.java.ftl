@@ -57,9 +57,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		elements.blocks.add(() -> new CustomBlock());
 		elements.items.add(() -> new BlockItem(block, new Item.Properties()
 		                             .group(${data.creativeTab})
-		                             <#if data.recipeRemainder?? && !data.recipeRemainder.isEmpty()>
-                                     .containerItem(${data.recipeRemainder?replace("Blocks", "Items")})
-                                     </#if>
 		                             ).setRegistryName(block.getRegistryName()));
 	}
 
@@ -86,7 +83,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		<#elseif data.rotationMode == 2 || data.rotationMode == 4 || data.rotationMode == 5>
 		public static final DirectionProperty FACING = DirectionalBlock.FACING;
         </#if>
-		<#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+        <#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
         </#if>
 

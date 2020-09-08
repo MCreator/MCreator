@@ -1056,9 +1056,6 @@ public class TestWorkspaceDataProvider {
 			block.hardness = 2.3;
 			block.resistance = 3.1;
 			block.hasGravity = _true;
-			block.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
-					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-							.getName());
 			block.useLootTableForDrops = !_true;
 			block.creativeTab = new TabEntry(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
