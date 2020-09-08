@@ -11,7 +11,8 @@ changes, and the way how to implement them to fit the existing code base and UX 
 * When committing, make sure to reference the issue by #ID in the commit message to link commits to the issue
 * Reference potential issues the pull request relates to when an issue(s) related to the pull request exists
 * Make sure to update files with license headers
-* Check existing issues and consider fixing one before considering adding a brand new feature not discussed before
+* Consider checking and testing existing PRs and confirm they work as designed to help us avoid bugs (try testing different MC versions, generators, also importing old workspaces, ...)
+* _Check existing issues and consider fixing one before considering adding a brand new feature not discussed before_
 * Be human, we are humans too, keep the community positive when colaborating with contributors and maintainers :)
 
 *Learn more about the development process and tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).*
