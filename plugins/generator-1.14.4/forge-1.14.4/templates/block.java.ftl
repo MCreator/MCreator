@@ -86,6 +86,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		<#elseif data.rotationMode == 2 || data.rotationMode == 4 || data.rotationMode == 5>
 		public static final DirectionProperty FACING = DirectionalBlock.FACING;
         </#if>
+		<#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+        public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+        </#if>
 
 		public CustomBlock() {
 			<#if data.blockBase?has_content && data.blockBase == "Stairs">
@@ -308,7 +311,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
             </#if>
 			<#if data.rotationMode != 3>
             return this.getDefaultState()
-                #if data.rotationMode == 1>
+                <#if data.rotationMode == 1>
             	.with(FACING, context.getPlacementHorizontalFacing().getOpposite())
             	<#elseif data.rotationMode == 2>
             	.with(FACING, context.getNearestLookingDirection().getOpposite())
