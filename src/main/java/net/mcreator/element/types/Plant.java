@@ -55,6 +55,7 @@ import java.util.Map;
 	public double luminance;
 	public boolean unbreakable;
 	public StepSound soundOnStep;
+	public boolean useLootTableForDrops;
 	public MItemBlock customDrop;
 	public int dropAmount;
 	public boolean forceTicking;
