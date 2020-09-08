@@ -264,10 +264,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.rotationMode != 0>
 		@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-      		<#if !data.isWaterloggable>
-                builder.add(FACING);
-            <#else>
+      		<#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
                 builder.add(FACING, WATERLOGGED);
+            <#elseif data.rotationMode != 0>
+                builder.add(FACING);
             </#if>
    		}
 
