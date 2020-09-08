@@ -855,6 +855,7 @@ public class TestWorkspaceDataProvider {
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
 							.getName());
 			plant.dropAmount = 4;
+			plant.useLootTableForDrops = !_true;
 			plant.frequencyOnChunks = 13;
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
@@ -883,6 +884,9 @@ public class TestWorkspaceDataProvider {
 			item.destroyAnyBlock = _true;
 			item.inventorySize = 10;
 			item.inventoryStackSize = 42;
+			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName());
 			item.stayInGridWhenCrafting = _true;
 			item.damageOnCrafting = _true;
 			item.hasGlow = _true;
@@ -1066,6 +1070,7 @@ public class TestWorkspaceDataProvider {
 			block.isNotColidable = _true;
 			block.canProvidePower = _true;
 			block.isBeaconBase = _true;
+			block.isWaterloggable = _true;
 			block.isLadder = _true;
 			block.enchantPowerBonus = 1.2342;
 			block.reactionToPushing = ListUtils
