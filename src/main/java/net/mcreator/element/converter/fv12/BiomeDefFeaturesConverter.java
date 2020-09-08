@@ -38,7 +38,7 @@ public class BiomeDefFeaturesConverter implements IConverter {
 			biome.defaultFeatures.add("MonsterRooms");
 			biome.defaultFeatures.add("Structures");
 			biome.defaultFeatures.add("Ores");
-			if(biome.generateLakes){
+			if(jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("generateLakes") != null){
 				biome.defaultFeatures.add("Lakes");
 			}
 			biome.name = input.getModElement().getName();
