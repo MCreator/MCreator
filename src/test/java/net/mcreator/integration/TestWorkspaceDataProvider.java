@@ -207,7 +207,6 @@ public class TestWorkspaceDataProvider {
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			biome.generateLakes = _true;
 			biome.vanillaTreeType = "Mega spruce trees";
 			biome.airColor = Color.red;
 			if (!emptyLists) {
