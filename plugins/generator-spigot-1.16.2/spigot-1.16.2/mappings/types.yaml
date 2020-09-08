@@ -1,0 +1,9 @@
+_default: Object
+world: World
+int: int
+entity: Entity
+itemstack: ItemStack
+map: HashMap
+string: String
+boolean: boolean
+direction: Direction

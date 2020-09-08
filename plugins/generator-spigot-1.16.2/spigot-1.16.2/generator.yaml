@@ -1,0 +1,22 @@
+name: Minecraft Spigot for 1.16.2
+basefeatures: []
+partial_support: [procedures]
+status: dev
+buildfileversion: 1.0.0
+
+gradle:
+  export_file: "build/libs/plugin.jar"
+  run_server: runSpigotServer
+  setup_task: "dependencies buildLatestSpigot --refresh-dependencies"
+
+source_root: "@WORKSPACEROOT/src/main/java"
+res_root: "@WORKSPACEROOT/src/main/resources"
+
+base_templates:
+- template: modbase/mod.java.ftl
+  name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModName.java"
+  canLock: true
+- template: modbase/plugin.yml.ftl
+  writer: file
+  name: "@RESROOT/plugin.yml"
+  canLock: true

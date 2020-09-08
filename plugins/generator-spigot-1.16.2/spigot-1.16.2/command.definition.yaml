@@ -1,0 +1,3 @@
+templates:
+  - template: command.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/command/@NAME.java"

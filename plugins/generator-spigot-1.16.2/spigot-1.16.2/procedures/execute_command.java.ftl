@@ -1,0 +1,1 @@
+player.performCommand(${input$command});

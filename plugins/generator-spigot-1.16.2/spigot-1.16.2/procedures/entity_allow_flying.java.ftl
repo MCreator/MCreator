@@ -1,0 +1,1 @@
+player.setAllowFlight(${input$condition});

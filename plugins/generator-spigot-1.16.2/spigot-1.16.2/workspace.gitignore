@@ -1,0 +1,33 @@
+# Gradle build system ignores
+.gradle/
+build/
+
+# IDE related folders
+.idea/
+.settings/
+*.ipr
+*.iml
+*.iws
+*.code-workspace
+.classpath
+.project
+.vscode/
+*.bbproject
+
+# MCreator workspace
+.mcreator/
+
+# Minecraft client/server files
+run/
+
+# MCreator generator ignores
+src/main/resources/assets/*/models/custom
+src/main/resources/assets/*/models/item
+src/main/resources/assets/*/textures/blocks
+src/main/resources/assets/*/textures/items
+src/main/resources/assets/*/textures/models/armor
+src/main/resources/assets/*/textures/*.png
+src/main/resources/assets/*/sounds
+
+# Mac OS Folder Metadata
+.DS_Store
