@@ -108,6 +108,9 @@ import java.util.List;
 
 		// DEFAULT VALUES
 		name = "";
+		spawnStronghold = true;
+		spawnMineshaft = true;
+		spawnPillagerOutpost = true;
 		vanillaTreeType = "Default";
 		villageType = "none";
 		oceanRuinType = "NONE";
