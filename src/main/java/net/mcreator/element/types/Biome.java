@@ -38,6 +38,7 @@ import java.util.List;
 	public String name;
 	public MItemBlock groundBlock;
 	public MItemBlock undergroundBlock;
+	public boolean generateLakes;
 
 	public int treeType;
 	public String vanillaTreeType;
