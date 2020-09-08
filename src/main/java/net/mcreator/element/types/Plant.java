@@ -38,6 +38,7 @@ import java.util.Map;
 
 	public int renderType;
 	public String texture;
+	public String textureBottom;
 	public String customModelName;
 
 	public String plantType;
@@ -46,6 +47,8 @@ import java.util.Map;
 
 	public String growapableSpawnType;
 	public int growapableMaxHeight;
+
+	public String doublePlantGenerationType;
 
 	public String name;
 	public List<String> specialInfo;
@@ -102,6 +105,7 @@ import java.util.Map;
 		this.offsetType = "XZ";
 
 		this.staticPlantGenerationType = "Flower";
+		this.doublePlantGenerationType = "Flower";
 
 		this.specialInfo = new ArrayList<>();
 	}

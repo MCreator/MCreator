@@ -114,7 +114,7 @@ package ${package}.block;
 					return super.place(world, generator, random, pos, config);
 				}
 			};
-		<#else>
+		<#elseif data.plantType == "growapable">
 			Feature<NoFeatureConfig> feature = new Feature<NoFeatureConfig>(NoFeatureConfig::deserialize) {
 				@Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 					DimensionType dimensionType = world.getDimension().getType();
@@ -165,6 +165,61 @@ package ${package}.block;
       				return generated > 0;
 				}
 			};
+		<#elseif data.plantType == "double">
+		    <#if data.doublePlantGenerationType == "Flower"> DoublePlantFeature feature = new DoublePlantFeature(DoublePlantConfig::deserialize)
+		    <#else> Feature<NoFeatureConfig> feature = new Feature<NoFeatureConfig>(NoFeatureConfig::deserialize) </#if> {
+		        @Override public boolean place(IWorld world, ChunkGenerator generator, Random random, BlockPos pos,
+		        <#if data.doublePlantGenerationType == "Flower">DoublePlant<#else>NoFeature</#if>Config config) {
+                					DimensionType dimensionType = world.getDimension().getType();
+                		boolean dimensionCriteria = false;
+
+                    	<#list data.spawnWorldTypes as worldType>
+                			<#if worldType=="Surface">
+                				if(dimensionType == DimensionType.OVERWORLD)
+                					dimensionCriteria = true;
+                			<#elseif worldType=="Nether">
+                				if(dimensionType == DimensionType.THE_NETHER)
+                					dimensionCriteria = true;
+                			<#elseif worldType=="End">
+                				if(dimensionType == DimensionType.THE_END)
+                					dimensionCriteria = true;
+                			<#else>
+                		    	if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
+                		    		dimensionCriteria = true;
+                			</#if>
+                		</#list>
+
+                		if(!dimensionCriteria)
+                			return false;
+
+                		<#if hasCondition(data.generateCondition)>
+                		    int x = pos.getX();
+                		    int y = pos.getY();
+                		    int z = pos.getZ();
+                		    if (!<@procedureOBJToConditionCode data.generateCondition/>)
+                		    	return false;
+                		</#if>
+
+                        <#if data.doublePlantGenerationType == "Flower">
+                	    return super.place(world, generator, random, pos, config);
+                	    <#else>
+                	    for (BlockState blockstate = world.getBlockState(pos); (blockstate.isAir() || blockstate.isIn(BlockTags.LEAVES))
+                        			&& pos.getY() > 0; blockstate = world.getBlockState(pos)) {
+                        	pos = pos.down();
+                        }
+                        int i = 0;
+                        for (int j = 0; j < 128; ++j) {
+                        	BlockPos blockpos = pos.add(random.nextInt(8) - random.nextInt(8), random.nextInt(4) - random.nextInt(4),
+                        			random.nextInt(8) - random.nextInt(8));
+                        	if (world.isAirBlock(blockpos) && block.getDefaultState().isValidPosition(world, blockpos)) {
+                        		((DoublePlantBlock) block).placeAt(world, blockpos, 2);
+                        		++i;
+                        	}
+                        }
+                        return i > 0;
+                	    </#if>
+                    }
+                };
 		</#if>
 
 		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
@@ -180,20 +235,22 @@ package ${package}.block;
 					continue;
 			</#if>
 
-			<#if data.plantType == "normal" && data.staticPlantGenerationType == "Grass">
-			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature, new GrassFeatureConfig(block.getDefaultState()),
+			<#if data.plantType == "normal" && data.staticPlantGenerationType == "Grass" || data.plantType == "double" && data.doublePlantGenerationType == "Grass">
+			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature,
+			    new <#if data.plantType == "normal">GrassFeatureConfig(block.getDefaultState())<#else>NoFeatureConfig()</#if>,
 					Placement.NOISE_HEIGHTMAP_32, new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks})
 			));
 			<#else>
-			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature, IFeatureConfig.NO_FEATURE_CONFIG,
-					Placement.<#if data.plantType == "normal">COUNT_HEIGHTMAP_32<#else>COUNT_HEIGHTMAP_DOUBLE</#if>, new FrequencyConfig(${data.frequencyOnChunks})
+			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature,
+			<#if data.plantType == "double">new DoublePlantConfig(block.getDefaultState())<#else>IFeatureConfig.NO_FEATURE_CONFIG</#if>,
+					Placement.<#if data.plantType == "normal" || data.plantType == "double">COUNT_HEIGHTMAP_32<#else>COUNT_HEIGHTMAP_DOUBLE</#if>, new FrequencyConfig(${data.frequencyOnChunks})
 			));
 			</#if>
 		}
 	}
 	</#if>
 
-	public static class BlockCustomFlower extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane</#if>Block {
+	public static class BlockCustomFlower extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block {
 
 		public BlockCustomFlower() {
 			super(<#if data.plantType == "normal">Effects.SATURATION, 0,</#if>
@@ -270,21 +327,30 @@ package ${package}.block;
 
 		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
 		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+            <#if data.plantType == "double">
+            if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
+                return Collections.emptyList();
+            </#if>List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			if(!dropsOriginal.isEmpty())
 				return dropsOriginal;
 			return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
 		}
 		<#elseif data.customDrop?? && !data.customDrop.isEmpty()>
 		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+            <#if data.plantType == "double">
+            if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
+                return Collections.emptyList();
+            </#if>List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			if(!dropsOriginal.isEmpty())
 				return dropsOriginal;
 			return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
 		}
 		<#else>
 		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+            <#if data.plantType == "double">
+            if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
+                return Collections.emptyList();
+            </#if>List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			if(!dropsOriginal.isEmpty())
 				return dropsOriginal;
 			return Collections.singletonList(new ItemStack(this, 1));

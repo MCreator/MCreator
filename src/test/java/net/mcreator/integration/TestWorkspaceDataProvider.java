@@ -810,9 +810,11 @@ public class TestWorkspaceDataProvider {
 			plant.creativeTab = new TabEntry(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			plant.texture = "test";
-			plant.plantType = "growapable";
+			plant.textureBottom = "test";
+			plant.plantType = "double";
 			plant.growapableSpawnType = "Water";
 			plant.staticPlantGenerationType = "Grass";
+			plant.doublePlantGenerationType = "Grass";
 			plant.growapableMaxHeight = 5;
 			plant.hardness = 0.03;
 			plant.emissiveRendering = !_true;
