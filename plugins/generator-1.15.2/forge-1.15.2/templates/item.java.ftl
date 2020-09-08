@@ -29,6 +29,7 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
+<#include "mcitems.ftl">
 
 package ${package}.item;
 
@@ -80,7 +81,11 @@ package ${package}.item;
 				return true;
 			}
 
-			<#if data.damageOnCrafting && data.damageCount != 0>
+			<#if data.recipeRemainder?? && !data.recipeRemainder.isEmpty()>
+			@Override public ItemStack getContainerItem(ItemStack itemstack) {
+			    return ${mappedMCItemToItemStackCode(data.recipeRemainder, 1)};
+            }
+			<#elseif data.damageOnCrafting && data.damageCount != 0>
 			@Override public ItemStack getContainerItem(ItemStack itemstack) {
 				ItemStack retval = new ItemStack(this);
 				retval.setDamage(itemstack.getDamage() + 1);

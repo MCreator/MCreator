@@ -37,6 +37,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
+import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -67,6 +68,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 0, 64, 1));
 	private final VTextField name = new VTextField(20);
+
+	private final MCItemHolder recipeRemainder = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(0, -100, 128000, 1));
 	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(0, -100, 128000, 1));
@@ -207,7 +210,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		pane2.setOpaque(false);
 
-		JPanel subpane2 = new JPanel(new GridLayout(11, 2, 45, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(12, 2, 45, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -237,6 +240,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 				"<html>Item use count / durability (leave 0 to disable damage):<br><small>If you want to make a tool, create a tool instead")));
 		subpane2.add(damageCount);
 
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/recipe_remainder"), new JLabel("Recipe remainder:")));
+		subpane2.add(PanelUtils.centerInPanel(recipeRemainder));
+
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/can_destroy_any_block"),
 				new JLabel("Can destroy any block?")));
 		subpane2.add(destroyAnyBlock);
@@ -260,6 +266,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 		destroyAnyBlock.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
+
+		recipeRemainder.addActionListener(e -> {
+			stayInGridWhenCrafting.setSelected(!recipeRemainder.containsItem());
+			damageOnCrafting.setEnabled(recipeRemainder.containsItem());
+			damageOnCrafting.setSelected(false);
+		});
 
 		subpane2.setOpaque(false);
 
@@ -370,6 +382,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		toolType.setValue(item.toolType);
 		useDuration.setValue(item.useDuration);
 		damageCount.setValue(item.damageCount);
+		recipeRemainder.setBlock(item.recipeRemainder);
 		destroyAnyBlock.setSelected(item.destroyAnyBlock);
 		stayInGridWhenCrafting.setSelected(item.stayInGridWhenCrafting);
 		damageOnCrafting.setSelected(item.damageOnCrafting);
@@ -394,6 +407,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.useDuration = (int) useDuration.getValue();
 		item.toolType = (double) toolType.getValue();
 		item.damageCount = (int) damageCount.getValue();
+		item.recipeRemainder = recipeRemainder.getBlock();
 		item.destroyAnyBlock = destroyAnyBlock.isSelected();
 		item.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		item.damageOnCrafting = damageOnCrafting.isSelected();
