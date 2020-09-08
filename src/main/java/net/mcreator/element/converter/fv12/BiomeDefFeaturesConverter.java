@@ -22,6 +22,7 @@ import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Biome;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,7 +42,7 @@ public class BiomeDefFeaturesConverter implements IConverter {
 			if(jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("generateLakes") != null){
 				biome.defaultFeatures.add("Lakes");
 			}
-			biome.name = input.getModElement().getName();
+			biome.name = StringUtils.machineToReadableName(input.getModElement().getName());
 		} catch(Exception e){
 			LOG.warn("Could not convert: "+ biome.getModElement().getName());
 		}
