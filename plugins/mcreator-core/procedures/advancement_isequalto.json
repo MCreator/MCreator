@@ -1,0 +1,14 @@
+{
+  "extensions": [
+    "achievement_list_provider"
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": 350,
+  "mcreator": {
+    "toolbox_id": "worldmanagement",
+    "fields": [
+      "achievement"
+    ]
+  }
+}
