@@ -240,9 +240,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 				"<html>Item use count / durability (leave 0 to disable damage):<br><small>If you want to make a tool, create a tool instead")));
 		subpane2.add(damageCount);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/recipe_remainder"), new JLabel("Recipe remainder:")));
-		subpane2.add(PanelUtils.centerInPanel(recipeRemainder));
-
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/can_destroy_any_block"),
 				new JLabel("Can destroy any block?")));
 		subpane2.add(destroyAnyBlock);
@@ -255,6 +252,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 				"<html>Damage item instead on crafting<br><small>Make sure to enable \"stay in crafting grid\" and that item is damageable")));
 		subpane2.add(damageOnCrafting);
 
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/recipe_remainder"), new JLabel(
+				"<html>Recipe remainder<br><small>Make sure to enable \"stay in crafting grid\"")));
+		subpane2.add(PanelUtils.centerInPanel(recipeRemainder));
+
 		subpane2.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("item/use_duration"), new JLabel("Item use animation duration:")));
 		subpane2.add(useDuration);
@@ -266,12 +267,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		destroyAnyBlock.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
-
-		recipeRemainder.addActionListener(e -> {
-			stayInGridWhenCrafting.setSelected(!recipeRemainder.containsItem());
-			damageOnCrafting.setEnabled(recipeRemainder.containsItem());
-			damageOnCrafting.setSelected(false);
-		});
 
 		subpane2.setOpaque(false);
 
