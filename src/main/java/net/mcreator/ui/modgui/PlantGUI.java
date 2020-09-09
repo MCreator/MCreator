@@ -509,6 +509,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		growapableSpawnType.setSelectedItem(plant.growapableSpawnType);
 		staticPlantGenerationType.setSelectedItem(plant.staticPlantGenerationType);
 
+		customDrop.setEnabled(!useLootTableForDrops.isSelected());
+		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
+
 		if (normalType.isSelected())
 			stl.setIcon(TiledImageCache.plantStaticYes);
 		else
@@ -517,11 +520,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			dyn.setIcon(TiledImageCache.plantGrowingYes);
 		else
 			dyn.setIcon(TiledImageCache.plantGrowingNo);
-
-		useLootTableForDrops.addActionListener(e -> {
-			customDrop.setEnabled(!useLootTableForDrops.isSelected());
-			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
-		});
 	}
 
 	@Override public Plant getElementFromGUI() {
