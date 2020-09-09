@@ -1,0 +1,1 @@
+(world.getWorld().getGameRules().getInt(${generator.map(field$gamerulesnumber, "gamerulesnumber")}))

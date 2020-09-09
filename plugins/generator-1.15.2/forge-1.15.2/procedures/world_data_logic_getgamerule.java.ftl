@@ -1,0 +1,1 @@
+(world.getWorld().getGameRules().getBoolean(${generator.map(field$gamerulesboolean, "gamerulesboolean")}))

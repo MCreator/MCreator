@@ -136,6 +136,14 @@ public class ElementUtil {
 		return retval.toArray(new String[0]);
 	}
 
+	public static String[] getAllBooleanGamerules() {
+		return DataListLoader.loadDataList("gamerulesboolean").stream().map(DataListEntry::getName).toArray(String[]::new);
+	}
+
+	public static String[] getAllNumberGamerules() {
+		return DataListLoader.loadDataList("gamerulesnumber").stream().map(DataListEntry::getName).toArray(String[]::new);
+	}
+
 	public static String[] loadAllFluids(Workspace workspace) {
 		ArrayList<String> retval = new ArrayList<>();
 

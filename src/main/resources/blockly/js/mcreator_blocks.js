@@ -657,6 +657,18 @@ Blockly.Extensions.register('potion_list_provider',
             arrayToBlocklyDropDownArray(javabridge.getListOf("potion"))), 'potion');
     });
 
+Blockly.Extensions.register('gamerulesboolean_list_provider',
+    function () {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArray(javabridge.getListOf("gamerulesboolean"))), 'gamerulesboolean');
+    });
+
+Blockly.Extensions.register('gamerulesnumber_list_provider',
+    function () {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArray(javabridge.getListOf("gamerulesnumber"))), 'gamerulesnumber');
+    });
+
 Blockly.Extensions.register('enhancement_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
