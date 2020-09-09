@@ -53,7 +53,7 @@ package ${package}.block;
 
 	@Override public void initElements() {
 		elements.blocks.add(() -> new BlockCustomFlower());
-		elements.items.add(() -> new BlockItem(block, new Item.Properties().group(${data.creativeTab})).setRegistryName(block.getRegistryName()));
+		elements.items.add(() -> new <#if data.plantType == "double">Tall</#if>BlockItem(block, new Item.Properties().group(${data.creativeTab})).setRegistryName(block.getRegistryName()));
 	}
 
 	<#if data.hasTileEntity>
