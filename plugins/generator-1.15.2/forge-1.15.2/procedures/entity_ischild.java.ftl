@@ -1,0 +1,1 @@
+(((LivingEntity) ${input$entity}).isChild())
