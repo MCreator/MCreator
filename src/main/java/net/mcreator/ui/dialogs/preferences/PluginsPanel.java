@@ -112,13 +112,16 @@ class PluginsPanel {
 					(value.getInfo().getName() != null) &&
 					(value.getInfo().getCredits() == "None")){
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion() + ", author: " + value.getInfo().getAuthor());
+						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", loaded: " +
+						(value.isLoaded() ? "<html><font color=green>true</font>" : "<html><font color=red>false</font>"));
 			}else if (value.getInfo().getAuthor() != null)
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", credit: " + value.getInfo().getCredits());
+						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", credit: " + value.getInfo().getCredits()
+                + ", loaded: " + (value.isLoaded() ? "<html><font color=green>true</font>" : "<html><font color=red>false</font>"));
 			else
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion());
+						.getPluginVersion() + ", loaded: " + (value.isLoaded() ? "<html><font color=green>true</font>" :
+						"<html><font color=red>false</font>"));
 
 			setToolTipText(value.getInfo().getDescription());
 			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
