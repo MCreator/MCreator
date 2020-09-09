@@ -674,6 +674,21 @@ public class MinecraftImageGenerator {
 			return out;
 		}
 
+		/**
+		 * This method generates biome images.
+		 *
+		 * @param airColor         Biome's air color.
+		 * @param grassColor       Biome's grass color.
+		 * @param waterColor       Biome's water color.
+		 * @param groundBlock      Block used to calculate ground color. If grass, uses grass color instead
+		 * @param undergroundBlock Block used to calculate underground color.
+		 * @param lakes            Toggle lake rendering.
+		 * @param treesPerChunk    If there are any, a tree renders.
+		 * @param treeType         Use default colors if vanilla.
+		 * @param treeStem         Item used to calculate tree stem color.
+		 * @param treeBranch       Item used to calculate tree branch/leaf color.
+		 * @return Returns generated image.
+		 */
 		public static BufferedImage generateBiomePreviewPicture(Workspace workspace, Color airColor, Color grassColor,
 				Color waterColor, MItemBlock groundBlock, MItemBlock undergroundBlock, boolean lakes, int treesPerChunk,
 				int treeType, MItemBlock treeStem, MItemBlock treeBranch) {
@@ -733,9 +748,9 @@ public class MinecraftImageGenerator {
 				Color stem, leaves;
 				if (treeType == 1) {
 					stem = (ImageUtils.getAverageColor(ImageUtils.toBufferedImage(
-							MCItem.getBlockIconBasedOnName(workspace, groundBlock.getUnmappedValue()).getImage())));
+							MCItem.getBlockIconBasedOnName(workspace, treeStem.getUnmappedValue()).getImage())));
 					leaves = new Color((ImageUtils.getAverageColor(ImageUtils.toBufferedImage(
-							MCItem.getBlockIconBasedOnName(workspace, groundBlock.getUnmappedValue()).getImage()))
+							MCItem.getBlockIconBasedOnName(workspace, treeBranch.getUnmappedValue()).getImage()))
 							.getRGB() & 0x00ffffff) | 0xEE000000, false);
 				} else {
 					stem = new Color(95, 69, 32);
@@ -753,6 +768,15 @@ public class MinecraftImageGenerator {
 			return icon;
 		}
 
+		/**
+		 * This method generates mob images.
+		 *
+		 * @param mobModelTexture   Mob model full texture.
+		 * @param spawnEggBaseColor Spawn egg's base (egg) color.
+		 * @param spawnEggDotColor  Spawn egg's detail (dot) color.
+		 * @param hasSpawnEgg       Toggle spawn egg rendering.
+		 * @return Returns generated image.
+		 */
 		public static BufferedImage generateMobPreviewPicture(Workspace workspace, String mobModelTexture,
 				Color spawnEggBaseColor, Color spawnEggDotColor, boolean hasSpawnEgg) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
@@ -778,6 +802,33 @@ public class MinecraftImageGenerator {
 				graphics2D.fillRect(21, 24, 1, 1);
 				graphics2D.fillRect(23, 26, 1, 1);
 				graphics2D.fillRect(25, 25, 1, 1);
+			}
+
+			graphics2D.dispose();
+			return icon;
+		}
+
+		/**
+		 * This method generates painting images.
+		 *
+		 * @param texture Painting's texture.
+		 * @param width   Painting's width.
+		 * @param height  Painting's height.
+		 * @return Returns generated image.
+		 */
+		public static BufferedImage generatePaintingPreviewPicture(File texture, int width, int height) {
+			if (!texture.isFile())
+				return null;
+			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2D = icon.createGraphics();
+
+			try {
+				Image tex = new ImageIcon(ImageUtils.autoCropTile(ImageIO.read(texture))).getImage();
+				double maxdim = Math.max(width, height);
+				int drawWidth = (int) ((width / maxdim) * 28), drawHeight = (int) ((height / maxdim) * 28);
+				graphics2D.drawImage(tex, 14 - drawWidth / 2, 14 - drawHeight / 2, drawWidth, drawHeight, null);
+			} catch (IOException e) {
+				LOG.error(e.getMessage(), e);
 			}
 
 			graphics2D.dispose();

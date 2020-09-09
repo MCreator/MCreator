@@ -19,15 +19,13 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.FileIO;
-import net.mcreator.util.image.ImageUtils;
+import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.commons.io.FilenameUtils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.List;
 
 public class Painting extends GeneratableElement {
 
@@ -39,6 +37,11 @@ public class Painting extends GeneratableElement {
 		super(element);
 	}
 
+	@Override public BufferedImage generateModElementPicture() {
+		return MinecraftImageGenerator.Preview.generatePaintingPreviewPicture(
+				getModElement().getWorkspace().getFolderManager()
+						.getOtherTextureFile(FilenameUtils.removeExtension(texture)), width, height);
+	}
 
 	@Override public void finalizeModElementGeneration() {
 		File originalTextureFileLocation = getModElement().getWorkspace().getFolderManager()
