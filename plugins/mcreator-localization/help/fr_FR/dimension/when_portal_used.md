@@ -1,0 +1,1 @@
+When an entity uses the portal, the procedure will be executed.

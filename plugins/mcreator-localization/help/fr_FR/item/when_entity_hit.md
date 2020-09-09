@@ -1,0 +1,1 @@
+This procedure is executed when a living entity (cow, creeper, player, etc.) is hit using this item.

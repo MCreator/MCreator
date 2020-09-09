@@ -1,0 +1,1 @@
+If checked then the structure will be rotated in different directions randomly on spawning.

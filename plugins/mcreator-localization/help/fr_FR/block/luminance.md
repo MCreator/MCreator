@@ -1,0 +1,2 @@
+This parameter controls how much light the block emits. It is usually a value between 0 and 1. 
+If set to 0, the block won't emit light. If set to 1, the block will have a light value of 15 (same as glowstone).

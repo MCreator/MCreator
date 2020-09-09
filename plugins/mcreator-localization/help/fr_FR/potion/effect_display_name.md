@@ -1,0 +1,1 @@
+This parameter controls the name of the effect (the name displayed inside the player's inventory).

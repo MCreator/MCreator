@@ -1,0 +1,1 @@
+The procedure is executed when a player right-clicks with this item in his hand.
