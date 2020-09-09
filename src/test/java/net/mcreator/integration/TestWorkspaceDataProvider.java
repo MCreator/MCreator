@@ -854,6 +854,7 @@ public class TestWorkspaceDataProvider {
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
 							.getName());
 			plant.dropAmount = 4;
+			plant.useLootTableForDrops = !_true;
 			plant.frequencyOnChunks = 13;
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
