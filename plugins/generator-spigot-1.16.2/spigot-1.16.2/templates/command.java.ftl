@@ -18,21 +18,21 @@ public class ${name} implements CommandExecutor
 			double y = 0;
 			double z = 0;
 
-			Entity entity = null;
+			Player player = null;
 
 			World world = null;
 
-			if (sender instanceof Entity) {
-				entity = (Entity) sender;
+			if(sender instanceof Player){
 
-				x = entity.getLocation().getX();
-				y = entity.getLocation().getX();
-				z = entity.getLocation().getX();
+				player = (Player) sender;
 
-				world = entity.getWorld();
+				x = player.getLocation().getX();
+				y = player.getLocation().getX();
+				z = player.getLocation().getX();
 
+				world = player.getWorld();
 
-			} else if (sender instanceof BlockCommandSender) {
+			}  else if (sender instanceof BlockCommandSender) {
 				x = ((BlockCommandSender) sender).getBlock().getLocation().getX();
 				y = ((BlockCommandSender) sender).getBlock().getLocation().getX();
 				z = ((BlockCommandSender) sender).getBlock().getLocation().getX();
