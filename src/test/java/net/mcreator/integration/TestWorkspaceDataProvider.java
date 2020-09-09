@@ -1067,7 +1067,6 @@ public class TestWorkspaceDataProvider {
 			block.isNotColidable = _true;
 			block.canProvidePower = _true;
 			block.isBeaconBase = _true;
-			block.isWaterloggable = _true;
 			block.isLadder = _true;
 			block.enchantPowerBonus = 1.2342;
 			block.reactionToPushing = ListUtils
