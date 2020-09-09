@@ -366,6 +366,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		selp.setOpaque(false);
 
+		useLootTableForDrops.addActionListener(e -> {
+			customDrop.setEnabled(!useLootTableForDrops.isSelected());
+			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
+		});
+
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils
 				.westAndEastElement(PanelUtils.centerInPanel(selp), PanelUtils.centerInPanel(selp2), 20, 20)));
 
@@ -561,11 +566,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 		plant.generateCondition = generateCondition.getSelectedProcedure();
 		plant.emissiveRendering = emissiveRendering.isSelected();
-
-		useLootTableForDrops.addActionListener(e -> {
-			customDrop.setEnabled(!useLootTableForDrops.isSelected());
-			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
-		});
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		plant.renderType = 12;
