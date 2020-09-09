@@ -705,7 +705,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedProperties.add(isBeaconBase);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_waterloggable"),
-				new JLabel("<html>Is block waterloggable?:<br><small>Block must not be full for this to work")));
+				new JLabel("<html>Is block waterloggable?:<br><small>Block must not be full for this to work and block base must be normal")));
 		advancedProperties.add(isWaterloggable);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_ladder"),
@@ -747,6 +747,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		useLootTableForDrops.addActionListener(e -> {
 			customDrop.setEnabled(!useLootTableForDrops.isSelected());
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
+		});
+
+		isWaterloggable.addActionListener(e -> {
+			hasGravity.setEnabled(!isWaterloggable.isSelected());
+			hasGravity.setSelected(false);
 		});
 
 		selp.setBorder(BorderFactory.createTitledBorder(
@@ -1287,6 +1292,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
+
+		hasGravity.setEnabled(!isWaterloggable.isSelected());
 	}
 
 	@Override public Block getElementFromGUI() {

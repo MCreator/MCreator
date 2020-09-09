@@ -94,7 +94,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<#else>
 				Block
 			</#if>
-			<#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+			<#if data.isWaterloggable>
             implements IWaterLoggable
             </#if> {
 
@@ -103,7 +103,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		<#elseif data.rotationMode == 2 || data.rotationMode == 4 || data.rotationMode == 5>
 		public static final DirectionProperty FACING = DirectionalBlock.FACING;
         </#if>
-        <#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+        <#if data.isWaterloggable>
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
         </#if>
 
@@ -158,7 +158,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
                                      <#elseif data.rotationMode == 5>
                                      .with(FACING, Direction.SOUTH)
                                      </#if>
-                                     <#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+                                     <#if data.isWaterloggable>
                                      .with(WATERLOGGED, false)
                                      </#if>
             );
@@ -294,9 +294,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.rotationMode != 0>
 		@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		    <#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+		    <#if data.isWaterloggable>
       		    builder.add(FACING, WATERLOGGED);
-      		<#elseif data.rotationMode != 0>
+      		<#else>
       		    builder.add(FACING);
       		</#if>
    		}
@@ -336,7 +336,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
             else
                 facing = Direction.SOUTH;
             </#if>
-            <#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+            <#if data.isWaterloggable>
             boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
             </#if>;
 			<#if data.rotationMode != 3>
@@ -348,27 +348,27 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
                     <#elseif data.rotationMode == 4 || data.rotationMode == 5>
 			        .with(FACING, facing)
 			        </#if>
-			        <#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+			        <#if data.isWaterloggable>
 			        .with(WATERLOGGED, flag)
 			        </#if>
 			<#elseif data.rotationMode == 3>
             if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
                 return this.getDefaultState()
                         .with(FACING, Direction.NORTH)
-                        <#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+                        <#if data.isWaterloggable>
                         .with(WATERLOGGED, flag)
                         </#if>;
             return this.getDefaultState()
                     .with(FACING, context.getFace())
-                    <#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
+                    <#if data.isWaterloggable>
                     .with(WATERLOGGED, flag)
                     </#if>
 			</#if>;
 		}
         </#if>
 
-        <#if !data.hasGravity && !data.blockBase?has_content && data.isWaterloggable>
-            <#if data.rotationMode ==0>
+        <#if data.isWaterloggable>
+            <#if data.rotationMode == 0>
             @Override
             public BlockState getStateForPlacement(BlockItemUseContext context) {
             boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
