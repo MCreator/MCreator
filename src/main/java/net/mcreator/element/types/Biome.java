@@ -38,7 +38,6 @@ import java.util.List;
 	public String name;
 	public MItemBlock groundBlock;
 	public MItemBlock undergroundBlock;
-	public boolean generateLakes;
 
 	public int treeType;
 	public String vanillaTreeType;
@@ -57,6 +56,7 @@ import java.util.List;
 
 	public int treesPerChunk;
 	public int grassPerChunk;
+	public int seagrassPerChunk;
 	public int flowersPerChunk;
 	public int mushroomsPerChunk;
 	public int bigMushroomsChunk;
@@ -82,11 +82,15 @@ import java.util.List;
 	public boolean spawnPillagerOutpost;
 	public String villageType;
 	public boolean spawnWoodlandMansion;
+	public boolean spawnJungleTemple;
+	public boolean spawnDesertPyramid;
+	public boolean spawnIgloo;
 	public boolean spawnOceanMonument;
 	public boolean spawnShipwreck;
 	public String oceanRuinType;
 
 	public List<String> biomeDictionaryTypes;
+	public List<String> defaultFeatures;
 
 	public List<SpawnEntry> spawnEntries;
 
@@ -103,12 +107,16 @@ import java.util.List;
 
 		// DEFAULT VALUES
 		name = "";
+		spawnStronghold = true;
+		spawnMineshaft = true;
+		spawnPillagerOutpost = true;
 		vanillaTreeType = "Default";
 		villageType = "none";
 		oceanRuinType = "NONE";
 		biomeCategory = "NONE";
 		biomeDictionaryTypes = new ArrayList<>();
 		spawnEntries = new ArrayList<>();
+		defaultFeatures = new ArrayList<>();
 	}
 
 	public static class SpawnEntry {
@@ -124,7 +132,7 @@ import java.util.List;
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview
 				.generateBiomePreviewPicture(getModElement().getWorkspace(), airColor, grassColor, waterColor,
-						groundBlock, undergroundBlock, generateLakes, treesPerChunk, treeType, treeStem, treeBranch);
+						groundBlock, undergroundBlock, treesPerChunk, treeType, treeStem, treeBranch);
 	}
 
 }

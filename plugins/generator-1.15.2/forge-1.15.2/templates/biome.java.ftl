@@ -89,14 +89,9 @@ import net.minecraft.block.material.Material;
 
 			setRegistryName("${registryname}");
 
-			DefaultBiomeFeatures.addCarvers(this);
-			DefaultBiomeFeatures.addStructures(this);
-			DefaultBiomeFeatures.addMonsterRooms(this);
-			DefaultBiomeFeatures.addOres(this);
-
-			<#if data.generateLakes>
-			DefaultBiomeFeatures.addLakes(this);
-			</#if>
+			<#list data.defaultFeatures as defaultFeature>
+			DefaultBiomeFeatures.add${generator.map(defaultFeature, "defaultfeatures")}(this);
+			</#list>
 
 			<#if data.spawnStronghold>
 			this.addStructure(Feature.STRONGHOLD.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
@@ -118,6 +113,18 @@ import net.minecraft.block.material.Material;
 			this.addStructure(Feature.WOODLAND_MANSION.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
 			</#if>
 
+			<#if data.spawnJungleTemple>
+			this.addStructure(Feature.JUNGLE_TEMPLE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			</#if>
+
+			<#if data.spawnDesertPyramid>
+			this.addStructure(Feature.DESERT_PYRAMID.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			</#if>
+
+			<#if data.spawnIgloo>
+			this.addStructure(Feature.IGLOO.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			</#if>
+
 			<#if data.spawnOceanMonument>
 			this.addStructure(Feature.OCEAN_MONUMENT.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
 			</#if>
@@ -135,7 +142,12 @@ import net.minecraft.block.material.Material;
 			</#if>
 
 			<#if (data.grassPerChunk > 0)>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.GRASS_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(${data.grassPerChunk}))));</#if>
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.GRASS_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(${data.grassPerChunk}))));
+			</#if>
+
+			<#if (data.seagrassPerChunk > 0)>
+			this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.SEAGRASS.withConfiguration(new SeaGrassConfig(${data.seagrassPerChunk}, 0.3D)).withPlacement(Placement.TOP_SOLID_HEIGHTMAP.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
+            </#if>
 
 			<#if (data.mushroomsPerChunk > 0)>
       		addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.BROWN_MUSHROOM_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(${data.mushroomsPerChunk}))));

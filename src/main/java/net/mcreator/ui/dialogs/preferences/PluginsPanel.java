@@ -108,17 +108,22 @@ class PluginsPanel {
 
 			ComponentUtils.deriveFont(this, 12);
 
-			if((value.getInfo().getAuthor() != null) &&
-					(value.getInfo().getName() != null) &&
-					(value.getInfo().getCredits() == "None")){
+			if ((value.getInfo().getAuthor() != null) && (value.getInfo().getName() != null) && (value.getInfo()
+					.getCredits().equals("None"))) {
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion() + ", author: " + value.getInfo().getAuthor());
-			}else if (value.getInfo().getAuthor() != null)
+						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", loaded: " + (value
+						.isLoaded() ? "<html><font color=#a7ed1a>yes</font>" : "<html><font color=#f24122>no</font>"));
+			} else if (value.getInfo().getAuthor() != null)
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", credit: " + value.getInfo().getCredits());
+						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", credit: " + value
+						.getInfo().getCredits() + ", loaded: " + (value.isLoaded() ?
+						"<html><font color=#a7ed1a>yes</font>" :
+						"<html><font color=#f24122>no</font>"));
 			else
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion());
+						.getPluginVersion() + ", loaded: " + (value.isLoaded() ?
+						"<html><font color=#a7ed1a>yes</font>" :
+						"<html><font color=#f24122>no</font>"));
 
 			setToolTipText(value.getInfo().getDescription());
 			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));

@@ -57,11 +57,12 @@ public class L10N {
 
 	public static Locale getLocale() {
 		if (locale == null) { // lazy-load locale
-			Locale suggested = Locale.getDefault();
+			// TODO: uncomment this once localizations are complete
+			/*Locale suggested = Locale.getDefault();
 			if (getSupportedLocales().contains(suggested))
 				locale = suggested;
-			else
-				locale = defaultLocale;
+			else*/
+			locale = defaultLocale;
 		}
 
 		return locale;
@@ -76,7 +77,7 @@ public class L10N {
 	}
 
 	public static void initTranslations() {
-		rb = ResourceBundle.getBundle("lang/texts", Locale.getDefault(), PluginLoader.INSTANCE, new UTF8Control());
+		rb = ResourceBundle.getBundle("lang/texts", getLocale(), PluginLoader.INSTANCE, new UTF8Control());
 	}
 
 	public static String t(String key, Object... parameters) {

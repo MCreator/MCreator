@@ -27,7 +27,6 @@
  # exception.
 -->
 
-
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
 <#include "mcitems.ftl">
@@ -305,41 +304,29 @@ import net.minecraft.block.material.Material;
     	}
         </#if>
 
-		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			<#if data.plantType == "double">
-            if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
-                return Collections.emptyList();
+        <#if !data.useLootTableForDrops>
+		    <#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
+		    @Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+			    List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+			    if(!dropsOriginal.isEmpty())
+				    return dropsOriginal;
+			    return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
+		    }
+		    <#elseif data.customDrop?? && !data.customDrop.isEmpty()>
+		    @Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+			    List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+			    if(!dropsOriginal.isEmpty())
+				    return dropsOriginal;
+			    return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
+		    }
+		    <#else>
+		    @Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+			    List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+			    if(!dropsOriginal.isEmpty())
+				    return dropsOriginal;
+			    return Collections.singletonList(new ItemStack(this, 1));
+		    }
             </#if>
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
-		}
-		<#elseif data.customDrop?? && !data.customDrop.isEmpty()>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			<#if data.plantType == "double">
-            if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
-                return Collections.emptyList();
-            </#if>
-
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
-		}
-		<#else>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			<#if data.plantType == "double">
-            if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
-            	return Collections.emptyList();
-            </#if>
-
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, 1));
-		}
         </#if>
 
 		@Override public PlantType getPlantType(IBlockReader world, BlockPos pos) {
