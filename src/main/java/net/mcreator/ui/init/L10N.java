@@ -77,7 +77,7 @@ public class L10N {
 	}
 
 	public static void initTranslations() {
-		rb = ResourceBundle.getBundle("lang/texts", Locale.getDefault(), PluginLoader.INSTANCE, new UTF8Control());
+		rb = ResourceBundle.getBundle("lang/texts", getLocale(), PluginLoader.INSTANCE, new UTF8Control());
 	}
 
 	public static String t(String key, Object... parameters) {

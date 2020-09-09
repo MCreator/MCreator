@@ -1,0 +1,1 @@
+Higher the number the stronger the damage the bullet deals to the entity hit.

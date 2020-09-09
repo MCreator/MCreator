@@ -268,27 +268,29 @@ import net.minecraft.block.material.Material;
     	}
         </#if>
 
-		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
-		}
-		<#elseif data.customDrop?? && !data.customDrop.isEmpty()>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
-		}
-		<#else>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, 1));
-		}
+        <#if !data.useLootTableForDrops>
+		    <#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
+		    @Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+			    List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+			    if(!dropsOriginal.isEmpty())
+				    return dropsOriginal;
+			    return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
+		    }
+		    <#elseif data.customDrop?? && !data.customDrop.isEmpty()>
+		    @Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+			    List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+			    if(!dropsOriginal.isEmpty())
+				    return dropsOriginal;
+			    return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
+		    }
+		    <#else>
+		    @Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+			    List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+			    if(!dropsOriginal.isEmpty())
+				    return dropsOriginal;
+			    return Collections.singletonList(new ItemStack(this, 1));
+		    }
+            </#if>
         </#if>
 
 		@Override public PlantType getPlantType(IBlockReader world, BlockPos pos) {
