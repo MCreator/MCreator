@@ -1343,6 +1343,12 @@ public class TestWorkspaceDataProvider {
 								.getRandomItem(random, ElementUtil.loadAllEnchantments(modElement.getWorkspace()))));
 			}
 			return enchantment;
+		case PAINTING:
+			Painting painting = new Painting(modElement);
+			painting.texture = "test.png";
+			painting.width = 16;
+			painting.height = 16;
+			return painting;
 		default:
 			return null;
 		}
