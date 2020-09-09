@@ -8,8 +8,6 @@ import org.bukkit.entity.Entity;
 
 public class ${name} implements CommandExecutor
 {
-
-	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
 		if(label.equalsIgnoreCase("${data.commandName}"))
