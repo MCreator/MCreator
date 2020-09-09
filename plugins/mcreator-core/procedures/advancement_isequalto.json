@@ -9,6 +9,12 @@
     "toolbox_id": "worldmanagement",
     "fields": [
       "achievement"
+    ],
+    "dependencies": [
+      {
+        "name": "advancement",
+        "type": "advancement"
+      }
     ]
   }
 }

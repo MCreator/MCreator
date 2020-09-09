@@ -1,2 +1,2 @@
 ((((MinecraftServer) ((ServerPlayerEntity) entity).server).getAdvancementManager()
-				.getAdvancement(new ResourceLocation("${generator.map(field$achievement, "achievements")}"))) == ((dependencies.get("advancement"))))
+				.getAdvancement(new ResourceLocation("${generator.map(field$achievement, "achievements")}"))) == ((advancement)))
