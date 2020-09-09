@@ -87,10 +87,9 @@ package ${package}.world.biome;
 
 			setRegistryName("${registryname}");
 
-			DefaultBiomeFeatures.addCarvers(this);
-			DefaultBiomeFeatures.addStructures(this);
-			DefaultBiomeFeatures.addMonsterRooms(this);
-			DefaultBiomeFeatures.addOres(this);
+			<#list data.defaultFeatures as defaultFeature>
+			DefaultBiomeFeatures.add${generator.map(defaultFeature, "defaultfeatures")}(this);
+			</#list>
 
 			<#if data.generateLakes>
 			DefaultBiomeFeatures.addLakes(this);
@@ -116,6 +115,18 @@ package ${package}.world.biome;
 			this.addStructure(Feature.WOODLAND_MANSION, IFeatureConfig.NO_FEATURE_CONFIG);
 			</#if>
 
+			<#if data.spawnJungleTemple>
+			this.addStructure(Feature.JUNGLE_TEMPLE, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnDesertPyramid>
+			this.addStructure(Feature.DESERT_PYRAMID, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnIgloo>
+			this.addStructure(Feature.IGLOO, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
 			<#if data.spawnOceanMonument>
 			this.addStructure(Feature.OCEAN_MONUMENT, IFeatureConfig.NO_FEATURE_CONFIG);
 			</#if>
@@ -134,6 +145,10 @@ package ${package}.world.biome;
 
 			<#if (data.grassPerChunk > 0)>
 			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.GRASS, new GrassFeatureConfig(Blocks.GRASS.getDefaultState()), Placement.COUNT_HEIGHTMAP_DOUBLE, new FrequencyConfig(${data.grassPerChunk})));
+			</#if>
+
+			<#if (data.seagrassPerChunk > 0)>
+			this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(Feature.SEAGRASS, new SeaGrassConfig(${data.seagrassPerChunk}, 0.3D), Placement.TOP_SOLID_HEIGHTMAP, IPlacementConfig.NO_PLACEMENT_CONFIG));
 			</#if>
 
 			<#if (data.mushroomsPerChunk > 0)>

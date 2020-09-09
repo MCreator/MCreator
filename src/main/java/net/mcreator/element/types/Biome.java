@@ -57,6 +57,7 @@ import java.util.List;
 
 	public int treesPerChunk;
 	public int grassPerChunk;
+	public int seagrassPerChunk;
 	public int flowersPerChunk;
 	public int mushroomsPerChunk;
 	public int bigMushroomsChunk;
@@ -82,11 +83,15 @@ import java.util.List;
 	public boolean spawnPillagerOutpost;
 	public String villageType;
 	public boolean spawnWoodlandMansion;
+	public boolean spawnJungleTemple;
+	public boolean spawnDesertPyramid;
+	public boolean spawnIgloo;
 	public boolean spawnOceanMonument;
 	public boolean spawnShipwreck;
 	public String oceanRuinType;
 
 	public List<String> biomeDictionaryTypes;
+	public List<String> defaultFeatures;
 
 	public List<SpawnEntry> spawnEntries;
 
@@ -109,6 +114,7 @@ import java.util.List;
 		biomeCategory = "NONE";
 		biomeDictionaryTypes = new ArrayList<>();
 		spawnEntries = new ArrayList<>();
+		defaultFeatures = new ArrayList<>();
 	}
 
 	public static class SpawnEntry {
