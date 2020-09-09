@@ -517,6 +517,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			dyn.setIcon(TiledImageCache.plantGrowingYes);
 		else
 			dyn.setIcon(TiledImageCache.plantGrowingNo);
+
+		useLootTableForDrops.addActionListener(e -> {
+			customDrop.setEnabled(!useLootTableForDrops.isSelected());
+			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
+		});
 	}
 
 	@Override public Plant getElementFromGUI() {

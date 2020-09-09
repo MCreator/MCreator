@@ -268,7 +268,7 @@ package ${package}.block;
 		}
 		</#if>
 
-        <#if data.useLootTableForDrops>
+        <#if !data.useLootTableForDrops>
 		    <#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
 		    @Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 			    List<ItemStack> dropsOriginal = super.getDrops(state, builder);
