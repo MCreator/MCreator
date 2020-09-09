@@ -34,7 +34,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
-import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
@@ -253,7 +252,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		subpane2.add(damageOnCrafting);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/recipe_remainder"), new JLabel(
-				"<html>Recipe remainder<br><small>Make sure to enable \"stay in crafting grid\"")));
+				"<html>Recipe remainder<br><small>Make sure to enable \"stay in crafting grid\". Leave empty to use current item.")));
 		subpane2.add(PanelUtils.centerInPanel(recipeRemainder));
 
 		subpane2.add(HelpUtils

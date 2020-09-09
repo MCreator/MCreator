@@ -883,9 +883,11 @@ public class TestWorkspaceDataProvider {
 			item.destroyAnyBlock = _true;
 			item.inventorySize = 10;
 			item.inventoryStackSize = 42;
-			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
-					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-							.getName());
+			if (!emptyLists) {
+				item.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+								.getName());
+			}
 			item.stayInGridWhenCrafting = _true;
 			item.damageOnCrafting = _true;
 			item.hasGlow = _true;
