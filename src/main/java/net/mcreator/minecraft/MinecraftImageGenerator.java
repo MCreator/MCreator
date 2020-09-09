@@ -690,7 +690,7 @@ public class MinecraftImageGenerator {
 		 * @return Returns generated image.
 		 */
 		public static BufferedImage generateBiomePreviewPicture(Workspace workspace, Color airColor, Color grassColor,
-				Color waterColor, MItemBlock groundBlock, MItemBlock undergroundBlock, boolean lakes, int treesPerChunk,
+				Color waterColor, MItemBlock groundBlock, MItemBlock undergroundBlock, int treesPerChunk,
 				int treeType, MItemBlock treeStem, MItemBlock treeBranch) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
@@ -729,18 +729,8 @@ public class MinecraftImageGenerator {
 
 			//draw grass
 			graphics2D.setColor(topColor);
-			if (lakes) {
-				graphics2D.fillRect(0, 18, 5, 1);
-				graphics2D.fillRect(13, 18, 15, 1);
-				if (waterColor != null)
-					graphics2D.setColor(waterColor);
-				else
-					graphics2D.setColor(new Color(0x2559CB));
-				graphics2D.fillRect(3, 18, 10, 2);
-				graphics2D.fillRect(5, 20, 6, 1);
-			} else {
-				graphics2D.fillRect(0, 18, 28, 1);
-			}
+
+			graphics2D.fillRect(0, 18, 28, 1);
 
 			//draw trees: 0 = vanilla, 1 = modded
 			if (treesPerChunk > 0) {

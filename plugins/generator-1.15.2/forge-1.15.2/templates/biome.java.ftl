@@ -93,10 +93,6 @@ import net.minecraft.block.material.Material;
 			DefaultBiomeFeatures.add${generator.map(defaultFeature, "defaultfeatures")}(this);
 			</#list>
 
-			<#if data.generateLakes>
-			DefaultBiomeFeatures.addLakes(this);
-			</#if>
-
 			<#if data.spawnStronghold>
 			this.addStructure(Feature.STRONGHOLD.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
 			</#if>
