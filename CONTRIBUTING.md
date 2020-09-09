@@ -4,7 +4,7 @@ by [donating](https://mcreator.net/donate).
 
 # Tips
 
-* *Before contributing brand new features into MCreator, open an issue for the feature and tell you would like to work on this, so we can discuss the suggested 
+* *Before contributing a brand new feature into MCreator, open an issue for the feature and tell you would like to work on this, so we can discuss the suggested 
 changes, and the way how to implement them to fit the existing code base and UX flow as good as possible.*
 * _Check existing issues and consider fixing one before considering adding a brand new feature not discussed before_
 * A good starting point into contributing is fixing or adding one of the features or bug reports from the issue tracker
