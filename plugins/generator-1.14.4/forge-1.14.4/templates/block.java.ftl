@@ -127,6 +127,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					</#if>
 			);
 
+            <#if data.rotationMode != 0 || data.isWaterloggable>
 			this.setDefaultState(this.stateContainer.getBaseState()
                                      <#if data.rotationMode == 1 || data.rotationMode == 3>
                                      .with(FACING, Direction.NORTH)
@@ -139,6 +140,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
                                      .with(WATERLOGGED, false)
                                      </#if>
             );
+			</#if>
 
 			setRegistryName("${registryname}");
 		}
