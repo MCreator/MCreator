@@ -343,7 +343,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         </#if>
 
         <#if data.isWaterloggable>
-            <#if data.rotationMode ==0>
+            <#if data.rotationMode == 0>
             @Override
             public BlockState getStateForPlacement(BlockItemUseContext context) {
             boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
