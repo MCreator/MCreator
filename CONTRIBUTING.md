@@ -4,15 +4,15 @@ by [donating](https://mcreator.net/donate).
 
 # Tips
 
+* *Before contributing brand new features into MCreator, open an issue for the feature and tell you would like to work on this, so we can discuss the suggested 
+changes, and the way how to implement them to fit the existing code base and UX flow as good as possible.*
+* _Check existing issues and consider fixing one before considering adding a brand new feature not discussed before_
 * A good starting point into contributing is fixing or adding one of the features or bug reports from the issue tracker
-* Before contributing new features into MCreator, consider opening a pull request draft, so we can discuss the suggested 
-changes, and the way how to implement them to fit the existing code base and UX flow as good as possible.
 * Try to follow existing code style, naming conventions, and UI/UX philosophy as much as possible
 * When committing, make sure to reference the issue by #ID in the commit message to link commits to the issue
 * Reference potential issues the pull request relates to when an issue(s) related to the pull request exists
 * Make sure to update files with license headers
 * Consider checking and testing existing PRs and confirm they work as designed to help us avoid bugs (try testing different MC versions, generators, also importing old workspaces, ...)
-* _Check existing issues and consider fixing one before considering adding a brand new feature not discussed before_
 * Be human, we are humans too, keep the community positive when colaborating with contributors and maintainers :)
 * Maintainers of this project do this for hobby. There might be cases of slow responses, or even inability to review or merge PR due to its scope and our (time) inability to review it properly or assist with changes needed to make it acceptable for merge.
 
