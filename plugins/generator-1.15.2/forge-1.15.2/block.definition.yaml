@@ -31,6 +31,11 @@ templates:
     writer: json
     variables: "model=cross;txname=cross"
     name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block.json.ftl
+    condition: "renderType() #= 13"
+    writer: json
+    variables: "model=crop;txname=crop"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block_cmodel.json.ftl
     condition: "renderType() #= 2"
     writer: json

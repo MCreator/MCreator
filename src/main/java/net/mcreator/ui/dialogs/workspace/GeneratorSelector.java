@@ -110,6 +110,7 @@ public class GeneratorSelector {
 			JPanel supportedElements = new JPanel(new GridLayout(-1, 6, 7, 3));
 
 			addStatsBar("Achievements", "achievements", supportedElements, stats);
+			addStatsBar("Action Animations", "actionanimations", supportedElements, stats);
 			addStatsBar("Biomes", "biomes", supportedElements, stats);
 			addStatsBar("Blocks and items", "blocksitems", supportedElements, stats);
 			addStatsBar("Creative tabs", "tabs", supportedElements, stats);
@@ -127,6 +128,7 @@ public class GeneratorSelector {
 			addStatsBar("Potions", "potions", supportedElements, stats);
 			addStatsBar("Sounds", "sounds", supportedElements, stats);
 			addStatsBar("Step sounds", "stepsounds", supportedElements, stats);
+
 
 			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
 				addStatsBar("Biome dictionary", "biomedictionarytypes", supportedElements, stats);
