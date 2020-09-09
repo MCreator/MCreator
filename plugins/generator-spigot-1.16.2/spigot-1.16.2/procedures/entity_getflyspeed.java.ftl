@@ -1,1 +1,1 @@
-(player.getFlySpeed())
+(entity.getFlySpeed())

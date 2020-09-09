@@ -1,0 +1,63 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "title",
+      "check": "String"
+    },
+    {
+      "type": "input_value",
+      "name": "subtitle",
+      "check": "String"
+    },
+    {
+      "type": "input_value",
+      "name": "fadein",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "stay",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "fadeout",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": "%{BKY_TEXTS_HUE}",
+  "mcreator": {
+    "toolbox_id": "spigot",
+    "toolbox_init": [
+      "<value name=\"title\"><block type=\"text\"><field name=\"TEXT\">title</field></block></value>",
+      "<value name=\"subtitle\"><block type=\"text\"><field name=\"TEXT\">subtitle</field></block></value>",
+      "<value name=\"fadein\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
+      "<value name=\"stay\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
+      "<value name=\"fadeout\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "inputs": [
+      "title",
+      "subtitle",
+      "fadein",
+      "stay",
+      "fadeout",
+      "entity"
+    ],
+    "dependencies": [
+      {
+        "name": "entity",
+        "type": "entity"
+      }
+    ]
+  }
+}

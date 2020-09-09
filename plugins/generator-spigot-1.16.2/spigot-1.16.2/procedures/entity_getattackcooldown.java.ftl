@@ -1,1 +1,1 @@
-(player.getAttackCooldown())
+(entity.getAttackCooldown())

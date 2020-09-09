@@ -1,1 +1,1 @@
-(player.getAllowFlight())
+(entity.getAllowFlight())

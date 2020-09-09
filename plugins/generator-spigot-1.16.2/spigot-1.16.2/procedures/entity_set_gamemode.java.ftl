@@ -1,1 +1,1 @@
-if(player instanceof org.bukkit.entity.Player) player.setGameMode(GameMode.${generator.map(field$gamemode, "gamemodes")})
+${input$entity} instanceof org.bukkit.entity.Player) ? ((org.bukkit.entity.Player)${input$entity}.setGameMode(GameMode.${generator.map(field$gamemode, "gamemodes")})
