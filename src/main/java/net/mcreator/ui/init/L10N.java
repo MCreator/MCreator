@@ -41,6 +41,7 @@ public class L10N {
 	private static final Locale defaultLocale = new Locale("en", "US");
 
 	private static ResourceBundle rb;
+	private static ResourceBundle rb_en;
 
 	private static Locale locale = null;
 	private static Set<Locale> supportedLocales = null;
@@ -78,6 +79,8 @@ public class L10N {
 
 	public static void initTranslations() {
 		rb = ResourceBundle.getBundle("lang/texts", getLocale(), PluginLoader.INSTANCE, new UTF8Control());
+		rb_en = ResourceBundle
+				.getBundle("lang/texts", new Locale("en", "US"), PluginLoader.INSTANCE, new UTF8Control());
 	}
 
 	public static String t(String key, Object... parameters) {
@@ -86,6 +89,16 @@ public class L10N {
 
 		if (rb.containsKey(key))
 			return MessageFormat.format(rb.getString(key), parameters);
+		else
+			return null;
+	}
+
+	public static String t_en(String key, Object... parameters) {
+		if (key == null)
+			return null;
+
+		if (rb_en.containsKey(key))
+			return MessageFormat.format(rb_en.getString(key), parameters);
 		else
 			return null;
 	}
