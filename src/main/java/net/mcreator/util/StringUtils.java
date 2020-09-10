@@ -24,6 +24,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtils {
 
@@ -79,6 +81,17 @@ public class StringUtils {
 			}
 		}
 		return retval;
+	}
+
+	public static int countRegexMatches(String where, String regex) {
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(where);
+
+		int count = 0;
+		while (matcher.find())
+			count++;
+
+		return count;
 	}
 
 }

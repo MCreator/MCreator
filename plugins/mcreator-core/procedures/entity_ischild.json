@@ -4,16 +4,10 @@
       "type": "input_value",
       "name": "entity",
       "check": "Entity"
-    },
-    {
-      "type": "field_image",
-      "src": "./res/null.png",
-      "width": 8,
-      "height": 24
     }
   ],
-  "output": "Entity",
-  "colour": 195,
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
     "toolbox_id": "entitymanagement",
     "toolbox_init": [
