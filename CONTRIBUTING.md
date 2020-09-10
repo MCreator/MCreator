@@ -43,7 +43,7 @@ Some pull request tips and standards:
 
 # Localization (translation of the UI)
 
-If you would like to contribute to the translations, make Crowdin user account and visit https://crowdin.com/project/mcreator. If you would like a brand new language added, check #15 and leave a comment on this issue.
+If you would like to contribute to the translations, make Crowdin user account and visit https://crowdin.com/project/mcreator. If you would like a brand new language added, check [issue #15](https://github.com/MCreator/MCreator/issues/15) and leave a comment on this issue.
 
 # CLA
 
