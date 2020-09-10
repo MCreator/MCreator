@@ -744,6 +744,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		canProvidePower.setOpaque(false);
 		isLadder.setOpaque(false);
 
+		blockBase.addActionListener(e -> {
+				isWaterloggable.setEnabled(blockBase.getSelectedIndex() == 0);
+				isWaterloggable.setSelected(false);
+		});
+
 		useLootTableForDrops.addActionListener(e -> {
 			customDrop.setEnabled(!useLootTableForDrops.isSelected());
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
@@ -1294,6 +1299,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 
 		hasGravity.setEnabled(!isWaterloggable.isSelected());
+
+		isWaterloggable.setEnabled(blockBase.getSelectedIndex() == 0);
 	}
 
 	@Override public Block getElementFromGUI() {
