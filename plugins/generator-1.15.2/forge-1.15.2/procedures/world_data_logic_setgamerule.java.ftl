@@ -1,0 +1,1 @@
+world.getWorld().getGameRules().get(${generator.map(field$gamerulesboolean, "gamerulesboolean")}).set(${input$gameruleValue}, world.getWorld().getServer());
