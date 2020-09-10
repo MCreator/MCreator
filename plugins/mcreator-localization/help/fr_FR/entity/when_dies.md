@@ -1,0 +1,1 @@
+This trigger triggers the procedure when the entity dies.

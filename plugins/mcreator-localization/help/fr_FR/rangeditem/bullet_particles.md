@@ -1,0 +1,1 @@
+Check this parameter if you want particles to be emitted in mid-air.

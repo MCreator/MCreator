@@ -1,0 +1,1 @@
+This trigger triggers the procedure when a player right-clicks on this entity.
