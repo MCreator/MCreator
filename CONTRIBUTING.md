@@ -4,9 +4,10 @@ by [donating](https://mcreator.net/donate).
 
 # Tips
 
-* *Before contributing a brand new feature into MCreator, open an issue for the feature and tell you would like to work on this, so we can discuss the suggested 
-changes, and the way how to implement them to fit the existing code base and UX flow as good as possible.*
-* _Check existing issues and consider fixing one before considering adding a brand new feature not discussed before_
+* **Before contributing a brand new feature into MCreator, open an issue for the feature and tell you would like to work on this, so we can discuss and confirm the suggested 
+changes, and the way how to implement them to fit the existing code base and UX flow as good as possible.**
+* **Check existing issues and consider fixing one before considering adding a brand new feature not discussed before**
+* **Prioritize bug fixes before new features, better stable interface with less features than buggy interface clogged with features**
 * A good starting point into contributing is fixing or adding one of the features or bug reports from the issue tracker
 * Try to follow existing code style, naming conventions, and UI/UX philosophy as much as possible
 * When committing, make sure to reference the issue by #ID in the commit message to link commits to the issue
@@ -34,14 +35,15 @@ most of the users might be rejected too, or suggested to be distributed in a plu
 If maintainers are busy, it can take a few days (or more) to properly review your PR so please be patient ;)
 
 Some pull request tips and standards:
-* Please separate different features in different pull requests
+* **Please separate different features in different pull requests**
+* **Avoid big PRs.** They will be likely take much more time to review. Too big PRs might not be accepted due to amount of code reviewing and testing needed. Similar rule applies to PRs that significantly change core implementation.
 * If possible, prepare a changelog of your pull request that is ready to be used in the final MCreator changelog
 * When adding features to generator, make sure to cover all generators currently supported
 * Add tests for features you added with the PR, if new fields were added to mod elements, update TestWorkspaceDataProvider
 
-# Localization (translation)
+# Localization (translation of the UI)
 
-If you would like to contribute to the translations, make Crowdin user account and visit https://crowdin.com/project/mcreator. If you would like a brand new language added, open an issue or contact us otherwise and we will add it to the list of languages.
+If you would like to contribute to the translations, make Crowdin user account and visit https://crowdin.com/project/mcreator. If you would like a brand new language added, check #15 and leave a comment on this issue.
 
 # CLA
 
