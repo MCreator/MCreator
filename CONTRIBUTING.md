@@ -41,9 +41,9 @@ Some pull request tips and standards:
 * When adding features to generator, make sure to cover all generators currently supported
 * Add tests for features you added with the PR, if new fields were added to mod elements, update TestWorkspaceDataProvider
 
-# Localization (translation)
+# Localization (translation of the UI)
 
-If you would like to contribute to the translations, make Crowdin user account and visit https://crowdin.com/project/mcreator. If you would like a brand new language added, open an issue or contact us otherwise and we will add it to the list of languages.
+If you would like to contribute to the translations, make Crowdin user account and visit https://crowdin.com/project/mcreator. If you would like a brand new language added, check #15 and leave a comment on this issue.
 
 # CLA
 
