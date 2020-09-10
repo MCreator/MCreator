@@ -12,6 +12,6 @@ if (!world.isRemote()) {
 					server,
 					null
 			),
-			String.format("gamerule %s %d", (${generator.map(field$gamerulesnumber, "gamerulesnumber")}).getName(), ${input$gameruleValue})
+			String.format("gamerule %s %d", (${generator.map(field$gamerulesnumber, "gamerulesnumber")}).toString(), ${input$gameruleValue})
 	);
 }
