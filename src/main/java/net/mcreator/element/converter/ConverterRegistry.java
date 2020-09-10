@@ -22,7 +22,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.fv10.BiomeSpawnListConverter;
 import net.mcreator.element.converter.fv11.GUICoordinateConverter;
 import net.mcreator.element.converter.fv11.OverlayCoordinateConverter;
-import net.mcreator.element.converter.fv12.BiomeDefFeaturesConverter;
+import net.mcreator.element.converter.fv12.BiomeDefaultFeaturesConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -42,7 +42,7 @@ public class ConverterRegistry {
 				new ProcedureGlobalTriggerFixer()));
 		put(ModElementType.BIOME, Collections.singletonList(new BiomeSpawnListConverter()));
 		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
-		put(ModElementType.BIOME, Collections.singletonList(new BiomeDefFeaturesConverter()));
+		put(ModElementType.BIOME, Collections.singletonList(new BiomeDefaultFeaturesConverter()));
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType modElementType) {

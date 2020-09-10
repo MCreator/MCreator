@@ -27,19 +27,23 @@ import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class BiomeDefFeaturesConverter implements IConverter {
-	private static final Logger LOG = LogManager.getLogger(BiomeDefFeaturesConverter.class);
+public class BiomeDefaultFeaturesConverter implements IConverter {
+	private static final Logger LOG = LogManager.getLogger(BiomeDefaultFeaturesConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Biome biome = (Biome)input;
+		Biome biome = (Biome) input;
 
-		try{
+		try {
 			biome.defaultFeatures.add("Caves");
 			biome.defaultFeatures.add("MonsterRooms");
 			biome.defaultFeatures.add("Structures");
 			biome.defaultFeatures.add("Ores");
-			if(jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("generateLakes") != null){
+
+			biome.foliageColor = biome.grassColor;
+			biome.waterFogColor = biome.waterColor;
+
+			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("generateLakes") != null) {
 				biome.defaultFeatures.add("Lakes");
 			}
 			biome.name = StringUtils.machineToReadableName(input.getModElement().getName());
