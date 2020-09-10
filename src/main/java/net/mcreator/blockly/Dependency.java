@@ -80,7 +80,7 @@ public class Dependency implements Comparable<Dependency> {
 		case "direction":
 			return new Color(0x997360).brighter();
 		case "advancement":
-			return new Color(0xffa500).brighter();
+			return new Color(0x68712E).brighter();
 		default:
 			return Color.white;
 		}
