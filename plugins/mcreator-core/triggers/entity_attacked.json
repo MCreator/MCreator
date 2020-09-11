@@ -27,6 +27,10 @@
     {
       "name": "amount",
       "type": "number"
+    },
+    {
+      "name": "projectileentity",
+      "type": "projectileentity"
     }
   ]
 }

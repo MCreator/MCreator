@@ -704,3 +704,9 @@ Blockly.Extensions.register('dimension_custom_list_provider',
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("dimension_custom"))), 'dimension');
     });
+
+Blockly.Extensions.register('projectiles_list_provider',
+    function () {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArray(javabridge.getListOf("projectiles"))), 'projectiles');
+    });

@@ -1,0 +1,1 @@
+(((projectileentity.getEntity() instanceof ${generator.map(field$projectiles, "projectiles")}) && (projectileentity != null))?((${generator.map(field$projectiles, "projectiles")}) projectileentity).getMotion().distanceTo(Vec3d.ZERO):0)

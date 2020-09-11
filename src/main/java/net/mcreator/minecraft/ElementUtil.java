@@ -234,4 +234,8 @@ public class ElementUtil {
 				.map(DataListEntry.Custom::new).collect(Collectors.toList());
 	}
 
+	public static String[] getAllProjectiles() {
+		return DataListLoader.loadDataList("projectiles").stream().map(DataListEntry::getName).toArray(String[]::new);
+	}
+
 }

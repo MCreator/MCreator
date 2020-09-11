@@ -2,6 +2,7 @@
 	if(event!=null&&event.getEntity()!=null){
 		Entity entity=event.getEntity();
 		Entity sourceentity=event.getSource().getTrueSource();
+		Entity projectileentity=event.getSource().getImmediateSource();
 		double i=entity.posX;
 		double j=entity.posY;
 		double k=entity.posZ;
@@ -15,6 +16,7 @@
 		dependencies.put("world",world);
 		dependencies.put("entity",entity);
 		dependencies.put("sourceentity",sourceentity);
+		dependencies.put("projectileentity",projectileentity);
 		dependencies.put("event",event);
 		this.executeProcedure(dependencies);
 	}

@@ -1,0 +1,20 @@
+{
+  "output": "Number",
+  "inputsInline": true,
+  "colour": "%{BKY_MATH_HUE}",
+  "extensions": [
+    "projectiles_list_provider"
+  ],
+  "mcreator": {
+    "toolbox_id": "entitymanagement",
+    "fields": [
+      "projectiles"
+    ],
+    "dependencies": [
+      {
+        "name": "projectileentity",
+        "type": "projectileentity"
+      }
+    ]
+  }
+}

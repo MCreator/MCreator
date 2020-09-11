@@ -8,3 +8,4 @@ string: String
 boolean: boolean
 direction: Direction
 advancement: Advancement
+projectileentity: Entity
