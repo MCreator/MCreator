@@ -47,6 +47,7 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,6 +80,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox stayInGridWhenCrafting = new JCheckBox("Check to enable");
 	private final JCheckBox damageOnCrafting = new JCheckBox("Check to enable");
 	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
+	private ProcedureSelector glowCondition;
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
@@ -134,6 +136,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				"When entity swings item",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+				"Does Item Glow", VariableElementType.LOGIC,
+				Dependency.fromString("itemstack:itemstack"));
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -165,19 +170,27 @@ public class ItemGUI extends ModElementGUI<Item> {
 		destal3.add("West", PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(texture, "Item texture")));
 		destal2.add("North", destal3);
 
-		JPanel destal = new JPanel(new GridLayout(2, 2, 15, 15));
+		JPanel destal = new JPanel(new GridLayout(1, 2, 15, 15));
 		destal.setOpaque(false);
+		JPanel destal1 = new JPanel(new GridLayout(1, 2, 15, 15));
+		destal1.setOpaque(false);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
 				"<html>Special information about the item:<br><small>Separate entries with comma, to use comma in description use \\,")));
 		destal.add(specialInfo);
 
 		hasGlow.setOpaque(false);
-		destal.add(
+
+		hasGlow.setSelected(false);
+		destal1.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Has glowing effect?")));
-		destal.add(hasGlow);
+		destal1.add(PanelUtils.join(FlowLayout.LEFT, hasGlow, glowCondition));
+
+		hasGlow.addActionListener(e -> updateGlowElements());
 
 		destal2.add("Center", PanelUtils.centerInPanel(destal));
+
+		destal2.add("South", PanelUtils.centerInPanel(destal1));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
 
@@ -325,6 +338,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		}
 	}
 
+	private void updateGlowElements() {
+		glowCondition.setEnabled(hasGlow.isSelected());
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onRightClickedInAir.refreshListKeepSelected();
@@ -335,6 +352,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onItemInUseTick.refreshListKeepSelected();
 		onStoppedUsing.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
+		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
@@ -381,11 +399,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 		stayInGridWhenCrafting.setSelected(item.stayInGridWhenCrafting);
 		damageOnCrafting.setSelected(item.damageOnCrafting);
 		hasGlow.setSelected(item.hasGlow);
+		glowCondition.setSelectedProcedure(item.glowCondition);
 		damageVsEntity.setValue(item.damageVsEntity);
 		enableMeleeDamage.setSelected(item.enableMeleeDamage);
 		guiBoundTo.setSelectedItem(item.guiBoundTo);
 		inventorySize.setValue(item.inventorySize);
 		inventoryStackSize.setValue(item.inventoryStackSize);
+
+		updateGlowElements();
 
 		Model model = item.getItemModel();
 		if (model != null)
@@ -406,6 +427,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		item.damageOnCrafting = damageOnCrafting.isSelected();
 		item.hasGlow = hasGlow.isSelected();
+		item.glowCondition = glowCondition.getSelectedProcedure();
 		item.onRightClickedInAir = onRightClickedInAir.getSelectedProcedure();
 		item.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();
 		item.onCrafted = onCrafted.getSelectedProcedure();

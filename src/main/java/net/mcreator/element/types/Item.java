@@ -59,6 +59,7 @@ import java.util.Map;
 
 	public List<String> specialInfo;
 	public boolean hasGlow;
+	public Procedure glowCondition;
 
 	public String guiBoundTo;
 	public int inventorySize;
