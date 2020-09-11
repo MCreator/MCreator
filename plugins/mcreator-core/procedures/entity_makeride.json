@@ -1,0 +1,39 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "sourceentity",
+      "check": "Entity"
+    },
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "entitymanagement",
+    "toolbox_init": [
+      "<value name=\"sourceentity\"><block type=\"source_entity_from_deps\"></block></value>",
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "inputs": [
+      "sourceentity",
+      "entity"
+    ],
+    "dependencies": [
+      {
+        "name": "entity",
+        "type": "entity"
+      },
+      {
+        "name": "sourceentity",
+        "type": "entity"
+      }
+    ]
+  }
+}
