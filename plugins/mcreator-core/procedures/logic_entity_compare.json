@@ -13,7 +13,7 @@
   "output": "Boolean",
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
-    "toolbox_id": "logicoperations",
+    "toolbox_id": "entitymanagement",
     "toolbox_init": [
       "<value name=\"compareTo\"><block type=\"entity_from_deps\"></block></value>"
     ],
