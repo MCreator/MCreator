@@ -74,12 +74,12 @@ public class ExternalBlockLoader {
 					String localized_message = L10N.t("blockly.block." + toolboxBlock.machine_name);
 					String localized_message_en = L10N.t_en("blockly.block." + toolboxBlock.machine_name);
 
-					int parameters_count = net.mcreator.util.StringUtils
-							.countRegexMatches(localized_message, "%[0-9]+");
-					int parameters_count_en = net.mcreator.util.StringUtils
-							.countRegexMatches(localized_message_en, "%[0-9]+");
-
 					if (localized_message != null) {
+						int parameters_count = net.mcreator.util.StringUtils
+								.countRegexMatches(localized_message, "%[0-9]+");
+						int parameters_count_en = net.mcreator.util.StringUtils
+								.countRegexMatches(localized_message_en, "%[0-9]+");
+
 						if (parameters_count == parameters_count_en) {
 							jsonresult.add("message0", new JsonPrimitive(localized_message));
 						} else {
@@ -89,6 +89,8 @@ public class ExternalBlockLoader {
 								jsonresult.add("message0", new JsonPrimitive(localized_message_en));
 							}
 						}
+					} else if (localized_message_en != null) {
+						jsonresult.add("message0", new JsonPrimitive(localized_message_en));
 					}
 
 					String localized_tooltip = L10N.t("blockly.block." + toolboxBlock.machine_name + ".tooltip");
