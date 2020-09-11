@@ -1,1 +1,1 @@
-((projectileentity != null)?(projectileentity instanceof ${generator.map(field$projectiles, "projectiles")}):false)
+(projectileentity instanceof ${generator.map(field$projectiles, "projectiles")})
