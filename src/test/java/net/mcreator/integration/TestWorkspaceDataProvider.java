@@ -558,6 +558,8 @@ public class TestWorkspaceDataProvider {
 			mob.mobBehaviourType = "Creature";
 			mob.mobCreatureType = "ILLAGER";
 			mob.attackStrength = 4;
+			mob.attackKnockback = 1.5;
+			mob.knockbackResistance = 0.5;
 			mob.movementSpeed = 0.76;
 			mob.armorBaseValue = 0.123;
 			mob.health = 42;
