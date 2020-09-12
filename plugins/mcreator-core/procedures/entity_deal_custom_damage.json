@@ -25,7 +25,7 @@
     "toolbox_init": [
       "<value name=\"damage_number\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
-      "<value name=\"localization_text\"><block type=\"text\"><field name=\"TEXT\">radiations</field></block></value>"
+      "<value name=\"localization_text\"><block type=\"text\"><field name=\"TEXT\">custom</field></block></value>"
     ],
     "inputs": [
       "damage_number",
