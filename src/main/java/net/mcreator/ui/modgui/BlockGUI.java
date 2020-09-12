@@ -305,13 +305,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasTransparency.setEnabled(true);
 			material.setEnabled(true);
 			connectedSides.setEnabled(true);
+			isWaterloggable.setEnabled(true);
 
 			if (blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Pane")) {
 				connectedSides.setEnabled(false);
 				renderType.setEnabled(false);
+				isWaterloggable.setEnabled(false);
 
 				connectedSides.setSelected(false);
 				renderType.setSelectedItem(singleTexture);
+				isWaterloggable.setSelected(false);
 
 				if (!isEditingMode()) {
 					transparencyType.setSelectedItem("CUTOUT_MIPPED");
@@ -322,12 +325,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 				rotationMode.setEnabled(false);
 				hasTransparency.setEnabled(false);
 				transparencyType.setEnabled(false);
+				isWaterloggable.setSelected(false);
 
 				material.setSelectedItem("LEAVES");
 				renderType.setSelectedItem(singleTexture);
 				rotationMode.setSelectedIndex(0);
 				hasTransparency.setSelected(false);
 				transparencyType.setSelectedItem("SOLID");
+				isWaterloggable.setEnabled(false);
 
 				if (!isEditingMode()) {
 					lightOpacity.setValue(1);
@@ -343,6 +348,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Mz.setEnabled(false);
 				hasGravity.setEnabled(false);
 				rotationMode.setEnabled(false);
+				isWaterloggable.setEnabled(false);
 
 				mx.setValue(0d);
 				my.setValue(0d);
@@ -352,6 +358,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Mz.setValue(1d);
 				hasGravity.setSelected(false);
 				rotationMode.setSelectedIndex(0);
+				isWaterloggable.setSelected(false);
 
 				if (blockBase.getSelectedItem().equals("Wall") || blockBase.getSelectedItem().equals("Fence")
 						|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem().equals("Door")
@@ -744,11 +751,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		canProvidePower.setOpaque(false);
 		isLadder.setOpaque(false);
 
-		blockBase.addActionListener(e -> {
-				isWaterloggable.setEnabled(blockBase.getSelectedIndex() == 0);
-				isWaterloggable.setSelected(false);
-		});
-
 		useLootTableForDrops.addActionListener(e -> {
 			customDrop.setEnabled(!useLootTableForDrops.isSelected());
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
@@ -756,7 +758,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		isWaterloggable.addActionListener(e -> {
 			hasGravity.setEnabled(!isWaterloggable.isSelected());
-			hasGravity.setSelected(false);
+			if (isWaterloggable.isSelected()) {
+				hasGravity.setSelected(false);
+			}
 		});
 
 		selp.setBorder(BorderFactory.createTitledBorder(
