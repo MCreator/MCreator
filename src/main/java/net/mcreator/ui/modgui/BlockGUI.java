@@ -217,7 +217,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final VTextField outSlotIDs = new VTextField(18);
 	private final VTextField inSlotIDs = new VTextField(18);
 
-	private final JTextField specialInfo = new JTextField(20);
+	private final JTextField specialInfo = new JTextField(25);
 
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page2group = new ValidationGroup();
@@ -311,10 +311,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 				connectedSides.setEnabled(false);
 				renderType.setEnabled(false);
 				isWaterloggable.setEnabled(false);
+				rotationMode.setEnabled(false);
 
 				connectedSides.setSelected(false);
 				renderType.setSelectedItem(singleTexture);
 				isWaterloggable.setSelected(false);
+				rotationMode.setSelectedIndex(0);
 
 				if (!isEditingMode()) {
 					transparencyType.setSelectedItem("CUTOUT_MIPPED");
@@ -432,6 +434,19 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destal.add(new JLabel());
 		destal.add(new JLabel());
 
+		JPanel txblock4 = new JPanel(new BorderLayout());
+		txblock4.setOpaque(false);
+		txblock4.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				"Block base (model and behaviour) and item texture", 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		txblock4.add("Center", PanelUtils.gridElements(2, 2, HelpUtils.wrapWithHelpButton(this.withEntry("block/base"),
+				new JLabel("<html>Block base:<br><small>Most blocks should leave this on default")), blockBase,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"), new JLabel(
+						"<html>Block item texture:<br><small>Optional texture for block in inventory and hand rendering")),
+				PanelUtils.centerInPanel(itemTexture)));
+
 		JPanel sbbp2 = new JPanel(new BorderLayout(1, 5));
 
 		JPanel sbbp22 = new JPanel();
@@ -452,8 +467,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		topnbot.setOpaque(false);
 
 		topnbot.add("Center", sbbp22);
+		topnbot.add("South", txblock4);
 
-		JPanel txblock3 = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+		JPanel txblock3 = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		txblock3.setOpaque(false);
 		txblock3.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -463,10 +479,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		ComponentUtils.deriveFont(specialInfo, 16);
 
 		txblock3.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
-				"<html>Special information about the block:<br><small>Separate entries with comma,<br>to use comma in description use \\,")));
+				"<html>Special information about the block:<br><small>Separate entries with comma, to use comma in description use \\,")));
 		txblock3.add(specialInfo);
-
-		topnbot.add("South", txblock3);
 
 		sbbp2.add("Center", topnbot);
 
@@ -494,7 +508,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		ComponentUtils.deriveFont(renderType, 16);
 		ComponentUtils.deriveFont(rotationMode, 16);
 
-		JPanel rent = new JPanel(new GridLayout(2, 2, 0, 2));
+		JPanel rent = new JPanel(new GridLayout(3, 2, 0, 2));
 		rent.setOpaque(false);
 
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/model"),
@@ -504,6 +518,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/rotation_mode"),
 				new JLabel("<html>Block rotation mode:<br><small>Select how this mod should rotate")));
 		rent.add(rotationMode);
+
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_waterloggable"),
+				new JLabel("<html>Is block waterloggable?:<br><small>Used by blocks with non 1x1x1 shape")));
+		rent.add(isWaterloggable);
 
 		renderType.setPreferredSize(new Dimension(320, 42));
 		rotationMode.setPreferredSize(new Dimension(320, 42));
@@ -540,30 +558,17 @@ public class BlockGUI extends ModElementGUI<Block> {
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Render type and rotation", 0, 0, getFont().deriveFont(12.0f),
+				"Render type and rotation (for blocks without base)", 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		transparencySettings.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1), "Transparency", 0,
 				0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JPanel txblock4 = new JPanel(new BorderLayout());
-		txblock4.setOpaque(false);
-		txblock4.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Block base (model and behaviour) and item texture", 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		txblock4.add("Center", PanelUtils.gridElements(2, 2, HelpUtils.wrapWithHelpButton(this.withEntry("block/base"),
-				new JLabel("<html>Block base:<br><small>Most blocks should leave this on default")), blockBase,
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"), new JLabel(
-						"<html>Block item texture:<br><small>Optional texture that will override block in inventory and hand")),
-				PanelUtils.centerInPanel(itemTexture)));
-
-		render.add(txblock4);
 		render.add(rent);
 		render.add(transparencySettings);
 		render.add(bound);
+		render.add(txblock3);
 
 		mx.addChangeListener(event -> updateParametersBasedOnBoundingBoxSize());
 		my.addChangeListener(event -> updateParametersBasedOnBoundingBoxSize());
@@ -596,7 +601,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel selp = new JPanel(new GridLayout(12, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 
-		JPanel advancedProperties = new JPanel(new GridLayout(15, 2, 0, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(14, 2, 0, 2));
 
 		hasGravity.setOpaque(false);
 		tickRandomly.setOpaque(false);
@@ -710,10 +715,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_beacon_base"),
 				new JLabel("Can this block be beacon base?")));
 		advancedProperties.add(isBeaconBase);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_waterloggable"),
-				new JLabel("<html>Is block waterloggable?:<br><small>Block must not be full for this to work and block base must be normal")));
-		advancedProperties.add(isWaterloggable);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_ladder"),
 				new JLabel("<html>Does block act like ladder?<br><small>Block must not be full for this to work")));
