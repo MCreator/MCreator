@@ -209,7 +209,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		pane2.setOpaque(false);
 
-		JPanel subpane2 = new JPanel(new GridLayout(11, 2, 45, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(12, 2, 45, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
