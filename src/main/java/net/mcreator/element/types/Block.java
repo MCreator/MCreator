@@ -64,6 +64,7 @@ import java.util.Map;
 	public double hardness;
 	public double resistance;
 	public boolean hasGravity;
+	public boolean isWaterloggable;
 	public TabEntry creativeTab;
 
 	public String destroyTool;
