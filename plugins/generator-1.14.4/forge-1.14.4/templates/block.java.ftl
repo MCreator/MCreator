@@ -55,7 +55,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 	@Override public void initElements() {
 		elements.blocks.add(() -> new CustomBlock());
-		elements.items.add(() -> new BlockItem(block, new Item.Properties().group(${data.creativeTab})).setRegistryName(block.getRegistryName()));
+		elements.items.add(() -> new BlockItem(block, new Item.Properties()
+		                             .group(${data.creativeTab})
+		                             ).setRegistryName(block.getRegistryName()));
 	}
 
 	<#if data.hasInventory>
@@ -71,12 +73,18 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				${data.blockBase}Block
 			<#else>
 				Block
-			</#if> {
+			</#if>
+			<#if data.isWaterloggable>
+            implements IWaterLoggable
+            </#if> {
 
 		<#if data.rotationMode == 1 || data.rotationMode == 3>
 		public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 		<#elseif data.rotationMode == 2 || data.rotationMode == 4 || data.rotationMode == 5>
 		public static final DirectionProperty FACING = DirectionalBlock.FACING;
+        </#if>
+        <#if data.isWaterloggable>
+        public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
         </#if>
 
 		public CustomBlock() {
@@ -119,13 +127,20 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					</#if>
 			);
 
-			<#if data.rotationMode == 1 || data.rotationMode == 3>
-			this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
-			<#elseif data.rotationMode == 2 || data.rotationMode == 4>
-			this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
-			<#elseif data.rotationMode == 5>
-			this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.SOUTH));
-        	</#if>
+            <#if data.rotationMode != 0 || data.isWaterloggable>
+			this.setDefaultState(this.stateContainer.getBaseState()
+                                     <#if data.rotationMode == 1 || data.rotationMode == 3>
+                                     .with(FACING, Direction.NORTH)
+                                     <#elseif data.rotationMode == 2 || data.rotationMode == 4>
+                                     .with(FACING, Direction.NORTH)
+                                     <#elseif data.rotationMode == 5>
+                                     .with(FACING, Direction.SOUTH)
+                                     </#if>
+                                     <#if data.isWaterloggable>
+                                     .with(WATERLOGGED, false)
+                                     </#if>
+            );
+			</#if>
 
 			setRegistryName("${registryname}");
 		}
@@ -256,7 +271,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.rotationMode != 0>
 		@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-      		builder.add(FACING);
+      		<#if data.isWaterloggable>
+                builder.add(FACING, WATERLOGGED);
+            <#elseif data.rotationMode != 0>
+                builder.add(FACING);
+            </#if>
    		}
 
 			<#if data.rotationMode != 5>
@@ -282,27 +301,64 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		@Override
 		public BlockState getStateForPlacement(BlockItemUseContext context) {
-			<#if data.rotationMode == 1>
-			return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
-			<#elseif data.rotationMode == 2>
-			return this.getDefaultState().with(FACING, context.getNearestLookingDirection().getOpposite());
-            <#elseif data.rotationMode == 3>
-			if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
-				return this.getDefaultState().with(FACING, Direction.NORTH);
-			return this.getDefaultState().with(FACING, context.getFace());
-            <#elseif data.rotationMode == 4>
-			return this.getDefaultState().with(FACING, context.getFace());
-			<#elseif data.rotationMode == 5>
-			Direction facing = context.getFace();
-			if (facing == Direction.WEST || facing == Direction.EAST)
-				facing = Direction.UP;
-			else if (facing == Direction.NORTH || facing == Direction.SOUTH)
-				facing = Direction.EAST;
-			else
-				facing = Direction.SOUTH;
-			return this.getDefaultState().with(FACING, facing);
-			</#if>
+		    <#if data.rotationMode == 4>
+            Direction facing = context.getFace();
+            </#if>
+            <#if data.rotationMode == 5>
+            Direction facing = context.getFace();
+            if (facing == Direction.WEST || facing == Direction.EAST)
+                facing = Direction.UP;
+            else if (facing == Direction.NORTH || facing == Direction.SOUTH)
+                facing = Direction.EAST;
+            else
+                facing = Direction.SOUTH;
+            </#if>
+            <#if data.isWaterloggable>
+            boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
+            </#if>;
+			<#if data.rotationMode != 3>
+            return this.getDefaultState()
+                <#if data.rotationMode == 1>
+            	.with(FACING, context.getPlacementHorizontalFacing().getOpposite())
+            	<#elseif data.rotationMode == 2>
+            	.with(FACING, context.getNearestLookingDirection().getOpposite())
+                <#elseif data.rotationMode == 4 || data.rotationMode == 5>
+            	.with(FACING, facing)
+            	</#if>
+            	<#if data.isWaterloggable>
+            	.with(WATERLOGGED, false)
+            	</#if>
+            	<#elseif data.rotationMode == 3>
+                if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
+                    return this.getDefaultState()
+                               .with(FACING, Direction.NORTH)
+                               <#if data.isWaterloggable>
+                               .with(WATERLOGGED, flag)
+                               </#if>;
+                return this.getDefaultState()
+                            .with(FACING, context.getFace())
+                            <#if data.isWaterloggable>
+                            .with(WATERLOGGED, flag)
+                            </#if>
+            	</#if>;
 		}
+        </#if>
+
+        <#if data.isWaterloggable>
+            <#if data.rotationMode == 0>
+            @Override
+            public BlockState getStateForPlacement(BlockItemUseContext context) {
+            boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
+                return this.getDefaultState().with(WATERLOGGED, flag);
+            }
+            @Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+                builder.add(WATERLOGGED);
+            }
+            </#if>
+
+        @Override public IFluidState getFluidState(BlockState state) {
+            return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        }
         </#if>
 
 		<#if data.isBeaconBase>
@@ -604,7 +660,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			@Override public boolean hasTileEntity(BlockState state) {
 				return true;
 			}
-			
+
 			@Override public TileEntity createTileEntity(BlockState state, IBlockReader world) {
     		    return new CustomTileEntity();
     		}
@@ -624,7 +680,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
    			         InventoryHelper.dropInventoryItems(world, pos, (CustomTileEntity) tileentity);
    			         world.updateComparatorOutputLevel(pos, this);
    			      }
-			
+
    			      super.onReplaced(state, world, pos, newState, isMoving);
    			   }
    			}
