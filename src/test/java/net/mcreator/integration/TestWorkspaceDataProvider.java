@@ -330,6 +330,7 @@ public class TestWorkspaceDataProvider {
 		case FOOD:
 			Food food = new Food(modElement);
 			food.name = modElement.getName();
+			food.rarity = "RARE";
 			food.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
 				food.specialInfo = StringUtils
@@ -873,6 +874,7 @@ public class TestWorkspaceDataProvider {
 		case ITEM:
 			Item item = new Item(modElement);
 			item.name = modElement.getName();
+			item.rarity = "EPIC";
 			item.creativeTab = new TabEntry(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			item.stackSize = 52;

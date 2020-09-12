@@ -67,6 +67,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 0, 64, 1));
 	private final VTextField name = new VTextField(20);
+	private final JComboBox<String> rarity = new JComboBox<>(
+			new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC"});
 
 	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(0, -100, 128000, 1));
 	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(0, -100, 128000, 1));
@@ -214,6 +216,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), new JLabel("Name in GUI:")));
 		subpane2.add(name);
 
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), new JLabel("Rarity:")));
+		subpane2.add(rarity);
+
 		subpane2.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel("Creative inventory tab:")));
 		subpane2.add(creativeTab);
@@ -353,6 +358,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	@Override public void openInEditingMode(Item item) {
 		name.setText(item.name);
+		rarity.setSelectedItem(item.rarity);
 		texture.setTextureFromTextureName(item.texture);
 		specialInfo.setText(
 				item.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
@@ -388,6 +394,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	@Override public Item getElementFromGUI() {
 		Item item = new Item(modElement);
 		item.name = name.getText();
+		item.rarity = (String) rarity.getSelectedItem();
 		item.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		item.stackSize = (int) stackSize.getValue();
 		item.enchantability = (int) enchantability.getValue();
