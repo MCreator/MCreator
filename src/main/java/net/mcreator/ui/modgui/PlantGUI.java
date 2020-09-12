@@ -72,6 +72,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JSpinner frequencyOnChunks = new JSpinner(new SpinnerNumberModel(5, 0, 40, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 200, 1));
 
+	private final JCheckBox useLootTableForDrops = new JCheckBox("Use loot table for drops");
 	private final JCheckBox unbreakable = new JCheckBox("Check to enable");
 	private final JCheckBox forceTicking = new JCheckBox("Check to enable");
 	private final JCheckBox hasTileEntity = new JCheckBox("Check to enable");
@@ -270,8 +271,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
 		JPanel selp = new JPanel(new GridLayout(10, 2, 25, 4));
-		JPanel selp2 = new JPanel(new GridLayout(10, 2, 25, 4));
+		JPanel selp2 = new JPanel(new GridLayout(11, 2, 25, 4));
 
+		useLootTableForDrops.setOpaque(false);
 		unbreakable.setOpaque(false);
 		forceTicking.setOpaque(false);
 		hasTileEntity.setOpaque(false);
@@ -307,12 +309,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/type"), new JLabel("Plant type: ")));
 		selp.add(growapableSpawnType);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
-				new JLabel("<html>Custom drop:<br><small>Leave empty for default drop")));
-		selp.add(PanelUtils.join(FlowLayout.LEFT, customDrop));
+		selp.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"), new JLabel("Plant flammability:")));
+		selp.add(flammability);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_amount"), new JLabel("Drop amount:")));
-		selp.add(dropAmount);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
+				new JLabel("<html>Fire spreading speed:<br><small>Leave 0 for vanilla handling")));
+		selp.add(fireSpreadSpeed);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
 				new JLabel("Enable emissive rendering (glow):")));
@@ -330,17 +333,20 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"), new JLabel("Is plant replaceable?")));
 		selp2.add(isReplaceable);
 
-		selp2.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"), new JLabel("Plant flammability:")));
-		selp2.add(flammability);
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
-				new JLabel("<html>Fire spreading speed:<br><small>Leave 0 for vanilla handling")));
-		selp2.add(fireSpreadSpeed);
-
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
 				new JLabel("<html>Creative pick item:<br><small>Leave empty for default creative pick item")));
 		selp2.add(PanelUtils.join(FlowLayout.LEFT, creativePickItem));
+
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
+				new JLabel("<html>Custom drop:<br><small>Leave empty for default drop")));
+		selp2.add(PanelUtils.join(FlowLayout.LEFT, customDrop));
+
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_amount"), new JLabel("Drop amount:")));
+		selp2.add(dropAmount);
+
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
+				new JLabel("<html>Use loot table for drops:<br><small>If checked, you need to define loot table for drops")));
+		selp2.add(useLootTableForDrops);
 
 		selp2.setOpaque(false);
 
@@ -359,6 +365,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		dropAmount.setOpaque(false);
 
 		selp.setOpaque(false);
+
+		useLootTableForDrops.addActionListener(e -> {
+			customDrop.setEnabled(!useLootTableForDrops.isSelected());
+			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
+		});
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils
 				.westAndEastElement(PanelUtils.centerInPanel(selp), PanelUtils.centerInPanel(selp2), 20, 20)));
@@ -462,8 +473,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		forceTicking.setSelected(plant.forceTicking);
 		hasTileEntity.setSelected(plant.hasTileEntity);
 		frequencyOnChunks.setValue(plant.frequencyOnChunks);
-		customDrop.setBlock(plant.customDrop);
 		emissiveRendering.setSelected(plant.emissiveRendering);
+		useLootTableForDrops.setSelected(plant.useLootTableForDrops);
+		customDrop.setBlock(plant.customDrop);
 		dropAmount.setValue(plant.dropAmount);
 		creativeTab.setSelectedItem(plant.creativeTab);
 		onNeighbourBlockChanges.setSelectedProcedure(plant.onNeighbourBlockChanges);
@@ -502,6 +514,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		growapableSpawnType.setSelectedItem(plant.growapableSpawnType);
 		staticPlantGenerationType.setSelectedItem(plant.staticPlantGenerationType);
 
+		customDrop.setEnabled(!useLootTableForDrops.isSelected());
+		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
+
 		if (normalType.isSelected())
 			stl.setIcon(TiledImageCache.plantStaticYes);
 		else
@@ -528,6 +543,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.forceTicking = forceTicking.isSelected();
 		plant.hasTileEntity = hasTileEntity.isSelected();
 		plant.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
+		plant.useLootTableForDrops = useLootTableForDrops.isSelected();
 		plant.customDrop = customDrop.getBlock();
 		plant.dropAmount = (int) dropAmount.getValue();
 		plant.frequencyOnChunks = (int) frequencyOnChunks.getValue();

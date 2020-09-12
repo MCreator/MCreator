@@ -51,6 +51,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class BiomeGUI extends ModElementGUI<Biome> {
@@ -108,8 +109,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JColor foliageColor = new JColor(mcreator, true);
 	private final JColor waterColor = new JColor(mcreator, true);
 	private final JColor waterFogColor = new JColor(mcreator, true);
-
-	private final JCheckBox generateLakes = new JCheckBox("Select to enable");
 
 	private final JSpinner biomeWeight = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 1));
 	private final JComboBox<String> biomeType = new JComboBox<>(new String[] { "WARM", "DESERT", "COOL", "ICY" });
@@ -363,8 +362,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(sbbp3));
 
-		JPanel sbbp4 = new JPanel(new GridLayout(10, 2, 0, 2));
-		generateLakes.setOpaque(false);
+		JPanel sbbp4 = new JPanel(new GridLayout(9, 2, 0, 2));
 
 		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/name"), new JLabel("Name:")));
 		sbbp4.add(name);
@@ -378,10 +376,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				new JLabel("<html>Underground block:<br><small>Tip: Underground block should use EARTH for material"),
 				new Color(179, 94, 26).brighter()));
 		sbbp4.add(PanelUtils.join(undergroundBlock));
-
-		sbbp4.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/generate_lakes"), new JLabel("Generate small water lakes?")));
-		sbbp4.add(PanelUtils.join(generateLakes));
 
 		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/air_color"), new JLabel("Air color:")));
 		sbbp4.add(airColor);
@@ -503,6 +497,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
+
+			defaultFeatures.setListElements(Arrays.asList("Caves", "MonsterRooms", "Structures", "Ores"));
 		}
 	}
 
@@ -547,7 +543,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		treeStem.setBlock(biome.treeStem);
 		treeBranch.setBlock(biome.treeBranch);
 		treeFruits.setBlock(biome.treeFruits);
-		generateLakes.setSelected(biome.generateLakes);
 
 		if (biome.treeType == biome.TREES_CUSTOM) {
 			vanillaTrees.setSelected(false);
@@ -608,7 +603,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.name = name.getText();
 		biome.groundBlock = groundBlock.getBlock();
 		biome.undergroundBlock = undergroundBlock.getBlock();
-		biome.generateLakes = generateLakes.isSelected();
 		if (customTrees.isSelected())
 			biome.treeType = biome.TREES_CUSTOM;
 		else

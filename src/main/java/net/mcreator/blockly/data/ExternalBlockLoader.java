@@ -72,8 +72,25 @@ public class ExternalBlockLoader {
 					toolboxBlock.machine_name = FilenameUtils.getBaseName(procedureBlock);
 
 					String localized_message = L10N.t("blockly.block." + toolboxBlock.machine_name);
+					String localized_message_en = L10N.t_en("blockly.block." + toolboxBlock.machine_name);
+
 					if (localized_message != null) {
-						jsonresult.add("message0", new JsonPrimitive(localized_message));
+						int parameters_count = net.mcreator.util.StringUtils
+								.countRegexMatches(localized_message, "%[0-9]+");
+						int parameters_count_en = net.mcreator.util.StringUtils
+								.countRegexMatches(localized_message_en, "%[0-9]+");
+
+						if (parameters_count == parameters_count_en) {
+							jsonresult.add("message0", new JsonPrimitive(localized_message));
+						} else {
+							LOG.warn("Not all procedure block inputs are defined using %N for block "
+									+ toolboxBlock.machine_name + " for the selected language");
+							if (localized_message_en != null) {
+								jsonresult.add("message0", new JsonPrimitive(localized_message_en));
+							}
+						}
+					} else if (localized_message_en != null) {
+						jsonresult.add("message0", new JsonPrimitive(localized_message_en));
 					}
 
 					String localized_tooltip = L10N.t("blockly.block." + toolboxBlock.machine_name + ".tooltip");

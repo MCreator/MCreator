@@ -1,0 +1,1 @@
+The amount of built-in armor points the mob has. Zombies by default have 4 armor points.

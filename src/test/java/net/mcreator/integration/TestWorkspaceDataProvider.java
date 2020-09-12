@@ -207,7 +207,6 @@ public class TestWorkspaceDataProvider {
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			biome.generateLakes = _true;
 			biome.vanillaTreeType = "Mega spruce trees";
 			biome.airColor = Color.red;
 			if (!emptyLists) {
@@ -855,6 +854,7 @@ public class TestWorkspaceDataProvider {
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
 							.getName());
 			plant.dropAmount = 4;
+			plant.useLootTableForDrops = !_true;
 			plant.frequencyOnChunks = 13;
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
@@ -883,6 +883,9 @@ public class TestWorkspaceDataProvider {
 			item.destroyAnyBlock = _true;
 			item.inventorySize = 10;
 			item.inventoryStackSize = 42;
+			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName());
 			item.stayInGridWhenCrafting = _true;
 			item.damageOnCrafting = _true;
 			item.hasGlow = _true;
@@ -1343,6 +1346,12 @@ public class TestWorkspaceDataProvider {
 								.getRandomItem(random, ElementUtil.loadAllEnchantments(modElement.getWorkspace()))));
 			}
 			return enchantment;
+		case PAINTING:
+			Painting painting = new Painting(modElement);
+			painting.texture = "test.png";
+			painting.width = 16;
+			painting.height = 16;
+			return painting;
 		default:
 			return null;
 		}

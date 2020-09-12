@@ -1,0 +1,1 @@
+This parameter controls how many blocks above or below initial spawn point the structure will be generated.
