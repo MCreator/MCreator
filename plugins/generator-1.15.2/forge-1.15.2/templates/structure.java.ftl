@@ -115,6 +115,7 @@ package ${package}.world.structure;
 							continue;
 						</#if>
 
+						TemplateManager templatemanager = ((ServerWorld) world.getWorld()).getSaveHandler().getStructureTemplateManager();
 						if (template == null)
 							template = templatemanager.getTemplate(new ResourceLocation("${modid}" + "${data.structure}"));
 
