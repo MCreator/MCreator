@@ -16,6 +16,7 @@ changes, and the way how to implement them to fit the existing code base and UX 
 * Consider checking and testing existing PRs and confirm they work as designed to help us avoid bugs (try testing different MC versions, generators, also importing old workspaces, ...)
 * Be human, we are humans too, keep the community positive when colaborating with contributors and maintainers :)
 * Maintainers of this project do this for hobby. There might be cases of slow responses, or even inability to review or merge PR due to its scope and our (time) inability to review it properly or assist with changes needed to make it acceptable for merge.
+* Texts in UI should be written "Everywhere like this" and not "Do Not Write Like This"
 
 *Learn more about the development process and tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).*
 
