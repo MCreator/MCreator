@@ -1,19 +1,26 @@
 {
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "projectile_entity",
+      "check": "Entity"
+    }
+  ],
   "output": "Number",
   "inputsInline": true,
   "colour": "%{BKY_MATH_HUE}",
-  "extensions": [
-    "projectiles_list_provider"
-  ],
   "mcreator": {
     "toolbox_id": "entitymanagement",
-    "fields": [
-      "projectiles"
+    "toolbox_init": [
+      "<value name=\"projectile_entity\"><block type=\"immediate_source_entity_from_deps\"></block></value>"
+    ],
+    "inputs": [
+      "projectile_entity"
     ],
     "dependencies": [
       {
-        "name": "projectileentity",
-        "type": "projectileentity"
+        "name": "imediatesourceentity",
+        "type": "imediatesourceentity"
       }
     ]
   }

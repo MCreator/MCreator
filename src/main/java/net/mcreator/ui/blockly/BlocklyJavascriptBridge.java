@@ -252,8 +252,6 @@ public class BlocklyJavascriptBridge {
 					.filter(var -> var.getType() == ModElementType.RANGEDITEM).map(ModElement::getName)
 					.collect(Collectors.toList()));
 			break;
-		case "projectiles":
-			return ElementUtil.getAllProjectiles();
 		default:
 			retval = new ArrayList<>();
 		}

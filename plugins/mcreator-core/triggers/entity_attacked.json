@@ -29,8 +29,8 @@
       "type": "number"
     },
     {
-      "name": "projectileentity",
-      "type": "projectileentity"
+      "name": "imediatesourceentity",
+      "type": "entity"
     }
   ]
 }

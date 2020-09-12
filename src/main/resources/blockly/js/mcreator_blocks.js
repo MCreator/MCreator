@@ -558,6 +558,12 @@ Blockly.defineBlocksWithJsonArray([
         "colour": "195"
     },
     {
+        "type": "immediate_source_entity_from_deps",
+        "message0": "Immediate source entity",
+        "output": "Entity",
+        "colour": "195"
+    },
+    {
         "type": "math_from_text",
         "message0": "number from text %1",
         "args0": [
@@ -703,10 +709,4 @@ Blockly.Extensions.register('dimension_custom_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("dimension_custom"))), 'dimension');
-    });
-
-Blockly.Extensions.register('projectiles_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("projectiles"))), 'projectiles');
     });

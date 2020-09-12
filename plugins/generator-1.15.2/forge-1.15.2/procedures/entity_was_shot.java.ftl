@@ -1,1 +1,0 @@
-(projectileentity instanceof ${generator.map(field$projectiles, "projectiles")})
