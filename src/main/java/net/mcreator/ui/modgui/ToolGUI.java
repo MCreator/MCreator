@@ -46,6 +46,7 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
 import org.jetbrains.annotations.Nullable;
 
@@ -80,6 +81,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal });
 
 	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
+	private ProcedureSelector glowCondition;
 
 	private final JTextField specialInfo = new JTextField(20);
 
@@ -134,6 +136,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				"When entity swings item",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+				"Does Item Glow", VariableElementType.LOGIC,
+				Dependency.fromString("itemstack:itemstack"));
 
 		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
@@ -152,6 +157,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		texture.setOpaque(false);
 
 		hasGlow.setOpaque(false);
+		hasGlow.setSelected(false);
 
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
@@ -200,7 +206,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Enable glowing effect")));
-		selp.add(hasGlow);
+		selp.add(PanelUtils.join(FlowLayout.LEFT, hasGlow, glowCondition));
+
+		hasGlow.addActionListener(e -> updateGlowElements());
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"), new JLabel("Type:")));
 		selp.add(toolType);
@@ -282,6 +290,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		}
 	}
 
+	private void updateGlowElements() {
+		glowCondition.setEnabled(hasGlow.isSelected());
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onRightClickedInAir.refreshListKeepSelected();
@@ -293,6 +305,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onItemInUseTick.refreshListKeepSelected();
 		onStoppedUsing.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
+		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("TOOLS"));
@@ -332,6 +345,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onStoppedUsing.setSelectedProcedure(tool.onStoppedUsing);
 		onEntitySwing.setSelectedProcedure(tool.onEntitySwing);
 		hasGlow.setSelected(tool.hasGlow);
+		glowCondition.setSelectedProcedure(tool.glowCondition);
 		repairItems.setListElements(tool.repairItems);
 		specialInfo.setText(
 				tool.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
@@ -339,6 +353,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		damageOnCrafting.setSelected(tool.damageOnCrafting);
 
 		blocksAffected.setListElements(tool.blocksAffected);
+
+		updateGlowElements();
 
 		if (toolType.getSelectedItem() != null)
 			blocksAffected.setEnabled(toolType.getSelectedItem().equals("Special"));
@@ -370,6 +386,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.onStoppedUsing = onStoppedUsing.getSelectedProcedure();
 		tool.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		tool.hasGlow = hasGlow.isSelected();
+		tool.glowCondition = glowCondition.getSelectedProcedure();
 		tool.repairItems = repairItems.getListElements();
 		tool.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 

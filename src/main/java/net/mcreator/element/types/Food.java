@@ -54,6 +54,7 @@ import java.util.Map;
 	public boolean isAlwaysEdible;
 	public String animation;
 	public boolean hasGlow;
+	public Procedure glowCondition;
 
 	public Procedure onRightClicked;
 	public Procedure onEaten;

@@ -72,6 +72,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	private final JCheckBox bulletIgnitesFire = new JCheckBox("Check to enable");
 
 	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
+	private ProcedureSelector glowCondition;
 
 	private ProcedureSelector onBulletHitsBlock;
 	private ProcedureSelector onBulletHitsPlayer;
@@ -143,6 +144,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		useCondition = new ProcedureSelector(this.withEntry("rangeditem/use_condition"), mcreator,
 				"Can use ranged item", VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+				"Does Item Glow", VariableElementType.LOGIC,
+				Dependency.fromString("itemstack:itemstack"));
 
 		customBulletModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
@@ -160,6 +164,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		texture.setOpaque(false);
 
 		hasGlow.setOpaque(false);
+		hasGlow.setSelected(false);
 
 		ComponentUtils.deriveFont(renderType, 16.0f);
 		renderType.setRenderer(new ModelComboBoxRenderer());
@@ -205,7 +210,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Enable glowing effect")));
-		selp.add(hasGlow);
+		selp.add(PanelUtils.join(FlowLayout.LEFT, hasGlow, glowCondition));
+
+		hasGlow.addActionListener(e -> updateGlowElements());
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"), new JLabel("Max stack size:")));
 		selp.add(stackSize);
@@ -341,6 +348,10 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		}
 	}
 
+	private void updateGlowElements() {
+		glowCondition.setEnabled(hasGlow.isSelected());
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onBulletHitsBlock.refreshListKeepSelected();
@@ -351,6 +362,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		onEntitySwing.refreshListKeepSelected();
 
 		useCondition.refreshListKeepSelected();
+		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(customBulletModelTexture, ListUtils.merge(Collections.singleton(""),
 				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
@@ -401,6 +413,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		onEntitySwing.setSelectedProcedure(rangedItem.onEntitySwing);
 		onRangedItemUsed.setSelectedProcedure(rangedItem.onRangedItemUsed);
 		hasGlow.setSelected(rangedItem.hasGlow);
+		glowCondition.setSelectedProcedure(rangedItem.glowCondition);
 		damageVsEntity.setValue(rangedItem.damageVsEntity);
 		enableMeleeDamage.setSelected(rangedItem.enableMeleeDamage);
 		specialInfo.setText(
@@ -408,6 +421,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		customBulletModelTexture.setSelectedItem(rangedItem.customBulletModelTexture);
 		useCondition.setSelectedProcedure(rangedItem.useCondition);
+
+		updateGlowElements();
 
 		Model model = rangedItem.getEntityModel();
 		if (model != null && model.getType() != null && model.getReadableName() != null)
@@ -440,6 +455,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		rangedItem.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		rangedItem.stackSize = (int) stackSize.getValue();
 		rangedItem.hasGlow = hasGlow.isSelected();
+		rangedItem.glowCondition = glowCondition.getSelectedProcedure();
 		rangedItem.damageVsEntity = (double) damageVsEntity.getValue();
 		rangedItem.enableMeleeDamage = enableMeleeDamage.isSelected();
 		rangedItem.bulletModel = (Objects.requireNonNull(bulletModel.getSelectedItem())).getReadableName();

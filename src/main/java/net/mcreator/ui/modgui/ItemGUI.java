@@ -180,8 +180,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		destal.add(specialInfo);
 
 		hasGlow.setOpaque(false);
-
 		hasGlow.setSelected(false);
+
 		destal1.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Has glowing effect?")));
 		destal1.add(PanelUtils.join(FlowLayout.LEFT, hasGlow, glowCondition));

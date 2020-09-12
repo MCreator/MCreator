@@ -45,6 +45,7 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,6 +80,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 	private ProcedureSelector onEntitySwing;
 
 	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
+	private ProcedureSelector glowCondition;
 
 	private final JComboBox<String> animation = new JComboBox<>(new String[] { "eat", "drink" });
 
@@ -104,6 +106,9 @@ public class FoodGUI extends ModElementGUI<Food> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				"When entity swings item",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+				"Does Item Glow", VariableElementType.LOGIC,
+				Dependency.fromString("itemstack:itemstack"));
 
 		animation.setRenderer(new ItemTexturesComboBoxRenderer());
 
@@ -118,6 +123,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 		destal.setOpaque(false);
 		hasGlow.setOpaque(false);
+		hasGlow.setSelected(false);
 
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
 		texture.setOpaque(false);
@@ -181,7 +187,9 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 		selp.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Has glowing effect?")));
-		selp.add(hasGlow);
+		selp.add(PanelUtils.join(FlowLayout.LEFT, hasGlow, glowCondition));
+
+		hasGlow.addActionListener(e -> updateGlowElements());
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/eating_speed"), new JLabel("Eating speed:")));
 		selp.add(eatingSpeed);
@@ -227,12 +235,17 @@ public class FoodGUI extends ModElementGUI<Food> {
 		}
 	}
 
+	private void updateGlowElements() {
+		glowCondition.setEnabled(hasGlow.isSelected());
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onRightClicked.refreshListKeepSelected();
 		onEaten.refreshListKeepSelected();
 		onCrafted.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
+		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("FOOD"));
@@ -266,9 +279,12 @@ public class FoodGUI extends ModElementGUI<Food> {
 		eatingSpeed.setValue(food.eatingSpeed);
 		animation.setSelectedItem(food.animation);
 		hasGlow.setSelected(food.hasGlow);
+		glowCondition.setSelectedProcedure(food.glowCondition);
 		creativeTab.setSelectedItem(food.creativeTab);
 		specialInfo.setText(
 				food.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+
+		updateGlowElements();
 
 		Model model = food.getItemModel();
 		if (model != null)
@@ -292,6 +308,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		food.onCrafted = onCrafted.getSelectedProcedure();
 		food.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		food.hasGlow = hasGlow.isSelected();
+		food.glowCondition = glowCondition.getSelectedProcedure();
 		food.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
 		Model.Type modelType = ((Model) Objects.requireNonNull(renderType.getSelectedItem())).getType();
