@@ -81,8 +81,6 @@ public class Dependency implements Comparable<Dependency> {
 			return new Color(0x997360).brighter();
 		case "advancement":
 			return new Color(0x68712E).brighter();
-		case "projectileentity":
-			return new Color(0x608a99).brighter();
 		default:
 			return Color.white;
 		}

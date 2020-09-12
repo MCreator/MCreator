@@ -20,7 +20,7 @@
     "dependencies": [
       {
         "name": "imediatesourceentity",
-        "type": "imediatesourceentity"
+        "type": "entity"
       }
     ]
   }
