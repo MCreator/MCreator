@@ -924,6 +924,7 @@ public class TestWorkspaceDataProvider {
 			} else {
 				rangedItem.specialInfo = new ArrayList<>();
 			}
+			rangedItem.animation = "bow";
 			rangedItem.shootConstantly = _true;
 			rangedItem.usageCount = 67;
 			rangedItem.stackSize = 41;

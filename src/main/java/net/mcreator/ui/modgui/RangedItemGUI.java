@@ -33,6 +33,7 @@ import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
@@ -72,6 +73,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	private final JCheckBox bulletIgnitesFire = new JCheckBox("Check to enable");
 
 	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
+
+	private final JComboBox<String> animation = new JComboBox<>(new String[] {
+			"block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 
 	private ProcedureSelector onBulletHitsBlock;
 	private ProcedureSelector onBulletHitsPlayer;
@@ -161,6 +165,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		hasGlow.setOpaque(false);
 
+		animation.setRenderer(new ItemTexturesComboBoxRenderer());
+
 		ComponentUtils.deriveFont(renderType, 16.0f);
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
@@ -175,7 +181,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
-		JPanel selp = new JPanel(new GridLayout(11, 2, 5, 2));
+		JPanel selp = new JPanel(new GridLayout(12, 2, 5, 2));
 		selp.setOpaque(false);
 
 		JPanel selp2 = new JPanel(new GridLayout(8, 2, 10, 2));
@@ -206,6 +212,10 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Enable glowing effect")));
 		selp.add(hasGlow);
+
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("item/animation"), new JLabel("Item animation: ")));
+		selp.add(animation);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"), new JLabel("Max stack size:")));
 		selp.add(stackSize);
@@ -401,6 +411,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		onEntitySwing.setSelectedProcedure(rangedItem.onEntitySwing);
 		onRangedItemUsed.setSelectedProcedure(rangedItem.onRangedItemUsed);
 		hasGlow.setSelected(rangedItem.hasGlow);
+		animation.setSelectedItem(rangedItem.animation);
 		damageVsEntity.setValue(rangedItem.damageVsEntity);
 		enableMeleeDamage.setSelected(rangedItem.enableMeleeDamage);
 		specialInfo.setText(
@@ -440,6 +451,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		rangedItem.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		rangedItem.stackSize = (int) stackSize.getValue();
 		rangedItem.hasGlow = hasGlow.isSelected();
+		rangedItem.animation = (String) animation.getSelectedItem();
 		rangedItem.damageVsEntity = (double) damageVsEntity.getValue();
 		rangedItem.enableMeleeDamage = enableMeleeDamage.isSelected();
 		rangedItem.bulletModel = (Objects.requireNonNull(bulletModel.getSelectedItem())).getReadableName();

@@ -102,6 +102,10 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 		</#if>
 
+		@Override public UseAction getUseAction(ItemStack par1ItemStack) {
+			return UseAction.${data.animation?upper_case};
+		}
+
 		@Override public int getUseDuration(ItemStack itemstack) {
 			return 72000;
 		}

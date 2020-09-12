@@ -1,1 +1,0 @@
-Food animation is the animation used when the player eats the food.

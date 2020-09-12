@@ -81,6 +81,10 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 		</#if>
 
+		@Override public UseAction getUseAction(ItemStack par1ItemStack) {
+			return UseAction.${data.animation?upper_case};
+		}
+
 		<#if hasProcedure(data.onEntitySwing)>
 		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
 			boolean retval = super.onEntitySwing(itemstack, entity);

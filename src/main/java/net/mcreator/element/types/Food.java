@@ -69,6 +69,7 @@ import java.util.Map;
 
 		this.eatingSpeed = 32;
 		this.saturation = 0.3f;
+		this.animation = "eat";
 
 		this.renderType = 0;
 		this.customModelName = "Normal";
