@@ -71,6 +71,7 @@ import java.util.Map;
 		this.rarity = "COMMON";
 		this.eatingSpeed = 32;
 		this.saturation = 0.3f;
+		this.animation = "eat";
 
 		this.renderType = 0;
 		this.customModelName = "Normal";

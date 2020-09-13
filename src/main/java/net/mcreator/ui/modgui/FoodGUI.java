@@ -81,7 +81,8 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
 
-	private final JComboBox<String> animation = new JComboBox<>(new String[] { "eat", "drink" });
+	private final JComboBox<String> animation = new JComboBox<>(new String[] {
+			"block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
@@ -190,7 +191,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/eating_speed"), new JLabel("Eating speed:")));
 		selp.add(eatingSpeed);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/animation"), new JLabel("Food animation: ")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"), new JLabel("Item animation: ")));
 		selp.add(animation);
 
 		pane4.setOpaque(false);
