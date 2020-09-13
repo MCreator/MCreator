@@ -17,6 +17,12 @@
     ],
     "inputs": [
       "item"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ]
   }
 }

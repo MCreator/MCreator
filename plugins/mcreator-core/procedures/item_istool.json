@@ -11,23 +11,23 @@
       "options": [
         [
           "Sword",
-          "SwordItem"
+          "Sword"
         ],
         [
           "Pickaxe",
-          "PickaxeItem"
+          "Pickaxe"
         ],
         [
           "Axe",
-          "AxeItem"
+          "Axe"
         ],
         [
           "Shovel",
-          "ShovelItem"
+          "Shovel"
         ],
         [
           "Hoe",
-          "HoeItem"
+          "Hoe"
         ]
       ]
     }

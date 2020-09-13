@@ -1,1 +1,1 @@
-(${input$item}.getItem() instanceof ${field$tool_type})
+(${input$item}.getItem() instanceof ${field$tool_type}Item)
