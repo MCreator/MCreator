@@ -145,11 +145,11 @@ public class FoodGUI extends ModElementGUI<Food> {
 										"<html>Special information about the food:<br><small>Separate entries with comma, to use comma in description use \\,")),
 						specialInfo))));
 
-		JPanel selp = new JPanel(new GridLayout(11, 2, 10, 10));
+		JPanel selp = new JPanel(new GridLayout(11, 2, 10, 2));
 		selp.setOpaque(false);
 
 		name.setPreferredSize(new Dimension(120, 31));
-		
+
 		forDogs.setOpaque(false);
 		isAlwaysEdible.setOpaque(false);
 
