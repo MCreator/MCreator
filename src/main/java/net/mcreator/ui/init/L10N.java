@@ -19,6 +19,7 @@
 package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.preferences.PreferencesManager;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,12 +39,9 @@ public class L10N {
 
 	private static final Logger LOG = LogManager.getLogger("L10N");
 
-	private static final Locale defaultLocale = new Locale("en", "US");
-
 	private static ResourceBundle rb;
 	private static ResourceBundle rb_en;
 
-	private static Locale locale = null;
 	private static Set<Locale> supportedLocales = null;
 
 	public static Set<Locale> getSupportedLocales() {
@@ -51,22 +49,14 @@ public class L10N {
 			Set<String> localeFiles = PluginLoader.INSTANCE.getResourcesInPackage("lang");
 			supportedLocales = localeFiles.stream().map(FilenameUtils::getBaseName).filter(e -> e.contains("_"))
 					.map(e -> e.split("_")).map(e -> new Locale(e[1], e[2])).collect(Collectors.toSet());
+			supportedLocales.add(new Locale("en", "US"));
 		}
 
 		return supportedLocales;
 	}
 
 	public static Locale getLocale() {
-		if (locale == null) { // lazy-load locale
-			// TODO: uncomment this once localizations are complete
-			/*Locale suggested = Locale.getDefault();
-			if (getSupportedLocales().contains(suggested))
-				locale = suggested;
-			else*/
-			locale = defaultLocale;
-		}
-
-		return locale;
+		return PreferencesManager.PREFERENCES.ui.language;
 	}
 
 	public static String getLocaleString() {
