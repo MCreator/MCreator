@@ -1070,7 +1070,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		page1group.addValidationElement(texture);
 
-		name.setValidator(new TextFieldValidator(name, "Block must have a name"));
+		name.setValidator(new TextFieldValidator(name, L10N.t("Block must have a name")));
 		name.enableRealtimeValidation();
 
 		page2group.addValidationElement(name);
