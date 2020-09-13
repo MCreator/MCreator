@@ -72,6 +72,7 @@ package ${package}.item;
 					<#else>
 					.maxStackSize(${data.stackSize})
 					</#if>
+					.rarity(Rarity.${data.rarity})
 			);
 			setRegistryName("${registryname}");
 		}

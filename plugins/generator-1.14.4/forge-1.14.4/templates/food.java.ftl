@@ -50,7 +50,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		public FoodItemCustom() {
 			super(new Item.Properties().group(${data.creativeTab}).maxStackSize(${data.stackSize})
-				.food((new Food.Builder()).hunger(${data.nutritionalValue}).saturation(${data.saturation}f)
+			.rarity(Rarity.${data.rarity}).food((new Food.Builder()).hunger(${data.nutritionalValue})
+			.saturation(${data.saturation}f)
 				<#if data.isAlwaysEdible>.setAlwaysEdible()</#if>
 				<#if data.forDogs>.meat()</#if>
 				.build()
