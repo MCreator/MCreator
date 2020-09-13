@@ -66,8 +66,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		<#if data.hasGlow>
 		@Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
-		    <#if hasProcedure(data.glowCondition)>
-        	if (!(<@procedureOBJToCode data.glowCondition/>)) {
+		    <#if hasCondition(data.glowCondition)>
+        	if (!(<@procedureOBJToConditionCode data.glowCondition/>)) {
         	    return false;
         	}
         	</#if>
