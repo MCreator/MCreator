@@ -41,6 +41,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
@@ -120,19 +121,19 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JColor beaconColorModifier = new JColor(mcreator, true);
 
-	private final JCheckBox hasGravity = new JCheckBox("Check to enable");
-	private final JCheckBox isWaterloggable = new JCheckBox("Check to enable");
-	private final JCheckBox tickRandomly = new JCheckBox("Check to enable");
-	private final JCheckBox unbreakable = new JCheckBox("Check to enable");
-	private final JCheckBox isNotColidable = new JCheckBox("Check to enable");
-	private final JCheckBox canProvidePower = new JCheckBox("Check to enable");
+	private final JCheckBox hasGravity = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
+	private final JCheckBox isWaterloggable = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
+	private final JCheckBox tickRandomly = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
+	private final JCheckBox unbreakable = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
+	private final JCheckBox isNotColidable = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
+	private final JCheckBox canProvidePower = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
 
-	private final JCheckBox hasTransparency = new JCheckBox("Check to enable");
-	private final JCheckBox connectedSides = new JCheckBox("Check to enable");
-	private final JCheckBox emissiveRendering = new JCheckBox("Check to enable");
+	private final JCheckBox hasTransparency = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
+	private final JCheckBox connectedSides = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
+	private final JCheckBox emissiveRendering = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
 
-	private final JCheckBox hasEnergyStorage = new JCheckBox("Check to enable energy storage");
-	private final JCheckBox isFluidTank = new JCheckBox("Check to enable fluid storage");
+	private final JCheckBox hasEnergyStorage = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
+	private final JCheckBox isFluidTank = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
 
 	private final JSpinner energyInitial = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 	private final JSpinner energyCapacity = new JSpinner(new SpinnerNumberModel(400000, 0, Integer.MAX_VALUE, 1));
@@ -143,7 +144,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
 
-	private final JCheckBox isReplaceable = new JCheckBox("Check to enable");
+	private final JCheckBox isReplaceable = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
 	private final JComboBox<String> colorOnMap = new JComboBox<>();
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -157,9 +158,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private MCItemListField blocksToReplace;
 	private DimensionListField spawnWorldTypes;
 
-	private final JCheckBox plantsGrowOn = new JCheckBox("Check to enable");
-	private final JCheckBox isBeaconBase = new JCheckBox("Check to enable");
-	private final JCheckBox isLadder = new JCheckBox("Check to enable");
+	private final JCheckBox plantsGrowOn = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
+	private final JCheckBox isBeaconBase = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
+	private final JCheckBox isLadder = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
 
 	private final JComboBox<String> reactionToPushing = new JComboBox<>(
 			new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" });
@@ -179,41 +180,44 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner slipperiness = new JSpinner(new SpinnerNumberModel(0.6, 0.01, 5, 0.1));
 
 	private final JComboBox<String> rotationMode = new JComboBox<>(
-			new String[] { "<html>No rotation<br><small>Fixed block orientation",
+			new String[] {
+					L10N.t("elementgui.block.rotationMode.noRotation"),
+					L10N.t("elementgui.block.rotationMode.swnePlayerSide"),
+					L10N.t("elementgui.block.rotationMode.dunswePlayerSide"),
+					L10N.t("elementgui.block.rotationMode.swneBlockFace"),
+					L10N.t("elementgui.block.rotationMode.dunsweBlockFace"),
+					L10N.t("elementgui.block.rotationMode.logRotation")
+			});
+			/*new String[] { "<html>No rotation<br><small>Fixed block orientation",
 					"<html>Y axis rotation (S/W/N/E)<br><small>Rotation from player side",
 					"<html>D/U/N/S/W/E rotation<br><small>Rotation from player side",
 					"<html>Y axis rotation (S/W/N/E)<br><small>Rotation from block face",
 					"<html>D/U/N/S/W/E rotation<br><small>Rotation from block face",
-					"<html>Log rotation (X/Y/Z)<br><small>Imitates vanilla log rotation" });
+					"<html>Log rotation (X/Y/Z)<br><small>Imitates vanilla log rotation" });*/
 
 	private final JComboBox<String> destroyTool = new JComboBox<>(
 			new String[] { "Not specified", "pickaxe", "axe", "shovel" });
 	private final JSpinner breakHarvestLevel = new JSpinner(new SpinnerNumberModel(1, -1, 100, 1));
 
-	private final JCheckBox spawnParticles = new JCheckBox("Spawn particles around block");
+	private final JCheckBox spawnParticles = new JCheckBox(L10N.t("elementgui.block.spawnParticles"));
 
 	private final Model normal = new Model.BuiltInModel("Normal");
 	private final Model singleTexture = new Model.BuiltInModel("Single texture");
 	private final Model cross = new Model.BuiltInModel("Cross model");
-	private final Model crop = new Model.BuiltInModel("Crop model");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
 
 	private final JComboBox<String> transparencyType = new JComboBox<>(
 			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" });
 
-	private final JCheckBox hasInventory = new JCheckBox(
-			"<html>Enable tile entity for this block. Check this box if you want any of these:<small>"
-					+ "<br>- block that can contain items, can interact with hoppers and/or comparators"
-					+ "<br>- block that can store NBT data tags"
-					+ "<br>- block that has fluid tank or energy storage capabilities");
+	private final JCheckBox hasInventory = new JCheckBox(L10N.t("elementgui.block.hasInventory"));
 
-	private final JCheckBox openGUIOnRightClick = new JCheckBox("Enable");
+	private final JCheckBox openGUIOnRightClick = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
 	private final JComboBox<String> guiBoundTo = new JComboBox<>();
 
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
-	private final JCheckBox inventoryDropWhenDestroyed = new JCheckBox("Enable");
-	private final JCheckBox inventoryComparatorPower = new JCheckBox("Enable");
+	private final JCheckBox inventoryDropWhenDestroyed = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
+	private final JCheckBox inventoryComparatorPower = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
 
 	private final VTextField outSlotIDs = new VTextField(18);
 	private final VTextField inSlotIDs = new VTextField(18);
@@ -230,7 +234,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 
-	private final JCheckBox useLootTableForDrops = new JCheckBox("Use loot table for drops");
+	private final JCheckBox useLootTableForDrops = new JCheckBox(L10N.t("elementgui.common.check_to_enable"));
 
 	public BlockGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -250,48 +254,53 @@ public class BlockGUI extends ModElementGUI<Block> {
 		blocksToReplace.setListElements(
 				new ArrayList<>(Collections.singleton(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE"))));
 
-		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator, "When block added",
+		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
+				L10N.t("elementgui.block.onBlockAdded"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onNeighbourBlockChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
-				"When neighbour block changes", Dependency.fromString("x:number/y:number/z:number/world:world"));
-		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator, "Update tick",
+				L10N.t("elementgui.block.onNeighbourBlockChanges"),
+				Dependency.fromString("x:number/y:number/z:number/world:world"));
+		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator,
+				L10N.t("elementgui.block.onTickUpdate"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onRandomUpdateEvent = new ProcedureSelector(this.withEntry("block/display_tick_update"), mcreator,
-				"Client display random tick", ProcedureSelector.Side.CLIENT,
+				L10N.t("elementgui.block.onRandomUpdateEvent"), ProcedureSelector.Side.CLIENT,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onDestroyedByPlayer = new ProcedureSelector(this.withEntry("block/when_destroyed_player"), mcreator,
-				"When block destroyed by player",
+				L10N.t("elementgui.block.onDestroyedByPlayer"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onDestroyedByExplosion = new ProcedureSelector(this.withEntry("block/when_destroyed_explosion"), mcreator,
-				"When block destroyed by explosion", Dependency.fromString("x:number/y:number/z:number/world:world"));
+				L10N.t("elementgui.block.onDestroyedByExplosion"),
+				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onStartToDestroy = new ProcedureSelector(this.withEntry("block/when_destroy_start"), mcreator,
-				"When player starts to destroy",
+				L10N.t("elementgui.block.onStartToDestroy"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onEntityCollides = new ProcedureSelector(this.withEntry("block/when_entity_collides"), mcreator,
-				"When entity collides in the block",
+				L10N.t("elementgui.block.onEntityCollides"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onEntityWalksOn = new ProcedureSelector(this.withEntry("block/when_entity_walks_on"), mcreator,
-				"When entity walks on the block",
+				L10N.t("elementgui.block.onEntityWalksOn"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onBlockPlayedBy = new ProcedureSelector(this.withEntry("block/when_block_placed_by"), mcreator,
-				"When block is placed by",
+				L10N.t("elementgui.block.onBlockPlayedBy"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClicked = new ProcedureSelector(this.withEntry("block/when_right_clicked"), mcreator,
-				"On block right clicked",
+				L10N.t("elementgui.block.onRightClicked"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/direction:direction"));
-		onRedstoneOn = new ProcedureSelector(this.withEntry("block/on_redstone_on"), mcreator, "Redstone on",
+		onRedstoneOn = new ProcedureSelector(this.withEntry("block/on_redstone_on"), mcreator,
+				L10N.t("elementgui.block.onRedstoneOn"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
-		onRedstoneOff = new ProcedureSelector(this.withEntry("block/on_redstone_off"), mcreator, "Redstone off",
+		onRedstoneOff = new ProcedureSelector(this.withEntry("block/on_redstone_off"), mcreator,
+				L10N.t("elementgui.block.onRedstoneOff"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
-				"Particle spawning condition", ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
+				L10N.t("elementgui.block.particleCondition"), ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				"Additional generation condition", VariableElementType.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName("(no additional condition)");
+				L10N.t("elementgui.block.generateCondition"), VariableElementType.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world"));
 
 		blockBase.addActionListener(e -> {
 			renderType.setEnabled(true);
@@ -411,14 +420,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isReplaceable.setOpaque(false);
 
 		destal.add(new JLabel());
-		destal.add(ComponentUtils.squareAndBorder(textureTop, "Top"));
+		destal.add(ComponentUtils.squareAndBorder(textureTop, L10N.t("elementgui.block.textureTop")));
 		destal.add(new JLabel());
 		destal.add(new JLabel());
 
-		destal.add(ComponentUtils.squareAndBorder(textureLeft, new Color(126, 196, 255), "Left"));
-		destal.add(ComponentUtils.squareAndBorder(textureFront, "Front"));
-		destal.add(ComponentUtils.squareAndBorder(textureRight, "Right"));
-		destal.add(ComponentUtils.squareAndBorder(textureBack, "Back"));
+		destal.add(ComponentUtils.squareAndBorder(textureLeft, new Color(126, 196, 255), L10N.t("elementgui.block.textureLeft")));
+		destal.add(ComponentUtils.squareAndBorder(textureFront, L10N.t("elementgui.block.textureFront")));
+		destal.add(ComponentUtils.squareAndBorder(textureRight, L10N.t("elementgui.block.textureRight")));
+		destal.add(ComponentUtils.squareAndBorder(textureBack, L10N.t("elementgui.block.textureBack")));
 
 		textureLeft.setActionListener(event -> {
 			if (!(texture.has() || textureTop.has() || textureBack.has() || textureFront.has() || textureRight.has())) {
@@ -431,7 +440,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		});
 
 		destal.add(new JLabel());
-		destal.add(ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174), "Bottom / main"));
+		destal.add(ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174), L10N.t("elementgui.block.textureBottom")));
 		destal.add(new JLabel());
 		destal.add(new JLabel());
 
@@ -439,14 +448,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		txblock4.setOpaque(false);
 		txblock4.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Block base (model and behaviour) and item texture", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.block.title.blockBase"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		txblock4.add("Center", PanelUtils.gridElements(2, 2, HelpUtils.wrapWithHelpButton(this.withEntry("block/base"),
-				new JLabel("<html>Block base:<br><small>Most blocks should leave this on default")), blockBase,
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"), new JLabel(
-						"<html>Block item texture:<br><small>Optional texture for block in inventory and hand rendering")),
-				PanelUtils.centerInPanel(itemTexture)));
+		txblock4.add("Center", PanelUtils.gridElements(2, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"),
+						L10N.label("elementgui.block.blockBase")), blockBase,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
+						L10N.label("elementgui.block.itemTexture")), PanelUtils.centerInPanel(itemTexture)));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout(1, 5));
 
@@ -461,8 +470,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		sbbp22.add(destal);
 
 		sbbp22.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1), "Block textures",
-				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.block.title.blockTextures"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JPanel topnbot = new JPanel(new BorderLayout());
 		topnbot.setOpaque(false);
@@ -474,13 +484,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 		txblock3.setOpaque(false);
 		txblock3.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Special information", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.block.title.specialInfo"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
 
-		txblock3.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
-				"<html>Special information about the block:<br><small>Separate entries with comma, to use comma in description use \\,")));
+		txblock3.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				L10N.label("elementgui.block.specialInfo")));
 		txblock3.add(specialInfo);
 
 		sbbp2.add("Center", topnbot);
@@ -494,16 +504,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel transparencySettings = new JPanel(new GridLayout(3, 2, 0, 2));
 		transparencySettings.setOpaque(false);
 
-		transparencySettings.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/transparency_type"), new JLabel("Transparency type:")));
+		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/transparency_type"),
+				L10N.label("elementgui.block.transparencyType")));
 		transparencySettings.add(transparencyType);
 
 		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_transparency"),
-				new JLabel("Check this if your block has transparent parts:")));
+				L10N.label("elementgui.block.hasTransparency")));
 		transparencySettings.add(hasTransparency);
 
 		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/connected_sides"),
-				new JLabel("Check this to enable connected sides:")));
+				L10N.label("elementgui.block.connectedSides")));
 		transparencySettings.add(connectedSides);
 
 		ComponentUtils.deriveFont(renderType, 16);
@@ -513,15 +523,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 		rent.setOpaque(false);
 
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/model"),
-				new JLabel("<html>Block model:<br><small>Supported: Built-in, JSON, OBJ")));
+				L10N.label("elementgui.block.renderType")));
 		rent.add(renderType);
 
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/rotation_mode"),
-				new JLabel("<html>Block rotation mode:<br><small>Select how this mod should rotate")));
+				L10N.label("elementgui.block.rotationMode")));
 		rent.add(rotationMode);
 
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_waterloggable"),
-				new JLabel("<html>Is block waterloggable?:<br><small>Used by blocks with non 1x1x1 shape")));
+				L10N.label("elementgui.block.isWaterloggable")));
 		rent.add(isWaterloggable);
 
 		renderType.setPreferredSize(new Dimension(320, 42));
@@ -540,31 +550,32 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel bound = new JPanel(new GridLayout(6, 2, 0, 2));
 		bound.setOpaque(false);
 
-		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"), new JLabel("Min. X coord: ")));
+		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"), L10N.label("elementgui.block.minCoord", "X")));
 		bound.add(mx);
-		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"), new JLabel("Min. Y coord: ")));
+		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"), L10N.label("elementgui.block.minCoord", "Y")));
 		bound.add(my);
-		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"), new JLabel("Min. Z coord: ")));
+		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"), L10N.label("elementgui.block.minCoord", "Z")));
 		bound.add(mz);
-		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"), new JLabel("Max. X coord: ")));
+		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"), L10N.label("elementgui.block.maxCoord", "X")));
 		bound.add(Mx);
-		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"), new JLabel("Max. Y coord: ")));
+		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"), L10N.label("elementgui.block.maxCoord", "Y")));
 		bound.add(My);
-		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"), new JLabel("Max. Z coord: ")));
+		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"), L10N.label("elementgui.block.maxCoord", "Z")));
 		bound.add(Mz);
 
 		bound.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Block bounding box", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.block.title.boundingBox"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Render type and rotation (for blocks without base)", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.block.title.renderType"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		transparencySettings.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1), "Transparency", 0,
-				0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.block.title.transparency"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		render.add(rent);
 		render.add(transparencySettings);
@@ -619,134 +630,145 @@ public class BlockGUI extends ModElementGUI<Block> {
 		lightOpacity.setOpaque(false);
 		isNotColidable.setOpaque(false);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), new JLabel("Name in GUI:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/material"), new JLabel("Material:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/material"),
+				L10N.label("elementgui.block.material")));
 		selp.add(material);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel("Creative inventory tab:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
+				L10N.label("elementgui.common.creative_tab")));
 		selp.add(creativeTab);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), new JLabel("Block sound:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"),
+				L10N.label("elementgui.block.sound")));
 		selp.add(soundOnStep);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hardness"), new JLabel("Hardness:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hardness"),
+				L10N.label("elementgui.block.hardness")));
 		selp.add(hardness);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/resistance"), new JLabel("Resistance:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/resistance"),
+				L10N.label("elementgui.block.resistance")));
 		selp.add(resistance);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/slipperiness"),
-				new JLabel("<html>Block slipperiness:<br><small>Normal slipperiness is 0.6")));
+				L10N.label("elementgui.block.slipperiness")));
 		selp.add(slipperiness);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"), new JLabel("Luminance:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
+				L10N.label("elementgui.block.luminance")));
 		selp.add(luminance);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/light_opacity"), new JLabel("Light opacity:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/light_opacity"),
+				L10N.label("elementgui.block.lightOpacity")));
 		selp.add(lightOpacity);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_gravity"), new JLabel("Has gravity?")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_gravity"),
+				L10N.label("elementgui.block.hasGravity")));
 		selp.add(hasGravity);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/can_walk_through"),
-				new JLabel("Can walk through the block?")));
+				L10N.label("elementgui.block.isNotColidable")));
 		selp.add(isNotColidable);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
-				new JLabel("Enable emissive rendering (glow):")));
+				L10N.label("elementgui.block.emissiveRendering")));
 		selp.add(emissiveRendering);
 
 		creativeTab.setPrototypeDisplayValue(new DataListEntry.Dummy("BUILDING_BLOCKS"));
 		creativeTab.addPopupMenuListener(new ComboBoxFullWidthPopup());
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
-				new JLabel("<html>Custom drop:<br><small>Leave empty to make it drop itself")));
+				L10N.label("elementgui.block.customDrop")));
 		selp3.add(PanelUtils.centerInPanel(customDrop));
 
-		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_amount"), new JLabel("Drop amount:")));
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_amount"),
+				L10N.label("elementgui.block.dropAmount")));
 		selp3.add(dropAmount);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
-				new JLabel("<html>Use loot table for drops:<br><small>If checked, you need to define loot table for drops")));
-		selp3.add(PanelUtils.centerInPanel(useLootTableForDrops));
+				L10N.label("elementgui.block.useLootTableForDrops")));
+		selp3.add(useLootTableForDrops);
 
-		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"), new JLabel(
-				"<html>Creative pick item:<br><small>" + "Leave empty for default creative mode pick item")));
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
+				L10N.label("elementgui.block.creativePickItem")));
 		selp3.add(PanelUtils.centerInPanel(creativePickItem));
 
-		selp3.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/harvest_tool"), new JLabel("Tool able to destroy it:")));
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/harvest_tool"),
+				L10N.label("elementgui.block.destroyTool")));
 		selp3.add(destroyTool);
 
-		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/harvest_level"), new JLabel(
-				"<html>Tool harvest level to break with drop:<br><small>Only works with certain materials (e.g. ROCK)")));
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/harvest_level"),
+				L10N.label("elementgui.block.breakHarvestLevel")));
 		selp3.add(breakHarvestLevel);
 
-		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"), new JLabel("Is unbreakable?")));
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
+				L10N.label("elementgui.block.unbreakable")));
 		selp3.add(unbreakable);
 
-		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"), new JLabel("Is replaceable?")));
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
+				L10N.label("elementgui.block.replaceable")));
 		selp3.add(isReplaceable);
 
-		advancedProperties
-				.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_rate"), new JLabel("Tick rate: ")));
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_rate"),
+				L10N.label("elementgui.block.tickRate")));
 		advancedProperties.add(tickRate);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_randomly"),
-				new JLabel("<html>Tick randomly:" + "<br><small>Ticks randomly with global tick rate factor")));
+				L10N.label("elementgui.block.")));
 		advancedProperties.add(tickRandomly);
 
 		tickRandomly.addActionListener(e -> tickRate.setEnabled(!tickRandomly.isSelected()));
 
-		advancedProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/color_on_map"), new JLabel("Block color on the map:")));
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/color_on_map"),
+				L10N.label("elementgui.block.colorOnMap")));
 		advancedProperties.add(colorOnMap);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/can_plants_grow"),
-				new JLabel("Can plants sustain on this block?")));
+				L10N.label("elementgui.block.plantsGrowOn")));
 		advancedProperties.add(plantsGrowOn);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/beacon_color_modifier"),
-				new JLabel("Beacon color modifier:")));
+				L10N.label("elementgui.block.beaconColorModifier")));
 		advancedProperties.add(beaconColorModifier);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_beacon_base"),
-				new JLabel("Can this block be beacon base?")));
+				L10N.label("elementgui.block.isBeaconBase")));
 		advancedProperties.add(isBeaconBase);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_ladder"),
-				new JLabel("<html>Does block act like ladder?<br><small>Block must not be full for this to work")));
+				L10N.label("elementgui.block.isLadder")));
 		advancedProperties.add(isLadder);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/redstone_connect"),
-				new JLabel("Does redstone connect to this block?")));
+				L10N.label("elementgui.block.canProvidePower")));
 		advancedProperties.add(canProvidePower);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/enchantments_bonus"),
-				new JLabel("Enchantments power bonus:")));
+				L10N.label("elementgui.block.enchantPowerBonus")));
 		advancedProperties.add(enchantPowerBonus);
 
-		advancedProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/flammability"), new JLabel("Block flammability:")));
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
+				L10N.label("elementgui.block.flammability")));
 		advancedProperties.add(flammability);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
-				new JLabel("<html>Fire spreading speed:<br><small>Leave 0 for vanilla handling")));
+				L10N.label("elementgui.block.fireSpreadSpeed")));
 		advancedProperties.add(fireSpreadSpeed);
 
-		advancedProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/push_reaction"), new JLabel("Reaction to being pushed:")));
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/push_reaction"),
+				L10N.label("elementgui.block.reactionToPushing")));
 		advancedProperties.add(reactionToPushing);
 
-		advancedProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/ai_path_node_type"), new JLabel("AI path node type:")));
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ai_path_node_type"),
+				L10N.label("elementgui.block.aiPathNodeType")));
 		advancedProperties.add(aiPathNodeType);
 
-		advancedProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/offset_type"), new JLabel("Random model offset:")));
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
+				L10N.label("elementgui.block.offsetType")));
 		advancedProperties.add(offsetType);
 
 		isWaterloggable.setOpaque(false);
@@ -767,15 +789,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		selp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"General properties", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
+				L10N.t("elementgui.block.title.generalProperties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
 		selp3.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Dropping properties", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
+				L10N.t("elementgui.block.title.droppingProperties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
 
 		advancedProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Advanced block properties", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
-				Color.white));
+				L10N.t("elementgui.block.title.advancedProperties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
 
 		JComponent ploca = PanelUtils.westAndEastElement(selp, PanelUtils.pullElementUp(selp3));
 
@@ -823,38 +844,35 @@ public class BlockGUI extends ModElementGUI<Block> {
 		props.setOpaque(false);
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bind_gui"),
-				new JLabel("<html>Bind this block to GUI:<br><small>Optional: block can have container but no GUI")));
+				L10N.label("elementgui.block.guiBoundTo")));
 		props.add(guiBoundTo);
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bind_gui_open"),
-				new JLabel("Open bound GUI on right click:")));
+				L10N.label("elementgui.block.openGUIOnRightClick")));
 		props.add(openGUIOnRightClick);
 
-		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/inventory_size"), new JLabel(
-				"<html>Size of inventory (slot count):<br><small>"
-						+ "Usually this value should be the <i>biggest slot ID in the GUI this block is bound to + 1</i>")));
+		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/inventory_size"),
+				L10N.label("elementgui.block.inventorySize")));
 		props.add(inventorySize);
 
-		props.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/inventory_stack_size"), new JLabel("Max size of stack:")));
+		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/inventory_stack_size"),
+				L10N.label("elementgui.block.inventoryStackSize")));
 		props.add(inventoryStackSize);
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_inventory_items"),
-				new JLabel("Drop items from inventory when block destroyed:")));
+				L10N.label("elementgui.block.inventoryDropWhenDestroyed")));
 		props.add(inventoryDropWhenDestroyed);
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/comparator_data"),
-				new JLabel("Enable block output comparator data:")));
+				L10N.label("elementgui.block.inventoryComparatorPower")));
 		props.add(inventoryComparatorPower);
 
-		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/input_slots"), new JLabel(
-				"<html>Disable automation (eg. hoppers) taking from these slots"
-						+ "<br><small>Enter comma separated list of slot IDs")));
+		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/input_slots"),
+				L10N.label("elementgui.block.inSlotIDs")));
 		props.add(inSlotIDs);
 
-		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/output_slots"), new JLabel(
-				"<html>Disable automation (eg. hoppers) inserting into these slots"
-						+ "<br><small>Enter comma separated list of slot IDs")));
+		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/output_slots"),
+				L10N.label("elementgui.block.outSlotIDs")));
 		props.add(outSlotIDs);
 
 		ComponentUtils.deriveFont(outSlotIDs, 16);
@@ -900,50 +918,52 @@ public class BlockGUI extends ModElementGUI<Block> {
 		fluidTank.setOpaque(false);
 
 		energyStorage.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1), "Energy storage",
-				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.block.title.energyStorage"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		fluidTank.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1), "Fluid tank", 0,
-				0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.block.title.fluidTank"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		hasEnergyStorage.setOpaque(false);
 		isFluidTank.setOpaque(false);
 
-		energyStorage.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("energy/enable_storage"), new JLabel("Enable energy storage:")));
+		energyStorage.add(HelpUtils.wrapWithHelpButton(this.withEntry("energy/enable_storage"),
+				L10N.label("elementgui.block.hasEnergyStorage")));
 		energyStorage.add(hasEnergyStorage);
 
-		energyStorage.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("energy/initial_energy"), new JLabel("Initial energy:")));
+		energyStorage.add(HelpUtils.wrapWithHelpButton(this.withEntry("energy/initial_energy"),
+				L10N.label("elementgui.block.energyInitial")));
 		energyStorage.add(energyInitial);
 
-		energyStorage.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("energy/energy_capacity"), new JLabel("Maximal energy capacity:")));
+		energyStorage.add(HelpUtils.wrapWithHelpButton(this.withEntry("energy/energy_capacity"),
+				L10N.label("elementgui.block.energyCapacity")));
 		energyStorage.add(energyCapacity);
 
 		energyStorage.add(HelpUtils.wrapWithHelpButton(this.withEntry("energy/max_receive"),
-				new JLabel("<html>Max energy receive:<br><small>Per insertion")));
+				L10N.label("elementgui.block.energyMaxReceive")));
 		energyStorage.add(energyMaxReceive);
 
 		energyStorage.add(HelpUtils.wrapWithHelpButton(this.withEntry("energy/max_extract"),
-				new JLabel("<html>Max energy extract:<br><small>Per extraction")));
+				L10N.label("elementgui.block.energyMaxExtract")));
 		energyStorage.add(energyMaxExtract);
 
-		fluidTank.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluidtank/enable_storage"), new JLabel("Enable fluid storage:")));
+		fluidTank.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluidtank/enable_storage"),
+				L10N.label("elementgui.block.isFluidTank")));
 		fluidTank.add(isFluidTank);
 
 		fluidTank.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluidtank/fluid_capacity"),
-				new JLabel("<html>Maximal fluid capacity:<br><small>Unit: milibuckets")));
+				L10N.label("elementgui.block.fluidCapacity")));
 		fluidTank.add(fluidCapacity);
 
-		fluidTank.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluidtank/fluid_restrictions"), new JLabel(
-				"<html>Restrict accepted fluids:<br><small>Empty means not restriction. Include flowing and still fluid")));
+		fluidTank.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluidtank/fluid_restrictions"),
+				L10N.label("elementgui.block.fluidRestrictions")));
 		fluidTank.add(fluidRestrictions);
 
 		pane10.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
-				new JLabel("Note: Tile entity needs to be enabled for energy storage and fluid tanks to work."),
+				L10N.label("elementgui.block.storageNote"),
 				PanelUtils.westAndEastElement(energyStorage,
 						PanelUtils.northAndCenterElement(fluidTank, new JEmptyBox())), 10, 10)));
 
@@ -952,7 +972,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		props.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Inventory settings", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.block.title.inventorySettings"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		invblock.add("Center", props);
@@ -966,30 +986,31 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel slip = new JPanel(new GridLayout(7, 2, 20, 2));
 
 		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
-				new JLabel("Dimensions to generate in (leave empty to disable spawning):")));
+				L10N.label("elementgui.block.spawnWorldTypes")));
 		slip.add(spawnWorldTypes);
 
 		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
-				new JLabel("Blocks this block can replace:")));
+				L10N.label("elementgui.block.blocksToReplace")));
 		slip.add(blocksToReplace);
 
 		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
-				new JLabel("Restriction biomes (leave empty for no restriction):")));
+				L10N.label("elementgui.block.restrictionBiomes")));
 		slip.add(restrictionBiomes);
 
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_chunk_count"), new JLabel(
-				"<html>Average amount of ore groups per chunk:<br><small>Setting this value too high (>32) might crash world generator")));
+		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_chunk_count"),
+				L10N.label("elementgui.block.frequencyPerChunks")));
 		slip.add(frequencyPerChunks);
 
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_group_size"), new JLabel(
-				"<html>Average number of ores in a group:<br><small>Setting this value too high (>32) might crash world generator")));
+		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_group_size"),
+				L10N.label("elementgui.block.frequencyOnChunk")));
 		slip.add(frequencyOnChunk);
 
-		slip.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/gen_min_height"), new JLabel("Minimal generation height:")));
+		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_min_height"),
+				L10N.label("elementgui.block.minGenerateHeight")));
 		slip.add(minGenerateHeight);
-		slip.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/gen_max_height"), new JLabel("Maximal generation height:")));
+
+		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_max_height"),
+				L10N.label("elementgui.block.maxGenerateHeight")));
 		slip.add(maxGenerateHeight);
 
 		slip.setOpaque(false);
@@ -1005,28 +1026,27 @@ public class BlockGUI extends ModElementGUI<Block> {
 		particleParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_particles"), spawnParticles));
 		particleParameters.add(new JLabel());
 
-		particleParameters
-				.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_type"), new JLabel("Particle type: ")));
+		particleParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_type"),
+				L10N.label("elementgui.block.particleToSpawn")));
 		particleParameters.add(particleToSpawn);
 
 		particleParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_shape"),
-				new JLabel("<html>Particle spawning shape:<br><small>Determines shape boundary")));
+				L10N.label("elementgui.block.particleSpawningShape")));
 		particleParameters.add(particleSpawningShape);
 
 		particleParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_spawn_radius"),
-				new JLabel("Average particle spawning radius: ")));
+				L10N.label("elementgui.block.particleSpawningRadious")));
 		particleParameters.add(particleSpawningRadious);
 
 		particleParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_average_amount"),
-				new JLabel("Average particle amount: ")));
+				L10N.label("elementgui.block.particleAmount")));
 		particleParameters.add(particleAmount);
 
-		JComponent parpar = PanelUtils
-				.northAndCenterElement(particleParameters, PanelUtils.join(FlowLayout.LEFT, particleCondition));
+		JComponent parpar = PanelUtils.northAndCenterElement(particleParameters, PanelUtils.join(FlowLayout.LEFT, particleCondition));
 
 		parpar.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Particle properties", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.block.title.particleProperties"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		particleParameters.setOpaque(false);
@@ -1061,13 +1081,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		page2group.addValidationElement(name);
 
-		addPage("Visual", pane2);
-		addPage("Properties", pane3);
-		addPage("Advanced properties", pane7);
-		addPage("Tile entity", pane8);
-		addPage("Energy & fluid storage", pane10);
-		addPage("Triggers", pane4);
-		addPage("Generation", pane9);
+		addPage(L10N.t("elementgui.block.page.visual"), pane2);
+		addPage(L10N.t("elementgui.block.page.properties"), pane3);
+		addPage(L10N.t("elementgui.block.page.advancedProperties"), pane7);
+		addPage(L10N.t("elementgui.block.page.tileEntity"), pane8);
+		addPage(L10N.t("elementgui.block.page.storage"), pane10);
+		addPage(L10N.t("elementgui.block.page.triggers"), pane4);
+		addPage(L10N.t("elementgui.block.page.generation"), pane9);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -1149,7 +1169,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		particleCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(normal, singleTexture, cross),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
@@ -1434,8 +1454,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 			block.renderType = 11;
 		else if (model.equals(cross))
 			block.renderType = 12;
-		else if (model.equals(crop))
-			block.renderType = 13;
 		block.customModelName = model.getReadableName();
 
 		return block;
