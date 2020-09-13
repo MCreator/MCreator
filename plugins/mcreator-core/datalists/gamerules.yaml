@@ -10,7 +10,7 @@
   type: boolean
 - DO_ENTITY_DROPS:
   type: boolean
-- DOFIRE_TICK:
+- DO_FIRE_TICK:
   type: boolean
 - DO_INSOMNIA:
   type: boolean
