@@ -1,0 +1,58 @@
+- ANNOUNCE_ADVANCEMENTS:
+  type: boolean
+- COMMAND_BLOCK_OUTPUT:
+  type: boolean
+- DISABLE_ELYTRA_MOVEMENT_CHECK:
+  type: boolean
+- DISABLE_RAIDS:
+  type: boolean
+- DO_DAYLIGHT_CYCLE:
+  type: boolean
+- DO_ENTITY_DROPS:
+  type: boolean
+- DO_FIRE_TICK:
+  type: boolean
+- DO_INSOMNIA:
+  type: boolean
+- DO_IMMEDIATE_RESPAWN:
+  type: boolean
+- DO_LIMITED_CRAFTING:
+  type: boolean
+- DO_MOB_LOOT:
+  type: boolean
+- DO_MOB_SPAWNING:
+  type: boolean
+- DO_TILE_DROPS:
+  type: boolean
+- DO_WEATHER_CYCLE:
+  type: boolean
+- DROWNING_DAMAGE:
+  type: boolean
+- FALL_DAMAGE:
+  type: boolean
+- FIRE_DAMAGE:
+  type: boolean
+- KEEP_INVENTORY:
+  type: boolean
+- LOG_ADMIN_COMMANDS:
+  type: boolean
+- MOB_GRIEFING:
+  type: boolean
+- NATURAL_REGENERATION:
+  type: boolean
+- REDUCED_DEBUG_INFO:
+  type: boolean
+- SEND_COMMAND_FEEDBACK:
+  type: boolean
+- SHOW_DEATH_MESSAGES:
+  type: boolean
+- SPECTATORS_GENERATE_CHUNKS:
+  type: boolean
+- MAX_COMMAND_CHAIN_LENGTH:
+  type: number
+- MAX_ENTITY_CRAMMING:
+  type: number
+- RANDOM_TICK_SPEED:
+  type: number
+- SPAWN_RADIUS:
+  type: number

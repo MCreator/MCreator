@@ -120,6 +120,7 @@ public class GeneratorSelector {
 			addStatsBar("Entities", "entities", supportedElements, stats);
 			addStatsBar("Fluids", "fluids", supportedElements, stats);
 			addStatsBar("Game modes", "gamemodes", supportedElements, stats);
+			addStatsBar("Game rules", "gamerules", supportedElements, stats);
 			addStatsBar("Map colors", "mapcolors", supportedElements, stats);
 			addStatsBar("Materials", "materials", supportedElements, stats);
 			addStatsBar("Particles", "particles", supportedElements, stats);
