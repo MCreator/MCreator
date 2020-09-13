@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.Dependency;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Food;
 import net.mcreator.minecraft.DataListEntry;
@@ -150,8 +149,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		selp.setOpaque(false);
 
 		name.setPreferredSize(new Dimension(120, 31));
-		rarity.setOpaque(false);
-
+		
 		forDogs.setOpaque(false);
 		isAlwaysEdible.setOpaque(false);
 
