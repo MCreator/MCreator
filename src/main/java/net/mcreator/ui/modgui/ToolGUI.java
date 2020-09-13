@@ -77,7 +77,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JCheckBox stayInGridWhenCrafting = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
 	private final JCheckBox damageOnCrafting = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
 
-	private final Model normal = new Model.BuiltInModel(L10N.t("elementgui.tool.model_normal"));
+	private final Model normal = new Model.BuiltInModel("Normal");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal });
 
 	private final JCheckBox hasGlow = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
