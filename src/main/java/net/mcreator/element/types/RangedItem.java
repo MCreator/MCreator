@@ -48,6 +48,7 @@ import java.util.Map;
 	public int usageCount;
 	public Sound actionSound;
 	public boolean hasGlow;
+	public String animation;
 	public boolean enableMeleeDamage;
 	public double damageVsEntity;
 	public Procedure onRangedItemUsed;
@@ -76,6 +77,7 @@ import java.util.Map;
 		super(element);
 
 		this.stackSize = 1;
+		this.animation = "bow";
 
 		this.specialInfo = new ArrayList<>();
 	}
