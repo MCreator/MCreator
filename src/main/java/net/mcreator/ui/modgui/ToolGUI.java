@@ -74,13 +74,13 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JComboBox<String> toolType = new JComboBox<>(
 			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Special", "MultiTool" });
 
-	private final JCheckBox stayInGridWhenCrafting = new JCheckBox(L10N.t("elementgui.tool.stay_in_grid_when_crafted"));
-	private final JCheckBox damageOnCrafting = new JCheckBox(L10N.t("elementgui.tool.damage_on_crafting"));
+	private final JCheckBox stayInGridWhenCrafting = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
+	private final JCheckBox damageOnCrafting = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
 
 	private final Model normal = new Model.BuiltInModel(L10N.t("elementgui.tool.model_normal"));
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal });
 
-	private final JCheckBox hasGlow = new JCheckBox(L10N.t("elementgui.tool.has_glow"));
+	private final JCheckBox hasGlow = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
 
 	private final JTextField specialInfo = new JTextField(20);
 
@@ -196,7 +196,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		selp.add(name);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel(L10N.t("elementgui.tool.creative_tab"))));
+				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel(L10N.t("elementgui.common.creative_tab"))));
 		selp.add(creativeTab);
 
 		selp.add(HelpUtils
@@ -212,7 +212,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/efficiency"), new JLabel(L10N.t("elementgui.tool.efficiency"))));
 		selp.add(efficiency);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"), new JLabel(L10N.t("elementgui.tool.enchantability"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"), new JLabel(L10N.t("elementgui.common.enchantability"))));
 		selp.add(enchantability);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/attack_speed"), new JLabel(L10N.t("elementgui.tool.attack_speed"))));
@@ -226,7 +226,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				.wrapWithHelpButton(this.withEntry("item/number_of_uses"), new JLabel(L10N.t("elementgui.tool.usage_count"))));
 		selp.add(usageCount);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"), new JLabel(L10N.t("elementgui.tool.repair_items"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"), new JLabel(L10N.t("elementgui.common.repair_items"))));
 		selp.add(repairItems);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"), new JLabel(L10N.t("elementgui.tool.blocks_affected"))));
