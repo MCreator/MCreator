@@ -129,7 +129,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final BiomeDictionaryTypeListField biomeDictionaryTypes = new BiomeDictionaryTypeListField(mcreator);
 	private final DefaultFeaturesListField defaultFeatures = new DefaultFeaturesListField(mcreator);
 
-	private final DataListEntry.Dummy noparent = new DataListEntry.Dummy(L10N.t("elementgui.biome.no_parent"));
+	private final DataListEntry.Dummy noparent = new DataListEntry.Dummy(L10N.t("No parent"));
 
 	public BiomeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -190,7 +190,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnPillagerOutpost.setOpaque(false);
 
 		sbbp2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/village"), new JLabel(L10N.t("elementgui.biome.village"))));
+				.wrapWithHelpButton(this.withEntry("biome/village"), new JLabel(L10N.t("elementgui.biome.generate_village"))));
 		sbbp2.add(villageType);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_woodland_mansions"),
@@ -265,8 +265,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(parent);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/dictionary"), new JLabel(
-				L10N.t("elementgui.biome.dictionnary")
-						+ L10N.t("elementgui.biome.dictionnary.info"))));
+				L10N.t("elementgui.biome.dictionnary"))));
 		spawnproperties.add(biomeDictionaryTypes);
 
 		spawnproperties.add(HelpUtils
@@ -332,7 +331,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp3.add(temperature);
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/default_features"),
-				new JLabel(L10N.t("elementgui.biome.default_features>"))));
+				new JLabel(L10N.t("elementgui.biome.default_features"))));
 		sbbp3.add(defaultFeatures);
 
 		sbbp3.setOpaque(false);
@@ -461,8 +460,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		JComponent component = PanelUtils.northAndCenterElement(HelpUtils
 						.wrapWithHelpButton(this.withEntry("biome/spawn_entities"), new JLabel(L10N.t(
-								"elementgui.biome.spawn_entities")
-										+ L10N.t("elementgui.biome.spawn_entities.info"))),
+								"elementgui.biome.spawn_entities"))),
 				spawnEntriesList);
 
 		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
