@@ -129,7 +129,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final BiomeDictionaryTypeListField biomeDictionaryTypes = new BiomeDictionaryTypeListField(mcreator);
 	private final DefaultFeaturesListField defaultFeatures = new DefaultFeaturesListField(mcreator);
 
-	private final DataListEntry.Dummy noparent = new DataListEntry.Dummy(L10N.t("No parent"));
+	private final DataListEntry.Dummy noparent = new DataListEntry.Dummy("No parent");
 
 	public BiomeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
