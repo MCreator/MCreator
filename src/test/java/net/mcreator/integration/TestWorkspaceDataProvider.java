@@ -345,7 +345,8 @@ public class TestWorkspaceDataProvider {
 			food.saturation = 0.8f;
 			food.forDogs = _true;
 			food.isAlwaysEdible = _true;
-			food.animation = "eat";
+			food.animation = ListUtils.getRandomItem(random,
+					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 			food.hasGlow = _true;
 			food.onRightClicked = new Procedure("procedure1");
 			food.onEaten = new Procedure("procedure2");
@@ -924,7 +925,8 @@ public class TestWorkspaceDataProvider {
 			} else {
 				rangedItem.specialInfo = new ArrayList<>();
 			}
-			rangedItem.animation = "bow";
+			rangedItem.animation = ListUtils.getRandomItem(random,
+					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 			rangedItem.shootConstantly = _true;
 			rangedItem.usageCount = 67;
 			rangedItem.stackSize = 41;
