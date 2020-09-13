@@ -137,11 +137,14 @@ public class ElementUtil {
 	}
 
 	public static String[] getAllBooleanGamerules() {
-		return DataListLoader.loadDataList("gamerulesboolean").stream().map(DataListEntry::getName).toArray(String[]::new);
+		return DataListLoader.loadDataList("gamerules").stream().filter(e -> e.getType().equals("boolean"))
+
+				.map(DataListEntry::getName).toArray(String[]::new);
 	}
 
 	public static String[] getAllNumberGamerules() {
-		return DataListLoader.loadDataList("gamerulesnumber").stream().map(DataListEntry::getName).toArray(String[]::new);
+		return DataListLoader.loadDataList("gamerules").stream().filter(e -> e.getType().equals("number"))
+				.map(DataListEntry::getName).toArray(String[]::new);
 	}
 
 	public static String[] loadAllFluids(Workspace workspace) {
