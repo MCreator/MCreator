@@ -75,8 +75,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
 	private ProcedureSelector glowCondition;
 
-	private final JComboBox<String> animation = new JComboBox<>(new String[] {
-			"block", "bow", "crossbow", "drink", "eat", "none", "spear" });
+	private final JComboBox<String> animation = new JComboBox<>(
+			new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 
 	private ProcedureSelector onBulletHitsBlock;
 	private ProcedureSelector onBulletHitsPlayer;
@@ -148,8 +148,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		useCondition = new ProcedureSelector(this.withEntry("rangeditem/use_condition"), mcreator,
 				"Can use ranged item", VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
-				"Does Item Glow", VariableElementType.LOGIC,
+		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow",
+				ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("itemstack:itemstack"));
 
 		customBulletModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
@@ -175,18 +175,22 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		ComponentUtils.deriveFont(renderType, 16.0f);
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
-		JPanel sbbp2 = new JPanel(new BorderLayout(0, 10));
+		JPanel sbbp2 = new JPanel(new BorderLayout(0, 2));
 		sbbp2.setOpaque(false);
 
-		sbbp2.add("Center", PanelUtils
+		sbbp2.add("North", PanelUtils
 				.westAndEastElement(PanelUtils.centerInPanel(ComponentUtils.squareAndBorder(texture, "Texture")),
 						PanelUtils.join(useCondition, onRangedItemUsed, onEntitySwing)));
+
+		sbbp2.add("South", PanelUtils.westAndEastElement(HelpUtils
+						.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Enable glowing effect")),
+				PanelUtils.join(hasGlow, glowCondition)));
 
 		pane1.setOpaque(false);
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
-		JPanel selp = new JPanel(new GridLayout(12, 2, 5, 2));
+		JPanel selp = new JPanel(new GridLayout(11, 2, 5, 2));
 		selp.setOpaque(false);
 
 		JPanel selp2 = new JPanel(new GridLayout(8, 2, 10, 2));
@@ -214,14 +218,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel("Creative inventory tab:")));
 		selp.add(creativeTab);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Enable glowing effect")));
-		selp.add(PanelUtils.join(FlowLayout.LEFT, hasGlow, glowCondition));
-
 		hasGlow.addActionListener(e -> updateGlowElements());
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/animation"), new JLabel("Item animation: ")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"), new JLabel("Item animation: ")));
 		selp.add(animation);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"), new JLabel("Max stack size:")));
@@ -243,7 +242,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				new JLabel("<html>Item usage count:<br><small>Set to 0 if stack size is larger than 1")));
 		selp.add(usageCount);
 
-		sbbp2.add("South", selp);
+		sbbp2.add("Center", selp);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/bullet_power"),
 				new JLabel("<html>Bullet power:<br><small>1 is like bow")));

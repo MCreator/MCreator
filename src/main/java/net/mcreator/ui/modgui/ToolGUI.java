@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.Dependency;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Tool;
 import net.mcreator.minecraft.DataListEntry;
@@ -136,8 +135,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				"When entity swings item",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
-				"Does Item Glow", VariableElementType.LOGIC,
+		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow",
+				ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("itemstack:itemstack"));
 
 		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocks);
@@ -182,14 +181,20 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2), "Tool 3D model",
 				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		pane2.setOpaque(false);
-		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils
-				.northAndCenterElement(PanelUtils.join(destal, rent), PanelUtils.gridElements(1, 2, HelpUtils
-								.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
-										"<html>Special information about the tool:<br><small>Separate entries with comma, to use comma in description use \\,")),
-						specialInfo))));
+		JComponent glow = PanelUtils.join(FlowLayout.LEFT, HelpUtils
+						.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Enable item glowing effect:")),
+				hasGlow, glowCondition);
 
-		JPanel selp = new JPanel(new GridLayout(14, 2, 10, 2));
+		JComponent visualBottom = PanelUtils.centerAndSouthElement(PanelUtils.gridElements(1, 2, HelpUtils
+						.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
+								"<html>Special information about the tool:<br><small>Separate entries with comma, to use comma in description use \\,")),
+				specialInfo), glow, 10, 10);
+
+		pane2.setOpaque(false);
+		pane2.add("Center", PanelUtils
+				.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.join(destal, rent), visualBottom)));
+
+		JPanel selp = new JPanel(new GridLayout(13, 2, 10, 2));
 		selp.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -203,10 +208,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel("Creative inventory tab:")));
 		selp.add(creativeTab);
-
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Enable glowing effect")));
-		selp.add(PanelUtils.join(FlowLayout.LEFT, hasGlow, glowCondition));
 
 		hasGlow.addActionListener(e -> updateGlowElements());
 
