@@ -217,7 +217,7 @@ public class TestWorkspaceDataProvider {
 			}
 			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];
 			biome.grassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 1;
-			biome.seagrassPerChunk = new int[] { 0, 5, 10, 16}[valueIndex] + 2;
+			biome.seagrassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 2;
 			biome.flowersPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 3;
 			biome.mushroomsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 4;
 			biome.bigMushroomsChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 5;
@@ -232,13 +232,13 @@ public class TestWorkspaceDataProvider {
 			biome.spawnShipwreck = _true;
 			biome.oceanRuinType = "NONE";
 			biome.spawnOceanMonument = !_true;
-			biome.spawnWoodlandMansion =  _true;
+			biome.spawnWoodlandMansion = _true;
 			biome.spawnJungleTemple = !_true;
 			biome.spawnDesertPyramid = !_true;
 			biome.spawnIgloo = !_true;
-			biome.spawnPillagerOutpost =  !_true;
-			biome.spawnStronghold =  _true;
-			biome.spawnMineshaft =  !_true;
+			biome.spawnPillagerOutpost = !_true;
+			biome.spawnStronghold = _true;
+			biome.spawnMineshaft = !_true;
 			biome.villageType = "desert";
 			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
 			biome.biomeType = ListUtils.getRandomItem(random, new String[] { "WARM", "DESERT", "COOL", "ICY" });
@@ -329,6 +329,7 @@ public class TestWorkspaceDataProvider {
 		case FOOD:
 			Food food = new Food(modElement);
 			food.name = modElement.getName();
+			food.rarity = ListUtils.getRandomItem(Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			food.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
 				food.specialInfo = StringUtils
@@ -345,7 +346,8 @@ public class TestWorkspaceDataProvider {
 			food.saturation = 0.8f;
 			food.forDogs = _true;
 			food.isAlwaysEdible = _true;
-			food.animation = "eat";
+			food.animation = ListUtils.getRandomItem(random,
+					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 			food.hasGlow = _true;
 			food.onRightClicked = new Procedure("procedure1");
 			food.onEaten = new Procedure("procedure2");
@@ -873,6 +875,7 @@ public class TestWorkspaceDataProvider {
 		case ITEM:
 			Item item = new Item(modElement);
 			item.name = modElement.getName();
+			item.rarity = ListUtils.getRandomItem(Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			item.creativeTab = new TabEntry(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			item.stackSize = 52;
@@ -924,6 +927,8 @@ public class TestWorkspaceDataProvider {
 			} else {
 				rangedItem.specialInfo = new ArrayList<>();
 			}
+			rangedItem.animation = ListUtils.getRandomItem(random,
+					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 			rangedItem.shootConstantly = _true;
 			rangedItem.usageCount = 67;
 			rangedItem.stackSize = 41;
