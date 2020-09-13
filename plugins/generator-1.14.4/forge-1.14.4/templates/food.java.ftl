@@ -79,7 +79,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 		</#if>
 
-		@Override public UseAction getUseAction(ItemStack par1ItemStack) {
+		@Override public UseAction getUseAction(ItemStack itemstack) {
 			return UseAction.${data.animation?upper_case};
 		}
 

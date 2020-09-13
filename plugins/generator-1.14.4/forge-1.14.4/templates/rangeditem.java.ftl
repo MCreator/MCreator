@@ -81,7 +81,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 		</#if>
 
-		@Override public UseAction getUseAction(ItemStack par1ItemStack) {
+		@Override public UseAction getUseAction(ItemStack itemstack) {
 			return UseAction.${data.animation?upper_case};
 		}
 
@@ -96,10 +96,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			return retval;
 		}
 		</#if>
-
-		@Override public UseAction getUseAction(ItemStack stack) {
-      		return UseAction.BOW;
-   		}
 
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
 			entity.setActiveHand(hand);
