@@ -34,6 +34,7 @@ import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.util.ArrayListListModel;
@@ -73,8 +74,8 @@ public class WYSIWYGEditor extends JPanel {
 
 	private boolean opening = false;
 
-	public JCheckBox renderBgLayer = new JCheckBox("Render background layer");
-	public JCheckBox doesPauseGame = new JCheckBox("Pause the game when open");
+	public JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
+	public JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
 	public JComboBox<String> priority = new JComboBox<>(new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 
 	public VComboBox<String> overlayBaseTexture = new SearchableComboBox<>();
@@ -162,18 +163,18 @@ public class WYSIWYGEditor extends JPanel {
 		JPanel comppan = new JPanel(new BorderLayout());
 		comppan.setOpaque(false);
 		comppan.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1), "Component list",
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1), (L10N.t("elementgui.gui.component_list")),
 				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		TransparentToolBar bar2 = new TransparentToolBar();
 		bar2.setBorder(null);
 		bar2.setFloatable(false);
 
-		moveComponent.setToolTipText("Move selected component");
-		editComponent.setToolTipText("Edit selected component");
-		removeComponent.setToolTipText("Remove selected component");
-		moveComponentUp.setToolTipText("Move selected component up the list");
-		moveComponentDown.setToolTipText("Move selected component down the list");
+		moveComponent.setToolTipText((L10N.t("elementgui.gui.move_component")));
+		editComponent.setToolTipText((L10N.t("elementgui.gui.edit_component")));
+		removeComponent.setToolTipText((L10N.t("elementgui.gui.remove_component")));
+		moveComponentUp.setToolTipText((L10N.t("elementgui.gui.move_component_up")));
+		moveComponentDown.setToolTipText((L10N.t("elementgui.gui.move_component_down")));
 
 		moveComponent.setMargin(new Insets(0, 0, 0, 0));
 		removeComponent.setMargin(new Insets(0, 0, 0, 0));
@@ -221,22 +222,22 @@ public class WYSIWYGEditor extends JPanel {
 		image.addActionListener(event -> new ImageDialog(this, null));
 
 		button.setMargin(new Insets(0, 0, 0, 0));
-		button.setToolTipText("Add button");
+		button.setToolTipText((L10N.t("elementgui.gui.add_button")));
 
 		label.setMargin(new Insets(0, 0, 0, 0));
-		label.setToolTipText("Add text label");
+		label.setToolTipText((L10N.t("elementgui.gui.add_text_label")));
 
 		image.setMargin(new Insets(0, 0, 0, 0));
-		image.setToolTipText("Add image");
+		image.setToolTipText((L10N.t("elementgui.gui.add_image")));
 
 		text.setMargin(new Insets(0, 0, 0, 0));
-		text.setToolTipText("Add text input");
+		text.setToolTipText((L10N.t("elementgui.gui.add_text_input")));
 
 		slot1.setMargin(new Insets(0, 0, 0, 0));
-		slot1.setToolTipText("Add input slot");
+		slot1.setToolTipText((L10N.t("elementgui.gui.add_input_slot")));
 
 		slot2.setMargin(new Insets(0, 0, 0, 0));
-		slot2.setToolTipText("Add output slot");
+		slot2.setToolTipText((L10N.t("elementgui.gui.add_output_slot")));
 
 		add.add(label);
 		add.add(button);
@@ -249,7 +250,7 @@ public class WYSIWYGEditor extends JPanel {
 		slot1.addActionListener(e -> new InputSlotDialog(this, null));
 		slot2.addActionListener(e -> new OutputSlotDialog(this, null));
 
-		JCheckBox snapOnGrid = new JCheckBox("Snap components on the grid");
+		JCheckBox snapOnGrid = new JCheckBox((L10N.t("elementgui.gui.snap_components_on_grid")));
 		snapOnGrid.setOpaque(false);
 		snapOnGrid.addActionListener(event -> {
 			editor.showGrid = snapOnGrid.isSelected();
@@ -285,17 +286,17 @@ public class WYSIWYGEditor extends JPanel {
 
 		JPanel gx = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 0));
 		gx.setOpaque(false);
-		gx.add(new JLabel("Grid x: "));
+		gx.add(new JLabel((L10N.t("elementgui.gui.grid_x"))));
 		gx.add(sx);
-		gx.add(new JLabel(" offset x: "));
+		gx.add(new JLabel((L10N.t("elementgui.gui.offset_x"))));
 		gx.add(ox);
 		adds.add(gx);
 
 		JPanel gy = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 1));
 		gy.setOpaque(false);
-		gy.add(new JLabel("Grid y: "));
+		gy.add(new JLabel((L10N.t("elementgui.gui.grid_y"))));
 		gy.add(sy);
-		gy.add(new JLabel(" offset y: "));
+		gy.add(new JLabel((L10N.t("elementgui.gui.offset_y"))));
 		gy.add(oy);
 		adds.add(gy);
 
@@ -308,7 +309,7 @@ public class WYSIWYGEditor extends JPanel {
 		moveComponentDown.setEnabled(false);
 
 		adds.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1), "Editor options",
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1), (L10N.t("elementgui.gui.editor_options")),
 				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		adds.setOpaque(false);
@@ -319,10 +320,10 @@ public class WYSIWYGEditor extends JPanel {
 		JPanel adds2 = new JPanel();
 		adds2.setLayout(new BoxLayout(adds2, BoxLayout.PAGE_AXIS));
 		adds2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1), "GUI properties",
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1), (L10N.t("elementgui.gui.gui_properties")),
 				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent pon = PanelUtils.westAndEastElement(new JLabel("<html><b>GUI type:  "), lol);
+		JComponent pon = PanelUtils.westAndEastElement(new JLabel((L10N.t("elementgui.gui.gui_type"))), lol);
 
 		if (isNotOverlayType)
 			lol.addActionListener(event -> {
@@ -331,8 +332,8 @@ public class WYSIWYGEditor extends JPanel {
 				if (lol.getSelectedIndex() == 0 && !isOpening()) {
 					Object[] options = { "Yes", "No" };
 					int n = JOptionPane.showOptionDialog(mcreator,
-							"<html>If you have any slots or inventories and are switching to the basic GUI, they will be removed.<br><b>Would you like to proceed?",
-							"Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options,
+							(L10N.t("elementgui.gui.warning_switch_gui")),
+							(L10N.t("elementgui.gui.warning")), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options,
 							options[0]);
 					if (n == 0) {
 						slot1.setEnabled(false);
@@ -363,7 +364,7 @@ public class WYSIWYGEditor extends JPanel {
 
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, pon));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, new JLabel("GUI WxH: "), spa1, new JLabel("x"), spa2));
-		adds2.add(PanelUtils.join(FlowLayout.LEFT, new JLabel("Inventory offset: "), invOffX, invOffY));
+		adds2.add(PanelUtils.join(FlowLayout.LEFT, new JLabel(L10N.t("elementgui.gui.inventory_ofsset")), invOffX, invOffY));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, renderBgLayer));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, doesPauseGame));
 
