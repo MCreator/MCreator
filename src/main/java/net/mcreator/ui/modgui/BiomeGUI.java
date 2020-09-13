@@ -51,6 +51,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class BiomeGUI extends ModElementGUI<Biome> {
@@ -496,6 +497,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
+
+			defaultFeatures.setListElements(Arrays.asList("Caves", "MonsterRooms", "Structures", "Ores"));
 		}
 	}
 

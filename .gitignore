@@ -25,3 +25,9 @@
 Thumbs.db
 debug.log
 hs_err_pid*
+
+#MACOS
+#=====================
+.DS_Store
+.AppleDouble
+.LSOverride

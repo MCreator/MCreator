@@ -72,10 +72,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			setRegistryName("${registryname}");
 		}
 
-		@Override public UseAction getUseAction(ItemStack stack) {
-      		return UseAction.BOW;
-   		}
-
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
 			entity.setActiveHand(hand);
 			return new ActionResult(ActionResultType.SUCCESS, entity.getHeldItem(hand));
@@ -101,6 +97,10 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			</#list>
 		}
 		</#if>
+
+		@Override public UseAction getUseAction(ItemStack itemstack) {
+			return UseAction.${data.animation?upper_case};
+		}
 
 		@Override public int getUseDuration(ItemStack itemstack) {
 			return 72000;

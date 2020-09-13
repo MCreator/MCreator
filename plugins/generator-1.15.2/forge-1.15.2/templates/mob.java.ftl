@@ -691,7 +691,9 @@ import net.minecraft.block.material.Material;
 
 		<#if data.breedable>
             @Override public AgeableEntity createChild(AgeableEntity ageable) {
-				return (CustomEntity) entity.create(this.world);
+				CustomEntity retval = (CustomEntity) entity.create(this.world);
+				retval.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(retval)), SpawnReason.BREEDING, (ILivingEntityData)null, (CompoundNBT)null);
+				return retval;
 			}
 
 			@Override public boolean isBreedingItem(ItemStack stack) {

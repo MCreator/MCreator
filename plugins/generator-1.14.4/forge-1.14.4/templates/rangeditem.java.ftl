@@ -81,6 +81,10 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 		</#if>
 
+		@Override public UseAction getUseAction(ItemStack itemstack) {
+			return UseAction.${data.animation?upper_case};
+		}
+
 		<#if hasProcedure(data.onEntitySwing)>
 		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
 			boolean retval = super.onEntitySwing(itemstack, entity);
@@ -92,10 +96,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			return retval;
 		}
 		</#if>
-
-		@Override public UseAction getUseAction(ItemStack stack) {
-      		return UseAction.BOW;
-   		}
 
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
 			entity.setActiveHand(hand);

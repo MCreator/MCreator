@@ -49,7 +49,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 	public static class FoodItemCustom extends Item {
 
 		public FoodItemCustom() {
-			super(new Item.Properties().group(${data.creativeTab}).maxStackSize(${data.stackSize})
+			super(new Item.Properties().group(${data.creativeTab}).maxStackSize(${data.stackSize}).rarity(Rarity.${data.rarity})
 				.food((new Food.Builder()).hunger(${data.nutritionalValue}).saturation(${data.saturation}f)
 				<#if data.isAlwaysEdible>.setAlwaysEdible()</#if>
 				<#if data.forDogs>.meat()</#if>
@@ -75,7 +75,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
         </#if>
 
-		@Override public UseAction getUseAction(ItemStack par1ItemStack) {
+		@Override public UseAction getUseAction(ItemStack itemstack) {
 			return UseAction.${data.animation?upper_case};
 		}
 

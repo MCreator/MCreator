@@ -558,6 +558,12 @@ Blockly.defineBlocksWithJsonArray([
         "colour": "195"
     },
     {
+        "type": "immediate_source_entity_from_deps",
+        "message0": "Immediate source entity",
+        "output": "Entity",
+        "colour": "195"
+    },
+    {
         "type": "math_from_text",
         "message0": "number from text %1",
         "args0": [
@@ -655,6 +661,18 @@ Blockly.Extensions.register('potion_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("potion"))), 'potion');
+    });
+
+Blockly.Extensions.register('gamerulesboolean_list_provider',
+    function () {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArray(javabridge.getListOf("gamerulesboolean"))), 'gamerulesboolean');
+    });
+
+Blockly.Extensions.register('gamerulesnumber_list_provider',
+    function () {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArray(javabridge.getListOf("gamerulesnumber"))), 'gamerulesnumber');
     });
 
 Blockly.Extensions.register('enhancement_list_provider',
