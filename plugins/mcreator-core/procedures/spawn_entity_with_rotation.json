@@ -24,6 +24,11 @@
       "type": "input_value",
       "name": "pitch",
       "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "isChild",
+      "check": "Boolean"
     }
   ],
   "extensions": [
@@ -40,7 +45,8 @@
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
       "<value name=\"z\"><block type=\"coord_z\"></block></value>",
       "<value name=\"yaw\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
-      "<value name=\"pitch\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+      "<value name=\"pitch\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"isChild\"><block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block></value>"
     ],
     "fields": [
       "entity"
@@ -50,7 +56,8 @@
       "y",
       "z",
       "yaw",
-      "pitch"
+      "pitch",
+      "isChild"
     ],
     "dependencies": [
       {

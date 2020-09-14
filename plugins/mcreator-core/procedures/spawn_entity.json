@@ -14,6 +14,11 @@
       "type": "input_value",
       "name": "z",
       "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "isChild",
+      "check": "Boolean"
     }
   ],
   "extensions": [
@@ -28,7 +33,8 @@
     "toolbox_init": [
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
-      "<value name=\"z\"><block type=\"coord_z\"></block></value>"
+      "<value name=\"z\"><block type=\"coord_z\"></block></value>",
+      "<value name=\"isChild\"><block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block></value>"
     ],
     "fields": [
       "entity"
@@ -36,7 +42,8 @@
     "inputs": [
       "x",
       "y",
-      "z"
+      "z",
+      "isChild"
     ],
     "dependencies": [
       {

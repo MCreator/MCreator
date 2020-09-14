@@ -39,6 +39,11 @@
       "type": "input_value",
       "name": "vz",
       "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "isChild",
+      "check": "Boolean"
     }
   ],
   "extensions": [
@@ -58,7 +63,8 @@
       "<value name=\"pitch\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
       "<value name=\"vx\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
       "<value name=\"vy\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
-      "<value name=\"vz\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+      "<value name=\"vz\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"isChild\"><block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block></value>"
     ],
     "fields": [
       "entity"
@@ -71,7 +77,8 @@
       "pitch",
       "vx",
       "vy",
-      "vz"
+      "vz",
+      "isChild"
     ],
     "dependencies": [
       {
