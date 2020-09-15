@@ -119,7 +119,7 @@ public class BlocklyBlockCodeGenerator {
 			for (String inputName : toolboxBlock.inputs) {
 				boolean found = false;
 				for (Element element : elements) {
-					if (element.getNodeName().equals("value") && element.getAttribute("name").equals(inputName)) {
+					if ((element.getNodeName().equals("value") || element.getNodeName().equals("statement")) && element.getAttribute("name").equals(inputName)) {
 						found = true;
 						String generatedCode = BlocklyToCode.directProcessOutputBlock(master, element);
 						dataModel.put("input$" + inputName, generatedCode);
