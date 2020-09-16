@@ -19,6 +19,11 @@
       "type": "input_value",
       "name": "isChild",
       "check": "Boolean"
+    },
+    {
+      "type": "input_value",
+      "name": "growingTime",
+      "check": "Number"
     }
   ],
   "extensions": [
@@ -34,7 +39,8 @@
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
       "<value name=\"z\"><block type=\"coord_z\"></block></value>",
-      "<value name=\"isChild\"><block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block></value>"
+      "<value name=\"isChild\"><block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block></value>",
+      "<value name=\"growingTime\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
     ],
     "fields": [
       "entity"
@@ -43,7 +49,8 @@
       "x",
       "y",
       "z",
-      "isChild"
+      "isChild",
+      "growingTime"
     ],
     "dependencies": [
       {

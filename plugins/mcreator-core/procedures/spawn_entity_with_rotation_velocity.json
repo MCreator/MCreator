@@ -44,6 +44,11 @@
       "type": "input_value",
       "name": "isChild",
       "check": "Boolean"
+    },
+    {
+      "type": "input_value",
+      "name": "growingTime",
+      "check": "Number"
     }
   ],
   "extensions": [
@@ -64,7 +69,8 @@
       "<value name=\"vx\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
       "<value name=\"vy\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
       "<value name=\"vz\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
-      "<value name=\"isChild\"><block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block></value>"
+      "<value name=\"isChild\"><block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block></value>",
+      "<value name=\"growingTime\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
     ],
     "fields": [
       "entity"
@@ -78,7 +84,8 @@
       "vx",
       "vy",
       "vz",
-      "isChild"
+      "isChild",
+      "growingTime"
     ],
     "dependencies": [
       {

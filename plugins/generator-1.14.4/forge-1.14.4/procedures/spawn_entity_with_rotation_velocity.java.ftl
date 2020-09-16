@@ -8,10 +8,12 @@
         </#if>
 		entityToSpawn.setLocationAndAngles(${input$x}, ${input$y}, ${input$z}, (float) ${input$yaw}, (float) ${input$pitch});
 		entityToSpawn.setMotion(${input$vx},${input$vy},${input$vz});
-		<#if !entity.toString().contains(".CustomEntity")>
-            ((${generator.map(field$entity, "entities", 0)}) entityToSpawn).setGrowingAge(-24000);
-        <#else>
-            ((${entity}) entityToSpawn).setGrowingAge(-24000);
+		<#if {input$isChild}>
+            <#if !entity.toString().contains(".CustomEntity")>
+                ((${generator.map(field$entity, "entities", 0)}) entityToSpawn).setGrowingAge(-20*{input$growingTime});
+            <#else>
+                ((${entity}) entityToSpawn).setGrowingAge(-20*{input$growingTime});
+            </#if>
         </#if>
 		if (entityToSpawn instanceof MobEntity)
 			((MobEntity)entityToSpawn).onInitialSpawn(world,world.getDifficultyForLocation(new BlockPos(entityToSpawn)), SpawnReason.MOB_SUMMONED, (ILivingEntityData) null, (CompoundNBT) null);
