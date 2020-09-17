@@ -27,18 +27,22 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class PreferencesDialog extends MCreatorDialog {
@@ -189,7 +193,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		cons.insets = new Insets(5, 10, 15, 10);
 		sectionPanel.setOpaque(false);
 		sectionPanel.add(new JLabel("<html><font style=\"font-size: 16px;\">" + name
-				+ "</big><br><font style=\"font-size: 9px; color: gray;\">" + description), cons);
+				+ "</big><br><div width=700><font style=\"font-size: 9px; color: gray;\">" + description), cons);
 		cons.insets = new Insets(5, 10, 5, 10);
 
 		Field[] fields = sectionField.getType().getFields();
@@ -205,7 +209,7 @@ public class PreferencesDialog extends MCreatorDialog {
 			}
 		}
 
-		preferences.add(PanelUtils.pullElementUp(sectionPanel), name);
+		preferences.add(new JScrollPane(PanelUtils.pullElementUp(sectionPanel)), name);
 	}
 
 	private void storePreferences() {
@@ -272,6 +276,13 @@ public class PreferencesDialog extends MCreatorDialog {
 			box.setColorSelectedListener(e -> apply.setEnabled(true));
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
+		} else if (actualField.getType().equals(Locale.class)) {
+			JComboBox<Locale> box = new JComboBox<>(L10N.getSupportedLocales().toArray(new Locale[0]));
+			box.setRenderer(new LocaleListRenderer());
+			box.setSelectedItem(value);
+			box.addActionListener(e -> apply.setEnabled(true));
+			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
+			return box;
 		}
 
 		placeInside.add(new JLabel(name + ": unknown property type"), cons);
@@ -287,6 +298,8 @@ public class PreferencesDialog extends MCreatorDialog {
 			return ((JComboBox<?>) value).getSelectedItem();
 		} else if (type.equals(Color.class)) {
 			return ((JColor) value).getColor();
+		} else if (type.equals(Locale.class)) {
+			return ((JComboBox<?>) value).getSelectedItem();
 		}
 		return null;
 	}
@@ -299,6 +312,28 @@ public class PreferencesDialog extends MCreatorDialog {
 		PreferencesUnit(Field section, Field entry) {
 			this.section = section;
 			this.entry = entry;
+		}
+	}
+
+	private static class LocaleListRenderer extends JLabel implements ListCellRenderer<Locale> {
+		@Override
+		public Component getListCellRendererComponent(JList<? extends Locale> list, Locale value, int index,
+				boolean isSelected, boolean cellHasFocus) {
+			setOpaque(isSelected);
+			setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			setForeground(Color.white);
+
+			ComponentUtils.deriveFont(this, 12);
+			setText(" " + value.getDisplayName());
+
+			try {
+				String flagpath = "/flags/" + value.toString().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
+				BufferedImage image = ImageIO.read(getClass().getResourceAsStream(flagpath));
+				setIcon(new ImageIcon(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11))));
+			} catch (Exception ignored) { // flag not found, ignore
+			}
+
+			return this;
 		}
 	}
 

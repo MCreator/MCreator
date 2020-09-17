@@ -1,3 +1,4 @@
+_default: Carvers
 Bamboo: Bamboo
 BambooJungleVegetation: BambooJungleVegetation
 BerryBushes: BerryBushes
@@ -32,6 +33,5 @@ StoneVariants: StoneVariants
 Structures: Structures
 SwampClayDisks: SwampClayDisks
 SwampVegetation: SwampVegetation
-TaigaGrassAndMushrooms: TaigaGrassAndMushrooms
 TaigaLargeFerns: TaigaLargeFerns
 TaigaRocks: TaigaRocks

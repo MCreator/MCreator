@@ -26,6 +26,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.ModElementListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -104,18 +105,19 @@ public class TagGUI extends ModElementGUI<Tag> {
 		JPanel main = new JPanel(new GridLayout(4, 2, 10, 10));
 		main.setOpaque(false);
 
-		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/registry_name"), new JLabel("Tag registry name:")));
+		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/registry_name"),
+				new JLabel(L10N.t("elementgui.tag.registry_name"))));
 		main.add(name);
 
-		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/namespace"), new JLabel(
-				"<html>Tag namespace:<br><small>Use minecraft namespace to add to tags, use forge for tags shared with other mods")));
+		main.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("tag/namespace"), new JLabel(L10N.t("elementgui.tag.namespace"))));
 		main.add(namespace);
 
-		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/type"), new JLabel("Tag type:")));
+		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/type"), new JLabel(L10N.t("elementgui.tag.type"))));
 		main.add(type);
 
 		main.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("tag/tag_elements"), new JLabel("Elements under this tag:")));
+				.wrapWithHelpButton(this.withEntry("tag/tag_elements"), new JLabel(L10N.t("elementgui.tag.elements"))));
 		main.add(valuesPan);
 
 		type.addActionListener(e -> valuesLayout.show(valuesPan, (String) type.getSelectedItem()));

@@ -41,7 +41,10 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.*;
@@ -223,7 +226,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			try {
 				BufferedImage image = ImageIO.read(getClass().getResourceAsStream(flagpath));
 				label.setIcon(new ImageIcon(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11))));
-			} catch (IOException ignored) { // flag not found, ignore
+			} catch (Exception ignored) { // flag not found, ignore
 			}
 
 			label.setBorder(BorderFactory.createEmptyBorder());

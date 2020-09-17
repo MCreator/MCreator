@@ -29,6 +29,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.datapack.recipe.*;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
@@ -53,12 +54,12 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private StoneCutterRecipeMaker scm;
 	private CampfireCookingRecipeMaker ccm;
 
-	private final JCheckBox recipeShapeless = new JCheckBox("Is crafting shapeless?");
+	private final JCheckBox recipeShapeless = new JCheckBox(L10N.t("elementgui.recipe.is_shapeless"));
 
 	private final JSpinner xpReward = new JSpinner(new SpinnerNumberModel(1.0, 0, 256, 1));
 	private final JSpinner cookingTime = new JSpinner(new SpinnerNumberModel(200, 0, 1000000, 1));
 
-	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
+	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod" , "minecraft" });
 
 	private final VComboBox<String> name = new VComboBox<>();
 
@@ -147,30 +148,32 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		JPanel northPanel = new JPanel(new GridLayout(6, 2, 10, 2));
 		northPanel.setOpaque(false);
 
-		northPanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("recipe/registry_name"), new JLabel("Recipe registry name:")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/registry_name"),
+				new JLabel(L10N.t("elementgui.recipe.registry_name"))));
 		northPanel.add(name);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/namespace"),
-				new JLabel("<html>Recipe namespace:<br><small>Use minecraft namespace to alter vanilla recipes")));
+				new JLabel(L10N.t("elementgui.recipe.name_space"))));
 		northPanel.add(namespace);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/group_name"),
-				new JLabel("<html>Recipe group name:<br>" + "<small>Leave empty for default mod group")));
+				new JLabel(L10N.t("elementgui.recipe.group"))));
 		northPanel.add(group);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/type"), new JLabel("Recipe type:")));
+		northPanel.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("recipe/type"), new JLabel(L10N.t("elementgui.recipe.type"))));
 		northPanel.add(recipeType);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/xp_reward"), new JLabel("XP reward: ")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/xp_reward"),
+				new JLabel(L10N.t("elementgui.recipe.xp_reward"))));
 		northPanel.add(xpReward);
 
-		northPanel
-				.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/cooking_time"), new JLabel("Cooking time:")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/cooking_time"),
+				new JLabel(L10N.t("elementgui.recipe.cooking_time"))));
 		northPanel.add(cookingTime);
 
-		centerrecipes.add("Center", PanelUtils.centerInPanel(recwrap));
-		centerrecipes.add("North", new JEmptyBox(100, 100));
+		centerrecipes.add("Center" , PanelUtils.centerInPanel(recwrap));
+		centerrecipes.add("North" , new JEmptyBox(100, 100));
 
 		pane5.setOpaque(false);
 		pane5.add(
@@ -208,33 +211,36 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if ("Crafting".equals(recipeType.getSelectedItem())) {
 			if (!rm.cb10.containsItem()) {
-				return new AggregatedValidationResult.FAIL("Crafting recipe needs to have crafting result defined");
+				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_result"));
 			} else if (!(rm.cb1.containsItem() || rm.cb2.containsItem() || rm.cb3.containsItem() || rm.cb4
 					.containsItem() || rm.cb5.containsItem() || rm.cb6.containsItem() || rm.cb7.containsItem() || rm.cb8
 					.containsItem() || rm.cb9.containsItem())) {
-				return new AggregatedValidationResult.FAIL("Crafting recipe needs to have at least one ingredient");
+				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_ingredient"));
 			}
 		} else if ("Smelting".equals(recipeType.getSelectedItem())) {
 			if (!fm.cb1.containsItem() || !fm.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL("Smelting recipe needs to have input and output defined");
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.recipe.error_smelting_no_ingredient_and_result"));
 			}
 		} else if ("Blasting".equals(recipeType.getSelectedItem())) {
 			if (!bm.cb1.containsItem() || !bm.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL("Blasting recipe needs to have input and output defined");
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.recipe.error_blasting_no_ingredient_and_result"));
 			}
 		} else if ("Smoking".equals(recipeType.getSelectedItem())) {
 			if (!sm.cb1.containsItem() || !sm.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL("Smoking recipe needs to have input and output defined");
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.recipe.error_smoking_no_ingredient_and_result"));
 			}
 		} else if ("Stone cutting".equals(recipeType.getSelectedItem())) {
 			if (!scm.cb1.containsItem() || !scm.cb2.containsItem()) {
 				return new AggregatedValidationResult.FAIL(
-						"Stone cutting recipe needs to have input and output defined");
+						L10N.t("elementgui.recipe.error_stone_cutting_no_ingredient_and_result"));
 			}
 		} else if ("Campfire cooking".equals(recipeType.getSelectedItem())) {
 			if (!ccm.cb1.containsItem() || !ccm.cb2.containsItem()) {
 				return new AggregatedValidationResult.FAIL(
-						"Campfire cooking recipe needs to have input and output defined");
+						L10N.t("elementgui.recipe.error_campfire_no_ingredient_and_result"));
 			}
 		}
 
