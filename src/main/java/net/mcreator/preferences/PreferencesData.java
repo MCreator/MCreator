@@ -23,6 +23,7 @@ import net.mcreator.ui.laf.AbstractMCreatorTheme;
 
 import java.awt.*;
 import java.io.File;
+import java.util.Locale;
 
 public class PreferencesData {
 
@@ -37,6 +38,8 @@ public class PreferencesData {
 	public HiddenPreferences hidden = new HiddenPreferences();
 
 	public static class UISettings {
+
+		@PreferencesEntry public Locale language = new Locale("en", "US");
 
 		@PreferencesEntry public Color interfaceAccentColor = AbstractMCreatorTheme.MAIN_TINT_DEFAULT;
 		@PreferencesEntry public boolean aatext = true;

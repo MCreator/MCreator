@@ -198,7 +198,7 @@ import net.minecraft.block.material.Material;
 		public BlockCustomFlower() {
 			super(<#if data.plantType == "normal">Effects.SATURATION, 0,</#if>
 					<#if data.colorOnMap != "DEFAULT">
-					Block.Properties.create(Material.PLANTS, MaterialColor.${data.colorOnMap})
+					Block.Properties.create(Material.PLANTS, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
 					<#else>
 					Block.Properties.create(Material.PLANTS)
 					</#if>
