@@ -114,7 +114,7 @@ public class WorkspacePanel extends JPanel {
 
 	public JRadioButtonMenuItem desc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.descending"));
 
-	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem("Creation date");
+	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.creation_date"));
 	public JRadioButtonMenuItem sortName = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_name"));
 	private final JRadioButtonMenuItem sortType = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_type"));
 	private final JRadioButtonMenuItem sortLoadingOrder = new JRadioButtonMenuItem(

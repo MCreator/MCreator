@@ -31,6 +31,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.DimensionListField;
@@ -57,10 +58,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner density = new JSpinner(new SpinnerNumberModel(1000, -100000, 100000, 1));
 	private final JSpinner viscosity = new JSpinner(new SpinnerNumberModel(1000, 0, 100000, 1));
 
-	private final JCheckBox generateBucket = new JCheckBox("Check to enable the fluid bucket");
+	private final JCheckBox generateBucket = new JCheckBox(L10N.t("elementgui.fluid.generate_bucket.check"));
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
-	private final JCheckBox isGas = new JCheckBox("Check if this fluid is gas");
+	private final JCheckBox isGas = new JCheckBox(L10N.t("elementgui.fluid.is_gas.check"));
 	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });
 
 	private ProcedureSelector onBlockAdded;
@@ -79,14 +80,14 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	}
 
 	@Override protected void initGUI() {
-		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator, "When block added",
+		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator, L10N.t("elementgui.fluid.when_added"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onNeighbourChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
-				"When neighbour block changes", Dependency.fromString("x:number/y:number/z:number/world:world"));
-		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator, "Update tick",
+				L10N.t("elementgui.fluid.when_neighbour_changes"), Dependency.fromString("x:number/y:number/z:number/world:world"));
+		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator, L10N.t("elementgui.fluid.update_tick"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onEntityCollides = new ProcedureSelector(this.withEntry("block/when_entity_collides"), mcreator,
-				"When mob/player collides block",
+				L10N.t("elementgui.fluid.when_entity_collides"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		spawnWorldTypes = new DimensionListField(mcreator);
@@ -105,8 +106,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		textureFlowing = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
 		textureFlowing.setOpaque(false);
 
-		destalx.add(ComponentUtils.squareAndBorder(textureStill, "Still texture"));
-		destalx.add(ComponentUtils.squareAndBorder(textureFlowing, "Flowing"));
+		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
+		destalx.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
 
 		pane3.add(PanelUtils.totalCenterInPanel(destalx));
 
@@ -127,34 +128,31 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		ComponentUtils.deriveFont(viscosity, 16);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/luminosity"),
-				new JLabel("<html>Luminosity:<br><small>The light level emitted")));
+				new JLabel(L10N.t("elementgui.fluid.luminosity"))));
 		destal.add(luminosity);
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/density"), new JLabel(
-				"<html>Density:<br><small>Negative value makes it lighter than air. It uses real life units kg/m^2")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/density"), new JLabel(L10N.t("elementgui.fluid.density"))));
 		destal.add(density);
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/viscosity"), new JLabel(
-				"<html>Viscosity:<br><small>Higher value makes it flow more slowly. It uses real-life units m/s^2(*10^-3)")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/viscosity"), new JLabel(L10N.t("elementgui.fluid.viscosity"))));
 		destal.add(viscosity);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/is_gas"),
-				new JLabel("<html>Is this fluid gas?<br><small>Makes it flow upwards")));
+				new JLabel(L10N.t("elementgui.fluid.is_gas"))));
 		destal.add(PanelUtils.centerInPanel(isGas));
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/type"), new JLabel(
-				"<html>Fluid type<br><small>Defines some properties of the fluid (sound, does ignite fire, does hurt entities)")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/type"), new JLabel(L10N.t("elementgui.fluid.type"))));
 		destal.add(fluidtype);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/generate_lakes"),
-				new JLabel("Generate lakes of this fluids in:")));
+				new JLabel(L10N.t("elementgui.fluid.generate_lakes"))));
 		destal.add(spawnWorldTypes);
 
-		destal.add(new JLabel("Select if this fluid should have own bucket generated automatically"));
+		destal.add(new JLabel(L10N.t("elementgui.fluid.generate_bucket")));
 		destal.add(PanelUtils.centerInPanel(generateBucket));
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				new JLabel("Bucket creative inventory tab:")));
+				new JLabel(L10N.t("elementgui.fluid.bucket_creative_tab"))));
 		destal.add(creativeTab);
 
 		generateBucket.setSelected(true);
@@ -186,9 +184,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		page1group.addValidationElement(textureStill);
 		page1group.addValidationElement(textureFlowing);
 
-		addPage("Visual", pane3);
-		addPage("Properties", pane2);
-		addPage("Triggers", pane4);
+		addPage(L10N.t("elementgui.fluid.visual"), pane3);
+		addPage(L10N.t("elementgui.fluid.properties"), pane2);
+		addPage(L10N.t("elementgui.fluid.triggers"), pane4);
 	}
 
 	@Override public void reloadDataLists() {

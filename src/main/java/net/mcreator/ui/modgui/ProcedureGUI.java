@@ -42,6 +42,7 @@ import net.mcreator.ui.blockly.ProcedureEditorToolbar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.NewVariableDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -132,7 +133,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				if (hasNewDependenciesAdded) {
 					depsWarningLabel.setText("<html><div style='width: 110px; padding: 2px; background: #444444;'>"
 							+ "<span style='background: yellow; color: black; font-wight: bold;'>&nbsp;&nbsp;!&nbsp;&nbsp;</span>&nbsp;"
-							+ "New dependencies were added. Make sure to use the ones that the trigger you use provides.");
+							+ L10N.t("elementgui.procedure.has_new_deps"));
 				}
 			}
 
@@ -172,12 +173,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					if (warn) {
 						depsWarningLabel.setText("<html><div style='width: 110px; padding: 2px; background: #444444;'>"
 								+ "<span style='background: red; color: white; font-wight: bold;'>&nbsp;X&nbsp;</span>&nbsp;"
-								+ "You have selected external trigger that does not provide the following dependencies:"
+								+ L10N.t("elementgui.procedure.error_deps_not_provided")
 								+ missingdeps);
 						hasDependencyErrors = true;
 					}
 					extDepsLab.setText(
-							"<html><div style='width: 100px; font-size: 8px;'>Dependencies provided by<br/><font style='font-size: 10px;'>"
+							"<html><div style='width: 100px; font-size: 8px;'>" + L10N.t("elementgui.procedure.deps_provided_by") + "<br/><font style='font-size: 10px;'>"
 									+ trigger.getName());
 					List<Dependency> tdeps = trigger.dependencies_provided;
 					if (tdeps != null) {
@@ -189,7 +190,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					if (!mcreator.getWorkspace().getGenerator().getGeneratorStats().getGeneratorTriggers()
 							.contains(trigger.getID())) {
 						compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-								"Selected global trigger is not supported by the selected generator. It will be ignored."));
+								L10N.t("elementgui.procedure.warning_trigger_not_supported")));
 					}
 
 					if (trigger.required_apis != null) {
@@ -197,14 +198,13 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 							if (!mcreator.getWorkspace().getWorkspaceSettings().getMCreatorDependencies()
 									.contains(required_api)) {
 								compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-										"Selected global trigger requires " + required_api
-												+ " enabled in workspace settings, or the current generator does not support it"));
+										L10N.t("elementgui.procedure.warning_trigger_requires_api", required_api)));
 							}
 						}
 					}
 				} else {
 					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Your procedure uses trigger that does not exist or was renamed!"));
+							L10N.t("elementgui.procedure.warning_trigger_not_applicable")));
 					triggerDepsPan.setVisible(false);
 				}
 			} else {
@@ -291,7 +291,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		bar4.setBorder(BorderFactory.createEmptyBorder(2, 2, 5, 0));
 		bar4.setFloatable(false);
 		bar4.setOpaque(false);
-		bar4.add(ComponentUtils.deriveFont(new JLabel("Return type"), 13));
+		bar4.add(ComponentUtils.deriveFont(new JLabel(L10N.t("elementgui.procedure.return_type")), 13));
 
 		JPanel rettypeHeader = new JPanel(new GridLayout());
 		rettypeHeader.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
@@ -328,7 +328,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		bar.setFloatable(false);
 		bar.setOpaque(false);
 
-		bar.add(ComponentUtils.deriveFont(new JLabel("Local variables"), 13));
+		bar.add(ComponentUtils.deriveFont(new JLabel(L10N.t("elementgui.procedure.local_variables")), 13));
 
 		JButton addvar = new JButton(UIRES.get("16px.add.gif"));
 		addvar.setContentAreaFilled(false);
@@ -354,7 +354,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 										String nameinrow = localVars.get(i).getName();
 										if (textname.equals(nameinrow))
 											return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-													"This name already exists");
+													L10N.t("elementgui.procedure.error_name_already_exists"));
 									}
 									return validator.validate();
 								}
@@ -371,9 +371,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			VariableElement element = localVarsList.getSelectedValue();
 			if (element != null) {
 				int n = JOptionPane.showConfirmDialog(mcreator,
-						"<html>Are you sure that you want to delete this variable?"
-								+ "<br>If this variable is in use, this action might cause compilation errors.",
-						"Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+						L10N.t("elementgui.procedure.delete_variable"),
+						L10N.t("elementgui.procedure.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (n == JOptionPane.YES_OPTION) {
 					blocklyPanel.removeLocalVariable(element.getName());
 					localVars.removeElement(element);
@@ -396,7 +395,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		bar2.setBorder(BorderFactory.createEmptyBorder(2, 2, 5, 0));
 		bar2.setFloatable(false);
 		bar2.setOpaque(false);
-		bar2.add(ComponentUtils.deriveFont(new JLabel("Required dependencies"), 13));
+		bar2.add(ComponentUtils.deriveFont(new JLabel(L10N.t("elementgui.procedure.required_deps")), 13));
 
 		JPanel depsHeader = new JPanel(new BorderLayout());
 		depsHeader.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
@@ -511,8 +510,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::getMessage)
 							.collect(Collectors.toList()));
 		else
-			return new AggregatedValidationResult.FAIL("External trigger you selected does not provide<br>"
-					+ "all the dependencies your procedure requires!");
+			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.procedure.deps_not_provided"));
 
 	}
 

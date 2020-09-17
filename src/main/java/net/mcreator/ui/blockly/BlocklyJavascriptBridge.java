@@ -136,7 +136,7 @@ public class BlocklyJavascriptBridge {
 	}
 
 	private final Map<String, String> ext_triggers = new LinkedHashMap<String, String>() {{
-		put("no_ext_trigger", "No additional trigger");
+		put("no_ext_trigger", L10N.t("trigger.no_ext_trigger"));
 	}};
 
 	public void addExternalTrigger(ExternalTriggerLoader.ExternalTrigger external_trigger) {
