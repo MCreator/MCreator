@@ -1,0 +1,27 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "item",
+      "check": "MCItem"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "extensions": [
+    "enhancement_list_provider"
+  ],
+  "mcreator": {
+    "toolbox_id": "itemmanagement",
+    "toolbox_init": [
+      "<value name=\"item\"><block type=\"itemstack_to_mcitem\"></block></value>"
+    ],
+    "inputs": [
+      "item"
+    ],
+    "fields": [
+      "enhancement"
+    ]
+  }
+}
