@@ -4,6 +4,12 @@
       "type": "input_value",
       "name": "item",
       "check": "MCItem"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/client.png",
+      "width": 8,
+      "height": 24
     }
   ],
   "inputsInline": true,
