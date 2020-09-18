@@ -59,7 +59,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private final JSpinner xpReward = new JSpinner(new SpinnerNumberModel(1.0, 0, 256, 1));
 	private final JSpinner cookingTime = new JSpinner(new SpinnerNumberModel(200, 0, 1000000, 1));
 
-	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
+	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod" , "minecraft" });
 
 	private final VComboBox<String> name = new VComboBox<>();
 
@@ -148,8 +148,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		JPanel northPanel = new JPanel(new GridLayout(6, 2, 10, 2));
 		northPanel.setOpaque(false);
 
-		northPanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("recipe/registry_name"), new JLabel(L10N.t("elementgui.recipe.registry_name"))));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/registry_name"),
+				new JLabel(L10N.t("elementgui.recipe.registry_name"))));
 		northPanel.add(name);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/namespace"),
@@ -160,18 +160,20 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				new JLabel(L10N.t("elementgui.recipe.group"))));
 		northPanel.add(group);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/type"), new JLabel(L10N.t("elementgui.recipe.type"))));
+		northPanel.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("recipe/type"), new JLabel(L10N.t("elementgui.recipe.type"))));
 		northPanel.add(recipeType);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/xp_reward"), new JLabel(L10N.t("elementgui.recipe.xp_reward"))));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/xp_reward"),
+				new JLabel(L10N.t("elementgui.recipe.xp_reward"))));
 		northPanel.add(xpReward);
 
-		northPanel
-				.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/cooking_time"), new JLabel(L10N.t("elementgui.recipe.cooking_time"))));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/cooking_time"),
+				new JLabel(L10N.t("elementgui.recipe.cooking_time"))));
 		northPanel.add(cookingTime);
 
-		centerrecipes.add("Center", PanelUtils.centerInPanel(recwrap));
-		centerrecipes.add("North", new JEmptyBox(100, 100));
+		centerrecipes.add("Center" , PanelUtils.centerInPanel(recwrap));
+		centerrecipes.add("North" , new JEmptyBox(100, 100));
 
 		pane5.setOpaque(false);
 		pane5.add(
@@ -217,23 +219,28 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			}
 		} else if ("Smelting".equals(recipeType.getSelectedItem())) {
 			if (!fm.cb1.containsItem() || !fm.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_smelting_no_ingredient_and_result"));
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.recipe.error_smelting_no_ingredient_and_result"));
 			}
 		} else if ("Blasting".equals(recipeType.getSelectedItem())) {
 			if (!bm.cb1.containsItem() || !bm.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_blasting_no_ingredient_and_result"));
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.recipe.error_blasting_no_ingredient_and_result"));
 			}
 		} else if ("Smoking".equals(recipeType.getSelectedItem())) {
 			if (!sm.cb1.containsItem() || !sm.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_smoking_no_ingredient_and_result"));
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.recipe.error_smoking_no_ingredient_and_result"));
 			}
 		} else if ("Stone cutting".equals(recipeType.getSelectedItem())) {
 			if (!scm.cb1.containsItem() || !scm.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_stone_cutting_no_ingredient_and_result"));
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.recipe.error_stone_cutting_no_ingredient_and_result"));
 			}
 		} else if ("Campfire cooking".equals(recipeType.getSelectedItem())) {
 			if (!ccm.cb1.containsItem() || !ccm.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_campfire_no_ingredient_and_result"));
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.recipe.error_campfire_no_ingredient_and_result"));
 			}
 		}
 
