@@ -1,0 +1,28 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "item",
+      "check": "MCItem"
+    }
+  ],
+  "inputsInline": true,
+  "colour": 350,
+  "previousStatement": null,
+  "nextStatement": null,
+  "extensions": [
+    "enhancement_list_provider"
+  ],
+  "mcreator": {
+    "toolbox_id": "itemmanagement",
+    "toolbox_init": [
+      "<value name=\"item\"><block type=\"itemstack_to_mcitem\"></block></value>"
+    ],
+    "inputs": [
+      "item"
+    ],
+    "fields": [
+      "enhancement"
+    ]
+  }
+}
