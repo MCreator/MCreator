@@ -49,7 +49,7 @@ public class L10N {
 			Set<String> localeFiles = PluginLoader.INSTANCE.getResourcesInPackage("lang");
 			supportedLocales = localeFiles.stream().map(FilenameUtils::getBaseName).filter(e -> e.contains("_"))
 					.map(e -> e.split("_")).map(e -> new Locale(e[1], e[2])).collect(Collectors.toSet());
-			supportedLocales.add(new Locale("en", "US"));
+			supportedLocales.add(new Locale("en" , "US"));
 		}
 
 		return supportedLocales;

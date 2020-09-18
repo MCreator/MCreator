@@ -54,6 +54,7 @@ import java.util.Map;
 	public int usageCount;
 	public List<MItemBlock> blocksAffected;
 	public boolean hasGlow;
+	public Procedure glowCondition;
 	public List<MItemBlock> repairItems;
 
 	public boolean stayInGridWhenCrafting;

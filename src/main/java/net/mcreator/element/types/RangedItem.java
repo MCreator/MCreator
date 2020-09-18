@@ -48,6 +48,7 @@ import java.util.Map;
 	public int usageCount;
 	public Sound actionSound;
 	public boolean hasGlow;
+	public Procedure glowCondition;
 	public String animation;
 	public boolean enableMeleeDamage;
 	public double damageVsEntity;
