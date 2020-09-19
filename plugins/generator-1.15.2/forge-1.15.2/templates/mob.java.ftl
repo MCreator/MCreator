@@ -668,10 +668,14 @@ import net.minecraft.block.material.Material;
 			this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(${data.attackStrength});
 
 			<#if (data.knockbackResistance > 0)>
+			if (this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE) == null)
+				this.getAttributes().registerAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE);
 			this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(${data.knockbackResistance}D);
 			</#if>
 
 			<#if (data.attackKnockback > 0)>
+			if (this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK) == null)
+				this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK);
 			this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue(${data.attackKnockback}D);
 			</#if>
 

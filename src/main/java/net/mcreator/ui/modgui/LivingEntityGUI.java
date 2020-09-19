@@ -99,8 +99,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 	private final JSpinner movementSpeed = new JSpinner(new SpinnerNumberModel(0.3, 0, 50, 0.1));
 	private final JSpinner armorBaseValue = new JSpinner(new SpinnerNumberModel(0.0, 0, 100, 0.1));
 	private final JSpinner health = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 1));
-	private final JSpinner knockbackResistance = new JSpinner(new SpinnerNumberModel(0, 0., 1000, 0.1));
-	private final JSpinner attackKnockback = new JSpinner(new SpinnerNumberModel(0, 0., 1000, 0.1));
+	private final JSpinner knockbackResistance = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 0.1));
+	private final JSpinner attackKnockback = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 0.1));
 
 	private final JSpinner trackingRange = new JSpinner(new SpinnerNumberModel(64, 0, 10000, 1));
 
