@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.Dependency;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Tool;
 import net.mcreator.minecraft.DataListEntry;
@@ -47,6 +46,7 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
 import org.jetbrains.annotations.Nullable;
 
@@ -72,15 +72,17 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final VTextField name = new VTextField(28);
 
 	private final JComboBox<String> toolType = new JComboBox<>(
-			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Special", "MultiTool" });
+			new String[] { "Pickaxe" , "Axe" , "Sword" , "Spade" , "Hoe" , "Shears" , "Special" , "MultiTool" });
 
-	private final JCheckBox stayInGridWhenCrafting = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
+	private final JCheckBox stayInGridWhenCrafting = new JCheckBox(
+			L10N.t("elementgui.common.check_to_enable_functionality"));
 	private final JCheckBox damageOnCrafting = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
 
 	private final Model normal = new Model.BuiltInModel("Normal");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal });
 
 	private final JCheckBox hasGlow = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
+	private ProcedureSelector glowCondition;
 
 	private final JTextField specialInfo = new JTextField(20);
 
@@ -112,7 +114,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onRightClickedInAir = new ProcedureSelector(this.withEntry("item/when_right_clicked"), mcreator,
 				L10N.t("elementgui.tool.event_right_clicked_air"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator, L10N.t("elementgui.tool.event_crafted"),
+		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator,
+				L10N.t("elementgui.tool.event_crafted"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
 				L10N.t("elementgui.tool.event_right_clicked_block"), Dependency.fromString(
@@ -126,14 +129,17 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onItemInInventoryTick = new ProcedureSelector(this.withEntry("item/inventory_tick"), mcreator,
 				L10N.t("elementgui.tool.event_in_inventory_tick"), Dependency
 				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
-		onItemInUseTick = new ProcedureSelector(this.withEntry("item/hand_tick"), mcreator, L10N.t("elementgui.tool.event_in_hand_tick"),
-				Dependency.fromString(
-						"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
+		onItemInUseTick = new ProcedureSelector(this.withEntry("item/hand_tick"), mcreator,
+				L10N.t("elementgui.tool.event_in_hand_tick"), Dependency
+				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
 		onStoppedUsing = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
 				L10N.t("elementgui.tool.event_stopped_using"), Dependency
 				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.tool.event_swings"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow" ,
+				ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocks);
@@ -153,6 +159,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		texture.setOpaque(false);
 
 		hasGlow.setOpaque(false);
+		hasGlow.setSelected(false);
 
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
@@ -163,8 +170,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
 
 		rent.setOpaque(false);
-		rent.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
-				new JLabel(L10N.t("elementgui.tool.item_model"))),
+		rent.add(PanelUtils.join(HelpUtils
+						.wrapWithHelpButton(this.withEntry("item/model"), new JLabel(L10N.t("elementgui.tool.item_model"))),
 				PanelUtils.join(renderType)));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
@@ -174,17 +181,29 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
 		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2), L10N.t("elementgui.tool.tool_3d_model"),
-				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				L10N.t("elementgui.tool.tool_3d_model"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		pane2.setOpaque(false);
-		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils
+		pane2.add("Center" , PanelUtils.totalCenterInPanel(PanelUtils
 				.northAndCenterElement(PanelUtils.join(destal, rent), PanelUtils.gridElements(1, 2, HelpUtils
-								.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
-										L10N.t("elementgui.tool.tool_special_information"))),
-						specialInfo))));
+						.wrapWithHelpButton(this.withEntry("item/special_information"),
+								new JLabel(L10N.t("elementgui.tool.tool_special_information"))), specialInfo))));
+		JComponent glow = PanelUtils.join(FlowLayout.LEFT, HelpUtils
+						.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Enable item glowing effect:")),
+				hasGlow, glowCondition);
 
-		JPanel selp = new JPanel(new GridLayout(14, 2, 10, 2));
+		JComponent visualBottom = PanelUtils.centerAndSouthElement(PanelUtils.gridElements(1, 2, HelpUtils
+						.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
+								"<html>Special information about the tool:<br><small>Separate entries with comma, to use comma in description use \\,")),
+				specialInfo), glow, 10, 10);
+
+		pane2.setOpaque(false);
+		pane2.add("Center", PanelUtils
+				.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.join(destal, rent), visualBottom)));
+
+		JPanel selp = new JPanel(new GridLayout(13, 2, 10, 2));
 		selp.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -192,52 +211,57 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		harvestLevel.setOpaque(false);
 		efficiency.setOpaque(false);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), new JLabel(L10N.t("elementgui.tool.name_in_gui"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				new JLabel(L10N.t("elementgui.tool.name_in_gui"))));
 		selp.add(name);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel(L10N.t("elementgui.common.creative_tab"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
+				new JLabel(L10N.t("elementgui.common.creative_tab"))));
 		selp.add(creativeTab);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel(L10N.t("elementgui.tool.glowing_effect"))));
-		selp.add(hasGlow);
+		hasGlow.addActionListener(e -> updateGlowElements());
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"), new JLabel(L10N.t("elementgui.tool.type"))));
 		selp.add(toolType);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/harvest_level"), new JLabel(L10N.t("elementgui.tool.harvest_level"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/harvest_level"),
+				new JLabel(L10N.t("elementgui.tool.harvest_level"))));
 		selp.add(harvestLevel);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/efficiency"), new JLabel(L10N.t("elementgui.tool.efficiency"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/efficiency"),
+				new JLabel(L10N.t("elementgui.tool.efficiency"))));
 		selp.add(efficiency);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"), new JLabel(L10N.t("elementgui.common.enchantability"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
+				new JLabel(L10N.t("elementgui.common.enchantability"))));
 		selp.add(enchantability);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/attack_speed"), new JLabel(L10N.t("elementgui.tool.attack_speed"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/attack_speed"),
+				new JLabel(L10N.t("elementgui.tool.attack_speed"))));
 		selp.add(attackSpeed);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
 				new JLabel(L10N.t("elementgui.tool.damage_vs_entity"))));
 		selp.add(damageVsEntity);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/number_of_uses"), new JLabel(L10N.t("elementgui.tool.usage_count"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
+				new JLabel(L10N.t("elementgui.tool.usage_count"))));
 		selp.add(usageCount);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"), new JLabel(L10N.t("elementgui.common.repair_items"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"),
+				new JLabel(L10N.t("elementgui.common.repair_items"))));
 		selp.add(repairItems);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"), new JLabel(L10N.t("elementgui.tool.blocks_affected"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
+				new JLabel(L10N.t("elementgui.tool.blocks_affected"))));
 		selp.add(blocksAffected);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item"),
 				new JLabel(L10N.t("elementgui.tool.stays_in_grid_when_crafting"))));
 		selp.add(stayInGridWhenCrafting);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"), new JLabel(
-				L10N.t("elementgui.tool.damaged_on_crafting"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
+				new JLabel(L10N.t("elementgui.tool.damaged_on_crafting"))));
 		selp.add(damageOnCrafting);
 
 		blocksAffected.setEnabled(false);
@@ -283,6 +307,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		}
 	}
 
+	private void updateGlowElements() {
+		glowCondition.setEnabled(hasGlow.isSelected());
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onRightClickedInAir.refreshListKeepSelected();
@@ -294,6 +322,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onItemInUseTick.refreshListKeepSelected();
 		onStoppedUsing.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
+		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("TOOLS"));
@@ -333,6 +362,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onStoppedUsing.setSelectedProcedure(tool.onStoppedUsing);
 		onEntitySwing.setSelectedProcedure(tool.onEntitySwing);
 		hasGlow.setSelected(tool.hasGlow);
+		glowCondition.setSelectedProcedure(tool.glowCondition);
 		repairItems.setListElements(tool.repairItems);
 		specialInfo.setText(
 				tool.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
@@ -340,6 +370,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		damageOnCrafting.setSelected(tool.damageOnCrafting);
 
 		blocksAffected.setListElements(tool.blocksAffected);
+
+		updateGlowElements();
 
 		if (toolType.getSelectedItem() != null)
 			blocksAffected.setEnabled(toolType.getSelectedItem().equals("Special"));
@@ -371,6 +403,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.onStoppedUsing = onStoppedUsing.getSelectedProcedure();
 		tool.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		tool.hasGlow = hasGlow.isSelected();
+		tool.glowCondition = glowCondition.getSelectedProcedure();
 		tool.repairItems = repairItems.getListElements();
 		tool.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 

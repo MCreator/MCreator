@@ -28,7 +28,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.Dependency;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Armor;
 import net.mcreator.minecraft.DataListEntry;
@@ -47,7 +46,6 @@ import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
@@ -636,10 +634,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
-			helmetName.setText(L10N.t("elementgui.armor.helmet", readableNameFromModElement));
-			bodyName.setText(L10N.t("elementgui.armor.body", readableNameFromModElement));
-			leggingsName.setText(L10N.t("elementgui.armor.leggings", readableNameFromModElement));
-			bootsName.setText(L10N.t("elementgui.armor.boots", readableNameFromModElement));
+			helmetName.setText(L10N.t("elementgui.armor.helmet" , readableNameFromModElement));
+			bodyName.setText(L10N.t("elementgui.armor.body" , readableNameFromModElement));
+			leggingsName.setText(L10N.t("elementgui.armor.leggings" , readableNameFromModElement));
+			bootsName.setText(L10N.t("elementgui.armor.boots" , readableNameFromModElement));
 		}
 	}
 
