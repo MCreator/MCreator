@@ -74,6 +74,7 @@ body {
 
 .blocklyTreeSeparator {
     border-bottom: solid #505050 1px;
+    border-left: none !important;
 }
 
 .blocklyFlyoutBackground {
@@ -107,8 +108,7 @@ body {
 }
 
 .blocklySelected > .blocklyPath {
-    stroke: #fff;
-    stroke-width: 2px;
+    stroke: #fff !important;
 }
 
 .whlab > .blocklyFlyoutLabelText {
@@ -152,4 +152,8 @@ body {
 
 .condition-label {
     font-size: 13px !important;
+}
+
+.blocklyDropDownContent {
+    position: relative;
 }
