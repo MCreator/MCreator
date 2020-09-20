@@ -98,36 +98,38 @@ public class BlocklyBlockCodeGenerator {
 
 		// check for all fields if they exist, if they do, add them to data model
 		if (toolboxBlock.fields != null) {
-			for (String fieldName : toolboxBlock.fields) {
+			for (ExternalBlockLoader.BlockArgument field : toolboxBlock.fields) {
 				boolean found = false;
 				for (Element element : elements) {
-					if (element.getNodeName().equals("field") && element.getAttribute("name").equals(fieldName)
+					if (element.getNodeName().equals("field") && element.getAttribute("name").equals(field.getName())
 							&& !element.getTextContent().equals("")) {
 						found = true;
-						dataModel.put("field$" + fieldName, element.getTextContent());
+						dataModel.put("field$" + field.getName(), element.getTextContent());
 					}
 				}
 				if (!found) {
-					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Field " + fieldName + " on block " + type + " is not defined."));
+					master.addCompileNote(new BlocklyCompileNote(
+							field.doesNotError() ? BlocklyCompileNote.Type.WARNING : BlocklyCompileNote.Type.ERROR,
+							"Field " + field.getName() + " on block " + type + " is not defined."));
 				}
 			}
 		}
 
 		// next we check for inputs if they exist, we process them and add to data model
 		if (toolboxBlock.inputs != null) {
-			for (String inputName : toolboxBlock.inputs) {
+			for (ExternalBlockLoader.BlockArgument input : toolboxBlock.inputs) {
 				boolean found = false;
 				for (Element element : elements) {
-					if (element.getNodeName().equals("value") && element.getAttribute("name").equals(inputName)) {
+					if ((element.getNodeName().equals("value") || element.getNodeName().equals("statement")) && element.getAttribute("name").equals(input.getName())) {
 						found = true;
 						String generatedCode = BlocklyToCode.directProcessOutputBlock(master, element);
-						dataModel.put("input$" + inputName, generatedCode);
+						dataModel.put("input$" + input.getName(), generatedCode);
 					}
 				}
 				if (!found) {
-					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Input " + inputName + " on block " + type + " is empty."));
+					master.addCompileNote(new BlocklyCompileNote(
+							input.doesNotError() ? BlocklyCompileNote.Type.WARNING : BlocklyCompileNote.Type.ERROR,
+							"Input " + input.getName() + " on block " + type + " is empty."));
 				}
 			}
 		}
