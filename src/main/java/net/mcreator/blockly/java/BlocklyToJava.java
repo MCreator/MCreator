@@ -61,6 +61,7 @@ public abstract class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new CoordinateBlock());
 		blockGenerators.add(new EventOrTargetEntityDependenyBlock());
 		blockGenerators.add(new SourceEntityDependenyBlock());
+		blockGenerators.add(new ImediateSourceEntityDependencyBlock());
 		blockGenerators.add(new DirectionDependenyBlock());
 		blockGenerators.add(new DirectionConstantBlock());
 		blockGenerators.add(new NullBlock());

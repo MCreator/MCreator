@@ -667,6 +667,18 @@ import net.minecraft.block.material.Material;
 				this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
 			this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(${data.attackStrength});
 
+			<#if (data.knockbackResistance > 0)>
+			if (this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE) == null)
+				this.getAttributes().registerAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE);
+			this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(${data.knockbackResistance}D);
+			</#if>
+
+			<#if (data.attackKnockback > 0)>
+			if (this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK) == null)
+				this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK);
+			this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue(${data.attackKnockback}D);
+			</#if>
+
 			<#if data.flyingMob>
 			if (this.getAttribute(SharedMonsterAttributes.FLYING_SPEED) == null)
 				this.getAttributes().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
@@ -691,7 +703,9 @@ import net.minecraft.block.material.Material;
 
 		<#if data.breedable>
             @Override public AgeableEntity createChild(AgeableEntity ageable) {
-				return (CustomEntity) entity.create(this.world);
+				CustomEntity retval = (CustomEntity) entity.create(this.world);
+				retval.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(retval)), SpawnReason.BREEDING, (ILivingEntityData)null, (CompoundNBT)null);
+				return retval;
 			}
 
 			@Override public boolean isBreedingItem(ItemStack stack) {

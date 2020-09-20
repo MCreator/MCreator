@@ -1,4 +1,4 @@
-_default: EFFICIENCY
+_default: Enchantments.EFFICIENCY
 _mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@NAMEEnchantment.enchantment"
 PROTECTION: Enchantments.PROTECTION

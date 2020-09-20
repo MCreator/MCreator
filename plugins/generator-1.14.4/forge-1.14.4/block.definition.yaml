@@ -8,7 +8,7 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/block_item_cmodel.json.ftl
-    condition: "renderType() #= 3"
+    condition: "renderType() #?= 13,3"
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
@@ -30,6 +30,11 @@ templates:
     condition: "renderType() #= 12"
     writer: json
     variables: "model=cross;txname=cross"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block.json.ftl
+    condition: "renderType() #= 13"
+    writer: json
+    variables: "model=crop;txname=crop"
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block_cmodel.json.ftl
     condition: "renderType() #= 2"

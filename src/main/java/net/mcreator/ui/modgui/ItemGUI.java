@@ -47,6 +47,7 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
 import org.jetbrains.annotations.Nullable;
 
@@ -67,6 +68,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 0, 64, 1));
 	private final VTextField name = new VTextField(20);
+	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 
 	private final MCItemHolder recipeRemainder = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -79,6 +81,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox stayInGridWhenCrafting = new JCheckBox("Check to enable");
 	private final JCheckBox damageOnCrafting = new JCheckBox("Check to enable");
 	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
+	private ProcedureSelector glowCondition;
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
@@ -132,7 +135,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 				"On player stopped using", Dependency
 				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
-				"When entity swings item",
+				"When entity swings item" ,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow" ,
+				ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		guiBoundTo.addActionListener(e -> {
@@ -158,26 +164,29 @@ public class ItemGUI extends ModElementGUI<Item> {
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
 		texture.setOpaque(false);
 
-		JPanel destal2 = new JPanel(new BorderLayout(0, 40));
+		JPanel destal2 = new JPanel(new BorderLayout(0, 10));
 		destal2.setOpaque(false);
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
 		destal3.setOpaque(false);
 		destal3.add("West", PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(texture, "Item texture")));
 		destal2.add("North", destal3);
 
-		JPanel destal = new JPanel(new GridLayout(2, 2, 15, 15));
+		JPanel destal = new JPanel(new GridLayout(1, 2, 15, 15));
 		destal.setOpaque(false);
+		JComponent destal1 = PanelUtils.join(FlowLayout.LEFT, HelpUtils
+						.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Enable item glowing effect:")),
+				hasGlow, glowCondition);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
 				"<html>Special information about the item:<br><small>Separate entries with comma, to use comma in description use \\,")));
 		destal.add(specialInfo);
 
 		hasGlow.setOpaque(false);
-		destal.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Has glowing effect?")));
-		destal.add(hasGlow);
+		hasGlow.setSelected(false);
 
-		destal2.add("Center", PanelUtils.centerInPanel(destal));
+		hasGlow.addActionListener(e -> updateGlowElements());
+
+		destal2.add("Center", PanelUtils.northAndCenterElement(destal, destal1, 10, 10));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
 
@@ -209,12 +218,15 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		pane2.setOpaque(false);
 
-		JPanel subpane2 = new JPanel(new GridLayout(12, 2, 45, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(13, 2, 45, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), new JLabel("Name in GUI:")));
 		subpane2.add(name);
+
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), new JLabel("Rarity:")));
+		subpane2.add(rarity);
 
 		subpane2.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel("Creative inventory tab:")));
@@ -325,6 +337,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		}
 	}
 
+	private void updateGlowElements() {
+		glowCondition.setEnabled(hasGlow.isSelected());
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onRightClickedInAir.refreshListKeepSelected();
@@ -335,6 +351,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onItemInUseTick.refreshListKeepSelected();
 		onStoppedUsing.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
+		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
@@ -359,6 +376,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	@Override public void openInEditingMode(Item item) {
 		name.setText(item.name);
+		rarity.setSelectedItem(item.rarity);
 		texture.setTextureFromTextureName(item.texture);
 		specialInfo.setText(
 				item.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
@@ -381,11 +399,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 		stayInGridWhenCrafting.setSelected(item.stayInGridWhenCrafting);
 		damageOnCrafting.setSelected(item.damageOnCrafting);
 		hasGlow.setSelected(item.hasGlow);
+		glowCondition.setSelectedProcedure(item.glowCondition);
 		damageVsEntity.setValue(item.damageVsEntity);
 		enableMeleeDamage.setSelected(item.enableMeleeDamage);
 		guiBoundTo.setSelectedItem(item.guiBoundTo);
 		inventorySize.setValue(item.inventorySize);
 		inventoryStackSize.setValue(item.inventoryStackSize);
+
+		updateGlowElements();
 
 		Model model = item.getItemModel();
 		if (model != null)
@@ -395,6 +416,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	@Override public Item getElementFromGUI() {
 		Item item = new Item(modElement);
 		item.name = name.getText();
+		item.rarity = (String) rarity.getSelectedItem();
 		item.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		item.stackSize = (int) stackSize.getValue();
 		item.enchantability = (int) enchantability.getValue();
@@ -406,6 +428,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		item.damageOnCrafting = damageOnCrafting.isSelected();
 		item.hasGlow = hasGlow.isSelected();
+		item.glowCondition = glowCondition.getSelectedProcedure();
 		item.onRightClickedInAir = onRightClickedInAir.getSelectedProcedure();
 		item.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();
 		item.onCrafted = onCrafted.getSelectedProcedure();

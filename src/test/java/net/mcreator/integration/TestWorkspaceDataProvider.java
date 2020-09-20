@@ -32,6 +32,7 @@ import net.mcreator.element.types.Fluid;
 import net.mcreator.element.types.*;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -49,6 +50,53 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TestWorkspaceDataProvider {
+
+	public static List<GeneratableElement> getModElementExamplesFor(ModElement modElement, Random random) {
+		List<GeneratableElement> generatableElements = new ArrayList<>();
+
+		if (modElement.getType() == ModElementType.RECIPE) {
+			generatableElements.add(getRecipeExample(modElement, "Crafting", random, true));
+			generatableElements.add(getRecipeExample(modElement, "Crafting", random, false));
+			generatableElements.add(getRecipeExample(modElement, "Crafting", random, false));
+			generatableElements.add(getRecipeExample(modElement, "Smelting", random, false));
+			generatableElements.add(getRecipeExample(modElement, "Smelting", random, true));
+			generatableElements.add(getRecipeExample(modElement, "Blasting", random, false));
+			generatableElements.add(getRecipeExample(modElement, "Blasting", random, true));
+			generatableElements.add(getRecipeExample(modElement, "Smoking", random, false));
+			generatableElements.add(getRecipeExample(modElement, "Smoking", random, true));
+			generatableElements.add(getRecipeExample(modElement, "Stone cutting", random, false));
+			generatableElements.add(getRecipeExample(modElement, "Stone cutting", random, true));
+			generatableElements.add(getRecipeExample(modElement, "Campfire cooking", random, false));
+			generatableElements.add(getRecipeExample(modElement, "Campfire cooking", random, true));
+		} else if (modElement.getType() == ModElementType.FUEL || modElement.getType() == ModElementType.TAB
+				|| modElement.getType() == ModElementType.OVERLAY) {
+			generatableElements.add(getExampleFor(modElement, random, true, true, 0));
+			generatableElements.add(getExampleFor(modElement, random, true, false, 1));
+			generatableElements.add(getExampleFor(modElement, random, false, true, 2));
+			generatableElements.add(getExampleFor(modElement, random, false, true, 3));
+		} else if (modElement.getType() == ModElementType.COMMAND || modElement.getType() == ModElementType.KEYBIND
+				|| modElement.getType() == ModElementType.FUNCTION || modElement.getType() == ModElementType.PAINTING) {
+			generatableElements.add(getExampleFor(modElement, random, true, true, 0));
+		} else {
+			GeneratableElement element1 = getExampleFor(modElement, random, true, true, 0);
+			if (element1 != null) {
+				generatableElements.add(element1);
+				generatableElements.add(getExampleFor(modElement, random, true, true, 3));
+				generatableElements.add(getExampleFor(modElement, random, true, false, 1));
+				generatableElements.add(getExampleFor(modElement, random, false, true, 2));
+				generatableElements.add(getExampleFor(modElement, random, false, false, 3));
+				generatableElements.add(getExampleFor(modElement, random, false, false, 0));
+				generatableElements.add(getExampleFor(modElement, random, true, true, 3));
+				generatableElements.add(getExampleFor(modElement, random, true, true, 0));
+				generatableElements.add(getExampleFor(modElement, random, true, false, 2));
+				generatableElements.add(getExampleFor(modElement, random, false, true, 1));
+				generatableElements.add(getExampleFor(modElement, random, false, false, 0));
+				generatableElements.add(getExampleFor(modElement, random, false, false, 3));
+			}
+		}
+
+		return generatableElements;
+	}
 
 	public static void fillWorkspaceWithTestData(Workspace workspace) {
 		workspace.addModElement(new ModElement(workspace, "procedure1", ModElementType.PROCEDURE)
@@ -137,29 +185,6 @@ public class TestWorkspaceDataProvider {
 		}
 	}
 
-	public static List<GeneratableElement> getModElementExamplesFor(ModElement modElement, Random random) {
-		List<GeneratableElement> generatableElements = new ArrayList<>();
-
-		GeneratableElement element1 = getExampleFor(modElement, random, true, true, 0);
-		if (element1 != null) {
-			generatableElements.add(element1);
-			generatableElements.add(getExampleFor(modElement, random, true, true, 3));
-			generatableElements.add(getExampleFor(modElement, random, true, false, 1));
-			generatableElements.add(getExampleFor(modElement, random, false, true, 2));
-			generatableElements.add(getExampleFor(modElement, random, false, false, 3));
-			generatableElements.add(getExampleFor(modElement, random, false, false, 0));
-
-			generatableElements.add(getExampleFor(modElement, random, true, true, 3));
-			generatableElements.add(getExampleFor(modElement, random, true, true, 0));
-			generatableElements.add(getExampleFor(modElement, random, true, false, 2));
-			generatableElements.add(getExampleFor(modElement, random, false, true, 1));
-			generatableElements.add(getExampleFor(modElement, random, false, false, 0));
-			generatableElements.add(getExampleFor(modElement, random, false, false, 3));
-		}
-
-		return generatableElements;
-	}
-
 	private static GeneratableElement getExampleFor(ModElement modElement, Random random, boolean _true,
 			boolean emptyLists, int valueIndex) {
 		switch (modElement.getType()) {
@@ -217,7 +242,7 @@ public class TestWorkspaceDataProvider {
 			}
 			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];
 			biome.grassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 1;
-			biome.seagrassPerChunk = new int[] { 0, 5, 10, 16}[valueIndex] + 2;
+			biome.seagrassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 2;
 			biome.flowersPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 3;
 			biome.mushroomsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 4;
 			biome.bigMushroomsChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 5;
@@ -232,13 +257,13 @@ public class TestWorkspaceDataProvider {
 			biome.spawnShipwreck = _true;
 			biome.oceanRuinType = "NONE";
 			biome.spawnOceanMonument = !_true;
-			biome.spawnWoodlandMansion =  _true;
+			biome.spawnWoodlandMansion = _true;
 			biome.spawnJungleTemple = !_true;
 			biome.spawnDesertPyramid = !_true;
 			biome.spawnIgloo = !_true;
-			biome.spawnPillagerOutpost =  !_true;
-			biome.spawnStronghold =  _true;
-			biome.spawnMineshaft =  !_true;
+			biome.spawnPillagerOutpost = !_true;
+			biome.spawnStronghold = _true;
+			biome.spawnMineshaft = !_true;
 			biome.villageType = "desert";
 			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
 			biome.biomeType = ListUtils.getRandomItem(random, new String[] { "WARM", "DESERT", "COOL", "ICY" });
@@ -329,6 +354,7 @@ public class TestWorkspaceDataProvider {
 		case FOOD:
 			Food food = new Food(modElement);
 			food.name = modElement.getName();
+			food.rarity = ListUtils.getRandomItem(Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			food.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
 				food.specialInfo = StringUtils
@@ -345,7 +371,8 @@ public class TestWorkspaceDataProvider {
 			food.saturation = 0.8f;
 			food.forDogs = _true;
 			food.isAlwaysEdible = _true;
-			food.animation = "eat";
+			food.animation = ListUtils.getRandomItem(random,
+					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 			food.hasGlow = _true;
 			food.onRightClicked = new Procedure("procedure1");
 			food.onEaten = new Procedure("procedure2");
@@ -362,98 +389,14 @@ public class TestWorkspaceDataProvider {
 			return command;
 		case KEYBIND:
 			KeyBinding keyBinding = new KeyBinding(modElement);
-			keyBinding.triggerKey = "A";
+			keyBinding.triggerKey = ListUtils.getRandomItem(
+					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName)
+							.toArray(String[]::new));
 			keyBinding.keyBindingName = modElement.getName();
 			keyBinding.keyBindingCategoryKey = "key.categories.misc";
 			keyBinding.onKeyPressed = new Procedure("procedure3");
 			keyBinding.onKeyReleased = new Procedure("procedure2");
 			return keyBinding;
-		case RECIPE:
-			Recipe recipe = new Recipe(modElement);
-			recipe.group = modElement.getName().toLowerCase(Locale.ENGLISH);
-			recipe.recipeType = ListUtils.getRandomItem(random,
-					new String[] { "Crafting", "Smelting", "Blasting", "Smoking", "Stone cutting" });
-			if ("Crafting".equals(recipe.recipeType)) {
-				MItemBlock[] recipeSlots = new MItemBlock[9];
-				recipeSlots[0] = new MItemBlock(modElement.getWorkspace(), ListUtils
-						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-						.getName());
-				recipeSlots[3] = new MItemBlock(modElement.getWorkspace(), ListUtils
-						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-						.getName());
-				recipeSlots[6] = new MItemBlock(modElement.getWorkspace(), ListUtils
-						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-						.getName());
-				recipeSlots[1] = new MItemBlock(modElement.getWorkspace(), ListUtils
-						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-						.getName());
-				recipeSlots[4] = new MItemBlock(modElement.getWorkspace(), ListUtils
-						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-						.getName());
-				recipeSlots[7] = new MItemBlock(modElement.getWorkspace(), ListUtils
-						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-						.getName());
-				recipeSlots[2] = new MItemBlock(modElement.getWorkspace(), ListUtils
-						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-						.getName());
-				recipeSlots[5] = new MItemBlock(modElement.getWorkspace(), ListUtils
-						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-						.getName());
-				recipeSlots[8] = new MItemBlock(modElement.getWorkspace(), ListUtils
-						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-						.getName());
-				recipe.recipeRetstackSize = 11;
-				recipe.recipeShapeless = _true;
-				recipe.recipeReturnStack = new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-								.getName());
-				recipe.recipeSlots = recipeSlots;
-			} else if ("Smelting".equals(recipe.recipeType)) {
-				recipe.smeltingInputStack = new MItemBlock(modElement.getWorkspace(), ListUtils
-						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-						.getName());
-				recipe.smeltingReturnStack = new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-								.getName());
-				recipe.xpReward = 1.234;
-				recipe.cookingTime = 123;
-			} else if ("Smoking".equals(recipe.recipeType)) {
-				recipe.smokingInputStack = new MItemBlock(modElement.getWorkspace(), ListUtils
-						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-						.getName());
-				recipe.smokingReturnStack = new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-								.getName());
-				recipe.xpReward = 12.34;
-				recipe.cookingTime = 42;
-			} else if ("Blasting".equals(recipe.recipeType)) {
-				recipe.blastingInputStack = new MItemBlock(modElement.getWorkspace(), ListUtils
-						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-						.getName());
-				recipe.blastingReturnStack = new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-								.getName());
-				recipe.xpReward = 21.234;
-				recipe.cookingTime = 1000;
-			} else if ("Stone cutting".equals(recipe.recipeType)) {
-				recipe.stoneCuttingInputStack = new MItemBlock(modElement.getWorkspace(), ListUtils
-						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-						.getName());
-				recipe.stoneCuttingReturnStack = new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-								.getName());
-				recipe.recipeRetstackSize = new int[] { 1, 3, 56, 64 }[valueIndex];
-			} else if ("Campfire cooking".equals(recipe.recipeType)) {
-				recipe.campfireCookingInputStack = new MItemBlock(modElement.getWorkspace(), ListUtils
-						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-						.getName());
-				recipe.campfireCookingReturnStack = new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-								.getName());
-				recipe.xpReward = 21.234;
-				recipe.cookingTime = 2983;
-			}
-			return recipe;
 		case TAB:
 			Tab tab = new Tab(modElement);
 			tab.name = modElement.getName();
@@ -558,6 +501,8 @@ public class TestWorkspaceDataProvider {
 			mob.mobBehaviourType = "Creature";
 			mob.mobCreatureType = "ILLAGER";
 			mob.attackStrength = 4;
+			mob.attackKnockback = 1.5;
+			mob.knockbackResistance = 0.5;
 			mob.movementSpeed = 0.76;
 			mob.armorBaseValue = 0.123;
 			mob.health = 42;
@@ -875,6 +820,7 @@ public class TestWorkspaceDataProvider {
 		case ITEM:
 			Item item = new Item(modElement);
 			item.name = modElement.getName();
+			item.rarity = ListUtils.getRandomItem(Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			item.creativeTab = new TabEntry(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			item.stackSize = 52;
@@ -926,6 +872,8 @@ public class TestWorkspaceDataProvider {
 			} else {
 				rangedItem.specialInfo = new ArrayList<>();
 			}
+			rangedItem.animation = ListUtils.getRandomItem(random,
+					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 			rangedItem.shootConstantly = _true;
 			rangedItem.usageCount = 67;
 			rangedItem.stackSize = 41;
@@ -1071,6 +1019,7 @@ public class TestWorkspaceDataProvider {
 			block.isNotColidable = _true;
 			block.canProvidePower = _true;
 			block.isBeaconBase = _true;
+			block.isWaterloggable = !block.hasGravity; // only works if block has no gravity, emptyLists for more randomness
 			block.isLadder = _true;
 			block.enchantPowerBonus = 1.2342;
 			block.reactionToPushing = ListUtils
@@ -1357,6 +1306,108 @@ public class TestWorkspaceDataProvider {
 		default:
 			return null;
 		}
+	}
+
+	private static GeneratableElement getRecipeExample(ModElement modElement, String recipeType, Random random,
+			boolean _true) {
+		Recipe recipe = new Recipe(modElement);
+		recipe.group = modElement.getName().toLowerCase(Locale.ENGLISH);
+		recipe.recipeType = recipeType;
+		if ("Crafting".equals(recipe.recipeType)) {
+			MItemBlock[] recipeSlots = new MItemBlock[9];
+
+			Arrays.fill(recipeSlots, new MItemBlock(modElement.getWorkspace(), ""));
+
+			recipeSlots[0] = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+							.getName());
+
+			if (random.nextBoolean())
+				recipeSlots[3] = new MItemBlock(modElement.getWorkspace(), ListUtils
+						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+						.getName());
+			if (random.nextBoolean())
+				recipeSlots[6] = new MItemBlock(modElement.getWorkspace(), ListUtils
+						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+						.getName());
+			if (random.nextBoolean())
+				recipeSlots[1] = new MItemBlock(modElement.getWorkspace(), ListUtils
+						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+						.getName());
+			if (random.nextBoolean())
+				recipeSlots[4] = new MItemBlock(modElement.getWorkspace(), ListUtils
+						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+						.getName());
+			if (random.nextBoolean())
+				recipeSlots[7] = new MItemBlock(modElement.getWorkspace(), ListUtils
+						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+						.getName());
+			if (random.nextBoolean())
+				recipeSlots[2] = new MItemBlock(modElement.getWorkspace(), ListUtils
+						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+						.getName());
+			if (random.nextBoolean())
+				recipeSlots[5] = new MItemBlock(modElement.getWorkspace(), ListUtils
+						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+						.getName());
+			if (random.nextBoolean())
+				recipeSlots[8] = new MItemBlock(modElement.getWorkspace(), ListUtils
+						.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+						.getName());
+			recipe.recipeRetstackSize = 11;
+			recipe.recipeShapeless = _true;
+			recipe.recipeReturnStack = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName());
+			recipe.recipeSlots = recipeSlots;
+		} else if ("Smelting".equals(recipe.recipeType)) {
+			recipe.smeltingInputStack = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+							.getName());
+			recipe.smeltingReturnStack = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName());
+			recipe.xpReward = 1.234;
+			recipe.cookingTime = 123;
+		} else if ("Smoking".equals(recipe.recipeType)) {
+			recipe.smokingInputStack = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+							.getName());
+			recipe.smokingReturnStack = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName());
+			recipe.xpReward = 12.34;
+			recipe.cookingTime = 42;
+		} else if ("Blasting".equals(recipe.recipeType)) {
+			recipe.blastingInputStack = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+							.getName());
+			recipe.blastingReturnStack = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName());
+			recipe.xpReward = 21.234;
+			recipe.cookingTime = 1000;
+		} else if ("Stone cutting".equals(recipe.recipeType)) {
+			recipe.stoneCuttingInputStack = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+							.getName());
+			recipe.stoneCuttingReturnStack = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName());
+			recipe.recipeRetstackSize = 32;
+		} else if ("Campfire cooking".equals(recipe.recipeType)) {
+			recipe.campfireCookingInputStack = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+							.getName());
+			recipe.campfireCookingReturnStack = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName());
+			recipe.xpReward = 21.234;
+			recipe.cookingTime = 2983;
+		} else {
+			throw new RuntimeException("Unknown recipe type");
+		}
+		return recipe;
 	}
 
 }

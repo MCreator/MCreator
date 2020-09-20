@@ -1,0 +1,36 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "damage_number",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+    {
+      "type": "input_value",
+      "name": "localization_text",
+      "check": "String"
+    }
+  ],
+  "inputsInline": true,
+  "colour": 195,
+  "previousStatement": null,
+  "nextStatement": null,
+  "mcreator": {
+    "toolbox_id": "entitymanagement",
+    "toolbox_init": [
+      "<value name=\"damage_number\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
+      "<value name=\"localization_text\"><block type=\"text\"><field name=\"TEXT\">custom</field></block></value>"
+    ],
+    "inputs": [
+      "damage_number",
+      "entity",
+      "localization_text"
+    ]
+  }
+}

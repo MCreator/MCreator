@@ -3,7 +3,6 @@
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/MCreator/MCreator/blob/master/LICENSE.txt)
 [![Build](https://api.travis-ci.org/MCreator/MCreator.svg?branch=master)](https://travis-ci.org/github/MCreator/MCreator)
 [![Download](https://img.shields.io/badge/Download-release-%2393c54b)](https://mcreator.net/download)
-![Supported platforms](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey)
 [![Donate](https://img.shields.io/badge/Donate-%E2%99%A1-%23ff7c00)](https://mcreator.net/donate)
 # MCreator - Minecraft Mod Maker
 

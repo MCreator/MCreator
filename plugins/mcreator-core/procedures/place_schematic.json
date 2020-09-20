@@ -14,6 +14,46 @@
       "type": "input_value",
       "name": "z",
       "check": "Number"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "rotation",
+      "options": [
+        [
+          "NONE",
+          "NONE"
+        ],
+        [
+          "CLOCKWISE_90",
+          "CLOCKWISE_90"
+        ],
+        [
+          "CLOCKWISE_180",
+          "CLOCKWISE_180"
+        ],
+        [
+          "COUNTERCLOCKWISE_90",
+          "COUNTERCLOCKWISE_90"
+        ]
+      ]
+    },
+    {
+      "type": "field_dropdown",
+      "name": "mirror",
+      "options": [
+        [
+          "NONE",
+          "NONE"
+        ],
+        [
+          "FRONT_BACK",
+          "FRONT_BACK"
+        ],
+        [
+          "LEFT_RIGHT",
+          "LEFT_RIGHT"
+        ]
+      ]
     }
   ],
   "extensions": [
@@ -31,7 +71,9 @@
       "<value name=\"z\"><block type=\"coord_z\"></block></value>"
     ],
     "fields": [
-      "schematic"
+      "schematic",
+      "rotation",
+      "mirror"
     ],
     "inputs": [
       "x",

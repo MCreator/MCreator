@@ -65,6 +65,8 @@ import java.util.List;
 	public String mobBehaviourType;
 	public String mobCreatureType;
 	public int attackStrength;
+	public double attackKnockback;
+	public double knockbackResistance;
 	public double movementSpeed;
 	public double armorBaseValue;
 	public int trackingRange;

@@ -19,6 +19,7 @@
 package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.preferences.PreferencesManager;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,34 +39,26 @@ public class L10N {
 
 	private static final Logger LOG = LogManager.getLogger("L10N");
 
-	private static final Locale defaultLocale = new Locale("en", "US");
-
 	private static ResourceBundle rb;
+	private static ResourceBundle rb_en;
 
-	private static Locale locale = null;
 	private static Set<Locale> supportedLocales = null;
+
+	private static boolean isTestingEnvironment = false;
 
 	public static Set<Locale> getSupportedLocales() {
 		if (supportedLocales == null) { // lazy-load supported locales
 			Set<String> localeFiles = PluginLoader.INSTANCE.getResourcesInPackage("lang");
 			supportedLocales = localeFiles.stream().map(FilenameUtils::getBaseName).filter(e -> e.contains("_"))
 					.map(e -> e.split("_")).map(e -> new Locale(e[1], e[2])).collect(Collectors.toSet());
+			supportedLocales.add(new Locale("en", "US"));
 		}
 
 		return supportedLocales;
 	}
 
 	public static Locale getLocale() {
-		if (locale == null) { // lazy-load locale
-			// TODO: uncomment this once localizations are complete
-			/*Locale suggested = Locale.getDefault();
-			if (getSupportedLocales().contains(suggested))
-				locale = suggested;
-			else*/
-			locale = defaultLocale;
-		}
-
-		return locale;
+		return PreferencesManager.PREFERENCES.ui.language;
 	}
 
 	public static String getLocaleString() {
@@ -78,6 +71,15 @@ public class L10N {
 
 	public static void initTranslations() {
 		rb = ResourceBundle.getBundle("lang/texts", getLocale(), PluginLoader.INSTANCE, new UTF8Control());
+		rb_en = ResourceBundle
+				.getBundle("lang/texts", new Locale("en", "US"), PluginLoader.INSTANCE, new UTF8Control());
+	}
+
+	/**
+	 * Test mode will make JVM crash with runtime exception if translation key is not found when requested
+	 */
+	public static void enterTestingMode() {
+		isTestingEnvironment = true;
 	}
 
 	public static String t(String key, Object... parameters) {
@@ -86,8 +88,26 @@ public class L10N {
 
 		if (rb.containsKey(key))
 			return MessageFormat.format(rb.getString(key), parameters);
-		else
+		else if (key.startsWith("blockly.") && key.endsWith(".tooltip"))
 			return null;
+		else if (isTestingEnvironment)
+			throw new RuntimeException("Failed to load any translation for key: " + key);
+		else
+			return key;
+	}
+
+	public static String t_en(String key, Object... parameters) {
+		if (key == null)
+			return null;
+
+		if (rb_en.containsKey(key))
+			return MessageFormat.format(rb_en.getString(key), parameters);
+		else if (key.startsWith("blockly.") && key.endsWith(".tooltip"))
+			return null;
+		else if (isTestingEnvironment)
+			throw new RuntimeException("Failed to load any translation for key: " + key);
+		else
+			return key;
 	}
 
 	public static JLabel label(String key, Object... parameter) {

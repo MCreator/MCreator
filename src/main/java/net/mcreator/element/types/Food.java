@@ -42,6 +42,7 @@ import java.util.Map;
 	public String customModelName;
 
 	public String name;
+	public String rarity;
 	public List<String> specialInfo;
 	public TabEntry creativeTab;
 	public int stackSize;
@@ -54,6 +55,7 @@ import java.util.Map;
 	public boolean isAlwaysEdible;
 	public String animation;
 	public boolean hasGlow;
+	public Procedure glowCondition;
 
 	public Procedure onRightClicked;
 	public Procedure onEaten;
@@ -67,8 +69,10 @@ import java.util.Map;
 	public Food(ModElement element) {
 		super(element);
 
+		this.rarity = "COMMON";
 		this.eatingSpeed = 32;
 		this.saturation = 0.3f;
+		this.animation = "eat";
 
 		this.renderType = 0;
 		this.customModelName = "Normal";

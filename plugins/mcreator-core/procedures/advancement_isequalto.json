@@ -1,0 +1,24 @@
+{
+  "extensions": [
+    "achievement_list_provider"
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "logicoperations",
+    "fields": [
+      "achievement"
+    ],
+    "dependencies": [
+      {
+        "name": "advancement",
+        "type": "advancement"
+      },
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}
