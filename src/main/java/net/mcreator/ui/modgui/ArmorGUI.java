@@ -465,7 +465,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		clop.setOpaque(false);
 
-		JPanel clopa = new JPanel(new BorderLayout());
+		JPanel clopa = new JPanel(new BorderLayout(35, 35));
 		clopa.add("Center", enderpanel);
 		clopa.add("South", clop);
 		clopa.setOpaque(false);
@@ -730,8 +730,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			clo1.setIcon(ImageUtils.drawOver(bg1, front1));
 			clo2.setIcon(ImageUtils.drawOver(bg2, front2));
 		} else {
-			clo1.setIcon(new ImageIcon());
-			clo2.setIcon(new ImageIcon());
+			clo1.setIcon(new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame1()));
+			clo2.setIcon(new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame2()));
 		}
 	}
 

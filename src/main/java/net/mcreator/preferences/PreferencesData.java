@@ -73,6 +73,7 @@ public class PreferencesData {
 
 	public static class BlocklySettings {
 
+		@PreferencesEntry(arrayData = { "Geras", "Thrasos" }) public String renderer = "Geras";
 		@PreferencesEntry public boolean useSmartSort = true;
 		@PreferencesEntry public boolean enableComments = true;
 		@PreferencesEntry public boolean enableCollapse = true;

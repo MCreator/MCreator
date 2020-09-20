@@ -384,11 +384,16 @@ public class ${JavaModName}Variables {
 	}
 
 	@SubscribeEvent public void clonePlayer(PlayerEvent.Clone event) {
-		if(event.isWasDeath()) {
-			PlayerVariables original = ((PlayerVariables) event.getOriginal().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables()));
-			PlayerVariables clone = ((PlayerVariables) event.getEntity().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables()));
+		PlayerVariables original = ((PlayerVariables) event.getOriginal().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables()));
+		PlayerVariables clone = ((PlayerVariables) event.getEntity().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables()));
+		<#list variables as var>
+			<#if var.getScope().name() == "PLAYER_PERSISTENT">
+			clone.${var.getName()} = original.${var.getName()};
+			</#if>
+		</#list>
+		if(!event.isWasDeath()) {
 			<#list variables as var>
-				<#if var.getScope().name() == "PLAYER_PERSISTENT">
+				<#if var.getScope().name() == "PLAYER_LIFETIME">
 				clone.${var.getName()} = original.${var.getName()};
 				</#if>
 			</#list>
