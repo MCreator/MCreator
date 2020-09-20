@@ -18,7 +18,15 @@ function AIConditionFieldImpl() {
             this.fieldGroup_);
 
         this.createTextElement_();
-        this.textElement_.setAttribute("x", this.textElement_.getAttribute("x") + 4);
+
+        if (workspace.getRenderer().name === "thrasos") {
+            this.textElement_.setAttribute("y", 8);
+            this.textElement_.setAttribute("x", this.textElement_.getAttribute("x") + 3);
+        } else {
+            this.textElement_.setAttribute("y", 13);
+            this.textElement_.setAttribute("x", this.textElement_.getAttribute("x") + 4);
+        }
+
         if (this.class_)
             Blockly.utils.dom.addClass(this.textElement_, this.class_);
 
