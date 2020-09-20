@@ -255,8 +255,8 @@ public class ExternalBlockLoader {
 
 		@Nullable private List<String> toolbox_init;
 
-		@Nullable public List<String> fields;
-		@Nullable public List<String> inputs;
+		@Nullable public List<Object> fields;
+		@Nullable public List<Object> inputs;
 		@Nullable public List<Dependency> dependencies;
 
 		@Nullable public List<String> required_apis;
@@ -271,6 +271,23 @@ public class ExternalBlockLoader {
 			if (a > 0)
 				return this.machine_name.substring(0, a);
 			return this.machine_name.split("_")[0];
+		}
+
+		static { // converts fields & inputs lists to the new format
+			if (fields != null) {
+				for (int fieldNum = 0; fieldNum < fields.size(); fieldNum++) {
+					if (!(fields.get(fieldNum) instanceof BlockArgument)) {
+						fields.set(fieldNum, new BlockArgument(fields.get(fieldNum).toString(), false));
+					}
+				}
+			}
+			if (inputs != null) {
+				for (int inputNum = 0; inputNum < inputs.size(); inputNum++) {
+					if (!(inputs.get(inputNum) instanceof BlockArgument)) {
+						inputs.set(inputNum, new BlockArgument(inputs.get(inputNum).toString(), false));
+					}
+				}
+			}
 		}
 
 		public String getName() {
@@ -296,6 +313,24 @@ public class ExternalBlockLoader {
 
 		@Override public int hashCode() {
 			return machine_name.hashCode();
+		}
+	}
+
+	public static class BlockArgument {
+		public String name;
+		public boolean does_not_error;
+
+		public BlockArgument(String name, boolean doesNotError) {
+			this.name = name;
+			this.does_not_error = doesNotError;
+		}
+
+		public boolean getName() {
+			return name;
+		}
+
+		public boolean doesNotError() {
+			return does_not_error;
 		}
 	}
 
