@@ -106,8 +106,8 @@ public class ExternalBlockLoader {
 						for (int fieldNum = 0; fieldNum < fields.size(); fieldNum++) {
 							if (!(fields.get(fieldNum) instanceof BlockArgument)) {
 								JsonObject blockArgument = new JsonObject();
-								blockArgument.set("name", fields.get(fieldNum).toString());
-								blockArgument.set("does_not_error", false);
+								blockArgument.addProperty("name", fields.get(fieldNum).toString());
+								blockArgument.addProperty("does_not_error", false);
 								jsonresult.get("mcreator").getAsJsonObject().get("fields").getAsJsonArray()
 									.set(fieldNum, (JsonElement)blockArgument);
 							}
@@ -119,8 +119,8 @@ public class ExternalBlockLoader {
 						for (int inputNum = 0; inputNum < inputs.size(); inputNum++) {
 							if (!(inputs.get(inputNum) instanceof BlockArgument)) {
 								JsonObject blockArgument = new JsonObject();
-								blockArgument.set("name", inputs.get(inputNum).toString());
-								blockArgument.set("does_not_error", false);
+								blockArgument.addProperty("name", inputs.get(inputNum).toString());
+								blockArgument.addProperty("does_not_error", false);
 								jsonresult.get("mcreator").getAsJsonObject().get("inputs").getAsJsonArray()
 									.set(inputNum, (JsonElement)blockArgument);
 							}
