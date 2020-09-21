@@ -99,18 +99,19 @@ public class BlocklyBlockCodeGenerator {
 		// check for all fields if they exist, if they do, add them to data model
 		if (toolboxBlock.fields != null) {
 			for (ExternalBlockLoader.BlockArgument field : toolboxBlock.fields) {
+				ExternalBlockLoader.BlockArgument arg = (ExternalBlockLoader.BlockArgument)field;
 				boolean found = false;
 				for (Element element : elements) {
-					if (element.getNodeName().equals("field") && element.getAttribute("name").equals(field.getName())
+					if (element.getNodeName().equals("field") && element.getAttribute("name").equals(arg.getName())
 							&& !element.getTextContent().equals("")) {
 						found = true;
-						dataModel.put("field$" + field.getName(), element.getTextContent());
+						dataModel.put("field$" + arg.getName(), element.getTextContent());
 					}
 				}
 				if (!found) {
 					master.addCompileNote(new BlocklyCompileNote(
-							field.doesNotError() ? BlocklyCompileNote.Type.WARNING : BlocklyCompileNote.Type.ERROR,
-							"Field " + field.getName() + " on block " + type + " is not defined."));
+							arg.doesNotError() ? BlocklyCompileNote.Type.WARNING : BlocklyCompileNote.Type.ERROR,
+							"Field " + arg.getName() + " on block " + type + " is not defined."));
 				}
 			}
 		}
@@ -118,18 +119,19 @@ public class BlocklyBlockCodeGenerator {
 		// next we check for inputs if they exist, we process them and add to data model
 		if (toolboxBlock.inputs != null) {
 			for (ExternalBlockLoader.BlockArgument input : toolboxBlock.inputs) {
+				ExternalBlockLoader.BlockArgument arg = (ExternalBlockLoader.BlockArgument)input;
 				boolean found = false;
 				for (Element element : elements) {
-					if ((element.getNodeName().equals("value") || element.getNodeName().equals("statement")) && element.getAttribute("name").equals(input.getName())) {
+					if ((element.getNodeName().equals("value") || element.getNodeName().equals("statement")) && element.getAttribute("name").equals(arg.getName())) {
 						found = true;
 						String generatedCode = BlocklyToCode.directProcessOutputBlock(master, element);
-						dataModel.put("input$" + input.getName(), generatedCode);
+						dataModel.put("input$" + arg.getName(), generatedCode);
 					}
 				}
 				if (!found) {
 					master.addCompileNote(new BlocklyCompileNote(
-							input.doesNotError() ? BlocklyCompileNote.Type.WARNING : BlocklyCompileNote.Type.ERROR,
-							"Input " + input.getName() + " on block " + type + " is empty."));
+							arg.doesNotError() ? BlocklyCompileNote.Type.WARNING : BlocklyCompileNote.Type.ERROR,
+							"Input " + arg.getName() + " on block " + type + " is empty."));
 				}
 			}
 		}
