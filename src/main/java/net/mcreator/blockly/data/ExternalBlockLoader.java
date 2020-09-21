@@ -100,18 +100,16 @@ public class ExternalBlockLoader {
 
 					jsonresult.add("type", new JsonPrimitive(toolboxBlock.machine_name));
 
-					toolboxBlock.blocklyJSON = jsonresult;
-					toolboxBlock.type = jsonresult.get("output") == null ?
-							IBlockGenerator.BlockType.PROCEDURAL :
-							IBlockGenerator.BlockType.OUTPUT;
-
 					// converts fields & inputs lists to the new format\
 					List<Object> fields = gson.fromJson(jsonresult.get("mcreator").getAsJsonObject().get("fields"), List.class);
 					if (fields != null) {
 						for (int fieldNum = 0; fieldNum < fields.size(); fieldNum++) {
 							if (!(fields.get(fieldNum) instanceof BlockArgument)) {
+								JsonObject blockArgument = new ();
+								blockArgument.set("name", fields.get(fieldNum).toString());
+								blockArgument.set("does_not_error", false);
 								jsonresult.get("mcreator").getAsJsonObject().get("fields").getAsJsonArray()
-									.set(fieldNum, new BlockArgument(fields.get(fieldNum).toString(), false));
+									.set(fieldNum, (JsonElement)blockArgument);
 							}
 						}
 					}
@@ -120,11 +118,19 @@ public class ExternalBlockLoader {
 					if (inputs != null) {
 						for (int inputNum = 0; inputNum < inputs.size(); inputNum++) {
 							if (!(inputs.get(inputNum) instanceof BlockArgument)) {
+								JsonObject blockArgument = new ();
+								blockArgument.set("name", inputs.get(inputNum).toString());
+								blockArgument.set("does_not_error", false);
 								jsonresult.get("mcreator").getAsJsonObject().get("inputs").getAsJsonArray()
-									.set(inputNum, new BlockArgument(inputs.get(inputNum).toString(), false));
+									.set(inputNum, (JsonElement)blockArgument);
 							}
 						}
 					}
+
+					toolboxBlock.blocklyJSON = jsonresult;
+					toolboxBlock.type = jsonresult.get("output") == null ?
+							IBlockGenerator.BlockType.PROCEDURAL :
+							IBlockGenerator.BlockType.OUTPUT;
 
 					toolboxBlocksList.add(toolboxBlock);
 				}
@@ -321,16 +327,11 @@ public class ExternalBlockLoader {
 		}
 	}
 
-	public static class BlockArgument {
+	@SuppressWarnings("unused") public static class BlockArgument {
 		public String name;
 		public boolean does_not_error;
 
-		public BlockArgument(String name, boolean doesNotError) {
-			this.name = name;
-			this.does_not_error = doesNotError;
-		}
-
-		public boolean getName() {
+		public String getName() {
 			return name;
 		}
 
