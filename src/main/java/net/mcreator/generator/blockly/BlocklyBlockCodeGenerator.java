@@ -98,7 +98,7 @@ public class BlocklyBlockCodeGenerator {
 
 		// check for all fields if they exist, if they do, add them to data model
 		if (toolboxBlock.fields != null) {
-			for (ExternalBlockLoader.BlockArgument field : toolboxBlock.fields) {
+			for (Object field : toolboxBlock.fields) {
 				ExternalBlockLoader.BlockArgument arg = (ExternalBlockLoader.BlockArgument)field;
 				boolean found = false;
 				for (Element element : elements) {
@@ -118,7 +118,7 @@ public class BlocklyBlockCodeGenerator {
 
 		// next we check for inputs if they exist, we process them and add to data model
 		if (toolboxBlock.inputs != null) {
-			for (ExternalBlockLoader.BlockArgument input : toolboxBlock.inputs) {
+			for (Object input : toolboxBlock.inputs) {
 				ExternalBlockLoader.BlockArgument arg = (ExternalBlockLoader.BlockArgument)input;
 				boolean found = false;
 				for (Element element : elements) {
