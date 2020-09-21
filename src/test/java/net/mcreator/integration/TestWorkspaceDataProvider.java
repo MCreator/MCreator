@@ -770,10 +770,11 @@ public class TestWorkspaceDataProvider {
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			plant.texture = "test";
 			plant.textureBottom = "test";
-			plant.plantType = "double";
-			plant.growapableSpawnType = "Water";
-			plant.staticPlantGenerationType = "Grass";
-			plant.doublePlantGenerationType = "Grass";
+			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
+			plant.growapableSpawnType = ListUtils
+					.getRandomItem(new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
+			plant.staticPlantGenerationType = ListUtils.getRandomItem(new String[] { "Grass", "Flower" });
+			plant.doublePlantGenerationType = ListUtils.getRandomItem(new String[] { "Grass", "Flower" });
 			plant.growapableMaxHeight = 5;
 			plant.hardness = 0.03;
 			plant.emissiveRendering = !_true;

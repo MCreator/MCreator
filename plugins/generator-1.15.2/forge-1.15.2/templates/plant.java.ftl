@@ -218,12 +218,13 @@ import net.minecraft.block.material.Material;
 
       		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, feature
 					.withConfiguration((new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(block.getDefaultState()), new <#if data.plantType == "double">DoublePlant<#else>Simple</#if>BlockPlacer()))
-					.tries(64)<#if data.plantType == "double" && data.doublePlantGenerationType == "Flower">.func_227317_b_()</#if>.build()).withPlacement(
-							<#if data.plantType == "normal" && data.staticPlantGenerationType == "Grass" || data.plantType == "double" && data.doublePlantGenerationType == "Grass">
-							Placement.NOISE_HEIGHTMAP_32.configure(new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks}))
-							<#else>
-							Placement.<#if data.plantType == "normal" || data.plantType == "double">COUNT_HEIGHTMAP_32<#else>COUNT_HEIGHTMAP_DOUBLE</#if>.configure(new FrequencyConfig(${data.frequencyOnChunks}))
-							</#if>
+					.tries(64)
+						<#if data.plantType == "double" && data.doublePlantGenerationType == "Flower">.func_227317_b_()</#if>.build()).withPlacement(
+						<#if (data.plantType == "normal" && data.staticPlantGenerationType == "Grass") || (data.plantType == "double" && data.doublePlantGenerationType == "Grass")>
+						Placement.NOISE_HEIGHTMAP_32.configure(new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks}))
+						<#else>
+						Placement.<#if data.plantType == "normal" || data.plantType == "double">COUNT_HEIGHTMAP_32<#else>COUNT_HEIGHTMAP_DOUBLE</#if>.configure(new FrequencyConfig(${data.frequencyOnChunks}))
+						</#if>
 					));
 		}
 	}
@@ -311,6 +312,7 @@ import net.minecraft.block.material.Material;
                 if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
                     return Collections.emptyList();
                 </#if>
+
                 List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			    if(!dropsOriginal.isEmpty())
 				    return dropsOriginal;
@@ -322,6 +324,7 @@ import net.minecraft.block.material.Material;
                 if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
                     return Collections.emptyList();
                 </#if>
+
                 List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			    if(!dropsOriginal.isEmpty())
 				    return dropsOriginal;
@@ -333,6 +336,7 @@ import net.minecraft.block.material.Material;
                 if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
                     return Collections.emptyList();
                 </#if>
+
                 List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			    if(!dropsOriginal.isEmpty())
 				    return dropsOriginal;

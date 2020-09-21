@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.Dependency;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Plant;
@@ -34,7 +33,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.TiledImageCache;
-import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -223,7 +221,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		sbbp2.setOpaque(false);
 
 		sbbp22.add("East", destal);
-		sbbp22.add("West", modelandinfo);
+		sbbp22.add("Center", modelandinfo);
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(normalType);
@@ -254,8 +252,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				dbl.setIcon(TiledImageCache.plantDoubleYes);
 				renderType.setSelectedItem(cross);
 				renderType.setEnabled(false);
-			}
-			else
+			} else
 				dbl.setIcon(TiledImageCache.plantDoubleNo);
 			updateTextureOptions();
 		};
@@ -358,8 +355,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/type"), new JLabel("Plant type: ")));
 		selp.add(growapableSpawnType);
 
-		selp.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"), new JLabel("Plant flammability:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"), new JLabel("Plant flammability:")));
 		selp.add(flammability);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
@@ -393,8 +389,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_amount"), new JLabel("Drop amount:")));
 		selp2.add(dropAmount);
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
-				new JLabel("<html>Use loot table for drops:<br><small>If checked, you need to define loot table for drops")));
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"), new JLabel(
+				"<html>Use loot table for drops:<br><small>If checked, you need to define loot table for drops")));
 		selp2.add(useLootTableForDrops);
 
 		selp2.setOpaque(false);
@@ -481,12 +477,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private void updateTextureOptions() {
 		texture.setVisible(false);
 		textureBottom.setVisible(false);
+
 		if (doubleType.isSelected()) {
 			texture.setVisible(true);
 			textureBottom.setVisible(true);
-		}
-		else
+		} else {
 			texture.setVisible(true);
+		}
 	}
 
 	@Override public void reloadDataLists() {
@@ -591,14 +588,18 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			stl.setIcon(TiledImageCache.plantStaticYes);
 		else
 			stl.setIcon(TiledImageCache.plantStaticNo);
+
 		if (growapableType.isSelected())
 			dyn.setIcon(TiledImageCache.plantGrowingYes);
 		else
 			dyn.setIcon(TiledImageCache.plantGrowingNo);
+
 		if (doubleType.isSelected())
 			dbl.setIcon(TiledImageCache.plantDoubleYes);
 		else
 			dbl.setIcon(TiledImageCache.plantDoubleNo);
+
+		updateTextureOptions();
 	}
 
 	@Override public Plant getElementFromGUI() {
@@ -609,8 +610,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.textureBottom = textureBottom.getID();
 		if (normalType.isSelected())
 			plant.plantType = "normal";
+		else if (growapableType.isSelected())
+			plant.plantType = "growapable";
 		else
-			plant.plantType = growapableType.isSelected() ? "growapable" : "double";
+			plant.plantType = "double";
 		plant.growapableSpawnType = (String) growapableSpawnType.getSelectedItem();
 		plant.staticPlantGenerationType = (String) staticPlantGenerationType.getSelectedItem();
 		plant.doublePlantGenerationType = (String) doublePlantGenerationType.getSelectedItem();

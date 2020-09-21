@@ -235,7 +235,7 @@ package ${package}.block;
 					continue;
 			</#if>
 
-			<#if data.plantType == "normal" && data.staticPlantGenerationType == "Grass" || data.plantType == "double" && data.doublePlantGenerationType == "Grass">
+			<#if (data.plantType == "normal" && data.staticPlantGenerationType == "Grass") || (data.plantType == "double" && data.doublePlantGenerationType == "Grass")>
 			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(feature,
 			    new <#if data.plantType == "normal">GrassFeatureConfig(block.getDefaultState())<#else>NoFeatureConfig()</#if>,
 					Placement.NOISE_HEIGHTMAP_32, new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks})
@@ -331,7 +331,9 @@ package ${package}.block;
                 <#if data.plantType == "double">
                 if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
                     return Collections.emptyList();
-                </#if>List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+                </#if>
+
+				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			    if(!dropsOriginal.isEmpty())
 				    return dropsOriginal;
 			    return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
@@ -341,7 +343,9 @@ package ${package}.block;
                 <#if data.plantType == "double">
                 if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
                     return Collections.emptyList();
-                </#if>List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+                </#if>
+
+				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			    if(!dropsOriginal.isEmpty())
 				    return dropsOriginal;
 			    return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
@@ -351,7 +355,9 @@ package ${package}.block;
                 <#if data.plantType == "double">
                 if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
                     return Collections.emptyList();
-                </#if>List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+                </#if>
+
+				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			    if(!dropsOriginal.isEmpty())
 				    return dropsOriginal;
 			    return Collections.singletonList(new ItemStack(this, 1));
