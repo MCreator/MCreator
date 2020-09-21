@@ -104,21 +104,28 @@ public class ExternalBlockLoader {
 					toolboxBlock.type = jsonresult.get("output") == null ?
 							IBlockGenerator.BlockType.PROCEDURAL :
 							IBlockGenerator.BlockType.OUTPUT;
-					// converts fields & inputs lists to the new format
+
+					// converts fields & inputs lists to the new format\
+					List<Object> fields = gson.fromJson(jsonresult.get("mcreator").getAsJsonObject().get("fields"), List.class);
 					if (fields != null) {
 						for (int fieldNum = 0; fieldNum < fields.size(); fieldNum++) {
 							if (!(fields.get(fieldNum) instanceof BlockArgument)) {
-								fields.set(fieldNum, new BlockArgument(fields.get(fieldNum).toString(), false));
+								jsonresult.get("mcreator").getAsJsonObject().get("fields").getAsJsonArray()
+									.set(fieldNum, new BlockArgument(fields.get(fieldNum).toString(), false));
 							}
 						}
 					}
+
+					List<Object> inputs = gson.fromJson(jsonresult.get("mcreator").getAsJsonObject().get("inputs"), List.class);
 					if (inputs != null) {
 						for (int inputNum = 0; inputNum < inputs.size(); inputNum++) {
 							if (!(inputs.get(inputNum) instanceof BlockArgument)) {
-								inputs.set(inputNum, new BlockArgument(inputs.get(inputNum).toString(), false));
+								jsonresult.get("mcreator").getAsJsonObject().get("inputs").getAsJsonArray()
+									.set(inputNum, new BlockArgument(inputs.get(inputNum).toString(), false));
 							}
 						}
 					}
+
 					toolboxBlocksList.add(toolboxBlock);
 				}
 			} catch (Exception e) {
