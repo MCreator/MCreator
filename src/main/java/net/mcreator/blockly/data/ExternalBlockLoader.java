@@ -100,7 +100,7 @@ public class ExternalBlockLoader {
 
 					jsonresult.add("type", new JsonPrimitive(toolboxBlock.machine_name));
 
-					// converts fields & inputs lists to the new format\
+					// converts fields & inputs lists to the new format
 					List<Object> fields = gson.fromJson(jsonresult.get("mcreator").getAsJsonObject().get("fields"), List.class);
 					if (fields != null) {
 						for (int fieldNum = 0; fieldNum < fields.size(); fieldNum++) {
