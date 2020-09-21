@@ -110,7 +110,7 @@ public class ExternalBlockLoader {
 								blockArgument.addProperty("does_not_error", false);
 								jsonresult.get("mcreator").getAsJsonObject().get("fields").getAsJsonArray()
 									.set(fieldNum, (JsonElement)blockArgument);
-								toolboxBlock.fields.set(fieldNum, new BlockArgument(fields.get(fieldNum).toString(), false))
+								toolboxBlock.fields.set(fieldNum, new BlockArgument(fields.get(fieldNum).toString(), false));
 							}
 						}
 					}
@@ -124,7 +124,7 @@ public class ExternalBlockLoader {
 								blockArgument.addProperty("does_not_error", false);
 								jsonresult.get("mcreator").getAsJsonObject().get("inputs").getAsJsonArray()
 									.set(inputNum, (JsonElement)blockArgument);
-								toolboxBlock.inputs.set(inputNum, new BlockArgument(inputs.get(fieldNum).toString(), false))
+								toolboxBlock.inputs.set(inputNum, new BlockArgument(inputs.get(fieldNum).toString(), false));
 							}
 						}
 					}
