@@ -110,6 +110,7 @@ public class ExternalBlockLoader {
 								blockArgument.addProperty("does_not_error", false);
 								jsonresult.get("mcreator").getAsJsonObject().get("fields").getAsJsonArray()
 									.set(fieldNum, (JsonElement)blockArgument);
+								toolboxBlock.fields.set(fieldNum, new BlockArgument(fields.get(fieldNum).toString(), false))
 							}
 						}
 					}
@@ -123,6 +124,7 @@ public class ExternalBlockLoader {
 								blockArgument.addProperty("does_not_error", false);
 								jsonresult.get("mcreator").getAsJsonObject().get("inputs").getAsJsonArray()
 									.set(inputNum, (JsonElement)blockArgument);
+								toolboxBlock.inputs.set(inputNum, new BlockArgument(inputs.get(fieldNum).toString(), false))
 							}
 						}
 					}
@@ -327,9 +329,14 @@ public class ExternalBlockLoader {
 		}
 	}
 
-	@SuppressWarnings("unused") public static class BlockArgument {
+	public static class BlockArgument {
 		public String name;
 		public boolean does_not_error;
+
+		public BlockArgument(String name, boolean doesNotError) {
+			this.name = name;
+			this.does_not_error = doesNotError;
+		}
 
 		public String getName() {
 			return name;
