@@ -104,6 +104,21 @@ public class ExternalBlockLoader {
 					toolboxBlock.type = jsonresult.get("output") == null ?
 							IBlockGenerator.BlockType.PROCEDURAL :
 							IBlockGenerator.BlockType.OUTPUT;
+					// converts fields & inputs lists to the new format
+					if (fields != null) {
+						for (int fieldNum = 0; fieldNum < fields.size(); fieldNum++) {
+							if (!(fields.get(fieldNum) instanceof BlockArgument)) {
+								fields.set(fieldNum, new BlockArgument(fields.get(fieldNum).toString(), false));
+							}
+						}
+					}
+					if (inputs != null) {
+						for (int inputNum = 0; inputNum < inputs.size(); inputNum++) {
+							if (!(inputs.get(inputNum) instanceof BlockArgument)) {
+								inputs.set(inputNum, new BlockArgument(inputs.get(inputNum).toString(), false));
+							}
+						}
+					}
 					toolboxBlocksList.add(toolboxBlock);
 				}
 			} catch (Exception e) {
@@ -271,23 +286,6 @@ public class ExternalBlockLoader {
 			if (a > 0)
 				return this.machine_name.substring(0, a);
 			return this.machine_name.split("_")[0];
-		}
-
-		static { // converts fields & inputs lists to the new format
-			if (fields != null) {
-				for (int fieldNum = 0; fieldNum < fields.size(); fieldNum++) {
-					if (!(fields.get(fieldNum) instanceof BlockArgument)) {
-						fields.set(fieldNum, new BlockArgument(fields.get(fieldNum).toString(), false));
-					}
-				}
-			}
-			if (inputs != null) {
-				for (int inputNum = 0; inputNum < inputs.size(); inputNum++) {
-					if (!(inputs.get(inputNum) instanceof BlockArgument)) {
-						inputs.set(inputNum, new BlockArgument(inputs.get(inputNum).toString(), false));
-					}
-				}
-			}
 		}
 
 		public String getName() {
