@@ -100,6 +100,35 @@ public class ExternalBlockLoader {
 
 					jsonresult.add("type", new JsonPrimitive(toolboxBlock.machine_name));
 
+					// converts fields & inputs lists to the new format
+					List<Object> fields = gson.fromJson(jsonresult.get("mcreator").getAsJsonObject().get("fields"), List.class);
+					if (fields != null) {
+						for (int fieldNum = 0; fieldNum < fields.size(); fieldNum++) {
+							if (!(fields.get(fieldNum) instanceof BlockArgument)) {
+								JsonObject blockArgument = new JsonObject();
+								blockArgument.addProperty("name", fields.get(fieldNum).toString());
+								blockArgument.addProperty("does_not_error", false);
+								jsonresult.get("mcreator").getAsJsonObject().get("fields").getAsJsonArray()
+									.set(fieldNum, (JsonElement)blockArgument);
+								toolboxBlock.fields.set(fieldNum, new BlockArgument(fields.get(fieldNum).toString(), false));
+							}
+						}
+					}
+
+					List<Object> inputs = gson.fromJson(jsonresult.get("mcreator").getAsJsonObject().get("inputs"), List.class);
+					if (inputs != null) {
+						for (int inputNum = 0; inputNum < inputs.size(); inputNum++) {
+							if (!(inputs.get(inputNum) instanceof BlockArgument)) {
+								JsonObject blockArgument = new JsonObject();
+								blockArgument.addProperty("name", inputs.get(inputNum).toString());
+								blockArgument.addProperty("does_not_error", false);
+								jsonresult.get("mcreator").getAsJsonObject().get("inputs").getAsJsonArray()
+									.set(inputNum, (JsonElement)blockArgument);
+								toolboxBlock.inputs.set(inputNum, new BlockArgument(inputs.get(inputNum).toString(), false));
+							}
+						}
+					}
+
 					toolboxBlock.blocklyJSON = jsonresult;
 					toolboxBlock.type = jsonresult.get("output") == null ?
 							IBlockGenerator.BlockType.PROCEDURAL :
@@ -255,8 +284,8 @@ public class ExternalBlockLoader {
 
 		@Nullable private List<String> toolbox_init;
 
-		@Nullable public List<String> fields;
-		@Nullable public List<String> inputs;
+		@Nullable public List<Object> fields;
+		@Nullable public List<Object> inputs;
 		@Nullable public List<Dependency> dependencies;
 
 		@Nullable public List<String> required_apis;
@@ -296,6 +325,24 @@ public class ExternalBlockLoader {
 
 		@Override public int hashCode() {
 			return machine_name.hashCode();
+		}
+	}
+
+	public static class BlockArgument {
+		public String name;
+		public boolean does_not_error;
+
+		public BlockArgument(String name, boolean doesNotError) {
+			this.name = name;
+			this.does_not_error = doesNotError;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public boolean doesNotError() {
+			return does_not_error;
 		}
 	}
 
