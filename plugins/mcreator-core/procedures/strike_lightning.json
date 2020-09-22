@@ -16,9 +16,9 @@
       "check": "Number"
     },
     {
-      "type": "input_value",
-      "name": "isCosmetic",
-      "check": "Boolean"
+      "type": "field_checkbox",
+      "name": "effectOnly",
+      "checked": false
     }
   ],
   "inputsInline": true,
@@ -30,14 +30,15 @@
     "toolbox_init": [
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
-      "<value name=\"z\"><block type=\"coord_z\"></block></value>",
-      "<value name=\"isCosmetic\"><block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block></value>"
+      "<value name=\"z\"><block type=\"coord_z\"></block></value>"
     ],
     "inputs": [
       "x",
       "y",
-      "z",
-      "isCosmetic"
+      "z"
+    ],
+    "fields": [
+      "effectOnly"
     ],
     "dependencies": [
       {
