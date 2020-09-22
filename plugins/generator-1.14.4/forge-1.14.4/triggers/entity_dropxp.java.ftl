@@ -12,8 +12,8 @@
 		dependencies.put("x", i);
 		dependencies.put("y", j);
 		dependencies.put("z", k);
-		dependencies.put("DroppedExperience", droppedxp);
-		dependencies.put("OriginalExperience", originalxp);
+		dependencies.put("droppedexperience", droppedxp);
+		dependencies.put("originalexperience", originalxp);
 		dependencies.put("sourceentity", attacked);
 		dependencies.put("world", world);
 		dependencies.put("entity", entity);

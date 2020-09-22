@@ -9,11 +9,11 @@
       "type": "entity"
     },
     {
-      "name": "DroppedExperience",
+      "name": "droppedexperience",
       "type": "number"
     },
     {
-      "name": "OriginalExperience",
+      "name": "originalexperience",
       "type": "number"
     },
     {
