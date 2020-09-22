@@ -4,6 +4,12 @@
       "type": "input_value",
       "name": "key",
       "check": "String"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/client.png",
+      "width": 8,
+      "height": 24
     }
   ],
   "inputsInline": true,
@@ -12,7 +18,7 @@
   "mcreator": {
     "toolbox_id": "text",
     "toolbox_init": [
-      "<value name=\"key\"><block type=\"text\"><field name=\"TEXT\">block.minecraft.cobblestone</field></block></value>"
+      "<value name=\"key\"><block type=\"text\"><field name=\"TEXT\">translation.key.name</field></block></value>"
     ],
     "inputs": [
       "key"
