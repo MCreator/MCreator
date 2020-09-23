@@ -498,6 +498,8 @@ public class GradleConsole extends JPanel {
 		append(text, (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 	}
 
+	private Color textAccent = null;
+
 	private void appendAutoColor(String text) {
 		pan.beginTransaction();
 
@@ -595,7 +597,7 @@ public class GradleConsole extends JPanel {
 				append(acd, c);
 
 			} else {
-				append(text, c);
+				append(text, textAccent != null ? textAccent : c);
 			}
 		}
 
