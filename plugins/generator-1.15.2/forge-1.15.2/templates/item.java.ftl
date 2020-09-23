@@ -265,6 +265,14 @@ package ${package}.item;
 		}
 		</#if>
 
+		<#if hasProcedure(data.onDroppedByPlayer)>
+        @Override
+        public boolean onDroppedByPlayer(ItemStack itemstack, PlayerEntity entity) {
+            <@procedureOBJToCode data.onDroppedByPlayer/>
+            return true;
+        }
+        </#if>
+
 		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 		@Override public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT compound) {
 			return new InventoryCapability();

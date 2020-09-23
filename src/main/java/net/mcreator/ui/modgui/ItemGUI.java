@@ -97,6 +97,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private ProcedureSelector onItemInUseTick;
 	private ProcedureSelector onStoppedUsing;
 	private ProcedureSelector onEntitySwing;
+	private ProcedureSelector onDroppedByPlayer;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -137,6 +138,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				"When entity swings item" ,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		onDroppedByPlayer = new ProcedureSelector(this.withEntry("item/on_dropped"), mcreator,
+				"When item is dropped by player",
+				Dependency.fromString("entity:entity/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow" ,
 				ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
@@ -295,6 +299,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		events.add(onItemInUseTick);
 		events.add(onStoppedUsing);
 		events.add(onEntitySwing);
+		events.add(onDroppedByPlayer);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
 		pane4.setOpaque(false);
 
@@ -351,6 +356,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onItemInUseTick.refreshListKeepSelected();
 		onStoppedUsing.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
+		onDroppedByPlayer.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
@@ -388,6 +394,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onItemInUseTick.setSelectedProcedure(item.onItemInUseTick);
 		onStoppedUsing.setSelectedProcedure(item.onStoppedUsing);
 		onEntitySwing.setSelectedProcedure(item.onEntitySwing);
+		onDroppedByPlayer.setSelectedProcedure(item.onDroppedByPlayer);
 		creativeTab.setSelectedItem(item.creativeTab);
 		stackSize.setValue(item.stackSize);
 		enchantability.setValue(item.enchantability);
@@ -437,6 +444,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.onItemInUseTick = onItemInUseTick.getSelectedProcedure();
 		item.onStoppedUsing = onStoppedUsing.getSelectedProcedure();
 		item.onEntitySwing = onEntitySwing.getSelectedProcedure();
+		item.onDroppedByPlayer = onDroppedByPlayer.getSelectedProcedure();
 		item.damageVsEntity = (double) damageVsEntity.getValue();
 		item.enableMeleeDamage = enableMeleeDamage.isSelected();
 		item.inventorySize = (int) inventorySize.getValue();
