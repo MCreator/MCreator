@@ -337,7 +337,10 @@ public class GradleConsole extends JPanel {
 									if (!line.contains("uses or overrides a deprecated API"))
 										if (!line.contains("unchecked or unsafe operations")) {
 											if (line.startsWith(":") || line.startsWith(">")) {
-												append(line, new Color(0xCFCFCF), true);
+												if (line.contains("UP-TO-DATE") || line.contains("NO-SOURCE"))
+													append(line, new Color(0x7B7B7B), true);
+												else
+													append(line, new Color(0xDADADA), true);
 											} else if (line.startsWith("BUILD SUCCESSFUL")) {
 												append(line, new Color(187, 232, 108), false);
 											} else {
@@ -506,96 +509,91 @@ public class GradleConsole extends JPanel {
 		if (!text.equals("")) {
 			Color c = (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
 
-			if (text.contains("WARN"))
-				c = new Color(0xD7D0BF);
-			if (text.contains("Thread-"))
-				c = new Color(0xDEEDFD);
-
 			if (!text.endsWith("\n"))
 				text = text + "\n";
 
-			if (text.contains("#################################################"))
-				c = new Color(0x494949);
-
 			if (text.trim().startsWith("[")) {
+				textAccent = null;
 
 				String[] data = text.split("] \\[");
-
-				String acd = "";
+				String logText = "";
 
 				for (int i = 0; i < data.length; i++) {
-					String td = data[i];
+					String bracketText = data[i];
 					if (i == 0)
-						td = td + "] ";
+						bracketText = bracketText + "] ";
 					else if (i == data.length - 1)
-						td = "[" + td;
+						bracketText = "[" + bracketText;
 					else
-						td = "[" + td + "] ";
+						bracketText = "[" + bracketText + "] ";
 
 					Color c2 = c;
 
-					if (td.contains("]") && td.contains("["))
-						c2 = new Color(125, 189, 183);
+					// default bracket color
+					if (bracketText.contains("]") && bracketText.contains("["))
+						c2 = new Color(239, 239, 239);
 
-					if (td.contains(":") && !td.contains("]:")) {
+					// format timestamps
+					if (bracketText.contains(":") && !bracketText.contains("]:")) {
 						c2 = new Color(0x95A0A7);
-						td = td.replace("[", "").replace("]", "");
-						String[] tstmp = td.split(":");
+						bracketText = bracketText.replace("[", "").replace("]", "");
+						String[] tstmp = bracketText.split(":");
 						if (tstmp.length == 3) {
 							if (!tstmp[0].replaceAll("\\p{C}", "").equals(tstmp[0]) && tstmp[0].contains("m"))
 								tstmp[0] = tstmp[0].split("m")[1].replaceAll("\\p{C}", "");
-							td = (tstmp[0] + ":" + tstmp[1] + "." + tstmp[2]);
+							bracketText = (tstmp[0] + ":" + tstmp[1] + "." + tstmp[2]);
 						}
 					}
 
-					if (td.contains("FML]"))
-						c2 = new Color(0xC1CD7E);
-					if (td.contains("Client"))
-						c2 = new Color(0x7CD4CC);
-					if (td.contains("Server"))
-						c2 = new Color(0xBACC9D);
-					if (td.contains("main/"))
-						c2 = new Color(0x9DCC79);
-					if (td.contains("modloading-worker"))
-						c2 = new Color(0xB7CCC9);
-					if (td.contains("FML]"))
-						c2 = new Color(0xBBC271);
-					if (td.contains("STDOUT]"))
-						c2 = new Color(0xDDF0C1);
-					if (td.contains("STDERR]"))
-						c2 = new Color(0xE56D66);
-					if (td.contains("LaunchWrapper]"))
-						c2 = new Color(0xD0D7A4);
+					// special bracket colors
+					if (bracketText.contains("Client"))
+						c2 = new Color(0xB3A7D0);
+					else if (bracketText.contains("Server"))
+						c2 = new Color(0x7CD48B);
+					else if (bracketText.contains("main/"))
+						c2 = new Color(0xAAB490);
+					else if (bracketText.contains("LaunchWrapper]") || bracketText.contains("FML]") || bracketText
+							.contains("modloading-worker"))
+						c2 = new Color(0xB5D7C3);
 
-					String[] spl = td.split("]:");
+					// handle log levels
+					if (textAccent == null && bracketText.contains("/TRACE]"))
+						textAccent = new Color(0x666666);
+					else if (textAccent == null && bracketText.contains("/DEBUG]"))
+						textAccent = new Color(0xA3A3A3);
+					else if (textAccent == null && bracketText.contains("/WARN]"))
+						textAccent = new Color(0xDED6C5);
+					else if (textAccent == null && bracketText.contains("/ERROR]") || bracketText.contains("STDERR]"))
+						textAccent = new Color(0xFF9696);
+					else if (textAccent == null && bracketText.contains("/FATAL]"))
+						textAccent = new Color(0xFF5F5F);
+
+					String[] spl = bracketText.split("]:");
 
 					if (spl.length > 1) {
-						acd = Arrays.stream(spl).skip(1).collect(Collectors.joining(""));
-						td = spl[0] + "]:";
+						logText = Arrays.stream(spl).skip(1).collect(Collectors.joining(""));
+						bracketText = spl[0] + "]:";
 					} else
-						td = spl[0];
+						bracketText = spl[0];
 
 					SimpleAttributeSet keyWord = new SimpleAttributeSet();
 					StyleConstants.setFontSize(keyWord, 9);
 
-					if (td.contains(":") && !td.contains("]:"))
+					if (bracketText.contains(":") && !bracketText.contains("]:"))
 						StyleConstants.setFontSize(keyWord, 6);
-					else
-						StyleConstants.setFontSize(keyWord, 8);
 
 					StyleConstants.setForeground(keyWord, c2);
 					StyleConstants.setBackground(keyWord, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-					if (td.matches("\\[(\\w{2}\\.)+\\w+/\\w+]:")) {
-						pan.insertString(td.replaceAll("(\\w{2}\\.)", ""), keyWord);
+					if (bracketText.matches("\\[(\\w{2}\\.)+\\w+/\\w+]:")) {
+						pan.insertString(bracketText.replaceAll("(\\w{2}\\.)", ""), keyWord);
 					} else {
-						pan.insertString(td, keyWord);
+						pan.insertString(bracketText, keyWord);
 					}
 
 				}
 
-				append(acd, c);
-
+				append(logText, textAccent != null ? textAccent : c);
 			} else {
 				append(text, textAccent != null ? textAccent : c);
 			}
