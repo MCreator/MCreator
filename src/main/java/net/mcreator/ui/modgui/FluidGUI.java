@@ -189,7 +189,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		addPage(L10N.t("elementgui.fluid.visual"), pane3);
 		addPage(L10N.t("elementgui.fluid.properties"), pane2);
-		addPage(L10N.t("elementgui.common.triggers"), pane4);
+		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 	}
 
 	@Override public void reloadDataLists() {
