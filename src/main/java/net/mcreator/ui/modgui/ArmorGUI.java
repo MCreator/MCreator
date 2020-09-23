@@ -632,7 +632,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		addPage(L10N.t("elementgui.armor.visual"), pane2);
 		addPage(L10N.t("elementgui.armor.properties"), pane5);
-		addPage(L10N.t("elementgui.armor.triggers"), pane6);
+		addPage(L10N.t("elementgui.common.page_triggers"), pane6);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
