@@ -220,6 +220,10 @@ public class BlocklyJavascriptBridge {
 					.toArray(String[]::new);
 		case "potion":
 			return ElementUtil.loadAllPotionEffects(mcreator.getWorkspace());
+		case "gamerulesboolean":
+			return ElementUtil.getAllBooleanGamerules();
+		case "gamerulesnumber":
+			return ElementUtil.getAllNumberGamerules();
 		case "fluid":
 			return ElementUtil.loadAllFluids(mcreator.getWorkspace());
 		case "sound":

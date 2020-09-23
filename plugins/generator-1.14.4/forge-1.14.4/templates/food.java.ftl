@@ -50,7 +50,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		public FoodItemCustom() {
 			super(new Item.Properties().group(${data.creativeTab}).maxStackSize(${data.stackSize})
-				.food((new Food.Builder()).hunger(${data.nutritionalValue}).saturation(${data.saturation}f)
+			.rarity(Rarity.${data.rarity}).food((new Food.Builder()).hunger(${data.nutritionalValue})
+			.saturation(${data.saturation}f)
 				<#if data.isAlwaysEdible>.setAlwaysEdible()</#if>
 				<#if data.forDogs>.meat()</#if>
 				.build()
@@ -66,6 +67,16 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		<#if data.hasGlow>
 		@Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
+		    <#if hasCondition(data.glowCondition)>
+			PlayerEntity entity = Minecraft.getInstance().player;
+			World world = entity.world;
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
+        	if (!(<@procedureOBJToConditionCode data.glowCondition/>)) {
+        	    return false;
+        	}
+        	</#if>
 			return true;
 		}
         </#if>
@@ -79,7 +90,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 		</#if>
 
-		@Override public UseAction getUseAction(ItemStack par1ItemStack) {
+		@Override public UseAction getUseAction(ItemStack itemstack) {
 			return UseAction.${data.animation?upper_case};
 		}
 

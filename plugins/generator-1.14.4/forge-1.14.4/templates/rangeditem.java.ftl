@@ -81,6 +81,10 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 		</#if>
 
+		@Override public UseAction getUseAction(ItemStack itemstack) {
+			return UseAction.${data.animation?upper_case};
+		}
+
 		<#if hasProcedure(data.onEntitySwing)>
 		@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
 			boolean retval = super.onEntitySwing(itemstack, entity);
@@ -93,10 +97,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 		</#if>
 
-		@Override public UseAction getUseAction(ItemStack stack) {
-      		return UseAction.BOW;
-   		}
-
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
 			entity.setActiveHand(hand);
 			return new ActionResult(ActionResultType.SUCCESS, entity.getHeldItem(hand));
@@ -108,6 +108,16 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		<#if data.hasGlow>
 		@Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
+		    <#if hasCondition(data.glowCondition)>
+			PlayerEntity entity = Minecraft.getInstance().player;
+			World world = entity.world;
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
+        	if (!(<@procedureOBJToConditionCode data.glowCondition/>)) {
+        	    return false;
+        	}
+        	</#if>
 			return true;
 		}
         </#if>

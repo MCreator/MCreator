@@ -28,7 +28,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.Dependency;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Armor;
 import net.mcreator.minecraft.DataListEntry;
@@ -47,7 +46,6 @@ import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
@@ -467,7 +465,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		clop.setOpaque(false);
 
-		JPanel clopa = new JPanel(new BorderLayout());
+		JPanel clopa = new JPanel(new BorderLayout(35, 35));
 		clopa.add("Center", enderpanel);
 		clopa.add("South", clop);
 		clopa.setOpaque(false);
@@ -630,16 +628,16 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		group2page.addValidationElement(armorTextureFile);
 
-		addPage(L10N.t("elementgui.armor.visual"), pane2);
-		addPage(L10N.t("elementgui.armor.properties"), pane5);
+		addPage(L10N.t("elementgui.common.page_visual"), pane2);
+		addPage(L10N.t("elementgui.common.page_properties"), pane5);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane6);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
-			helmetName.setText(L10N.t("elementgui.armor.helmet", readableNameFromModElement));
-			bodyName.setText(L10N.t("elementgui.armor.body", readableNameFromModElement));
-			leggingsName.setText(L10N.t("elementgui.armor.leggings", readableNameFromModElement));
-			bootsName.setText(L10N.t("elementgui.armor.boots", readableNameFromModElement));
+			helmetName.setText(L10N.t("elementgui.armor.helmet" , readableNameFromModElement));
+			bodyName.setText(L10N.t("elementgui.armor.body" , readableNameFromModElement));
+			leggingsName.setText(L10N.t("elementgui.armor.leggings" , readableNameFromModElement));
+			bootsName.setText(L10N.t("elementgui.armor.boots" , readableNameFromModElement));
 		}
 	}
 
@@ -732,8 +730,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			clo1.setIcon(ImageUtils.drawOver(bg1, front1));
 			clo2.setIcon(ImageUtils.drawOver(bg2, front2));
 		} else {
-			clo1.setIcon(new ImageIcon());
-			clo2.setIcon(new ImageIcon());
+			clo1.setIcon(new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame1()));
+			clo2.setIcon(new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame2()));
 		}
 	}
 

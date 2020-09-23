@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.Dependency;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Plant;
@@ -34,7 +33,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.TiledImageCache;
-import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -62,9 +60,11 @@ import java.util.stream.Collectors;
 public class PlantGUI extends ModElementGUI<Plant> {
 
 	private TextureHolder texture;
+	private TextureHolder textureBottom;
 
 	private final JLabel stl = new JLabel(TiledImageCache.plantStaticYes);
 	private final JLabel dyn = new JLabel(TiledImageCache.plantGrowingNo);
+	private final JLabel dbl = new JLabel(TiledImageCache.plantDoubleNo);
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(0, -1, 64000, 0.1));
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(0, 0, 64000, 0.5));
@@ -91,12 +91,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final Model cross = new Model.BuiltInModel("Cross model");
+	private final Model crop = new Model.BuiltInModel("Crop model");
 	private final JRadioButton normalType = new JRadioButton("<html><b>Use static plant type");
 	private final JComboBox<String> growapableSpawnType = new JComboBox<>(
 			new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
 	private final JSpinner growapableMaxHeight = new JSpinner(new SpinnerNumberModel(3, 1, 14, 1));
 
 	private final JComboBox<String> staticPlantGenerationType = new JComboBox<>(new String[] { "Flower", "Grass" });
+
+	private final JRadioButton doubleType = new JRadioButton("<html><b>Use double plant type");
+	private final JComboBox<String> doublePlantGenerationType = new JComboBox<>(new String[] { "Flower", "Grass" });
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 	private final JRadioButton growapableType = new JRadioButton("<html><b>Use growable plant type");
@@ -163,14 +167,26 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
-		JPanel destal = new JPanel(new BorderLayout(20, 20));
+		JPanel destal = new JPanel(new GridLayout(2, 1));
 
 		destal.setOpaque(false);
 
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
+		textureBottom = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
 		texture.setOpaque(false);
+		textureBottom.setOpaque(false);
+		textureBottom.setVisible(false);
 
-		destal.add("South", PanelUtils.gridElements(1, 2, HelpUtils
+		JPanel modelandinfo = new JPanel(new GridLayout(2, 1));
+		modelandinfo.setOpaque(false);
+
+		JPanel infopanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+		infopanel.setOpaque(false);
+		infopanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				"Special information", 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		infopanel.add("South", PanelUtils.gridElements(1, 2, HelpUtils
 						.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
 								"<html>Special information about the plant:<br><small>Separate entries with comma, to use comma in description use \\,")),
 				specialInfo));
@@ -188,32 +204,42 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2), "Plant 3D model",
 				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		destal.add("Center", PanelUtils
-				.westAndCenterElement(ComponentUtils.squareAndBorder(texture, "Plant texture"), rent, 10, 10));
+		modelandinfo.add(rent);
+		modelandinfo.add(infopanel);
+
+		destal.add(ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174), "Top / main"));
+		destal.add(ComponentUtils.squareAndBorder(textureBottom, "Bottom"));
+		destal.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1), "Plant textures",
+				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 
-		JPanel sbbp22 = new JPanel(new BorderLayout(20, 50));
+		JPanel sbbp22 = new JPanel();
 
 		sbbp22.setOpaque(false);
 		sbbp2.setOpaque(false);
 
-		sbbp22.add("North", destal);
+		sbbp22.add("East", destal);
+		sbbp22.add("Center", modelandinfo);
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(normalType);
 		bg.add(growapableType);
+		bg.add(doubleType);
 
 		normalType.setSelected(true);
 
 		normalType.setOpaque(false);
 		growapableType.setOpaque(false);
+		doubleType.setOpaque(false);
 
 		emissiveRendering.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
 
 		ActionListener planttypeselected = event -> {
+			renderType.setEnabled(true);
 			if (normalType.isSelected())
 				stl.setIcon(TiledImageCache.plantStaticYes);
 			else
@@ -222,10 +248,18 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				dyn.setIcon(TiledImageCache.plantGrowingYes);
 			else
 				dyn.setIcon(TiledImageCache.plantGrowingNo);
+			if (doubleType.isSelected()) {
+				dbl.setIcon(TiledImageCache.plantDoubleYes);
+				renderType.setSelectedItem(cross);
+				renderType.setEnabled(false);
+			} else
+				dbl.setIcon(TiledImageCache.plantDoubleNo);
+			updateTextureOptions();
 		};
 
 		normalType.addActionListener(planttypeselected);
 		growapableType.addActionListener(planttypeselected);
+		doubleType.addActionListener(planttypeselected);
 
 		JPanel ptipe = new JPanel(new BorderLayout());
 		ptipe.setOpaque(false);
@@ -260,12 +294,24 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		ptipe2.add("North", growapableType);
 		ptipe2.setOpaque(false);
 
+		JPanel ptipe3 = new JPanel(new BorderLayout());
+		ptipe3.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				"Double plant type", 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		ptipe3.add("West", dbl);
+		ptipe3.add("Center", PanelUtils.join(HelpUtils
+						.wrapWithHelpButton(this.withEntry("plant/static_generation_type"), new JLabel("Generator type:")),
+				doublePlantGenerationType));
+		ptipe3.add("North", doubleType);
+		ptipe3.setOpaque(false);
+
 		ptipe.add("West", ptipe1);
+		ptipe.add("Center", ptipe3);
 		ptipe.add("East", ptipe2);
 
-		sbbp22.add("Center", PanelUtils.totalCenterInPanel(ptipe));
-
 		sbbp2.add("North", sbbp22);
+		sbbp2.add("Center", PanelUtils.totalCenterInPanel(ptipe));
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
@@ -309,8 +355,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/type"), new JLabel("Plant type: ")));
 		selp.add(growapableSpawnType);
 
-		selp.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"), new JLabel("Plant flammability:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"), new JLabel("Plant flammability:")));
 		selp.add(flammability);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
@@ -344,8 +389,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_amount"), new JLabel("Drop amount:")));
 		selp2.add(dropAmount);
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
-				new JLabel("<html>Use loot table for drops:<br><small>If checked, you need to define loot table for drops")));
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"), new JLabel(
+				"<html>Use loot table for drops:<br><small>If checked, you need to define loot table for drops")));
 		selp2.add(useLootTableForDrops);
 
 		selp2.setOpaque(false);
@@ -429,6 +474,18 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 	}
 
+	private void updateTextureOptions() {
+		texture.setVisible(false);
+		textureBottom.setVisible(false);
+
+		if (doubleType.isSelected()) {
+			texture.setVisible(true);
+			textureBottom.setVisible(true);
+		} else {
+			texture.setVisible(true);
+		}
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onNeighbourBlockChanges.refreshListKeepSelected();
@@ -446,7 +503,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.loadMapColors()), "DEFAULT");
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(cross),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(cross, crop),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
@@ -464,6 +521,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	@Override public void openInEditingMode(Plant plant) {
 		texture.setTextureFromTextureName(plant.texture);
+		textureBottom.setTextureFromTextureName(plant.textureBottom);
 		name.setText(plant.name);
 		hardness.setValue(plant.hardness);
 		resistance.setValue(plant.resistance);
@@ -505,14 +563,23 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		if (plant.plantType.equals("normal")) {
 			normalType.setSelected(true);
+			doubleType.setSelected(false);
 			growapableType.setSelected(false);
+		} else if (plant.plantType.equals("double")) {
+			normalType.setSelected(false);
+			doubleType.setSelected(true);
+			growapableType.setSelected(false);
+			textureBottom.setVisible(true);
+			renderType.setEnabled(false);
 		} else {
 			normalType.setSelected(false);
+			doubleType.setSelected(false);
 			growapableType.setSelected(true);
 		}
 
 		growapableSpawnType.setSelectedItem(plant.growapableSpawnType);
 		staticPlantGenerationType.setSelectedItem(plant.staticPlantGenerationType);
+		doublePlantGenerationType.setSelectedItem(plant.doublePlantGenerationType);
 
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
@@ -521,10 +588,18 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			stl.setIcon(TiledImageCache.plantStaticYes);
 		else
 			stl.setIcon(TiledImageCache.plantStaticNo);
+
 		if (growapableType.isSelected())
 			dyn.setIcon(TiledImageCache.plantGrowingYes);
 		else
 			dyn.setIcon(TiledImageCache.plantGrowingNo);
+
+		if (doubleType.isSelected())
+			dbl.setIcon(TiledImageCache.plantDoubleYes);
+		else
+			dbl.setIcon(TiledImageCache.plantDoubleNo);
+
+		updateTextureOptions();
 	}
 
 	@Override public Plant getElementFromGUI() {
@@ -532,9 +607,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.name = name.getText();
 		plant.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		plant.texture = texture.getID();
-		plant.plantType = normalType.isSelected() ? "normal" : "growapable";
+		plant.textureBottom = textureBottom.getID();
+		if (normalType.isSelected())
+			plant.plantType = "normal";
+		else if (growapableType.isSelected())
+			plant.plantType = "growapable";
+		else
+			plant.plantType = "double";
 		plant.growapableSpawnType = (String) growapableSpawnType.getSelectedItem();
 		plant.staticPlantGenerationType = (String) staticPlantGenerationType.getSelectedItem();
+		plant.doublePlantGenerationType = (String) doublePlantGenerationType.getSelectedItem();
 		plant.growapableMaxHeight = (int) growapableMaxHeight.getValue();
 		plant.hardness = (double) hardness.getValue();
 		plant.resistance = (double) resistance.getValue();
@@ -573,6 +655,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			plant.renderType = 2;
 		else if (model.getType() == Model.Type.OBJ)
 			plant.renderType = 3;
+		else if (model.equals(cross))
+			plant.renderType = 12;
+		else if (model.equals(crop))
+			plant.renderType = 13;
 		plant.customModelName = model.getReadableName();
 
 		return plant;

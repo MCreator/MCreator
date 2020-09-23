@@ -1,0 +1,34 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "item",
+      "check": "MCItem"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/client.png",
+      "width": 8,
+      "height": 24
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": "350",
+  "mcreator": {
+    "toolbox_id": "itemmanagement",
+    "toolbox_init": [
+      "<value name=\"item\"><block type=\"itemstack_to_mcitem\"></block></value>"
+    ],
+    "inputs": [
+      "item"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "gameruleValue",
+      "check": "Boolean"
+    }
+  ],
+  "extensions": [
+    "gamerulesboolean_list_provider"
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "worlddata",
+    "toolbox_init": [
+      "<value name=\"gameruleValue\"><block type=\"logic_boolean\"><field name=\"BOOL\">TRUE</field></block></value>"
+    ],
+    "inputs": [
+      "gameruleValue"
+    ],
+    "fields": [
+      "gamerulesboolean"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}

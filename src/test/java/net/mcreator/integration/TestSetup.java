@@ -66,6 +66,7 @@ public class TestSetup {
 
 		// load translations after plugins are loaded
 		L10N.initTranslations();
+		L10N.enterTestingMode();
 
 		// some mod element guis use icons
 		TiledImageCache.loadAndTileImages();

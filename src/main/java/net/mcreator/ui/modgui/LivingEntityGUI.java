@@ -99,6 +99,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 	private final JSpinner movementSpeed = new JSpinner(new SpinnerNumberModel(0.3, 0, 50, 0.1));
 	private final JSpinner armorBaseValue = new JSpinner(new SpinnerNumberModel(0.0, 0, 100, 0.1));
 	private final JSpinner health = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 1));
+	private final JSpinner knockbackResistance = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 0.1));
+	private final JSpinner attackKnockback = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 0.1));
 
 	private final JSpinner trackingRange = new JSpinner(new SpinnerNumberModel(64, 0, 10000, 1));
 
@@ -346,7 +348,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane7 = new JPanel(new BorderLayout(0, 0));
 
-		JPanel subpane1 = new JPanel(new GridLayout(11, 2, 0, 2));
+		JPanel subpane1 = new JPanel(new GridLayout(12, 2, 0, 2));
 
 		immuneToFire.setOpaque(false);
 		immuneToArrows.setOpaque(false);
@@ -384,6 +386,11 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		subpane1.add(PanelUtils
 				.join(HelpUtils.wrapWithHelpButton(this.withEntry("entity/attack_strength"), attackStrength),
 						HelpUtils.wrapWithHelpButton(this.withEntry("entity/armor_base_value"), armorBaseValue)));
+
+		subpane1.add(new JLabel("Attack knockback, knockback resistance: "));
+		subpane1.add(PanelUtils
+				.join(HelpUtils.wrapWithHelpButton(this.withEntry("entity/attack_knockback"), attackKnockback),
+						HelpUtils.wrapWithHelpButton(this.withEntry("entity/knockback_resistance"), knockbackResistance)));
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"), new JLabel(
 				"<html>Equipment (optional: main hand, off hand, helmet, body, leggings, boots):<br><small>Only works for Biped and Zombie models")));
@@ -481,6 +488,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		movementSpeed.setPreferredSize(new Dimension(250, 32));
 		trackingRange.setPreferredSize(new Dimension(250, 32));
 		attackStrength.setPreferredSize(new Dimension(250, 32));
+		attackKnockback.setPreferredSize(new Dimension(250, 32));
+		knockbackResistance.setPreferredSize(new Dimension(250, 32));
 
 		health.setPreferredSize(new Dimension(250, 32));
 		xpAmount.setPreferredSize(new Dimension(250, 32));
@@ -889,6 +898,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		mobBehaviourType.setSelectedItem(mob.mobBehaviourType);
 		mobCreatureType.setSelectedItem(mob.mobCreatureType);
 		attackStrength.setValue(mob.attackStrength);
+		attackKnockback.setValue(mob.attackKnockback);
+		knockbackResistance.setValue(mob.knockbackResistance);
 		movementSpeed.setValue(mob.movementSpeed);
 		mobDrop.setBlock(mob.mobDrop);
 		equipmentMainHand.setBlock(mob.equipmentMainHand);
@@ -1007,6 +1018,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		mob.mobBehaviourType = (String) mobBehaviourType.getSelectedItem();
 		mob.mobCreatureType = (String) mobCreatureType.getSelectedItem();
 		mob.attackStrength = (int) attackStrength.getValue();
+		mob.attackKnockback = (double) attackKnockback.getValue();
+		mob.knockbackResistance = (double) knockbackResistance.getValue();
 		mob.movementSpeed = (double) movementSpeed.getValue();
 		mob.health = (int) health.getValue();
 		mob.trackingRange = (int) trackingRange.getValue();
