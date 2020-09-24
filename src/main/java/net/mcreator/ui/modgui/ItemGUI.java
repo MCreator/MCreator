@@ -140,7 +140,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onDroppedByPlayer = new ProcedureSelector(this.withEntry("item/on_dropped"), mcreator,
 				"When item is dropped by player",
-				Dependency.fromString("entity:entity/itemstack:itemstack"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow" ,
 				ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));

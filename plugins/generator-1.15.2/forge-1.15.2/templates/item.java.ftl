@@ -268,6 +268,10 @@ package ${package}.item;
 		<#if hasProcedure(data.onDroppedByPlayer)>
         @Override
         public boolean onDroppedByPlayer(ItemStack itemstack, PlayerEntity entity) {
+            double x = entity.getPosX();
+            double y = entity.getPosY();
+            double z = entity.getPosZ();
+            World world = entity.world;
             <@procedureOBJToCode data.onDroppedByPlayer/>
             return true;
         }
