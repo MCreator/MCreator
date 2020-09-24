@@ -1,3 +1,2 @@
-if(${input$entity} instanceof LivingEntity){
-${input$entity}.setSprinting(${input$boolean});
-}
+if(${input$entity} instanceof PlayerEntity)
+    ${input$entity}.setSprinting(${input$boolean});
