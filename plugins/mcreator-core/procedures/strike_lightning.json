@@ -14,6 +14,11 @@
       "type": "input_value",
       "name": "z",
       "check": "Number"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "effectOnly",
+      "checked": false
     }
   ],
   "inputsInline": true,
@@ -31,6 +36,9 @@
       "x",
       "y",
       "z"
+    ],
+    "fields": [
+      "effectOnly"
     ],
     "dependencies": [
       {
