@@ -87,4 +87,5 @@
 
 .blocklySelected > .blocklyPath {
     stroke: #fff !important;
+    stroke-width: 2px !important;
 }
