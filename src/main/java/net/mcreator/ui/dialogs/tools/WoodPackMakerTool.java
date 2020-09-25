@@ -69,7 +69,8 @@ public class WoodPackMakerTool {
 
 		dialog.add("North", PanelUtils.centerInPanel(new JLabel(
 				"<html><center>Using this tool, you can make the base for your wood pack in just a few clicks.<br>"
-						+ "This tool will make: <b>Log, Wood, Planks, Block bases, Recipes and Tags")));
+						+ "This tool will make: <b>Log, Wood, Planks, Stairs, Slab, Fence, Fence gate,"
+						+ "<br>Recipes and Tags")));
 
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
 
@@ -107,7 +108,7 @@ public class WoodPackMakerTool {
 			}
 		});
 
-		dialog.setSize(600, 230);
+		dialog.setSize(600, 250);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
 	}
