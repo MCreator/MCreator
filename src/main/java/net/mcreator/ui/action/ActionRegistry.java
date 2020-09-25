@@ -35,10 +35,7 @@ import net.mcreator.ui.browser.action.*;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
-import net.mcreator.ui.dialogs.tools.ArmorPackMakerTool;
-import net.mcreator.ui.dialogs.tools.MaterialPackMakerTool;
-import net.mcreator.ui.dialogs.tools.OrePackMakerTool;
-import net.mcreator.ui.dialogs.tools.ToolPackMakerTool;
+import net.mcreator.ui.dialogs.tools.*;
 import net.mcreator.ui.ide.action.*;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -157,6 +154,7 @@ public class ActionRegistry {
 	public final BasicAction openOrePackMaker;
 	public final BasicAction openToolPackMaker;
 	public final BasicAction openArmorPackMaker;
+	public final BasicAction openWoodPackMaker;
 	public final BasicAction showEntityIDList;
 	public final BasicAction showItemBlockList;
 	public final BasicAction showParticleIDList;
@@ -288,6 +286,7 @@ public class ActionRegistry {
 		this.openOrePackMaker = OrePackMakerTool.getAction(this);
 		this.openToolPackMaker = ToolPackMakerTool.getAction(this);
 		this.openArmorPackMaker = ArmorPackMakerTool.getAction(this);
+		this.openWoodPackMaker = WoodPackMakerTool.getAction(this);
 		this.showShortcuts = new BasicAction(this, L10N.t("action.keyboard_shortcuts"),
 				e -> AcceleratorDialog.showAcceleratorMapDialog(mcreator, this.acceleratorMap));
 		this.showEntityIDList = new ShowDataListAction.EntityIDs(this);
