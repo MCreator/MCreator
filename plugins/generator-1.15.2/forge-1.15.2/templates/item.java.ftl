@@ -266,8 +266,7 @@ package ${package}.item;
 		</#if>
 
 		<#if hasProcedure(data.onDroppedByPlayer)>
-        @Override
-        public boolean onDroppedByPlayer(ItemStack itemstack, PlayerEntity entity) {
+        @Override public boolean onDroppedByPlayer(ItemStack itemstack, PlayerEntity entity) {
             double x = entity.getPosX();
             double y = entity.getPosY();
             double z = entity.getPosZ();
