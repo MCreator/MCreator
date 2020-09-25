@@ -103,7 +103,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		selp.add(rarity);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("enchantment/min_level"), new JLabel(L10N.t("elementguielementgui.enchantment.min_level"))));
+				.wrapWithHelpButton(this.withEntry("enchantment/min_level"), new JLabel(L10N.t("elementgui.enchantment.min_level"))));
 		selp.add(minLevel);
 
 		selp.add(HelpUtils
