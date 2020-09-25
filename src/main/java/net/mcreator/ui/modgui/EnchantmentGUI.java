@@ -56,9 +56,9 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 	private final JSpinner damageModifier = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 
-	private final JCheckBox isTreasureEnchantment = new JCheckBox(L10N.t("elementgui.enchantment.is_treasure_enchantment"));
-	private final JCheckBox isCurse = new JCheckBox(L10N.t("elementgui.enchantment.is_curse"));
-	private final JCheckBox isAllowedOnBooks = new JCheckBox(L10N.t("elementgui.enchantment.is_allowed_on_books"));
+	private final JCheckBox isTreasureEnchantment = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
+	private final JCheckBox isCurse = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
+	private final JCheckBox isAllowedOnBooks = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
 
 	private MCItemListField compatibleItems;
 	private EnchantmentListField compatibleEnchantments;
@@ -103,7 +103,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		selp.add(rarity);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("enchantment/min_level"), new JLabel("elementguielementgui.enchantment.min_level")));
+				.wrapWithHelpButton(this.withEntry("enchantment/min_level"), new JLabel(L10N.t("elementguielementgui.enchantment.min_level"))));
 		selp.add(minLevel);
 
 		selp.add(HelpUtils

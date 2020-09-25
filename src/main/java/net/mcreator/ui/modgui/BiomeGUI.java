@@ -436,7 +436,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		sbbp5.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				(L10N.t("elementgui.biome.custom_tree_properties")), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.biome.custom_tree_properties"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JPanel panels = new JPanel(new BorderLayout(15, 25));
