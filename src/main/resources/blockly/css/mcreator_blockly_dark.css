@@ -48,10 +48,6 @@
     fill: #3e3d3d;
 }
 
-.blocklySelected > .blocklyPath {
-    stroke: #fff;
-}
-
 .whlab > .blocklyFlyoutLabelText {
     fill: white;
 }
@@ -82,4 +78,13 @@
 .blocklyCommentTextarea {
     background: #3e3e3e;
     color: white;
+}
+
+.blocklyMutatorBackground {
+    fill: #3e3e3e;
+    stroke-width: 0;
+}
+
+.blocklySelected > .blocklyPath {
+    stroke: #fff !important;
 }
