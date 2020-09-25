@@ -68,13 +68,13 @@ public class BlocklyToProcedure extends BlocklyToJava {
 					throw new ParseException("Could not find start block!", -1);
 
 				// first we load data from startblock
-				Element trigger = XMLUtil.getFirstChildrenWithName("field", start_block);
+				Element trigger = XMLUtil.getFirstChildrenWithName(start_block, "field");
 				if (trigger != null && !trigger.getTextContent().equals("no_ext_trigger")) {
 					externalTrigger = trigger.getTextContent();
 				}
 
 				// first we add custom local variables
-				Element variables = XMLUtil.getFirstChildrenWithName("variables", doc.getDocumentElement());
+				Element variables = XMLUtil.getFirstChildrenWithName(doc.getDocumentElement(), "variables");
 				this.variables = variableGenerator.processLocalVariables(variables);
 
 				// find all blocks placed under start block

@@ -45,6 +45,7 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 import java.util.Locale;
 
 public class ArmorPackMakerTool {
@@ -146,6 +147,7 @@ public class ArmorPackMakerTool {
 		armor.damageValueBody = (int) Math.round(5 * factor);
 		armor.damageValueLeggings = (int) Math.round(6 * factor);
 		armor.damageValueBoots = (int) Math.round(2 * factor);
+		armor.repairItems = Collections.singletonList(base);
 
 		mcreator.getWorkspace().getModElementManager().storeModElementPicture(armor);
 		mcreator.getWorkspace().addModElement(armor.getModElement());

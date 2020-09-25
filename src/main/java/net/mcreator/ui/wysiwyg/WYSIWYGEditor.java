@@ -490,11 +490,11 @@ public class WYSIWYGEditor extends JPanel {
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			if (isSelected) {
-				setForeground(Color.black);
-				setBackground(Color.white);
+				setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 				setOpaque(true);
 			} else {
-				setForeground(Color.white);
+				setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 				setOpaque(false);
 			}
 

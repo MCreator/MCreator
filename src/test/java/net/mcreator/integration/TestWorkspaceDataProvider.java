@@ -846,6 +846,7 @@ public class TestWorkspaceDataProvider {
 			item.onItemInUseTick = new Procedure("procedure6");
 			item.onStoppedUsing = new Procedure("procedure7");
 			item.onEntitySwing = new Procedure("procedure8");
+			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
 			if (!emptyLists) {

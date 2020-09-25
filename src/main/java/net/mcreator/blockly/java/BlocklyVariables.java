@@ -39,7 +39,7 @@ public class BlocklyVariables {
 		List<String> varlist = new ArrayList<>();
 
 		if (variables_block != null) {
-			List<Element> variables = XMLUtil.getChildrenWithName("variable", variables_block);
+			List<Element> variables = XMLUtil.getChildrenWithName(variables_block, "variable");
 			for (Element variable : variables) {
 				String type = variable.getAttribute("type");
 				String name = variable.getAttribute("id");
