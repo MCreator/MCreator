@@ -850,12 +850,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		props.add(inventoryComparatorPower);
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/input_slots"), new JLabel(
-				"<html>Disable automation (eg. hoppers) taking from these slots"
+				"<html>Disable taking from the following slots:"
 						+ "<br><small>Enter comma separated list of slot IDs")));
 		props.add(inSlotIDs);
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/output_slots"), new JLabel(
-				"<html>Disable automation (eg. hoppers) inserting into these slots"
+				"<html>Disable inserting into the following slots:"
 						+ "<br><small>Enter comma separated list of slot IDs")));
 		props.add(outSlotIDs);
 

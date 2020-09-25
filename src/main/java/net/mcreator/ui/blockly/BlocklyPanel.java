@@ -44,6 +44,7 @@ import org.w3c.dom.Text;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -109,6 +110,7 @@ public class BlocklyPanel extends JFXPanel {
 					// @formatter:off
 					webEngine.executeScript("var MCR_BLCKLY_PREF = { "
 							+ "'comments' : " + PreferencesManager.PREFERENCES.blockly.enableComments + ","
+							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.renderer.toLowerCase(Locale.ENGLISH) + "',"
 							+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse + ","
 							+ "'trashcan' : " + PreferencesManager.PREFERENCES.blockly.enableTrashcan + ","
 							+ "'maxScale' : " + PreferencesManager.PREFERENCES.blockly.maxScale/100.0 + ","

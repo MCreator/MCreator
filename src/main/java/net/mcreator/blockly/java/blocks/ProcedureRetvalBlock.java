@@ -49,7 +49,7 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 			return;
 		}
 
-		Element element = XMLUtil.getFirstChildrenWithName("field", block);
+		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 
 		if (element != null) {
 			Procedure procedure = new Procedure(element.getTextContent());

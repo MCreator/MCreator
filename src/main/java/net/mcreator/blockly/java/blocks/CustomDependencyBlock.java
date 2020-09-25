@@ -28,7 +28,7 @@ import org.w3c.dom.Element;
 public class CustomDependencyBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
-		Element element = XMLUtil.getFirstChildrenWithName("field", block);
+		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null && element.getTextContent() != null && !element.getTextContent().equals("")) {
 			String depname = element.getTextContent();
 			String deptype = null;

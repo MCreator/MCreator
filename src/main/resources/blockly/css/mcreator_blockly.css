@@ -54,13 +54,9 @@ body {
 }
 
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
-    fill: #323232;
     rx: 0;
     ry: 0;
     width: 7px;
-}
-
-.blocklyScrollbarVertical:hover .blocklyScrollbarHandle {
 }
 
 .blocklyScrollbarHorizontal .blocklyScrollbarHandle {
@@ -88,4 +84,8 @@ body {
 
 .condition-label {
     font-size: 13px !important;
+}
+
+.blocklyDropDownContent {
+    position: relative;
 }

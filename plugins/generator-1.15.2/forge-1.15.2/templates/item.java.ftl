@@ -127,6 +127,16 @@ package ${package}.item;
 
 		<#if data.hasGlow>
 		@Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
+		    <#if hasCondition(data.glowCondition)>
+			PlayerEntity entity = Minecraft.getInstance().player;
+			World world = entity.world;
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
+        	if (!(<@procedureOBJToConditionCode data.glowCondition/>)) {
+        	    return false;
+        	}
+        	</#if>
 			return true;
 		}
         </#if>

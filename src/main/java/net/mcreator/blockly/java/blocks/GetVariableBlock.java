@@ -55,7 +55,7 @@ public class GetVariableBlock implements IBlockGenerator {
 			return;
 		}
 
-		Element variable = XMLUtil.getFirstChildrenWithName("field", block);
+		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (variable != null) {
 			String[] varfield = variable.getTextContent().split(":");
 			if (varfield.length == 2) {

@@ -46,7 +46,7 @@ public class IfBlock implements IBlockGenerator {
 					}
 					// find the corresponding condition for this statement
 					Element condition = null;
-					List<Element> conditions = XMLUtil.getChildrenWithName("value", block);
+					List<Element> conditions = XMLUtil.getChildrenWithName(block, "value");
 					for (Element cond_candidate : conditions) {
 						if (cond_candidate.getAttribute("name").equals("IF" + ifindex)) {
 							condition = cond_candidate;

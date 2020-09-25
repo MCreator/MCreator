@@ -45,7 +45,7 @@ public class PreferencesData {
 
 		@PreferencesEntry public boolean aatext = true;
 
-		@PreferencesEntry(arrayData = { "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb", "lcd_vbgr" })
+		@PreferencesEntry(arrayData = { "on" , "off" , "gasp" , "lcd" , "lcd_hbgr" , "lcd_vrgb" , "lcd_vbgr" })
 		public String textAntialiasingType = "on";
 
 		@PreferencesEntry(arrayData = {"Dark theme", "Light theme"})
@@ -77,6 +77,7 @@ public class PreferencesData {
 
 	public static class BlocklySettings {
 
+		@PreferencesEntry(arrayData = { "Geras", "Thrasos" }) public String renderer = "Geras";
 		@PreferencesEntry public boolean useSmartSort = true;
 		@PreferencesEntry public boolean enableComments = true;
 		@PreferencesEntry public boolean enableCollapse = true;

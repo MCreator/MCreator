@@ -28,7 +28,7 @@ import org.w3c.dom.Element;
 public class LogicNegateBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		Element negated_output_block = XMLUtil.getFirstChildrenWithName("value", block);
+		Element negated_output_block = XMLUtil.getFirstChildrenWithName(block, "value");
 		master.append("(");
 		if (negated_output_block != null) {
 			master.append("!");

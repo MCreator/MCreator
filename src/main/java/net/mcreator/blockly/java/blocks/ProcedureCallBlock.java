@@ -33,7 +33,7 @@ import java.util.Map;
 public class ProcedureCallBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		Element element = XMLUtil.getFirstChildrenWithName("field", block);
+		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 
 		if (element != null) {
 			Procedure procedure = new Procedure(element.getTextContent());
@@ -46,7 +46,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 			}
 
 			Element x = null, y = null, z = null;
-			List<Element> values = XMLUtil.getChildrenWithName("value", block);
+			List<Element> values = XMLUtil.getChildrenWithName(block, "value");
 			for (Element e : values)
 				switch (e.getAttribute("name")) {
 				case "x":
