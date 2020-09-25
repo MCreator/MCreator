@@ -669,8 +669,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_amount"), new JLabel("Drop amount:")));
 		selp3.add(dropAmount);
 
-		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
-				new JLabel("<html>Use loot table for drops:<br><small>If checked, you need to define loot table for drops")));
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"), new JLabel(
+				"<html>Use loot table for drops:<br><small>If checked, you need to define loot table for drops")));
 		selp3.add(PanelUtils.centerInPanel(useLootTableForDrops));
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"), new JLabel(
@@ -767,15 +767,17 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		selp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"General properties", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
+				"General properties", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		selp3.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Dropping properties", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
+				"Dropping properties", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		advancedProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				"Advanced block properties", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
-				Color.white));
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JComponent ploca = PanelUtils.westAndEastElement(selp, PanelUtils.pullElementUp(selp3));
 
@@ -1149,10 +1151,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		particleCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils
+				.merge(Arrays.asList(normal, singleTexture, cross, crop),
+						Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+								.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
+								.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
 				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)

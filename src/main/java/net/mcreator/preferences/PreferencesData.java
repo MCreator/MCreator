@@ -39,9 +39,9 @@ public class PreferencesData {
 
 	public static class UISettings {
 
-		@PreferencesEntry public Locale language = new Locale("en", "US");
-
 		@PreferencesEntry public Color interfaceAccentColor = AbstractMCreatorTheme.MAIN_TINT_DEFAULT;
+
+		@PreferencesEntry public Locale language = new Locale("en", "US");
 
 		@PreferencesEntry(arrayData = {"Dark theme", "Light theme"})
 		public String interfaceTheme = "Dark theme";

@@ -84,9 +84,12 @@ public class BlocklyPanel extends JFXPanel {
 					// load CSS from file to select proper style for OS
 					Element styleNode = webEngine.getDocument().createElement("style");
 					String css = FileIO.readResourceToString("/blockly/css/mcreator_blockly.css");
+
 					if (OS.getOS() != OS.WINDOWS) {
 						css += FileIO.readResourceToString("/blockly/css/mcreator_blockly_unixfix.css");
 					}
+
+					css += FileIO.readResourceToString("/blockly/css/" + UIManager.get("MCreatorLAF.BLOCKLY_CSS"));
 
 					//remove font declaration if property set so
 					if (PreferencesManager.PREFERENCES.blockly.legacyFont) {
