@@ -114,7 +114,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		renderStatusInHUD.setOpaque(false);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/effect_display_name"),
-				new JLabel(L10N.t("elementgui.potion.effet_displayname"))));
+				new JLabel(L10N.t("elementgui.potion.effect_display_name"))));
 		selp.add(effectName);
 
 		JButton importicontexture = new JButton(UIRES.get("18px.add"));
@@ -138,7 +138,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		selp.add(registerPotionType);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/display_name"), new JLabel(L10N.t("elementgui.potion.displayname"))));
+				.wrapWithHelpButton(this.withEntry("potion/display_name"), new JLabel(L10N.t("elementgui.potion.display_name"))));
 		selp.add(name);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/instant"), new JLabel(
@@ -187,11 +187,11 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		});
 
 		name.setValidator(
-				new ConditionalTextFieldValidator(name, L10N.t("elementgui.potion.error_potion_needs_displayname"), registerPotionType, true));
+				new ConditionalTextFieldValidator(name, L10N.t("elementgui.potion.error_potion_needs_display_name"), registerPotionType, true));
 		name.enableRealtimeValidation();
 		page1group.addValidationElement(name);
 
-		effectName.setValidator(new TextFieldValidator(effectName, L10N.t("elementgui.potion.error_potion_effect_needs_displayname")));
+		effectName.setValidator(new TextFieldValidator(effectName, L10N.t("elementgui.potion.error_potion_effect_needs_display_name")));
 		effectName.enableRealtimeValidation();
 		page1group.addValidationElement(effectName);
 
