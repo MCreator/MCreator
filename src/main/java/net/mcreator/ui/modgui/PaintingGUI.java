@@ -28,6 +28,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.TextureHolder;
@@ -79,7 +80,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		//ComponentUtils.deriveFont(height, 16);
 
 		JButton importicontexture = new JButton(UIRES.get("18px.add"));
-		importicontexture.setToolTipText("Click this to import painting icon");
+		importicontexture.setToolTipText(L10N.t("elementgui.painting.import_painting"));
 		importicontexture.setOpaque(false);
 		importicontexture.addActionListener(e -> {
 			TextureImportDialogs.importOtherTextures(mcreator);
@@ -88,15 +89,15 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 			mcreator.getWorkspace().getFolderManager().getOtherTexturesList().forEach(el -> texture.addItem(el.getName()));
 		});
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/texture"), new JLabel("Painting texture:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/texture"), new JLabel(L10N.t("elementgui.painting.painting_texture"))));
 		selp.add(PanelUtils.centerAndEastElement(texture, importicontexture));
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("painting/width"), new JLabel("Painting width: ")));
+				.wrapWithHelpButton(this.withEntry("painting/width"), new JLabel(L10N.t("elementgui.painting.painting_width"))));
 		selp.add(width);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("painting/height"), new JLabel("Painting height: ")));
+				.wrapWithHelpButton(this.withEntry("painting/height"), new JLabel(L10N.t("elementgui.painting.painting_height"))));
 		selp.add(height);
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(selp));
@@ -104,12 +105,12 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		texture.setValidator(() -> {
 			if (texture.getSelectedItem() == null || texture.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"Painting needs to have texture");
+						L10N.t("elementgui.painting.error_painting_needs_texture"));
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 		page1group.addValidationElement(texture);
 
-		addPage("Properties", pane3);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 	}
 
 	@Override public void reloadDataLists() {

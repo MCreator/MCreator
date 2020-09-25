@@ -29,6 +29,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.ProcedureSelector;
@@ -59,13 +60,13 @@ public class PotionGUI extends ModElementGUI<Potion> {
 	private final JColor color = new JColor(mcreator);
 	private final VComboBox<String> icon = new SearchableComboBox<>();
 
-	private final JCheckBox isInstant = new JCheckBox("Is instant");
-	private final JCheckBox isBad = new JCheckBox("Is bad");
-	private final JCheckBox isBenefitical = new JCheckBox("Is benefitical");
-	private final JCheckBox renderStatusInInventory = new JCheckBox("Enable");
-	private final JCheckBox renderStatusInHUD = new JCheckBox("Enable");
+	private final JCheckBox isInstant = new JCheckBox(L10N.t("elementgui.potion.is_instant"));
+	private final JCheckBox isBad = new JCheckBox(L10N.t("elementgui.potion.is_bad"));
+	private final JCheckBox isBenefitical = new JCheckBox(L10N.t("elementgui.potion.is_benefitical"));
+	private final JCheckBox renderStatusInInventory = new JCheckBox(L10N.t("elementgui.common.enable"));
+	private final JCheckBox renderStatusInHUD = new JCheckBox(L10N.t("elementgui.common.enable"));
 
-	private final JCheckBox registerPotionType = new JCheckBox("Enable bottles");
+	private final JCheckBox registerPotionType = new JCheckBox(L10N.t("elementgui.potion.enable_bottles"));
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -81,12 +82,12 @@ public class PotionGUI extends ModElementGUI<Potion> {
 
 	@Override protected void initGUI() {
 		onStarted = new ProcedureSelector(this.withEntry("potion/when_potion_applied"), mcreator,
-				"When potion started/applied",
+				L10N.t("elementgui.potion.event_potion_applied"),
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
 		onActiveTick = new ProcedureSelector(this.withEntry("potion/when_active_tick"), mcreator,
-				"On potion active tick",
+				L10N.t("elementgui.potion.event_potion_tick"),
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
-		onExpired = new ProcedureSelector(this.withEntry("potion/when_potion_expires"), mcreator, "When potion expires",
+		onExpired = new ProcedureSelector(this.withEntry("potion/when_potion_expires"), mcreator, L10N.t("elementgui.potion.event_potion_expires"),
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
 
 		renderStatusInInventory.setSelected(true);
@@ -113,11 +114,11 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		renderStatusInHUD.setOpaque(false);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/effect_display_name"),
-				new JLabel("Potion effect display name: ")));
+				new JLabel(L10N.t("elementgui.potion.effet_displayname"))));
 		selp.add(effectName);
 
 		JButton importicontexture = new JButton(UIRES.get("18px.add"));
-		importicontexture.setToolTipText("Click this to import potion icon");
+		importicontexture.setToolTipText(L10N.t("elementgui.potion.import_potion_icon"));
 		importicontexture.setOpaque(false);
 		importicontexture.addActionListener(e -> {
 			TextureImportDialogs.importOtherTextures(mcreator);
@@ -126,39 +127,38 @@ public class PotionGUI extends ModElementGUI<Potion> {
 			mcreator.getWorkspace().getFolderManager().getOtherTexturesList().forEach(el -> icon.addItem(el.getName()));
 		});
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/color"), new JLabel("Potion color: ")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/color"), new JLabel(L10N.t("elementgui.potion.color"))));
 		selp.add(color);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/icon"), new JLabel("Potion icon:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/icon"), new JLabel(L10N.t("elementgui.potion.icon"))));
 		selp.add(PanelUtils.centerAndEastElement(icon, importicontexture));
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/has_bottles"),
-				new JLabel("Register potion effect bottles: ")));
+				new JLabel(L10N.t("elementgui.potion.has_bottle"))));
 		selp.add(registerPotionType);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/display_name"), new JLabel("Potion display name: ")));
+				.wrapWithHelpButton(this.withEntry("potion/display_name"), new JLabel(L10N.t("elementgui.potion.displayname"))));
 		selp.add(name);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/instant"), new JLabel(
-				"<html>Is this potion instantly applied?<br><small>"
-						+ "If this is checked, potion tick procedure will not be called")));
+				L10N.t("elementgui.potion.instant"))));
 		selp.add(isInstant);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/bad"), new JLabel("Is this potion bad for the player?")));
+				.wrapWithHelpButton(this.withEntry("potion/bad"), new JLabel(L10N.t("elementgui.potion.bad"))));
 		selp.add(isBad);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/benefitical"),
-				new JLabel("Is this potion benefitical to the player?")));
+				new JLabel(L10N.t("elementgui.potion.benefitical"))));
 		selp.add(isBenefitical);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/render_in_inventory"),
-				new JLabel("Render active potion status in inventory:")));
+				new JLabel(L10N.t("elementgui.potion.render_status_inventory"))));
 		selp.add(renderStatusInInventory);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/render_in_hud"),
-				new JLabel("Render active potion status in HUD:")));
+				new JLabel(L10N.t("elementgui.potion.render_status_hud"))));
 		selp.add(renderStatusInHUD);
 
 		selp.setOpaque(false);
@@ -182,23 +182,23 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		icon.setValidator(() -> {
 			if (icon.getSelectedItem() == null || icon.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"Potion needs to have icon");
+						L10N.t("elementgui.potion.error_potion_needs_icon"));
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
 		name.setValidator(
-				new ConditionalTextFieldValidator(name, "Potion needs a display name", registerPotionType, true));
+				new ConditionalTextFieldValidator(name, L10N.t("elementgui.potion.error_potion_needs_displayname"), registerPotionType, true));
 		name.enableRealtimeValidation();
 		page1group.addValidationElement(name);
 
-		effectName.setValidator(new TextFieldValidator(effectName, "Potion effect needs a display name"));
+		effectName.setValidator(new TextFieldValidator(effectName, L10N.t("elementgui.potion.error_potion_effect_needs_displayname")));
 		effectName.enableRealtimeValidation();
 		page1group.addValidationElement(effectName);
 
 		page1group.addValidationElement(icon);
 
-		addPage("Properties", pane3);
-		addPage("Triggers", pane4);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
