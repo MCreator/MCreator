@@ -32,13 +32,13 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 
 	private static final Logger LOG = LogManager.getLogger("Look and Feel");
 
-	private AbstractMCreatorTheme theme = new DarkMCreatorTheme();
+	private final AbstractMCreatorTheme theme;
 
 	public MCreatorLookAndFeel() {
-		if(PreferencesManager.PREFERENCES.ui.interfaceTheme.equals("Dark theme")) {
-			setCurrentTheme(theme = new DarkMCreatorTheme());
-		} else if(PreferencesManager.PREFERENCES.ui.interfaceTheme.equals("Light theme")){
+		if(PreferencesManager.PREFERENCES.ui.interfaceTheme.equals("Light theme")){
 			setCurrentTheme(theme = new LightMCreatorTheme());
+		} else {
+			setCurrentTheme(theme = new DarkMCreatorTheme());
 		}
 	}
 

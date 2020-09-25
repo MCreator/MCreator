@@ -42,8 +42,10 @@ public class PreferencesData {
 		@PreferencesEntry public Locale language = new Locale("en", "US");
 
 		@PreferencesEntry public Color interfaceAccentColor = AbstractMCreatorTheme.MAIN_TINT_DEFAULT;
+
 		@PreferencesEntry(arrayData = {"Dark theme", "Light theme"})
 		public String interfaceTheme = "Dark theme";
+
 		@PreferencesEntry public boolean aatext = true;
 
 		@PreferencesEntry(arrayData = { "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb", "lcd_vbgr" })
