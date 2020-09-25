@@ -28,7 +28,7 @@ import org.w3c.dom.Element;
 public class PrintTextBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		org.w3c.dom.Element element = XMLUtil.getFirstChildrenWithName("value", block);
+		org.w3c.dom.Element element = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (element != null) {
 			master.append("System.out.println(");
 			master.processOutputBlock(element);

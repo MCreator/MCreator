@@ -127,6 +127,16 @@ package ${package}.item;
 
 		<#if data.hasGlow>
 		@Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
+		    <#if hasCondition(data.glowCondition)>
+			PlayerEntity entity = Minecraft.getInstance().player;
+			World world = entity.world;
+			double x = entity.getPosX();
+			double y = entity.getPosY();
+			double z = entity.getPosZ();
+        	if (!(<@procedureOBJToConditionCode data.glowCondition/>)) {
+        	    return false;
+        	}
+        	</#if>
 			return true;
 		}
         </#if>
@@ -254,6 +264,17 @@ package ${package}.item;
     		<@procedureOBJToCode data.onItemInInventoryTick/>
 		}
 		</#if>
+
+		<#if hasProcedure(data.onDroppedByPlayer)>
+        @Override public boolean onDroppedByPlayer(ItemStack itemstack, PlayerEntity entity) {
+            double x = entity.getPosX();
+            double y = entity.getPosY();
+            double z = entity.getPosZ();
+            World world = entity.world;
+            <@procedureOBJToCode data.onDroppedByPlayer/>
+            return true;
+        }
+        </#if>
 
 		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 		@Override public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT compound) {

@@ -28,7 +28,7 @@ import org.w3c.dom.Element;
 public class NumberConstantsBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
-		Element element = XMLUtil.getFirstChildrenWithName("field", block);
+		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null && JavaKeywordsMap.MATH_CONSTANTS.get(element.getTextContent()) != null) {
 			master.append(JavaKeywordsMap.MATH_CONSTANTS.get(element.getTextContent()));
 		} else {

@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
 public class JavaCodeBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
-		Element element = XMLUtil.getFirstChildrenWithName("field", block);
+		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null) {
 			master.append(element.getTextContent());
 		} else {

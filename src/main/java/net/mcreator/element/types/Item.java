@@ -60,6 +60,7 @@ import java.util.Map;
 
 	public List<String> specialInfo;
 	public boolean hasGlow;
+	public Procedure glowCondition;
 
 	public String guiBoundTo;
 	public int inventorySize;
@@ -73,6 +74,7 @@ import java.util.Map;
 	public Procedure onItemInUseTick;
 	public Procedure onStoppedUsing;
 	public Procedure onEntitySwing;
+	public Procedure onDroppedByPlayer;
 
 	private Item() {
 		this(null);

@@ -31,8 +31,8 @@ public class LoopBlock implements IBlockGenerator {
 	private int loopIndex = 0;
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		Element value = XMLUtil.getFirstChildrenWithName("value", block);
-		Element statement = XMLUtil.getFirstChildrenWithName("statement", block);
+		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
+		Element statement = XMLUtil.getFirstChildrenWithName(block, "statement");
 
 		String blocktype = block.getAttribute("type");
 

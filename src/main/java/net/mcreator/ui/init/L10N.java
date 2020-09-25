@@ -44,6 +44,8 @@ public class L10N {
 
 	private static Set<Locale> supportedLocales = null;
 
+	private static boolean isTestingEnvironment = false;
+
 	public static Set<Locale> getSupportedLocales() {
 		if (supportedLocales == null) { // lazy-load supported locales
 			Set<String> localeFiles = PluginLoader.INSTANCE.getResourcesInPackage("lang");
@@ -73,14 +75,25 @@ public class L10N {
 				.getBundle("lang/texts", new Locale("en", "US"), PluginLoader.INSTANCE, new UTF8Control());
 	}
 
+	/**
+	 * Test mode will make JVM crash with runtime exception if translation key is not found when requested
+	 */
+	public static void enterTestingMode() {
+		isTestingEnvironment = true;
+	}
+
 	public static String t(String key, Object... parameters) {
 		if (key == null)
 			return null;
 
 		if (rb.containsKey(key))
 			return MessageFormat.format(rb.getString(key), parameters);
-		else
+		else if (key.startsWith("blockly.") && key.endsWith(".tooltip"))
 			return null;
+		else if (isTestingEnvironment)
+			throw new RuntimeException("Failed to load any translation for key: " + key);
+		else
+			return key;
 	}
 
 	public static String t_en(String key, Object... parameters) {
@@ -89,8 +102,12 @@ public class L10N {
 
 		if (rb_en.containsKey(key))
 			return MessageFormat.format(rb_en.getString(key), parameters);
-		else
+		else if (key.startsWith("blockly.") && key.endsWith(".tooltip"))
 			return null;
+		else if (isTestingEnvironment)
+			throw new RuntimeException("Failed to load any translation for key: " + key);
+		else
+			return key;
 	}
 
 	public static JLabel label(String key, Object... parameter) {

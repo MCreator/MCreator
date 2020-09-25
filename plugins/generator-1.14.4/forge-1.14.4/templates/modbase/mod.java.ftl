@@ -48,8 +48,13 @@
 
 package ${package};
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 @Mod("${modid}")
 public class ${JavaModName} {
+
+    public static final Logger LOGGER = LogManager.getLogger(${JavaModName}.class);
 
 	private static final String PROTOCOL_VERSION = "1";
 	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation("${modid}", "${modid}"),

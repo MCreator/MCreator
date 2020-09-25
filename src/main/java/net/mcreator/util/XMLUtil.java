@@ -18,6 +18,7 @@
 
 package net.mcreator.util;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -28,24 +29,25 @@ import java.util.List;
 public class XMLUtil {
 
 	public static List<Element> getDirectChildren(Element element) {
-		return getChildrenWithName(null, element);
+		return getChildrenWithName(element, (String[]) null);
 	}
 
-	public static List<Element> getChildrenWithName(String name, Element element) {
+	public static List<Element> getChildrenWithName(Element element, String... names) {
 		List<Element> elements = new ArrayList<>();
 		NodeList nodeList = element.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
-				if (name == null || node.getNodeName().equals(name))
+				if (names == null || (names.length == 1 && names[0].equals(node.getNodeName())) || ArrayUtils
+						.contains(names, node.getNodeName()))
 					elements.add((Element) node);
 			}
 		}
 		return elements;
 	}
 
-	public static Element getFirstChildrenWithName(String name, Element element) {
-		List<Element> elements = getChildrenWithName(name, element);
+	public static Element getFirstChildrenWithName(Element element, String... names) {
+		List<Element> elements = getChildrenWithName(element, names);
 		if (elements.size() > 0) {
 			return elements.get(0);
 		} else {

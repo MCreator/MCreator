@@ -12,6 +12,7 @@ var workspace = Blockly.inject(blockly, {
     collapse: MCR_BLCKLY_PREF['collapse'],
     disable: false,
     trashcan: MCR_BLCKLY_PREF['trashcan'],
+    renderer: MCR_BLCKLY_PREF['renderer'],
     zoom: {
         controls: false,
         wheel: true,
@@ -20,7 +21,7 @@ var workspace = Blockly.inject(blockly, {
         minScale: MCR_BLCKLY_PREF['minScale'],
         scaleSpeed: MCR_BLCKLY_PREF['scaleSpeed']
     },
-    toolbox: '<xml id="toolbox"><category></category></xml>'
+    toolbox: '<xml id="toolbox"><category name="" colour=""></category></xml>'
 });
 
 function blocklyEventFuntion() {
@@ -104,6 +105,7 @@ function getBlocklyWorkspaceSVG() {
     var xml = new XMLSerializer().serializeToString(cp);
     xml = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' + bbox.width + '" height="' + bbox.height +
         '" viewBox="' + bbox.x + ' ' + bbox.y + ' ' + bbox.width + ' ' + bbox.height + '"><rect width="100%" height="100%" fill="white"></rect>' + xml + '</svg>';
+    return xml;
 }
 
 function getallcss() {

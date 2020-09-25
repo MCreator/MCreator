@@ -28,7 +28,7 @@ import org.w3c.dom.Element;
 public class TextLengthBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		Element element = XMLUtil.getFirstChildrenWithName("value", block);
+		Element element = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (element != null) {
 			master.append("(");
 			master.processOutputBlock(element);
