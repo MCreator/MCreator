@@ -126,10 +126,10 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		ComponentUtils.deriveFont(name, 16);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/sound"),
-				new JLabel(L10N.t("elementgui.music_disc.music_mono_tip"))));
+				L10N.label("elementgui.music_disc.music_mono_tip")));
 		subpane2.add(music);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), new JLabel(L10N.t("elementgui.music_disc.name_in_gui"))));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), new JLabel(L10N.t("elementgui.common.name_in_gui"))));
 		subpane2.add(name);
 
 		subpane2.add(HelpUtils
