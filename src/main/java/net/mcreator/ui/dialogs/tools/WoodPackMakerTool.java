@@ -74,10 +74,9 @@ public class WoodPackMakerTool {
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
 
 		VTextField name = new VTextField(25);
-		JColor color = new JColor(mcreator);
+		JColor color = new JColor(mcreator, false);
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 
-		color.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		name.enableRealtimeValidation();
 
 		props.add(new JLabel("Wood pack name:"));
@@ -108,7 +107,7 @@ public class WoodPackMakerTool {
 			}
 		});
 
-		dialog.setSize(600, 280);
+		dialog.setSize(600, 230);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
 	}
