@@ -45,7 +45,7 @@ public class ReturnBlock implements IBlockGenerator {
 			break;
 		}
 
-		Element element = XMLUtil.getFirstChildrenWithName("value", block);
+		Element element = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (master instanceof BlocklyToProcedure && element != null) {
 			if (((BlocklyToProcedure) master).getReturnType() != null) {
 				if (((BlocklyToProcedure) master).getReturnType() != returnType) {
