@@ -65,6 +65,8 @@ public class WoodPackMakerTool {
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, "Wood pack maker", true);
 		dialog.setLayout(new BorderLayout(10, 10));
 
+		dialog.setIconImage(UIRES.get("16px.woodpack").getImage());
+
 		dialog.add("North", PanelUtils.centerInPanel(new JLabel(
 				"<html><center>Using this tool, you can make the base for your wood pack in just a few clicks.<br>"
 						+ "This tool will make: <b>Log, Wood, Planks, Stairs, Slab, Fence, Fence gate,"
@@ -424,7 +426,7 @@ public class WoodPackMakerTool {
 						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TAG)
 						!= GeneratorStats.CoverageStatus.NONE;
 			}
-		};
+		}.setIcon(UIRES.get("16px.woodpack"));
 	}
 
 }
