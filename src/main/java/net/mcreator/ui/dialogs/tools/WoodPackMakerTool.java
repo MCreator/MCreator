@@ -65,12 +65,10 @@ public class WoodPackMakerTool {
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, "Wood pack maker", true);
 		dialog.setLayout(new BorderLayout(10, 10));
 
-		dialog.setIconImage(UIRES.get("16px.toolpack").getImage());
-
 		dialog.add("North", PanelUtils.centerInPanel(new JLabel(
 				"<html><center>Using this tool, you can make the base for your wood pack in just a few clicks.<br>"
 						+ "This tool will make: <b>Log, Wood, Planks, Stairs, Slab, Fence, Fence gate,"
-						+ "<br>Recipes and Tags")));
+						+ "<br>Recipes and Tag")));
 
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
 
@@ -311,28 +309,13 @@ public class WoodPackMakerTool {
 		mcreator.getWorkspace().getGenerator().generateElement(fenceGateBlock);
 		mcreator.getWorkspace().getModElementManager().storeModElement(fenceGateBlock);
 
-		// Tags
-		Tag woodBlockTag = (Tag) ModElementTypeRegistry.REGISTRY.get(ModElementType.TAG)
-				.getModElement(mcreator, new ModElement(workspace, name + "BlocksTag", ModElementType.TAG), false)
-				.getElementFromGUI();
-		woodBlockTag.namespace = "forge";
-		woodBlockTag.name = name.toLowerCase().replace(" ", "_") + "_log";
-		woodBlockTag.type = "Blocks";
-		woodBlockTag.blocks = new ArrayList<>();
-		woodBlockTag.blocks.add(new MItemBlock(workspace, "CUSTOM:" + woodBlock.getModElement().getName()));
-		woodBlockTag.blocks.add(new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName()));
-		mcreator.getWorkspace().getModElementManager().storeModElementPicture(woodBlockTag);
-		mcreator.getWorkspace().addModElement(woodBlockTag.getModElement());
-		mcreator.getWorkspace().getGenerator().generateElement(woodBlockTag);
-		mcreator.getWorkspace().getModElementManager().storeModElement(woodBlockTag);
-
 		//Tag - Items
 		//Mainly used for recipes and loot tables
 		Tag woodItemTag = (Tag) ModElementTypeRegistry.REGISTRY.get(ModElementType.TAG)
 				.getModElement(mcreator, new ModElement(workspace, name + "ItemsTag", ModElementType.TAG), false)
 				.getElementFromGUI();
 		woodItemTag.namespace = "forge";
-		woodItemTag.name = name.toLowerCase().replace(" ", "_") + "_log";
+		woodItemTag.name = RegistryNameFixer.fix(name) + "_log";
 		woodItemTag.type = "Items";
 		woodItemTag.items = new ArrayList<>();
 		woodItemTag.items.add(new MItemBlock(workspace, "CUSTOM:" + woodBlock.getModElement().getName()));
@@ -441,7 +424,7 @@ public class WoodPackMakerTool {
 						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TAG)
 						!= GeneratorStats.CoverageStatus.NONE;
 			}
-		}.setIcon(UIRES.get("16px.armorpack"));
+		};
 	}
 
 }
