@@ -499,7 +499,8 @@ public class TestWorkspaceDataProvider {
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
 							.getName());
 			mob.mobBehaviourType = "Creature";
-			mob.mobCreatureType = "WATER";
+			mob.mobCreatureType = ListUtils
+					.getRandomItem(new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
 			mob.attackStrength = 4;
 			mob.attackKnockback = 1.5;
 			mob.knockbackResistance = 0.5;
