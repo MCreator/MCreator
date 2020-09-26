@@ -78,10 +78,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 
 	private final JComboBox<String> background = new JComboBox<>();
 
-	JCheckBox showPopup = new JCheckBox(L10N.t("elementgui.advancement.enable"));
-	JCheckBox announceToChat = new JCheckBox(L10N.t("elementgui.advancement.enable"));
-	JCheckBox hideIfNotCompleted = new JCheckBox(L10N.t("elementgui.advancement.enable"));
-	JCheckBox disableDisplay = new JCheckBox(L10N.t("elementgui.advancement.enable"));
+	JCheckBox showPopup = new JCheckBox(L10N.t("elementgui.common.enable"));
+	JCheckBox announceToChat = new JCheckBox(L10N.t("elementgui.common.enable"));
+	JCheckBox hideIfNotCompleted = new JCheckBox(L10N.t("elementgui.common.enable"));
+	JCheckBox disableDisplay = new JCheckBox(L10N.t("elementgui.common.enable"));
 
 	private final ValidationGroup page1group = new ValidationGroup();
 

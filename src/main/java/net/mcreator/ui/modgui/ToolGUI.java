@@ -212,7 +212,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		efficiency.setOpaque(false);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
-				new JLabel(L10N.t("elementgui.tool.name_in_gui"))));
+				new JLabel(L10N.t("elementgui.common.name_in_gui"))));
 		selp.add(name);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
