@@ -27,12 +27,16 @@ import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
+import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class TreeGUI extends ModElementGUI<Tree> {
 
@@ -64,6 +68,7 @@ public class TreeGUI extends ModElementGUI<Tree> {
 	}
 
 	@Override protected void initGUI() {
+
 		treeStem = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		treeBranch = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 
@@ -71,7 +76,7 @@ public class TreeGUI extends ModElementGUI<Tree> {
 
 		pane2.setOpaque(false);
 
-		JPanel sbbp1 = new JPanel(new GridLayout(2, 2, 5, 5));
+		JPanel sbbp1 = new JPanel(new GridLayout(3, 2, 5, 5));
 
 		sbbp1.add(HelpUtils.wrapWithHelpButton(this.withEntry("tree/stem_block"), new JLabel("Block for log:")));
 		sbbp1.add(PanelUtils.join(treeStem));
@@ -80,7 +85,6 @@ public class TreeGUI extends ModElementGUI<Tree> {
 		sbbp1.add(PanelUtils.join(treeBranch));
 
 		sbbp1.setOpaque(false);
-
 
 		JPanel sbbp2 = new JPanel(new GridLayout(4, 2, 5, 5));
 
@@ -130,9 +134,7 @@ public class TreeGUI extends ModElementGUI<Tree> {
 		treeStem.setValidator(new MCItemHolderValidator(treeStem));
 		treeBranch.setValidator(new MCItemHolderValidator(treeBranch));
 
-
 		addPage("Tree", pane2);
-
 
 	}
 

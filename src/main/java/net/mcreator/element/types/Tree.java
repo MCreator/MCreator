@@ -38,6 +38,7 @@ public class Tree extends GeneratableElement {
 
 	public Tree(ModElement element) {
 		super(element);
+
 	}
 	private Tree(){
 		this(null);

@@ -11,7 +11,6 @@ import net.minecraft.block.material.Material;
 
 	public ${name} (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
-    FMLJavaModLoadingContext.get().getModEventBus().register(this);
 	}
 
   public static class CustomTree extends Tree {
