@@ -114,6 +114,18 @@ public class L10N {
 		return new JLabel(t(key, parameter));
 	}
 
+	public static JCheckBox checkbox(String key, Object... parameter) {
+		return new JCheckBox(t(key, parameter));
+	}
+
+	public static JButton button(String key, Object... parameter) {
+		return new JButton(t(key, parameter));
+	}
+
+	public static JRadioButton radiobutton(String key, Object... parameter) {
+		return new JRadioButton(t(key, parameter));
+	}
+
 	private static class UTF8Control extends ResourceBundle.Control {
 
 		public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader,

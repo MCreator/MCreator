@@ -32,6 +32,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
@@ -71,15 +72,15 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 	private final JTextField specialInfo = new JTextField(20);
 
-	private final JCheckBox forDogs = new JCheckBox("Check to enable");
-	private final JCheckBox isAlwaysEdible = new JCheckBox("Check to enable");
+	private final JCheckBox forDogs = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
 
 	private ProcedureSelector onRightClicked;
 	private ProcedureSelector onEaten;
 	private ProcedureSelector onCrafted;
 	private ProcedureSelector onEntitySwing;
 
-	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
+	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
 
 	private final JComboBox<String> animation = new JComboBox<>(

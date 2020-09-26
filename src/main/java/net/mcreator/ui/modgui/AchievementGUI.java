@@ -78,10 +78,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 
 	private final JComboBox<String> background = new JComboBox<>();
 
-	JCheckBox showPopup = new JCheckBox(L10N.t("elementgui.common.enable"));
-	JCheckBox announceToChat = new JCheckBox(L10N.t("elementgui.common.enable"));
-	JCheckBox hideIfNotCompleted = new JCheckBox(L10N.t("elementgui.common.enable"));
-	JCheckBox disableDisplay = new JCheckBox(L10N.t("elementgui.common.enable"));
+	JCheckBox showPopup = L10N.checkbox("elementgui.common.enable");
+	JCheckBox announceToChat = L10N.checkbox("elementgui.common.enable");
+	JCheckBox hideIfNotCompleted = L10N.checkbox("elementgui.common.enable");
+	JCheckBox disableDisplay = L10N.checkbox("elementgui.common.enable");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -126,37 +126,37 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		announceToChat.setSelected(true);
 
 		selp.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("advancement/name"), new JLabel(L10N.t("elementgui.advancement.name"))));
+				HelpUtils.wrapWithHelpButton(this.withEntry("advancement/name"), L10N.label("elementgui.advancement.name")));
 		selp.add(achievementName);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/description"),
-				new JLabel(L10N.t("elementgui.advancement.description"))));
+				L10N.label("elementgui.advancement.description")));
 		selp.add(achievementDescription);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/icon"), new JLabel("elementgui.advancement.icon")));
 		selp.add(PanelUtils.join(FlowLayout.LEFT, achievementIcon));
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/background"),
-				new JLabel(L10N.t("elementgui.advancement.background"))));
+				L10N.label("elementgui.advancement.background")));
 		selp.add(background);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/type"), new JLabel("elementgui.advancement.type")));
 		selp.add(achievementType);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/parent"),
-				new JLabel(L10N.t("elementgui.advancement.parent"))));
+				L10N.label("elementgui.advancement.parent")));
 		selp.add(parentAchievement);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/show_toast"),
-				new JLabel(L10N.t("elementgui.advancement.show_toast"))));
+				L10N.label("elementgui.advancement.show_toast")));
 		selp.add(showPopup);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/announce_to_chat"),
-				new JLabel(L10N.t("elementgui.advancement.announce_to_chat"))));
+				L10N.label("elementgui.advancement.announce_to_chat")));
 		selp.add(announceToChat);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_if_not_completed"),
-				new JLabel(L10N.t("elementgui.advancement.hide_if_not_completed"))));
+				L10N.label("elementgui.advancement.hide_if_not_completed")));
 		selp.add(hideIfNotCompleted);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_display"), new JLabel(L10N.t(
@@ -164,19 +164,19 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		selp.add(disableDisplay);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_xp"),
-				new JLabel(L10N.t("elementgui.advancement.reward_xp"))));
+				L10N.label("elementgui.advancement.reward_xp")));
 		selp2.add(rewardXP);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_function"),
-				new JLabel(L10N.t("elementgui.advancement.reward_functions"))));
+				L10N.label("elementgui.advancement.reward_functions")));
 		selp2.add(rewardFunction);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_loot_tables"),
-				new JLabel(L10N.t("elementgui.advancement.reward_loot_tables"))));
+				L10N.label("elementgui.advancement.reward_loot_tables")));
 		selp2.add(rewardLoot);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_recipes"),
-				new JLabel(L10N.t("elementgui.advancement.reward_recipes"))));
+				L10N.label("elementgui.advancement.reward_recipes")));
 		selp2.add(rewardRecipes);
 
 		selp.setBorder(BorderFactory.createTitledBorder(

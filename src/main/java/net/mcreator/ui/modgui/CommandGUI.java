@@ -68,11 +68,11 @@ public class CommandGUI extends ModElementGUI<Command> {
 		JPanel enderpanel = new JPanel(new GridLayout(2, 2, 10, 2));
 
 		enderpanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("command/name"), new JLabel(L10N.t("elementgui.command.name"))));
+				.wrapWithHelpButton(this.withEntry("command/name"), L10N.label("elementgui.command.name")));
 		enderpanel.add(commandName);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("command/permission_level"),
-				new JLabel(L10N.t("elementgui.command.permission_level"))));
+				L10N.label("elementgui.command.permission_level")));
 		enderpanel.add(permissionLevel);
 
 		enderpanel.setOpaque(false);

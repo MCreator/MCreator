@@ -120,10 +120,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 	private final VComboBox<String> armorTextureFile = new SearchableComboBox<>();
 
-	private final JCheckBox enableHelmet = new JCheckBox(L10N.t("elementgui.armor.armor_helmet"));
-	private final JCheckBox enableBody = new JCheckBox(L10N.t("elementgui.armor.armor_body"));
-	private final JCheckBox enableLeggings = new JCheckBox(L10N.t("elementgui.armor.armor_leggings"));
-	private final JCheckBox enableBoots = new JCheckBox(L10N.t("elementgui.armor.armor_boots"));
+	private final JCheckBox enableHelmet = L10N.checkbox("elementgui.armor.armor_helmet");
+	private final JCheckBox enableBody = L10N.checkbox("elementgui.armor.armor_body");
+	private final JCheckBox enableLeggings = L10N.checkbox("elementgui.armor.armor_leggings");
+	private final JCheckBox enableBoots = L10N.checkbox("elementgui.armor.armor_boots");
 
 	private final VComboBox<String> helmetModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> bodyModelTexture = new SearchableComboBox<>();
@@ -288,7 +288,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enableBoots.setOpaque(false);
 
 		helmetModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"), PanelUtils.northAndCenterElement(PanelUtils
-						.join(FlowLayout.LEFT, new JLabel(L10N.t("elementgui.armor.supported_java")), helmetModel,
+						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), helmetModel,
 								new JLabel(":"), helmetModelPart, new JLabel("elementgui.armor.texture"), helmetModelTexture),
 				PanelUtils.join(FlowLayout.LEFT, new JLabel(
 								L10N.t("elementgui.armor.special_information")),
@@ -302,7 +302,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						BorderFactory.createEmptyBorder(15, 12, 0, 12)));
 
 		destal.add(PanelUtils.westAndCenterElement(helText, PanelUtils.centerAndSouthElement(
-				PanelUtils.join(FlowLayout.LEFT, new JLabel(L10N.t("elementgui.armor.helmet_name")), helmetName), helmetModelPanel), 5,
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.helmet_name"), helmetName), helmetModelPanel), 5,
 				0));
 
 		destal.add(new JEmptyBox(10, 10));
@@ -314,16 +314,16 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						BorderFactory.createEmptyBorder(15, 17, 0, 17)));
 
 		bodyModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_body"), PanelUtils.northAndCenterElement(PanelUtils
-				.join(FlowLayout.LEFT, new JLabel(L10N.t("elementgui.armor.supported_java")), bodyModel,
+				.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bodyModel,
 						new JLabel(":"), bodyModelPart, new JLabel("arms L"), armsModelPartL, new JLabel("arms R"),
-						armsModelPartR, new JLabel(L10N.t("elementgui.armor.texture")), bodyModelTexture), PanelUtils
+						armsModelPartR, L10N.label("elementgui.armor.texture"), bodyModelTexture), PanelUtils
 				.join(FlowLayout.LEFT, new JLabel(
 								L10N.t("elementgui.armor.special_information")),
 						bodySpecialInfo)));
 		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(bodText, PanelUtils
-				.centerAndSouthElement(PanelUtils.join(FlowLayout.LEFT, new JLabel(L10N.t("elementgui.armor.body_name")), bodyName),
+				.centerAndSouthElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.body_name"), bodyName),
 						bodyModelPanel), 5, 0));
 
 		destal.add(new JEmptyBox(10, 10));
@@ -335,16 +335,16 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						BorderFactory.createEmptyBorder(15, 8, 0, 8)));
 
 		leggingsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"), PanelUtils.northAndCenterElement(
-				PanelUtils.join(FlowLayout.LEFT, new JLabel(L10N.t("elementgui.armor.supported_java")), leggingsModel,
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), leggingsModel,
 						new JLabel(": L"), leggingsModelPartL, new JLabel("R"), leggingsModelPartR,
-						new JLabel(L10N.t("elementgui.armor.texture")), leggingsModelTexture), PanelUtils.join(FlowLayout.LEFT,
+						L10N.label("elementgui.armor.texture"), leggingsModelTexture), PanelUtils.join(FlowLayout.LEFT,
 						new JLabel(
 								L10N.t("elementgui.armor.special_information")),
 						leggingsSpecialInfo)));
 		leggingsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(legText, PanelUtils.centerAndSouthElement(
-				PanelUtils.join(FlowLayout.LEFT, new JLabel(L10N.t("elementgui.armor.leggings_name")), leggingsName),
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
 				leggingsModelPanel), 5, 0));
 
 		destal.add(new JEmptyBox(10, 10));
@@ -356,16 +356,16 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						BorderFactory.createEmptyBorder(15, 16, 0, 15)));
 
 		bootsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"), PanelUtils.northAndCenterElement(PanelUtils
-				.join(FlowLayout.LEFT, new JLabel(L10N.t("elementgui.armor.supported_java")), bootsModel,
+				.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bootsModel,
 						new JLabel(": L"), bootsModelPartL, new JLabel("R"), bootsModelPartR,
-						new JLabel(L10N.t("elementgui.armor.texture")), bootsModelTexture), PanelUtils.join(FlowLayout.LEFT,
+						L10N.label("elementgui.armor.texture"), bootsModelTexture), PanelUtils.join(FlowLayout.LEFT,
 				new JLabel(
 						L10N.t("elementgui.armor.special_information")),
 				bootsSpecialInfo)));
 		bootsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(bootText, PanelUtils
-				.centerAndSouthElement(PanelUtils.join(FlowLayout.LEFT, new JLabel(L10N.t("elementgui.armor.boots_name")), bootsName),
+				.centerAndSouthElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),
 						bootsModelPanel), 5, 0));
 
 		enableHelmet.addActionListener(event -> {
@@ -423,32 +423,32 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enderpanel.add(armorTextureFile);
 
 		enderpanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel(L10N.t("elementgui.common.creative_tab"))));
+				.wrapWithHelpButton(this.withEntry("common/creative_tab"), L10N.label("elementgui.common.creative_tab")));
 		enderpanel.add(creativeTab);
 
 		enderpanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("armor/equip_sound"), new JLabel(L10N.t("elementgui.armor.equip_sound"))));
+				.wrapWithHelpButton(this.withEntry("armor/equip_sound"), L10N.label("elementgui.armor.equip_sound")));
 		enderpanel.add(equipSound);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/max_damage_absorbed"),
-				new JLabel(L10N.t("elementgui.armor.max_damage_absorption"))));
+				L10N.label("elementgui.armor.max_damage_absorption")));
 		enderpanel.add(maxDamage);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/damage_values"),
-				new JLabel(L10N.t("elementgui.armor.damage_values"))));
+				L10N.label("elementgui.armor.damage_values")));
 		enderpanel.add(PanelUtils
 				.gridElements(1, 4, damageValueHelmet, damageValueBody, damageValueLeggings, damageValueBoots));
 
 		enderpanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("armor/enchantability"), new JLabel(L10N.t("elementgui.common.enchantability"))));
+				.wrapWithHelpButton(this.withEntry("armor/enchantability"), L10N.label("elementgui.common.enchantability")));
 		enderpanel.add(enchantability);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/toughness"),
-				new JLabel(L10N.t("elementgui.armor.toughness"))));
+				L10N.label("elementgui.armor.toughness")));
 		enderpanel.add(toughness);
 
 		enderpanel
-				.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/repair_items"), new JLabel(L10N.t("elementgui.common.repair_items"))));
+				.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/repair_items"), L10N.label("elementgui.common.repair_items")));
 		enderpanel.add(repairItems);
 
 		enderpanel.setOpaque(false);

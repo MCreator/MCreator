@@ -57,7 +57,7 @@ public class FuelGUI extends ModElementGUI<Fuel> {
 		ps.setOpaque(false);
 		pane5.setOpaque(false);
 
-		ps.add(HelpUtils.wrapWithHelpButton(this.withEntry("fuel/burn_time"), new JLabel(L10N.t("elementgui.fuel.burn_time"))));
+		ps.add(HelpUtils.wrapWithHelpButton(this.withEntry("fuel/burn_time"), L10N.label("elementgui.fuel.burn_time")));
 		ps.add(power);
 
 		enderpanel.add("North", ps);

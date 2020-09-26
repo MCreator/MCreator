@@ -106,18 +106,18 @@ public class TagGUI extends ModElementGUI<Tag> {
 		main.setOpaque(false);
 
 		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/registry_name"),
-				new JLabel(L10N.t("elementgui.tag.registry_name"))));
+				L10N.label("elementgui.tag.registry_name")));
 		main.add(name);
 
 		main.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("tag/namespace"), new JLabel(L10N.t("elementgui.tag.namespace"))));
+				.wrapWithHelpButton(this.withEntry("tag/namespace"), L10N.label("elementgui.tag.namespace")));
 		main.add(namespace);
 
-		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/type"), new JLabel(L10N.t("elementgui.tag.type"))));
+		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/type"), L10N.label("elementgui.tag.type")));
 		main.add(type);
 
 		main.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("tag/tag_elements"), new JLabel(L10N.t("elementgui.tag.elements"))));
+				.wrapWithHelpButton(this.withEntry("tag/tag_elements"), L10N.label("elementgui.tag.elements")));
 		main.add(valuesPan);
 
 		type.addActionListener(e -> valuesLayout.show(valuesPan, (String) type.getSelectedItem()));

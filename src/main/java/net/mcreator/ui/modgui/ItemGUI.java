@@ -50,6 +50,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
 import org.jetbrains.annotations.Nullable;
+import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,10 +78,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner toolType = new JSpinner(new SpinnerNumberModel(1.0, -100.0, 128000.0, 0.1));
 	private final JSpinner damageCount = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
 
-	private final JCheckBox destroyAnyBlock = new JCheckBox("Check to enable");
-	private final JCheckBox stayInGridWhenCrafting = new JCheckBox("Check to enable");
-	private final JCheckBox damageOnCrafting = new JCheckBox("Check to enable");
-	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
+	private final JCheckBox destroyAnyBlock = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);

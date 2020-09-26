@@ -50,6 +50,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
 import org.jetbrains.annotations.Nullable;
+import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,14 +66,14 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 	private TextureHolder texture;
 
-	private final JCheckBox shootConstantly = new JCheckBox("Check to enable");
+	private final JCheckBox shootConstantly = L10N.checkbox("elementgui.common.enable");
 
 	private final VTextField name = new VTextField(13);
 
-	private final JCheckBox bulletParticles = new JCheckBox("Check to enable");
-	private final JCheckBox bulletIgnitesFire = new JCheckBox("Check to enable");
+	private final JCheckBox bulletParticles = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox bulletIgnitesFire = L10N.checkbox("elementgui.common.enable");
 
-	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
+	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
 
 	private final JComboBox<String> animation = new JComboBox<>(

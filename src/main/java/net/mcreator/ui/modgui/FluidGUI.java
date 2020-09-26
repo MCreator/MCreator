@@ -58,10 +58,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner density = new JSpinner(new SpinnerNumberModel(1000, -100000, 100000, 1));
 	private final JSpinner viscosity = new JSpinner(new SpinnerNumberModel(1000, 0, 100000, 1));
 
-	private final JCheckBox generateBucket = new JCheckBox(L10N.t("elementgui.fluid.generate_bucket"));
+	private final JCheckBox generateBucket = L10N.checkbox("elementgui.fluid.generate_bucket");
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
-	private final JCheckBox isGas = new JCheckBox(L10N.t("elementgui.fluid.is_gas_checkbox"));
+	private final JCheckBox isGas = L10N.checkbox("elementgui.fluid.is_gas_checkbox");
 	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });
 
 	private ProcedureSelector onBlockAdded;
@@ -128,7 +128,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		ComponentUtils.deriveFont(viscosity, 16);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/luminosity"),
-				new JLabel(L10N.t("elementgui.fluid.luminosity"))));
+				L10N.label("elementgui.fluid.luminosity")));
 		destal.add(luminosity);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/density"), new JLabel(
@@ -140,7 +140,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destal.add(viscosity);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/is_gas"),
-				new JLabel(L10N.t("elementgui.fluid.is_gas"))));
+				L10N.label("elementgui.fluid.is_gas")));
 		destal.add(PanelUtils.centerInPanel(isGas));
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/type"), new JLabel(
@@ -148,14 +148,14 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destal.add(fluidtype);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/generate_lakes"),
-				new JLabel(L10N.t("elementgui.fluid.generate_lakes"))));
+				L10N.label("elementgui.fluid.generate_lakes")));
 		destal.add(spawnWorldTypes);
 
-		destal.add(new JLabel(L10N.t("elementgui.fluid.generate_bucket_label")));
+		destal.add(L10N.label("elementgui.fluid.generate_bucket_label"));
 		destal.add(PanelUtils.centerInPanel(generateBucket));
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				new JLabel(L10N.t("elementgui.common.creative_tab"))));
+				L10N.label("elementgui.common.creative_tab")));
 		destal.add(creativeTab);
 
 		generateBucket.setSelected(true);

@@ -46,6 +46,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
 import org.jetbrains.annotations.Nullable;
+import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,10 +74,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 200, 1));
 
 	private final JCheckBox useLootTableForDrops = new JCheckBox("Use loot table for drops");
-	private final JCheckBox unbreakable = new JCheckBox("Check to enable");
-	private final JCheckBox forceTicking = new JCheckBox("Check to enable");
-	private final JCheckBox hasTileEntity = new JCheckBox("Check to enable");
-	private final JCheckBox emissiveRendering = new JCheckBox("Check to enable");
+	private final JCheckBox unbreakable = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox forceTicking = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox hasTileEntity = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
 
 	private final VTextField name = new VTextField(18);
 

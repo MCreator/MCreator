@@ -60,7 +60,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 	private final VTextField name = new VTextField(20);
 	private final VTextField description = new VTextField(20);
 
-	private final JCheckBox hasGlow = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
+	private final JCheckBox hasGlow = new JCheckBox(L10N.t("elementgui.common.enable"));
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
