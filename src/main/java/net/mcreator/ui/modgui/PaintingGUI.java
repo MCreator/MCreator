@@ -23,23 +23,17 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
-import net.mcreator.ui.minecraft.TextureHolder;
-import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
-import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import org.jetbrains.annotations.Nullable;
 
@@ -86,18 +80,20 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			texture.removeAllItems();
 			texture.addItem("");
-			mcreator.getWorkspace().getFolderManager().getOtherTexturesList().forEach(el -> texture.addItem(el.getName()));
+			mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
+					.forEach(el -> texture.addItem(el.getName()));
 		});
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/texture"), new JLabel(L10N.t("elementgui.painting.painting_texture"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/texture"),
+				new JLabel(L10N.t("elementgui.painting.painting_texture"))));
 		selp.add(PanelUtils.centerAndEastElement(texture, importicontexture));
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("painting/width"), new JLabel(L10N.t("elementgui.painting.painting_width"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/width"),
+				new JLabel(L10N.t("elementgui.painting.painting_width"))));
 		selp.add(width);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("painting/height"), new JLabel(L10N.t("elementgui.painting.painting_height"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/height"),
+				new JLabel(L10N.t("elementgui.painting.painting_height"))));
 		selp.add(height);
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(selp));

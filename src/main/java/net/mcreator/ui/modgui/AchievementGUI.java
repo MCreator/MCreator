@@ -125,26 +125,28 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		showPopup.setSelected(true);
 		announceToChat.setSelected(true);
 
-		selp.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("advancement/name"), L10N.label("elementgui.advancement.name")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("advancement/name"), L10N.label("elementgui.advancement.name")));
 		selp.add(achievementName);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/description"),
 				L10N.label("elementgui.advancement.description")));
 		selp.add(achievementDescription);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/icon"), new JLabel("elementgui.advancement.icon")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("advancement/icon"), new JLabel("elementgui.advancement.icon")));
 		selp.add(PanelUtils.join(FlowLayout.LEFT, achievementIcon));
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/background"),
 				L10N.label("elementgui.advancement.background")));
 		selp.add(background);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/type"), new JLabel("elementgui.advancement.type")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("advancement/type"), new JLabel("elementgui.advancement.type")));
 		selp.add(achievementType);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/parent"),
-				L10N.label("elementgui.advancement.parent")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("advancement/parent"), L10N.label("elementgui.advancement.parent")));
 		selp.add(parentAchievement);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/show_toast"),
@@ -159,8 +161,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 				L10N.label("elementgui.advancement.hide_if_not_completed")));
 		selp.add(hideIfNotCompleted);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_display"), new JLabel(L10N.t(
-				"elementgui.advancement.hide_display"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_display"),
+				new JLabel(L10N.t("elementgui.advancement.hide_display"))));
 		selp.add(disableDisplay);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_xp"),
@@ -192,9 +194,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		selp.setOpaque(false);
 		selp2.setOpaque(false);
 
-		achievementName.setValidator(new TextFieldValidator(achievementName, L10N.t("elementgui.advancement.cant_be_empty")));
-		achievementDescription
-				.setValidator(new TextFieldValidator(achievementDescription, L10N.t("elementgui.advancement.must_have_description")));
+		achievementName
+				.setValidator(new TextFieldValidator(achievementName, L10N.t("elementgui.advancement.cant_be_empty")));
+		achievementDescription.setValidator(
+				new TextFieldValidator(achievementDescription, L10N.t("elementgui.advancement.must_have_description")));
 		achievementIcon.setValidator(new MCItemHolderValidator(achievementIcon));
 		achievementName.enableRealtimeValidation();
 		achievementDescription.enableRealtimeValidation();
@@ -219,8 +222,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		JPanel advancementTrigger = (JPanel) PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
 		advancementTrigger.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.advancement.trigger_builder"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
+				L10N.t("elementgui.advancement.trigger_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Color.white));
 
 		advancementTrigger.setPreferredSize(new Dimension(0, 330));
 
@@ -244,8 +247,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 
 		BlocklyToJSONTrigger blocklyToJSONTrigger;
 		try {
-			blocklyToJSONTrigger = new BlocklyToJSONTrigger(mcreator.getWorkspace(),
-					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+			blocklyToJSONTrigger = new BlocklyToJSONTrigger(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
+					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;
 		}
@@ -275,13 +278,16 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		ComboBoxUtil
 				.updateComboBoxContents(parentAchievement, ElementUtil.loadAllAchievements(mcreator.getWorkspace()));
 
-		ComboBoxUtil.updateComboBoxContents(rewardFunction, ListUtils.merge(Collections.singleton(L10N.t("elementgui.advancement.no_function")),
-				mcreator.getWorkspace().getModElements().stream().filter(e -> e.getType() == ModElementType.FUNCTION)
-						.map(ModElement::getName).collect(Collectors.toList())), L10N.t("elementgui.advancement.no_function"));
+		ComboBoxUtil.updateComboBoxContents(rewardFunction, ListUtils
+				.merge(Collections.singleton(L10N.t("elementgui.advancement.no_function")),
+						mcreator.getWorkspace().getModElements().stream()
+								.filter(e -> e.getType() == ModElementType.FUNCTION).map(ModElement::getName)
+								.collect(Collectors.toList())), L10N.t("elementgui.advancement.no_function"));
 
-		ComboBoxUtil.updateComboBoxContents(background, ListUtils.merge(Collections.singleton(L10N.t("elementgui.advancement.default")),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
-						.collect(Collectors.toList())), L10N.t("elementgui.advancement.default"));
+		ComboBoxUtil.updateComboBoxContents(background, ListUtils
+				.merge(Collections.singleton(L10N.t("elementgui.advancement.default")),
+						mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
+								.collect(Collectors.toList())), L10N.t("elementgui.advancement.default"));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

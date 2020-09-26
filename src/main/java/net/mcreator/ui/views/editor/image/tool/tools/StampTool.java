@@ -169,12 +169,12 @@ public class StampTool extends AbstractModificationTool {
 		if (width % 2.0 == 1)
 			x = tx - width / 2;
 		else
-			x = Math.round((int)(rx / zoom + 0.5)) - width / 2;
+			x = Math.round((int) (rx / zoom + 0.5)) - width / 2;
 
 		if (height % 2.0 == 1)
 			y = ty - height / 2;
 		else
-			y = Math.round((int)(ry / zoom + 0.5)) - height / 2;
+			y = Math.round((int) (ry / zoom + 0.5)) - height / 2;
 
 		g.drawImage(getImage(), x, y, width, height, null);
 	}

@@ -105,12 +105,11 @@ public class TagGUI extends ModElementGUI<Tag> {
 		JPanel main = new JPanel(new GridLayout(4, 2, 10, 10));
 		main.setOpaque(false);
 
-		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/registry_name"),
-				L10N.label("elementgui.tag.registry_name")));
+		main.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("tag/registry_name"), L10N.label("elementgui.tag.registry_name")));
 		main.add(name);
 
-		main.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("tag/namespace"), L10N.label("elementgui.tag.namespace")));
+		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/namespace"), L10N.label("elementgui.tag.namespace")));
 		main.add(namespace);
 
 		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/type"), L10N.label("elementgui.tag.type")));

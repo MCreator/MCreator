@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.Dependency;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.MusicDisc;
 import net.mcreator.minecraft.DataListEntry;
@@ -32,7 +31,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.minecraft.SoundSelector;
@@ -87,7 +85,8 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onRightClickedInAir = new ProcedureSelector(this.withEntry("item/when_right_clicked"), mcreator,
 				L10N.t("elementgui.music_disc.event_rightclicked_air"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator, L10N.t("elementgui.music_disc.event_crafted_smelted"),
+		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator,
+				L10N.t("elementgui.music_disc.event_crafted_smelted"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
 				L10N.t("elementgui.music_disc.event_rightclicked_block"), Dependency.fromString(
@@ -98,9 +97,9 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onItemInInventoryTick = new ProcedureSelector(this.withEntry("item/inventory_tick"), mcreator,
 				L10N.t("elementgui.music_disc.event_inventory"), Dependency
 				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
-		onItemInUseTick = new ProcedureSelector(this.withEntry("item/hand_tick"), mcreator, L10N.t("elementgui.music_disc.event_inhand"),
-				Dependency.fromString(
-						"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
+		onItemInUseTick = new ProcedureSelector(this.withEntry("item/hand_tick"), mcreator,
+				L10N.t("elementgui.music_disc.event_inhand"), Dependency
+				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
 		onStoppedUsing = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
 				L10N.t("elementgui.music_disc.event_stopped_using"), Dependency
 				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
@@ -129,28 +128,30 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.label("elementgui.music_disc.music_mono_tip")));
 		subpane2.add(music);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), new JLabel(L10N.t("elementgui.common.name_in_gui"))));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				new JLabel(L10N.t("elementgui.common.name_in_gui"))));
 		subpane2.add(name);
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("musicdisc/description"), new JLabel(L10N.t("elementgui.music_disc.disc_description"))));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/description"),
+				new JLabel(L10N.t("elementgui.music_disc.disc_description"))));
 		subpane2.add(description);
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel(L10N.t("elementgui.common.creative_tab"))));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
+				new JLabel(L10N.t("elementgui.common.creative_tab"))));
 		subpane2.add(creativeTab);
 
-		subpane2.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel(L10N.t("elementgui.music_disc.has_glowing_effect"))));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+				new JLabel(L10N.t("elementgui.music_disc.has_glowing_effect"))));
 		subpane2.add(hasGlow);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
-				L10N.t("elementgui.music_disc.disc_description_tip"))));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				new JLabel(L10N.t("elementgui.music_disc.disc_description_tip"))));
 		subpane2.add(specialInfo);
 
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
 		destal3.setOpaque(false);
-		destal3.add("West", PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.music_disc.disc_texture"))));
+		destal3.add("West", PanelUtils.totalCenterInPanel(
+				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.music_disc.disc_texture"))));
 
 		pane3.add(PanelUtils.totalCenterInPanel(
 				PanelUtils.northAndCenterElement(PanelUtils.centerInPanel(destal3), subpane2, 40, 40)));
@@ -181,10 +182,12 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.music_disc.error_disc_needs_name")));
 		name.enableRealtimeValidation();
 
-		description.setValidator(new TextFieldValidator(description, L10N.t("elementgui.music_disc.error_disc_needs_description")));
+		description.setValidator(
+				new TextFieldValidator(description, L10N.t("elementgui.music_disc.error_disc_needs_description")));
 		description.enableRealtimeValidation();
 
-		music.getVTextField().setValidator(new TextFieldValidator(music.getVTextField(), L10N.t("elementgui.music_disc.error_needs_sound")));
+		music.getVTextField().setValidator(
+				new TextFieldValidator(music.getVTextField(), L10N.t("elementgui.music_disc.error_needs_sound")));
 		music.getVTextField().enableRealtimeValidation();
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);

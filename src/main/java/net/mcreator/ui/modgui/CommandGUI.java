@@ -93,7 +93,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(merge)));
 
-		commandName.setValidator(new TextFieldValidator(commandName, L10N.t("elementgui.command.warning.empty_string")));
+		commandName
+				.setValidator(new TextFieldValidator(commandName, L10N.t("elementgui.command.warning.empty_string")));
 		commandName.enableRealtimeValidation();
 
 		page1group.addValidationElement(commandName);

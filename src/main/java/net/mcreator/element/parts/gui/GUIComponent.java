@@ -31,8 +31,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@JsonAdapter(GUIComponent.GSONAdapter.class) public abstract class GUIComponent
-		implements Comparable<GUIComponent> {
+@JsonAdapter(GUIComponent.GSONAdapter.class) public abstract class GUIComponent implements Comparable<GUIComponent> {
 
 	public String name;
 	public int x;

@@ -26,9 +26,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 
 public class MinecraftFolderActions {
 

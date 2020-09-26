@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.Dependency;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.minecraft.DataListEntry;
@@ -80,11 +79,13 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	}
 
 	@Override protected void initGUI() {
-		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator, L10N.t("elementgui.fluid.when_added"),
-				Dependency.fromString("x:number/y:number/z:number/world:world"));
+		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
+				L10N.t("elementgui.fluid.when_added"), Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onNeighbourChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
-				L10N.t("elementgui.fluid.when_neighbour_changes"), Dependency.fromString("x:number/y:number/z:number/world:world"));
-		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator, L10N.t("elementgui.fluid.update_tick"),
+				L10N.t("elementgui.fluid.when_neighbour_changes"),
+				Dependency.fromString("x:number/y:number/z:number/world:world"));
+		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator,
+				L10N.t("elementgui.fluid.update_tick"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onEntityCollides = new ProcedureSelector(this.withEntry("block/when_entity_collides"), mcreator,
 				L10N.t("elementgui.fluid.when_entity_collides"),
@@ -127,24 +128,23 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		ComponentUtils.deriveFont(density, 16);
 		ComponentUtils.deriveFont(viscosity, 16);
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/luminosity"),
-				L10N.label("elementgui.fluid.luminosity")));
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/luminosity"), L10N.label("elementgui.fluid.luminosity")));
 		destal.add(luminosity);
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/density"), new JLabel(
-				L10N.t("elementgui.fluid.density"))));
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/density"), new JLabel(L10N.t("elementgui.fluid.density"))));
 		destal.add(density);
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/viscosity"), new JLabel(
-				L10N.t("elementgui.fluid.viscosity"))));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/viscosity"),
+				new JLabel(L10N.t("elementgui.fluid.viscosity"))));
 		destal.add(viscosity);
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/is_gas"),
-				L10N.label("elementgui.fluid.is_gas")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/is_gas"), L10N.label("elementgui.fluid.is_gas")));
 		destal.add(PanelUtils.centerInPanel(isGas));
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/type"), new JLabel(
-				L10N.t("elementgui.fluid.type"))));
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/type"), new JLabel(L10N.t("elementgui.fluid.type"))));
 		destal.add(fluidtype);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/generate_lakes"),

@@ -121,7 +121,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 			File sch = FileDialogs.getOpenDialog(mcreator, new String[] { ".nbt" });
 			if (sch != null) {
 				String strname = Transliteration.transliterateString(sch.getName().toLowerCase(Locale.ENGLISH))
-						.replace(" " , "_");
+						.replace(" ", "_");
 				FileIO.copyFile(sch, new File(mcreator.getWorkspace().getFolderManager().getStructuresDir(), strname));
 				structureSelector.removeAllItems();
 				mcreator.getWorkspace().getFolderManager().getStructureList().forEach(structureSelector::addItem);
@@ -179,7 +179,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 		pane5.setOpaque(false);
 
-		pane5.add("Center" , PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(params,
+		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(params,
 				PanelUtils.join(FlowLayout.LEFT, generateCondition, onStructureGenerated), 20, 20)));
 
 		spawnWorldTypes.setValidator(

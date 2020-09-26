@@ -72,10 +72,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final VTextField name = new VTextField(28);
 
 	private final JComboBox<String> toolType = new JComboBox<>(
-			new String[] { "Pickaxe" , "Axe" , "Sword" , "Spade" , "Hoe" , "Shears" , "Special" , "MultiTool" });
+			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Special", "MultiTool" });
 
-	private final JCheckBox stayInGridWhenCrafting = new JCheckBox(
-			L10N.t("elementgui.common.enable"));
+	private final JCheckBox stayInGridWhenCrafting = new JCheckBox(L10N.t("elementgui.common.enable"));
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
 
 	private final Model normal = new Model.BuiltInModel("Normal");
@@ -138,7 +137,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.tool.event_swings"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow" ,
+		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow",
 				ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
@@ -186,7 +185,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		pane2.setOpaque(false);
-		pane2.add("Center" , PanelUtils.totalCenterInPanel(PanelUtils
+		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils
 				.northAndCenterElement(PanelUtils.join(destal, rent), PanelUtils.gridElements(1, 2, HelpUtils
 						.wrapWithHelpButton(this.withEntry("item/special_information"),
 								L10N.label("elementgui.tool.tool_special_information")), specialInfo))));
@@ -211,8 +210,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		harvestLevel.setOpaque(false);
 		efficiency.setOpaque(false);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
-				L10N.label("elementgui.common.name_in_gui")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
@@ -224,32 +223,32 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"), L10N.label("elementgui.tool.type")));
 		selp.add(toolType);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/harvest_level"),
-				L10N.label("elementgui.tool.harvest_level")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("tool/harvest_level"), L10N.label("elementgui.tool.harvest_level")));
 		selp.add(harvestLevel);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/efficiency"),
-				L10N.label("elementgui.tool.efficiency")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("tool/efficiency"), L10N.label("elementgui.tool.efficiency")));
 		selp.add(efficiency);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
 				L10N.label("elementgui.common.enchantability")));
 		selp.add(enchantability);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/attack_speed"),
-				L10N.label("elementgui.tool.attack_speed")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("tool/attack_speed"), L10N.label("elementgui.tool.attack_speed")));
 		selp.add(attackSpeed);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
 				L10N.label("elementgui.tool.damage_vs_entity")));
 		selp.add(damageVsEntity);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
-				L10N.label("elementgui.tool.usage_count")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("item/number_of_uses"), L10N.label("elementgui.tool.usage_count")));
 		selp.add(usageCount);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"),
-				L10N.label("elementgui.common.repair_items")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("tool/repair_items"), L10N.label("elementgui.common.repair_items")));
 		selp.add(repairItems);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
