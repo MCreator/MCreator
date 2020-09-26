@@ -35,6 +35,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.Validator;
@@ -140,7 +141,7 @@ public class ProcedureSelector extends JPanel {
 		JLabel eventNameLabel = new JLabel();
 		if (side == Side.CLIENT) {
 			eventNameLabel.setIcon(UIRES.get("16px.client"));
-			eventNameLabel.setToolTipText("This trigger triggers procedure on client-side only");
+			eventNameLabel.setToolTipText(L10N.t("trigger.triggers_on_client_side_only"));
 			if (helpContext == null)
 				top.add("North", PanelUtils
 						.westAndCenterElement(eventNameLabel, ComponentUtils.deriveFont(new JLabel(eventName), 14)));
@@ -149,7 +150,7 @@ public class ProcedureSelector extends JPanel {
 						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 14),
 								SwingConstants.LEFT)));
 		} else if (side == Side.SERVER) {
-			eventNameLabel.setToolTipText("This trigger triggers procedure on server-side only");
+			eventNameLabel.setToolTipText(L10N.t("trigger.triggers_on_server_side_only"));
 			eventNameLabel.setIcon(UIRES.get("16px.server"));
 			if (helpContext == null)
 				top.add("North", PanelUtils
@@ -198,13 +199,15 @@ public class ProcedureSelector extends JPanel {
 				}
 
 				procedureNameString = VOptionPane
-						.showInputDialog(mcreator, "Enter the new procedure name: ", "New procedure", null,
+						.showInputDialog(mcreator, L10N.t("action.procedure.enter_procedure_name"),
+								L10N.t("action.procedure.default_procedure_name"), null,
 								new OptionPaneValidatior() {
 									@Override public Validator.ValidationResult validate(JComponent component) {
 										return new ModElementNameValidator(mcreator.getWorkspace(),
 												(VTextField) component).validate();
 									}
-								}, "Create procedure", "Cancel", procedureNameString);
+								}, L10N.t("action.procedure.create_procedure"),
+								L10N.t("action.procedure.cancel_creation"), procedureNameString);
 
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
@@ -251,8 +254,7 @@ public class ProcedureSelector extends JPanel {
 
 		add("North", PanelUtils.join(FlowLayout.LEFT, 4, 4, top));
 
-		procedures.setToolTipText("<html>Only procedures that match dependencies with provided data are shown.<br>"
-				+ "You can add new procedures by making a new procedure mod element.");
+		procedures.setToolTipText(L10N.t("action.procedure.match_dependencies"));
 
 		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXX"));
 
@@ -387,7 +389,7 @@ public class ProcedureSelector extends JPanel {
 			if (!value.correctDependencies) {
 				component.setBackground(list.getBackground());
 				component.setForeground(Color.gray.brighter());
-				component.setText("<html>" + component.getText() + "<small> - missing dependencies");
+				component.setText("<html>" + component.getText() + L10N.t("action.procedure.missing_dependencies"));
 			}
 
 			return component;
