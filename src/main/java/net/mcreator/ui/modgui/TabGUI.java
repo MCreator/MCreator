@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -45,7 +46,7 @@ public class TabGUI extends ModElementGUI<Tab> {
 
 	private final VTextField name = new VTextField(20);
 	private MCItemHolder icon;
-	private final JCheckBox showSearch = new JCheckBox("Check to enable");
+	private final JCheckBox showSearch = L10N.checkbox("elementgui.common.enable");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 

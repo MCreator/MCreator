@@ -390,7 +390,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		subpane1.add(new JLabel("Attack knockback, knockback resistance: "));
 		subpane1.add(PanelUtils
 				.join(HelpUtils.wrapWithHelpButton(this.withEntry("entity/attack_knockback"), attackKnockback),
-						HelpUtils.wrapWithHelpButton(this.withEntry("entity/knockback_resistance"), knockbackResistance)));
+						HelpUtils.wrapWithHelpButton(this.withEntry("entity/knockback_resistance"),
+								knockbackResistance)));
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"), new JLabel(
 				"<html>Equipment (optional: main hand, off hand, helmet, body, leggings, boots):<br><small>Only works for Biped and Zombie models")));

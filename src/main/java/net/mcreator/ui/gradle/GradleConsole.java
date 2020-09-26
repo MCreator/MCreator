@@ -337,7 +337,8 @@ public class GradleConsole extends JPanel {
 									if (!line.contains("uses or overrides a deprecated API"))
 										if (!line.contains("unchecked or unsafe operations")) {
 											if (line.startsWith(":") || line.startsWith(">")) {
-												if (line.contains("UP-TO-DATE") || line.contains("NO-SOURCE"))
+												if (line.contains(" UP-TO-DATE") || line.contains(" NO-SOURCE") || line
+														.contains(" SKIPPED"))
 													append(line, new Color(0x7B7B7B), true);
 												else
 													append(line, new Color(0xDADADA), true);
@@ -546,7 +547,7 @@ public class GradleConsole extends JPanel {
 					}
 
 					// special bracket colors
-					if (bracketText.contains("Client"))
+					if (bracketText.contains("Client") || bracketText.contains("Render"))
 						c2 = new Color(0xB3A7D0);
 					else if (bracketText.contains("Server"))
 						c2 = new Color(0x7CD48B);

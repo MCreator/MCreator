@@ -151,7 +151,8 @@ public class InputSlotDialog extends MCreatorDialog {
 					editor.lol.setSelectedIndex(1);
 					editor.editor.setPositioningMode(18, 18);
 					editor.editor.setPositionDefinedListener(e1 -> editor.editor.addComponent(
-							new InputSlot(slotIDnum, "Slot #" + slotIDnum, editor.editor.newlyAddedComponentPosX, editor.editor.newlyAddedComponentPosY,
+							new InputSlot(slotIDnum, "Slot #" + slotIDnum, editor.editor.newlyAddedComponentPosX,
+									editor.editor.newlyAddedComponentPosY,
 									color.getColor().equals(Color.white) ? null : color.getColor(),
 									disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
 									eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure(),

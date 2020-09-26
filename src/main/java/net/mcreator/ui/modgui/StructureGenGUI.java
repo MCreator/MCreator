@@ -75,8 +75,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 	private final JComboBox<String> structureSelector = new JComboBox<>();
 
-	private final JCheckBox randomlyRotateStructure = new JCheckBox(
-			L10N.t("elementgui.common.check_to_enable_functionality"));
+	private final JCheckBox randomlyRotateStructure = L10N.checkbox("elementgui.common.enable");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -122,7 +121,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 			File sch = FileDialogs.getOpenDialog(mcreator, new String[] { ".nbt" });
 			if (sch != null) {
 				String strname = Transliteration.transliterateString(sch.getName().toLowerCase(Locale.ENGLISH))
-						.replace(" " , "_");
+						.replace(" ", "_");
 				FileIO.copyFile(sch, new File(mcreator.getWorkspace().getFolderManager().getStructuresDir(), strname));
 				structureSelector.removeAllItems();
 				mcreator.getWorkspace().getFolderManager().getStructureList().forEach(structureSelector::addItem);
@@ -131,47 +130,47 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		});
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/structure"),
-				new JLabel(L10N.t("elementgui.structuregen.select_tooltip"))));
+				L10N.label("elementgui.structuregen.select_tooltip")));
 		params.add(PanelUtils.centerAndEastElement(structureSelector, importnbt));
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/probability"),
-				new JLabel(L10N.t("elementgui.structuregen.probability"))));
+				L10N.label("elementgui.structuregen.probability")));
 		params.add(spawnProbability);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/group_size"),
-				new JLabel(L10N.t("elementgui.structuregen.structure_group"))));
+				L10N.label("elementgui.structuregen.structure_group")));
 		params.add(PanelUtils.gridElements(1, 2, 5, 5, minCountPerChunk, maxCountPerChunk));
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/random_rotation"),
-				new JLabel(L10N.t("elementgui.structuregen.random_structure_rotation"))));
+				L10N.label("elementgui.structuregen.random_structure_rotation")));
 		params.add(randomlyRotateStructure);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/ignore_blocks"),
-				new JLabel(L10N.t("elementgui.structuregen.ignore_blocks"))));
+				L10N.label("elementgui.structuregen.ignore_blocks")));
 		params.add(ignoreBlocks);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/ground_detection"),
-				new JLabel(L10N.t("elementgui.structuregen.surface_detection_type"))));
+				L10N.label("elementgui.structuregen.surface_detection_type")));
 		params.add(surfaceDetectionType);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/spawn_location"),
-				new JLabel(L10N.t("elementgui.structuregen.spawn_location"))));
+				L10N.label("elementgui.structuregen.spawn_location")));
 		params.add(spawnLocation);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/height_offset"),
-				new JLabel(L10N.t("elementgui.structuregen.spawn_height_offset"))));
+				L10N.label("elementgui.structuregen.spawn_height_offset")));
 		params.add(spawnHeightOffset);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
-				new JLabel(L10N.t("elementgui.structuregen.spawn_world_types"))));
+				L10N.label("elementgui.structuregen.spawn_world_types")));
 		params.add(spawnWorldTypes);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_blocks"),
-				new JLabel(L10N.t("elementgui.structuregen.restrict_blocks"))));
+				L10N.label("elementgui.structuregen.restrict_blocks")));
 		params.add(restrictionBlocks);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
-				new JLabel(L10N.t("elementgui.structuregen.restrict_biomes"))));
+				L10N.label("elementgui.structuregen.restrict_biomes")));
 		params.add(restrictionBiomes);
 
 		randomlyRotateStructure.setSelected(true);
@@ -180,7 +179,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 		pane5.setOpaque(false);
 
-		pane5.add("Center" , PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(params,
+		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(params,
 				PanelUtils.join(FlowLayout.LEFT, generateCondition, onStructureGenerated), 20, 20)));
 
 		spawnWorldTypes.setValidator(
