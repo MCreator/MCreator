@@ -34,6 +34,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
@@ -77,10 +78,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner toolType = new JSpinner(new SpinnerNumberModel(1.0, -100.0, 128000.0, 0.1));
 	private final JSpinner damageCount = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
 
-	private final JCheckBox destroyAnyBlock = new JCheckBox("Check to enable");
-	private final JCheckBox stayInGridWhenCrafting = new JCheckBox("Check to enable");
-	private final JCheckBox damageOnCrafting = new JCheckBox("Check to enable");
-	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
+	private final JCheckBox destroyAnyBlock = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
@@ -136,12 +137,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 				"On player stopped using", Dependency
 				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
-				"When entity swings item" ,
+				"When entity swings item",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onDroppedByPlayer = new ProcedureSelector(this.withEntry("item/on_dropped"), mcreator,
 				"When item is dropped by player",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow" ,
+		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow",
 				ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 

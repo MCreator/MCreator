@@ -37,8 +37,8 @@ public class TextField extends SizedComponent {
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
-		g.drawImage(MinecraftImageGenerator.generateTextField(this.width, this.height), cx, cy,
-				this.width, this.height, wysiwygEditor);
+		g.drawImage(MinecraftImageGenerator.generateTextField(this.width, this.height), cx, cy, this.width, this.height,
+				wysiwygEditor);
 	}
 
 }

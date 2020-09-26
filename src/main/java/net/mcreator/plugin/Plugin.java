@@ -45,7 +45,7 @@ public class Plugin implements Comparable<Plugin> {
 		return builtin;
 	}
 
-	public boolean isLoaded(){
+	public boolean isLoaded() {
 		return loaded;
 	}
 

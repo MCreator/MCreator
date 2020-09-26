@@ -166,7 +166,7 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 		JPanel southcenter = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		southcenter.setBorder(BorderFactory.createEmptyBorder(0, 0, 26, 60 - 1));
 
-		JLabel donate = new JLabel(L10N.t("dialog.workspace_selector.donate"));
+		JLabel donate = L10N.label("dialog.workspace_selector.donate");
 		donate.setIcon(UIRES.get("donate"));
 		donate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.deriveFont(donate, 13);
@@ -182,7 +182,7 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 
 		southcenter.add(new JEmptyBox(5, 5));
 
-		JLabel prefs = new JLabel(L10N.t("dialog.workspace_selector.preferences"));
+		JLabel prefs = L10N.label("dialog.workspace_selector.preferences");
 		prefs.setIcon(UIRES.get("settings"));
 		prefs.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.deriveFont(prefs, 13);

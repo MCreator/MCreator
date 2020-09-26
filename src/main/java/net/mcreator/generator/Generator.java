@@ -279,7 +279,8 @@ public class Generator implements Closeable {
 		List<GeneratorFile> generatorFiles = new ArrayList<>();
 
 		// generate all source files
-		List<GeneratorTemplate> generatorTemplateList = getModElementGeneratorTemplatesList(element.getModElement(), true, element);
+		List<GeneratorTemplate> generatorTemplateList = getModElementGeneratorTemplatesList(element.getModElement(),
+				true, element);
 		if (generatorTemplateList != null) {
 			for (GeneratorTemplate generatorTemplate : generatorTemplateList) {
 				String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("template");

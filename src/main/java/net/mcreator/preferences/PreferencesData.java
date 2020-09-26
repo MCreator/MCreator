@@ -45,11 +45,10 @@ public class PreferencesData {
 
 		@PreferencesEntry public boolean aatext = true;
 
-		@PreferencesEntry(arrayData = { "on" , "off" , "gasp" , "lcd" , "lcd_hbgr" , "lcd_vrgb" , "lcd_vbgr" })
+		@PreferencesEntry(arrayData = { "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb", "lcd_vbgr" })
 		public String textAntialiasingType = "on";
 
-		@PreferencesEntry(arrayData = {"Dark theme", "Light theme"})
-		public String interfaceTheme = "Dark theme";
+		@PreferencesEntry(arrayData = { "Dark theme", "Light theme" }) public String interfaceTheme = "Dark theme";
 
 		@PreferencesEntry public boolean expandSectionsByDefault = false;
 		@PreferencesEntry public boolean use2DAcceleration = false;

@@ -29,8 +29,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Dimension extends GeneratableElement
-		implements ITabContainedElement {
+@SuppressWarnings("unused") public class Dimension extends GeneratableElement implements ITabContainedElement {
 
 	public MItemBlock portalFrame;
 	public Particle portalParticles;

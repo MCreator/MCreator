@@ -88,7 +88,7 @@ public class L10N {
 
 		if (rb.containsKey(key))
 			return MessageFormat.format(rb.getString(key), parameters);
-		else if (key.startsWith("blockly.") && key.endsWith(".tooltip"))
+		else if (key.startsWith("blockly."))
 			return null;
 		else if (isTestingEnvironment)
 			throw new RuntimeException("Failed to load any translation for key: " + key);
@@ -102,7 +102,7 @@ public class L10N {
 
 		if (rb_en.containsKey(key))
 			return MessageFormat.format(rb_en.getString(key), parameters);
-		else if (key.startsWith("blockly.") && key.endsWith(".tooltip"))
+		else if (key.startsWith("blockly."))
 			return null;
 		else if (isTestingEnvironment)
 			throw new RuntimeException("Failed to load any translation for key: " + key);
@@ -112,6 +112,18 @@ public class L10N {
 
 	public static JLabel label(String key, Object... parameter) {
 		return new JLabel(t(key, parameter));
+	}
+
+	public static JCheckBox checkbox(String key, Object... parameter) {
+		return new JCheckBox(t(key, parameter));
+	}
+
+	public static JButton button(String key, Object... parameter) {
+		return new JButton(t(key, parameter));
+	}
+
+	public static JRadioButton radiobutton(String key, Object... parameter) {
+		return new JRadioButton(t(key, parameter));
 	}
 
 	private static class UTF8Control extends ResourceBundle.Control {
