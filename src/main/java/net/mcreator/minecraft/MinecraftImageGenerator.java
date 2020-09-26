@@ -758,6 +758,30 @@ public class MinecraftImageGenerator {
 			return icon;
 		}
 
+
+		public static BufferedImage generateBiomePreviewPicture(Workspace workspace, MItemBlock treeStem, MItemBlock treeBranch) {
+			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2D = icon.createGraphics();
+
+			graphics2D.fillRect(0, 18, 28, 1);
+
+			Color stem, leaves;
+			stem = (ImageUtils.getAverageColor(ImageUtils.toBufferedImage(
+					MCItem.getBlockIconBasedOnName(workspace, treeStem.getUnmappedValue()).getImage())));
+			leaves = new Color((ImageUtils.getAverageColor(ImageUtils.toBufferedImage(
+					MCItem.getBlockIconBasedOnName(workspace, treeBranch.getUnmappedValue()).getImage()))
+					.getRGB() & 0x00ffffff) | 0xEE000000, false);
+
+			graphics2D.setColor(stem);
+			graphics2D.fillRect(20, 8, 2, 10);
+
+			graphics2D.setColor(leaves);
+			graphics2D.fillRect(16, 8, 10, 6);
+			graphics2D.fillRect(18, 6, 6, 2);
+			graphics2D.dispose();
+			return icon;
+		}
+
 		/**
 		 * This method generates mob images.
 		 *

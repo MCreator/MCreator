@@ -81,7 +81,9 @@ public enum ModElementType {
 
 	@SerializedName("function") FUNCTION(BaseType.DATAPACK, RecipeElementType.NONE),
 
-	@SerializedName("painting") PAINTING(BaseType.OTHER, RecipeElementType.NONE);
+	@SerializedName("painting") PAINTING(BaseType.OTHER, RecipeElementType.NONE),
+
+	@SerializedName("tree") TREE(BaseType.OTHER, RecipeElementType.NONE);
 
 	private final BaseType baseType;
 	private final String description;
@@ -117,7 +119,7 @@ public enum ModElementType {
 	}
 
 	public enum BaseType {
-		BLOCK, ITEM, ARMOR, BIOME, COMMAND, FUEL, ENTITY, TAB, DIMENSION, STRUCTURE, GUI, KEYBIND, PROCEDURE, OVERLAY, POTION, OTHER, DATAPACK, ENCHANTMENT, /* legacy: */ ACHIEVEMENT
+		BLOCK, ITEM, ARMOR, BIOME, COMMAND, FUEL, ENTITY, TAB, DIMENSION, STRUCTURE, GUI, KEYBIND, PROCEDURE, OVERLAY, POTION, OTHER, DATAPACK, ENCHANTMENT, TREE, /* legacy: */ ACHIEVEMENT
 	}
 
 }
