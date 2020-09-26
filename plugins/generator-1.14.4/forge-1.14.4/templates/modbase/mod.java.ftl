@@ -79,6 +79,8 @@ public class ${JavaModName} {
 
 	private void clientSetup(FMLClientSetupEvent event) {
         OBJLoader.INSTANCE.addDomain("${modid}");
+	
+        elements.getElements().forEach(element -> element.clientLoad(event));
     }
 
     @SubscribeEvent public void serverLoad(FMLServerStartingEvent event) {

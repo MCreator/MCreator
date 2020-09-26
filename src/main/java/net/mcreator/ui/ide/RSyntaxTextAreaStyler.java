@@ -40,7 +40,8 @@ public class RSyntaxTextAreaStyler {
 
 	public static void style(RSyntaxTextArea te, RTextScrollPane sp, int initialFontSize) {
 		try {
-			Theme theme = Theme.load(te.getClass().getResourceAsStream("/codeeditor.xml"));
+			Theme theme = Theme.load(te.getClass().getResourceAsStream(
+					(String) UIManager.get("MCreatorLAF.CODE_EDITOR_XML")));
 			if (!PreferencesManager.PREFERENCES.ide.editorTheme.equals("MCreator")) {
 				theme = Theme.load(te.getClass().getResourceAsStream(
 						"/org/fife/ui/rsyntaxtextarea/themes/" + PreferencesManager.PREFERENCES.ide.editorTheme

@@ -87,7 +87,8 @@ public class TabGUI extends ModElementGUI<Tab> {
 		slpa.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				"To add blocks/items to this tab, make new element and set this tab as inventory tab.",
-				TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
+				TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		pane3.add(PanelUtils.totalCenterInPanel(slpa));
 		pane3.setOpaque(false);

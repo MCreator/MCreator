@@ -32,7 +32,7 @@ import java.util.Map;
 public class MCItemBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		Element element = XMLUtil.getFirstChildrenWithName("field", block);
+		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null && element.getTextContent() != null && !element.getTextContent().equals("") && !element
 				.getTextContent().equals("null")) {
 			if (master.getTemplateGenerator() != null) {

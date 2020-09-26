@@ -49,6 +49,7 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 import java.util.Locale;
 
 public class ToolPackMakerTool {
@@ -183,6 +184,7 @@ public class ToolPackMakerTool {
 		pickaxeTool.name = name + " Pickaxe";
 		pickaxeTool.texture = pickaxeTextureName;
 		pickaxeTool.toolType = "Pickaxe";
+		pickaxeTool.repairItems = Collections.singletonList(base);
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, pickaxeTool);
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
@@ -192,6 +194,7 @@ public class ToolPackMakerTool {
 		axeTool.name = name + " Axe";
 		axeTool.texture = axeTextureName;
 		axeTool.toolType = "Axe";
+		axeTool.repairItems = Collections.singletonList(base);
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, axeTool);
 		axeTool.damageVsEntity = (double) Math.round(9.0f * factor);
 
@@ -203,8 +206,9 @@ public class ToolPackMakerTool {
 		swordTool.texture = swordTextureName;
 		swordTool.toolType = "Sword";
 		swordTool.creativeTab = new TabEntry(mcreator.getWorkspace(), "COMBAT");
+		swordTool.repairItems = Collections.singletonList(base);
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, swordTool);
-		axeTool.damageVsEntity = (double) Math.round(6.0f * factor);
+		swordTool.damageVsEntity = (double) Math.round(6.0f * factor);
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool shovelTool = (Tool) ModElementTypeRegistry.REGISTRY.get(ModElementType.TOOL)
@@ -213,6 +217,7 @@ public class ToolPackMakerTool {
 		shovelTool.name = name + " Shovel";
 		shovelTool.texture = shovelTextureName;
 		shovelTool.toolType = "Spade";
+		shovelTool.repairItems = Collections.singletonList(base);
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, shovelTool);
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
@@ -222,6 +227,7 @@ public class ToolPackMakerTool {
 		hoeTool.name = name + " Hoe";
 		hoeTool.texture = hoeTextureName;
 		hoeTool.toolType = "Hoe";
+		hoeTool.repairItems = Collections.singletonList(base);
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, hoeTool);
 
 		Recipe pickaxeRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)

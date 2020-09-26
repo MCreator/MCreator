@@ -51,8 +51,8 @@ public class ProcedureTemplateIO {
 		if (start_block == null)
 			throw new ParseException("Could not find start block!", -1);
 
-		Element next = XMLUtil.getFirstChildrenWithName("next", start_block);
-		Element block = XMLUtil.getFirstChildrenWithName("block", next);
+		Element next = XMLUtil.getFirstChildrenWithName(start_block, "next");
+		Element block = XMLUtil.getFirstChildrenWithName(next, "block");
 
 		if (block == null)
 			throw new ParseException("Could not export block!", -1);
@@ -73,8 +73,8 @@ public class ProcedureTemplateIO {
 		if (start_block == null)
 			throw new ParseException("Could not find start block!", -1);
 
-		Element next = XMLUtil.getFirstChildrenWithName("next", start_block);
-		Element block = XMLUtil.getFirstChildrenWithName("block", next);
+		Element next = XMLUtil.getFirstChildrenWithName(start_block, "next");
+		Element block = XMLUtil.getFirstChildrenWithName(next, "block");
 
 		if (block == null)
 			throw new ParseException("Could not export block!", -1);

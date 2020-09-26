@@ -546,7 +546,7 @@ public class GradleConsole extends JPanel {
 					}
 
 					// special bracket colors
-					if (bracketText.contains("Client"))
+					if (bracketText.contains("Client") || bracketText.contains("Render"))
 						c2 = new Color(0xB3A7D0);
 					else if (bracketText.contains("Server"))
 						c2 = new Color(0x7CD48B);
