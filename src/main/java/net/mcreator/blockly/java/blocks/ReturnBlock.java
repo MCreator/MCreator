@@ -27,6 +27,9 @@ import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElementType;
 import org.w3c.dom.Element;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ReturnBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -43,10 +46,13 @@ public class ReturnBlock implements IBlockGenerator {
 		case "return_text":
 			returnType = VariableElementType.STRING;
 			break;
+		case "return_itemstack":
+			returnType = VariableElementType.ITEMSTACK;
+			break;
 		}
 
-		Element element = XMLUtil.getFirstChildrenWithName(block, "value");
-		if (master instanceof BlocklyToProcedure && element != null) {
+		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
+		if (master instanceof BlocklyToProcedure && value != null) {
 			if (((BlocklyToProcedure) master).getReturnType() != null) {
 				if (((BlocklyToProcedure) master).getReturnType() != returnType) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
@@ -55,10 +61,14 @@ public class ReturnBlock implements IBlockGenerator {
 			} else {
 				((BlocklyToProcedure) master).setReturnType(returnType);
 			}
-
-			master.append("return ");
-			master.processOutputBlock(element);
-			master.append(";");
+			if (master.getTemplateGenerator() != null) {
+				Map<String, Object> dataModel = new HashMap<>();
+				dataModel.put("type", type);
+				dataModel.put("value", BlocklyToCode.directProcessOutputBlock(master, value));
+				String code = master.getTemplateGenerator()
+						.generateFromTemplate("_return.java.ftl", dataModel);
+				master.append(code);
+			}
 		} else {
 			master.getCompileNotes()
 					.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Skipped empty return block."));
@@ -66,7 +76,7 @@ public class ReturnBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "return_logic", "return_number", "return_text" };
+		return new String[] { "return_logic", "return_number", "return_text", "return_itemstack" };
 	}
 
 	@Override public BlockType getBlockType() {
