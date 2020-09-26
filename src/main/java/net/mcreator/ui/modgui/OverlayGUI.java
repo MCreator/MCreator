@@ -54,7 +54,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 
 		displayCondition = new ProcedureSelector(this.withEntry("overlay/display_condition"), mcreator,
-				L10N.t("elementgui.overlay.event_display_ingame="), ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
+				L10N.t("elementgui.overlay.event_display_ingame"), ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		editor = new WYSIWYGEditor(mcreator, false);
