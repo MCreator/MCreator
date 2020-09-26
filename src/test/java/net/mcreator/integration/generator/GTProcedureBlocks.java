@@ -137,6 +137,12 @@ public class GTProcedureBlocks {
 							+ "<block type=\"return_text\"><value name=\"return\">" + testXML
 							+ "</value></block></next></block></xml>";
 					break;
+				case "MCItem":
+					procedure.procedurexml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
+							+ "<block type=\"event_trigger\"><field name=\"trigger\">no_ext_trigger</field><next>"
+							+ "<block type=\"return_itemstack\"><value name=\"return\">" + testXML
+							+ "</value></block></next></block></xml>";
+					break;
 				default:
 					procedure.procedurexml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
 							+ "<block type=\"event_trigger\"><field name=\"trigger\">no_ext_trigger</field><next>"
