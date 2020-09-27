@@ -79,8 +79,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner heightVariation = new JSpinner(new SpinnerNumberModel(0.2, 0, 2, 0.1));
 	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, -1.0, 2.0, 0.1));
 
-	private final JRadioButton customTrees = L10N.radiobutton("elementgui.biome.custom_trees");
-
+	private final JCheckBox customTrees = L10N.checkbox("elementgui.biome.custom_trees");
 	private final JCheckBox spawnVines = L10N.checkbox("elementgui.biome.spawn_vines");
 	private final JCheckBox spawnBiome = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnStronghold = L10N.checkbox("elementgui.common.enable");
