@@ -67,6 +67,7 @@ public abstract class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new NullBlock());
 		blockGenerators.add(new MCItemBlock());
 		blockGenerators.add(new CancelEventBlock());
+		blockGenerators.add(new SetEventResultBlock());
 		blockGenerators.add(new SetVariableBlock());
 		blockGenerators.add(new GetVariableBlock());
 		blockGenerators.add(new ReturnBlock());
