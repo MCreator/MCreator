@@ -169,7 +169,7 @@ import net.minecraft.block.material.Material;
 			<#elseif tree.toString().equals("BIRCH_TREE")>
 			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(DefaultBiomeFeatures.field_230129_h_).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float)  ${spawnTree.extraChance}f, ${spawnTree.extraCount}))));
 			<#else>
-			this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(${tree}.CustomTree.${tree?upper_case}_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) (float)  ${spawnTree.extraChance}f, ${spawnTree.extraCount}))));
+			this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(${tree}.CustomTree.${tree?upper_case}_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount}))));
 			</#if>
 			</#list>
 
