@@ -279,7 +279,7 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				Biome.SpawnTree entry1 = new Biome.SpawnTree();
 				entry1.tree = new TreeEntry(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadAllTrees(modElement.getWorkspace())));
+						ListUtils.getRandomItem(random, ElementUtil.loadAllTrees()));
 				entry1.count = 10;
 				entry1.extraChance = 0.5d;
 				entry1.extraCount = 3;
@@ -287,7 +287,7 @@ public class TestWorkspaceDataProvider {
 
 				Biome.SpawnTree entry2 = new Biome.SpawnTree();
 				entry2.tree = new TreeEntry(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadAllTrees(modElement.getWorkspace())));
+						ListUtils.getRandomItem(random, ElementUtil.loadAllTrees()));
 				entry2.count = 4;
 				entry2.extraChance = 1;
 				entry2.extraCount = 0;

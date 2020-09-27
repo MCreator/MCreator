@@ -104,10 +104,8 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static List<DataListEntry> loadAllTrees(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.BaseType.TREE);
-		retval.addAll(DataListLoader.loadDataList("trees"));
-		return retval;
+	public static List<DataListEntry> loadAllTrees() {
+		return DataListLoader.loadDataList("trees");
 	}
 
 	public static List<DataListEntry> loadMaterials() {

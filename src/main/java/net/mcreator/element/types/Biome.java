@@ -83,6 +83,17 @@ import java.util.List;
 	public List<SpawnTree> spawnTrees;
 	public List<SpawnEntry> spawnEntries;
 
+	public boolean customTree;
+	public int minHeight;
+	public double extraChance;
+	public int extraCount;
+	public boolean spawnVines;
+	public MItemBlock treeVines;
+	public MItemBlock treeStem;
+	public MItemBlock treeBranch;
+	public MItemBlock treeFruits;
+	public int treesPerChunk;
+
 	private Biome() {
 		this(null);
 	}
@@ -131,7 +142,7 @@ import java.util.List;
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview
 				.generateBiomePreviewPicture(getModElement().getWorkspace(), airColor, grassColor, waterColor,
-						groundBlock, undergroundBlock);
+						groundBlock, undergroundBlock, treesPerChunk, customTree, treeStem, treeBranch);
 	}
 
 }

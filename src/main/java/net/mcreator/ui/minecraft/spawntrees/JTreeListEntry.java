@@ -69,7 +69,7 @@ public class JTreeListEntry extends JPanel {
 		parent.add(container);
 		entryList.add(this);
 
-		ElementUtil.loadAllTrees(workspace).forEach(e -> treeType.addItem(e.getReadableName()));
+		ElementUtil.loadAllTrees().forEach(e -> treeType.addItem(e.getReadableName()));
 
 		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("biome/tree_config"),
 				L10N.label("elementgui.biome.tree_config")));
