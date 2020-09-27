@@ -107,9 +107,14 @@ import java.util.List;
 	public static class SpawnTree {
 
 		public TreeEntry tree;
+		public String shape;
 		public int count;
 		public double extraChance;
 		public int extraCount;
+
+		public SpawnTree(){
+			shape = "NORMAL_TREE";
+		}
 
 	}
 

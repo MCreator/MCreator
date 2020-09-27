@@ -52,6 +52,9 @@ public class JTreeListEntry extends JPanel {
 	private final JSpinner extraChance = new JSpinner(new SpinnerNumberModel(0.1, 0, 1000, 0.1));
 	private final JSpinner extraCount = new JSpinner(new SpinnerNumberModel(1, 0, 1000, 1));
 
+	private final JComboBox<String> shape = new JComboBox<>(new String[] {"ACACIA_TREE", "DARK_OAK_TREE", "FANCY_TREE",
+			"JUNGLE_GROUND_BUSH", "MEGA_JUNGLE_TREE", "MEGA_SPRUCE_TREE", "NORMAL_TREE"});
+
 	private final Workspace workspace;
 
 	public JTreeListEntry(MCreator mcreator, JPanel parent, List<JTreeListEntry> entryList) {
@@ -64,8 +67,13 @@ public class JTreeListEntry extends JPanel {
 
 		ElementUtil.loadAllTrees(workspace).forEach(e -> treeType.addItem(e.getReadableName()));
 
-		add(L10N.label("elementgui.biome.tree"));
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("biome/tree_config"),
+				L10N.label("elementgui.biome.tree_config")));
 		add(treeType);
+
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("biome/tree_shape"),
+				L10N.label("elementgui.biome.tree_shape")));
+		add(shape);
 
 		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("biome/trees_per_chunk"),
 				L10N.label("elementgui.biome.trees_per_chunk")));
@@ -96,6 +104,7 @@ public class JTreeListEntry extends JPanel {
 	public Biome.SpawnTree getEntry() {
 		Biome.SpawnTree entry = new Biome.SpawnTree();
 		entry.tree = new TreeEntry(workspace, (String) treeType.getSelectedItem());
+		entry.shape = (String) shape.getSelectedItem();
 		entry.count = (int) count.getValue();
 		entry.extraChance = (double) extraChance.getValue();
 		entry.extraCount = (int) extraCount.getValue();
@@ -104,6 +113,7 @@ public class JTreeListEntry extends JPanel {
 
 	public void setEntry(Biome.SpawnTree e) {
 		treeType.setSelectedItem(e.tree.getUnmappedValue());
+		shape.setSelectedItem(e.shape);
 		count.setValue(e.count);
 		extraChance.setValue(e.extraChance);
 		extraCount.setValue(e.extraCount);

@@ -156,20 +156,32 @@ import net.minecraft.block.material.Material;
 
 			<#list data.spawnTrees as spawnTree>
 			<#assign tree = generator.map(spawnTree.tree.getUnmappedValue(), "trees", 1)>
-			<#if tree.toString().equals("OAK_TREE")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_SELECTOR.withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(Feature.NORMAL_TREE.withConfiguration(DefaultBiomeFeatures.field_230129_h_).withChance(0.2F), Feature.FANCY_TREE.withConfiguration(DefaultBiomeFeatures.field_230131_m_).withChance(0.1F)), Feature.NORMAL_TREE.withConfiguration(DefaultBiomeFeatures.field_230132_o_))).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count}, (float) ${spawnTree.extraChance}f, ${spawnTree.extraCount}))));
-			<#elseif tree.toString().equals("BIG_TREE")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_SELECTOR.withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(Feature.FANCY_TREE.withConfiguration(DefaultBiomeFeatures.FANCY_TREE_CONFIG).withChance(0.1F)), Feature.NORMAL_TREE.withConfiguration(DefaultBiomeFeatures.JUNGLE_TREE_CONFIG))).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float)  ${spawnTree.extraChance}f, ${spawnTree.extraCount}))));
-			<#elseif tree.toString().equals("SAVANNA_TREE")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_SELECTOR.withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(Feature.ACACIA_TREE.withConfiguration(DefaultBiomeFeatures.ACACIA_TREE_CONFIG).withChance(0.8F)), Feature.NORMAL_TREE.withConfiguration(DefaultBiomeFeatures.OAK_TREE_CONFIG))).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count}, (float) ${spawnTree.extraChance}f, ${spawnTree.extraCount}))));
-			<#elseif tree.toString().equals("MEGA_PINE_TREE")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_SELECTOR.withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(Feature.MEGA_SPRUCE_TREE.withConfiguration(DefaultBiomeFeatures.MEGA_PINE_TREE_CONFIG).withChance(0.30769232F)), Feature.NORMAL_TREE.withConfiguration(DefaultBiomeFeatures.SPRUCE_TREE_CONFIG))).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count}, (float) ${spawnTree.extraChance}f, ${spawnTree.extraCount}))));
-			<#elseif tree.toString().equals("MEGA_SPRUCE_TREE")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_SELECTOR.withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(Feature.MEGA_SPRUCE_TREE.withConfiguration(DefaultBiomeFeatures.MEGA_SPRUCE_TREE_CONFIG).withChance(0.33333334F)), Feature.NORMAL_TREE.withConfiguration(DefaultBiomeFeatures.SPRUCE_TREE_CONFIG))).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float)  ${spawnTree.extraChance}f, ${spawnTree.extraCount}))));
-			<#elseif tree.toString().equals("BIRCH_TREE")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(DefaultBiomeFeatures.field_230129_h_).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float)  ${spawnTree.extraChance}f, ${spawnTree.extraCount}))));
+			<#if tree.toString().equals("ACACIA")>
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.${spawnTree.shape}.withConfiguration(ACACIA_TREE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			<#elseif tree.toString().equals("BIRCH")>
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.${spawnTree.shape}.withConfiguration(BIRCH_TREE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			<#elseif tree.toString().equals("DARK_OAK")>
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.${spawnTree.shape}.withConfiguration(DARK_OAK_TREE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			<#elseif tree.toString().equals("FANCY")>
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.${spawnTree.shape}.withConfiguration(FANCY_TREE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			<#elseif tree.toString().equals("JUNGLE")>
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.${spawnTree.shape}.withConfiguration(JUNGLE_TREE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			<#elseif tree.toString().equals("JUNGLE_GROUND_BUSH")>
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.${spawnTree.shape}.withConfiguration(JUNGLE_GROUND_BUSH_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			<#elseif tree.toString().equals("OAK")>
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.${spawnTree.shape}.withConfiguration(OAK_TREE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			<#elseif tree.toString().equals("MEGA_JUNGLE")>
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.${spawnTree.shape}.withConfiguration(MEGA_JUNGLE_TREE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			<#elseif tree.toString().equals("MEGA_PINE")>
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.${spawnTree.shape}.withConfiguration(MEGA_PINE_TREE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			<#elseif tree.toString().equals("MEGA_SPRUCE")>
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.${spawnTree.shape}.withConfiguration(MEGA_SPRUCE_TREE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			<#elseif tree.toString().equals("PINE")>
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.${spawnTree.shape}.withConfiguration(PINE_TREE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			<#elseif tree.toString().equals("SPRUCE")>
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.${spawnTree.shape}.withConfiguration(SPRUCE_TREE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
 			<#else>
-			this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(${tree}.CustomTree.${tree?upper_case}_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount}))));
+			this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.${spawnTree.shape}.withConfiguration(${tree}.CustomTree.${tree?upper_case}_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount}))));
 			</#if>
 			</#list>
 

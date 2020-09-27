@@ -1,3 +1,0 @@
-templates:
-  - template: tree.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/trees/@NAME.java"
