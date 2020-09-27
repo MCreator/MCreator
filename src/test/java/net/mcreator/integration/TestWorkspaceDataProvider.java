@@ -232,7 +232,6 @@ public class TestWorkspaceDataProvider {
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			biome.vanillaTreeType = "Mega spruce trees";
 			biome.airColor = Color.red;
 			if (!emptyLists) {
 				biome.grassColor = Color.green;
@@ -240,7 +239,6 @@ public class TestWorkspaceDataProvider {
 				biome.waterColor = Color.blue;
 				biome.waterFogColor = Color.cyan;
 			}
-			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];
 			biome.grassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 1;
 			biome.seagrassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 2;
 			biome.flowersPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 3;
@@ -277,6 +275,25 @@ public class TestWorkspaceDataProvider {
 				biome.parent = new BiomeEntry(modElement.getWorkspace(), "No parent");
 			}
 
+			List<Biome.SpawnTree> trees = new ArrayList<>();
+			if (!emptyLists) {
+				Biome.SpawnTree entry1 = new Biome.SpawnTree();
+				entry1.tree = new TreeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllTrees(modElement.getWorkspace())));
+				entry1.count = 10;
+				entry1.extraChance = 0.5d;
+				entry1.extraCount = 3;
+				trees.add(entry1);
+
+				Biome.SpawnTree entry2 = new Biome.SpawnTree();
+				entry2.tree = new TreeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllTrees(modElement.getWorkspace())));
+				entry2.count = 4;
+				entry2.extraChance = 1;
+				entry2.extraCount = 0;
+				trees.add(entry2);
+			}
+
 			List<Biome.SpawnEntry> entities = new ArrayList<>();
 			if (!emptyLists) {
 				Biome.SpawnEntry entry1 = new Biome.SpawnEntry();
@@ -298,7 +315,6 @@ public class TestWorkspaceDataProvider {
 				entities.add(entry2);
 			}
 			biome.spawnEntries = entities;
-			biome.minHeight = 2;
 			List<String> biomeDictTypes = new ArrayList<>();
 			if (!emptyLists) {
 				biomeDictTypes.add(ListUtils.getRandomItem(random, ElementUtil.loadBiomeDictionaryTypes()));
@@ -321,15 +337,6 @@ public class TestWorkspaceDataProvider {
 				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
 			}
 			biome.defaultFeatures = biomeDefaultFeatures;
-			biome.spawnVines = _true;
-			biome.treeVines = new MItemBlock(modElement.getWorkspace(),
-					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			biome.treeStem = new MItemBlock(modElement.getWorkspace(),
-					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			biome.treeBranch = new MItemBlock(modElement.getWorkspace(),
-					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			biome.treeFruits = new MItemBlock(modElement.getWorkspace(),
-					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.spawnBiome = !_true;
 			return biome;
 		case FLUID:

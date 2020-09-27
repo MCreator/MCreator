@@ -40,9 +40,6 @@ public class Tree extends GeneratableElement {
 		super(element);
 
 	}
-	private Tree(){
-		this(null);
-	}
 
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview

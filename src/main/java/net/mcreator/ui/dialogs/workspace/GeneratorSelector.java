@@ -111,6 +111,8 @@ public class GeneratorSelector {
 
 			addStatsBar("Achievements", "achievements", supportedElements, stats);
 			addStatsBar("Biomes", "biomes", supportedElements, stats);
+			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
+				addStatsBar("Biome dictionary", "biomedictionarytypes", supportedElements, stats);
 			addStatsBar("Blocks and items", "blocksitems", supportedElements, stats);
 			addStatsBar("Creative tabs", "tabs", supportedElements, stats);
 			addStatsBar("Damage sources", "damagesources", supportedElements, stats);
@@ -128,9 +130,7 @@ public class GeneratorSelector {
 			addStatsBar("Potions", "potions", supportedElements, stats);
 			addStatsBar("Sounds", "sounds", supportedElements, stats);
 			addStatsBar("Step sounds", "stepsounds", supportedElements, stats);
-
-			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
-				addStatsBar("Biome dictionary", "biomedictionarytypes", supportedElements, stats);
+			addStatsBar("Trees", "trees", supportedElements, stats);
 
 			genStats.add(PanelUtils.northAndCenterElement(
 					new JLabel("Vanilla/Forge elements coverage (compared to the latest supported Minecraft version):"),

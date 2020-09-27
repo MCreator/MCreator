@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.element.types.Tree;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.minecraft.MCItemHolder;
@@ -33,9 +34,12 @@ import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 
 public class TreeGUI extends ModElementGUI<Tree> {
@@ -165,5 +169,9 @@ public class TreeGUI extends ModElementGUI<Tree> {
 		tree.foliageRadius = (int) foliageRadius.getValue();
 		tree.foliageRadiusRandom = (int) foliageRadiusRandom.getValue();
 		return tree;
+	}
+
+	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-tree");
 	}
 }

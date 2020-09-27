@@ -83,7 +83,7 @@ public enum ModElementType {
 
 	@SerializedName("painting") PAINTING(BaseType.OTHER, RecipeElementType.NONE),
 
-	@SerializedName("tree") TREE(BaseType.OTHER, RecipeElementType.NONE);
+	@SerializedName("tree") TREE(BaseType.TREE, RecipeElementType.NONE);
 
 	private final BaseType baseType;
 	private final String description;

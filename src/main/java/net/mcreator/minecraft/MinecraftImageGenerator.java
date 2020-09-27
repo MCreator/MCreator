@@ -682,16 +682,10 @@ public class MinecraftImageGenerator {
 		 * @param waterColor       Biome's water color.
 		 * @param groundBlock      Block used to calculate ground color. If grass, uses grass color instead
 		 * @param undergroundBlock Block used to calculate underground color.
-		 * @param lakes            Toggle lake rendering.
-		 * @param treesPerChunk    If there are any, a tree renders.
-		 * @param treeType         Use default colors if vanilla.
-		 * @param treeStem         Item used to calculate tree stem color.
-		 * @param treeBranch       Item used to calculate tree branch/leaf color.
 		 * @return Returns generated image.
 		 */
 		public static BufferedImage generateBiomePreviewPicture(Workspace workspace, Color airColor, Color grassColor,
-				Color waterColor, MItemBlock groundBlock, MItemBlock undergroundBlock, int treesPerChunk, int treeType,
-				MItemBlock treeStem, MItemBlock treeBranch) {
+				Color waterColor, MItemBlock groundBlock, MItemBlock undergroundBlock) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 
@@ -731,28 +725,6 @@ public class MinecraftImageGenerator {
 			graphics2D.setColor(topColor);
 
 			graphics2D.fillRect(0, 18, 28, 1);
-
-			//draw trees: 0 = vanilla, 1 = modded
-			if (treesPerChunk > 0) {
-				//select colors for the tree parts
-				Color stem, leaves;
-				if (treeType == 1) {
-					stem = (ImageUtils.getAverageColor(ImageUtils.toBufferedImage(
-							MCItem.getBlockIconBasedOnName(workspace, treeStem.getUnmappedValue()).getImage())));
-					leaves = new Color((ImageUtils.getAverageColor(ImageUtils.toBufferedImage(
-							MCItem.getBlockIconBasedOnName(workspace, treeBranch.getUnmappedValue()).getImage()))
-							.getRGB() & 0x00ffffff) | 0xEE000000, false);
-				} else {
-					stem = new Color(95, 69, 32);
-					leaves = new Color(38, 108, 30, 238);
-				}
-				graphics2D.setColor(stem);
-				graphics2D.fillRect(20, 8, 2, 10);
-
-				graphics2D.setColor(leaves);
-				graphics2D.fillRect(16, 8, 10, 6);
-				graphics2D.fillRect(18, 6, 6, 2);
-			}
 
 			graphics2D.dispose();
 			return icon;

@@ -6,9 +6,6 @@ package ${package}.world.features.trees;
 import net.minecraft.block.material.Material;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name} extends ${JavaModName}Elements.ModElement{
-  @ObjectHolder("${modid}:${registryname}")
-	public static final CustomTree tree = null;
-
 	public ${name} (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 	}
