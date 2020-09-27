@@ -250,7 +250,7 @@ public class TestWorkspaceDataProvider {
 			biome.treeFruits = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.minHeight = 2;
-			biome.extraChance = 0.5d;
+			biome.extraChance = 0.5;
 			biome.extraCount = 10;
 
 			biome.grassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 1;
