@@ -69,7 +69,7 @@ public class WoodPackMakerTool {
 
 		dialog.add("North", PanelUtils.centerInPanel(new JLabel(
 				"<html><center>Using this tool, you can make the base for your wood pack in just a few clicks.<br>"
-						+ "This tool will make: <b>Log, Wood, Planks, Stairs, Slab, Fence, Fence gate,"
+						+ "This tool will make: <b>Leaves, Log, Wood, Planks, Stairs, Slab, Fence, Fence gate,"
 						+ "<br>Recipes and Tag")));
 
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
@@ -160,7 +160,7 @@ public class WoodPackMakerTool {
 				.getModElement(mcreator, new ModElement(workspace, name + "Wood", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		woodBlock.name = name + " Wood";
-		woodBlock.material = new Material(workspace, "Wood");
+		woodBlock.material = new Material(workspace, "WOOD");
 		woodBlock.texture = woodTextureName;
 		woodBlock.renderType = 11; // single texture
 		woodBlock.customModelName = "Single texture";
@@ -181,7 +181,7 @@ public class WoodPackMakerTool {
 				.getModElement(mcreator, new ModElement(workspace, name + "Log", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		logBlock.name = name + " Log";
-		logBlock.material = new Material(workspace, "Log");
+		logBlock.material = new Material(workspace, "WOOD");
 		logBlock.texture = logTextureName;
 		logBlock.textureTop = logTextureName;
 		logBlock.textureBack = woodTextureName;
@@ -199,7 +199,7 @@ public class WoodPackMakerTool {
 		logBlock.flammability = (int) Math.round(5 * factor);
 		mcreator.getWorkspace().getModElementManager().storeModElementPicture(logBlock);
 		mcreator.getWorkspace().addModElement(logBlock.getModElement());
-		mcreator.getWorkspace().getGenerator().generateElement(woodBlock);
+		mcreator.getWorkspace().getGenerator().generateElement(logBlock);
 		mcreator.getWorkspace().getModElementManager().storeModElement(logBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -207,7 +207,7 @@ public class WoodPackMakerTool {
 				.getModElement(mcreator, new ModElement(workspace, name + "Planks", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		planksBlock.name = name + " Planks";
-		planksBlock.material = new Material(workspace, "Wood");
+		planksBlock.material = new Material(workspace, "WOOD");
 		planksBlock.texture = planksTextureName;
 		planksBlock.renderType = 11; // single texture
 		planksBlock.customModelName = "Single texture";
@@ -228,8 +228,9 @@ public class WoodPackMakerTool {
 				.getElementFromGUI();
 		leavesBlock.name = name + " Leaves";
 		leavesBlock.blockBase = "Leaves";
+		leavesBlock.material = new Material(workspace, "LEAVES");
 		leavesBlock.texture = leavesTextureName;
-		leavesBlock.soundOnStep = new StepSound(workspace, "WOOD");
+		leavesBlock.soundOnStep = new StepSound(workspace, "PLANT");
 		leavesBlock.hardness = 0.2 * factor;
 		leavesBlock.resistance = 0.2 * factor;
 		leavesBlock.breakHarvestLevel = 0;
