@@ -34,6 +34,7 @@ import java.util.List;
 
 	@Nullable public List<String> fields;
 	@Nullable public List<String> inputs;
+	@Nullable public List<StatementInput> statements;
 	@Nullable public List<Dependency> dependencies;
 
 	@Nullable public List<String> required_apis;
@@ -42,13 +43,6 @@ import java.util.List;
 
 	@Nullable public String toolboxXML;
 	@Nullable public ToolboxCategory toolboxCategory;
-
-	public String getGroupEstimate() {
-		int a = StringUtils.ordinalIndexOf(this.machine_name, "_", 2);
-		if (a > 0)
-			return this.machine_name.substring(0, a);
-		return this.machine_name.split("_")[0];
-	}
 
 	public String getName() {
 		return blocklyJSON.getAsJsonObject().get("message0").getAsString();
@@ -60,6 +54,13 @@ import java.util.List;
 		} else {
 			return null;
 		}
+	}
+
+	String getGroupEstimate() {
+		int a = StringUtils.ordinalIndexOf(this.machine_name, "_", 2);
+		if (a > 0)
+			return this.machine_name.substring(0, a);
+		return this.machine_name.split("_")[0];
 	}
 
 	@Override public boolean equals(Object o) {
