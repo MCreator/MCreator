@@ -187,8 +187,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		page1group.addValidationElement(textureStill);
 		page1group.addValidationElement(textureFlowing);
 
-		addPage(L10N.t("elementgui.fluid.visual"), pane3);
-		addPage(L10N.t("elementgui.fluid.properties"), pane2);
+		addPage(L10N.t("elementgui.common.page_visual"), pane3);
+		addPage(L10N.t("elementgui.common.page_properties"), pane2);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 	}
 
