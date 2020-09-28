@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Food;
 import net.mcreator.minecraft.DataListEntry;
@@ -32,6 +32,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
@@ -71,15 +72,15 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 	private final JTextField specialInfo = new JTextField(20);
 
-	private final JCheckBox forDogs = new JCheckBox("Check to enable");
-	private final JCheckBox isAlwaysEdible = new JCheckBox("Check to enable");
+	private final JCheckBox forDogs = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
 
 	private ProcedureSelector onRightClicked;
 	private ProcedureSelector onEaten;
 	private ProcedureSelector onCrafted;
 	private ProcedureSelector onEntitySwing;
 
-	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
+	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
 
 	private final JComboBox<String> animation = new JComboBox<>(
@@ -105,9 +106,9 @@ public class FoodGUI extends ModElementGUI<Food> {
 		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator, "When item is crafted/smelted",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
-				"When entity swings item" ,
+				"When entity swings item",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow" ,
+		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow",
 				ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 

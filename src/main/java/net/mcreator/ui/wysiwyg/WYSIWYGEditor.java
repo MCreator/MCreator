@@ -163,8 +163,9 @@ public class WYSIWYGEditor extends JPanel {
 		JPanel comppan = new JPanel(new BorderLayout());
 		comppan.setOpaque(false);
 		comppan.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1), (L10N.t("elementgui.gui.component_list")),
-				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
+				(L10N.t("elementgui.gui.component_list")), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		TransparentToolBar bar2 = new TransparentToolBar();
 		bar2.setBorder(null);
@@ -300,7 +301,7 @@ public class WYSIWYGEditor extends JPanel {
 		gy.add(oy);
 		adds.add(gy);
 
-		adds.add(new JEmptyBox(1,1));
+		adds.add(new JEmptyBox(1, 1));
 
 		editComponent.setEnabled(false);
 		moveComponent.setEnabled(false);
@@ -309,8 +310,9 @@ public class WYSIWYGEditor extends JPanel {
 		moveComponentDown.setEnabled(false);
 
 		adds.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1), (L10N.t("elementgui.gui.editor_options")),
-				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
+				(L10N.t("elementgui.gui.editor_options")), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		adds.setOpaque(false);
 
@@ -320,8 +322,9 @@ public class WYSIWYGEditor extends JPanel {
 		JPanel adds2 = new JPanel();
 		adds2.setLayout(new BoxLayout(adds2, BoxLayout.PAGE_AXIS));
 		adds2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1), (L10N.t("elementgui.gui.gui_properties")),
-				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
+				(L10N.t("elementgui.gui.gui_properties")), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JComponent pon = PanelUtils.westAndEastElement(new JLabel((L10N.t("elementgui.gui.gui_type"))), lol);
 
@@ -331,10 +334,9 @@ public class WYSIWYGEditor extends JPanel {
 				invOffY.setEnabled(lol.getSelectedIndex() == 1);
 				if (lol.getSelectedIndex() == 0 && !isOpening()) {
 					Object[] options = { "Yes", "No" };
-					int n = JOptionPane.showOptionDialog(mcreator,
-							(L10N.t("elementgui.gui.warning_switch_gui")),
-							(L10N.t("elementgui.gui.warning")), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options,
-							options[0]);
+					int n = JOptionPane.showOptionDialog(mcreator, (L10N.t("elementgui.gui.warning_switch_gui")),
+							(L10N.t("elementgui.gui.warning")), JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 					if (n == 0) {
 						slot1.setEnabled(false);
 						slot2.setEnabled(false);
@@ -364,7 +366,7 @@ public class WYSIWYGEditor extends JPanel {
 
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, pon));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, new JLabel("GUI WxH: "), spa1, new JLabel("x"), spa2));
-		adds2.add(PanelUtils.join(FlowLayout.LEFT, new JLabel(L10N.t("elementgui.gui.inventory_offset")), invOffX, invOffY));
+		adds2.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.gui.inventory_offset"), invOffX, invOffY));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, renderBgLayer));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, doesPauseGame));
 

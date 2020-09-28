@@ -20,7 +20,7 @@ package net.mcreator.integration.generator;
 
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.ExternalBlockLoader;
+import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.GeneratorStats;
@@ -49,7 +49,7 @@ public class GTProcedureBlocks {
 
 		Set<String> generatorBlocks = workspace.getGenerator().getGeneratorStats().getGeneratorProcedures();
 
-		for (ExternalBlockLoader.ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getProcedureBlockLoader()
+		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getProcedureBlockLoader()
 				.getDefinedBlocks().values()) {
 
 			if (!generatorBlocks.contains(procedureBlock.machine_name)) {
@@ -66,6 +66,12 @@ public class GTProcedureBlocks {
 
 			if (procedureBlock.fields != null) {
 				LOG.warn("[" + generatorName + "] Skipping procedure block with fields (no test atm): "
+						+ procedureBlock.machine_name);
+				continue;
+			}
+
+			if (procedureBlock.statements != null) {
+				LOG.warn("[" + generatorName + "] Skipping procedure block with statements (no test atm): "
 						+ procedureBlock.machine_name);
 				continue;
 			}

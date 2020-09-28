@@ -160,13 +160,12 @@ public final class MCreatorApplication {
 
 		if (Launcher.version.isSnapshot()) {
 			JOptionPane.showMessageDialog(splashScreen,
-					"<html><b>The version you are using is EAP snapshot!</b><br><br>"
-							+ "Before opening any workspace in this version, make a backup of the workspace.<br>"
-							+ "This version is not intended for production use and can contain critical bugs!",
-					"Snapshot version", JOptionPane.WARNING_MESSAGE);
+					L10N.t("action.eap_loading.text"),
+					L10N.t("action.eap_loading.title"), JOptionPane.WARNING_MESSAGE);
 		}
 
-		discordClient.updatePresence("Just opened", "Version " + Launcher.version.getMajorString());
+		discordClient.updatePresence(L10N.t("dialog.discord_rpc.just_opened"),
+				L10N.t("dialog.discord_rpc.version") + Launcher.version.getMajorString());
 
 		boolean directLaunch = false;
 		if (launchArguments.size() > 0) {
@@ -215,10 +214,8 @@ public final class MCreatorApplication {
 			Workspace workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
 			if (workspace.getMCreatorVersion() > Launcher.version.versionlong && !MCreatorVersionNumber
 					.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
-				JOptionPane.showMessageDialog(workspaceSelector, "<html><big>Workspace open failed!</big>"
-								+ "<br>The workspace you are trying to open was previously open in a newer version of MCreator!<br>"
-								+ "You can't open this workspace in older versions. Please update your MCreator to the latest version.",
-						"Workspace open failed", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(workspaceSelector, L10N.t("dialog.workspace.open_failed_message"),
+						L10N.t("dialog.workspace.open_failed_title"), JOptionPane.ERROR_MESSAGE);
 			} else {
 				MCreator mcreator = new MCreator(this, workspace);
 				if (!this.openMCreators.contains(mcreator)) {
@@ -249,11 +246,8 @@ public final class MCreatorApplication {
 					String[] backups = Arrays.stream(files).filter(e -> e.contains(".mcreator-backup"))
 							.sorted(Collections.reverseOrder()).toArray(String[]::new);
 					String selected = (String) JOptionPane.showInputDialog(this.workspaceSelector,
-							"<html><b>The workspace you are trying to open got corrupted.</b><br><br>"
-									+ "This can happen if MCreator is unexpectedly closed, but don't worry,"
-									+ "<br>MCreator automatically backs up workspace so you can revert it from one of the backups."
-									+ "<br><br>Select the backup you want to restore the workspace from on the dropdown and click OK.<br>",
-							"Restore workspace from backup", JOptionPane.QUESTION_MESSAGE, null, backups, "");
+							L10N.t("dialog.workspace.got_corrupted_message"),
+							L10N.t("dialog.workspace.got_corrupted_title"), JOptionPane.QUESTION_MESSAGE, null, backups, "");
 					if (selected != null) {
 						File backup = new File(backupsDir, selected);
 						FileIO.copyFile(backup, workspaceFile);
@@ -274,11 +268,9 @@ public final class MCreatorApplication {
 	}
 
 	private void reportFailedWorkspaceOpen(Exception e) {
-		JOptionPane.showMessageDialog(this.workspaceSelector, "<html><big>Workspace open failed!</big>"
-				+ "<br>The workspace you are trying to open is not a valid MCreator workspace or is corrupted!<br>"
-				+ "<br>If you did not change the folder name and are seeing this, the workspace file might be corrupted."
-				+ "<br>Workspace file backups are stored in &lt;workspace folder&gt;/.mcreator/workspaceBackups/<br><br>"
-				+ "Message: " + e.getMessage(), "Workspace open failed", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this.workspaceSelector,
+				L10N.t("dialog.workspace.is_not_valid_message") + e.getMessage(),
+				L10N.t("dialog.workspace.is_not_valid_title"), JOptionPane.ERROR_MESSAGE);
 	}
 
 	public final void closeApplication() {

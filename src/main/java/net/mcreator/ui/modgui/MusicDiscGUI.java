@@ -18,8 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
-import net.mcreator.element.ModElementType;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.MusicDisc;
 import net.mcreator.minecraft.DataListEntry;
@@ -31,7 +30,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
-import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.minecraft.SoundSelector;
@@ -59,7 +58,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 	private final VTextField name = new VTextField(20);
 	private final VTextField description = new VTextField(20);
 
-	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
+	private final JCheckBox hasGlow = new JCheckBox(L10N.t("elementgui.common.enable"));
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
@@ -84,27 +83,28 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
 	@Override protected void initGUI() {
 		onRightClickedInAir = new ProcedureSelector(this.withEntry("item/when_right_clicked"), mcreator,
-				"When right clicked in air (player loc.)",
+				L10N.t("elementgui.music_disc.event_rightclicked_air"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator, "When item is crafted/smelted",
+		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator,
+				L10N.t("elementgui.music_disc.event_crafted_smelted"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
-				"When right clicked on block (hand loc.)", Dependency.fromString(
+				L10N.t("elementgui.music_disc.event_rightclicked_block"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction"));
 		onEntityHitWith = new ProcedureSelector(this.withEntry("item/when_entity_hit"), mcreator,
-				"When living entity is hit with item", Dependency.fromString(
+				L10N.t("elementgui.music_disc.event_entity_hitwith"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack"));
 		onItemInInventoryTick = new ProcedureSelector(this.withEntry("item/inventory_tick"), mcreator,
-				"When item in inventory tick", Dependency
+				L10N.t("elementgui.music_disc.event_inventory"), Dependency
 				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
-		onItemInUseTick = new ProcedureSelector(this.withEntry("item/hand_tick"), mcreator, "When item in hand tick",
-				Dependency.fromString(
-						"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
+		onItemInUseTick = new ProcedureSelector(this.withEntry("item/hand_tick"), mcreator,
+				L10N.t("elementgui.music_disc.event_inhand"), Dependency
+				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
 		onStoppedUsing = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
-				"On player stopped using", Dependency
+				L10N.t("elementgui.music_disc.event_stopped_using"), Dependency
 				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
-				"When entity swings item",
+				L10N.t("elementgui.music_disc.event_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
@@ -125,31 +125,33 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		ComponentUtils.deriveFont(name, 16);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/sound"),
-				new JLabel("<html>Sound to play:<br><small>Music needs to be mono to properly work")));
+				L10N.label("elementgui.music_disc.music_mono_tip")));
 		subpane2.add(music);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), new JLabel("Name in GUI:")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				new JLabel(L10N.t("elementgui.common.name_in_gui"))));
 		subpane2.add(name);
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("musicdisc/description"), new JLabel("Music disc description:")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/description"),
+				new JLabel(L10N.t("elementgui.music_disc.disc_description"))));
 		subpane2.add(description);
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel("Creative inventory tab:")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
+				new JLabel(L10N.t("elementgui.common.creative_tab"))));
 		subpane2.add(creativeTab);
 
-		subpane2.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Has glowing effect?")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+				new JLabel(L10N.t("elementgui.music_disc.has_glowing_effect"))));
 		subpane2.add(hasGlow);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
-				"<html>Special information about the music disc:<br><small>Separate entries with comma, to use comma in description use \\,")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				new JLabel(L10N.t("elementgui.music_disc.disc_description_tip"))));
 		subpane2.add(specialInfo);
 
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
 		destal3.setOpaque(false);
-		destal3.add("West", PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(texture, "Disc texture")));
+		destal3.add("West", PanelUtils.totalCenterInPanel(
+				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.music_disc.disc_texture"))));
 
 		pane3.add(PanelUtils.totalCenterInPanel(
 				PanelUtils.northAndCenterElement(PanelUtils.centerInPanel(destal3), subpane2, 40, 40)));
@@ -177,17 +179,19 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		page1group.addValidationElement(description);
 		page1group.addValidationElement(music.getVTextField());
 
-		name.setValidator(new TextFieldValidator(name, "Music disc needs a name"));
+		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.music_disc.error_disc_needs_name")));
 		name.enableRealtimeValidation();
 
-		description.setValidator(new TextFieldValidator(description, "Music disc needs a description"));
+		description.setValidator(
+				new TextFieldValidator(description, L10N.t("elementgui.music_disc.error_disc_needs_description")));
 		description.enableRealtimeValidation();
 
-		music.getVTextField().setValidator(new TextFieldValidator(music.getVTextField(), "Select a sound"));
+		music.getVTextField().setValidator(
+				new TextFieldValidator(music.getVTextField(), L10N.t("elementgui.music_disc.error_needs_sound")));
 		music.getVTextField().enableRealtimeValidation();
 
-		addPage("Properties", pane3);
-		addPage("Triggers", pane4);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());

@@ -20,13 +20,9 @@ package net.mcreator.blockly.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.mcreator.blockly.Dependency;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.ui.init.L10N;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -58,40 +54,6 @@ public class ExternalTriggerLoader {
 
 	public List<ExternalTrigger> getExternalTrigers() {
 		return externalTriggers;
-	}
-
-	public static class ExternalTrigger {
-
-		private String id;
-		private String name;
-
-		@Nullable public List<String> required_apis;
-
-		@Nullable public List<Dependency> dependencies_provided;
-
-		public boolean cancelable;
-
-		public boolean has_result;
-
-		public String getID() {
-			return id;
-		}
-
-		public String getGroupEstimate() {
-			int a = StringUtils.ordinalIndexOf(this.id, "_", 2);
-			if (a > 0)
-				return this.id.substring(0, a);
-			return this.id.split("_")[0];
-		}
-
-		public String getName() {
-			String l10nname = L10N.t("trigger." + id);
-			if (l10nname != null)
-				return l10nname;
-
-			return name;
-		}
-
 	}
 
 }

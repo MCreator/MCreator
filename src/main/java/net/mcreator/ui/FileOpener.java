@@ -25,9 +25,7 @@ import net.mcreator.ui.views.NBTEditorView;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.util.DesktopUtils;
 
-import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 
 public class FileOpener {
 

@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.RangedItem;
 import net.mcreator.minecraft.DataListEntry;
@@ -32,6 +32,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
@@ -65,14 +66,14 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 	private TextureHolder texture;
 
-	private final JCheckBox shootConstantly = new JCheckBox("Check to enable");
+	private final JCheckBox shootConstantly = L10N.checkbox("elementgui.common.enable");
 
 	private final VTextField name = new VTextField(13);
 
-	private final JCheckBox bulletParticles = new JCheckBox("Check to enable");
-	private final JCheckBox bulletIgnitesFire = new JCheckBox("Check to enable");
+	private final JCheckBox bulletParticles = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox bulletIgnitesFire = L10N.checkbox("elementgui.common.enable");
 
-	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
+	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
 
 	private final JComboBox<String> animation = new JComboBox<>(
@@ -146,9 +147,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		useCondition = new ProcedureSelector(this.withEntry("rangeditem/use_condition"), mcreator,
-				"Can use ranged item" , VariableElementType.LOGIC,
+				"Can use ranged item", VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow" ,
+		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow",
 				ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 

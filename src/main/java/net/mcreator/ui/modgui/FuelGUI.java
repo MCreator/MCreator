@@ -57,7 +57,7 @@ public class FuelGUI extends ModElementGUI<Fuel> {
 		ps.setOpaque(false);
 		pane5.setOpaque(false);
 
-		ps.add(HelpUtils.wrapWithHelpButton(this.withEntry("fuel/burn_time"), new JLabel(L10N.t("elementgui.fuel.burn_time"))));
+		ps.add(HelpUtils.wrapWithHelpButton(this.withEntry("fuel/burn_time"), L10N.label("elementgui.fuel.burn_time")));
 		ps.add(power);
 
 		enderpanel.add("North", ps);
@@ -67,8 +67,9 @@ public class FuelGUI extends ModElementGUI<Fuel> {
 
 		enderpanel.setOpaque(false);
 		enderpanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2), L10N.t("elementgui.fuel.properties"),
-				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				L10N.t("elementgui.fuel.properties"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(enderpanel));
 

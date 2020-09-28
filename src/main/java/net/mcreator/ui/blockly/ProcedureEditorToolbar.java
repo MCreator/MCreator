@@ -19,7 +19,7 @@
 package net.mcreator.ui.blockly;
 
 import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.ExternalBlockLoader;
+import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.java.ProcedureTemplateIO;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;
@@ -96,9 +96,9 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 				if (!search.getText().equals("")) {
 					String[] keyWords = search.getText().replaceAll("[^ a-zA-Z0-9/._-]+", "").split(" ");
 
-					Set<ExternalBlockLoader.ToolboxBlock> filtered = new LinkedHashSet<>();
+					Set<ToolboxBlock> filtered = new LinkedHashSet<>();
 
-					for (ExternalBlockLoader.ToolboxBlock block : BlocklyLoader.INSTANCE.getProcedureBlockLoader()
+					for (ToolboxBlock block : BlocklyLoader.INSTANCE.getProcedureBlockLoader()
 							.getDefinedBlocks().values()) {
 						if (block.getName().toLowerCase(Locale.ENGLISH)
 								.contains(search.getText().toLowerCase(Locale.ENGLISH))) {
@@ -106,7 +106,7 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 						}
 					}
 
-					for (ExternalBlockLoader.ToolboxBlock block : BlocklyLoader.INSTANCE.getProcedureBlockLoader()
+					for (ToolboxBlock block : BlocklyLoader.INSTANCE.getProcedureBlockLoader()
 							.getDefinedBlocks().values()) {
 						for (String keyWord : keyWords) {
 							if (block.getName().toLowerCase(Locale.ENGLISH)
@@ -129,7 +129,7 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 						results = new JScrollablePopupMenu();
 						results.setMaximumVisibleRows(20);
 
-						for (ExternalBlockLoader.ToolboxBlock block : filtered) {
+						for (ToolboxBlock block : filtered) {
 							JMenuItem menuItem = new JMenuItem("<html>" + (block.toolboxCategory != null ?
 									"<span style='background: #" + Integer
 											.toHexString(block.toolboxCategory.getColor().getRGB()).substring(2)

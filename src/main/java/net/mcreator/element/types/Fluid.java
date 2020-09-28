@@ -29,8 +29,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Fluid extends GeneratableElement
-		implements ITabContainedElement {
+@SuppressWarnings("unused") public class Fluid extends GeneratableElement implements ITabContainedElement {
 
 	public String name;
 
