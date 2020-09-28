@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalBlockLoader;
+import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.AchievementEntry;
@@ -93,7 +94,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private boolean hasErrors = false;
-	private Map<String, ExternalBlockLoader.ToolboxBlock> externalBlocks;
+	private Map<String, ToolboxBlock> externalBlocks;
 
 	public AchievementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);

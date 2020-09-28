@@ -16,26 +16,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.blockly.java.blocks;
+package net.mcreator.blockly.data;
 
-import net.mcreator.blockly.BlocklyToCode;
-import net.mcreator.blockly.data.Dependency;
-import net.mcreator.blockly.IBlockGenerator;
-import org.w3c.dom.Element;
+import net.mcreator.ui.init.L10N;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
-public class SourceEntityDependenyBlock implements IBlockGenerator {
+import java.util.List;
 
-	@Override public void generateBlock(BlocklyToCode master, Element block) {
-		master.append("sourceentity");
-		master.addDependency(new Dependency("sourceentity", "entity"));
+@SuppressWarnings("unused") public class ExternalTrigger {
+
+	String id;
+	String name;
+
+	@Nullable public List<String> required_apis;
+
+	@Nullable public List<Dependency> dependencies_provided;
+
+	public String getID() {
+		return id;
 	}
 
-	@Override public String[] getSupportedBlocks() {
-		return new String[] { "source_entity_from_deps" };
+	public String getGroupEstimate() {
+		int a = StringUtils.ordinalIndexOf(this.id, "_", 2);
+		if (a > 0)
+			return this.id.substring(0, a);
+		return this.id.split("_")[0];
 	}
 
-	@Override public BlockType getBlockType() {
-		return BlockType.OUTPUT;
+	public String getName() {
+		String l10nname = L10N.t("trigger." + id);
+		if (l10nname != null)
+			return l10nname;
+
+		return name;
 	}
 
 }

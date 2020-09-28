@@ -18,6 +18,7 @@
 
 package net.mcreator.blockly;
 
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;

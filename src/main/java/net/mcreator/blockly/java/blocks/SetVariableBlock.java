@@ -20,7 +20,7 @@ package net.mcreator.blockly.java.blocks;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;

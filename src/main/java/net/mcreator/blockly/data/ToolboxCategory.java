@@ -16,26 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.blockly.java.blocks;
+package net.mcreator.blockly.data;
 
-import net.mcreator.blockly.BlocklyToCode;
-import net.mcreator.blockly.data.Dependency;
-import net.mcreator.blockly.IBlockGenerator;
-import org.w3c.dom.Element;
+import net.mcreator.ui.init.L10N;
 
-public class SourceEntityDependenyBlock implements IBlockGenerator {
+import java.awt.*;
 
-	@Override public void generateBlock(BlocklyToCode master, Element block) {
-		master.append("sourceentity");
-		master.addDependency(new Dependency("sourceentity", "entity"));
+@SuppressWarnings("unused") public class ToolboxCategory {
+	String id, name, description;
+	int color;
+	boolean api;
+
+	public String getName() {
+		String l10nname = L10N.t("blockly.category." + id);
+		if (l10nname != null)
+			return l10nname;
+
+		return name;
 	}
 
-	@Override public String[] getSupportedBlocks() {
-		return new String[] { "source_entity_from_deps" };
+	public Color getColor() {
+		return Color.getHSBColor(color / 360f, 0.37f, 0.6f);
 	}
-
-	@Override public BlockType getBlockType() {
-		return BlockType.OUTPUT;
-	}
-
 }

@@ -20,7 +20,7 @@ package net.mcreator.ui.minecraft;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.parts.Procedure;

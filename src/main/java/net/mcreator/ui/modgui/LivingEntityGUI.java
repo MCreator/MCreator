@@ -20,9 +20,10 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToAITasks;
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalBlockLoader;
+import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
@@ -227,7 +228,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private boolean hasErrors = false;
-	private Map<String, ExternalBlockLoader.ToolboxBlock> externalBlocks;
+	private Map<String, ToolboxBlock> externalBlocks;
 
 	private boolean disableMobModelCheckBoxListener = false;
 

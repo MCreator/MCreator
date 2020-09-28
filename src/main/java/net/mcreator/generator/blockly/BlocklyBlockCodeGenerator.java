@@ -21,7 +21,7 @@ package net.mcreator.generator.blockly;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.blockly.data.ExternalBlockLoader;
+import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
@@ -35,7 +35,7 @@ import java.util.Set;
 
 public class BlocklyBlockCodeGenerator {
 
-	private final Map<String, ExternalBlockLoader.ToolboxBlock> blocks;
+	private final Map<String, ToolboxBlock> blocks;
 
 	@Nullable private final TemplateGenerator templateGenerator;
 	@Nullable private final Map<String, Object> additionalData;
@@ -46,13 +46,13 @@ public class BlocklyBlockCodeGenerator {
 
 	@Nullable private Set<String> supportedBlocksGenerator;
 
-	public BlocklyBlockCodeGenerator(Map<String, ExternalBlockLoader.ToolboxBlock> blocks,
+	public BlocklyBlockCodeGenerator(Map<String, ToolboxBlock> blocks,
 			@Nullable Set<String> supportedBlocksGenerator) {
 		this(blocks, null, null);
 		this.supportedBlocksGenerator = supportedBlocksGenerator;
 	}
 
-	public BlocklyBlockCodeGenerator(Map<String, ExternalBlockLoader.ToolboxBlock> blocks,
+	public BlocklyBlockCodeGenerator(Map<String, ToolboxBlock> blocks,
 			@Nullable TemplateGenerator templateGenerator, @Nullable Map<String, Object> additionalData) {
 		this.blocks = blocks;
 		this.templateGenerator = templateGenerator;
@@ -67,7 +67,7 @@ public class BlocklyBlockCodeGenerator {
 	public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String type = block.getAttribute("type");
 
-		ExternalBlockLoader.ToolboxBlock toolboxBlock = blocks.get(type);
+		ToolboxBlock toolboxBlock = blocks.get(type);
 		if (toolboxBlock == null)
 			return;
 
