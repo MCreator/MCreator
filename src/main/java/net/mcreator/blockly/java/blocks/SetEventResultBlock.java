@@ -41,6 +41,7 @@ import com.google.gson.GsonBuilder;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.data.ExternalTriggerLoader;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -65,9 +66,9 @@ public class SetEventResultBlock implements IBlockGenerator {
 			}
 			if (((BlocklyToProcedure) master).getExternalTrigger() != null) {
 				final Gson gson = new GsonBuilder().create();
-				ExternalTriggerLoader.ExternalTrigger trigger = gson.fromJson(
+				ExternalTrigger trigger = gson.fromJson(
 						FileIO.readResourceToString(PluginLoader.INSTANCE, "triggers/"+((BlocklyToProcedure) master).getExternalTrigger()+".json"),
-						ExternalTriggerLoader.ExternalTrigger.class);
+						ExternalTrigger.class);
 				if (!trigger.has_result) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							"This event does not have a result"));

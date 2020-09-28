@@ -33,6 +33,10 @@ import java.util.List;
 
 	@Nullable public List<Dependency> dependencies_provided;
 
+	public boolean cancelable;
+
+	public boolean has_result;
+
 	public String getID() {
 		return id;
 	}
