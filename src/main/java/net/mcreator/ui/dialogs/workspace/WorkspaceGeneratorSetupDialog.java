@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
+import net.mcreator.ui.dialogs.tutorials.WorkspaceTutorial;
 import net.mcreator.util.DesktopUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -117,6 +118,7 @@ public class WorkspaceGeneratorSetupDialog {
 				WorkspaceGeneratorSetup.completeSetup(m.getWorkspace().getGenerator());
 
 				dial.hideAll();
+				WorkspaceTutorial.newDialog(m, "tutorial.workspace.first_page");
 			} catch (Exception e) {
 				LOG.error("Failed to reload Gradle caches", e);
 				p3.err();

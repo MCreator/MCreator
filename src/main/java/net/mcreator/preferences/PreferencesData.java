@@ -50,6 +50,8 @@ public class PreferencesData {
 
 		@PreferencesEntry(arrayData = { "Dark theme", "Light theme" }) public String interfaceTheme = "Dark theme";
 
+		@PreferencesEntry public boolean tutorials = true;
+
 		@PreferencesEntry public boolean expandSectionsByDefault = false;
 		@PreferencesEntry public boolean use2DAcceleration = false;
 		@PreferencesEntry public boolean autoreloadTabs = true;
