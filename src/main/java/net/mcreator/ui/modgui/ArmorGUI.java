@@ -688,25 +688,25 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(helmetModelTexture, ListUtils
-				.merge(Collections.singleton(L10N.t("elementgui.armor.from_armor")),
+				.merge(Collections.singleton("From armor"),
 						mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
 								.filter(element -> element.getName().endsWith(".png")).map(File::getName)
 								.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bodyModelTexture, ListUtils
-				.merge(Collections.singleton(L10N.t("elementgui.armor.from_armor")),
+				.merge(Collections.singleton("From armor"),
 						mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
 								.filter(element -> element.getName().endsWith(".png")).map(File::getName)
 								.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(leggingsModelTexture, ListUtils
-				.merge(Collections.singleton(L10N.t("elementgui.armor.from_armor")),
+				.merge(Collections.singleton("From armor"),
 						mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
 								.filter(element -> element.getName().endsWith(".png")).map(File::getName)
 								.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bootsModelTexture, ListUtils
-				.merge(Collections.singleton("elementgui.armor.from_armor"),
+				.merge(Collections.singleton("From armor"),
 						mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
 								.filter(element -> element.getName().endsWith(".png")).map(File::getName)
 								.collect(Collectors.toList())), "");

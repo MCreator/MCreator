@@ -280,15 +280,15 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 				.updateComboBoxContents(parentAchievement, ElementUtil.loadAllAchievements(mcreator.getWorkspace()));
 
 		ComboBoxUtil.updateComboBoxContents(rewardFunction, ListUtils
-				.merge(Collections.singleton(L10N.t("elementgui.advancement.no_function")),
+				.merge(Collections.singleton("No function"),
 						mcreator.getWorkspace().getModElements().stream()
 								.filter(e -> e.getType() == ModElementType.FUNCTION).map(ModElement::getName)
-								.collect(Collectors.toList())), L10N.t("elementgui.advancement.no_function"));
+								.collect(Collectors.toList())), "No function");
 
 		ComboBoxUtil.updateComboBoxContents(background, ListUtils
-				.merge(Collections.singleton(L10N.t("elementgui.advancement.default")),
+				.merge(Collections.singleton("Default"),
 						mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
-								.collect(Collectors.toList())), L10N.t("elementgui.advancement.default"));
+								.collect(Collectors.toList())), "Default");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
