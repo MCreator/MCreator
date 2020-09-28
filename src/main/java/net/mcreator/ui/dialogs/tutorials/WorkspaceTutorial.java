@@ -27,21 +27,22 @@ import java.awt.*;
 
 public class WorkspaceTutorial {
 
-	public static void newDialog(Window window, String text){
+	public static void newDialog(Window window, String text, int width, int height){
 		if(PreferencesManager.PREFERENCES.ui.tutorials) {
 			MCreatorDialog dialog = new MCreatorDialog(window, "Tutorial", true);
 
 			dialog.setLayout(new BorderLayout(10, 10));
 
 			dialog.add("Center", panelWithLabel(text));
-			JButton next = new JButton("Finish");
+			JButton next = new JButton("Done");
+			next.setPreferredSize(new Dimension(50, 40));
 			byte b = 0;
 			next.addActionListener(e -> {
 				dialog.setVisible(false);
 			});
 			dialog.add("South", next);
 
-			dialog.setSize(700, 250);
+			dialog.setSize(width, height);
 			dialog.setLocationRelativeTo(window);
 			dialog.setVisible(true);
 		}

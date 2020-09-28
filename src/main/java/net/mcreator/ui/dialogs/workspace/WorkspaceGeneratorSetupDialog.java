@@ -118,7 +118,7 @@ public class WorkspaceGeneratorSetupDialog {
 				WorkspaceGeneratorSetup.completeSetup(m.getWorkspace().getGenerator());
 
 				dial.hideAll();
-				WorkspaceTutorial.newDialog(m, "tutorial.workspace.first_page");
+				WorkspaceTutorial.newDialog(m, "tutorial.workspace.first_page", 700, 250);
 			} catch (Exception e) {
 				LOG.error("Failed to reload Gradle caches", e);
 				p3.err();
