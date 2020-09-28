@@ -28,5 +28,7 @@
       "name": "distance",
       "type": "number"
     }
-  ]
+  ],
+  "cancelable": "true",
+  "has_result": "false"
 }

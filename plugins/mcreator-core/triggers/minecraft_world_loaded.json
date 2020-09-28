@@ -4,5 +4,7 @@
       "name": "world",
       "type": "world"
     }
-  ]
+  ],
+  "cancelable": "false",
+  "has_result": "false"
 }

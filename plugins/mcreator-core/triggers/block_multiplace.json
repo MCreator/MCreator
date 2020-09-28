@@ -32,5 +32,7 @@
       "name": "world",
       "type": "world"
     }
-  ]
+  ],
+  "cancelable": "true",
+  "has_result": "false"
 }

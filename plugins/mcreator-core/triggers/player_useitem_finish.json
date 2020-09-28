@@ -32,5 +32,7 @@
       "name": "getresultstack",
       "type": "itemstack"
     }
-  ]
+  ],
+  "cancelable": "false",
+  "has_result": "false"
 }

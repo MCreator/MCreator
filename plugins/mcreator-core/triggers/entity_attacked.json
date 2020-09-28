@@ -32,5 +32,7 @@
       "name": "imediatesourceentity",
       "type": "entity"
     }
-  ]
+  ],
+  "cancelable": "true",
+  "has_result": "false"
 }

@@ -24,5 +24,7 @@
       "name": "itemstack",
       "type": "itemstack"
     }
-  ]
+  ],
+  "cancelable": "true",
+  "has_result": "false"
 }
