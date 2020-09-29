@@ -558,6 +558,12 @@ Blockly.defineBlocksWithJsonArray([
         "colour": "195"
     },
     {
+        "type": "entity_iterator",
+        "message0": "Entity iterator",
+        "output": "Entity",
+        "colour": "195"
+    },
+    {
         "type": "immediate_source_entity_from_deps",
         "message0": "Immediate source entity",
         "output": "Entity",

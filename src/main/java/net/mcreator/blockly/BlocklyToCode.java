@@ -19,6 +19,7 @@
 package net.mcreator.blockly;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
@@ -42,6 +43,8 @@ public abstract class BlocklyToCode {
 
 	protected String lastProceduralBlockType = null;
 
+	private final Stack<StatementInput> statementInputStack = new Stack<>();
+
 	public BlocklyToCode(Workspace workspace, @Nullable TemplateGenerator templateGenerator,
 			IBlockGenerator... externalGenerators) {
 		this.templateGenerator = templateGenerator;
@@ -57,15 +60,15 @@ public abstract class BlocklyToCode {
 		blockGenerators.addAll(Arrays.asList(externalGenerators));
 	}
 
-	public String getGeneratedCode() {
+	public final String getGeneratedCode() {
 		return code.toString();
 	}
 
-	public List<BlocklyCompileNote> getCompileNotes() {
+	public final List<BlocklyCompileNote> getCompileNotes() {
 		return compile_notes;
 	}
 
-	public List<Dependency> getDependencies() {
+	public final List<Dependency> getDependencies() {
 		return dependencies.stream().sorted()
 				// this is here for compatibility with workspaces before 2020.4
 				.map(e -> {
@@ -75,32 +78,53 @@ public abstract class BlocklyToCode {
 				}).collect(Collectors.toList());
 	}
 
-	public BlocklyToCode append(Object data) {
+	public final BlocklyToCode append(Object data) {
 		code.append(data);
 		return this;
 	}
 
-	public void clearCodeGeneratorBuffer() {
+	public final void clearCodeGeneratorBuffer() {
 		code.setLength(0);
 	}
 
-	public void addCompileNote(BlocklyCompileNote compileNote) {
+	public final void addCompileNote(BlocklyCompileNote compileNote) {
 		compile_notes.add(compileNote);
 	}
 
-	public void addDependency(Dependency dependency) {
+	public final void addDependency(Dependency dependency) {
+		// check if used by statement input and skip in this case
+		if (checkIfStatementInputsProvide(dependency))
+			return;
+
 		dependencies.add(dependency);
 	}
 
-	@Nullable public TemplateGenerator getTemplateGenerator() {
+	@Nullable public final TemplateGenerator getTemplateGenerator() {
 		return templateGenerator;
 	}
 
-	public Workspace getWorkspace() {
+	public final Workspace getWorkspace() {
 		return workspace;
 	}
 
-	public void processBlockProcedure(List<Element> blocks) throws TemplateGeneratorException {
+	public final void pushStatementInputStack(StatementInput statementInput) {
+		statementInputStack.push(statementInput);
+	}
+
+	public final void popStatementInputStack() {
+		statementInputStack.pop();
+	}
+
+	public boolean checkIfStatementInputsProvide(Dependency dependency) {
+		for (StatementInput statementInput : statementInputStack) {
+			if (statementInput.provides != null && statementInput.provides.contains(dependency))
+				return true;
+		}
+
+		return false;
+	}
+
+	public final void processBlockProcedure(List<Element> blocks) throws TemplateGeneratorException {
 		for (Element block : blocks) {
 			String type = block.getAttribute("type");
 			boolean generated = false;
@@ -124,7 +148,7 @@ public abstract class BlocklyToCode {
 		}
 	}
 
-	public void processOutputBlock(Element condition) throws TemplateGeneratorException {
+	public final void processOutputBlock(Element condition) throws TemplateGeneratorException {
 		List<Element> conditionBlocks = XMLUtil.getChildrenWithName(condition, "block", "shadow");
 		if (conditionBlocks.size() < 1)
 			return;
@@ -154,6 +178,19 @@ public abstract class BlocklyToCode {
 		String originalMasterCode = master.getGeneratedCode();
 		master.clearCodeGeneratorBuffer(); // we clear all the existing code
 		master.processOutputBlock(element);
+		String generatedCode = master.getGeneratedCode(); // get the generated code
+		master.clearCodeGeneratorBuffer(); // we clear the master again to remove the code we just generated
+		master.append(originalMasterCode); // set the master code to the original code
+		return generatedCode;
+	}
+
+	public static String directProcessStatementBlock(BlocklyToCode master, Element element)
+			throws TemplateGeneratorException {
+		// we do a little hack to get the code of the input only
+		String originalMasterCode = master.getGeneratedCode();
+		master.clearCodeGeneratorBuffer(); // we clear all the existing code
+		List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithBlock(element);
+		master.processBlockProcedure(base_blocks);
 		String generatedCode = master.getGeneratedCode(); // get the generated code
 		master.clearCodeGeneratorBuffer(); // we clear the master again to remove the code we just generated
 		master.append(originalMasterCode); // set the master code to the original code

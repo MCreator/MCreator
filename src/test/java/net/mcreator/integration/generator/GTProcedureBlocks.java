@@ -70,6 +70,12 @@ public class GTProcedureBlocks {
 				continue;
 			}
 
+			if (procedureBlock.statements != null) {
+				LOG.warn("[" + generatorName + "] Skipping procedure block with statements (no test atm): "
+						+ procedureBlock.machine_name);
+				continue;
+			}
+
 			if (procedureBlock.inputs != null && procedureBlock.inputs.size() != StringUtils
 					.countMatches(procedureBlock.toolboxXML, "<value name")) {
 				LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template (no test atm): "
