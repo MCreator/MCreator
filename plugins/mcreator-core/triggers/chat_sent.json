@@ -25,6 +25,5 @@
       "type": "string"
     }
   ],
-  "cancelable": "true",
-  "has_result": "false"
+  "cancelable": "true"
 }

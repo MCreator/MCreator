@@ -24,7 +24,5 @@
       "name": "advancement",
       "type": "advancement"
     }
-  ],
-  "cancelable": "false",
-  "has_result": "false"
+  ]
 }

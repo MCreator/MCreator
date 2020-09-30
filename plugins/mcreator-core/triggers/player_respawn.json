@@ -24,7 +24,5 @@
       "name": "endconquered",
       "type": "boolean"
     }
-  ],
-  "cancelable": "false",
-  "has_result": "false"
+  ]
 }

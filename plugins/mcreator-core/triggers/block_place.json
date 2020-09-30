@@ -33,6 +33,5 @@
       "type": "number"
     }
   ],
-  "cancelable": "true",
-  "has_result": "false"
+  "cancelable": "true"
 }

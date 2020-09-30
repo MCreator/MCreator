@@ -33,6 +33,5 @@
       "type": "entity"
     }
   ],
-  "cancelable": "true",
-  "has_result": "false"
+  "cancelable": "true"
 }
