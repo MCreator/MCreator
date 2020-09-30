@@ -2,10 +2,9 @@
 	Entity entity=event.getTarget();
 	PlayerEntity sourceentity=event.getPlayer();
 	double i=sourceentity.posX;
-    double j=sourceentity.posY;
-    double k=sourceentity.posZ;
-    World world=sourceentity.world;
-
+	double j=sourceentity.posY;
+	double k=sourceentity.posZ;
+	World world=sourceentity.world;
 	Map<String, Object> dependencies = new HashMap<>();
 	dependencies.put("x", i);
 	dependencies.put("y", j);
