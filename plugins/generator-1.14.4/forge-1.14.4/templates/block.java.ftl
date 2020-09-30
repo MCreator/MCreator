@@ -359,13 +359,13 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         @Override public IFluidState getFluidState(BlockState state) {
             return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
         }
-	
-	@Override
-        public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-	        if (stateIn.get(WATERLOGGED)) {
-		        worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+
+
+        @Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+	        if (state.get(WATERLOGGED)) {
+		        world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 	        }
-	        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+	        return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
         }
         </#if>
 
