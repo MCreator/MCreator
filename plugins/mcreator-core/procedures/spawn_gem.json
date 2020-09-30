@@ -27,7 +27,7 @@
     },
     {
       "type": "field_checkbox",
-      "name": "noDespawn",
+      "name": "despawn",
       "checked": true
     }
   ],
@@ -52,7 +52,7 @@
       "pickUpDelay"
     ],
     "fields": [
-      "noDespawn"
+      "despawn"
     ],
     "dependencies": [
       {
