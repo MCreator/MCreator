@@ -81,11 +81,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final JComboBox<String> portalParticles = new JComboBox<>(ElementUtil.loadParticles());
 
-	private final JComboBox<String> worldGenType = new JComboBox<>(
-			new String[] { "Normal world gen", "Nether like gen", "End like gen" });
+	private final JComboBox<String> worldGenType = new JComboBox<>(new String[] { "Normal world gen", "Nether like gen", "End like gen" });
 
-	private final JComboBox<String> sleepResult = new JComboBox<>(
-			new String[] { "ALLOW", "DENY", "BED_EXPLODES" });
+	private final JComboBox<String> sleepResult = new JComboBox<>(new String[] { "ALLOW", "DENY", "BED_EXPLODES" });
 
 	private BiomeListField biomesInDimension;
 
@@ -170,13 +168,11 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		biomesInDimension.setPreferredSize(new java.awt.Dimension(300, 42));
 
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/main_filler_block"),
-				L10N.label("elementgui.dimension.main_filler_block"),
-				new Color(0x2980b9)));
+				L10N.label("elementgui.dimension.main_filler_block"), new Color(0x2980b9)));
 		proper2.add(PanelUtils.join(mainFillerBlock));
 
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fluid_block"),
-				L10N.label("elementgui.dimension.fluid_block"),
-				new Color(0xB8E700)));
+				L10N.label("elementgui.dimension.fluid_block"), new Color(0xB8E700)));
 		proper2.add(PanelUtils.join(fluidBlock));
 
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sleep_result"),
@@ -318,7 +314,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
-			igniterName.setText(readableNameFromModElement + L10N.t("elementgui.dimension.portal_igniter_texture_default_name"));
+			igniterName.setText(readableNameFromModElement + L10N.t("elementgui.dimension.portal_igniter_default_name"));
 		}
 	}
 
