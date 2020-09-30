@@ -86,6 +86,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	private final JPanel returnType = new JPanel(new BorderLayout());
 	private final JLabel returnTypeLabel = new JLabel();
 
+	private final JPanel triggerInfoPanel = new JPanel(new BorderLayout());
+	private final JLabel cancelableTriggerLabel = new JLabel();
+	private final JLabel hasResultTriggerLabel = new JLabel();
+
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 
 	public ProcedureGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -114,12 +118,14 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			dependencies.clear();
 			dependenciesExtTrigger.clear();
 			depsWarningLabel.setText("");
+			cancelableTriggerLabel.setText("");
+			hasResultTriggerLabel.setText("");
 
 			if (isEditingMode() && dependenciesBeforeEdit == null) {
 				dependenciesBeforeEdit = new ArrayList<>(dependenciesArrayList);
 			} else if (dependenciesBeforeEdit != null) {
 				boolean hasNewDependenciesAdded = false;
-				// we go through new dependecy list and check if old one contains all of them
+				// we go through new dependency list and check if old one contains all of them
 				for (Dependency dependency : dependenciesArrayList) {
 					if (!dependenciesBeforeEdit.contains(dependency)) {
 						hasNewDependenciesAdded = true;
@@ -180,6 +186,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					if (tdeps != null) {
 						Collections.sort(tdeps);
 						tdeps.forEach(dependenciesExtTrigger::addElement);
+					}
+ 					if (trigger.cancelable) {
+						cancelableTriggerLabel.setText("<html><div style='width: 100px; font-size: 9px;'>Provided event is cancelable");
+					}
+					if (trigger.has_result) {
+						hasResultTriggerLabel.setText("<html><div style='width: 100px; font-size: 9px;'>Provided event has a result");
 					}
 					triggerDepsPan.setVisible(true);
 
@@ -300,6 +312,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		returnType.setBorder(
 				BorderFactory.createMatteBorder(1, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+
+		triggerInfoPanel.setVisible(true);
+		triggerInfoPanel.setOpaque(false);
+		triggerInfoPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 0));
+		triggerInfoPanel.add("North", cancelableTriggerLabel);
+		triggerInfoPanel.add("Center", hasResultTriggerLabel);
 
 		JPanel localVarsPan = new JPanel(new BorderLayout());
 		localVarsPan.setOpaque(false);
@@ -455,6 +473,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		triggerDepsPan.add("Center", scrollPaneExtDeps);
 		triggerDepsPan.setPreferredSize(new Dimension(150, 0));
 		triggerDepsPan.setVisible(false);
+		triggerDepsPan.add("South", triggerInfoPanel);
 
 		JPanel eastPan = new JPanel();
 		eastPan.setLayout(new BoxLayout(eastPan, BoxLayout.PAGE_AXIS));
