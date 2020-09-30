@@ -5,10 +5,6 @@
       "type": "entity"
     },
     {
-      "name": "sourceentity",
-      "type": "entity"
-    },
-    {
       "name": "world",
       "type": "world"
     },
