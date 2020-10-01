@@ -23,6 +23,7 @@ import net.mcreator.element.converter.fv10.BiomeSpawnListConverter;
 import net.mcreator.element.converter.fv11.GUICoordinateConverter;
 import net.mcreator.element.converter.fv11.OverlayCoordinateConverter;
 import net.mcreator.element.converter.fv12.BiomeDefaultFeaturesConverter;
+import net.mcreator.element.converter.fv13.ProcedureStringsFixer;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
