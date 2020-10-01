@@ -347,6 +347,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(resistance);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), new JLabel("Block sound:")));
+		soundOnStep.setSelectedItem("PLANT");
 		selp.add(soundOnStep);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"), new JLabel("Luminance:")));
