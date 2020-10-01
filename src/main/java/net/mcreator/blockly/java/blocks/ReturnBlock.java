@@ -61,10 +61,13 @@ public class ReturnBlock implements IBlockGenerator {
 			} else {
 				((BlocklyToProcedure) master).setReturnType(returnType);
 			}
+
+			String valuecode = BlocklyToCode.directProcessOutputBlock(master, value);
+
 			if (master.getTemplateGenerator() != null) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("type", type);
-				dataModel.put("value", BlocklyToCode.directProcessOutputBlock(master, value));
+				dataModel.put("value", valuecode);
 				String code = master.getTemplateGenerator()
 						.generateFromTemplate("_return.java.ftl", dataModel);
 				master.append(code);
