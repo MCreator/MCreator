@@ -29,11 +29,11 @@ import javax.swing.*;
 import java.io.File;
 import java.util.List;
 
-public class BlocklyTemplateDropdown extends JScrollablePopupMenu {
+public class AITaskTemplateDropdown extends JScrollablePopupMenu {
 
-	private static final Logger LOG = LogManager.getLogger(BlocklyTemplateDropdown.class);
+	private static final Logger LOG = LogManager.getLogger(AITaskTemplateDropdown.class);
 
-	public BlocklyTemplateDropdown(BlocklyPanel blocklyPanel, List<ResourcePointer> templatesSorted) {
+	public AITaskTemplateDropdown(BlocklyPanel blocklyPanel, List<ResourcePointer> templatesSorted) {
 		setMaximumVisibleRows(20);
 		for (ResourcePointer template : templatesSorted) {
 			try {

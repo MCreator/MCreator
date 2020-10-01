@@ -20,6 +20,7 @@ package net.mcreator.ui.blockly;
 
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.java.ProcedureTemplateIO;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;
@@ -29,6 +30,8 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.FileDialogs;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.modgui.ProcedureGUI;
+import net.mcreator.workspace.elements.VariableElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,6 +40,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -46,10 +50,10 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 
 	private JScrollablePopupMenu results = new JScrollablePopupMenu();
 
-	public ProcedureEditorToolbar(MCreator mcreator, BlocklyPanel blocklyPanel) {
+	public ProcedureEditorToolbar(MCreator mcreator, BlocklyPanel blocklyPanel, ProcedureGUI procedureGUI) {
 		setBorder(null);
 
-		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel,
+		ProcedureTemplateDropdown templateDropdown = new ProcedureTemplateDropdown(procedureGUI, blocklyPanel,
 				TemplatesLoader.loadTemplates("ptpl", "ptpl"));
 
 		JButton bs1 = new JButton("Template library");
@@ -98,16 +102,16 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 
 					Set<ToolboxBlock> filtered = new LinkedHashSet<>();
 
-					for (ToolboxBlock block : BlocklyLoader.INSTANCE.getProcedureBlockLoader()
-							.getDefinedBlocks().values()) {
+					for (ToolboxBlock block : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
+							.values()) {
 						if (block.getName().toLowerCase(Locale.ENGLISH)
 								.contains(search.getText().toLowerCase(Locale.ENGLISH))) {
 							filtered.add(block);
 						}
 					}
 
-					for (ToolboxBlock block : BlocklyLoader.INSTANCE.getProcedureBlockLoader()
-							.getDefinedBlocks().values()) {
+					for (ToolboxBlock block : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
+							.values()) {
 						for (String keyWord : keyWords) {
 							if (block.getName().toLowerCase(Locale.ENGLISH)
 									.contains(keyWord.toLowerCase(Locale.ENGLISH)) && (block.toolboxCategory != null
@@ -196,7 +200,21 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { ".ptpl" });
 			if (imp != null) {
 				try {
-					blocklyPanel.addBlocksFromXML(ProcedureTemplateIO.importBlocklyXML(imp));
+					String procedureXml = ProcedureTemplateIO.importBlocklyXML(imp);
+
+					Set<VariableElement> localVariables = ProcedureTemplateIO.tryToExtractVariables(procedureXml);
+					List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
+
+					for (VariableElement localVariable : localVariables) {
+						if (existingLocalVariables.contains(localVariable))
+							continue; // skip if variable with this name already exists
+
+						blocklyPanel.addLocalVariable(localVariable.getName(),
+								BlocklyVariables.getBlocklyVariableTypeFromMCreatorVariable(localVariable));
+						procedureGUI.localVars.addElement(localVariable);
+					}
+
+					blocklyPanel.addBlocksFromXML(procedureXml);
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator, "<html><b>Failed to import the procedure!</b><br>"

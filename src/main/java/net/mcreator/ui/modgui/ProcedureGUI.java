@@ -62,7 +62,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private BlocklyPanel blocklyPanel;
 
-	private final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
+	public final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
 	private final JList<VariableElement> localVarsList = new JList<>(localVars);
 
 	private boolean hasErrors = false;
@@ -495,7 +495,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
 
-		pane5.add("North", new ProcedureEditorToolbar(mcreator, blocklyPanel));
+		pane5.add("North", new ProcedureEditorToolbar(mcreator, blocklyPanel, this));
 
 		addPage(PanelUtils.gridElements(1, 1, pane5));
 	}
