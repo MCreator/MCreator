@@ -20,9 +20,10 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToAITasks;
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalBlockLoader;
+import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
@@ -189,7 +190,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature" });
 	private final JComboBox<String> mobCreatureType = new JComboBox<>(
-			new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER" });
+			new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
 	private final JComboBox<String> bossBarColor = new JComboBox<>(
 			new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
 	private final JComboBox<String> bossBarType = new JComboBox<>(
@@ -227,7 +228,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private boolean hasErrors = false;
-	private Map<String, ExternalBlockLoader.ToolboxBlock> externalBlocks;
+	private Map<String, ToolboxBlock> externalBlocks;
 
 	private boolean disableMobModelCheckBoxListener = false;
 
@@ -390,7 +391,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		subpane1.add(new JLabel("Attack knockback, knockback resistance: "));
 		subpane1.add(PanelUtils
 				.join(HelpUtils.wrapWithHelpButton(this.withEntry("entity/attack_knockback"), attackKnockback),
-						HelpUtils.wrapWithHelpButton(this.withEntry("entity/knockback_resistance"), knockbackResistance)));
+						HelpUtils.wrapWithHelpButton(this.withEntry("entity/knockback_resistance"),
+								knockbackResistance)));
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"), new JLabel(
 				"<html>Equipment (optional: main hand, off hand, helmet, body, leggings, boots):<br><small>Only works for Biped and Zombie models")));

@@ -19,7 +19,7 @@
 package net.mcreator.integration.generator;
 
 import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.ExternalTriggerLoader;
+import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.GeneratorStats;
@@ -44,7 +44,7 @@ public class GTProcedureTriggers {
 
 		Set<String> generatorTriggers = workspace.getGenerator().getGeneratorStats().getGeneratorTriggers();
 
-		for (ExternalTriggerLoader.ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader()
+		for (ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader()
 				.getExternalTrigers()) {
 			if (!generatorTriggers.contains(externalTrigger.getID())) {
 				LOG.warn("[" + generatorName + "] Skipping procedure trigger that is not defined by generator: "

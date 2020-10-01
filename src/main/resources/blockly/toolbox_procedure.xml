@@ -10,6 +10,7 @@
         <block type="entity_from_deps"/>
         <block type="source_entity_from_deps"/>
         <block type="immediate_source_entity_from_deps"/>
+        <block type="entity_iterator"/>
         <block type="direction_constant"/>
         <block type="direction_from_deps"/>
         <custom-mcelements/>

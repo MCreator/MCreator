@@ -54,12 +54,12 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private StoneCutterRecipeMaker scm;
 	private CampfireCookingRecipeMaker ccm;
 
-	private final JCheckBox recipeShapeless = new JCheckBox(L10N.t("elementgui.recipe.is_shapeless"));
+	private final JCheckBox recipeShapeless = L10N.checkbox("elementgui.recipe.is_shapeless");
 
 	private final JSpinner xpReward = new JSpinner(new SpinnerNumberModel(1.0, 0, 256, 1));
 	private final JSpinner cookingTime = new JSpinner(new SpinnerNumberModel(200, 0, 1000000, 1));
 
-	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod" , "minecraft" });
+	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
 
 	private final VComboBox<String> name = new VComboBox<>();
 
@@ -149,31 +149,31 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		northPanel.setOpaque(false);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/registry_name"),
-				new JLabel(L10N.t("elementgui.recipe.registry_name"))));
+				L10N.label("elementgui.recipe.registry_name")));
 		northPanel.add(name);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/namespace"),
-				new JLabel(L10N.t("elementgui.recipe.name_space"))));
+		northPanel.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("recipe/namespace"), L10N.label("elementgui.recipe.name_space")));
 		northPanel.add(namespace);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/group_name"),
-				new JLabel(L10N.t("elementgui.recipe.group"))));
+		northPanel.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("recipe/group_name"), L10N.label("elementgui.recipe.group")));
 		northPanel.add(group);
 
-		northPanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("recipe/type"), new JLabel(L10N.t("elementgui.recipe.type"))));
+		northPanel
+				.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/type"), L10N.label("elementgui.recipe.type")));
 		northPanel.add(recipeType);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/xp_reward"),
-				new JLabel(L10N.t("elementgui.recipe.xp_reward"))));
+		northPanel.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("recipe/xp_reward"), L10N.label("elementgui.recipe.xp_reward")));
 		northPanel.add(xpReward);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/cooking_time"),
-				new JLabel(L10N.t("elementgui.recipe.cooking_time"))));
+				L10N.label("elementgui.recipe.cooking_time")));
 		northPanel.add(cookingTime);
 
-		centerrecipes.add("Center" , PanelUtils.centerInPanel(recwrap));
-		centerrecipes.add("North" , new JEmptyBox(100, 100));
+		centerrecipes.add("Center", PanelUtils.centerInPanel(recwrap));
+		centerrecipes.add("North", new JEmptyBox(100, 100));
 
 		pane5.setOpaque(false);
 		pane5.add(

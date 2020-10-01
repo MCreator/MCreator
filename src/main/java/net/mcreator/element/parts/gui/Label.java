@@ -44,7 +44,7 @@ public class Label extends GUIComponent {
 	}
 
 	@Override public final int getHeight(Workspace workspace) {
-		return  (int) (WYSIWYG.fontMC.getStringBounds(this.text, WYSIWYG.frc).getHeight()) + 1;
+		return (int) (WYSIWYG.fontMC.getStringBounds(this.text, WYSIWYG.frc).getHeight()) + 1;
 	}
 
 	@Override public int getWeight() {
