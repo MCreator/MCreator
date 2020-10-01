@@ -48,8 +48,10 @@ public class CustomDependencyBlock implements IBlockGenerator {
 				break;
 			}
 			master.addDependency(new Dependency(depname, deptype));
-			if (deptype.equals("itemstack"))
+
+			if (deptype != null && deptype.equals("itemstack"))
 				master.append("/*@ItemStack*/");
+
 			master.append("(").append(element.getTextContent()).append(")");
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
