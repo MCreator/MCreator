@@ -80,6 +80,16 @@ Blockly.Blocks['procedure_retval_string'] = {
     }
 };
 
+Blockly.Blocks['procedure_retval_itemstack'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.procedure_retval"))
+            .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure_retval_itemstack"))), 'procedure');
+        this.setOutput(true, 'MCItem');
+        this.setColour(350);
+    }
+};
+
 Blockly.Blocks['aitasks_container'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.aitasks_container"));
@@ -238,6 +248,16 @@ Blockly.Blocks['custom_dependency_text'] = {
     }
 };
 
+Blockly.Blocks['custom_dependency_itemstack'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.custom_dependency_itemstack"))
+            .appendField(new Blockly.FieldTextInput("dependencyName"), 'NAME');
+        this.setColour(350);
+        this.setOutput(true, 'MCItem');
+    }
+};
+
 Blockly.Blocks['java_code'] = {
     init: function () {
         this.appendDummyInput()
@@ -333,6 +353,15 @@ Blockly.Blocks['return_text'] = {
         this.setPreviousStatement(true);
         this.setNextStatement(false);
         this.setColour(Blockly.Constants.Text.HUE);
+    }
+};
+
+Blockly.Blocks['return_itemstack'] = {
+    init: function () {
+        this.appendValueInput('return').setCheck('MCItem').appendField(javabridge.t("blockly.block.return"));
+        this.setPreviousStatement(true);
+        this.setNextStatement(false);
+        this.setColour(350);
     }
 };
 
