@@ -40,7 +40,7 @@ public class ConverterRegistry {
 		put(ModElementType.ACHIEVEMENT, Collections.singletonList(new AchievementFixer()));
 		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
 		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
-				new ProcedureGlobalTriggerFixer()));
+				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemAddPickupDelay()));
 		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter()));
 		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
 	}};
