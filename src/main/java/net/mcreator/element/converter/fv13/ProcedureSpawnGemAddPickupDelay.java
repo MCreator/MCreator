@@ -42,9 +42,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ProcedureStringsFixer implements IConverter {
+public class ProcedureSpawnGemAddPickupDelay implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger("ProcedureStringsFixer");
+	private static final Logger LOG = LogManager.getLogger("ProcedureSpawnGemAddPickupDelay");
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
