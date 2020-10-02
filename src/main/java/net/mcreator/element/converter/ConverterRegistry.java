@@ -41,10 +41,9 @@ public class ConverterRegistry {
 		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
 		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
 				new ProcedureGlobalTriggerFixer()));
-		put(ModElementType.BIOME, Collections.singletonList(new BiomeSpawnListConverter()));
+		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeTreeConverter(),
+				new BiomeDefaultFeaturesConverter()));
 		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
-		put(ModElementType.BIOME, Collections.singletonList(new BiomeDefaultFeaturesConverter()));
-		put(ModElementType.BIOME, Collections.singletonList(new BiomeTreeConverter()));
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType modElementType) {
