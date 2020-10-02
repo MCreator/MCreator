@@ -19,10 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.Dependency;
-import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.ExternalBlockLoader;
-import net.mcreator.blockly.data.ExternalTriggerLoader;
+import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.GeneratableElement;
@@ -65,7 +62,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private BlocklyPanel blocklyPanel;
 
-	private final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
+	public final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
 	private final JList<VariableElement> localVarsList = new JList<>(localVars);
 
 	private boolean hasErrors = false;
@@ -81,9 +78,9 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private final JLabel extDepsLab = new JLabel();
 
-	private Map<String, ExternalBlockLoader.ToolboxBlock> externalBlocks;
+	private Map<String, ToolboxBlock> externalBlocks;
 
-	private ExternalTriggerLoader.ExternalTrigger trigger = null;
+	private ExternalTrigger trigger = null;
 
 	private final JPanel triggerDepsPan = new JPanel(new BorderLayout());
 	private final JPanel returnType = new JPanel(new BorderLayout());
@@ -147,10 +144,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			hasDependencyErrors = false;
 			if (blocklyToJava.getExternalTrigger() != null) {
-				List<ExternalTriggerLoader.ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE
+				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE
 						.getExternalTriggerLoader().getExternalTrigers();
 
-				for (ExternalTriggerLoader.ExternalTrigger externalTrigger : externalTriggers) {
+				for (ExternalTrigger externalTrigger : externalTriggers) {
 					if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger())) {
 						trigger = externalTrigger;
 						break;
@@ -498,7 +495,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
 
-		pane5.add("North", new ProcedureEditorToolbar(mcreator, blocklyPanel));
+		pane5.add("North", new ProcedureEditorToolbar(mcreator, blocklyPanel, this));
 
 		addPage(PanelUtils.gridElements(1, 1, pane5));
 	}

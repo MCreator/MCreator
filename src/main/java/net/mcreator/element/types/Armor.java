@@ -36,8 +36,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings("unused") public class Armor extends GeneratableElement
-		implements ITabContainedElement {
+@SuppressWarnings("unused") public class Armor extends GeneratableElement implements ITabContainedElement {
 
 	public boolean enableHelmet;
 	public String textureHelmet;

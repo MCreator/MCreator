@@ -89,7 +89,7 @@ public class BlocklyToProcedure extends BlocklyToJava {
 				}
 			} catch (TemplateGeneratorException e) {
 				throw e;
-			}  catch (Exception e) {
+			} catch (Exception e) {
 				LOG.error(e.getMessage(), e);
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						"Exception while compiling blocks: " + e.getMessage()));

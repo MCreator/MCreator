@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Plant;
@@ -32,6 +32,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
@@ -73,10 +74,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 200, 1));
 
 	private final JCheckBox useLootTableForDrops = new JCheckBox("Use loot table for drops");
-	private final JCheckBox unbreakable = new JCheckBox("Check to enable");
-	private final JCheckBox forceTicking = new JCheckBox("Check to enable");
-	private final JCheckBox hasTileEntity = new JCheckBox("Check to enable");
-	private final JCheckBox emissiveRendering = new JCheckBox("Check to enable");
+	private final JCheckBox unbreakable = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox forceTicking = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox hasTileEntity = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
 
 	private final VTextField name = new VTextField(18);
 

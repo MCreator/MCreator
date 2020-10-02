@@ -92,6 +92,8 @@ public class L10N {
 			return null;
 		else if (isTestingEnvironment)
 			throw new RuntimeException("Failed to load any translation for key: " + key);
+		else if (key.startsWith("blockly.") || key.startsWith("trigger."))
+			return null;
 		else
 			return key;
 	}
@@ -106,12 +108,26 @@ public class L10N {
 			return null;
 		else if (isTestingEnvironment)
 			throw new RuntimeException("Failed to load any translation for key: " + key);
+		else if (key.startsWith("blockly.") || key.startsWith("trigger."))
+			return null;
 		else
 			return key;
 	}
 
 	public static JLabel label(String key, Object... parameter) {
 		return new JLabel(t(key, parameter));
+	}
+
+	public static JCheckBox checkbox(String key, Object... parameter) {
+		return new JCheckBox(t(key, parameter));
+	}
+
+	public static JButton button(String key, Object... parameter) {
+		return new JButton(t(key, parameter));
+	}
+
+	public static JRadioButton radiobutton(String key, Object... parameter) {
+		return new JRadioButton(t(key, parameter));
 	}
 
 	private static class UTF8Control extends ResourceBundle.Control {

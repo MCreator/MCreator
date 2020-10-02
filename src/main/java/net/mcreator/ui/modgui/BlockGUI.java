@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.*;
@@ -41,6 +41,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
@@ -120,16 +121,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JColor beaconColorModifier = new JColor(mcreator, true);
 
-	private final JCheckBox hasGravity = new JCheckBox("Check to enable");
-	private final JCheckBox isWaterloggable = new JCheckBox("Check to enable");
-	private final JCheckBox tickRandomly = new JCheckBox("Check to enable");
-	private final JCheckBox unbreakable = new JCheckBox("Check to enable");
-	private final JCheckBox isNotColidable = new JCheckBox("Check to enable");
-	private final JCheckBox canProvidePower = new JCheckBox("Check to enable");
+	private final JCheckBox hasGravity = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isWaterloggable = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox tickRandomly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox unbreakable = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isNotColidable = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
 
-	private final JCheckBox hasTransparency = new JCheckBox("Check to enable");
-	private final JCheckBox connectedSides = new JCheckBox("Check to enable");
-	private final JCheckBox emissiveRendering = new JCheckBox("Check to enable");
+	private final JCheckBox hasTransparency = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox connectedSides = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox hasEnergyStorage = new JCheckBox("Check to enable energy storage");
 	private final JCheckBox isFluidTank = new JCheckBox("Check to enable fluid storage");
@@ -143,7 +144,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
 
-	private final JCheckBox isReplaceable = new JCheckBox("Check to enable");
+	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> colorOnMap = new JComboBox<>();
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -157,9 +158,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private MCItemListField blocksToReplace;
 	private DimensionListField spawnWorldTypes;
 
-	private final JCheckBox plantsGrowOn = new JCheckBox("Check to enable");
-	private final JCheckBox isBeaconBase = new JCheckBox("Check to enable");
-	private final JCheckBox isLadder = new JCheckBox("Check to enable");
+	private final JCheckBox plantsGrowOn = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isBeaconBase = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
 
 	private final JComboBox<String> reactionToPushing = new JComboBox<>(
 			new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" });
@@ -207,13 +208,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 					+ "<br>- block that can store NBT data tags"
 					+ "<br>- block that has fluid tank or energy storage capabilities");
 
-	private final JCheckBox openGUIOnRightClick = new JCheckBox("Enable");
+	private final JCheckBox openGUIOnRightClick = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> guiBoundTo = new JComboBox<>();
 
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
-	private final JCheckBox inventoryDropWhenDestroyed = new JCheckBox("Enable");
-	private final JCheckBox inventoryComparatorPower = new JCheckBox("Enable");
+	private final JCheckBox inventoryDropWhenDestroyed = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox inventoryComparatorPower = L10N.checkbox("elementgui.common.enable");
 
 	private final VTextField outSlotIDs = new VTextField(18);
 	private final VTextField inSlotIDs = new VTextField(18);

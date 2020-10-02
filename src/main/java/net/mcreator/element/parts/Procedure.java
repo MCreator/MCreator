@@ -18,7 +18,7 @@
 
 package net.mcreator.element.parts;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.workspace.Workspace;
 

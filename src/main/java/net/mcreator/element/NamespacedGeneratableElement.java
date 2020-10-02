@@ -22,8 +22,7 @@ import net.mcreator.workspace.elements.ModElement;
 
 import java.util.Locale;
 
-@SuppressWarnings("unused") public abstract class NamespacedGeneratableElement
-		extends GeneratableElement {
+@SuppressWarnings("unused") public abstract class NamespacedGeneratableElement extends GeneratableElement {
 
 	public String name;
 	public String namespace;

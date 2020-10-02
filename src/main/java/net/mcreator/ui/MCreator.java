@@ -34,6 +34,7 @@ import net.mcreator.ui.component.util.MacOSUIUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.ListUtils;
@@ -321,17 +322,16 @@ public final class MCreator extends JFrame {
 		boolean safetoexit = gradleConsole.getStatus() != GradleConsole.RUNNING;
 		if (!safetoexit) {
 			if (gradleConsole.isGradleSetupTaskRunning()) {
-				JOptionPane.showMessageDialog(this, "<html><b>Gradle is still setting up the workspace!</b><br>"
-								+ "You can not close MCreator while the Gradle is setting up. Wait until the setup is complete.<br>"
-								+ "You can monitor the progress of the setup in the Console tab.", "Gradle setting up",
+				JOptionPane.showMessageDialog(this,
+						L10N.t("action.gradle.close_mcreator_while_installation_message"),
+						L10N.t("action.gradle.close_mcreator_while_installation_title"),
 						JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
 
 			int reply = JOptionPane.showConfirmDialog(this,
-					"<html><b>There are some Gradle tasks running in the background.</b>"
-							+ "<br>Are you sure you want to close this workspace?<br><small>"
-							+ "<br>If you proceed, running tasks will be canceled!", "Close workspace",
+					L10N.t("action.gradle.close_mcreator_while_running_message"),
+					L10N.t("action.gradle.close_mcreator_while_running_title"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null);
 			if (reply == JOptionPane.YES_OPTION) {
 				safetoexit = true;
