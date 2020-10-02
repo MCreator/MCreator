@@ -56,9 +56,9 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 	private final JSpinner damageModifier = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 
-	private final JCheckBox isTreasureEnchantment = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
-	private final JCheckBox isCurse = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
-	private final JCheckBox isAllowedOnBooks = new JCheckBox(L10N.t("elementgui.common.check_to_enable_functionality"));
+	private final JCheckBox isTreasureEnchantment = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isCurse = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isAllowedOnBooks = L10N.checkbox("elementgui.common.enable");
 
 	private MCItemListField compatibleItems;
 	private EnchantmentListField compatibleEnchantments;
@@ -92,46 +92,48 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		JPanel selp = new JPanel(new GridLayout(11, 2, 100, 2));
 		selp.setOpaque(false);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/name"), new JLabel(L10N.t("elementgui.enchantment.name"))));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("enchantment/name"), L10N.label("elementgui.enchantment.name")));
 		selp.add(name);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/type"), new JLabel(L10N.t("elementgui.enchantment.type"))));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("enchantment/type"), L10N.label("elementgui.enchantment.type")));
 		selp.add(type);
 
-		selp.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/rarity"), new JLabel(L10N.t("elementgui.enchantment.rarity"))));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("enchantment/rarity"), L10N.label("elementgui.enchantment.rarity")));
 		selp.add(rarity);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("enchantment/min_level"), new JLabel(L10N.t("elementgui.enchantment.min_level"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/min_level"),
+				L10N.label("elementgui.enchantment.min_level")));
 		selp.add(minLevel);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("enchantment/max_level"), new JLabel(L10N.t("elementgui.enchantment.max_level"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/max_level"),
+				L10N.label("elementgui.enchantment.max_level")));
 		selp.add(maxLevel);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/damage_modifier"), new JLabel(
-				L10N.t("elementgui.enchantment.damage_modifier"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/damage_modifier"),
+				new JLabel(L10N.t("elementgui.enchantment.damage_modifier"))));
 		selp.add(damageModifier);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/treasure_enchantment"),
-				new JLabel(L10N.t("elementgui.enchantment.teasure_enchantment"))));
+				L10N.label("elementgui.enchantment.teasure_enchantment")));
 		selp.add(isTreasureEnchantment);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("enchantment/curse"), new JLabel(L10N.t("elementgui.enchantment.curse"))));
+				.wrapWithHelpButton(this.withEntry("enchantment/curse"), L10N.label("elementgui.enchantment.curse")));
 		selp.add(isCurse);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/allowed_on_books"),
-				new JLabel(L10N.t("elementgui.enchantment.allowed_on_books"))));
+				L10N.label("elementgui.enchantment.allowed_on_books")));
 		selp.add(isAllowedOnBooks);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/compatible_enchantments"), new JLabel(
-				L10N.t("elementgui.enchantment.compatible_enchantments"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/compatible_enchantments"),
+				new JLabel(L10N.t("elementgui.enchantment.compatible_enchantments"))));
 		selp.add(compatibleEnchantments);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/can_apply_to"), new JLabel(
-				L10N.t("elementgui.enchantment.can_apply_to"))));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/can_apply_to"),
+				new JLabel(L10N.t("elementgui.enchantment.can_apply_to"))));
 		selp.add(compatibleItems);
 
 		pane1.add(PanelUtils.totalCenterInPanel(selp));

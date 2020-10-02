@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Food;
 import net.mcreator.minecraft.DataListEntry;
@@ -32,6 +32,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
@@ -71,15 +72,15 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 	private final JTextField specialInfo = new JTextField(20);
 
-	private final JCheckBox forDogs = new JCheckBox("Check to enable");
-	private final JCheckBox isAlwaysEdible = new JCheckBox("Check to enable");
+	private final JCheckBox forDogs = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
 
 	private ProcedureSelector onRightClicked;
 	private ProcedureSelector onEaten;
 	private ProcedureSelector onCrafted;
 	private ProcedureSelector onEntitySwing;
 
-	private final JCheckBox hasGlow = new JCheckBox("Check to enable");
+	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
 
 	private final JComboBox<String> animation = new JComboBox<>(
@@ -98,16 +99,19 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 	@Override protected void initGUI() {
 		onRightClicked = new ProcedureSelector(this.withEntry("item/when_right_clicked"), mcreator,
-				"When right clicked in air (player loc.)",
+				L10N.t("elementgui.common.event_right_clicked_air"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		onEaten = new ProcedureSelector(this.withEntry("food/when_eaten"), mcreator, "When food eaten",
+		onEaten = new ProcedureSelector(this.withEntry("food/when_eaten"), mcreator,
+				L10N.t("elementgui.food.event_on_eaten"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator, "When item is crafted/smelted",
+		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator,
+				L10N.t("elementgui.food.event_on_crafted"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
-				"When entity swings item" ,
+				L10N.t("elementgui.food.event_on_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow" ,
+		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+				L10N.t("elementgui.food.event_make_glow"),
 				ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
@@ -129,13 +133,13 @@ public class FoodGUI extends ModElementGUI<Food> {
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
 		texture.setOpaque(false);
 
-		destal.add("Center", ComponentUtils.squareAndBorder(texture, "Food texture"));
+		destal.add("Center", ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.food.texture")));
 
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
 		rent.setOpaque(false);
 		rent.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
-				new JLabel("<html>Item model:<br><small>Select the item model to be used. Supported: JSON, OBJ")),
+				L10N.label("elementgui.food.item_model")),
 				PanelUtils.join(renderType)));
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
@@ -144,18 +148,16 @@ public class FoodGUI extends ModElementGUI<Food> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2), "Food 3D model",
 				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent glow = PanelUtils.join(FlowLayout.LEFT, HelpUtils
-						.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Enable item glowing effect:")),
+		JComponent glow = PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+				L10N.label("elementgui.food.enable_glowing")),
 				hasGlow, glowCondition);
 
-		JComponent visualBottom = PanelUtils.centerAndSouthElement(PanelUtils.gridElements(1, 2, HelpUtils
-						.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
-								"<html>Special information about the tool:<br><small>Separate entries with comma, to use comma in description use \\,")),
+		JComponent visualBottom = PanelUtils.centerAndSouthElement(PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				L10N.label("elementgui.food.tooltip_tip")),
 				specialInfo), glow, 10, 10);
 
 		pane2.setOpaque(false);
-		pane2.add("Center", PanelUtils
-				.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.join(destal, rent), visualBottom)));
+		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.join(destal, rent), visualBottom)));
 
 		JPanel selp = new JPanel(new GridLayout(10, 2, 10, 2));
 		selp.setOpaque(false);
@@ -169,38 +171,46 @@ public class FoodGUI extends ModElementGUI<Food> {
 		nutritionalValue.setOpaque(false);
 		saturation.setOpaque(false);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), new JLabel("Name in GUI:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), new JLabel("Rarity:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"),
+				L10N.label("elementgui.food.rarity")));
 		selp.add(rarity);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel("Creative inventory tab:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
+				L10N.label("elementgui.common.creative_tab")));
 		selp.add(creativeTab);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"), new JLabel("Stack size:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
+				L10N.label("elementgui.food.stack_size")));
 		selp.add(stackSize);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("food/nutritional_value"), new JLabel("Nutritional value:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/nutritional_value"),
+				L10N.label("elementgui.food.nutritional_value")));
 		selp.add(nutritionalValue);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/saturation"), new JLabel("Saturation:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/saturation"),
+				L10N.label("elementgui.food.saturation")));
 		selp.add(saturation);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/is_for_dogs"), new JLabel("Is this food meat?")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/is_for_dogs"),
+				L10N.label("elementgui.food.is_meat")));
 		selp.add(forDogs);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/always_edible"), new JLabel("Is always edible?")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/always_edible"),
+				L10N.label("elementgui.food.is_edible")));
 		selp.add(isAlwaysEdible);
 
 		hasGlow.addActionListener(e -> updateGlowElements());
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/eating_speed"), new JLabel("Eating speed:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/eating_speed"),
+				L10N.label("elementgui.food.eating_speed")));
 		selp.add(eatingSpeed);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"), new JLabel("Item animation: ")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
+				L10N.label("elementgui.food.item_animation")));
 		selp.add(animation);
 
 		pane4.setOpaque(false);
@@ -222,18 +232,18 @@ public class FoodGUI extends ModElementGUI<Food> {
 		wrap.setOpaque(false);
 		wrap.add(events);
 		wrap.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1), "Food events", 0,
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1), L10N.t("elementgui.food.events"), 0,
 				0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(wrap));
 
 		texture.setValidator(new TileHolderValidator(texture));
-		name.setValidator(new TextFieldValidator(name, "Food needs a name"));
+		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.food.error_needs_name")));
 		name.enableRealtimeValidation();
 
-		addPage("Visual", pane2);
-		addPage("Properties", pane4);
-		addPage("Triggers", pane1);
+		addPage(L10N.t("elementgui.common.page_visual"), pane2);
+		addPage(L10N.t("elementgui.common.page_properties"), pane4);
+		addPage(L10N.t("elementgui.common.page_triggers"), pane1);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());

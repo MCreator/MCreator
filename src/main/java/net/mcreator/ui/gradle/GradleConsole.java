@@ -337,7 +337,8 @@ public class GradleConsole extends JPanel {
 									if (!line.contains("uses or overrides a deprecated API"))
 										if (!line.contains("unchecked or unsafe operations")) {
 											if (line.startsWith(":") || line.startsWith(">")) {
-												if (line.contains("UP-TO-DATE") || line.contains("NO-SOURCE"))
+												if (line.contains(" UP-TO-DATE") || line.contains(" NO-SOURCE") || line
+														.contains(" SKIPPED"))
 													append(line, new Color(0x7B7B7B), true);
 												else
 													append(line, new Color(0xDADADA), true);

@@ -226,7 +226,7 @@ public class WorkspacePanel extends JPanel {
 
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JComponent isize = ComponentUtils.deriveFont(new JLabel(L10N.t("workspace.elements.list.icon_size")), 12);
+		JComponent isize = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.icon_size"), 12);
 		isize.setToolTipText(L10N.t("workspace.elements.list.icon_size.tooltip"));
 		bar.add(isize);
 
@@ -335,8 +335,8 @@ public class WorkspacePanel extends JPanel {
 		leftPan.setOpaque(false);
 		leftPan.add(search);
 
-		JButton filter = new JButton(L10N.t("workspace.elements.list.filter"));
-		JButton sort = new JButton(L10N.t("workspace.elements.list.sort"));
+		JButton filter = L10N.button("workspace.elements.list.filter");
+		JButton sort = L10N.button("workspace.elements.list.sort");
 
 		ComponentUtils.deriveFont(filter, 11);
 		filter.setMargin(new Insets(1, 3, 1, 3));
@@ -699,12 +699,12 @@ public class WorkspacePanel extends JPanel {
 		emptct.setLayout(new BoxLayout(emptct, BoxLayout.LINE_AXIS));
 		emptct.setOpaque(false);
 
-		emptct.add(ComponentUtils.deriveFont(new JLabel(L10N.t("workspace.elements.empty.tip_part1")), 24));
+		emptct.add(ComponentUtils.deriveFont(L10N.label("workspace.elements.empty.tip_part1"), 24));
 
 		JLabel but1_empty = new JLabel(new ImageIcon(ImageUtils.resize(TiledImageCache.workspaceAdd.getImage(), 32)));
 		emptct.add(but1_empty);
 
-		emptct.add(ComponentUtils.deriveFont(new JLabel(L10N.t("workspace.elements.empty.tip_part2")), 24));
+		emptct.add(ComponentUtils.deriveFont(L10N.label("workspace.elements.empty.tip_part2"), 24));
 
 		JPanel emptbtpd = new JPanel(new BorderLayout());
 		emptbtpd.setOpaque(false);

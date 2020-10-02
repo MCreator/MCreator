@@ -125,8 +125,8 @@ public class DrawingTool extends AbstractModificationTool {
 			x = tx - size / 2;
 			y = ty - size / 2;
 		} else {
-			x = Math.round((int)(rx / zoom + 0.5)) - size / 2;
-			y = Math.round((int)(ry / zoom + 0.5)) - size / 2;
+			x = Math.round((int) (rx / zoom + 0.5)) - size / 2;
+			y = Math.round((int) (ry / zoom + 0.5)) - size / 2;
 		}
 		g.setColor(colorSelector.getForegroundColor());
 		switch (shape) {

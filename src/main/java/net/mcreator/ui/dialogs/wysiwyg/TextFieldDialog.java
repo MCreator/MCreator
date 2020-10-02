@@ -60,8 +60,8 @@ public class TextFieldDialog extends MCreatorDialog {
 		JPanel options = new JPanel();
 
 		if (textField == null)
-			add("North", PanelUtils
-					.centerInPanel(new JLabel("After you click OK, right-click with the mouse to change text field width")));
+			add("North", PanelUtils.centerInPanel(
+					new JLabel("After you click OK, right-click with the mouse to change text field width")));
 		else
 			add("North", PanelUtils.centerInPanel(
 					new JLabel("To resize the text field, use move tool and right-click with the mouse when moving")));
