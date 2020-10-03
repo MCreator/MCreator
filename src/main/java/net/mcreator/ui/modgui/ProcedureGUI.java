@@ -137,7 +137,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				returnType.setVisible(true);
 				returnTypeLabel.setText(blocklyToJava.getReturnType().name());
 				returnTypeLabel
-						.setForeground(new Dependency("", blocklyToJava.getReturnType().toDependencyType()).getColor());
+						.setForeground(new Dependency("", blocklyToJava.getReturnType().toDependencyType()).getColor().brighter());
 			} else {
 				returnType.setVisible(false);
 			}
@@ -231,7 +231,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			setBorder(null);
 			Color col = value.getColor();
 			setBackground(isSelected ? col : (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : col);
+			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : col.brighter());
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
 			setToolTipText(value.getName() + ", type: " + value.getRawType());

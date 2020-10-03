@@ -18,6 +18,7 @@
 
 package net.mcreator.blockly.data;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.ui.init.L10N;
 
 import java.awt.*;
@@ -36,6 +37,6 @@ import java.awt.*;
 	}
 
 	public Color getColor() {
-		return Color.getHSBColor(color / 360f, 0.37f, 0.6f);
+		return BlocklyBlockUtil.getBlockColorFromHUE(color);
 	}
 }
