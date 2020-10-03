@@ -421,7 +421,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destal.add(ComponentUtils.squareAndBorder(textureLeft, new Color(126, 196, 255), L10N.t("elementgui.block.texture_place_left")));
 		destal.add(ComponentUtils.squareAndBorder(textureFront, L10N.t("elementgui.block.texture_place_front")));
 		destal.add(ComponentUtils.squareAndBorder(textureRight, L10N.t("elementgui.block.texture_place_right")));
-		destal.add(ComponentUtils.squareAndBorder(textureBack, L10N.t("elementgui.block.texture_place=back")));
+		destal.add(ComponentUtils.squareAndBorder(textureBack, L10N.t("elementgui.block.texture_place_back")));
 
 		textureLeft.setActionListener(event -> {
 			if (!(texture.has() || textureTop.has() || textureBack.has() || textureFront.has() || textureRight.has())) {
