@@ -130,8 +130,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final ValidationGroup page2group = new ValidationGroup();
 
-	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
-	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
+	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(100, 0, 1024, 1));
+	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(60, 0, 1024, 1));
 
 	public PlantGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
