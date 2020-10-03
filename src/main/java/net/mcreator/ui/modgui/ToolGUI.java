@@ -163,7 +163,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
 
-		destal.add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.tool_texture")));
+		destal.add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture")));
 
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
