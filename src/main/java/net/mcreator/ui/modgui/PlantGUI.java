@@ -85,7 +85,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JTextField specialInfo = new JTextField(20);
 
-	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
+	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator);
 
 	private final JCheckBox isReplaceable = new JCheckBox("Is replaceable");
 	private final JComboBox<String> colorOnMap = new JComboBox<>();
@@ -366,7 +366,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(resistance);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), new JLabel("Block sound:")));
-		soundOnStep.setSelectedItem("PLANT");
 		selp.add(soundOnStep);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"), new JLabel("Luminance:")));
@@ -526,6 +525,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("DECORATIONS"));
+
+		ComboBoxUtil.updateComboBoxContents(soundOnStep, ElementUtil.loadStepSounds(),
+				new DataListEntry.Dummy("PLANT"));
 
 		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.loadMapColors()), "DEFAULT");
 
