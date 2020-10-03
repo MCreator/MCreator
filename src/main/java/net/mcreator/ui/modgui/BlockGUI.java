@@ -251,10 +251,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.event_on_block_added"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onNeighbourBlockChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
-				L10N.t("elementgui.block.event_on_neighbour_block_changes"),
+				L10N.t("elementgui.common.event_on_neighbour_block_changes"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator,
-				L10N.t("elementgui.block.event_on_update_tick"),
+				L10N.t("elementgui.common.event_on_update_tick"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onRandomUpdateEvent = new ProcedureSelector(this.withEntry("block/display_tick_update"), mcreator,
 				L10N.t("elementgui.block.event_on_randon_update"), ProcedureSelector.Side.CLIENT,
@@ -419,9 +419,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destal.add(new JLabel());
 
 		destal.add(ComponentUtils.squareAndBorder(textureLeft, new Color(126, 196, 255), L10N.t("elementgui.block.texture_place_left")));
-		destal.add(ComponentUtils.squareAndBorder(textureFront, "Front"));
-		destal.add(ComponentUtils.squareAndBorder(textureRight, "Right"));
-		destal.add(ComponentUtils.squareAndBorder(textureBack, "Back"));
+		destal.add(ComponentUtils.squareAndBorder(textureFront, L10N.t("elementgui.block.texture_place_front")));
+		destal.add(ComponentUtils.squareAndBorder(textureRight, L10N.t("elementgui.block.texture_place_right")));
+		destal.add(ComponentUtils.squareAndBorder(textureBack, L10N.t("elementgui.block.texture_place=back")));
 
 		textureLeft.setActionListener(event -> {
 			if (!(texture.has() || textureTop.has() || textureBack.has() || textureFront.has() || textureRight.has())) {
@@ -628,7 +628,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(name);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/material"),
-				new JLabel("Material:")));
+				L10N.label("elementgui.block.material")));
 		selp.add(material);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
@@ -636,15 +636,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(creativeTab);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"),
-				L10N.label("elementgui.block.block_sound")));
+				L10N.label("elementgui.common.block_sound")));
 		selp.add(soundOnStep);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hardness"),
-				L10N.label("elementgui.block.hardness")));
+				L10N.label("elementgui.common.hardness")));
 		selp.add(hardness);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/resistance"),
-				L10N.label("elementgui.block.resistance")));
+				L10N.label("elementgui.common.resistance")));
 		selp.add(resistance);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/slipperiness"),
@@ -652,7 +652,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(slipperiness);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
-				L10N.label("elementgui.block.luminance")));
+				L10N.label("elementgui.common.luminance")));
 		selp.add(luminance);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/light_opacity"),
@@ -668,26 +668,26 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(isNotColidable);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
-				L10N.label("elementgui.block.emissive_rendering")));
+				L10N.label("elementgui.common.emissive_rendering")));
 		selp.add(emissiveRendering);
 
 		creativeTab.setPrototypeDisplayValue(new DataListEntry.Dummy("BUILDING_BLOCKS"));
 		creativeTab.addPopupMenuListener(new ComboBoxFullWidthPopup());
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
-				L10N.label("elementgui.block.custom_drop")));
+				L10N.label("elementgui.common.custom_drop")));
 		selp3.add(PanelUtils.centerInPanel(customDrop));
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_amount"),
-				L10N.label("elementgui.block.drop_amount")));
+				L10N.label("elementgui.common.drop_amount")));
 		selp3.add(dropAmount);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
-				L10N.label("elementgui.block.use_loot_table_for_drop")));
+				L10N.label("elementgui.common.use_loot_table_for_drop")));
 		selp3.add(PanelUtils.centerInPanel(useLootTableForDrops));
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
-				L10N.label("elementgui.block.creative_pick_item")));
+				L10N.label("elementgui.common.creative_pick_item")));
 		selp3.add(PanelUtils.centerInPanel(creativePickItem));
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/harvest_tool"),
@@ -749,7 +749,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedProperties.add(flammability);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
-				L10N.label("elementgui.block.fire_spread_speed")));
+				L10N.label("elementgui.common.fire_spread_speed")));
 		advancedProperties.add(fireSpreadSpeed);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/push_reaction"),
@@ -757,11 +757,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedProperties.add(reactionToPushing);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ai_path_node_type"),
-				L10N.label("elementgui.block.ai_path_node_type")));
+				L10N.label("elementgui.common.ai_path_node_type")));
 		advancedProperties.add(aiPathNodeType);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
-				L10N.label("elementgui.block.offset_type")));
+				L10N.label("elementgui.common.offset_type")));
 		advancedProperties.add(offsetType);
 
 		isWaterloggable.setOpaque(false);
@@ -988,7 +988,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		slip.add(blocksToReplace);
 
 		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
-				L10N.label("elementgui.block.restrict_to_biomes")));
+				L10N.label("elementgui.common.restrict_to_biomes")));
 		slip.add(restrictionBiomes);
 
 		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_chunk_count"),
@@ -1081,7 +1081,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		addPage(L10N.t("elementgui.block.page_tile_entity"), pane8);
 		addPage(L10N.t("elementgui.block.page_energy_fluid_storage"), pane10);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
-		addPage(L10N.t("elementgui.block.page_generation"), pane9);
+		addPage(L10N.t("elementgui.common.page_generation"), pane9);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
