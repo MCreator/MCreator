@@ -139,7 +139,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
 		rent.setOpaque(false);
 		rent.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
-				L10N.label("elementgui.food.item_model")),
+				L10N.label("elementgui.common.item_model")),
 				PanelUtils.join(renderType)));
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
@@ -176,7 +176,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		selp.add(name);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"),
-				L10N.label("elementgui.food.rarity")));
+				L10N.label("elementgui.common.rarity")));
 		selp.add(rarity);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
@@ -184,7 +184,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		selp.add(creativeTab);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
-				L10N.label("elementgui.food.stack_size")));
+				L10N.label("elementgui.common.stack_size")));
 		selp.add(stackSize);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/nutritional_value"),

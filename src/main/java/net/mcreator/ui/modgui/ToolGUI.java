@@ -170,7 +170,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		rent.setOpaque(false);
 		rent.add(PanelUtils.join(HelpUtils
-						.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.tool.item_model")),
+						.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
 				PanelUtils.join(renderType)));
 
 		ComponentUtils.deriveFont(specialInfo, 16);

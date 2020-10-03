@@ -179,11 +179,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel destal = new JPanel(new GridLayout(1, 2, 15, 15));
 		destal.setOpaque(false);
 		JComponent destal1 = PanelUtils.join(FlowLayout.LEFT, HelpUtils
-						.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("Enable item glowing effect:")),
+						.wrapWithHelpButton(this.withEntry("item/glowing_effect"), L10N.label("elementgui.item.glowing_effect")),
 				hasGlow, glowCondition);
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
-				"<html>Special information about the item:<br><small>Separate entries with comma, to use comma in description use \\,")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"), L10N.label("elementgui.item.tooltip_tip")));
 		destal.add(specialInfo);
 
 		hasGlow.setOpaque(false);
@@ -202,7 +201,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		rent.setOpaque(false);
 		rent.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
-				new JLabel("<html>Item model:<br><small>Select the item model to be used. Supported: JSON, OBJ")),
+				L10N.label("elementgui.common.item_model")),
 				PanelUtils.join(renderType)));
 
 		renderType.setPreferredSize(new Dimension(350, 42));
@@ -227,53 +226,50 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		ComponentUtils.deriveFont(name, 16);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), new JLabel("Name in GUI:")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
 		subpane2.add(name);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), new JLabel("Rarity:")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
 		subpane2.add(rarity);
 
 		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel("Creative inventory tab:")));
+				.wrapWithHelpButton(this.withEntry("common/creative_tab"), L10N.label("elementgui.common.creative_tab")));
 		subpane2.add(creativeTab);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"), new JLabel("Max stack size:")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"), L10N.label("elementgui.common.stack_size")));
 		subpane2.add(stackSize);
 
 		subpane2.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"), new JLabel("Enchantability:")));
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"), L10N.label("elementgui.common.enchantability")));
 		subpane2.add(enchantability);
 
 		subpane2.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/destroy_speed"), new JLabel("Item destroy speed:")));
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/destroy_speed"), L10N.label("elementgui.item.destroy_speed")));
 		subpane2.add(toolType);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
-				new JLabel("<html>Damage vs mob/animal (check to enable):<br><small>Melee damage")));
+				L10N.label("elementgui.item.damage_vs_entity")));
 		subpane2.add(PanelUtils.westAndCenterElement(enableMeleeDamage, damageVsEntity));
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"), new JLabel(
-				"<html>Item use count / durability (leave 0 to disable damage):<br><small>If you want to make a tool, create a tool instead")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"), L10N.label("elementgui.item.number_of_uses")));
 		subpane2.add(damageCount);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/can_destroy_any_block"),
-				new JLabel("Can destroy any block?")));
+				L10N.label("elementgui.item.can_destroy_any_block")));
 		subpane2.add(destroyAnyBlock);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item"),
-				new JLabel("Does item stay in crafting grid when crafted?")));
+				L10N.label("elementgui.item.container_item")));
 		subpane2.add(stayInGridWhenCrafting);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"), new JLabel(
-				"<html>Damage item instead on crafting<br><small>Make sure to enable \"stay in crafting grid\" and that item is damageable")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"), L10N.label("elementgui.item.container_item_damage")));
 		subpane2.add(damageOnCrafting);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/recipe_remainder"), new JLabel(
-				"<html>Recipe remainder<br><small>Make sure to enable \"stay in crafting grid\". Leave empty to use current item.")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/recipe_remainder"), L10N.label("elementgui.item.recipe_remainder")));
 		subpane2.add(PanelUtils.centerInPanel(recipeRemainder));
 
 		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/use_duration"), new JLabel("Item use animation duration:")));
+				.wrapWithHelpButton(this.withEntry("item/use_duration"), L10N.label("elementgui.item.use_duration")));
 		subpane2.add(useDuration);
 
 		enchantability.setOpaque(false);
@@ -329,13 +325,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		page1group.addValidationElement(texture);
 
-		name.setValidator(new TextFieldValidator(name, "Item needs a name"));
+		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.item.error_item_needs_name")));
 		name.enableRealtimeValidation();
 
-		addPage("Visual", pane2);
-		addPage("Properties", pane3);
-		addPage("Inventory", pane5);
-		addPage("Triggers", pane4);
+		addPage(L10N.t("elementgui.common.page_visual"), pane2);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_inventory"), pane5);
+		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
