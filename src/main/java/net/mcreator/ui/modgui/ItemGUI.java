@@ -117,32 +117,32 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	@Override protected void initGUI() {
 		onRightClickedInAir = new ProcedureSelector(this.withEntry("item/when_right_clicked"), mcreator,
-				"When right clicked in air (player loc.)",
+				L10N.t("elementgui.common.event_right_clicked_air"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator, "When item is crafted/smelted",
+		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator, L10N.t("elementgui.food.event_on_crafted"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
-				"When right clicked on block (hand loc.)", Dependency.fromString(
+				L10N.t("elementgui.common.event_right_clicked_block"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction"));
 		onEntityHitWith = new ProcedureSelector(this.withEntry("item/when_entity_hit"), mcreator,
-				"When living entity is hit with item", Dependency.fromString(
+				L10N.t("elementgui.item.event_entity_hit"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack"));
 		onItemInInventoryTick = new ProcedureSelector(this.withEntry("item/inventory_tick"), mcreator,
-				"When item in inventory tick", Dependency
+				L10N.t("elementgui.item.event_inventory_tick"), Dependency
 				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
-		onItemInUseTick = new ProcedureSelector(this.withEntry("item/hand_tick"), mcreator, "When item in hand tick",
+		onItemInUseTick = new ProcedureSelector(this.withEntry("item/hand_tick"), mcreator, L10N.t("elementgui.item.event_hand_tick"),
 				Dependency.fromString(
 						"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
 		onStoppedUsing = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
-				"On player stopped using", Dependency
+				L10N.t("elementgui.item.event_stopped_using"), Dependency
 				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
-				"When entity swings item",
+				L10N.t("elementgui.item.event_entity_swings"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onDroppedByPlayer = new ProcedureSelector(this.withEntry("item/on_dropped"), mcreator,
-				"When item is dropped by player",
+				L10N.t("elementgui.item.event_on_dropped"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow",
+		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, L10N.t("elementgui.item.condition_glow"),
 				ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
@@ -173,7 +173,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		destal2.setOpaque(false);
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
 		destal3.setOpaque(false);
-		destal3.add("West", PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(texture, "Item texture")));
+		destal3.add("West", PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))));
 		destal2.add("North", destal3);
 
 		JPanel destal = new JPanel(new GridLayout(1, 2, 15, 15));
@@ -210,7 +210,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		destal3.add("Center", rent);
 
 		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2), "Item 3D model",
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2), L10N.t("elementgui.item.item_3d_model"),
 				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
@@ -303,19 +303,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel props = new JPanel(new GridLayout(3, 2, 35, 2));
 		props.setOpaque(false);
 
-		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"), new JLabel(
-				"<html>Bind this item to GUI:<br>"
-						+ "<small>Set to Empty to disable inventory (you want this in most cases)<br>"
-						+ "Enabling inventory will make this item unstackable")));
+		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"), L10N.label("elementgui.item.bind_gui")));
 		props.add(guiBoundTo);
 
-		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_size"), new JLabel(
-				"<html>Size of inventory (slot count):<br><small>"
-						+ "Set this value to the <i>biggest slot ID in the GUI</i> + 1")));
+		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_size"), L10N.label("elementgui.item.inventory_size")));
 		props.add(inventorySize);
 
 		props.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/inventory_stack_size"), new JLabel("Max size of stack:")));
+				.wrapWithHelpButton(this.withEntry("item/inventory_stack_size"), L10N.label("elementgui.item.inventory_stack_size")));
 		props.add(inventoryStackSize);
 
 		pane5.add(PanelUtils.totalCenterInPanel(props));
