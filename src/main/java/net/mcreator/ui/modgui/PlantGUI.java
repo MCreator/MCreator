@@ -63,6 +63,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private TextureHolder texture;
 	private TextureHolder textureBottom;
 
+	private TextureHolder itemTexture;
+
 	private final JLabel stl = new JLabel(TiledImageCache.plantStaticYes);
 	private final JLabel dyn = new JLabel(TiledImageCache.plantGrowingNo);
 	private final JLabel dbl = new JLabel(TiledImageCache.plantDoubleNo);
@@ -189,6 +191,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		textureBottom.setOpaque(false);
 		textureBottom.setVisible(false);
 
+		itemTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"), 32);
+		itemTexture.setOpaque(false);
+
 		JPanel modelandinfo = new JPanel(new GridLayout(2, 1));
 		modelandinfo.setOpaque(false);
 
@@ -196,12 +201,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		infopanel.setOpaque(false);
 		infopanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Special information", 0, 0, getFont().deriveFont(12.0f),
+				"Special information and item texture", 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		infopanel.add("South", PanelUtils.gridElements(1, 2, HelpUtils
+		infopanel.add("South", PanelUtils.gridElements(2, 2, HelpUtils
 						.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
 								"<html>Special information about the plant:<br><small>Separate entries with comma, to use comma in description use \\,")),
-				specialInfo));
+				specialInfo, HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"), new JLabel(
+						"<html>Plant item texture:<br><small>Optional texture for plant in inventory and hand rendering")),
+				PanelUtils.centerInPanel(itemTexture)));
 
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
@@ -539,6 +546,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	@Override public void openInEditingMode(Plant plant) {
+		itemTexture.setTextureFromTextureName(plant.itemTexture);
 		texture.setTextureFromTextureName(plant.texture);
 		textureBottom.setTextureFromTextureName(plant.textureBottom);
 		name.setText(plant.name);
@@ -630,6 +638,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		plant.texture = texture.getID();
 		plant.textureBottom = textureBottom.getID();
+		plant.itemTexture = itemTexture.getID();
 		if (normalType.isSelected())
 			plant.plantType = "normal";
 		else if (growapableType.isSelected())

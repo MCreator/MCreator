@@ -41,6 +41,8 @@ import java.util.Map;
 	public String textureBottom;
 	public String customModelName;
 
+	public String itemTexture;
+
 	public String plantType;
 
 	public String staticPlantGenerationType;
