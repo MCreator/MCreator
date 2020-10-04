@@ -23,8 +23,10 @@ import net.mcreator.ui.init.L10N;
 
 import java.awt.*;
 
-@SuppressWarnings("unused") public class ToolboxCategory {
+public class ToolboxCategory {
+
 	String id, name, description;
+
 	int color;
 	boolean api;
 
