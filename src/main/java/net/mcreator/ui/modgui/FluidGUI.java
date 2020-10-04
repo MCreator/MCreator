@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.minecraft.DataListEntry;
@@ -102,9 +102,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel destalx = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		destalx.setOpaque(false);
 
-		textureStill = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
+		textureStill = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
 		textureStill.setOpaque(false);
-		textureFlowing = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
+		textureFlowing = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
 		textureFlowing.setOpaque(false);
 
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
@@ -187,8 +187,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		page1group.addValidationElement(textureStill);
 		page1group.addValidationElement(textureFlowing);
 
-		addPage(L10N.t("elementgui.fluid.visual"), pane3);
-		addPage(L10N.t("elementgui.fluid.properties"), pane2);
+		addPage(L10N.t("elementgui.common.page_visual"), pane3);
+		addPage(L10N.t("elementgui.common.page_properties"), pane2);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 	}
 

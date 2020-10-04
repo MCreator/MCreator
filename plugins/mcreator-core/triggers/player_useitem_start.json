@@ -28,5 +28,6 @@
       "name": "duration",
       "type": "number"
     }
-  ]
+  ],
+  "cancelable": "true"
 }

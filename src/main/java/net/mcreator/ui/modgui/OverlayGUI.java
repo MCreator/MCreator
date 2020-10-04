@@ -18,11 +18,12 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.Overlay;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -53,7 +54,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 
 		displayCondition = new ProcedureSelector(this.withEntry("overlay/display_condition"), mcreator,
-				"Display overlay in-game", ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
+				L10N.t("elementgui.overlay.event_display_ingame"), ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		editor = new WYSIWYGEditor(mcreator, false);

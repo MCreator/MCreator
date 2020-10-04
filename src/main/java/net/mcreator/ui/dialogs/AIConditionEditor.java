@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.dialogs;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;

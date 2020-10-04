@@ -32,5 +32,6 @@
       "name": "z",
       "type": "number"
     }
-  ]
+  ],
+  "cancelable": "true"
 }

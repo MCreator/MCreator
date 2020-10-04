@@ -101,6 +101,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private MCItemHolder groundBlock;
 	private MCItemHolder undergroundBlock;
+
 	private MCItemHolder treeVines;
 	private MCItemHolder treeStem;
 	private MCItemHolder treeBranch;
@@ -393,8 +394,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp5.add(extraCount);
 
 		customTrees.addActionListener(event -> updateBiomeTreesForm());
+		vanillaTrees.addActionListener(event -> updateBiomeTreesForm());
 
 		customTrees.setOpaque(false);
+		vanillaTrees.setOpaque(false);
 		spawnVines.setOpaque(false);
 		minHeight.setOpaque(false);
 

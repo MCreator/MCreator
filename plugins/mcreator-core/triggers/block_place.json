@@ -32,5 +32,6 @@
       "name": "pz",
       "type": "number"
     }
-  ]
+  ],
+  "cancelable": "true"
 }

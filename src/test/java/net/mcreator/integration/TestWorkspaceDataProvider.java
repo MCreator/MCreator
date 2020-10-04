@@ -34,6 +34,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
@@ -68,6 +69,21 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getRecipeExample(modElement, "Stone cutting", random, true));
 			generatableElements.add(getRecipeExample(modElement, "Campfire cooking", random, false));
 			generatableElements.add(getRecipeExample(modElement, "Campfire cooking", random, true));
+		} else if (modElement.getType() == ModElementType.TOOL) {
+			generatableElements.add(getToolExample(modElement, "Pickaxe", random, false, false));
+			generatableElements.add(getToolExample(modElement, "Pickaxe", random, true, false));
+			generatableElements.add(getToolExample(modElement, "Pickaxe", random, false, true));
+			generatableElements.add(getToolExample(modElement, "Pickaxe", random, true, true));
+			generatableElements.add(getToolExample(modElement, "Axe", random, true, false));
+			generatableElements.add(getToolExample(modElement, "Sword", random, true, false));
+			generatableElements.add(getToolExample(modElement, "Spade", random, true, false));
+			generatableElements.add(getToolExample(modElement, "Hoe", random, true, false));
+			generatableElements.add(getToolExample(modElement, "Special", random, true, false));
+			generatableElements.add(getToolExample(modElement, "Special", random, false, false));
+			generatableElements.add(getToolExample(modElement, "MultiTool", random, true, false));
+			generatableElements.add(getToolExample(modElement, "MultiTool", random, false, false));
+			generatableElements.add(getToolExample(modElement, "Shears", random, true, false));
+			generatableElements.add(getToolExample(modElement, "Shears", random, false, false));
 		} else if (modElement.getType() == ModElementType.FUEL || modElement.getType() == ModElementType.TAB
 				|| modElement.getType() == ModElementType.OVERLAY) {
 			generatableElements.add(getExampleFor(modElement, random, true, true, 0));
@@ -195,7 +211,7 @@ public class TestWorkspaceDataProvider {
 			achievement.achievementIcon = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
 							.getName());
-			achievement.achievementType = "challenge";
+			achievement.achievementType = new String[] { "task", "goal", "challenge", "challenge" }[valueIndex];
 			achievement.parent = new AchievementEntry(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadAllAchievements(modElement.getWorkspace())));
 			achievement.announceToChat = _true;
@@ -204,7 +220,7 @@ public class TestWorkspaceDataProvider {
 			achievement.rewardXP = 14;
 			achievement.hideIfNotCompleted = !_true;
 			achievement.rewardFunction = "No function";
-			achievement.background = "Default";
+			achievement.background = emptyLists ? "Default" : "test.png";
 			achievement.rewardLoot = new ArrayList<>();
 			if (!emptyLists) {
 				achievement.rewardLoot.add("test1");
@@ -268,7 +284,7 @@ public class TestWorkspaceDataProvider {
 			biome.heightVariation = 0.7;
 			biome.temperature = 4.0;
 			biome.spawnShipwreck = _true;
-			biome.oceanRuinType = "NONE";
+			biome.oceanRuinType = ListUtils.getRandomItem(random, new String[] { "NONE", "COLD", "WARM" });
 			biome.spawnOceanMonument = !_true;
 			biome.spawnWoodlandMansion = _true;
 			biome.spawnJungleTemple = !_true;
@@ -277,7 +293,8 @@ public class TestWorkspaceDataProvider {
 			biome.spawnPillagerOutpost = !_true;
 			biome.spawnStronghold = _true;
 			biome.spawnMineshaft = !_true;
-			biome.villageType = "desert";
+			biome.villageType = ListUtils
+					.getRandomItem(random, new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
 			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
 			biome.biomeType = ListUtils.getRandomItem(random, new String[] { "WARM", "DESERT", "COOL", "ICY" });
 			biome.biomeCategory = ListUtils.getRandomItem(random,
@@ -370,7 +387,7 @@ public class TestWorkspaceDataProvider {
 			fluid.onNeighbourChanges = new Procedure("procedure2");
 			fluid.onTickUpdate = new Procedure("procedure3");
 			fluid.onEntityCollides = new Procedure("procedure4");
-			fluid.type = "WATER";
+			fluid.type = _true ? "WATER" : "LAVA";
 			fluid.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "End"));
 			return fluid;
 		case FOOD:
@@ -429,7 +446,8 @@ public class TestWorkspaceDataProvider {
 			return tab;
 		case OVERLAY:
 			Overlay overlay = new Overlay(modElement);
-			overlay.priority = "HIGH";
+			overlay.priority = ListUtils
+					.getRandomItem(random, new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 			ArrayList<GUIComponent> components = new ArrayList<>();
 			if (!emptyLists) {
 				components.add(new net.mcreator.element.parts.gui.Label("text", 100, 150, "text", Color.red,
@@ -491,17 +509,19 @@ public class TestWorkspaceDataProvider {
 		case MOB:
 			Mob mob = new Mob(modElement);
 			mob.mobName = modElement.getName();
-			mob.mobLabel = "mod label";
-			mob.mobModelTexture = "";
-			mob.mobModelGlowTexture = "";
-			mob.mobModelName = "Biped";
+			mob.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
+			mob.mobModelTexture = "test.png";
+			mob.mobModelGlowTexture = emptyLists ? "" : "test.png";
+			mob.mobModelName = ListUtils.getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
 			mob.spawnEggBaseColor = Color.red;
 			mob.spawnEggDotColor = Color.green;
 			mob.isBoss = _true;
 			mob.creativeTab = new TabEntry(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			mob.bossBarColor = "RED";
-			mob.bossBarType = "NOTCHED_10";
+			mob.bossBarColor = ListUtils.getRandomItem(random,
+					new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
+			mob.bossBarType = ListUtils.getRandomItem(random,
+					new String[] { "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" });
 			mob.equipmentMainHand = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
 							.getName());
@@ -520,8 +540,9 @@ public class TestWorkspaceDataProvider {
 			mob.equipmentBoots = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
 							.getName());
-			mob.mobBehaviourType = "Creature";
-			mob.mobCreatureType = "ILLAGER";
+			mob.mobBehaviourType = _true ? "Creature" : "Mob";
+			mob.mobCreatureType = ListUtils
+					.getRandomItem(new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
 			mob.attackStrength = 4;
 			mob.attackKnockback = 1.5;
 			mob.knockbackResistance = 0.5;
@@ -565,7 +586,7 @@ public class TestWorkspaceDataProvider {
 			mob.spawnParticles = _true;
 			mob.particleToSpawn = new Particle(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadParticles()));
-			mob.particleSpawningShape = "Tube";
+			mob.particleSpawningShape = new String[] { "Spread", "Top", "Tube", "Plane" }[valueIndex];
 			mob.rangedItemType = "Default item";
 			mob.particleSpawningRadious = 4;
 			mob.particleAmount = 13;
@@ -583,7 +604,7 @@ public class TestWorkspaceDataProvider {
 				mob.onInitialSpawn = new Procedure("procedure9");
 			}
 			mob.hasAI = _true;
-			mob.aiBase = "Creeper";
+			mob.aiBase = "(none)";
 			mob.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\" x=\"40\" y=\"40\">"
 					+ "<next><block type=\"wander\"><field name=\"speed\">1</field>"
 					+ "<next><block type=\"look_around\"><next><block type=\"swim_in_water\">"
@@ -617,7 +638,7 @@ public class TestWorkspaceDataProvider {
 			mob.spawnThisMob = !_true;
 			mob.doesDespawnWhenIdle = _true;
 			mob.spawningProbability = 23;
-			mob.mobSpawningType = "creature";
+			mob.mobSpawningType = new String[] { "monster", "creature", "ambient", "waterCreature" }[valueIndex];
 			mob.minNumberOfMobsPerGroup = 4;
 			mob.maxNumberOfMobsPerGroup = 40;
 			mob.restrictionBiomes = new ArrayList<>();
@@ -669,8 +690,8 @@ public class TestWorkspaceDataProvider {
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			dimension.igniterName = modElement.getName();
-			dimension.worldGenType = ListUtils
-					.getRandomItem(Arrays.asList("Nether like gen", "Normal world gen", "End like gen"));
+			dimension.worldGenType = new String[] { "Nether like gen", "Normal world gen", "End like gen",
+					"Normal world gen" }[valueIndex];
 			dimension.mainFillerBlock = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			dimension.fluidBlock = new MItemBlock(modElement.getWorkspace(),
@@ -791,7 +812,7 @@ public class TestWorkspaceDataProvider {
 			plant.creativeTab = new TabEntry(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			plant.texture = "test";
-			plant.textureBottom = "test";
+			plant.textureBottom = "test2";
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
 			plant.growapableSpawnType = ListUtils
 					.getRandomItem(new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
@@ -926,75 +947,6 @@ public class TestWorkspaceDataProvider {
 			rangedItem.enableMeleeDamage = !_true;
 			rangedItem.damageVsEntity = 2;
 			return rangedItem;
-		case TOOL:
-			Tool tool = new Tool(modElement);
-			tool.name = modElement.getName();
-			tool.creativeTab = new TabEntry(modElement.getWorkspace(),
-					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			tool.toolType = ListUtils.getRandomItem(random,
-					new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Special", "MultiTool", "Shears" });
-			tool.harvestLevel = 3;
-			tool.efficiency = 6;
-			tool.attackSpeed = 4.8;
-			tool.enchantability = 4;
-			tool.damageVsEntity = 2;
-			tool.usageCount = 24;
-			tool.stayInGridWhenCrafting = _true;
-			tool.damageOnCrafting = _true;
-			tool.blocksAffected = new ArrayList<>();
-			tool.hasGlow = _true;
-			tool.specialInfo = new ArrayList<>();
-			if (!emptyLists) {
-				tool.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
-			} else {
-				tool.specialInfo = new ArrayList<>();
-			}
-			if (!emptyLists) {
-				tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
-				tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
-				tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
-				tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
-				tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
-				tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
-			}
-			tool.repairItems = new ArrayList<>();
-			if (!emptyLists) {
-				tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-								.getName()));
-				tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-								.getName()));
-				tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-								.getName()));
-				tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-								.getName()));
-				tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-								.getName()));
-			}
-			tool.onRightClickedInAir = new Procedure("procedure1");
-			tool.onRightClickedOnBlock = new Procedure("procedure2");
-			tool.onCrafted = new Procedure("procedure3");
-			tool.onBlockDestroyedWithTool = new Procedure("procedure4");
-			tool.onEntityHitWith = new Procedure("procedure5");
-			tool.onItemInInventoryTick = new Procedure("procedure6");
-			tool.onItemInUseTick = new Procedure("procedure7");
-			tool.onStoppedUsing = new Procedure("procedure8");
-			tool.onEntitySwing = new Procedure("procedure11");
-			tool.texture = "test";
-			tool.renderType = 0;
-			tool.customModelName = "Normal";
-			return tool;
 		case POTION:
 			Potion potion = new Potion(modElement);
 			potion.name = modElement.getName();
@@ -1032,7 +984,7 @@ public class TestWorkspaceDataProvider {
 			block.useLootTableForDrops = !_true;
 			block.creativeTab = new TabEntry(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			block.destroyTool = "shovel";
+			block.destroyTool = new String[] { "Not specified", "pickaxe", "axe", "shovel" }[valueIndex];
 			block.customDrop = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
 							.getName());
@@ -1073,7 +1025,7 @@ public class TestWorkspaceDataProvider {
 			block.tickRandomly = _true;
 			block.particleToSpawn = new Particle(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadParticles()));
-			block.particleSpawningShape = "Tube";
+			block.particleSpawningShape = new String[] { "Spread", "Top", "Tube", "Plane" }[valueIndex];
 			block.particleSpawningRadious = 4;
 			block.particleAmount = 13;
 			block.hasInventory = _true;
@@ -1110,7 +1062,7 @@ public class TestWorkspaceDataProvider {
 				block.fluidRestrictions.add(new net.mcreator.element.parts.Fluid(modElement.getWorkspace(),
 						ListUtils.getRandomItem(random, ElementUtil.loadAllFluids(modElement.getWorkspace()))));
 			}
-			block.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface"));
+			block.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			block.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				block.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
@@ -1330,6 +1282,77 @@ public class TestWorkspaceDataProvider {
 		default:
 			return null;
 		}
+	}
+
+	private static GeneratableElement getToolExample(ModElement modElement, String recipeType, Random random,
+			boolean _true, boolean emptyLists) {
+		Tool tool = new Tool(modElement);
+		tool.name = modElement.getName();
+		tool.creativeTab = new TabEntry(modElement.getWorkspace(),
+				ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
+		tool.toolType = recipeType;
+		tool.harvestLevel = 3;
+		tool.efficiency = 6;
+		tool.attackSpeed = 4.8;
+		tool.enchantability = 4;
+		tool.damageVsEntity = 2;
+		tool.usageCount = 24;
+		tool.stayInGridWhenCrafting = _true;
+		tool.damageOnCrafting = _true;
+		tool.blocksAffected = new ArrayList<>();
+		tool.hasGlow = _true;
+		tool.specialInfo = new ArrayList<>();
+		if (!emptyLists) {
+			tool.specialInfo = StringUtils
+					.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+		} else {
+			tool.specialInfo = new ArrayList<>();
+		}
+		if (!emptyLists) {
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+		}
+		tool.repairItems = new ArrayList<>();
+		if (!emptyLists) {
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName()));
+		}
+		tool.onRightClickedInAir = new Procedure("procedure1");
+		tool.onRightClickedOnBlock = new Procedure("procedure2");
+		tool.onCrafted = new Procedure("procedure3");
+		tool.onBlockDestroyedWithTool = new Procedure("procedure4");
+		tool.onEntityHitWith = new Procedure("procedure5");
+		tool.onItemInInventoryTick = new Procedure("procedure6");
+		tool.onItemInUseTick = new Procedure("procedure7");
+		tool.onStoppedUsing = new Procedure("procedure8");
+		tool.onEntitySwing = new Procedure("procedure11");
+		tool.texture = "test";
+		tool.renderType = 0;
+		tool.customModelName = "Normal";
+		return tool;
 	}
 
 	private static GeneratableElement getRecipeExample(ModElement modElement, String recipeType, Random random,
