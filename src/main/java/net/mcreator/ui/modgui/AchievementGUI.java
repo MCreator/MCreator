@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalBlockLoader;
+import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.AchievementEntry;
@@ -93,7 +94,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private boolean hasErrors = false;
-	private Map<String, ExternalBlockLoader.ToolboxBlock> externalBlocks;
+	private Map<String, ToolboxBlock> externalBlocks;
 
 	public AchievementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -279,15 +280,15 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 				.updateComboBoxContents(parentAchievement, ElementUtil.loadAllAchievements(mcreator.getWorkspace()));
 
 		ComboBoxUtil.updateComboBoxContents(rewardFunction, ListUtils
-				.merge(Collections.singleton(L10N.t("elementgui.advancement.no_function")),
+				.merge(Collections.singleton("No function"),
 						mcreator.getWorkspace().getModElements().stream()
 								.filter(e -> e.getType() == ModElementType.FUNCTION).map(ModElement::getName)
-								.collect(Collectors.toList())), L10N.t("elementgui.advancement.no_function"));
+								.collect(Collectors.toList())), "No function");
 
 		ComboBoxUtil.updateComboBoxContents(background, ListUtils
-				.merge(Collections.singleton(L10N.t("elementgui.advancement.default")),
+				.merge(Collections.singleton("Default"),
 						mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
-								.collect(Collectors.toList())), L10N.t("elementgui.advancement.default"));
+								.collect(Collectors.toList())), "Default");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

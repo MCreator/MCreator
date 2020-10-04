@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Tool;
 import net.mcreator.minecraft.DataListEntry;
@@ -111,13 +111,13 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	@Override protected void initGUI() {
 		onRightClickedInAir = new ProcedureSelector(this.withEntry("item/when_right_clicked"), mcreator,
-				L10N.t("elementgui.tool.event_right_clicked_air"),
+				L10N.t("elementgui.common.event_right_clicked_air"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator,
 				L10N.t("elementgui.tool.event_crafted"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
-				L10N.t("elementgui.tool.event_right_clicked_block"), Dependency.fromString(
+				L10N.t("elementgui.common.event_right_clicked_block"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction"));
 		onBlockDestroyedWithTool = new ProcedureSelector(this.withEntry("tool/when_block_destroyed"), mcreator,
 				L10N.t("elementgui.tool.event_block_destroyed"),
@@ -154,7 +154,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		JPanel destal = new JPanel();
 		destal.setOpaque(false);
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
 		texture.setOpaque(false);
 
 		hasGlow.setOpaque(false);

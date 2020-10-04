@@ -88,10 +88,12 @@ public class L10N {
 
 		if (rb.containsKey(key))
 			return MessageFormat.format(rb.getString(key), parameters);
-		else if (key.startsWith("blockly."))
+		else if (key.startsWith("blockly.") && key.endsWith(".tooltip"))
 			return null;
 		else if (isTestingEnvironment)
 			throw new RuntimeException("Failed to load any translation for key: " + key);
+		else if (key.startsWith("blockly.") || key.startsWith("trigger."))
+			return null;
 		else
 			return key;
 	}
@@ -102,10 +104,12 @@ public class L10N {
 
 		if (rb_en.containsKey(key))
 			return MessageFormat.format(rb_en.getString(key), parameters);
-		else if (key.startsWith("blockly."))
+		else if (key.startsWith("blockly.") && key.endsWith(".tooltip"))
 			return null;
 		else if (isTestingEnvironment)
 			throw new RuntimeException("Failed to load any translation for key: " + key);
+		else if (key.startsWith("blockly.") || key.startsWith("trigger."))
+			return null;
 		else
 			return key;
 	}

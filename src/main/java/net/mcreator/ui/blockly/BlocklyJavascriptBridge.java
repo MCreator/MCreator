@@ -19,7 +19,7 @@
 package net.mcreator.ui.blockly;
 
 import com.google.gson.Gson;
-import net.mcreator.blockly.data.ExternalTriggerLoader;
+import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.element.ModElementType;
 import net.mcreator.io.OS;
 import net.mcreator.minecraft.DataListEntry;
@@ -139,7 +139,7 @@ public class BlocklyJavascriptBridge {
 		put("no_ext_trigger", "No additional trigger");
 	}};
 
-	public void addExternalTrigger(ExternalTriggerLoader.ExternalTrigger external_trigger) {
+	public void addExternalTrigger(ExternalTrigger external_trigger) {
 		ext_triggers.put(external_trigger.getID(), external_trigger.getName());
 	}
 

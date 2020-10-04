@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.Structure;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.Transliteration;

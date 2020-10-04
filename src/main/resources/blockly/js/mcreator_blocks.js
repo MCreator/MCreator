@@ -23,6 +23,17 @@ Blockly.Blocks['cancel_event'] = {
     }
 };
 
+Blockly.Blocks['set_event_result'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.set_event_result.line1"))
+        	.appendField(new Blockly.FieldDropdown([["DEFAULT","DEFAULT"], ["ALLOW","ALLOW"], ["DENY","DENY"]]), 'result');
+        this.appendDummyInput().appendField(new Blockly.FieldLabel(javabridge.t("blockly.block.set_event_result.line2"), 'small-text'));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour(90);
+    }
+};
+
 Blockly.Blocks['call_procedure'] = {
     init: function () {
         this.appendDummyInput()
@@ -77,6 +88,16 @@ Blockly.Blocks['procedure_retval_string'] = {
             .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure_retval_string"))), 'procedure');
         this.setOutput(true, 'String');
         this.setColour(Blockly.Constants.Text.HUE);
+    }
+};
+
+Blockly.Blocks['procedure_retval_itemstack'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.procedure_retval"))
+            .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure_retval_itemstack"))), 'procedure');
+        this.setOutput(true, 'MCItem');
+        this.setColour(350);
     }
 };
 
@@ -238,6 +259,16 @@ Blockly.Blocks['custom_dependency_text'] = {
     }
 };
 
+Blockly.Blocks['custom_dependency_itemstack'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.custom_dependency_itemstack"))
+            .appendField(new Blockly.FieldTextInput("dependencyName"), 'NAME');
+        this.setColour(350);
+        this.setOutput(true, 'MCItem');
+    }
+};
+
 Blockly.Blocks['java_code'] = {
     init: function () {
         this.appendDummyInput()
@@ -333,6 +364,15 @@ Blockly.Blocks['return_text'] = {
         this.setPreviousStatement(true);
         this.setNextStatement(false);
         this.setColour(Blockly.Constants.Text.HUE);
+    }
+};
+
+Blockly.Blocks['return_itemstack'] = {
+    init: function () {
+        this.appendValueInput('return').setCheck('MCItem').appendField(javabridge.t("blockly.block.return"));
+        this.setPreviousStatement(true);
+        this.setNextStatement(false);
+        this.setColour(350);
     }
 };
 
@@ -554,6 +594,12 @@ Blockly.defineBlocksWithJsonArray([
     {
         "type": "source_entity_from_deps",
         "message0": "Source entity",
+        "output": "Entity",
+        "colour": "195"
+    },
+    {
+        "type": "entity_iterator",
+        "message0": "Entity iterator",
         "output": "Entity",
         "colour": "195"
     },
