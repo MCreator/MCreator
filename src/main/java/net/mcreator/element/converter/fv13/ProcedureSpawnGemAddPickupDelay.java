@@ -73,7 +73,7 @@ public class ProcedureSpawnGemAddPickupDelay implements IConverter {
 			String type = element.getAttribute("type");
 			if (type != null && strings_tofix_types.contains(type)) {
 				Element value = doc.createElement("value");
-				value.setAttribute("name", "item");
+				value.setAttribute("name", "string");
 				Element deps_block = doc.createElement("block");
 				deps_block.setAttribute("type", "string");
 				value.appendChild(deps_block);
