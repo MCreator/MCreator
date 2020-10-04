@@ -832,8 +832,7 @@ public class MinecraftImageGenerator {
 		 * @param dependencies Spawn egg's base (egg) color.
 		 * @return Returns generated image.
 		 */
-		public static BufferedImage generateProcedurePreviewPicture(Workspace workspace, String procedurexml,
-				List<Dependency> dependencies) {
+		public static BufferedImage generateProcedurePreviewPicture(String procedurexml, List<Dependency> dependencies) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 
