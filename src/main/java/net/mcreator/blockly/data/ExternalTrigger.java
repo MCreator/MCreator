@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-@SuppressWarnings("unused") public class ExternalTrigger {
+public class ExternalTrigger {
 
 	String id;
 	String name;
