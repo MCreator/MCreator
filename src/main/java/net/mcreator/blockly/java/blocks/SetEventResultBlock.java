@@ -36,17 +36,13 @@
 
 package net.mcreator.blockly.java.blocks;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalTrigger;
-import net.mcreator.blockly.data.ExternalTriggerLoader;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
-import net.mcreator.io.FileIO;
-import net.mcreator.plugin.PluginLoader;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -61,31 +57,42 @@ public class SetEventResultBlock implements IBlockGenerator {
 			List<Element> elements = XMLUtil.getDirectChildren(block);
 			String value = null;
 			for (Element element : elements) {
-			if (element.getNodeName().equals("field") && element.getAttribute("name").equals("result"))
-				value = element.getTextContent();
+				if (element.getNodeName().equals("field") && element.getAttribute("name").equals("result"))
+					value = element.getTextContent();
 			}
+
 			if (((BlocklyToProcedure) master).getExternalTrigger() != null) {
-				final Gson gson = new GsonBuilder().create();
-				ExternalTrigger trigger = gson.fromJson(
-						FileIO.readResourceToString(PluginLoader.INSTANCE, "triggers/"+((BlocklyToProcedure) master).getExternalTrigger()+".json"),
-						ExternalTrigger.class);
-				if (!trigger.has_result) {
-					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"This event does not have a result"));
+				ExternalTrigger trigger = null;
+
+				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
+						.getExternalTrigers();
+				for (ExternalTrigger externalTrigger : externalTriggers) {
+					if (externalTrigger.getID().equals(((BlocklyToProcedure) master).getExternalTrigger())) {
+						trigger = externalTrigger;
+						break;
+					}
 				}
+
+				if (trigger == null) {
+					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							"Failed to load selected external trigger"));
+				} else if (!trigger.has_result) {
+					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							"The selected global trigger does not have a result"));
+				}
+
 				if (master.getTemplateGenerator() != null) {
 					Map<String, Object> dataModel = new HashMap<>();
 					dataModel.put("result", value);
-					String code = master.getTemplateGenerator().generateFromTemplate("_set_event_result.java.ftl", dataModel);
+					String code = master.getTemplateGenerator()
+							.generateFromTemplate("_set_event_result.java.ftl", dataModel);
 					master.append(code);
 				}
-			}
-			else {
+			} else {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						"This procedure does not use global trigger so the set event result block can not set any result"));
 			}
-		}
-		else {
+		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 					"Set event result procedure block is not supported in this editor!"));
 		}
