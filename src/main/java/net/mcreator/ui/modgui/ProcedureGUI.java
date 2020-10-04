@@ -62,7 +62,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private BlocklyPanel blocklyPanel;
 
-	private final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
+	public final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
 	private final JList<VariableElement> localVarsList = new JList<>(localVars);
 
 	private boolean hasErrors = false;
@@ -143,7 +143,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				returnType.setVisible(true);
 				returnTypeLabel.setText(blocklyToJava.getReturnType().name());
 				returnTypeLabel
-						.setForeground(new Dependency("", blocklyToJava.getReturnType().toDependencyType()).getColor());
+						.setForeground(new Dependency("", blocklyToJava.getReturnType().toDependencyType()).getColor().brighter());
 			} else {
 				returnType.setVisible(false);
 			}
@@ -243,7 +243,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			setBorder(null);
 			Color col = value.getColor();
 			setBackground(isSelected ? col : (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : col);
+			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : col.brighter());
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
 			setToolTipText(value.getName() + ", type: " + value.getRawType());
@@ -514,7 +514,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
 
-		pane5.add("North", new ProcedureEditorToolbar(mcreator, blocklyPanel));
+		pane5.add("North", new ProcedureEditorToolbar(mcreator, blocklyPanel, this));
 
 		addPage(PanelUtils.gridElements(1, 1, pane5));
 	}

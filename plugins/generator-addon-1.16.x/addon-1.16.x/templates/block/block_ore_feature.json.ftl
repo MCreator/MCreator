@@ -4,7 +4,7 @@
     "format_version": "1.13.0",
     "minecraft:ore_feature": {
       "description": {
-        "identifier": "${modid}_${registryname}_ore_feature"
+        "identifier": "${modid}:${modid}_${registryname}_ore_feature"
       },
       "count": ${data.frequencyOnChunk},
       "places_block": "${modid}:${registryname}",

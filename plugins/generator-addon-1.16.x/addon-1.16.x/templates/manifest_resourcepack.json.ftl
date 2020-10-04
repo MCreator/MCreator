@@ -5,21 +5,15 @@
     "header": {
       "description": "${settings.getDescription()!""}",
       "name": "${settings.getModName()}",
-      "uuid": "${w.getUUID()}",
+      "uuid": "${w.getUUID("resourcepack")}",
       "version": [${v[0]}, ${v[1]}, ${v[2]}],
-      "min_engine_version": [1, 14, 0]
+      "min_engine_version": [1, 16, 0]
     },
     "modules": [
       {
         "description": "${settings.getDescription()!""}",
-        "type": "data",
-        "uuid": "${w.getUUID("module_data")}",
-        "version": [${v[0]}, ${v[1]}, ${v[2]}]
-      }
-    ],
-    "dependencies": [
-      {
-        "uuid": "${w.getUUID("resourcepack")}",
+        "type": "resources",
+        "uuid": "${w.getUUID("module_resources")}",
         "version": [${v[0]}, ${v[1]}, ${v[2]}]
       }
     ],

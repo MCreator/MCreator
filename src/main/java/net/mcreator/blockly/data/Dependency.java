@@ -82,23 +82,23 @@ public class Dependency implements Comparable<Dependency> {
 	public Color getColor() {
 		switch (type) {
 		case "number":
-			return new Color(0x606999).brighter();
+			return new Color(0x606999);
 		case "boolean":
-			return new Color(0x607c99).brighter();
+			return new Color(0x607c99);
 		case "world":
-			return new Color(0x998160).brighter();
+			return new Color(0x998160);
 		case "entity":
-			return new Color(0x608a99).brighter();
+			return new Color(0x608a99);
 		case "itemstack":
-			return new Color(0x996069).brighter();
+			return new Color(0x996069);
 		case "map":
-			return new Color(143, 217, 128);
+			return new Color(0x8FD980);
 		case "string":
 			return new Color(0x609986);
 		case "direction":
-			return new Color(0x997360).brighter();
+			return new Color(0x997360);
 		case "advancement":
-			return new Color(0x68712E).brighter();
+			return new Color(0x68712E);
 		default:
 			return Color.white;
 		}

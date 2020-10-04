@@ -20,9 +20,11 @@ package net.mcreator.element.types;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.WorkspaceFileManager;
 import net.mcreator.workspace.elements.ModElement;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,4 +55,8 @@ public class Procedure extends GeneratableElement {
 		}
 	}
 
+	@Override public BufferedImage generateModElementPicture() {
+		return MinecraftImageGenerator.Preview
+				.generateProcedurePreviewPicture(getModElement().getWorkspace(), procedurexml, getDependencies());
+	}
 }

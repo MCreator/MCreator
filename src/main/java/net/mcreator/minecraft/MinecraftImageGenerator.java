@@ -18,6 +18,8 @@
 
 package net.mcreator.minecraft;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
@@ -38,6 +40,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class MinecraftImageGenerator {
@@ -399,12 +402,9 @@ public class MinecraftImageGenerator {
 				String name) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
-			graphics2D.setColor(new Color(255, 255, 255, 180));
+			graphics2D.setColor(new Color(190, 190, 190, 65));
 
-			graphics2D.drawLine(0, 8, 27, 8);
-			graphics2D.drawLine(0, 19, 27, 19);
-			graphics2D.drawLine(0, 9, 0, 18);
-			graphics2D.drawLine(27, 9, 27, 18);
+			graphics2D.fillRect(0, 8, 28, 12);
 
 			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
 					MCItem.getBlockIconBasedOnName(workspace, achievementIcon.getUnmappedValue()).getImage())), 2, 10,
@@ -485,12 +485,13 @@ public class MinecraftImageGenerator {
 		public static BufferedImage generateCreativeTabPreviewPicture(Workspace workspace, MItemBlock item) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
-			graphics2D.setColor(new Color(255, 255, 255, 180));
+			graphics2D.setColor(new Color(190, 190, 190, 65));
 			graphics2D.setFont(new Font(null, Font.PLAIN, 9));
 
 			graphics2D.drawLine(0, 1, 0, 27);
 			graphics2D.drawLine(27, 1, 27, 27);
 			graphics2D.drawLine(1, 0, 26, 0);
+			graphics2D.fillRect(1, 1, 26, 27);
 
 			int s = 16;
 
@@ -682,7 +683,6 @@ public class MinecraftImageGenerator {
 		 * @param waterColor       Biome's water color.
 		 * @param groundBlock      Block used to calculate ground color. If grass, uses grass color instead
 		 * @param undergroundBlock Block used to calculate underground color.
-		 * @param lakes            Toggle lake rendering.
 		 * @param treesPerChunk    If there are any, a tree renders.
 		 * @param treeType         Use default colors if vanilla.
 		 * @param treeStem         Item used to calculate tree stem color.
@@ -776,7 +776,7 @@ public class MinecraftImageGenerator {
 					workspace.getFolderManager().getOtherTextureFile(FilenameUtils.removeExtension(mobModelTexture))
 							.getAbsolutePath()).getImage()));
 
-			graphics2D.drawImage(ImageUtils.colorize(UIRES.get("entity_base"), textureColor, false).getImage(), 0, 0,
+			graphics2D.drawImage(ImageUtils.colorize(UIRES.get("mod_preview_bases.entity_base"), textureColor, false).getImage(), 0, 0,
 					null);
 
 			if (hasSpawnEgg) {
@@ -820,6 +820,79 @@ public class MinecraftImageGenerator {
 			} catch (IOException e) {
 				LOG.error(e.getMessage(), e);
 			}
+
+			graphics2D.dispose();
+			return icon;
+		}
+
+		/**
+		 * This method generates procedure images.
+		 *
+		 * @param procedurexml Mob model full texture.
+		 * @param dependencies Spawn egg's base (egg) color.
+		 * @return Returns generated image.
+		 */
+		public static BufferedImage generateProcedurePreviewPicture(Workspace workspace, String procedurexml,
+				List<Dependency> dependencies) {
+			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2D = icon.createGraphics();
+
+			Color startColor = null;
+			Color returnColor = null;
+			Color blockColor = null;
+
+			// hacky xml scanning for performance reasons
+			// also this is only used for preview only, so it is fine
+			if (!procedurexml.contains("<field name=\"trigger\">no_ext_trigger</field>"))
+				startColor = BlocklyBlockUtil.getBlockColorFromHUE(76);
+
+			if (procedurexml.contains("<block type=\"return_")) {
+				if (procedurexml.contains("<block type=\"return_logic\"><value name=\"return\">")) {
+					returnColor = new Color(0x607c99);
+				} else if (procedurexml.contains("<block type=\"return_number\"><value name=\"return\">")) {
+					returnColor = new Color(0x606999);
+				} else if (procedurexml.contains("<block type=\"return_text\"><value name=\"return\">")) {
+					returnColor = new Color(0x609986);
+				} else if (procedurexml.contains("<block type=\"return_itemstack\"><value name=\"return\">")) {
+					returnColor = BlocklyBlockUtil.getBlockColorFromHUE(350);
+				}
+			}
+
+			if (dependencies.contains(new Dependency("advancement", ""))) {
+				blockColor = new Color(0x68712E);
+			} else if (procedurexml.contains("<block type=\"block_")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(60);
+			} else if (dependencies.contains(new Dependency("itemstack", ""))) {
+				blockColor = new Color(0x996069);
+			} else if (dependencies.contains(new Dependency("entity", "")) || dependencies
+					.contains(new Dependency("sourceentity", "")) || dependencies
+					.contains(new Dependency("imediatesourceentity", ""))) {
+				blockColor = new Color(0x608a99);
+			} else if (dependencies.contains(new Dependency("world", ""))) {
+				blockColor = new Color(0x998160);
+			}
+
+			if (startColor != null)
+				graphics2D.drawImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_base"), startColor, false)
+								.getImage(), 0, 0, null);
+			else {
+				graphics2D.drawImage(UIRES.get("mod_preview_bases.procedure_empty_base").getImage(), 0, 0, null);
+			}
+
+			if (blockColor != null) {
+				graphics2D.drawImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_block_base"), blockColor, false)
+								.getImage(), 0, 0, null);
+			} else
+				graphics2D.drawImage(UIRES.get("mod_preview_bases.procedure_block_base").getImage(), 0, 0, null);
+
+			if (returnColor != null)
+				graphics2D.drawImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_return_base"), returnColor, false)
+								.getImage(), 0, 0, null);
+			else
+				graphics2D.drawImage(UIRES.get("mod_preview_bases.procedure_return_base").getImage(), 0, 0, null);
 
 			graphics2D.dispose();
 			return icon;
