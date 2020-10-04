@@ -18,40 +18,23 @@
 
 package net.mcreator.ui.minecraft.spawntrees;
 
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TreeEntry;
 import net.mcreator.element.types.Biome;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.resources.Model;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class JTreeListEntry extends JPanel {
 
-	private final JComboBox treeType = new JComboBox<>();
+	private final JComboBox<String> treeType = new JComboBox<>();
 	private final JSpinner count = new JSpinner(new SpinnerNumberModel(5, 1, 1000, 1));
 	private final JSpinner extraChance = new JSpinner(new SpinnerNumberModel(0.1, 0, 1000, 0.1));
 	private final JSpinner extraCount = new JSpinner(new SpinnerNumberModel(1, 0, 1000, 1));
