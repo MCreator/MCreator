@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-@SuppressWarnings("unused") public class ToolboxBlock {
+public class ToolboxBlock {
 	String toolbox_id;
 	public String machine_name;
 	public IBlockGenerator.BlockType type;

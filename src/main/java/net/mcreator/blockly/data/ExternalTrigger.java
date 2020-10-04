@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-@SuppressWarnings("unused") public class ExternalTrigger {
+public class ExternalTrigger {
 
 	String id;
 	String name;
@@ -32,6 +32,10 @@ import java.util.List;
 	@Nullable public List<String> required_apis;
 
 	@Nullable public List<Dependency> dependencies_provided;
+
+	public boolean cancelable;
+
+	public boolean has_result;
 
 	public String getID() {
 		return id;

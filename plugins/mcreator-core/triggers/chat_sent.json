@@ -24,5 +24,6 @@
       "name": "text",
       "type": "string"
     }
-  ]
+  ],
+  "cancelable": "true"
 }
