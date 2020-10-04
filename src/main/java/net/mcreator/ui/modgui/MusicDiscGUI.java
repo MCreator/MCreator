@@ -107,7 +107,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.t("elementgui.music_disc.event_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
 
 		texture.setOpaque(false);
 		hasGlow.setOpaque(false);

@@ -391,15 +391,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel destal = new JPanel(new GridLayout(3, 4));
 		destal.setOpaque(false);
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
-		textureTop = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+		textureTop = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
 
-		textureLeft = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
-		textureFront = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
-		textureRight = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
-		textureBack = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
+		textureLeft = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+		textureFront = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+		textureRight = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+		textureBack = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
 
-		itemTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"), 32);
+		itemTexture = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM), 32);
 
 		itemTexture.setOpaque(false);
 		texture.setOpaque(false);
