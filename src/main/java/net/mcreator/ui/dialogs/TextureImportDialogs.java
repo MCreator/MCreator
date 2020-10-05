@@ -39,9 +39,9 @@ public class TextureImportDialogs {
 		int n = JOptionPane.showOptionDialog(mcreator, message, "Texture type", JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (n == 0) {
-			TextureImportDialogs.importTexturesBlockOrItem(mcreator, "blocks", new File[] { file });
+			TextureImportDialogs.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.BLOCK, new File[] { file });
 		} else if (n == 1) {
-			TextureImportDialogs.importTexturesBlockOrItem(mcreator, "items", new File[] { file });
+			TextureImportDialogs.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.ITEM, new File[] { file });
 		} else if (n == 2) {
 			TextureImportDialogs.importOtherTextures(mcreator, new File[] { file });
 		}
@@ -118,17 +118,17 @@ public class TextureImportDialogs {
 			}
 	}
 
-	public static void importTexturesBlockOrItem(MCreator fr, String type) {
+	public static void importTexturesBlockOrItem(MCreator fr, BlockItemTextureSelector.TextureType type) {
 		File[] hohe = FileDialogs.getMultiOpenDialog(fr, new String[] { ".png" });
 		if (hohe != null)
 			importTexturesBlockOrItem(fr, type, hohe);
 	}
 
-	public static void importTexturesBlockOrItem(MCreator fr, String type, File[] hohe) {
+	public static void importTexturesBlockOrItem(MCreator fr, BlockItemTextureSelector.TextureType type, File[] hohe) {
 		Arrays.stream(hohe).forEach(hoh -> {
 			String namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(hoh.getName()));
 			File file;
-			if (type.equals("blocks")) {
+			if (type == BlockItemTextureSelector.TextureType.BLOCK) {
 				file = fr.getWorkspace().getFolderManager().getBlockTextureFile(namec);
 			} else {
 				file = fr.getWorkspace().getFolderManager().getItemTextureFile(namec);
@@ -138,7 +138,7 @@ public class TextureImportDialogs {
 						+ "You can enter a new name or cancel the import", "Import error", JOptionPane.WARNING_MESSAGE);
 				if (name != null) {
 					namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(name));
-					if (type.equals("blocks")) {
+					if (type == BlockItemTextureSelector.TextureType.BLOCK) {
 						file = fr.getWorkspace().getFolderManager().getBlockTextureFile(namec);
 					} else {
 						file = fr.getWorkspace().getFolderManager().getItemTextureFile(namec);

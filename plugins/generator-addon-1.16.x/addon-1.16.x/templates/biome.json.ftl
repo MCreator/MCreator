@@ -1,7 +1,7 @@
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 {
-  "format_version": "1.13",
+  "format_version": "1.13.0",
   "minecraft:biome": {
     "description": {
       "identifier": "${registryname}"
@@ -18,14 +18,15 @@
       "minecraft:overworld_height": {
         "noise_type": "${thelper.mapToString(data.heightVariation, 0, 1.5, "lowlands", "default", "extreme")}"
       },
-      "minecraft:overworld_surface": {
-        "floor_depth": ${(-12.5 * data.baseHeight + 25)?round},
+      "minecraft:surface_parameters": {
+        "sea_floor_depth": ${(-12.5 * data.baseHeight + 25)?round},
+        "sea_floor_material": ${mappedMCItemToIngameItemName(data.undergroundBlock)?replace("\"item\":", "")},
         "top_material": ${mappedMCItemToIngameItemName(data.groundBlock)?replace("\"item\":", "")},
         "mid_material": ${mappedMCItemToIngameItemName(data.undergroundBlock)?replace("\"item\":", "")},
-        "floor_material": ${mappedMCItemToIngameItemName(data.undergroundBlock)?replace("\"item\":", "")},
-        "foundation_material": "minecraft:stone"
+        "foundation_material": "minecraft:stone",
+        "sea_material": "minecraft:water"
       },
-      "minecraft:world_generation_rules": {
+      "minecraft:overworld_generation_rules": {
         <#if data.spawnBiome>
             "generate_for_climates": [
               <#if data.biomeType == "COOL" || data.biomeType == "ICY">

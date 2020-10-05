@@ -130,7 +130,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		hasGlow.setOpaque(false);
 		hasGlow.setSelected(false);
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
 		texture.setOpaque(false);
 
 		destal.add("Center", ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.food.texture")));

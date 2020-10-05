@@ -32,6 +32,7 @@ import net.mcreator.ui.action.impl.workspace.resources.ModelImportActions;
 import net.mcreator.ui.action.impl.workspace.resources.StructureImportActions;
 import net.mcreator.ui.action.impl.workspace.resources.TextureAction;
 import net.mcreator.ui.browser.action.*;
+import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
@@ -236,10 +237,10 @@ public class ActionRegistry {
 		this.createAnimatedTexture = new TextureAction(this, L10N.t("action.create_animated_texture"),
 				actionEvent -> new AnimationMakerView(mcreator).showView()).setIcon(UIRES.get("16px.newanimation"));
 		this.importBlockTexture = new TextureAction(this, L10N.t("action.import_block_texture"),
-				actionEvent -> TextureImportDialogs.importTexturesBlockOrItem(mcreator, "blocks"))
+				actionEvent -> TextureImportDialogs.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.BLOCK))
 				.setIcon(UIRES.get("16px.importblock"));
 		this.importItemTexture = new TextureAction(this, L10N.t("action.import_item_texture"),
-				actionEvent -> TextureImportDialogs.importTexturesBlockOrItem(mcreator, "items"))
+				actionEvent -> TextureImportDialogs.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.ITEM))
 				.setIcon(UIRES.get("16px.importitem"));
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
