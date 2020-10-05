@@ -207,8 +207,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		pane3.setOpaque(false);
 
-		portalTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
+		portalTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
 
 		portalTexture.setOpaque(false);
 		texture.setOpaque(false);
