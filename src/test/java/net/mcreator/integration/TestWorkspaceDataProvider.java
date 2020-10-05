@@ -440,6 +440,7 @@ public class TestWorkspaceDataProvider {
 			}
 			overlay.displayCondition = new Procedure("condition1");
 			overlay.components = components;
+			overlay.baseTexture = "test.png";
 			return overlay;
 		case GUI:
 			GUI gui = new GUI(modElement);
@@ -546,6 +547,7 @@ public class TestWorkspaceDataProvider {
 			mob.ridable = _true;
 			mob.canControlStrafe = !_true;
 			mob.canControlForward = _true;
+			mob.guiBoundTo = "<NONE>";
 			mob.mobDrop = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
 							.getName());
@@ -723,12 +725,16 @@ public class TestWorkspaceDataProvider {
 			Armor armor = new Armor(modElement);
 			armor.enableHelmet = !_true;
 			armor.textureHelmet = "test";
+			armor.helmetModelTexture = emptyLists ? "From armor" : "test.png";
 			armor.enableBody = !_true;
 			armor.textureBody = "test2";
+			armor.bodyModelTexture = emptyLists ? "From armor" : "test.png";
 			armor.enableLeggings = !_true;
 			armor.textureLeggings = "test3";
+			armor.leggingsModelTexture = emptyLists ? "From armor" : "test.png";
 			armor.enableBoots = !_true;
 			armor.textureBoots = "test4";
+			armor.bootsModelTexture = emptyLists ? "From armor" : "test.png";
 			if (!emptyLists) {
 				armor.helmetSpecialInfo = StringUtils
 						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
@@ -853,6 +859,7 @@ public class TestWorkspaceDataProvider {
 			item.destroyAnyBlock = _true;
 			item.inventorySize = 10;
 			item.inventoryStackSize = 42;
+			item.guiBoundTo = "<NONE>";
 			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
 							.getName());
@@ -1007,6 +1014,7 @@ public class TestWorkspaceDataProvider {
 			block.particleSpawningRadious = 4;
 			block.particleAmount = 13;
 			block.hasInventory = _true;
+			block.guiBoundTo = "<NONE>";
 			block.openGUIOnRightClick = !_true;
 			block.inventorySize = 10;
 			block.inventoryStackSize = 42;
