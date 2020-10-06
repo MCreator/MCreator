@@ -63,6 +63,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private TextureHolder texture;
 	private TextureHolder textureBottom;
 
+	private TextureHolder itemTexture;
+
 	private final JLabel stl = new JLabel(TiledImageCache.plantStaticYes);
 	private final JLabel dyn = new JLabel(TiledImageCache.plantGrowingNo);
 	private final JLabel dbl = new JLabel(TiledImageCache.plantDoubleNo);
@@ -83,7 +85,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JTextField specialInfo = new JTextField(20);
 
-	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
+	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator);
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.plant.is_replaceable");
 	private final JComboBox<String> colorOnMap = new JComboBox<>();
@@ -110,12 +112,15 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
 	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
 
+	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourBlockChanges;
 	private ProcedureSelector onTickUpdate;
+	private ProcedureSelector onRandomUpdateEvent;
 	private ProcedureSelector onDestroyedByPlayer;
 	private ProcedureSelector onDestroyedByExplosion;
 	private ProcedureSelector onStartToDestroy;
 	private ProcedureSelector onEntityCollides;
+	private ProcedureSelector onBlockPlacedBy;
 	private ProcedureSelector onRightClicked;
 
 	private ProcedureSelector generateCondition;
@@ -125,8 +130,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final ValidationGroup page2group = new ValidationGroup();
 
-	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
-	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
+	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(100, 0, 1024, 1));
+	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(60, 0, 1024, 1));
 
 	public PlantGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -137,12 +142,17 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	@Override protected void initGUI() {
 		restrictionBiomes = new BiomeListField(mcreator);
 
+		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator, "When plant added",
+				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onNeighbourBlockChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
 				L10N.t("elementgui.common.event_on_neighbour_block_changes"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator,
 				L10N.t("elementgui.common.event_on_update_tick"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
+		onRandomUpdateEvent = new ProcedureSelector(this.withEntry("block/display_tick_update"), mcreator,
+				"Client display random tick", ProcedureSelector.Side.CLIENT,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onDestroyedByPlayer = new ProcedureSelector(this.withEntry("block/when_destroyed_player"), mcreator,
 				L10N.t("elementgui.plant.event_on_destroyed_by_player"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
@@ -155,6 +165,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onEntityCollides = new ProcedureSelector(this.withEntry("block/when_entity_collides"), mcreator,
 				L10N.t("elementgui.plant.event_on_entity_collides"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		onBlockPlacedBy = new ProcedureSelector(this.withEntry("block/when_block_placed_by"), mcreator,
+				"When block is placed by",
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClicked = new ProcedureSelector(this.withEntry("block/when_right_clicked"), mcreator,
 				L10N.t("elementgui.plant.event_on_right_clicked"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/direction:direction"));
@@ -182,6 +195,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		textureBottom.setOpaque(false);
 		textureBottom.setVisible(false);
 
+		itemTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM), 32);
+		itemTexture.setOpaque(false);
+
 		JPanel modelandinfo = new JPanel(new GridLayout(2, 1));
 		modelandinfo.setOpaque(false);
 
@@ -191,9 +207,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.special_information_title"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		infopanel.add("South", PanelUtils.gridElements(1, 2,
+		infopanel.add("South", PanelUtils.gridElements(2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-						L10N.label("elementgui.plant.special_information_tip")), specialInfo));
+						L10N.label("elementgui.plant.special_information_tip")),
+				specialInfo, HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
+						L10N.label("elementgui.plant.item_texture")),
+				PanelUtils.centerInPanel(itemTexture)));
 
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
@@ -434,15 +453,18 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		pane3.setOpaque(false);
 
-		JPanel events2 = new JPanel(new GridLayout(3, 3, 8, 8));
+		JPanel events2 = new JPanel(new GridLayout(3, 4, 5, 8));
 		events2.setOpaque(false);
+		events2.add(onRightClicked);
+		events2.add(onBlockAdded);
 		events2.add(onNeighbourBlockChanges);
 		events2.add(onTickUpdate);
 		events2.add(onDestroyedByPlayer);
 		events2.add(onDestroyedByExplosion);
 		events2.add(onStartToDestroy);
 		events2.add(onEntityCollides);
-		events2.add(onRightClicked);
+		events2.add(onBlockPlacedBy);
+		events2.add(onRandomUpdateEvent);
 		events2.add(new JLabel(""));
 
 		JPanel spawning = new JPanel(new GridLayout(3, 2, 5, 5));
@@ -501,18 +523,24 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
+		onBlockAdded.refreshListKeepSelected();
 		onNeighbourBlockChanges.refreshListKeepSelected();
 		onTickUpdate.refreshListKeepSelected();
+		onRandomUpdateEvent.refreshListKeepSelected();
 		onDestroyedByPlayer.refreshListKeepSelected();
 		onDestroyedByExplosion.refreshListKeepSelected();
 		onStartToDestroy.refreshListKeepSelected();
 		onEntityCollides.refreshListKeepSelected();
+		onBlockPlacedBy.refreshListKeepSelected();
 		onRightClicked.refreshListKeepSelected();
 
 		generateCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("DECORATIONS"));
+
+		ComboBoxUtil.updateComboBoxContents(soundOnStep, ElementUtil.loadStepSounds(),
+				new DataListEntry.Dummy("PLANT"));
 
 		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.loadMapColors()), "DEFAULT");
 
@@ -533,6 +561,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	@Override public void openInEditingMode(Plant plant) {
+		itemTexture.setTextureFromTextureName(plant.itemTexture);
 		texture.setTextureFromTextureName(plant.texture);
 		textureBottom.setTextureFromTextureName(plant.textureBottom);
 		name.setText(plant.name);
@@ -549,12 +578,15 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		customDrop.setBlock(plant.customDrop);
 		dropAmount.setValue(plant.dropAmount);
 		creativeTab.setSelectedItem(plant.creativeTab);
+		onBlockAdded.setSelectedProcedure(plant.onBlockAdded);
 		onNeighbourBlockChanges.setSelectedProcedure(plant.onNeighbourBlockChanges);
 		onTickUpdate.setSelectedProcedure(plant.onTickUpdate);
+		onRandomUpdateEvent.setSelectedProcedure(plant.onRandomUpdateEvent);
 		onDestroyedByPlayer.setSelectedProcedure(plant.onDestroyedByPlayer);
 		onDestroyedByExplosion.setSelectedProcedure(plant.onDestroyedByExplosion);
 		onStartToDestroy.setSelectedProcedure(plant.onStartToDestroy);
 		onEntityCollides.setSelectedProcedure(plant.onEntityCollides);
+		onBlockPlacedBy.setSelectedProcedure(plant.onBlockPlacedBy);
 		onRightClicked.setSelectedProcedure(plant.onRightClicked);
 		growapableMaxHeight.setValue(plant.growapableMaxHeight);
 		spawnWorldTypes.setListElements(plant.spawnWorldTypes);
@@ -621,6 +653,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		plant.texture = texture.getID();
 		plant.textureBottom = textureBottom.getID();
+		plant.itemTexture = itemTexture.getID();
 		if (normalType.isSelected())
 			plant.plantType = "normal";
 		else if (growapableType.isSelected())
@@ -642,12 +675,15 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.customDrop = customDrop.getBlock();
 		plant.dropAmount = (int) dropAmount.getValue();
 		plant.frequencyOnChunks = (int) frequencyOnChunks.getValue();
+		plant.onBlockAdded = onBlockAdded.getSelectedProcedure();
 		plant.onNeighbourBlockChanges = onNeighbourBlockChanges.getSelectedProcedure();
 		plant.onTickUpdate = onTickUpdate.getSelectedProcedure();
+		plant.onRandomUpdateEvent = onRandomUpdateEvent.getSelectedProcedure();
 		plant.onDestroyedByPlayer = onDestroyedByPlayer.getSelectedProcedure();
 		plant.onDestroyedByExplosion = onDestroyedByExplosion.getSelectedProcedure();
 		plant.onStartToDestroy = onStartToDestroy.getSelectedProcedure();
 		plant.onEntityCollides = onEntityCollides.getSelectedProcedure();
+		plant.onBlockPlacedBy = onBlockPlacedBy.getSelectedProcedure();
 		plant.onRightClicked = onRightClicked.getSelectedProcedure();
 		plant.spawnWorldTypes = spawnWorldTypes.getListElements();
 		plant.restrictionBiomes = restrictionBiomes.getListElements();
