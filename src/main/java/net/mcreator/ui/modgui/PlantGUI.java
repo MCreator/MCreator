@@ -191,7 +191,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		textureBottom.setOpaque(false);
 		textureBottom.setVisible(false);
 
-		itemTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"), 32);
+		itemTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM), 32);
 		itemTexture.setOpaque(false);
 
 		JPanel modelandinfo = new JPanel(new GridLayout(2, 1));
