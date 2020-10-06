@@ -94,7 +94,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
 	private final JComboBox<String> oceanRuinType = new JComboBox<>(new String[] { "NONE", "COLD", "WARM" });
 
-	private final JSpawnEntriesList spawnEntriesList = new JSpawnEntriesList(mcreator);
+	private final JSpawnEntriesList spawnEntries = new JSpawnEntriesList(mcreator);
 
 	private MCItemHolder groundBlock;
 	private MCItemHolder undergroundBlock;
@@ -464,7 +464,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		JComponent component = PanelUtils.northAndCenterElement(HelpUtils
 				.wrapWithHelpButton(this.withEntry("biome/spawn_entities"),
-						new JLabel(L10N.t("elementgui.biome.spawn_entities"))), spawnEntriesList);
+						new JLabel(L10N.t("elementgui.biome.spawn_entities"))), spawnEntries);
 
 		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -595,7 +595,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biomeDictionaryTypes.setListElements(biome.biomeDictionaryTypes);
 		defaultFeatures.setListElements(biome.defaultFeatures);
 		vanillaTreeType.setSelectedItem(biome.vanillaTreeType);
-		spawnEntriesList.setSpawns(biome.spawnEntries);
+		spawnEntries.setSpawns(biome.spawnEntries);
 
 		updateBiomeTreesForm();
 	}
@@ -635,7 +635,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.biomeDictionaryTypes = biomeDictionaryTypes.getListElements();
 		biome.defaultFeatures = defaultFeatures.getListElements();
 		biome.vanillaTreeType = (String) vanillaTreeType.getSelectedItem();
-		biome.spawnEntries = spawnEntriesList.getSpawns();
+		biome.spawnEntries = spawnEntries.getSpawns();
 		biome.minHeight = (int) minHeight.getValue();
 		biome.spawnVines = spawnVines.isSelected();
 		biome.treeVines = treeVines.getBlock();

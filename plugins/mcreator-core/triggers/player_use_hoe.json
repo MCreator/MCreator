@@ -20,5 +20,7 @@
       "name": "z",
       "type": "number"
     }
-  ]
+  ],
+  "cancelable": "true",
+  "has_result": "true"
 }

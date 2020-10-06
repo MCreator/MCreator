@@ -59,6 +59,7 @@ public class MainToolBar extends JToolBar {
 		add(mcreator.actionRegistry.openOrePackMaker);
 		add(mcreator.actionRegistry.openToolPackMaker);
 		add(mcreator.actionRegistry.openArmorPackMaker);
+		add(mcreator.actionRegistry.openWoodPackMaker);
 
 		addSeparator(new Dimension(10, 4));
 		add(mcreator.actionRegistry.setCreativeTabItemOrder);

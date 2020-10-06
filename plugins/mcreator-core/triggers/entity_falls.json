@@ -28,5 +28,6 @@
       "name": "distance",
       "type": "number"
     }
-  ]
+  ],
+  "cancelable": "true"
 }

@@ -166,7 +166,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
 		texture.setOpaque(false);
 
 		JPanel destal2 = new JPanel(new BorderLayout(0, 10));

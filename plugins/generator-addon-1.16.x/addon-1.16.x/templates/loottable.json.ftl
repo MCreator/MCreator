@@ -13,14 +13,14 @@
           },
           </#if>
           <#if pool.hasbonusrolls>
-            <#if pool.minbonusrolls == pool.maxbonusrolls>
+              <#if pool.minbonusrolls == pool.maxbonusrolls>
             "bonus_rolls": ${pool.minbonusrolls},
-            <#else>
+              <#else>
             "bonus_rolls": {
               "min": ${pool.minbonusrolls},
               "max": ${pool.maxbonusrolls}
             },
-            </#if>
+              </#if>
           </#if>
           "entries": [
             <#list pool.entries as entry>
@@ -93,16 +93,16 @@
                       "formula": "minecraft:ore_drops"
                     },
                     </#if>
-                    {
-                        "function": "set_count",
-                        "count": {
-                          "min": ${entry.minCount},
-                          "max": ${entry.maxCount}
+                  {
+                    "function": "set_count",
+                    "count": {
+                      "min": ${entry.minCount},
+                      "max": ${entry.maxCount}
                     }
                   }
                 ]
               }
-              <#if entry?has_next>,</#if>
+                <#if entry?has_next>,</#if>
             </#list>
           ]
         }

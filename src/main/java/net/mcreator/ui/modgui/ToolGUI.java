@@ -154,7 +154,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		JPanel destal = new JPanel();
 		destal.setOpaque(false);
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
 		texture.setOpaque(false);
 
 		hasGlow.setOpaque(false);

@@ -18,12 +18,15 @@
 
 package net.mcreator.blockly.data;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.ui.init.L10N;
 
 import java.awt.*;
 
-@SuppressWarnings("unused") public class ToolboxCategory {
+public class ToolboxCategory {
+
 	String id, name, description;
+
 	int color;
 	boolean api;
 
@@ -36,6 +39,6 @@ import java.awt.*;
 	}
 
 	public Color getColor() {
-		return Color.getHSBColor(color / 360f, 0.37f, 0.6f);
+		return BlocklyBlockUtil.getBlockColorFromHUE(color);
 	}
 }
