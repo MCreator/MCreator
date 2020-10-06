@@ -75,7 +75,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JSpinner frequencyOnChunks = new JSpinner(new SpinnerNumberModel(5, 0, 40, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 200, 1));
 
-	private final JCheckBox useLootTableForDrops = new JCheckBox("Use loot table for drops");
+	private final JCheckBox useLootTableForDrops = L10N.checkbox("elementgui.common.use_table_loot_drops");
 	private final JCheckBox unbreakable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox forceTicking = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasTileEntity = L10N.checkbox("elementgui.common.enable");
@@ -87,7 +87,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator);
 
-	private final JCheckBox isReplaceable = new JCheckBox("Is replaceable");
+	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.plant.is_replaceable");
 	private final JComboBox<String> colorOnMap = new JComboBox<>();
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -95,7 +95,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
-	private final JRadioButton normalType = new JRadioButton("<html><b>Use static plant type");
+	private final JRadioButton normalType = L10N.radiobutton("elementgui.plant.use_static_plant_type");
 	private final JComboBox<String> growapableSpawnType = new JComboBox<>(
 			new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
 	private final JSpinner growapableMaxHeight = new JSpinner(new SpinnerNumberModel(3, 1, 14, 1));
@@ -106,7 +106,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JComboBox<String> doublePlantGenerationType = new JComboBox<>(new String[] { "Flower", "Grass" });
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
-	private final JRadioButton growapableType = new JRadioButton("<html><b>Use growable plant type");
+	private final JRadioButton growapableType = L10N.radiobutton("elementgui.plant.use_growable_plant_type");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
@@ -145,33 +145,37 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator, "When plant added",
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onNeighbourBlockChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
-				"When neighbour block changes", Dependency.fromString("x:number/y:number/z:number/world:world"));
-		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator, "Update tick",
+				L10N.t("elementgui.common.event_on_neighbour_block_changes"),
+				Dependency.fromString("x:number/y:number/z:number/world:world"));
+		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator,
+				L10N.t("elementgui.common.event_on_update_tick"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onRandomUpdateEvent = new ProcedureSelector(this.withEntry("block/display_tick_update"), mcreator,
 				"Client display random tick", ProcedureSelector.Side.CLIENT,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onDestroyedByPlayer = new ProcedureSelector(this.withEntry("block/when_destroyed_player"), mcreator,
-				"When plant destroyed by player",
+				L10N.t("elementgui.plant.event_on_destroyed_by_player"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onDestroyedByExplosion = new ProcedureSelector(this.withEntry("block/when_destroyed_explosion"), mcreator,
-				"When plant destroyed by explosion", Dependency.fromString("x:number/y:number/z:number/world:world"));
+				L10N.t("elementgui.plant.event_on_destroyed_by_explosion"),
+				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onStartToDestroy = new ProcedureSelector(this.withEntry("block/when_destroy_start"), mcreator,
-				"When start to destroy", Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				L10N.t("elementgui.plant.event_on_start_to_destroy"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onEntityCollides = new ProcedureSelector(this.withEntry("block/when_entity_collides"), mcreator,
-				"When mob/player collides with plant",
+				L10N.t("elementgui.plant.event_on_entity_collides"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onBlockPlacedBy = new ProcedureSelector(this.withEntry("block/when_block_placed_by"), mcreator,
 				"When block is placed by",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClicked = new ProcedureSelector(this.withEntry("block/when_right_clicked"), mcreator,
-				"When plant right clicked",
+				L10N.t("elementgui.plant.event_on_right_clicked"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/direction:direction"));
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				"Additional generation condition", VariableElementType.LOGIC,
+				L10N.t("elementgui.plant.event_additional_generation_condition"), VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName("(no additional condition)");
+				.setDefaultName(L10N.t("elementgui.plant.no_additional_condition"));
 
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
@@ -201,35 +205,35 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		infopanel.setOpaque(false);
 		infopanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Special information and item texture", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.plant.special_information_title"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		infopanel.add("South", PanelUtils.gridElements(2, 2, HelpUtils
-						.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
-								"<html>Special information about the plant:<br><small>Separate entries with comma, to use comma in description use \\,")),
-				specialInfo, HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"), new JLabel(
-						"<html>Plant item texture:<br><small>Optional texture for plant in inventory and hand rendering")),
+		infopanel.add("South", PanelUtils.gridElements(2, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+						L10N.label("elementgui.plant.special_information_tip")),
+				specialInfo, HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
+						L10N.label("elementgui.plant.item_texture")),
 				PanelUtils.centerInPanel(itemTexture)));
 
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
 		rent.setOpaque(false);
 		rent.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(this.withEntry("block/model"),
-				new JLabel("<html>Plant model:<br><small>Select the plant model to be used. Supported: JSON, OBJ")),
+				L10N.label("elementgui.plant.block_model")),
 				PanelUtils.join(renderType)));
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2), "Plant 3D model",
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2), L10N.t("elementgui.plant.3dmodel"),
 				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		modelandinfo.add(rent);
 		modelandinfo.add(infopanel);
 
-		destal.add(ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174), "Top / main"));
-		destal.add(ComponentUtils.squareAndBorder(textureBottom, "Bottom"));
+		destal.add(ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174), L10N.t("elementgui.plant.texture_place_top_main")));
+		destal.add(ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom")));
 		destal.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1), "Plant textures",
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1), L10N.t("elementgui.plant.texture_title"),
 				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
@@ -286,19 +290,19 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel ptipe1 = new JPanel(new BorderLayout());
 		ptipe1.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				"Static plant type", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.plant.type_static"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		ptipe1.add("West", stl);
-		ptipe1.add("Center", PanelUtils.join(HelpUtils
-						.wrapWithHelpButton(this.withEntry("plant/static_generation_type"), new JLabel("Generator type:")),
-				staticPlantGenerationType));
+		ptipe1.add("Center",
+				PanelUtils.join(HelpUtils.wrapWithHelpButton(this.withEntry("plant/static_generation_type"),
+						L10N.label("elementgui.plant.type_generator")), staticPlantGenerationType));
 		ptipe1.add("North", normalType);
 		ptipe1.setOpaque(false);
 
 		JPanel ptipe2 = new JPanel(new BorderLayout());
 		ptipe2.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				"Growable plant type", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.plant.type_growable"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		ptipe2.add("West", dyn);
 
@@ -306,7 +310,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		mlo.setOpaque(false);
 
-		mlo.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/max_height"), new JLabel("Max. height: ")));
+		mlo.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/max_height"),
+				L10N.label("elementgui.plant.max_height")));
 		mlo.add(growapableMaxHeight);
 
 		ptipe2.add("Center", PanelUtils.join(mlo));
@@ -316,12 +321,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel ptipe3 = new JPanel(new BorderLayout());
 		ptipe3.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				"Double plant type", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.plant.type_double"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		ptipe3.add("West", dbl);
-		ptipe3.add("Center", PanelUtils.join(HelpUtils
-						.wrapWithHelpButton(this.withEntry("plant/static_generation_type"), new JLabel("Generator type:")),
-				doublePlantGenerationType));
+		ptipe3.add("Center",
+				PanelUtils.join(HelpUtils.wrapWithHelpButton(this.withEntry("plant/static_generation_type"),
+						L10N.label("elementgui.plant.type_generator")), doublePlantGenerationType));
 		ptipe3.add("North", doubleType);
 		ptipe3.setOpaque(false);
 
@@ -345,85 +350,93 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		ComponentUtils.deriveFont(name, 16);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), new JLabel("Name in GUI:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel("Creative inventory tab:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
+				L10N.label("elementgui.common.creative_tab")));
 		selp.add(creativeTab);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/color_on_map"), new JLabel("Plant color on the map:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/color_on_map"),
+				L10N.label("elementgui.plant.color_on_map")));
 		selp.add(colorOnMap);
 
 		hardness.setOpaque(false);
 		resistance.setOpaque(false);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hardness"), new JLabel("Hardness:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hardness"),
+				L10N.label("elementgui.common.hardness")));
 		selp.add(hardness);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/resistance"), new JLabel("Resistance:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/resistance"),
+				L10N.label("elementgui.common.resistance")));
 		selp.add(resistance);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), new JLabel("Block sound:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"),
+				L10N.label("elementgui.common.block_sound")));
 		selp.add(soundOnStep);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"), new JLabel("Luminance:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
+				L10N.label("elementgui.common.luminance")));
 		selp.add(luminance);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/type"), new JLabel("Plant type: ")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/type"),
+				L10N.label("elementgui.plant.type")));
 		selp.add(growapableSpawnType);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"), new JLabel("Plant flammability:")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
+				L10N.label("elementgui.plant.flammability")));
 		selp.add(flammability);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
-				new JLabel("<html>Fire spreading speed:<br><small>Leave 0 for vanilla handling")));
+				L10N.label("elementgui.common.fire_spread_speed")));
 		selp.add(fireSpreadSpeed);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
-				new JLabel("Enable emissive rendering (glow):")));
+				L10N.label("elementgui.common.emissive_rendering")));
 		selp2.add(emissiveRendering);
 
-		selp2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("plant/force_ticking"), new JLabel("Force plant ticking?")));
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/force_ticking"),
+				L10N.label("elementgui.plant.force_ticking")));
 		selp2.add(forceTicking);
 
-		selp2.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"), new JLabel("Is plant unbreakable?")));
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
+				L10N.label("elementgui.plant.is_unbreakable")));
 		selp2.add(unbreakable);
 
-		selp2.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"), new JLabel("Is plant replaceable?")));
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
+				L10N.label("elementgui.plant.plant_is_replaceable")));
 		selp2.add(isReplaceable);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
-				new JLabel("<html>Creative pick item:<br><small>Leave empty for default creative pick item")));
+				L10N.label("elementgui.common.creative_pick_item")));
 		selp2.add(PanelUtils.join(FlowLayout.LEFT, creativePickItem));
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
-				new JLabel("<html>Custom drop:<br><small>Leave empty for default drop")));
+				L10N.label("elementgui.common.custom_drop")));
 		selp2.add(PanelUtils.join(FlowLayout.LEFT, customDrop));
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_amount"), new JLabel("Drop amount:")));
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_amount"),
+				L10N.label("elementgui.common.drop_amount")));
 		selp2.add(dropAmount);
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"), new JLabel(
-				"<html>Use loot table for drops:<br><small>If checked, you need to define loot table for drops")));
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
+				L10N.label("elementgui.common.use_loot_table_for_drop")));
 		selp2.add(useLootTableForDrops);
 
 		selp2.setOpaque(false);
 
-		selp2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/ai_path_node_type"), new JLabel("AI path node type:")));
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ai_path_node_type"),
+				L10N.label("elementgui.common.ai_path_node_type")));
 		selp2.add(aiPathNodeType);
 
-		selp2.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"), new JLabel("Random model offset:")));
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
+				L10N.label("elementgui.common.offset_type")));
 		selp2.add(offsetType);
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/has_tile_entity"), new JLabel(
-				"<html>Has tile entity?<br>" + "<small>Enable ONLY if you want to use NBT tags with this plant")));
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/has_tile_entity"),
+				L10N.label("elementgui.plant.has_tile_entity")));
 		selp2.add(hasTileEntity);
 
 		dropAmount.setOpaque(false);
@@ -457,16 +470,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel spawning = new JPanel(new GridLayout(3, 2, 5, 5));
 		spawning.setOpaque(false);
 
-		spawning.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("plant/gen_chunk_count"), new JLabel("Spawn frequency on chunks:")));
+		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/gen_chunk_count"),
+				L10N.label("elementgui.plant.gen_chunk_count")));
 		spawning.add(frequencyOnChunks);
 
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
-				new JLabel("Spawn in these dimensions (leave empty to disable spawning):")));
+				L10N.label("elementgui.plant.spawn_world_types")));
 		spawning.add(spawnWorldTypes);
 
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
-				new JLabel("Restriction biomes (leave empty for no restriction):")));
+				L10N.label("elementgui.common.restrict_to_biomes")));
 		spawning.add(restrictionBiomes);
 
 		JPanel lastPan = new JPanel(new BorderLayout(15, 15));
@@ -480,15 +493,15 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		texture.setValidator(new TileHolderValidator(texture));
 
-		name.setValidator(new TextFieldValidator(name, "Plant needs a name"));
+		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.plant.error_plant_needs_name")));
 		name.enableRealtimeValidation();
 
 		page2group.addValidationElement(name);
 
-		addPage("Visual and type", pane2);
-		addPage("Properties", pane3);
-		addPage("Triggers", PanelUtils.totalCenterInPanel(events2));
-		addPage("Generation", PanelUtils.totalCenterInPanel(pane4));
+		addPage(L10N.t("elementgui.plant.page_visual_and_type"), pane2);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_triggers"), PanelUtils.totalCenterInPanel(events2));
+		addPage(L10N.t("elementgui.common.page_generation"), PanelUtils.totalCenterInPanel(pane4));
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
