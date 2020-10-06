@@ -162,7 +162,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				"When mob/player collides with plant",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onBlockPlacedBy = new ProcedureSelector(this.withEntry("block/when_block_placed_by"), mcreator,
-				"When plant is placed by",
+				"When block is placed by",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClicked = new ProcedureSelector(this.withEntry("block/when_right_clicked"), mcreator,
 				"When plant right clicked",
