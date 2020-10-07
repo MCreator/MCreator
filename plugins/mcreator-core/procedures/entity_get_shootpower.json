@@ -10,7 +10,7 @@
   "inputsInline": true,
   "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
-    "toolbox_id": "entitymanagement",
+    "toolbox_id": "entitydata",
     "toolbox_init": [
       "<value name=\"projectile_entity\"><block type=\"immediate_source_entity_from_deps\"></block></value>"
     ],
