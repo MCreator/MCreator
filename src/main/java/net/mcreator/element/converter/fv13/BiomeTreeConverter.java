@@ -19,12 +19,10 @@
 package net.mcreator.element.converter.fv13;
 
 import com.google.gson.JsonElement;
-import com.sun.media.jfxmediaimpl.HostUtils;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.TreeEntry;
 import net.mcreator.element.types.Biome;
-import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,43 +37,42 @@ public class BiomeTreeConverter implements IConverter {
 			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("treeType").getAsInt() == 0) {
 
 				//Create the tree entry to add
-				Biome.SpawnTree spawnTree = new Biome.SpawnTree();
+				Biome.TreeSpawn treeSpawn = new Biome.TreeSpawn();
 
-				spawnTree.count = biome.treesPerChunk;
+				treeSpawn.count = biome.treesPerChunk;
 
 				String name = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
 						.get("vanillaTreeType").getAsString();
 
 				if(name.equals("Default")){
-					spawnTree.tree = new TreeEntry(workspace, "OAK");
-					spawnTree.shape = "NORMAL_TREE";
-					biome.spawnTrees.add(spawnTree);
+					treeSpawn.tree = new TreeEntry(workspace, "OAK");
+					treeSpawn.shape = "NORMAL_TREE";
+					biome.treeSpawns.add(treeSpawn);
 				} else if(name.equals("Big trees")){
-					spawnTree.tree = new TreeEntry(workspace, "FANCY");
-					spawnTree.shape = "FANCY_TREE";
-					biome.spawnTrees.add(spawnTree);
+					treeSpawn.tree = new TreeEntry(workspace, "FANCY");
+					treeSpawn.shape = "FANCY_TREE";
+					biome.treeSpawns.add(treeSpawn);
 				} else if(name.equals("Birch trees")){
-					spawnTree.tree = new TreeEntry(workspace, "BIRCH");
-					spawnTree.shape = "NORMAL_TREE";
-					biome.spawnTrees.add(spawnTree);
+					treeSpawn.tree = new TreeEntry(workspace, "BIRCH");
+					treeSpawn.shape = "NORMAL_TREE";
+					biome.treeSpawns.add(treeSpawn);
 				} else if(name.equals("Savanna trees")){
-					spawnTree.tree = new TreeEntry(workspace, "ACACIA");
-					spawnTree.shape = "ACACIA_TREE";
-					biome.spawnTrees.add(spawnTree);
+					treeSpawn.tree = new TreeEntry(workspace, "ACACIA");
+					treeSpawn.shape = "ACACIA_TREE";
+					biome.treeSpawns.add(treeSpawn);
 				} else if(name.equals("Mega pine trees")){
-					spawnTree.tree = new TreeEntry(workspace, "MEGA_PINE");
-					spawnTree.shape = "MEGA_SPRUCE_TREE";
-					biome.spawnTrees.add(spawnTree);
+					treeSpawn.tree = new TreeEntry(workspace, "MEGA_PINE");
+					treeSpawn.shape = "MEGA_SPRUCE_TREE";
+					biome.treeSpawns.add(treeSpawn);
 				} else if(name.equals("Mega spruce trees")){
-					spawnTree.tree = new TreeEntry(workspace, "MEGA_SPRUCE");
-					spawnTree.shape = "MEGA_SPRUCE_TREE";
-					biome.spawnTrees.add(spawnTree);
+					treeSpawn.tree = new TreeEntry(workspace, "MEGA_SPRUCE");
+					treeSpawn.shape = "MEGA_SPRUCE_TREE";
+					biome.treeSpawns.add(treeSpawn);
 				}
 
 			}
 		} catch (Exception e) {
-			LOG.warn("Could not convert: " + biome.getModElement().getName());
-			LOG.error(e);
+			LOG.warn("Could not convert: " + biome.getModElement().getName() + e);
 		}
 
 		return biome;

@@ -84,11 +84,11 @@ public class JTreeEntriesList extends JPanel {
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 	}
 
-	public List<Biome.SpawnTree> getSpawns() {
+	public List<Biome.TreeSpawn> getSpawns() {
 		return entryList.stream().map(JTreeListEntry::getEntry).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
-	public void setSpawns(List<Biome.SpawnTree> pool) {
+	public void setSpawns(List<Biome.TreeSpawn> pool) {
 		pool.forEach(e -> new JTreeListEntry(mcreator, entries, entryList).setEntry(e));
 	}
 }

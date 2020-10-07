@@ -690,7 +690,7 @@ public class MinecraftImageGenerator {
 		 * @return Returns generated image.
 		 */
 		public static BufferedImage generateBiomePreviewPicture(Workspace workspace, Color airColor, Color grassColor,
-				Color waterColor, MItemBlock groundBlock, MItemBlock undergroundBlock, int treesPerChunk, boolean treeType,
+				Color waterColor, MItemBlock groundBlock, MItemBlock undergroundBlock, int treesPerChunk, int treeType,
 				MItemBlock treeStem, MItemBlock treeBranch) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
@@ -733,10 +733,10 @@ public class MinecraftImageGenerator {
 			graphics2D.fillRect(0, 18, 28, 1);
 
 			//draw trees: 0 = vanilla, 1 = modded
-			if (treesPerChunk > 0) {
+			if (treesPerChunk != 0) {
 				//select colors for the tree parts
 				Color stem, leaves;
-				if (treeType) {
+				if (treeType == 1) {
 					stem = (ImageUtils.getAverageColor(ImageUtils.toBufferedImage(
 							MCItem.getBlockIconBasedOnName(workspace, treeStem.getUnmappedValue()).getImage())));
 					leaves = new Color((ImageUtils.getAverageColor(ImageUtils.toBufferedImage(

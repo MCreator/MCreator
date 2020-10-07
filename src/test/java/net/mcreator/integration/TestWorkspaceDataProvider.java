@@ -255,7 +255,8 @@ public class TestWorkspaceDataProvider {
 				biome.waterColor = Color.blue;
 				biome.waterFogColor = Color.cyan;
 			}
-			if(biome.customTree) {
+			biome.treeType = 1;
+			if(biome.treeType == 1) {
 				biome.spawnVines = _true;
 				biome.treeVines = new MItemBlock(modElement.getWorkspace(),
 						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
@@ -307,9 +308,9 @@ public class TestWorkspaceDataProvider {
 				biome.parent = new BiomeEntry(modElement.getWorkspace(), "No parent");
 			}
 
-			List<Biome.SpawnTree> trees = new ArrayList<>();
+			List<Biome.TreeSpawn> trees = new ArrayList<>();
 			if (!emptyLists) {
-				Biome.SpawnTree entry1 = new Biome.SpawnTree();
+				Biome.TreeSpawn entry1 = new Biome.TreeSpawn();
 				entry1.tree = new TreeEntry(modElement.getWorkspace(),
 						ListUtils.getRandomItem(random, ElementUtil.loadAllTrees()));
 				entry1.count = 10;
@@ -317,7 +318,7 @@ public class TestWorkspaceDataProvider {
 				entry1.extraCount = 3;
 				trees.add(entry1);
 
-				Biome.SpawnTree entry2 = new Biome.SpawnTree();
+				Biome.TreeSpawn entry2 = new Biome.TreeSpawn();
 				entry2.tree = new TreeEntry(modElement.getWorkspace(),
 						ListUtils.getRandomItem(random, ElementUtil.loadAllTrees()));
 				entry2.count = 4;

@@ -44,7 +44,6 @@ public class ConverterRegistry {
 		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeTreeConverter(),
 				new BiomeDefaultFeaturesConverter()));
 		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
-		put(ModElementType.BIOME, Collections.singletonList(new BiomeDefaultFeaturesConverter()));
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType modElementType) {

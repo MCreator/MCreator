@@ -518,12 +518,14 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	}
 
 	private void updateBiomeTreesForm() {
-		minHeight.setEnabled(true);
-		spawnVines.setEnabled(true);
-		treeVines.setEnabled(true);
-		treeStem.setEnabled(true);
-		treeBranch.setEnabled(true);
-		treeFruits.setEnabled(true);
+		if(customTrees.isSelected()) {
+			minHeight.setEnabled(true);
+			spawnVines.setEnabled(true);
+			treeVines.setEnabled(true);
+			treeStem.setEnabled(true);
+			treeBranch.setEnabled(true);
+			treeFruits.setEnabled(true);
+		}
 	}
 
 	@Override public void reloadDataLists() {
@@ -549,18 +551,18 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		waterColor.setColor(biome.waterColor);
 		waterFogColor.setColor(biome.waterFogColor);
 
-		if (biome.customTree) {
+		treeVines.setBlock(biome.treeVines);
+		treeStem.setBlock(biome.treeStem);
+		treeBranch.setBlock(biome.treeBranch);
+		treeFruits.setBlock(biome.treeFruits);
+		spawnVines.setSelected(biome.spawnVines);
+		minHeight.setValue(biome.minHeight);
+		treesPerChunk.setValue(biome.treesPerChunk);
+		extraChance.setValue(biome.extraChance);
+		extraCount.setValue(biome.extraCount);
+
+		if (biome.treeType == 1)
 			customTrees.setSelected(true);
-			treeVines.setBlock(biome.treeVines);
-			treeStem.setBlock(biome.treeStem);
-			treeBranch.setBlock(biome.treeBranch);
-			treeFruits.setBlock(biome.treeFruits);
-			spawnVines.setSelected(biome.spawnVines);
-			minHeight.setValue(biome.minHeight);
-			treesPerChunk.setValue(biome.treesPerChunk);
-			extraChance.setValue(biome.extraChance);
-			extraCount.setValue(biome.extraCount);
-		}
 
 		grassPerChunk.setValue(biome.grassPerChunk);
 		seagrassPerChunk.setValue(biome.seagrassPerChunk);
@@ -595,7 +597,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biomeDictionaryTypes.setListElements(biome.biomeDictionaryTypes);
 		defaultFeatures.setListElements(biome.defaultFeatures);
 		spawnEntriesList.setSpawns(biome.spawnEntries);
-		treeEntriesList.setSpawns(biome.spawnTrees);
+		treeEntriesList.setSpawns(biome.treeSpawns);
 
 		updateBiomeTreesForm();
 	}
@@ -610,18 +612,21 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.foliageColor = foliageColor.getColor();
 		biome.waterColor = waterColor.getColor();
 		biome.waterFogColor = waterFogColor.getColor();
-
+		biome.treesPerChunk = (int) treesPerChunk.getValue();
+		biome.minHeight = (int) minHeight.getValue();
+		biome.spawnVines = spawnVines.isSelected();
+		biome.treeVines = treeVines.getBlock();
+		biome.treeStem = treeStem.getBlock();
+		biome.treeBranch = treeBranch.getBlock();
+		biome.treeFruits = treeFruits.getBlock();
+		biome.extraChance = (double) extraChance.getValue();
+		biome.extraCount = (int) extraCount.getValue();
 		if(customTrees.isSelected()){
-			biome.treesPerChunk = (int) treesPerChunk.getValue();
-			biome.minHeight = (int) minHeight.getValue();
-			biome.spawnVines = spawnVines.isSelected();
-			biome.treeVines = treeVines.getBlock();
-			biome.treeStem = treeStem.getBlock();
-			biome.treeBranch = treeBranch.getBlock();
-			biome.treeFruits = treeFruits.getBlock();
-			biome.customTree = customTrees.isSelected();
-			biome.extraChance = (double) extraChance.getValue();
-			biome.extraCount = (int) extraCount.getValue();
+			biome.treeType = 1;
+		} else if(treeEntriesList.getSpawns() != null){
+			biome.treeType = 0;
+		} else {
+			biome.treesPerChunk = 0;
 		}
 
 		biome.grassPerChunk = (int) grassPerChunk.getValue();
@@ -644,7 +649,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.biomeDictionaryTypes = biomeDictionaryTypes.getListElements();
 		biome.defaultFeatures = defaultFeatures.getListElements();
 		biome.spawnEntries = spawnEntriesList.getSpawns();
-		biome.spawnTrees = treeEntriesList.getSpawns();
+		biome.treeSpawns = treeEntriesList.getSpawns();
 		biome.spawnBiome = spawnBiome.isSelected();
 		biome.spawnMineshaft = spawnMineshaft.isSelected();
 		biome.spawnStronghold = spawnStronghold.isSelected();

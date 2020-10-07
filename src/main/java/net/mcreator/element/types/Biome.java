@@ -80,10 +80,10 @@ import java.util.List;
 	public List<String> biomeDictionaryTypes;
 	public List<String> defaultFeatures;
 
-	public List<SpawnTree> spawnTrees;
+	public List<TreeSpawn> treeSpawns;
 	public List<SpawnEntry> spawnEntries;
 
-	public boolean customTree;
+	public int treeType;
 	public int minHeight;
 	public double extraChance;
 	public int extraCount;
@@ -110,12 +110,12 @@ import java.util.List;
 		oceanRuinType = "NONE";
 		biomeCategory = "NONE";
 		biomeDictionaryTypes = new ArrayList<>();
-		spawnTrees = new ArrayList<>();
+		treeSpawns = new ArrayList<>();
 		spawnEntries = new ArrayList<>();
 		defaultFeatures = new ArrayList<>();
 	}
 
-	public static class SpawnTree {
+	public static class TreeSpawn {
 
 		public TreeEntry tree;
 		public String shape;
@@ -123,7 +123,7 @@ import java.util.List;
 		public double extraChance;
 		public int extraCount;
 
-		public SpawnTree(){
+		public TreeSpawn(){
 			shape = "NORMAL_TREE";
 		}
 
@@ -142,7 +142,7 @@ import java.util.List;
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview
 				.generateBiomePreviewPicture(getModElement().getWorkspace(), airColor, grassColor, waterColor,
-						groundBlock, undergroundBlock, treesPerChunk, customTree, treeStem, treeBranch);
+						groundBlock, undergroundBlock, treesPerChunk, treeType, treeStem, treeBranch);
 	}
 
 }

@@ -88,8 +88,8 @@ public class JTreeListEntry extends JPanel {
 		parent.repaint();
 	}
 	
-	public Biome.SpawnTree getEntry() {
-		Biome.SpawnTree entry = new Biome.SpawnTree();
+	public Biome.TreeSpawn getEntry() {
+		Biome.TreeSpawn entry = new Biome.TreeSpawn();
 		entry.tree = new TreeEntry(workspace, (String) treeType.getSelectedItem());
 		entry.shape = (String) shape.getSelectedItem();
 		entry.count = (int) count.getValue();
@@ -98,7 +98,7 @@ public class JTreeListEntry extends JPanel {
 		return entry;
 	}
 
-	public void setEntry(Biome.SpawnTree e) {
+	public void setEntry(Biome.TreeSpawn e) {
 		treeType.setSelectedItem(e.tree.getUnmappedValue());
 		shape.setSelectedItem(e.shape);
 		count.setValue(e.count);
