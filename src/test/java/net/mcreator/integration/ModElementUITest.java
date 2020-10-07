@@ -113,7 +113,7 @@ public class ModElementUITest {
 
 			// use non-default translation to test translations at the same time
 			// this should be set to the most complete translation
-			PreferencesManager.PREFERENCES.ui.language = new Locale("ru", "RU");
+			PreferencesManager.PREFERENCES.ui.language = new Locale("fr", "FR");
 			L10N.initTranslations();
 
 			for (GeneratableElement generatableElementOrig : generatableElements) {
