@@ -453,7 +453,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		txblock4.setOpaque(false);
 		txblock4.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.block.block_base_item_texture"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.block.block_base_optional_textures"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		txblock4.add("Center", PanelUtils.gridElements(3, 2,
@@ -462,8 +462,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
 						L10N.label("elementgui.block.item_texture")),
 				PanelUtils.centerInPanel(itemTexture),
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"), new JLabel(
-						"<html>Block particle texture:<br><small>Optional texture for block breaking particles")),
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
+						L10N.label("elementgui.block.particle_texture")),
 				PanelUtils.centerInPanel(particleTexture)));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout(1, 5));
@@ -525,7 +525,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		transparencySettings.add(connectedSides);
 
 		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fluid_overlay"),
-				new JLabel("Check this to display a fluid overlay when submerged:")));
+				L10N.label("elementgui.block.fluid_overlay")));
 		transparencySettings.add(fluidOverlay);
 
 		ComponentUtils.deriveFont(renderType, 16);

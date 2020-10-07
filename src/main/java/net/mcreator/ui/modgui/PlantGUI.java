@@ -216,7 +216,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				specialInfo, HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
 						L10N.label("elementgui.plant.item_texture")),
 				PanelUtils.centerInPanel(itemTexture), HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
-						new JLabel("<html>Plant particle texture:<br><small>Optional texture for plant breaking particles")),
+						L10N.label("elementgui.plant.particle_texture")),
 				PanelUtils.centerInPanel(particleTexture)));
 
 		JPanel rent = new JPanel();
