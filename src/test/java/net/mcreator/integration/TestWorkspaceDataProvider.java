@@ -463,6 +463,7 @@ public class TestWorkspaceDataProvider {
 			}
 			overlay.displayCondition = new Procedure("condition1");
 			overlay.components = components;
+			overlay.baseTexture = "test.png";
 			return overlay;
 		case GUI:
 			GUI gui = new GUI(modElement);
@@ -569,6 +570,7 @@ public class TestWorkspaceDataProvider {
 			mob.ridable = _true;
 			mob.canControlStrafe = !_true;
 			mob.canControlForward = _true;
+			mob.guiBoundTo = "<NONE>";
 			mob.mobDrop = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
 							.getName());
@@ -746,12 +748,16 @@ public class TestWorkspaceDataProvider {
 			Armor armor = new Armor(modElement);
 			armor.enableHelmet = !_true;
 			armor.textureHelmet = "test";
+			armor.helmetModelTexture = emptyLists ? "From armor" : "test.png";
 			armor.enableBody = !_true;
 			armor.textureBody = "test2";
+			armor.bodyModelTexture = emptyLists ? "From armor" : "test.png";
 			armor.enableLeggings = !_true;
 			armor.textureLeggings = "test3";
+			armor.leggingsModelTexture = emptyLists ? "From armor" : "test.png";
 			armor.enableBoots = !_true;
 			armor.textureBoots = "test4";
+			armor.bootsModelTexture = emptyLists ? "From armor" : "test.png";
 			if (!emptyLists) {
 				armor.helmetSpecialInfo = StringUtils
 						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
@@ -814,6 +820,7 @@ public class TestWorkspaceDataProvider {
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			plant.texture = "test";
 			plant.textureBottom = "test2";
+			plant.itemTexture = emptyLists ? "" : "itest";
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
 			plant.growapableSpawnType = ListUtils
 					.getRandomItem(new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
@@ -858,6 +865,9 @@ public class TestWorkspaceDataProvider {
 			plant.onStartToDestroy = new Procedure("procedure5");
 			plant.onEntityCollides = new Procedure("procedure6");
 			plant.onRightClicked = new Procedure("procedure7");
+			plant.onBlockAdded = new Procedure("procedure8");
+			plant.onBlockPlacedBy = new Procedure("procedure9");
+			plant.onRandomUpdateEvent = new Procedure("procedure10");
 			plant.generateCondition = new Procedure("condition1");
 			plant.renderType = 12;
 			plant.customModelName = "Cross model";
@@ -876,6 +886,7 @@ public class TestWorkspaceDataProvider {
 			item.destroyAnyBlock = _true;
 			item.inventorySize = 10;
 			item.inventoryStackSize = 42;
+			item.guiBoundTo = "<NONE>";
 			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
 							.getName());
@@ -1030,6 +1041,7 @@ public class TestWorkspaceDataProvider {
 			block.particleSpawningRadious = 4;
 			block.particleAmount = 13;
 			block.hasInventory = _true;
+			block.guiBoundTo = "<NONE>";
 			block.openGUIOnRightClick = !_true;
 			block.inventorySize = 10;
 			block.inventoryStackSize = 42;
@@ -1105,7 +1117,7 @@ public class TestWorkspaceDataProvider {
 				block.generateCondition = new Procedure("condition1");
 				block.particleCondition = new Procedure("condition4");
 			}
-			block.itemTexture = "itest";
+			block.itemTexture = emptyLists ? "" : "itest";
 			block.texture = "test";
 			block.textureTop = "test2";
 			block.textureLeft = "test3";

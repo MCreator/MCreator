@@ -199,6 +199,7 @@ public class MainMenuBar extends JMenuBar {
 		tools.add(mcreator.actionRegistry.openOrePackMaker);
 		tools.add(mcreator.actionRegistry.openToolPackMaker);
 		tools.add(mcreator.actionRegistry.openArmorPackMaker);
+		tools.add(mcreator.actionRegistry.openWoodPackMaker);
 		tools.addSeparator();
 		tools.add(mcreator.actionRegistry.openJavaEditionFolder);
 		tools.add(mcreator.actionRegistry.openBedrockEditionFolder);
