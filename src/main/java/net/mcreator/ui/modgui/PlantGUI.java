@@ -64,6 +64,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private TextureHolder textureBottom;
 
 	private TextureHolder itemTexture;
+	private TextureHolder particleTexture;
 
 	private final JLabel stl = new JLabel(TiledImageCache.plantStaticYes);
 	private final JLabel dyn = new JLabel(TiledImageCache.plantGrowingNo);
@@ -193,6 +194,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		itemTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM), 32);
 		itemTexture.setOpaque(false);
+		particleTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK), 32);
+		particleTexture.setOpaque(false);
 
 		JPanel modelandinfo = new JPanel(new GridLayout(2, 1));
 		modelandinfo.setOpaque(false);
@@ -201,14 +204,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		infopanel.setOpaque(false);
 		infopanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Special information and item texture", 0, 0, getFont().deriveFont(12.0f),
+				"Special information and optional textures", 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		infopanel.add("South", PanelUtils.gridElements(2, 2, HelpUtils
+		infopanel.add("South", PanelUtils.gridElements(3, 2, HelpUtils
 						.wrapWithHelpButton(this.withEntry("item/special_information"), new JLabel(
 								"<html>Special information about the plant:<br><small>Separate entries with comma, to use comma in description use \\,")),
 				specialInfo, HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"), new JLabel(
 						"<html>Plant item texture:<br><small>Optional texture for plant in inventory and hand rendering")),
-				PanelUtils.centerInPanel(itemTexture)));
+				PanelUtils.centerInPanel(itemTexture), HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
+						new JLabel("<html>Plant particle texture:<br><small>Optional texture for plant breaking particles")),
+				PanelUtils.centerInPanel(particleTexture)));
 
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
@@ -549,6 +554,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	@Override public void openInEditingMode(Plant plant) {
 		itemTexture.setTextureFromTextureName(plant.itemTexture);
+		particleTexture.setTextureFromTextureName(plant.particleTexture);
 		texture.setTextureFromTextureName(plant.texture);
 		textureBottom.setTextureFromTextureName(plant.textureBottom);
 		name.setText(plant.name);
@@ -641,6 +647,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.texture = texture.getID();
 		plant.textureBottom = textureBottom.getID();
 		plant.itemTexture = itemTexture.getID();
+		plant.particleTexture = particleTexture.getID();
 		if (normalType.isSelected())
 			plant.plantType = "normal";
 		else if (growapableType.isSelected())

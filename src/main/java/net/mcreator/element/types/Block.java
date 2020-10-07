@@ -52,6 +52,7 @@ import java.util.Map;
 	public boolean fluidOverlay;
 
 	public String itemTexture;
+	public String particleTexture;
 
 	public String blockBase;
 
