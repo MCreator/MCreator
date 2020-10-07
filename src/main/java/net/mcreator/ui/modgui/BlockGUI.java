@@ -131,6 +131,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox hasTransparency = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox connectedSides = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox fluidOverlay = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox hasEnergyStorage = L10N.checkbox("elementgui.block.enable_energy_storage");
 	private final JCheckBox isFluidTank = L10N.checkbox("elementgui.block.enable_fluid_storage");
@@ -501,7 +502,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		ComponentUtils.deriveFont(transparencyType, 16);
 		ComponentUtils.deriveFont(blockBase, 16);
 
-		JPanel transparencySettings = new JPanel(new GridLayout(3, 2, 0, 2));
+		JPanel transparencySettings = new JPanel(new GridLayout(4, 2, 0, 2));
 		transparencySettings.setOpaque(false);
 
 		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/transparency_type"),
@@ -515,6 +516,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/connected_sides"),
 				L10N.label("elementgui.block.connected_sides")));
 		transparencySettings.add(connectedSides);
+
+		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fluid_overlay"),
+				L10N.label("elementgui.block.fluid_overlay")));
+		transparencySettings.add(fluidOverlay);
 
 		ComponentUtils.deriveFont(renderType, 16);
 		ComponentUtils.deriveFont(rotationMode, 16);
@@ -603,6 +608,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		hasTransparency.setOpaque(false);
 		connectedSides.setOpaque(false);
 		emissiveRendering.setOpaque(false);
+		fluidOverlay.setOpaque(false);
 
 		sbbp2.add("East", PanelUtils.pullElementUp(render));
 
@@ -1220,6 +1226,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		enchantPowerBonus.setValue(block.enchantPowerBonus);
 		hasTransparency.setSelected(block.hasTransparency);
 		connectedSides.setSelected(block.connectedSides);
+		fluidOverlay.setSelected(block.fluidOverlay);
 		hasEnergyStorage.setSelected(block.hasEnergyStorage);
 		isFluidTank.setSelected(block.isFluidTank);
 		energyInitial.setValue(block.energyInitial);
@@ -1333,6 +1340,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.name = name.getText();
 		block.hasTransparency = hasTransparency.isSelected();
 		block.connectedSides = connectedSides.isSelected();
+		block.fluidOverlay = fluidOverlay.isSelected();
 		block.transparencyType = (String) transparencyType.getSelectedItem();
 		block.mx = (double) mx.getValue();
 		block.my = (double) my.getValue();
