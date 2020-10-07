@@ -797,12 +797,12 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		pane6.setOpaque(false);
 
 		addPage(L10N.t("elementgui.living_entity.page_visual_and_sound"), pane2);
-		addPage(L10N.t("elementgui.living_entity.bahaviour"), pane1);
-		addPage(L10N.t("elementgui.living_entity.particles"), pane6);
+		addPage(L10N.t("elementgui.living_entity.page_bahaviour"), pane1);
+		addPage(L10N.t("elementgui.living_entity.page_particles"), pane6);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
-		addPage(L10N.t("elementgui.living_entity.ai_and_goals"), pane3);
-		addPage(L10N.t("elementgui.living_entity.spawning"), pane5);
+		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3);
+		addPage(L10N.t("elementgui.living_entity.page_spawning"), pane5);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
