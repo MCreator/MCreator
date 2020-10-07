@@ -119,7 +119,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onRightClickedInAir = new ProcedureSelector(this.withEntry("item/when_right_clicked"), mcreator,
 				L10N.t("elementgui.common.event_right_clicked_air"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator, L10N.t("elementgui.food.event_on_crafted"),
+		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator, L10N.t("elementgui.common.event_on_crafted"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
 				L10N.t("elementgui.common.event_right_clicked_block"), Dependency.fromString(

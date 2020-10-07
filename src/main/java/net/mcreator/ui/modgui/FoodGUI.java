@@ -105,7 +105,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 				L10N.t("elementgui.food.event_on_eaten"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator,
-				L10N.t("elementgui.food.event_on_crafted"),
+				L10N.t("elementgui.common.event_on_crafted"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.food.event_on_swing"),
