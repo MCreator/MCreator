@@ -798,6 +798,7 @@ public class TestWorkspaceDataProvider {
 			plant.texture = "test";
 			plant.textureBottom = "test2";
 			plant.itemTexture = emptyLists ? "" : "itest";
+			plant.particleTexture = emptyLists ? "" : "test3";
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
 			plant.growapableSpawnType = ListUtils
 					.getRandomItem(new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
@@ -958,6 +959,7 @@ public class TestWorkspaceDataProvider {
 			block.hasTransparency = new boolean[] { _true, _true, true,
 					_true }[valueIndex]; // third is true because third index for model is cross which requires transparency
 			block.connectedSides = _true;
+			block.fluidOverlay = _true;
 			block.emissiveRendering = _true;
 			block.transparencyType = new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" }[valueIndex];
 			block.mx = 0.1;
@@ -1095,6 +1097,7 @@ public class TestWorkspaceDataProvider {
 				block.particleCondition = new Procedure("condition4");
 			}
 			block.itemTexture = emptyLists ? "" : "itest";
+			block.particleTexture = emptyLists ? "" : "test7";
 			block.texture = "test";
 			block.textureTop = "test2";
 			block.textureLeft = "test3";
