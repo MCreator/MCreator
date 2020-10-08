@@ -143,6 +143,8 @@ import java.util.List;
 		int treeType = 0;
 		if(customTree) {
 			treeType = 1;
+		} else if(treeSpawns.isEmpty()){
+			treesPerChunk = 0;
 		}
 		return MinecraftImageGenerator.Preview
 				.generateBiomePreviewPicture(getModElement().getWorkspace(), airColor, grassColor, waterColor,
