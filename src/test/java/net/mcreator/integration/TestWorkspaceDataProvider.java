@@ -258,6 +258,7 @@ public class TestWorkspaceDataProvider {
 			biome.customTree = _true;
 			if(biome.customTree) {
 				biome.spawnVines = _true;
+				biome.treesPerChunk = 10;
 				biome.treeVines = new MItemBlock(modElement.getWorkspace(),
 						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 				biome.treeStem = new MItemBlock(modElement.getWorkspace(),
