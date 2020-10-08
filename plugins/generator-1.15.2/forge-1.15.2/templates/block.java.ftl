@@ -198,7 +198,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-		<#if data.fluidOverlay>
+		<#if data.displayFluidOverlay>
 		@Override public boolean shouldDisplayFluidOverlay(BlockState state, ILightReader world, BlockPos pos, IFluidState fluidstate) {
 			return true;
 		}
