@@ -1,0 +1,1 @@
+(ServerLifecycleHooks.getCurrentServer() != null ? ServerLifecycleHooks.getCurrentServer().getCurrentPlayerCount() : 0)

@@ -1,0 +1,1 @@
+(ServerLifecycleHooks.getCurrentServer() != null ? ServerLifecycleHooks.getCurrentServer().getMaxPlayers() : 0)
