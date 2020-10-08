@@ -255,18 +255,21 @@ public class TestWorkspaceDataProvider {
 				biome.waterColor = Color.blue;
 				biome.waterFogColor = Color.cyan;
 			}
+				
 			biome.customTree = _true;
+				
+			biome.treeVines = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
+			biome.treeStem = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
+			biome.treeBranch = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
+			biome.treeFruits = new MItemBlock(modElement.getWorkspace(),
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
+				
 			if(biome.customTree) {
 				biome.spawnVines = _true;
 				biome.treesPerChunk = 10;
-				biome.treeVines = new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-				biome.treeStem = new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-				biome.treeBranch = new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-				biome.treeFruits = new MItemBlock(modElement.getWorkspace(),
-						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 				biome.minHeight = 2;
 				biome.extraChance = 0.5;
 				biome.extraCount = 10;
