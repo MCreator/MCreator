@@ -152,30 +152,30 @@ package ${package}.world.biome;
       		addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.BUSH, new BushConfig(Blocks.RED_MUSHROOM.getDefaultState()), Placement.CHANCE_HEIGHTMAP_DOUBLE, new ChanceConfig(${data.mushroomsPerChunk})));
 			</#if>
 
-			<#list data.spawnTrees as spawnTree>
-			<#assign tree = generator.map(spawnTree.tree.getUnmappedValue(), "trees", 1)>
+			<#list data.treeSpawns as treeSpawn>
+			<#assign tree = generator.map(treeSpawn.tree.getUnmappedValue(), "trees", 1)>
 			<#if tree.toString().equals("ACACIA")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.SAVANNA_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.SAVANNA_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${treeSpawn.count},(float) ${treeSpawn.extraChance}f, ${treeSpawn.extraCount})));
 			<#elseif tree.toString().equals("BIRCH")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.BIRCH_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.BIRCH_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${treeSpawn.count},(float) ${treeSpawn.extraChance}f, ${treeSpawn.extraCount})));
 			<#elseif tree.toString().equals("DARK_OAK")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.BIRCH_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.BIRCH_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${treeSpawn.count},(float) ${treeSpawn.extraChance}f, ${treeSpawn.extraCount})));
 			<#elseif tree.toString().equals("FANCY")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.FANCY_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.FANCY_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${treeSpawn.count},(float) ${treeSpawn.extraChance}f, ${treeSpawn.extraCount})));
 			<#elseif tree.toString().equals("JUNGLE")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.JUNGLE_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.JUNGLE_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${treeSpawn.count},(float) ${treeSpawn.extraChance}f, ${treeSpawn.extraCount})));
 			<#elseif tree.toString().equals("JUNGLE_GROUND_BUSH")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.JUNGLE_GROUND_BUSH, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.JUNGLE_GROUND_BUSH, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${treeSpawn.count},(float) ${treeSpawn.extraChance}f, ${treeSpawn.extraCount})));
 			<#elseif tree.toString().equals("OAK")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.NORMAL_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.NORMAL_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${treeSpawn.count},(float) ${treeSpawn.extraChance}f, ${treeSpawn.extraCount})));
 			<#elseif tree.toString().equals("MEGA_JUNGLE")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.MEGA_JUNGLE_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.MEGA_JUNGLE_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${treeSpawn.count},(float) ${treeSpawn.extraChance}f, ${treeSpawn.extraCount})));
 			<#elseif tree.toString().equals("MEGA_PINE")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.MEGA_PINE_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.MEGA_PINE_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${treeSpawn.count},(float) ${treeSpawn.extraChance}f, ${treeSpawn.extraCount})));
 			<#elseif tree.toString().equals("MEGA_SPRUCE")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.MEGA_SPRUCE_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.MEGA_SPRUCE_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${treeSpawn.count},(float) ${treeSpawn.extraChance}f, ${treeSpawn.extraCount})));
 			<#elseif tree.toString().equals("SWAMP")>
-			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.SWAMP_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${spawnTree.count},(float) ${spawnTree.extraChance}f, ${spawnTree.extraCount})));
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.SWAMP_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(${treeSpawn.count},(float) ${treeSpawn.extraChance}f, ${treeSpawn.extraCount})));
 			</#if>
 			</#list>
 
@@ -248,7 +248,7 @@ package ${package}.world.biome;
 			IWorld world = (IWorld) worldgen;
 
 			int height = rand.nextInt(5) + ${data.minHeight};
-			boolean spawnTree = true;
+			boolean treeSpawn = true;
 
 			if (position.getY() >= 1 && position.getY() + height + 1 <= world.getHeight()) {
 				for (int j = position.getY(); j <= position.getY() + 1 + height; j++) {
@@ -260,19 +260,19 @@ package ${package}.world.biome;
 					if (j >= position.getY() + height - 1)
 						k = 2;
 
-					for (int px = position.getX() - k; px <= position.getX() + k && spawnTree; px++) {
-						for (int pz = position.getZ() - k; pz <= position.getZ() + k && spawnTree; pz++) {
+					for (int px = position.getX() - k; px <= position.getX() + k && treeSpawn; px++) {
+						for (int pz = position.getZ() - k; pz <= position.getZ() + k && treeSpawn; pz++) {
 							if (j >= 0 && j < world.getHeight()) {
 								if (!this.isReplaceable(world, new BlockPos(px, j, pz))) {
-									spawnTree = false;
+									treeSpawn = false;
 								}
 							} else {
-								spawnTree = false;
+								treeSpawn = false;
 							}
 						}
 					}
 				}
-				if (!spawnTree) {
+				if (!treeSpawn) {
 					return false;
 				} else {
 					Block ground = world.getBlockState(position.add(0, -1, 0)).getBlock();

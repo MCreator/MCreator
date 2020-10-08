@@ -561,7 +561,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		extraChance.setValue(biome.extraChance);
 		extraCount.setValue(biome.extraCount);
 
-		if (biome.treeType == 1)
+		if (biome.customTree)
 			customTrees.setSelected(true);
 
 		grassPerChunk.setValue(biome.grassPerChunk);
@@ -621,14 +621,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.treeFruits = treeFruits.getBlock();
 		biome.extraChance = (double) extraChance.getValue();
 		biome.extraCount = (int) extraCount.getValue();
-		if(customTrees.isSelected()){
-			biome.treeType = 1;
-		} else if(treeEntriesList.getSpawns() != null){
-			biome.treeType = 0;
-		} else {
-			biome.treesPerChunk = 0;
-		}
-
+		biome.customTree = customTrees.isSelected();
 		biome.grassPerChunk = (int) grassPerChunk.getValue();
 		biome.seagrassPerChunk = (int) seagrassPerChunk.getValue();
 		biome.flowersPerChunk = (int) flowersPerChunk.getValue();

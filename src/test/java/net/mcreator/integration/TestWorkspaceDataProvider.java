@@ -255,8 +255,8 @@ public class TestWorkspaceDataProvider {
 				biome.waterColor = Color.blue;
 				biome.waterFogColor = Color.cyan;
 			}
-			biome.treeType = 1;
-			if(biome.treeType == 1) {
+			biome.customTree = _true;
+			if(biome.customTree) {
 				biome.spawnVines = _true;
 				biome.treeVines = new MItemBlock(modElement.getWorkspace(),
 						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());

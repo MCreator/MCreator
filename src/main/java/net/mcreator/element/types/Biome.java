@@ -83,7 +83,7 @@ import java.util.List;
 	public List<TreeSpawn> treeSpawns;
 	public List<SpawnEntry> spawnEntries;
 
-	public int treeType;
+	public boolean customTree;
 	public int minHeight;
 	public double extraChance;
 	public int extraCount;
@@ -140,6 +140,10 @@ import java.util.List;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
+		int treeType = 0;
+		if(customTree) {
+			treeType = 1;
+		}
 		return MinecraftImageGenerator.Preview
 				.generateBiomePreviewPicture(getModElement().getWorkspace(), airColor, grassColor, waterColor,
 						groundBlock, undergroundBlock, treesPerChunk, treeType, treeStem, treeBranch);
