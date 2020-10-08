@@ -15,7 +15,7 @@
   "output": "Boolean",
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
-    "toolbox_id": "entitymanagement",
+    "toolbox_id": "entitydata",
     "toolbox_init": [
       "<value name=\"permissionlevel\"><block type=\"math_number\"><field name=\"NUM\">2</field></block></value>",
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
