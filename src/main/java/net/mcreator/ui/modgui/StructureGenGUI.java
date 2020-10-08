@@ -66,6 +66,8 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 			new String[] { "First motion blocking block", "First block" });
 
 	private final JSpinner spawnHeightOffset = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
+	private final JSpinner spawnOffsetX = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
+	private final JSpinner spawnOffsetZ = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
 
 	private final JSpinner minCountPerChunk = new JSpinner(new SpinnerNumberModel(1, 1, 16, 1));
 	private final JSpinner maxCountPerChunk = new JSpinner(new SpinnerNumberModel(1, 1, 16, 1));
@@ -111,7 +113,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 		ComponentUtils.deriveFont(structureSelector, 16);
 
-		JPanel params = new JPanel(new GridLayout(11, 2, 50, 7));
+		JPanel params = new JPanel(new GridLayout(12, 2, 50, 7));
 		params.setOpaque(false);
 
 		JButton importnbt = new JButton(UIRES.get("18px.add"));
@@ -160,6 +162,11 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/height_offset"),
 				L10N.label("elementgui.structuregen.spawn_height_offset")));
 		params.add(spawnHeightOffset);
+
+		params.add(L10N.label("elementgui.structuregen.spawn_xz_offset"));
+		params.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(this.withEntry("structure/x_offset"), spawnOffsetX),
+				HelpUtils.wrapWithHelpButton(this.withEntry("structure/z_offset"),
+						spawnOffsetZ)));
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
 				L10N.label("elementgui.structuregen.spawn_world_types")));
@@ -211,6 +218,8 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 	@Override public void openInEditingMode(Structure structure) {
 		spawnProbability.setValue(structure.spawnProbability);
 		spawnHeightOffset.setValue(structure.spawnHeightOffset);
+		spawnOffsetX.setValue(structure.spawnXOffset);
+		spawnOffsetZ.setValue(structure.spawnZOffset);
 		minCountPerChunk.setValue(structure.minCountPerChunk);
 		maxCountPerChunk.setValue(structure.maxCountPerChunk);
 		spawnLocation.setSelectedItem(structure.spawnLocation);
@@ -229,6 +238,8 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		Structure structure = new Structure(modElement);
 		structure.spawnProbability = (int) spawnProbability.getValue();
 		structure.spawnHeightOffset = (int) spawnHeightOffset.getValue();
+		structure.spawnXOffset = (int) spawnOffsetX.getValue();
+		structure.spawnZOffset = (int) spawnOffsetZ.getValue();
 		structure.minCountPerChunk = (int) minCountPerChunk.getValue();
 		structure.maxCountPerChunk = (int) maxCountPerChunk.getValue();
 		structure.spawnWorldTypes = spawnWorldTypes.getListElements();

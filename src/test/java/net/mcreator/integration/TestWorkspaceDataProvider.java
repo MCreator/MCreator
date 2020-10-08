@@ -702,6 +702,8 @@ public class TestWorkspaceDataProvider {
 			structure.minCountPerChunk = 1;
 			structure.maxCountPerChunk = 3;
 			structure.spawnHeightOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
+			structure.spawnXOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
+			structure.spawnZOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
 			structure.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			structure.spawnLocation = ListUtils.getRandomItem(random, Arrays.asList("Ground", "Air", "Underground"));
 			structure.surfaceDetectionType = ListUtils
