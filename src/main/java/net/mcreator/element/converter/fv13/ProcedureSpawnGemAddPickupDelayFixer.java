@@ -22,6 +22,7 @@ import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Procedure;
+import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,9 +43,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ProcedureSpawnGemAddPickupDelay implements IConverter {
+public class ProcedureSpawnGemAddPickupDelayFixer implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger("ProcedureSpawnGemAddPickupDelay");
+	private static final Logger LOG = LogManager.getLogger("ProcedureSpawnGemAddPickupDelayFixer");
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
@@ -73,10 +74,10 @@ public class ProcedureSpawnGemAddPickupDelay implements IConverter {
 			String type = element.getAttribute("type");
 			if (type != null && strings_tofix_types.contains(type)) {
 				Element value = doc.createElement("value");
-				value.setAttribute("name", "string");
-				Element deps_block = doc.createElement("block");
-				deps_block.setAttribute("type", "string");
-				value.appendChild(deps_block);
+				value.setAttribute("name", "pickUpDelay");
+				Element delay_block = doc.createElement("block");
+				delay_block.setAttribute("type", "math_number");
+				value.appendChild(delay_block);
 				element.appendChild(value);
 			}
 		}
