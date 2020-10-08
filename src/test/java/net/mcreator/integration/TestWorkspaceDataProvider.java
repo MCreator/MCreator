@@ -959,7 +959,7 @@ public class TestWorkspaceDataProvider {
 			block.hasTransparency = new boolean[] { _true, _true, true,
 					_true }[valueIndex]; // third is true because third index for model is cross which requires transparency
 			block.connectedSides = _true;
-			block.fluidOverlay = _true;
+			block.displayFluidOverlay = _true;
 			block.emissiveRendering = _true;
 			block.transparencyType = new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" }[valueIndex];
 			block.mx = 0.1;
