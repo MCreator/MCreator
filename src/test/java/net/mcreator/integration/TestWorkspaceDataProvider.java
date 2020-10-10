@@ -259,6 +259,7 @@ public class TestWorkspaceDataProvider {
 			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];
 			biome.grassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 1;
 			biome.seagrassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 2;
+			biome.bamboosPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 2;
 			biome.flowersPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 3;
 			biome.mushroomsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 4;
 			biome.bigMushroomsChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 5;
