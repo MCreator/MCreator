@@ -367,6 +367,19 @@ public class TestWorkspaceDataProvider {
 			fluid.onEntityCollides = new Procedure("procedure4");
 			fluid.type = _true ? "WATER" : "LAVA";
 			fluid.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "End"));
+			fluid.restrictionBiomes = new ArrayList<>();
+			if (!emptyLists) {
+				fluid.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				fluid.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				fluid.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				fluid.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+			}
+			fluid.frequencyOnChunks = 13;
+			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
 			return fluid;
 		case FOOD:
 			Food food = new Food(modElement);
@@ -835,6 +848,16 @@ public class TestWorkspaceDataProvider {
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
 			plant.restrictionBiomes = new ArrayList<>();
+			if (!emptyLists) {
+				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+			}
 			plant.onNeighbourBlockChanges = new Procedure("procedure1");
 			plant.onTickUpdate = new Procedure("procedure2");
 			plant.onDestroyedByPlayer = new Procedure("procedure3");
@@ -845,7 +868,7 @@ public class TestWorkspaceDataProvider {
 			plant.onBlockAdded = new Procedure("procedure8");
 			plant.onBlockPlacedBy = new Procedure("procedure9");
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
-			plant.generateCondition = new Procedure("condition1");
+			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
 			plant.renderType = 12;
 			plant.customModelName = "Cross model";
 			return plant;
@@ -958,6 +981,7 @@ public class TestWorkspaceDataProvider {
 			block.hasTransparency = new boolean[] { _true, _true, true,
 					_true }[valueIndex]; // third is true because third index for model is cross which requires transparency
 			block.connectedSides = _true;
+			block.displayFluidOverlay = _true;
 			block.emissiveRendering = _true;
 			block.transparencyType = new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" }[valueIndex];
 			block.mx = 0.1;

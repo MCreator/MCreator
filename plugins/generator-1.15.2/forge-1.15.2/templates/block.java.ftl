@@ -198,6 +198,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
+		<#if data.displayFluidOverlay>
+		@Override public boolean shouldDisplayFluidOverlay(BlockState state, ILightReader world, BlockPos pos, IFluidState fluidstate) {
+			return true;
+		}
+		</#if>
+
 		<#if data.beaconColorModifier?has_content>
 		@Override public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
 			return new float[] { ${data.beaconColorModifier.getRed()/255}f, ${data.beaconColorModifier.getGreen()/255}f, ${data.beaconColorModifier.getBlue()/255}f };
