@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 basefeatures: [variables, model_json, model_java, model_obj]
-status: lts
+status: deprecated
 buildfileversion: 28.2.16
 
 # gradle task definitions
