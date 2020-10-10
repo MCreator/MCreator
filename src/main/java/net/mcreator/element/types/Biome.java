@@ -82,6 +82,7 @@ import java.util.List;
 	public boolean spawnPillagerOutpost;
 	public String villageType;
 	public boolean spawnWoodlandMansion;
+	public boolean spawnSwampHut;
 	public boolean spawnJungleTemple;
 	public boolean spawnDesertPyramid;
 	public boolean spawnIgloo;

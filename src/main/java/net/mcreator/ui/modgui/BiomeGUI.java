@@ -84,6 +84,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JCheckBox spawnMineshaft = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnPillagerOutpost = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnWoodlandMansion = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox spawnSwampHut = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnJungleTemple = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnDesertPyramid = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnIgloo = L10N.checkbox("elementgui.common.enable");
@@ -164,7 +165,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		waterColor.setOpaque(false);
 		waterFogColor.setOpaque(false);
 
-		JPanel sbbp2 = new JPanel(new GridLayout(11, 2, 4, 2));
+		JPanel sbbp2 = new JPanel(new GridLayout(12, 2, 4, 2));
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_strongholds"),
 				L10N.label("elementgui.biome.generate_strongholds")));
@@ -193,6 +194,12 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp2.add(spawnWoodlandMansion);
 		spawnWoodlandMansion.setSelected(false);
 		spawnWoodlandMansion.setOpaque(false);
+
+		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_swamp_hut"),
+				L10N.label("elementgui.biome.generate_mansions")));
+		sbbp2.add(spawnSwampHut);
+		spawnSwampHut.setSelected(false);
+		spawnSwampHut.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_jungle_temples"),
 				L10N.label("elementgui.biome.generate_jungle_temples")));
@@ -578,6 +585,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnPillagerOutpost.setSelected(biome.spawnPillagerOutpost);
 		villageType.setSelectedItem(biome.villageType);
 		spawnWoodlandMansion.setSelected(biome.spawnWoodlandMansion);
+		spawnSwampHut.setSelected(biome.spawnSwampHut);
 		spawnJungleTemple.setSelected(biome.spawnJungleTemple);
 		spawnDesertPyramid.setSelected(biome.spawnDesertPyramid);
 		spawnIgloo.setSelected(biome.spawnIgloo);
@@ -648,6 +656,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.spawnPillagerOutpost = spawnPillagerOutpost.isSelected();
 		biome.villageType = (String) villageType.getSelectedItem();
 		biome.spawnWoodlandMansion = spawnWoodlandMansion.isSelected();
+		biome.spawnSwampHut = spawnSwampHut.isSelected();
 		biome.spawnJungleTemple = spawnJungleTemple.isSelected();
 		biome.spawnDesertPyramid = spawnDesertPyramid.isSelected();
 		biome.spawnIgloo = spawnIgloo.isSelected();

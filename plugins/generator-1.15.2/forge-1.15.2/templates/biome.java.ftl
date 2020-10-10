@@ -113,6 +113,10 @@ import net.minecraft.block.material.Material;
 			this.addStructure(Feature.WOODLAND_MANSION.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
 			</#if>
 
+			<#if data.spawnSwampHut>
+			this.addStructure(Feature.SWAMP_HUT.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			</#if>
+
 			<#if data.spawnJungleTemple>
 			this.addStructure(Feature.JUNGLE_TEMPLE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
 			</#if>

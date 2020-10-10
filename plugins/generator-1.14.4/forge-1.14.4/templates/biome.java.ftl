@@ -111,6 +111,10 @@ package ${package}.world.biome;
 			this.addStructure(Feature.WOODLAND_MANSION, IFeatureConfig.NO_FEATURE_CONFIG);
 			</#if>
 
+			<#if data.spawnWoodlandMansion>
+			this.addStructure(Feature.SWAMP_HUT, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
 			<#if data.spawnJungleTemple>
 			this.addStructure(Feature.JUNGLE_TEMPLE, IFeatureConfig.NO_FEATURE_CONFIG);
 			</#if>

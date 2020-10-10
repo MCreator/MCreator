@@ -274,6 +274,7 @@ public class TestWorkspaceDataProvider {
 			biome.oceanRuinType = ListUtils.getRandomItem(random, new String[] { "NONE", "COLD", "WARM" });
 			biome.spawnOceanMonument = !_true;
 			biome.spawnWoodlandMansion = _true;
+			biome.spawnSwampHut = _true;
 			biome.spawnJungleTemple = !_true;
 			biome.spawnDesertPyramid = !_true;
 			biome.spawnIgloo = !_true;
