@@ -139,6 +139,14 @@ package ${package}.world.biome;
 			this.addStructure(Feature.OCEAN_RUIN, new OceanRuinConfig(OceanRuinStructure.Type.${data.oceanRuinType}, 0.3F, 0.9F));
 			</#if>
 
+			<#if data.spawnNetherFortress>
+			this.addStructure(Feature.NETHER_BRIDGE, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnEndCity>
+			this.addStructure(Feature.END_CITY, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
 			<#if (data.flowersPerChunk > 0)>
 			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.DEFAULT_FLOWER, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(${data.flowersPerChunk})));
 			</#if>

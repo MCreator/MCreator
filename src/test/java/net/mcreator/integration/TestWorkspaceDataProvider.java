@@ -281,6 +281,8 @@ public class TestWorkspaceDataProvider {
 			biome.spawnPillagerOutpost = !_true;
 			biome.spawnStronghold = _true;
 			biome.spawnMineshaft = !_true;
+			biome.spawnNetherFortress = _true;
+			biome.spawnEndCity = _true;
 			biome.villageType = ListUtils
 					.getRandomItem(random, new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
 			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];

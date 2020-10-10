@@ -90,6 +90,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JCheckBox spawnIgloo = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnOceanMonument = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnShipwreck = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox spawnNetherFortress = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox spawnEndCity = L10N.checkbox("elementgui.common.enable");
 
 	private final JComboBox<String> villageType = new JComboBox<>(
 			new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
@@ -165,7 +167,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		waterColor.setOpaque(false);
 		waterFogColor.setOpaque(false);
 
-		JPanel sbbp2 = new JPanel(new GridLayout(12, 2, 4, 2));
+		JPanel sbbp2 = new JPanel(new GridLayout(14, 2, 4, 2));
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_strongholds"),
 				L10N.label("elementgui.biome.generate_strongholds")));
@@ -196,7 +198,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnWoodlandMansion.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_swamp_hut"),
-				L10N.label("elementgui.biome.generate_mansions")));
+				L10N.label("elementgui.biome.generate_swamp_hut")));
 		sbbp2.add(spawnSwampHut);
 		spawnSwampHut.setSelected(false);
 		spawnSwampHut.setOpaque(false);
@@ -237,6 +239,18 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp2.add(oceanRuinType);
 
 		oceanRuinType.setPreferredSize(new Dimension(200, 36));
+
+		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether_fortress"),
+				L10N.label("elementgui.biome.generate_nether_fortress")));
+		sbbp2.add(spawnNetherFortress);
+		spawnNetherFortress.setSelected(false);
+		spawnNetherFortress.setOpaque(false);
+
+		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_end_city"),
+				L10N.label("elementgui.biome.generate_end_city")));
+		sbbp2.add(spawnEndCity);
+		spawnEndCity.setSelected(false);
+		spawnEndCity.setOpaque(false);
 
 		sbbp2.setOpaque(false);
 		pane2.setOpaque(false);
@@ -592,7 +606,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnOceanMonument.setSelected(biome.spawnOceanMonument);
 		spawnShipwreck.setSelected(biome.spawnShipwreck);
 		oceanRuinType.setSelectedItem(biome.oceanRuinType);
-
+		spawnNetherFortress.setSelected(biome.spawnNetherFortress);
+		spawnEndCity.setSelected(biome.spawnEndCity);
 		temperature.setValue(biome.temperature);
 		bigMushroomsChunk.setValue(biome.bigMushroomsChunk);
 		gravelPatchesPerChunk.setValue(biome.gravelPatchesPerChunk);
@@ -663,6 +678,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.spawnOceanMonument = spawnOceanMonument.isSelected();
 		biome.spawnShipwreck = spawnShipwreck.isSelected();
 		biome.oceanRuinType = (String) oceanRuinType.getSelectedItem();
+		biome.spawnNetherFortress = spawnNetherFortress.isSelected();
+		biome.spawnEndCity = spawnEndCity.isSelected();
 		return biome;
 	}
 

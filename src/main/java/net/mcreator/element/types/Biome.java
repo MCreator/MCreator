@@ -89,6 +89,8 @@ import java.util.List;
 	public boolean spawnOceanMonument;
 	public boolean spawnShipwreck;
 	public String oceanRuinType;
+	public boolean spawnNetherFortress;
+	public boolean spawnEndCity;
 
 	public List<String> biomeDictionaryTypes;
 	public List<String> defaultFeatures;
