@@ -1,1 +1,1 @@
-This parameter controls the number of vanilla flowers (poppy and dandelion only) per biome chunk
+This parameter controls the number of vanilla flowers (poppy and dandelion or double flowers) per biome chunk
