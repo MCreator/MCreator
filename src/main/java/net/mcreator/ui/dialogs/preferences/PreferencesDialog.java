@@ -172,7 +172,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		new EditTemplatesPanel(this, "Procedure templates", "templates/ptpl", "ptpl");
 		new EditTemplatesPanel(this, "AI builder templates", "templates/aitpl", "aitpl");
 		new EditTemplatesPanel(this, "Texture templates", "templates/textures/texturemaker", "png");
-		new PluginsPanel(this);
+		new PluginsPanel(this, this);
 	}
 
 	private void createPreferencesPanel(Field sectionField) {

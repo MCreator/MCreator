@@ -40,7 +40,7 @@ class PluginsPanel {
 
 	private final DefaultListModel<Plugin> tmodel = new DefaultListModel<>();
 
-	PluginsPanel(PreferencesDialog preferencesDialog) {
+	PluginsPanel(PreferencesDialog preferencesDialog, Window w) {
 		preferencesDialog.model.addElement("Manage plugins");
 
 		JList<Plugin> plugins = new JList<>(tmodel);
@@ -51,7 +51,7 @@ class PluginsPanel {
 		sectionPanel.add("North", new JLabel("<html><font style=\"font-size: 16px;\">Manage plugins"
 				+ "</big><br><font style=\"font-size: 9px; color: gray;\">"
 				+ "Here you can load plugins that extend functionality or add new generator types.<br>"
-				+ "It is recommended to restart MCreator after adding new plugins!"));
+				+ "It is recommended to restart MCreator after adding or removing new plugins!"));
 		sectionPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
 
 		JToolBar opts = new JToolBar();
@@ -78,6 +78,28 @@ class PluginsPanel {
 		opts.add(new JEmptyBox(5, 5));
 
 		explorePlugins.addActionListener(e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins"));
+
+		JButton remove = new JButton("Remove plugin");
+		remove.setIcon(UIRES.get("16px.delete.gif"));
+		opts.add(remove);
+
+		remove.addActionListener(e -> plugins.getSelectedValuesList().forEach(el -> {
+			if(!el.isBuiltin()) {
+				int option = JOptionPane
+						.showConfirmDialog(null, "<html>Are you sure you want to delete <b>"
+										+ el.getInfo().getName() + "</b>?",
+								"Remove a plugin", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+				if(option == JOptionPane.YES_NO_OPTION) {
+					File plugin = new File(el.getFile().getPath());
+					plugin.deleteOnExit();
+					tmodel.removeElement(el);
+				}
+			} else {
+				StringBuilder stringBuilder = new StringBuilder("<html>You can not remove a built-in plugin.");
+				JOptionPane.showMessageDialog(w, stringBuilder.toString(), "Impossible action",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}));
 
 		reloadPluginList();
 
