@@ -65,6 +65,7 @@ import java.util.List;
 	public int sandPathcesPerChunk;
 	public int gravelPatchesPerChunk;
 	public int reedsPerChunk;
+	public int pumpkinsPerChunk;
 	public int cactiPerChunk;
 
 	public double rainingPossibility;

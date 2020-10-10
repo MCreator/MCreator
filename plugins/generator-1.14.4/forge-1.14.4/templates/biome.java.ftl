@@ -187,6 +187,10 @@ package ${package}.world.biome;
 			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.REED, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_DOUBLE, new FrequencyConfig(${data.reedsPerChunk})));
 			</#if>
 
+			<#if (data.pumpkinsPerChunk > 0)>
+			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.PUMPKIN, IFeatureConfig.NO_FEATURE_CONFIG, Placement.CHANCE_HEIGHTMAP_DOUBLE, new ChanceConfig(${data.pumpkinsPerChunk})));
+			</#if>
+
 			<#if (data.cactiPerChunk > 0)>
 			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.CACTUS, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_DOUBLE, new FrequencyConfig(${data.cactiPerChunk})));
 			</#if>

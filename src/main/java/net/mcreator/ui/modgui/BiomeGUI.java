@@ -70,6 +70,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner sandPathcesPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner gravelPatchesPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner reedsPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
+	private final JSpinner pumpkinsPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner cactiPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner rainingPossibility = new JSpinner(new SpinnerNumberModel(0.5, 0, 1, 0.1));
 	private final JSpinner baseHeight = new JSpinner(new SpinnerNumberModel(0.1, -10, 10, 0.1));
@@ -324,6 +325,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/reeds_per_chunk"),
 				L10N.label("elementgui.biome.reeds_per_chunk")));
 		sbbp3.add(reedsPerChunk);
+
+		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/pumpkins_per_chunk"),
+				L10N.label("elementgui.biome.pumpkins_per_chunk")));
+		sbbp3.add(pumpkinsPerChunk);
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/cacti_per_chunk"),
 				L10N.label("elementgui.biome.cacti_per_chunk")));
@@ -580,6 +585,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		mushroomsPerChunk.setValue(biome.mushroomsPerChunk);
 		sandPathcesPerChunk.setValue(biome.sandPathcesPerChunk);
 		reedsPerChunk.setValue(biome.reedsPerChunk);
+		pumpkinsPerChunk.setValue(biome.pumpkinsPerChunk);
 		cactiPerChunk.setValue(biome.cactiPerChunk);
 		rainingPossibility.setValue(biome.rainingPossibility);
 		baseHeight.setValue(biome.baseHeight);
@@ -637,6 +643,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.sandPathcesPerChunk = (int) sandPathcesPerChunk.getValue();
 		biome.gravelPatchesPerChunk = (int) gravelPatchesPerChunk.getValue();
 		biome.reedsPerChunk = (int) reedsPerChunk.getValue();
+		biome.pumpkinsPerChunk = (int) pumpkinsPerChunk.getValue();
 		biome.cactiPerChunk = (int) cactiPerChunk.getValue();
 		biome.rainingPossibility = (double) rainingPossibility.getValue();
 		biome.baseHeight = (double) baseHeight.getValue();
