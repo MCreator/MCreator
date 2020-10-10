@@ -142,7 +142,8 @@ import net.minecraft.block.material.Material;
 			</#if>
 
 			<#if (data.doubleFlowersPerChunk > 0)>
-			this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_RANDOM_SELECTOR.withConfiguration(new MultipleWithChanceRandomFeatureConfig(ImmutableList.of(Feature.RANDOM_PATCH.withConfiguration(LILAC_CONFIG), Feature.RANDOM_PATCH.withConfiguration(ROSE_BUSH_CONFIG), Feature.RANDOM_PATCH.withConfiguration(PEONY_CONFIG), Feature.FLOWER.withConfiguration(LILY_OF_THE_VALLEY_CONFIG)), 0)).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(${data.doubleFlowersPerChunk}))));
+			this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_RANDOM_SELECTOR.withConfiguration(new MultipleWithChanceRandomFeatureConfig(ImmutableList.of(Feature.RANDOM_PATCH.withConfiguration(LILAC_CONFIG),
+					Feature.RANDOM_PATCH.withConfiguration(ROSE_BUSH_CONFIG), Feature.RANDOM_PATCH.withConfiguration(PEONY_CONFIG), Feature.FLOWER.withConfiguration(LILY_OF_THE_VALLEY_CONFIG)), 0)).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(${data.doubleFlowersPerChunk}))));
    			</#if>
 
 			<#if (data.grassPerChunk > 0)>
