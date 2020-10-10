@@ -62,7 +62,7 @@ import java.util.List;
 	public int doubleFlowersPerChunk;
 	public int mushroomsPerChunk;
 	public int bigMushroomsChunk;
-	public int sandPathcesPerChunk;
+	public int sandPatchesPerChunk;
 	public int gravelPatchesPerChunk;
 	public int reedsPerChunk;
 	public int pumpkinsPerChunk;
