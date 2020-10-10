@@ -67,7 +67,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner doubleFlowersPerChunk = new JSpinner(new SpinnerNumberModel(4, 0, 256, 1));
 	private final JSpinner mushroomsPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner bigMushroomsChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
-	private final JSpinner sandPathcesPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
+	private final JSpinner sandPatchesPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner gravelPatchesPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner reedsPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner pumpkinsPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
@@ -278,7 +278,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane5.add("Center", PanelUtils.totalCenterInPanel(spawnproperties));
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
-		JPanel sbbp3 = new JPanel(new GridLayout(15, 2, 10, 2));
+		JPanel sbbp3 = new JPanel(new GridLayout(16, 2, 10, 2));
 
 		defaultFeatures.setPreferredSize(new Dimension(340, 36));
 
@@ -316,7 +316,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/sand_patches_per_chunk"),
 				L10N.label("elementgui.biome.sand_patches_per_chunk")));
-		sbbp3.add(sandPathcesPerChunk);
+		sbbp3.add(sandPatchesPerChunk);
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/gravel_patches_per_chunk"),
 				L10N.label("elementgui.biome.gravel_patches_per_chunk")));
@@ -583,7 +583,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		flowersPerChunk.setValue(biome.flowersPerChunk);
 		doubleFlowersPerChunk.setValue(biome.doubleFlowersPerChunk);
 		mushroomsPerChunk.setValue(biome.mushroomsPerChunk);
-		sandPathcesPerChunk.setValue(biome.sandPathcesPerChunk);
+		sandPatchesPerChunk.setValue(biome.sandPatchesPerChunk);
 		reedsPerChunk.setValue(biome.reedsPerChunk);
 		pumpkinsPerChunk.setValue(biome.pumpkinsPerChunk);
 		cactiPerChunk.setValue(biome.cactiPerChunk);
@@ -640,7 +640,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.doubleFlowersPerChunk = (int) doubleFlowersPerChunk.getValue();
 		biome.mushroomsPerChunk = (int) mushroomsPerChunk.getValue();
 		biome.bigMushroomsChunk = (int) bigMushroomsChunk.getValue();
-		biome.sandPathcesPerChunk = (int) sandPathcesPerChunk.getValue();
+		biome.sandPatchesPerChunk = (int) sandPatchesPerChunk.getValue();
 		biome.gravelPatchesPerChunk = (int) gravelPatchesPerChunk.getValue();
 		biome.reedsPerChunk = (int) reedsPerChunk.getValue();
 		biome.pumpkinsPerChunk = (int) pumpkinsPerChunk.getValue();
