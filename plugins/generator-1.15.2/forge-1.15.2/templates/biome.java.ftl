@@ -200,7 +200,7 @@ import net.minecraft.block.material.Material;
 			</#if>
 
 			<#if (data.sandPatchesPerChunk > 0)>
-			addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.DISK.withConfiguration(new SphereReplaceConfig(Blocks.SAND.getDefaultState(), 7, 2, Lists.newArrayList(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}))).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(${data.sandPathcesPerChunk}))));
+			addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.DISK.withConfiguration(new SphereReplaceConfig(Blocks.SAND.getDefaultState(), 7, 2, Lists.newArrayList(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}))).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(${data.sandPatchesPerChunk}))));
 			</#if>
 
 			<#if (data.gravelPatchesPerChunk > 0)>

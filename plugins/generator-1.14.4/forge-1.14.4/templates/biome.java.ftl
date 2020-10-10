@@ -196,7 +196,7 @@ package ${package}.world.biome;
 			</#if>
 
 			<#if (data.sandPatchesPerChunk > 0)>
-			addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.DISK, new SphereReplaceConfig(Blocks.SAND.getDefaultState(), 7, 2, Lists.newArrayList(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})), Placement.COUNT_TOP_SOLID, new FrequencyConfig(${data.sandPathcesPerChunk})));
+			addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.DISK, new SphereReplaceConfig(Blocks.SAND.getDefaultState(), 7, 2, Lists.newArrayList(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})), Placement.COUNT_TOP_SOLID, new FrequencyConfig(${data.sandPatchesPerChunk})));
 			</#if>
 
 			<#if (data.gravelPatchesPerChunk > 0)>
