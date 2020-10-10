@@ -86,13 +86,13 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.new_workspace"), UIRES.get("addwrk"), e -> {
 			NewWorkspaceDialog newWorkspaceDialog = new NewWorkspaceDialog(this);
 			if (newWorkspaceDialog.getWorkspaceFile() != null)
-				workspaceOpenListener.workspaceOpened(newWorkspaceDialog.getWorkspaceFile());
+				workspaceOpenListener.workspaceOpened(newWorkspaceDialog.getWorkspaceFile(), null, false);
 		}, actions);
 
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.open_workspace"), UIRES.get("opnwrk"), e -> {
 			File workspaceFile = FileDialogs.getOpenDialog(this, new String[] { ".mcreator" });
 			if (workspaceFile != null && workspaceFile.getParentFile().isDirectory())
-				workspaceOpenListener.workspaceOpened(workspaceFile);
+				workspaceOpenListener.workspaceOpened(workspaceFile, null, false);
 		}, actions);
 
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.import"), UIRES.get("impfile"), e -> {
@@ -102,7 +102,7 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 				if (workspaceDir != null) {
 					File workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir, this);
 					if (workspaceFile != null)
-						workspaceOpenListener.workspaceOpened(workspaceFile);
+						workspaceOpenListener.workspaceOpened(workspaceFile, null, false);
 				}
 			}
 		}, actions);
@@ -120,7 +120,8 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 						CloneWorkspace.cloneWorkspace(this, vcsInfo, workspaceFolder);
 						try {
 							File workspaceFile = WorkspaceUtils.getWorkspaceFileForWorkspaceFolder(workspaceFolder);
-							workspaceOpenListener.workspaceOpened(workspaceFile);
+							workspaceOpenListener.workspaceOpened(workspaceFile, null, false);
+
 						} catch (Exception ex) {
 							throw new Exception("The remote repository is not a MCreator workspace or is corrupted");
 						}
@@ -245,7 +246,7 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 					if (transfObj instanceof File) {
 						File workspaceFile = (File) transfObj;
 						if (workspaceFile.getName().endsWith(".mcreator")) {
-							workspaceOpenListener.workspaceOpened(workspaceFile);
+							workspaceOpenListener.workspaceOpened(workspaceFile, null, false);
 						} else {
 							Toolkit.getDefaultToolkit().beep();
 						}
@@ -277,14 +278,14 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 		saveRecentWorkspaces();
 	}
 
-	private void removeRecentWorkspace(RecentWorkspaceEntry recentWorkspace) {
+	public void removeRecentWorkspace(RecentWorkspaceEntry recentWorkspace) {
 		recentWorkspaces.list.remove(recentWorkspace);
 		saveRecentWorkspaces();
 	}
 
 	private static final Gson gson = new GsonBuilder().setPrettyPrinting().setLenient().create();
 
-	private void saveRecentWorkspaces() {
+	public void saveRecentWorkspaces() {
 		String serialized = gson.toJson(recentWorkspaces);
 		if (serialized != null && !serialized.isEmpty()) {
 			FileIO.writeStringToFile(serialized, UserFolderManager.getFileFromUserFolder("recentworkspaces"));
@@ -324,7 +325,8 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 						removeRecentWorkspace(defaultListModel.elementAt(idx));
 						reloadRecents();
 					} else if (mouseEvent.getClickCount() == 2) {
-						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
+						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath(),
+								recentsList.getSelectedValue(), true);
 					}
 				}
 			});
@@ -450,15 +452,22 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 			setFont(AbstractMCreatorTheme.light_font.deriveFont(16.0f));
 
 			String path = value.getPath().getParentFile().getAbsolutePath().replace("\\", "/");
-			setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.name, 20)
-					+ "</font><small><br>" + StringUtils.abbreviateStringInverse(path, 37));
+			String generator = value.generator;
+			if(generator != null) {
+				setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.name, 20)
+						+ "</font><small><br>" + StringUtils.abbreviateStringInverse(value.generator, 37)
+						+ "</font><small><br>" + StringUtils.abbreviateStringInverse(path, 37));
+			} else {
+				setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.name, 20)
+						+ "</font><small><br>" + StringUtils.abbreviateStringInverse(path, 37));
+			}
 
 			return this;
 		}
 	}
 
 	interface WorkspaceOpenListener {
-		void workspaceOpened(File workspaceFolder);
+		void workspaceOpened(File workspaceFolder, RecentWorkspaceEntry recentWorkspaceEntry, boolean updateRecent);
 	}
 
 	static class RecentWorkspaces {
@@ -477,10 +486,12 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 
 		private String name;
 		private String path;
+		private String generator;
 
-		public RecentWorkspaceEntry(String name, File path) {
+		public RecentWorkspaceEntry(String name, File path, String generator) {
 			this.name = name;
 			this.path = path.toString();
+			this.generator = generator;
 		}
 
 		public File getPath() {
@@ -489,6 +500,12 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 
 		public String getName() {
 			return name;
+		}
+
+		public String getGenerator(){return generator;}
+
+		public void setGenerator(String generator) {
+			this.generator = generator;
 		}
 
 		@Override public int hashCode() {
@@ -504,4 +521,7 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 		}
 	}
 
+	public RecentWorkspaces getRecentWorkspaces() {
+		return recentWorkspaces;
+	}
 }

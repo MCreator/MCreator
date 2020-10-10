@@ -32,6 +32,7 @@ import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 
 import java.io.File;
@@ -122,10 +123,13 @@ public class WorkspaceSettingsAction extends GradleAction {
 									change.workspaceSettings.getModID());
 				}
 
+				String flavor = mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor().toString();
 				// add new modid workspace to the recent workspaces so it does not get removed from the list
 				mcreator.getApplication().getWorkspaceSelector().addRecentWorkspace(
 						new WorkspaceSelector.RecentWorkspaceEntry(
-								mcreator.getWorkspace().getWorkspaceSettings().getModName(), newWorkspaceFile));
+								mcreator.getWorkspace().getWorkspaceSettings().getModName(), newWorkspaceFile,
+								StringUtils.uppercaseFirstLetter(flavor.toLowerCase()) + " "
+										+ mcreator.getWorkspace().getGenerator().getGeneratorMinecraftVersion()));
 			}
 
 			// handle change of generator in a different manner
@@ -148,6 +152,20 @@ public class WorkspaceSettingsAction extends GradleAction {
 					dial.addProgress(p2);
 
 					mcreator.getWorkspace().switchGenerator(change.workspaceSettings.getCurrentGenerator());
+					//Create a new RecentWorkspaceEntry
+					WorkspaceSelector.RecentWorkspaceEntry recentWorkspace = new WorkspaceSelector.RecentWorkspaceEntry(
+							mcreator.getWorkspace().getWorkspaceSettings().getModName(), mcreator.getWorkspace().getFileManager().getWorkspaceFile(),
+							StringUtils.uppercaseFirstLetter(
+							mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor().toString()
+									.toLowerCase()) + " " + mcreator.getWorkspace().getGenerator()
+							.getGeneratorMinecraftVersion());
+					//Remove the old RecentWorkspaceEntry and add the new one
+					WorkspaceSelector.RecentWorkspaceEntry old = mcreator.getApplication().getRecentWorkspaceEntry();
+					mcreator.getApplication().getWorkspaceSelector().removeRecentWorkspace(old);
+					mcreator.getApplication().getWorkspaceSelector().addRecentWorkspace(recentWorkspace);
+					mcreator.getApplication().getWorkspaceSelector().saveRecentWorkspaces();
+					//Save the new recentWorkspaceEntry
+					mcreator.getApplication().setRecentWorkspaceEntry(recentWorkspace);
 
 					p2.ok();
 					dial.hideAll();

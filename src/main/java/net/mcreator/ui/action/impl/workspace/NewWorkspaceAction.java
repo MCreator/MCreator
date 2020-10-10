@@ -30,7 +30,7 @@ public class NewWorkspaceAction extends BasicAction {
 			NewWorkspaceDialog newWorkspaceDialog = new NewWorkspaceDialog(actionRegistry.getMCreator());
 			if (newWorkspaceDialog.getWorkspaceFile() != null)
 				actionRegistry.getMCreator().getApplication()
-						.openWorkspaceInMCreator(newWorkspaceDialog.getWorkspaceFile());
+						.openWorkspaceInMCreator(newWorkspaceDialog.getWorkspaceFile(), null, false);
 		});
 		setIcon(UIRES.get("16px.add.gif"));
 	}

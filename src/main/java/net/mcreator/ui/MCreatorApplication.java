@@ -42,6 +42,7 @@ import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
 import net.mcreator.util.MCreatorVersionNumber;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
@@ -70,6 +71,8 @@ public final class MCreatorApplication {
 	private final WorkspaceSelector workspaceSelector;
 
 	private final List<MCreator> openMCreators = new ArrayList<>();
+
+	private WorkspaceSelector.RecentWorkspaceEntry recentWorkspaceEntry;
 
 	private final DiscordClient discordClient;
 
@@ -175,7 +178,7 @@ public final class MCreatorApplication {
 			File passedFile = new File(lastArg);
 			if (passedFile.isFile() && passedFile.getName().endsWith(".mcreator")) {
 				splashScreen.setVisible(false);
-				openWorkspaceInMCreator(passedFile);
+				openWorkspaceInMCreator(passedFile, null, false);
 				directLaunch = true;
 			}
 		}
@@ -208,7 +211,7 @@ public final class MCreatorApplication {
 		return workspaceSelector;
 	}
 
-	public void openWorkspaceInMCreator(File workspaceFile) {
+	public void openWorkspaceInMCreator(File workspaceFile, WorkspaceSelector.RecentWorkspaceEntry recentWorkspace, boolean updateRecent) {
 		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		try {
 			Workspace workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
@@ -217,6 +220,15 @@ public final class MCreatorApplication {
 				JOptionPane.showMessageDialog(workspaceSelector, L10N.t("dialog.workspace.open_failed_message"),
 						L10N.t("dialog.workspace.open_failed_title"), JOptionPane.ERROR_MESSAGE);
 			} else {
+				if(updateRecent) {
+					if (recentWorkspace.getGenerator() == null) {
+						recentWorkspace.setGenerator(StringUtils.uppercaseFirstLetter(
+								workspace.getGenerator().getGeneratorConfiguration().getGeneratorFlavor().toString()
+										.toLowerCase()) + " " + workspace.getGenerator()
+								.getGeneratorMinecraftVersion());
+					}
+					this.recentWorkspaceEntry = recentWorkspace;
+				}
 				MCreator mcreator = new MCreator(this, workspace);
 				if (!this.openMCreators.contains(mcreator)) {
 					this.workspaceSelector.setVisible(false);
@@ -233,8 +245,11 @@ public final class MCreatorApplication {
 						}
 					}
 				}
+				String flavor = mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor().toString();
 				this.workspaceSelector.addRecentWorkspace(new WorkspaceSelector.RecentWorkspaceEntry(
-						mcreator.getWorkspace().getWorkspaceSettings().getModName(), workspaceFile));
+						mcreator.getWorkspace().getWorkspaceSettings().getModName(), workspaceFile,
+						StringUtils.uppercaseFirstLetter(flavor.toLowerCase()) + " "
+								+ mcreator.getWorkspace().getGenerator().getGeneratorMinecraftVersion()));
 			}
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
 			LOG.fatal("Failed to open workspace!", corruptedWorkspaceFile);
@@ -251,7 +266,7 @@ public final class MCreatorApplication {
 					if (selected != null) {
 						File backup = new File(backupsDir, selected);
 						FileIO.copyFile(backup, workspaceFile);
-						openWorkspaceInMCreator(workspaceFile);
+						openWorkspaceInMCreator(workspaceFile, null, false);
 					} else {
 						reportFailedWorkspaceOpen(
 								new IOException("User canceled workspace backup restoration", corruptedWorkspaceFile));
@@ -326,5 +341,13 @@ public final class MCreatorApplication {
 
 	public DiscordClient getDiscordClient() {
 		return discordClient;
+	}
+
+	public WorkspaceSelector.RecentWorkspaceEntry getRecentWorkspaceEntry() {
+		return recentWorkspaceEntry;
+	}
+
+	public void setRecentWorkspaceEntry(WorkspaceSelector.RecentWorkspaceEntry recentWorkspaceEntry) {
+		this.recentWorkspaceEntry = recentWorkspaceEntry;
 	}
 }

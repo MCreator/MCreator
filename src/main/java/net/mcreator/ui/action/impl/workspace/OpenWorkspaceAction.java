@@ -31,7 +31,7 @@ public class OpenWorkspaceAction extends BasicAction {
 		super(actionRegistry, L10N.t("action.workspace.open"), e -> {
 			File workspaceFile = FileDialogs.getOpenDialog(actionRegistry.getMCreator(), new String[] { ".mcreator" });
 			if (workspaceFile != null && workspaceFile.getParentFile().isDirectory())
-				actionRegistry.getMCreator().getApplication().openWorkspaceInMCreator(workspaceFile);
+				actionRegistry.getMCreator().getApplication().openWorkspaceInMCreator(workspaceFile, null, false);
 		});
 	}
 
