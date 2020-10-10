@@ -57,6 +57,7 @@ import java.util.List;
 	public int treesPerChunk;
 	public int grassPerChunk;
 	public int seagrassPerChunk;
+	public int bamboosPerChunk;
 	public int flowersPerChunk;
 	public int mushroomsPerChunk;
 	public int bigMushroomsChunk;
