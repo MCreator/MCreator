@@ -228,7 +228,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		selp.add(animation);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
-				L10N.label("elementgui.ranged_item.max_stack_size")));
+				L10N.label("elementgui.common.max_stack_size")));
 		selp.add(stackSize);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
