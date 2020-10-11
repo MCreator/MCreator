@@ -1,0 +1,49 @@
+{
+  "args0": [
+	{
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+	{
+      "type": "field_dropdown",
+      "name": "type",
+      "options": [
+        [
+          "UNDEFINED",
+          "UNDEFINED"
+        ],
+        [
+          "UNDEAD",
+          "UNDEAD"
+        ],
+        [
+          "ARTHROPOD",
+          "ARTHROPOD"
+        ],
+		[
+          "ILLAGER",
+          "ILLAGER"
+        ],
+		[
+          "WATER",
+          "WATER"
+        ]
+      ]
+    }
+  ],
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "entitydata",
+	"toolbox_init": [
+	  "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "inputs": [
+	  "entity"
+    ],
+	"fields": [
+	  "type"
+	]
+  }
+}

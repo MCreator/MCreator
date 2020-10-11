@@ -25,6 +25,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.ide.RSyntaxTextAreaStyler;
 import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
@@ -75,12 +76,12 @@ public class FunctionGUI extends ModElementGUI<Function> {
 		JPanel northPanel = new JPanel(new GridLayout(2, 2, 15, 10));
 		northPanel.setOpaque(false);
 
-		northPanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("function/registry_name"), new JLabel("Function registry name:")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("function/registry_name"),
+				L10N.label("elementgui.function.registry_name")));
 		northPanel.add(name);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("function/namespace"),
-				new JLabel("<html>Function namespace:<br><small>You may want to leave this on mod in most cases")));
+				L10N.label("elementgui.function.namespace")));
 		northPanel.add(namespace);
 
 		RTextScrollPane sp = new RTextScrollPane(te, true);
@@ -109,9 +110,8 @@ public class FunctionGUI extends ModElementGUI<Function> {
 		atmf.putMapping("text/mcfunction", MinecraftCommandsTokenMaker.class.getName());
 		te.setSyntaxEditingStyle("text/mcfunction");
 
-		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), PanelUtils
-				.northAndCenterElement(new JLabel(
-								"<html>&nbsp;&nbsp;&nbsp;&nbsp;Enter the function code (in Minecraft function/command syntax - one command per line) below:"),
+		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel),
+				PanelUtils.northAndCenterElement(L10N.label("elementgui.function.indications"),
 						sp, 10, 10), 15, 15));
 
 		addPage(pane3);

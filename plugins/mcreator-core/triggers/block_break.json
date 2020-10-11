@@ -36,5 +36,6 @@
       "name": "xpAmount",
       "type": "number"
     }
-  ]
+  ],
+  "cancelable": "true"
 }
