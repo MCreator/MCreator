@@ -387,7 +387,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		JLabel tt = new JLabel(UIRES.get("biomeblocks"));
 
 		panels.add("Center", PanelUtils.join(sbbp4));
-		panels.add("South", sbbp5);
 
 		panels.setOpaque(false);
 

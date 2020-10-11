@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.data.Dependency;
+import net.mcreator.blockly.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.MusicDisc;
 import net.mcreator.minecraft.DataListEntry;
@@ -83,13 +83,13 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
 	@Override protected void initGUI() {
 		onRightClickedInAir = new ProcedureSelector(this.withEntry("item/when_right_clicked"), mcreator,
-				L10N.t("elementgui.common.event_right_clicked_air"),
+				L10N.t("elementgui.music_disc.event_rightclicked_air"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator,
 				L10N.t("elementgui.music_disc.event_crafted_smelted"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
-				L10N.t("elementgui.common.event_right_clicked_block"), Dependency.fromString(
+				L10N.t("elementgui.music_disc.event_rightclicked_block"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction"));
 		onEntityHitWith = new ProcedureSelector(this.withEntry("item/when_entity_hit"), mcreator,
 				L10N.t("elementgui.music_disc.event_entity_hitwith"), Dependency.fromString(
@@ -107,7 +107,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.t("elementgui.music_disc.event_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
 
 		texture.setOpaque(false);
 		hasGlow.setOpaque(false);

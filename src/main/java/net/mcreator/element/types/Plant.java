@@ -41,8 +41,6 @@ import java.util.Map;
 	public String textureBottom;
 	public String customModelName;
 
-	public String itemTexture;
-
 	public String plantType;
 
 	public String staticPlantGenerationType;
@@ -82,15 +80,12 @@ import java.util.Map;
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
 
-	public Procedure onBlockAdded;
 	public Procedure onNeighbourBlockChanges;
 	public Procedure onTickUpdate;
-	public Procedure onRandomUpdateEvent;
 	public Procedure onDestroyedByPlayer;
 	public Procedure onDestroyedByExplosion;
 	public Procedure onStartToDestroy;
 	public Procedure onEntityCollides;
-	public Procedure onBlockPlacedBy;
 	public Procedure onRightClicked;
 
 	private Plant() {

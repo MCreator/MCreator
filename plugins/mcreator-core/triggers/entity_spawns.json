@@ -24,6 +24,5 @@
       "name": "reason",
       "type": "number"
     }
-  ],
-  "cancelable": "true"
+  ]
 }

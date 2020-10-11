@@ -10,7 +10,7 @@
   "output": "MCItem",
   "colour": 350,
   "mcreator": {
-    "toolbox_id": "entitydata",
+    "toolbox_id": "entitymanagement",
     "toolbox_init": [
       "<value name=\"source\"><block type=\"entity_from_deps\"></block></value>"
     ],

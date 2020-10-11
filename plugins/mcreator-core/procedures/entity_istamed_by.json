@@ -15,10 +15,9 @@
   "output": "Boolean",
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
-    "toolbox_id": "entitydata",
+    "toolbox_id": "entitymanagement",
     "toolbox_init": [
-      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
-      "<value name=\"tamedBy\"><block type=\"source_entity_from_deps\"></block></value>"
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "inputs": [
       "entity",

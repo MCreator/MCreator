@@ -23,7 +23,6 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
 
@@ -42,8 +41,8 @@ public class JLootTableEntry extends JPanel {
 	private final JSpinner minEnchantmentsLevel = new JSpinner(new SpinnerNumberModel(0, 0, 64000, 1));
 	private final JSpinner maxEnchantmentsLevel = new JSpinner(new SpinnerNumberModel(0, 0, 64000, 1));
 
-	private final JCheckBox affectedByFortune = L10N.checkbox("elementgui.loot_table.affected_by_fortune");
-	private final JCheckBox explosionDecay = L10N.checkbox("elementgui.loot_table.enable_explosion_decay");
+	private final JCheckBox affectedByFortune = new JCheckBox("Affected by fortune");
+	private final JCheckBox explosionDecay = new JCheckBox("Enable explosion decay");
 
 	private final JComboBox<String> silkTouchMode = new JComboBox<>(
 			new String[] { "Ignore silk touch", "Only with silk touch", "Only without silk touch" });
@@ -63,16 +62,16 @@ public class JLootTableEntry extends JPanel {
 		JPanel line1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		line1.setOpaque(false);
 
-		line1.add(L10N.label("elementgui.loot_table.entry_item"));
+		line1.add(new JLabel("Entry item: "));
 		line1.add(item);
-		line1.add(L10N.label("elementgui.loot_table.entry_weight"));
+		line1.add(new JLabel("Entry weight: "));
 		line1.add(weight);
 
 		line1.add(new JEmptyBox(15, 5));
 
-		line1.add(L10N.label("elementgui.loot_table.min_count"));
+		line1.add(new JLabel("Min count: "));
 		line1.add(mincount);
-		line1.add(L10N.label("elementgui.loot_table.max_count"));
+		line1.add(new JLabel("Max count: "));
 		line1.add(maxcount);
 
 		line1.add(new JEmptyBox(15, 5));
@@ -82,14 +81,14 @@ public class JLootTableEntry extends JPanel {
 
 		line1.add(new JEmptyBox(15, 5));
 
-		line1.add(L10N.label("elementgui.loot_table.silk_touch_mode"));
+		line1.add(new JLabel("Silk touch mode: "));
 		line1.add(silkTouchMode);
 
 		affectedByFortune.setOpaque(false);
 		explosionDecay.setOpaque(false);
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
-		remove.setText(L10N.t("elementgui.loot_table.remove_entry"));
+		remove.setText("Remove this entry");
 		remove.addActionListener(e -> {
 			entryList.remove(this);
 			parent.remove(container);
@@ -100,9 +99,9 @@ public class JLootTableEntry extends JPanel {
 		JPanel line2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		line2.setOpaque(false);
 
-		line2.add(L10N.label("elementgui.loot_table.enchantments_level_min"));
+		line2.add(new JLabel("Entry item enchantments level min: "));
 		line2.add(minEnchantmentsLevel);
-		line2.add(L10N.label("elementgui.loot_table.enchantments_level_max"));
+		line2.add(new JLabel("max: "));
 		line2.add(maxEnchantmentsLevel);
 
 		add(PanelUtils.centerAndEastElement(line1, PanelUtils.join(remove)));

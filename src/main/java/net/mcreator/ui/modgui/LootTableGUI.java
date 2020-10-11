@@ -25,7 +25,6 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.datapack.loottable.JLootTablePool;
 import net.mcreator.ui.help.HelpUtils;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -65,8 +64,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
 
-		name.setValidator(new RegistryNameValidator(name,
-				L10N.t("elementgui.loot_table.name")).setValidChars(Arrays.asList('_', '/')));
+		name.setValidator(new RegistryNameValidator(name, "Loot table").setValidChars(Arrays.asList('_', '/')));
 		name.enableRealtimeValidation();
 
 		name.addItem("blocks/stone");
@@ -89,15 +87,14 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		northPanel.setOpaque(false);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("loottable/registry_name"),
-				L10N.label("elementgui.loot_table.registry_name")));
+				new JLabel("Loot table registry name:")));
 		northPanel.add(name);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("loottable/namespace"),
-				L10N.label("elementgui.loot_table.namespace")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("loottable/namespace"), new JLabel(
+				"<html>Loot table namespace:<br><small>Use minecraft namespace to alter vanilla loot tables")));
 		northPanel.add(namespace);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("loottable/type"),
-				L10N.label("elementgui.loot_table.type")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("loottable/type"), new JLabel("Loot table type:")));
 		northPanel.add(type);
 
 		JPanel maineditor = new JPanel(new BorderLayout());
@@ -106,7 +103,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		JToolBar bar = new JToolBar();
 		bar.setFloatable(false);
 
-		JButton addPool = L10N.button("elementgui.loot_table.add_pool");
+		JButton addPool = new JButton("Add loot table pool");
 		addPool.setIcon(UIRES.get("16px.add.gif"));
 		bar.add(addPool);
 

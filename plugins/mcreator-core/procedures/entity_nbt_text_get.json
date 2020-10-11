@@ -15,7 +15,7 @@
   "output": "String",
   "colour": "%{BKY_TEXTS_HUE}",
   "mcreator": {
-    "toolbox_id": "entitydata",
+    "toolbox_id": "entitymanagement",
     "toolbox_init": [
       "<value name=\"tagName\"><block type=\"text\"><field name=\"TEXT\">tagName</field></block></value>",
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"

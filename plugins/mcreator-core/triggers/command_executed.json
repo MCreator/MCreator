@@ -24,6 +24,5 @@
       "name": "command",
       "type": "string"
     }
-  ],
-  "cancelable": "true"
+  ]
 }

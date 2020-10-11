@@ -41,7 +41,7 @@ public class AITasksEditorToolbar extends TransparentToolBar {
 	public AITasksEditorToolbar(MCreator mcreator, BlocklyPanel blocklyPanel) {
 		setBorder(null);
 
-		AITaskTemplateDropdown templateDropdown = new AITaskTemplateDropdown(blocklyPanel,
+		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel,
 				TemplatesLoader.loadTemplates("aitpl", "aitpl"));
 
 		JButton bs1 = new JButton("AI templates");

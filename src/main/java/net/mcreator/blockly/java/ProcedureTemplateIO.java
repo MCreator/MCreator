@@ -21,8 +21,6 @@ package net.mcreator.blockly.java;
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.io.BinaryStringIO;
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.ls.DOMImplementationLS;
@@ -37,10 +35,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.ParseException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ProcedureTemplateIO {
 
@@ -105,56 +99,6 @@ public class ProcedureTemplateIO {
 
 	public static String importBlocklyXML(String template) {
 		return BinaryStringIO.readResourceToString(template);
-	}
-
-	private static final Pattern logicLocalVariables = Pattern.compile(
-			"<block type=\"(?:variables_set_logic|variables_get_logic)\"><field name=\"VAR\">local:(.*?)</field>");
-	private static final Pattern numberLocalVariables = Pattern.compile(
-			"<block type=\"(?:variables_set_number|variables_get_number)\"><field name=\"VAR\">local:(.*?)</field>");
-	private static final Pattern textLocalVariables = Pattern.compile(
-			"<block type=\"(?:variables_set_text|variables_get_text)\"><field name=\"VAR\">local:(.*?)</field>");
-	private static final Pattern itemstackLocalVariables = Pattern.compile(
-			"<block type=\"(?:variables_set_itemstack|variables_get_itemstack)\"><field name=\"VAR\">local:(.*?)</field>");
-
-	public static Set<VariableElement> tryToExtractVariables(String xml) {
-		Set<VariableElement> retval = new HashSet<>();
-
-		try {
-			Matcher m = logicLocalVariables.matcher(xml);
-			while (m.find()) {
-				VariableElement element = new VariableElement();
-				element.setName(m.group(1));
-				element.setType(VariableElementType.LOGIC);
-				retval.add(element);
-			}
-
-			m = numberLocalVariables.matcher(xml);
-			while (m.find()) {
-				VariableElement element = new VariableElement();
-				element.setName(m.group(1));
-				element.setType(VariableElementType.NUMBER);
-				retval.add(element);
-			}
-
-			m = textLocalVariables.matcher(xml);
-			while (m.find()) {
-				VariableElement element = new VariableElement();
-				element.setName(m.group(1));
-				element.setType(VariableElementType.STRING);
-				retval.add(element);
-			}
-
-			m = itemstackLocalVariables.matcher(xml);
-			while (m.find()) {
-				VariableElement element = new VariableElement();
-				element.setName(m.group(1));
-				element.setType(VariableElementType.ITEMSTACK);
-				retval.add(element);
-			}
-		} catch (Exception ignored) {
-		}
-
-		return retval;
 	}
 
 }
