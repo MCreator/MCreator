@@ -269,7 +269,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 	@Override protected void initGUI() {
 		onStruckByLightning = new ProcedureSelector(this.withEntry("entity/when_struck_by_lightning"), mcreator,
-				L10N.t("elementgui.living_entity.event_strucked_by_lightning"),
+				L10N.t("elementgui.living_entity.event_struck_by_lightning"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		whenMobFalls = new ProcedureSelector(this.withEntry("entity/when_falls"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_falls"),
