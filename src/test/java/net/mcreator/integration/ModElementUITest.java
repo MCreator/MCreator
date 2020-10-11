@@ -27,7 +27,6 @@ import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.integration.javafx.JavaFXThreadingRule;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -45,7 +44,6 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -111,11 +109,6 @@ public class ModElementUITest {
 			LOG.info("Testing mod element type UI " + modElement.getType().getReadableName() + " with "
 					+ generatableElements.size() + " variants");
 
-			// use non-default translation to test translations at the same time
-			// this should be set to the most complete translation
-			PreferencesManager.PREFERENCES.ui.language = new Locale("fr", "FR");
-			L10N.initTranslations();
-
 			for (GeneratableElement generatableElementOrig : generatableElements) {
 				GeneratableElement generatableElement;
 
@@ -139,16 +132,11 @@ public class ModElementUITest {
 				field.setAccessible(true);
 				field.set(modElementGUI, true);
 
-				// test opening generatable element
 				Method method = modElementGUI.getClass()
 						.getDeclaredMethod("openInEditingMode", GeneratableElement.class);
 				method.setAccessible(true);
 				method.invoke(modElementGUI, generatableElement);
 
-				// test if data remains the same after reloading the data lists
-				modElementGUI.reloadDataLists();
-
-				// test UI -> GeneratableElement
 				generatableElement = modElementGUI.getElementFromGUI();
 
 				// compare GeneratableElements, no fields should change in the process

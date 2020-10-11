@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.data.Dependency;
+import net.mcreator.blockly.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
@@ -166,7 +166,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
 		texture.setOpaque(false);
 
 		JPanel destal2 = new JPanel(new BorderLayout(0, 10));

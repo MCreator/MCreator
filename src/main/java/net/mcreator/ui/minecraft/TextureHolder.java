@@ -117,7 +117,7 @@ public class TextureHolder extends VButton {
 		if (texture != null && !texture.equals("")) {
 			id = texture;
 			setToolTipText(texture);
-			if (td.getTextureType() == BlockItemTextureSelector.TextureType.BLOCK)
+			if (td.getTextureType().equals("Block"))
 				setIcon(new ImageIcon(ImageUtils
 						.resize(td.getMCreator().getWorkspace().getFolderManager().getBlockImageIcon(texture)
 								.getImage(), this.size)));

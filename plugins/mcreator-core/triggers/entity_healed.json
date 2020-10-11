@@ -24,6 +24,5 @@
       "name": "amount",
       "type": "number"
     }
-  ],
-  "cancelable": "true"
+  ]
 }

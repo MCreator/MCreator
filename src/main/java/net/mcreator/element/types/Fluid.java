@@ -20,7 +20,6 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ITabContainedElement;
-import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.util.image.ImageUtils;
@@ -46,10 +45,7 @@ import java.util.List;
 	public boolean generateBucket;
 	public TabEntry creativeTab;
 
-	public int frequencyOnChunks;
 	public List<String> spawnWorldTypes;
-	public List<BiomeEntry> restrictionBiomes;
-	public Procedure generateCondition;
 
 	public Procedure onBlockAdded;
 	public Procedure onNeighbourChanges;
@@ -64,8 +60,6 @@ import java.util.List;
 		super(element);
 
 		this.spawnWorldTypes = new ArrayList<>();
-		this.frequencyOnChunks = 5;
-		this.restrictionBiomes = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

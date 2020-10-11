@@ -70,6 +70,9 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		JPanel selp = new JPanel(new GridLayout(3, 2, 50, 20));
 		selp.setOpaque(false);
 
+		//ComponentUtils.deriveFont(width, 16);
+		//ComponentUtils.deriveFont(height, 16);
+
 		JButton importicontexture = new JButton(UIRES.get("18px.add"));
 		importicontexture.setToolTipText(L10N.t("elementgui.painting.import_painting"));
 		importicontexture.setOpaque(false);
@@ -135,7 +138,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	}
 
 	@Override public @Nullable URI getContextURL() throws URISyntaxException {
-		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-painting");
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-music-disc");
 	}
 
 }

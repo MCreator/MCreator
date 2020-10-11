@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.data.Dependency;
+import net.mcreator.blockly.Dependency;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Dimension;
@@ -32,7 +32,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
@@ -64,24 +63,25 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private MCItemHolder mainFillerBlock;
 	private MCItemHolder fluidBlock;
 
-	private final JCheckBox canRespawnHere = L10N.checkbox("elementgui.dimension.can_player_respawn");
-	private final JCheckBox hasFog = L10N.checkbox("elementgui.dimension.has_fog");
-	private final JCheckBox isDark = L10N.checkbox("elementgui.dimension.is_dark");
-	private final JCheckBox doesWaterVaporize = L10N.checkbox("elementgui.dimension.does_water_vaporize");
+	private final JCheckBox canRespawnHere = new JCheckBox("Can player respawn here");
+	private final JCheckBox hasFog = new JCheckBox("Has fog everywhere");
+	private final JCheckBox isDark = new JCheckBox("Disable global light source");
+	private final JCheckBox doesWaterVaporize = new JCheckBox("Does water vaporize");
 
-	private final JCheckBox hasSkyLight = L10N.checkbox("elementgui.dimension.has_sky_light");
-	private final JCheckBox imitateOverworldBehaviour = L10N.checkbox("elementgui.dimension.imitate_overworld_behaviour");
+	private final JCheckBox hasSkyLight = new JCheckBox("Has sky light (from the sun)");
+	private final JCheckBox imitateOverworldBehaviour = new JCheckBox("Imitate overworld behaviour");
 
-	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
+	private final JCheckBox enablePortal = new JCheckBox("Enable portal");
 
-	private final JCheckBox hasWeather = L10N.checkbox("elementgui.dimension.enable_weather");
+	private final JCheckBox hasWeather = new JCheckBox("Enable weather");
 
 	private final SoundSelector portalSound = new SoundSelector(mcreator);
 	private final JColor airColor = new JColor(mcreator);
 
 	private final JComboBox<String> portalParticles = new JComboBox<>(ElementUtil.loadParticles());
 
-	private final JComboBox<String> worldGenType = new JComboBox<>(new String[] { "Normal world gen", "Nether like gen", "End like gen" });
+	private final JComboBox<String> worldGenType = new JComboBox<>(
+			new String[] { "Normal world gen", "Nether like gen", "End like gen" });
 
 	private final JComboBox<String> sleepResult = new JComboBox<>(new String[] { "ALLOW", "DENY", "BED_EXPLODES" });
 
@@ -110,23 +110,22 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	@Override protected void initGUI() {
 		whenPortaTriggerlUsed = new ProcedureSelector(this.withEntry("dimension/when_portal_used"), mcreator,
-				L10N.t("elementgui.dimension.event_portal_trigger_used"),
+				"When portal trigger used",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onPortalTickUpdate = new ProcedureSelector(this.withEntry("dimension/on_portal_tick_update"), mcreator,
-				L10N.t("elementgui.dimension.event_portal_tick_update"),
-				Dependency.fromString("x:number/y:number/z:number/world:world"));
+				"On portal tick update", Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onPlayerEntersDimension = new ProcedureSelector(this.withEntry("dimension/when_player_enters"), mcreator,
-				L10N.t("elementgui.dimension.event_player_enters"),
+				"When player enters dimension",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onPlayerLeavesDimension = new ProcedureSelector(this.withEntry("dimension/when_player_leaves"), mcreator,
-				L10N.t("elementgui.dimension.event_player_leaves"),
+				"When player leaves dimension",
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		portalMakeCondition = new ProcedureSelector(this.withEntry("dimension/condition_portal_make"), mcreator,
-				L10N.t("elementgui.dimension.event_can_make_portal"), VariableElementType.LOGIC,
+				"Can make portal", VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		portalUseCondition = new ProcedureSelector(this.withEntry("dimension/condition_portal_use"), mcreator,
-				L10N.t("elementgui.dimension.event_can_travel_through_portal"), VariableElementType.LOGIC,
+				"Can travel through portal", VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		worldGenType.setRenderer(new ItemTexturesComboBoxRenderer());
@@ -147,7 +146,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel insid = new JPanel(new BorderLayout(20, 20));
 
 		insid.add("East", PanelUtils.northAndCenterElement(
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.dimension.world_gen_type"), worldGenType),
+				PanelUtils.join(FlowLayout.LEFT, new JLabel("      World gen type:"), worldGenType),
 				PanelUtils.join(new JLabel(UIRES.get("dimension_types")))));
 
 		JPanel proper2 = new JPanel(new GridLayout(9, 2, 3, 3));
@@ -161,22 +160,22 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		hasFog.setOpaque(false);
 		doesWaterVaporize.setOpaque(false);
 
-		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/biomes"),
-				L10N.label("elementgui.dimension.biomes_in")));
+		proper2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("dimension/biomes"), new JLabel("Biomes in this dimension:")));
 		proper2.add(biomesInDimension);
 
 		biomesInDimension.setPreferredSize(new java.awt.Dimension(300, 42));
 
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/main_filler_block"),
-				L10N.label("elementgui.dimension.main_filler_block"), new Color(0x2980b9)));
+				new JLabel("<html>Main filler block:<br><small>Normal, Nether, End"), new Color(0x2980b9)));
 		proper2.add(PanelUtils.join(mainFillerBlock));
 
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fluid_block"),
-				L10N.label("elementgui.dimension.fluid_block"), new Color(0xB8E700)));
+				new JLabel("<html>Fluid block:<br><small>Normal, Nether, End"), new Color(0xB8E700)));
 		proper2.add(PanelUtils.join(fluidBlock));
 
-		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sleep_result"),
-				L10N.label("elementgui.dimension.sleep_result")));
+		proper2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("dimension/sleep_result"), new JLabel("Sleep attempt result:")));
 		proper2.add(PanelUtils.join(sleepResult));
 
 		proper2.add(
@@ -192,8 +191,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/does_water_vaporize"), doesWaterVaporize));
 		proper2.add(new JLabel());
 
-		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fog_color"),
-				L10N.label("elementgui.dimension.fog_air_color")));
+		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fog_color"), new JLabel("Fog/air color:")));
 		proper2.add(PanelUtils.join(airColor));
 
 		isDark.setOpaque(false);
@@ -207,8 +205,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		pane3.setOpaque(false);
 
-		portalTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		portalTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
 
 		portalTexture.setOpaque(false);
 		texture.setOpaque(false);
@@ -222,40 +220,40 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		proper.setOpaque(false);
 		proper22.setOpaque(false);
 
-		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_portal"),
-				L10N.label("elementgui.dimension.enable_dimension_portal")));
+		proper.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("dimension/enable_portal"), new JLabel("Enable dimension portal:")));
 		proper.add(PanelUtils.join(enablePortal));
 
-		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_frame_block"),
-				L10N.label("elementgui.dimension.portal_frame_block")));
+		proper.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("dimension/portal_frame_block"), new JLabel("Portal frame block:")));
 		proper.add(PanelUtils.join(portalFrame));
 
 		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_particles"),
-				L10N.label("elementgui.dimension.portal_particles")));
+				new JLabel("Portal frame block particles:")));
 		proper.add(portalParticles);
 
-		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_sound"),
-				L10N.label("elementgui.dimension.portal_sound")));
+		proper.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("dimension/portal_sound"), new JLabel("Portal frame block sound:")));
 		proper.add(portalSound);
 
-		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
-				L10N.label("elementgui.dimension.portal_luminance")));
+		proper.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/luminance"), new JLabel("Portal frame block luminance:")));
 		proper.add(luminance);
 
-		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
-				L10N.label("elementgui.dimension.portal_igniter_name")));
+		proper.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("common/gui_name"), new JLabel("Portal igniter item name:")));
 		proper.add(igniterName);
 
-		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				L10N.label("elementgui.dimension.portal_igniter_tab")));
+		proper.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel("Portal igniter item tab:")));
 		proper.add(igniterTab);
 
 		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_igniter_texture"),
-				L10N.label("elementgui.dimension.portal_igniter_texture")));
+				new JLabel("Portal igniter item texture:")));
 		proper22.add(PanelUtils.join(texture));
 
-		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_texture"),
-				L10N.label("elementgui.dimension.portal_block_texture")));
+		proper22.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("dimension/portal_texture"), new JLabel("Portal block texture:")));
 		proper22.add(PanelUtils.join(portalTexture));
 
 		portalSound.setText("block.portal.ambient");
@@ -287,8 +285,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		pane5.add(PanelUtils.totalCenterInPanel(events));
 		pane5.setOpaque(false);
 
-		igniterName.setValidator(new ConditionalTextFieldValidator(igniterName,
-				L10N.t("elementgui.dimension.error_portal_igniter_needs_name"), enablePortal, true));
+		igniterName.setValidator(
+				new ConditionalTextFieldValidator(igniterName, "Portal igniter needs a name", enablePortal, true));
 		portalTexture.setValidator(new TileHolderValidator(portalTexture, enablePortal));
 		texture.setValidator(new TileHolderValidator(texture, enablePortal));
 		portalFrame.setValidator(new MCItemHolderValidator(portalFrame, enablePortal));
@@ -299,8 +297,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		page1group.addValidationElement(texture);
 		page1group.addValidationElement(portalFrame);
 
-		biomesInDimension.setValidator(new ItemListFieldValidator(biomesInDimension,
-				L10N.t("elementgui.dimension.error_select_biome")));
+		biomesInDimension
+				.setValidator(new ItemListFieldValidator(biomesInDimension, "Please select at least one biome"));
 		mainFillerBlock.setValidator(new MCItemHolderValidator(mainFillerBlock));
 		fluidBlock.setValidator(new MCItemHolderValidator(fluidBlock));
 
@@ -308,13 +306,13 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		page2group.addValidationElement(mainFillerBlock);
 		page2group.addValidationElement(fluidBlock);
 
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
-		addPage(L10N.t("elementgui.dimension.page_portal"), pane2);
-		addPage(L10N.t("elementgui.common.page_triggers"), pane5);
+		addPage("Properties", pane3);
+		addPage("Portal", pane2);
+		addPage("Triggers", pane5);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
-			igniterName.setText(readableNameFromModElement + L10N.t("elementgui.dimension.portal_igniter_default_name"));
+			igniterName.setText(readableNameFromModElement + " Portal Igniter");
 		}
 	}
 

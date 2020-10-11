@@ -349,16 +349,6 @@ import net.minecraft.block.material.Material;
 			return PlantType.${data.growapableSpawnType};
 		}
 
-        <#if hasProcedure(data.onBlockAdded)>
-		@Override public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
-			super.onBlockAdded(state, world, pos, oldState, moving);
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			<@procedureOBJToCode data.onBlockAdded/>
-		}
-        </#if>
-
         <#if hasProcedure(data.onTickUpdate) || data.plantType == "growapable">
 		@Override public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 			<#if hasProcedure(data.onTickUpdate)>
@@ -385,18 +375,6 @@ import net.minecraft.block.material.Material;
 			   }
 			}
             </#if>
-		}
-        </#if>
-
-        <#if hasProcedure(data.onRandomUpdateEvent)>
-		@OnlyIn(Dist.CLIENT) @Override
-		public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-			super.animateTick(state, world, pos, random);
-			PlayerEntity entity = Minecraft.getInstance().player;
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			<@procedureOBJToCode data.onRandomUpdateEvent/>
 		}
         </#if>
 
@@ -451,17 +429,6 @@ import net.minecraft.block.material.Material;
 			int y = pos.getY();
 			int z = pos.getZ();
 			<@procedureOBJToCode data.onStartToDestroy/>
-		}
-        </#if>
-
-        <#if hasProcedure(data.onBlockPlacedBy)>
-		@Override
-		public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemstack) {
-			super.onBlockPlacedBy(world, pos, state, entity, itemstack);
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			<@procedureOBJToCode data.onBlockPlacedBy/>
 		}
         </#if>
 

@@ -21,39 +21,17 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class CancelEventBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		if (master instanceof BlocklyToProcedure) {
 			if (((BlocklyToProcedure) master).getExternalTrigger() != null) {
-				ExternalTrigger trigger = null;
-
-				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-						.getExternalTrigers();
-				for (ExternalTrigger externalTrigger : externalTriggers) {
-					if (externalTrigger.getID().equals(((BlocklyToProcedure) master).getExternalTrigger())) {
-						trigger = externalTrigger;
-						break;
-					}
-				}
-
-				if (trigger == null) {
-					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Failed to load selected external trigger"));
-				} else if (!trigger.cancelable) {
-					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"The selected global trigger is not cancellable"));
-				}
-
 				if (master.getTemplateGenerator() != null) {
 					master.append(master.getTemplateGenerator()
 							.generateFromTemplate("_cancel_event.java.ftl", new HashMap<>()));

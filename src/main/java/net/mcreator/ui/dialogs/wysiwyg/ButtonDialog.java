@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.dialogs.wysiwyg;
 
-import net.mcreator.blockly.data.Dependency;
+import net.mcreator.blockly.Dependency;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;

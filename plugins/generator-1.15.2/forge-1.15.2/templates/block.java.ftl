@@ -198,12 +198,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-		<#if data.displayFluidOverlay>
-		@Override public boolean shouldDisplayFluidOverlay(BlockState state, ILightReader world, BlockPos pos, IFluidState fluidstate) {
-			return true;
-		}
-		</#if>
-
 		<#if data.beaconColorModifier?has_content>
 		@Override public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
 			return new float[] { ${data.beaconColorModifier.getRed()/255}f, ${data.beaconColorModifier.getGreen()/255}f, ${data.beaconColorModifier.getBlue()/255}f };
@@ -389,13 +383,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
         @Override public IFluidState getFluidState(BlockState state) {
             return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-        }
-	
-		@Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-	        if (state.get(WATERLOGGED)) {
-		        world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
-	        }
-	        return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
         }
         </#if>
 

@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.data.Dependency;
+import net.mcreator.blockly.Dependency;
 import net.mcreator.element.types.Command;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;

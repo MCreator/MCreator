@@ -20,10 +20,9 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToAITasks;
-import net.mcreator.blockly.data.Dependency;
+import net.mcreator.blockly.Dependency;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalBlockLoader;
-import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
@@ -190,7 +189,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature" });
 	private final JComboBox<String> mobCreatureType = new JComboBox<>(
-			new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
+			new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER" });
 	private final JComboBox<String> bossBarColor = new JComboBox<>(
 			new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
 	private final JComboBox<String> bossBarType = new JComboBox<>(
@@ -228,7 +227,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private boolean hasErrors = false;
-	private Map<String, ToolboxBlock> externalBlocks;
+	private Map<String, ExternalBlockLoader.ToolboxBlock> externalBlocks;
 
 	private boolean disableMobModelCheckBoxListener = false;
 

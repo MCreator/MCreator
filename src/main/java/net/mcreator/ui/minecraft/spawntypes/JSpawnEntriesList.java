@@ -38,8 +38,6 @@ public class JSpawnEntriesList extends JPanel {
 
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 
-	private final JButton add = new JButton(UIRES.get("16px.add.gif"));
-
 	public JSpawnEntriesList(MCreator mcreator) {
 		super(new BorderLayout());
 		setOpaque(false);
@@ -49,6 +47,7 @@ public class JSpawnEntriesList extends JPanel {
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
+		JButton add = new JButton(UIRES.get("16px.add.gif"));
 		add.setText("Add spawn entry");
 		topbar.add(add);
 
@@ -64,12 +63,6 @@ public class JSpawnEntriesList extends JPanel {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
 				"Entity spawn entries", 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-	}
-
-	@Override public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
-
-		add.setEnabled(false);
 	}
 
 	public List<Biome.SpawnEntry> getSpawns() {

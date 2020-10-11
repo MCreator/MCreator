@@ -19,7 +19,10 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.data.*;
+import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.ExternalBlockLoader;
+import net.mcreator.blockly.data.ExternalTriggerLoader;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.GeneratableElement;
@@ -62,7 +65,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private BlocklyPanel blocklyPanel;
 
-	public final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
+	private final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
 	private final JList<VariableElement> localVarsList = new JList<>(localVars);
 
 	private boolean hasErrors = false;
@@ -78,17 +81,13 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private final JLabel extDepsLab = new JLabel();
 
-	private Map<String, ToolboxBlock> externalBlocks;
+	private Map<String, ExternalBlockLoader.ToolboxBlock> externalBlocks;
 
-	private ExternalTrigger trigger = null;
+	private ExternalTriggerLoader.ExternalTrigger trigger = null;
 
 	private final JPanel triggerDepsPan = new JPanel(new BorderLayout());
 	private final JPanel returnType = new JPanel(new BorderLayout());
 	private final JLabel returnTypeLabel = new JLabel();
-
-	private final JPanel triggerInfoPanel = new JPanel(new BorderLayout());
-	private final JLabel cancelableTriggerLabel = new JLabel();
-	private final JLabel hasResultTriggerLabel = new JLabel();
 
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 
@@ -119,17 +118,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			dependenciesExtTrigger.clear();
 			depsWarningLabel.setText("");
 
-			cancelableTriggerLabel.setText("");
-			hasResultTriggerLabel.setText("");
-
-			cancelableTriggerLabel.setIcon(null);
-			hasResultTriggerLabel.setIcon(null);
-
 			if (isEditingMode() && dependenciesBeforeEdit == null) {
 				dependenciesBeforeEdit = new ArrayList<>(dependenciesArrayList);
 			} else if (dependenciesBeforeEdit != null) {
 				boolean hasNewDependenciesAdded = false;
-				// we go through new dependency list and check if old one contains all of them
+				// we go through new dependecy list and check if old one contains all of them
 				for (Dependency dependency : dependenciesArrayList) {
 					if (!dependenciesBeforeEdit.contains(dependency)) {
 						hasNewDependenciesAdded = true;
@@ -146,18 +139,18 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			if (blocklyToJava.getReturnType() != null) {
 				returnType.setVisible(true);
 				returnTypeLabel.setText(blocklyToJava.getReturnType().name());
-				returnTypeLabel.setForeground(
-						new Dependency("", blocklyToJava.getReturnType().toDependencyType()).getColor().brighter());
+				returnTypeLabel
+						.setForeground(new Dependency("", blocklyToJava.getReturnType().toDependencyType()).getColor());
 			} else {
 				returnType.setVisible(false);
 			}
 
 			hasDependencyErrors = false;
 			if (blocklyToJava.getExternalTrigger() != null) {
-				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-						.getExternalTrigers();
+				List<ExternalTriggerLoader.ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE
+						.getExternalTriggerLoader().getExternalTrigers();
 
-				for (ExternalTrigger externalTrigger : externalTriggers) {
+				for (ExternalTriggerLoader.ExternalTrigger externalTrigger : externalTriggers) {
 					if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger())) {
 						trigger = externalTrigger;
 						break;
@@ -165,8 +158,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				}
 
 				if (trigger != null) {
-					triggerDepsPan.setVisible(true);
-
 					// if we find a trigger, we go through list of procedure dependencies and
 					// make sure that all of them are contained in trigger's dependency list
 					StringBuilder missingdeps = new StringBuilder();
@@ -185,22 +176,15 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 								+ missingdeps);
 						hasDependencyErrors = true;
 					}
-					extDepsLab.setText("<html><font style='font-size: 10px;'>" + trigger.getName());
+					extDepsLab.setText(
+							"<html><div style='width: 100px; font-size: 8px;'>Dependencies provided by<br/><font style='font-size: 10px;'>"
+									+ trigger.getName());
 					List<Dependency> tdeps = trigger.dependencies_provided;
 					if (tdeps != null) {
 						Collections.sort(tdeps);
 						tdeps.forEach(dependenciesExtTrigger::addElement);
 					}
-
-					if (trigger.cancelable) {
-						cancelableTriggerLabel.setText("<html><div style='width: 100px; font-size: 9px;'>Cancelable");
-						cancelableTriggerLabel.setIcon(UIRES.get("info"));
-					}
-					if (trigger.has_result) {
-						hasResultTriggerLabel
-								.setText("<html><div style='width: 100px; font-size: 9px;'>Can specify result");
-						hasResultTriggerLabel.setIcon(UIRES.get("info"));
-					}
+					triggerDepsPan.setVisible(true);
 
 					if (!mcreator.getWorkspace().getGenerator().getGeneratorStats().getGeneratorTriggers()
 							.contains(trigger.getID())) {
@@ -220,7 +204,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					}
 				} else {
 					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Your procedure uses a global trigger that does not exist"));
+							"Your procedure uses trigger that does not exist or was renamed!"));
 					triggerDepsPan.setVisible(false);
 				}
 			} else {
@@ -250,7 +234,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			setBorder(null);
 			Color col = value.getColor();
 			setBackground(isSelected ? col : (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : col.brighter());
+			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : col);
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
 			setToolTipText(value.getName() + ", type: " + value.getRawType());
@@ -319,11 +303,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		returnType.setBorder(
 				BorderFactory.createMatteBorder(1, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
-
-		triggerInfoPanel.setOpaque(false);
-		triggerInfoPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 0));
-		triggerInfoPanel.add("North", cancelableTriggerLabel);
-		triggerInfoPanel.add("Center", hasResultTriggerLabel);
 
 		JPanel localVarsPan = new JPanel(new BorderLayout());
 		localVarsPan.setOpaque(false);
@@ -462,7 +441,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		triggerDepsPan.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		triggerDepsPan.setBorder(
 				BorderFactory.createMatteBorder(1, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
-
 		JScrollPane scrollPaneExtDeps = new JScrollPane(dependenciesExtTrigList);
 		scrollPaneExtDeps.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		scrollPaneExtDeps.getViewport().setOpaque(false);
@@ -477,10 +455,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), scrollPaneExtDeps.getHorizontalScrollBar()));
 		scrollPaneExtDeps.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneExtDeps.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-
-		triggerDepsPan.add("Center", PanelUtils.northAndCenterElement(triggerInfoPanel, PanelUtils
-				.northAndCenterElement(ComponentUtils.deriveFont(new JLabel("  Provided dependencies"), 13),
-						scrollPaneExtDeps, 0, 1), 0, 4));
+		triggerDepsPan.add("Center", scrollPaneExtDeps);
 		triggerDepsPan.setPreferredSize(new Dimension(150, 0));
 		triggerDepsPan.setVisible(false);
 
@@ -523,7 +498,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
 
-		pane5.add("North", new ProcedureEditorToolbar(mcreator, blocklyPanel, this));
+		pane5.add("North", new ProcedureEditorToolbar(mcreator, blocklyPanel));
 
 		addPage(PanelUtils.gridElements(1, 1, pane5));
 	}

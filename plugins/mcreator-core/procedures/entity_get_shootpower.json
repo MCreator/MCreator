@@ -10,12 +10,18 @@
   "inputsInline": true,
   "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
-    "toolbox_id": "entitydata",
+    "toolbox_id": "entitymanagement",
     "toolbox_init": [
       "<value name=\"projectile_entity\"><block type=\"immediate_source_entity_from_deps\"></block></value>"
     ],
     "inputs": [
       "projectile_entity"
+    ],
+    "dependencies": [
+      {
+        "name": "imediatesourceentity",
+        "type": "entity"
+      }
     ]
   }
 }

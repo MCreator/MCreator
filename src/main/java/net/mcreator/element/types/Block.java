@@ -49,7 +49,6 @@ import java.util.Map;
 	public String customModelName;
 	public int rotationMode;
 	public boolean emissiveRendering;
-	public boolean displayFluidOverlay;
 
 	public String itemTexture;
 
