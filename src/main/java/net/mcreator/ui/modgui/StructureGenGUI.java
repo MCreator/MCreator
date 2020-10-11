@@ -113,7 +113,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 		ComponentUtils.deriveFont(structureSelector, 16);
 
-		JPanel params = new JPanel(new GridLayout(12, 2, 50, 7));
+		JPanel params = new JPanel(new GridLayout(11, 2, 50, 2));
 		params.setOpaque(false);
 
 		JButton importnbt = new JButton(UIRES.get("18px.add"));
@@ -161,12 +161,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/height_offset"),
 				L10N.label("elementgui.structuregen.spawn_height_offset")));
-		params.add(spawnHeightOffset);
-
-		params.add(L10N.label("elementgui.structuregen.spawn_xz_offset"));
-		params.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(this.withEntry("structure/x_offset"), spawnOffsetX),
-				HelpUtils.wrapWithHelpButton(this.withEntry("structure/z_offset"),
-						spawnOffsetZ)));
+		params.add(PanelUtils.gridElements(1, 3, 2, 2, spawnOffsetX, spawnHeightOffset, spawnOffsetZ));
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
 				L10N.label("elementgui.structuregen.spawn_world_types")));

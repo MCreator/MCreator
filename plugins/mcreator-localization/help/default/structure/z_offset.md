@@ -1,1 +1,0 @@
-This parameter controls how many blocks on the Z-axis compared to the initial spawn point the structure will be generated.
