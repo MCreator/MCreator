@@ -28,7 +28,7 @@
     {
       "type": "field_checkbox",
       "name": "despawn",
-      "checked": true
+      "checked": false
     }
   ],
   "inputsInline": true,
