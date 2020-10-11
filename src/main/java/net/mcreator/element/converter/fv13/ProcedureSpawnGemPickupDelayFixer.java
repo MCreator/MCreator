@@ -22,7 +22,6 @@ import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Procedure;
-import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,22 +38,21 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
-public class ProcedureSpawnGemAddPickupDelayFixer implements IConverter {
+public class ProcedureSpawnGemPickupDelayFixer implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger("ProcedureSpawnGemAddPickupDelayFixer");
+	private static final Logger LOG = LogManager.getLogger("ProcedureSpawnGemPickupDelayFixer");
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Procedure procedure = (Procedure) input;
+
 		try {
 			procedure.procedurexml = fixXML(procedure.procedurexml);
 		} catch (Exception e) {
 			LOG.warn("Failed to fix string dependency for procedure " + input.getModElement().getName());
 		}
+
 		return procedure;
 	}
 
@@ -72,11 +70,18 @@ public class ProcedureSpawnGemAddPickupDelayFixer implements IConverter {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Element element = (Element) nodeList.item(i);
 			String type = element.getAttribute("type");
-			if (type != null && strings_tofix_types.contains(type)) {
+			if (type != null && type.equals("spawn_gem")) {
 				Element value = doc.createElement("value");
 				value.setAttribute("name", "pickUpDelay");
+
 				Element delay_block = doc.createElement("block");
 				delay_block.setAttribute("type", "math_number");
+
+				Element delay_block_filed = doc.createElement("field");
+				delay_block_filed.setAttribute("name", "NUM");
+				delay_block_filed.setTextContent("10");
+
+				delay_block.appendChild(delay_block_filed);
 				value.appendChild(delay_block);
 				element.appendChild(value);
 			}
@@ -89,7 +94,5 @@ public class ProcedureSpawnGemAddPickupDelayFixer implements IConverter {
 
 		return writer.getBuffer().toString();
 	}
-
-	private final Set<String> strings_tofix_types = new HashSet<>(Collections.singletonList("spawn_gem"));
 
 }
