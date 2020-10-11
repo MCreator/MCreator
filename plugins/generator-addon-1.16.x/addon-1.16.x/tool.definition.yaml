@@ -1,0 +1,13 @@
+templates:
+  - template: tool.json.ftl
+    writer: json
+    name: "@SRCROOT/items/@registryname.json"
+  - template: resourcepack/tool.json.ftl
+    writer: json
+    name: "@RESROOT/items/@registryname.json"
+
+localizationkeys:
+  - key: item.@modid:@registryname.name
+    mapto: name
+
+field_inclusions: [texture, name, hasGlow, usageCount, damageVsEntity]

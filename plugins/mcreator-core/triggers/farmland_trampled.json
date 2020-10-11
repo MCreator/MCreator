@@ -1,0 +1,29 @@
+{
+  "dependencies_provided": [
+    {
+      "name": "world",
+      "type": "world"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    },
+    {
+      "name": "z",
+      "type": "number"
+    },
+    {
+      "name": "entity",
+      "type": "entity"
+    },
+    {
+      "name": "falldistance",
+      "type": "number"
+    }
+  ],
+  "cancelable": "true"
+}

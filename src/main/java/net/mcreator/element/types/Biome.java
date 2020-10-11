@@ -22,7 +22,6 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.TreeEntry;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -33,9 +32,21 @@ import java.util.List;
 
 @SuppressWarnings("unused") public class Biome extends GeneratableElement {
 
+	public final transient int TREES_VANILLA;
+	public final transient int TREES_CUSTOM;
+
 	public String name;
 	public MItemBlock groundBlock;
 	public MItemBlock undergroundBlock;
+
+	public int treeType;
+	public String vanillaTreeType;
+	public int minHeight;
+	public boolean spawnVines;
+	public MItemBlock treeVines;
+	public MItemBlock treeStem;
+	public MItemBlock treeBranch;
+	public MItemBlock treeFruits;
 
 	public Color airColor;
 	public Color grassColor;
@@ -43,6 +54,7 @@ import java.util.List;
 	public Color waterColor;
 	public Color waterFogColor;
 
+	public int treesPerChunk;
 	public int grassPerChunk;
 	public int seagrassPerChunk;
 	public int flowersPerChunk;
@@ -80,7 +92,6 @@ import java.util.List;
 	public List<String> biomeDictionaryTypes;
 	public List<String> defaultFeatures;
 
-	public List<SpawnTree> spawnTrees;
 	public List<SpawnEntry> spawnEntries;
 
 	private Biome() {
@@ -90,32 +101,22 @@ import java.util.List;
 	public Biome(ModElement element) {
 		super(element);
 
+		// RESTORE CONSTANTS (FOR GSON)
+		TREES_VANILLA = 0;
+		TREES_CUSTOM = 1;
+
 		// DEFAULT VALUES
 		name = "";
 		spawnStronghold = true;
 		spawnMineshaft = true;
 		spawnPillagerOutpost = true;
+		vanillaTreeType = "Default";
 		villageType = "none";
 		oceanRuinType = "NONE";
 		biomeCategory = "NONE";
 		biomeDictionaryTypes = new ArrayList<>();
-		spawnTrees = new ArrayList<>();
 		spawnEntries = new ArrayList<>();
 		defaultFeatures = new ArrayList<>();
-	}
-
-	public static class SpawnTree {
-
-		public TreeEntry tree;
-		public String shape;
-		public int count;
-		public double extraChance;
-		public int extraCount;
-
-		public SpawnTree(){
-			shape = "NORMAL_TREE";
-		}
-
 	}
 
 	public static class SpawnEntry {
@@ -131,7 +132,7 @@ import java.util.List;
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview
 				.generateBiomePreviewPicture(getModElement().getWorkspace(), airColor, grassColor, waterColor,
-						groundBlock, undergroundBlock);
+						groundBlock, undergroundBlock, treesPerChunk, treeType, treeStem, treeBranch);
 	}
 
 }

@@ -19,7 +19,6 @@
 package net.mcreator.blockly.data;
 
 import com.google.gson.*;
-import net.mcreator.blockly.Dependency;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
@@ -27,12 +26,9 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.init.L10N;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.util.List;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -228,75 +224,6 @@ public class ExternalBlockLoader {
 
 	public Map<String, ToolboxBlock> getDefinedBlocks() {
 		return toolboxBlocks;
-	}
-
-	@SuppressWarnings("unused") public static class ToolboxCategory {
-		private String id, name, description;
-		private int color;
-		private boolean api;
-
-		public String getName() {
-			String l10nname = L10N.t("blockly.category." + id);
-			if (l10nname != null)
-				return l10nname;
-
-			return name;
-		}
-
-		public Color getColor() {
-			return Color.getHSBColor(color / 360f, 0.37f, 0.6f);
-		}
-	}
-
-	@SuppressWarnings("unused") public static class ToolboxBlock {
-		private String toolbox_id;
-		public String machine_name;
-		public IBlockGenerator.BlockType type;
-
-		@Nullable private List<String> toolbox_init;
-
-		@Nullable public List<String> fields;
-		@Nullable public List<String> inputs;
-		@Nullable public List<Dependency> dependencies;
-
-		@Nullable public List<String> required_apis;
-
-		private JsonElement blocklyJSON;
-
-		@Nullable public String toolboxXML;
-		@Nullable public ToolboxCategory toolboxCategory;
-
-		public String getGroupEstimate() {
-			int a = StringUtils.ordinalIndexOf(this.machine_name, "_", 2);
-			if (a > 0)
-				return this.machine_name.substring(0, a);
-			return this.machine_name.split("_")[0];
-		}
-
-		public String getName() {
-			return blocklyJSON.getAsJsonObject().get("message0").getAsString();
-		}
-
-		public String getOutputType() {
-			if (type == IBlockGenerator.BlockType.OUTPUT) {
-				return blocklyJSON.getAsJsonObject().get("output").getAsString();
-			} else {
-				return null;
-			}
-		}
-
-		@Override public boolean equals(Object o) {
-			if (this == o)
-				return true;
-			if (o == null || getClass() != o.getClass())
-				return false;
-			ToolboxBlock block = (ToolboxBlock) o;
-			return machine_name.equals(block.machine_name);
-		}
-
-		@Override public int hashCode() {
-			return machine_name.hashCode();
-		}
 	}
 
 	public enum ToolboxType {

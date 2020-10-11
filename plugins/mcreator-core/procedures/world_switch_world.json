@@ -1,0 +1,44 @@
+{
+  "args0": [
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_statement",
+      "name": "worldstatements"
+    },
+    {
+      "type": "input_dummy"
+    }
+  ],
+  "extensions": [
+    "dimension_list_provider"
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 35,
+  "mcreator": {
+    "toolbox_id": "worldmanagement",
+    "fields": [
+      "dimension"
+    ],
+    "statements": [
+      {
+        "name": "worldstatements",
+        "provides": [
+          {
+            "name": "_worldorig",
+            "type": "world"
+          }
+        ]
+      }
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}
