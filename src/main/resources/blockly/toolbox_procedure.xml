@@ -10,6 +10,7 @@
         <block type="entity_from_deps"/>
         <block type="source_entity_from_deps"/>
         <block type="immediate_source_entity_from_deps"/>
+        <block type="entity_iterator"/>
         <block type="direction_constant"/>
         <block type="direction_from_deps"/>
         <custom-mcelements/>
@@ -38,6 +39,7 @@
         <block type="return_logic"/>
         <block type="return_number"/>
         <block type="return_text"/>
+        <block type="return_itemstack"/>
         <block type="controls_repeat_ext"/>
         <block type="controls_while"/>
         <block type="controls_flow_statements"/>
@@ -80,6 +82,7 @@
     <custom-apis/>
     <category name="${t:blockly.category.advanced}" colour="250">
         <block type="cancel_event"/>
+        <block type="set_event_result"/>
         <block type="call_procedure"/>
         <block type="call_procedure_at">
             <value name="x">
@@ -95,9 +98,11 @@
         <block type="procedure_retval_logic"/>
         <block type="procedure_retval_number"/>
         <block type="procedure_retval_string"/>
+        <block type="procedure_retval_itemstack"/>
         <block type="custom_dependency_logic"/>
         <block type="custom_dependency_number"/>
         <block type="custom_dependency_text"/>
+        <block type="custom_dependency_itemstack"/>
         <block type="java_code"/>
         <custom-advanced/>
     </category>

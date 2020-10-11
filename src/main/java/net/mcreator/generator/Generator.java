@@ -20,9 +20,9 @@ package net.mcreator.generator;
 
 import com.google.gson.GsonBuilder;
 import net.mcreator.blockly.BlocklyToAITasks;
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.ExternalTriggerLoader;
+import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.element.GeneratableElement;
@@ -303,10 +303,10 @@ public class Generator implements Closeable {
 										new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 										new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 
-								List<ExternalTriggerLoader.ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE
+								List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE
 										.getExternalTriggerLoader().getExternalTrigers();
-								ExternalTriggerLoader.ExternalTrigger trigger = null;
-								for (ExternalTriggerLoader.ExternalTrigger externalTrigger : externalTriggers) {
+								ExternalTrigger trigger = null;
+								for (ExternalTrigger externalTrigger : externalTriggers) {
 									if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger()))
 										trigger = externalTrigger;
 								}

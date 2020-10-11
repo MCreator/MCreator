@@ -32,5 +32,6 @@
       "name": "world",
       "type": "world"
     }
-  ]
+  ],
+  "cancelable": "true"
 }
