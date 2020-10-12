@@ -110,6 +110,7 @@ import java.util.List;
 
 		// DEFAULT VALUES
 		name = "";
+		doubleFlowersPerChunk = 4;
 		spawnStronghold = true;
 		spawnMineshaft = true;
 		spawnPillagerOutpost = true;
