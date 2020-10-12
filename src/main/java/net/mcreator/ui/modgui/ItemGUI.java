@@ -321,7 +321,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		props.add(inventorySize);
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_stack_size"),
-				L10N.label("elementgui.common.inventory_stack_size")));
+				L10N.label("elementgui.common.max_stack_size")));
 		props.add(inventoryStackSize);
 
 		pane5.add(PanelUtils.totalCenterInPanel(props));

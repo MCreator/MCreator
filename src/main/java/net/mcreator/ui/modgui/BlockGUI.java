@@ -864,7 +864,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		props.add(inventorySize);
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/inventory_stack_size"),
-				L10N.label("elementgui.common.inventory_stack_size")));
+				L10N.label("elementgui.common.max_stack_size")));
 		props.add(inventoryStackSize);
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_inventory_items"),

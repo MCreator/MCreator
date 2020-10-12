@@ -776,7 +776,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		props.add(inventorySize);
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/inventory_stack_size"),
-				L10N.label("elementgui.common.inventory_stack_size")));
+				L10N.label("elementgui.common.max_stack_size")));
 		props.add(inventoryStackSize);
 
 		pane7.add(PanelUtils.totalCenterInPanel(props));
