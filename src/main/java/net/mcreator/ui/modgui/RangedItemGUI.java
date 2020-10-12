@@ -209,8 +209,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				L10N.label("elementgui.common.item_model")));
 		selp.add(renderType);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
-				L10N.label("elementgui.common.name_in_gui")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
