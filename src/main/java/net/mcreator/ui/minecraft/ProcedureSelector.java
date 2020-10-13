@@ -180,7 +180,6 @@ public class ProcedureSelector extends JPanel {
 		}
 
 		if (allowInlineEditor) {
-
 			add.setContentAreaFilled(false);
 			add.setOpaque(false);
 			add.setMargin(new Insets(0, 0, 0, 0));
@@ -200,7 +199,7 @@ public class ProcedureSelector extends JPanel {
 
 				procedureNameString = VOptionPane
 						.showInputDialog(mcreator, L10N.t("action.procedure.enter_procedure_name"),
-								L10N.t("action.procedure.default_procedure_name"), null,
+								L10N.t("action.procedure.new_procedure_dialog_title"), null,
 								new OptionPaneValidatior() {
 									@Override public Validator.ValidationResult validate(JComponent component) {
 										return new ModElementNameValidator(mcreator.getWorkspace(),
