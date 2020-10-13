@@ -367,6 +367,19 @@ public class TestWorkspaceDataProvider {
 			fluid.onEntityCollides = new Procedure("procedure4");
 			fluid.type = _true ? "WATER" : "LAVA";
 			fluid.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "End"));
+			fluid.restrictionBiomes = new ArrayList<>();
+			if (!emptyLists) {
+				fluid.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				fluid.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				fluid.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				fluid.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+			}
+			fluid.frequencyOnChunks = 13;
+			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
 			return fluid;
 		case FOOD:
 			Food food = new Food(modElement);
@@ -689,6 +702,8 @@ public class TestWorkspaceDataProvider {
 			structure.minCountPerChunk = 1;
 			structure.maxCountPerChunk = 3;
 			structure.spawnHeightOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
+			structure.spawnXOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
+			structure.spawnZOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
 			structure.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			structure.spawnLocation = ListUtils.getRandomItem(random, Arrays.asList("Ground", "Air", "Underground"));
 			structure.surfaceDetectionType = ListUtils
@@ -836,6 +851,16 @@ public class TestWorkspaceDataProvider {
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
 			plant.restrictionBiomes = new ArrayList<>();
+			if (!emptyLists) {
+				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+			}
 			plant.onNeighbourBlockChanges = new Procedure("procedure1");
 			plant.onTickUpdate = new Procedure("procedure2");
 			plant.onDestroyedByPlayer = new Procedure("procedure3");
@@ -846,7 +871,7 @@ public class TestWorkspaceDataProvider {
 			plant.onBlockAdded = new Procedure("procedure8");
 			plant.onBlockPlacedBy = new Procedure("procedure9");
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
-			plant.generateCondition = new Procedure("condition1");
+			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
 			plant.renderType = 12;
 			plant.customModelName = "Cross model";
 			return plant;
