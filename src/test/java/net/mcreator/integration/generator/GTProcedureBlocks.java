@@ -18,6 +18,8 @@
 
 package net.mcreator.integration.generator;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.StatementInput;
@@ -26,6 +28,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -89,7 +92,7 @@ public class GTProcedureBlocks {
 				}
 
 				if (!templatesDefined) {
-					LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template (no test atm): "
+					LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template: "
 							+ procedureBlock.machine_name);
 					continue;
 				}
@@ -106,16 +109,96 @@ public class GTProcedureBlocks {
 				}
 
 				if (skip) {
-					LOG.warn("[" + generatorName + "] Skipping API specific procedure block: "
-							+ procedureBlock.machine_name);
+					// We skip API specific blocks without any warnings logged as we do not intend to test them anyway
+					//LOG.warn("[" + generatorName + "] Skipping API specific procedure block: "
+					//		+ procedureBlock.machine_name);
 					continue;
 				}
 			}
 
 			if (procedureBlock.fields != null) {
-				LOG.warn("[" + generatorName + "] Skipping procedure block with fields (no test atm): "
-						+ procedureBlock.machine_name);
-				continue;
+				int processed = 0;
+
+				for (String field : procedureBlock.fields) {
+					try {
+						JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+						for (int i = 0; i < args0.size(); i++) {
+							JsonObject arg = args0.get(i).getAsJsonObject();
+							if (arg.get("name").getAsString().equals(field)) {
+								switch (arg.get("type").getAsString()) {
+								case "field_checkbox":
+									additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
+									processed++;
+									break;
+								case "field_number":
+									additionalXML.append("<field name=\"").append(field).append("\">1.23d</field>");
+									processed++;
+									break;
+								case "field_input":
+									additionalXML.append("<field name=\"").append(field).append("\">test</field>");
+									processed++;
+									break;
+								case "field_dropdown":
+									JsonArray opts = arg.get("options").getAsJsonArray();
+									JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
+									additionalXML.append("<field name=\"").append(field).append("\">")
+											.append(opt.get(0).getAsString()).append("</field>");
+									processed++;
+									break;
+								}
+								break;
+							}
+						}
+					} catch (Exception ignored) {
+					}
+				}
+
+				try {
+					JsonArray extensions = procedureBlock.blocklyJSON.getAsJsonObject().get("extensions")
+							.getAsJsonArray();
+					for (int i = 0; i < extensions.size(); i++) {
+						String extension = extensions.get(i).getAsString();
+						String suggestedFieldName = extension.replace("_list_provider", "");
+						String suggestedDataListName = suggestedFieldName;
+
+						// convert to proper field names in some extension cases
+						switch (extension) {
+						case "gui_list_provider":
+							suggestedFieldName = "guiname";
+							suggestedDataListName = "gui";
+							break;
+						case "dimension_custom_list_provider":
+							suggestedFieldName = "dimension";
+							suggestedDataListName = "dimension_custom";
+							break;
+						case "biome_dictionary_list_provider":
+							suggestedFieldName = "biomedict";
+							suggestedDataListName = "biomedictionary";
+							break;
+						}
+
+						if (procedureBlock.fields.contains(suggestedFieldName)) {
+							String[] values = BlocklyJavascriptBridge
+									.getListOfForWorkspace(workspace, suggestedDataListName);
+							if (values.length > 0 && !values[0].equals("")) {
+								if (suggestedFieldName.equals("entity")) {
+									additionalXML.append("<field name=\"entity\">EntityZombie</field>");
+								} else {
+									additionalXML.append("<field name=\"").append(suggestedFieldName).append("\">")
+											.append(ListUtils.getRandomItem(random, values)).append("</field>");
+								}
+								processed++;
+							}
+						}
+					}
+				} catch (Exception ignored) {
+				}
+
+				if (processed != procedureBlock.fields.size()) {
+					LOG.warn("[" + generatorName + "] Skipping procedure block with special fields: "
+							+ procedureBlock.machine_name);
+					continue;
+				}
 			}
 
 			if (procedureBlock.statements != null) {

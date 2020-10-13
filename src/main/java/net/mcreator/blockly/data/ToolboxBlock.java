@@ -39,7 +39,7 @@ public class ToolboxBlock {
 
 	@Nullable public List<String> required_apis;
 
-	JsonElement blocklyJSON;
+	public JsonElement blocklyJSON;
 
 	@Nullable public String toolboxXML;
 	@Nullable public ToolboxCategory toolboxCategory;
