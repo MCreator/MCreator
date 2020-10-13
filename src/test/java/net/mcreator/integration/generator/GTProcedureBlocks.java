@@ -52,6 +52,8 @@ public class GTProcedureBlocks {
 		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
 				.values()) {
 
+			StringBuilder additionalXML = new StringBuilder();
+
 			if (!generatorBlocks.contains(procedureBlock.machine_name)) {
 				LOG.warn("[" + generatorName + "] Skipping procedure block that is not defined by generator: "
 						+ procedureBlock.machine_name);
@@ -118,52 +120,43 @@ public class GTProcedureBlocks {
 
 			// replace all math blocks with blocks that contain double value to verify type casting
 			testXML = testXML.replace("<block type=\"coord_x\"></block>",
-					"<block type=\"math_number\"><field name=\"NUM\">1.1d</field></block>");
+					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
 			testXML = testXML.replace("<block type=\"coord_y\"></block>",
-					"<block type=\"math_number\"><field name=\"NUM\">2.1d</field></block>");
+					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
 			testXML = testXML.replace("<block type=\"coord_z\"></block>",
-					"<block type=\"math_number\"><field name=\"NUM\">3.2d</field></block>");
+					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
 			testXML = testXML.replaceAll("<block type=\"math_number\"><field name=\"NUM\">(.*?)</field></block>",
-					"<block type=\"math_number\"><field name=\"NUM\">5.123d</field></block>");
+					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
+
+			testXML += additionalXML.toString();
 
 			Procedure procedure = new Procedure(modElement);
 
 			if (procedureBlock.type == IBlockGenerator.BlockType.PROCEDURAL) {
-				procedure.procedurexml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-						+ "<block type=\"event_trigger\"><field name=\"trigger\">no_ext_trigger</field><next>" + testXML
-						+ "</next></block></xml>";
+				procedure.procedurexml = wrapWithBaseTestXML(testXML);
 			} else { // output block type
 				String rettype = procedureBlock.getOutputType();
 				switch (rettype) {
 				case "Number":
-					procedure.procedurexml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-							+ "<block type=\"event_trigger\"><field name=\"trigger\">no_ext_trigger</field><next>"
-							+ "<block type=\"return_number\"><value name=\"return\">" + testXML
-							+ "</value></block></next></block></xml>";
+					procedure.procedurexml = wrapWithBaseTestXML(
+							"<block type=\"return_number\"><value name=\"return\">" + testXML + "</value></block>");
 					break;
 				case "Boolean":
-					procedure.procedurexml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-							+ "<block type=\"event_trigger\"><field name=\"trigger\">no_ext_trigger</field><next>"
-							+ "<block type=\"return_logic\"><value name=\"return\">" + testXML
-							+ "</value></block></next></block></xml>";
+					procedure.procedurexml = wrapWithBaseTestXML(
+							"<block type=\"return_logic\"><value name=\"return\">" + testXML + "</value></block>");
+
 					break;
 				case "String":
-					procedure.procedurexml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-							+ "<block type=\"event_trigger\"><field name=\"trigger\">no_ext_trigger</field><next>"
-							+ "<block type=\"return_text\"><value name=\"return\">" + testXML
-							+ "</value></block></next></block></xml>";
+					procedure.procedurexml = wrapWithBaseTestXML(
+							"<block type=\"return_text\"><value name=\"return\">" + testXML + "</value></block>");
 					break;
 				case "MCItem":
-					procedure.procedurexml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-							+ "<block type=\"event_trigger\"><field name=\"trigger\">no_ext_trigger</field><next>"
-							+ "<block type=\"return_itemstack\"><value name=\"return\">" + testXML
-							+ "</value></block></next></block></xml>";
+					procedure.procedurexml = wrapWithBaseTestXML(
+							"<block type=\"return_itemstack\"><value name=\"return\">" + testXML + "</value></block>");
 					break;
 				default:
-					procedure.procedurexml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-							+ "<block type=\"event_trigger\"><field name=\"trigger\">no_ext_trigger</field><next>"
-							+ "<block type=\"text_print\"><value name=\"TEXT\">" + testXML
-							+ "</value></block></next></block></xml>";
+					procedure.procedurexml = wrapWithBaseTestXML(
+							"<block type=\"text_print\"><value name=\"TEXT\">" + testXML + "</value></block>");
 					break;
 				}
 			}
@@ -178,6 +171,17 @@ public class GTProcedureBlocks {
 			}
 		}
 
+	}
+
+	private static String wrapWithBaseTestXML(String customXML) {
+		return "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
+				+ "<variables><variable type=\"Number\" id=\"test\">test</variable></variables>"
+				+ "<block type=\"event_trigger\" deletable=\"false\" x=\"73\" y=\"64\"><field name=\"trigger\">no_ext_trigger</field><next>"
+				+ "<block type=\"variables_set_number\"><field name=\"VAR\">local:test</field><value name=\"VAL\">"
+				+ "<block type=\"math_dual_ops\"><field name=\"OP\">ADD</field><value name=\"A\">"
+				+ "<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block></value>"
+				+ "<value name=\"B\"><block type=\"math_number\"><field name=\"NUM\">1.2</field></block></value></block></value>"
+				+ "<next>" + customXML + "</next></block></next></block></xml>";
 	}
 
 }
