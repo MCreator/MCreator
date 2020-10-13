@@ -128,6 +128,18 @@ import net.minecraft.block.material.Material;
 	<#if (data.spawnWorldTypes?size > 0)>
 	@Override public void init(FMLCommonSetupEvent event) {
 		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
+			<#if data.restrictionBiomes?has_content>
+				boolean biomeCriteria = false;
+				<#list data.restrictionBiomes as restrictionBiome>
+					<#if restrictionBiome.canProperlyMap()>
+					if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
+						biomeCriteria = true;
+					</#if>
+				</#list>
+				if (!biomeCriteria)
+					continue;
+			</#if>
+
 			biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, new LakesFeature(BlockStateFeatureConfig::deserialize) {
 					@Override public boolean place(IWorld world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
 					DimensionType dimensionType = world.getDimension().getType();
@@ -152,9 +164,17 @@ import net.minecraft.block.material.Material;
 					if(!dimensionCriteria)
 						return false;
 
+					<#if hasCondition(data.generateCondition)>
+					int x = pos.getX();
+					int y = pos.getY();
+					int z = pos.getZ();
+					if (!<@procedureOBJToConditionCode data.generateCondition/>)
+						return false;
+					</#if>
+
 					return super.place(world, generator, rand, pos, config);
 				}}.withConfiguration(new BlockStateFeatureConfig(block.getDefaultState()))
-					.withPlacement(Placement.WATER_LAKE.configure(new ChanceConfig(5))));
+					.withPlacement(Placement.WATER_LAKE.configure(new ChanceConfig(${data.frequencyOnChunks}))));
 		}
 	}
 	</#if>

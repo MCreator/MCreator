@@ -49,8 +49,8 @@ public class GTProcedureBlocks {
 
 		Set<String> generatorBlocks = workspace.getGenerator().getGeneratorStats().getGeneratorProcedures();
 
-		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getProcedureBlockLoader()
-				.getDefinedBlocks().values()) {
+		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
+				.values()) {
 
 			if (!generatorBlocks.contains(procedureBlock.machine_name)) {
 				LOG.warn("[" + generatorName + "] Skipping procedure block that is not defined by generator: "
@@ -115,6 +115,16 @@ public class GTProcedureBlocks {
 					"<block type=\"mcitem_all\"><field name=\"value\">" + ListUtils
 							.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()
 							+ "</field></block>");
+
+			// replace all math blocks with blocks that contain double value to verify type casting
+			testXML = testXML.replace("<block type=\"coord_x\"></block>",
+					"<block type=\"math_number\"><field name=\"NUM\">1.1d</field></block>");
+			testXML = testXML.replace("<block type=\"coord_y\"></block>",
+					"<block type=\"math_number\"><field name=\"NUM\">2.1d</field></block>");
+			testXML = testXML.replace("<block type=\"coord_z\"></block>",
+					"<block type=\"math_number\"><field name=\"NUM\">3.2d</field></block>");
+			testXML = testXML.replaceAll("<block type=\"math_number\"><field name=\"NUM\">(.*?)</field></block>",
+					"<block type=\"math_number\"><field name=\"NUM\">5.123d</field></block>");
 
 			Procedure procedure = new Procedure(modElement);
 
