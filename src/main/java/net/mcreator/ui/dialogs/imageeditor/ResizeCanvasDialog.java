@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.imageeditor;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 
 import javax.swing.*;
@@ -29,7 +30,7 @@ import java.awt.*;
 public class ResizeCanvasDialog extends MCreatorDialog {
 
 	public ResizeCanvasDialog(MCreator window, Canvas canvas) {
-		super(window, "Resize Canvas", true);
+		super(window, L10N.t("dialog.imageeditor.resize_canvas"), true);
 
 		JPanel settings = new JPanel(new GridBagLayout());
 		JPanel controls = new JPanel(new BorderLayout());
@@ -39,8 +40,8 @@ public class ResizeCanvasDialog extends MCreatorDialog {
 		JSpinner width = new JSpinner(new SpinnerNumberModel(canvas.getWidth(), 0, 10000, 1));
 		JSpinner height = new JSpinner(new SpinnerNumberModel(canvas.getHeight(), 0, 10000, 1));
 
-		JButton cancel = new JButton("Cancel");
-		JButton ok = new JButton("Resize");
+		JButton cancel = L10N.button("action.common.cancel");
+		JButton ok = L10N.button("action.common.resize");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		getRootPane().setDefaultButton(ok);
@@ -54,9 +55,9 @@ public class ResizeCanvasDialog extends MCreatorDialog {
 			setVisible(false);
 		});
 
-		constraints.add(new JLabel("Width:"));
+		constraints.add(L10N.label("dialog.common.width"));
 		constraints.add(width);
-		constraints.add(new JLabel("Height:"));
+		constraints.add(L10N.label("dialog.common.height"));
 		constraints.add(height);
 
 		layoutConstraints.gridx = 0;

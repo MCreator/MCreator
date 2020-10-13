@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.imageeditor;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.tool.component.JSlidingSpinner;
@@ -35,7 +36,7 @@ import java.awt.image.BufferedImage;
 public class DesaturateDialog extends MCreatorDialog {
 
 	public DesaturateDialog(MCreator window, Canvas canvas, Layer layer, VersionManager versionManager) {
-		super(window, "Desaturate Layer", true);
+		super(window, L10N.t("dialog.imageeditor.desaturate_title"), true);
 
 		JPanel settings = new JPanel(new GridBagLayout());
 		JPanel controls = new JPanel(new BorderLayout());
@@ -43,8 +44,8 @@ public class DesaturateDialog extends MCreatorDialog {
 		JSlidingSpinner spinner = new JSlidingSpinner("Saturation:");
 		spinner.setValue(50);
 
-		JButton cancel = new JButton("Cancel");
-		JButton ok = new JButton("Desaturate");
+		JButton cancel = L10N.button("action.common.cancel");
+		JButton ok = L10N.button("dialog.imageeditor.desaturate_action");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		getRootPane().setDefaultButton(ok);

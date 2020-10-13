@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.imageeditor;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
@@ -32,7 +33,7 @@ import java.awt.*;
 public class ResizeDialog extends MCreatorDialog {
 
 	public ResizeDialog(MCreator window, Canvas canvas, Layer layer, VersionManager versionManager) {
-		super(window, "Resize Layer", true);
+		super(window, L10N.t("dialog.imageeditor.resize_layer"), true);
 
 		JPanel settings = new JPanel(new GridBagLayout());
 		JPanel controls = new JPanel(new BorderLayout());
@@ -43,8 +44,8 @@ public class ResizeDialog extends MCreatorDialog {
 		JSpinner height = new JSpinner(new SpinnerNumberModel(layer.getHeight(), 0, 10000, 1));
 		JCheckBox type = new JCheckBox();
 
-		JButton cancel = new JButton("Cancel");
-		JButton ok = new JButton("Resize");
+		JButton cancel = L10N.button("action.common.cancel");
+		JButton ok = L10N.button("action.common.resize");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		getRootPane().setDefaultButton(ok);
@@ -59,11 +60,11 @@ public class ResizeDialog extends MCreatorDialog {
 			setVisible(false);
 		});
 
-		constraints.add(new JLabel("Width:"));
+		constraints.add(L10N.label("dialog.common.width"));
 		constraints.add(width);
-		constraints.add(new JLabel("Height:"));
+		constraints.add(L10N.label("dialog.common.height"));
 		constraints.add(height);
-		constraints.add(new JLabel("Enable anti-aliasing:"));
+		constraints.add(L10N.label("dialog.imageeditor.resize_enable_anti_aliasing"));
 		constraints.add(type);
 
 		layoutConstraints.gridx = 0;
