@@ -44,8 +44,7 @@ public class GTProcedureTriggers {
 
 		Set<String> generatorTriggers = workspace.getGenerator().getGeneratorStats().getGeneratorTriggers();
 
-		for (ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-				.getExternalTrigers()) {
+		for (ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()) {
 			if (!generatorTriggers.contains(externalTrigger.getID())) {
 				LOG.warn("[" + generatorName + "] Skipping procedure trigger that is not defined by generator: "
 						+ externalTrigger.getID());
@@ -56,16 +55,16 @@ public class GTProcedureTriggers {
 				boolean skip = false;
 
 				for (String required_api : externalTrigger.required_apis) {
-					if (!workspace.getWorkspaceSettings().getMCreatorDependencies()
-							.contains(required_api)) {
+					if (!workspace.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
 						skip = true;
 						break;
 					}
 				}
 
-				if (skip)  {
-					LOG.warn("[" + generatorName + "] Skipping API specific procedure trigger: "
-							+ externalTrigger.getID());
+				if (skip) {
+					// We skip API specific triggers without any warnings logged as we do not intend to test them anyway
+					//LOG.warn("[" + generatorName + "] Skipping API specific procedure trigger: "
+					//		+ externalTrigger.getID());
 					continue;
 				}
 			}
