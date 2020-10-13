@@ -1,1 +1,1 @@
-(world.getFluidState(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})).getBlockState())
+/*@BlockState*/(world.getFluidState(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})).getBlockState())
