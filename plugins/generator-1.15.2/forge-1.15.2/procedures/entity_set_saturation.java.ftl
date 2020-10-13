@@ -1,3 +1,3 @@
 if ((${input$entity} instanceof PlayerEntity)) {
-    ((PlayerEntity)${input$entity}).getFoodStats().setFoodSaturationLevel(${input$amount});
+    ((PlayerEntity)${input$entity}).getFoodStats().setFoodSaturationLevel((float)${input$amount});
 }
