@@ -2,6 +2,10 @@
             ${input$x} - (${input$range} / 2d), ${input$y} - (${input$range} / 2d), ${input$z} - (${input$range} / 2d),
             ${input$x} + (${input$range} / 2d), ${input$y} + (${input$range} / 2d), ${input$z} + (${input$range} / 2d)), null)
     .stream()
-    .sorted(Comparator.comparing(_entcnd -> _entcnd.getDistanceSq(${input$x}, ${input$y}, ${input$z})))
+	.sorted(new Object() {
+	    Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
+	        return Comparator.comparing((Function<Entity, Double>) (_entcnd -> _entcnd.getDistanceSq(_x, _y, _z)));
+	    }
+	}.compareDistOf(${input$x}, ${input$y}, ${input$z}))
     .findFirst().orElse(null)
 )
