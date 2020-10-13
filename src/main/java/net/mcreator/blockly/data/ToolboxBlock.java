@@ -30,7 +30,7 @@ public class ToolboxBlock {
 	public String machine_name;
 	public IBlockGenerator.BlockType type;
 
-	@Nullable List<String> toolbox_init;
+	@Nullable public List<String> toolbox_init;
 
 	@Nullable public List<String> fields;
 	@Nullable public List<String> inputs;

@@ -20,6 +20,7 @@ package net.mcreator.integration.generator;
 
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
@@ -28,7 +29,6 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
@@ -66,23 +66,33 @@ public class GTProcedureBlocks {
 				continue;
 			}
 
-			if (procedureBlock.fields != null) {
-				LOG.warn("[" + generatorName + "] Skipping procedure block with fields (no test atm): "
-						+ procedureBlock.machine_name);
-				continue;
-			}
+			if (procedureBlock.inputs != null) {
+				boolean templatesDefined = true;
 
-			if (procedureBlock.statements != null) {
-				LOG.warn("[" + generatorName + "] Skipping procedure block with statements (no test atm): "
-						+ procedureBlock.machine_name);
-				continue;
-			}
+				if (procedureBlock.toolbox_init != null) {
+					for (String input : procedureBlock.inputs) {
+						boolean match = false;
+						for (String toolboxtemplate : procedureBlock.toolbox_init) {
+							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
+								match = true;
+								break;
+							}
+						}
 
-			if (procedureBlock.inputs != null && procedureBlock.inputs.size() != StringUtils
-					.countMatches(procedureBlock.toolboxXML, "<value name")) {
-				LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template (no test atm): "
-						+ procedureBlock.machine_name);
-				continue;
+						if (!match) {
+							templatesDefined = false;
+							break;
+						}
+					}
+				} else {
+					templatesDefined = false;
+				}
+
+				if (!templatesDefined) {
+					LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template (no test atm): "
+							+ procedureBlock.machine_name);
+					continue;
+				}
 			}
 
 			if (procedureBlock.required_apis != null) {
@@ -99,6 +109,21 @@ public class GTProcedureBlocks {
 					LOG.warn("[" + generatorName + "] Skipping API specific procedure block: "
 							+ procedureBlock.machine_name);
 					continue;
+				}
+			}
+
+			if (procedureBlock.fields != null) {
+				LOG.warn("[" + generatorName + "] Skipping procedure block with fields (no test atm): "
+						+ procedureBlock.machine_name);
+				continue;
+			}
+
+			if (procedureBlock.statements != null) {
+				for (StatementInput statement : procedureBlock.statements) {
+					additionalXML.append("<statement name=\"").append(statement.name).append("\">")
+							.append("<block type=\"text_print\"><value name=\"TEXT\"><block type=\"math_number\">"
+									+ "<field name=\"NUM\">123.456</field></block></value></block>")
+							.append("</statement>\n");
 				}
 			}
 
@@ -128,7 +153,8 @@ public class GTProcedureBlocks {
 			testXML = testXML.replaceAll("<block type=\"math_number\"><field name=\"NUM\">(.*?)</field></block>",
 					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
 
-			testXML += additionalXML.toString();
+			testXML = testXML.replace("<block type=\"" + procedureBlock.machine_name + "\">",
+					"<block type=\"" + procedureBlock.machine_name + "\">" + additionalXML.toString());
 
 			Procedure procedure = new Procedure(modElement);
 
