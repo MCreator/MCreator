@@ -24,7 +24,7 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
-public class JavaCodeExecuteBlock implements IBlockGenerator {
+public class JavaCodeProceduralBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
