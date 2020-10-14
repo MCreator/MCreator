@@ -282,7 +282,7 @@ public class GTProcedureBlocks {
 
 	}
 
-	private static String wrapWithBaseTestXML(String customXML) {
+	public static String wrapWithBaseTestXML(String customXML) {
 		return "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
 				+ "<variables><variable type=\"Number\" id=\"test\">test</variable></variables>"
 				+ "<block type=\"event_trigger\" deletable=\"false\" x=\"73\" y=\"64\"><field name=\"trigger\">no_ext_trigger</field><next>"
