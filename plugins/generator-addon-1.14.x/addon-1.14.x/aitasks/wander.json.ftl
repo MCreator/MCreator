@@ -1,0 +1,2 @@
+"minecraft:movement.basic": {
+},
