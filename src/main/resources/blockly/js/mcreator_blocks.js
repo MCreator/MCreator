@@ -284,7 +284,7 @@ Blockly.Blocks['java_code_get'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(javabridge.t("blockly.block.java_code"))
-            .appendField(new Blockly.FieldTextInput("(null)"), 'CODE');
+            .appendField(new Blockly.FieldMultilineInput("(null)"), 'CODE');
         this.setColour(250);
         this.setOutput(true);
     }
