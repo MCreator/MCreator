@@ -1,4 +1,6 @@
 <#include "mcitems.ftl">
-if(${input$entity} instanceof PlayerEntity)
+if(${input$entity} instanceof PlayerEntity) {
+	ItemStack _stktoremove = ${mappedMCItemToItemStackCode(input$item, 1)};
 	((PlayerEntity)${input$entity}).inventory
-        .clearMatchingItems(p -> ${mappedMCItemToItemStackCode(input$item, 1)}.getItem() == p.getItem(), (int)${input$amount});
+        .clearMatchingItems(p -> _stktoremove.getItem() == p.getItem(), (int)${input$amount});
+}

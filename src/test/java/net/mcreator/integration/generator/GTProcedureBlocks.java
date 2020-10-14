@@ -215,7 +215,29 @@ public class GTProcedureBlocks {
 
 			String testXML = procedureBlock.toolboxXML;
 
-			// set MCItem block to some value
+			// replace common math blocks with blocks that contain double variable to verify things like type casting
+			testXML = testXML.replace("<block type=\"coord_x\"></block>",
+					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
+			testXML = testXML.replace("<block type=\"coord_y\"></block>",
+					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
+			testXML = testXML.replace("<block type=\"coord_z\"></block>",
+					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
+			testXML = testXML.replaceAll("<block type=\"math_number\"><field name=\"NUM\">(.*?)</field></block>",
+					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
+
+			// replace common logic blocks with blocks that contain logic variable
+			testXML = testXML.replace("<block type=\"logic_boolean\"><field name=\"BOOL\">TRUE</field></block>",
+					"<block type=\"variables_get_logic\"><field name=\"VAR\">local:flag</field></block>");
+			testXML = testXML.replace("<block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block>",
+					"<block type=\"variables_get_logic\"><field name=\"VAR\">local:flag</field></block>");
+
+			// replace common itemstack blocks with blocks that contain logic variable
+			testXML = testXML.replace("<block type=\"itemstack_to_mcitem\"></block>",
+					"<block type=\"variables_get_itemstack\"><field name=\"VAR\">local:stackvar</field></block>");
+			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
+					"<block type=\"variables_get_itemstack\"><field name=\"VAR\">local:stackvar</field></block>");
+
+			// set MCItem blocks to some value
 			testXML = testXML.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
 					"<block type=\"mcitem_allblocks\"><field name=\"value\">" + ListUtils
 							.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()
@@ -226,16 +248,7 @@ public class GTProcedureBlocks {
 							.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()
 							+ "</field></block>");
 
-			// replace all math blocks with blocks that contain double value to verify type casting
-			testXML = testXML.replace("<block type=\"coord_x\"></block>",
-					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
-			testXML = testXML.replace("<block type=\"coord_y\"></block>",
-					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
-			testXML = testXML.replace("<block type=\"coord_z\"></block>",
-					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
-			testXML = testXML.replaceAll("<block type=\"math_number\"><field name=\"NUM\">(.*?)</field></block>",
-					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
-
+			// add additional xml to the block definition
 			testXML = testXML.replace("<block type=\"" + procedureBlock.machine_name + "\">",
 					"<block type=\"" + procedureBlock.machine_name + "\">" + additionalXML.toString());
 
@@ -282,15 +295,23 @@ public class GTProcedureBlocks {
 
 	}
 
-	private static String wrapWithBaseTestXML(String customXML) {
+	public static String wrapWithBaseTestXML(String customXML) {
 		return "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-				+ "<variables><variable type=\"Number\" id=\"test\">test</variable></variables>"
-				+ "<block type=\"event_trigger\" deletable=\"false\" x=\"73\" y=\"64\"><field name=\"trigger\">no_ext_trigger</field><next>"
-				+ "<block type=\"variables_set_number\"><field name=\"VAR\">local:test</field><value name=\"VAL\">"
-				+ "<block type=\"math_dual_ops\"><field name=\"OP\">ADD</field><value name=\"A\">"
-				+ "<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block></value>"
-				+ "<value name=\"B\"><block type=\"math_number\"><field name=\"NUM\">1.2</field></block></value></block></value>"
-				+ "<next>" + customXML + "</next></block></next></block></xml>";
+				+ "<variables><variable type=\"Number\" id=\"test\">test</variable>"
+				+ "<variable type=\"Boolean\" id=\"flag\">flag</variable>"
+				+ "<variable type=\"MCItem\" id=\"stackvar\">stackvar</variable></variables>"
+				+ "<block type=\"event_trigger\" deletable=\"false\" x=\"59\" y=\"38\">"
+				+ "<field name=\"trigger\">no_ext_trigger</field><next><block type=\"variables_set_logic\">"
+				+ "<field name=\"VAR\">local:flag</field><value name=\"VAL\"><block type=\"logic_negate\">"
+				+ "<value name=\"BOOL\"><block type=\"variables_get_logic\"><field name=\"VAR\">local:flag</field>"
+				+ "</block></value></block></value><next><block type=\"variables_set_number\">"
+				+ "<field name=\"VAR\">local:test</field><value name=\"VAL\"><block type=\"math_dual_ops\">"
+				+ "<field name=\"OP\">ADD</field><value name=\"A\"><block type=\"variables_get_number\">"
+				+ "<field name=\"VAR\">local:test</field></block></value><value name=\"B\"><block type=\"math_number\">"
+				+ "<field name=\"NUM\">1.23</field></block></value></block></value><next><block type=\"variables_set_itemstack\">"
+				+ "<field name=\"VAR\">local:stackvar</field><value name=\"VAL\"><block type=\"mcitem_all\"><field name=\"value\">"
+				+ "Blocks.STONE</field></block></value><next>" + customXML
+				+ "</next></block></next></block></next></block></next></block></xml>";
 	}
 
 }
