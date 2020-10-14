@@ -1,3 +1,3 @@
 <#include "mcitems.ftl">
-/*@ItemStack*/new ItemStack((${mappedBlockToBlockStateCode(input$block)}.getBlock() instanceof FlowingFluidBlock ?
-((FlowingFluidBlock) ${mappedBlockToBlockStateCode(input$block)}.getBlock()).getFluid().getFilledBucket() : Items.AIR))
+/*@ItemStack*/(${mappedBlockToBlockStateCode(input$block)}.getBlock() instanceof FlowingFluidBlock ?
+        new ItemStack(((FlowingFluidBlock) ${mappedBlockToBlockStateCode(input$block)}.getBlock()).getFluid().getFilledBucket()) : ItemStack.EMPTY)
