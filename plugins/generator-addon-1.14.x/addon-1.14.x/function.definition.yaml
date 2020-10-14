@@ -1,4 +1,0 @@
-templates:
-  - template: function.mcfunction.ftl
-    writer: file
-    name: "@SRCROOT/functions/@[getName()].mcfunction"

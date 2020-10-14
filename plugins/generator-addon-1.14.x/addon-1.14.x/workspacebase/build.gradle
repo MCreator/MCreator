@@ -1,5 +1,0 @@
-task build(type: Zip) {
-    from 'src/main'
-    archiveName = 'export.mcaddon'
-    destinationDir = file('build/export/')
-}

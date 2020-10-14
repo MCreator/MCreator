@@ -1,6 +1,0 @@
-templates:
-  - template: loottable.json.ftl
-    writer: json
-    name: "@SRCROOT/loot_tables/@[getName()].json"
-
-field_inclusions: [name]
