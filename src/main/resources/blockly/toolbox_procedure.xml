@@ -104,6 +104,7 @@
         <block type="custom_dependency_text"/>
         <block type="custom_dependency_itemstack"/>
         <block type="java_code"/>
+        <block type="java_code_get"/>
         <custom-advanced/>
     </category>
 </xml>
