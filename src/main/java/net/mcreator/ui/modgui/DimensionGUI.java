@@ -314,7 +314,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
-			igniterName.setText(readableNameFromModElement + L10N.t("elementgui.dimension.portal_igniter_default_name"));
+			igniterName.setText(readableNameFromModElement + " Portal Igniter");
 		}
 	}
 
