@@ -62,15 +62,15 @@ public class GTModElements {
 				continue;
 			}
 
-			ModElement modElement = new ModElement(workspace, "Example" + modElementRegistration.getKey().name(),
-					modElementRegistration.getKey());
+			List<GeneratableElement> modElementExamples = TestWorkspaceDataProvider
+					.getModElementExamplesFor(workspace, modElementRegistration.getKey(), random);
 
-			List<GeneratableElement> modElementExamples = TestWorkspaceDataProvider.getModElementExamplesFor(modElement, random);
-
-			LOG.info("[" + generatorName + "] Testing mod element type generation " + modElement.getType()
+			LOG.info("[" + generatorName + "] Testing mod element type generation " + modElementRegistration.getKey()
 					.getReadableName() + " with " + modElementExamples.size() + " variants");
 
 			modElementExamples.forEach(generatableElement -> {
+				ModElement modElement = generatableElement.getModElement();
+
 				workspace.addModElement(modElement);
 
 				assertTrue(workspace.getGenerator().generateElement(generatableElement));
@@ -80,13 +80,9 @@ public class GTModElements {
 				List<File> modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(modElement)
 						.stream().map(GeneratorTemplate::getFile).collect(Collectors.toList());
 
-				// test generated JAVA/JSON syntax
+				// test generated JSON syntax (Java is tested later in the build)
 				for (File modElementFile : modElementFiles) {
-					if (modElementFile.getName().endsWith(".java")) {
-						JavaSource<?> classJavaSource = (JavaSource<?>) Roaster
-								.parse(FileIO.readFileToString(modElementFile)); // source to AST
-						classJavaSource.toString(); // AST to string
-					} else if (modElementFile.getName().endsWith(".json")) {
+					if (modElementFile.getName().endsWith(".json")) {
 						try {
 							new Gson().fromJson(FileIO.readFileToString(modElementFile),
 									Object.class); // try to parse JSON
@@ -118,6 +114,9 @@ public class GTModElements {
 						fail("Filed to properly delete file of mod element type: " + modElement.getType()
 								.getReadableName() + ", file: " + modElementFile);
 				}
+
+				// generate back after removal for build testing
+				assertTrue(workspace.getGenerator().generateElement(generatableElement));
 			});
 		}
 	}
