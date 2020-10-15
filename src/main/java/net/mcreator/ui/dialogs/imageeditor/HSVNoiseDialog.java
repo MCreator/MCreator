@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.imageeditor;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.tool.component.JSlidingSpinner;
@@ -36,7 +37,7 @@ import java.util.UUID;
 public class HSVNoiseDialog extends MCreatorDialog {
 
 	public HSVNoiseDialog(MCreator window, Canvas canvas, Layer layer, VersionManager versionManager) {
-		super(window, "Apply Noise to Layer", true);
+		super(window, L10N.t("dialog.imageeditor.noise_apply"), true);
 
 		JPanel settings = new JPanel(new GridBagLayout());
 		JPanel controls = new JPanel(new BorderLayout());
@@ -46,7 +47,7 @@ public class HSVNoiseDialog extends MCreatorDialog {
 		JSlidingSpinner val = new JSlidingSpinner("Max value variation", 30, 0, 255, 1);
 
 		JPanel seedControls = new JPanel(new GridLayout(2, 1, 5, 5));
-		JButton randomize = new JButton("Randomize seed");
+		JButton randomize = L10N.button("dialog.imageeditor.noise_randomize_seed");
 		JTextField textField = new JTextField();
 		textField.setText(generateSeed());
 		randomize.addActionListener(e -> textField.setText(generateSeed()));
@@ -56,8 +57,8 @@ public class HSVNoiseDialog extends MCreatorDialog {
 		seedControls.add(new JLabel(""));
 		seedControls.add(randomize);
 
-		JButton cancel = new JButton("Cancel");
-		JButton ok = new JButton("Apply");
+		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton ok = L10N.button("action.common.apply");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		getRootPane().setDefaultButton(ok);
