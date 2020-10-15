@@ -32,6 +32,7 @@ import java.util.Locale;
 	public List<MItemBlock> items;
 	public List<MItemBlock> blocks;
 	public List<String> functions;
+	public List<String> entities;
 
 	public Tag(ModElement element) {
 		super(element);
