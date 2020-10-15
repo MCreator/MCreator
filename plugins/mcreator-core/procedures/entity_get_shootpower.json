@@ -16,6 +16,12 @@
     ],
     "inputs": [
       "projectile_entity"
+    ],
+    "dependencies": [
+      {
+        "name": "imediatesourceentity",
+        "type": "entity"
+      }
     ]
   }
 }
