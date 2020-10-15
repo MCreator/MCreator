@@ -104,6 +104,10 @@ public class ElementUtil {
 		return retval;
 	}
 
+	public static List<DataListEntry> loadAllTrees() {
+		return DataListLoader.loadDataList("trees");
+	}
+
 	public static List<DataListEntry> loadMaterials() {
 		return DataListLoader.loadDataList("materials");
 	}
