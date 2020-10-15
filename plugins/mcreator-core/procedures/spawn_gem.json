@@ -19,16 +19,6 @@
       "type": "input_value",
       "name": "z",
       "check": "Number"
-    },
-    {
-      "type": "input_value",
-      "name": "pickUpDelay",
-      "check": "Number"
-    },
-    {
-      "type": "field_checkbox",
-      "name": "despawn",
-      "checked": true
     }
   ],
   "inputsInline": true,
@@ -41,18 +31,13 @@
       "<value name=\"block\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
-      "<value name=\"z\"><block type=\"coord_z\"></block></value>",
-      "<value name=\"pickUpDelay\"><block type=\"math_number\"><field name=\"NUM\">10</field></block></value>"
+      "<value name=\"z\"><block type=\"coord_z\"></block></value>"
     ],
     "inputs": [
       "x",
       "y",
       "z",
-      "block",
-      "pickUpDelay"
-    ],
-    "fields": [
-      "despawn"
+      "block"
     ],
     "dependencies": [
       {

@@ -30,7 +30,7 @@ public class ToolboxBlock {
 	public String machine_name;
 	public IBlockGenerator.BlockType type;
 
-	@Nullable public List<String> toolbox_init;
+	@Nullable List<String> toolbox_init;
 
 	@Nullable public List<String> fields;
 	@Nullable public List<String> inputs;
@@ -39,7 +39,7 @@ public class ToolboxBlock {
 
 	@Nullable public List<String> required_apis;
 
-	public JsonElement blocklyJSON;
+	JsonElement blocklyJSON;
 
 	@Nullable public String toolboxXML;
 	@Nullable public ToolboxCategory toolboxCategory;

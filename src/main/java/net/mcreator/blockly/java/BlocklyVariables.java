@@ -45,7 +45,7 @@ public class BlocklyVariables {
 				String name = variable.getAttribute("id");
 				if (JavaKeywordsMap.VARIABLE_TYPES.get(type) != null && name != null) {
 					generator.append(JavaKeywordsMap.VARIABLE_TYPES.get(type)[0]).append(" ").append(name).append(" = ")
-							.append(JavaKeywordsMap.VARIABLE_TYPES.get(type)[1]).append(";\n");
+							.append(JavaKeywordsMap.VARIABLE_TYPES.get(type)[1]).append(";");
 
 					// add variable to the array of variables
 					varlist.add(name);

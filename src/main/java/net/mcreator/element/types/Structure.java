@@ -41,8 +41,6 @@ import java.util.List;
 
 	public String spawnLocation;
 	public int spawnHeightOffset;
-	public int spawnXOffset;
-	public int spawnZOffset;
 	public List<String> spawnWorldTypes;
 
 	public List<MItemBlock> restrictionBlocks;
@@ -63,8 +61,6 @@ import java.util.List;
 
 		this.randomlyRotateStructure = true;
 		this.spawnHeightOffset = 0;
-		this.spawnXOffset = 0;
-		this.spawnZOffset = 0;
 		this.surfaceDetectionType = "First motion blocking block";
 
 		this.minCountPerChunk = 1;
