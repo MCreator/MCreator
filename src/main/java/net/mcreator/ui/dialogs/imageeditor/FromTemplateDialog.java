@@ -64,9 +64,9 @@ public class FromTemplateDialog extends MCreatorDialog {
 	private final JComboBox<ResourcePointer> cbs2 = new JComboBox<>();
 	private final JComboBox<ResourcePointer> cbs3 = new JComboBox<>();
 	private final JComboBox<ResourcePointer> cbs4 = new JComboBox<>();
-	private final JCheckBox type1 = L10N.checkbox("dialog.common.saturation_brightness_lock");
-	private final JCheckBox type2 = L10N.checkbox("dialog.common.saturation_brightness_lock");
-	private final JCheckBox type3 = L10N.checkbox("dialog.common.saturation_brightness_lock");
+	private final JCheckBox type1 = L10N.checkbox("dialog.imageeditor.saturation_brightness_lock");
+	private final JCheckBox type2 = L10N.checkbox("dialog.imageeditor.saturation_brightness_lock");
+	private final JCheckBox type3 = L10N.checkbox("dialog.imageeditor.saturation_brightness_lock");
 	private final JLabel prev = new JLabel();
 	private final JColor col1;
 	private final JColor col2;
@@ -255,7 +255,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		generateFromTemplate("Random");
 
-		JButton cancel = L10N.button("action.common.cancel");
+		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton merge = L10N.button("dialog.imageeditor.template_create_and_merge");
 		JButton ok = L10N.button("action.common.create");
 

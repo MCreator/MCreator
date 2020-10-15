@@ -64,14 +64,14 @@ public class NewLayerDialog extends MCreatorDialog {
 		//Filler settings
 		JPanel colorSettings = new JPanel(new GridLayout(1, 2, 5, 5));
 		JColor colorChoser = new JColor(window);
-		colorSettings.add(L10N.label("dialog.common.base_color"));
+		colorSettings.add(L10N.label("dialog.imageeditor.base_color"));
 		colorSettings.add(colorChoser);
 
 		JPanel templateSettings = new JPanel(new GridLayout(1, 2, 5, 5));
 		JButton templateChooserButton = new JButton(
 				new ImageIcon(ImageUtils.resize(ImageMakerTexturesCache.CACHE.get(selection).getImage(), 32)));
 		templateChooserButton.setMargin(new Insets(0, 0, 0, 0));
-		templateSettings.add(L10N.label("dialog.common.base_texture"));
+		templateSettings.add(L10N.label("dialog.imageeditor.base_texture"));
 		templateSettings.add(PanelUtils.totalCenterInPanel(templateChooserButton));
 
 		//Constraints
@@ -80,7 +80,7 @@ public class NewLayerDialog extends MCreatorDialog {
 		JSpinner offsetX = new JSpinner(new SpinnerNumberModel(0, -10000, 10000, 1));
 		JSpinner offsetY = new JSpinner(new SpinnerNumberModel(0, -10000, 10000, 1));
 
-		JButton cancel = L10N.button("action.common.cancel");
+		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("action.common.create");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -140,9 +140,9 @@ public class NewLayerDialog extends MCreatorDialog {
 		specialSettings.add(colorSettings, layerTypes[1]);
 		specialSettings.add(templateSettings, layerTypes[2]);
 
-		constraints.add(L10N.label("dialog.common.width"));
+		constraints.add(L10N.label("dialog.imageeditor.width"));
 		constraints.add(width);
-		constraints.add(L10N.label("dialog.common.height"));
+		constraints.add(L10N.label("dialog.imageeditor.height"));
 		constraints.add(height);
 		constraints.add(L10N.label("dialog.imageeditor.new_layer_x_offset"));
 		constraints.add(offsetX);

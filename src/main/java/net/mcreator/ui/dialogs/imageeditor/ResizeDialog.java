@@ -44,7 +44,7 @@ public class ResizeDialog extends MCreatorDialog {
 		JSpinner height = new JSpinner(new SpinnerNumberModel(layer.getHeight(), 0, 10000, 1));
 		JCheckBox type = new JCheckBox();
 
-		JButton cancel = L10N.button("action.common.cancel");
+		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("action.common.resize");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -60,9 +60,9 @@ public class ResizeDialog extends MCreatorDialog {
 			setVisible(false);
 		});
 
-		constraints.add(L10N.label("dialog.common.width"));
+		constraints.add(L10N.label("dialog.imageeditor.width"));
 		constraints.add(width);
-		constraints.add(L10N.label("dialog.common.height"));
+		constraints.add(L10N.label("dialog.imageeditor.height"));
 		constraints.add(height);
 		constraints.add(L10N.label("dialog.imageeditor.resize_enable_anti_aliasing"));
 		constraints.add(type);

@@ -67,21 +67,21 @@ public class NewImageDialog extends MCreatorDialog {
 		//Filler settings
 		JPanel colorSettings = new JPanel(new GridLayout(1, 2, 5, 5));
 		JColor colorChoser = new JColor(window);
-		colorSettings.add(L10N.label("dialog.common.base_color"));
+		colorSettings.add(L10N.label("dialog.imageeditor.base_color"));
 		colorSettings.add(colorChoser);
 
 		JPanel templateSettings = new JPanel(new GridLayout(1, 2, 5, 5));
 		JButton templateChooserButton = new JButton(
 				new ImageIcon(ImageUtils.resize(ImageMakerTexturesCache.CACHE.get(selection).getImage(), 32)));
 		templateChooserButton.setMargin(new Insets(0, 0, 0, 0));
-		templateSettings.add(L10N.label("dialog.common.base_texture"));
+		templateSettings.add(L10N.label("dialog.imageeditor.base_texture"));
 		templateSettings.add(PanelUtils.totalCenterInPanel(templateChooserButton));
 
 		//Constraints
 		JSpinner width = new JSpinner(new SpinnerNumberModel(16, 0, 10000, 1));
 		JSpinner height = new JSpinner(new SpinnerNumberModel(16, 0, 10000, 1));
 
-		JButton cancel = L10N.button("action.common.cancel");
+		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("action.common.create");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -142,9 +142,9 @@ public class NewImageDialog extends MCreatorDialog {
 		specialSettings.add(templateSettings, layerTypes[2]);
 		specialSettings.add(PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor.new_image_add_no_layer")), layerTypes[3]);
 
-		constraints.add(L10N.label("dialog.common.width"));
+		constraints.add(L10N.label("dialog.imageeditor.width"));
 		constraints.add(width);
-		constraints.add(L10N.label("dialog.common.height"));
+		constraints.add(L10N.label("dialog.imageeditor.height"));
 		constraints.add(height);
 
 		layoutConstraints.gridx = 0;

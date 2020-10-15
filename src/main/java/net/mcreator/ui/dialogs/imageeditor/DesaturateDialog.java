@@ -44,7 +44,7 @@ public class DesaturateDialog extends MCreatorDialog {
 		JSlidingSpinner spinner = new JSlidingSpinner("Saturation:");
 		spinner.setValue(50);
 
-		JButton cancel = L10N.button("action.common.cancel");
+		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("dialog.imageeditor.desaturate_action");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));

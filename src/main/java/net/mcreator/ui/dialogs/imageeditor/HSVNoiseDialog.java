@@ -57,7 +57,7 @@ public class HSVNoiseDialog extends MCreatorDialog {
 		seedControls.add(new JLabel(""));
 		seedControls.add(randomize);
 
-		JButton cancel = L10N.button("action.common.cancel");
+		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("action.common.apply");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
