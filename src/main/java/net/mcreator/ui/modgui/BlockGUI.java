@@ -468,15 +468,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		JPanel sbbp2 = new JPanel(new BorderLayout(1, 5));
 
-		JPanel sbbp22 = new JPanel();
+		JPanel sbbp22 = PanelUtils.totalCenterInPanel(destal);
 
-		sbbp22.setOpaque(false);
 		sbbp2.setOpaque(false);
 
 		plantsGrowOn.setOpaque(false);
 		isBeaconBase.setOpaque(false);
-
-		sbbp22.add(destal);
 
 		sbbp22.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1), L10N.t("elementgui.block.block_textures"),
