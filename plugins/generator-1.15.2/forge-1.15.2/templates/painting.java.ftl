@@ -41,7 +41,7 @@ public class ${name}Painting extends ${JavaModName}Elements.ModElement{
 	}
 	
 	@SubscribeEvent
-	public void registerTileEntity(RegistryEvent.Register<PaintingType> event) {
+	public void registerPaintingType(RegistryEvent.Register<PaintingType> event) {
 		event.getRegistry().register(new PaintingType(${data.width}, ${data.height}).setRegistryName("${registryname}"));
 	}
 
