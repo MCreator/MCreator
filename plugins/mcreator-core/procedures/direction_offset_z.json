@@ -1,0 +1,18 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "direction",
+      "check": "Direction"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Number",
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "toolbox_id": "mcelements",
+    "inputs": [
+      "direction"
+    ]
+  }
+}
