@@ -1,0 +1,27 @@
+templates:
+  - template: block/block.json.ftl
+    writer: json
+    name: "@SRCROOT/blocks/@registryname.json"
+  - template: block/block_custom_loot.json.ftl
+    writer: json
+    name: "@SRCROOT/loot_tables/blocks/@modid_@registryname.json"
+    condition: hasCustomDrop()
+    deleteWhenConditionFalse: true
+  - template: block/block_ore_feature.json.ftl
+    writer: json
+    name: "@SRCROOT/features/@modid_@registryname_ore_feature.json"
+    condition: isGeneratedInWorld()
+    deleteWhenConditionFalse: true
+  - template: block/block_ore_feature_rule.json.ftl
+    writer: json
+    name: "@SRCROOT/feature_rules/@modid_@registryname_ore_feature_rule.json"
+    condition: isGeneratedInWorld()
+    deleteWhenConditionFalse: true
+
+localizationkeys:
+  - key: tile.@modid:@registryname.name
+    mapto: name
+
+field_inclusions: [name, texture, textureTop, textureLeft, textureFront, textureRight, textureBack, customDrop, dropAmount,
+                   slipperiness, soundOnStep, resistance, hardness, luminance, fireSpreadSpeed, flammability, colorOnMap,
+                   spawnWorldTypes, frequencyPerChunks, minGenerateHeight, maxGenerateHeight, frequencyOnChunk, blocksToReplace ]

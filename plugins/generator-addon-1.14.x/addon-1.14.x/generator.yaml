@@ -1,0 +1,61 @@
+name: Add-On for Bedrock Edition @minecraft
+partial_support: [item, food, biome, tool, block, mob]
+status: experimental
+buildfileversion: 1.0
+
+# gradle task definitions
+gradle:
+  run_client: "@bedrock_run_client"
+  export_file: "build/export/export.mcaddon"
+
+# base generator roots
+source_root: "@WORKSPACEROOT/src/main/@modid_behaviourpack"
+res_root: "@WORKSPACEROOT/src/main/@modid_resourcepack"
+mod_assets_root: "@WORKSPACEROOT/src/main/@modid_resourcepack"
+mod_data_root: "@WORKSPACEROOT/src/main/@modid_behaviourpack"
+
+# specific resource folders
+sounds_dir: "@RESROOT/sounds"
+other_textures_dir: "@MODASSETSROOT/textures"
+block_textures_dir: "@MODASSETSROOT/textures/blocks"
+item_textures_dir: "@MODASSETSROOT/textures/items"
+
+base_templates:
+  - template: manifest_behaviourpack.json.ftl
+    writer: json
+    name: "@SRCROOT/manifest.json"
+  - template: manifest_resourcepack.json.ftl
+    writer: json
+    name: "@RESROOT/manifest.json"
+  - template: item_texture.json.ftl
+    writer: json
+    name: "@RESROOT/textures/item_texture.json"
+  - template: resourcepack/sound_definitions.json.ftl
+    writer: json
+    name: "@RESROOT/sounds/sound_definitions.json"
+  - template: resourcepack/blocks.json.ftl
+    writer: json
+    name: "@RESROOT/blocks.json"
+  - template: resourcepack/terrain_texture.json.ftl
+    writer: json
+    name: "@RESROOT/textures/terrain_texture.json"
+  - template: player.json.ftl
+    writer: json
+    name: "@SRCROOT/entities/player.json"
+
+language_file:
+  format: keyvalue
+  root_folder: "@RESROOT/texts/"
+  langfile_name: "@lang_NAME.lang"
+
+resources_setup_tasks:
+  - task: copy_and_resize_image
+    width: 128
+    height: 128
+    from: "@MODASSETSROOT/textures/@modpicture.png"
+    to: "@RESROOT/pack_icon.png"
+  - task: copy_and_resize_image
+    width: 128
+    height: 128
+    from: "@MODASSETSROOT/textures/@modpicture.png"
+    to: "@SRCROOT/pack_icon.png"
