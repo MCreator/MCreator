@@ -7,6 +7,6 @@
   "east": "${modid}:blocks/${data.textureRight?has_content?then(data.textureLeft, data.texture)}",
   "south": "${modid}:blocks/${data.textureLeft?has_content?then(data.textureBack, data.texture)}",
   "west": "${modid}:blocks/${data.textureBack?has_content?then(data.textureRight, data.texture)}",
-  "particle": "${modid}:blocks/${data.particleTexture?has_content?then(data.particleTexture, data.texture)}"
+  "particle": "${modid}:blocks/${data.texture}"
   }
 }

@@ -32,7 +32,6 @@ import net.mcreator.ui.dialogs.MCItemSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import netscape.javascript.JSObject;
@@ -153,19 +152,15 @@ public class BlocklyJavascriptBridge {
 	}
 
 	@SuppressWarnings("unused") public String[] getListOf(String type) {
-		return getListOfForWorkspace(mcreator.getWorkspace(), type);
-	}
-	
-	@SuppressWarnings("unused") public static String[] getListOfForWorkspace(Workspace workspace, String type) {
 		List<String> retval;
 		switch (type) {
 		case "procedure":
-			retval = workspace.getModElements().stream()
+			retval = mcreator.getWorkspace().getModElements().stream()
 					.filter(mel -> mel.getType() == ModElementType.PROCEDURE).map(ModElement::getName)
 					.collect(Collectors.toList());
 			break;
 		case "procedure_retval_logic":
-			retval = workspace.getModElements().stream().filter(mod -> {
+			retval = mcreator.getWorkspace().getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
 							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
@@ -176,7 +171,7 @@ public class BlocklyJavascriptBridge {
 			}).map(ModElement::getName).collect(Collectors.toList());
 			break;
 		case "procedure_retval_number":
-			retval = workspace.getModElements().stream().filter(mod -> {
+			retval = mcreator.getWorkspace().getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
 							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
@@ -187,7 +182,7 @@ public class BlocklyJavascriptBridge {
 			}).map(ModElement::getName).collect(Collectors.toList());
 			break;
 		case "procedure_retval_string":
-			retval = workspace.getModElements().stream().filter(mod -> {
+			retval = mcreator.getWorkspace().getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
 							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
@@ -198,7 +193,7 @@ public class BlocklyJavascriptBridge {
 			}).map(ModElement::getName).collect(Collectors.toList());
 			break;
 		case "procedure_retval_itemstack":
-			retval = workspace.getModElements().stream().filter(mod -> {
+			retval = mcreator.getWorkspace().getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
 							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
@@ -209,10 +204,10 @@ public class BlocklyJavascriptBridge {
 			}).map(ModElement::getName).collect(Collectors.toList());
 			break;
 		case "entity":
-			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName)
+			return ElementUtil.loadAllEntities(mcreator.getWorkspace()).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "gui":
-			retval = ElementUtil.loadBasicGUI(workspace);
+			retval = ElementUtil.loadBasicGUI(mcreator.getWorkspace());
 			break;
 		case "gamemode":
 			return ElementUtil.getAllGameModes();
@@ -221,35 +216,35 @@ public class BlocklyJavascriptBridge {
 		case "damagesource":
 			return ElementUtil.getAllDamageSources();
 		case "achievement":
-			return ElementUtil.loadAllAchievements(workspace).stream().map(DataListEntry::getName)
+			return ElementUtil.loadAllAchievements(mcreator.getWorkspace()).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "potion":
-			return ElementUtil.loadAllPotionEffects(workspace);
+			return ElementUtil.loadAllPotionEffects(mcreator.getWorkspace());
 		case "gamerulesboolean":
 			return ElementUtil.getAllBooleanGamerules();
 		case "gamerulesnumber":
 			return ElementUtil.getAllNumberGamerules();
 		case "fluid":
-			return ElementUtil.loadAllFluids(workspace);
+			return ElementUtil.loadAllFluids(mcreator.getWorkspace());
 		case "sound":
-			return ElementUtil.getAllSounds(workspace);
+			return ElementUtil.getAllSounds(mcreator.getWorkspace());
 		case "particle":
 			return ElementUtil.loadParticles();
 		case "direction":
 			return ElementUtil.loadDirections();
 		case "schematic":
-			retval = workspace.getFolderManager().getStructureList();
+			retval = mcreator.getWorkspace().getFolderManager().getStructureList();
 			break;
 		case "enhancement":
-			return ElementUtil.loadAllEnchantments(workspace).stream().map(DataListEntry::getName)
+			return ElementUtil.loadAllEnchantments(mcreator.getWorkspace()).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "biome":
-			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName)
+			return ElementUtil.loadAllBiomes(mcreator.getWorkspace()).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "dimension":
-			return ElementUtil.loadAllDimensions(workspace);
+			return ElementUtil.loadAllDimensions(mcreator.getWorkspace());
 		case "dimension_custom":
-			retval = workspace.getModElements().stream()
+			retval = mcreator.getWorkspace().getModElements().stream()
 					.filter(mu -> mu.getType().getBaseType() == ModElementType.BaseType.DIMENSION)
 					.map(mu -> "CUSTOM:" + mu.getName()).collect(Collectors.toList());
 			break;
@@ -257,7 +252,7 @@ public class BlocklyJavascriptBridge {
 			retval = ElementUtil.loadMaterials().stream().map(DataListEntry::getName).collect(Collectors.toList());
 			break;
 		case "rangeditem":
-			retval = ListUtils.merge(Collections.singleton("Arrow"), workspace.getModElements().stream()
+			retval = ListUtils.merge(Collections.singleton("Arrow"), mcreator.getWorkspace().getModElements().stream()
 					.filter(var -> var.getType() == ModElementType.RANGEDITEM).map(ModElement::getName)
 					.collect(Collectors.toList()));
 			break;

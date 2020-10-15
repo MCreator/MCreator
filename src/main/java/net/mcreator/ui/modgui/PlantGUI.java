@@ -64,7 +64,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private TextureHolder textureBottom;
 
 	private TextureHolder itemTexture;
-	private TextureHolder particleTexture;
 
 	private final JLabel stl = new JLabel(TiledImageCache.plantStaticYes);
 	private final JLabel dyn = new JLabel(TiledImageCache.plantGrowingNo);
@@ -198,8 +197,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		itemTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM), 32);
 		itemTexture.setOpaque(false);
-		particleTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK), 32);
-		particleTexture.setOpaque(false);
+
+		JPanel modelandinfo = new JPanel(new GridLayout(2, 1));
+		modelandinfo.setOpaque(false);
 
 		JPanel infopanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
 		infopanel.setOpaque(false);
@@ -207,27 +207,28 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.special_information_title"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		infopanel.add("South", PanelUtils.gridElements(3, 2,
+		infopanel.add("South", PanelUtils.gridElements(2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
 						L10N.label("elementgui.plant.special_information_tip")),
 				specialInfo, HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
 						L10N.label("elementgui.plant.item_texture")),
-				PanelUtils.centerInPanel(itemTexture), HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
-						L10N.label("elementgui.plant.particle_texture")),
-				PanelUtils.centerInPanel(particleTexture)));
+				PanelUtils.centerInPanel(itemTexture)));
 
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
 		rent.setOpaque(false);
 		rent.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(this.withEntry("block/model"),
 				L10N.label("elementgui.plant.block_model")),
-				renderType));
+				PanelUtils.join(renderType)));
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2), L10N.t("elementgui.plant.3dmodel"),
 				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		modelandinfo.add(rent);
+		modelandinfo.add(infopanel);
 
 		destal.add(ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174), L10N.t("elementgui.plant.texture_place_top_main")));
 		destal.add(ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom")));
@@ -243,7 +244,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		sbbp2.setOpaque(false);
 
 		sbbp22.add("East", destal);
-		sbbp22.add("Center", PanelUtils.northAndCenterElement(rent, infopanel));
+		sbbp22.add("Center", modelandinfo);
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(normalType);
@@ -561,7 +562,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	@Override public void openInEditingMode(Plant plant) {
 		itemTexture.setTextureFromTextureName(plant.itemTexture);
-		particleTexture.setTextureFromTextureName(plant.particleTexture);
 		texture.setTextureFromTextureName(plant.texture);
 		textureBottom.setTextureFromTextureName(plant.textureBottom);
 		name.setText(plant.name);
@@ -654,7 +654,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.texture = texture.getID();
 		plant.textureBottom = textureBottom.getID();
 		plant.itemTexture = itemTexture.getID();
-		plant.particleTexture = particleTexture.getID();
 		if (normalType.isSelected())
 			plant.plantType = "normal";
 		else if (growapableType.isSelected())
