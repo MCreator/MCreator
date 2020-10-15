@@ -37,7 +37,7 @@ public abstract class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new FlowControlBlock());
 		blockGenerators.add(new SingularMathOperationsBlock());
 		blockGenerators.add(new NumberFromTextBlock());
-		blockGenerators.add(new JavaCodeBlock());
+		blockGenerators.add(new JavaCodeProceduralBlock());
 		blockGenerators.add(new ProcedureCallBlock());
 		blockGenerators.add(new ProcedureRetvalBlock());
 
@@ -56,6 +56,7 @@ public abstract class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new TextJoinBlock());
 		blockGenerators.add(new TextLengthBlock());
 		blockGenerators.add(new CustomDependencyBlock());
+		blockGenerators.add(new JavaCodeOutputBlock());
 
 		// add Minecraft related blocks
 		blockGenerators.add(new CoordinateBlock());
