@@ -83,6 +83,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private TextureHolder textureBack;
 
 	private TextureHolder itemTexture;
+	private TextureHolder particleTexture;
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourBlockChanges;
@@ -409,8 +410,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		itemTexture = new TextureHolder(
 				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM), 32);
+		particleTexture = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK), 32);
 
 		itemTexture.setOpaque(false);
+		particleTexture.setOpaque(false);
 		texture.setOpaque(false);
 		textureTop.setOpaque(false);
 		textureLeft.setOpaque(false);
@@ -452,24 +456,24 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.block_base_item_texture"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		txblock4.add("Center", PanelUtils.gridElements(2, 2,
+		txblock4.add("Center", PanelUtils.gridElements(3, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"),
 						L10N.label("elementgui.block.block_base")), blockBase,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
 						L10N.label("elementgui.block.item_texture")),
-				PanelUtils.centerInPanel(itemTexture)));
+				PanelUtils.centerInPanel(itemTexture),
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
+						L10N.label("elementgui.block.particle_texture")),
+				PanelUtils.centerInPanel(particleTexture)));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout(1, 5));
 
-		JPanel sbbp22 = new JPanel();
+		JPanel sbbp22 = PanelUtils.totalCenterInPanel(destal);
 
-		sbbp22.setOpaque(false);
 		sbbp2.setOpaque(false);
 
 		plantsGrowOn.setOpaque(false);
 		isBeaconBase.setOpaque(false);
-
-		sbbp22.add(destal);
 
 		sbbp22.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1), L10N.t("elementgui.block.block_textures"),
@@ -1209,6 +1213,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	@Override public void openInEditingMode(Block block) {
 		itemTexture.setTextureFromTextureName(block.itemTexture);
+		particleTexture.setTextureFromTextureName(block.particleTexture);
 		texture.setTextureFromTextureName(block.texture);
 		textureTop.setTextureFromTextureName(block.textureTop);
 		textureLeft.setTextureFromTextureName(block.textureLeft);
@@ -1422,6 +1427,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.onRedstoneOff = onRedstoneOff.getSelectedProcedure();
 		block.texture = texture.getID();
 		block.itemTexture = itemTexture.getID();
+		block.particleTexture = particleTexture.getID();
 		block.textureTop = textureTop.getID();
 		block.textureLeft = textureLeft.getID();
 		block.textureFront = textureFront.getID();

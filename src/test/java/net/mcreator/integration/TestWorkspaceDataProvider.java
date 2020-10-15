@@ -52,62 +52,69 @@ import java.util.stream.Collectors;
 
 public class TestWorkspaceDataProvider {
 
-	public static List<GeneratableElement> getModElementExamplesFor(ModElement modElement, Random random) {
+	private static ModElement me(Workspace workspace, ModElementType type, String sufix) {
+		return new ModElement(workspace, "Example" + type.name() + sufix, type);
+	}
+
+	public static List<GeneratableElement> getModElementExamplesFor(Workspace workspace, ModElementType type,
+			Random random) {
 		List<GeneratableElement> generatableElements = new ArrayList<>();
 
-		if (modElement.getType() == ModElementType.RECIPE) {
-			generatableElements.add(getRecipeExample(modElement, "Crafting", random, true));
-			generatableElements.add(getRecipeExample(modElement, "Crafting", random, false));
-			generatableElements.add(getRecipeExample(modElement, "Crafting", random, false));
-			generatableElements.add(getRecipeExample(modElement, "Smelting", random, false));
-			generatableElements.add(getRecipeExample(modElement, "Smelting", random, true));
-			generatableElements.add(getRecipeExample(modElement, "Blasting", random, false));
-			generatableElements.add(getRecipeExample(modElement, "Blasting", random, true));
-			generatableElements.add(getRecipeExample(modElement, "Smoking", random, false));
-			generatableElements.add(getRecipeExample(modElement, "Smoking", random, true));
-			generatableElements.add(getRecipeExample(modElement, "Stone cutting", random, false));
-			generatableElements.add(getRecipeExample(modElement, "Stone cutting", random, true));
-			generatableElements.add(getRecipeExample(modElement, "Campfire cooking", random, false));
-			generatableElements.add(getRecipeExample(modElement, "Campfire cooking", random, true));
-		} else if (modElement.getType() == ModElementType.TOOL) {
-			generatableElements.add(getToolExample(modElement, "Pickaxe", random, false, false));
-			generatableElements.add(getToolExample(modElement, "Pickaxe", random, true, false));
-			generatableElements.add(getToolExample(modElement, "Pickaxe", random, false, true));
-			generatableElements.add(getToolExample(modElement, "Pickaxe", random, true, true));
-			generatableElements.add(getToolExample(modElement, "Axe", random, true, false));
-			generatableElements.add(getToolExample(modElement, "Sword", random, true, false));
-			generatableElements.add(getToolExample(modElement, "Spade", random, true, false));
-			generatableElements.add(getToolExample(modElement, "Hoe", random, true, false));
-			generatableElements.add(getToolExample(modElement, "Special", random, true, false));
-			generatableElements.add(getToolExample(modElement, "Special", random, false, false));
-			generatableElements.add(getToolExample(modElement, "MultiTool", random, true, false));
-			generatableElements.add(getToolExample(modElement, "MultiTool", random, false, false));
-			generatableElements.add(getToolExample(modElement, "Shears", random, true, false));
-			generatableElements.add(getToolExample(modElement, "Shears", random, false, false));
-		} else if (modElement.getType() == ModElementType.FUEL || modElement.getType() == ModElementType.TAB
-				|| modElement.getType() == ModElementType.OVERLAY) {
-			generatableElements.add(getExampleFor(modElement, random, true, true, 0));
-			generatableElements.add(getExampleFor(modElement, random, true, false, 1));
-			generatableElements.add(getExampleFor(modElement, random, false, true, 2));
-			generatableElements.add(getExampleFor(modElement, random, false, true, 3));
-		} else if (modElement.getType() == ModElementType.COMMAND || modElement.getType() == ModElementType.KEYBIND
-				|| modElement.getType() == ModElementType.FUNCTION || modElement.getType() == ModElementType.PAINTING) {
-			generatableElements.add(getExampleFor(modElement, random, true, true, 0));
+		if (type == ModElementType.RECIPE) {
+			generatableElements.add(getRecipeExample(me(workspace, type, "1"), "Crafting", random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "2"), "Crafting", random, false));
+			generatableElements.add(getRecipeExample(me(workspace, type, "3"), "Crafting", random, false));
+			generatableElements.add(getRecipeExample(me(workspace, type, "4"), "Smelting", random, false));
+			generatableElements.add(getRecipeExample(me(workspace, type, "5"), "Smelting", random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "6"), "Blasting", random, false));
+			generatableElements.add(getRecipeExample(me(workspace, type, "7"), "Blasting", random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "8"), "Smoking", random, false));
+			generatableElements.add(getRecipeExample(me(workspace, type, "9"), "Smoking", random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "10"), "Stone cutting", random, false));
+			generatableElements.add(getRecipeExample(me(workspace, type, "11"), "Stone cutting", random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "12"), "Campfire cooking", random, false));
+			generatableElements.add(getRecipeExample(me(workspace, type, "13"), "Campfire cooking", random, true));
+		} else if (type == ModElementType.TOOL) {
+			generatableElements.add(getToolExample(me(workspace, type, "1"), "Pickaxe", random, false, false));
+			generatableElements.add(getToolExample(me(workspace, type, "2"), "Pickaxe", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "3"), "Pickaxe", random, false, true));
+			generatableElements.add(getToolExample(me(workspace, type, "4"), "Pickaxe", random, true, true));
+			generatableElements.add(getToolExample(me(workspace, type, "5"), "Axe", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "6"), "Sword", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "7"), "Spade", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "8"), "Hoe", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "9"), "Special", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "10"), "Special", random, false, false));
+			generatableElements.add(getToolExample(me(workspace, type, "11"), "MultiTool", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "12"), "MultiTool", random, false, false));
+			generatableElements.add(getToolExample(me(workspace, type, "13"), "Shears", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "14"), "Shears", random, false, false));
+		} else if (type == ModElementType.FUEL || type == ModElementType.TAB || type == ModElementType.OVERLAY
+				|| type == ModElementType.KEYBIND) {
+			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));
+			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));
+			generatableElements.add(getExampleFor(me(workspace, type, "3"), random, false, true, 2));
+			generatableElements.add(getExampleFor(me(workspace, type, "4"), random, false, true, 3));
+		} else if (type == ModElementType.COMMAND || type == ModElementType.FUNCTION
+				|| type == ModElementType.PAINTING) {
+			generatableElements
+					.add(getExampleFor(new ModElement(workspace, "Example" + type.name(), type), random, true, true,
+							0));
 		} else {
-			GeneratableElement element1 = getExampleFor(modElement, random, true, true, 0);
+			GeneratableElement element1 = getExampleFor(me(workspace, type, "1"), random, true, true, 0);
 			if (element1 != null) {
 				generatableElements.add(element1);
-				generatableElements.add(getExampleFor(modElement, random, true, true, 3));
-				generatableElements.add(getExampleFor(modElement, random, true, false, 1));
-				generatableElements.add(getExampleFor(modElement, random, false, true, 2));
-				generatableElements.add(getExampleFor(modElement, random, false, false, 3));
-				generatableElements.add(getExampleFor(modElement, random, false, false, 0));
-				generatableElements.add(getExampleFor(modElement, random, true, true, 3));
-				generatableElements.add(getExampleFor(modElement, random, true, true, 0));
-				generatableElements.add(getExampleFor(modElement, random, true, false, 2));
-				generatableElements.add(getExampleFor(modElement, random, false, true, 1));
-				generatableElements.add(getExampleFor(modElement, random, false, false, 0));
-				generatableElements.add(getExampleFor(modElement, random, false, false, 3));
+				generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, true, 3));
+				generatableElements.add(getExampleFor(me(workspace, type, "3"), random, true, false, 1));
+				generatableElements.add(getExampleFor(me(workspace, type, "4"), random, false, true, 2));
+				generatableElements.add(getExampleFor(me(workspace, type, "5"), random, false, false, 3));
+				generatableElements.add(getExampleFor(me(workspace, type, "6"), random, false, false, 0));
+				generatableElements.add(getExampleFor(me(workspace, type, "7"), random, true, true, 3));
+				generatableElements.add(getExampleFor(me(workspace, type, "8"), random, true, true, 0));
+				generatableElements.add(getExampleFor(me(workspace, type, "9"), random, true, false, 2));
+				generatableElements.add(getExampleFor(me(workspace, type, "10"), random, false, true, 1));
+				generatableElements.add(getExampleFor(me(workspace, type, "11"), random, false, false, 0));
+				generatableElements.add(getExampleFor(me(workspace, type, "12"), random, false, false, 3));
 			}
 		}
 
@@ -115,42 +122,6 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static void fillWorkspaceWithTestData(Workspace workspace) {
-		workspace.addModElement(new ModElement(workspace, "procedure1", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()));
-		workspace.addModElement(new ModElement(workspace, "procedure2", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()));
-		workspace.addModElement(new ModElement(workspace, "procedure3", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()));
-		workspace.addModElement(new ModElement(workspace, "procedure4", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()));
-		workspace.addModElement(new ModElement(workspace, "procedure5", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()));
-		workspace.addModElement(new ModElement(workspace, "procedure6", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()));
-		workspace.addModElement(new ModElement(workspace, "procedure7", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()));
-		workspace.addModElement(new ModElement(workspace, "procedure8", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()));
-		workspace.addModElement(new ModElement(workspace, "procedure9", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()));
-		workspace.addModElement(new ModElement(workspace, "procedure10", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()));
-		workspace.addModElement(new ModElement(workspace, "procedure11", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()));
-		workspace.addModElement(new ModElement(workspace, "procedure12", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()));
-		workspace.addModElement(new ModElement(workspace, "procedure13", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()));
-
-		workspace.addModElement(new ModElement(workspace, "condition1", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
-		workspace.addModElement(new ModElement(workspace, "condition2", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
-		workspace.addModElement(new ModElement(workspace, "condition3", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
-		workspace.addModElement(new ModElement(workspace, "condition4", ModElementType.PROCEDURE)
-				.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
-
 		VariableElement sampleVariable1 = new VariableElement();
 		sampleVariable1.setName("test");
 		sampleVariable1.setValue("true");
@@ -336,6 +307,12 @@ public class TestWorkspaceDataProvider {
 				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
 				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
 				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
+				biomeDefaultFeatures.add(ListUtils.getRandomItem(random, ElementUtil.loadDefaultFeatures()));
 			}
 			biome.defaultFeatures = biomeDefaultFeatures;
 			biome.spawnVines = _true;
@@ -494,7 +471,7 @@ public class TestWorkspaceDataProvider {
 						new Procedure("procedure1"), new Procedure("procedure2"), new Procedure("procedure3")));
 				components.add(new OutputSlot(6, "sot", 243, 563, Color.black, _true, _true, null, null, null));
 				components.add(new TextField("text1", 0, 10, 100, 20, "Input value ..."));
-				components.add(new TextField("text1", 55, 231, 90, 20, ""));
+				components.add(new TextField("text2", 55, 231, 90, 20, ""));
 			}
 			gui.components = components;
 			return gui;
@@ -678,7 +655,7 @@ public class TestWorkspaceDataProvider {
 			dimension.isDark = _true;
 			dimension.doesWaterVaporize = !_true;
 			dimension.hasWeather = !_true;
-			dimension.enablePortal = !emptyLists;
+			dimension.enablePortal = true; // we always want it as it can be referenced in other tests
 			dimension.portalLuminance = 0.4;
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
@@ -702,6 +679,8 @@ public class TestWorkspaceDataProvider {
 			structure.minCountPerChunk = 1;
 			structure.maxCountPerChunk = 3;
 			structure.spawnHeightOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
+			structure.spawnXOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
+			structure.spawnZOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
 			structure.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			structure.spawnLocation = ListUtils.getRandomItem(random, Arrays.asList("Ground", "Air", "Underground"));
 			structure.surfaceDetectionType = ListUtils
@@ -811,6 +790,7 @@ public class TestWorkspaceDataProvider {
 			plant.texture = "test";
 			plant.textureBottom = "test2";
 			plant.itemTexture = emptyLists ? "" : "itest";
+			plant.particleTexture = emptyLists ? "" : "test3";
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
 			plant.growapableSpawnType = ListUtils
 					.getRandomItem(new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
@@ -1119,6 +1099,7 @@ public class TestWorkspaceDataProvider {
 				block.particleCondition = new Procedure("condition4");
 			}
 			block.itemTexture = emptyLists ? "" : "itest";
+			block.particleTexture = emptyLists ? "" : "test7";
 			block.texture = "test";
 			block.textureTop = "test2";
 			block.textureLeft = "test3";

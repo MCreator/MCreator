@@ -24,15 +24,14 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
-public class JavaCodeBlock implements IBlockGenerator {
+public class JavaCodeProceduralBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null) {
-			master.append(element.getTextContent());
+			master.append(element.getTextContent()).append("\n");
 		} else {
-			master.addCompileNote(
-					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Empty code block was skipped."));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Empty code block was skipped."));
 		}
 	}
 
