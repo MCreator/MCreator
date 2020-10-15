@@ -1,0 +1,27 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "block",
+      "check": "MCItemBlock"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/bi.png",
+      "width": 8,
+      "height": 36
+    }
+  ],
+  "inputsInline": true,
+  "output": "MCItem",
+  "colour": 350,
+  "mcreator": {
+    "toolbox_id": "itemmanagement",
+    "toolbox_init": [
+      "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+    ],
+    "inputs": [
+      "block"
+    ]
+  }
+}

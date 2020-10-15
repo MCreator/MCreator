@@ -44,10 +44,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -88,6 +85,17 @@ public class ModElementUITest {
 
 		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
 
+		// generate some "dummy" procedures for dropdowns to work
+		for (int i = 1; i <= 13; i++) {
+			workspace.addModElement(new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE)
+					.putMetadata("dependencies", new ArrayList<String>()));
+		}
+
+		for (int i = 1; i <= 4; i++) {
+			workspace.addModElement(new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE)
+					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
+		}
+
 		// reduce autosave interval for tests
 		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 2000;
 	}
@@ -102,13 +110,10 @@ public class ModElementUITest {
 		for (Map.Entry<ModElementType, ModElementTypeRegistry.ModTypeRegistration<?>> modElementRegistration : ModElementTypeRegistry.REGISTRY
 				.entrySet()) {
 
-			ModElement modElement = new ModElement(workspace, "Example" + modElementRegistration.getKey().name(),
-					modElementRegistration.getKey());
-
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider
-					.getModElementExamplesFor(modElement, random);
+					.getModElementExamplesFor(workspace, modElementRegistration.getKey(), random);
 
-			LOG.info("Testing mod element type UI " + modElement.getType().getReadableName() + " with "
+			LOG.info("Testing mod element type UI " + modElementRegistration.getKey().getReadableName() + " with "
 					+ generatableElements.size() + " variants");
 
 			// use non-default translation to test translations at the same time
@@ -117,6 +122,8 @@ public class ModElementUITest {
 			L10N.initTranslations();
 
 			for (GeneratableElement generatableElementOrig : generatableElements) {
+				ModElement modElement = generatableElementOrig.getModElement();
+
 				GeneratableElement generatableElement;
 
 				// convert mod element to json
