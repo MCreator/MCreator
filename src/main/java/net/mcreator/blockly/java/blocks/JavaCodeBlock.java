@@ -29,7 +29,7 @@ public class JavaCodeBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null) {
-			master.append(element.getTextContent());
+			master.append(element.getTextContent()).append("\n");
 		} else {
 			master.addCompileNote(
 					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Empty code block was skipped."));

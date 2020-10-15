@@ -1,0 +1,40 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "_placeholder",
+      "check": "Entity"
+    },
+    {
+      "type": "input_statement",
+      "name": "foreach"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 35,
+  "mcreator": {
+    "toolbox_id": "worldmanagement",
+    "toolbox_init": [
+      "<value name=\"_placeholder\"><block deletable=\"false\" movable=\"false\" enabled=\"false\" type=\"entity_iterator\"></block></value>"
+    ],
+    "statements": [
+      {
+        "name": "foreach",
+        "provides": [
+          {
+            "name": "entityiterator",
+            "type": "entity"
+          }
+        ]
+      }
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}
