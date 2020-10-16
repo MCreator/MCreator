@@ -190,7 +190,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 						.wrapWithHelpButton(this.withEntry("item/special_information"),
 								L10N.label("elementgui.tool.tool_special_information")), specialInfo))));
 		JComponent glow = PanelUtils.join(FlowLayout.LEFT, HelpUtils
-						.wrapWithHelpButton(this.withEntry("item/glowing_effect"), new JLabel("elementgui.tool.glowing_effect")),
+						.wrapWithHelpButton(this.withEntry("item/glowing_effect"), L10N.label("elementgui.tool.glowing_effect")),
 				hasGlow, glowCondition);
 
 		JComponent visualBottom = PanelUtils.centerAndSouthElement(PanelUtils.gridElements(1, 2, HelpUtils
