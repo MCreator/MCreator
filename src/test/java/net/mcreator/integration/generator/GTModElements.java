@@ -38,8 +38,6 @@ import net.mcreator.io.FileIO;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
-import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.source.JavaSource;
 
 import java.io.File;
 import java.util.List;
@@ -93,6 +91,8 @@ public class GTModElements {
 					}
 				}
 
+				// disabled file detection system due to too long Travis builds
+				/*
 				// test mod element file detection system
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
@@ -116,7 +116,7 @@ public class GTModElements {
 				}
 
 				// generate back after removal for build testing
-				assertTrue(workspace.getGenerator().generateElement(generatableElement));
+				assertTrue(workspace.getGenerator().generateElement(generatableElement));*/
 			});
 		}
 	}
