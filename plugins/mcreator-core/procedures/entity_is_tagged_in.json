@@ -17,7 +17,7 @@
   "mcreator": {
     "toolbox_id": "entitydata",
     "toolbox_init": [
-      "<value name=\"b\"><block type=\"text\"><field name=\"TEXT\">logs</field></block></value>",
+      "<value name=\"b\"><block type=\"text\"><field name=\"TEXT\">skeletons</field></block></value>",
       "<value name=\"a\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "inputs": [
