@@ -40,7 +40,7 @@ public class EntityListField extends JItemListField<EntityEntry> {
 
 	@Override protected List<EntityEntry> getElementsToAdd() {
 		JList<String> vlist = new JList<>(ElementUtil.loadAllEntities(frame.getWorkspace())
-              .stream().map(DataListEntry::getName).collect(Collectors.toList());
+			.stream().map(DataListEntry::getName).collect(Collectors.toList()));
 		int option = JOptionPane.showOptionDialog(frame, PanelUtils
 						.northAndCenterElement(new JLabel("Select entities you would like to add to the list:"),
 								new JScrollPane(vlist)), "Select entities", JOptionPane.OK_CANCEL_OPTION,
