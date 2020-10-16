@@ -17,7 +17,7 @@
           </#list>
       <#elseif data.type == "Entities">
           <#list data.entities as value>
-              <#assign entity = generator.map(value.getUnmappedValue(), "entities", 1)!"null">
+              <#assign entity = generator.map(value.getUnmappedValue(), "entities", 1)?lower_case!"null">
               <#if entity != "null">
             "${entity}"<#if value?has_next>,</#if>
               </#if>
