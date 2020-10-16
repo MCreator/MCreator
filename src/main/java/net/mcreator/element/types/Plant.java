@@ -42,6 +42,7 @@ import java.util.Map;
 	public String customModelName;
 
 	public String itemTexture;
+	public String particleTexture;
 
 	public String plantType;
 

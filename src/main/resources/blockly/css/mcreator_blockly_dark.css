@@ -89,3 +89,8 @@
     stroke: #fff !important;
     stroke-width: 2px !important;
 }
+
+.blocklyHtmlTextAreaInput {
+    background: #323232;
+    color: white;
+}

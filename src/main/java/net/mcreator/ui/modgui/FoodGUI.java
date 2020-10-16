@@ -105,7 +105,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 				L10N.t("elementgui.food.event_on_eaten"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator,
-				L10N.t("elementgui.food.event_on_crafted"),
+				L10N.t("elementgui.common.event_on_crafted"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.food.event_on_swing"),
@@ -139,13 +139,13 @@ public class FoodGUI extends ModElementGUI<Food> {
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
 		rent.setOpaque(false);
 		rent.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
-				L10N.label("elementgui.food.item_model")),
+				L10N.label("elementgui.common.item_model")),
 				PanelUtils.join(renderType)));
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2), "Food 3D model",
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2), L10N.t("elementgui.food.food_3d_model"),
 				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JComponent glow = PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
@@ -176,7 +176,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		selp.add(name);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"),
-				L10N.label("elementgui.food.rarity")));
+				L10N.label("elementgui.common.rarity")));
 		selp.add(rarity);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
@@ -184,7 +184,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		selp.add(creativeTab);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
-				L10N.label("elementgui.food.stack_size")));
+				L10N.label("elementgui.common.stack_size")));
 		selp.add(stackSize);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/nutritional_value"),
