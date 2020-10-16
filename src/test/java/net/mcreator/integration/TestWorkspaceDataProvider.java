@@ -1124,6 +1124,7 @@ public class TestWorkspaceDataProvider {
 			tag.name = modElement.getName();
 			tag.items = new ArrayList<>();
 			tag.blocks = new ArrayList<>();
+			tag.entities = new ArrayList<>();
 			tag.functions = new ArrayList<>();
 			if (!emptyLists) {
 				tag.items.add(new MItemBlock(modElement.getWorkspace(),
@@ -1140,6 +1141,10 @@ public class TestWorkspaceDataProvider {
 						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
 				tag.blocks.add(new MItemBlock(modElement.getWorkspace(),
 						ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+				tag.entities.add(new EntityEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllEntities(modElement.getWorkspace())).getName()));
+				tag.entities.add(new EntityEntry(modElement.getWorkspace(),
+						ListUtils.getRandomItem(random, ElementUtil.loadAllEntities(modElement.getWorkspace())).getName()));
 				tag.functions.add("test1");
 				tag.functions.add("test2");
 			}
