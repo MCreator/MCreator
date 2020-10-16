@@ -27,6 +27,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.EntityListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.ModElementListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -44,10 +45,12 @@ import java.util.Objects;
 public class TagGUI extends ModElementGUI<Tag> {
 
 	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "forge", "minecraft", "mod" });
-	private final JComboBox<String> type = new JComboBox<>(new String[] { "Items", "Blocks", "Functions" });
+	private final JComboBox<String> type = new JComboBox<>(new String[] { "Items", "Blocks", "Entities", "Functions" });
 
 	private MCItemListField items;
 	private MCItemListField blocks;
+
+	private EntityListField entities;
 
 	private ModElementListField functions;
 
@@ -65,6 +68,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 		items = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 		blocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
+		entities = new EntityListField(mcreator);
 		functions = new ModElementListField(mcreator, ModElementType.FUNCTION);
 
 		name.setValidator(new TagsNameValidator<>(name, false));
@@ -85,6 +89,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 		valuesPan.add(items, "Items");
 		valuesPan.add(blocks, "Blocks");
+		valuesPan.add(entities, "Entities");
 		valuesPan.add(functions, "Functions");
 
 		if (isEditingMode()) {
@@ -138,6 +143,8 @@ public class TagGUI extends ModElementGUI<Tag> {
 		items.setListElements(tag.items);
 		blocks.setListElements(tag.blocks);
 
+		entities.setListElements(tag.entities);
+
 		functions.setListElements(tag.functions);
 	}
 
@@ -148,6 +155,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 		tag.items = items.getListElements();
 		tag.blocks = blocks.getListElements();
+		tag.entities = entities.getListElements();
 		tag.functions = functions.getListElements();
 
 		tag.name = name.getEditor().getItem().toString();
