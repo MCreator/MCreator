@@ -109,11 +109,14 @@ public class ModElementUITest {
 		LOG.info("Random number generator seed: " + rgenseed);
 
 		// test mod elements using default (en) translations
+		LOG.info("Testing mod element GUI for locale " + PreferencesManager.PREFERENCES.ui.language);
 		testModElementLoading(random);
 
 		// use non-default translation to test translations at the same time
 		// this should be set to the most complete translation at the time
 		PreferencesManager.PREFERENCES.ui.language = new Locale("fr", "FR");
+
+		LOG.info("Testing mod element GUI for locale " + PreferencesManager.PREFERENCES.ui.language);
 		L10N.initTranslations();
 
 		testModElementLoading(random);
