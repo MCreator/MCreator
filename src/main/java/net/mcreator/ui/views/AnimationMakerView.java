@@ -101,7 +101,7 @@ public class AnimationMakerView extends ViewBase {
 
 			zoom = x;
 			try {
-				prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).slika, zoom)));
+				prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
 			} catch (Exception ignored) {
 			}
 		});
@@ -151,7 +151,7 @@ public class AnimationMakerView extends ViewBase {
 						animindex = 0;
 					SwingUtilities.invokeLater(() -> {
 						prv.setIcon(
-								new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).slika, zoom)));
+								new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
 						timeline.repaint();
 					});
 					try {
@@ -194,7 +194,7 @@ public class AnimationMakerView extends ViewBase {
 			animindex++;
 			if (animindex >= timelinevector.getSize())
 				animindex--;
-			prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).slika, zoom)));
+			prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
 			timeline.repaint();
 		});
 		next.setIcon(UIRES.get("16px.fwd"));
@@ -205,7 +205,7 @@ public class AnimationMakerView extends ViewBase {
 			animindex--;
 			if (animindex < 0)
 				animindex = 0;
-			prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).slika, zoom)));
+			prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
 			timeline.repaint();
 		});
 		prev.setIcon(UIRES.get("16px.rwd"));
@@ -294,7 +294,7 @@ public class AnimationMakerView extends ViewBase {
 		JButton remove = new JButton("Remove selected frames");
 		remove.addActionListener(event -> {
 			if (timeline.getSelectedValue() != null)
-				timeline.getSelectedValuesList().forEach(e -> timelinevector.removeElement(e));
+				timeline.getSelectedValuesList().forEach(timelinevector::removeElement);
 		});
 		remove.setIcon(UIRES.get("18px.remove"));
 		timelinebar.add(remove);
@@ -334,22 +334,28 @@ public class AnimationMakerView extends ViewBase {
 	}
 
 	protected void use() {
-		Object[] options = { "Block", "Item" };
+		Object[] options = { "Block", "Item", "Other" };
 		int n = JOptionPane.showOptionDialog(mcreator, "What kind of texture is this?", "Texture type",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		if (n < 0)
+			return;
+
 		String namec = JOptionPane.showInputDialog("Enter name of texture (without spaces): ");
 		if (namec != null) {
 			File exportFile;
 			namec = RegistryNameFixer.fix(namec);
 			if (n == 0)
 				exportFile = mcreator.getWorkspace().getFolderManager().getBlockTextureFile(namec);
-			else
+			else if (n == 1)
 				exportFile = mcreator.getWorkspace().getFolderManager().getItemTextureFile(namec);
-			String type = n == 0 ? "Block" : "Item";
-			if (exportFile.isFile())
-				JOptionPane.showMessageDialog(mcreator, type + " with this name already exists!", "Resource error",
-						JOptionPane.ERROR_MESSAGE);
-			else {
+			else
+				exportFile = mcreator.getWorkspace().getFolderManager().getOtherTextureFile(namec);
+
+			if (exportFile.isFile()) {
+				JOptionPane
+						.showMessageDialog(mcreator, options[n] + " with this name already exists!", "Resource error",
+								JOptionPane.ERROR_MESSAGE);
+			} else {
 				Object[] possibilities = { "4 x 4", "8 x 8", "16 x 16", "32 x 32", "64 x 64", "128 x 128", "256 x 256",
 						"512 x 512" };
 				String s = (String) JOptionPane
@@ -486,7 +492,7 @@ public class AnimationMakerView extends ViewBase {
 			try {
 				if (f.get() != null) {
 					BufferedImage imge = TiledImageUtils.convert(ImageIO.read(f.get()), BufferedImage.TYPE_INT_ARGB);
-					int x = imge.getHeight() > imge.getWidth() ? imge.getWidth() : imge.getHeight();
+					int x = Math.min(imge.getHeight(), imge.getWidth());
 					selectFile.setText(StringUtils.abbreviateString(f.get().getName(), 25));
 					tilImgUtl.set(new TiledImageUtils(imge, x, x));
 					if (cbox2.isSelected())
@@ -548,7 +554,7 @@ public class AnimationMakerView extends ViewBase {
 					ImageUtils.colorize(new ImageIcon(bufferedImage), color, colorizerType).getImage());
 		else
 			b = bufferedImage;
-		int x = b.getHeight() > b.getWidth() ? b.getWidth() : b.getHeight();
+		int x = Math.min(b.getHeight(), b.getWidth());
 		TiledImageUtils tiledImageUtils = null;
 		try {
 			tiledImageUtils = new TiledImageUtils(b, x, x);
@@ -587,7 +593,7 @@ public class AnimationMakerView extends ViewBase {
 				setBackground(Color.gray);
 			}
 			setPreferredSize(new Dimension(170, 170));
-			add(new JLabel(new ImageIcon(ImageUtils.resize(value.slika, 170))));
+			add(new JLabel(new ImageIcon(ImageUtils.resize(value.image, 170))));
 
 			return this;
 		}
@@ -598,16 +604,16 @@ public class AnimationMakerView extends ViewBase {
 		BufferedImage resizedImage = new BufferedImage(size, size * stevilo, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = resizedImage.createGraphics();
 		for (int i = 0; i < timelinevector.getSize(); i++)
-			g.drawImage(timelinevector.get(i).slika, 0, i * size, size, size, new JLabel());
+			g.drawImage(timelinevector.get(i).image, 0, i * size, size, size, new JLabel());
 		g.dispose();
 		return new ImageIcon(Toolkit.getDefaultToolkit().createImage(resizedImage.getSource()));
 	}
 
-	class AnimationFrame {
-		BufferedImage slika;
+	static class AnimationFrame {
+		BufferedImage image;
 
 		AnimationFrame(BufferedImage s) {
-			slika = s;
+			image = s;
 		}
 	}
 

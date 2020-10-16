@@ -1,4 +1,3 @@
 templates:
   - template: painting.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/painting/@NAMEPainting.java"
-  
