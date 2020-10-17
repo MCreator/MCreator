@@ -38,8 +38,6 @@ import net.mcreator.io.FileIO;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
-import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.source.JavaSource;
 
 import java.io.File;
 import java.util.List;
