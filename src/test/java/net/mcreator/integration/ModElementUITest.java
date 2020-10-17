@@ -41,6 +41,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -107,6 +108,22 @@ public class ModElementUITest {
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: " + rgenseed);
 
+		// test mod elements using default (en) translations
+		LOG.info("Testing mod element GUI for locale " + PreferencesManager.PREFERENCES.ui.language);
+		testModElementLoading(random);
+
+		// use non-default translation to test translations at the same time
+		// this should be set to the most complete translation at the time
+		PreferencesManager.PREFERENCES.ui.language = new Locale("fr", "FR");
+
+		LOG.info("Testing mod element GUI for locale " + PreferencesManager.PREFERENCES.ui.language);
+		L10N.initTranslations();
+
+		testModElementLoading(random);
+	}
+
+	private void testModElementLoading(Random random)
+			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
 		for (Map.Entry<ModElementType, ModElementTypeRegistry.ModTypeRegistration<?>> modElementRegistration : ModElementTypeRegistry.REGISTRY
 				.entrySet()) {
 
@@ -115,11 +132,6 @@ public class ModElementUITest {
 
 			LOG.info("Testing mod element type UI " + modElementRegistration.getKey().getReadableName() + " with "
 					+ generatableElements.size() + " variants");
-
-			// use non-default translation to test translations at the same time
-			// this should be set to the most complete translation
-			PreferencesManager.PREFERENCES.ui.language = new Locale("fr", "FR");
-			L10N.initTranslations();
 
 			for (GeneratableElement generatableElementOrig : generatableElements) {
 				ModElement modElement = generatableElementOrig.getModElement();
@@ -134,21 +146,18 @@ public class ModElementUITest {
 						.fromJSONtoGeneratableElement(exportedJSON, modElement);// from JSON to generatableelement
 
 				if (generatableElement == null) {
-					LOG.warn("This mod element type does not support generatable elements: " + modElement.getType()
-							.getReadableName());
+					LOG.warn("This mod element type does not support generatable elements: " + modElement.getType().getReadableName());
 					continue;
 				}
 
-				ModElementGUI<?> modElementGUI = modElementRegistration.getValue()
-						.getModElement(mcreator, modElement, false);
+				ModElementGUI<?> modElementGUI = modElementRegistration.getValue().getModElement(mcreator, modElement, false);
 
 				Field field = modElementGUI.getClass().getSuperclass().getDeclaredField("editingMode");
 				field.setAccessible(true);
 				field.set(modElementGUI, true);
 
 				// test opening generatable element
-				Method method = modElementGUI.getClass()
-						.getDeclaredMethod("openInEditingMode", GeneratableElement.class);
+				Method method = modElementGUI.getClass().getDeclaredMethod("openInEditingMode", GeneratableElement.class);
 				method.setAccessible(true);
 				method.invoke(modElementGUI, generatableElement);
 
