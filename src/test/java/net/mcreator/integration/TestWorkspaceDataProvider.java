@@ -372,6 +372,10 @@ public class TestWorkspaceDataProvider {
 			food.texture = "test";
 			food.creativeTab = new TabEntry(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
+			food.resultItem = new MItemBlock(modElement.getWorkspace(), emptyLists ?
+					"" :
+					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName());
 			food.stackSize = 32;
 			food.eatingSpeed = 123;
 			food.nutritionalValue = 5;
@@ -379,7 +383,7 @@ public class TestWorkspaceDataProvider {
 			food.forDogs = _true;
 			food.isAlwaysEdible = _true;
 			food.animation = ListUtils.getRandomItem(random,
-					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
+					new String[] { "block" , "bow" , "crossbow" , "drink" , "eat" , "none" , "spear" });
 			food.hasGlow = _true;
 			food.onRightClicked = new Procedure("procedure1");
 			food.onEaten = new Procedure("procedure2");
