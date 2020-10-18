@@ -22,6 +22,7 @@ sounds_dir: "@MODASSETSROOT/sounds"
 other_textures_dir: "@MODASSETSROOT/textures"
 block_textures_dir: "@MODASSETSROOT/textures/blocks"
 item_textures_dir: "@MODASSETSROOT/textures/items"
+entity_textures_dir: "@MODASSETSROOT/textures/entities"
 armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 
 base_templates:

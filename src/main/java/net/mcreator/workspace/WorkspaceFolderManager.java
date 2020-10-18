@@ -65,6 +65,10 @@ public class WorkspaceFolderManager {
 		return new File(getItemsTexturesDir(), textureIdentifier + ".png");
 	}
 
+	public File getEntityTextureFile(String textureIdentifier) {
+		return new File(getEntitiesTexturesDir(), textureIdentifier + ".png");
+	}
+
 	public File getOtherTextureFile(String textureIdentifier) {
 		return new File(getOtherTexturesDir(), textureIdentifier + ".png");
 	}
@@ -92,6 +96,10 @@ public class WorkspaceFolderManager {
 
 	public List<File> getItemTexturesList() {
 		return listPNGsInDir(getItemsTexturesDir());
+	}
+
+	public List<File> getEntityTexturesList() {
+		return listPNGsInDir(getEntitiesTexturesDir());
 	}
 
 	public List<File> getArmorTexturesList() {
@@ -126,6 +134,11 @@ public class WorkspaceFolderManager {
 	@Nullable public File getItemsTexturesDir() {
 		return GeneratorUtils
 				.getSpecificRoot(workspace, workspace.getGenerator().getGeneratorConfiguration(), "item_textures_dir");
+	}
+
+	@Nullable public File getEntitiesTexturesDir() {
+		return GeneratorUtils
+				.getSpecificRoot(workspace, workspace.getGenerator().getGeneratorConfiguration(), "entity_textures_dir");
 	}
 
 	@Nullable public File getArmorTexturesDir() {

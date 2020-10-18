@@ -125,6 +125,7 @@ public class ActionRegistry {
 	public final BasicAction importBlockTexture;
 	public final BasicAction importItemTexture;
 	public final BasicAction importArmorTexture;
+	public final BasicAction importEntityTexture;
 	public final BasicAction importOtherTexture;
 	public final BasicAction importSound;
 	public final BasicAction importStructure;
@@ -235,15 +236,18 @@ public class ActionRegistry {
 		this.createAnimatedTexture = new TextureAction(this, L10N.t("action.create_animated_texture"),
 				actionEvent -> new AnimationMakerView(mcreator).showView()).setIcon(UIRES.get("16px.newanimation"));
 		this.importBlockTexture = new TextureAction(this, L10N.t("action.import_block_texture"),
-				actionEvent -> TextureImportDialogs.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.BLOCK))
+				actionEvent -> TextureImportDialogs.importTexturesBlockItemOrEntity(mcreator, BlockItemTextureSelector.TextureType.BLOCK))
 				.setIcon(UIRES.get("16px.importblock"));
 		this.importItemTexture = new TextureAction(this, L10N.t("action.import_item_texture"),
-				actionEvent -> TextureImportDialogs.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.ITEM))
+				actionEvent -> TextureImportDialogs.importTexturesBlockItemOrEntity(mcreator, BlockItemTextureSelector.TextureType.ITEM))
 				.setIcon(UIRES.get("16px.importitem"));
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
 			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
 		});
+		this.importEntityTexture = new TextureAction(this, L10N.t("action.import_entity_texture"),
+				actionEvent -> TextureImportDialogs.importTexturesBlockItemOrEntity(mcreator, BlockItemTextureSelector.TextureType.ENTITY))
+				.setIcon(UIRES.get("16px.importentity"));
 		this.importOtherTexture = new TextureAction(this, L10N.t("action.import_other_texture"),
 				actionEvent -> TextureImportDialogs.importOtherTextures(mcreator))
 				.setIcon(UIRES.get("16px.importtexture"));

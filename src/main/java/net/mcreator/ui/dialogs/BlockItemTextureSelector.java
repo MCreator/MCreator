@@ -135,7 +135,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		importTx.setIcon(UIRES.get("18px.add"));
 		importTx.addActionListener(event -> {
 
-			TextureImportDialogs.importTexturesBlockOrItem(mcreator, type);
+			TextureImportDialogs.importTexturesBlockItemOrEntity(mcreator, type);
 			List<File> block1;
 			if (type == TextureType.BLOCK) {
 				block1 = mcreator.getWorkspace().getFolderManager().getBlockTexturesList();
@@ -264,7 +264,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	}
 
 	public enum TextureType {
-		BLOCK, ITEM
+		BLOCK, ITEM, ENTITY
 	}
 
 }

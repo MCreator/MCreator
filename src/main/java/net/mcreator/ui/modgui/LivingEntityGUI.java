@@ -307,8 +307,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 
-		mobModelTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
-		mobModelGlowTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		mobModelTexture.setRenderer(new WTextureComboBoxRenderer.EntityTextures(mcreator.getWorkspace()));
+		mobModelGlowTexture.setRenderer(new WTextureComboBoxRenderer.EntityTextures(mcreator.getWorkspace()));
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -447,11 +447,11 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			mobModelTexture.removeAllItems();
 			mobModelTexture.addItem("");
-			mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
+			mcreator.getWorkspace().getFolderManager().getEntityTexturesList()
 					.forEach(el -> mobModelTexture.addItem(el.getName()));
 			mobModelGlowTexture.removeAllItems();
 			mobModelGlowTexture.addItem("");
-			mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
+			mcreator.getWorkspace().getFolderManager().getEntityTexturesList()
 					.forEach(el -> mobModelGlowTexture.addItem(el.getName()));
 		});
 
@@ -828,11 +828,11 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		spawningCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getWorkspace().getFolderManager().getEntityTexturesList().stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModelGlowTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getWorkspace().getFolderManager().getEntityTexturesList().stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),

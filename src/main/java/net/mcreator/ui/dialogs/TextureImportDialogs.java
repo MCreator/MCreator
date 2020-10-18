@@ -39,9 +39,9 @@ public class TextureImportDialogs {
 		int n = JOptionPane.showOptionDialog(mcreator, message, "Texture type", JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (n == 0) {
-			TextureImportDialogs.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.BLOCK, new File[] { file });
+			TextureImportDialogs.importTexturesBlockItemOrEntity(mcreator, BlockItemTextureSelector.TextureType.BLOCK, new File[] { file });
 		} else if (n == 1) {
-			TextureImportDialogs.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.ITEM, new File[] { file });
+			TextureImportDialogs.importTexturesBlockItemOrEntity(mcreator, BlockItemTextureSelector.TextureType.ITEM, new File[] { file });
 		} else if (n == 2) {
 			TextureImportDialogs.importOtherTextures(mcreator, new File[] { file });
 		}
@@ -118,19 +118,21 @@ public class TextureImportDialogs {
 			}
 	}
 
-	public static void importTexturesBlockOrItem(MCreator fr, BlockItemTextureSelector.TextureType type) {
+	public static void importTexturesBlockItemOrEntity(MCreator fr, BlockItemTextureSelector.TextureType type) {
 		File[] hohe = FileDialogs.getMultiOpenDialog(fr, new String[] { ".png" });
 		if (hohe != null)
-			importTexturesBlockOrItem(fr, type, hohe);
+			importTexturesBlockItemOrEntity(fr, type, hohe);
 	}
 
-	public static void importTexturesBlockOrItem(MCreator fr, BlockItemTextureSelector.TextureType type, File[] hohe) {
+	public static void importTexturesBlockItemOrEntity(MCreator fr, BlockItemTextureSelector.TextureType type, File[] hohe) {
 		Arrays.stream(hohe).forEach(hoh -> {
 			String namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(hoh.getName()));
 			File file;
 			if (type == BlockItemTextureSelector.TextureType.BLOCK) {
 				file = fr.getWorkspace().getFolderManager().getBlockTextureFile(namec);
-			} else {
+			} else if (type == BlockItemTextureSelector.TextureType.ENTITY){
+				file = fr.getWorkspace().getFolderManager().getEntityTextureFile(namec);
+			} else{
 				file = fr.getWorkspace().getFolderManager().getItemTextureFile(namec);
 			}
 			if (file.isFile()) {
@@ -140,8 +142,10 @@ public class TextureImportDialogs {
 					namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(name));
 					if (type == BlockItemTextureSelector.TextureType.BLOCK) {
 						file = fr.getWorkspace().getFolderManager().getBlockTextureFile(namec);
-					} else {
+					} else if (type == BlockItemTextureSelector.TextureType.ITEM){
 						file = fr.getWorkspace().getFolderManager().getItemTextureFile(namec);
+					} else if (type == BlockItemTextureSelector.TextureType.ENTITY){
+						file = fr.getWorkspace().getFolderManager().getEntityTextureFile(namec);
 					}
 				} else {
 					return;

@@ -79,4 +79,16 @@ public class WTextureComboBoxRenderer extends JLabel implements ListCellRenderer
 		}
 	}
 
+	public static class EntityTextures extends WTextureComboBoxRenderer {
+
+		public EntityTextures(Workspace workspace) {
+			super(element -> {
+				File file = workspace.getFolderManager().getEntityTextureFile(FilenameUtils.removeExtension(element));
+				if (file.isFile())
+					return new ImageIcon(file.getAbsolutePath());
+				return null;
+			});
+		}
+	}
+
 }
