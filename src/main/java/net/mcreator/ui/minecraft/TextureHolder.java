@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.minecraft;
 
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
 import net.mcreator.util.image.ImageUtils;
@@ -31,7 +31,7 @@ import java.awt.event.*;
 public class TextureHolder extends VButton {
 
 	private String id = "";
-	private final BlockItemTextureSelector td;
+	private final GeneralTextureSelector td;
 
 	private ActionListener actionListener;
 
@@ -39,11 +39,11 @@ public class TextureHolder extends VButton {
 
 	private boolean removeButtonHover;
 
-	public TextureHolder(BlockItemTextureSelector td) {
+	public TextureHolder(GeneralTextureSelector td) {
 		this(td, 70);
 	}
 
-	public TextureHolder(BlockItemTextureSelector td, int size) {
+	public TextureHolder(GeneralTextureSelector td, int size) {
 		super("");
 		this.td = td;
 
@@ -117,7 +117,7 @@ public class TextureHolder extends VButton {
 		if (texture != null && !texture.equals("")) {
 			id = texture;
 			setToolTipText(texture);
-			if (td.getTextureType() == BlockItemTextureSelector.TextureType.BLOCK)
+			if (td.getTextureType() == GeneralTextureSelector.TextureType.BLOCK)
 				setIcon(new ImageIcon(ImageUtils
 						.resize(td.getMCreator().getWorkspace().getFolderManager().getBlockImageIcon(texture)
 								.getImage(), this.size)));

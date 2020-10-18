@@ -52,6 +52,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	private FilterModel dmli = new FilterModel();
 	private FilterModel dmla = new FilterModel();
 	private FilterModel dmle = new FilterModel();
+	private FilterModel dmlp = new FilterModel();
 	private FilterModel dmlo = new FilterModel();
 
 	private final ListGroup<File> listGroup = new ListGroup<>();
@@ -62,6 +63,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	private final JComponentWithList<File> listi;
 	private final JComponentWithList<File> lista;
 	private final JComponentWithList<File> liste;
+	private final JComponentWithList<File> listp;
 	private final JComponentWithList<File> listo;
 
 	private final MouseAdapter mouseAdapter;
@@ -85,8 +87,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		respan.setLayout(new BoxLayout(respan, BoxLayout.Y_AXIS));
 
 		listb = createListElement(dmlb, "Textures for blocks:");
-		listi = createListElement(dmli, "Textures for items:");
 		liste = createListElement(dmle, "Textures for entities:");
+		listi = createListElement(dmli, "Textures for items:");
+		listp = createListElement(dmlp, "Textures for paintings:");
 		lista = createListElement(dmla, "Textures for armor:");
 		listo = createListElement(dmlo, "Other textures (GUI components, ...):");
 
@@ -94,6 +97,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		respan.add(listi.getComponent());
 		respan.add(lista.getComponent());
 		respan.add(liste.getComponent());
+		respan.add(listp.getComponent());
 		respan.add(listo.getComponent());
 
 		respan.setOpaque(false);
@@ -148,9 +152,10 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 
 		importMenu.add(workspacePanel.mcreator.actionRegistry.importBlockTexture);
-		importMenu.add(workspacePanel.mcreator.actionRegistry.importItemTexture);
-		importMenu.add(workspacePanel.mcreator.actionRegistry.importArmorTexture);
 		importMenu.add(workspacePanel.mcreator.actionRegistry.importEntityTexture);
+		importMenu.add(workspacePanel.mcreator.actionRegistry.importItemTexture);
+		importMenu.add(workspacePanel.mcreator.actionRegistry.importPaintingTexture);
+		importMenu.add(workspacePanel.mcreator.actionRegistry.importArmorTexture);
 		importMenu.add(workspacePanel.mcreator.actionRegistry.importOtherTexture);
 
 		importt.addActionListener(e -> importMenu.show(importt, 5, importt.getHeight() + 5));
@@ -266,12 +271,14 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			List<File> selectedb = listb.getList().getSelectedValuesList();
 			List<File> selectedi = listi.getList().getSelectedValuesList();
 			List<File> selectede = liste.getList().getSelectedValuesList();
+			List<File> selectedp = listp.getList().getSelectedValuesList();
 			List<File> selecteda = lista.getList().getSelectedValuesList();
 			List<File> selectedo = listo.getList().getSelectedValuesList();
 
 			FilterModel newdmlb = new FilterModel();
 			FilterModel newdmli = new FilterModel();
 			FilterModel newdmle = new FilterModel();
+			FilterModel newdmlp = new FilterModel();
 			FilterModel newdmla = new FilterModel();
 			FilterModel newdmlo = new FilterModel();
 
@@ -281,6 +288,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 					.forEach(newdmli::addElement);
 			workspacePanel.mcreator.getWorkspace().getFolderManager().getEntityTexturesList()
 					.forEach(newdmle::addElement);
+			workspacePanel.mcreator.getWorkspace().getFolderManager().getPaintingTexturesList()
+					.forEach(newdmlp::addElement);
 			workspacePanel.mcreator.getWorkspace().getFolderManager().getArmorTexturesList()
 					.forEach(newdmla::addElement);
 			workspacePanel.mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
@@ -290,6 +299,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				listb.getList().setModel(dmlb = newdmlb);
 				listi.getList().setModel(dmli = newdmli);
 				liste.getList().setModel(dmle = newdmle);
+				listp.getList().setModel(dmlp = newdmlp);
 				lista.getList().setModel(dmla = newdmla);
 				listo.getList().setModel(dmlo = newdmlo);
 
@@ -298,6 +308,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				ListUtil.setSelectedValues(listb.getList(), selectedb);
 				ListUtil.setSelectedValues(listi.getList(), selectedi);
 				ListUtil.setSelectedValues(liste.getList(), selectede);
+				ListUtil.setSelectedValues(listp.getList(), selectedp);
 				ListUtil.setSelectedValues(lista.getList(), selecteda);
 				ListUtil.setSelectedValues(listo.getList(), selectedo);
 
@@ -310,6 +321,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		dmli.refilter();
 		dmlb.refilter();
 		dmle.refilter();
+		dmlp.refilter();
 		dmla.refilter();
 		dmlo.refilter();
 
@@ -327,6 +339,14 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		} else {
 			liste.getComponent().setPreferredSize(new Dimension(0, 0));
 			liste.getComponent().setVisible(false);
+		}
+
+		if (dmlp.getSize() > 0) {
+			listp.getComponent().setPreferredSize(null);
+			listp.getComponent().setVisible(true);
+		} else {
+			listp.getComponent().setPreferredSize(new Dimension(0, 0));
+			listp.getComponent().setVisible(false);
 		}
 
 		if (dmla.getSize() > 0) {

@@ -23,6 +23,7 @@ other_textures_dir: "@MODASSETSROOT/textures"
 block_textures_dir: "@MODASSETSROOT/textures/blocks"
 item_textures_dir: "@MODASSETSROOT/textures/items"
 entity_textures_dir: "@MODASSETSROOT/textures/entities"
+painting_textures_dir: "@MODASSETSROOT/textures/painting"
 armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 
 base_templates:

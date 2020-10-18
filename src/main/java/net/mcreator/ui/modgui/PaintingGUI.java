@@ -24,6 +24,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -61,7 +62,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	}
 
 	@Override protected void initGUI() {
-		texture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		texture.setRenderer(new WTextureComboBoxRenderer.PaintingTextures(mcreator.getWorkspace()));
 		texture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 		JPanel pane3 = new JPanel(new BorderLayout());
@@ -74,10 +75,10 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		importicontexture.setToolTipText(L10N.t("elementgui.painting.import_painting"));
 		importicontexture.setOpaque(false);
 		importicontexture.addActionListener(e -> {
-			TextureImportDialogs.importOtherTextures(mcreator);
+			TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.PAINTING);
 			texture.removeAllItems();
 			texture.addItem("");
-			mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
+			mcreator.getWorkspace().getFolderManager().getPaintingTexturesList()
 					.forEach(el -> texture.addItem(el.getName()));
 		});
 
@@ -110,7 +111,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		super.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(texture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getWorkspace().getFolderManager().getPaintingTexturesList().stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 	}
 

@@ -28,7 +28,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
@@ -113,10 +113,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destalx.setOpaque(false);
 
 		textureStill = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+				new GeneralTextureSelector(mcreator, GeneralTextureSelector.TextureType.BLOCK));
 		textureStill.setOpaque(false);
 		textureFlowing = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+				new GeneralTextureSelector(mcreator, GeneralTextureSelector.TextureType.BLOCK));
 		textureFlowing.setOpaque(false);
 
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));

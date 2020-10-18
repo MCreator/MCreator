@@ -30,7 +30,7 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
@@ -190,15 +190,15 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		destal.setOpaque(false);
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
-		textureBottom = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+		texture = new TextureHolder(new GeneralTextureSelector(mcreator, GeneralTextureSelector.TextureType.BLOCK));
+		textureBottom = new TextureHolder(new GeneralTextureSelector(mcreator, GeneralTextureSelector.TextureType.BLOCK));
 		texture.setOpaque(false);
 		textureBottom.setOpaque(false);
 		textureBottom.setVisible(false);
 
-		itemTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM), 32);
+		itemTexture = new TextureHolder(new GeneralTextureSelector(mcreator, GeneralTextureSelector.TextureType.ITEM), 32);
 		itemTexture.setOpaque(false);
-		particleTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK), 32);
+		particleTexture = new TextureHolder(new GeneralTextureSelector(mcreator, GeneralTextureSelector.TextureType.BLOCK), 32);
 		particleTexture.setOpaque(false);
 
 		JPanel infopanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));

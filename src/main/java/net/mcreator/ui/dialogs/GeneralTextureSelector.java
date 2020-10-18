@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-public class BlockItemTextureSelector extends MCreatorDialog {
+public class GeneralTextureSelector extends MCreatorDialog {
 
 	private final JButton naprej = new JButton("Select");
 	private final FilterModel model = new FilterModel();
@@ -51,7 +51,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 
 	private final MCreator mcreator;
 
-	public BlockItemTextureSelector(MCreator mcreator, TextureType type) {
+	public GeneralTextureSelector(MCreator mcreator, TextureType type) {
 		super(mcreator);
 		this.type = type;
 		this.mcreator = mcreator;
@@ -135,7 +135,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		importTx.setIcon(UIRES.get("18px.add"));
 		importTx.addActionListener(event -> {
 
-			TextureImportDialogs.importTexturesBlockItemOrEntity(mcreator, type);
+			TextureImportDialogs.importTexturesGeneral(mcreator, type);
 			List<File> block1;
 			if (type == TextureType.BLOCK) {
 				block1 = mcreator.getWorkspace().getFolderManager().getBlockTexturesList();
@@ -264,7 +264,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	}
 
 	public enum TextureType {
-		BLOCK, ITEM, ENTITY
+		BLOCK, ITEM, ENTITY, PAINTING
 	}
 
 }
