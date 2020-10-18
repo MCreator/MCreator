@@ -1,2 +1,2 @@
-(((World) world).isRemote() ? Minecraft.getInstance().getConnection().getPlayerInfoMap().size() :
+(world.getWorld().isRemote?Minecraft.getInstance().getConnection().getPlayerInfoMap().size():
 	ServerLifecycleHooks.getCurrentServer().getCurrentPlayerCount())
