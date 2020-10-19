@@ -25,6 +25,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.dialogs.TextureSelectorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.util.image.ImageUtils;
@@ -42,7 +43,7 @@ public class NewLayerDialog extends MCreatorDialog {
 	private final List<ResourcePointer> templatesSorted;
 
 	public NewLayerDialog(MCreator window, Canvas canvas) {
-		super(window, "New Layer", true);
+		super(window, L10N.t("dialog.imageeditor.new_layer"), true);
 
 		templatesSorted = new ArrayList<>(ImageMakerTexturesCache.CACHE.keySet());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
@@ -63,14 +64,14 @@ public class NewLayerDialog extends MCreatorDialog {
 		//Filler settings
 		JPanel colorSettings = new JPanel(new GridLayout(1, 2, 5, 5));
 		JColor colorChoser = new JColor(window);
-		colorSettings.add(new JLabel("Base color:"));
+		colorSettings.add(L10N.label("dialog.imageeditor.base_color"));
 		colorSettings.add(colorChoser);
 
 		JPanel templateSettings = new JPanel(new GridLayout(1, 2, 5, 5));
 		JButton templateChooserButton = new JButton(
 				new ImageIcon(ImageUtils.resize(ImageMakerTexturesCache.CACHE.get(selection).getImage(), 32)));
 		templateChooserButton.setMargin(new Insets(0, 0, 0, 0));
-		templateSettings.add(new JLabel("Base texture:"));
+		templateSettings.add(L10N.label("dialog.imageeditor.base_texture"));
 		templateSettings.add(PanelUtils.totalCenterInPanel(templateChooserButton));
 
 		//Constraints
@@ -79,8 +80,8 @@ public class NewLayerDialog extends MCreatorDialog {
 		JSpinner offsetX = new JSpinner(new SpinnerNumberModel(0, -10000, 10000, 1));
 		JSpinner offsetY = new JSpinner(new SpinnerNumberModel(0, -10000, 10000, 1));
 
-		JButton cancel = new JButton("Cancel");
-		JButton ok = new JButton("Create");
+		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton ok = L10N.button("action.common.create");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		getRootPane().setDefaultButton(ok);
@@ -129,23 +130,23 @@ public class NewLayerDialog extends MCreatorDialog {
 			setVisible(false);
 		});
 
-		properties.add(new JLabel("Layer name:"));
+		properties.add(L10N.label("dialog.imageeditor.new_layer_name"));
 		properties.add(layerName);
-		properties.add(new JLabel("Fill with:"));
+		properties.add(L10N.label("dialog.imageeditor.new_layer_fill_with"));
 		properties.add(layerType);
 
 		specialSettings
-				.add(PanelUtils.totalCenterInPanel(new JLabel("Fills the layer with transparency")), layerTypes[0]);
+				.add(PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor.new_layer_fills_transparency")), layerTypes[0]);
 		specialSettings.add(colorSettings, layerTypes[1]);
 		specialSettings.add(templateSettings, layerTypes[2]);
 
-		constraints.add(new JLabel("Width:"));
+		constraints.add(L10N.label("dialog.imageeditor.width"));
 		constraints.add(width);
-		constraints.add(new JLabel("Height:"));
+		constraints.add(L10N.label("dialog.imageeditor.height"));
 		constraints.add(height);
-		constraints.add(new JLabel("Offset X:"));
+		constraints.add(L10N.label("dialog.imageeditor.new_layer_x_offset"));
 		constraints.add(offsetX);
-		constraints.add(new JLabel("Offset Y:"));
+		constraints.add(L10N.label("dialog.imageeditor.new_layer_y_offset"));
 		constraints.add(offsetY);
 
 		layoutConstraints.gridx = 0;

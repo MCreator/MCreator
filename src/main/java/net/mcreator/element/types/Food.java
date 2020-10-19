@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.IItemWithModel;
 import net.mcreator.element.IItemWithTexture;
 import net.mcreator.element.ITabContainedElement;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.util.image.ImageUtils;
@@ -51,6 +52,7 @@ import java.util.Map;
 	public double saturation;
 
 	public int eatingSpeed;
+	public MItemBlock resultItem;
 	public boolean forDogs;
 	public boolean isAlwaysEdible;
 	public String animation;
