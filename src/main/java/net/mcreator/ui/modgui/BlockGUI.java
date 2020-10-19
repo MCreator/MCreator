@@ -259,7 +259,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.common.event_on_update_tick"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onRandomUpdateEvent = new ProcedureSelector(this.withEntry("block/display_tick_update"), mcreator,
-				L10N.t("elementgui.block.event_on_randon_update"), ProcedureSelector.Side.CLIENT,
+				L10N.t("elementgui.common.event_on_random_update"), ProcedureSelector.Side.CLIENT,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onDestroyedByPlayer = new ProcedureSelector(this.withEntry("block/when_destroyed_player"), mcreator,
 				L10N.t("elementgui.block.event_on_block_destroyed_by_player"),
@@ -277,7 +277,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.event_on_entity_walks_on"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onBlockPlayedBy = new ProcedureSelector(this.withEntry("block/when_block_placed_by"), mcreator,
-				L10N.t("elementgui.block.event_on_block_placed_by"),
+				L10N.t("elementgui.common.event_on_block_placed_by"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClicked = new ProcedureSelector(this.withEntry("block/when_right_clicked"), mcreator,
 				L10N.t("elementgui.block.event_on_right_clicked"),
@@ -868,7 +868,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		props.add(inventorySize);
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/inventory_stack_size"),
-				L10N.label("elementgui.block.inventory_stack_size")));
+				L10N.label("elementgui.common.max_stack_size")));
 		props.add(inventoryStackSize);
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_inventory_items"),
