@@ -91,9 +91,8 @@ public class GTModElements {
 					}
 				}
 
-				// disabled file detection system due to too long Travis builds
-				/*
-				// test mod element file detection system
+				// Disabled part of the test due to Travis timeouts
+				/*// test mod element file detection system
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
 					if (!modElement.equals(modElement1))

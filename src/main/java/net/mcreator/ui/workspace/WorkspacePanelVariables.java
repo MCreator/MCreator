@@ -24,6 +24,7 @@ import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.SpinnerCellEditor;
 import net.mcreator.ui.dialogs.NewVariableDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.validation.Validator;
@@ -54,7 +55,9 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		this.workspacePanel = workspacePanel;
 
 		elements = new JTable(new DefaultTableModel(
-				new Object[] { "Variable name", "Variable type", "Variable scope", "Initial value" }, 0) {
+				new Object[] { L10N.t("workspace.variables.variable_name"), L10N.t("workspace.variables.variable_type"),
+						L10N.t("workspace.variables.variable_scope"), L10N.t("workspace.variables.initial_value") },
+				0) {
 			@Override public boolean isCellEditable(int row, int column) {
 				if (getValueAt(row, 1).toString().equals("ITEMSTACK"))
 					return column != 3;
@@ -184,7 +187,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton addvar = new JButton("Add new variable");
+		JButton addvar = new JButton(L10N.t("workspace.variables.add_new"));
 		addvar.setIcon(UIRES.get("16px.add.gif"));
 		addvar.setContentAreaFilled(false);
 		addvar.setOpaque(false);
@@ -192,7 +195,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		addvar.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(addvar);
 
-		JButton delvar = new JButton("Remove selected");
+		JButton delvar = new JButton(L10N.t("workspace.variables.remove_selected"));
 		delvar.setIcon(UIRES.get("16px.delete.gif"));
 		delvar.setContentAreaFilled(false);
 		delvar.setOpaque(false);
@@ -200,7 +203,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		delvar.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(delvar);
 
-		JButton help = new JButton("Help with variables");
+		JButton help = new JButton(L10N.t("workspace.variables.help"));
 		help.setIcon(UIRES.get("16px.info"));
 		help.setContentAreaFilled(false);
 		help.setOpaque(false);
