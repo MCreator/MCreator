@@ -70,7 +70,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JCheckBox doesWaterVaporize = L10N.checkbox("elementgui.dimension.does_water_vaporize");
 
 	private final JCheckBox hasSkyLight = L10N.checkbox("elementgui.dimension.has_sky_light");
-	private final JCheckBox imitateOverworldBehaviour = L10N.checkbox("elementgui.dimension.imitate_overworld_behaviour");
+	private final JCheckBox imitateOverworldBehaviour = L10N
+			.checkbox("elementgui.dimension.imitate_overworld_behaviour");
 
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
 
@@ -79,9 +80,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final SoundSelector portalSound = new SoundSelector(mcreator);
 	private final JColor airColor = new JColor(mcreator);
 
-	private final JComboBox<String> portalParticles = new JComboBox<>(ElementUtil.loadParticles());
+	private final DataListComboBox portalParticles = new DataListComboBox(mcreator);
 
-	private final JComboBox<String> worldGenType = new JComboBox<>(new String[] { "Normal world gen", "Nether like gen", "End like gen" });
+	private final JComboBox<String> worldGenType = new JComboBox<>(
+			new String[] { "Normal world gen", "Nether like gen", "End like gen" });
 
 	private final JComboBox<String> sleepResult = new JComboBox<>(new String[] { "ALLOW", "DENY", "BED_EXPLODES" });
 
@@ -343,6 +345,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		ComboBoxUtil.updateComboBoxContents(igniterTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("TOOLS"));
+
+		ComboBoxUtil.updateComboBoxContents(portalParticles, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -364,7 +368,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		worldGenType.setSelectedItem(dimension.worldGenType);
 		sleepResult.setSelectedItem(dimension.sleepResult);
 		igniterTab.setSelectedItem(dimension.igniterTab.getUnmappedValue());
-		portalParticles.setSelectedItem(dimension.portalParticles.getUnmappedValue());
+		portalParticles.setSelectedItem(dimension.portalParticles);
 		biomesInDimension.setListElements(dimension.biomesInDimension);
 		airColor.setColor(dimension.airColor);
 		canRespawnHere.setSelected(dimension.canRespawnHere);
@@ -390,7 +394,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		Dimension dimension = new Dimension(modElement);
 		dimension.texture = texture.getID();
 		dimension.portalTexture = portalTexture.getID();
-		dimension.portalParticles = new Particle(mcreator.getWorkspace(), (String) portalParticles.getSelectedItem());
+		dimension.portalParticles = new Particle(mcreator.getWorkspace(), portalParticles.getSelectedItem());
 		dimension.igniterTab = new TabEntry(mcreator.getWorkspace(), igniterTab.getSelectedItem());
 		dimension.portalSound = portalSound.getSound();
 		dimension.biomesInDimension = biomesInDimension.getListElements();
