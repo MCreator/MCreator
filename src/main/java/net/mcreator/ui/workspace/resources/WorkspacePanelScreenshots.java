@@ -25,6 +25,7 @@ import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.ListUtil;
 import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.workspace.IReloadableFilterable;
@@ -73,7 +74,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton edit = new JButton("Export selected ...");
+		JButton edit = new JButton(L10N.t("workspace.screenshots.export_selected"));
 		edit.setIcon(UIRES.get("16px.ext.gif"));
 		edit.setOpaque(false);
 		edit.setContentAreaFilled(false);
@@ -81,7 +82,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		bar.add(edit);
 		edit.addActionListener(e -> exportSelectedScreenshots());
 
-		JButton useasbg = new JButton("Use selected as MCreator background ...");
+		JButton useasbg = new JButton(L10N.t("workspace.screenshots.use_as_background"));
 		useasbg.setIcon(UIRES.get("16px.textures"));
 		useasbg.setOpaque(false);
 		useasbg.setContentAreaFilled(false);
@@ -89,7 +90,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		bar.add(useasbg);
 		useasbg.addActionListener(e -> useSelectedAsBackgrounds());
 
-		JButton del = new JButton("Delete selected");
+		JButton del = new JButton(L10N.t("workspace.screenshots.delete_selected"));
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
 		del.setContentAreaFilled(false);
