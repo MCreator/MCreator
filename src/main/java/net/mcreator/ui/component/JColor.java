@@ -45,7 +45,7 @@ public class JColor extends JPanel {
 	}
 
 	public JColor(Window window, boolean allowNullColor) {
-		setLayout(new BorderLayout(5, 0));
+		setLayout(new BorderLayout(2, 0));
 		fl1.setText("255,255,255");
 		fl1.setBackground(Color.white);
 		bt1.setOpaque(false);
@@ -75,7 +75,7 @@ public class JColor extends JPanel {
 			bt2.setMargin(new Insets(0, 0, 0, 0));
 			bt2.setOpaque(false);
 			bt2.addActionListener(e -> setColor(null));
-			add("East", PanelUtils.gridElements(1, 2, 5, 0, bt1, bt2));
+			add("East", PanelUtils.gridElements(1, 2, 2, 0, bt1, bt2));
 		} else {
 			add("East", bt1);
 		}
