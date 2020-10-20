@@ -76,7 +76,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 	@Override protected void initGUI() {
 		additionalExpiryCondition = new ProcedureSelector(this.withEntry("particle/additional_expiry_condition"),
-				mcreator, "Additional particle expiry condition", ProcedureSelector.Side.CLIENT, true,
+				mcreator, L10N.t("elementgui.particle.expiry_condition"), ProcedureSelector.Side.CLIENT, true,
 				VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/age:number/onGround:logic"));
 
@@ -97,7 +97,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		spo2.setOpaque(false);
 
 		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
-		importmobtexture.setToolTipText("Click this to import particle texture");
+		importmobtexture.setToolTipText(L10N.t("elementgui.particle.texture.import_tooltip"));
 		importmobtexture.setOpaque(false);
 		importmobtexture.addActionListener(e -> {
 			TextureImportDialogs.importOtherTextures(mcreator);
@@ -107,50 +107,52 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 					.forEach(el -> texture.addItem(el.getName()));
 		});
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"), new JLabel(
-				"<html>Particle texture:<br><small>Tiled textures will be randomized, or animated if selected")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"),
+				new JLabel(L10N.t("elementgui.particle.texture"))));
 		spo2.add(PanelUtils.centerAndEastElement(texture, importmobtexture));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/animated_texture"),
-				new JLabel("<html>Animate this particle?<br><small>Only works with tiled textures")));
+				new JLabel(L10N.t("elementgui.particle.animated_texture"))));
 		spo2.add(animate);
 
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("particle/render_type"), new JLabel("Particle render type:")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/render_type"),
+				new JLabel(L10N.t("elementgui.particle.render_type"))));
 		spo2.add(renderType);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/scale"), new JLabel("Particle visual scale:")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/scale"),
+				new JLabel(L10N.t("elementgui.particle.visual_scale"))));
 		spo2.add(scale);
 
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("particle/width"), new JLabel("Particle bounding box width:")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/width"),
+				new JLabel(L10N.t("elementgui.particle.bbox_width"))));
 		spo2.add(width);
 
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("particle/height"), new JLabel("Particle bounding box height:")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/height"),
+				new JLabel(L10N.t("elementgui.particle.bbox_height"))));
 		spo2.add(height);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/speed_factor"), new JLabel(
-				"<html>Speed factor for input speed:<br><small>Use 0 for particles that only move due to gravity (eg. drips)")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/speed_factor"),
+				new JLabel(L10N.t("elementgui.particle.speed_factor"))));
 		spo2.add(speedFactor);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gravity"), new JLabel("Particle gravity:")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gravity"),
+				new JLabel(L10N.t("elementgui.particle.gravity"))));
 		spo2.add(gravity);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/max_age"), new JLabel(
-				"<html>Particle maximal age (in ticks):<br><small>This parameter is ignored if \"Animated\" texture type is used")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/max_age"),
+				new JLabel(L10N.t("elementgui.particle.max_age"))));
 		spo2.add(maxAge);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/max_age_diff"), new JLabel(
-				"<html>How much can age vary +/- per particle?<br><small>This parameter is ignored if \"Animated\" texture type is used")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/max_age_diff"),
+				new JLabel(L10N.t("elementgui.particle.max_age_diff"))));
 		spo2.add(maxAgeDiff);
 
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("particle/always_show"), new JLabel("Always show the particle?")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/always_show"),
+				new JLabel(L10N.t("elementgui.particle.always_show"))));
 		spo2.add(alwaysShow);
 
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("particle/can_collide"), new JLabel("Does particle collide?")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/can_collide"),
+				new JLabel(L10N.t("elementgui.particle.does_collide"))));
 		spo2.add(canCollide);
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils
@@ -158,7 +160,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 		texture.setValidator(() -> {
 			if (texture.getSelectedItem() == null || texture.getSelectedItem().equals(""))
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, "Particle needs a texture");
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("elementgui.particle.error.needs_texture"));
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
