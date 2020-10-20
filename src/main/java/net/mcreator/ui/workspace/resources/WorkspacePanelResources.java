@@ -19,6 +19,7 @@
 package net.mcreator.ui.workspace.resources;
 
 import net.mcreator.generator.GeneratorStats;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 
@@ -44,7 +45,7 @@ public class WorkspacePanelResources extends JTabbedPane {
 
 		if (workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
 				.get("textures") != GeneratorStats.CoverageStatus.NONE)
-			addTab("Texture files", workspacePanelTextures);
+			addTab(L10N.t("workspace.resources.tab.textures"), workspacePanelTextures);
 
 		if (workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
 				.get("model_json") != GeneratorStats.CoverageStatus.NONE ||
@@ -52,20 +53,20 @@ public class WorkspacePanelResources extends JTabbedPane {
 						.get("model_java") != GeneratorStats.CoverageStatus.NONE ||
 				workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
 						.get("model_obj") != GeneratorStats.CoverageStatus.NONE)
-			addTab("3D models and texture mappings", workspacePanelModels);
+			addTab(L10N.t("workspace.resources.tab.3d_models"), workspacePanelModels);
 
 		if (workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
 				.get("sounds") != GeneratorStats.CoverageStatus.NONE)
-			addTab("Sound files", workspacePanelSounds);
+			addTab(L10N.t("workspace.resources.tab.sounds"), workspacePanelSounds);
 
 		if (workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
 				.get("structures") != GeneratorStats.CoverageStatus.NONE)
-			addTab("Structures", workspacePanelStructures);
+			addTab(L10N.t("workspace.resources.tab.structures"), workspacePanelStructures);
 
 		if (workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
 				.getGradleTaskFor("run_client") != null && !workspacePanel.mcreator.getWorkspace().getGenerator()
 				.getGeneratorConfiguration().getGradleTaskFor("run_client").contains("@"))
-			addTab("Screenshots", workspacePanelScreenshots);
+			addTab(L10N.t("workspace.resources.tab.screenshots"), workspacePanelScreenshots);
 
 		for (int i = 0; i < getTabCount(); i++) {
 			setBackgroundAt(i, new Color(0, 0, 0, 0));

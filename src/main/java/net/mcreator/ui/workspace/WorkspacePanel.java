@@ -114,7 +114,8 @@ public class WorkspacePanel extends JPanel {
 
 	public JRadioButtonMenuItem desc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.descending"));
 
-	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem("Creation date");
+	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem(
+			L10N.t("workspace.elements.list.sort_date"));
 	public JRadioButtonMenuItem sortName = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_name"));
 	private final JRadioButtonMenuItem sortType = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_type"));
 	private final JRadioButtonMenuItem sortLoadingOrder = new JRadioButtonMenuItem(
@@ -983,10 +984,10 @@ public class WorkspacePanel extends JPanel {
 	public void reloadElements() {
 		if (mcreator.getWorkspace() != null && mcreator.getWorkspace().getWorkspaceSettings() != null) {
 			if (mcreator.getWorkspace().getModElements().size() > 0) {
-				elementsCount.setText(
-						mcreator.getWorkspace().getWorkspaceSettings().getModName() + " [" + mcreator.getWorkspace()
-								.getGenerator().getGeneratorName() + "]: " + mcreator.getWorkspace().getModElements()
-								.size() + " mod elements ");
+				elementsCount.setText(L10N.t("workspace.stats.current_workspace",
+						mcreator.getWorkspace().getWorkspaceSettings().getModName(),
+						mcreator.getWorkspace().getGenerator().getGeneratorName(),
+						mcreator.getWorkspace().getModElements().size()));
 				mainpcl.show(mainp, "sp");
 
 				// reload list model partially in the background
@@ -1006,8 +1007,8 @@ public class WorkspacePanel extends JPanel {
 				}).start();
 			} else {
 				elementsCount.setText(
-						mcreator.getWorkspace().getWorkspaceSettings().getModName() + " [" + mcreator.getWorkspace()
-								.getGenerator().getGeneratorName() + "]: no mod elements yet ");
+						L10N.t("workspace.stats.empty", mcreator.getWorkspace().getWorkspaceSettings().getModName(),
+								mcreator.getWorkspace().getGenerator().getGeneratorName()));
 				mainpcl.show(mainp, "ep");
 			}
 

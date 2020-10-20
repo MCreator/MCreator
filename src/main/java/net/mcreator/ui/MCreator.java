@@ -201,12 +201,12 @@ public final class MCreator extends JFrame {
 		pon.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
 
-		workspaceTab = new MCreatorTabs.Tab("Workspace", PanelUtils.maxMargin(mv, 5, true, true, true, true),
-				"Workspace", true, false);
+		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"),
+				PanelUtils.maxMargin(mv, 5, true, true, true, true), "Workspace", true, false);
 		mcreatorTabs.addTab(workspaceTab);
 		pon.add("West", workspaceTab);
 
-		consoleTab = new MCreatorTabs.Tab("Console ", gradleConsole, "Console", true, false) {
+		consoleTab = new MCreatorTabs.Tab(L10N.t("tab.console") + " ", gradleConsole, "Console", true, false) {
 			@Override public void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				switch (gradleConsole.getStatus()) {
@@ -239,8 +239,8 @@ public final class MCreator extends JFrame {
 
 		pon.add("Center", mcreatorTabs.getTabsStrip());
 
-		workspace.getFileManager().setDataSavedListener(() -> statusBar
-				.setPersistentMessage("Workspace auto-saved at " + new SimpleDateFormat("HH:mm").format(new Date())));
+		workspace.getFileManager().setDataSavedListener(() -> statusBar.setPersistentMessage(
+				L10N.t("workspace.statusbar.autosave_message", new SimpleDateFormat("HH:mm").format(new Date()))));
 
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, projectBrowser,
 				PanelUtils.northAndCenterElement(pon, mpan));
