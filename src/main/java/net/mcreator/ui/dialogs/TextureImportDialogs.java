@@ -21,29 +21,41 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.FileListField;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.ResourceNameValidator;
+import net.mcreator.workspace.elements.SoundElement;
+import net.mcreator.workspace.elements.TextureElement;
 import org.apache.commons.io.FilenameUtils;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.Arrays;
-import java.util.Locale;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TextureImportDialogs {
 
 	private static File f1, f2;
 
 	public static void importTextureGeneral(final MCreator mcreator, File file, String message) {
-		Object[] options = { "Block", "Item", "Other" };
+		Object[] options = { "Block", "Entity", "Item", "Other", "Painting" };
 		int n = JOptionPane.showOptionDialog(mcreator, message, "Texture type", JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (n == 0) {
 			TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.BLOCK, new File[] { file });
-		} else if (n == 1) {
-			TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.ITEM, new File[] { file });
+		} else if (n == 1){
+			TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.ENTITY, new File[] {file});
 		} else if (n == 2) {
+			TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.ITEM, new File[] { file });
+		} else if (n == 3) {
 			TextureImportDialogs.importOtherTextures(mcreator, new File[] { file });
+		} else if (n == 4){
+			TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.PAINTING, new File[] {file});
 		}
 	}
 
@@ -127,35 +139,7 @@ public class TextureImportDialogs {
 	public static void importTexturesGeneral(MCreator fr, GeneralTextureSelector.TextureType type, File[] hohe) {
 		Arrays.stream(hohe).forEach(hoh -> {
 			String namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(hoh.getName()));
-			File file;
-			if (type == GeneralTextureSelector.TextureType.BLOCK) {
-				file = fr.getWorkspace().getFolderManager().getBlockTextureFile(namec);
-			} else if (type == GeneralTextureSelector.TextureType.ENTITY){
-				file = fr.getWorkspace().getFolderManager().getEntityTextureFile(namec);
-			} else if (type == GeneralTextureSelector.TextureType.PAINTING){
-				file = fr.getWorkspace().getFolderManager().getPaintingTextureFile(namec);
-			} else{
-				file = fr.getWorkspace().getFolderManager().getItemTextureFile(namec);
-			}
-			if (file.isFile()) {
-				String name = JOptionPane.showInputDialog(fr, "<html>Texture " + namec + " already exists!<br>"
-						+ "You can enter a new name or cancel the import", "Import error", JOptionPane.WARNING_MESSAGE);
-				if (name != null) {
-					namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(name));
-					if (type == GeneralTextureSelector.TextureType.BLOCK) {
-						file = fr.getWorkspace().getFolderManager().getBlockTextureFile(namec);
-					} else if (type == GeneralTextureSelector.TextureType.ITEM){
-						file = fr.getWorkspace().getFolderManager().getItemTextureFile(namec);
-					} else if (type == GeneralTextureSelector.TextureType.ENTITY){
-						file = fr.getWorkspace().getFolderManager().getEntityTextureFile(namec);
-					} else if (type == GeneralTextureSelector.TextureType.PAINTING){
-						file = fr.getWorkspace().getFolderManager().getPaintingTextureFile(namec);
-					}
-				} else {
-					return;
-				}
-			}
-			FileIO.copyFile(hoh, file);
+			TextureFolderDialog.setTextureFolder(fr, hoh, type, namec);
 			fr.mv.resourcesPan.workspacePanelTextures.reloadElements();
 		});
 	}

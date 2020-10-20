@@ -264,7 +264,7 @@ public class GeneralTextureSelector extends MCreatorDialog {
 	}
 
 	public enum TextureType {
-		BLOCK, ITEM, ENTITY, PAINTING
+		BLOCK, ITEM, ENTITY, PAINTING, OTHER
 	}
 
 }
