@@ -39,6 +39,7 @@ import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidatorJSON;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.TextureElement;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 import org.apache.commons.io.FilenameUtils;
@@ -279,8 +280,8 @@ public class WorkspaceDialogs {
 
 			modPicture.addItem("No picture / default picture");
 			if (workspace != null) {
-				List<File> other = workspace.getFolderManager().getOtherTexturesList();
-				for (File element : other) {
+				List<TextureElement> other = workspace.getFolderManager().getOtherTexturesList();
+				for (TextureElement element : other) {
 					if (element.getName().endsWith(".png"))
 						modPicture.addItem(FilenameUtils.removeExtension(element.getName()));
 				}

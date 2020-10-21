@@ -61,6 +61,7 @@ import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.TextureElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
 import org.jetbrains.annotations.Nullable;
@@ -828,11 +829,11 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		spawningCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getEntityTexturesList().stream().map(File::getName)
+				mcreator.getWorkspace().getFolderManager().getEntityTexturesList().stream().map(TextureElement::getName)
 						.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModelGlowTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getEntityTexturesList().stream().map(File::getName)
+				mcreator.getWorkspace().getFolderManager().getEntityTexturesList().stream().map(TextureElement::getName)
 						.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),

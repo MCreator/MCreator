@@ -138,8 +138,7 @@ public class TextureImportDialogs {
 
 	public static void importTexturesGeneral(MCreator fr, GeneralTextureSelector.TextureType type, File[] hohe) {
 		Arrays.stream(hohe).forEach(hoh -> {
-			String namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(hoh.getName()));
-			TextureFolderDialog.setTextureFolder(fr, hoh, type, namec);
+			TextureFolderDialog.setTextureFolder(fr, hoh, type);
 			fr.mv.resourcesPan.workspacePanelTextures.reloadElements();
 		});
 	}

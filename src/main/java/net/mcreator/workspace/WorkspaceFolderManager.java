@@ -20,6 +20,8 @@ package net.mcreator.workspace;
 
 import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.io.OS;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
+import net.mcreator.workspace.elements.TextureElement;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,6 +34,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static net.mcreator.ui.dialogs.GeneralTextureSelector.*;
 
 public class WorkspaceFolderManager {
 
@@ -94,43 +98,80 @@ public class WorkspaceFolderManager {
 				new File(getArmorTexturesDir(), armorTextureName + "_layer_2.png") };
 	}
 
-	public List<File> getBlockTexturesList() {
-		return listPNGsInDir(getBlocksTexturesDir());
+	public List<TextureElement> getBlockTexturesList() {
+		return listPNGsInDir(workspace, TextureType.BLOCK);
 	}
 
-	public List<File> getItemTexturesList() {
-		return listPNGsInDir(getItemsTexturesDir());
+	public List<TextureElement> getItemTexturesList() {
+		return listPNGsInDir(workspace, TextureType.ITEM);
 	}
 
-	public List<File> getEntityTexturesList() {
-		return listPNGsInDir(getEntitiesTexturesDir());
+	public List<TextureElement> getEntityTexturesList() {
+		return listPNGsInDir(workspace, TextureType.ENTITY);
 	}
 
-	public List<File> getPaintingTexturesList() {
-		return listPNGsInDir(getPaintingsTexturesDir());
+	public List<TextureElement> getPaintingTexturesList() {
+		return listPNGsInDir(workspace, TextureType.PAINTING);
 	}
 
-	public List<File> getArmorTexturesList() {
-		return listPNGsInDir(getArmorTexturesDir());
+	public List<TextureElement> getArmorTexturesList() {
+		return listPNGsInDir(workspace, TextureType.ARMOR);
 	}
 
-	public List<File> getOtherTexturesList() {
-		return listPNGsInDir(getOtherTexturesDir());
+	public List<TextureElement> getOtherTexturesList() {
+		return listPNGsInDir(workspace, TextureType.OTHER);
 	}
 
 	public void removeStructure(String name) {
 		new File(getStructuresDir(), name + ".nbt").delete();
 	}
 
-	private static List<File> listPNGsInDir(@Nullable File dir) {
-		if (dir == null)
+	private static List<TextureElement> listPNGsInDir(@Nullable Workspace workspace, TextureType type) {
+		if (workspace.getTextureElements() == null)
 			return Collections.emptyList();
 
-		List<File> retval = new ArrayList<>();
-		File[] block = dir.listFiles();
-		for (File element : block != null ? block : new File[0])
-			if (element.getName().endsWith(".png"))
-				retval.add(element);
+		List<TextureElement> retval = new ArrayList<>();
+		switch (type) {
+			case ARMOR:
+			for(TextureElement element : workspace.getTextureElements()){
+				if(element.getType() == TextureType.ARMOR)
+					retval.add(element);
+			}
+			case BLOCK:
+			for(TextureElement element : workspace.getTextureElements()){
+				if(element.getType() == TextureType.BLOCK)
+					retval.add(element);
+			}
+			break;
+
+			case ITEM:
+			for(TextureElement element : workspace.getTextureElements()){
+				if(element.getType() == TextureType.ITEM)
+					retval.add(element);
+			}
+			break;
+
+			case ENTITY:
+			for(TextureElement element : workspace.getTextureElements()){
+				if(element.getType() == TextureType.ENTITY)
+					retval.add(element);
+			}
+			break;
+
+			case PAINTING:
+			for(TextureElement element : workspace.getTextureElements()){
+				if(element.getType() == TextureType.PAINTING)
+					retval.add(element);
+			}
+			break;
+
+			case OTHER:
+			for(TextureElement element : workspace.getTextureElements()){
+				if(element.getType() == TextureType.OTHER)
+					retval.add(element);
+			}
+			break;
+		}
 		return retval;
 	}
 

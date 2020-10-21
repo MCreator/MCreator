@@ -24,6 +24,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.elements.TextureElement;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;
@@ -136,14 +137,21 @@ public class GeneralTextureSelector extends MCreatorDialog {
 		importTx.addActionListener(event -> {
 
 			TextureImportDialogs.importTexturesGeneral(mcreator, type);
-			List<File> block1;
+			List<TextureElement> block1;
 			if (type == TextureType.BLOCK) {
 				block1 = mcreator.getWorkspace().getFolderManager().getBlockTexturesList();
-			} else {
+			} else if (type == TextureType.ARMOR) {
+				block1 = mcreator.getWorkspace().getFolderManager().getArmorTexturesList();
+			} else if (type == TextureType.ENTITY) {
+				block1 = mcreator.getWorkspace().getFolderManager().getEntityTexturesList();
+			} else if (type == TextureType.PAINTING) {
+				block1 = mcreator.getWorkspace().getFolderManager().getPaintingTexturesList();
+			} else  {
 				block1 = mcreator.getWorkspace().getFolderManager().getItemTexturesList();
 			}
 			model.removeAllElements();
-			for (File element : block1) {
+			for (TextureElement texture : block1) {
+				File element = new File(texture.getPath());
 				if (element.getName().endsWith(".png"))
 					model.addElement(element);
 			}
@@ -164,14 +172,21 @@ public class GeneralTextureSelector extends MCreatorDialog {
 	}
 
 	@Override public void setVisible(boolean b) {
-		List<File> block;
+		List<TextureElement> block;
 		if (type == TextureType.BLOCK) {
 			block = mcreator.getWorkspace().getFolderManager().getBlockTexturesList();
-		} else {
+		} else if (type == TextureType.ARMOR) {
+			block = mcreator.getWorkspace().getFolderManager().getArmorTexturesList();
+		} else if (type == TextureType.ENTITY) {
+			block = mcreator.getWorkspace().getFolderManager().getEntityTexturesList();
+		} else if (type == TextureType.PAINTING) {
+			block = mcreator.getWorkspace().getFolderManager().getPaintingTexturesList();
+		} else  {
 			block = mcreator.getWorkspace().getFolderManager().getItemTexturesList();
 		}
 		model.removeAllElements();
-		for (File element : block) {
+		for (TextureElement texture : block) {
+			File element = new File(texture.getPath());
 			if (element.getName().endsWith(".png"))
 				model.addElement(element);
 		}
@@ -264,7 +279,7 @@ public class GeneralTextureSelector extends MCreatorDialog {
 	}
 
 	public enum TextureType {
-		BLOCK, ITEM, ENTITY, PAINTING, OTHER
+		ARMOR, BLOCK, ITEM, ENTITY, PAINTING, OTHER
 	}
 
 }

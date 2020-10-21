@@ -34,6 +34,7 @@ import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.elements.TextureElement;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;
@@ -55,16 +56,16 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	private FilterModel dmlp = new FilterModel();
 	private FilterModel dmlo = new FilterModel();
 
-	private final ListGroup<File> listGroup = new ListGroup<>();
+	private final ListGroup<TextureElement> listGroup = new ListGroup<>();
 
 	private final WorkspacePanel workspacePanel;
 
-	private final JComponentWithList<File> listb;
-	private final JComponentWithList<File> listi;
-	private final JComponentWithList<File> lista;
-	private final JComponentWithList<File> liste;
-	private final JComponentWithList<File> listp;
-	private final JComponentWithList<File> listo;
+	private final JComponentWithList<TextureElement> listb;
+	private final JComponentWithList<TextureElement> listi;
+	private final JComponentWithList<TextureElement> lista;
+	private final JComponentWithList<TextureElement> liste;
+	private final JComponentWithList<TextureElement> listp;
+	private final JComponentWithList<TextureElement> listo;
 
 	private final MouseAdapter mouseAdapter;
 
@@ -192,7 +193,12 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		export.addActionListener(e -> exportSelectedImages());
 
 		del.addActionListener(actionEvent -> {
-			List<File> files = listGroup.getSelectedItemsList();
+			List<TextureElement> elements = listGroup.getSelectedItemsList();
+			List<File> files = new LinkedList<>();
+			for(TextureElement element : elements){
+				File file = new File(element.getPath());
+				files.add(file);
+			}
 			if (files.size() > 0) {
 				Object[] options = { "Yes", "No" };
 				int n = JOptionPane.showOptionDialog(workspacePanel.mcreator,
@@ -224,7 +230,12 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	}
 
 	private void exportSelectedImages() {
-		List<File> files = listGroup.getSelectedItemsList();
+		List<TextureElement> elements = listGroup.getSelectedItemsList();
+		List<File> files = new LinkedList<>();
+		for(TextureElement element : elements){
+			File file = new File(element.getPath());
+			files.add(file);
+		}
 		if (files.size() > 0) {
 			files.forEach(f -> {
 				File to = FileDialogs.getSaveDialog(workspacePanel.mcreator, new String[] { ".png" });
@@ -235,7 +246,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	}
 
 	private void duplicateSelectedFile() {
-		File file = listGroup.getSelectedItem();
+		TextureElement element = listGroup.getSelectedItem();
+		File file = new File (element.getPath());
 		if (file != null) {
 			TextureImportDialogs.importTextureGeneral(workspacePanel.mcreator, file,
 					"Select the type of texture you would like to duplicate into:");
@@ -243,7 +255,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	}
 
 	private void editSelectedFile() {
-		File file = listGroup.getSelectedItem();
+		TextureElement element = listGroup.getSelectedItem();
+		File file = new File (element.getPath());
 		if (file != null) {
 			ImageMakerView imageMakerView = new ImageMakerView(workspacePanel.mcreator);
 			imageMakerView.openInEditMode(file);
@@ -251,9 +264,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		}
 	}
 
-	private JComponentWithList<File> createListElement(FilterModel dmlb, String title) {
-		JSelectableList<File> listElement = new JSelectableList<>(dmlb);
-		listElement.setCellRenderer(textureRender);
+	private JComponentWithList<TextureElement> createListElement(FilterModel dmlb, String title) {
+		JSelectableList<TextureElement> listElement = new JSelectableList<>(dmlb);
+		listElement.setCellRenderer(new Render());
 		listElement.setOpaque(false);
 		listElement.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		listElement.setVisibleRowCount(-1);
@@ -268,12 +281,12 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	public void reloadElements() {
 		new Thread(() -> {
-			List<File> selectedb = listb.getList().getSelectedValuesList();
-			List<File> selectedi = listi.getList().getSelectedValuesList();
-			List<File> selectede = liste.getList().getSelectedValuesList();
-			List<File> selectedp = listp.getList().getSelectedValuesList();
-			List<File> selecteda = lista.getList().getSelectedValuesList();
-			List<File> selectedo = listo.getList().getSelectedValuesList();
+			List<TextureElement> selectedb = listb.getList().getSelectedValuesList();
+			List<TextureElement> selectedi = listi.getList().getSelectedValuesList();
+			List<TextureElement> selectede = liste.getList().getSelectedValuesList();
+			List<TextureElement> selectedp = listp.getList().getSelectedValuesList();
+			List<TextureElement> selecteda = lista.getList().getSelectedValuesList();
+			List<TextureElement> selectedo = listo.getList().getSelectedValuesList();
 
 			FilterModel newdmlb = new FilterModel();
 			FilterModel newdmli = new FilterModel();
@@ -375,9 +388,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	}
 
-	private class FilterModel extends DefaultListModel<File> {
-		List<File> items;
-		List<File> filterItems;
+	private class FilterModel extends DefaultListModel<TextureElement> {
+		List<TextureElement> items;
+		List<TextureElement> filterItems;
 
 		FilterModel() {
 			super();
@@ -385,7 +398,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			filterItems = new ArrayList<>();
 		}
 
-		@Override public File getElementAt(int index) {
+		@Override public TextureElement getElementAt(int index) {
 			if (index < filterItems.size())
 				return filterItems.get(index);
 			else
@@ -393,7 +406,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		}
 
 		@Override public int indexOf(Object elem) {
-			if (elem instanceof File)
+			if (elem instanceof TextureElement)
 				return filterItems.indexOf(elem);
 			else
 				return -1;
@@ -403,7 +416,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			return filterItems.size();
 		}
 
-		@Override public void addElement(File o) {
+		@Override public void addElement(TextureElement o) {
 			items.add(o);
 			refilter();
 		}
@@ -415,7 +428,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		}
 
 		@Override public boolean removeElement(Object a) {
-			if (a instanceof File) {
+			if (a instanceof TextureElement) {
 				items.remove(a);
 				filterItems.remove(a);
 			}
@@ -430,7 +443,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 							.contains(term.toLowerCase(Locale.ENGLISH)))).collect(Collectors.toList()));
 
 			if (workspacePanel.sortName.isSelected()) {
-				filterItems.sort(Comparator.comparing(File::getName));
+				filterItems.sort(Comparator.comparing(TextureElement::getName));
 			}
 
 			if (workspacePanel.desc.isSelected())
@@ -440,7 +453,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		}
 	}
 
-	static class Render extends JLabel implements ListCellRenderer<File> {
+	static class Render extends JLabel implements ListCellRenderer<TextureElement> {
 
 		private final Map<File, ImageIcon> TEXTURE_CACHE = new ConcurrentHashMap<>();
 
@@ -458,8 +471,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		}
 
 		@Override
-		public Component getListCellRendererComponent(JList<? extends File> list, File ma, int index,
+		public Component getListCellRendererComponent(JList<? extends TextureElement> list, TextureElement ma, int index,
 				boolean isSelected, boolean cellHasFocus) {
+			File file = new File(ma.getPath());
 			if (isSelected) {
 				setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 				setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
@@ -470,24 +484,24 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			}
 
 			if (ma != null) {
-				String name = StringUtils.abbreviateString(FilenameUtils.removeExtension(ma.getName()), 10);
+				String name = StringUtils.abbreviateString(FilenameUtils.removeExtension(file.getName()), 10);
 				if (name.trim().equals(""))
 					name = "(untitled)";
 
 				setText(name);
-				setToolTipText(ma.getName());
+				setToolTipText(file.getName());
 
-				if (ma.getName().endsWith(".png")) {
+				if (file.getName().endsWith(".png")) {
 					if (TEXTURE_CACHE.get(ma) != null && TEXTURE_CACHE.get(ma).getImage() != null)
 						setIcon(TEXTURE_CACHE.get(ma));
 					else {
 						ImageIcon icon = new ImageIcon(
-								ImageUtils.resize(new ImageIcon(ma.getAbsolutePath()).getImage(), 42));
-						TEXTURE_CACHE.put(ma, icon);
+								ImageUtils.resize(new ImageIcon(file.getAbsolutePath()).getImage(), 42));
+						TEXTURE_CACHE.put(file, icon);
 						setIcon(icon);
 					}
 
-					if (!ma.getName().matches("[a-z0-9/._-]+")) {
+					if (!file.getName().matches("[a-z0-9/._-]+")) {
 						if (getIcon() instanceof ImageIcon) {
 							ImageIcon icon = (ImageIcon) getIcon();
 							icon = ImageUtils.changeSaturation(icon, 0.5f);
