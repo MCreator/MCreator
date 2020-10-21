@@ -143,7 +143,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 						if (!player.isCreative() && !player.inventory.addItemStackToInventory(retval))
 							player.dropItem(retval, false);
 					}
-				return itemstack;
+					return itemstack;
 				}
 			<#else>
 				return retval;
