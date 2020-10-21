@@ -34,8 +34,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static net.mcreator.ui.dialogs.GeneralTextureSelector.*;
-
 public class WorkspaceFolderManager {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace Folder Manager");
@@ -98,57 +96,59 @@ public class WorkspaceFolderManager {
 	}
 
 	public List<File> getBlockTexturesList() {
-		return listPNGsInDir(getBlocksTexturesDir(), null);
+		return listPNGsInDir(getBlocksTexturesDir());
 	}
 
 	public List<File> getItemTexturesList() {
-		return listPNGsInDir(getItemsTexturesDir(), null);
+		return listPNGsInDir(getItemsTexturesDir());
 	}
 
 	public List<File> getEntityTexturesList() {
-		return listPNGsInDir(getEntitiesTexturesDir(), null);
+		return listPNGsInDir(getEntitiesTexturesDir());
 	}
 
 	public List<File> getPaintingTexturesList() {
-		return listPNGsInDir(getPaintingsTexturesDir(), null);
+		return listPNGsInDir(getPaintingsTexturesDir());
 	}
 
 	public List<File> getArmorTexturesList() {
-		return listPNGsInDir(getArmorTexturesDir(), null);
+		return listPNGsInDir(getArmorTexturesDir());
 	}
 
 	public List<File> getOtherTexturesList() {
-		return listPNGsInDir(getOtherTexturesDir(), null);
+		return listPNGsInDir(getOtherTexturesDir());
 	}
 
 	public void removeStructure(String name) {
 		new File(getStructuresDir(), name + ".nbt").delete();
 	}
 
-	private static List<File> listPNGsInDir(@Nullable File dir, List<File> list) {
+	private static List<File> listPNGsInDir(@Nullable File dir) {
 		if (dir == null)
 			return Collections.emptyList();
 
-		List<File> retval;
-		if (list == null) {
-			retval = new LinkedList<>();
-		} else {
-			retval = list;
-		}
+		List<File> retval = new LinkedList<>();
 
-		File[] block = dir.listFiles();
-		for (File f : block) {
-			if (f.isFile()) {
-				if (f.getName().endsWith(".png")) {
-					retval.add(f);
-				}
-			} else if (f.isDirectory()) {
-				listPNGsInDir(f, retval);
-			}
-		} for (File file : retval) {
+		retval = listPNGsInDir(dir, retval);
+		for(File file : retval){
 			System.out.println(file.getName());
 		}
+
 		return retval;
+	}
+
+	private static List<File> listPNGsInDir(File dir, List<File> list){
+		File[] block = dir.listFiles();
+		for (File f : block != null ? block : new File[0]) {
+			if (f.isFile()) {
+				if (f.getName().endsWith(".png")) {
+					list.add(f);
+				}
+			} else if (f.isDirectory()) {
+				listPNGsInDir(f, list);
+			}
+		}
+		return list;
 	}
 
 	@Nullable public File getBlocksTexturesDir() {
