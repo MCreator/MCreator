@@ -36,7 +36,6 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.TextureElement;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -112,7 +111,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		super.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(texture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getPaintingTexturesList().stream().map(TextureElement::getName)
+				mcreator.getWorkspace().getFolderManager().getPaintingTexturesList().stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 	}
 

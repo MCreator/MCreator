@@ -24,7 +24,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.workspace.elements.TextureElement;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;
@@ -137,7 +136,7 @@ public class GeneralTextureSelector extends MCreatorDialog {
 		importTx.addActionListener(event -> {
 
 			TextureImportDialogs.importTexturesGeneral(mcreator, type);
-			List<TextureElement> block1;
+			List<File> block1;
 			if (type == TextureType.BLOCK) {
 				block1 = mcreator.getWorkspace().getFolderManager().getBlockTexturesList();
 			} else if (type == TextureType.ARMOR) {
@@ -150,8 +149,7 @@ public class GeneralTextureSelector extends MCreatorDialog {
 				block1 = mcreator.getWorkspace().getFolderManager().getItemTexturesList();
 			}
 			model.removeAllElements();
-			for (TextureElement texture : block1) {
-				File element = new File(texture.getPath());
+			for (File element : block1) {
 				if (element.getName().endsWith(".png"))
 					model.addElement(element);
 			}
@@ -172,7 +170,7 @@ public class GeneralTextureSelector extends MCreatorDialog {
 	}
 
 	@Override public void setVisible(boolean b) {
-		List<TextureElement> block;
+		List<File> block;
 		if (type == TextureType.BLOCK) {
 			block = mcreator.getWorkspace().getFolderManager().getBlockTexturesList();
 		} else if (type == TextureType.ARMOR) {
@@ -185,8 +183,7 @@ public class GeneralTextureSelector extends MCreatorDialog {
 			block = mcreator.getWorkspace().getFolderManager().getItemTexturesList();
 		}
 		model.removeAllElements();
-		for (TextureElement texture : block) {
-			File element = new File(texture.getPath());
+		for (File element : block) {
 			if (element.getName().endsWith(".png"))
 				model.addElement(element);
 		}

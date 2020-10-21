@@ -28,7 +28,6 @@ import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
-import net.mcreator.workspace.elements.TextureElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.Nullable;
@@ -46,7 +45,7 @@ public class ImageDialog extends MCreatorDialog {
 		setModal(true);
 
 		VComboBox<String> textureSelector = new SearchableComboBox<>(
-				editor.mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(TextureElement::getName)
+				editor.mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
 						.toArray(String[]::new));
 		textureSelector.setRenderer(new WTextureComboBoxRenderer.OtherTextures(editor.mcreator.getWorkspace()));
 

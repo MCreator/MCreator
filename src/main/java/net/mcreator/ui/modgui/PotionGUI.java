@@ -43,7 +43,6 @@ import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.TextureElement;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -221,7 +220,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		onExpired.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(icon, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(TextureElement::getName)
+				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 	}
 

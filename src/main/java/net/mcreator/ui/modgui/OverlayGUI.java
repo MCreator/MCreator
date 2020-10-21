@@ -30,7 +30,6 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.TextureElement;
 import net.mcreator.workspace.elements.VariableElementType;
 
 import javax.swing.*;
@@ -84,7 +83,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		super.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(editor.overlayBaseTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(TextureElement::getName)
+				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		displayCondition.refreshListKeepSelected();

@@ -21,22 +21,13 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.FileListField;
 import net.mcreator.ui.modgui.ModElementGUI;
-import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.ResourceNameValidator;
-import net.mcreator.workspace.elements.SoundElement;
-import net.mcreator.workspace.elements.TextureElement;
 import org.apache.commons.io.FilenameUtils;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class TextureImportDialogs {
 

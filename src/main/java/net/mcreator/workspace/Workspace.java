@@ -54,7 +54,6 @@ public class Workspace implements Closeable {
 	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
-	private Set<TextureElement> texture_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language_map = new ConcurrentHashMap<String, ConcurrentHashMap<String, String>>() {{
 		put("en_us", new ConcurrentHashMap<>());
 	}};
@@ -99,10 +98,6 @@ public class Workspace implements Closeable {
 
 	public Collection<SoundElement> getSoundElements() {
 		return sound_elements;
-	}
-
-	public Collection<TextureElement> getTextureElements() {
-		return texture_elements;
 	}
 
 	public Map<String, ConcurrentHashMap<String, String>> getLanguageMap() {
@@ -194,13 +189,6 @@ public class Workspace implements Closeable {
 		}
 	}
 
-	public void addTextureElement(TextureElement element) {
-		if (!texture_elements.contains(element)) {
-			texture_elements.add(element);
-			markDirty();
-		}
-	}
-
 	public void updateModElement(ModElement element) {
 		for (ModElement el : mod_elements) {
 			if (el.getName().equals(element.getName())) {
@@ -217,17 +205,6 @@ public class Workspace implements Closeable {
 			if (el.getName().equals(originalElement.getName())) {
 				sound_elements.remove(el);
 				sound_elements.add(updatedElement);
-			}
-		}
-		markDirty();
-	}
-
-	public void updateTextureElement(TextureElement originalElement, TextureElement updatedElement) {
-		Set<TextureElement> tmp = new HashSet<>(texture_elements);
-		for (TextureElement el : tmp) {
-			if (el.getPath().equals(originalElement.getPath())) {
-				texture_elements.remove(el);
-				texture_elements.add(updatedElement);
 			}
 		}
 		markDirty();
@@ -275,13 +252,6 @@ public class Workspace implements Closeable {
 		element.getFiles()
 				.forEach(file -> new File(fileManager.getFolderManager().getSoundsDir(), file + ".ogg").delete());
 		sound_elements.remove(element);
-		markDirty();
-	}
-
-	public void removeTextureElement(TextureElement element) {
-		File file = new File(element.getPath());
-		file.delete();
-		texture_elements.remove(element);
 		markDirty();
 	}
 
@@ -477,7 +447,6 @@ public class Workspace implements Closeable {
 		this.mod_elements = other.mod_elements;
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;
-		this.texture_elements = other.texture_elements;
 		this.language_map = other.language_map;
 		this.mcreatorVersion = other.mcreatorVersion;
 		this.workspaceSettings = other.workspaceSettings;

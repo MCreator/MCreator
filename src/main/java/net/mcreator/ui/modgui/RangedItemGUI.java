@@ -48,7 +48,6 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.TextureElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
 import org.jetbrains.annotations.Nullable;
@@ -298,8 +297,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			customBulletModelTexture.removeAllItems();
 			customBulletModelTexture.addItem("");
-			List<TextureElement> textures = mcreator.getWorkspace().getFolderManager().getOtherTexturesList();
-			for (TextureElement element : textures)
+			List<File> textures = mcreator.getWorkspace().getFolderManager().getOtherTexturesList();
+			for (File element : textures)
 				if (element.getName().endsWith(".png"))
 					customBulletModelTexture.addItem(element.getName());
 		});
@@ -380,7 +379,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		ComboBoxUtil.updateComboBoxContents(customBulletModelTexture, ListUtils.merge(Collections.singleton(""),
 				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
-						.filter(element -> element.getName().endsWith(".png")).map(TextureElement::getName)
+						.filter(element -> element.getName().endsWith(".png")).map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bulletModel, ListUtils.merge(Collections.singletonList(adefault),

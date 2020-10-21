@@ -40,7 +40,6 @@ import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ResourceNameValidator;
-import net.mcreator.workspace.elements.TextureElement;
 import org.apache.commons.io.FileUtils;
 
 import javax.swing.*;
@@ -91,8 +90,6 @@ public class TextureFolderDialog{
 					File finalFile = new File(path + originalFile.getName());
 					try {
 						FileUtils.copyFile(originalFile, finalFile);
-						TextureElement element = new TextureElement(finalFile.getName(), path + originalFile.getName(), folderName.getText(), TextureType.ARMOR);
-						mcreator.getWorkspace().addTextureElement(element);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -117,8 +114,6 @@ public class TextureFolderDialog{
 					File finalFile = new File(path + originalFile.getName());
 					try {
 						FileUtils.copyFile(originalFile, finalFile);
-						TextureElement element = new TextureElement(finalFile.getName(), path + originalFile.getName(), folderName.getText(), TextureType.BLOCK);
-						mcreator.getWorkspace().addTextureElement(element);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -143,8 +138,6 @@ public class TextureFolderDialog{
 					File finalFile = new File(path + originalFile.getName());
 					try {
 						FileUtils.copyFile(originalFile, finalFile);
-						TextureElement element = new TextureElement(finalFile.getName(), path + originalFile.getName(), folderName.getText(), TextureType.ENTITY);
-						mcreator.getWorkspace().addTextureElement(element);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -169,8 +162,6 @@ public class TextureFolderDialog{
 					File finalFile = new File(path + originalFile.getName());
 					try {
 						FileUtils.copyFile(originalFile, finalFile);
-						TextureElement element = new TextureElement(finalFile.getName(), path + originalFile.getName(), folderName.getText(), TextureType.PAINTING);
-						mcreator.getWorkspace().addTextureElement(element);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -195,8 +186,6 @@ public class TextureFolderDialog{
 					File finalFile = new File(path + originalFile.getName());
 					try {
 						FileUtils.copyFile(originalFile, finalFile);
-						TextureElement element = new TextureElement(finalFile.getName(), path + originalFile.getName(), folderName.getText(), TextureType.ITEM);
-						mcreator.getWorkspace().addTextureElement(element);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
