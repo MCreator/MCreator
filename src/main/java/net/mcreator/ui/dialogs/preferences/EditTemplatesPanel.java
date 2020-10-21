@@ -23,6 +23,7 @@ import net.mcreator.io.UserFolderManager;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
@@ -38,22 +39,19 @@ class EditTemplatesPanel {
 
 		JPanel sectionPanel = new JPanel(new BorderLayout(15, 15));
 
-		sectionPanel.add("North", new JLabel(
-				"<html><font style=\"font-size: 16px;\">Custom " + name.toLowerCase(Locale.ENGLISH)
-						+ "</big><br><font style=\"font-size: 9px; color: gray;\">You can manage custom " + name
-						.toLowerCase(Locale.ENGLISH) + " (*." + templateExt + ") here"));
+		sectionPanel.add("North", L10N.label("dialog.preferences.change_language", name.toLowerCase(Locale.ENGLISH), templateExt));
 		sectionPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
 
 		JToolBar opts = new JToolBar();
 		opts.setFloatable(false);
 
-		JButton add = new JButton("Add " + name.toLowerCase(Locale.ENGLISH));
+		JButton add = L10N.button("dialog.preferences.add_language", name.toLowerCase(Locale.ENGLISH));
 		add.setIcon(UIRES.get("16px.add.gif"));
 		opts.add(add);
 
 		opts.add(new JEmptyBox(5, 5));
 
-		JButton remove = new JButton("Remove selected");
+		JButton remove = L10N.button("dialog.preferences.remove_selected_language");
 		remove.setIcon(UIRES.get("16px.delete.gif"));
 		opts.add(remove);
 
