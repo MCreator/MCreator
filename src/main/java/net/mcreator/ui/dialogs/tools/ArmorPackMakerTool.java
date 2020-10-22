@@ -109,7 +109,7 @@ public class ArmorPackMakerTool {
 		ok.addActionListener(e -> {
 			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-				addArmorPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
+				addArmorPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), "", base.getBlock(),
 						color.getColor(), (Double) power.getValue());
 				mcreator.mv.updateMods();
 				dialog.setCursor(Cursor.getDefaultCursor());
@@ -122,10 +122,10 @@ public class ArmorPackMakerTool {
 		dialog.setVisible(true);
 	}
 
-	static void addArmorPackToWorkspace(MCreator mcreator, Workspace workspace, String name, MItemBlock base,
+	static void addArmorPackToWorkspace(MCreator mcreator, Workspace workspace, String name, String folderName, MItemBlock base,
 			Color color, double factor) {
 		// generate armor textures
-		ArmorImageMakerView.generateArmorImages(workspace, name.toLowerCase(Locale.ENGLISH), "Standard", color, true);
+		ArmorImageMakerView.generateArmorImages(workspace, name.toLowerCase(Locale.ENGLISH), folderName, "Standard", color, true);
 
 		// generate armor item
 		Armor armor = (Armor) ModElementTypeRegistry.REGISTRY.get(ModElementType.ARMOR)

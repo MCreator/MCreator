@@ -218,16 +218,10 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 								return new RegistryNameValidator((VTextField) component, "Texture name").validate();
 							}
 						});
-		String folderName = VOptionPane
-				.showInputDialog(mcreator, "Enter folder name of texture (without spaces): ", "Image folder", null,
-						new OptionPaneValidatior() {
-
-							@Override public ValidationResult validate(JComponent component) {
-								return new RegistryNameValidator((VTextField) component, "Texture name").setAllowEmpty(true).validate();
-							}
-						});
+		String folderName = JOptionPane.showInputDialog("Folder name of armor texture (without spaces): ");
 		if(folderName == null)
 			folderName = "";
+		folderName = RegistryNameFixer.fix(folderName);
 
 		if (namec != null) {
 			File exportFile;
