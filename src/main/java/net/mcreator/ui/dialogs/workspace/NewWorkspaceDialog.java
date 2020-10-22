@@ -25,6 +25,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.util.DesktopUtils;
@@ -47,7 +48,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 	private final JPanel workspacePanels = new JPanel(cardLayout);
 
 	public NewWorkspaceDialog(Window w) {
-		super(w, "New workspace", true);
+		super(w, L10N.t("dialog.new_workspace.title"), true);
 
 		AbstractWorkspacePanel forgeWorkspacePanel = new ForgeWorkspacePanel(this);
 		AbstractWorkspacePanel fabricWorkspacePanel = new FabricWorkspacePanel(this);
@@ -57,15 +58,15 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		JPanel buttons = new JPanel();
 
-		JButton ok = new JButton("Create new workspace");
+		JButton ok = new JButton(L10N.t("dialog.new_workspace.button_new"));
 		buttons.add(ok);
 
-		JButton cancel = new JButton("Cancel");
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		buttons.add(cancel);
 
 		buttons.add(new JEmptyBox(2, 2));
 
-		JButton help = new JButton("Help");
+		JButton help = new JButton(L10N.t("common.help"));
 		buttons.add(help);
 
 		buttons.setBorder(BorderFactory.createEmptyBorder(8, 0, 8, 0));

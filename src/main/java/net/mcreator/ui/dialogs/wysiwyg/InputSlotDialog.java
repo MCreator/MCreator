@@ -113,7 +113,7 @@ public class InputSlotDialog extends MCreatorDialog {
 
 		setTitle("Input slot editor");
 		JButton ok = new JButton("Save slot");
-		JButton cancel = new JButton("Cancel");
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		add("South", PanelUtils.join(ok, cancel));
 
 		getRootPane().setDefaultButton(ok);
