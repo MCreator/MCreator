@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.minecraft;
 
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
@@ -27,6 +28,7 @@ import org.apache.commons.io.FilenameUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 
 public class TextureHolder extends VButton {
 
@@ -53,7 +55,23 @@ public class TextureHolder extends VButton {
 		setPreferredSize(new Dimension(this.size, this.size));
 		td.getConfirmButton().addActionListener(event -> {
 			if (td.list.getSelectedValue() != null) {
-				id = FilenameUtils.removeExtension(td.list.getSelectedValue().getName());
+				File file = td.list.getSelectedValue();
+				id = file.getPath();
+				if(id.contains("textures\\blocks\\")){
+					id = textureNameReplace(
+							FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getBlocksTexturesDir().getPath(), "")));
+				} else if(id.contains("textures\\entities\\")){
+					id = textureNameReplace(
+							FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getEntitiesTexturesDir().getPath(), "")));
+				} else if(id.contains("textures\\items\\")){
+					id = textureNameReplace(
+							FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getItemsTexturesDir().getPath(), "")));
+				} else if(id.contains("textures\\painting\\")){
+					id = textureNameReplace(
+							FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getPaintingsTexturesDir().getPath(), "")));
+				} else if(id.contains("textures\\others\\")){
+					id = textureNameReplace(FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getOtherTexturesDir().getPath(), "")));
+				}
 				setIcon(new ImageIcon(
 						ImageUtils.resize(new ImageIcon(td.list.getSelectedValue().toString()).getImage(), this.size)));
 				td.setVisible(false);
@@ -93,6 +111,10 @@ public class TextureHolder extends VButton {
 				repaint();
 			}
 		});
+	}
+
+	private String textureNameReplace(String string){
+		return string.replace("\\", "/").replace("//", "");
 	}
 
 	@Override public void paintComponent(Graphics g) {
