@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.io.FileIO;
+import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
@@ -29,6 +30,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -97,6 +99,12 @@ public class Particle extends GeneratableElement {
 				}
 			}
 		}
+	}
+
+	@Override public BufferedImage generateModElementPicture() {
+		return MinecraftImageGenerator.Preview.generateParticlePreviewPicture(
+				getModElement().getWorkspace().getFolderManager()
+						.getOtherTextureFile(FilenameUtils.removeExtension(texture)), getTextureTileCount() > 1);
 	}
 
 }

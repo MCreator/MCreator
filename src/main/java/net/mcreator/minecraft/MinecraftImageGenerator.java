@@ -776,8 +776,9 @@ public class MinecraftImageGenerator {
 					workspace.getFolderManager().getOtherTextureFile(FilenameUtils.removeExtension(mobModelTexture))
 							.getAbsolutePath()).getImage()));
 
-			graphics2D.drawImage(ImageUtils.colorize(UIRES.get("mod_preview_bases.entity_base"), textureColor, false).getImage(), 0, 0,
-					null);
+			graphics2D.drawImage(
+					ImageUtils.colorize(UIRES.get("mod_preview_bases.entity_base"), textureColor, false).getImage(), 0,
+					0, null);
 
 			if (hasSpawnEgg) {
 				graphics2D.setColor(spawnEggBaseColor);
@@ -832,7 +833,8 @@ public class MinecraftImageGenerator {
 		 * @param dependencies Spawn egg's base (egg) color.
 		 * @return Returns generated image.
 		 */
-		public static BufferedImage generateProcedurePreviewPicture(String procedurexml, List<Dependency> dependencies) {
+		public static BufferedImage generateProcedurePreviewPicture(String procedurexml,
+				List<Dependency> dependencies) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 
@@ -892,6 +894,47 @@ public class MinecraftImageGenerator {
 								.getImage(), 0, 0, null);
 			else
 				graphics2D.drawImage(UIRES.get("mod_preview_bases.procedure_return_base").getImage(), 0, 0, null);
+
+			graphics2D.dispose();
+			return icon;
+		}
+
+		/**
+		 * This method generates particle images.
+		 *
+		 * @param texture Particle's texture.
+		 * @param tiled   If the texture is tiled.
+		 * @return Returns generated image.
+		 */
+		public static BufferedImage generateParticlePreviewPicture(File texture, boolean tiled) {
+			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2D = icon.createGraphics();
+
+			double maxdim = -1;
+			double width = -1, height = -1;
+			Image tex = null;
+			try {
+				if (tiled)
+					tex = new ImageIcon(ImageUtils.autoCropTile(ImageIO.read(texture))).getImage();
+				else
+					tex = new ImageIcon(ImageIO.read(texture)).getImage();
+				width = tex.getWidth(null);
+				height = tex.getHeight(null);
+				maxdim = Math.max(width, height);
+			} catch (IOException e) {
+				LOG.error(e.getMessage(), e);
+			}
+
+			if (maxdim > 0 & width > 0 & height > 0 & tex != null) {
+				int drawWidth1 = (int) ((width / maxdim) * 6), drawHeight1 = (int) ((height / maxdim) * 6);
+				graphics2D.drawImage(tex, 6 - drawWidth1 / 2, 3 - drawHeight1 / 2, drawWidth1, drawHeight1, null);
+
+				int drawWidth2 = (int) ((width / maxdim) * 8), drawHeight2 = (int) ((height / maxdim) * 8);
+				graphics2D.drawImage(tex, 23 - drawWidth2 / 2, 12 - drawHeight2 / 2, drawWidth2, drawHeight2, null);
+
+				int drawWidth3 = (int) ((width / maxdim) * 10), drawHeight3 = (int) ((height / maxdim) * 10);
+				graphics2D.drawImage(tex, 9 - drawWidth3 / 2, 22 - drawHeight3 / 2, drawWidth3, drawHeight3, null);
+			}
 
 			graphics2D.dispose();
 			return icon;
