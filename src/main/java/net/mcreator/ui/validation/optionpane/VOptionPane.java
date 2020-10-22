@@ -33,7 +33,8 @@ public class VOptionPane {
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
 			OptionPaneValidatior validator) {
-		return showInputDialog(frame, text, title, icon, validator, "OK", "Cancel");
+		return showInputDialog(frame, text, title, icon, validator, UIManager.getString("OptionPane.okButtonText"),
+				UIManager.getString("OptionPane.cancelButtonText"));
 	}
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
