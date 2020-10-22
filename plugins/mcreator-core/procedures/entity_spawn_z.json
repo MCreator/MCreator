@@ -1,0 +1,23 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    }
+  ],
+  "extensions": [
+    "dimension_list_provider"
+  ],
+  "output": "Number",
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "toolbox_id": "playermanagement",
+    "fields": [
+      "dimension"
+    ],
+    "inputs": [
+      "entity"
+    ]
+  }
+}
