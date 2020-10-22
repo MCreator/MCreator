@@ -192,11 +192,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		export.addActionListener(e -> exportSelectedImages());
 
 		del.addActionListener(actionEvent -> {
-			List<File> elements = listGroup.getSelectedItemsList();
-			for(File element : elements){
-				elements.add(element);
-			}
-			if (elements.size() > 0) {
+			List<File> files = listGroup.getSelectedItemsList();
+			if (files.size() > 0) {
 				Object[] options = { "Yes", "No" };
 				int n = JOptionPane.showOptionDialog(workspacePanel.mcreator,
 						"<html>Are you sure that you want to delete this file?"
@@ -205,7 +202,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 						options[1]);
 
 				if (n == 0) {
-					elements.forEach(file -> {
+					files.forEach(file -> {
 						if (file != null) {
 							file.delete();
 
