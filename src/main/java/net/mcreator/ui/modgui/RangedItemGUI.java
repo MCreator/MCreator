@@ -294,7 +294,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		importmobtexture.setToolTipText(L10N.t("elementgui.ranged_item.bullet_model_tooltip"));
 		importmobtexture.setOpaque(false);
 		importmobtexture.addActionListener(e -> {
-			TextureImportDialogs.importOtherTextures(mcreator);
+			TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.ENTITY);
 			customBulletModelTexture.removeAllItems();
 			customBulletModelTexture.addItem("");
 			List<File> textures = mcreator.getWorkspace().getFolderManager().getOtherTexturesList();

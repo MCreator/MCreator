@@ -59,8 +59,8 @@ public class TextureFolderDialog{
 
 		folderName.setValidator(new ResourceNameValidator(folderName, "Folder name"));
 		folderName.enableRealtimeValidation();
-		ui.add(new JLabel("<html>Folder name:"
-				+ "<br><small>Leave blank to use the main default folder."));
+		ui.add(new JLabel("<html>Folder name for " + "<b>" + file.getName().replace(".png", "")
+				+ "</b><br><small>Leave blank to use the main default folder."));
 		ui.add(folderName);
 
 		int option = JOptionPane
@@ -191,6 +191,30 @@ public class TextureFolderDialog{
 					}
 					return;
 				}
+			case OTHER: {
+				if(!folderName.getText().isEmpty()) {
+					File folder = new File(
+							mcreator.getWorkspace().getFolderManager().getOtherTexturesDir() + "\\" + folderName
+									.getText() + "\\");
+					if (!folder.exists())
+						folder.mkdirs();
+				}
+
+				String path = GeneratorUtils.getSpecificRoot(mcreator.getWorkspace(),
+						mcreator.getWorkspace().getGenerator().getGeneratorConfiguration(), "other_textures_dir")
+						.getPath() + "\\";
+
+				if(!folderName.getText().isEmpty())
+					path = path + folderName.getText() + "\\";
+
+				File finalFile = new File(path + originalFile.getName());
+				try {
+					FileUtils.copyFile(originalFile, finalFile);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
 				}
 		} else {
 			try {

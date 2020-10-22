@@ -253,7 +253,7 @@ public class ActionRegistry {
 				actionEvent -> TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.PAINTING))
 				.setIcon(UIRES.get("16px.importentity"));
 		this.importOtherTexture = new TextureAction(this, L10N.t("action.import_other_texture"),
-				actionEvent -> TextureImportDialogs.importOtherTextures(mcreator))
+				actionEvent -> TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.OTHER))
 				.setIcon(UIRES.get("16px.importtexture"));
 		this.importSound = new ImportSoundAction(this);
 		this.importStructure = new StructureImportActions.ImportStructure(this)
