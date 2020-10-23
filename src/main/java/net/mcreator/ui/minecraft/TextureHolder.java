@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.minecraft;
 
-import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;

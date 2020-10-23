@@ -1,0 +1,31 @@
+name: Resource Pack for Minecraft Java Edition 1.16.x
+status: stable
+buildfileversion: 1.0.0
+
+gradle:
+  export_file: "build/export/export.zip"
+
+source_root: "@WORKSPACEROOT/src/main/java"
+res_root: "@WORKSPACEROOT/src/main/resources"
+mod_assets_root: "@RESROOT/assets/minecraft"
+
+block_textures_dir: "@MODASSETSROOT/textures/block"
+item_textures_dir: "@MODASSETSROOT/textures/item"
+armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+entity_textures_dir: "@MODASSETSROOT/textures/entity"
+painting_textures_dir: "@MODASSETSROOT/textures/painting"
+other_textures_dir: "@MODASSETSROOT/textures"
+sounds_dir: "@MODASSETSROOT/sounds"
+
+base_templates:
+  - template: pack.mcmeta.ftl
+    writer: json
+    name: "@SRCROOT/pack.mcmeta"
+  - template: sounds.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/sounds.json"
+
+language_file:
+  format: json
+  root_folder: "@MODASSETSROOT/lang/"
+  langfile_name: "@langname.json"
