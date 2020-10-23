@@ -32,14 +32,16 @@ public class SoundElement {
 	private String name;
 	private List<String> files;
 	private String category;
+	private String directory;
 
 	@Nullable private String subtitle;
 
-	public SoundElement(String name, List<String> files, String category, @Nullable String subtitle) {
+	public SoundElement(String name, List<String> files, String category, @Nullable String subtitle, String directory) {
 		this.name = name;
 		this.files = files;
 		this.category = category;
 		this.subtitle = subtitle;
+		this.directory = directory;
 	}
 
 	@Override public String toString() {
@@ -86,6 +88,14 @@ public class SoundElement {
 		this.subtitle = subtitle;
 	}
 
+	public String getDirectory() {
+		return directory;
+	}
+
+	public void setDirectory(String directory) {
+		this.directory = directory;
+	}
+
 	public static class SoundElementDeserializer implements JsonDeserializer<SoundElement> {
 		@Override public SoundElement deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
@@ -107,7 +117,7 @@ public class SoundElement {
 					jsonObject.getAsJsonPrimitive("category").getAsString(),
 					jsonObject.getAsJsonPrimitive("subtitle") != null ?
 							jsonObject.getAsJsonPrimitive("subtitle").getAsString() :
-							null);
+							null, jsonObject.getAsJsonPrimitive("directory").getAsString());
 		}
 	}
 

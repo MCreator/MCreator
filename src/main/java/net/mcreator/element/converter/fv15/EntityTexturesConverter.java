@@ -29,7 +29,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 
-public class EntityTexturesFixer implements IConverter {
+public class EntityTexturesConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Mob entity = (Mob) input;

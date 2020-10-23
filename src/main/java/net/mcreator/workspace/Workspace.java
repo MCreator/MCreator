@@ -31,6 +31,7 @@ import net.mcreator.vcs.WorkspaceVCS;
 import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.misc.WorkspaceInfo;
 import net.mcreator.workspace.settings.WorkspaceSettings;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -250,7 +251,8 @@ public class Workspace implements Closeable {
 
 	public void removeSoundElement(SoundElement element) {
 		element.getFiles()
-				.forEach(file -> new File(fileManager.getFolderManager().getSoundsDir(), file + ".ogg").delete());
+				.forEach(file -> new File(fileManager.getFolderManager().getSoundsDir() + "/" + element.getDirectory() +
+						"/", file + ".ogg").delete());
 		sound_elements.remove(element);
 		markDirty();
 	}

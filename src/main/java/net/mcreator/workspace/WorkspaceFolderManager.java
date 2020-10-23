@@ -128,11 +128,7 @@ public class WorkspaceFolderManager {
 			return Collections.emptyList();
 
 		List<File> retval = new LinkedList<>();
-
 		retval = listPNGsInDir(dir, retval);
-		for(File file : retval){
-			System.out.println(file.getName());
-		}
 
 		return retval;
 	}
