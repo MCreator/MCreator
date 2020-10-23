@@ -142,6 +142,20 @@ public class TestWorkspaceDataProvider {
 
 		}
 
+		if (workspace.getFolderManager().getEntitiesTexturesDir() != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("test"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("test2"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("test3"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("test4"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("etest"));
+
+		}
+
 		if (workspace.getFolderManager().getPaintingsTexturesDir() != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getPaintingTextureFile("test"));
@@ -153,20 +167,6 @@ public class TestWorkspaceDataProvider {
 					workspace.getFolderManager().getPaintingTextureFile("test4"));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getPaintingTextureFile("ptest"));
-
-		}
-
-		if (workspace.getFolderManager().getGuisTexturesDir() != null) {
-			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getGuiTextureFile("test"));
-			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getGuiTextureFile("test2"));
-			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getGuiTextureFile("test3"));
-			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getGuiTextureFile("test4"));
-			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getGuiTextureFile("gtest"));
 
 		}
 
