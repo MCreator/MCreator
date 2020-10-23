@@ -73,19 +73,31 @@ public class ProcedureShootArrowDirectionFixer implements IConverter {
 			if (type != null && type.equals("shoot_arrow")) {
 				Element value_yaw = doc.createElement("value");
 				value_yaw.setAttribute("name", "yaw");
-
 				Element shoot_yaw = doc.createElement("block");
 				shoot_yaw.setAttribute("type", "entity_direction");
 
+				Element value_yaw_entity = doc.createElement("value");
+				value_yaw_entity.setAttribute("name", "entity");
+				Element shoot_yaw_entity = doc.createElement("block");
+				shoot_yaw_entity.setAttribute("type", "entity_from_deps");
+
+				value_yaw_entity.appendChild(shoot_yaw_entity);
+				shoot_yaw.appendChild(value_yaw_entity);
 				value_yaw.appendChild(shoot_yaw);
 				element.appendChild(value_yaw);
 
 				Element value_pitch = doc.createElement("value");
 				value_pitch.setAttribute("name", "pitch");
-
 				Element shoot_pitch = doc.createElement("block");
 				shoot_pitch.setAttribute("type", "entity_pitch");
 
+				Element value_pitch_entity = doc.createElement("value");
+				value_pitch_entity.setAttribute("name", "entity");
+				Element shoot_pitch_entity = doc.createElement("block");
+				shoot_pitch_entity.setAttribute("type", "entity_from_deps");
+
+				value_pitch_entity.appendChild(shoot_pitch_entity);
+				shoot_pitch.appendChild(value_pitch_entity);
 				value_pitch.appendChild(shoot_pitch);
 				element.appendChild(value_pitch);
 			}
