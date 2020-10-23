@@ -23,7 +23,10 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.StringUtils;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 public class JavaMemeberNameValidator implements Validator {
 
@@ -54,6 +57,9 @@ public class JavaMemeberNameValidator implements Validator {
 		} else if (JavaConventions.isStringReservedJavaWord(textField.getText())) {
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 					"Name contains reserved Java keywords");
+		} else if (common_names.contains(textField.getText())) {
+			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					"Do not use vanilla names, this can cause build problems!");
 		} else if (JavaConventions.containsInvalidJavaNameCharacters(textField.getText())) {
 			return new Validator.ValidationResult(Validator.ValidationResultType.WARNING,
 					"Name contains characters that will be converted");
@@ -65,5 +71,11 @@ public class JavaMemeberNameValidator implements Validator {
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		}
 	}
+
+	private static final Set<String> common_names = new HashSet<>(
+			Arrays.asList("Axe", "Pickaxe", "Spade", "Hoe", "Shovel", "Sword", "Shears", "Overworld", "Nether", "World",
+					"Living", "Mob", "Monster", "Animal", "End", "Stairs", "Slab", "Fence", "Wall", "Leaves",
+					"TrapDoor", "Pane", "Door", "FenceGate", "Creature", "Item", "Block", "BoneMeal", "Diamond", "Ore",
+					"Gem", "Gold", "Iron", "Stack", "Emerald", "Entity", "Surface"));
 
 }

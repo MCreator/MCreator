@@ -143,7 +143,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	@Override protected void initGUI() {
 		restrictionBiomes = new BiomeListField(mcreator);
 
-		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator, "When plant added",
+		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
+				L10N.t("elementgui.plant.event_on_added"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onNeighbourBlockChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
 				L10N.t("elementgui.common.event_on_neighbour_block_changes"),
@@ -152,7 +153,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.common.event_on_update_tick"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onRandomUpdateEvent = new ProcedureSelector(this.withEntry("block/display_tick_update"), mcreator,
-				"Client display random tick", ProcedureSelector.Side.CLIENT,
+				L10N.t("elementgui.common.event_on_random_update"), ProcedureSelector.Side.CLIENT,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onDestroyedByPlayer = new ProcedureSelector(this.withEntry("block/when_destroyed_player"), mcreator,
 				L10N.t("elementgui.plant.event_on_destroyed_by_player"),
@@ -167,7 +168,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.plant.event_on_entity_collides"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onBlockPlacedBy = new ProcedureSelector(this.withEntry("block/when_block_placed_by"), mcreator,
-				"When block is placed by",
+				L10N.t("elementgui.common.event_on_block_placed_by"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClicked = new ProcedureSelector(this.withEntry("block/when_right_clicked"), mcreator,
 				L10N.t("elementgui.plant.event_on_right_clicked"),
