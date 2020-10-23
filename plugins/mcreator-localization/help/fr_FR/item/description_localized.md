@@ -1,5 +1,3 @@
-Si vous mettez une clef de traduction dans le champ au dessus.
+Si vous cochez la boite, le texte dans le champ au dessus sera localisé (et donc traduisible)
 
-Sera automatiquement ajouté à la l'onglet de traduction.
-
-Format conseillé: element.nom.description (exemple: block.four.description)
+Il sera automatiquement ajouté à la l'onglet de traduction.
