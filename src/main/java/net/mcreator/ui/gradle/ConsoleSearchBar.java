@@ -19,6 +19,7 @@
 package net.mcreator.ui.gradle;
 
 import net.mcreator.ui.component.ConsolePane;
+import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -33,8 +34,8 @@ import java.awt.event.KeyEvent;
 public class ConsoleSearchBar extends JToolBar {
 
 	private final JTextField jtf1 = new JTextField(40);
-	private final JCheckBox cb3 = new JCheckBox("Match Case");
-	private final JLabel results = new JLabel("No results");
+	private final JCheckBox cb3 = L10N.checkbox("console.search.match_case");
+	private final JLabel results = L10N.label("console.search.no_results");
 
 	private Highlighter hilite;
 
@@ -108,7 +109,7 @@ public class ConsoleSearchBar extends JToolBar {
 		oldSearch = searchFor;
 
 		if (searchFor.equals("")) {
-			results.setText("No results");
+			results.setText(L10N.t("console.search.no_results"));
 			return;
 		}
 
@@ -132,9 +133,9 @@ public class ConsoleSearchBar extends JToolBar {
 			}
 
 			if (max > 0)
-				results.setText(index + " out of " + max);
+				results.setText(L10N.t("console.search.out_of", index, max));
 			else if (max == 0)
-				results.setText("No results");
+				results.setText(L10N.t("console.search.no_results"));
 
 			if (index >= max && max >= 0) {
 				index = 0;
