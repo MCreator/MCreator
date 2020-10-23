@@ -284,3 +284,6 @@ templates:
 localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
+  - key: block.@modid.@registryname.tooltip.1
+    condition: descriptionLocalized
+    mapto: specialInfo

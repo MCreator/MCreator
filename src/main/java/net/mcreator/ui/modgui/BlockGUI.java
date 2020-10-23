@@ -307,6 +307,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			Mx.setEnabled(true);
 			My.setEnabled(true);
 			Mz.setEnabled(true);
+			descriptionLocalized.setEnabled(true);
 			rotationMode.setEnabled(true);
 			hasGravity.setEnabled(true);
 			hasTransparency.setEnabled(true);
@@ -355,6 +356,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Mx.setEnabled(false);
 				My.setEnabled(false);
 				Mz.setEnabled(false);
+				descriptionLocalized.setEnabled(true);
 				hasGravity.setEnabled(false);
 				rotationMode.setEnabled(false);
 				isWaterloggable.setEnabled(false);
@@ -365,6 +367,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Mx.setValue(1d);
 				My.setValue(1d);
 				Mz.setValue(1d);
+				descriptionLocalized.setSelected(false);
 				hasGravity.setSelected(false);
 				rotationMode.setSelectedIndex(0);
 				isWaterloggable.setSelected(false);
@@ -1331,6 +1334,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		specialInfo.setText(
 				block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 
+		descriptionLocalized.setSelected(block.descriptionLocalized);
+
 		refreshFiledsTileEntity();
 
 		tickRate.setEnabled(!tickRandomly.isSelected());
@@ -1460,6 +1465,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.slipperiness = (double) slipperiness.getValue();
 
 		block.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
+
+		block.descriptionLocalized = descriptionLocalized.isSelected();
 
 		if (blockBase.getSelectedIndex() != 0)
 			block.blockBase = (String) blockBase.getSelectedItem();

@@ -63,6 +63,7 @@ import java.util.Map;
 
 	public String name;
 	public List<String> specialInfo;
+	public boolean descriptionLocalized;
 	public double hardness;
 	public double resistance;
 	public boolean hasGravity;

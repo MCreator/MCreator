@@ -163,9 +163,15 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		<#if data.specialInfo?has_content>
 		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
-			<#list data.specialInfo as entry>
-			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-            </#list>
+			<#if data.descriptionLocalized>
+			    <#list data.specialInfo as entry>
+			    list.add(new TranslationTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+			    </#list>
+			<#else>
+                <#list data.specialInfo as entry>
+                list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+                </#list>
+            </#if>
 		}
         </#if>
 
