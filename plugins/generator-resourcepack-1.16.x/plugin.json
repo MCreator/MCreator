@@ -3,5 +3,6 @@
   "minversion": 202000500000,
   "info": {
     "name": "Minecraft resource pack 1.16.x generator"
+    "description": "For Minecraft 1.16.2 and above"
   }
 }
