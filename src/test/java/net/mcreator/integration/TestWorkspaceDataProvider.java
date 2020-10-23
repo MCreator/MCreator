@@ -142,6 +142,34 @@ public class TestWorkspaceDataProvider {
 
 		}
 
+		if (workspace.getFolderManager().getPaintingsTexturesDir() != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("test"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("test2"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("test3"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("test4"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("ptest"));
+
+		}
+
+		if (workspace.getFolderManager().getGuisTexturesDir() != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getGuiTextureFile("test"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getGuiTextureFile("test2"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getGuiTextureFile("test3"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getGuiTextureFile("test4"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getGuiTextureFile("gtest"));
+
+		}
+
 		if (workspace.getFolderManager().getOtherTexturesDir() != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getOtherTextureFile("test"));
