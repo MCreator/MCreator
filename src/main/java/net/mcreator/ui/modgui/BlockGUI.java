@@ -122,6 +122,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JColor beaconColorModifier = new JColor(mcreator, true);
 
+	private final JCheckBox descriptionLocalized = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasGravity = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isWaterloggable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox tickRandomly = L10N.checkbox("elementgui.common.enable");
@@ -494,9 +495,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComponentUtils.deriveFont(specialInfo, 16);
 
-		txblock3.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.block.special_information_tip")));
-		txblock3.add(specialInfo);
+		txblock3.add("Center", PanelUtils.gridElements(2, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+						L10N.label("elementgui.block.special_information_tip")), specialInfo,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_localized"),
+						L10N.label("elementgui.block.description_localized")), descriptionLocalized
+				));
 
 		sbbp2.add("Center", topnbot);
 
@@ -609,6 +613,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		render.setOpaque(false);
 
+		descriptionLocalized.setOpaque(false);
 		hasTransparency.setOpaque(false);
 		connectedSides.setOpaque(false);
 		emissiveRendering.setOpaque(false);
