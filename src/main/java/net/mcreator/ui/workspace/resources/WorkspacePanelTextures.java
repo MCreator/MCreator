@@ -91,8 +91,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		listi = createListElement(dmli, L10N.t("workspace.textures.category_items"));
 		lista = createListElement(dmla, L10N.t("workspace.textures.category_armor"));
 		listo = createListElement(dmlo, L10N.t("workspace.textures.category_other"));
-		liste = createListElement(dmle, "Textures for entities:");
-		listp = createListElement(dmlp, "Textures for paintings:");
+		liste = createListElement(dmle, "workspace.textures.category_entities");
+		listp = createListElement(dmlp, "workspace.textures.category_paintings");
 
 		respan.add(listb.getComponent());
 		respan.add(listi.getComponent());
