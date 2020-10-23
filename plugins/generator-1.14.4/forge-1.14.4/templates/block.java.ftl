@@ -164,16 +164,16 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
 			<#if data.descriptionLocalized>
-			    <#list data.specialInfo as entry>
-			    list.add(new TranslationTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-			    </#list>
+				<#list data.specialInfo as entry>
+				list.add(new TranslationTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+				</#list>
 			<#else>
-                <#list data.specialInfo as entry>
-                list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-                </#list>
-            </#if>
+				<#list data.specialInfo as entry>
+				list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+				</#list>
+			</#if>
 		}
-        </#if>
+		</#if>
 
 		<#if data.transparencyType != "SOLID">
 		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
