@@ -58,8 +58,8 @@ public class ButtonDialog extends MCreatorDialog {
 		options.add(PanelUtils.join(eh));
 
 		add("Center", options);
-		JButton ok = new JButton("OK");
-		JButton cancel = new JButton("Cancel");
+		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		add("South", PanelUtils.join(ok, cancel));
 
 		getRootPane().setDefaultButton(ok);
