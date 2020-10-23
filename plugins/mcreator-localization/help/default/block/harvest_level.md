@@ -1,6 +1,5 @@
 This is the tier of tool required to break this block.
 
-* -1 is hand
 * 0 is wood
 * 1 is stone
 * 2 is iron
