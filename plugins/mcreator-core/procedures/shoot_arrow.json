@@ -2,6 +2,16 @@
   "args0": [
     {
       "type": "input_value",
+      "name": "yaw",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "pitch",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
       "name": "speed",
       "check": "Number"
     },
@@ -31,12 +41,16 @@
   "mcreator": {
     "toolbox_id": "entitymanagement",
     "toolbox_init": [
+      "<value name=\"yaw\"><block type=\"entity_direction\"></block></value>",
+      "<value name=\"pitch\"><block type=\"entity_pitch\"></block></value>",
       "<value name=\"speed\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
       "<value name=\"damage\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value>",
       "<value name=\"knockback\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value>",
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "inputs": [
+      "yaw",
+      "pitch",
       "speed",
       "damage",
       "knockback",
