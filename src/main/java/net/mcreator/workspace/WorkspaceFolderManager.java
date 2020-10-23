@@ -141,10 +141,20 @@ public class WorkspaceFolderManager {
 					list.add(f);
 				}
 			} else if (f.isDirectory()) {
-				listPNGsInDir(f, list);
+				if(defaultDirectoryNames(f)) {
+					listPNGsInDir(f, list);
+				}
 			}
 		}
 		return list;
+	}
+	private static boolean defaultDirectoryNames(File file){
+		if (file.getName().contains("block") || file.getName().contains("ïtem") || file.getName().contains("entity")
+				|| file.getName().contains("entities") || file.getName().contains("painting") || file.getName().contains("models")){
+			return false;
+		} else
+			return true;
+
 	}
 
 	@Nullable public File getBlocksTexturesDir() {

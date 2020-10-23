@@ -14,13 +14,13 @@ item_textures_dir: "@MODASSETSROOT/textures/item"
 armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 entity_textures_dir: "@MODASSETSROOT/textures/entity"
 painting_textures_dir: "@MODASSETSROOT/textures/painting"
-other_textures_dir: "@MODASSETSROOT/textures"
+other_textures_dir: "@MODASSETSROOT/textures/others"
 sounds_dir: "@MODASSETSROOT/sounds"
 
 base_templates:
   - template: pack.mcmeta.ftl
     writer: json
-    name: "@SRCROOT/pack.mcmeta"
+    name: "@MODASSETSROOT/pack.mcmeta"
   - template: sounds.json.ftl
     writer: json
     name: "@MODASSETSROOT/sounds.json"
