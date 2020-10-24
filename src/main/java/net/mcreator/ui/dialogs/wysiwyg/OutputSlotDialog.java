@@ -105,7 +105,7 @@ public class OutputSlotDialog extends MCreatorDialog {
 		add("North", PanelUtils.join(FlowLayout.LEFT, options));
 		setTitle("Output slot editor");
 		JButton ok = new JButton("Save slot");
-		JButton cancel = new JButton("Cancel");
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		add("South", PanelUtils.join(ok, cancel));
 
 		getRootPane().setDefaultButton(ok);

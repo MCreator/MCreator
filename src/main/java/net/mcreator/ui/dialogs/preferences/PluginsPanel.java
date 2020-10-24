@@ -27,6 +27,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.DesktopUtils;
 
@@ -48,16 +49,13 @@ class PluginsPanel {
 
 		JPanel sectionPanel = new JPanel(new BorderLayout(15, 15));
 
-		sectionPanel.add("North", new JLabel("<html><font style=\"font-size: 16px;\">Manage plugins"
-				+ "</big><br><font style=\"font-size: 9px; color: gray;\">"
-				+ "Here you can load plugins that extend functionality or add new generator types.<br>"
-				+ "It is recommended to restart MCreator after adding new plugins!"));
+		sectionPanel.add("North", L10N.label("dialog.preferences.manage_plugins"));
 		sectionPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
 
 		JToolBar opts = new JToolBar();
 		opts.setFloatable(false);
 
-		JButton add = new JButton("Load plugin... ");
+		JButton add = L10N.button("dialog.preferences.load_plugins");
 		add.setIcon(UIRES.get("16px.add.gif"));
 		opts.add(add);
 		opts.add(new JEmptyBox(5, 5));
@@ -72,7 +70,7 @@ class PluginsPanel {
 			}
 		});
 
-		JButton explorePlugins = new JButton("Explore plugins");
+		JButton explorePlugins = L10N.button("dialog.preferences.explore_plugins");
 		explorePlugins.setIcon(UIRES.get("16px.search"));
 		opts.add(explorePlugins);
 		opts.add(new JEmptyBox(5, 5));
