@@ -74,7 +74,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JComboBox<String> toolType = new JComboBox<>(
 			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Special", "MultiTool" });
 
-	private final JCheckBox stayInGridWhenCrafting = new JCheckBox(L10N.t("elementgui.common.enable"));
+	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
 
 	private final Model normal = new Model.BuiltInModel("Normal");

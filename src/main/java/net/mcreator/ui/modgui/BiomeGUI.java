@@ -261,7 +261,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(parent);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/dictionary"),
-				new JLabel(L10N.t("elementgui.biome.dictionnary"))));
+				L10N.label("elementgui.biome.dictionnary")));
 		spawnproperties.add(biomeDictionaryTypes);
 
 		spawnproperties.add(HelpUtils
@@ -464,7 +464,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		JComponent component = PanelUtils.northAndCenterElement(HelpUtils
 				.wrapWithHelpButton(this.withEntry("biome/spawn_entities"),
-						new JLabel(L10N.t("elementgui.biome.spawn_entities"))), spawnEntries);
+						L10N.label("elementgui.biome.spawn_entities")), spawnEntries);
 
 		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 

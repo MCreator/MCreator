@@ -90,7 +90,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton imp1 = new JButton(L10N.t("action.workspace.resources.import_java_model"));
+		JButton imp1 = L10N.button("action.workspace.resources.import_java_model");
 		imp1.setIcon(UIRES.get("16px.importjavamodel"));
 		imp1.setContentAreaFilled(false);
 		imp1.setOpaque(false);
@@ -103,7 +103,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 
 		imp1.addActionListener(e -> workspacePanel.mcreator.actionRegistry.importJavaModel.doAction());
 
-		JButton imp2 = new JButton(L10N.t("action.workspace.resources.import_json_model"));
+		JButton imp2 = L10N.button("action.workspace.resources.import_json_model");
 		imp2.setIcon(UIRES.get("16px.importjsonmodel"));
 		imp2.setContentAreaFilled(false);
 		imp2.setOpaque(false);
@@ -116,7 +116,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 
 		imp2.addActionListener(e -> workspacePanel.mcreator.actionRegistry.importJSONModel.doAction());
 
-		JButton imp3 = new JButton(L10N.t("action.workspace.resources.import_obj_mtl_model"));
+		JButton imp3 = L10N.button("action.workspace.resources.import_obj_mtl_model");
 		imp3.setIcon(UIRES.get("16px.importobjmodel"));
 		imp3.setContentAreaFilled(false);
 		imp3.setOpaque(false);
@@ -129,7 +129,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 
 		imp3.addActionListener(e -> workspacePanel.mcreator.actionRegistry.importOBJModel.doAction());
 
-		JButton editTextureMappings = new JButton(L10N.t("workspace.3dmodels.edit_texture_mappings"));
+		JButton editTextureMappings = L10N.button("workspace.3dmodels.edit_texture_mappings");
 		editTextureMappings.setIcon(UIRES.get("16px.edit.gif"));
 		editTextureMappings.setOpaque(false);
 		editTextureMappings.setContentAreaFilled(false);
@@ -137,7 +137,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		bar.add(editTextureMappings);
 		editTextureMappings.addActionListener(e -> editSelectedModelTextureMappings());
 
-		JButton editModelAnimations = new JButton(L10N.t("workspace.3dmodels.redefine_animations"));
+		JButton editModelAnimations = L10N.button("workspace.3dmodels.redefine_animations");
 		editModelAnimations.setIcon(UIRES.get("16px.edit.gif"));
 		editModelAnimations.setOpaque(false);
 		editModelAnimations.setContentAreaFilled(false);
@@ -145,7 +145,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		bar.add(editModelAnimations);
 		editModelAnimations.addActionListener(e -> editSelectedModelAnimations());
 
-		JButton del = new JButton(L10N.t("workspace.3dmodels.delete_selected"));
+		JButton del = L10N.button("workspace.3dmodels.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
 		del.setContentAreaFilled(false);

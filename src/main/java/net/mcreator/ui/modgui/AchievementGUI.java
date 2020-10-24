@@ -163,7 +163,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		selp.add(hideIfNotCompleted);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_display"),
-				new JLabel(L10N.t("elementgui.advancement.hide_display"))));
+				L10N.label("elementgui.advancement.hide_display")));
 		selp.add(disableDisplay);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_xp"),

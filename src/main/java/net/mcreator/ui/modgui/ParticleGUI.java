@@ -109,55 +109,55 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		});
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"),
-				new JLabel(L10N.t("elementgui.particle.texture"))));
+				L10N.label("elementgui.particle.texture")));
 		spo2.add(PanelUtils.centerAndEastElement(texture, importmobtexture));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/animated_texture"),
-				new JLabel(L10N.t("elementgui.particle.animated_texture"))));
+				L10N.label("elementgui.particle.animated_texture")));
 		spo2.add(animate);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/animated_frame_duration"),
-				new JLabel(L10N.t("elementgui.particle.animated_frame_duration"))));
+				L10N.label("elementgui.particle.animated_frame_duration")));
 		spo2.add(frameDuration);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/render_type"),
-				new JLabel(L10N.t("elementgui.particle.render_type"))));
+				L10N.label("elementgui.particle.render_type")));
 		spo2.add(renderType);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/scale"),
-				new JLabel(L10N.t("elementgui.particle.visual_scale"))));
+				L10N.label("elementgui.particle.visual_scale")));
 		spo2.add(scale);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/width"),
-				new JLabel(L10N.t("elementgui.particle.bbox_width"))));
+				L10N.label("elementgui.particle.bbox_width")));
 		spo2.add(width);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/height"),
-				new JLabel(L10N.t("elementgui.particle.bbox_height"))));
+				L10N.label("elementgui.particle.bbox_height")));
 		spo2.add(height);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/speed_factor"),
-				new JLabel(L10N.t("elementgui.particle.speed_factor"))));
+				L10N.label("elementgui.particle.speed_factor")));
 		spo2.add(speedFactor);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gravity"),
-				new JLabel(L10N.t("elementgui.particle.gravity"))));
+				L10N.label("elementgui.particle.gravity")));
 		spo2.add(gravity);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/max_age"),
-				new JLabel(L10N.t("elementgui.particle.max_age"))));
+				L10N.label("elementgui.particle.max_age")));
 		spo2.add(maxAge);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/max_age_diff"),
-				new JLabel(L10N.t("elementgui.particle.max_age_diff"))));
+				L10N.label("elementgui.particle.max_age_diff")));
 		spo2.add(maxAgeDiff);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/always_show"),
-				new JLabel(L10N.t("elementgui.particle.always_show"))));
+				L10N.label("elementgui.particle.always_show")));
 		spo2.add(alwaysShow);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/can_collide"),
-				new JLabel(L10N.t("elementgui.particle.does_collide"))));
+				L10N.label("elementgui.particle.does_collide")));
 		spo2.add(canCollide);
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils
