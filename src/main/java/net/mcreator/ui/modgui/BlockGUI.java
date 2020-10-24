@@ -172,7 +172,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
-	private final JComboBox<String> particleToSpawn = new JComboBox<>(ElementUtil.loadParticles());
+	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
 
 	private final JComboBox<String> particleSpawningShape = new JComboBox<>(
 			new String[] { "Spread", "Top", "Tube", "Plane" });
@@ -1193,6 +1193,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.loadMapColors()), "DEFAULT");
 		ComboBoxUtil.updateComboBoxContents(aiPathNodeType, Arrays.asList(ElementUtil.loadPathNodeTypes()), "DEFAULT");
+
+		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -1260,7 +1262,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		frequencyPerChunks.setValue(block.frequencyPerChunks);
 		frequencyOnChunk.setValue(block.frequencyOnChunk);
 		spawnParticles.setSelected(block.spawnParticles);
-		particleToSpawn.setSelectedItem(block.particleToSpawn.getUnmappedValue());
+		particleToSpawn.setSelectedItem(block.particleToSpawn);
 		particleSpawningShape.setSelectedItem(block.particleSpawningShape);
 		particleCondition.setSelectedProcedure(block.particleCondition);
 		generateCondition.setSelectedProcedure(block.generateCondition);
@@ -1385,7 +1387,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.unbreakable = unbreakable.isSelected();
 		block.breakHarvestLevel = (int) breakHarvestLevel.getValue();
 		block.spawnParticles = spawnParticles.isSelected();
-		block.particleToSpawn = new Particle(mcreator.getWorkspace(), (String) particleToSpawn.getSelectedItem());
+		block.particleToSpawn = new Particle(mcreator.getWorkspace(), particleToSpawn.getSelectedItem());
 		block.particleSpawningShape = (String) particleSpawningShape.getSelectedItem();
 		block.particleSpawningRadious = (double) particleSpawningRadious.getValue();
 		block.particleAmount = (int) particleAmount.getValue();
