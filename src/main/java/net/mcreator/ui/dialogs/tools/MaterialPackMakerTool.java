@@ -59,22 +59,22 @@ public class MaterialPackMakerTool {
 		color.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		name.enableRealtimeValidation();
 
-		props.add(L10N.label("dialog.tools.material_ore_pack_name"));
+		props.add(L10N.label("dialog.tools.material_pack_name"));
 		props.add(name);
 
-		props.add(L10N.label("dialog.tools.material_ore_pack_type"));
+		props.add(L10N.label("dialog.tools.material_pack_type"));
 		props.add(type);
 
-		props.add(L10N.label("dialog.tools.material_ore_pack_color_accent"));
+		props.add(L10N.label("dialog.tools.material_pack_color_accent"));
 		props.add(color);
 
-		props.add(L10N.label("dialog.tools.material_ore_pack_power_factor"));
+		props.add(L10N.label("dialog.tools.material_pack_power_factor"));
 		props.add(power);
 
 		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name));
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
-		JButton ok = L10N.button("dialog.tools.material_ore_pack_create");
+		JButton ok = L10N.button("dialog.tools.material_pack_create");
 		JButton canecel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
 		canecel.addActionListener(e -> dialog.setVisible(false));
 		dialog.add("South", PanelUtils.join(ok, canecel));
