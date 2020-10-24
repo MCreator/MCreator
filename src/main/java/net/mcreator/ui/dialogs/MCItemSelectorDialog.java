@@ -95,7 +95,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		});
 
 		JPanel buttons = new JPanel();
-		JButton naprej2 = new JButton("Cancel");
+		JButton naprej2 = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 
 		JButton naprej = new JButton("Use selected item");
 		naprej.addActionListener(e -> {

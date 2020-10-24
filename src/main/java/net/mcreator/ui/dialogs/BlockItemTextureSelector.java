@@ -90,7 +90,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		JPanel buttons = new JPanel();
 
 		naprej.setFont(naprej.getFont().deriveFont(16.0f));
-		JButton naprej2 = new JButton("Cancel");
+		JButton naprej2 = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		naprej2.setFont(naprej2.getFont().deriveFont(16.0f));
 
 		buttons.add(naprej);

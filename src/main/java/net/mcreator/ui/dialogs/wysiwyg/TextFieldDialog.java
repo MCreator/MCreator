@@ -72,8 +72,8 @@ public class TextFieldDialog extends MCreatorDialog {
 		setTitle("Add text field");
 		options.add(PanelUtils.join(new JLabel("Initial text: "), deft));
 
-		JButton ok = new JButton("OK");
-		JButton cancel = new JButton("Cancel");
+		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		add("South", PanelUtils.join(ok, cancel));
 
 		getRootPane().setDefaultButton(ok);

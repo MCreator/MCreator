@@ -57,7 +57,7 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	private final Map<PreferencesUnit, JComponent> entries = new HashMap<>();
 
-	private final JButton apply = new JButton("Apply");
+	private final JButton apply = L10N.button("action.common.apply");
 
 	private final Window parent;
 
@@ -67,7 +67,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		this.parent = parent;
 
 		setModal(true);
-		setTitle("MCreator's Preferences");
+		setTitle(L10N.t("dialog.preferences.title_mcreator"));
 
 		sections.setBackground(getBackground());
 		sections.setFixedCellHeight(26);
@@ -102,14 +102,14 @@ public class PreferencesDialog extends MCreatorDialog {
 		sections.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		ComponentUtils.deriveFont(sections, 13);
 
-		JButton ok = new JButton("Save");
-		JButton cancel = new JButton("Cancel");
+		JButton ok = L10N.button("dialog.preferences.save");
+		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
 
-		JButton reset = new JButton("Restore defaults");
+		JButton reset = L10N.button("dialog.preferences.restore_defaults");
 		reset.addActionListener(actionEvent -> {
 			int option = JOptionPane
-					.showConfirmDialog(null, "Are you sure you want to restore preferences to default values?",
-							"Restore defaults", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+					.showConfirmDialog(null, L10N.t("dialog.preferences.restore_defaults_confirmation"),
+							L10N.t("dialog.preferences.restore_defaults"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 			if (option == JOptionPane.YES_OPTION) {
 				PreferencesManager.PREFERENCES = new PreferencesData();
 				PreferencesManager.storePreferences(PreferencesManager.PREFERENCES);
@@ -168,10 +168,10 @@ public class PreferencesDialog extends MCreatorDialog {
 		}
 		sections.setSelectedIndex(0);
 
-		new EditTemplatesPanel(this, "UI backgrounds", "backgrounds", "png");
-		new EditTemplatesPanel(this, "Procedure templates", "templates/ptpl", "ptpl");
-		new EditTemplatesPanel(this, "AI builder templates", "templates/aitpl", "aitpl");
-		new EditTemplatesPanel(this, "Texture templates", "templates/textures/texturemaker", "png");
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ui_backgrounds"), "backgrounds", "png");
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_procedure_templates"), "templates/ptpl", "ptpl");
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ai_builder_templates"), "templates/aitpl", "aitpl");
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_texture_templates"), "templates/textures/texturemaker", "png");
 		new PluginsPanel(this);
 	}
 
@@ -192,8 +192,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		cons.weighty = 1;
 		cons.insets = new Insets(5, 10, 15, 10);
 		sectionPanel.setOpaque(false);
-		sectionPanel.add(new JLabel("<html><font style=\"font-size: 16px;\">" + name
-				+ "</big><br><div width=700><font style=\"font-size: 9px; color: gray;\">" + description), cons);
+		sectionPanel.add(L10N.label("dialog.preferences.description", name, description), cons);
 		cons.insets = new Insets(5, 10, 5, 10);
 
 		Field[] fields = sectionField.getType().getFields();
@@ -237,8 +236,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		if (description == null)
 			description = "";
 
-		JComponent label = new JLabel(
-				"<html>" + name + ":<br><font style=\"font-size: 8px; color: gray;\">" + description);
+		JComponent label = L10N.label("dialog.preferences.entry_description", name, description);
 
 		if (actualField.getType().equals(int.class) || actualField.getType().equals(Integer.class)) {
 			int max = (int) entry.max();
@@ -285,7 +283,7 @@ public class PreferencesDialog extends MCreatorDialog {
 			return box;
 		}
 
-		placeInside.add(new JLabel(name + ": unknown property type"), cons);
+		placeInside.add(L10N.label("dialog.preferences.unknown_property_type", name), cons);
 		return null;
 	}
 

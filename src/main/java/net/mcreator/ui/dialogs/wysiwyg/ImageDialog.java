@@ -66,11 +66,11 @@ public class ImageDialog extends MCreatorDialog {
 
 		setTitle("Image component");
 
-		JButton ok = new JButton("OK");
+		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 
 		getRootPane().setDefaultButton(ok);
 
-		JButton cancel = new JButton("Cancel");
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		add("South", PanelUtils.join(ok, cancel));
 
 		if (image != null) {

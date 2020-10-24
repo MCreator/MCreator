@@ -33,6 +33,7 @@ import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.dialogs.CodeErrorDialog;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.ide.ProjectFileOpener;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.util.HtmlUtils;
@@ -447,14 +448,14 @@ public class GradleConsole extends JPanel {
 				status = ERROR;
 				ref.consoleTab.repaint();
 				ref.statusBar.reloadGradleIndicator();
-				ref.statusBar.setGradleMessage("Gradle idle");
+				ref.statusBar.setGradleMessage(L10N.t("gradle.idle"));
 			}
 
 			private void succeed() {
 				status = READY;
 				ref.consoleTab.repaint();
 				ref.statusBar.reloadGradleIndicator();
-				ref.statusBar.setGradleMessage("Gradle idle");
+				ref.statusBar.setGradleMessage(L10N.t("gradle.idle"));
 			}
 
 			private void taskComplete(int mcreatorGradleStatus) {

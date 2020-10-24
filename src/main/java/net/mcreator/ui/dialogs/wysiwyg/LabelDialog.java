@@ -75,11 +75,11 @@ public class LabelDialog extends MCreatorDialog {
 		}
 
 		options.add(PanelUtils.join(FlowLayout.LEFT, new JLabel("Text color: "), cola));
-		JButton ok = new JButton("OK");
+		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 
 		getRootPane().setDefaultButton(ok);
 
-		JButton cancel = new JButton("Cancel");
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		add("South", PanelUtils.join(ok, cancel));
 
 		if (label != null) {
