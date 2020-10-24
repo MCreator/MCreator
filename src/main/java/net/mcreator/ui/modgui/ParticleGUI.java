@@ -59,6 +59,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1, -100, 100, 0.1));
 	private final JSpinner maxAge = new JSpinner(new SpinnerNumberModel(7, 0, 100000, 1));
 	private final JSpinner maxAgeDiff = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
+	private final JSpinner frameDuration = new JSpinner(new SpinnerNumberModel(1, 0, 100000, 1));
 
 	private final JCheckBox canCollide = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox alwaysShow = L10N.checkbox("elementgui.common.enable");
@@ -93,7 +94,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		texture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 		ComponentUtils.deriveFont(texture, 16);
 
-		JPanel spo2 = new JPanel(new GridLayout(12, 2, 2, 2));
+		JPanel spo2 = new JPanel(new GridLayout(13, 2, 2, 2));
 		spo2.setOpaque(false);
 
 		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
@@ -114,6 +115,10 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/animated_texture"),
 				new JLabel(L10N.t("elementgui.particle.animated_texture"))));
 		spo2.add(animate);
+
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/animated_frame_duration"),
+				new JLabel(L10N.t("elementgui.particle.animated_frame_duration"))));
+		spo2.add(frameDuration);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/render_type"),
 				new JLabel(L10N.t("elementgui.particle.render_type"))));
@@ -191,6 +196,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		scale.setValue(particle.scale);
 		gravity.setValue(particle.gravity);
 		speedFactor.setValue(particle.speedFactor);
+		frameDuration.setValue(particle.frameDuration);
 		maxAge.setValue(particle.maxAge);
 		maxAgeDiff.setValue(particle.maxAgeDiff);
 		canCollide.setSelected(particle.canCollide);
@@ -209,6 +215,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		particle.gravity = (double) gravity.getValue();
 		particle.speedFactor = (double) speedFactor.getValue();
 		particle.maxAge = (int) maxAge.getValue();
+		particle.frameDuration = (int) frameDuration.getValue();
 		particle.maxAgeDiff = (int) maxAgeDiff.getValue();
 		particle.canCollide = canCollide.isSelected();
 		particle.animate = animate.isSelected();

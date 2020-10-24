@@ -1265,6 +1265,7 @@ public class TestWorkspaceDataProvider {
 			net.mcreator.element.types.Particle particle = new net.mcreator.element.types.Particle(modElement);
 			particle.texture = "test.png";
 			particle.width = 2.3;
+			particle.frameDuration = 2;
 			particle.height = 1.38;
 			particle.scale = 1.38;
 			particle.gravity = 12.3;

@@ -63,14 +63,10 @@ public class ${name}Particle extends ${JavaModName}Elements.ModElement{
 			this.setSize((float) ${data.width}, (float) ${data.height});
 			this.particleScale *= (float) ${data.scale};
 
-			<#if data.animate>
-			this.maxAge = ${data.getTextureTileCount()};
+			<#if (data.maxAgeDiff > 0)>
+			this.maxAge = (int) Math.max(1, ${data.maxAge} + (this.rand.nextInt(${data.maxAgeDiff * 2}) - ${data.maxAgeDiff}));
 			<#else>
-				<#if (data.maxAgeDiff > 0)>
-				this.maxAge = (int) Math.max(1, ${data.maxAge} + (this.rand.nextInt(${data.maxAgeDiff * 2}) - ${data.maxAgeDiff}));
-				<#else>
-				this.maxAge = ${data.maxAge};
-				</#if>
+			this.maxAge = ${data.maxAge};
 			</#if>
 
 			this.particleGravity = (float) ${data.gravity};
@@ -102,7 +98,8 @@ public class ${name}Particle extends ${JavaModName}Elements.ModElement{
 
 			<#if data.animate>
 			if(!this.isExpired) {
-				this.selectSpriteWithAge(this.spriteSet);
+				<#assign frameCount = data.getTextureTileCount()>
+				this.setSprite(this.spriteSet.get((this.age / ${data.frameDuration}) % ${frameCount + 1}, ${frameCount}));
 			}
 			</#if>
 

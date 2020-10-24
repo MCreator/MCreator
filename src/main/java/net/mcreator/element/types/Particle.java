@@ -37,7 +37,9 @@ import java.io.IOException;
 public class Particle extends GeneratableElement {
 
 	public String texture;
+
 	public boolean animate;
+	public int frameDuration;
 
 	public double width;
 	public double height;
