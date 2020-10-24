@@ -104,7 +104,7 @@ public class Particle extends GeneratableElement {
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateParticlePreviewPicture(
 				getModElement().getWorkspace().getFolderManager()
-						.getOtherTextureFile(FilenameUtils.removeExtension(texture)), getTextureTileCount() > 1);
+						.getOtherTextureFile(FilenameUtils.removeExtension(texture)), getTextureTileCount() > 1, getModElement().getName());
 	}
 
 }
