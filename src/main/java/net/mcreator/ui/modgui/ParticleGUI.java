@@ -59,7 +59,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1, -100, 100, 0.1));
 	private final JSpinner maxAge = new JSpinner(new SpinnerNumberModel(7, 0, 100000, 1));
 	private final JSpinner maxAgeDiff = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
-	private final JSpinner frameDuration = new JSpinner(new SpinnerNumberModel(1, 0, 100000, 1));
+	private final JSpinner frameDuration = new JSpinner(new SpinnerNumberModel(1, 1, 100000, 1));
 
 	private final JCheckBox canCollide = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox alwaysShow = L10N.checkbox("elementgui.common.enable");
