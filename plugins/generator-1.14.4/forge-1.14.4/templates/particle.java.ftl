@@ -99,7 +99,7 @@ public class ${name}Particle extends ${JavaModName}Elements.ModElement{
 			<#if data.animate>
 			if(!this.isExpired) {
 				<#assign frameCount = data.getTextureTileCount()>
-				this.setSprite(this.spriteSet.get((this.age / ${data.frameDuration}) % ${frameCount + 1}, ${frameCount}));
+				this.setSprite(this.spriteSet.get((this.age / ${data.frameDuration}) % ${frameCount} + 1, ${frameCount}));
 			}
 			</#if>
 
