@@ -60,13 +60,13 @@ public class PotionGUI extends ModElementGUI<Potion> {
 	private final JColor color = new JColor(mcreator);
 	private final VComboBox<String> icon = new SearchableComboBox<>();
 
-	private final JCheckBox isInstant = new JCheckBox(L10N.t("elementgui.potion.is_instant"));
-	private final JCheckBox isBad = new JCheckBox(L10N.t("elementgui.potion.is_bad"));
-	private final JCheckBox isBenefitical = new JCheckBox(L10N.t("elementgui.potion.is_benefitical"));
-	private final JCheckBox renderStatusInInventory = new JCheckBox(L10N.t("elementgui.common.enable"));
-	private final JCheckBox renderStatusInHUD = new JCheckBox(L10N.t("elementgui.common.enable"));
+	private final JCheckBox isInstant = L10N.checkbox("elementgui.potion.is_instant");
+	private final JCheckBox isBad = L10N.checkbox("elementgui.potion.is_bad");
+	private final JCheckBox isBenefitical = L10N.checkbox("elementgui.potion.is_benefitical");
+	private final JCheckBox renderStatusInInventory = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox renderStatusInHUD = L10N.checkbox("elementgui.common.enable");
 
-	private final JCheckBox registerPotionType = new JCheckBox(L10N.t("elementgui.potion.enable_bottles"));
+	private final JCheckBox registerPotionType = L10N.checkbox("elementgui.potion.enable_bottles");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -115,7 +115,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		renderStatusInHUD.setOpaque(false);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/effect_display_name"),
-				new JLabel(L10N.t("elementgui.potion.effect_display_name"))));
+				L10N.label("elementgui.potion.effect_display_name")));
 		selp.add(effectName);
 
 		JButton importicontexture = new JButton(UIRES.get("18px.add"));
@@ -129,39 +129,39 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		});
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/color"), new JLabel(L10N.t("elementgui.potion.color"))));
+				.wrapWithHelpButton(this.withEntry("potion/color"), L10N.label("elementgui.potion.color")));
 		selp.add(color);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/icon"), new JLabel(L10N.t("elementgui.potion.icon"))));
+				.wrapWithHelpButton(this.withEntry("potion/icon"), L10N.label("elementgui.potion.icon")));
 		selp.add(PanelUtils.centerAndEastElement(icon, importicontexture));
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/has_bottles"),
-				new JLabel(L10N.t("elementgui.potion.has_bottle"))));
+				L10N.label("elementgui.potion.has_bottle")));
 		selp.add(registerPotionType);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/display_name"),
-				new JLabel(L10N.t("elementgui.potion.display_name"))));
+				L10N.label("elementgui.potion.display_name")));
 		selp.add(name);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/instant"), new JLabel(L10N.t("elementgui.potion.instant"))));
+				.wrapWithHelpButton(this.withEntry("potion/instant"), L10N.label("elementgui.potion.instant")));
 		selp.add(isInstant);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/bad"), new JLabel(L10N.t("elementgui.potion.bad"))));
+				.wrapWithHelpButton(this.withEntry("potion/bad"), L10N.label("elementgui.potion.bad")));
 		selp.add(isBad);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/benefitical"),
-				new JLabel(L10N.t("elementgui.potion.benefitical"))));
+				L10N.label("elementgui.potion.benefitical")));
 		selp.add(isBenefitical);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/render_in_inventory"),
-				new JLabel(L10N.t("elementgui.potion.render_status_inventory"))));
+				L10N.label("elementgui.potion.render_status_inventory")));
 		selp.add(renderStatusInInventory);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/render_in_hud"),
-				new JLabel(L10N.t("elementgui.potion.render_status_hud"))));
+				L10N.label("elementgui.potion.render_status_hud")));
 		selp.add(renderStatusInHUD);
 
 		selp.setOpaque(false);

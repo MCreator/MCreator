@@ -20,6 +20,7 @@ package net.mcreator.element.parts;
 
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.workspace.Workspace;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,6 +34,10 @@ public class Particle extends MappableElement {
 		this();
 		mapper.setWorkspace(owner);
 		setValue(name);
+	}
+
+	public Particle(@NotNull Workspace owner, DataListEntry name) {
+		this(owner, name.getName());
 	}
 
 }
