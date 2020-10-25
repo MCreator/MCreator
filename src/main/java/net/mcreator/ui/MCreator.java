@@ -322,17 +322,15 @@ public final class MCreator extends JFrame {
 		boolean safetoexit = gradleConsole.getStatus() != GradleConsole.RUNNING;
 		if (!safetoexit) {
 			if (gradleConsole.isGradleSetupTaskRunning()) {
-				JOptionPane.showMessageDialog(this,
-						L10N.t("action.gradle.close_mcreator_while_installation_message"),
-						L10N.t("action.gradle.close_mcreator_while_installation_title"),
-						JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(this, L10N.t("action.gradle.close_mcreator_while_installation_message"),
+						L10N.t("action.gradle.close_mcreator_while_installation_title"), JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
 
-			int reply = JOptionPane.showConfirmDialog(this,
-					L10N.t("action.gradle.close_mcreator_while_running_message"),
-					L10N.t("action.gradle.close_mcreator_while_running_title"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null);
+			int reply = JOptionPane
+					.showConfirmDialog(this, L10N.t("action.gradle.close_mcreator_while_running_message"),
+							L10N.t("action.gradle.close_mcreator_while_running_title"), JOptionPane.YES_NO_OPTION,
+							JOptionPane.WARNING_MESSAGE, null);
 			if (reply == JOptionPane.YES_OPTION) {
 				safetoexit = true;
 				gradleConsole.cancelTask();

@@ -69,14 +69,15 @@ public static class CustomPortalBlock extends NetherPortalBlock {
 			double vy = (random.nextFloat() - 0.5) / 2f;
 			double vz = (random.nextFloat() - 0.5) / 2f;
 			int j = random.nextInt(4) - 1;
-			if (world.getBlockState(pos.west()).getBlock() != this && world.getBlockState(pos.east()).getBlock() != this) {
+			if (world.getBlockState(pos.west()).getBlock() != this
+					&& world.getBlockState(pos.east()).getBlock() != this) {
 				px = pos.getX() + 0.5 + 0.25 * j;
 				vx = random.nextFloat() * 2 * j;
 			} else {
 				pz = pos.getZ() + 0.5 + 0.25 * j;
 				vz = random.nextFloat() * 2 * j;
 			}
-			world.addParticle(ParticleTypes.${data.portalParticles}, px, py, pz, vx, vy, vz);
+			world.addParticle(${data.portalParticles}, px, py, pz, vx, vy, vz);
 		}
 
 		<#if data.portalSound.toString()?has_content>
@@ -85,7 +86,7 @@ public static class CustomPortalBlock extends NetherPortalBlock {
 					(net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS
 							.getValue(new ResourceLocation(("${data.portalSound}"))), SoundCategory.BLOCKS, 0.5f,
 					random.nextFloat() * 0.4F + 0.8F, false);
-		</#if>
+        </#if>
 	}
 
 	@Override public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {

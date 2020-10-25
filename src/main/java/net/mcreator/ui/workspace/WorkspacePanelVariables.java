@@ -187,7 +187,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton addvar = new JButton(L10N.t("workspace.variables.add_new"));
+		JButton addvar = L10N.button("workspace.variables.add_new");
 		addvar.setIcon(UIRES.get("16px.add.gif"));
 		addvar.setContentAreaFilled(false);
 		addvar.setOpaque(false);
@@ -195,7 +195,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		addvar.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(addvar);
 
-		JButton delvar = new JButton(L10N.t("workspace.variables.remove_selected"));
+		JButton delvar = L10N.button("workspace.variables.remove_selected");
 		delvar.setIcon(UIRES.get("16px.delete.gif"));
 		delvar.setContentAreaFilled(false);
 		delvar.setOpaque(false);
@@ -203,7 +203,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		delvar.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(delvar);
 
-		JButton help = new JButton(L10N.t("workspace.variables.help"));
+		JButton help = L10N.button("workspace.variables.help");
 		help.setIcon(UIRES.get("16px.info"));
 		help.setContentAreaFilled(false);
 		help.setOpaque(false);

@@ -191,14 +191,14 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		pas.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_one"), cbs, bt, as));
 		pas.add(PanelUtils
-				.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_two"), cbs2, bt2, col1, type1, L10N.label("dialog.imageeditor.template_rotation"),
-						ang1));
+				.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_two"), cbs2, bt2, col1, type1,
+						L10N.label("dialog.imageeditor.template_rotation"), ang1));
 		pas.add(PanelUtils
-				.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_three"), cbs3, bt3, col2, type2, L10N.label("dialog.imageeditor.template_rotation"),
-						ang2));
+				.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_three"), cbs3, bt3, col2, type2,
+						L10N.label("dialog.imageeditor.template_rotation"), ang2));
 		pas.add(PanelUtils
-				.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_four"), cbs4, bt4, col4, type3, L10N.label("dialog.imageeditor.template_rotation"),
-						ang3));
+				.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_four"), cbs4, bt4, col4, type3,
+						L10N.label("dialog.imageeditor.template_rotation"), ang3));
 
 		col1.setColorSelectedListener(event -> refreshIcon());
 		col2.setColorSelectedListener(event -> refreshIcon());
@@ -266,7 +266,8 @@ public class FromTemplateDialog extends MCreatorDialog {
 		cancel.addActionListener(e -> setVisible(false));
 
 		merge.addActionListener(e -> {
-			Layer first = new Layer(16, 16, 0, 0, L10N.t("dialog.imageeditor.template_merged_layer"), refreshIcon().getImage());
+			Layer first = new Layer(16, 16, 0, 0, L10N.t("dialog.imageeditor.template_merged_layer"),
+					refreshIcon().getImage());
 			canvas.add(first);
 			setVisible(false);
 		});

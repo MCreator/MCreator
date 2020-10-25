@@ -26,7 +26,7 @@ Blockly.Blocks['cancel_event'] = {
 Blockly.Blocks['set_event_result'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.set_event_result.line1"))
-        	.appendField(new Blockly.FieldDropdown([["DEFAULT","DEFAULT"], ["ALLOW","ALLOW"], ["DENY","DENY"]]), 'result');
+            .appendField(new Blockly.FieldDropdown([["DEFAULT", "DEFAULT"], ["ALLOW", "ALLOW"], ["DENY", "DENY"]]), 'result');
         this.appendDummyInput().appendField(new Blockly.FieldLabel(javabridge.t("blockly.block.set_event_result.line2"), 'small-text'));
         this.setPreviousStatement(true);
         this.setNextStatement(true);

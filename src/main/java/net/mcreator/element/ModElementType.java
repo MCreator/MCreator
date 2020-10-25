@@ -69,6 +69,8 @@ public enum ModElementType {
 
 	@SerializedName("potion") POTION(BaseType.POTION, RecipeElementType.NONE),
 
+	@SerializedName("particle") PARTICLE(BaseType.PARTICLE, RecipeElementType.NONE),
+
 	@SerializedName("enchantment") ENCHANTMENT(BaseType.ENCHANTMENT, RecipeElementType.NONE),
 
 	@SerializedName("code") CODE(BaseType.OTHER, RecipeElementType.NONE),
@@ -117,7 +119,7 @@ public enum ModElementType {
 	}
 
 	public enum BaseType {
-		BLOCK, ITEM, ARMOR, BIOME, COMMAND, FUEL, ENTITY, TAB, DIMENSION, STRUCTURE, GUI, KEYBIND, PROCEDURE, OVERLAY, POTION, OTHER, DATAPACK, ENCHANTMENT, /* legacy: */ ACHIEVEMENT
+		BLOCK, ITEM, ARMOR, BIOME, COMMAND, FUEL, ENTITY, TAB, DIMENSION, STRUCTURE, GUI, KEYBIND, PROCEDURE, OVERLAY, POTION, OTHER, DATAPACK, ENCHANTMENT, PARTICLE, /* legacy: */ ACHIEVEMENT
 	}
 
 }

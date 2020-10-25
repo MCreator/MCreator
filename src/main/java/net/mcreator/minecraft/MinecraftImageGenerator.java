@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 public class MinecraftImageGenerator {
 
@@ -776,8 +777,9 @@ public class MinecraftImageGenerator {
 					workspace.getFolderManager().getOtherTextureFile(FilenameUtils.removeExtension(mobModelTexture))
 							.getAbsolutePath()).getImage()));
 
-			graphics2D.drawImage(ImageUtils.colorize(UIRES.get("mod_preview_bases.entity_base"), textureColor, false).getImage(), 0, 0,
-					null);
+			graphics2D.drawImage(
+					ImageUtils.colorize(UIRES.get("mod_preview_bases.entity_base"), textureColor, false).getImage(), 0,
+					0, null);
 
 			if (hasSpawnEgg) {
 				graphics2D.setColor(spawnEggBaseColor);
@@ -832,7 +834,8 @@ public class MinecraftImageGenerator {
 		 * @param dependencies Spawn egg's base (egg) color.
 		 * @return Returns generated image.
 		 */
-		public static BufferedImage generateProcedurePreviewPicture(String procedurexml, List<Dependency> dependencies) {
+		public static BufferedImage generateProcedurePreviewPicture(String procedurexml,
+				List<Dependency> dependencies) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 
@@ -892,6 +895,70 @@ public class MinecraftImageGenerator {
 								.getImage(), 0, 0, null);
 			else
 				graphics2D.drawImage(UIRES.get("mod_preview_bases.procedure_return_base").getImage(), 0, 0, null);
+
+			graphics2D.dispose();
+			return icon;
+		}
+
+		/**
+		 * This method generates particle images.
+		 *
+		 * @param texture Particle's texture.
+		 * @param tiled   If the texture is tiled.
+		 * @return Returns generated image.
+		 */
+		public static BufferedImage generateParticlePreviewPicture(File texture, boolean tiled, String randomSeed) {
+			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2D = icon.createGraphics();
+
+			double maxdim = -1;
+			double width = -1, height = -1;
+			Image tex = null;
+			ArrayList<Image> rantex = new ArrayList<>();
+			try {
+				if (tiled) {
+					BufferedImage readImage = ImageIO.read(texture);
+					Random random = new Random(randomSeed.hashCode());
+					rantex.add(ImageUtils.randomTile(readImage, random));
+					rantex.add(ImageUtils.randomTile(readImage, random));
+					rantex.add(ImageUtils.randomTile(readImage, random));
+					width = Math.min(readImage.getWidth(), readImage.getHeight());
+					height = width;
+					maxdim = width;
+				} else {
+					tex = new ImageIcon(ImageIO.read(texture)).getImage();
+					width = tex.getWidth(null);
+					height = tex.getHeight(null);
+					maxdim = Math.max(width, height);
+				}
+			} catch (IOException e) {
+				LOG.error(e.getMessage(), e);
+			}
+
+			if ((maxdim > 0 & width > 0 & height > 0) & (tex != null || rantex.size() > 2)) {
+				BufferedImage tex1, tex2, tex3;
+				int drawWidth1 = (int) ((width / maxdim) * 7), drawHeight1 = (int) ((height / maxdim) * 7);
+				if (tex != null) {
+					tex1 = ImageUtils.resizeAA(tex, drawWidth1, drawHeight1);
+				} else {
+					tex1 = ImageUtils.resizeAA(rantex.get(0), drawWidth1, drawHeight1);
+				}
+				graphics2D.drawImage(tex1, 6 - drawWidth1 / 2, 3 - drawHeight1 / 2, null);
+
+				int drawWidth2 = (int) ((width / maxdim) * 9), drawHeight2 = (int) ((height / maxdim) * 9);
+				if (tex != null)
+					tex2 = ImageUtils.resizeAA(tex, drawWidth2, drawHeight2);
+				else
+					tex2 = ImageUtils.resizeAA(rantex.get(1), drawWidth2, drawHeight2);
+				graphics2D.drawImage(tex2, 21 - drawWidth2 / 2, 11 - drawHeight2 / 2, null);
+
+				int drawWidth3 = (int) ((width / maxdim) * 11), drawHeight3 = (int) ((height / maxdim) * 11);
+				if (tex != null)
+					tex3 = ImageUtils.resizeAA(tex, drawWidth3, drawHeight3);
+				else
+					tex3 = ImageUtils.resizeAA(rantex.get(2), drawWidth3, drawHeight3);
+				graphics2D.drawImage(tex3, 9 - drawWidth3 / 2, 20 - drawHeight3 / 2, null);
+			}
 
 			graphics2D.dispose();
 			return icon;

@@ -70,7 +70,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JCheckBox doesWaterVaporize = L10N.checkbox("elementgui.dimension.does_water_vaporize");
 
 	private final JCheckBox hasSkyLight = L10N.checkbox("elementgui.dimension.has_sky_light");
-	private final JCheckBox imitateOverworldBehaviour = L10N.checkbox("elementgui.dimension.imitate_overworld_behaviour");
+	private final JCheckBox imitateOverworldBehaviour = L10N
+			.checkbox("elementgui.dimension.imitate_overworld_behaviour");
 
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
 
@@ -79,9 +80,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final SoundSelector portalSound = new SoundSelector(mcreator);
 	private final JColor airColor = new JColor(mcreator);
 
-	private final JComboBox<String> portalParticles = new JComboBox<>(ElementUtil.loadParticles());
+	private final DataListComboBox portalParticles = new DataListComboBox(mcreator);
 
-	private final JComboBox<String> worldGenType = new JComboBox<>(new String[] { "Normal world gen", "Nether like gen", "End like gen" });
+	private final JComboBox<String> worldGenType = new JComboBox<>(
+			new String[] { "Normal world gen", "Nether like gen", "End like gen" });
 
 	private final JComboBox<String> sleepResult = new JComboBox<>(new String[] { "ALLOW", "DENY", "BED_EXPLODES" });
 
@@ -161,8 +163,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		hasFog.setOpaque(false);
 		doesWaterVaporize.setOpaque(false);
 
-		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/biomes"),
-				L10N.label("elementgui.dimension.biomes_in")));
+		proper2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("dimension/biomes"), L10N.label("elementgui.dimension.biomes_in")));
 		proper2.add(biomesInDimension);
 
 		biomesInDimension.setPreferredSize(new java.awt.Dimension(300, 42));
@@ -207,7 +209,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		pane3.setOpaque(false);
 
-		portalTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+		portalTexture = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
 
 		portalTexture.setOpaque(false);
@@ -299,8 +302,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		page1group.addValidationElement(texture);
 		page1group.addValidationElement(portalFrame);
 
-		biomesInDimension.setValidator(new ItemListFieldValidator(biomesInDimension,
-				L10N.t("elementgui.dimension.error_select_biome")));
+		biomesInDimension.setValidator(
+				new ItemListFieldValidator(biomesInDimension, L10N.t("elementgui.dimension.error_select_biome")));
 		mainFillerBlock.setValidator(new MCItemHolderValidator(mainFillerBlock));
 		fluidBlock.setValidator(new MCItemHolderValidator(fluidBlock));
 
@@ -343,6 +346,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		ComboBoxUtil.updateComboBoxContents(igniterTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("TOOLS"));
+
+		ComboBoxUtil.updateComboBoxContents(portalParticles, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -364,7 +369,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		worldGenType.setSelectedItem(dimension.worldGenType);
 		sleepResult.setSelectedItem(dimension.sleepResult);
 		igniterTab.setSelectedItem(dimension.igniterTab.getUnmappedValue());
-		portalParticles.setSelectedItem(dimension.portalParticles.getUnmappedValue());
+		portalParticles.setSelectedItem(dimension.portalParticles);
 		biomesInDimension.setListElements(dimension.biomesInDimension);
 		airColor.setColor(dimension.airColor);
 		canRespawnHere.setSelected(dimension.canRespawnHere);
@@ -390,7 +395,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		Dimension dimension = new Dimension(modElement);
 		dimension.texture = texture.getID();
 		dimension.portalTexture = portalTexture.getID();
-		dimension.portalParticles = new Particle(mcreator.getWorkspace(), (String) portalParticles.getSelectedItem());
+		dimension.portalParticles = new Particle(mcreator.getWorkspace(), portalParticles.getSelectedItem());
 		dimension.igniterTab = new TabEntry(mcreator.getWorkspace(), igniterTab.getSelectedItem());
 		dimension.portalSound = portalSound.getSound();
 		dimension.biomesInDimension = biomesInDimension.getListElements();
