@@ -128,16 +128,14 @@ public class PotionGUI extends ModElementGUI<Potion> {
 			mcreator.getWorkspace().getFolderManager().getOtherTexturesList().forEach(el -> icon.addItem(el.getName()));
 		});
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/color"), L10N.label("elementgui.potion.color")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/color"), L10N.label("elementgui.potion.color")));
 		selp.add(color);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/icon"), L10N.label("elementgui.potion.icon")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/icon"), L10N.label("elementgui.potion.icon")));
 		selp.add(PanelUtils.centerAndEastElement(icon, importicontexture));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/has_bottles"),
-				L10N.label("elementgui.potion.has_bottle")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("potion/has_bottles"), L10N.label("elementgui.potion.has_bottle")));
 		selp.add(registerPotionType);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/display_name"),
@@ -148,12 +146,11 @@ public class PotionGUI extends ModElementGUI<Potion> {
 				.wrapWithHelpButton(this.withEntry("potion/instant"), L10N.label("elementgui.potion.instant")));
 		selp.add(isInstant);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/bad"), L10N.label("elementgui.potion.bad")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/bad"), L10N.label("elementgui.potion.bad")));
 		selp.add(isBad);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/benefitical"),
-				L10N.label("elementgui.potion.benefitical")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("potion/benefitical"), L10N.label("elementgui.potion.benefitical")));
 		selp.add(isBenefitical);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/render_in_inventory"),

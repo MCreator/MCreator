@@ -940,7 +940,7 @@ public class MinecraftImageGenerator {
 				int drawWidth1 = (int) ((width / maxdim) * 7), drawHeight1 = (int) ((height / maxdim) * 7);
 				if (tex != null) {
 					tex1 = ImageUtils.resizeAA(tex, drawWidth1, drawHeight1);
-				}else {
+				} else {
 					tex1 = ImageUtils.resizeAA(rantex.get(0), drawWidth1, drawHeight1);
 				}
 				graphics2D.drawImage(tex1, 6 - drawWidth1 / 2, 3 - drawHeight1 / 2, null);
