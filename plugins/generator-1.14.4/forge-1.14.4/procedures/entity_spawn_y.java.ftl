@@ -9,5 +9,6 @@
 				return retval;
 		} else {
 			return retval;
+		}
 	}
 }.getSpawnY(world, ${input$entity}))

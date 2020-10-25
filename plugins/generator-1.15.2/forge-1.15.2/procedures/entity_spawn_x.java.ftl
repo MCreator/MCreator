@@ -9,5 +9,6 @@
 				return retval;
 		} else {
 			return retval;
+		}
 	}
 }.getSpawnX(world, ${input$entity}))
