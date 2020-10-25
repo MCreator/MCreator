@@ -120,6 +120,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			super(
 			<#elseif data.blockBase?has_content && data.blockBase == "Fence">
 			super(
+			<#elseif data.blockBase?has_content && data.blockBase == "WoodButton">
+			super(
 			<#else>
 			super(
 			</#if>

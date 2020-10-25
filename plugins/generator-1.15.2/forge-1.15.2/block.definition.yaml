@@ -281,6 +281,30 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_wall_open.json"
 
+  # TX: Wood StoneButton templates
+  - template: json/txblock/button_item.json.ftl
+    condition: "blockBase %= StoneButton"
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/txblock/button_states.json.ftl
+    condition: "blockBase %= StoneButton"
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/txblock/button.json.ftl
+    condition: "blockBase %= StoneButton"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_button.json"
+  - template: json/txblock/button_pressed.json.ftl
+    deleteWhenConditionFalse: true
+    condition: "blockBase %= StoneButton"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_button_pressed.json"
+  - template: json/txblock/button_inventory.json.ftl
+    deleteWhenConditionFalse: true
+    condition: "blockBase %= StoneButton"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
+
 localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
