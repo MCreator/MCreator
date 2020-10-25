@@ -9,7 +9,10 @@
   "output": "Number",
   "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
-    "toolbox_id": "playermanagement",
+    "toolbox_id": "entitydata",
+    "toolbox_init": [
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
     "inputs": [
       "entity"
     ],

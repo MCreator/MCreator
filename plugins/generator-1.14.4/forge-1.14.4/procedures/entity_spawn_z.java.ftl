@@ -1,8 +1,8 @@
 (new Object() {
-	public int getSpawnZ(Entity _ent) {
-		int retval = world.getSpawnPoint().getZ();
+	public int getSpawnZ(World _world, Entity _ent) {
+		int retval = _world.getSpawnPoint().getZ();
 		if (_ent instanceof PlayerEntity) {
-			BlockPos _bp = _ent.getBedLocation(world.getDimension().getType());
+			BlockPos _bp = _ent.getBedLocation(_world.getDimension().getType());
 			if (_bp != null)
 				return _bp.getZ();
 			else
@@ -10,4 +10,4 @@
 		} else {
 			return retval;
 	}
-}.getSpawnZ(${input$entity}))
+}.getSpawnZ(world, ${input$entity}))
