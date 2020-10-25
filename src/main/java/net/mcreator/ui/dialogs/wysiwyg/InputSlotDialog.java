@@ -27,6 +27,7 @@ import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.IHelpContext;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
@@ -62,47 +63,45 @@ public class InputSlotDialog extends MCreatorDialog {
 						continue;
 					if (component instanceof Slot && component.name.equals("Slot #" + slotIDnum))
 						return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-								"This slot ID is already in use");
+								L10N.t("dialog.input_slot.slot_id_already_used"));
 				}
 			} catch (Exception exc) {
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, "Slot ID must be a number");
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, L10N.t("dialog.input_slot.slot_id_must_be_number"));
 			}
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 		slotID.setText("0");
-		options.add(PanelUtils.join(FlowLayout.LEFT, new JLabel("Slot ID: "), slotID));
+		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.input_slot.slot_id"), slotID));
 
 		JColor color = new JColor(editor.mcreator);
 		options.add(PanelUtils.join(FlowLayout.LEFT,
-				new JLabel("<html>Custom color<br><small>Click only if you intend to use custom color: "), color));
+				L10N.label("dialog.input_slot.custom_color"), color));
 
 		MCItemHolder limit = new MCItemHolder(editor.mcreator, ElementUtil::loadBlocksAndItems);
 		options.add(PanelUtils
-				.join(FlowLayout.LEFT, new JLabel("<html>Limit stack input to:<br><small>If empty, there is no limit "),
+				.join(FlowLayout.LEFT, L10N.label("dialog.input_slot.limit_stack_input"),
 						limit));
 
-		JCheckBox disableStackInteraction = new JCheckBox(
-				"Disable player interaction with this slot (can't take item from it or insert in it)");
+		JCheckBox disableStackInteraction = L10N.checkbox("dialog.input_slot.disable_player_interaction");
 		options.add(PanelUtils.join(FlowLayout.LEFT, disableStackInteraction));
 
-		JCheckBox dropItemsWhenNotBound = new JCheckBox(
-				"Drop items when GUI not bound to any external inventory is closed");
+		JCheckBox dropItemsWhenNotBound = L10N.checkbox("dialog.input_slot.drop_item_when_gui_closed");
 		options.add(PanelUtils.join(FlowLayout.LEFT, dropItemsWhenNotBound));
 
 		dropItemsWhenNotBound.setSelected(true);
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slot_changed"),
-				editor.mcreator, "When slot contents change", ProcedureSelector.Side.BOTH, false,
+				editor.mcreator, L10N.t("dialog.input_slot.event_slot_content_changes"), ProcedureSelector.Side.BOTH, false,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		eh.refreshList();
 
 		ProcedureSelector eh2 = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slot_item_taken"),
-				editor.mcreator, "When item taken from slot", ProcedureSelector.Side.BOTH, false,
+				editor.mcreator, L10N.t("dialog.input_slot.event_item_taken_from_slot"), ProcedureSelector.Side.BOTH, false,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		eh2.refreshList();
 
 		ProcedureSelector eh3 = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_transferred_from_slot"),
-				editor.mcreator, "When transferred from slot (shift-click)", ProcedureSelector.Side.BOTH, false,
+				editor.mcreator, L10N.t("dialog.input_slot.event_transfered_from_slot"), ProcedureSelector.Side.BOTH, false,
 				Dependency
 						.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map/amount:number"));
 		eh3.refreshList();
@@ -111,15 +110,15 @@ public class InputSlotDialog extends MCreatorDialog {
 
 		add("North", PanelUtils.join(FlowLayout.LEFT, options));
 
-		setTitle("Input slot editor");
-		JButton ok = new JButton("Save slot");
+		setTitle(L10N.t("dialog.input_slot.editor_title"));
+		JButton ok = L10N.button("dialog.input_slot.save_slot");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		add("South", PanelUtils.join(ok, cancel));
 
 		getRootPane().setDefaultButton(ok);
 
 		if (slot != null) {
-			ok.setText("Save changes");
+			ok.setText(L10N.t("dialog.input_slot.save_changes"));
 			slotID.setText(String.valueOf(slot.id));
 			color.setColor(slot.color);
 			limit.setBlock(slot.inputLimit);
