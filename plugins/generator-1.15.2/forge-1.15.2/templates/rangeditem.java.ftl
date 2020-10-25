@@ -310,27 +310,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 </#if>
 
-	public static ArrowCustomEntity shoot(World world, LivingEntity entity, Random random, float power, double damage, int knockback) {
-		ArrowCustomEntity entityarrow = new ArrowCustomEntity(arrow, entity, world);
-		entityarrow.shoot(entity.getLookVec().x, entity.getLookVec().y, entity.getLookVec().z, power * 2, 0);
-		entityarrow.setSilent(true);
-		entityarrow.setIsCritical(${data.bulletParticles});
-		entityarrow.setDamage(damage);
-		entityarrow.setKnockbackStrength(knockback);
-		<#if data.bulletIgnitesFire>
-			entityarrow.setFire(100);
-		</#if>
-		world.addEntity(entityarrow);
-
-		double x = entity.getPosX();
-		double y = entity.getPosY();
-		double z = entity.getPosZ();
-		world.playSound((PlayerEntity) null, (double) x, (double) y, (double) z, (net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS
-				.getValue(new ResourceLocation("${data.actionSound}")), SoundCategory.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
-
-		return entityarrow;
-	}
-
 	public static ArrowCustomEntity shoot(World world, LivingEntity entity, Random random, float power, double damage, int knockback, float pitch, float yaw) {
 		ArrowCustomEntity entityarrow = new ArrowCustomEntity(arrow, entity, world);
 		entityarrow.shoot(entity, pitch, yaw, 0, power * 2, 0);
@@ -396,7 +375,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 	if (entity.abilities.isCreativeMode || stack != ItemStack.EMPTY) {
 	</#if>
 
-	ArrowCustomEntity entityarrow = shoot(world, entity, random, ${data.bulletPower}f, ${data.bulletDamage}, ${data.bulletKnockback});
+	ArrowCustomEntity entityarrow = shoot(world, entity, random, ${data.bulletPower}f, ${data.bulletDamage}, ${data.bulletKnockback}, entity.rotationPitch, entity.rotationYaw);
 
 	itemstack.damageItem(1, entity, e -> e.sendBreakAnimation(entity.getActiveHand()));
 
