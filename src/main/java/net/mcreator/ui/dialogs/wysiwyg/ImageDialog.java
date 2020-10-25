@@ -24,6 +24,7 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.IHelpContext;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -51,13 +52,13 @@ public class ImageDialog extends MCreatorDialog {
 
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
-		options.add(PanelUtils.westAndCenterElement(new JLabel("Texture: "), textureSelector));
+		options.add(PanelUtils.westAndCenterElement(L10N.label("dialog.image.texture"), textureSelector));
 
-		JCheckBox scale1x = new JCheckBox("Use original scale (1X instead of Minecraft 2X scale)");
+		JCheckBox scale1x = L10N.checkbox("dialog.image.use_scale");
 		options.add(PanelUtils.join(FlowLayout.LEFT, scale1x));
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
-				IHelpContext.NONE.withEntry("gui/image_display_condition"), editor.mcreator, "Image display condition",
+				IHelpContext.NONE.withEntry("gui/image_display_condition"), editor.mcreator, L10N.t("dialog.image.display_condition"),
 				ProcedureSelector.Side.CLIENT, false, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
@@ -74,7 +75,7 @@ public class ImageDialog extends MCreatorDialog {
 		add("South", PanelUtils.join(ok, cancel));
 
 		if (image != null) {
-			ok.setText("Save changes");
+			ok.setText(L10N.t("dialog.image.save_changes"));
 			textureSelector.setSelectedItem(image.image);
 			scale1x.setSelected(image.use1Xscale);
 			displayCondition.setSelectedProcedure(image.displayCondition);
