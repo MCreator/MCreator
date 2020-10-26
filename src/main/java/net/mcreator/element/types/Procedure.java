@@ -56,7 +56,6 @@ public class Procedure extends GeneratableElement {
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview
-				.generateProcedurePreviewPicture(procedurexml, getDependencies());
+		return MinecraftImageGenerator.Preview.generateProcedurePreviewPicture(procedurexml, getDependencies());
 	}
 }

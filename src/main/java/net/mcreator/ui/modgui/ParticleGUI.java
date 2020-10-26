@@ -108,8 +108,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 					.forEach(el -> texture.addItem(el.getName()));
 		});
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"),
-				L10N.label("elementgui.particle.texture")));
+		spo2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("particle/texture"), L10N.label("elementgui.particle.texture")));
 		spo2.add(PanelUtils.centerAndEastElement(texture, importmobtexture));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/animated_texture"),
@@ -124,28 +124,28 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				L10N.label("elementgui.particle.render_type")));
 		spo2.add(renderType);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/scale"),
-				L10N.label("elementgui.particle.visual_scale")));
+		spo2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("particle/scale"), L10N.label("elementgui.particle.visual_scale")));
 		spo2.add(scale);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/width"),
-				L10N.label("elementgui.particle.bbox_width")));
+		spo2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("particle/width"), L10N.label("elementgui.particle.bbox_width")));
 		spo2.add(width);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/height"),
-				L10N.label("elementgui.particle.bbox_height")));
+		spo2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("particle/height"), L10N.label("elementgui.particle.bbox_height")));
 		spo2.add(height);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/speed_factor"),
 				L10N.label("elementgui.particle.speed_factor")));
 		spo2.add(speedFactor);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gravity"),
-				L10N.label("elementgui.particle.gravity")));
+		spo2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("particle/gravity"), L10N.label("elementgui.particle.gravity")));
 		spo2.add(gravity);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/max_age"),
-				L10N.label("elementgui.particle.max_age")));
+		spo2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("particle/max_age"), L10N.label("elementgui.particle.max_age")));
 		spo2.add(maxAge);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/max_age_diff"),

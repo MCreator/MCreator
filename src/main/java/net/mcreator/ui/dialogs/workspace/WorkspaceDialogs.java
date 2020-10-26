@@ -245,7 +245,8 @@ public class WorkspaceDialogs {
 					fb.insertString(offset, text.toLowerCase(Locale.ENGLISH), attr);
 				}
 
-				@Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text,
+				@Override
+				public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text,
 						AttributeSet attrs) throws BadLocationException {
 					fb.replace(offset, length, text.toLowerCase(Locale.ENGLISH), attrs);
 				}
@@ -458,8 +459,7 @@ public class WorkspaceDialogs {
 						e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins"));
 
 				apiSettings.add("South", PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("dialog.workspace_settings.plugins_tip"),
-								explorePlugins));
+						.join(FlowLayout.LEFT, L10N.label("dialog.workspace_settings.plugins_tip"), explorePlugins));
 
 				_external_apis.add(new JEmptyBox(5, 15));
 				_external_apis.add(apiSettings);

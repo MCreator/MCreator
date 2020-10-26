@@ -260,8 +260,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				.wrapWithHelpButton(this.withEntry("biome/parent"), L10N.label("elementgui.biome.parent")));
 		spawnproperties.add(parent);
 
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/dictionary"),
-				L10N.label("elementgui.biome.dictionnary")));
+		spawnproperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("biome/dictionary"), L10N.label("elementgui.biome.dictionnary")));
 		spawnproperties.add(biomeDictionaryTypes);
 
 		spawnproperties.add(HelpUtils

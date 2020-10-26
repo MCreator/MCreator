@@ -163,8 +163,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		hasFog.setOpaque(false);
 		doesWaterVaporize.setOpaque(false);
 
-		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/biomes"),
-				L10N.label("elementgui.dimension.biomes_in")));
+		proper2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("dimension/biomes"), L10N.label("elementgui.dimension.biomes_in")));
 		proper2.add(biomesInDimension);
 
 		biomesInDimension.setPreferredSize(new java.awt.Dimension(300, 42));
@@ -209,7 +209,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		pane3.setOpaque(false);
 
-		portalTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+		portalTexture = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
 
 		portalTexture.setOpaque(false);
@@ -301,8 +302,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		page1group.addValidationElement(texture);
 		page1group.addValidationElement(portalFrame);
 
-		biomesInDimension.setValidator(new ItemListFieldValidator(biomesInDimension,
-				L10N.t("elementgui.dimension.error_select_biome")));
+		biomesInDimension.setValidator(
+				new ItemListFieldValidator(biomesInDimension, L10N.t("elementgui.dimension.error_select_biome")));
 		mainFillerBlock.setValidator(new MCItemHolderValidator(mainFillerBlock));
 		fluidBlock.setValidator(new MCItemHolderValidator(fluidBlock));
 

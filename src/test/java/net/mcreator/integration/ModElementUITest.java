@@ -146,18 +146,21 @@ public class ModElementUITest {
 						.fromJSONtoGeneratableElement(exportedJSON, modElement);// from JSON to generatableelement
 
 				if (generatableElement == null) {
-					LOG.warn("This mod element type does not support generatable elements: " + modElement.getType().getReadableName());
+					LOG.warn("This mod element type does not support generatable elements: " + modElement.getType()
+							.getReadableName());
 					continue;
 				}
 
-				ModElementGUI<?> modElementGUI = modElementRegistration.getValue().getModElement(mcreator, modElement, false);
+				ModElementGUI<?> modElementGUI = modElementRegistration.getValue()
+						.getModElement(mcreator, modElement, false);
 
 				Field field = modElementGUI.getClass().getSuperclass().getDeclaredField("editingMode");
 				field.setAccessible(true);
 				field.set(modElementGUI, true);
 
 				// test opening generatable element
-				Method method = modElementGUI.getClass().getDeclaredMethod("openInEditingMode", GeneratableElement.class);
+				Method method = modElementGUI.getClass()
+						.getDeclaredMethod("openInEditingMode", GeneratableElement.class);
 				method.setAccessible(true);
 				method.invoke(modElementGUI, generatableElement);
 
