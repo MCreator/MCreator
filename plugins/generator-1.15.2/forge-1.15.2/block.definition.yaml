@@ -324,6 +324,44 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_down.json"
 
+  # TX: Cake templates
+  - template: json/block_item.json.ftl
+    condition: "blockBase %= Cake"
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/txblock/cake_states.json.ftl
+    condition: "blockBase %= Cake"
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/txblock/cake.json.ftl
+    condition: "blockBase %= Cake"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/txblock/cake_slice1.json.ftl
+    condition: "blockBase %= Cake"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_slice1.json"
+  - template: json/txblock/cake_slice2.json.ftl
+    condition: "blockBase %= Cake"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_slice2.json"
+  - template: json/txblock/cake_slice3.json.ftl
+    condition: "blockBase %= Cake"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_slice3.json"
+  - template: json/txblock/cake_slice4.json.ftl
+    condition: "blockBase %= Cake"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_slice4.json"
+  - template: json/txblock/cake_slice5.json.ftl
+    condition: "blockBase %= Cake"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_slice5.json"
+  - template: json/txblock/cake_slice6.json.ftl
+    condition: "blockBase %= Cake"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_slice6.json"
+
 localizationkeys:
   - key: block.@modid.@registryname
     mapto: name

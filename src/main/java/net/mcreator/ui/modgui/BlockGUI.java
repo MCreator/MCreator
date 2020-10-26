@@ -224,7 +224,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JComboBox<String> blockBase = new JComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
-					"Door", "FenceGate", "StoneButton", "PressurePlate" });
+					"Door", "FenceGate", "StoneButton", "PressurePlate", "Cake" });
 
 	private final JComboBox<String> sensitivity = new JComboBox<>(
 			new String[] { "EVERYTHING", "MOBS" });
@@ -387,8 +387,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 						hasTransparency.setSelected(true);
 						lightOpacity.setValue(0);
 						}
-					}
-				} else if(blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Default basic base")){
+				} else if(blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Cake")){
+
+				}
+
+			} else if(blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Default basic base")){
 				sensitivity.setEnabled(false);
 			}
 
@@ -1162,7 +1165,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 			textureTop.setVisible(true);
 			textureFront.setVisible(true);
 			texture.setVisible(true);
-		} else {
+		}else if("Cake".equals(blockBase.getSelectedItem())){
+			textureTop.setVisible(true);
+			textureFront.setVisible(true);
+			texture.setVisible(true);
+			textureRight.setVisible(true);
+		}
+		else {
 			texture.setVisible(true);
 		}
 	}

@@ -123,7 +123,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<#elseif data.blockBase?has_content && data.blockBase == "WoodButton">
 			super(
 			<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
-            super(Sensitivity.${data.sensitivity}
+            super(Sensitivity.${data.sensitivity},
+            <#elseif data.blockBase?has_content && data.blockBase == "Cake">
+            super(
 			<#else>
 			super(
 			</#if>
