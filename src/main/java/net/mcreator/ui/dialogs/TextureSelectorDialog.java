@@ -82,7 +82,7 @@ public class TextureSelectorDialog extends MCreatorDialog {
 				setIcon(new ImageIcon(
 						ImageUtils.resize(new ImageIcon(((File) ma.identifier).getAbsolutePath()).getImage(), 32)));
 
-			setToolTipText(FilenameUtils.removeExtension(ma.getName()));
+			setToolTipText(ma.toString());
 
 			setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
