@@ -38,22 +38,22 @@ public class ButtonDialog extends MCreatorDialog {
 		setModal(true);
 		setSize(480, 200);
 		setLocationRelativeTo(editor.mcreator);
-		setTitle(L10N.t("dialog.button.add_title"));
+		setTitle(L10N.t("dialog.gui.button_add_title"));
 		JTextField nameField = new JTextField(20);
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
 		if (button == null)
 			add("North", PanelUtils.centerInPanel(
-					L10N.label("dialog.button.change_width")));
+					L10N.label("dialog.gui.button_change_width")));
 		else
 			add("North", PanelUtils.centerInPanel(
-					L10N.label("dialog.button.resize")));
+					L10N.label("dialog.gui.button_resize")));
 
-		options.add(PanelUtils.join(L10N.label("dialog.button.text"), nameField));
+		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), nameField));
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
-				editor.mcreator, L10N.t("dialog.button.event_on_clicked"), ProcedureSelector.Side.BOTH, false,
+				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		eh.refreshList();
 		options.add(PanelUtils.join(eh));
@@ -66,7 +66,7 @@ public class ButtonDialog extends MCreatorDialog {
 		getRootPane().setDefaultButton(ok);
 
 		if (button != null) {
-			ok.setText(L10N.t("dialog.button.save_changes"));
+			ok.setText(L10N.t("dialog.common.save_changes"));
 			nameField.setText(button.name);
 			eh.setSelectedProcedure(button.onClick);
 		}

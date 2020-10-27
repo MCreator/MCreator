@@ -55,17 +55,17 @@ public class LabelDialog extends MCreatorDialog {
 		}
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
-				IHelpContext.NONE.withEntry("gui/label_display_condition"), editor.mcreator, L10N.t("dialog.label.event_display_condition"),
+				IHelpContext.NONE.withEntry("gui/label_display_condition"), editor.mcreator, L10N.t("dialog.gui.label_event_display_condition"),
 				ProcedureSelector.Side.CLIENT, false, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
 
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
-		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.label.text"), name));
+		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text"), name));
 		add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(options, displayCondition, 20, 5)));
 
-		setTitle(L10N.t("dialog.label.component_title"));
+		setTitle(L10N.t("dialog.gui.label_component_title"));
 
 		final JColor cola = new JColor(editor.mcreator);
 
@@ -75,7 +75,7 @@ public class LabelDialog extends MCreatorDialog {
 			cola.setColor(Color.white);
 		}
 
-		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.label.text_color"), cola));
+		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text_color"), cola));
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 
 		getRootPane().setDefaultButton(ok);
@@ -84,7 +84,7 @@ public class LabelDialog extends MCreatorDialog {
 		add("South", PanelUtils.join(ok, cancel));
 
 		if (label != null) {
-			ok.setText(L10N.t("dialog.label.save_changes"));
+			ok.setText(L10N.t("dialog.common.save_changes"));
 			name.setSelectedItem(label.name);
 			cola.setColor(label.color);
 			displayCondition.setSelectedProcedure(label.displayCondition);

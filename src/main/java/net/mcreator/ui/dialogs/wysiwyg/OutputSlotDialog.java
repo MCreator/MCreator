@@ -60,41 +60,41 @@ public class OutputSlotDialog extends MCreatorDialog {
 						continue;
 					if (component instanceof Slot && component.name.equals("Slot #" + slotIDnum))
 						return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-								L10N.t("dialog.slot.slot_id_already_used"));
+								L10N.t("dialog.gui.slot_id_already_used"));
 				}
 			} catch (Exception exc) {
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, L10N.t("dialog.slot.slot_id_must_be_number"));
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, L10N.t("dialog.gui.slot_id_must_be_number"));
 			}
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 		slotID.setText("0");
-		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.slot.slot_id"), slotID));
+		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_id"), slotID));
 
-		JCheckBox disableStackInteraction = L10N.checkbox("dialog.slot.disable_player_interaction");
+		JCheckBox disableStackInteraction = L10N.checkbox("dialog.gui.slot_disable_player_interaction");
 		options.add(PanelUtils.join(FlowLayout.LEFT, disableStackInteraction));
 
-		JCheckBox dropItemsWhenNotBound = L10N.checkbox("dialog.slot.drop_item_when_gui_closed");
+		JCheckBox dropItemsWhenNotBound = L10N.checkbox("dialog.gui.slot_drop_item_when_gui_closed");
 		options.add(PanelUtils.join(FlowLayout.LEFT, dropItemsWhenNotBound));
 
 		dropItemsWhenNotBound.setSelected(true);
 
 		final JColor color = new JColor(editor.mcreator);
 		options.add(PanelUtils
-				.join(FlowLayout.LEFT, L10N.label("dialog.slot.custom_color"),
+				.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_custom_color"),
 						color));
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slot_changed"),
-				editor.mcreator, L10N.t("dialog.slot.event_slot_content_changes"), ProcedureSelector.Side.BOTH, false,
+				editor.mcreator, L10N.t("dialog.gui.slot_event_slot_content_changes"), ProcedureSelector.Side.BOTH, false,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		eh.refreshList();
 
 		ProcedureSelector eh2 = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slot_item_taken"),
-				editor.mcreator, L10N.t("dialog.slot.event_item_taken_from_slot"), ProcedureSelector.Side.BOTH, false,
+				editor.mcreator, L10N.t("dialog.gui.slot_event_item_taken_from_slot"), ProcedureSelector.Side.BOTH, false,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		eh2.refreshList();
 
 		ProcedureSelector eh3 = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_transferred_from_slot"),
-				editor.mcreator, L10N.t("dialog.slot.event_transfered_from_slot"), ProcedureSelector.Side.BOTH, false,
+				editor.mcreator, L10N.t("dialog.gui.slot_event_transfered_from_slot"), ProcedureSelector.Side.BOTH, false,
 				Dependency
 						.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map/amount:number"));
 		eh3.refreshList();
@@ -102,15 +102,15 @@ public class OutputSlotDialog extends MCreatorDialog {
 		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 3, 5, 5, eh, eh2, eh3))));
 
 		add("North", PanelUtils.join(FlowLayout.LEFT, options));
-		setTitle(L10N.t("dialog.slot.output_editor_title"));
-		JButton ok = L10N.button("dialog.slot.save_slot");
+		setTitle(L10N.t("dialog.gui.slot_output_editor_title"));
+		JButton ok = L10N.button("dialog.gui.save_slot");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		add("South", PanelUtils.join(ok, cancel));
 
 		getRootPane().setDefaultButton(ok);
 
 		if (slot != null) {
-			ok.setText(L10N.t("dialog.slot.save_changes"));
+			ok.setText(L10N.t("dialog.common.save_changes"));
 			slotID.setText(String.valueOf(slot.id));
 			color.setColor(slot.color);
 			eh.setSelectedProcedure(slot.onSlotChanged);

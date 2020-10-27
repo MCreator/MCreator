@@ -52,20 +52,20 @@ public class ImageDialog extends MCreatorDialog {
 
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
-		options.add(PanelUtils.westAndCenterElement(L10N.label("dialog.image.texture"), textureSelector));
+		options.add(PanelUtils.westAndCenterElement(L10N.label("dialog.gui.image_texture"), textureSelector));
 
-		JCheckBox scale1x = L10N.checkbox("dialog.image.use_scale");
+		JCheckBox scale1x = L10N.checkbox("dialog.gui.image_use_scale");
 		options.add(PanelUtils.join(FlowLayout.LEFT, scale1x));
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
-				IHelpContext.NONE.withEntry("gui/image_display_condition"), editor.mcreator, L10N.t("dialog.image.display_condition"),
+				IHelpContext.NONE.withEntry("gui/image_display_condition"), editor.mcreator, L10N.t("dialog.gui.image_display_condition"),
 				ProcedureSelector.Side.CLIENT, false, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
 
 		add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(options, displayCondition, 20, 5)));
 
-		setTitle("Image component");
+		setTitle(L10N.t("dialog.gui.image_title"));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 
@@ -75,7 +75,7 @@ public class ImageDialog extends MCreatorDialog {
 		add("South", PanelUtils.join(ok, cancel));
 
 		if (image != null) {
-			ok.setText(L10N.t("dialog.image.save_changes"));
+			ok.setText(L10N.t("dialog.common.save_changes"));
 			textureSelector.setSelectedItem(image.image);
 			scale1x.setSelected(image.use1Xscale);
 			displayCondition.setSelectedProcedure(image.displayCondition);

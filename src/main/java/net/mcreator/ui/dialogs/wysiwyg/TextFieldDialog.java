@@ -53,7 +53,7 @@ public class TextFieldDialog extends MCreatorDialog {
 					continue;
 				if (component instanceof TextField && component.name.equals(textname))
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							L10N.t("dialog.textfield.name_already_exists"));
+							L10N.t("dialog.gui.textfield_name_already_exists"));
 			}
 			return validator.validate();
 		});
@@ -62,16 +62,16 @@ public class TextFieldDialog extends MCreatorDialog {
 
 		if (textField == null)
 			add("North", PanelUtils.centerInPanel(
-					L10N.label("dialog.textfield.change_width")));
+					L10N.label("dialog.gui.textfield_change_width")));
 		else
 			add("North", PanelUtils.centerInPanel(
-					L10N.label("dialog.textfield.resize")));
+					L10N.label("dialog.gui.textfield_resize")));
 
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
-		options.add(PanelUtils.join(L10N.label("dialog.textfield.input_name"), nameField));
+		options.add(PanelUtils.join(L10N.label("dialog.gui.textfield_input_name"), nameField));
 		add("Center", options);
-		setTitle(L10N.t("dialog.textfield.add"));
-		options.add(PanelUtils.join(L10N.label("dialog.textfield.initial_text"), deft));
+		setTitle(L10N.t("dialog.gui.textfield_add"));
+		options.add(PanelUtils.join(L10N.label("dialog.gui.textfield_initial_text"), deft));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -80,7 +80,7 @@ public class TextFieldDialog extends MCreatorDialog {
 		getRootPane().setDefaultButton(ok);
 
 		if (textField != null) {
-			ok.setText(L10N.t("dialog.textfield.save_changes"));
+			ok.setText(L10N.t("dialog.common.save_changes"));
 			nameField.setText(textField.name);
 			deft.setText(textField.placeholder);
 		}
