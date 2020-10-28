@@ -4,5 +4,3 @@ if(${input$entity} instanceof PlayerEntity) {
 	if(${input$entity} instanceof ServerPlayerEntity)
 		((ServerPlayerEntity)${input$entity}).inventory.markDirty();
 }
-
-/*@ItemStack*/
