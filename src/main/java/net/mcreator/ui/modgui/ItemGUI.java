@@ -53,6 +53,7 @@ import net.mcreator.workspace.resources.Model;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -99,6 +100,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private ProcedureSelector onStoppedUsing;
 	private ProcedureSelector onEntitySwing;
 	private ProcedureSelector onDroppedByPlayer;
+
+	private final JCheckBox hasDispenseBehavior = L10N.checkbox("elementgui.common.enable");
+	private ProcedureSelector dispenseSuccessCondition;
+	private ProcedureSelector dispenseResultItemstack;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -147,6 +152,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		dispenseSuccessCondition = new ProcedureSelector(this.withEntry("item/dispense_success_condition"), mcreator,
+				L10N.t("elementgui.item.dispense_success_condition"), VariableElementType.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/direction:direction"));
+		dispenseResultItemstack = new ProcedureSelector(this.withEntry("item/dispense_result_stack"), mcreator,
+				L10N.t("elementgui.item.dispense_result_itemstack"), VariableElementType.ITEMSTACK,
+				Dependency.fromString("x:number/y:number/z:number/world:world/direction:direction/success:boolean"))
+				.setDefaultName("(provided itemstack)");
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -227,7 +239,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		pane2.setOpaque(false);
 
-		JPanel subpane2 = new JPanel(new GridLayout(13, 2, 45, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(13, 2, 2, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -291,11 +303,35 @@ public class ItemGUI extends ModElementGUI<Item> {
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
 
+		subpane2.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		subpane2.setOpaque(false);
 
-		pane3.setOpaque(false);
+		JComponent canDispense = PanelUtils.join(FlowLayout.LEFT, 0, 20, HelpUtils
+				.wrapWithHelpButton(this.withEntry("item/has_dispense_behavior"),
+						L10N.label("elementgui.item.has_dispense_behavior")), hasDispenseBehavior);
+		JComponent dispenseProcedures = PanelUtils.gridElements(2, 1, 0, 8, dispenseSuccessCondition, dispenseResultItemstack);
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(subpane2));
+		hasDispenseBehavior.setOpaque(false);
+		hasDispenseBehavior.setSelected(false);
+		hasDispenseBehavior.addActionListener(e -> updateDispenseElements());
+
+		JComponent dispenseProperties = PanelUtils
+				.northAndCenterElement(canDispense, PanelUtils.join(FlowLayout.LEFT, dispenseProcedures));
+
+		dispenseProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item.dispense_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		dispenseProperties.setOpaque(false);
+
+		JComponent generalAndDispenseProperties = PanelUtils.westAndEastElement(subpane2, PanelUtils.pullElementUp(dispenseProperties));
+		generalAndDispenseProperties.setOpaque(false);
+
+		pane3.setOpaque(false);
+		pane3.add("Center", PanelUtils.totalCenterInPanel(generalAndDispenseProperties));
 
 		JPanel events = new JPanel(new GridLayout(3, 3, 10, 10));
 		events.setOpaque(false);
@@ -351,6 +387,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 		glowCondition.setEnabled(hasGlow.isSelected());
 	}
 
+	private void updateDispenseElements() {
+		dispenseSuccessCondition.setEnabled(hasDispenseBehavior.isSelected());
+		dispenseResultItemstack.setEnabled(hasDispenseBehavior.isSelected());
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onRightClickedInAir.refreshListKeepSelected();
@@ -363,6 +404,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onEntitySwing.refreshListKeepSelected();
 		onDroppedByPlayer.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
+		dispenseSuccessCondition.refreshListKeepSelected();
+		dispenseResultItemstack.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
@@ -417,8 +460,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 		guiBoundTo.setSelectedItem(item.guiBoundTo);
 		inventorySize.setValue(item.inventorySize);
 		inventoryStackSize.setValue(item.inventoryStackSize);
+		hasDispenseBehavior.setSelected(item.hasDispenseBehavior);
+		dispenseSuccessCondition.setSelectedProcedure(item.dispenseSuccessCondition);
+		dispenseResultItemstack.setSelectedProcedure(item.dispenseResultItemstack);
 
 		updateGlowElements();
+		updateDispenseElements();
 
 		Model model = item.getItemModel();
 		if (model != null)
@@ -455,6 +502,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.inventorySize = (int) inventorySize.getValue();
 		item.inventoryStackSize = (int) inventoryStackSize.getValue();
 		item.guiBoundTo = (String) guiBoundTo.getSelectedItem();
+		item.hasDispenseBehavior = hasDispenseBehavior.isSelected();
+		item.dispenseSuccessCondition = dispenseSuccessCondition.getSelectedProcedure();
+		item.dispenseResultItemstack = dispenseResultItemstack.getSelectedProcedure();
 
 		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
