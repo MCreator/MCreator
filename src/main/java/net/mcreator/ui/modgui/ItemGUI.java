@@ -154,7 +154,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		dispenseSuccessCondition = new ProcedureSelector(this.withEntry("item/dispense_success_condition"), mcreator,
 				L10N.t("elementgui.item.dispense_success_condition"), VariableElementType.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/direction:direction"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction"));
 		dispenseResultItemstack = new ProcedureSelector(this.withEntry("item/dispense_result_stack"), mcreator,
 				L10N.t("elementgui.item.dispense_result_itemstack"), VariableElementType.ITEMSTACK,
 				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:boolean"))
