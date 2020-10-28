@@ -101,9 +101,8 @@ public class InputSlotDialog extends MCreatorDialog {
 		eh2.refreshList();
 
 		ProcedureSelector eh3 = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_transferred_from_slot"),
-				editor.mcreator, L10N.t("dialog.gui.slot_.event_transfered_from_slot"), ProcedureSelector.Side.BOTH, false,
-				Dependency
-						.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map/amount:number"));
+				editor.mcreator, L10N.t("dialog.gui.slot_event_transfered_from_slot"), ProcedureSelector.Side.BOTH, false,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map/amount:number"));
 		eh3.refreshList();
 
 		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 3, 5, 5, eh, eh2, eh3))));
