@@ -319,7 +319,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		hasDispenseBehavior.addActionListener(e -> updateDispenseElements());
 
 		JComponent dispenseProperties = PanelUtils
-				.northAndCenterElement(canDispense, PanelUtils.join(FlowLayout.LEFT, dispenseProcedures));
+				.northAndCenterElement(canDispense, PanelUtils.centerInPanel(dispenseProcedures));
 
 		dispenseProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
