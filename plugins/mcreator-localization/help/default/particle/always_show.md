@@ -1,1 +1,2 @@
-This parameter controls if the particle is shown even if the particles are set to minimal.
+This parameter controls if the particle is shown in all cases, 
+even if the particle display is set to minimal in the video settings.
