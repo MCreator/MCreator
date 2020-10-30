@@ -163,7 +163,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		selp.add(hideIfNotCompleted);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_display"),
-				new JLabel(L10N.t("elementgui.advancement.hide_display"))));
+				L10N.label("elementgui.advancement.hide_display")));
 		selp.add(disableDisplay);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_xp"),
@@ -279,16 +279,13 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		ComboBoxUtil
 				.updateComboBoxContents(parentAchievement, ElementUtil.loadAllAchievements(mcreator.getWorkspace()));
 
-		ComboBoxUtil.updateComboBoxContents(rewardFunction, ListUtils
-				.merge(Collections.singleton("No function"),
-						mcreator.getWorkspace().getModElements().stream()
-								.filter(e -> e.getType() == ModElementType.FUNCTION).map(ModElement::getName)
-								.collect(Collectors.toList())), "No function");
+		ComboBoxUtil.updateComboBoxContents(rewardFunction, ListUtils.merge(Collections.singleton("No function"),
+				mcreator.getWorkspace().getModElements().stream().filter(e -> e.getType() == ModElementType.FUNCTION)
+						.map(ModElement::getName).collect(Collectors.toList())), "No function");
 
-		ComboBoxUtil.updateComboBoxContents(background, ListUtils
-				.merge(Collections.singleton("Default"),
-						mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
-								.collect(Collectors.toList())), "Default");
+		ComboBoxUtil.updateComboBoxContents(background, ListUtils.merge(Collections.singleton("Default"),
+				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.collect(Collectors.toList())), "Default");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

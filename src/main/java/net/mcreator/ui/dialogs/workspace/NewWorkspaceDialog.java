@@ -58,7 +58,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		JPanel buttons = new JPanel();
 
-		JButton ok = new JButton(L10N.t("dialog.new_workspace.button_new"));
+		JButton ok = L10N.button("dialog.new_workspace.button_new");
 		buttons.add(ok);
 
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -66,7 +66,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		buttons.add(new JEmptyBox(2, 2));
 
-		JButton help = new JButton(L10N.t("common.help"));
+		JButton help = L10N.button("common.help");
 		buttons.add(help);
 
 		buttons.setBorder(BorderFactory.createEmptyBorder(8, 0, 8, 0));
@@ -105,8 +105,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		add("Center", center);
 
 		JLabel label = new JLabel(UIRES.get("addwrk"));
-		label.setText(
-				"<html><font style=\"font-size: 16px;\">Create new workspace</font><br><small>Enter the workspace details below");
+		label.setText(L10N.t("dialog.new_workspace.main_title_html"));
 		label.setHorizontalAlignment(SwingConstants.LEFT);
 		label.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
 
@@ -227,14 +226,14 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 	private void disableType(JToggleButton button) {
 		button.setEnabled(false);
-		button.setToolTipText("You need to have at least one plugin supporting this generator type installed.");
+		button.setToolTipText(L10N.t("dialog.new_workspace.disabled.tooltip"));
 		button.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				super.mouseReleased(e);
-				int option = JOptionPane.showConfirmDialog(null,
-						"<html>No plugins supporting this generator type are currently installed."
-								+ "<br>Do you want to browse MCreator's plugin library for plugins?", "Plugin needed",
-						JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
+				int option = JOptionPane
+						.showConfirmDialog(null, L10N.t("dialog.new_workspace.dialog_plugin_needed.text"),
+								L10N.t("dialog.new_workspace.dialog_plugin_needed.title"), JOptionPane.YES_NO_OPTION,
+								JOptionPane.INFORMATION_MESSAGE, null);
 				if (option == JOptionPane.YES_OPTION) {
 					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins");
 				}
@@ -243,7 +242,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 	}
 
 	private void showErrorsMessage(Window w, AggregatedValidationResult validationResult) {
-		StringBuilder stringBuilder = new StringBuilder("<html>Your workspace setup has the following issues:");
+		StringBuilder stringBuilder = new StringBuilder(L10N.t("dialog.new_workspace.error_list"));
 		stringBuilder.append("<ul>");
 		int count = 0;
 		for (String error : validationResult.getValidationProblemMessages()) {
@@ -258,11 +257,10 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		}
 		stringBuilder.append("</ul>");
-		stringBuilder
-				.append("<small>Errors were marked on the window with red colors and error icons so you can locate them and fix<br>"
-						+ "them based on notes here.");
-		JOptionPane.showMessageDialog(w, stringBuilder.toString(), "Invalid workspace settings",
-				JOptionPane.ERROR_MESSAGE);
+		stringBuilder.append(L10N.t("dialog.workspace_settings.dialog.error"));
+		JOptionPane
+				.showMessageDialog(w, stringBuilder.toString(), L10N.t("dialog.workspace_settings.dialog.error.title"),
+						JOptionPane.ERROR_MESSAGE);
 	}
 
 	public File getWorkspaceFile() {

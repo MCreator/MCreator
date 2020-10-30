@@ -117,9 +117,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			ItemStack retval =
 				<#if data.resultItem?? && !data.resultItem.isEmpty()>
 					${mappedMCItemToItemStackCode(data.resultItem, 1)};
-				<#else>
-					super.onItemUseFinish(itemstack, world, entity);
 				</#if>
+			super.onItemUseFinish(itemstack, world, entity);
 
 			<#if hasProcedure(data.onEaten)>
 				double x = entity.getPosX();
@@ -128,7 +127,20 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 				<@procedureOBJToCode data.onEaten/>
 			</#if>
 
-			return retval;
+			<#if data.resultItem?? && !data.resultItem.isEmpty()>
+				if (itemstack.isEmpty()) {
+					return retval;
+				} else {
+					if (entity instanceof PlayerEntity) {
+						PlayerEntity player = (PlayerEntity) entity;
+						if (!player.isCreative() && !player.inventory.addItemStackToInventory(retval))
+							player.dropItem(retval, false);
+					}
+					return itemstack;
+				}
+			<#else>
+				return retval;
+			</#if>
 		}
         </#if>
 

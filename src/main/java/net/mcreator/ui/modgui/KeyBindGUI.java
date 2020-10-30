@@ -96,8 +96,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 		evente.setOpaque(false);
 		evente.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.keybind.key_procedure_triggers"),
-				0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.keybind.key_procedure_triggers"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		evente.add(onKeyPressed);
 		evente.add(onKeyReleased);
@@ -111,8 +110,8 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(merge)));
 
-		keyBindingName.setValidator(new TextFieldValidator(keyBindingName,
-				L10N.t("elementgui.keybind.error_key_needs_name")));
+		keyBindingName.setValidator(
+				new TextFieldValidator(keyBindingName, L10N.t("elementgui.keybind.error_key_needs_name")));
 		keyBindingName.enableRealtimeValidation();
 
 		keyBindingCategoryKey.setValidator(new RegistryNameValidator(keyBindingCategoryKey,

@@ -159,8 +159,7 @@ public final class MCreatorApplication {
 		workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);
 
 		if (Launcher.version.isSnapshot()) {
-			JOptionPane.showMessageDialog(splashScreen,
-					L10N.t("action.eap_loading.text"),
+			JOptionPane.showMessageDialog(splashScreen, L10N.t("action.eap_loading.text"),
 					L10N.t("action.eap_loading.title"), JOptionPane.WARNING_MESSAGE);
 		}
 
@@ -245,9 +244,10 @@ public final class MCreatorApplication {
 				if (files != null) {
 					String[] backups = Arrays.stream(files).filter(e -> e.contains(".mcreator-backup"))
 							.sorted(Collections.reverseOrder()).toArray(String[]::new);
-					String selected = (String) JOptionPane.showInputDialog(this.workspaceSelector,
-							L10N.t("dialog.workspace.got_corrupted_message"),
-							L10N.t("dialog.workspace.got_corrupted_title"), JOptionPane.QUESTION_MESSAGE, null, backups, "");
+					String selected = (String) JOptionPane
+							.showInputDialog(this.workspaceSelector, L10N.t("dialog.workspace.got_corrupted_message"),
+									L10N.t("dialog.workspace.got_corrupted_title"), JOptionPane.QUESTION_MESSAGE, null,
+									backups, "");
 					if (selected != null) {
 						File backup = new File(backupsDir, selected);
 						FileIO.copyFile(backup, workspaceFile);

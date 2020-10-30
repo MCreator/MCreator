@@ -397,6 +397,23 @@ public class ImageUtils {
 			return crop(tile, new Rectangle(0, 0, tile.getHeight(), tile.getHeight()));
 	}
 
+	public static Image randomTile(BufferedImage tile, Random random) {
+		try {
+			int tilesize = Math.min(tile.getWidth(), tile.getHeight());
+			TiledImageUtils tiu = new TiledImageUtils(tile, tilesize, tilesize);
+			int tilex = random.nextInt(tiu.getWidthInTiles()) + 1;
+			int tiley = random.nextInt(tiu.getHeightInTiles()) + 1;
+			ImageIcon imge = tiu.getIcon(tilex, tiley);
+			return imge.getImage();
+		} catch (InvalidTileSizeException e) {
+			return autoCropTile(tile);
+		}
+	}
+
+	public static Image randomTile(BufferedImage tile) {
+		return randomTile(tile, new Random());
+	}
+
 	public static BufferedImage resizeAndCrop(Image image, int size) {
 		return resizeImageWithHint(autoCropTile(toBufferedImage(image)), size, size);
 	}
