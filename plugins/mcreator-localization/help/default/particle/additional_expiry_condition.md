@@ -1,0 +1,1 @@
+If condition is specified, the particle must pass it in order to expire.

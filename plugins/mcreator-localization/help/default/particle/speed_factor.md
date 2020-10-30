@@ -1,0 +1,1 @@
+This parameter defines how fast this particle should move aside.

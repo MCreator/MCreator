@@ -1,0 +1,1 @@
+This parameter defines how many times visual particle size is larger than its physical size.

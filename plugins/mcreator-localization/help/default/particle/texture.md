@@ -1,0 +1,1 @@
+This parameter defines the texture of your particle.

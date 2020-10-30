@@ -1,0 +1,1 @@
+If checked, this particle will be rendered even if it's not in range for render.

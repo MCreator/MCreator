@@ -1,0 +1,1 @@
+This parameter controls how much actual maximal particle age can differ from the value above.
