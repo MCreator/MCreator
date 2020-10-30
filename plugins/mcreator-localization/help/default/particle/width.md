@@ -1,1 +1,1 @@
-This parameter controls how wide this particle is (in blocks).
+This parameter controls how wide this particle is (in block units).

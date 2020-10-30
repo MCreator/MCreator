@@ -1,1 +1,1 @@
-This parameter defines the texture of your particle.
+Texture can be considered tiled if it repeats more than one time across a polygon.

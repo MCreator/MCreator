@@ -1,1 +1,1 @@
-If checked, this particle will be rendered even if it's not in range for render.
+This parameter controls if the particle is shown even if the particles are set to minimal.

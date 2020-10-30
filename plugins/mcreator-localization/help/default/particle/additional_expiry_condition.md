@@ -1,1 +1,1 @@
-If condition is specified, the particle must pass it in order to expire.
+The particle might expire before its maximal age if it passes this condition.
