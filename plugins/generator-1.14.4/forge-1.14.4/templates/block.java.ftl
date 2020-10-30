@@ -387,6 +387,16 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
+        <#if data.emitsRedstone>
+        @Override public boolean canProvidePower(BlockState state) {
+            return true;
+        }
+
+        @Override public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+            return ${data.emittedRedstonePower};
+        }
+        </#if>
+
 		<#if data.beaconColorModifier?has_content>
 		@Override public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
 			return new float[] { ${data.beaconColorModifier.getRed()/255}f, ${data.beaconColorModifier.getGreen()/255}f, ${data.beaconColorModifier.getBlue()/255}f };
