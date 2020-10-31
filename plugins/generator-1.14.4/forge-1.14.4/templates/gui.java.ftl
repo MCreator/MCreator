@@ -441,7 +441,32 @@ import ${package}.${JavaModName};
 			<#list data.components as component>
 				<#if component.getClass().getSimpleName() == "TextField">
 					${component.name} = new TextFieldWidget(this.font, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, "${component.placeholder}");
+															${component.width}, ${component.height}, "${component.placeholder}")
+					<#if component.placeholder?has_content>
+					{
+						{
+							setSuggestion("${component.placeholder}");
+						}
+
+						@Override public void writeText(String text) {
+							super.writeText(text);
+
+							if(getText().isEmpty())
+								setSuggestion("${component.placeholder}");
+							else
+								setSuggestion(null);
+						}
+
+						@Override public void setCursorPosition(int pos) {
+							super.setCursorPosition(pos);
+
+							if(getText().isEmpty())
+								setSuggestion("${component.placeholder}");
+							else
+								setSuggestion(null);
+						}
+					}
+					</#if>;
                     guistate.put("text:${component.name}", ${component.name});
 					${component.name}.setMaxStringLength(32767);
                     this.children.add(this.${component.name});
