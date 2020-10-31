@@ -88,7 +88,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton add = new JButton(L10N.t("workspace.localization.add_entry"));
+		JButton add = L10N.button("workspace.localization.add_entry");
 		add.setIcon(UIRES.get("16px.add.gif"));
 		add.setContentAreaFilled(false);
 		add.setOpaque(false);
@@ -96,7 +96,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		add.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(add);
 
-		del = new JButton(L10N.t("workspace.localization.remove_selected"));
+		del = L10N.button("workspace.localization.remove_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
 		del.setContentAreaFilled(false);
@@ -105,14 +105,14 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 
 		bar.addSeparator();
 
-		exp = new JButton(L10N.t("workspace.localization.export_to_csv"));
+		exp = L10N.button("workspace.localization.export_to_csv");
 		exp.setIcon(UIRES.get("16px.ext.gif"));
 		exp.setOpaque(false);
 		exp.setContentAreaFilled(false);
 		exp.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(exp);
 
-		imp = new JButton(L10N.t("workspace.localization.import_csv"));
+		imp = L10N.button("workspace.localization.import_csv");
 		imp.setIcon(UIRES.get("16px.open.gif"));
 		imp.setOpaque(false);
 		imp.setContentAreaFilled(false);

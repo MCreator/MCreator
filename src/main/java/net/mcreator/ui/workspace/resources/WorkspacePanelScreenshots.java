@@ -74,7 +74,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton edit = new JButton(L10N.t("workspace.screenshots.export_selected"));
+		JButton edit = L10N.button("workspace.screenshots.export_selected");
 		edit.setIcon(UIRES.get("16px.ext.gif"));
 		edit.setOpaque(false);
 		edit.setContentAreaFilled(false);
@@ -82,7 +82,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		bar.add(edit);
 		edit.addActionListener(e -> exportSelectedScreenshots());
 
-		JButton useasbg = new JButton(L10N.t("workspace.screenshots.use_as_background"));
+		JButton useasbg = L10N.button("workspace.screenshots.use_as_background");
 		useasbg.setIcon(UIRES.get("16px.textures"));
 		useasbg.setOpaque(false);
 		useasbg.setContentAreaFilled(false);
@@ -90,7 +90,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		bar.add(useasbg);
 		useasbg.addActionListener(e -> useSelectedAsBackgrounds());
 
-		JButton del = new JButton(L10N.t("workspace.screenshots.delete_selected"));
+		JButton del = L10N.button("workspace.screenshots.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
 		del.setContentAreaFilled(false);

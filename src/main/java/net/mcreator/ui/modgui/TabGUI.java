@@ -64,16 +64,14 @@ public class TabGUI extends ModElementGUI<Tab> {
 
 		ComponentUtils.deriveFont(name, 16);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tab/name"),
-				L10N.label("elementgui.tab.name")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tab/name"), L10N.label("elementgui.tab.name")));
 		selp.add(name);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tab/icon"),
-				L10N.label("elementgui.tab.icon")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tab/icon"), L10N.label("elementgui.tab.icon")));
 		selp.add(PanelUtils.join(FlowLayout.LEFT, icon));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tab/search_bar"),
-				L10N.label("elementgui.tab.search_bar")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("tab/search_bar"), L10N.label("elementgui.tab.search_bar")));
 		selp.add(showSearch);
 
 		showSearch.setOpaque(false);
@@ -90,8 +88,7 @@ public class TabGUI extends ModElementGUI<Tab> {
 
 		slpa.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.tab.add_stuff_tip"),
-				TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
+				L10N.t("elementgui.tab.add_stuff_tip"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		pane3.add(PanelUtils.totalCenterInPanel(slpa));

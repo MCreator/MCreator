@@ -20,8 +20,8 @@ package net.mcreator.blockly.java.blocks;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
-import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -60,7 +60,8 @@ public class CustomDependencyBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "custom_dependency_logic", "custom_dependency_number", "custom_dependency_text", "custom_dependency_itemstack" };
+		return new String[] { "custom_dependency_logic", "custom_dependency_number", "custom_dependency_text",
+				"custom_dependency_itemstack" };
 	}
 
 	@Override public BlockType getBlockType() {

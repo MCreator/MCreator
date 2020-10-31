@@ -118,22 +118,16 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static String[] loadParticles() {
-		return DataListLoader.loadDataList("particles").stream().map(DataListEntry::getName).toArray(String[]::new);
+	public static List<DataListEntry> loadAllParticles(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.BaseType.PARTICLE);
+		retval.addAll(DataListLoader.loadDataList("particles"));
+		return retval;
 	}
 
-	public static String[] loadAllPotionEffects(Workspace workspace) {
-		ArrayList<String> retval = new ArrayList<>();
-
-		for (ModElement modElement : workspace.getModElements()) {
-			if (modElement.getType() == ModElementType.POTION)
-				retval.add("CUSTOM:" + modElement.getName());
-		}
-
-		retval.addAll(DataListLoader.loadDataList("potions").stream().map(DataListEntry::getName)
-				.collect(Collectors.toList()));
-
-		return retval.toArray(new String[0]);
+	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.BaseType.POTION);
+		retval.addAll(DataListLoader.loadDataList("potions"));
+		return retval;
 	}
 
 	public static String[] getAllBooleanGamerules() {

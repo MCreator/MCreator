@@ -155,14 +155,13 @@ public class BlocklyJavascriptBridge {
 	@SuppressWarnings("unused") public String[] getListOf(String type) {
 		return getListOfForWorkspace(mcreator.getWorkspace(), type);
 	}
-	
+
 	@SuppressWarnings("unused") public static String[] getListOfForWorkspace(Workspace workspace, String type) {
 		List<String> retval;
 		switch (type) {
 		case "procedure":
-			retval = workspace.getModElements().stream()
-					.filter(mel -> mel.getType() == ModElementType.PROCEDURE).map(ModElement::getName)
-					.collect(Collectors.toList());
+			retval = workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
+					.map(ModElement::getName).collect(Collectors.toList());
 			break;
 		case "procedure_retval_logic":
 			retval = workspace.getModElements().stream().filter(mod -> {
@@ -209,8 +208,7 @@ public class BlocklyJavascriptBridge {
 			}).map(ModElement::getName).collect(Collectors.toList());
 			break;
 		case "entity":
-			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
+			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "gui":
 			retval = ElementUtil.loadBasicGUI(workspace);
 			break;
@@ -224,7 +222,8 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllAchievements(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "potion":
-			return ElementUtil.loadAllPotionEffects(workspace);
+			return ElementUtil.loadAllPotionEffects(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
 		case "gamerulesboolean":
 			return ElementUtil.getAllBooleanGamerules();
 		case "gamerulesnumber":
@@ -234,7 +233,7 @@ public class BlocklyJavascriptBridge {
 		case "sound":
 			return ElementUtil.getAllSounds(workspace);
 		case "particle":
-			return ElementUtil.loadParticles();
+			return ElementUtil.loadAllParticles(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "direction":
 			return ElementUtil.loadDirections();
 		case "schematic":
@@ -244,8 +243,7 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllEnchantments(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "biome":
-			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
+			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "dimension":
 			return ElementUtil.loadAllDimensions(workspace);
 		case "dimension_custom":
@@ -257,9 +255,9 @@ public class BlocklyJavascriptBridge {
 			retval = ElementUtil.loadMaterials().stream().map(DataListEntry::getName).collect(Collectors.toList());
 			break;
 		case "rangeditem":
-			retval = ListUtils.merge(Collections.singleton("Arrow"), workspace.getModElements().stream()
-					.filter(var -> var.getType() == ModElementType.RANGEDITEM).map(ModElement::getName)
-					.collect(Collectors.toList()));
+			retval = ListUtils.merge(Collections.singleton("Arrow"),
+					workspace.getModElements().stream().filter(var -> var.getType() == ModElementType.RANGEDITEM)
+							.map(ModElement::getName).collect(Collectors.toList()));
 			break;
 		default:
 			retval = new ArrayList<>();

@@ -82,15 +82,15 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		});
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/texture"),
-				new JLabel(L10N.t("elementgui.painting.painting_texture"))));
+				L10N.label("elementgui.painting.painting_texture")));
 		selp.add(PanelUtils.centerAndEastElement(texture, importicontexture));
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/width"),
-				new JLabel(L10N.t("elementgui.painting.painting_width"))));
+				L10N.label("elementgui.painting.painting_width")));
 		selp.add(width);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/height"),
-				new JLabel(L10N.t("elementgui.painting.painting_height"))));
+				L10N.label("elementgui.painting.painting_height")));
 		selp.add(height);
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(selp));

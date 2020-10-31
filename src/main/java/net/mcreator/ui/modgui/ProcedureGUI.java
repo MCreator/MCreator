@@ -193,8 +193,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						cancelableTriggerLabel.setIcon(UIRES.get("info"));
 					}
 					if (trigger.has_result) {
-						hasResultTriggerLabel
-								.setText(L10N.t("elementgui.procedure.can_specify_result_trigger"));
+						hasResultTriggerLabel.setText(L10N.t("elementgui.procedure.can_specify_result_trigger"));
 						hasResultTriggerLabel.setIcon(UIRES.get("info"));
 					}
 
@@ -386,9 +385,9 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		remvar.addActionListener(e -> {
 			VariableElement element = localVarsList.getSelectedValue();
 			if (element != null) {
-				int n = JOptionPane.showConfirmDialog(mcreator,
-						L10N.t("elementgui.procedure.confirm_delete_var_msg"),
-						L10N.t("elementgui.procedure.confirm_delete_var_title"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("elementgui.procedure.confirm_delete_var_msg"),
+						L10N.t("elementgui.procedure.confirm_delete_var_title"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
 				if (n == JOptionPane.YES_OPTION) {
 					blocklyPanel.removeLocalVariable(element.getName());
 					localVars.removeElement(element);
@@ -473,7 +472,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		scrollPaneExtDeps.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
 		triggerDepsPan.add("Center", PanelUtils.northAndCenterElement(triggerInfoPanel, PanelUtils
-				.northAndCenterElement(ComponentUtils.deriveFont(L10N.label("elementgui.procedure.provided_dependencies"), 13),
+				.northAndCenterElement(
+						ComponentUtils.deriveFont(L10N.label("elementgui.procedure.provided_dependencies"), 13),
 						scrollPaneExtDeps, 0, 1), 0, 4));
 		triggerDepsPan.setPreferredSize(new Dimension(150, 0));
 		triggerDepsPan.setVisible(false);
@@ -530,7 +530,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::getMessage)
 							.collect(Collectors.toList()));
 		else
-			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
+			return new AggregatedValidationResult.FAIL(
+					L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
 
 	}
 
