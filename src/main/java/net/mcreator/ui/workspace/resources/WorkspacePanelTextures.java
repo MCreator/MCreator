@@ -120,7 +120,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton create = new JButton(L10N.t("workspace.textures.new"));
+		JButton create = L10N.button("workspace.textures.new");
 		create.setIcon(UIRES.get("16px.add.gif"));
 		create.setContentAreaFilled(false);
 		create.setOpaque(false);
@@ -139,7 +139,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		create.addActionListener(e -> createMenu.show(create, 5, create.getHeight() + 5));
 
-		JButton importt = new JButton(L10N.t("workspace.textures.import"));
+		JButton importt = L10N.button("workspace.textures.import");
 		importt.setIcon(UIRES.get("16px.open.gif"));
 		importt.setContentAreaFilled(false);
 		importt.setOpaque(false);
@@ -161,7 +161,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		importt.addActionListener(e -> importMenu.show(importt, 5, importt.getHeight() + 5));
 
-		JButton edit = new JButton(L10N.t("workspace.textures.edit_selected"));
+		JButton edit = L10N.button("workspace.textures.edit_selected");
 		edit.setIcon(UIRES.get("16px.edit.gif"));
 		edit.setContentAreaFilled(false);
 		edit.setOpaque(false);
@@ -169,7 +169,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		edit.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(edit);
 
-		JButton duplicate = new JButton(L10N.t("workspace.textures.duplicate_selected"));
+		JButton duplicate = L10N.button("workspace.textures.duplicate_selected");
 		duplicate.setIcon(UIRES.get("16px.duplicate.gif"));
 		duplicate.setContentAreaFilled(false);
 		duplicate.setOpaque(false);
@@ -177,14 +177,14 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		duplicate.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(duplicate);
 
-		JButton del = new JButton(L10N.t("workspace.textures.delete_selected"));
+		JButton del = L10N.button("workspace.textures.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
 		del.setContentAreaFilled(false);
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
-		JButton export = new JButton(L10N.t("workspace.textures.export_selected"));
+		JButton export = L10N.button("workspace.textures.export_selected");
 		export.setIcon(UIRES.get("16px.ext.gif"));
 		export.setOpaque(false);
 		export.setContentAreaFilled(false);

@@ -20,6 +20,7 @@ package net.mcreator.integration;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.Button;
@@ -569,7 +570,7 @@ public class TestWorkspaceDataProvider {
 			}
 			mob.spawnParticles = _true;
 			mob.particleToSpawn = new Particle(modElement.getWorkspace(),
-					ListUtils.getRandomItem(random, ElementUtil.loadParticles()));
+					ListUtils.getRandomItem(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			mob.particleSpawningShape = new String[] { "Spread", "Top", "Tube", "Plane" }[valueIndex];
 			mob.rangedItemType = "Default item";
 			mob.particleSpawningRadious = 4;
@@ -647,7 +648,7 @@ public class TestWorkspaceDataProvider {
 			dimension.texture = "test";
 			dimension.portalTexture = "test2";
 			dimension.portalParticles = new Particle(modElement.getWorkspace(),
-					ListUtils.getRandomItem(random, ElementUtil.loadParticles()));
+					ListUtils.getRandomItem(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			dimension.igniterTab = new TabEntry(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			dimension.portalSound = new Sound(modElement.getWorkspace(),
@@ -1031,7 +1032,7 @@ public class TestWorkspaceDataProvider {
 			block.spawnParticles = _true;
 			block.tickRandomly = _true;
 			block.particleToSpawn = new Particle(modElement.getWorkspace(),
-					ListUtils.getRandomItem(random, ElementUtil.loadParticles()));
+					ListUtils.getRandomItem(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			block.particleSpawningShape = new String[] { "Spread", "Top", "Tube", "Plane" }[valueIndex];
 			block.particleSpawningRadious = 4;
 			block.particleAmount = 13;
@@ -1288,6 +1289,23 @@ public class TestWorkspaceDataProvider {
 			painting.width = 16;
 			painting.height = 16;
 			return painting;
+		case PARTICLE:
+			net.mcreator.element.types.Particle particle = new net.mcreator.element.types.Particle(modElement);
+			particle.texture = "test.png";
+			particle.width = 2.3;
+			particle.frameDuration = 2;
+			particle.height = 1.38;
+			particle.scale = 1.38;
+			particle.gravity = 12.3;
+			particle.speedFactor = 1.3;
+			particle.canCollide = _true;
+			particle.alwaysShow = !_true;
+			particle.animate = _true;
+			particle.maxAge = 12;
+			particle.maxAgeDiff = emptyLists ? 0 : 15;
+			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "LIT" }[valueIndex];
+			particle.additionalExpiryCondition = new Procedure("condition1");
+			return particle;
 		default:
 			return null;
 		}

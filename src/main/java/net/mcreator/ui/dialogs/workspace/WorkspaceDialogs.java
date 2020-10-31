@@ -66,7 +66,7 @@ public class WorkspaceDialogs {
 		WorkspaceDialogPanel wdp = new WorkspaceDialogPanel(workspaceDialog, in);
 		workspaceDialog.add("Center", wdp);
 		JPanel buttons = new JPanel();
-		JButton ok = new JButton(L10N.t("dialog.workspace_settings.save_changes"));
+		JButton ok = L10N.button("dialog.workspace_settings.save_changes");
 		buttons.add(ok);
 		workspaceDialog.add("South", buttons);
 		ok.addActionListener(e -> {
@@ -127,8 +127,8 @@ public class WorkspaceDialogs {
 		VTextField websiteURL = new VTextField(24);
 
 		JComboBox<String> modPicture = new JComboBox<>();
-		JCheckBox lockBaseModFiles = new JCheckBox(L10N.t("dialog.workspace_settings.lock_base_files"));
-		JCheckBox serverSideOnly = new JCheckBox(L10N.t("dialog.workspace_settings.server_side_mod"));
+		JCheckBox lockBaseModFiles = L10N.checkbox("dialog.workspace_settings.lock_base_files");
+		JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
 		JCheckBox disableForgeVersionCheck = new JCheckBox();
 		JTextField updateJSON = new JTextField(24);
 		JTextField requiredMods = new JTextField(24);
@@ -245,7 +245,8 @@ public class WorkspaceDialogs {
 					fb.insertString(offset, text.toLowerCase(Locale.ENGLISH), attr);
 				}
 
-				@Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text,
+				@Override
+				public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text,
 						AttributeSet attrs) throws BadLocationException {
 					fb.replace(offset, length, text.toLowerCase(Locale.ENGLISH), attrs);
 				}
@@ -340,13 +341,13 @@ public class WorkspaceDialogs {
 			generalSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 					L10N.t("dialog.workspace_settings.section.basic")));
 			_basicSettings.add(generalSettings);
-			generalSettings.add(new JLabel(L10N.t("dialog.workspace_settings.display_name")));
+			generalSettings.add(L10N.label("dialog.workspace_settings.display_name"));
 			generalSettings.add(modName);
-			generalSettings.add(new JLabel(L10N.t("dialog.workspace_settings.mod_id")));
+			generalSettings.add(L10N.label("dialog.workspace_settings.mod_id"));
 			generalSettings.add(modID);
-			generalSettings.add(new JLabel(L10N.t("dialog.workspace_settings.package")));
+			generalSettings.add(L10N.label("dialog.workspace_settings.package"));
 			generalSettings.add(packageName);
-			generalSettings.add(new JLabel(L10N.t("dialog.workspace_settings.generator")));
+			generalSettings.add(L10N.label("dialog.workspace_settings.generator"));
 			generalSettings.add(generatorSelector);
 
 			_basicSettings.add(new JEmptyBox(5, 15));
@@ -356,18 +357,18 @@ public class WorkspaceDialogs {
 					.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 							L10N.t("dialog.workspace_settings.section.details")));
 			_basicSettings.add(descriptionSettings);
-			descriptionSettings.add(new JLabel(L10N.t("dialog.workspace_settings.version")));
+			descriptionSettings.add(L10N.label("dialog.workspace_settings.version"));
 			descriptionSettings.add(version);
-			descriptionSettings.add(new JLabel(L10N.t("dialog.workspace_settings.description")));
+			descriptionSettings.add(L10N.label("dialog.workspace_settings.description"));
 			descriptionSettings.add(description);
 			if (workspace != null) {
-				descriptionSettings.add(new JLabel(L10N.t("dialog.workspace_settings.author")));
+				descriptionSettings.add(L10N.label("dialog.workspace_settings.author"));
 				descriptionSettings.add(author);
-				descriptionSettings.add(new JLabel(L10N.t("dialog.workspace_settings.website")));
+				descriptionSettings.add(L10N.label("dialog.workspace_settings.website"));
 				descriptionSettings.add(websiteURL);
-				descriptionSettings.add(new JLabel(L10N.t("dialog.workspace_settings.credits")));
+				descriptionSettings.add(L10N.label("dialog.workspace_settings.credits"));
 				descriptionSettings.add(credits);
-				descriptionSettings.add(new JLabel(L10N.t("dialog.workspace_settings.picture")));
+				descriptionSettings.add(L10N.label("dialog.workspace_settings.picture"));
 				descriptionSettings.add(modPicture);
 
 				_basicSettings.add(new JEmptyBox(5, 15));
@@ -427,7 +428,7 @@ public class WorkspaceDialogs {
 				JPanel apiSettings = new JPanel(new BorderLayout());
 				apiSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 						L10N.t("dialog.workspace_settings.section.external_apis")));
-				apiSettings.add("North", new JLabel(L10N.t("dialog.workspace_settings.section.external_apis.tooltip")));
+				apiSettings.add("North", L10N.label("dialog.workspace_settings.section.external_apis.tooltip"));
 
 				JPanel apiList = new JPanel();
 				apiList.setLayout(new BoxLayout(apiList, BoxLayout.PAGE_AXIS));
@@ -452,21 +453,20 @@ public class WorkspaceDialogs {
 
 				apiSettings.add("West", apiList);
 
-				JButton explorePlugins = new JButton(L10N.t("dialog.workspace_settings.explore_plugins"));
+				JButton explorePlugins = L10N.button("dialog.workspace_settings.explore_plugins");
 				explorePlugins.setIcon(UIRES.get("16px.search"));
 				explorePlugins.addActionListener(
 						e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins"));
 
 				apiSettings.add("South", PanelUtils
-						.join(FlowLayout.LEFT, new JLabel(L10N.t("dialog.workspace_settings.plugins_tip")),
-								explorePlugins));
+						.join(FlowLayout.LEFT, L10N.label("dialog.workspace_settings.plugins_tip"), explorePlugins));
 
 				_external_apis.add(new JEmptyBox(5, 15));
 				_external_apis.add(apiSettings);
 			}
 
 			JComponent forgeVersionCheckPan = PanelUtils
-					.westAndEastElement(new JLabel(L10N.t("dialog.workspace_settings.section.version_check")),
+					.westAndEastElement(L10N.label("dialog.workspace_settings.section.version_check"),
 							disableForgeVersionCheck);
 			forgeVersionCheckPan.setBorder(BorderFactory
 					.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
@@ -478,19 +478,19 @@ public class WorkspaceDialogs {
 			advancedSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 					L10N.t("dialog.workspace_settings.section.advanced")));
 			_advancedSettings.add(advancedSettings);
-			advancedSettings.add(new JLabel(L10N.t("dialog.workspace_settings.server_side_only")));
+			advancedSettings.add(L10N.label("dialog.workspace_settings.server_side_only"));
 			advancedSettings.add(serverSideOnly);
-			advancedSettings.add(new JLabel(L10N.t("dialog.workspace_settings.lock_base_files_label")));
+			advancedSettings.add(L10N.label("dialog.workspace_settings.lock_base_files_label"));
 			advancedSettings.add(lockBaseModFiles);
-			advancedSettings.add(new JLabel(L10N.t("dialog.workspace_settings.update_url")));
+			advancedSettings.add(L10N.label("dialog.workspace_settings.update_url"));
 			advancedSettings.add(updateJSON);
 
 			JPanel dependencySettings = new JPanel(new GridLayout(3, 2, 5, 2));
-			dependencySettings.add(new JLabel(L10N.t("dialog.workspace_settings.required_mods")));
+			dependencySettings.add(L10N.label("dialog.workspace_settings.required_mods"));
 			dependencySettings.add(requiredMods);
-			dependencySettings.add(new JLabel(L10N.t("dialog.workspace_settings.dependencies")));
+			dependencySettings.add(L10N.label("dialog.workspace_settings.dependencies"));
 			dependencySettings.add(dependencies);
-			dependencySettings.add(new JLabel(L10N.t("dialog.workspace_settings.dependants")));
+			dependencySettings.add(L10N.label("dialog.workspace_settings.dependants"));
 			dependencySettings.add(dependants);
 
 			if (workspace != null) {

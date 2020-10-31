@@ -20,8 +20,8 @@ package net.mcreator.generator;
 
 import com.google.gson.GsonBuilder;
 import net.mcreator.blockly.BlocklyToAITasks;
-import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.blockly.java.BlocklyToProcedure;

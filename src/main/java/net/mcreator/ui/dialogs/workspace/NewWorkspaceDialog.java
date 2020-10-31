@@ -59,7 +59,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		JPanel buttons = new JPanel();
 
-		JButton ok = new JButton(L10N.t("dialog.new_workspace.button_new"));
+		JButton ok = L10N.button("dialog.new_workspace.button_new");
 		buttons.add(ok);
 
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -67,7 +67,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		buttons.add(new JEmptyBox(2, 2));
 
-		JButton help = new JButton(L10N.t("common.help"));
+		JButton help = L10N.button("common.help");
 		buttons.add(help);
 
 		buttons.setBorder(BorderFactory.createEmptyBorder(8, 0, 8, 0));

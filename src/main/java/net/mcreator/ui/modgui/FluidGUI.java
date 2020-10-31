@@ -156,8 +156,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/is_gas"), L10N.label("elementgui.fluid.is_gas")));
 		destal.add(PanelUtils.centerInPanel(isGas));
 
-		destal.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/type"), new JLabel(L10N.t("elementgui.fluid.type"))));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/type"), L10N.label("elementgui.fluid.type")));
 		destal.add(fluidtype);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/enable_bucket"),

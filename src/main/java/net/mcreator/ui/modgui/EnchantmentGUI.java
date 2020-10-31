@@ -113,7 +113,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		selp.add(maxLevel);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/damage_modifier"),
-				new JLabel(L10N.t("elementgui.enchantment.damage_modifier"))));
+				L10N.label("elementgui.enchantment.damage_modifier")));
 		selp.add(damageModifier);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/treasure_enchantment"),
@@ -129,11 +129,11 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		selp.add(isAllowedOnBooks);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/compatible_enchantments"),
-				new JLabel(L10N.t("elementgui.enchantment.compatible_enchantments"))));
+				L10N.label("elementgui.enchantment.compatible_enchantments")));
 		selp.add(compatibleEnchantments);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/can_apply_to"),
-				new JLabel(L10N.t("elementgui.enchantment.can_apply_to"))));
+				L10N.label("elementgui.enchantment.can_apply_to")));
 		selp.add(compatibleItems);
 
 		pane1.add(PanelUtils.totalCenterInPanel(selp));

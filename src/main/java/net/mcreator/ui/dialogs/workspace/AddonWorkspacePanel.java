@@ -36,31 +36,31 @@ public class AddonWorkspacePanel extends AbstractWorkspacePanel {
 
 		add(new JEmptyBox(20, 20));
 
-		add(PanelUtils.westAndEastElement(new JLabel(L10N.t("dialog.new_workspace.addon.display_name")),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.display_name"),
 				PanelUtils.join(workspaceDialogPanel.modName)));
 
 		add(new JEmptyBox(5, 5));
 
-		add(PanelUtils.westAndEastElement(new JLabel(L10N.t("dialog.new_workspace.addon.addon_id")),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.addon_id"),
 				PanelUtils.join(workspaceDialogPanel.modID)));
 
 		add(new JEmptyBox(5, 5));
 
-		add(PanelUtils.westAndEastElement(new JLabel(L10N.t("dialog.new_workspace.addon.generator")),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.generator"),
 				PanelUtils.join(workspaceDialogPanel.generatorSelector)));
 
 		add(new JEmptyBox(30, 30));
 
-		add(PanelUtils.westAndEastElement(new JLabel(L10N.t("dialog.new_workspace.addon.folder")),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 5, 5)));
 
 		add(new JEmptyBox(30, 204));
 
 		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.warning")), new JEmptyBox(0, 0),
-				new JLabel(L10N.t("dialog.new_workspace.addon.notice1"))));
+				L10N.label("dialog.new_workspace.addon.notice1")));
 
 		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.info")), new JEmptyBox(0, 0),
-				new JLabel(L10N.t("dialog.new_workspace.addon.notice2"))));
+				L10N.label("dialog.new_workspace.addon.notice2")));
 
 		validationGroup.addValidationElement(workspaceDialogPanel.modName);
 		validationGroup.addValidationElement(workspaceDialogPanel.modID);

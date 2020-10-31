@@ -36,36 +36,36 @@ public class ForgeWorkspacePanel extends AbstractWorkspacePanel {
 
 		add(new JEmptyBox(20, 20));
 
-		add(PanelUtils.westAndEastElement(new JLabel(L10N.t("dialog.new_workspace.forge.display_name")),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.display_name"),
 				PanelUtils.join(workspaceDialogPanel.modName)));
 
 		add(new JEmptyBox(5, 5));
 
-		add(PanelUtils.westAndEastElement(new JLabel(L10N.t("dialog.new_workspace.forge.modid")),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.modid"),
 				PanelUtils.join(workspaceDialogPanel.modID)));
 
 		add(new JEmptyBox(5, 5));
 
-		add(PanelUtils.westAndEastElement(new JLabel(L10N.t("dialog.new_workspace.forge.generator")),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.generator"),
 				PanelUtils.join(workspaceDialogPanel.generatorSelector)));
 
 		add(new JEmptyBox(30, 30));
 
-		add(PanelUtils.westAndEastElement(new JLabel(L10N.t("dialog.new_workspace.forge.package")),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.package"),
 				PanelUtils.join(workspaceDialogPanel.packageName)));
 
 		add(new JEmptyBox(30, 30));
 
-		add(PanelUtils.westAndEastElement(new JLabel(L10N.t("dialog.new_workspace.forge.folder")),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 5, 5)));
 
 		add(new JEmptyBox(30, 142));
 
 		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.ok")), new JEmptyBox(0, 0),
-				new JLabel(L10N.t("dialog.new_workspace.forge.notice1"))));
+				L10N.label("dialog.new_workspace.forge.notice1")));
 
 		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.info")), new JEmptyBox(0, 0),
-				new JLabel(L10N.t("dialog.new_workspace.forge.notice2"))));
+				L10N.label("dialog.new_workspace.forge.notice2")));
 
 		validationGroup.addValidationElement(workspaceDialogPanel.modName);
 		validationGroup.addValidationElement(workspaceDialogPanel.modID);
