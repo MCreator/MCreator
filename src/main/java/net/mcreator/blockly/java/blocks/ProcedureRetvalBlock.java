@@ -81,7 +81,8 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "procedure_retval_logic", "procedure_retval_number", "procedure_retval_string", "procedure_retval_itemstack" };
+		return new String[] { "procedure_retval_logic", "procedure_retval_number", "procedure_retval_string",
+				"procedure_retval_itemstack" };
 	}
 
 	@Override public BlockType getBlockType() {

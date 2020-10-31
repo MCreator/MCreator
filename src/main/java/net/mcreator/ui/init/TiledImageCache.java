@@ -103,14 +103,14 @@ public class TiledImageCache {
 
 	public static ImageIcon getModTypeIcon(ModElementType modType) {
 		if (modType == null)
-			return modTypes.getIcon(25, 1);
+			return modTypes.getIcon(1, 1);
 
 		ModElementTypeRegistry.ModTypeRegistration<?> modRegistration = ModElementTypeRegistry.REGISTRY.get(modType);
 		if (modRegistration != null) {
 			return modTypes.getIcon(modRegistration.getIconID(), 1);
 		}
 
-		return modTypes.getIcon(25, 1);
+		return modTypes.getIcon(1, 1);
 	}
 
 }

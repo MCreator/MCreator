@@ -80,8 +80,8 @@ public class FunctionGUI extends ModElementGUI<Function> {
 				L10N.label("elementgui.function.registry_name")));
 		northPanel.add(name);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("function/namespace"),
-				L10N.label("elementgui.function.namespace")));
+		northPanel.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("function/namespace"), L10N.label("elementgui.function.namespace")));
 		northPanel.add(namespace);
 
 		RTextScrollPane sp = new RTextScrollPane(te, true);
@@ -111,8 +111,7 @@ public class FunctionGUI extends ModElementGUI<Function> {
 		te.setSyntaxEditingStyle("text/mcfunction");
 
 		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel),
-				PanelUtils.northAndCenterElement(L10N.label("elementgui.function.indications"),
-						sp, 10, 10), 15, 15));
+				PanelUtils.northAndCenterElement(L10N.label("elementgui.function.indications"), sp, 10, 10), 15, 15));
 
 		addPage(pane3);
 	}

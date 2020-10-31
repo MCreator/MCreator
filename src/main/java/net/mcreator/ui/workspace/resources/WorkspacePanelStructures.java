@@ -64,7 +64,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton importnbt = new JButton(L10N.t("action.workspace.resources.import_structure"));
+		JButton importnbt = L10N.button("action.workspace.resources.import_structure");
 		importnbt.setIcon(UIRES.get("16px.open.gif"));
 		importnbt.setContentAreaFilled(false);
 		importnbt.setOpaque(false);
@@ -72,7 +72,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		importnbt.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(importnbt);
 
-		JButton importmc = new JButton(L10N.t("action.workspace.resources.import_structure_from_minecraft"));
+		JButton importmc = L10N.button("action.workspace.resources.import_structure_from_minecraft");
 		importmc.setIcon(UIRES.get("16px.open.gif"));
 		importmc.setContentAreaFilled(false);
 		importmc.setOpaque(false);
@@ -80,7 +80,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		importmc.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(importmc);
 
-		JButton del = new JButton(L10N.t("workspace.sounds.delete_selected"));
+		JButton del = L10N.button("workspace.sounds.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
 		del.setContentAreaFilled(false);
