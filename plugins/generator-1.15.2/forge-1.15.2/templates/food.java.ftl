@@ -29,6 +29,7 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
+<#include "mcitems.ftl">
 
 package ${package}.item;
 
@@ -111,14 +112,35 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
         </#if>
 
-		<#if hasProcedure(data.onEaten)>
-		@Override public ItemStack onItemUseFinish(ItemStack itemStack, World world, LivingEntity entity) {
-			ItemStack retval = super.onItemUseFinish(itemStack, world, entity);
-			double x = entity.getPosX();
-			double y = entity.getPosY();
-			double z = entity.getPosZ();
-			<@procedureOBJToCode data.onEaten/>
-			return retval;
+		<#if hasProcedure(data.onEaten) || (data.resultItem?? && !data.resultItem.isEmpty())>
+		@Override public ItemStack onItemUseFinish(ItemStack itemstack, World world, LivingEntity entity) {
+			ItemStack retval =
+				<#if data.resultItem?? && !data.resultItem.isEmpty()>
+					${mappedMCItemToItemStackCode(data.resultItem, 1)};
+				</#if>
+			super.onItemUseFinish(itemstack, world, entity);
+
+			<#if hasProcedure(data.onEaten)>
+				double x = entity.getPosX();
+				double y = entity.getPosY();
+				double z = entity.getPosZ();
+				<@procedureOBJToCode data.onEaten/>
+			</#if>
+
+			<#if data.resultItem?? && !data.resultItem.isEmpty()>
+				if (itemstack.isEmpty()) {
+					return retval;
+				} else {
+					if (entity instanceof PlayerEntity) {
+						PlayerEntity player = (PlayerEntity) entity;
+						if (!player.isCreative() && !player.inventory.addItemStackToInventory(retval))
+							player.dropItem(retval, false);
+					}
+					return itemstack;
+				}
+			<#else>
+				return retval;
+			</#if>
 		}
         </#if>
 

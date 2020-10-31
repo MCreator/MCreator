@@ -23,6 +23,7 @@ import net.mcreator.element.parts.gui.Button;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.IHelpContext;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -37,35 +38,35 @@ public class ButtonDialog extends MCreatorDialog {
 		setModal(true);
 		setSize(480, 200);
 		setLocationRelativeTo(editor.mcreator);
-		setTitle("Add button");
+		setTitle(L10N.t("dialog.gui.button_add_title"));
 		JTextField nameField = new JTextField(20);
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
 		if (button == null)
 			add("North", PanelUtils.centerInPanel(
-					new JLabel("After you click OK, right-click with the mouse to change button width")));
+					L10N.label("dialog.gui.button_change_width")));
 		else
 			add("North", PanelUtils.centerInPanel(
-					new JLabel("To resize the button, use move tool and right-click with the mouse when moving")));
+					L10N.label("dialog.gui.button_resize")));
 
-		options.add(PanelUtils.join(new JLabel("Text of the button: "), nameField));
+		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), nameField));
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
-				editor.mcreator, "On button clicked", ProcedureSelector.Side.BOTH, false,
+				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		eh.refreshList();
 		options.add(PanelUtils.join(eh));
 
 		add("Center", options);
-		JButton ok = new JButton("OK");
-		JButton cancel = new JButton("Cancel");
+		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		add("South", PanelUtils.join(ok, cancel));
 
 		getRootPane().setDefaultButton(ok);
 
 		if (button != null) {
-			ok.setText("Save changes");
+			ok.setText(L10N.t("dialog.common.save_changes"));
 			nameField.setText(button.name);
 			eh.setSelectedProcedure(button.onClick);
 		}

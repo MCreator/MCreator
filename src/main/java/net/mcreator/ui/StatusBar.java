@@ -22,6 +22,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.gradle.GradleConsole;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.vcs.BranchesPopup;
 import net.mcreator.util.DesktopUtils;
@@ -41,7 +42,7 @@ import java.util.concurrent.TimeUnit;
 public class StatusBar extends JPanel {
 
 	private final JLabel messages = new JLabel("");
-	private final JLabel gradleMessages = new JLabel("Gradle idle");
+	private final JLabel gradleMessages = L10N.label("gradle.idle");
 
 	private final GradleIndicator gradleIndicator = new GradleIndicator();
 

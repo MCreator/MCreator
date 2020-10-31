@@ -58,7 +58,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 	private final VTextField name = new VTextField(20);
 	private final VTextField description = new VTextField(20);
 
-	private final JCheckBox hasGlow = new JCheckBox(L10N.t("elementgui.common.enable"));
+	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
@@ -86,7 +86,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.t("elementgui.common.event_right_clicked_air"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator,
-				L10N.t("elementgui.music_disc.event_crafted_smelted"),
+				L10N.t("elementgui.common.event_on_crafted"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
 				L10N.t("elementgui.common.event_right_clicked_block"), Dependency.fromString(
@@ -128,24 +128,24 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.label("elementgui.music_disc.music_mono_tip")));
 		subpane2.add(music);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
-				new JLabel(L10N.t("elementgui.common.name_in_gui"))));
+		subpane2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
 		subpane2.add(name);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/description"),
-				new JLabel(L10N.t("elementgui.music_disc.disc_description"))));
+				L10N.label("elementgui.music_disc.disc_description")));
 		subpane2.add(description);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				new JLabel(L10N.t("elementgui.common.creative_tab"))));
+				L10N.label("elementgui.common.creative_tab")));
 		subpane2.add(creativeTab);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-				new JLabel(L10N.t("elementgui.music_disc.has_glowing_effect"))));
+				L10N.label("elementgui.music_disc.has_glowing_effect")));
 		subpane2.add(hasGlow);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				new JLabel(L10N.t("elementgui.music_disc.disc_description_tip"))));
+				L10N.label("elementgui.music_disc.disc_description_tip")));
 		subpane2.add(specialInfo);
 
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));

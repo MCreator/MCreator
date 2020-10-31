@@ -22,6 +22,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
@@ -37,7 +38,7 @@ public class RecolorDialog extends MCreatorDialog {
 
 	public RecolorDialog(MCreator window, Canvas canvas, Layer layer, ColorSelector colorSelector,
 			VersionManager versionManager) {
-		super(window, "Recolor Layer", true);
+		super(window, L10N.t("dialog.imageeditor.recolor_layer"), true);
 
 		JPanel settings = new JPanel(new GridBagLayout());
 		JPanel controls = new JPanel(new BorderLayout());
@@ -46,14 +47,14 @@ public class RecolorDialog extends MCreatorDialog {
 		colorSettings.setLayout(new BoxLayout(colorSettings, BoxLayout.X_AXIS));
 		JColor colorChoser = new JColor(window);
 		colorChoser.setColor(colorSelector.getForegroundColor());
-		colorSettings.add(new JLabel("Color:"));
+		colorSettings.add(L10N.label("dialog.imageeditor.color"));
 		colorSettings.add(Box.createRigidArea(new Dimension(25, 0)));
 		colorSettings.add(colorChoser);
 
-		JCheckBox lock = new JCheckBox("Lock saturation and brightness");
+		JCheckBox lock = L10N.checkbox("dialog.imageeditor.saturation_brightness_lock");
 
-		JButton cancel = new JButton("Cancel");
-		JButton ok = new JButton("Recolor");
+		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton ok = L10N.button("dialog.imageeditor.recolor_action");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		getRootPane().setDefaultButton(ok);

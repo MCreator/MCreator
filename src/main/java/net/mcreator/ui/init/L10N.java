@@ -73,6 +73,7 @@ public class L10N {
 		rb = ResourceBundle.getBundle("lang/texts", getLocale(), PluginLoader.INSTANCE, new UTF8Control());
 		rb_en = ResourceBundle
 				.getBundle("lang/texts", new Locale("en", "US"), PluginLoader.INSTANCE, new UTF8Control());
+		Locale.setDefault(getLocale());
 	}
 
 	/**

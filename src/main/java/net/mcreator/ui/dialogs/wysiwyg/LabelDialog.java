@@ -24,6 +24,7 @@ import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.IHelpContext;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -54,17 +55,17 @@ public class LabelDialog extends MCreatorDialog {
 		}
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
-				IHelpContext.NONE.withEntry("gui/label_display_condition"), editor.mcreator, "Label display condition",
+				IHelpContext.NONE.withEntry("gui/label_display_condition"), editor.mcreator, L10N.t("dialog.gui.label_event_display_condition"),
 				ProcedureSelector.Side.CLIENT, false, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
 
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
-		options.add(PanelUtils.join(FlowLayout.LEFT, new JLabel("Text: "), name));
+		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text"), name));
 		add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(options, displayCondition, 20, 5)));
 
-		setTitle("Label component");
+		setTitle(L10N.t("dialog.gui.label_component_title"));
 
 		final JColor cola = new JColor(editor.mcreator);
 
@@ -74,16 +75,16 @@ public class LabelDialog extends MCreatorDialog {
 			cola.setColor(Color.white);
 		}
 
-		options.add(PanelUtils.join(FlowLayout.LEFT, new JLabel("Text color: "), cola));
-		JButton ok = new JButton("OK");
+		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text_color"), cola));
+		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 
 		getRootPane().setDefaultButton(ok);
 
-		JButton cancel = new JButton("Cancel");
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		add("South", PanelUtils.join(ok, cancel));
 
 		if (label != null) {
-			ok.setText("Save changes");
+			ok.setText(L10N.t("dialog.common.save_changes"));
 			name.setSelectedItem(label.name);
 			cola.setColor(label.color);
 			displayCondition.setSelectedProcedure(label.displayCondition);

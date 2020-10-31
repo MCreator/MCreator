@@ -253,8 +253,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				.wrapWithHelpButton(this.withEntry("biome/parent"), L10N.label("elementgui.biome.parent")));
 		spawnproperties.add(parent);
 
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/dictionary"),
-				new JLabel(L10N.t("elementgui.biome.dictionnary"))));
+		spawnproperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("biome/dictionary"), L10N.label("elementgui.biome.dictionnary")));
 		spawnproperties.add(biomeDictionaryTypes);
 
 		spawnproperties.add(HelpUtils
@@ -359,6 +359,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		JPanel sbbp5 = new JPanel(new GridLayout(5, 4, 5, 5));
 
 		sbbp5.add(PanelUtils.join(customTrees));
+		sbbp5.add(L10N.label("elementgui.biome.minimal_height"));
+
+		sbbp5.add(minHeight);
 		sbbp5.add(PanelUtils.join(spawnVines));
 
 		sbbp5.add(HelpUtils

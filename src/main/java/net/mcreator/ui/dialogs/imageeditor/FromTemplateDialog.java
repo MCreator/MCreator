@@ -25,6 +25,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.dialogs.TextureSelectorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
@@ -63,9 +64,9 @@ public class FromTemplateDialog extends MCreatorDialog {
 	private final JComboBox<ResourcePointer> cbs2 = new JComboBox<>();
 	private final JComboBox<ResourcePointer> cbs3 = new JComboBox<>();
 	private final JComboBox<ResourcePointer> cbs4 = new JComboBox<>();
-	private final JCheckBox type1 = new JCheckBox("Lock saturation and brightness");
-	private final JCheckBox type2 = new JCheckBox("Lock saturation and brightness");
-	private final JCheckBox type3 = new JCheckBox("Lock saturation and brightness");
+	private final JCheckBox type1 = L10N.checkbox("dialog.imageeditor.saturation_brightness_lock");
+	private final JCheckBox type2 = L10N.checkbox("dialog.imageeditor.saturation_brightness_lock");
+	private final JCheckBox type3 = L10N.checkbox("dialog.imageeditor.saturation_brightness_lock");
 	private final JLabel prev = new JLabel();
 	private final JColor col1;
 	private final JColor col2;
@@ -82,7 +83,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 	private boolean disableRefresh = false;
 
 	public FromTemplateDialog(MCreator window, Canvas canvas, VersionManager versionManager) {
-		super(window, "From template", true);
+		super(window, L10N.t("dialog.imageeditor.template_from_title"), true);
 
 		templatesSorted = new ArrayList<>(ImageMakerTexturesCache.CACHE.keySet());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
@@ -99,7 +100,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		JComboBox<String> templateSelector = new JComboBox<>(templateList);
 		templateSelector.setSelectedIndex(0);
-		templates.add(new JLabel("Generator template:"));
+		templates.add(L10N.label("dialog.imageeditor.template_generator"));
 		templates.add(templateSelector);
 
 		for (ResourcePointer template : templatesSorted) {
@@ -126,10 +127,10 @@ public class FromTemplateDialog extends MCreatorDialog {
 		JButton bt2 = new JButton(UIRES.get("18px.open"));
 		JButton bt3 = new JButton(UIRES.get("18px.open"));
 		JButton bt4 = new JButton(UIRES.get("18px.open"));
-		bt.setText("Select texture");
-		bt2.setText("Select texture");
-		bt3.setText("Select texture");
-		bt4.setText("Select texture");
+		bt.setText(L10N.t("dialog.imageeditor.template_select_texture"));
+		bt2.setText(L10N.t("dialog.imageeditor.template_select_texture"));
+		bt3.setText(L10N.t("dialog.imageeditor.template_select_texture"));
+		bt4.setText(L10N.t("dialog.imageeditor.template_select_texture"));
 		bt.setMargin(new Insets(2, 2, 2, 2));
 		bt2.setMargin(new Insets(2, 2, 2, 2));
 		bt3.setMargin(new Insets(2, 2, 2, 2));
@@ -188,16 +189,16 @@ public class FromTemplateDialog extends MCreatorDialog {
 		JPanel pas = new JPanel();
 		pas.setLayout(new BoxLayout(pas, BoxLayout.PAGE_AXIS));
 
-		pas.add(PanelUtils.join(FlowLayout.LEFT, new JLabel("Layer 1: "), cbs, bt, as));
+		pas.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_one"), cbs, bt, as));
 		pas.add(PanelUtils
-				.join(FlowLayout.LEFT, new JLabel("Layer 2: "), cbs2, bt2, col1, type1, new JLabel("Rotation: "),
-						ang1));
+				.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_two"), cbs2, bt2, col1, type1,
+						L10N.label("dialog.imageeditor.template_rotation"), ang1));
 		pas.add(PanelUtils
-				.join(FlowLayout.LEFT, new JLabel("Layer 3: "), cbs3, bt3, col2, type2, new JLabel("Rotation: "),
-						ang2));
+				.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_three"), cbs3, bt3, col2, type2,
+						L10N.label("dialog.imageeditor.template_rotation"), ang2));
 		pas.add(PanelUtils
-				.join(FlowLayout.LEFT, new JLabel("Layer 4: "), cbs4, bt4, col4, type3, new JLabel("Rotation: "),
-						ang3));
+				.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_four"), cbs4, bt4, col4, type3,
+						L10N.label("dialog.imageeditor.template_rotation"), ang3));
 
 		col1.setColorSelectedListener(event -> refreshIcon());
 		col2.setColorSelectedListener(event -> refreshIcon());
@@ -216,7 +217,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 		editp.add("South", PanelUtils.centerInPanel(pas));
 		editp.setOpaque(false);
 
-		JButton randomize = new JButton("Randomize");
+		JButton randomize = L10N.button("dialog.imageeditor.template_randomize");
 		randomize.setMargin(new Insets(1, 40, 1, 40));
 		randomize.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		randomize.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
@@ -254,9 +255,9 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		generateFromTemplate("Random");
 
-		JButton cancel = new JButton("Cancel");
-		JButton merge = new JButton("Create and merge");
-		JButton ok = new JButton("Create");
+		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton merge = L10N.button("dialog.imageeditor.template_create_and_merge");
+		JButton ok = L10N.button("action.common.create");
 
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -265,7 +266,8 @@ public class FromTemplateDialog extends MCreatorDialog {
 		cancel.addActionListener(e -> setVisible(false));
 
 		merge.addActionListener(e -> {
-			Layer first = new Layer(16, 16, 0, 0, "Merged layer", refreshIcon().getImage());
+			Layer first = new Layer(16, 16, 0, 0, L10N.t("dialog.imageeditor.template_merged_layer"),
+					refreshIcon().getImage());
 			canvas.add(first);
 			setVisible(false);
 		});

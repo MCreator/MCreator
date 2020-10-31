@@ -108,7 +108,6 @@ public class BlocklyBlockUtil {
 		return base_blocks;
 	}
 
-
 	/**
 	 * Calculates block's full color out of its hue value.
 	 *
