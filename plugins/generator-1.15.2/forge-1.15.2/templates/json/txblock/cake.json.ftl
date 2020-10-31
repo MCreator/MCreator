@@ -1,7 +1,8 @@
 <#-- @formatter:off -->
 {
     "textures": {
-         <#if data.particleTexture?has_content>"particle": "${modid}:blocks/${data.particleTexture}",</#if>
+         <#if data.particleTexture?has_content>"particle": "${modid}:blocks/${data.particleTexture}",
+         <#else> "particle": "${modid}:blocks/${data.textureFront?has_content?then(data.textureFront, data.texture)}",</#if>
         "bottom": "${modid}:blocks/${data.texture}",
         "top": "${modid}:blocks/${data.textureTop?has_content?then(data.textureTop, data.texture)}",
         "side": "${modid}:blocks/${data.textureFront?has_content?then(data.textureFront, data.texture)}"
