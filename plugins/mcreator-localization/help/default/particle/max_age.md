@@ -1,1 +1,1 @@
-The particle will expire as soon as it its age is equal to this number of ticks.
+The particle will expire as soon as its age is equal to this number of ticks.
