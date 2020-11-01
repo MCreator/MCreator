@@ -1,4 +1,4 @@
-How your static plant will be generated. 
+This parameter controls how your static plant will be generated. 
 
-* Flower will generate your plant like veins while 
-* Grass will generate your plant in masses
+* **Flower:** The plant will be generated like veins.
+* **Grass:** The plant will be generated in masses.
