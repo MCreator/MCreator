@@ -19,6 +19,24 @@
       "type": "input_value",
       "name": "z",
       "check": "Number"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "mode",
+      "options": [
+        [
+          "None",
+          "NONE"
+        ],
+        [
+          "Break",
+          "BREAK"
+        ],
+        [
+          "Destroy",
+          "DESTROY"
+        ]
+      ]
     }
   ],
   "inputsInline": true,
@@ -31,7 +49,11 @@
       "<value name=\"power\"><block type=\"math_number\"><field name=\"NUM\">4</field></block></value>",
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
-      "<value name=\"z\"><block type=\"coord_z\"></block></value>"
+      "<value name=\"z\"><block type=\"coord_z\"></block></value>",
+      "<field name=\"mode\">BREAK</field>"
+    ],
+    "fields": [
+      "mode"
     ],
     "inputs": [
       "x",
