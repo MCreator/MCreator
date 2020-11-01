@@ -11,8 +11,9 @@ assignees: ''
 
 A clear and concise description of what the feature is.
 
-**How to implement it in the UI**
-How do you think your feature in the UI? As a new mod element, an element base, a new option n an existing mod element, ...?
+**How would you implement it?**
+
+Explain how you would like to be implemented in the UI (New mod element, element base, option, existing mod element, procedure block) and if you already tried to implement it on your own.
 
 **Additional context**
 
