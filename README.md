@@ -1,25 +1,25 @@
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Team-MCToolkit/MCToolkit/blob/master/LICENSE.txt)
 [![Build](https://api.travis-ci.org/MCreator/MCreator.svg?branch=master)](https://travis-ci.org/github/Team-MCToolkit/MCToolkit)
-[![Download](https://img.shields.io/badge/Download-release-%2393c54b)](https://mcreator.net/download)
+[![Download](https://img.shields.io/badge/Download-release-%2393c54b)](https://mctoolkit.net/download)
 [![Donate](https://img.shields.io/badge/Donate-%E2%99%A1-%23ff7c00)](https://mcreator.net/donate)
 # MCToolkit - Minecraft Mod Maker
 
 <img align="right" width="300" src="https://mcreator.net/image/mainwindow.png">
 
-https://mcreator.net/ - MCToolkit is a software used to make Minecraft Java Edition mods, Minecraft Bedrock Edition Add-Ons, and data packs using an intuitive easy-to-learn interface or with an integrated code editor. 
+https://mctoolkit.net/ - MCToolkit is a software used to make Minecraft Java Edition mods, Minecraft Bedrock Edition Add-Ons, and data packs using an intuitive easy-to-learn interface or with an integrated code editor.
 
 It is used worldwide by Minecraft players, aspiring mod developers, [for education, online classes, and STEM workshops](https://mcreator.net/education).
 
 ## Download, community, and support
 
-This repository page is for people looking to contribute to MCToolkit. Visit https://mcreator.net/ to download MCToolkit distribution and to engage in the community. Check https://mcreator.net/support to find the support, forums, knowledge base, and more.
+This repository page is for people looking to contribute to MCToolkit. Visit https://mctoolkit.net/ to download MCToolkit distribution and to engage in the community. Check https://mcreator.net/support to find the support, forums, knowledge base, and more.
 
-Download MCToolkit binary distributions on https://mcreator.net/download.
+Download MCToolkit binary distributions on https://mctoolkit.net/download.
 
 ## Contributing
 
 You are welcome to support this project by opening pull requests. Read more about contributing in our [contributing guidelines](CONTRIBUTING.md).
-Before we can use your code, you must sign the [MCToolkit CLA](https://cla-assistant.io/MCreator/MCreator).
+Before we can use your code, you must sign the [MCToolkit CLA](https://cla-assistant.io/Team-MCToolkit/MCToolkit).
 
 Big thanks to [all the people](https://github.com/Team-MCToolkit/MCToolkit/graphs/contributors) who already contributed to MCToolkit! 💚
 
