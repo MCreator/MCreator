@@ -1,1 +1,1 @@
-Triggers a procedure every tick while this GUI is opened.
+Triggers a procedure every tick while this GUI is open.

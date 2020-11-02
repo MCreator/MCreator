@@ -1,1 +1,1 @@
-This parameter controls how much actual maximal particle age can vary in positive or negative value from the number above.
+This parameter controls how much actual maximal particle age can vary in positive or negative value from the specified maximal age.
