@@ -25,15 +25,15 @@
       "name": "mode",
       "options": [
         [
-          "None",
+          "NONE",
           "NONE"
         ],
         [
-          "Break",
+          "BREAK",
           "BREAK"
         ],
         [
-          "Destroy",
+          "DESTROY",
           "DESTROY"
         ]
       ]
