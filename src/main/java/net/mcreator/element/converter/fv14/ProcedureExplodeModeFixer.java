@@ -70,7 +70,7 @@ public class ProcedureExplodeModeFixer implements IConverter {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Element element = (Element) nodeList.item(i);
 			String type = element.getAttribute("type");
-			if (type != null && type.equals("spawn_gem")) {
+			if (type != null && type.equals("explode")) {
 				Element mode_field = doc.createElement("field");
 				mode_field.setAttribute("name", "mode");
 				mode_field.setTextContent("BREAK");
