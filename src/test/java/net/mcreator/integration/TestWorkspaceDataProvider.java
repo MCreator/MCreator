@@ -957,8 +957,6 @@ public class TestWorkspaceDataProvider {
 			block.Mx = 0.9;
 			block.My = 0.9;
 			block.Mz = 0.9;
-			block.onShiftOnly = false;
-			block.onCommandOnly = false;
 			block.rotationMode = new int[] { 0, 1, 4, 5 }[valueIndex];
 			block.hardness = 2.3;
 			block.resistance = 3.1;
