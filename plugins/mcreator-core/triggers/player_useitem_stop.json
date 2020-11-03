@@ -1,0 +1,33 @@
+{
+  "dependencies_provided": [
+    {
+      "name": "entity",
+      "type": "entity"
+    },
+    {
+      "name": "itemstack",
+      "type": "itemstack"
+    },
+    {
+      "name": "world",
+      "type": "world"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    },
+    {
+      "name": "z",
+      "type": "number"
+    },
+    {
+      "name": "duration",
+      "type": "number"
+    }
+  ],
+  "cancelable": "true"
+}

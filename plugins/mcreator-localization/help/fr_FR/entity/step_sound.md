@@ -1,0 +1,1 @@
+The sound played when tye entity walks.

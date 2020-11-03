@@ -22,6 +22,7 @@ import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.SoundElementDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.AbstractMCreatorTheme;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
@@ -76,7 +77,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton importsound = new JButton("Import ogg sound(s) ...");
+		JButton importsound = L10N.button("action.workspace.resources.import_sound");
 		importsound.setIcon(UIRES.get("16px.open.gif"));
 		importsound.setContentAreaFilled(false);
 		importsound.setOpaque(false);
@@ -84,7 +85,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		importsound.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(importsound);
 
-		JButton edit = new JButton("Edit selected ...");
+		JButton edit = L10N.button("workspace.sounds.edit_selected");
 		edit.setIcon(UIRES.get("16px.edit.gif"));
 		edit.setContentAreaFilled(false);
 		edit.setOpaque(false);
@@ -92,7 +93,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		edit.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(edit);
 
-		JButton del = new JButton("Delete selected");
+		JButton del = L10N.button("workspace.sounds.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
 		del.setContentAreaFilled(false);
@@ -235,7 +236,9 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 			String rightText;
 
 			if (ma.getSubtitle() != null && !ma.getSubtitle().isEmpty()) {
-				rightText = "<html><small>Subtitle:</small> " + ma.getSubtitle() + ", <small>Sound category:</small> " + ma.getCategory();
+				rightText =
+						"<html><small>Subtitle:</small> " + ma.getSubtitle() + ", <small>Sound category:</small> " + ma
+								.getCategory();
 			} else {
 				rightText = "<html><small>Sound category:</small> " + ma.getCategory();
 			}

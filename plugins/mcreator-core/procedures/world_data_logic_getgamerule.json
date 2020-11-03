@@ -1,0 +1,20 @@
+{
+  "extensions": [
+    "gamerulesboolean_list_provider"
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "worlddata",
+    "fields": [
+      "gamerulesboolean"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}

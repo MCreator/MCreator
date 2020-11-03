@@ -114,7 +114,8 @@ public class WorkspacePanel extends JPanel {
 
 	public JRadioButtonMenuItem desc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.descending"));
 
-	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem("Creation date");
+	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem(
+			L10N.t("workspace.elements.list.sort_date"));
 	public JRadioButtonMenuItem sortName = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_name"));
 	private final JRadioButtonMenuItem sortType = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_type"));
 	private final JRadioButtonMenuItem sortLoadingOrder = new JRadioButtonMenuItem(
@@ -226,7 +227,7 @@ public class WorkspacePanel extends JPanel {
 
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JComponent isize = ComponentUtils.deriveFont(new JLabel(L10N.t("workspace.elements.list.icon_size")), 12);
+		JComponent isize = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.icon_size"), 12);
 		isize.setToolTipText(L10N.t("workspace.elements.list.icon_size.tooltip"));
 		bar.add(isize);
 
@@ -335,8 +336,8 @@ public class WorkspacePanel extends JPanel {
 		leftPan.setOpaque(false);
 		leftPan.add(search);
 
-		JButton filter = new JButton(L10N.t("workspace.elements.list.filter"));
-		JButton sort = new JButton(L10N.t("workspace.elements.list.sort"));
+		JButton filter = L10N.button("workspace.elements.list.filter");
+		JButton sort = L10N.button("workspace.elements.list.sort");
 
 		ComponentUtils.deriveFont(filter, 11);
 		filter.setMargin(new Insets(1, 3, 1, 3));
@@ -699,12 +700,12 @@ public class WorkspacePanel extends JPanel {
 		emptct.setLayout(new BoxLayout(emptct, BoxLayout.LINE_AXIS));
 		emptct.setOpaque(false);
 
-		emptct.add(ComponentUtils.deriveFont(new JLabel(L10N.t("workspace.elements.empty.tip_part1")), 24));
+		emptct.add(ComponentUtils.deriveFont(L10N.label("workspace.elements.empty.tip_part1"), 24));
 
 		JLabel but1_empty = new JLabel(new ImageIcon(ImageUtils.resize(TiledImageCache.workspaceAdd.getImage(), 32)));
 		emptct.add(but1_empty);
 
-		emptct.add(ComponentUtils.deriveFont(new JLabel(L10N.t("workspace.elements.empty.tip_part2")), 24));
+		emptct.add(ComponentUtils.deriveFont(L10N.label("workspace.elements.empty.tip_part2"), 24));
 
 		JPanel emptbtpd = new JPanel(new BorderLayout());
 		emptbtpd.setOpaque(false);
@@ -983,10 +984,10 @@ public class WorkspacePanel extends JPanel {
 	public void reloadElements() {
 		if (mcreator.getWorkspace() != null && mcreator.getWorkspace().getWorkspaceSettings() != null) {
 			if (mcreator.getWorkspace().getModElements().size() > 0) {
-				elementsCount.setText(
-						mcreator.getWorkspace().getWorkspaceSettings().getModName() + " [" + mcreator.getWorkspace()
-								.getGenerator().getGeneratorName() + "]: " + mcreator.getWorkspace().getModElements()
-								.size() + " mod elements ");
+				elementsCount.setText(L10N.t("workspace.stats.current_workspace",
+						mcreator.getWorkspace().getWorkspaceSettings().getModName(),
+						mcreator.getWorkspace().getGenerator().getGeneratorName(),
+						mcreator.getWorkspace().getModElements().size()));
 				mainpcl.show(mainp, "sp");
 
 				// reload list model partially in the background
@@ -1006,8 +1007,8 @@ public class WorkspacePanel extends JPanel {
 				}).start();
 			} else {
 				elementsCount.setText(
-						mcreator.getWorkspace().getWorkspaceSettings().getModName() + " [" + mcreator.getWorkspace()
-								.getGenerator().getGeneratorName() + "]: no mod elements yet ");
+						L10N.t("workspace.stats.empty", mcreator.getWorkspace().getWorkspaceSettings().getModName(),
+								mcreator.getWorkspace().getGenerator().getGeneratorName()));
 				mainpcl.show(mainp, "ep");
 			}
 

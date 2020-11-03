@@ -43,7 +43,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	private final JButton naprej = new JButton("Select");
 	private final FilterModel model = new FilterModel();
 	public JList<File> list = new JList<>(model);
-	private final String type;
+	private final TextureType type;
 	private final CardLayout layout = new CardLayout();
 	private final JPanel center = new JPanel(layout);
 
@@ -51,7 +51,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 
 	private final MCreator mcreator;
 
-	public BlockItemTextureSelector(MCreator mcreator, String type) {
+	public BlockItemTextureSelector(MCreator mcreator, TextureType type) {
 		super(mcreator);
 		this.type = type;
 		this.mcreator = mcreator;
@@ -90,7 +90,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		JPanel buttons = new JPanel();
 
 		naprej.setFont(naprej.getFont().deriveFont(16.0f));
-		JButton naprej2 = new JButton("Cancel");
+		JButton naprej2 = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		naprej2.setFont(naprej2.getFont().deriveFont(16.0f));
 
 		buttons.add(naprej);
@@ -130,13 +130,14 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		});
 		pno.add(createTx2);
 
-		JButton importTx = new JButton("<html>Import texture<br><small>For " + type.toLowerCase(Locale.ENGLISH));
+		JButton importTx = new JButton("<html>Import texture<br><small>For " + type.name().toLowerCase(Locale.ENGLISH));
 		importTx.setFont(naprej.getFont());
 		importTx.setIcon(UIRES.get("18px.add"));
 		importTx.addActionListener(event -> {
-			TextureImportDialogs.importTexturesBlockOrItem(mcreator, type.toLowerCase(Locale.ENGLISH) + "s");
+
+			TextureImportDialogs.importTexturesBlockOrItem(mcreator, type);
 			List<File> block1;
-			if (type.equalsIgnoreCase("block")) {
+			if (type == TextureType.BLOCK) {
 				block1 = mcreator.getWorkspace().getFolderManager().getBlockTexturesList();
 			} else {
 				block1 = mcreator.getWorkspace().getFolderManager().getItemTexturesList();
@@ -158,13 +159,13 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		add(pn);
 	}
 
-	public String getTextureType() {
+	public TextureType getTextureType() {
 		return type;
 	}
 
 	@Override public void setVisible(boolean b) {
 		List<File> block;
-		if (type.equalsIgnoreCase("block")) {
+		if (type == TextureType.BLOCK) {
 			block = mcreator.getWorkspace().getFolderManager().getBlockTexturesList();
 		} else {
 			block = mcreator.getWorkspace().getFolderManager().getItemTexturesList();
@@ -192,7 +193,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		return mcreator;
 	}
 
-	class Render extends JLabel implements ListCellRenderer<File> {
+	static class Render extends JLabel implements ListCellRenderer<File> {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends File> list, File ma, int index,
 				boolean isSelected, boolean cellHasFocus) {
@@ -260,6 +261,10 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 					.contains(term.toLowerCase(Locale.ENGLISH))).collect(Collectors.toList()));
 			fireContentsChanged(this, 0, getSize());
 		}
+	}
+
+	public enum TextureType {
+		BLOCK, ITEM
 	}
 
 }

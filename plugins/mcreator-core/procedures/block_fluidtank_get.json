@@ -39,7 +39,7 @@
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
       "<value name=\"z\"><block type=\"coord_z\"></block></value>",
       "<value name=\"tank\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
-      "<value name=\"direction\"><block type=\"direction_unspecified\">DOWN</block></value>"
+      "<value name=\"direction\"><block type=\"direction_unspecified\"></block></value>"
     ],
     "inputs": [
       "x",

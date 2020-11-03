@@ -7,3 +7,4 @@ map: HashMap
 string: String
 boolean: boolean
 direction: Direction
+advancement: Advancement

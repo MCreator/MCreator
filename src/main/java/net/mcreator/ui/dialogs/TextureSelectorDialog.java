@@ -31,7 +31,7 @@ import java.io.File;
 
 public class TextureSelectorDialog extends MCreatorDialog {
 
-	public JButton naprej = new JButton("OK");
+	public JButton naprej = new JButton(UIManager.getString("OptionPane.okButtonText"));
 
 	private final DefaultListModel<ResourcePointer> model = new DefaultListModel<>();
 	public JList<ResourcePointer> list = new JList<>(model);
@@ -46,7 +46,7 @@ public class TextureSelectorDialog extends MCreatorDialog {
 		block.forEach(model::addElement);
 
 		JPanel buttons = new JPanel();
-		JButton naprej2 = new JButton("Cancel");
+		JButton naprej2 = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		buttons.add(naprej2);
 		list.setLayoutOrientation(JList.VERTICAL_WRAP);
 		list.addListSelectionListener(event -> naprej.doClick());
@@ -81,6 +81,8 @@ public class TextureSelectorDialog extends MCreatorDialog {
 			else if (!ma.isInClasspath())
 				setIcon(new ImageIcon(
 						ImageUtils.resize(new ImageIcon(((File) ma.identifier).getAbsolutePath()).getImage(), 32)));
+
+			setToolTipText(ma.toString());
 
 			setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 

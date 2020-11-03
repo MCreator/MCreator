@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.Structure;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.Transliteration;
@@ -30,6 +30,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.FileDialogs;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.minecraft.DimensionListField;
@@ -65,6 +66,8 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 			new String[] { "First motion blocking block", "First block" });
 
 	private final JSpinner spawnHeightOffset = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
+	private final JSpinner spawnOffsetX = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
+	private final JSpinner spawnOffsetZ = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
 
 	private final JSpinner minCountPerChunk = new JSpinner(new SpinnerNumberModel(1, 1, 16, 1));
 	private final JSpinner maxCountPerChunk = new JSpinner(new SpinnerNumberModel(1, 1, 16, 1));
@@ -74,7 +77,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 	private final JComboBox<String> structureSelector = new JComboBox<>();
 
-	private final JCheckBox randomlyRotateStructure = new JCheckBox("Check to enable");
+	private final JCheckBox randomlyRotateStructure = L10N.checkbox("elementgui.common.enable");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -90,13 +93,14 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 	@Override protected void initGUI() {
 		onStructureGenerated = new ProcedureSelector(this.withEntry("structure/on_generated"), mcreator,
-				"On structure instance generated", ProcedureSelector.Side.SERVER,
+				L10N.t("elementgui.structuregen.event_structure_instance_generated"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 
 		generateCondition = new ProcedureSelector(this.withEntry("structure/condition"), mcreator,
-				"Additional generation condition", ProcedureSelector.Side.SERVER, true, VariableElementType.LOGIC,
+				L10N.t("elementgui.structuregen.event_additional_structure_condition_is"),
+				ProcedureSelector.Side.SERVER, true, VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName("(no additional condition)");
+				.setDefaultName(L10N.t("elementgui.structuregen.event_additional_structure_condition_none"));
 
 		restrictionBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		restrictionBiomes = new BiomeListField(mcreator);
@@ -109,12 +113,11 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 		ComponentUtils.deriveFont(structureSelector, 16);
 
-		JPanel params = new JPanel(new GridLayout(11, 2, 50, 7));
+		JPanel params = new JPanel(new GridLayout(11, 2, 50, 2));
 		params.setOpaque(false);
 
 		JButton importnbt = new JButton(UIRES.get("18px.add"));
-		importnbt.setToolTipText("<html>Click this to import nbt structure file<br>"
-				+ "Use Structures section in Workspace tab for more options.");
+		importnbt.setToolTipText(L10N.t("elementgui.structuregen.import_tooltip"));
 		importnbt.setOpaque(false);
 		importnbt.addActionListener(e -> {
 			File sch = FileDialogs.getOpenDialog(mcreator, new String[] { ".nbt" });
@@ -128,50 +131,48 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 			}
 		});
 
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/structure"), new JLabel(
-				"<html>Structure to spawn: <br>"
-						+ "<small>For more structure import options, use the structures section of the workspace tab")));
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/structure"),
+				L10N.label("elementgui.structuregen.select_tooltip")));
 		params.add(PanelUtils.centerAndEastElement(structureSelector, importnbt));
 
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/probability"), new JLabel(
-				"<html>Spawn probability (number of structures per 1.000.000 chunks):<br><small>Setting this value too high might cause slow world generation")));
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/probability"),
+				L10N.label("elementgui.structuregen.probability")));
 		params.add(spawnProbability);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/group_size"),
-				new JLabel("Structure group size (min, max): ")));
+				L10N.label("elementgui.structuregen.structure_group")));
 		params.add(PanelUtils.gridElements(1, 2, 5, 5, minCountPerChunk, maxCountPerChunk));
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/random_rotation"),
-				new JLabel("Randomize structure rotation: ")));
+				L10N.label("elementgui.structuregen.random_structure_rotation")));
 		params.add(randomlyRotateStructure);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/ignore_blocks"),
-				new JLabel("<html>Blocks to ignore when placing:")));
+				L10N.label("elementgui.structuregen.ignore_blocks")));
 		params.add(ignoreBlocks);
 
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/ground_detection"), new JLabel(
-				"<html>Type of reference ground detection:<br><small>"
-						+ "Top down detection until the condition is met")));
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/ground_detection"),
+				L10N.label("elementgui.structuregen.surface_detection_type")));
 		params.add(surfaceDetectionType);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/spawn_location"),
-				new JLabel("<html>Spawn location: <br><small>For nether type dimensions, use underground only")));
+				L10N.label("elementgui.structuregen.spawn_location")));
 		params.add(spawnLocation);
 
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/height_offset"), new JLabel(
-				"<html>Spawn height offset:<br><small>Use this is your structure if floating or buried in the ground")));
-		params.add(spawnHeightOffset);
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/height_offset"),
+				L10N.label("elementgui.structuregen.spawn_height_offset")));
+		params.add(PanelUtils.gridElements(1, 3, 2, 2, spawnOffsetX, spawnHeightOffset, spawnOffsetZ));
 
-		params.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/spawn_world_types"), new JLabel("Spawn world types: ")));
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
+				L10N.label("elementgui.structuregen.spawn_world_types")));
 		params.add(spawnWorldTypes);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_blocks"),
-				new JLabel("Restrics to block type (leave empty for no restriction): ")));
+				L10N.label("elementgui.structuregen.restrict_blocks")));
 		params.add(restrictionBlocks);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
-				new JLabel("Rectrict to biome types (leave empty for no restriction): ")));
+				L10N.label("elementgui.structuregen.restrict_biomes")));
 		params.add(restrictionBiomes);
 
 		randomlyRotateStructure.setSelected(true);
@@ -183,7 +184,8 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(params,
 				PanelUtils.join(FlowLayout.LEFT, generateCondition, onStructureGenerated), 20, 20)));
 
-		spawnWorldTypes.setValidator(new ItemListFieldValidator(spawnWorldTypes, "Select at least one world type!"));
+		spawnWorldTypes.setValidator(
+				new ItemListFieldValidator(spawnWorldTypes, L10N.t("elementgui.structuregen.error_select_world_type")));
 		page1group.addValidationElement(spawnWorldTypes);
 
 		addPage(pane5);
@@ -202,8 +204,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().toString().equals(""))
-			return new AggregatedValidationResult.FAIL(
-					"You need to select a structure that will be spawned by this structure spawn in order to proceed.");
+			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.structuregen.error_select_structure_spawn"));
 		else
 			return new AggregatedValidationResult(page1group);
 
@@ -212,6 +213,8 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 	@Override public void openInEditingMode(Structure structure) {
 		spawnProbability.setValue(structure.spawnProbability);
 		spawnHeightOffset.setValue(structure.spawnHeightOffset);
+		spawnOffsetX.setValue(structure.spawnXOffset);
+		spawnOffsetZ.setValue(structure.spawnZOffset);
 		minCountPerChunk.setValue(structure.minCountPerChunk);
 		maxCountPerChunk.setValue(structure.maxCountPerChunk);
 		spawnLocation.setSelectedItem(structure.spawnLocation);
@@ -230,6 +233,8 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		Structure structure = new Structure(modElement);
 		structure.spawnProbability = (int) spawnProbability.getValue();
 		structure.spawnHeightOffset = (int) spawnHeightOffset.getValue();
+		structure.spawnXOffset = (int) spawnOffsetX.getValue();
+		structure.spawnZOffset = (int) spawnOffsetZ.getValue();
 		structure.minCountPerChunk = (int) minCountPerChunk.getValue();
 		structure.maxCountPerChunk = (int) maxCountPerChunk.getValue();
 		structure.spawnWorldTypes = spawnWorldTypes.getListElements();

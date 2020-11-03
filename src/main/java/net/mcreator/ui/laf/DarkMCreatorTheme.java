@@ -49,4 +49,12 @@ public class DarkMCreatorTheme extends AbstractMCreatorTheme {
 	@Override protected @NotNull Color getBrightColor() {
 		return BRIGHT_COLOR;
 	}
+
+	@Override protected @NotNull String getBlocklyCSSName() {
+		return "mcreator_blockly_dark.css";
+	}
+
+	@Override protected @NotNull String getCodeEditorXML() {
+		return "/codeeditor_dark.xml";
+	}
 }

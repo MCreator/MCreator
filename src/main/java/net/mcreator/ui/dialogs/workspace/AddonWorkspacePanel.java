@@ -23,6 +23,7 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
@@ -35,34 +36,31 @@ public class AddonWorkspacePanel extends AbstractWorkspacePanel {
 
 		add(new JEmptyBox(20, 20));
 
-		add(PanelUtils.westAndEastElement(new JLabel("<html>Add-on display name:<br><small>This name is shown in-game"),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.display_name"),
 				PanelUtils.join(workspaceDialogPanel.modName)));
 
 		add(new JEmptyBox(5, 5));
 
-		add(PanelUtils.westAndEastElement(new JLabel("<html>Addon ID:<br><small>Used for add-on identification"),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.addon_id"),
 				PanelUtils.join(workspaceDialogPanel.modID)));
 
 		add(new JEmptyBox(5, 5));
 
-		add(PanelUtils.westAndEastElement(
-				new JLabel("<html>Minecraft version (generator):<br><small>Target Bedrock Edition version"),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.generator"),
 				PanelUtils.join(workspaceDialogPanel.generatorSelector)));
 
 		add(new JEmptyBox(30, 30));
 
-		add(PanelUtils.westAndEastElement(new JLabel("Workspace folder:      "),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 5, 5)));
 
 		add(new JEmptyBox(30, 204));
 
-		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.warning")), new JEmptyBox(0, 0), new JLabel(
-				"<html><font color='#aaaaaa' size=2>Add-Ons are currently experimental features both in Minecraft and MCreator so the feature<br>"
-						+ "coverage is limited.")));
+		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.warning")), new JEmptyBox(0, 0),
+				L10N.label("dialog.new_workspace.addon.notice1")));
 
-		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.info")), new JEmptyBox(0, 0), new JLabel(
-				"<html><font color='#aaaaaa' size=2>Add-Ons are mods for Minecraft Bedrock Edition and do not require any additional software<br>"
-						+ "or modloader installed.")));
+		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.info")), new JEmptyBox(0, 0),
+				L10N.label("dialog.new_workspace.addon.notice2")));
 
 		validationGroup.addValidationElement(workspaceDialogPanel.modName);
 		validationGroup.addValidationElement(workspaceDialogPanel.modID);

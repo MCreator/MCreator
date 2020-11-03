@@ -38,7 +38,11 @@ import java.util.Map;
 
 	public int renderType;
 	public String texture;
+	public String textureBottom;
 	public String customModelName;
+
+	public String itemTexture;
+	public String particleTexture;
 
 	public String plantType;
 
@@ -46,6 +50,8 @@ import java.util.Map;
 
 	public String growapableSpawnType;
 	public int growapableMaxHeight;
+
+	public String doublePlantGenerationType;
 
 	public String name;
 	public List<String> specialInfo;
@@ -55,6 +61,7 @@ import java.util.Map;
 	public double luminance;
 	public boolean unbreakable;
 	public StepSound soundOnStep;
+	public boolean useLootTableForDrops;
 	public MItemBlock customDrop;
 	public int dropAmount;
 	public boolean forceTicking;
@@ -76,12 +83,15 @@ import java.util.Map;
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
 
+	public Procedure onBlockAdded;
 	public Procedure onNeighbourBlockChanges;
 	public Procedure onTickUpdate;
+	public Procedure onRandomUpdateEvent;
 	public Procedure onDestroyedByPlayer;
 	public Procedure onDestroyedByExplosion;
 	public Procedure onStartToDestroy;
 	public Procedure onEntityCollides;
+	public Procedure onBlockPlacedBy;
 	public Procedure onRightClicked;
 
 	private Plant() {
@@ -102,6 +112,7 @@ import java.util.Map;
 		this.offsetType = "XZ";
 
 		this.staticPlantGenerationType = "Flower";
+		this.doublePlantGenerationType = "Flower";
 
 		this.specialInfo = new ArrayList<>();
 	}

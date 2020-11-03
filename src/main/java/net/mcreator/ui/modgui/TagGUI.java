@@ -26,6 +26,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.ModElementListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -77,6 +78,8 @@ public class TagGUI extends ModElementGUI<Tag> {
 		name.setEditable(true);
 		name.setOpaque(false);
 
+		namespace.setEditable(true);
+
 		CardLayout valuesLayout = new CardLayout();
 		JPanel valuesPan = new JPanel(valuesLayout);
 
@@ -102,18 +105,18 @@ public class TagGUI extends ModElementGUI<Tag> {
 		JPanel main = new JPanel(new GridLayout(4, 2, 10, 10));
 		main.setOpaque(false);
 
-		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/registry_name"), new JLabel("Tag registry name:")));
+		main.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("tag/registry_name"), L10N.label("elementgui.tag.registry_name")));
 		main.add(name);
 
-		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/namespace"), new JLabel(
-				"<html>Tag namespace:<br><small>Use minecraft namespace to add to tags, use forge for tags shared with other mods")));
+		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/namespace"), L10N.label("elementgui.tag.namespace")));
 		main.add(namespace);
 
-		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/type"), new JLabel("Tag type:")));
+		main.add(HelpUtils.wrapWithHelpButton(this.withEntry("tag/type"), L10N.label("elementgui.tag.type")));
 		main.add(type);
 
 		main.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("tag/tag_elements"), new JLabel("Elements under this tag:")));
+				.wrapWithHelpButton(this.withEntry("tag/tag_elements"), L10N.label("elementgui.tag.elements")));
 		main.add(valuesPan);
 
 		type.addActionListener(e -> valuesLayout.show(valuesPan, (String) type.getSelectedItem()));
@@ -128,8 +131,8 @@ public class TagGUI extends ModElementGUI<Tag> {
 	}
 
 	@Override public void openInEditingMode(Tag tag) {
-		namespace.setSelectedItem(tag.namespace);
 		type.setSelectedItem(tag.type);
+		namespace.getEditor().setItem(tag.namespace);
 		name.getEditor().setItem(tag.name);
 
 		items.setListElements(tag.items);
@@ -140,7 +143,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 	@Override public Tag getElementFromGUI() {
 		Tag tag = new Tag(modElement);
-		tag.namespace = (String) namespace.getSelectedItem();
+		tag.namespace = namespace.getEditor().getItem().toString();
 		tag.type = (String) type.getSelectedItem();
 
 		tag.items = items.getListElements();

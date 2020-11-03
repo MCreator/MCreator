@@ -18,8 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
-import net.mcreator.element.ModElementType;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.minecraft.DataListEntry;
@@ -31,15 +30,14 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
-import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.ui.minecraft.DimensionListField;
-import net.mcreator.ui.minecraft.ProcedureSelector;
-import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableElementType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -57,10 +55,12 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner density = new JSpinner(new SpinnerNumberModel(1000, -100000, 100000, 1));
 	private final JSpinner viscosity = new JSpinner(new SpinnerNumberModel(1000, 0, 100000, 1));
 
-	private final JCheckBox generateBucket = new JCheckBox("Check to enable the fluid bucket");
+	private final JSpinner frequencyOnChunks = new JSpinner(new SpinnerNumberModel(5, 0, 40, 1));
+
+	private final JCheckBox generateBucket = L10N.checkbox("elementgui.fluid.generate_bucket");
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
-	private final JCheckBox isGas = new JCheckBox("Check if this fluid is gas");
+	private final JCheckBox isGas = L10N.checkbox("elementgui.fluid.is_gas_checkbox");
 	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });
 
 	private ProcedureSelector onBlockAdded;
@@ -68,7 +68,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private ProcedureSelector onTickUpdate;
 	private ProcedureSelector onEntityCollides;
 
+	private ProcedureSelector generateCondition;
+
 	private DimensionListField spawnWorldTypes;
+	private BiomeListField restrictionBiomes;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -79,15 +82,24 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	}
 
 	@Override protected void initGUI() {
-		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator, "When block added",
-				Dependency.fromString("x:number/y:number/z:number/world:world"));
+		restrictionBiomes = new BiomeListField(mcreator);
+
+		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
+				L10N.t("elementgui.fluid.when_added"), Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onNeighbourChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
-				"When neighbour block changes", Dependency.fromString("x:number/y:number/z:number/world:world"));
-		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator, "Update tick",
+				L10N.t("elementgui.common.event_on_neighbour_block_changes"),
+				Dependency.fromString("x:number/y:number/z:number/world:world"));
+		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator,
+				L10N.t("elementgui.common.event_on_update_tick"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onEntityCollides = new ProcedureSelector(this.withEntry("block/when_entity_collides"), mcreator,
-				"When mob/player collides block",
+				L10N.t("elementgui.fluid.when_entity_collides"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+
+		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
+				"Additional generation condition", VariableElementType.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world"))
+				.setDefaultName("(no additional condition)");
 
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
@@ -100,20 +112,23 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel destalx = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		destalx.setOpaque(false);
 
-		textureStill = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
+		textureStill = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
 		textureStill.setOpaque(false);
-		textureFlowing = new TextureHolder(new BlockItemTextureSelector(mcreator, "Block"));
+		textureFlowing = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
 		textureFlowing.setOpaque(false);
 
-		destalx.add(ComponentUtils.squareAndBorder(textureStill, "Still texture"));
-		destalx.add(ComponentUtils.squareAndBorder(textureFlowing, "Flowing"));
+		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
+		destalx.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
 
 		pane3.add(PanelUtils.totalCenterInPanel(destalx));
 
+		JPanel pane1 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		JPanel destal = new JPanel(new GridLayout(8, 2, 20, 5));
+		JPanel destal = new JPanel(new GridLayout(7, 2, 20, 2));
 		destal.setOpaque(false);
 
 		luminosity.setOpaque(false);
@@ -126,35 +141,30 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		ComponentUtils.deriveFont(density, 16);
 		ComponentUtils.deriveFont(viscosity, 16);
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/luminosity"),
-				new JLabel("<html>Luminosity:<br><small>The light level emitted")));
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/luminosity"), L10N.label("elementgui.fluid.luminosity")));
 		destal.add(luminosity);
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/density"), new JLabel(
-				"<html>Density:<br><small>Negative value makes it lighter than air. It uses real life units kg/m^2")));
+		destal.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("fluid/density"), L10N.label("elementgui.fluid.density")));
 		destal.add(density);
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/viscosity"), new JLabel(
-				"<html>Viscosity:<br><small>Higher value makes it flow more slowly. It uses real-life units m/s^2(*10^-3)")));
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/viscosity"), L10N.label("elementgui.fluid.viscosity")));
 		destal.add(viscosity);
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/is_gas"),
-				new JLabel("<html>Is this fluid gas?<br><small>Makes it flow upwards")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/is_gas"), L10N.label("elementgui.fluid.is_gas")));
 		destal.add(PanelUtils.centerInPanel(isGas));
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/type"), new JLabel(
-				"<html>Fluid type<br><small>Defines some properties of the fluid (sound, does ignite fire, does hurt entities)")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/type"), L10N.label("elementgui.fluid.type")));
 		destal.add(fluidtype);
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/generate_lakes"),
-				new JLabel("Generate lakes of this fluids in:")));
-		destal.add(spawnWorldTypes);
-
-		destal.add(new JLabel("Select if this fluid should have own bucket generated automatically"));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/enable_bucket"),
+				L10N.label("elementgui.fluid.generate_bucket_label")));
 		destal.add(PanelUtils.centerInPanel(generateBucket));
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				new JLabel("Bucket creative inventory tab:")));
+				L10N.label("elementgui.common.creative_tab")));
 		destal.add(creativeTab);
 
 		generateBucket.setSelected(true);
@@ -165,6 +175,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		render.setOpaque(false);
 
 		pane2.setOpaque(false);
+		pane1.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(destal));
 
 		JPanel events = new JPanel();
@@ -180,15 +191,42 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
+		JPanel spawning = new JPanel(new GridLayout(3, 2, 2, 2));
+		spawning.setOpaque(false);
+
+		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/generate_lakes"),
+				L10N.label("elementgui.fluid.generate_lakes")));
+		spawning.add(spawnWorldTypes);
+
+		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/gen_frequency"),
+				L10N.label("elementgui.plant.gen_chunk_count")));
+		spawning.add(frequencyOnChunks);
+
+		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
+				L10N.label("elementgui.common.restrict_to_biomes")));
+		spawning.add(restrictionBiomes);
+
+		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
+
+		JPanel lastPan = new JPanel(new BorderLayout(15, 15));
+		lastPan.setOpaque(false);
+		lastPan.add("North", spawning);
+
+		pane1.add("Center", PanelUtils.totalCenterInPanel(lastPan));
+		pane1.add("South", PanelUtils.join(FlowLayout.LEFT, generateCondition));
+
+		pane1.setOpaque(false);
+
 		textureStill.setValidator(new TileHolderValidator(textureStill));
 		textureFlowing.setValidator(new TileHolderValidator(textureFlowing));
 
 		page1group.addValidationElement(textureStill);
 		page1group.addValidationElement(textureFlowing);
 
-		addPage("Visual", pane3);
-		addPage("Properties", pane2);
-		addPage("Triggers", pane4);
+		addPage(L10N.t("elementgui.common.page_visual"), pane3);
+		addPage(L10N.t("elementgui.common.page_properties"), pane2);
+		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
+		addPage(L10N.t("elementgui.common.page_generation"), PanelUtils.totalCenterInPanel(pane1));
 	}
 
 	@Override public void reloadDataLists() {
@@ -197,6 +235,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onNeighbourChanges.refreshListKeepSelected();
 		onTickUpdate.refreshListKeepSelected();
 		onEntityCollides.refreshListKeepSelected();
+
+		generateCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
@@ -222,6 +262,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onTickUpdate.setSelectedProcedure(fluid.onTickUpdate);
 		onEntityCollides.setSelectedProcedure(fluid.onEntityCollides);
 		fluidtype.setSelectedItem(fluid.type);
+		frequencyOnChunks.setValue(fluid.frequencyOnChunks);
+		generateCondition.setSelectedProcedure(fluid.generateCondition);
+		restrictionBiomes.setListElements(fluid.restrictionBiomes);
 		if (fluid.creativeTab != null)
 			creativeTab.setSelectedItem(fluid.creativeTab);
 	}
@@ -242,6 +285,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.onEntityCollides = onEntityCollides.getSelectedProcedure();
 		fluid.type = (String) fluidtype.getSelectedItem();
 		fluid.spawnWorldTypes = spawnWorldTypes.getListElements();
+		fluid.restrictionBiomes = restrictionBiomes.getListElements();
+		fluid.generateCondition = generateCondition.getSelectedProcedure();
+		fluid.frequencyOnChunks = (int) frequencyOnChunks.getValue();
 		fluid.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		return fluid;
 	}

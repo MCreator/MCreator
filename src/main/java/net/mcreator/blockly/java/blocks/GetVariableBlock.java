@@ -20,8 +20,8 @@ package net.mcreator.blockly.java.blocks;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
-import net.mcreator.blockly.Dependency;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
@@ -55,7 +55,7 @@ public class GetVariableBlock implements IBlockGenerator {
 			return;
 		}
 
-		Element variable = XMLUtil.getFirstChildrenWithName("field", block);
+		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (variable != null) {
 			String[] varfield = variable.getTextContent().split(":");
 			if (varfield.length == 2) {

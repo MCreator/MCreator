@@ -1,0 +1,1 @@
+This parameter controls how many blocks far the entity can be seen.

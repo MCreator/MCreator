@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.IItemWithModel;
 import net.mcreator.element.ITabContainedElement;
 import net.mcreator.element.parts.Fluid;
+import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -49,8 +50,10 @@ import java.util.Map;
 	public String customModelName;
 	public int rotationMode;
 	public boolean emissiveRendering;
+	public boolean displayFluidOverlay;
 
 	public String itemTexture;
+	public String particleTexture;
 
 	public String blockBase;
 
@@ -64,6 +67,7 @@ import java.util.Map;
 	public double hardness;
 	public double resistance;
 	public boolean hasGravity;
+	public boolean isWaterloggable;
 	public TabEntry creativeTab;
 
 	public String destroyTool;

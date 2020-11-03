@@ -23,6 +23,7 @@ import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
@@ -52,7 +53,7 @@ public class TextFieldDialog extends MCreatorDialog {
 					continue;
 				if (component instanceof TextField && component.name.equals(textname))
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							"This name already exists");
+							L10N.t("dialog.gui.textfield_name_already_exists"));
 			}
 			return validator.validate();
 		});
@@ -60,26 +61,26 @@ public class TextFieldDialog extends MCreatorDialog {
 		JPanel options = new JPanel();
 
 		if (textField == null)
-			add("North", PanelUtils
-					.centerInPanel(new JLabel("After you click OK, right-click with the mouse to change text field width")));
+			add("North", PanelUtils.centerInPanel(
+					L10N.label("dialog.gui.textfield_change_width")));
 		else
 			add("North", PanelUtils.centerInPanel(
-					new JLabel("To resize the text field, use move tool and right-click with the mouse when moving")));
+					L10N.label("dialog.gui.textfield_resize")));
 
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
-		options.add(PanelUtils.join(new JLabel("Text input name: "), nameField));
+		options.add(PanelUtils.join(L10N.label("dialog.gui.textfield_input_name"), nameField));
 		add("Center", options);
-		setTitle("Add text field");
-		options.add(PanelUtils.join(new JLabel("Initial text: "), deft));
+		setTitle(L10N.t("dialog.gui.textfield_add"));
+		options.add(PanelUtils.join(L10N.label("dialog.gui.textfield_initial_text"), deft));
 
-		JButton ok = new JButton("OK");
-		JButton cancel = new JButton("Cancel");
+		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		add("South", PanelUtils.join(ok, cancel));
 
 		getRootPane().setDefaultButton(ok);
 
 		if (textField != null) {
-			ok.setText("Save changes");
+			ok.setText(L10N.t("dialog.common.save_changes"));
 			nameField.setText(textField.name);
 			deft.setText(textField.placeholder);
 		}

@@ -24,6 +24,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.FuelRecipeMaker;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
@@ -56,7 +57,7 @@ public class FuelGUI extends ModElementGUI<Fuel> {
 		ps.setOpaque(false);
 		pane5.setOpaque(false);
 
-		ps.add(HelpUtils.wrapWithHelpButton(this.withEntry("fuel/burn_time"), new JLabel("Fuel burn time (power): ")));
+		ps.add(HelpUtils.wrapWithHelpButton(this.withEntry("fuel/burn_time"), L10N.label("elementgui.fuel.burn_time")));
 		ps.add(power);
 
 		enderpanel.add("North", ps);
@@ -66,8 +67,9 @@ public class FuelGUI extends ModElementGUI<Fuel> {
 
 		enderpanel.setOpaque(false);
 		enderpanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2), "Fuel properties",
-				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				L10N.t("elementgui.fuel.properties"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(enderpanel));
 

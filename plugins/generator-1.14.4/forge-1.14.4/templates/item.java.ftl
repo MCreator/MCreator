@@ -29,6 +29,7 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
+<#include "mcitems.ftl">
 
 package ${package}.item;
 
@@ -71,6 +72,7 @@ package ${package}.item;
 					<#else>
 					.maxStackSize(${data.stackSize})
 					</#if>
+					.rarity(Rarity.${data.rarity})
 			);
 			setRegistryName("${registryname}");
 		}
@@ -80,7 +82,11 @@ package ${package}.item;
 				return true;
 			}
 
-			<#if data.damageOnCrafting && data.damageCount != 0>
+            <#if data.recipeRemainder?? && !data.recipeRemainder.isEmpty()>
+            @Override public ItemStack getContainerItem(ItemStack itemstack) {
+                return ${mappedMCItemToItemStackCode(data.recipeRemainder, 1)};
+            }
+			<#elseif data.damageOnCrafting && data.damageCount != 0>
 			@Override public ItemStack getContainerItem(ItemStack itemstack) {
 				ItemStack retval = new ItemStack(this);
 				retval.setDamage(itemstack.getDamage() + 1);
@@ -121,6 +127,16 @@ package ${package}.item;
 
 		<#if data.hasGlow>
 		@Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
+		    <#if hasCondition(data.glowCondition)>
+			PlayerEntity entity = Minecraft.getInstance().player;
+			World world = entity.world;
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
+        	if (!(<@procedureOBJToConditionCode data.glowCondition/>)) {
+        	    return false;
+        	}
+        	</#if>
 			return true;
 		}
         </#if>
@@ -248,6 +264,17 @@ package ${package}.item;
     		<@procedureOBJToCode data.onItemInInventoryTick/>
 		}
 		</#if>
+
+		<#if hasProcedure(data.onDroppedByPlayer)>
+        @Override public boolean onDroppedByPlayer(ItemStack itemstack, PlayerEntity entity) {
+            double x = entity.posX;
+            double y = entity.posY;
+            double z = entity.posZ;
+            World world = entity.world;
+            <@procedureOBJToCode data.onDroppedByPlayer/>
+            return true;
+        }
+        </#if>
 
 		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 		@Override public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT compound) {

@@ -28,7 +28,7 @@ public class LightMCreatorTheme extends AbstractMCreatorTheme {
 	private final Color DARK_ACCENT = new Color(225, 225, 225);
 	private final Color LIGHT_ACCENT = new Color(200, 200, 200);
 	private final Color GRAY_COLOR = new Color(57, 57, 57);
-	private final Color BRIGHT_COLOR = new Color(24, 24, 24);
+	private final Color BRIGHT_COLOR = new Color(35, 35, 35);
 
 	@Override protected @NotNull Color getBlackAccent() {
 		return BLACK_ACCENT;
@@ -48,5 +48,13 @@ public class LightMCreatorTheme extends AbstractMCreatorTheme {
 
 	@Override protected @NotNull Color getBrightColor() {
 		return BRIGHT_COLOR;
+	}
+
+	@Override protected @NotNull String getBlocklyCSSName() {
+		return "mcreator_blockly_light.css";
+	}
+
+	@Override protected @NotNull String getCodeEditorXML() {
+		return "/codeeditor_light.xml";
 	}
 }

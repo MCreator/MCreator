@@ -26,6 +26,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.util.image.ImageUtils;
@@ -41,7 +42,10 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.*;
@@ -84,7 +88,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton add = new JButton("Add localization entry");
+		JButton add = L10N.button("workspace.localization.add_entry");
 		add.setIcon(UIRES.get("16px.add.gif"));
 		add.setContentAreaFilled(false);
 		add.setOpaque(false);
@@ -92,7 +96,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		add.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(add);
 
-		del = new JButton("Remove selected");
+		del = L10N.button("workspace.localization.remove_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
 		del.setContentAreaFilled(false);
@@ -101,14 +105,14 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 
 		bar.addSeparator();
 
-		exp = new JButton("Export current language to CSV");
+		exp = L10N.button("workspace.localization.export_to_csv");
 		exp.setIcon(UIRES.get("16px.ext.gif"));
 		exp.setOpaque(false);
 		exp.setContentAreaFilled(false);
 		exp.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(exp);
 
-		imp = new JButton("Import CSV to current language");
+		imp = L10N.button("workspace.localization.import_csv");
 		imp.setIcon(UIRES.get("16px.open.gif"));
 		imp.setOpaque(false);
 		imp.setContentAreaFilled(false);
@@ -145,10 +149,11 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 				.getLanguageMap().entrySet()) {
 			ConcurrentHashMap<String, String> entries = entry.getValue();
 
-			JTable elements = new JTable(new DefaultTableModel(new Object[] { "Language resource key",
-					"Localized text for " + entry.getKey() + (entry.getKey().equals("en_us") ?
-							" - values in en_us might get overwritten!" :
-							" - mappings can be edited here") }, 0));
+			JTable elements = new JTable(new DefaultTableModel(
+					new Object[] { L10N.t("workspace.localization.column_key"),
+							"Localized text for " + entry.getKey() + (entry.getKey().equals("en_us") ?
+									" - values in en_us might get overwritten!" :
+									" - mappings can be edited here") }, 0));
 
 			TableRowSorter<TableModel> sorter = new TableRowSorter<>(elements.getModel());
 			elements.setRowSorter(sorter);
@@ -223,7 +228,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			try {
 				BufferedImage image = ImageIO.read(getClass().getResourceAsStream(flagpath));
 				label.setIcon(new ImageIcon(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11))));
-			} catch (IOException ignored) { // flag not found, ignore
+			} catch (Exception ignored) { // flag not found, ignore
 			}
 
 			label.setBorder(BorderFactory.createEmptyBorder());

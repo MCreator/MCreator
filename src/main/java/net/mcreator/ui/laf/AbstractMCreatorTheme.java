@@ -72,6 +72,10 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 
 	@NotNull protected abstract Color getBrightColor();
 
+	@NotNull protected abstract String getBlocklyCSSName();
+
+	@NotNull protected abstract String getCodeEditorXML();
+
 	protected void initMCreatorThemeColors(UIDefaults table) {
 		table.put("MCreatorLAF.BLACK_ACCENT", getBlackAccent());
 		table.put("MCreatorLAF.DARK_ACCENT", getDarkAccent());
@@ -79,6 +83,8 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 		table.put("MCreatorLAF.GRAY_COLOR", getGrayColor());
 		table.put("MCreatorLAF.BRIGHT_COLOR", getBrightColor());
 		table.put("MCreatorLAF.MAIN_TINT", MAIN_TINT);
+		table.put("MCreatorLAF.BLOCKLY_CSS", getBlocklyCSSName());
+		table.put("MCreatorLAF.CODE_EDITOR_XML", getCodeEditorXML());
 	}
 
 	@Override public void addCustomEntriesToTable(UIDefaults table) {

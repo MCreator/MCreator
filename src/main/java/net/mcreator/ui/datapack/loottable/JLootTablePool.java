@@ -22,6 +22,7 @@ import net.mcreator.element.types.LootTable;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
@@ -37,7 +38,7 @@ public class JLootTablePool extends JPanel {
 	private final JSpinner maxrolls = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
 	private final JSpinner minbonusrolls = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
 	private final JSpinner maxbonusrolls = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
-	private final JCheckBox hasbonusrolls = new JCheckBox("Enable bonus rolls");
+	private final JCheckBox hasbonusrolls = L10N.checkbox("elementgui.loot_table.enable_pool_rolls");
 
 	private final List<JLootTableEntry> entryList = new ArrayList<>();
 
@@ -63,26 +64,26 @@ public class JLootTablePool extends JPanel {
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setOpaque(false);
 
-		topbar.add(new JLabel("Min rolls: "));
+		topbar.add(L10N.label("elementgui.loot_table.min_rolls"));
 		topbar.add(minrolls);
-		topbar.add(new JLabel("Max rolls: "));
+		topbar.add(L10N.label("elementgui.loot_table.max_rolls"));
 		topbar.add(maxrolls);
 
 		topbar.add(new JEmptyBox(15, 5));
 
 		topbar.add(hasbonusrolls);
-		topbar.add(new JLabel("Min bonus rolls: "));
+		topbar.add(L10N.label("elementgui.loot_table.min_bonus_rolls"));
 		topbar.add(minbonusrolls);
-		topbar.add(new JLabel("Max bonus rolls: "));
+		topbar.add(L10N.label("elementgui.loot_table.max_bonus_rolls"));
 		topbar.add(maxbonusrolls);
 
 		topbar.add(Box.createHorizontalGlue());
 
 		JButton add = new JButton(UIRES.get("16px.add.gif"));
-		add.setText("Add pool entry");
+		add.setText(L10N.t("elementgui.loot_table.add_pool_entry"));
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
-		remove.setText("Remove this pool");
+		remove.setText(L10N.t("elementgui.loot_table.remove_pool"));
 		remove.addActionListener(e -> {
 			pollList.remove(this);
 			parent.remove(container);
@@ -104,8 +105,9 @@ public class JLootTablePool extends JPanel {
 		add("Center", entries);
 
 		setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2), "Loot table pool",
-				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				L10N.t("elementgui.loot_table.pool"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		parent.revalidate();
 		parent.repaint();

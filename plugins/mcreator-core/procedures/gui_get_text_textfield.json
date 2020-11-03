@@ -4,6 +4,12 @@
       "type": "field_input",
       "name": "textfield",
       "text": "textFieldName"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/client.png",
+      "width": 8,
+      "height": 24
     }
   ],
   "output": "String",

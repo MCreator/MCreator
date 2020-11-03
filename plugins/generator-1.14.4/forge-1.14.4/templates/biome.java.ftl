@@ -1,29 +1,29 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2020 Pylo and contributors
- # 
+ #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
  # the Free Software Foundation, either version 3 of the License, or
  # (at your option) any later version.
- # 
+ #
  # This program is distributed in the hope that it will be useful,
  # but WITHOUT ANY WARRANTY; without even the implied warranty of
  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  # GNU General Public License for more details.
- # 
+ #
  # You should have received a copy of the GNU General Public License
  # along with this program.  If not, see <https://www.gnu.org/licenses/>.
- # 
+ #
  # Additional permission for code generator templates (*.ftl files)
- # 
- # As a special exception, you may create a larger work that contains part or 
- # all of the MCreator code generator templates (*.ftl files) and distribute 
- # that work under terms of your choice, so long as that work isn't itself a 
- # template for code generation. Alternatively, if you modify or redistribute 
- # the template itself, you may (at your option) remove this special exception, 
- # which will cause the template and the resulting code generator output files 
- # to be licensed under the GNU General Public License without this special 
+ #
+ # As a special exception, you may create a larger work that contains part or
+ # all of the MCreator code generator templates (*.ftl files) and distribute
+ # that work under terms of your choice, so long as that work isn't itself a
+ # template for code generation. Alternatively, if you modify or redistribute
+ # the template itself, you may (at your option) remove this special exception,
+ # which will cause the template and the resulting code generator output files
+ # to be licensed under the GNU General Public License without this special
  # exception.
 -->
 
@@ -69,9 +69,14 @@ package ${package}.world.biome;
 				.precipitation(Biome.RainType.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
 				.category(Biome.Category.${data.biomeCategory})
 				<#if data.waterColor?has_content>
-				.waterColor(${data.waterColor.getRGB()}).waterFogColor(${data.waterColor.getRGB()})
+				.waterColor(${data.waterColor.getRGB()})
 				<#else>
-				.waterColor(4159204).waterFogColor(329011)
+				.waterColor(4159204)
+				</#if>
+				<#if data.waterFogColor?has_content>
+				.waterFogColor(${data.waterFogColor.getRGB()})
+				<#else>
+				.waterFogColor(329011)
 				</#if>
 				<#if data.parent?? && data.parent.getUnmappedValue() != "No parent">
 				.parent("${data.parent}")
@@ -82,13 +87,52 @@ package ${package}.world.biome;
 
 			setRegistryName("${registryname}");
 
-			DefaultBiomeFeatures.addCarvers(this);
-			DefaultBiomeFeatures.addStructures(this);
-			DefaultBiomeFeatures.addMonsterRooms(this);
-			DefaultBiomeFeatures.addOres(this);
+			<#list data.defaultFeatures as defaultFeature>
+			DefaultBiomeFeatures.add${generator.map(defaultFeature, "defaultfeatures")}(this);
+			</#list>
 
-			<#if data.generateLakes>
-			DefaultBiomeFeatures.addLakes(this);
+			<#if data.spawnStronghold>
+			this.addStructure(Feature.STRONGHOLD, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnMineshaft>
+			this.addStructure(Feature.MINESHAFT, new MineshaftConfig(0.004D, MineshaftStructure.Type.NORMAL));
+			</#if>
+
+			<#if data.spawnPillagerOutpost>
+			this.addStructure(Feature.PILLAGER_OUTPOST, new PillagerOutpostConfig(0.004D));
+			</#if>
+
+			<#if data.villageType != "none">
+			this.addStructure(Feature.VILLAGE, new VillageConfig("village/${data.villageType}/town_centers", 6));
+			</#if>
+
+			<#if data.spawnWoodlandMansion>
+			this.addStructure(Feature.WOODLAND_MANSION, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnJungleTemple>
+			this.addStructure(Feature.JUNGLE_TEMPLE, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnDesertPyramid>
+			this.addStructure(Feature.DESERT_PYRAMID, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnIgloo>
+			this.addStructure(Feature.IGLOO, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnOceanMonument>
+			this.addStructure(Feature.OCEAN_MONUMENT, IFeatureConfig.NO_FEATURE_CONFIG);
+			</#if>
+
+			<#if data.spawnShipwreck>
+			this.addStructure(Feature.SHIPWRECK, new ShipwreckConfig(false));
+			</#if>
+
+			<#if data.oceanRuinType != "NONE">
+			this.addStructure(Feature.OCEAN_RUIN, new OceanRuinConfig(OceanRuinStructure.Type.${data.oceanRuinType}, 0.3F, 0.9F));
 			</#if>
 
 			<#if (data.flowersPerChunk > 0)>
@@ -97,6 +141,10 @@ package ${package}.world.biome;
 
 			<#if (data.grassPerChunk > 0)>
 			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.GRASS, new GrassFeatureConfig(Blocks.GRASS.getDefaultState()), Placement.COUNT_HEIGHTMAP_DOUBLE, new FrequencyConfig(${data.grassPerChunk})));
+			</#if>
+
+			<#if (data.seagrassPerChunk > 0)>
+			this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(Feature.SEAGRASS, new SeaGrassConfig(${data.seagrassPerChunk}, 0.3D), Placement.TOP_SOLID_HEIGHTMAP, IPlacementConfig.NO_PLACEMENT_CONFIG));
 			</#if>
 
 			<#if (data.mushroomsPerChunk > 0)>
@@ -158,11 +206,13 @@ package ${package}.world.biome;
 		@OnlyIn(Dist.CLIENT) @Override public int getGrassColor(BlockPos pos) {
 			return ${data.grassColor.getRGB()};
 		}
+        </#if>
 
-		@OnlyIn(Dist.CLIENT) @Override public int getFoliageColor(BlockPos pos) {
-			return ${data.grassColor.getRGB()};
-		}
-		</#if>
+		<#if data.foliageColor?has_content>
+        @OnlyIn(Dist.CLIENT) @Override public int getFoliageColor(BlockPos pos) {
+        	return ${data.foliageColor.getRGB()};
+        }
+        </#if>
 
 		<#if data.airColor?has_content>
 		@OnlyIn(Dist.CLIENT) @Override public int getSkyColorByTemp(float currentTemperature) {
@@ -182,7 +232,7 @@ package ${package}.world.biome;
 		@Override public boolean place(Set<BlockPos> changedBlocks, IWorldGenerationReader worldgen, Random rand, BlockPos position, MutableBoundingBox bbox) {
 			if (!(worldgen instanceof IWorld))
 				return false;
-			
+
 			IWorld world = (IWorld) worldgen;
 
 			int height = rand.nextInt(5) + ${data.minHeight};
@@ -358,7 +408,7 @@ package ${package}.world.biome;
 			BlockState state = world.getBlockState(pos);
         	return state.getBlock().isAir(state, world, pos) || canGrowInto(state.getBlock()) || !state.getMaterial().blocksMovement();
 		}
-		
+
 		private void setTreeBlockState(Set<BlockPos> changedBlocks, IWorldWriter world, BlockPos pos, BlockState state, MutableBoundingBox mbb) {
 			super.setLogState(changedBlocks, world, pos, state, mbb);
 			changedBlocks.add(pos.toImmutable());

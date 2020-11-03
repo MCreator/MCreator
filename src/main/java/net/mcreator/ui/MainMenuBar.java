@@ -21,12 +21,11 @@ package net.mcreator.ui;
 import net.mcreator.ui.component.SocialButtons;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.ide.CodeEditorView;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.image.ImageUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,16 +33,11 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 public class MainMenuBar extends JMenuBar {
 
-	private static final Logger LOG = LogManager.getLogger("Menu Bar");
-
-	private final JMenu code = new JMenu("Code");
-	private final JMenu imageEditor = new JMenu("Image");
+	private final JMenu code = new JMenu(L10N.t("menubar.code"));
+	private final JMenu imageEditor = new JMenu(L10N.t("menubar.image"));
 
 	private final MCreator mcreator;
 
@@ -68,14 +62,14 @@ public class MainMenuBar extends JMenuBar {
 
 		add(logo);
 
-		JMenu file = new JMenu("File");
+		JMenu file = new JMenu(L10N.t("menubar.file"));
 		file.setMnemonic('F');
 		file.add(mcreator.actionRegistry.newWorkspace);
 		file.addSeparator();
 		file.add(mcreator.actionRegistry.openWorkspace);
 
 		if (mcreator.getApplication() != null) {
-			JMenu recentWorkspacesList = new JMenu("Open recent");
+			JMenu recentWorkspacesList = new JMenu(L10N.t("menubar.file.recent"));
 			int number = 0;
 			for (WorkspaceSelector.RecentWorkspaceEntry recentWorkspaceEntry : mcreator.getApplication()
 					.getRecentWorkspaces()) {
@@ -141,7 +135,7 @@ public class MainMenuBar extends JMenuBar {
 		imageEditor.add(mcreator.actionRegistry.imageEditorResizeLayer);
 		add(imageEditor);
 
-		JMenu workspace = new JMenu("Workspace");
+		JMenu workspace = new JMenu(L10N.t("menubar.workspace"));
 		workspace.setMnemonic('S');
 
 		workspace.addSeparator();
@@ -156,7 +150,7 @@ public class MainMenuBar extends JMenuBar {
 
 		add(workspace);
 
-		JMenu resources = new JMenu("Resources");
+		JMenu resources = new JMenu(L10N.t("menubar.resources"));
 		resources.setMnemonic('R');
 		resources.add(mcreator.actionRegistry.importBlockTexture);
 		resources.add(mcreator.actionRegistry.importItemTexture);
@@ -173,7 +167,7 @@ public class MainMenuBar extends JMenuBar {
 		resources.add(mcreator.actionRegistry.importOBJModel);
 		add(resources);
 
-		JMenu build = new JMenu("Build & run");
+		JMenu build = new JMenu(L10N.t("menubar.build_and_run"));
 		build.setMnemonic('B');
 		build.add(mcreator.actionRegistry.buildWorkspace);
 		build.add(mcreator.actionRegistry.buildGradleOnly);
@@ -192,7 +186,7 @@ public class MainMenuBar extends JMenuBar {
 		build.add(mcreator.actionRegistry.runServer);
 		add(build);
 
-		JMenu tools = new JMenu("Tools");
+		JMenu tools = new JMenu(L10N.t("menubar.tools"));
 		tools.setMnemonic('T');
 		tools.add(mcreator.actionRegistry.createMCItemTexture);
 		tools.add(mcreator.actionRegistry.createArmorTexture);
@@ -202,11 +196,12 @@ public class MainMenuBar extends JMenuBar {
 		tools.add(mcreator.actionRegistry.openOrePackMaker);
 		tools.add(mcreator.actionRegistry.openToolPackMaker);
 		tools.add(mcreator.actionRegistry.openArmorPackMaker);
+		tools.add(mcreator.actionRegistry.openWoodPackMaker);
 		tools.addSeparator();
 		tools.add(mcreator.actionRegistry.openJavaEditionFolder);
 		tools.add(mcreator.actionRegistry.openBedrockEditionFolder);
 		tools.addSeparator();
-		JMenu dataLists = new JMenu("Minecraft data lists");
+		JMenu dataLists = new JMenu(L10N.t("menubar.tools.data_lists"));
 		dataLists.add(mcreator.actionRegistry.showEntityIDList);
 		dataLists.add(mcreator.actionRegistry.showItemBlockList);
 		dataLists.add(mcreator.actionRegistry.showParticleIDList);
@@ -216,7 +211,7 @@ public class MainMenuBar extends JMenuBar {
 		tools.add(dataLists);
 		add(tools);
 
-		JMenu vcs = new JMenu("Remote workspace");
+		JMenu vcs = new JMenu(L10N.t("menubar.vcs"));
 		vcs.setMnemonic('R');
 		vcs.add(mcreator.actionRegistry.setupVCS);
 		vcs.addSeparator();
@@ -229,7 +224,7 @@ public class MainMenuBar extends JMenuBar {
 		vcs.add(mcreator.actionRegistry.remoteWorkspaceSettings);
 		add(vcs);
 
-		JMenu window = new JMenu("Window");
+		JMenu window = new JMenu(L10N.t("menubar.window"));
 		window.add(mcreator.actionRegistry.showWorkspaceBrowser);
 		window.add(mcreator.actionRegistry.hideWorkspaceBrowser);
 		window.addSeparator();
@@ -241,7 +236,7 @@ public class MainMenuBar extends JMenuBar {
 		window.setMnemonic('W');
 		add(window);
 
-		JMenu help = new JMenu("Help");
+		JMenu help = new JMenu(L10N.t("menubar.help"));
 		addHelpSearch(help);
 		help.add(mcreator.actionRegistry.help);
 		help.add(mcreator.actionRegistry.support);
@@ -266,7 +261,7 @@ public class MainMenuBar extends JMenuBar {
 				g.setColor(new Color(0x9C9C9C));
 				g.setFont(getFont().deriveFont(11.0f));
 				if (getText().equals(""))
-					g.drawString("Search for tutorials, examples, ...", 28, 14);
+					g.drawString(L10N.t("menubar.help.search.tooltip"), 28, 14);
 			}
 		};
 		searchField.setOpaque(true);

@@ -1,0 +1,1 @@
+This parameter controls how long the item can be used in one take.

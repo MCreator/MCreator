@@ -18,12 +18,13 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.GUI;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.CollapsiblePanel;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -49,14 +50,16 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 	@Override protected void initGUI() {
 		editor = new WYSIWYGEditor(mcreator, true);
 
-		onOpen = new ProcedureSelector(this.withEntry("gui/gui_opened"), mcreator, "When this GUI is opened",
+		onOpen = new ProcedureSelector(this.withEntry("gui/gui_opened"), mcreator, L10N.t("elementgui.gui.gui_opened"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		onTick = new ProcedureSelector(this.withEntry("gui/gui_open_tick"), mcreator, "While this GUI is open tick",
+		onTick = new ProcedureSelector(this.withEntry("gui/gui_open_tick"), mcreator,
+				L10N.t("elementgui.gui.gui_open_ticks"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		onClosed = new ProcedureSelector(this.withEntry("block/gui/gui_closed"), mcreator, "When this GUI is closed",
+		onClosed = new ProcedureSelector(this.withEntry("gui/gui_closed"), mcreator,
+				L10N.t("elementgui.gui.gui_closed"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
-		CollapsiblePanel events = new CollapsiblePanel("GUI procedure triggers",
+		CollapsiblePanel events = new CollapsiblePanel(L10N.t("elementgui.gui.gui_triggers"),
 				PanelUtils.join(FlowLayout.LEFT, 1, 1, PanelUtils.gridElements(1, 3, 5, 0, onOpen, onTick, onClosed)));
 		events.setOpaque(false);
 		events.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);

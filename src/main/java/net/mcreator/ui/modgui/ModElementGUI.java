@@ -373,14 +373,16 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private void finishModCreation(boolean closeTab) {
 		GE element = getElementFromGUI();
 
-		// save custom mod element (preview) picture if it has one
-		generateModElementPreviewPicture(element);
-
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed
+		// add it before generating so all references are loaded
 		mcreator.getWorkspace().addModElement(modElement);
 
 		// generate mod element code
 		mcreator.getWorkspace().getGenerator().generateElement(element);
+
+		// save custom mod element (preview) picture if it has one
+		mcreator.getWorkspace().getModElementManager().storeModElementPicture(element);
+		modElement.reinit(); // re-init mod element to pick up the new mod element picture
 
 		// save the GeneratableElement definition
 		mcreator.getWorkspace().getModElementManager().storeModElement(element);
@@ -413,10 +415,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	public void reloadDataLists() {
-	}
-
-	protected void generateModElementPreviewPicture(GE element) {
-		mcreator.getWorkspace().getModElementManager().storeModElementPicture(element);
 	}
 
 	/**

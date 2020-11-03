@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalBlockLoader;
+import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.AchievementEntry;
@@ -37,6 +38,7 @@ import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
@@ -77,10 +79,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 
 	private final JComboBox<String> background = new JComboBox<>();
 
-	JCheckBox showPopup = new JCheckBox("Enable");
-	JCheckBox announceToChat = new JCheckBox("Enable");
-	JCheckBox hideIfNotCompleted = new JCheckBox("Enable");
-	JCheckBox disableDisplay = new JCheckBox("Enable");
+	JCheckBox showPopup = L10N.checkbox("elementgui.common.enable");
+	JCheckBox announceToChat = L10N.checkbox("elementgui.common.enable");
+	JCheckBox hideIfNotCompleted = L10N.checkbox("elementgui.common.enable");
+	JCheckBox disableDisplay = L10N.checkbox("elementgui.common.enable");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -92,7 +94,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private boolean hasErrors = false;
-	private Map<String, ExternalBlockLoader.ToolboxBlock> externalBlocks;
+	private Map<String, ToolboxBlock> externalBlocks;
 
 	public AchievementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -124,76 +126,79 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		showPopup.setSelected(true);
 		announceToChat.setSelected(true);
 
-		selp.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("advancement/name"), new JLabel("Advancement GUI name: ")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("advancement/name"), L10N.label("elementgui.advancement.name")));
 		selp.add(achievementName);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/description"),
-				new JLabel("Advancement description: ")));
+				L10N.label("elementgui.advancement.description")));
 		selp.add(achievementDescription);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/icon"), new JLabel("Advancement icon: ")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("advancement/icon"), new JLabel("elementgui.advancement.icon")));
 		selp.add(PanelUtils.join(FlowLayout.LEFT, achievementIcon));
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/background"),
-				new JLabel("<html>Advancement background:<br><small>Only used with root advancements")));
+				L10N.label("elementgui.advancement.background")));
 		selp.add(background);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/type"), new JLabel("Advancement type: ")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("advancement/type"), new JLabel("elementgui.advancement.type")));
 		selp.add(achievementType);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/parent"),
-				new JLabel("<html>Advancement parent:<br><small>Root advancements present themselves as tabs")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("advancement/parent"), L10N.label("elementgui.advancement.parent")));
 		selp.add(parentAchievement);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/show_toast"),
-				new JLabel("Show toast when completed: ")));
+				L10N.label("elementgui.advancement.show_toast")));
 		selp.add(showPopup);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/announce_to_chat"),
-				new JLabel("Announce to chat when completed: ")));
+				L10N.label("elementgui.advancement.announce_to_chat")));
 		selp.add(announceToChat);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_if_not_completed"),
-				new JLabel("Hide if not completed yet: ")));
+				L10N.label("elementgui.advancement.hide_if_not_completed")));
 		selp.add(hideIfNotCompleted);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_display"), new JLabel(
-				"<html>Hide advancement display:<br><small>Used for \"logic only\" advancements such as function triggers")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_display"),
+				L10N.label("elementgui.advancement.hide_display")));
 		selp.add(disableDisplay);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_xp"),
-				new JLabel("<html>Reward XP:<br><small>Given to the player when advancement is completed")));
+				L10N.label("elementgui.advancement.reward_xp")));
 		selp2.add(rewardXP);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_function"),
-				new JLabel("<html>Reward function:<br><small>Executed when advancement is completed")));
+				L10N.label("elementgui.advancement.reward_functions")));
 		selp2.add(rewardFunction);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_loot_tables"),
-				new JLabel("<html>Reward loot tables:<br><small>Given to the player when advancement is completed")));
+				L10N.label("elementgui.advancement.reward_loot_tables")));
 		selp2.add(rewardLoot);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_recipes"),
-				new JLabel("<html>Reward recipes:<br><small>List of recipes to unlock when advancement is completed")));
+				L10N.label("elementgui.advancement.reward_recipes")));
 		selp2.add(rewardRecipes);
 
 		selp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Advancement display parameters", 0, 0, selp.getFont().deriveFont(12.0f),
+				L10N.t("elementgui.advancement.display_paramters"), 0, 0, selp.getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		selp2.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Advancement logic", 0, 0, selp2.getFont().deriveFont(12.0f),
+				L10N.t("elementgui.advancement.logic"), 0, 0, selp2.getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		selp.setOpaque(false);
 		selp2.setOpaque(false);
 
-		achievementName.setValidator(new TextFieldValidator(achievementName, "Advancement name can't be empty"));
-		achievementDescription
-				.setValidator(new TextFieldValidator(achievementDescription, "Advancement must have description"));
+		achievementName
+				.setValidator(new TextFieldValidator(achievementName, L10N.t("elementgui.advancement.cant_be_empty")));
+		achievementDescription.setValidator(
+				new TextFieldValidator(achievementDescription, L10N.t("elementgui.advancement.must_have_description")));
 		achievementIcon.setValidator(new MCItemHolderValidator(achievementIcon));
 		achievementName.enableRealtimeValidation();
 		achievementDescription.enableRealtimeValidation();
@@ -218,8 +223,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		JPanel advancementTrigger = (JPanel) PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
 		advancementTrigger.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Advancement trigger builder (use procedures for more advanced use cases)", TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
+				L10N.t("elementgui.advancement.trigger_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Color.white));
 
 		advancementTrigger.setPreferredSize(new Dimension(0, 330));
 
@@ -243,8 +248,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 
 		BlocklyToJSONTrigger blocklyToJSONTrigger;
 		try {
-			blocklyToJSONTrigger = new BlocklyToJSONTrigger(mcreator.getWorkspace(),
-					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+			blocklyToJSONTrigger = new BlocklyToJSONTrigger(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
+					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;
 		}
@@ -253,7 +258,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 
 		if (!blocklyToJSONTrigger.hasTrigger()) {
 			compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"Advancements need some type of trigger selected!"));
+					L10N.t("elementgui.advancement.need_trigger")));
 		}
 
 		SwingUtilities.invokeLater(() -> {
@@ -286,7 +291,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (hasErrors)
 			return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-					.map(compileNote -> "Advancement trigger: " + compileNote.getMessage())
+					.map(compileNote -> L10N.t("elementgui.advancement.trigger") + compileNote.getMessage())
 					.collect(Collectors.toList()));
 
 		return new AggregatedValidationResult(page1group);

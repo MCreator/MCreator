@@ -22,6 +22,8 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.fv10.BiomeSpawnListConverter;
 import net.mcreator.element.converter.fv11.GUICoordinateConverter;
 import net.mcreator.element.converter.fv11.OverlayCoordinateConverter;
+import net.mcreator.element.converter.fv12.BiomeDefaultFeaturesConverter;
+import net.mcreator.element.converter.fv13.ProcedureSpawnGemPickupDelayFixer;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -38,8 +40,8 @@ public class ConverterRegistry {
 		put(ModElementType.ACHIEVEMENT, Collections.singletonList(new AchievementFixer()));
 		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
 		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
-				new ProcedureGlobalTriggerFixer()));
-		put(ModElementType.BIOME, Collections.singletonList(new BiomeSpawnListConverter()));
+				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer()));
+		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter()));
 		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
 	}};
 

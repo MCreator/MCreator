@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.DesktopUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,11 +42,12 @@ public class WorkspaceGeneratorSetupDialog {
 	private static final Logger LOG = LogManager.getLogger("Workspace Generator Setup UI");
 
 	public static void runSetup(final MCreator m, boolean showWebsite) {
-		ProgressDialog dial = new ProgressDialog(m, "Workspace setup for selected generator");
+		ProgressDialog dial = new ProgressDialog(m, L10N.t("dialog.setup_workspace.title"));
 		AtomicBoolean setupOk = new AtomicBoolean(true);
 
 		Thread t = new Thread(() -> {
-			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit("Setting up Gradle project files");
+			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
+					L10N.t("dialog.setup_workspace.step.gradle_files"));
 			dial.addProgress(p1);
 
 			// setup workspacebase files
@@ -57,7 +59,8 @@ public class WorkspaceGeneratorSetupDialog {
 			if (m.getWorkspace().getGenerator().getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
 				m.getGradleConsole().setGradleSetupTaskRunningFlag(true);
 
-				ProgressDialog.ProgressUnit p20 = new ProgressDialog.ProgressUnit("Stopping running Gradle daemons");
+				ProgressDialog.ProgressUnit p20 = new ProgressDialog.ProgressUnit(
+						L10N.t("dialog.setup_workspace.step.gradle_daemons"));
 				dial.addProgress(p20);
 
 				try {
@@ -69,7 +72,8 @@ public class WorkspaceGeneratorSetupDialog {
 				}
 				dial.refreshDisplay();
 
-				ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit("Setting up Gradle project");
+				ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
+						L10N.t("dialog.setup_workspace.step.gradle_project"));
 				dial.addProgress(p2);
 
 				m.mcreatorTabs.showTab(m.consoleTab);
@@ -102,14 +106,16 @@ public class WorkspaceGeneratorSetupDialog {
 	}
 
 	private static void finalizeTheSetup(MCreator m, ProgressDialog dial) {
-		ProgressDialog.ProgressUnit p3 = new ProgressDialog.ProgressUnit("Importing Gradle project");
+		ProgressDialog.ProgressUnit p3 = new ProgressDialog.ProgressUnit(
+				L10N.t("dialog.setup_workspace.step.importing_gradle"));
 		dial.addProgress(p3);
 		new Thread(() -> {
 			try {
 				m.getWorkspace().getGenerator().reloadGradleCaches();
 				p3.ok();
 
-				ProgressDialog.ProgressUnit p4 = new ProgressDialog.ProgressUnit("Generating base source");
+				ProgressDialog.ProgressUnit p4 = new ProgressDialog.ProgressUnit(
+						L10N.t("dialog.setup_workspace.step.generating_base"));
 				dial.addProgress(p4);
 				m.getWorkspace().getGenerator().generateBase();
 				p4.ok();

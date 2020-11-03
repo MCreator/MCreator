@@ -23,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -94,8 +95,12 @@ public class SoundElement {
 			if (jsonObject.get("file") != null) {
 				files = Collections.singletonList(jsonObject.get("file").getAsString());
 			} else {
-				files = context.deserialize(jsonObject.get("files").getAsJsonArray(),
-						new TypeToken<List<String>>() {}.getType());
+				try {
+					files = context.deserialize(jsonObject.get("files").getAsJsonArray(),
+							new TypeToken<List<String>>() {}.getType());
+				} catch (Exception e) {
+					files = new ArrayList<>();
+				}
 			}
 
 			return new SoundElement(jsonObject.getAsJsonPrimitive("name").getAsString(), files,

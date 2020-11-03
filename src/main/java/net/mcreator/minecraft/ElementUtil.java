@@ -40,7 +40,8 @@ public class ElementUtil {
 		List<MCItem> elements = new ArrayList<>();
 		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
 		elements.addAll(
-				DataListLoader.loadDataList("blocksitems").stream().map(e -> (MCItem) e).collect(Collectors.toList()));
+				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
+						.map(e -> (MCItem) e).collect(Collectors.toList()));
 		return elements;
 	}
 
@@ -55,8 +56,8 @@ public class ElementUtil {
 		List<MCItem> elements = new ArrayList<>();
 		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
 		elements.addAll(
-				DataListLoader.loadDataList("blocksitems").stream().map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
-						.collect(Collectors.toList()));
+				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
+						.map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes).collect(Collectors.toList()));
 		return elements;
 	}
 
@@ -72,8 +73,10 @@ public class ElementUtil {
 		workspace.getModElements().stream()
 				.filter(element -> element.getType().getBaseType() == ModElementType.BaseType.BLOCK)
 				.forEach(modElement -> elements.addAll(modElement.getMCItems()));
-		elements.addAll(DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.getType().equals("block"))
-				.map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes).collect(Collectors.toList()));
+		elements.addAll(
+				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
+						.filter(e -> e.getType().equals("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
+						.collect(Collectors.toList()));
 		return elements;
 	}
 
@@ -115,22 +118,27 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static String[] loadParticles() {
-		return DataListLoader.loadDataList("particles").stream().map(DataListEntry::getName).toArray(String[]::new);
+	public static List<DataListEntry> loadAllParticles(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.BaseType.PARTICLE);
+		retval.addAll(DataListLoader.loadDataList("particles"));
+		return retval;
 	}
 
-	public static String[] loadAllPotionEffects(Workspace workspace) {
-		ArrayList<String> retval = new ArrayList<>();
+	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.BaseType.POTION);
+		retval.addAll(DataListLoader.loadDataList("potions"));
+		return retval;
+	}
 
-		for (ModElement modElement : workspace.getModElements()) {
-			if (modElement.getType() == ModElementType.POTION)
-				retval.add("CUSTOM:" + modElement.getName());
-		}
+	public static String[] getAllBooleanGamerules() {
+		return DataListLoader.loadDataList("gamerules").stream().filter(e -> e.getType().equals("boolean"))
 
-		retval.addAll(DataListLoader.loadDataList("potions").stream().map(DataListEntry::getName)
-				.collect(Collectors.toList()));
+				.map(DataListEntry::getName).toArray(String[]::new);
+	}
 
-		return retval.toArray(new String[0]);
+	public static String[] getAllNumberGamerules() {
+		return DataListLoader.loadDataList("gamerules").stream().filter(e -> e.getType().equals("number"))
+				.map(DataListEntry::getName).toArray(String[]::new);
 	}
 
 	public static String[] loadAllFluids(Workspace workspace) {
@@ -176,6 +184,11 @@ public class ElementUtil {
 
 	public static String[] loadBiomeDictionaryTypes() {
 		return DataListLoader.loadDataList("biomedictionarytypes").stream().map(DataListEntry::getName)
+				.toArray(String[]::new);
+	}
+
+	public static String[] loadDefaultFeatures() {
+		return DataListLoader.loadDataList("defaultfeatures").stream().map(DataListEntry::getName)
 				.toArray(String[]::new);
 	}
 

@@ -23,6 +23,7 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
@@ -35,39 +36,36 @@ public class ForgeWorkspacePanel extends AbstractWorkspacePanel {
 
 		add(new JEmptyBox(20, 20));
 
-		add(PanelUtils.westAndEastElement(new JLabel("<html>Mod display name:<br><small>This name is shown in-game"),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.display_name"),
 				PanelUtils.join(workspaceDialogPanel.modName)));
 
 		add(new JEmptyBox(5, 5));
 
-		add(PanelUtils.westAndEastElement(new JLabel("<html>Mod ID / namespace:<br><small>Used for mod identification"),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.modid"),
 				PanelUtils.join(workspaceDialogPanel.modID)));
 
 		add(new JEmptyBox(5, 5));
 
-		add(PanelUtils.westAndEastElement(
-				new JLabel("<html>Minecraft version (generator):<br><small>Target Java Edition version"),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.generator"),
 				PanelUtils.join(workspaceDialogPanel.generatorSelector)));
 
 		add(new JEmptyBox(30, 30));
 
-		add(PanelUtils.westAndEastElement(
-				new JLabel("<html>Mod Java package name:<br><small>Used for root of code generator"),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.package"),
 				PanelUtils.join(workspaceDialogPanel.packageName)));
 
 		add(new JEmptyBox(30, 30));
 
-		add(PanelUtils.westAndEastElement(new JLabel("Workspace folder:      "),
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 5, 5)));
 
 		add(new JEmptyBox(30, 142));
 
-		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.ok")), new JEmptyBox(0, 0), new JLabel(
-				"<html><font color='#aaaaaa' size=2>At this time only Minecraft Forge mods offer full feature coverage of MCreator.")));
+		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.ok")), new JEmptyBox(0, 0),
+				L10N.label("dialog.new_workspace.forge.notice1")));
 
-		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.info")), new JEmptyBox(0, 0), new JLabel(
-				"<html><font color='#aaaaaa' size=2>Minecraft Forge mods are Java based mods that work on Minecraft Java Edition and require<br>"
-						+ "Minecraft Forge to be installed on clients (and the server) in order for them to work.")));
+		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.info")), new JEmptyBox(0, 0),
+				L10N.label("dialog.new_workspace.forge.notice2")));
 
 		validationGroup.addValidationElement(workspaceDialogPanel.modName);
 		validationGroup.addValidationElement(workspaceDialogPanel.modID);

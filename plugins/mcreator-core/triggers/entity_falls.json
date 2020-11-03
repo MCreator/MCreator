@@ -1,0 +1,33 @@
+{
+  "dependencies_provided": [
+    {
+      "name": "entity",
+      "type": "entity"
+    },
+    {
+      "name": "damagemultiplier",
+      "type": "number"
+    },
+    {
+      "name": "world",
+      "type": "world"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    },
+    {
+      "name": "z",
+      "type": "number"
+    },
+    {
+      "name": "distance",
+      "type": "number"
+    }
+  ],
+  "cancelable": "true"
+}

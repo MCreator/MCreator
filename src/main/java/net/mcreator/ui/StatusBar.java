@@ -22,21 +22,18 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.gradle.GradleConsole;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.vcs.BranchesPopup;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -44,10 +41,8 @@ import java.util.concurrent.TimeUnit;
 
 public class StatusBar extends JPanel {
 
-	private static final Logger LOG = LogManager.getLogger();
-
 	private final JLabel messages = new JLabel("");
-	private final JLabel gradleMessages = new JLabel("Gradle idle");
+	private final JLabel gradleMessages = L10N.label("gradle.idle");
 
 	private final GradleIndicator gradleIndicator = new GradleIndicator();
 
