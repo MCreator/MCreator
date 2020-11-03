@@ -24,11 +24,13 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.dialogs.imageeditor.FromTemplateDialog;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
+import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.canvas.CanvasRenderer;
@@ -205,7 +207,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	public void saveAs() {
 		Image image = canvasRenderer.render();
-		Object[] options = { "Block", "Item", "Other" };
+		Object[] options = { "Block", "Entity", "Item", "Painting", "Other" };
 		int n = JOptionPane.showOptionDialog(mcreator, "What kind of texture is this?", "Texture type",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		String namec = VOptionPane
@@ -216,18 +218,29 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 								return new RegistryNameValidator((VTextField) component, "Texture name").validate();
 							}
 						});
+		String folderName = JOptionPane.showInputDialog("Folder name of armor texture (without spaces): ");
+		if(folderName == null)
+			folderName = "";
+		folderName = RegistryNameFixer.fix(folderName);
+
 		if (namec != null) {
 			File exportFile;
-			if (n == 0)
+			if (n == 0) {
 				exportFile = mcreator.getWorkspace().getFolderManager()
-						.getBlockTextureFile(RegistryNameFixer.fix(namec));
-			else if (n == 1)
+						.getBlockTextureFile(RegistryNameFixer.fix(folderName + "/" + namec));
+			} else if (n == 1) {
 				exportFile = mcreator.getWorkspace().getFolderManager()
-						.getItemTextureFile(RegistryNameFixer.fix(namec));
-			else if (n == 2)
+						.getEntityTextureFile(RegistryNameFixer.fix(folderName + "/" + namec));
+			} else if (n == 2) {
 				exportFile = mcreator.getWorkspace().getFolderManager()
-						.getOtherTextureFile(RegistryNameFixer.fix(namec));
-			else
+						.getItemTextureFile(RegistryNameFixer.fix(folderName + "/" + namec));
+			} else if (n == 3) {
+				exportFile = mcreator.getWorkspace().getFolderManager()
+						.getPaintingTextureFile(RegistryNameFixer.fix(folderName + "/" + namec));
+			} else if (n == 4) {
+				exportFile = mcreator.getWorkspace().getFolderManager()
+						.getOtherTextureFile(RegistryNameFixer.fix(folderName + "/" + namec));
+			} else
 				return;
 
 			if (exportFile.isFile())
