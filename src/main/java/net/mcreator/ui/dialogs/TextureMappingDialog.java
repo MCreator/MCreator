@@ -161,7 +161,7 @@ public class TextureMappingDialog {
 		for (Map.Entry<String, String> s : entries) {
 			panel.add(new JLabel("<html><small>Model texture part:</small><br><font size=5>" + s.getKey() + " "));
 			tx[idx] = new TextureHolder(
-					new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+					new GeneralTextureSelector(mcreator, GeneralTextureSelector.TextureType.BLOCK));
 			if (s.getValue() != null && !s.getValue().equals(""))
 				tx[idx].setTextureFromTextureName(s.getValue());
 			panel.add(PanelUtils.join(tx[idx]));

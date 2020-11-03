@@ -28,7 +28,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
@@ -107,7 +107,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.t("elementgui.music_disc.event_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		texture = new TextureHolder(new GeneralTextureSelector(mcreator, GeneralTextureSelector.TextureType.ITEM));
 
 		texture.setOpaque(false);
 		hasGlow.setOpaque(false);
@@ -121,7 +121,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		JPanel subpane2 = new JPanel(new GridLayout(6, 2, 45, 8));
 		subpane2.setOpaque(false);
 
-		name.setOpaque(false);
 		ComponentUtils.deriveFont(name, 16);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/sound"),
