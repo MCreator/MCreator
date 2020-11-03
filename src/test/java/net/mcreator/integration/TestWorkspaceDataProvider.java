@@ -804,6 +804,7 @@ public class TestWorkspaceDataProvider {
 			plant.texture = "test";
 			plant.textureBottom = "test2";
 			plant.itemTexture = emptyLists ? "" : "itest";
+			plant.particleTexture = emptyLists ? "" : "test3";
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
 			plant.growapableSpawnType = ListUtils
 					.getRandomItem(new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
