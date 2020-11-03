@@ -1,1 +1,0 @@
-(${input$entity}.dimension.getId())
