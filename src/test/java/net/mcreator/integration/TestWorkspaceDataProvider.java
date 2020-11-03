@@ -1118,6 +1118,7 @@ public class TestWorkspaceDataProvider {
 			block.textureFront = "test4";
 			block.textureRight = "test5";
 			block.textureBack = "test6";
+			block.particleTexture = emptyLists ? "" : "test7";
 			block.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
 				block.specialInfo = StringUtils
