@@ -662,7 +662,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel selp = new JPanel(new GridLayout(12, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 
-		JPanel advancedProperties = new JPanel(new GridLayout(14, 2, 0, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(13, 2, 0, 2));
 
 		hasGravity.setOpaque(false);
 		tickRandomly.setOpaque(false);
@@ -791,10 +791,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedProperties.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/is_ladder"), L10N.label("elementgui.block.is_ladder")));
 		advancedProperties.add(isLadder);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/redstone_connect"),
-				L10N.label("elementgui.block.redstone_connect")));
-		advancedProperties.add(canProvidePower);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/enchantments_bonus"),
 				L10N.label("elementgui.block.enchantments_bonus")));
@@ -1103,12 +1099,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		particleParameters.setOpaque(false);
 
-		JPanel redstoneParameters = new JPanel(new GridLayout(2, 2, 0, 2));
+		JPanel redstoneParameters = new JPanel(new GridLayout(3, 2, 0, 2));
 		redstoneParameters.setOpaque(false);
 		redstoneParameters.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.properties_redstone"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		redstoneParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/redstone_connect"),
+				L10N.label("elementgui.block.redstone_connect")));
+		redstoneParameters.add(canProvidePower);
 
 		redstoneParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emits_redstone"),
 				L10N.label("elementgui.block.emits_redstone")));
