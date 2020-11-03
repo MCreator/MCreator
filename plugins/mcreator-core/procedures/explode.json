@@ -25,15 +25,15 @@
       "name": "mode",
       "options": [
         [
-          "DEFAULT",
+          "BREAK",
           "BREAK"
         ],
         [
-          "NO_LOOT",
+          "DESTROY",
           "DESTROY"
         ],
         [
-          "COSMETIC",
+          "NONE",
           "NONE"
         ]
       ]
