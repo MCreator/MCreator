@@ -226,7 +226,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JComboBox<String> blockBase = new JComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
-					"Door", "FenceGate" });
+					"Door", "FenceGate", "StoneButton", "PressurePlate", "Cake" });
+
+	private final JComboBox<String> sensitivity = new JComboBox<>(
+			new String[] { "EVERYTHING", "MOBS" });
 
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -329,13 +332,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 				if (!isEditingMode()) {
 					transparencyType.setSelectedItem("CUTOUT_MIPPED");
 				}
-			} else if (blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Leaves")) {
+			}else if (blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Leaves")) {
 				material.setEnabled(false);
 				renderType.setEnabled(false);
 				rotationMode.setEnabled(false);
 				hasTransparency.setEnabled(false);
 				transparencyType.setEnabled(false);
 				isWaterloggable.setSelected(false);
+				sensitivity.setEnabled(false);
 
 				material.setSelectedItem("LEAVES");
 				renderType.setSelectedItem(singleTexture);
@@ -359,6 +363,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				hasGravity.setEnabled(false);
 				rotationMode.setEnabled(false);
 				isWaterloggable.setEnabled(false);
+				sensitivity.setEnabled(false);
 
 				mx.setValue(0d);
 				my.setValue(0d);
@@ -372,12 +377,24 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 				if (blockBase.getSelectedItem().equals("Wall") || blockBase.getSelectedItem().equals("Fence")
 						|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem().equals("Door")
-						|| blockBase.getSelectedItem().equals("FenceGate")) {
+						|| blockBase.getSelectedItem().equals("FenceGate") || blockBase.getSelectedItem().equals("StoneButton")) {
 					if (!isEditingMode()) {
 						hasTransparency.setSelected(true);
 						lightOpacity.setValue(0);
 					}
+					sensitivity.setEnabled(false);
+				}  else if(blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("PressurePlate")) {
+					sensitivity.setEnabled(true);
+					if (!isEditingMode()) {
+						hasTransparency.setSelected(true);
+						lightOpacity.setValue(0);
+						}
+				} else if(blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Cake")){
+
 				}
+
+			} else if(blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Default basic base")){
+				sensitivity.setEnabled(false);
 			}
 
 			updateTextureOptions();
@@ -462,12 +479,18 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.block_base_item_texture"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		txblock4.add("Center", PanelUtils.gridElements(3, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
-				blockBase, HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
-						L10N.label("elementgui.block.item_texture")), PanelUtils.centerInPanel(itemTexture), HelpUtils
-						.wrapWithHelpButton(this.withEntry("block/particle_texture"),
-								L10N.label("elementgui.block.particle_texture")),
+		txblock4.add("Center", PanelUtils.gridElements(4, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"),
+						L10N.label("elementgui.block.block_base")), blockBase,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/sensitivity"),
+						L10N.label("elementgui.block.sensitivity")),
+				PanelUtils.centerInPanel(sensitivity),
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
+						L10N.label("elementgui.block.item_texture")),
+				PanelUtils.centerInPanel(itemTexture),
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
+						L10N.label("elementgui.block.particle_texture")),
+
 				PanelUtils.centerInPanel(particleTexture)));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout(1, 5));
@@ -1181,7 +1204,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 			textureTop.setVisible(true);
 			textureFront.setVisible(true);
 			texture.setVisible(true);
-		} else {
+		}else if("Cake".equals(blockBase.getSelectedItem())){
+			textureTop.setVisible(true);
+			textureFront.setVisible(true);
+			texture.setVisible(true);
+			textureRight.setVisible(true);
+		}
+		else {
 			texture.setVisible(true);
 		}
 	}
@@ -1252,6 +1281,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	@Override public void openInEditingMode(Block block) {
 		itemTexture.setTextureFromTextureName(block.itemTexture);
 		particleTexture.setTextureFromTextureName(block.particleTexture);
+		sensitivity.setSelectedItem(block.sensitivity);
 		texture.setTextureFromTextureName(block.texture);
 		textureTop.setTextureFromTextureName(block.textureTop);
 		textureLeft.setTextureFromTextureName(block.textureLeft);
@@ -1470,6 +1500,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.texture = texture.getID();
 		block.itemTexture = itemTexture.getID();
 		block.particleTexture = particleTexture.getID();
+		block.sensitivity = (String) sensitivity.getSelectedItem();
 		block.textureTop = textureTop.getID();
 		block.textureLeft = textureLeft.getID();
 		block.textureFront = textureFront.getID();
