@@ -64,6 +64,10 @@ import java.util.Map;
 
 	public String name;
 	public List<String> specialInfo;
+	public boolean onShiftOnly;
+	public List<String> onShiftInfo;
+	public boolean onCommandOnly;
+	public List<String> onCommandInfo;
 	public double hardness;
 	public double resistance;
 	public boolean hasGravity;
@@ -184,6 +188,18 @@ import java.util.Map;
 		if (blockBase != null && !blockBase.equals(""))
 			return -1;
 		return renderType;
+	}
+
+	public boolean infoOnly() {
+		return !specialInfo.isEmpty();
+	}
+
+	public boolean shiftOnly() {
+		return onShiftOnly;
+	}
+
+	public boolean commandOnly() {
+		return onCommandOnly;
 	}
 
 	public boolean hasCustomDrop() {

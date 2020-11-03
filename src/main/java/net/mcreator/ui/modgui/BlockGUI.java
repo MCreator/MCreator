@@ -219,7 +219,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final VTextField outSlotIDs = new VTextField(18);
 	private final VTextField inSlotIDs = new VTextField(18);
 
+	private final JCheckBox onShiftOnly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox onCommandOnly = L10N.checkbox("elementgui.common.enable");
 	private final JTextField specialInfo = new JTextField(25);
+	private final JTextField onShiftInfo = new JTextField(25);
+	private final JTextField onCommandInfo = new JTextField(25);
 
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page2group = new ValidationGroup();
@@ -308,6 +312,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			Mx.setEnabled(true);
 			My.setEnabled(true);
 			Mz.setEnabled(true);
+			onShiftOnly.setEnabled(true);
+			onCommandOnly.setEnabled(true);
 			rotationMode.setEnabled(true);
 			hasGravity.setEnabled(true);
 			hasTransparency.setEnabled(true);
@@ -356,6 +362,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Mx.setEnabled(false);
 				My.setEnabled(false);
 				Mz.setEnabled(false);
+				onShiftOnly.setEnabled(true);
+				onCommandOnly.setEnabled(true);
 				hasGravity.setEnabled(false);
 				rotationMode.setEnabled(false);
 				isWaterloggable.setEnabled(false);
@@ -366,6 +374,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Mx.setValue(1d);
 				My.setValue(1d);
 				Mz.setValue(1d);
+				onShiftOnly.setSelected(false);
+				onCommandOnly.setSelected(false);
 				hasGravity.setSelected(false);
 				rotationMode.setSelectedIndex(0);
 				isWaterloggable.setSelected(false);
@@ -490,18 +500,35 @@ public class BlockGUI extends ModElementGUI<Block> {
 		topnbot.add("Center", sbbp22);
 		topnbot.add("South", txblock4);
 
-		JPanel txblock3 = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		txblock3.setOpaque(false);
-		txblock3.setBorder(BorderFactory.createTitledBorder(
+		JPanel specialDescription = new JPanel(new GridLayout(3, 2, 0, 2));
+		specialDescription.setOpaque(false);
+		specialDescription.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.special_information_title"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
+		ComponentUtils.deriveFont(onShiftInfo, 16);
+		ComponentUtils.deriveFont(onCommandInfo, 16);
 
-		txblock3.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+		onShiftOnly.addActionListener(e -> refreshShiftField());
+		refreshShiftField();
+		onCommandOnly.addActionListener(e -> refreshCommandField());
+		refreshCommandField();
+
+		specialDescription.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
 				L10N.label("elementgui.block.special_information_tip")));
-		txblock3.add(specialInfo);
+		specialDescription.add(specialInfo);
+
+		specialDescription.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_shift"),
+						L10N.label("elementgui.block.description_on_shift")), onShiftOnly));
+		specialDescription.add(onShiftInfo);
+
+		specialDescription.add(PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_command"),
+						L10N.label("elementgui.block.description_on_command")), onCommandOnly));
+		specialDescription.add(onCommandInfo);
 
 		sbbp2.add("Center", topnbot);
 
@@ -599,7 +626,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		render.add(rent);
 		render.add(transparencySettings);
 		render.add(bound);
-		render.add(txblock3);
+		render.add(specialDescription);
 
 		mx.addChangeListener(event -> updateParametersBasedOnBoundingBoxSize());
 		my.addChangeListener(event -> updateParametersBasedOnBoundingBoxSize());
@@ -620,6 +647,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		render.setOpaque(false);
 
+		onShiftOnly.setOpaque(false);
+		onCommandOnly.setOpaque(false);
 		hasTransparency.setOpaque(false);
 		connectedSides.setOpaque(false);
 		emissiveRendering.setOpaque(false);
@@ -1155,6 +1184,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		fluidRestrictions.setEnabled(hasInventory.isSelected());
 	}
 
+	private void refreshShiftField() {
+		onShiftInfo.setEnabled(onShiftOnly.isSelected());
+	}
+
+	private void refreshCommandField() {
+		onCommandInfo.setEnabled(onCommandOnly.isSelected());
+	}
+
 	private void refreshRedstoneEmitted() {
 		emittedRedstonePower.setEnabled(emitsRedstone.isSelected());
 	}
@@ -1363,11 +1400,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 		reactionToPushing.setSelectedItem(block.reactionToPushing);
 		slipperiness.setValue(block.slipperiness);
 
-		specialInfo.setText(
-				block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		specialInfo.setText(block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		if (!onShiftInfo.getText().equals("")) {
+			onShiftInfo.setText(block.onShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		}
+		if (!onCommandInfo.getText().equals("")) {
+			onCommandInfo.setText(block.onCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		}
+
+		onShiftOnly.setSelected(block.onShiftOnly);
+		onCommandOnly.setSelected(block.onCommandOnly);
 
 		refreshFiledsTileEntity();
 		refreshRedstoneEmitted();
+		refreshShiftField();
+		refreshCommandField();
 
 		tickRate.setEnabled(!tickRandomly.isSelected());
 
@@ -1498,6 +1545,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.slipperiness = (double) slipperiness.getValue();
 
 		block.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
+		block.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onShiftInfo.getText());
+		block.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onCommandInfo.getText());
+
+		block.onShiftOnly = onShiftOnly.isSelected();
+		block.onCommandOnly = onCommandOnly.isSelected();
 
 		if (blockBase.getSelectedIndex() != 0)
 			block.blockBase = (String) blockBase.getSelectedItem();
