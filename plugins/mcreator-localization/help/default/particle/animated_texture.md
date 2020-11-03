@@ -1,0 +1,1 @@
+Check this box if your particle should be animated.
