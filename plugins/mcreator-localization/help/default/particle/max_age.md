@@ -1,0 +1,1 @@
+If particle can expire and is older than this number of, it will expire.

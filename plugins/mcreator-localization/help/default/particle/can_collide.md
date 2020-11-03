@@ -1,0 +1,1 @@
+Check to make this particle able to collide blocks (like drips or block breaking particles).

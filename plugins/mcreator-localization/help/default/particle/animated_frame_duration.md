@@ -1,0 +1,1 @@
+This parameter controls how many ticks should pass between different animation frames.
