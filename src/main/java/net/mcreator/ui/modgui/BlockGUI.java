@@ -548,7 +548,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 						L10N.label("elementgui.block.description_on_shift")), onShiftOnly));
 		specialDescription.add(onShiftInfo);
 
-		specialDescription.add(PanelUtils.gridElements(1, 1,
+		specialDescription.add("Center", PanelUtils.gridElements(1, 1,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_command"),
 						L10N.label("elementgui.block.description_on_command")), onCommandOnly));
 		specialDescription.add(onCommandInfo);
