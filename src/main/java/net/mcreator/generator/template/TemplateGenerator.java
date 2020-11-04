@@ -67,6 +67,7 @@ public class TemplateGenerator {
 		dataModel.put("variables", generator.getWorkspace().getVariableElements());
 		dataModel.put("sounds", generator.getWorkspace().getSoundElements());
 
+
 		return generateTemplate(templateName, dataModel);
 	}
 
