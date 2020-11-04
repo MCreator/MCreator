@@ -55,7 +55,7 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		onTick = new ProcedureSelector(this.withEntry("gui/gui_open_tick"), mcreator,
 				L10N.t("elementgui.gui.gui_open_ticks"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		onClosed = new ProcedureSelector(this.withEntry("block/gui/gui_closed"), mcreator,
+		onClosed = new ProcedureSelector(this.withEntry("gui/gui_closed"), mcreator,
 				L10N.t("elementgui.gui.gui_closed"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
