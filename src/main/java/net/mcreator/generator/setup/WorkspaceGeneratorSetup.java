@@ -91,6 +91,9 @@ public class WorkspaceGeneratorSetup {
 		moveFilesToAnotherDir(workspace.getFolderManager().getArmorTexturesDir(),
 				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "armor_textures_dir"));
 
+		moveFilesToAnotherDir(workspace.getFolderManager().getEntitiesTexturesDir(),
+				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "entity_textures_dir"));
+
 		moveFilesToAnotherDir(workspace.getFolderManager().getOtherTexturesDir(),
 				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "other_textures_dir"));
 
