@@ -54,6 +54,7 @@ import java.util.Map;
 
 	public String itemTexture;
 	public String particleTexture;
+	public String sensitivity;
 
 	public String blockBase;
 
@@ -86,6 +87,8 @@ import java.util.Map;
 	public boolean tickRandomly;
 
 	public boolean isReplaceable;
+	public boolean emitsRedstone;
+	public int emittedRedstonePower;
 	public String colorOnMap;
 	public MItemBlock creativePickItem;
 	public String offsetType;
@@ -171,6 +174,7 @@ import java.util.Map;
 		this.offsetType = "NONE";
 		this.inventoryInSlotIDs = new ArrayList<>();
 		this.inventoryOutSlotIDs = new ArrayList<>();
+		this.sensitivity = "EVERYTHING";
 
 		this.energyCapacity = 400000;
 		this.energyMaxReceive = 200;
