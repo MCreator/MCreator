@@ -57,6 +57,7 @@ import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -1431,11 +1432,19 @@ public class BlockGUI extends ModElementGUI<Block> {
 		slipperiness.setValue(block.slipperiness);
 
 		specialInfo.setText(block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
-		if (!onShiftInfo.getText().equals("")) {
-			onShiftInfo.setText(block.onShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		try {
+			if (Block.class.getField("onShiftInfo").get(block) != null) {
+				onShiftInfo.setText(block.onShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
-		if (!onCommandInfo.getText().equals("")) {
-			onCommandInfo.setText(block.onCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		try {
+			if (Block.class.getField("onCommandInfo").get(block) != null) {
+				onCommandInfo.setText(block.onCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
 
 		onShiftOnly.setSelected(block.onShiftOnly);
