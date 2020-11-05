@@ -161,8 +161,15 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		</#if>
 
 		<#if data.specialInfo?has_content || data.onShiftInfo?has_content || data.onCommandInfo?has_content>
-		@OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
+			<#if data.specialInfo?has_content>
+			<#assign line = 1>
+			<#list data.specialInfo as entry>
+			list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.tooltip${line}"));
+			<#assign line++>
+			</#list>
+			</#if>
 			<#if data.onShiftInfo?has_content && data.shiftOnly()>
 			if (Screen.hasShiftDown()) {
 				<#assign line = 1>
@@ -170,6 +177,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.shift.tooltip${line}"));
 				<#assign line++>
 				</#list>
+			} else {
+				list.add(new StringTextComponent("\u00A77Press SHIFT for more information"));
 			}
 			</#if>
 			<#if data.onCommandInfo?has_content && data.commandOnly()>
@@ -179,14 +188,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.command.tooltip${line}"));
 				<#assign line++>
 				</#list>
+			} else {
+				list.add(new StringTextComponent("\u00A77Press CTRL for more information"));
 			}
-			</#if>
-			<#if data.specialInfo?has_content>
-			<#assign line = 1>
-			<#list data.specialInfo as entry>
-			list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.tooltip${line}"));
-			<#assign line++>
-			</#list>
 			</#if>
 		}
 		</#if>
