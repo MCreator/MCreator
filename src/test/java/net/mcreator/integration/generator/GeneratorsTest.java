@@ -171,6 +171,19 @@ import static org.junit.Assert.fail;
 				workspace.getModElementManager().storeModElement(procedure);
 			}
 
+			for (int i = 1; i <= 4; i++) {
+				ModElement me = new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE)
+						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "ITEMSTACK");
+				workspace.addModElement(me);
+
+				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
+						"<block type=\"return_itemstack\"><value name=\"return\">"
+								+ "<block type=\"empty_itemstack\"></block>" + "</value></block>");
+				assertTrue(workspace.getGenerator().generateElement(procedure));
+				workspace.getModElementManager().storeModElement(procedure);
+			}
+
 			GTModElements.runTest(LOG, generator, random, workspace);
 
 			LOG.info("[" + generator + "] ----- Testing workspace build with mod elements");
