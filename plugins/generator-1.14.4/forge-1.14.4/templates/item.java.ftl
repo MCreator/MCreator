@@ -147,14 +147,36 @@ package ${package}.item;
 		}
         </#if>
 
-		<#if data.specialInfo?has_content>
-		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+		<#if data.specialInfo?has_content || data.onShiftInfo?has_content || data.onCommandInfo?has_content>
+		@OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
+			<#if data.onShiftInfo?has_content && data.itemShiftOnly()>
+			if (Screen.hasShiftDown()) {
+				<#assign line = 1>
+				<#list data.onShiftInfo as entry>
+				list.add(new TranslationTextComponent("block.${JavaModName?lower_case?replace("mod", "")}.${name?lower_case}.shift.tooltip${line}"));
+				<#assign line++>
+				</#list>
+			}
+			</#if>
+			<#if data.onCommandInfo?has_content && data.itemCommandOnly()>
+			if (Screen.hasControlDown()) {
+				<#assign line = 1>
+				<#list data.onCommandInfo as entry>
+				list.add(new TranslationTextComponent("block.${JavaModName?lower_case?replace("mod", "")}.${name?lower_case}.command.tooltip${line}"));
+				<#assign line++>
+				</#list>
+			}
+			</#if>
+			<#if data.specialInfo?has_content>
+			<#assign line = 1>
 			<#list data.specialInfo as entry>
-			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-            </#list>
+			list.add(new TranslationTextComponent("block.${JavaModName?lower_case?replace("mod", "")}.${name?lower_case}.tooltip${line}"));
+			<#assign line++>
+			</#list>
+			</#if>
 		}
-        </#if>
+		</#if>
 
 		<#if hasProcedure(data.onRightClickedInAir) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
