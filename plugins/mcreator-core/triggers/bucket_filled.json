@@ -23,6 +23,10 @@
     {
       "name": "itemstack",
       "type": "itemstack"
+    },
+    {
+      "name": "bucket",
+      "type": "itemstack"
     }
   ],
   "cancelable": "true"
