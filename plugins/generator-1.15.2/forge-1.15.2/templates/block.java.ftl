@@ -196,7 +196,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			if (Screen.hasShiftDown()) {
 				<#assign line = 1>
 				<#list data.onShiftInfo as entry>
-				list.add(new TranslationTextComponent("block.${JavaModName?lower_case?replace("mod", "")}.${name?lower_case}.shift.tooltip${line}"));
+				list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.shift.tooltip${line}"));
 				<#assign line++>
 				</#list>
 			}
@@ -205,7 +205,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			if (Screen.hasControlDown()) {
 				<#assign line = 1>
 				<#list data.onCommandInfo as entry>
-				list.add(new TranslationTextComponent("block.${JavaModName?lower_case?replace("mod", "")}.${name?lower_case}.command.tooltip${line}"));
+				list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.command.tooltip${line}"));
 				<#assign line++>
 				</#list>
 			}
@@ -213,7 +213,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<#if data.specialInfo?has_content>
 			<#assign line = 1>
 			<#list data.specialInfo as entry>
-			list.add(new TranslationTextComponent("block.${JavaModName?lower_case?replace("mod", "")}.${name?lower_case}.tooltip${line}"));
+			list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.tooltip${line}"));
 			<#assign line++>
 			</#list>
 			</#if>
