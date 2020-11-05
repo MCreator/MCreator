@@ -25,7 +25,7 @@
       "type": "itemstack"
     },
     {
-      "name": "bucket",
+      "name": "originalitemstack",
       "type": "itemstack"
     }
   ],
