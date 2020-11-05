@@ -163,7 +163,7 @@ package ${package}.item;
 			if (Screen.hasControlDown()) {
 				<#assign line = 1>
 				<#list data.onCommandInfo as entry>
-				list.add(new TranslationTextComponent("item.${modid?lower_case?}.${registryname?lower_case}.command.tooltip${line}"));
+				list.add(new TranslationTextComponent("item.${modid?lower_case}.${registryname?lower_case}.command.tooltip${line}"));
 				<#assign line++>
 				</#list>
 			}
@@ -171,7 +171,7 @@ package ${package}.item;
 			<#if data.specialInfo?has_content>
 			<#assign line = 1>
 			<#list data.specialInfo as entry>
-			list.add(new TranslationTextComponent("item.${modid?lower_case?}.${registryname?lower_case}.tooltip${line}"));
+			list.add(new TranslationTextComponent("item.${modid?lower_case}.${registryname?lower_case}.tooltip${line}"));
 			<#assign line++>
 			</#list>
 			</#if>
