@@ -1,0 +1,1 @@
+When box checked, field on right will show its text in the description when the player shifts.

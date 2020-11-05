@@ -189,14 +189,36 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
    		@Override ${mcc.getMethod("net.minecraft.block.WallBlock", "updatePostPlacement", "BlockState", "Direction", "BlockState", "IWorld", "BlockPos", "BlockPos")}
 		</#if>
 
-		<#if data.specialInfo?has_content>
-		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
+		<#if data.specialInfo?has_content || data.onShiftInfo?has_content || data.onCommandInfo?has_content>
+		@OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
+			<#if data.onShiftInfo?has_content && data.shiftOnly()>
+			if (Screen.hasShiftDown()) {
+				<#assign line = 1>
+				<#list data.onShiftInfo as entry>
+				list.add(new TranslationTextComponent("block.${JavaModName?lower_case?replace("mod", "")}.${name?lower_case}.shift.tooltip${line}"));
+				<#assign line++>
+				</#list>
+			}
+			</#if>
+			<#if data.onCommandInfo?has_content && data.commandOnly()>
+			if (Screen.hasControlDown()) {
+				<#assign line = 1>
+				<#list data.onCommandInfo as entry>
+				list.add(new TranslationTextComponent("block.${JavaModName?lower_case?replace("mod", "")}.${name?lower_case}.command.tooltip${line}"));
+				<#assign line++>
+				</#list>
+			}
+			</#if>
+			<#if data.specialInfo?has_content>
+			<#assign line = 1>
 			<#list data.specialInfo as entry>
-			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-            </#list>
+			list.add(new TranslationTextComponent("block.${JavaModName?lower_case?replace("mod", "")}.${name?lower_case}.tooltip${line}"));
+			<#assign line++>
+			</#list>
+			</#if>
 		}
-        </#if>
+		</#if>
 
 		<#if data.emissiveRendering>
         @OnlyIn(Dist.CLIENT) @Override public boolean isEmissiveRendering(BlockState blockState) {
