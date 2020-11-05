@@ -899,11 +899,18 @@ public class TestWorkspaceDataProvider {
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
+			item.onShiftOnly = _true;
+			item.onCommandOnly = _true;
+			item.onShiftInfo = new ArrayList<>();
+			item.onCommandInfo = new ArrayList<>();
 			if (!emptyLists) {
-				item.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				item.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				item.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				item.specialInfo = new ArrayList<>();
+				item.onShiftInfo = new ArrayList<>();
+				item.onCommandInfo = new ArrayList<>();
 			}
 			item.texture = "test2";
 			item.renderType = 0;
