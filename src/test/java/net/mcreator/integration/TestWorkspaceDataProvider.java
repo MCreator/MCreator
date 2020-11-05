@@ -900,8 +900,8 @@ public class TestWorkspaceDataProvider {
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
 			item.hasDispenseBehavior = _true;
-			item.dispenseSuccessCondition = new Procedure("condition1");
-			item.dispenseResultItemstack = new Procedure("itemstack1");
+			item.dispenseSuccessCondition = !_true ? null : new Procedure("condition1");
+			item.dispenseResultItemstack = !_true ? null : new Procedure("itemstack1");
 			if (!emptyLists) {
 				item.specialInfo = StringUtils
 						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
