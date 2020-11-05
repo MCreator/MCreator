@@ -388,21 +388,48 @@ public class Generator implements Closeable {
 			for (Object template : localizationkeys) {
 				String key = (String) ((Map<?, ?>) template).get("key");
 				String mapto = (String) ((Map<?, ?>) template).get("mapto");
+				Boolean condition = ((Map<?, ?>) template).containsKey("condition");
 				key = GeneratorTokens.replaceTokens(workspace, key.replace("@NAME", element.getModElement().getName())
 						.replace("@modid", workspace.getWorkspaceSettings().getModID())
 						.replace("@registryname", element.getModElement().getRegistryName()));
 				try {
-					String value = (String) element.getClass().getField(mapto.trim()).get(element);
+					int i = 0;
+					int size;
+					for(String value : element.getClass().getField(mapto.trim()).get(element).toString().split(",")){
+						List<String> list = Arrays.asList(element.getClass().getField(mapto.trim()).get(element).toString().split(","));
+						value = list.get(i);
+						size = list.size();
+						if (!value.isEmpty()) {
+							String suffix = (String) ((Map<?, ?>) template).get("suffix");
+							if (suffix != null) {
+								value += suffix;
+							}
 
-					String suffix = (String) ((Map<?, ?>) template).get("suffix");
-					if (suffix != null)
-						value += suffix;
+							String prefix = (String) ((Map<?, ?>) template).get("prefix");
+							if (prefix != null) {
+								value = prefix + value;
+							}
 
-					String prefix = (String) ((Map<?, ?>) template).get("prefix");
-					if (prefix != null)
-						value = prefix + value;
+							if (value != null && !value.equals("[]")) {
+								if ((value.charAt(0) == '[') && condition && ((i+1) == 1)) {
+									value = value.substring(1);
+								}
+								if ((value.charAt(value.length() - 1) == ']') && condition && ((size == 1) || (i > 1))) {
+									value = value.substring(0, value.length() - 1);
+								}
 
-					workspace.setLocalization(key, value);
+								if (condition) {
+									String newKey = key;
+									newKey += (i + 1);
+									workspace.setLocalization(newKey, value.trim());
+									i++;
+								} else {
+									workspace.setLocalization(key, value);
+								}
+							}
+						}
+					}
+
 				} catch (IllegalAccessException | NoSuchFieldException e) {
 					LOG.error(e.getMessage(), e);
 					LOG.error("[" + generatorName + "] " + e.getMessage());
