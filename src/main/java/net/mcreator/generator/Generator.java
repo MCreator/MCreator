@@ -414,7 +414,7 @@ public class Generator implements Closeable {
 								if ((value.charAt(0) == '[') && condition && ((i+1) == 1)) {
 									value = value.substring(1);
 								}
-								if ((value.charAt(value.length() - 1) == ']') && condition && ((size == 1) || (i > 1))) {
+								if ((value.charAt(value.length() - 1) == ']') && condition && ((size == 1) || (i >= 1))) {
 									value = value.substring(0, value.length() - 1);
 								}
 
@@ -477,11 +477,30 @@ public class Generator implements Closeable {
 		// delete all localization keys
 		List<?> localizationkeys = (List<?>) map.get("localizationkeys");
 		if (localizationkeys != null) {
+			int i = 0;
+			String oldKey = "key";
 			for (Object template : localizationkeys) {
 				String key = (String) ((Map<?, ?>) template).get("key");
-				key = GeneratorTokens.replaceTokens(workspace,
-						key.replace("@NAME", element.getName()).replace("@registryname", element.getRegistryName()));
-				workspace.removeLocalizationEntryByKey(key);
+				Boolean condition = ((Map<?, ?>) template).containsKey("condition");
+				LOG.debug("Processing key " + key + " with i = " + i);
+				key = GeneratorTokens.replaceTokens(workspace, key.replace("@NAME", element.getName())
+						.replace("@modid", workspace.getWorkspaceSettings().getModID())
+						.replace("@registryname", element.getRegistryName()));
+				if (condition) {
+					LOG.debug("oldKey : " + oldKey + " and key : " + key);
+					if (oldKey != key) {
+						i = 0;
+					}
+					oldKey = key;
+					String newKey = key;
+					newKey += (i + 1);
+					workspace.removeLocalizationEntryByKey(newKey);
+					LOG.debug("Key " + newKey + " deleted! i = " + i);
+					i++;
+				} else {
+					workspace.removeLocalizationEntryByKey(key);
+					LOG.debug("Key " + key + " deleted! i = " + i);
+				}
 			}
 		}
 	}
