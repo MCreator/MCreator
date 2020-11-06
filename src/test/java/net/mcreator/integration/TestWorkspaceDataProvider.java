@@ -143,6 +143,34 @@ public class TestWorkspaceDataProvider {
 
 		}
 
+		if (workspace.getFolderManager().getEntitiesTexturesDir() != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("test"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("test2"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("test3"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("test4"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("etest"));
+
+		}
+
+		if (workspace.getFolderManager().getPaintingsTexturesDir() != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("test"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("test2"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("test3"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("test4"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("ptest"));
+
+		}
+
 		if (workspace.getFolderManager().getOtherTexturesDir() != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getOtherTextureFile("test"));
@@ -871,11 +899,18 @@ public class TestWorkspaceDataProvider {
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
+			item.onShiftOnly = _true;
+			item.onCommandOnly = _true;
+			item.onShiftInfo = new ArrayList<>();
+			item.onCommandInfo = new ArrayList<>();
 			if (!emptyLists) {
-				item.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				item.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				item.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				item.specialInfo = new ArrayList<>();
+				item.onShiftInfo = new ArrayList<>();
+				item.onCommandInfo = new ArrayList<>();
 			}
 			item.texture = "test2";
 			item.renderType = 0;
@@ -1093,12 +1128,22 @@ public class TestWorkspaceDataProvider {
 			block.textureFront = "test4";
 			block.textureRight = "test5";
 			block.textureBack = "test6";
+			block.onShiftOnly = _true;
+			block.onCommandOnly = _true;
 			block.specialInfo = new ArrayList<>();
+			block.onShiftInfo = new ArrayList<>();
+			block.onCommandInfo = new ArrayList<>();
 			if (!emptyLists) {
 				block.specialInfo = StringUtils
 						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				block.onShiftInfo = StringUtils
+						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				block.onCommandInfo = StringUtils
+						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				block.specialInfo = new ArrayList<>();
+				block.onShiftInfo = new ArrayList<>();
+				block.onCommandInfo = new ArrayList<>();
 			}
 			block.renderType = new int[] { 10, 11, 12, 11 }[valueIndex];
 			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",

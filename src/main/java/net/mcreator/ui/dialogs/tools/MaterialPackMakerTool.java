@@ -100,7 +100,7 @@ public class MaterialPackMakerTool {
 			Color color, double factor) {
 		MItemBlock gem = OrePackMakerTool.addOrePackToWorkspace(mcreator, workspace, name, type, color, factor);
 		ToolPackMakerTool.addToolPackToWorkspace(mcreator, workspace, name, gem, color, factor);
-		ArmorPackMakerTool.addArmorPackToWorkspace(mcreator, workspace, name, gem, color, factor);
+		ArmorPackMakerTool.addArmorPackToWorkspace(mcreator, workspace, name, "", gem, color, factor);
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
