@@ -67,6 +67,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private TextureHolder texture;
 
 	private final JTextField specialInfo = new JTextField(20);
+	private final JTextField onShiftInfo = new JTextField(20);
+	private final JTextField onCommandInfo = new JTextField(20);
+
+	private final JCheckBox onShiftOnly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox onCommandOnly = L10N.checkbox("elementgui.common.enable");
 
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 0, 64, 1));
 	private final VTextField name = new VTextField(20);
@@ -191,7 +196,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				.totalCenterInPanel(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))));
 		destal2.add("North", destal3);
 
-		JPanel destal = new JPanel(new GridLayout(1, 2, 15, 15));
+		JPanel destal = new JPanel(new GridLayout(3, 2, 15, 15));
 		destal.setOpaque(false);
 		JComponent destal1 = PanelUtils.join(FlowLayout.LEFT, HelpUtils
 				.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
@@ -201,14 +206,31 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.tooltip_tip")));
 		destal.add(specialInfo);
 
+		destal.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_shift"),
+						L10N.label("elementgui.common.description_on_shift")), onShiftOnly));
+		destal.add(onShiftInfo);
+
+		destal.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_command"),
+						L10N.label("elementgui.common.description_on_command")), onCommandOnly));
+		destal.add(onCommandInfo);
+
 		hasGlow.setOpaque(false);
 		hasGlow.setSelected(false);
 
+		onShiftOnly.setOpaque(false);
+		onCommandOnly.setOpaque(false);
+
 		hasGlow.addActionListener(e -> updateGlowElements());
+		onShiftOnly.addActionListener(e -> updateShiftInfo());
+		onCommandOnly.addActionListener(e -> updateCommandInfo());
 
 		destal2.add("Center", PanelUtils.northAndCenterElement(destal, destal1, 10, 10));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
+		ComponentUtils.deriveFont(onShiftInfo, 16);
+		ComponentUtils.deriveFont(onCommandInfo, 16);
 
 		ComponentUtils.deriveFont(renderType, 16.0f);
 
@@ -391,6 +413,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		dispenseSuccessCondition.setEnabled(hasDispenseBehavior.isSelected());
 		dispenseResultItemstack.setEnabled(hasDispenseBehavior.isSelected());
 	}
+  
+	private void updateShiftInfo() { onShiftInfo.setEnabled(onShiftOnly.isSelected());}
+
+	private void updateCommandInfo() { onCommandInfo.setEnabled(onCommandOnly.isSelected());}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
@@ -432,8 +458,23 @@ public class ItemGUI extends ModElementGUI<Item> {
 		name.setText(item.name);
 		rarity.setSelectedItem(item.rarity);
 		texture.setTextureFromTextureName(item.texture);
-		specialInfo.setText(
-				item.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+
+		specialInfo.setText(item.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		try {
+			if (Item.class.getField("onShiftInfo").get(item) != null) {
+				onShiftInfo.setText(item.onShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		try {
+			if (Item.class.getField("onCommandInfo").get(item) != null) {
+				onCommandInfo.setText(item.onCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		onRightClickedInAir.setSelectedProcedure(item.onRightClickedInAir);
 		onRightClickedOnBlock.setSelectedProcedure(item.onRightClickedOnBlock);
 		onCrafted.setSelectedProcedure(item.onCrafted);
@@ -454,6 +495,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		stayInGridWhenCrafting.setSelected(item.stayInGridWhenCrafting);
 		damageOnCrafting.setSelected(item.damageOnCrafting);
 		hasGlow.setSelected(item.hasGlow);
+		onShiftOnly.setSelected(item.onShiftOnly);
+		onCommandOnly.setSelected(item.onCommandOnly);
 		glowCondition.setSelectedProcedure(item.glowCondition);
 		damageVsEntity.setValue(item.damageVsEntity);
 		enableMeleeDamage.setSelected(item.enableMeleeDamage);
@@ -466,6 +509,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		updateGlowElements();
 		updateDispenseElements();
+		updateShiftInfo();
+		updateCommandInfo();
 
 		Model model = item.getItemModel();
 		if (model != null)
@@ -487,6 +532,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		item.damageOnCrafting = damageOnCrafting.isSelected();
 		item.hasGlow = hasGlow.isSelected();
+		item.onShiftOnly = onShiftOnly.isSelected();
+		item.onCommandOnly = onCommandOnly.isSelected();
 		item.glowCondition = glowCondition.getSelectedProcedure();
 		item.onRightClickedInAir = onRightClickedInAir.getSelectedProcedure();
 		item.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();
@@ -507,6 +554,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.dispenseResultItemstack = dispenseResultItemstack.getSelectedProcedure();
 
 		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
+		item.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onShiftInfo.getText());
+		item.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onCommandInfo.getText());
 
 		item.texture = texture.getID();
 		Model.Type modelType = ((Model) Objects.requireNonNull(renderType.getSelectedItem())).getType();
