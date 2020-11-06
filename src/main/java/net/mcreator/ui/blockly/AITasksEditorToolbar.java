@@ -24,6 +24,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,7 +45,7 @@ public class AITasksEditorToolbar extends TransparentToolBar {
 		AITaskTemplateDropdown templateDropdown = new AITaskTemplateDropdown(blocklyPanel,
 				TemplatesLoader.loadTemplates("aitpl", "aitpl"));
 
-		JButton bs1 = new JButton("AI templates");
+		JButton bs1 = L10N.button("blockly.templates.ai_setup");
 		bs1.setPreferredSize(new Dimension(155, 16));
 		bs1.setIcon(UIRES.get("18px.templatelib"));
 		bs1.setOpaque(false);
@@ -58,7 +59,7 @@ public class AITasksEditorToolbar extends TransparentToolBar {
 
 		add(Box.createHorizontalGlue());
 
-		JButton bs2 = new JButton("Export AI setup");
+		JButton bs2 = L10N.button("blockly.templates.ai_setup.export");
 		bs2.setIcon(UIRES.get("18px.export"));
 		bs2.setOpaque(false);
 		add(bs2);
@@ -69,16 +70,15 @@ public class AITasksEditorToolbar extends TransparentToolBar {
 					ProcedureTemplateIO.exportAITaskSetup(blocklyPanel.getXML(), exp);
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
-					JOptionPane.showMessageDialog(mcreator, "<html><b>Failed to export the AI setup!</b><br>"
-									+ "Your AT task setup may be empty or corrupted.", "Export failed",
-							JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(mcreator, L10N.t("blockly.templates.ai_setup.export_failed.message"),
+							L10N.t("blockly.templates.ai_setup.export_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
 		ComponentUtils.normalizeButton4(bs2);
 		bs2.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 
-		JButton bs3 = new JButton("Import AI setup");
+		JButton bs3 = L10N.button("blockly.templates.ai_setup.import");
 		bs3.setIcon(UIRES.get("18px.import"));
 		bs3.setOpaque(false);
 		add(bs3);
@@ -89,9 +89,8 @@ public class AITasksEditorToolbar extends TransparentToolBar {
 					blocklyPanel.addBlocksFromXML(ProcedureTemplateIO.importBlocklyXML(imp));
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
-					JOptionPane.showMessageDialog(mcreator, "<html><b>Failed to import the AI setup!</b><br>"
-									+ "The AI task setup file you are importing is invalid.", "Import failed",
-							JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(mcreator, L10N.t("blockly.templates.ai_setup.import_failed.message"),
+							L10N.t("blockly.templates.ai_setup.import_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
