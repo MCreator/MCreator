@@ -104,7 +104,7 @@ public class MaterialPackMakerTool {
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
-		return new BasicAction(actionRegistry, "Create material pack...", e -> open(actionRegistry.getMCreator())) {
+		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.material"), e -> open(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getWorkspace().getGenerator()
 						.getGeneratorConfiguration();
