@@ -130,7 +130,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(description, 16);
 
-		JPanel subpane2 = new JPanel(new GridLayout(5, 2, 45, 8));
+		JPanel subpane2 = new JPanel(new GridLayout(4, 2, 45, 8));
 		subpane2.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -151,10 +151,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.label("elementgui.common.creative_tab")));
 		subpane2.add(creativeTab);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-				L10N.label("elementgui.music_disc.has_glowing_effect")));
-		subpane2.add(hasGlow);
-
 		JPanel specialInformations = new JPanel(new GridLayout(4, 2, 15, 15));
 		specialInformations.setOpaque(false);
 
@@ -172,6 +168,10 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 						L10N.label("elementgui.common.description_on_command")), onCommandOnly));
 		specialInformations.add(onCommandInfo);
 
+		specialInformations.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+				L10N.label("elementgui.music_disc.has_glowing_effect")));
+		specialInformations.add(hasGlow);
+
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
 		destal3.setOpaque(false);
 		destal3.add("West", PanelUtils.totalCenterInPanel(
@@ -183,7 +183,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				PanelUtils.northAndCenterElement(PanelUtils.centerInPanel(destal3), subpane3, 40, 40)));
 		pane3.setOpaque(false);
 
-		hasGlow.addActionListener(e -> updateGlowElements());
 		onShiftOnly.addActionListener(e -> updateShiftInfo());
 		onCommandOnly.addActionListener(e -> updateCommandInfo());
 
@@ -227,10 +226,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
-	}
-
-	private void updateGlowElements() {
-		hasGlow.setEnabled(hasGlow.isSelected());
 	}
 
 	private void updateShiftInfo() { onShiftInfo.setEnabled(onShiftOnly.isSelected());}
@@ -291,7 +286,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onCommandOnly.setSelected(musicDisc.onCommandOnly);
 		music.setSound(musicDisc.music);
 
-		updateGlowElements();
 		updateShiftInfo();
 		updateCommandInfo();
 	}
