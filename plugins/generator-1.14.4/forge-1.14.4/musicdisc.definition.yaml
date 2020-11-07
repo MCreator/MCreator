@@ -10,3 +10,12 @@ localizationkeys:
     mapto: name
   - key: item.@modid.@registryname.desc
     mapto: description
+  - key: item.@modid.@registryname.tooltip
+    condition: musicInfoOnly
+    mapto: specialInfo
+  - key: item.@modid.@registryname.shift.tooltip
+    condition: musicShiftOnly
+    mapto: onShiftInfo
+  - key: item.@modid.@registryname.command.tooltip
+    condition: musicCommandOnly
+    mapto: onCommandInfo

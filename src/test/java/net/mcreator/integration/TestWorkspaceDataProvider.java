@@ -1257,11 +1257,19 @@ public class TestWorkspaceDataProvider {
 			musicDisc.onEntitySwing = new Procedure("procedure8");
 			musicDisc.music = new Sound(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			musicDisc.onShiftOnly = _true;
+			musicDisc.onCommandOnly = _true;
+			musicDisc.onShiftInfo = new ArrayList<>();
+			musicDisc.onCommandInfo = new ArrayList<>();
+			musicDisc.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				musicDisc.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				musicDisc.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				musicDisc.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				musicDisc.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				musicDisc.specialInfo = new ArrayList<>();
+				musicDisc.onShiftInfo = new ArrayList<>();
+				musicDisc.onCommandInfo = new ArrayList<>();
 			}
 			musicDisc.texture = "itest";
 			return musicDisc;

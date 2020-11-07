@@ -55,9 +55,13 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 	private TextureHolder texture;
 
 	private final JTextField specialInfo = new JTextField(20);
+	private final JTextField onShiftInfo = new JTextField(20);
+	private final JTextField onCommandInfo = new JTextField(20);
 	private final VTextField name = new VTextField(20);
 	private final VTextField description = new VTextField(20);
 
+	private final JCheckBox onShiftOnly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox onCommandOnly = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
@@ -110,15 +114,23 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		texture = new TextureHolder(new GeneralTextureSelector(mcreator, GeneralTextureSelector.TextureType.ITEM));
 
 		texture.setOpaque(false);
+		onShiftOnly.setOpaque(false);
+		onShiftOnly.setEnabled(true);
+		onShiftOnly.setSelected(false);
+		onCommandOnly.setOpaque(false);
+		onCommandOnly.setEnabled(true);
+		onCommandOnly.setSelected(false);
 		hasGlow.setOpaque(false);
 
 		JPanel pane3 = new JPanel(new BorderLayout());
 
 		ComponentUtils.deriveFont(specialInfo, 16);
+		ComponentUtils.deriveFont(onShiftInfo, 16);
+		ComponentUtils.deriveFont(onCommandInfo, 16);
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(description, 16);
 
-		JPanel subpane2 = new JPanel(new GridLayout(6, 2, 45, 8));
+		JPanel subpane2 = new JPanel(new GridLayout(5, 2, 45, 8));
 		subpane2.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -127,8 +139,8 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.label("elementgui.music_disc.music_mono_tip")));
 		subpane2.add(music);
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				L10N.label("elementgui.common.name_in_gui")));
 		subpane2.add(name);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/description"),
@@ -143,18 +155,37 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.label("elementgui.music_disc.has_glowing_effect")));
 		subpane2.add(hasGlow);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+		JPanel specialInformations = new JPanel(new GridLayout(4, 2, 15, 15));
+		specialInformations.setOpaque(false);
+
+		specialInformations.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
 				L10N.label("elementgui.music_disc.disc_description_tip")));
-		subpane2.add(specialInfo);
+		specialInformations.add(specialInfo);
+
+		specialInformations.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_shift"),
+						L10N.label("elementgui.common.description_on_shift")), onShiftOnly));
+		specialInformations.add(onShiftInfo);
+
+		specialInformations.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_command"),
+						L10N.label("elementgui.common.description_on_command")), onCommandOnly));
+		specialInformations.add(onCommandInfo);
 
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
 		destal3.setOpaque(false);
 		destal3.add("West", PanelUtils.totalCenterInPanel(
 				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.music_disc.disc_texture"))));
 
+		JComponent subpane3 = PanelUtils.centerAndSouthElement(subpane2, specialInformations, 10, 10);
+
 		pane3.add(PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(PanelUtils.centerInPanel(destal3), subpane2, 40, 40)));
+				PanelUtils.northAndCenterElement(PanelUtils.centerInPanel(destal3), subpane3, 40, 40)));
 		pane3.setOpaque(false);
+
+		hasGlow.addActionListener(e -> updateGlowElements());
+		onShiftOnly.addActionListener(e -> updateShiftInfo());
+		onCommandOnly.addActionListener(e -> updateCommandInfo());
 
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
@@ -198,6 +229,14 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		}
 	}
 
+	private void updateGlowElements() {
+		hasGlow.setEnabled(hasGlow.isSelected());
+	}
+
+	private void updateShiftInfo() { onShiftInfo.setEnabled(onShiftOnly.isSelected());}
+
+	private void updateCommandInfo() { onCommandInfo.setEnabled(onCommandOnly.isSelected());}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onRightClickedInAir.refreshListKeepSelected();
@@ -223,8 +262,21 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		name.setText(musicDisc.name);
 		description.setText(musicDisc.description);
 		texture.setTextureFromTextureName(musicDisc.texture);
-		specialInfo.setText(
-				musicDisc.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		specialInfo.setText(musicDisc.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		try {
+			if (MusicDisc.class.getField("onShiftInfo").get(musicDisc) != null) {
+				onShiftInfo.setText(musicDisc.onShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		try {
+			if (MusicDisc.class.getField("onCommandInfo").get(musicDisc) != null) {
+				onCommandInfo.setText(musicDisc.onCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 		onRightClickedInAir.setSelectedProcedure(musicDisc.onRightClickedInAir);
 		onRightClickedOnBlock.setSelectedProcedure(musicDisc.onRightClickedOnBlock);
 		onCrafted.setSelectedProcedure(musicDisc.onCrafted);
@@ -235,7 +287,13 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onEntitySwing.setSelectedProcedure(musicDisc.onEntitySwing);
 		creativeTab.setSelectedItem(musicDisc.creativeTab);
 		hasGlow.setSelected(musicDisc.hasGlow);
+		onShiftOnly.setSelected(musicDisc.onShiftOnly);
+		onCommandOnly.setSelected(musicDisc.onCommandOnly);
 		music.setSound(musicDisc.music);
+
+		updateGlowElements();
+		updateShiftInfo();
+		updateCommandInfo();
 	}
 
 	@Override public MusicDisc getElementFromGUI() {
@@ -244,6 +302,8 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		musicDisc.description = description.getText();
 		musicDisc.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		musicDisc.hasGlow = hasGlow.isSelected();
+		musicDisc.onShiftOnly = onShiftOnly.isSelected();
+		musicDisc.onCommandOnly = onCommandOnly.isSelected();
 		musicDisc.onRightClickedInAir = onRightClickedInAir.getSelectedProcedure();
 		musicDisc.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();
 		musicDisc.onCrafted = onCrafted.getSelectedProcedure();
@@ -253,6 +313,8 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		musicDisc.onStoppedUsing = onStoppedUsing.getSelectedProcedure();
 		musicDisc.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		musicDisc.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
+		musicDisc.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onShiftInfo.getText());
+		musicDisc.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onCommandInfo.getText());
 		musicDisc.texture = texture.getID();
 		musicDisc.music = music.getSound();
 		return musicDisc;
