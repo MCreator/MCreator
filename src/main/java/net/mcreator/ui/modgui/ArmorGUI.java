@@ -298,7 +298,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		helmetModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"), PanelUtils
 				.northAndCenterElement(PanelUtils
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), helmetModel,
-								new JLabel(":"), helmetModelPart, new JLabel("elementgui.armor.texture"),
+								new JLabel(":"), helmetModelPart, L10N.label("elementgui.armor.texture"),
 								helmetModelTexture), PanelUtils
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), helmetSpecialInfo)));
 		helmetModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);

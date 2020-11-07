@@ -7,6 +7,7 @@
 			Entity entityToSpawn = new ${entity}(${entity.toString().replace(".CustomEntity", "")}.entity, world.getWorld());
     </#if>
 		entityToSpawn.setLocationAndAngles(${input$x}, ${input$y}, ${input$z}, (float) ${input$yaw}, (float) ${input$pitch});
+		entityToSpawn.setRenderYawOffset((float) ${input$yaw});
 
 		if (entityToSpawn instanceof MobEntity)
 			((MobEntity)entityToSpawn).onInitialSpawn(world,world.getDifficultyForLocation(new BlockPos(entityToSpawn)), SpawnReason.MOB_SUMMONED, (ILivingEntityData) null, (CompoundNBT) null);
