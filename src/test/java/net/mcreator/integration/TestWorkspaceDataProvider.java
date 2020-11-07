@@ -373,12 +373,19 @@ public class TestWorkspaceDataProvider {
 			Food food = new Food(modElement);
 			food.name = modElement.getName();
 			food.rarity = ListUtils.getRandomItem(Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+			food.onShiftOnly = _true;
+			food.onCommandOnly = _true;
+			food.onShiftInfo = new ArrayList<>();
+			food.onCommandInfo = new ArrayList<>();
 			food.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				food.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				food.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				food.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				food.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				food.specialInfo = new ArrayList<>();
+				food.onShiftInfo = new ArrayList<>();
+				food.onCommandInfo = new ArrayList<>();
 			}
 			food.texture = "test";
 			food.creativeTab = new TabEntry(modElement.getWorkspace(),

@@ -207,8 +207,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 		hasGlow.setOpaque(false);
 		hasGlow.setSelected(false);
 
+		onShiftOnly.setEnabled(true);
 		onShiftOnly.setOpaque(false);
+		onShiftOnly.setSelected(false);
+		onCommandOnly.setEnabled(true);
 		onCommandOnly.setOpaque(false);
+		onCommandOnly.setSelected(false);
 
 		hasGlow.addActionListener(e -> updateGlowElements());
 		onShiftOnly.addActionListener(e -> updateShiftInfo());
