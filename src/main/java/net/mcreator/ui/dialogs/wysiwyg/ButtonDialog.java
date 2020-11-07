@@ -21,7 +21,6 @@ package net.mcreator.ui.dialogs.wysiwyg;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.ProcedureSelector;
@@ -31,10 +30,10 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class ButtonDialog extends MCreatorDialog {
+public class ButtonDialog extends AbstractWYSIWYGDialog {
 
 	public ButtonDialog(WYSIWYGEditor editor, @Nullable Button button) {
-		super(editor.mcreator);
+		super(editor.mcreator, button);
 		setModal(true);
 		setSize(480, 200);
 		setLocationRelativeTo(editor.mcreator);
@@ -44,11 +43,9 @@ public class ButtonDialog extends MCreatorDialog {
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
 		if (button == null)
-			add("North", PanelUtils.centerInPanel(
-					L10N.label("dialog.gui.button_change_width")));
+			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_change_width")));
 		else
-			add("North", PanelUtils.centerInPanel(
-					L10N.label("dialog.gui.button_resize")));
+			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_resize")));
 
 		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), nameField));
 
@@ -89,6 +86,7 @@ public class ButtonDialog extends MCreatorDialog {
 					Button buttonNew = new Button(text, button.getX(), button.getY(), text, button.width, button.height,
 							eh.getSelectedProcedure());
 					editor.components.add(idx, buttonNew);
+					setEditingComponent(buttonNew);
 				}
 			}
 		});
