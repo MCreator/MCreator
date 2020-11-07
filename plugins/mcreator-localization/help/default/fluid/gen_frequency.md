@@ -1,0 +1,1 @@
+This parameter defines how many lakes of this fluid should be generated per chunk.

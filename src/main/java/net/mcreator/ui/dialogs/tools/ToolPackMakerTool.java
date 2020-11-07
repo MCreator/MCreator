@@ -308,7 +308,7 @@ public class ToolPackMakerTool {
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
-		return new BasicAction(actionRegistry, "Create tool pack...", e -> open(actionRegistry.getMCreator())) {
+		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.tool"), e -> open(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getWorkspace().getGenerator()
 						.getGeneratorConfiguration();

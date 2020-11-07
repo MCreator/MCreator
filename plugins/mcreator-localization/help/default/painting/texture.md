@@ -1,0 +1,1 @@
+Select a texture that should be used as a foreground of this painting.

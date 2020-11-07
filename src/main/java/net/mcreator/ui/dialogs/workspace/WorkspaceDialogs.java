@@ -86,7 +86,8 @@ public class WorkspaceDialogs {
 		});
 
 		workspaceDialog.getRootPane().setDefaultButton(ok);
-		workspaceDialog.setSize(590, 620);
+		workspaceDialog.pack();
+		workspaceDialog.setSize(workspaceDialog.getBounds().width, 620);
 		workspaceDialog.setLocationRelativeTo(mcreator);
 		workspaceDialog.setVisible(true);
 
