@@ -85,7 +85,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 	private ProcedureSelector glowCondition;
 
 	private final JComboBox<String> animation = new JComboBox<>(
-			new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
+			new String[] { "eat", "drink", "block", "bow", "crossbow", "none", "spear" });
 
 	private final MCItemHolder resultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
