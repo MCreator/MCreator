@@ -32,7 +32,7 @@ import net.mcreator.ui.action.impl.workspace.resources.ModelImportActions;
 import net.mcreator.ui.action.impl.workspace.resources.StructureImportActions;
 import net.mcreator.ui.action.impl.workspace.resources.TextureAction;
 import net.mcreator.ui.browser.action.*;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
@@ -125,6 +125,8 @@ public class ActionRegistry {
 	public final BasicAction importBlockTexture;
 	public final BasicAction importItemTexture;
 	public final BasicAction importArmorTexture;
+	public final BasicAction importEntityTexture;
+	public final BasicAction importPaintingTexture;
 	public final BasicAction importOtherTexture;
 	public final BasicAction importSound;
 	public final BasicAction importStructure;
@@ -235,19 +237,23 @@ public class ActionRegistry {
 		this.createAnimatedTexture = new TextureAction(this, L10N.t("action.create_animated_texture"),
 				actionEvent -> new AnimationMakerView(mcreator).showView()).setIcon(UIRES.get("16px.newanimation"));
 		this.importBlockTexture = new TextureAction(this, L10N.t("action.import_block_texture"),
-				actionEvent -> TextureImportDialogs
-						.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.BLOCK))
+				actionEvent -> TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.BLOCK))
 				.setIcon(UIRES.get("16px.importblock"));
 		this.importItemTexture = new TextureAction(this, L10N.t("action.import_item_texture"),
-				actionEvent -> TextureImportDialogs
-						.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.ITEM))
+				actionEvent -> TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.ITEM))
 				.setIcon(UIRES.get("16px.importitem"));
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
 			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
 		});
+		this.importEntityTexture = new TextureAction(this, L10N.t("action.import_entity_texture"),
+				actionEvent -> TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.ENTITY))
+				.setIcon(UIRES.get("16px.importentity"));
+		this.importPaintingTexture = new TextureAction(this, L10N.t("action.import_painting_texture"),
+				actionEvent -> TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.PAINTING))
+				.setIcon(UIRES.get("16px.importentity"));
 		this.importOtherTexture = new TextureAction(this, L10N.t("action.import_other_texture"),
-				actionEvent -> TextureImportDialogs.importOtherTextures(mcreator))
+				actionEvent -> TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.OTHER))
 				.setIcon(UIRES.get("16px.importtexture"));
 		this.importSound = new ImportSoundAction(this);
 		this.importStructure = new StructureImportActions.ImportStructure(this)

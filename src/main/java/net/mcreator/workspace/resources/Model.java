@@ -30,6 +30,7 @@ public class Model {
 	File[] file;
 	String readableName;
 	Type type;
+	String directory;
 
 	public Model(File file) {
 		if (file == null || !file.isFile() || !file.getName().contains("."))
@@ -87,6 +88,10 @@ public class Model {
 
 	public Type getType() {
 		return type;
+	}
+
+	public String getDirectory() {
+		return directory;
 	}
 
 	@Override public boolean equals(Object obj) {
