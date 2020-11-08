@@ -906,6 +906,9 @@ public class TestWorkspaceDataProvider {
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
+			item.hasDispenseBehavior = _true;
+			item.dispenseSuccessCondition = !_true ? null : new Procedure("condition1");
+			item.dispenseResultItemstack = !_true ? null : new Procedure("itemstack1");
 			item.onShiftOnly = _true;
 			item.onCommandOnly = _true;
 			item.onShiftInfo = new ArrayList<>();
