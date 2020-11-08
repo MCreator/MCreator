@@ -934,12 +934,19 @@ public class TestWorkspaceDataProvider {
 			rangedItem.ammoItem = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
 							.getName());
+			rangedItem.onShiftOnly = _true;
+			rangedItem.onCommandOnly = _true;
+			rangedItem.onShiftInfo = new ArrayList<>();
+			rangedItem.onCommandInfo = new ArrayList<>();
 			rangedItem.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				rangedItem.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				rangedItem.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				rangedItem.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				rangedItem.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				rangedItem.specialInfo = new ArrayList<>();
+				rangedItem.onShiftInfo = new ArrayList<>();
+				rangedItem.onCommandInfo = new ArrayList<>();
 			}
 			rangedItem.animation = ListUtils.getRandomItem(random,
 					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
@@ -1363,12 +1370,19 @@ public class TestWorkspaceDataProvider {
 		tool.damageOnCrafting = _true;
 		tool.blocksAffected = new ArrayList<>();
 		tool.hasGlow = _true;
+		tool.onShiftOnly = _true;
+		tool.onCommandOnly = _true;
+		tool.onShiftInfo = new ArrayList<>();
+		tool.onCommandInfo = new ArrayList<>();
 		tool.specialInfo = new ArrayList<>();
 		if (!emptyLists) {
-			tool.specialInfo = StringUtils
-					.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+			tool.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+			tool.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+			tool.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 		} else {
 			tool.specialInfo = new ArrayList<>();
+			tool.onShiftInfo = new ArrayList<>();
+			tool.onCommandInfo = new ArrayList<>();
 		}
 		if (!emptyLists) {
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
