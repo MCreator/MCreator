@@ -143,6 +143,34 @@ public class TestWorkspaceDataProvider {
 
 		}
 
+		if (workspace.getFolderManager().getEntitiesTexturesDir() != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("test"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("test2"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("test3"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("test4"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getEntityTextureFile("etest"));
+
+		}
+
+		if (workspace.getFolderManager().getPaintingsTexturesDir() != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("test"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("test2"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("test3"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("test4"));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getPaintingTextureFile("ptest"));
+
+		}
+
 		if (workspace.getFolderManager().getOtherTexturesDir() != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getOtherTextureFile("test"));
@@ -345,12 +373,19 @@ public class TestWorkspaceDataProvider {
 			Food food = new Food(modElement);
 			food.name = modElement.getName();
 			food.rarity = ListUtils.getRandomItem(Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+			food.onShiftOnly = _true;
+			food.onCommandOnly = _true;
+			food.onShiftInfo = new ArrayList<>();
+			food.onCommandInfo = new ArrayList<>();
 			food.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				food.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				food.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				food.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				food.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				food.specialInfo = new ArrayList<>();
+				food.onShiftInfo = new ArrayList<>();
+				food.onCommandInfo = new ArrayList<>();
 			}
 			food.texture = "test";
 			food.creativeTab = new TabEntry(modElement.getWorkspace(),
@@ -871,11 +906,21 @@ public class TestWorkspaceDataProvider {
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
+			item.hasDispenseBehavior = _true;
+			item.dispenseSuccessCondition = !_true ? null : new Procedure("condition1");
+			item.dispenseResultItemstack = !_true ? null : new Procedure("itemstack1");
+			item.onShiftOnly = _true;
+			item.onCommandOnly = _true;
+			item.onShiftInfo = new ArrayList<>();
+			item.onCommandInfo = new ArrayList<>();
 			if (!emptyLists) {
-				item.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				item.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				item.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				item.specialInfo = new ArrayList<>();
+				item.onShiftInfo = new ArrayList<>();
+				item.onCommandInfo = new ArrayList<>();
 			}
 			item.texture = "test2";
 			item.renderType = 0;
@@ -1093,12 +1138,22 @@ public class TestWorkspaceDataProvider {
 			block.textureFront = "test4";
 			block.textureRight = "test5";
 			block.textureBack = "test6";
+			block.onShiftOnly = _true;
+			block.onCommandOnly = _true;
 			block.specialInfo = new ArrayList<>();
+			block.onShiftInfo = new ArrayList<>();
+			block.onCommandInfo = new ArrayList<>();
 			if (!emptyLists) {
 				block.specialInfo = StringUtils
 						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				block.onShiftInfo = StringUtils
+						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				block.onCommandInfo = StringUtils
+						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				block.specialInfo = new ArrayList<>();
+				block.onShiftInfo = new ArrayList<>();
+				block.onCommandInfo = new ArrayList<>();
 			}
 			block.renderType = new int[] { 10, 11, 12, 11 }[valueIndex];
 			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",
@@ -1205,11 +1260,19 @@ public class TestWorkspaceDataProvider {
 			musicDisc.onEntitySwing = new Procedure("procedure8");
 			musicDisc.music = new Sound(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			musicDisc.onShiftOnly = _true;
+			musicDisc.onCommandOnly = _true;
+			musicDisc.onShiftInfo = new ArrayList<>();
+			musicDisc.onCommandInfo = new ArrayList<>();
+			musicDisc.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				musicDisc.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				musicDisc.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				musicDisc.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				musicDisc.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				musicDisc.specialInfo = new ArrayList<>();
+				musicDisc.onShiftInfo = new ArrayList<>();
+				musicDisc.onCommandInfo = new ArrayList<>();
 			}
 			musicDisc.texture = "itest";
 			return musicDisc;
