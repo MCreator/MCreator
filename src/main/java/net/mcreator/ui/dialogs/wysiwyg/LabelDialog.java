@@ -22,7 +22,6 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.ProcedureSelector;
@@ -35,10 +34,10 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class LabelDialog extends MCreatorDialog {
+public class LabelDialog extends AbstractWYSIWYGDialog {
 
 	public LabelDialog(WYSIWYGEditor editor, @Nullable Label label) {
-		super(editor.mcreator);
+		super(editor.mcreator, label);
 		setSize(560, 180);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
@@ -55,8 +54,9 @@ public class LabelDialog extends MCreatorDialog {
 		}
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
-				IHelpContext.NONE.withEntry("gui/label_display_condition"), editor.mcreator, L10N.t("dialog.gui.label_event_display_condition"),
-				ProcedureSelector.Side.CLIENT, false, VariableElementType.LOGIC,
+				IHelpContext.NONE.withEntry("gui/label_display_condition"), editor.mcreator,
+				L10N.t("dialog.gui.label_event_display_condition"), ProcedureSelector.Side.CLIENT, false,
+				VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
 
@@ -98,16 +98,17 @@ public class LabelDialog extends MCreatorDialog {
 				if (label == null) {
 					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
 					editor.editor.setPositioningMode(textwidth, 16);
-					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(
+					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
 							new Label(text, editor.editor.newlyAddedComponentPosX,
 									editor.editor.newlyAddedComponentPosY, text, cola.getColor(),
-									displayCondition.getSelectedProcedure())));
+									displayCondition.getSelectedProcedure()))));
 				} else {
 					int idx = editor.components.indexOf(label);
 					editor.components.remove(label);
 					Label labelNew = new Label(text, label.getX(), label.getY(), text, cola.getColor(),
 							displayCondition.getSelectedProcedure());
 					editor.components.add(idx, labelNew);
+					setEditingComponent(labelNew);
 				}
 			}
 		});
