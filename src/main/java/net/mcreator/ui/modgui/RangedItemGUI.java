@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.RangedItem;
+import net.mcreator.element.types.Tool;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -77,7 +78,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	private ProcedureSelector glowCondition;
 
 	private final JComboBox<String> animation = new JComboBox<>(
-			new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
+			new String[] { "bow", "block", "crossbow", "drink", "eat", "none", "spear" });
 
 	private ProcedureSelector onBulletHitsBlock;
 	private ProcedureSelector onBulletHitsPlayer;
@@ -89,6 +90,11 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	private final SoundSelector shootSound = new SoundSelector(mcreator);
 
 	private final JTextField specialInfo = new JTextField(20);
+	private final JTextField onShiftInfo = new JTextField(20);
+	private final JTextField onCommandInfo = new JTextField(20);
+
+	private final JCheckBox onShiftOnly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox onCommandOnly = L10N.checkbox("elementgui.common.enable");
 
 	private MCItemHolder ammoItem;
 	private MCItemHolder bulletItemTexture;
@@ -162,6 +168,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		bulletModel.setRenderer(new ModelComboBoxRenderer());
 		ComponentUtils.deriveFont(bulletModel, 16);
 		ComponentUtils.deriveFont(specialInfo, 16);
+		ComponentUtils.deriveFont(onShiftInfo, 16);
+		ComponentUtils.deriveFont(onCommandInfo, 16);
 
 		JPanel pane1 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
@@ -171,6 +179,12 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		hasGlow.setOpaque(false);
 		hasGlow.setSelected(false);
+		onShiftOnly.setOpaque(false);
+		onShiftOnly.setEnabled(true);
+		onShiftOnly.setSelected(false);
+		onCommandOnly.setOpaque(false);
+		onCommandOnly.setEnabled(true);
+		onCommandOnly.setSelected(false);
 
 		animation.setRenderer(new ItemTexturesComboBoxRenderer());
 
@@ -192,7 +206,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
-		JPanel selp = new JPanel(new GridLayout(11, 2, 5, 2));
+		JPanel selp = new JPanel(new GridLayout(13, 2, 5, 2));
 		selp.setOpaque(false);
 
 		JPanel selp2 = new JPanel(new GridLayout(8, 2, 10, 2));
@@ -205,23 +219,35 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		shootConstantly.setOpaque(false);
 
-		selp.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
+				L10N.label("elementgui.common.item_model")));
 		selp.add(renderType);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
 				L10N.label("elementgui.ranged_item.special_informations")));
 		selp.add(specialInfo);
 
+		selp.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_shift"),
+						L10N.label("elementgui.common.description_on_shift")), onShiftOnly));
+		selp.add(onShiftInfo);
+
+		selp.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_command"),
+						L10N.label("elementgui.common.description_on_command")), onCommandOnly));
+		selp.add(onCommandInfo);
+
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.common.creative_tab")));
 		selp.add(creativeTab);
 
 		hasGlow.addActionListener(e -> updateGlowElements());
+		onShiftOnly.addActionListener(e -> updateShiftInfo());
+		onCommandOnly.addActionListener(e -> updateCommandInfo());
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
 				L10N.label("elementgui.ranged_item.item_animation")));
@@ -367,6 +393,10 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		glowCondition.setEnabled(hasGlow.isSelected());
 	}
 
+	private void updateShiftInfo() { onShiftInfo.setEnabled(onShiftOnly.isSelected());}
+
+	private void updateCommandInfo() { onCommandInfo.setEnabled(onCommandOnly.isSelected());}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onBulletHitsBlock.refreshListKeepSelected();
@@ -428,17 +458,34 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		onEntitySwing.setSelectedProcedure(rangedItem.onEntitySwing);
 		onRangedItemUsed.setSelectedProcedure(rangedItem.onRangedItemUsed);
 		hasGlow.setSelected(rangedItem.hasGlow);
+		onShiftOnly.setSelected(rangedItem.onShiftOnly);
+		onCommandOnly.setSelected(rangedItem.onCommandOnly);
 		glowCondition.setSelectedProcedure(rangedItem.glowCondition);
 		animation.setSelectedItem(rangedItem.animation);
 		damageVsEntity.setValue(rangedItem.damageVsEntity);
 		enableMeleeDamage.setSelected(rangedItem.enableMeleeDamage);
-		specialInfo.setText(
-				rangedItem.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		specialInfo.setText(rangedItem.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		try {
+			if (RangedItem.class.getField("onShiftInfo").get(rangedItem) != null) {
+				onShiftInfo.setText(rangedItem.onShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		try {
+			if (RangedItem.class.getField("onCommandInfo").get(rangedItem) != null) {
+				onCommandInfo.setText(rangedItem.onCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 
 		customBulletModelTexture.setSelectedItem(rangedItem.customBulletModelTexture);
 		useCondition.setSelectedProcedure(rangedItem.useCondition);
 
 		updateGlowElements();
+		updateShiftInfo();
+		updateCommandInfo();
 
 		Model model = rangedItem.getEntityModel();
 		if (model != null && model.getType() != null && model.getReadableName() != null)
@@ -471,6 +518,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		rangedItem.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		rangedItem.stackSize = (int) stackSize.getValue();
 		rangedItem.hasGlow = hasGlow.isSelected();
+		rangedItem.onShiftOnly = onShiftOnly.isSelected();
+		rangedItem.onCommandOnly = onCommandOnly.isSelected();
 		rangedItem.glowCondition = glowCondition.getSelectedProcedure();
 		rangedItem.animation = (String) animation.getSelectedItem();
 		rangedItem.damageVsEntity = (double) damageVsEntity.getValue();
@@ -478,6 +527,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		rangedItem.bulletModel = (Objects.requireNonNull(bulletModel.getSelectedItem())).getReadableName();
 		rangedItem.customBulletModelTexture = customBulletModelTexture.getSelectedItem();
 		rangedItem.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
+		rangedItem.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onShiftInfo.getText());
+		rangedItem.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onCommandInfo.getText());
 		rangedItem.useCondition = useCondition.getSelectedProcedure();
 
 		rangedItem.texture = texture.getID();

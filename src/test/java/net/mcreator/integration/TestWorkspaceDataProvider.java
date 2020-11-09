@@ -373,12 +373,19 @@ public class TestWorkspaceDataProvider {
 			Food food = new Food(modElement);
 			food.name = modElement.getName();
 			food.rarity = ListUtils.getRandomItem(Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+			food.onShiftOnly = _true;
+			food.onCommandOnly = _true;
+			food.onShiftInfo = new ArrayList<>();
+			food.onCommandInfo = new ArrayList<>();
 			food.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				food.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				food.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				food.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				food.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				food.specialInfo = new ArrayList<>();
+				food.onShiftInfo = new ArrayList<>();
+				food.onCommandInfo = new ArrayList<>();
 			}
 			food.texture = "test";
 			food.creativeTab = new TabEntry(modElement.getWorkspace(),
@@ -742,20 +749,40 @@ public class TestWorkspaceDataProvider {
 			armor.enableBoots = !_true;
 			armor.textureBoots = "test4";
 			armor.bootsModelTexture = emptyLists ? "From armor" : "test.png";
+			armor.helmetShiftOnly = _true;
+			armor.bodyShiftOnly = _true;
+			armor.leggingsShiftOnly = _true;
+			armor.bootsShiftOnly = _true;
+			armor.helmetCommandOnly = _true;
+			armor.bodyCommandOnly = _true;
+			armor.leggingsCommandOnly = _true;
+			armor.bootsCommandOnly = _true;
 			if (!emptyLists) {
-				armor.helmetSpecialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
-				armor.bodySpecialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
-				armor.leggingsSpecialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
-				armor.bootsSpecialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.helmetSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.bodySpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.leggingsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.bootsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.helmetShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.bodyShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.leggingsShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.bootsShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.helmetCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.bodyCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.leggingsCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.bootsCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				armor.helmetSpecialInfo = new ArrayList<>();
 				armor.bodySpecialInfo = new ArrayList<>();
 				armor.leggingsSpecialInfo = new ArrayList<>();
 				armor.bootsSpecialInfo = new ArrayList<>();
+				armor.helmetShiftInfo = new ArrayList<>();
+				armor.bodyShiftInfo = new ArrayList<>();
+				armor.leggingsShiftInfo = new ArrayList<>();
+				armor.bootsShiftInfo = new ArrayList<>();
+				armor.helmetCommandInfo = new ArrayList<>();
+				armor.bodyCommandInfo = new ArrayList<>();
+				armor.leggingsCommandInfo = new ArrayList<>();
+				armor.bootsCommandInfo = new ArrayList<>();
 			}
 			armor.equipSound = new Sound(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
@@ -819,12 +846,19 @@ public class TestWorkspaceDataProvider {
 			plant.isReplaceable = !_true;
 			plant.forceTicking = !_true;
 			plant.hasTileEntity = !_true;
+			plant.onShiftOnly = _true;
+			plant.onCommandOnly = _true;
+			plant.onShiftInfo = new ArrayList<>();
+			plant.onCommandInfo = new ArrayList<>();
 			plant.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				plant.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				plant.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				plant.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				plant.specialInfo = new ArrayList<>();
+				plant.onShiftInfo = new ArrayList<>();
+				plant.onCommandInfo = new ArrayList<>();
 			}
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
@@ -899,11 +933,21 @@ public class TestWorkspaceDataProvider {
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
+			item.hasDispenseBehavior = _true;
+			item.dispenseSuccessCondition = !_true ? null : new Procedure("condition1");
+			item.dispenseResultItemstack = !_true ? null : new Procedure("itemstack1");
+			item.onShiftOnly = _true;
+			item.onCommandOnly = _true;
+			item.onShiftInfo = new ArrayList<>();
+			item.onCommandInfo = new ArrayList<>();
 			if (!emptyLists) {
-				item.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				item.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				item.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				item.specialInfo = new ArrayList<>();
+				item.onShiftInfo = new ArrayList<>();
+				item.onCommandInfo = new ArrayList<>();
 			}
 			item.texture = "test2";
 			item.renderType = 0;
@@ -917,12 +961,19 @@ public class TestWorkspaceDataProvider {
 			rangedItem.ammoItem = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
 							.getName());
+			rangedItem.onShiftOnly = _true;
+			rangedItem.onCommandOnly = _true;
+			rangedItem.onShiftInfo = new ArrayList<>();
+			rangedItem.onCommandInfo = new ArrayList<>();
 			rangedItem.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				rangedItem.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				rangedItem.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				rangedItem.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				rangedItem.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				rangedItem.specialInfo = new ArrayList<>();
+				rangedItem.onShiftInfo = new ArrayList<>();
+				rangedItem.onCommandInfo = new ArrayList<>();
 			}
 			rangedItem.animation = ListUtils.getRandomItem(random,
 					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
@@ -1121,12 +1172,22 @@ public class TestWorkspaceDataProvider {
 			block.textureFront = "test4";
 			block.textureRight = "test5";
 			block.textureBack = "test6";
+			block.onShiftOnly = _true;
+			block.onCommandOnly = _true;
 			block.specialInfo = new ArrayList<>();
+			block.onShiftInfo = new ArrayList<>();
+			block.onCommandInfo = new ArrayList<>();
 			if (!emptyLists) {
 				block.specialInfo = StringUtils
 						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				block.onShiftInfo = StringUtils
+						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				block.onCommandInfo = StringUtils
+						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				block.specialInfo = new ArrayList<>();
+				block.onShiftInfo = new ArrayList<>();
+				block.onCommandInfo = new ArrayList<>();
 			}
 			block.renderType = new int[] { 10, 11, 12, 11 }[valueIndex];
 			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",
@@ -1233,11 +1294,19 @@ public class TestWorkspaceDataProvider {
 			musicDisc.onEntitySwing = new Procedure("procedure8");
 			musicDisc.music = new Sound(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			musicDisc.onShiftOnly = _true;
+			musicDisc.onCommandOnly = _true;
+			musicDisc.onShiftInfo = new ArrayList<>();
+			musicDisc.onCommandInfo = new ArrayList<>();
+			musicDisc.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				musicDisc.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				musicDisc.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				musicDisc.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				musicDisc.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				musicDisc.specialInfo = new ArrayList<>();
+				musicDisc.onShiftInfo = new ArrayList<>();
+				musicDisc.onCommandInfo = new ArrayList<>();
 			}
 			musicDisc.texture = "itest";
 			return musicDisc;
@@ -1328,12 +1397,19 @@ public class TestWorkspaceDataProvider {
 		tool.damageOnCrafting = _true;
 		tool.blocksAffected = new ArrayList<>();
 		tool.hasGlow = _true;
+		tool.onShiftOnly = _true;
+		tool.onCommandOnly = _true;
+		tool.onShiftInfo = new ArrayList<>();
+		tool.onCommandInfo = new ArrayList<>();
 		tool.specialInfo = new ArrayList<>();
 		if (!emptyLists) {
-			tool.specialInfo = StringUtils
-					.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+			tool.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+			tool.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+			tool.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 		} else {
 			tool.specialInfo = new ArrayList<>();
+			tool.onShiftInfo = new ArrayList<>();
+			tool.onCommandInfo = new ArrayList<>();
 		}
 		if (!emptyLists) {
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),

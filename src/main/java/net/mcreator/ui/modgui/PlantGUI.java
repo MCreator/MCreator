@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.types.MusicDisc;
 import net.mcreator.element.types.Plant;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
@@ -85,6 +86,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final VTextField name = new VTextField(18);
 
 	private final JTextField specialInfo = new JTextField(20);
+	private final JTextField onShiftInfo = new JTextField(20);
+	private final JTextField onCommandInfo = new JTextField(20);
+
+	private final JCheckBox onShiftOnly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox onCommandOnly = L10N.checkbox("elementgui.common.enable");
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator);
 
@@ -183,6 +189,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
+		ComponentUtils.deriveFont(onShiftInfo, 16);
+		ComponentUtils.deriveFont(onCommandInfo, 16);
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
@@ -202,20 +210,44 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		particleTexture = new TextureHolder(new GeneralTextureSelector(mcreator, GeneralTextureSelector.TextureType.BLOCK), 32);
 		particleTexture.setOpaque(false);
 
-		JPanel infopanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+		JPanel infopanel = new JPanel(new GridLayout(5, 2, 15, 15));
 		infopanel.setOpaque(false);
-		infopanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+
+		infopanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.special_information_title"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		infopanel.add("South", PanelUtils.gridElements(3, 2, HelpUtils
-						.wrapWithHelpButton(this.withEntry("item/special_information"),
-								L10N.label("elementgui.plant.special_information_tip")), specialInfo, HelpUtils
-						.wrapWithHelpButton(this.withEntry("block/item_texture"), L10N.label("elementgui.plant.item_texture")),
-				PanelUtils.centerInPanel(itemTexture), HelpUtils
-						.wrapWithHelpButton(this.withEntry("block/particle_texture"),
-								L10N.label("elementgui.plant.particle_texture")),
-				PanelUtils.centerInPanel(particleTexture)));
+
+		infopanel.add("Center", HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				L10N.label("elementgui.plant.special_information_tip")));
+		infopanel.add(specialInfo);
+
+		infopanel.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_shift"),
+						L10N.label("elementgui.common.description_on_shift")), onShiftOnly));
+		infopanel.add(onShiftInfo);
+
+		infopanel.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_command"),
+						L10N.label("elementgui.common.description_on_command")), onCommandOnly));
+		infopanel.add(onCommandInfo);
+
+		infopanel.add("Center", HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
+				L10N.label("elementgui.plant.item_texture")));
+		infopanel.add("Center", PanelUtils.centerInPanel(itemTexture));
+
+		infopanel.add("Center", HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
+				L10N.label("elementgui.plant.particle_texture")));
+		infopanel.add("Center", PanelUtils.centerInPanel(particleTexture));
+
+		onShiftOnly.setOpaque(false);
+		onShiftOnly.setEnabled(true);
+		onShiftOnly.setSelected(false);
+		onCommandOnly.setOpaque(false);
+		onCommandOnly.setEnabled(true);
+		onCommandOnly.setSelected(false);
+
+		onShiftOnly.addActionListener(e -> updateShiftInfo());
+		onCommandOnly.addActionListener(e -> updateCommandInfo());
 
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
@@ -511,6 +543,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 	}
 
+	private void updateShiftInfo() { onShiftInfo.setEnabled(onShiftOnly.isSelected());}
+
+	private void updateCommandInfo() { onCommandInfo.setEnabled(onCommandOnly.isSelected());}
+
 	private void updateTextureOptions() {
 		texture.setVisible(false);
 		textureBottom.setVisible(false);
@@ -565,6 +601,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	@Override public void openInEditingMode(Plant plant) {
 		itemTexture.setTextureFromTextureName(plant.itemTexture);
 		particleTexture.setTextureFromTextureName(plant.particleTexture);
+		onShiftOnly.setSelected(plant.onShiftOnly);
+		onCommandOnly.setSelected(plant.onCommandOnly);
 		texture.setTextureFromTextureName(plant.texture);
 		textureBottom.setTextureFromTextureName(plant.textureBottom);
 		name.setText(plant.name);
@@ -601,8 +639,21 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		creativePickItem.setBlock(plant.creativePickItem);
 		flammability.setValue(plant.flammability);
 		fireSpreadSpeed.setValue(plant.fireSpreadSpeed);
-		specialInfo.setText(
-				plant.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		specialInfo.setText(plant.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		try {
+			if (Plant.class.getField("onShiftInfo").get(plant) != null) {
+				onShiftInfo.setText(plant.onShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		try {
+			if (Plant.class.getField("onCommandInfo").get(plant) != null) {
+				onCommandInfo.setText(plant.onCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 		generateCondition.setSelectedProcedure(plant.generateCondition);
 
 		Model model = plant.getItemModel();
@@ -648,6 +699,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			dbl.setIcon(TiledImageCache.plantDoubleNo);
 
 		updateTextureOptions();
+		updateShiftInfo();
+		updateCommandInfo();
 	}
 
 	@Override public Plant getElementFromGUI() {
@@ -669,6 +722,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.doublePlantGenerationType = (String) doublePlantGenerationType.getSelectedItem();
 		plant.growapableMaxHeight = (int) growapableMaxHeight.getValue();
 		plant.hardness = (double) hardness.getValue();
+		plant.onShiftOnly = onShiftOnly.isSelected();
+		plant.onCommandOnly = onCommandOnly.isSelected();
 		plant.resistance = (double) resistance.getValue();
 		plant.luminance = (double) luminance.getValue();
 		plant.unbreakable = unbreakable.isSelected();
@@ -699,6 +754,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.flammability = (int) flammability.getValue();
 		plant.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 		plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
+		plant.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onShiftInfo.getText());
+		plant.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onCommandInfo.getText());
 		plant.generateCondition = generateCondition.getSelectedProcedure();
 		plant.emissiveRendering = emissiveRendering.isSelected();
 

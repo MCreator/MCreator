@@ -104,6 +104,26 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final JTextField leggingsSpecialInfo = new JTextField(20);
 	private final JTextField bootsSpecialInfo = new JTextField(20);
 
+	private final JTextField helmetShiftInfo = new JTextField(20);
+	private final JTextField bodyShiftInfo = new JTextField(20);
+	private final JTextField leggingsShiftInfo = new JTextField(20);
+	private final JTextField bootsShiftInfo = new JTextField(20);
+
+	private final JTextField helmetCommandInfo = new JTextField(20);
+	private final JTextField bodyCommandInfo = new JTextField(20);
+	private final JTextField leggingsCommandInfo = new JTextField(20);
+	private final JTextField bootsCommandInfo = new JTextField(20);
+
+	private final JCheckBox helmetShiftOnly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox bodyShiftOnly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox leggingsShiftOnly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox bootsShiftOnly = L10N.checkbox("elementgui.common.enable");
+
+	private final JCheckBox helmetCommandOnly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox bodyCommandOnly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox leggingsCommandOnly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox bootsCommandOnly = L10N.checkbox("elementgui.common.enable");
+
 	private ActionListener helmetModelListener = null;
 	private ActionListener bodyModelListener = null;
 	private ActionListener leggingsModelListener = null;
@@ -265,6 +285,16 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		ComponentUtils.deriveFont(leggingsSpecialInfo, 16);
 		ComponentUtils.deriveFont(bootsSpecialInfo, 16);
 
+		ComponentUtils.deriveFont(helmetShiftInfo, 16);
+		ComponentUtils.deriveFont(bodyShiftInfo, 16);
+		ComponentUtils.deriveFont(leggingsShiftInfo, 16);
+		ComponentUtils.deriveFont(bootsShiftInfo, 16);
+
+		ComponentUtils.deriveFont(helmetCommandInfo, 16);
+		ComponentUtils.deriveFont(bodyCommandInfo, 16);
+		ComponentUtils.deriveFont(leggingsCommandInfo, 16);
+		ComponentUtils.deriveFont(bootsCommandInfo, 16);
+
 		ComponentUtils.deriveFont(armorTextureFile, 16);
 
 		JPanel destal = new JPanel();
@@ -295,12 +325,59 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enableLeggings.setOpaque(false);
 		enableBoots.setOpaque(false);
 
-		helmetModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"), PanelUtils
-				.northAndCenterElement(PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), helmetModel,
-								new JLabel(":"), helmetModelPart, new JLabel("elementgui.armor.texture"),
-								helmetModelTexture), PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), helmetSpecialInfo)));
+		helmetShiftOnly.setOpaque(false);
+		bodyShiftOnly.setOpaque(false);
+		leggingsShiftOnly.setOpaque(false);
+		bootsShiftOnly.setOpaque(false);
+
+		helmetCommandOnly.setOpaque(false);
+		bodyCommandOnly.setOpaque(false);
+		leggingsCommandOnly.setOpaque(false);
+		bootsCommandOnly.setOpaque(false);
+
+		helmetShiftOnly.setSelected(false);
+		bodyShiftOnly.setSelected(false);
+		leggingsShiftOnly.setSelected(false);
+		bootsShiftOnly.setSelected(false);
+
+		helmetCommandOnly.setSelected(false);
+		bodyCommandOnly.setSelected(false);
+		leggingsCommandOnly.setSelected(false);
+		bootsCommandOnly.setSelected(false);
+
+		helmetShiftOnly.addActionListener(e -> updateHelmetShiftInfo());
+		bodyShiftOnly.addActionListener(e -> updateBodyShiftInfo());
+		leggingsShiftOnly.addActionListener(e -> updateLeggingsShiftInfo());
+		bootsShiftOnly.addActionListener(e -> updateBootsShiftInfo());
+
+		helmetCommandOnly.addActionListener(e -> updateHelmetCommandInfo());
+		bodyCommandOnly.addActionListener(e -> updateBodyCommandInfo());
+		leggingsCommandOnly.addActionListener(e -> updateLeggingsCommandInfo());
+		bootsCommandOnly.addActionListener(e -> updateBootsCommandInfo());
+
+		JPanel helmetInfos = new JPanel(new GridLayout(3, 2, 15, 15));
+		helmetInfos.setOpaque(false);
+
+		helmetInfos.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				L10N.label("elementgui.armor.special_information")));
+		helmetInfos.add(helmetSpecialInfo);
+
+		helmetInfos.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_shift"),
+						L10N.label("elementgui.common.description_on_shift")), helmetShiftOnly));
+		helmetInfos.add(helmetShiftInfo);
+
+		helmetInfos.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_command"),
+						L10N.label("elementgui.common.description_on_command")), helmetCommandOnly));
+		helmetInfos.add(helmetCommandInfo);
+
+		helmetModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"),
+				PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT,
+						L10N.label("elementgui.armor.supported_java"), helmetModel,
+						new JLabel(":"), helmetModelPart,
+						L10N.label("elementgui.armor.texture"), helmetModelTexture),
+						helmetInfos));
 		helmetModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		JComponent helText = PanelUtils
@@ -315,40 +392,73 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		destal.add(new JEmptyBox(10, 10));
 
-		JComponent bodText = PanelUtils
-				.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureBody, 0, 0), enableBody);
-		bodText.setBorder(BorderFactory
-				.createCompoundBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-						BorderFactory.createEmptyBorder(15, 17, 0, 17)));
+		JPanel bodyInfos = new JPanel(new GridLayout(3, 2, 15, 15));
+		bodyInfos.setOpaque(false);
 
-		bodyModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_body"), PanelUtils
-				.northAndCenterElement(PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bodyModel,
-								new JLabel(":"), bodyModelPart, new JLabel("arms L"), armsModelPartL,
-								new JLabel("arms R"), armsModelPartR, L10N.label("elementgui.armor.texture"),
-								bodyModelTexture), PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), bodySpecialInfo)));
+		bodyInfos.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				L10N.label("elementgui.armor.special_information")));
+		bodyInfos.add(bodySpecialInfo);
+
+		bodyInfos.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_shift"),
+						L10N.label("elementgui.common.description_on_shift")), bodyShiftOnly));
+		bodyInfos.add(bodyShiftInfo);
+
+		bodyInfos.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_command"),
+						L10N.label("elementgui.common.description_on_command")), bodyCommandOnly));
+		bodyInfos.add(bodyCommandInfo);
+
+		JComponent bodText = PanelUtils.centerAndSouthElement(
+				PanelUtils.centerInPanelPadding(textureBody, 0, 0), enableBody);
+		bodText.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
+				BorderFactory.createEmptyBorder(15, 17, 0, 17)));
+
+		bodyModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_body"),
+				PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT,
+						L10N.label("elementgui.armor.supported_java"), bodyModel,
+						new JLabel(":"), bodyModelPart, new JLabel("arms L"), armsModelPartL,
+						new JLabel("arms R"), armsModelPartR, L10N.label("elementgui.armor.texture"), bodyModelTexture),
+						bodyInfos));
 		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(bodText, PanelUtils.centerAndSouthElement(
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.body_name"), bodyName), bodyModelPanel),
-				5, 0));
+				PanelUtils.join(FlowLayout.LEFT,
+						L10N.label("elementgui.armor.body_name"), bodyName), bodyModelPanel), 5, 0));
 
 		destal.add(new JEmptyBox(10, 10));
 
-		JComponent legText = PanelUtils
-				.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureLeggings, 0, 0), enableLeggings);
-		legText.setBorder(BorderFactory
-				.createCompoundBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-						BorderFactory.createEmptyBorder(15, 8, 0, 8)));
+		JPanel leggingsInfos = new JPanel(new GridLayout(3, 2, 15, 15));
+		leggingsInfos.setOpaque(false);
 
-		leggingsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"), PanelUtils
-				.northAndCenterElement(PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), leggingsModel,
-								new JLabel(": L"), leggingsModelPartL, new JLabel("R"), leggingsModelPartR,
-								L10N.label("elementgui.armor.texture"), leggingsModelTexture), PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
-								leggingsSpecialInfo)));
+		leggingsInfos.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				L10N.label("elementgui.armor.special_information")));
+		leggingsInfos.add(leggingsSpecialInfo);
+
+		leggingsInfos.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_shift"),
+						L10N.label("elementgui.common.description_on_shift")), leggingsShiftOnly));
+		leggingsInfos.add(leggingsShiftInfo);
+
+		leggingsInfos.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_command"),
+						L10N.label("elementgui.common.description_on_command")), leggingsCommandOnly));
+		leggingsInfos.add(leggingsCommandInfo);
+
+		JComponent legText = PanelUtils.centerAndSouthElement(
+				PanelUtils.centerInPanelPadding(textureLeggings, 0, 0), enableLeggings);
+		legText.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
+				BorderFactory.createEmptyBorder(15, 8, 0, 8)));
+
+		leggingsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"),
+				PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT,
+						L10N.label("elementgui.armor.supported_java"), leggingsModel,
+						new JLabel(": L"), leggingsModelPartL,
+						new JLabel("R"), leggingsModelPartR,
+						L10N.label("elementgui.armor.texture"), leggingsModelTexture),
+						leggingsInfos));
 		leggingsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(legText, PanelUtils.centerAndSouthElement(
@@ -357,18 +467,35 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		destal.add(new JEmptyBox(10, 10));
 
-		JComponent bootText = PanelUtils
-				.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureBoots, 0, 0), enableBoots);
-		bootText.setBorder(BorderFactory
-				.createCompoundBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-						BorderFactory.createEmptyBorder(15, 16, 0, 15)));
+		JPanel bootsInfos = new JPanel(new GridLayout(3, 2, 15, 15));
+		bootsInfos.setOpaque(false);
 
-		bootsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"), PanelUtils
-				.northAndCenterElement(PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bootsModel,
-								new JLabel(": L"), bootsModelPartL, new JLabel("R"), bootsModelPartR,
-								L10N.label("elementgui.armor.texture"), bootsModelTexture), PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), bootsSpecialInfo)));
+		bootsInfos.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				L10N.label("elementgui.armor.special_information")));
+		bootsInfos.add(bootsSpecialInfo);
+
+		bootsInfos.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_shift"),
+						L10N.label("elementgui.common.description_on_shift")), bootsShiftOnly));
+		bootsInfos.add(bootsShiftInfo);
+
+		bootsInfos.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_command"),
+						L10N.label("elementgui.common.description_on_command")), bootsCommandOnly));
+		bootsInfos.add(bootsCommandInfo);
+
+		JComponent bootText = PanelUtils.centerAndSouthElement(
+				PanelUtils.centerInPanelPadding(textureBoots, 0, 0), enableBoots);
+		bootText.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
+				BorderFactory.createEmptyBorder(15, 16, 0, 15)));
+
+		bootsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"),
+				PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT,
+						L10N.label("elementgui.armor.supported_java"), bootsModel,
+						new JLabel(": L"), bootsModelPartL, new JLabel("R"), bootsModelPartR,
+						L10N.label("elementgui.armor.texture"), bootsModelTexture),
+						bootsInfos));
 		bootsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(bootText, PanelUtils.centerAndSouthElement(
@@ -653,6 +780,38 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		}
 	}
 
+	private void updateHelmetShiftInfo() {
+		helmetShiftInfo.setEnabled(helmetShiftOnly.isSelected());
+	}
+
+	private void updateBodyShiftInfo() {
+		bodyShiftInfo.setEnabled(bodyShiftOnly.isSelected());
+	}
+
+	private void updateLeggingsShiftInfo() {
+		leggingsShiftInfo.setEnabled(leggingsShiftOnly.isSelected());
+	}
+
+	private void updateBootsShiftInfo() {
+		bootsShiftInfo.setEnabled(bootsShiftOnly.isSelected());
+	}
+
+	private void updateHelmetCommandInfo() {
+		helmetCommandInfo.setEnabled(helmetCommandOnly.isSelected());
+	}
+
+	private void updateBodyCommandInfo() {
+		bodyCommandInfo.setEnabled(bodyCommandOnly.isSelected());
+	}
+
+	private void updateLeggingsCommandInfo() {
+		leggingsCommandInfo.setEnabled(leggingsCommandOnly.isSelected());
+	}
+
+	private void updateBootsCommandInfo() {
+		bootsCommandInfo.setEnabled(bootsCommandOnly.isSelected());
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
@@ -779,15 +938,60 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsName.setText(armor.bootsName);
 		repairItems.setListElements(armor.repairItems);
 		equipSound.setSound(armor.equipSound);
+		helmetShiftOnly.setSelected(armor.helmetShiftOnly);
+		bodyShiftOnly.setSelected(armor.bodyShiftOnly);
+		leggingsShiftOnly.setSelected(armor.leggingsShiftOnly);
+		bootsShiftOnly.setSelected(armor.bootsShiftOnly);
+		helmetCommandOnly.setSelected(armor.helmetCommandOnly);
+		bodyCommandOnly.setSelected(armor.bodyCommandOnly);
+		leggingsCommandOnly.setSelected(armor.leggingsCommandOnly);
+		bootsCommandOnly.setSelected(armor.bootsCommandOnly);
 
-		helmetSpecialInfo.setText(armor.helmetSpecialInfo.stream().map(info -> info.replace(",", "\\,"))
-				.collect(Collectors.joining(",")));
-		bodySpecialInfo.setText(
-				armor.bodySpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
-		leggingsSpecialInfo.setText(armor.leggingsSpecialInfo.stream().map(info -> info.replace(",", "\\,"))
-				.collect(Collectors.joining(",")));
-		bootsSpecialInfo.setText(
-				armor.bootsSpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		helmetSpecialInfo.setText(armor.helmetSpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		bodySpecialInfo.setText(armor.bodySpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		leggingsSpecialInfo.setText(armor.leggingsSpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		bootsSpecialInfo.setText(armor.bootsSpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		/*
+		try {
+			if (RangedItem.class.getField("onCommandInfo").get(rangedItem) != null) {
+				onCommandInfo.setText(rangedItem.onCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		 */
+		try {
+			if (Armor.class.getField("helmetShiftInfo").get(armor) != null ) {
+				helmetShiftInfo.setText(armor.helmetShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+			if (Armor.class.getField("bodyShiftInfo").get(armor) != null ) {
+				bodyShiftInfo.setText(armor.bodyShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+			if (Armor.class.getField("leggingsShiftInfo").get(armor) != null ) {
+				leggingsShiftInfo.setText(armor.leggingsShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+			if (Armor.class.getField("bootsShiftInfo").get(armor) != null ) {
+				bootsShiftInfo.setText(armor.bootsShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		try {
+			if (Armor.class.getField("helmetCommandInfo").get(armor) != null) {
+				helmetCommandInfo.setText(armor.helmetCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+			if (Armor.class.getField("bodyCommandInfo").get(armor) != null) {
+				bodyCommandInfo.setText(armor.bodyCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+			if (Armor.class.getField("leggingsCommandInfo").get(armor) != null) {
+				leggingsCommandInfo.setText(armor.leggingsCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+			if (Armor.class.getField("bootsCommandInfo").get(armor) != null) {
+				bootsCommandInfo.setText(armor.bootsCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 
 		Model _helmetModel = armor.getHelmetModel();
 		if (_helmetModel != null && _helmetModel.getType() != null && _helmetModel.getReadableName() != null)
@@ -829,6 +1033,16 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				bootsModel.getSelectedItem() != defaultModel || !bootsSpecialInfo.getText().isEmpty());
 
 		updateArmorTexturePreview();
+
+		updateHelmetShiftInfo();
+		updateBodyShiftInfo();
+		updateLeggingsShiftInfo();
+		updateBootsShiftInfo();
+
+		updateHelmetCommandInfo();
+		updateBodyCommandInfo();
+		updateLeggingsCommandInfo();
+		updateBootsCommandInfo();
 	}
 
 	@Override public Armor getElementFromGUI() {
@@ -880,6 +1094,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.bodySpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(bodySpecialInfo.getText());
 		armor.leggingsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(leggingsSpecialInfo.getText());
 		armor.bootsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(bootsSpecialInfo.getText());
+		armor.helmetShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(helmetShiftInfo.getText());
+		armor.bodyShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(bodyShiftInfo.getText());
+		armor.leggingsShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(leggingsShiftInfo.getText());
+		armor.bootsShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(bootsShiftInfo.getText());
+		armor.helmetCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(helmetCommandInfo.getText());
+		armor.bodyCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(bodyCommandInfo.getText());
+		armor.leggingsCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(leggingsCommandInfo.getText());
+		armor.bootsCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(bootsCommandInfo.getText());
+		armor.helmetShiftOnly = helmetShiftOnly.isSelected();
+		armor.bodyShiftOnly = bodyShiftOnly.isSelected();
+		armor.leggingsShiftOnly = leggingsShiftOnly.isSelected();
+		armor.bootsShiftOnly = bootsShiftOnly.isSelected();
+		armor.helmetCommandOnly = helmetCommandOnly.isSelected();
+		armor.bodyCommandOnly = bodyCommandOnly.isSelected();
+		armor.leggingsCommandOnly = leggingsCommandOnly.isSelected();
+		armor.bootsCommandOnly = bootsCommandOnly.isSelected();
 		return armor;
 	}
 

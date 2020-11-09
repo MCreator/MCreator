@@ -232,9 +232,8 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		add("West", wrapPan);
 
 		getRootPane().setDefaultButton(ok);
-		setSize(710, 640);
+		pack();
 		setLocationRelativeTo(w);
-		setResizable(false);
 
 		forge.setSelected(true);
 		forgeWorkspacePanel.focusMainField();

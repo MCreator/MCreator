@@ -7,6 +7,7 @@
 			Entity entityToSpawn = new ${entity}(${entity.toString().replace(".CustomEntity", "")}.entity, world.getWorld());
     </#if>
 		entityToSpawn.setLocationAndAngles(${input$x}, ${input$y}, ${input$z}, (float) ${input$yaw}, (float) ${input$pitch});
+		entityToSpawn.setRenderYawOffset((float) ${input$yaw});
 		entityToSpawn.setMotion(${input$vx},${input$vy},${input$vz});
 
 		if (entityToSpawn instanceof MobEntity)

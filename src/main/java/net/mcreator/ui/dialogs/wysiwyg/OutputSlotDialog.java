@@ -24,7 +24,6 @@ import net.mcreator.element.parts.gui.OutputSlot;
 import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.ProcedureSelector;
@@ -36,10 +35,10 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class OutputSlotDialog extends MCreatorDialog {
+public class OutputSlotDialog extends AbstractWYSIWYGDialog {
 
 	public OutputSlotDialog(WYSIWYGEditor editor, @Nullable OutputSlot slot) {
-		super(editor.mcreator);
+		super(editor.mcreator, slot);
 		setModal(true);
 		setSize(850, 310);
 		setLocationRelativeTo(editor.mcreator);
@@ -63,7 +62,8 @@ public class OutputSlotDialog extends MCreatorDialog {
 								L10N.t("dialog.gui.slot_id_already_used"));
 				}
 			} catch (Exception exc) {
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, L10N.t("dialog.gui.slot_id_must_be_number"));
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("dialog.gui.slot_id_must_be_number"));
 			}
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
@@ -79,24 +79,22 @@ public class OutputSlotDialog extends MCreatorDialog {
 		dropItemsWhenNotBound.setSelected(true);
 
 		final JColor color = new JColor(editor.mcreator);
-		options.add(PanelUtils
-				.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_custom_color"),
-						color));
+		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_custom_color"), color));
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slot_changed"),
-				editor.mcreator, L10N.t("dialog.gui.slot_event_slot_content_changes"), ProcedureSelector.Side.BOTH, false,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				editor.mcreator, L10N.t("dialog.gui.slot_event_slot_content_changes"), ProcedureSelector.Side.BOTH,
+				false, Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		eh.refreshList();
 
 		ProcedureSelector eh2 = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slot_item_taken"),
-				editor.mcreator, L10N.t("dialog.gui.slot_event_item_taken_from_slot"), ProcedureSelector.Side.BOTH, false,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				editor.mcreator, L10N.t("dialog.gui.slot_event_item_taken_from_slot"), ProcedureSelector.Side.BOTH,
+				false, Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		eh2.refreshList();
 
 		ProcedureSelector eh3 = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_transferred_from_slot"),
-				editor.mcreator, L10N.t("dialog.gui.slot_event_transfered_from_slot"), ProcedureSelector.Side.BOTH, false,
-				Dependency
-						.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map/amount:number"));
+				editor.mcreator, L10N.t("dialog.gui.slot_event_transfered_from_slot"), ProcedureSelector.Side.BOTH,
+				false, Dependency
+				.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map/amount:number"));
 		eh3.refreshList();
 
 		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 3, 5, 5, eh, eh2, eh3))));
@@ -139,13 +137,13 @@ public class OutputSlotDialog extends MCreatorDialog {
 				if (slot == null) {
 					editor.lol.setSelectedIndex(1);
 					editor.editor.setPositioningMode(18, 18);
-					editor.editor.setPositionDefinedListener(e1 -> editor.editor.addComponent(
+					editor.editor.setPositionDefinedListener(e1 -> editor.editor.addComponent(setEditingComponent(
 							new OutputSlot(slotIDnum, "Slot #" + slotIDnum, editor.editor.newlyAddedComponentPosX,
 									editor.editor.newlyAddedComponentPosY,
 									color.getColor().equals(Color.white) ? null : color.getColor(),
 									disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
 									eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
-									eh3.getSelectedProcedure())));
+									eh3.getSelectedProcedure()))));
 				} else {
 					int idx = editor.components.indexOf(slot);
 					editor.components.remove(slot);
@@ -154,6 +152,7 @@ public class OutputSlotDialog extends MCreatorDialog {
 							disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
 							eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure());
 					editor.components.add(idx, slotNew);
+					setEditingComponent(slotNew);
 				}
 			}
 		});
