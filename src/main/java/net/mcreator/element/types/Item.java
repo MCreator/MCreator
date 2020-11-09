@@ -59,6 +59,10 @@ import java.util.Map;
 	public double damageVsEntity;
 
 	public List<String> specialInfo;
+	public boolean onShiftOnly;
+	public List<String> onShiftInfo;
+	public boolean onCommandOnly;
+	public List<String> onCommandInfo;
 	public boolean hasGlow;
 	public Procedure glowCondition;
 
@@ -75,6 +79,10 @@ import java.util.Map;
 	public Procedure onStoppedUsing;
 	public Procedure onEntitySwing;
 	public Procedure onDroppedByPlayer;
+
+	public boolean hasDispenseBehavior;
+	public Procedure dispenseSuccessCondition;
+	public Procedure dispenseResultItemstack;
 
 	private Item() {
 		this(null);
@@ -108,6 +116,18 @@ import java.util.Map;
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
 		return null;
+	}
+
+	public boolean itemInfoOnly() {
+		return !specialInfo.isEmpty();
+	}
+
+	public boolean itemShiftOnly() {
+		return onShiftOnly;
+	}
+
+	public boolean itemCommandOnly() {
+		return onCommandOnly;
 	}
 
 	@Override public TabEntry getCreativeTab() {
