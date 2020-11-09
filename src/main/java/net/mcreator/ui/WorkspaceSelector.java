@@ -166,20 +166,6 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 		JPanel southcenter = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		southcenter.setBorder(BorderFactory.createEmptyBorder(0, 0, 26, 60 - 1));
 
-		JLabel donate = L10N.label("dialog.workspace_selector.donate");
-		donate.setIcon(UIRES.get("donate"));
-		donate.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		ComponentUtils.deriveFont(donate, 13);
-		donate.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-		donate.setBorder(BorderFactory.createEmptyBorder());
-		donate.setHorizontalTextPosition(JLabel.LEFT);
-		donate.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent mouseEvent) {
-				DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/donate");
-			}
-		});
-		southcenter.add(donate);
-
 		southcenter.add(new JEmptyBox(5, 5));
 
 		JLabel prefs = L10N.label("dialog.workspace_selector.preferences");
@@ -215,7 +201,7 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 	}
 
 	private void reloadTitle() {
-		setTitle("MCreator " + Launcher.version.getMajorString());
+		setTitle("MCToolkit " + Launcher.version.getMajorString());
 	}
 
 	@Override public void dragEnter(DropTargetDragEvent dtde) {
