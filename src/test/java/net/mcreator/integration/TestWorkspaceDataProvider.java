@@ -749,20 +749,40 @@ public class TestWorkspaceDataProvider {
 			armor.enableBoots = !_true;
 			armor.textureBoots = "test4";
 			armor.bootsModelTexture = emptyLists ? "From armor" : "test.png";
+			armor.helmetShiftOnly = _true;
+			armor.bodyShiftOnly = _true;
+			armor.leggingsShiftOnly = _true;
+			armor.bootsShiftOnly = _true;
+			armor.helmetCommandOnly = _true;
+			armor.bodyCommandOnly = _true;
+			armor.leggingsCommandOnly = _true;
+			armor.bootsCommandOnly = _true;
 			if (!emptyLists) {
-				armor.helmetSpecialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
-				armor.bodySpecialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
-				armor.leggingsSpecialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
-				armor.bootsSpecialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.helmetSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.bodySpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.leggingsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.bootsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.helmetShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.bodyShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.leggingsShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.bootsShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.helmetCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.bodyCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.leggingsCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.bootsCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				armor.helmetSpecialInfo = new ArrayList<>();
 				armor.bodySpecialInfo = new ArrayList<>();
 				armor.leggingsSpecialInfo = new ArrayList<>();
 				armor.bootsSpecialInfo = new ArrayList<>();
+				armor.helmetShiftInfo = new ArrayList<>();
+				armor.bodyShiftInfo = new ArrayList<>();
+				armor.leggingsShiftInfo = new ArrayList<>();
+				armor.bootsShiftInfo = new ArrayList<>();
+				armor.helmetCommandInfo = new ArrayList<>();
+				armor.bodyCommandInfo = new ArrayList<>();
+				armor.leggingsCommandInfo = new ArrayList<>();
+				armor.bootsCommandInfo = new ArrayList<>();
 			}
 			armor.equipSound = new Sound(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
@@ -826,12 +846,19 @@ public class TestWorkspaceDataProvider {
 			plant.isReplaceable = !_true;
 			plant.forceTicking = !_true;
 			plant.hasTileEntity = !_true;
+			plant.onShiftOnly = _true;
+			plant.onCommandOnly = _true;
+			plant.onShiftInfo = new ArrayList<>();
+			plant.onCommandInfo = new ArrayList<>();
 			plant.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				plant.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				plant.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				plant.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
 			} else {
 				plant.specialInfo = new ArrayList<>();
+				plant.onShiftInfo = new ArrayList<>();
+				plant.onCommandInfo = new ArrayList<>();
 			}
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
