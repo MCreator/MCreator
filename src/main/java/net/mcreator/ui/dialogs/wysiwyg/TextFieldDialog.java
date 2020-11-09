@@ -22,7 +22,6 @@ import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -33,10 +32,10 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class TextFieldDialog extends MCreatorDialog {
+public class TextFieldDialog extends AbstractWYSIWYGDialog {
 
 	public TextFieldDialog(WYSIWYGEditor editor, @Nullable TextField textField) {
-		super(editor.mcreator);
+		super(editor.mcreator, textField);
 		setModal(true);
 		setSize(480, 150);
 		setLocationRelativeTo(editor.mcreator);
@@ -61,11 +60,9 @@ public class TextFieldDialog extends MCreatorDialog {
 		JPanel options = new JPanel();
 
 		if (textField == null)
-			add("North", PanelUtils.centerInPanel(
-					L10N.label("dialog.gui.textfield_change_width")));
+			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.textfield_change_width")));
 		else
-			add("North", PanelUtils.centerInPanel(
-					L10N.label("dialog.gui.textfield_resize")));
+			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.textfield_resize")));
 
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 		options.add(PanelUtils.join(L10N.label("dialog.gui.textfield_input_name"), nameField));
@@ -93,16 +90,17 @@ public class TextFieldDialog extends MCreatorDialog {
 				if (!text.equals("")) {
 					if (textField == null) {
 						editor.editor.setPositioningMode(120, 20);
-						editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(
+						editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
 								new TextField(text, editor.editor.newlyAddedComponentPosX,
 										editor.editor.newlyAddedComponentPosY, editor.editor.ow, editor.editor.oh,
-										deft.getText())));
+										deft.getText()))));
 					} else {
 						int idx = editor.components.indexOf(textField);
 						editor.components.remove(textField);
 						TextField textfieldNew = new TextField(text, textField.getX(), textField.getY(),
 								textField.width, textField.height, deft.getText());
 						editor.components.add(idx, textfieldNew);
+						setEditingComponent(textfieldNew);
 					}
 				}
 			}
