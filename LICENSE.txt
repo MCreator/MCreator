@@ -5,7 +5,7 @@ files or other files of this project.
 MCToolkit is a continuation of MCreator (trademark of Pylo). Custom
 distributions of this software may not include MCToolkit or Pylo or MCreator
 trademark (trademark name and logo) to not confuse the software with the
-official distribution of MCToolkit project. Custom distributions can
+official distribution of the MCreator project. Custom distributions can
 (and should) still note that they are a variant of original MCreator and MCToolkit
 projects.
 
