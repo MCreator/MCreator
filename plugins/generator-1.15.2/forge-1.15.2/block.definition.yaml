@@ -396,7 +396,7 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
 
-  # TX: Slime templates
+  # TX: Honey templates
   - template: json/block_item.json.ftl
     condition: "blockBase %= Honey"
     writer: json

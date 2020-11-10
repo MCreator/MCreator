@@ -1236,10 +1236,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 			textureRight.setVisible(true);
 			textureBack.setVisible(true);
 		} else if ("Pane".equals(blockBase.getSelectedItem()) || "Door".equals(blockBase.getSelectedItem())
-				|| "Lever".equals(blockBase.getSelectedItem())) {
+					|| "Lever".equals(blockBase.getSelectedItem())) {
 			textureTop.setVisible(true);
 			texture.setVisible(true);
-		} else if ("Stairs".equals(blockBase.getSelectedItem()) || "Slab".equals(blockBase.getSelectedItem())) {
+		} else if ("Stairs".equals(blockBase.getSelectedItem()) || "Slab".equals(blockBase.getSelectedItem())
+					|| "Honey".equals(blockBase.getSelectedItem())) {
 			textureTop.setVisible(true);
 			textureFront.setVisible(true);
 			texture.setVisible(true);
