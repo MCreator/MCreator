@@ -306,7 +306,7 @@ templates:
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
 
   # TX: PressurePlate templates
-  - template: json/txblock/pressure_plate_item.json.ftl
+  - template: json/txblock/txblock_item.json.ftl
     condition: "blockBase %= PressurePlate"
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
@@ -361,6 +361,55 @@ templates:
     condition: "blockBase %= Cake"
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_slice6.json"
+
+  # TX: Lever templates
+  - template: json/txblock/txblock_item.json.ftl
+    condition: "blockBase %= Lever"
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/txblock/lever_states.json.ftl
+    condition: "blockBase %= Lever"
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/txblock/lever.json.ftl
+    condition: "blockBase %= Lever"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/txblock/lever_on.json.ftl
+    deleteWhenConditionFalse: true
+    condition: "blockBase %= Lever"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_on.json"
+
+  # TX: Slime templates
+  - template: json/block_item.json.ftl
+    condition: "blockBase %= Slime"
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/block_states.json.ftl
+    condition: "blockBase %= Slime"
+    variables: "variant= "
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/txblock/slime.json.ftl
+    condition: "blockBase %= Slime"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+
+  # TX: Honey templates
+  - template: json/block_item.json.ftl
+    condition: "blockBase %= Honey"
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/block_states.json.ftl
+    condition: "blockBase %= Honey"
+    variables: "variant= "
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/txblock/honey.json.ftl
+    condition: "blockBase %= Honey"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
 
 localizationkeys:
   - key: block.@modid.@registryname
