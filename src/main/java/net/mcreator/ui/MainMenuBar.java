@@ -46,7 +46,7 @@ public class MainMenuBar extends JMenuBar {
 
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
 
-		JMenu logo = new JMenu("  MCreator");
+		JMenu logo = new JMenu("  MCToolkit");
 		logo.setMnemonic('M');
 		logo.setIcon(new ImageIcon(ImageUtils.resizeAA(UIRES.get("icon").getImage(), 14, 14)));
 
