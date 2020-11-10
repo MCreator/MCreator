@@ -1,14 +1,12 @@
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Team-MCToolkit/MCToolkit/blob/master/LICENSE.txt)
 [![Build](https://api.travis-ci.org/MCreator/MCreator.svg?branch=master)](https://travis-ci.org/github/Team-MCToolkit/MCToolkit)
+[![Crowdin](https://badges.crowdin.net/mctoolkit/localized.svg)](https://crowdin.com/project/mctoolkit)
 [![Download](https://img.shields.io/badge/Download-release-%2393c54b)](https://mctoolkit.net/download)
-[![Donate](https://img.shields.io/badge/Donate-%E2%99%A1-%23ff7c00)](https://mcreator.net/donate)
 # MCToolkit - Minecraft Mod Maker
 
-<img align="right" width="300" src="https://mcreator.net/image/mcreatoruifront.png">
+<img align="right" width="300" src="https://zupimages.net/up/20/46/bqcx.png">
 
 https://mctoolkit.net/ - MCToolkit is a software used to make Minecraft Java Edition mods, Minecraft Bedrock Edition Add-Ons, and data packs using an intuitive easy-to-learn interface or with an integrated code editor.
-
-It is used worldwide by Minecraft players, aspiring mod developers, [for education, online classes, and STEM workshops](https://mcreator.net/education).
 
 ## Download, community, and support
 
