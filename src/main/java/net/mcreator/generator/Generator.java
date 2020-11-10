@@ -477,29 +477,20 @@ public class Generator implements Closeable {
 		// delete all localization keys
 		List<?> localizationkeys = (List<?>) map.get("localizationkeys");
 		if (localizationkeys != null) {
-			int i = 0;
-			String oldKey = "key";
 			for (Object template : localizationkeys) {
 				String key = (String) ((Map<?, ?>) template).get("key");
 				Boolean condition = ((Map<?, ?>) template).containsKey("condition");
-				LOG.debug("Processing key " + key + " with i = " + i);
 				key = GeneratorTokens.replaceTokens(workspace, key.replace("@NAME", element.getName())
 						.replace("@modid", workspace.getWorkspaceSettings().getModID())
 						.replace("@registryname", element.getRegistryName()));
 				if (condition) {
-					LOG.debug("oldKey : " + oldKey + " and key : " + key);
-					if (oldKey != key) {
-						i = 0;
+					for (int j=0; j <= 10; j++) {
+						String newKey = key;
+						newKey += (j + 1);
+						workspace.removeLocalizationEntryByKey(newKey);
 					}
-					oldKey = key;
-					String newKey = key;
-					newKey += (i + 1);
-					workspace.removeLocalizationEntryByKey(newKey);
-					LOG.debug("Key " + newKey + " deleted! i = " + i);
-					i++;
 				} else {
 					workspace.removeLocalizationEntryByKey(key);
-					LOG.debug("Key " + key + " deleted! i = " + i);
 				}
 			}
 		}

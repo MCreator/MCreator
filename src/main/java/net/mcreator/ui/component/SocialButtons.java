@@ -41,15 +41,15 @@ public class SocialButtons extends JLabel {
 				}
 				int x = mouseEvent.getX() - offset;
 				if (x >= 0 && x <= 16) {
-					DesktopUtils.browseSafe("https://www.facebook.com/PyloDEV/");
+					DesktopUtils.browseSafe("https://www.twitch.tv/mctoolkit"); //facebook --> twitch
 				} else if (x >= 20 && x <= 36) {
-					DesktopUtils.browseSafe("https://www.youtube.com/subscription_center?add_user=PyloGroup");
+					DesktopUtils.browseSafe("https://www.youtube.com/channel/UC4xDMztON_gM_zZHOSZDJdA");
 				} else if (x >= 40 && x <= 56) {
-					DesktopUtils.browseSafe("https://twitter.com/PyloDEV");
+					DesktopUtils.browseSafe("https://twitter.com/Team_MCToolkit");
 				} else if (x >= 60 && x <= 76) {
-					DesktopUtils.browseSafe("https://www.instagram.com/pylocompany/");
+					DesktopUtils.browseSafe("https://www.reddit.com/r/MCToolkit/"); //instagram --> reddit
 				} else if (x >= 80 && x <= 96) {
-					DesktopUtils.browseSafe("https://github.com/Pylo");
+					DesktopUtils.browseSafe("https://github.com/Team-MCToolkit");
 				}
 			}
 		});

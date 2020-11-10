@@ -146,7 +146,7 @@ public final class MCreatorApplication {
 		// we do async login attempt
 		UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
 
-		splashScreen.setProgress(100, "Loading MCreator windows");
+		splashScreen.setProgress(100, "Loading MCToolkit windows");
 
 		if (OS.getOS() == OS.MAC) {
 			MacOSUIUtil.registerAboutHandler(() -> AboutAction.showDialog(null));
