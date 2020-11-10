@@ -230,7 +230,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JComboBox<String> blockBase = new JComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
-					"Door", "FenceGate", "StoneButton", "PressurePlate", "Cake" });
+					"Door", "FenceGate", "StoneButton", "PressurePlate", "Cake", "Lever", "Slime", "Honey" });
 
 	private final JComboBox<String> sensitivity = new JComboBox<>(
 			new String[] { "EVERYTHING", "MOBS" });
@@ -387,7 +387,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 				if (blockBase.getSelectedItem().equals("Wall") || blockBase.getSelectedItem().equals("Fence")
 						|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem().equals("Door")
-						|| blockBase.getSelectedItem().equals("FenceGate") || blockBase.getSelectedItem().equals("StoneButton")) {
+						|| blockBase.getSelectedItem().equals("FenceGate") || blockBase.getSelectedItem().equals("StoneButton")
+						|| blockBase.getSelectedItem().equals("Lever")) {
 					if (!isEditingMode()) {
 						hasTransparency.setSelected(true);
 						lightOpacity.setValue(0);
@@ -1234,10 +1235,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 			textureFront.setVisible(true);
 			textureRight.setVisible(true);
 			textureBack.setVisible(true);
-		} else if ("Pane".equals(blockBase.getSelectedItem()) || "Door".equals(blockBase.getSelectedItem())) {
+		} else if ("Pane".equals(blockBase.getSelectedItem()) || "Door".equals(blockBase.getSelectedItem())
+					|| "Lever".equals(blockBase.getSelectedItem())) {
 			textureTop.setVisible(true);
 			texture.setVisible(true);
-		} else if ("Stairs".equals(blockBase.getSelectedItem()) || "Slab".equals(blockBase.getSelectedItem())) {
+		} else if ("Stairs".equals(blockBase.getSelectedItem()) || "Slab".equals(blockBase.getSelectedItem())
+					|| "Honey".equals(blockBase.getSelectedItem())) {
 			textureTop.setVisible(true);
 			textureFront.setVisible(true);
 			texture.setVisible(true);

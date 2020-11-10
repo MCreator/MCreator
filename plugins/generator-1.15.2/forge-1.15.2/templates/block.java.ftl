@@ -126,6 +126,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
             super(Sensitivity.${data.sensitivity},
             <#elseif data.blockBase?has_content && data.blockBase == "Cake">
             super(
+			<#elseif data.blockBase?has_content && data.blockBase == "Lever">
+			super(
+			<#elseif data.blockBase?has_content && data.blockBase == "Slime">
+			super(
+			<#elseif data.blockBase?has_content && data.blockBase == "Honey">
+			super(
 			<#else>
 			super(
 			</#if>
