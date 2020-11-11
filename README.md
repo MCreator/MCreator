@@ -1,10 +1,10 @@
-[![MCreator](https://zupimages.net/up/20/46/cvwm.png)](https://mctoolkit.net/)
+[![MCreator](https://i.ibb.co/BBmn3tK/mctoolkit-image-1.png)](https://mctoolkit.net/)
 
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Team-MCToolkit/MCToolkit/blob/master/LICENSE.txt)
 [![Build](https://api.travis-ci.org/MCreator/MCreator.svg?branch=master)](https://travis-ci.org/github/Team-MCToolkit/MCToolkit)
 [![Crowdin](https://badges.crowdin.net/mctoolkit/localized.svg)](https://crowdin.com/project/mctoolkit)
 [![Download](https://img.shields.io/badge/Download-release-%2393c54b)](https://mctoolkit.net/download)
-# MCToolkit - Minecraft Mod Maker
+# MCToolkit - Minecraft Modding Toolkit
 
 <img align="right" width="300" src="https://zupimages.net/up/20/46/bqcx.png">
 
