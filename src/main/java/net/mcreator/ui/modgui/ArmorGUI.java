@@ -951,15 +951,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodySpecialInfo.setText(armor.bodySpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		leggingsSpecialInfo.setText(armor.leggingsSpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		bootsSpecialInfo.setText(armor.bootsSpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
-		/*
-		try {
-			if (RangedItem.class.getField("onCommandInfo").get(rangedItem) != null) {
-				onCommandInfo.setText(rangedItem.onCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
-			}
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		 */
 		try {
 			if (Armor.class.getField("helmetShiftInfo").get(armor) != null ) {
 				helmetShiftInfo.setText(armor.helmetShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));

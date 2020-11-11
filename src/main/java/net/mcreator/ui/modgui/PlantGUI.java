@@ -21,12 +21,13 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.types.MusicDisc;
 import net.mcreator.element.types.Plant;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.CollapsiblePanel;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -140,6 +141,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(100, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(60, 0, 1024, 1));
 
+	private CollapsiblePanel infoPanel;
+
 	public PlantGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -213,10 +216,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel infopanel = new JPanel(new GridLayout(5, 2, 15, 15));
 		infopanel.setOpaque(false);
 
-		infopanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.plant.special_information_title"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
 		infopanel.add("Center", HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
 				L10N.label("elementgui.plant.special_information_tip")));
 		infopanel.add(specialInfo);
@@ -238,6 +237,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		infopanel.add("Center", HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
 				L10N.label("elementgui.plant.particle_texture")));
 		infopanel.add("Center", PanelUtils.centerInPanel(particleTexture));
+
+		infoPanel = new CollapsiblePanel(L10N.t("elementgui.plant.special_information_title"), infopanel);
+		infoPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		onShiftOnly.setOpaque(false);
 		onShiftOnly.setEnabled(true);
@@ -279,7 +281,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		sbbp2.setOpaque(false);
 
 		sbbp22.add("East", destal);
-		sbbp22.add("Center", PanelUtils.northAndCenterElement(rent, infopanel));
+		sbbp22.add("Center", PanelUtils.northAndCenterElement(rent, infoPanel));
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(normalType);
@@ -679,6 +681,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		growapableSpawnType.setSelectedItem(plant.growapableSpawnType);
 		staticPlantGenerationType.setSelectedItem(plant.staticPlantGenerationType);
 		doublePlantGenerationType.setSelectedItem(plant.doublePlantGenerationType);
+
+		infoPanel.toggleVisibility(!specialInfo.getText().isEmpty());
 
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
