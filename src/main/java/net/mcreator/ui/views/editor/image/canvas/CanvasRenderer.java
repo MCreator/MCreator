@@ -152,15 +152,16 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 				int width = image.getWidth(null), height = image.getHeight(null);
 
 				if (width % 2.0 == 1) {
-					x = (int) ((mouseEvent.getX() - width / 2.0) * zoom);
+					x = (int) Math.round((mouseEvent.getX() - width / 2) * zoom);
 				} else {
-					x = (int) ((int) (mex / zoom + 0.5 - width / 2.0) * zoom);
+					x = (int) Math.round(Math.floor((mex / zoom + 0.5 - width / 2)) * zoom);
+
 				}
 
 				if (height % 2.0 == 1) {
-					y = (int) ((mouseEvent.getY() - height / 2.0) * zoom);
+					y = (int) Math.round((mouseEvent.getY() - height / 2) * zoom);
 				} else {
-					y = (int) ((int) (mey / zoom + 0.5 - height / 2.0) * zoom);
+					y = (int) Math.round(Math.floor((mey / zoom + 0.5 - height / 2)) * zoom);
 				}
 
 				g.drawImage(image, x, y, (int) Math.round(width * zoom), (int) Math.round(height * zoom), null);

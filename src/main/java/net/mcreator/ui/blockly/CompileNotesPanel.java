@@ -20,6 +20,7 @@ package net.mcreator.ui.blockly;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 
@@ -30,7 +31,7 @@ import java.util.List;
 
 public class CompileNotesPanel extends JPanel {
 
-	private final JLabel compileNotesLabel = new JLabel("Warnings and errors (0)");
+	private final JLabel compileNotesLabel = L10N.label("blockly.compile_notes", 0);
 	private final DefaultListModel<BlocklyCompileNote> compileNotes = new DefaultListModel<>();
 
 	public CompileNotesPanel() {
@@ -79,7 +80,7 @@ public class CompileNotesPanel extends JPanel {
 	public void updateCompileNotes(List<BlocklyCompileNote> compileNotesArrayList) {
 		compileNotes.clear();
 		compileNotesArrayList.forEach(compileNotes::addElement);
-		compileNotesLabel.setText("Warnings and errors (" + compileNotesArrayList.size() + "):");
+		compileNotesLabel.setText(L10N.t("blockly.compile_notes", compileNotesArrayList.size()));
 	}
 
 	public List<BlocklyCompileNote> getCompileNotes() {
