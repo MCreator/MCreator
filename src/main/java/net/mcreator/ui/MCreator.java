@@ -203,6 +203,8 @@ public final class MCreator extends JFrame {
 
 		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"),
 				PanelUtils.maxMargin(mv, 5, true, true, true, true), "Workspace", true, false);
+		workspaceTab.setIcon(ImageUtils.colorize(UIRES.get("16px.workspace"),
+							PreferencesManager.PREFERENCES.ui.interfaceAccentColor, false));
 		mcreatorTabs.addTab(workspaceTab);
 		pon.add("West", workspaceTab);
 
@@ -226,6 +228,8 @@ public final class MCreator extends JFrame {
 			}
 		};
 		consoleTab.setHasRightBorder(false);
+		consoleTab.setIcon(ImageUtils.colorize(UIRES.get("16px.console"),
+							PreferencesManager.PREFERENCES.ui.interfaceAccentColor, false));
 		consoleTab.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK))
