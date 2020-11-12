@@ -83,7 +83,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
 
+	private final JCheckBox onShiftOnly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox onCommandOnly = L10N.checkbox("elementgui.common.enable");
+
 	private final JTextField specialInfo = new JTextField(20);
+	private final JTextField onShiftInfo = new JTextField(20);
+	private final JTextField onCommandInfo = new JTextField(20);
 
 	private ProcedureSelector onRightClickedInAir;
 	private ProcedureSelector onCrafted;
@@ -159,6 +164,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		hasGlow.setOpaque(false);
 		hasGlow.setSelected(false);
+		onShiftOnly.setOpaque(false);
+		onShiftOnly.setEnabled(true);
+		onShiftOnly.setSelected(false);
+		onCommandOnly.setOpaque(false);
+		onCommandOnly.setEnabled(true);
+		onCommandOnly.setSelected(false);
 
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
@@ -174,6 +185,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				PanelUtils.join(renderType)));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
+		ComponentUtils.deriveFont(onShiftInfo, 16);
+		ComponentUtils.deriveFont(onCommandInfo, 16);
 
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
@@ -184,18 +197,28 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.t("elementgui.tool.tool_3d_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		pane2.setOpaque(false);
-		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils
-				.northAndCenterElement(PanelUtils.join(destal, rent), PanelUtils.gridElements(1, 2, HelpUtils
-						.wrapWithHelpButton(this.withEntry("item/special_information"),
-								L10N.label("elementgui.tool.tool_special_information")), specialInfo))));
+		JPanel specialInformations = new JPanel(new GridLayout(3, 2, 15, 15));
+		specialInformations.setOpaque(false);
+
+		specialInformations.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				L10N.label("elementgui.music_disc.disc_description_tip")));
+		specialInformations.add(specialInfo);
+
+		specialInformations.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_shift"),
+						L10N.label("elementgui.common.description_on_shift")), onShiftOnly));
+		specialInformations.add(onShiftInfo);
+
+		specialInformations.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_command"),
+						L10N.label("elementgui.common.description_on_command")), onCommandOnly));
+		specialInformations.add(onCommandInfo);
+
 		JComponent glow = PanelUtils.join(FlowLayout.LEFT, HelpUtils
 				.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
 						L10N.label("elementgui.tool.glowing_effect")), hasGlow, glowCondition);
 
-		JComponent visualBottom = PanelUtils.centerAndSouthElement(PanelUtils.gridElements(1, 2, HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/special_information"),
-						L10N.label("elementgui.tool.tooltip_tip")), specialInfo), glow, 10, 10);
+		JComponent visualBottom = PanelUtils.centerAndSouthElement(specialInformations, glow, 10, 10);
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils
@@ -209,8 +232,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		harvestLevel.setOpaque(false);
 		efficiency.setOpaque(false);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
@@ -218,36 +241,39 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		selp.add(creativeTab);
 
 		hasGlow.addActionListener(e -> updateGlowElements());
+		onShiftOnly.addActionListener(e -> updateShiftInfo());
+		onCommandOnly.addActionListener(e -> updateCommandInfo());
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"), L10N.label("elementgui.tool.type")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"),
+				L10N.label("elementgui.tool.type")));
 		selp.add(toolType);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("tool/harvest_level"), L10N.label("elementgui.tool.harvest_level")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/harvest_level"),
+				L10N.label("elementgui.tool.harvest_level")));
 		selp.add(harvestLevel);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("tool/efficiency"), L10N.label("elementgui.tool.efficiency")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/efficiency"),
+				L10N.label("elementgui.tool.efficiency")));
 		selp.add(efficiency);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
 				L10N.label("elementgui.common.enchantability")));
 		selp.add(enchantability);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("tool/attack_speed"), L10N.label("elementgui.tool.attack_speed")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/attack_speed"),
+				L10N.label("elementgui.tool.attack_speed")));
 		selp.add(attackSpeed);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
 				L10N.label("elementgui.tool.damage_vs_entity")));
 		selp.add(damageVsEntity);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/number_of_uses"), L10N.label("elementgui.tool.usage_count")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
+				L10N.label("elementgui.tool.usage_count")));
 		selp.add(usageCount);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("tool/repair_items"), L10N.label("elementgui.common.repair_items")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"),
+				L10N.label("elementgui.common.repair_items")));
 		selp.add(repairItems);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
@@ -309,6 +335,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		glowCondition.setEnabled(hasGlow.isSelected());
 	}
 
+	private void updateShiftInfo() { onShiftInfo.setEnabled(onShiftOnly.isSelected());}
+
+	private void updateCommandInfo() { onCommandInfo.setEnabled(onCommandOnly.isSelected());}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onRightClickedInAir.refreshListKeepSelected();
@@ -360,16 +390,33 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onStoppedUsing.setSelectedProcedure(tool.onStoppedUsing);
 		onEntitySwing.setSelectedProcedure(tool.onEntitySwing);
 		hasGlow.setSelected(tool.hasGlow);
+		onShiftOnly.setSelected(tool.onShiftOnly);
+		onCommandOnly.setSelected(tool.onCommandOnly);
 		glowCondition.setSelectedProcedure(tool.glowCondition);
 		repairItems.setListElements(tool.repairItems);
-		specialInfo.setText(
-				tool.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		specialInfo.setText(tool.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		try {
+			if (Tool.class.getField("onShiftInfo").get(tool) != null) {
+				onShiftInfo.setText(tool.onShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		try {
+			if (Tool.class.getField("onCommandInfo").get(tool) != null) {
+				onCommandInfo.setText(tool.onCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 		stayInGridWhenCrafting.setSelected(tool.stayInGridWhenCrafting);
 		damageOnCrafting.setSelected(tool.damageOnCrafting);
 
 		blocksAffected.setListElements(tool.blocksAffected);
 
 		updateGlowElements();
+		updateShiftInfo();
+		updateCommandInfo();
 
 		if (toolType.getSelectedItem() != null)
 			blocksAffected.setEnabled(toolType.getSelectedItem().equals("Special"));
@@ -401,9 +448,13 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.onStoppedUsing = onStoppedUsing.getSelectedProcedure();
 		tool.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		tool.hasGlow = hasGlow.isSelected();
+		tool.onShiftOnly = onShiftOnly.isSelected();
+		tool.onCommandOnly = onCommandOnly.isSelected();
 		tool.glowCondition = glowCondition.getSelectedProcedure();
 		tool.repairItems = repairItems.getListElements();
 		tool.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
+		tool.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onShiftInfo.getText());
+		tool.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onCommandInfo.getText());
 
 		tool.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		tool.damageOnCrafting = damageOnCrafting.isSelected();

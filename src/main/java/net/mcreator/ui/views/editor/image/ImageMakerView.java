@@ -218,7 +218,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 								return new RegistryNameValidator((VTextField) component, "Texture name").validate();
 							}
 						});
-		String folderName = JOptionPane.showInputDialog("Folder name of armor texture (without spaces): ");
+		String folderName = JOptionPane.showInputDialog("Folder name of the texture (without spaces): ");
 		if(folderName == null)
 			folderName = "";
 		folderName = RegistryNameFixer.fix(folderName);

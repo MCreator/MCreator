@@ -284,3 +284,12 @@ templates:
 localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
+  - key: block.@modid.@registryname.tooltip
+    condition: infoOnly
+    mapto: specialInfo
+  - key: block.@modid.@registryname.shift.tooltip
+    condition: shiftOnly
+    mapto: onShiftInfo
+  - key: block.@modid.@registryname.command.tooltip
+    condition: commandOnly
+    mapto: onCommandInfo

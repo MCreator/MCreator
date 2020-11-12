@@ -72,6 +72,11 @@ public class FoodGUI extends ModElementGUI<Food> {
 	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 
 	private final JTextField specialInfo = new JTextField(20);
+	private final JTextField onShiftInfo = new JTextField(20);
+	private final JTextField onCommandInfo = new JTextField(20);
+
+	private final JCheckBox onShiftOnly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox onCommandOnly = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox forDogs = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
@@ -85,7 +90,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 	private ProcedureSelector glowCondition;
 
 	private final JComboBox<String> animation = new JComboBox<>(
-			new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
+			new String[] { "eat", "drink", "block", "bow", "crossbow", "none", "spear" });
 
 	private final MCItemHolder resultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -126,6 +131,8 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(specialInfo, 16);
+		ComponentUtils.deriveFont(onShiftInfo, 16);
+		ComponentUtils.deriveFont(onCommandInfo, 16);
 
 		JPanel destal = new JPanel();
 
@@ -152,13 +159,35 @@ public class FoodGUI extends ModElementGUI<Food> {
 				L10N.t("elementgui.food.food_3d_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent glow = PanelUtils.join(FlowLayout.LEFT, HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+		JComponent glow = PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
 						L10N.label("elementgui.food.enable_glowing")), hasGlow, glowCondition);
 
-		JComponent visualBottom = PanelUtils.centerAndSouthElement(PanelUtils.gridElements(1, 2, HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/special_information"),
-						L10N.label("elementgui.food.tooltip_tip")), specialInfo), glow, 10, 10);
+		JPanel specialInformations = new JPanel(new GridLayout(3, 2, 15, 15));
+		specialInformations.setOpaque(false);
+
+		specialInformations.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				L10N.label("elementgui.item.tooltip_tip")));
+		specialInformations.add(specialInfo);
+
+		specialInformations.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_shift"),
+						L10N.label("elementgui.common.description_on_shift")), onShiftOnly));
+		specialInformations.add(onShiftInfo);
+
+		specialInformations.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_command"),
+						L10N.label("elementgui.common.description_on_command")), onCommandOnly));
+		specialInformations.add(onCommandInfo);
+
+		onShiftOnly.setEnabled(true);
+		onShiftOnly.setOpaque(false);
+		onShiftOnly.setSelected(false);
+		onCommandOnly.setEnabled(true);
+		onCommandOnly.setOpaque(false);
+		onCommandOnly.setSelected(false);
+
+		JComponent visualBottom = PanelUtils.centerAndSouthElement(specialInformations, glow, 10, 10);
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils
@@ -212,6 +241,8 @@ public class FoodGUI extends ModElementGUI<Food> {
 		selp.add(isAlwaysEdible);
 
 		hasGlow.addActionListener(e -> updateGlowElements());
+		onShiftOnly.addActionListener(e -> updateShiftInfo());
+		onCommandOnly.addActionListener(e -> updateCommandInfo());
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("food/eating_speed"), L10N.label("elementgui.food.eating_speed")));
@@ -264,6 +295,10 @@ public class FoodGUI extends ModElementGUI<Food> {
 		glowCondition.setEnabled(hasGlow.isSelected());
 	}
 
+	private void updateShiftInfo() { onShiftInfo.setEnabled(onShiftOnly.isSelected());}
+
+	private void updateCommandInfo() { onCommandInfo.setEnabled(onCommandOnly.isSelected());}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onRightClicked.refreshListKeepSelected();
@@ -305,13 +340,31 @@ public class FoodGUI extends ModElementGUI<Food> {
 		eatingSpeed.setValue(food.eatingSpeed);
 		animation.setSelectedItem(food.animation);
 		hasGlow.setSelected(food.hasGlow);
+		onShiftOnly.setSelected(food.onShiftOnly);
+		onCommandOnly.setSelected(food.onCommandOnly);
 		glowCondition.setSelectedProcedure(food.glowCondition);
 		creativeTab.setSelectedItem(food.creativeTab);
 		resultItem.setBlock(food.resultItem);
-		specialInfo.setText(
-				food.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+
+		specialInfo.setText(food.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		try {
+			if (Food.class.getField("onShiftInfo").get(food) != null) {
+				onShiftInfo.setText(food.onShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		try {
+			if (Food.class.getField("onCommandInfo").get(food) != null) {
+				onCommandInfo.setText(food.onCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 
 		updateGlowElements();
+		updateShiftInfo();
+		updateCommandInfo();
 
 		Model model = food.getItemModel();
 		if (model != null)
@@ -336,8 +389,12 @@ public class FoodGUI extends ModElementGUI<Food> {
 		food.onCrafted = onCrafted.getSelectedProcedure();
 		food.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		food.hasGlow = hasGlow.isSelected();
+		food.onShiftOnly = onShiftOnly.isSelected();
+		food.onCommandOnly = onCommandOnly.isSelected();
 		food.glowCondition = glowCondition.getSelectedProcedure();
 		food.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
+		food.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onShiftInfo.getText());
+		food.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onCommandInfo.getText());
 		food.resultItem = resultItem.getBlock();
 
 		Model.Type modelType = ((Model) Objects.requireNonNull(renderType.getSelectedItem())).getType();

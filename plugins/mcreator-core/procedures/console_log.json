@@ -39,7 +39,7 @@
   "mcreator": {
     "toolbox_id": "text",
     "toolbox_init": [
-      "<value name=\"text\"><block type=\"text\"><field name=\"TEXT\">Message</field></block></value>"
+      "<value name=\"message\"><block type=\"text\"><field name=\"TEXT\">Message</field></block></value>"
     ],
     "inputs": [
       "message"

@@ -65,28 +65,6 @@
                 ],
                 </#if>
                 "functions": [
-                    <#if entry.minEnchantmentLevel != 0 || entry.maxEnchantmentLevel != 0>
-                    {
-                      "function": "enchant_with_levels",
-                      "treasure": true,
-                      "levels": {
-                        "min": ${entry.minEnchantmentLevel},
-                        "max": ${entry.maxEnchantmentLevel}
-                      }
-                    },
-                    </#if>
-                    <#if entry.explosionDecay>
-                    {
-                      "function": "minecraft:explosion_decay"
-                    },
-                    </#if>
-                    <#if entry.affectedByFortune>
-                    {
-                      "function": "minecraft:apply_bonus",
-                      "enchantment": "minecraft:fortune",
-                      "formula": "minecraft:ore_drops"
-                    },
-                    </#if>
                     {
                       "function": "set_count",
                       "count": {
@@ -94,6 +72,28 @@
                         "max": ${entry.maxCount}
                       }
                     }
+                    <#if entry.minEnchantmentLevel != 0 || entry.maxEnchantmentLevel != 0>
+                    ,{
+                      "function": "enchant_with_levels",
+                      "treasure": true,
+                      "levels": {
+                        "min": ${entry.minEnchantmentLevel},
+                        "max": ${entry.maxEnchantmentLevel}
+                      }
+                    }
+                    </#if>
+                    <#if entry.explosionDecay>
+                    ,{
+                      "function": "minecraft:explosion_decay"
+                    }
+                    </#if>
+                    <#if entry.affectedByFortune>
+                    ,{
+                      "function": "minecraft:apply_bonus",
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops"
+                    }
+                    </#if>
                 ]
               }
                 <#if entry?has_next>,</#if>

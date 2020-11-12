@@ -109,12 +109,38 @@ package ${package}.item;
 				}
 				</#if>
 
-				<#if data.helmetSpecialInfo?has_content>
-				@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+				<#if data.helmetSpecialInfo?has_content || data.helmetShiftInfo?has_content || data.helmetCommandInfo?has_content>
+				@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 					super.addInformation(itemstack, world, list, flag);
+					<#if data.helmetSpecialInfo?has_content>
+					<#assign line = 1>
 					<#list data.helmetSpecialInfo as entry>
-					list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+					list.add(new TranslationTextComponent("item.${modid?lower_case}.${registryname?lower_case}_helmet.tooltip${line}"));
+					<#assign line++>
 					</#list>
+					</#if>
+					<#if data.helmetShiftInfo?has_content && data.armorHelmetShiftOnly()>
+					if (Screen.hasShiftDown()) {
+						<#assign line = 1>
+						<#list data.helmetShiftInfo as entry>
+						list.add(new TranslationTextComponent("item.${modid?lower_case}.${registryname?lower_case}_helmet.shift.tooltip${line}"));
+						<#assign line++>
+						</#list>
+					} else {
+						list.add(new StringTextComponent("\u00A77Press SHIFT for more information"));
+					}
+					</#if>
+					<#if data.helmetCommandInfo?has_content && data.armorHelmetCommandOnly()>
+					if (Screen.hasControlDown()) {
+						<#assign line = 1>
+						<#list data.helmetCommandInfo as entry>
+						list.add(new TranslationTextComponent("item.${modid?lower_case}.${registryname?lower_case}_helmet.command.tooltip${line}"));
+						<#assign line++>
+						</#list>
+					} else {
+						list.add(new StringTextComponent("\u00A77Press CTRL for more information"));
+					}
+					</#if>
 				}
 				</#if>
 
@@ -160,12 +186,38 @@ package ${package}.item;
 				}
 				</#if>
 
-				<#if data.bodySpecialInfo?has_content>
-				@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+				<#if data.bodySpecialInfo?has_content || data.bodyShiftInfo?has_content || data.bodyCommandInfo?has_content>
+				@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 					super.addInformation(itemstack, world, list, flag);
+					<#if data.bodySpecialInfo?has_content>
+					<#assign line = 1>
 					<#list data.bodySpecialInfo as entry>
-					list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+					list.add(new TranslationTextComponent("item.${modid?lower_case}.${registryname?lower_case}_chestplate.tooltip${line}"));
+					<#assign line++>
 					</#list>
+					</#if>
+					<#if data.bodyShiftInfo?has_content && data.armorChestplateShiftOnly()>
+					if (Screen.hasShiftDown()) {
+						<#assign line = 1>
+						<#list data.bodyShiftInfo as entry>
+						list.add(new TranslationTextComponent("item.${modid?lower_case}.${registryname?lower_case}_chestplate.shift.tooltip${line}"));
+						<#assign line++>
+						</#list>
+					} else {
+						list.add(new StringTextComponent("\u00A77Press SHIFT for more information"));
+					}
+					</#if>
+					<#if data.bodyCommandInfo?has_content && data.armorChestplateCommandOnly()>
+					if (Screen.hasControlDown()) {
+						<#assign line = 1>
+						<#list data.bodyCommandInfo as entry>
+						list.add(new TranslationTextComponent("item.${modid?lower_case}.${registryname?lower_case}_chestplate.command.tooltip${line}"));
+						<#assign line++>
+						</#list>
+					} else {
+						list.add(new StringTextComponent("\u00A77Press CTRL for more information"));
+					}
+					</#if>
 				}
 				</#if>
 
@@ -203,12 +255,38 @@ package ${package}.item;
 				}
 				</#if>
 
-				<#if data.leggingsSpecialInfo?has_content>
-				@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+				<#if data.leggingsSpecialInfo?has_content || data.leggingsShiftInfo?has_content || data.leggingsCommandInfo?has_content>
+				@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 					super.addInformation(itemstack, world, list, flag);
+					<#if data.leggingsSpecialInfo?has_content>
+					<#assign line = 1>
 					<#list data.leggingsSpecialInfo as entry>
-					list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+					list.add(new TranslationTextComponent("item.${modid?lower_case}.${registryname?lower_case}_leggings.tooltip${line}"));
+					<#assign line++>
 					</#list>
+					</#if>
+					<#if data.leggingsShiftInfo?has_content && data.armorLeggingsShiftOnly()>
+					if (Screen.hasShiftDown()) {
+						<#assign line = 1>
+						<#list data.leggingsShiftInfo as entry>
+						list.add(new TranslationTextComponent("item.${modid?lower_case}.${registryname?lower_case}_leggings.shift.tooltip${line}"));
+						<#assign line++>
+						</#list>
+					} else {
+						list.add(new StringTextComponent("\u00A77Press SHIFT for more information"));
+					}
+					</#if>
+					<#if data.leggingsCommandInfo?has_content && data.armorLeggingsCommandOnly()>
+					if (Screen.hasControlDown()) {
+						<#assign line = 1>
+						<#list data.leggingsCommandInfo as entry>
+						list.add(new TranslationTextComponent("item.${modid?lower_case}.${registryname?lower_case}_leggings.command.tooltip${line}"));
+						<#assign line++>
+						</#list>
+					} else {
+						list.add(new StringTextComponent("\u00A77Press CTRL for more information"));
+					}
+					</#if>
 				}
 				</#if>
 
@@ -246,12 +324,38 @@ package ${package}.item;
 				}
 				</#if>
 
-				<#if data.bootsSpecialInfo?has_content>
-				@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+				<#if data.bootsSpecialInfo?has_content || data.bootsShiftInfo?has_content || data.bootsCommandInfo?has_content>
+				@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 					super.addInformation(itemstack, world, list, flag);
+					<#if data.bootsSpecialInfo?has_content>
+					<#assign line = 1>
 					<#list data.bootsSpecialInfo as entry>
-					list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+					list.add(new TranslationTextComponent("item.${modid?lower_case}.${registryname?lower_case}_boots.tooltip${line}"));
+					<#assign line++>
 					</#list>
+					</#if>
+					<#if data.bootsShiftInfo?has_content && data.armorBootsShiftOnly()>
+					if (Screen.hasShiftDown()) {
+						<#assign line = 1>
+						<#list data.bootsShiftInfo as entry>
+						list.add(new TranslationTextComponent("item.${modid?lower_case}.${registryname?lower_case}_boots.shift.tooltip${line}"));
+						<#assign line++>
+						</#list>
+					} else {
+						list.add(new StringTextComponent("\u00A77Press SHIFT for more information"));
+					}
+					</#if>
+					<#if data.bootsCommandInfo?has_content && data.armorBootsCommandOnly()>
+					if (Screen.hasControlDown()) {
+						<#assign line = 1>
+						<#list data.bootsCommandInfo as entry>
+						list.add(new TranslationTextComponent("item.${modid?lower_case}.${registryname?lower_case}_boots.command.tooltip${line}"));
+						<#assign line++>
+						</#list>
+					} else {
+						list.add(new StringTextComponent("\u00A77Press CTRL for more information"));
+					}
+					</#if>
 				}
 				</#if>
 
