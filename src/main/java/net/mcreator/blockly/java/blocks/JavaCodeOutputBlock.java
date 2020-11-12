@@ -31,7 +31,8 @@ public class JavaCodeOutputBlock implements IBlockGenerator {
 		if (element != null) {
 			master.append(element.getTextContent());
 		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, "Output code block can't be empty!"));
+			master.addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, "Output code block can't be empty!"));
 		}
 	}
 

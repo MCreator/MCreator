@@ -1,0 +1,1 @@
+Check this box if texture of your particle should be animated.

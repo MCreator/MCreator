@@ -77,7 +77,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	private ProcedureSelector glowCondition;
 
 	private final JComboBox<String> animation = new JComboBox<>(
-			new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
+			new String[] { "bow", "block", "crossbow", "drink", "eat", "none", "spear" });
 
 	private ProcedureSelector onBulletHitsBlock;
 	private ProcedureSelector onBulletHitsPlayer;
@@ -150,8 +150,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				L10N.t("elementgui.ranged_item.can_use"), VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
-				L10N.t("elementgui.ranged_item.make_glow"),
-				ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
+				L10N.t("elementgui.ranged_item.make_glow"), ProcedureSelector.Side.CLIENT, true,
+				VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		customBulletModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
@@ -180,13 +180,13 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		JPanel sbbp2 = new JPanel(new BorderLayout(0, 2));
 		sbbp2.setOpaque(false);
 
-		sbbp2.add("North", PanelUtils.westAndEastElement(
-				PanelUtils.centerInPanel(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.ranged_item.texture"))),
+		sbbp2.add("North", PanelUtils.westAndEastElement(PanelUtils
+						.centerInPanel(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.ranged_item.texture"))),
 				PanelUtils.join(useCondition, onRangedItemUsed, onEntitySwing)));
 
-		sbbp2.add("South", PanelUtils.westAndEastElement(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-				L10N.label("elementgui.ranged_item.enable_glowing")),
-				PanelUtils.join(hasGlow, glowCondition)));
+		sbbp2.add("South", PanelUtils.westAndEastElement(HelpUtils
+				.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+						L10N.label("elementgui.ranged_item.enable_glowing")), PanelUtils.join(hasGlow, glowCondition)));
 
 		pane1.setOpaque(false);
 
@@ -205,11 +205,12 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		shootConstantly.setOpaque(false);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
-				L10N.label("elementgui.common.item_model")));
+		selp.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		selp.add(renderType);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
@@ -226,8 +227,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				L10N.label("elementgui.ranged_item.item_animation")));
 		selp.add(animation);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
-				L10N.label("elementgui.common.max_stack_size")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("item/stack_size"), L10N.label("elementgui.common.max_stack_size")));
 		selp.add(stackSize);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
@@ -337,7 +338,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 			if (bulletItemTexture.containsItem() || !adefault.equals(bulletModel.getSelectedItem()))
 				return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 			else
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, L10N.t("elementgui.ranged_item.error_select_element"));
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("elementgui.ranged_item.error_select_element"));
 		});
 
 		customBulletModelTexture.setValidator(() -> {

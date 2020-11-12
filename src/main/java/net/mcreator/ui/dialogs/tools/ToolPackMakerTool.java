@@ -37,6 +37,7 @@ import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
@@ -55,14 +56,12 @@ import java.util.Locale;
 public class ToolPackMakerTool {
 
 	private static void open(MCreator mcreator) {
-		MCreatorDialog dialog = new MCreatorDialog(mcreator, "Tool pack maker", true);
+		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.tools.tool_pack_title"), true);
 		dialog.setLayout(new BorderLayout(10, 10));
 
 		dialog.setIconImage(UIRES.get("16px.toolpack").getImage());
 
-		dialog.add("North", PanelUtils.centerInPanel(new JLabel(
-				"<html><center>Using this tool, you can make the base for your tool pack in just a few clicks.<br>"
-						+ "This tool will make: <b>Pickaxe, Axe, Sword, Shovel, Hoe, Tool Recipes")));
+		dialog.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools.tool_pack_info")));
 
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
 
@@ -74,7 +73,7 @@ public class ToolPackMakerTool {
 		color.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		name.enableRealtimeValidation();
 
-		props.add(new JLabel("Tool pack base item:"));
+		props.add(L10N.label("dialog.tools.tool_pack_base_item"));
 		props.add(PanelUtils.centerInPanel(base));
 
 		base.setBlockSelectedListener(e -> {
@@ -93,20 +92,20 @@ public class ToolPackMakerTool {
 			}
 		});
 
-		props.add(new JLabel("Tool pack name:"));
+		props.add(L10N.label("dialog.tools.tool_pack_name"));
 		props.add(name);
 
-		props.add(new JLabel("Tool pack color accent:"));
+		props.add(L10N.label("dialog.tools.tool_pack_color_accent"));
 		props.add(color);
 
-		props.add(new JLabel("<html>Tool pack power factor:<br><small>Relative to iron tool pack"));
+		props.add(L10N.label("dialog.tools.tool_pack_power_factor"));
 		props.add(power);
 
 		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name));
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
-		JButton ok = new JButton("Create tool pack");
-		JButton canecel = new JButton("Cancel");
+		JButton ok = L10N.button("dialog.tools.tool_pack_create");
+		JButton canecel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
 		canecel.addActionListener(e -> dialog.setVisible(false));
 		dialog.add("South", PanelUtils.join(ok, canecel));
 
@@ -309,7 +308,8 @@ public class ToolPackMakerTool {
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
-		return new BasicAction(actionRegistry, "Create tool pack...", e -> open(actionRegistry.getMCreator())) {
+		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.tool"),
+				e -> open(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getWorkspace().getGenerator()
 						.getGeneratorConfiguration();

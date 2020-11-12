@@ -20,6 +20,7 @@ package net.mcreator.integration;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.Button;
@@ -541,7 +542,7 @@ public class TestWorkspaceDataProvider {
 			}
 			mob.spawnParticles = _true;
 			mob.particleToSpawn = new Particle(modElement.getWorkspace(),
-					ListUtils.getRandomItem(random, ElementUtil.loadParticles()));
+					ListUtils.getRandomItem(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			mob.particleSpawningShape = new String[] { "Spread", "Top", "Tube", "Plane" }[valueIndex];
 			mob.rangedItemType = "Default item";
 			mob.particleSpawningRadious = 4;
@@ -619,7 +620,7 @@ public class TestWorkspaceDataProvider {
 			dimension.texture = "test";
 			dimension.portalTexture = "test2";
 			dimension.portalParticles = new Particle(modElement.getWorkspace(),
-					ListUtils.getRandomItem(random, ElementUtil.loadParticles()));
+					ListUtils.getRandomItem(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			dimension.igniterTab = new TabEntry(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			dimension.portalSound = new Sound(modElement.getWorkspace(),
@@ -1003,7 +1004,7 @@ public class TestWorkspaceDataProvider {
 			block.spawnParticles = _true;
 			block.tickRandomly = _true;
 			block.particleToSpawn = new Particle(modElement.getWorkspace(),
-					ListUtils.getRandomItem(random, ElementUtil.loadParticles()));
+					ListUtils.getRandomItem(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			block.particleSpawningShape = new String[] { "Spread", "Top", "Tube", "Plane" }[valueIndex];
 			block.particleSpawningRadious = 4;
 			block.particleAmount = 13;
@@ -1144,11 +1145,11 @@ public class TestWorkspaceDataProvider {
 				int pools = random.nextInt(5) + 1;
 				for (int i = 0; i < pools; i++) {
 					LootTable.Pool pool = new LootTable.Pool();
-					pool.minrolls = 3;
-					pool.maxrolls = 4;
+					pool.minrolls = new int[] { 2, 4, 1, 3 }[valueIndex];
+					pool.maxrolls = new int[] { 3, 4, 6, 3 }[valueIndex];
 					pool.hasbonusrolls = _true;
-					pool.minbonusrolls = 2;
-					pool.maxbonusrolls = 2;
+					pool.minbonusrolls = new int[] { 0, 9, 4, 6 }[valueIndex];
+					pool.maxbonusrolls = new int[] { 2, 9, 4, 7 }[valueIndex];
 					pool.entries = new ArrayList<>();
 
 					int entries = random.nextInt(5) + 1;
@@ -1156,18 +1157,18 @@ public class TestWorkspaceDataProvider {
 						LootTable.Pool.Entry entry = new LootTable.Pool.Entry();
 
 						entry.type = "item";
-						entry.weight = 2;
+						entry.weight = new int[] { 1, 2, 3, -3 }[valueIndex];
 
-						entry.minCount = 8;
-						entry.maxCount = 10;
+						entry.minCount = new int[] { 1, 6, 2, 8 }[valueIndex];
+						entry.maxCount = new int[] { 4, 6, 7, 8 }[valueIndex];
 
-						entry.affectedByFortune = true;
-						entry.explosionDecay = true;
+						entry.affectedByFortune = _true;
+						entry.explosionDecay = _true;
 
-						entry.silkTouchMode = 1;
+						entry.silkTouchMode = new int[] { 0, 1, 2, 1 }[valueIndex];
 
-						entry.minEnchantmentLevel = 2;
-						entry.maxEnchantmentLevel = 12;
+						entry.minEnchantmentLevel = new int[] { 2, 5, 1, 6 }[valueIndex];
+						entry.maxEnchantmentLevel = new int[] { 3, 9, 5, 6 }[valueIndex];
 
 						entry.item = new MItemBlock(modElement.getWorkspace(), ListUtils
 								.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
@@ -1260,6 +1261,23 @@ public class TestWorkspaceDataProvider {
 			painting.width = 16;
 			painting.height = 16;
 			return painting;
+		case PARTICLE:
+			net.mcreator.element.types.Particle particle = new net.mcreator.element.types.Particle(modElement);
+			particle.texture = "test.png";
+			particle.width = 2.3;
+			particle.frameDuration = 2;
+			particle.height = 1.38;
+			particle.scale = 1.38;
+			particle.gravity = 12.3;
+			particle.speedFactor = 1.3;
+			particle.canCollide = _true;
+			particle.alwaysShow = !_true;
+			particle.animate = _true;
+			particle.maxAge = 12;
+			particle.maxAgeDiff = emptyLists ? 0 : 15;
+			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "LIT" }[valueIndex];
+			particle.additionalExpiryCondition = new Procedure("condition1");
+			return particle;
 		default:
 			return null;
 		}

@@ -137,10 +137,13 @@ public class NewImageDialog extends MCreatorDialog {
 		properties.add(new JLabel("Fill with:"));
 		properties.add(layerType);
 
-		specialSettings.add(PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor.new_image_add_transparent_layer")), layerTypes[0]);
+		specialSettings
+				.add(PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor.new_image_add_transparent_layer")),
+						layerTypes[0]);
 		specialSettings.add(colorSettings, layerTypes[1]);
 		specialSettings.add(templateSettings, layerTypes[2]);
-		specialSettings.add(PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor.new_image_add_no_layer")), layerTypes[3]);
+		specialSettings.add(PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor.new_image_add_no_layer")),
+				layerTypes[3]);
 
 		constraints.add(L10N.label("dialog.imageeditor.width"));
 		constraints.add(width);

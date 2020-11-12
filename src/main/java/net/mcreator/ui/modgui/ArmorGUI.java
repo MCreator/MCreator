@@ -298,10 +298,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		helmetModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"), PanelUtils
 				.northAndCenterElement(PanelUtils
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), helmetModel,
-								new JLabel(":"), helmetModelPart, new JLabel("elementgui.armor.texture"),
+								new JLabel(":"), helmetModelPart, L10N.label("elementgui.armor.texture"),
 								helmetModelTexture), PanelUtils
-						.join(FlowLayout.LEFT, new JLabel(L10N.t("elementgui.armor.special_information")),
-								helmetSpecialInfo)));
+						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), helmetSpecialInfo)));
 		helmetModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		JComponent helText = PanelUtils
@@ -328,8 +327,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 								new JLabel(":"), bodyModelPart, new JLabel("arms L"), armsModelPartL,
 								new JLabel("arms R"), armsModelPartR, L10N.label("elementgui.armor.texture"),
 								bodyModelTexture), PanelUtils
-						.join(FlowLayout.LEFT, new JLabel(L10N.t("elementgui.armor.special_information")),
-								bodySpecialInfo)));
+						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), bodySpecialInfo)));
 		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(bodText, PanelUtils.centerAndSouthElement(
@@ -349,7 +347,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), leggingsModel,
 								new JLabel(": L"), leggingsModelPartL, new JLabel("R"), leggingsModelPartR,
 								L10N.label("elementgui.armor.texture"), leggingsModelTexture), PanelUtils
-						.join(FlowLayout.LEFT, new JLabel(L10N.t("elementgui.armor.special_information")),
+						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
 								leggingsSpecialInfo)));
 		leggingsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
@@ -370,8 +368,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bootsModel,
 								new JLabel(": L"), bootsModelPartL, new JLabel("R"), bootsModelPartR,
 								L10N.label("elementgui.armor.texture"), bootsModelTexture), PanelUtils
-						.join(FlowLayout.LEFT, new JLabel(L10N.t("elementgui.armor.special_information")),
-								bootsSpecialInfo)));
+						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), bootsSpecialInfo)));
 		bootsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(bootText, PanelUtils.centerAndSouthElement(

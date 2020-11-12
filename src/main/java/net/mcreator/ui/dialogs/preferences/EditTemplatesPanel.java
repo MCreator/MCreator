@@ -39,7 +39,8 @@ class EditTemplatesPanel {
 
 		JPanel sectionPanel = new JPanel(new BorderLayout(15, 15));
 
-		sectionPanel.add("North", L10N.label("dialog.preferences.change_language", name.toLowerCase(Locale.ENGLISH), templateExt));
+		sectionPanel.add("North",
+				L10N.label("dialog.preferences.change_language", name.toLowerCase(Locale.ENGLISH), templateExt));
 		sectionPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
 
 		JToolBar opts = new JToolBar();

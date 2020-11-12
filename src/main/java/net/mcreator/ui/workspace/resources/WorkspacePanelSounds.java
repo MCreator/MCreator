@@ -77,7 +77,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton importsound = new JButton(L10N.t("action.workspace.resources.import_sound"));
+		JButton importsound = L10N.button("action.workspace.resources.import_sound");
 		importsound.setIcon(UIRES.get("16px.open.gif"));
 		importsound.setContentAreaFilled(false);
 		importsound.setOpaque(false);
@@ -85,7 +85,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		importsound.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(importsound);
 
-		JButton edit = new JButton(L10N.t("workspace.sounds.edit_selected"));
+		JButton edit = L10N.button("workspace.sounds.edit_selected");
 		edit.setIcon(UIRES.get("16px.edit.gif"));
 		edit.setContentAreaFilled(false);
 		edit.setOpaque(false);
@@ -93,7 +93,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		edit.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(edit);
 
-		JButton del = new JButton(L10N.t("workspace.sounds.delete_selected"));
+		JButton del = L10N.button("workspace.sounds.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
 		del.setContentAreaFilled(false);

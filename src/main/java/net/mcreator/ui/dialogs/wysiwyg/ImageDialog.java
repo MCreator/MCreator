@@ -22,8 +22,8 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Image;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.IHelpContext;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -36,10 +36,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
-public class ImageDialog extends MCreatorDialog {
+public class ImageDialog extends AbstractWYSIWYGDialog {
 
 	public ImageDialog(WYSIWYGEditor editor, @Nullable Image image) {
-		super(editor.mcreator);
+		super(editor.mcreator, image);
 		setSize(560, 180);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
@@ -51,20 +51,21 @@ public class ImageDialog extends MCreatorDialog {
 
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
-		options.add(PanelUtils.westAndCenterElement(new JLabel("Texture: "), textureSelector));
+		options.add(PanelUtils.westAndCenterElement(L10N.label("dialog.gui.image_texture"), textureSelector));
 
-		JCheckBox scale1x = new JCheckBox("Use original scale (1X instead of Minecraft 2X scale)");
+		JCheckBox scale1x = L10N.checkbox("dialog.gui.image_use_scale");
 		options.add(PanelUtils.join(FlowLayout.LEFT, scale1x));
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
-				IHelpContext.NONE.withEntry("gui/image_display_condition"), editor.mcreator, "Image display condition",
-				ProcedureSelector.Side.CLIENT, false, VariableElementType.LOGIC,
+				IHelpContext.NONE.withEntry("gui/image_display_condition"), editor.mcreator,
+				L10N.t("dialog.gui.image_display_condition"), ProcedureSelector.Side.CLIENT, false,
+				VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
 
 		add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(options, displayCondition, 20, 5)));
 
-		setTitle("Image component");
+		setTitle(L10N.t("dialog.gui.image_title"));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 
@@ -74,7 +75,7 @@ public class ImageDialog extends MCreatorDialog {
 		add("South", PanelUtils.join(ok, cancel));
 
 		if (image != null) {
-			ok.setText("Save changes");
+			ok.setText(L10N.t("dialog.common.save_changes"));
 			textureSelector.setSelectedItem(image.image);
 			scale1x.setSelected(image.use1Xscale);
 			displayCondition.setSelectedProcedure(image.displayCondition);
@@ -94,16 +95,17 @@ public class ImageDialog extends MCreatorDialog {
 					else
 						editor.editor.setPositioningMode(a.getIconWidth(), a.getIconHeight());
 
-					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(
+					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
 							new Image(imageTxt, editor.editor.newlyAddedComponentPosX,
 									editor.editor.newlyAddedComponentPosY, imageTxt, scale1x.isSelected(),
-									displayCondition.getSelectedProcedure())));
+									displayCondition.getSelectedProcedure()))));
 				} else {
 					int idx = editor.components.indexOf(image);
 					editor.components.remove(image);
 					Image labelNew = new Image(imageTxt, image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
 							displayCondition.getSelectedProcedure());
 					editor.components.add(idx, labelNew);
+					setEditingComponent(labelNew);
 				}
 			}
 		});

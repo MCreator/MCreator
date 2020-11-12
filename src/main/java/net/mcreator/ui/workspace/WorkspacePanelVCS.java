@@ -65,7 +65,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton uncommited = new JButton(L10N.t("workspace.vcs.show_local_changes"));
+		JButton uncommited = L10N.button("workspace.vcs.show_local_changes");
 		uncommited.setIcon(UIRES.get("16px.info"));
 		uncommited.setContentAreaFilled(false);
 		uncommited.setOpaque(false);
@@ -75,7 +75,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 
 		uncommited.addActionListener(e -> workspacePanel.mcreator.actionRegistry.showUnsyncedChanges.doAction());
 
-		JButton checkout = new JButton(L10N.t("workspace.vcs.jump_to_selected_commit"));
+		JButton checkout = L10N.button("workspace.vcs.jump_to_selected_commit");
 		checkout.setIcon(UIRES.get("16px.rwd"));
 		checkout.setContentAreaFilled(false);
 		checkout.setOpaque(false);

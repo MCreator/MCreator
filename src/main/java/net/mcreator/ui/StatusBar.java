@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
 public class StatusBar extends JPanel {
 
 	private final JLabel messages = new JLabel("");
-	private final JLabel gradleMessages = new JLabel(L10N.t("gradle.idle"));
+	private final JLabel gradleMessages = L10N.label("gradle.idle");
 
 	private final GradleIndicator gradleIndicator = new GradleIndicator();
 

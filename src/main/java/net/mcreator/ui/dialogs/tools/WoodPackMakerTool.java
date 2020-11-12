@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.dialogs.tools;
 
-import net.mcreator.blockly.java.blocks.MCItemBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.parts.MItemBlock;
@@ -27,12 +26,10 @@ import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.element.types.Tag;
-import net.mcreator.element.types.Tool;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.ResourcePointer;
-import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
@@ -41,13 +38,12 @@ import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.util.ListUtils;
-import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -56,21 +52,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Locale;
 
 public class WoodPackMakerTool {
 
 	private static void open(MCreator mcreator) {
-		MCreatorDialog dialog = new MCreatorDialog(mcreator, "Wood pack maker", true);
+		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.tools.wood_pack_title"), true);
 		dialog.setLayout(new BorderLayout(10, 10));
 
 		dialog.setIconImage(UIRES.get("16px.woodpack").getImage());
 
-		dialog.add("North", PanelUtils.centerInPanel(new JLabel(
-				"<html><center>Using this tool, you can make the base for your wood pack in just a few clicks.<br>"
-						+ "This tool will make: <b>Leaves, Log, Wood, Planks, Stairs, Slab, Fence, Fence gate,"
-						+ "<br>Recipes and Tag")));
+		dialog.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools.wood_pack_info")));
 
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
 
@@ -80,28 +72,28 @@ public class WoodPackMakerTool {
 
 		name.enableRealtimeValidation();
 
-		props.add(new JLabel("Wood pack name:"));
+		props.add(L10N.label("dialog.tools.wood_pack_name"));
 		props.add(name);
 
-		props.add(new JLabel("Wood pack color accent:"));
+		props.add(L10N.label("dialog.tools.wood_pack_color_accent"));
 		props.add(color);
 
-		props.add(new JLabel("<html>Wood pack power factor:<br><small>Relative to oak wood pack"));
+		props.add(L10N.label("dialog.tools.wood_pack_power_factor"));
 		props.add(power);
 
 		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name));
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
-		JButton ok = new JButton("Create wood pack");
-		JButton canecel = new JButton("Cancel");
+		JButton ok = L10N.button("dialog.tools.wood_pack_create");
+		JButton canecel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
 		canecel.addActionListener(e -> dialog.setVisible(false));
 		dialog.add("South", PanelUtils.join(ok, canecel));
 
 		ok.addActionListener(e -> {
 			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-				addWoodPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
-						color.getColor(), (Double) power.getValue());
+				addWoodPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), color.getColor(),
+						(Double) power.getValue());
 				mcreator.mv.updateMods();
 				dialog.setCursor(Cursor.getDefaultCursor());
 				dialog.setVisible(false);
@@ -113,32 +105,29 @@ public class WoodPackMakerTool {
 		dialog.setVisible(true);
 	}
 
-	private static void addWoodPackToWorkspace(MCreator mcreator, Workspace workspace, String name,
-			Color color, double factor) {
+	private static void addWoodPackToWorkspace(MCreator mcreator, Workspace workspace, String name, Color color,
+			double factor) {
 		// first we generate wood texture
 		ImageIcon wood = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
-						"templates/textures/texturemaker/" + ListUtils
-								.getRandomItem(Arrays.asList("log_side_1", "log_side_2", "log_side_3",
-										"log_side_4", "log_side_5")) + ".png")), color,
-				true);
+						"templates/textures/texturemaker/" + ListUtils.getRandomItem(
+								Arrays.asList("log_side_1", "log_side_2", "log_side_3", "log_side_4", "log_side_5")) + ".png")),
+				color, true);
 		String woodTextureName = (name + "_log_side").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(wood.getImage()),
-				mcreator.getWorkspace().getFolderManager()
-						.getBlockTextureFile(RegistryNameFixer.fix(woodTextureName)));
+				mcreator.getWorkspace().getFolderManager().getBlockTextureFile(RegistryNameFixer.fix(woodTextureName)));
 
 		//then we generate the missing log texture
-		ImageIcon log = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
-						"templates/textures/texturemaker/log_top.png")), color, true);
+		ImageIcon log = ImageUtils.colorize(
+				ImageMakerTexturesCache.CACHE.get(new ResourcePointer("templates/textures/texturemaker/log_top.png")),
+				color, true);
 		String logTextureName = (name + "_log_top").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(log.getImage()),
-				mcreator.getWorkspace().getFolderManager()
-						.getBlockTextureFile(RegistryNameFixer.fix(logTextureName)));
+				mcreator.getWorkspace().getFolderManager().getBlockTextureFile(RegistryNameFixer.fix(logTextureName)));
 
 		//then we generate the planks texture
 		ImageIcon planks = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
-						"templates/textures/texturemaker/" + ListUtils
-								.getRandomItem(Arrays.asList("planks_0", "planks_1")) + ".png")), color,
-				true);
+				"templates/textures/texturemaker/" + ListUtils.getRandomItem(Arrays.asList("planks_0", "planks_1"))
+						+ ".png")), color, true);
 		String planksTextureName = (name + "_planks").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(planks.getImage()),
 				mcreator.getWorkspace().getFolderManager()
@@ -146,10 +135,9 @@ public class WoodPackMakerTool {
 
 		//then we generate the leaves texture
 		ImageIcon leaves = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
-						"templates/textures/texturemaker/" + ListUtils
-								.getRandomItem(Arrays.asList("leaves_0", "leaves_1", "leaves_2", "leaves_3", "leaves_4",
-										"leaves_5", "leaves_new1", "leaves_new2", "leaves2")) + ".png")), color,
-				true);
+				"templates/textures/texturemaker/" + ListUtils.getRandomItem(
+						Arrays.asList("leaves_0", "leaves_1", "leaves_2", "leaves_3", "leaves_4", "leaves_5",
+								"leaves_new1", "leaves_new2", "leaves2")) + ".png")), color, true);
 		String leavesTextureName = (name + "_leaves").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(leaves.getImage()),
 				mcreator.getWorkspace().getFolderManager()
@@ -334,8 +322,8 @@ public class WoodPackMakerTool {
 
 		//Recipes
 		Recipe woodRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "WoodRecipe", ModElementType.RECIPE),
-						false).getElementFromGUI();
+				.getModElement(mcreator, new ModElement(workspace, name + "WoodRecipe", ModElementType.RECIPE), false)
+				.getElementFromGUI();
 		woodRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName());
 		woodRecipe.recipeSlots[1] = new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName());
 		woodRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName());
@@ -348,9 +336,10 @@ public class WoodPackMakerTool {
 		mcreator.getWorkspace().getModElementManager().storeModElement(woodRecipe);
 
 		Recipe planksRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "PlanksRecipe", ModElementType.RECIPE),
-						false).getElementFromGUI();
-		planksRecipe.recipeSlots[4] = new MItemBlock(workspace, "TAG:" + woodItemTag.namespace + ":" + woodItemTag.name);
+				.getModElement(mcreator, new ModElement(workspace, name + "PlanksRecipe", ModElementType.RECIPE), false)
+				.getElementFromGUI();
+		planksRecipe.recipeSlots[4] = new MItemBlock(workspace,
+				"TAG:" + woodItemTag.namespace + ":" + woodItemTag.name);
 		planksRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Planks");
 		planksRecipe.recipeShapeless = true;
 		planksRecipe.recipeRetstackSize = 4;
@@ -360,8 +349,8 @@ public class WoodPackMakerTool {
 		mcreator.getWorkspace().getModElementManager().storeModElement(planksRecipe);
 
 		Recipe stairsRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "StairsRecipe", ModElementType.RECIPE),
-						false).getElementFromGUI();
+				.getModElement(mcreator, new ModElement(workspace, name + "StairsRecipe", ModElementType.RECIPE), false)
+				.getElementFromGUI();
 		stairsRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		stairsRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		stairsRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
@@ -376,8 +365,8 @@ public class WoodPackMakerTool {
 		mcreator.getWorkspace().getModElementManager().storeModElement(stairsRecipe);
 
 		Recipe slabRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "SlabRecipe", ModElementType.RECIPE),
-						false).getElementFromGUI();
+				.getModElement(mcreator, new ModElement(workspace, name + "SlabRecipe", ModElementType.RECIPE), false)
+				.getElementFromGUI();
 		slabRecipe.recipeSlots[6] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		slabRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		slabRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
@@ -389,8 +378,8 @@ public class WoodPackMakerTool {
 		mcreator.getWorkspace().getModElementManager().storeModElement(slabRecipe);
 
 		Recipe fenceRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "FenceRecipe", ModElementType.RECIPE),
-						false).getElementFromGUI();
+				.getModElement(mcreator, new ModElement(workspace, name + "FenceRecipe", ModElementType.RECIPE), false)
+				.getElementFromGUI();
 		fenceRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		fenceRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		fenceRecipe.recipeSlots[5] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
@@ -421,8 +410,8 @@ public class WoodPackMakerTool {
 		mcreator.getWorkspace().getModElementManager().storeModElement(fenceGateRecipe);
 
 		Recipe stickRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "StickRecipe", ModElementType.RECIPE),
-						false).getElementFromGUI();
+				.getModElement(mcreator, new ModElement(workspace, name + "StickRecipe", ModElementType.RECIPE), false)
+				.getElementFromGUI();
 		stickRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		stickRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		stickRecipe.recipeReturnStack = new MItemBlock(workspace, "Items.STICK");
@@ -434,7 +423,8 @@ public class WoodPackMakerTool {
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
-		return new BasicAction(actionRegistry, "Create wood pack...", e -> open(actionRegistry.getMCreator())) {
+		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.wood"),
+				e -> open(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getWorkspace().getGenerator()
 						.getGeneratorConfiguration();

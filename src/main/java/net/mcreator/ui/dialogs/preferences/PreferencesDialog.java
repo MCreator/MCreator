@@ -94,7 +94,7 @@ public class PreferencesDialog extends MCreatorDialog {
 			}
 		});
 		spne.setContinuousLayout(true);
-		spne.setDividerLocation(150);
+		spne.setDividerLocation(0.3);
 		spne.setDividerSize(2);
 		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
 		add("Center", spne);
@@ -107,9 +107,9 @@ public class PreferencesDialog extends MCreatorDialog {
 
 		JButton reset = L10N.button("dialog.preferences.restore_defaults");
 		reset.addActionListener(actionEvent -> {
-			int option = JOptionPane
-					.showConfirmDialog(null, L10N.t("dialog.preferences.restore_defaults_confirmation"),
-							L10N.t("dialog.preferences.restore_defaults"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+			int option = JOptionPane.showConfirmDialog(null, L10N.t("dialog.preferences.restore_defaults_confirmation"),
+					L10N.t("dialog.preferences.restore_defaults"), JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null);
 			if (option == JOptionPane.YES_OPTION) {
 				PreferencesManager.PREFERENCES = new PreferencesData();
 				PreferencesManager.storePreferences(PreferencesManager.PREFERENCES);
@@ -153,7 +153,8 @@ public class PreferencesDialog extends MCreatorDialog {
 
 		cancel.addActionListener(event -> setVisible(false));
 
-		setSize(940, 540);
+		pack();
+		setSize(Math.max(940, getBounds().width), 540);
 		setLocationRelativeTo(parent);
 		setVisible(true);
 	}
@@ -170,8 +171,10 @@ public class PreferencesDialog extends MCreatorDialog {
 
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ui_backgrounds"), "backgrounds", "png");
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_procedure_templates"), "templates/ptpl", "ptpl");
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ai_builder_templates"), "templates/aitpl", "aitpl");
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_texture_templates"), "templates/textures/texturemaker", "png");
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ai_builder_templates"), "templates/aitpl",
+				"aitpl");
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_texture_templates"),
+				"templates/textures/texturemaker", "png");
 		new PluginsPanel(this);
 	}
 

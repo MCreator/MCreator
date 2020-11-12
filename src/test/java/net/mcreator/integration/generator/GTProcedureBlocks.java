@@ -142,7 +142,7 @@ public class GTProcedureBlocks {
 									JsonArray opts = arg.get("options").getAsJsonArray();
 									JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
 									additionalXML.append("<field name=\"").append(field).append("\">")
-											.append(opt.get(0).getAsString()).append("</field>");
+											.append(opt.get(1).getAsString()).append("</field>");
 									processed++;
 									break;
 								}

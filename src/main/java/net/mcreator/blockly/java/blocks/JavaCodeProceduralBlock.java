@@ -31,7 +31,8 @@ public class JavaCodeProceduralBlock implements IBlockGenerator {
 		if (element != null) {
 			master.append(element.getTextContent()).append("\n");
 		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Empty code block was skipped."));
+			master.addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Empty code block was skipped."));
 		}
 	}
 
