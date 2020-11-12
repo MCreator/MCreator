@@ -1234,11 +1234,11 @@ public class TestWorkspaceDataProvider {
 				int pools = random.nextInt(5) + 1;
 				for (int i = 0; i < pools; i++) {
 					LootTable.Pool pool = new LootTable.Pool();
-					pool.minrolls = 3;
-					pool.maxrolls = 4;
+					pool.minrolls = new int[] { 2, 4, 1, 3 }[valueIndex];
+					pool.maxrolls = new int[] { 3, 4, 6, 3 }[valueIndex];
 					pool.hasbonusrolls = _true;
-					pool.minbonusrolls = 2;
-					pool.maxbonusrolls = 2;
+					pool.minbonusrolls = new int[] { 0, 9, 4, 6 }[valueIndex];
+					pool.maxbonusrolls = new int[] { 2, 9, 4, 7 }[valueIndex];
 					pool.entries = new ArrayList<>();
 
 					int entries = random.nextInt(5) + 1;
@@ -1246,18 +1246,18 @@ public class TestWorkspaceDataProvider {
 						LootTable.Pool.Entry entry = new LootTable.Pool.Entry();
 
 						entry.type = "item";
-						entry.weight = 2;
+						entry.weight = new int[] { 1, 2, 3, -3 }[valueIndex];
 
-						entry.minCount = 8;
-						entry.maxCount = 10;
+						entry.minCount = new int[] { 1, 6, 2, 8 }[valueIndex];
+						entry.maxCount = new int[] { 4, 6, 7, 8 }[valueIndex];
 
-						entry.affectedByFortune = true;
-						entry.explosionDecay = true;
+						entry.affectedByFortune = _true;
+						entry.explosionDecay = _true;
 
-						entry.silkTouchMode = 1;
+						entry.silkTouchMode = new int[] { 0, 1, 2, 1 }[valueIndex];
 
-						entry.minEnchantmentLevel = 2;
-						entry.maxEnchantmentLevel = 12;
+						entry.minEnchantmentLevel = new int[] { 2, 5, 1, 6 }[valueIndex];
+						entry.maxEnchantmentLevel = new int[] { 3, 9, 5, 6 }[valueIndex];
 
 						entry.item = new MItemBlock(modElement.getWorkspace(), ListUtils
 								.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
