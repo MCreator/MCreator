@@ -184,8 +184,10 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 					ProcedureTemplateIO.exportProcedure(blocklyPanel.getXML(), exp);
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
-					JOptionPane.showMessageDialog(mcreator, L10N.t("blockly.templates.procedures.export_failed.message"),
-							L10N.t("blockly.templates.procedures.export_failed.title"), JOptionPane.WARNING_MESSAGE);
+					JOptionPane
+							.showMessageDialog(mcreator, L10N.t("blockly.templates.procedures.export_failed.message"),
+									L10N.t("blockly.templates.procedures.export_failed.title"),
+									JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -217,8 +219,10 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 					blocklyPanel.addBlocksFromXML(procedureXml);
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
-					JOptionPane.showMessageDialog(mcreator, L10N.t("blockly.templates.procedures.import_failed.message"),
-							L10N.t("blockly.templates.procedures.import_failed.title"), JOptionPane.WARNING_MESSAGE);
+					JOptionPane
+							.showMessageDialog(mcreator, L10N.t("blockly.templates.procedures.import_failed.message"),
+									L10N.t("blockly.templates.procedures.import_failed.title"),
+									JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
