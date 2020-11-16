@@ -4,6 +4,7 @@
 [![Build](https://api.travis-ci.org/MCreator/MCreator.svg?branch=master)](https://travis-ci.org/github/Team-MCToolkit/MCToolkit)
 [![Crowdin](https://badges.crowdin.net/mctoolkit/localized.svg)](https://crowdin.com/project/mctoolkit)
 [![Download](https://img.shields.io/badge/Download-release-%2393c54b)](https://mctoolkit.net/download)
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J72NOXK)
 # MCToolkit - Minecraft Modding Toolkit
 
 <img align="right" width="300" src="https://zupimages.net/up/20/46/bqcx.png">
