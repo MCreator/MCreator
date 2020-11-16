@@ -80,8 +80,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		additionalExpiryCondition = new ProcedureSelector(this.withEntry("particle/additional_expiry_condition"),
 				mcreator, L10N.t("elementgui.particle.expiry_condition"), ProcedureSelector.Side.CLIENT, true,
 				VariableElementType.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/age:number/onGround:boolean"))
-				.setDefaultName("(no additional condition)");
+				Dependency.fromString("x:number/y:number/z:number/world:world/age:number/onGround:boolean"));
 
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
