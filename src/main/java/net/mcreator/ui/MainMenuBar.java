@@ -46,7 +46,7 @@ public class MainMenuBar extends JMenuBar {
 
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
 
-		JMenu logo = new JMenu("  MCreator");
+		JMenu logo = new JMenu("  MCToolkit");
 		logo.setMnemonic('M');
 		logo.setIcon(new ImageIcon(ImageUtils.resizeAA(UIRES.get("icon").getImage(), 14, 14)));
 
@@ -55,8 +55,6 @@ public class MainMenuBar extends JMenuBar {
 		SocialButtons socialButtons = new SocialButtons();
 		socialButtons.setBorder(BorderFactory.createEmptyBorder(3, 29, 7, 0));
 		logo.add(socialButtons);
-		logo.addSeparator();
-		logo.add(mcreator.actionRegistry.donate);
 		logo.addSeparator();
 		logo.add(mcreator.actionRegistry.mcreatorPublish);
 
@@ -154,6 +152,8 @@ public class MainMenuBar extends JMenuBar {
 		resources.setMnemonic('R');
 		resources.add(mcreator.actionRegistry.importBlockTexture);
 		resources.add(mcreator.actionRegistry.importItemTexture);
+		resources.add(mcreator.actionRegistry.importEntityTexture);
+		resources.add(mcreator.actionRegistry.importPaintingTexture);
 		resources.add(mcreator.actionRegistry.importArmorTexture);
 		resources.add(mcreator.actionRegistry.importOtherTexture);
 		resources.addSeparator();
@@ -243,8 +243,6 @@ public class MainMenuBar extends JMenuBar {
 		help.add(mcreator.actionRegistry.knowledgeBase);
 		help.addSeparator();
 		help.add(mcreator.actionRegistry.showShortcuts);
-		help.addSeparator();
-		help.add(mcreator.actionRegistry.donate);
 		help.addSeparator();
 		help.add(mcreator.actionRegistry.checkForUpdates);
 		help.add(mcreator.actionRegistry.aboutMCreator);

@@ -45,3 +45,12 @@ templates:
 localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
+  - key: block.@modid.@registryname.tooltip
+    condition: plantInfoOnly
+    mapto: specialInfo
+  - key: block.@modid.@registryname.shift.tooltip
+    condition: plantShiftOnly
+    mapto: onShiftInfo
+  - key: block.@modid.@registryname.command.tooltip
+    condition: plantCommandOnly
+    mapto: onCommandInfo

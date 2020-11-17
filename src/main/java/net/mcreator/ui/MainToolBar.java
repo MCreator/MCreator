@@ -40,6 +40,7 @@ public class MainToolBar extends JToolBar {
 
 		add(mcreator.actionRegistry.importBlockTexture);
 		add(mcreator.actionRegistry.importItemTexture);
+		add(mcreator.actionRegistry.importEntityTexture);
 		add(mcreator.actionRegistry.importOtherTexture);
 
 		addSeparator(new Dimension(10, 4));

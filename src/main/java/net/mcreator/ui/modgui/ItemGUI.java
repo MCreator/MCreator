@@ -32,7 +32,7 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
@@ -53,6 +53,7 @@ import net.mcreator.workspace.resources.Model;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -66,6 +67,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private TextureHolder texture;
 
 	private final JTextField specialInfo = new JTextField(20);
+	private final JTextField onShiftInfo = new JTextField(20);
+	private final JTextField onCommandInfo = new JTextField(20);
+
+	private final JCheckBox onShiftOnly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox onCommandOnly = L10N.checkbox("elementgui.common.enable");
 
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 0, 64, 1));
 	private final VTextField name = new VTextField(20);
@@ -99,6 +105,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private ProcedureSelector onStoppedUsing;
 	private ProcedureSelector onEntitySwing;
 	private ProcedureSelector onDroppedByPlayer;
+
+	private final JCheckBox hasDispenseBehavior = L10N.checkbox("elementgui.common.enable");
+	private ProcedureSelector dispenseSuccessCondition;
+	private ProcedureSelector dispenseResultItemstack;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -147,6 +157,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		dispenseSuccessCondition = new ProcedureSelector(this.withEntry("item/dispense_success_condition"), mcreator,
+				L10N.t("elementgui.item.dispense_success_condition"), VariableElementType.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction"));
+		dispenseResultItemstack = new ProcedureSelector(this.withEntry("item/dispense_result_itemstack"), mcreator,
+				L10N.t("elementgui.item.dispense_result_itemstack"), VariableElementType.ITEMSTACK,
+				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:boolean"))
+				.setDefaultName("(provided itemstack)");
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -168,7 +185,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		texture = new TextureHolder(new GeneralTextureSelector(mcreator, GeneralTextureSelector.TextureType.ITEM));
 		texture.setOpaque(false);
 
 		JPanel destal2 = new JPanel(new BorderLayout(0, 10));
@@ -179,7 +196,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				.totalCenterInPanel(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))));
 		destal2.add("North", destal3);
 
-		JPanel destal = new JPanel(new GridLayout(1, 2, 15, 15));
+		JPanel destal = new JPanel(new GridLayout(3, 2, 15, 15));
 		destal.setOpaque(false);
 		JComponent destal1 = PanelUtils.join(FlowLayout.LEFT, HelpUtils
 				.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
@@ -189,14 +206,35 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.tooltip_tip")));
 		destal.add(specialInfo);
 
+		destal.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_shift"),
+						L10N.label("elementgui.common.description_on_shift")), onShiftOnly));
+		destal.add(onShiftInfo);
+
+		destal.add("Center", PanelUtils.gridElements(1, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/description_on_command"),
+						L10N.label("elementgui.common.description_on_command")), onCommandOnly));
+		destal.add(onCommandInfo);
+
 		hasGlow.setOpaque(false);
 		hasGlow.setSelected(false);
 
+		onShiftOnly.setEnabled(true);
+		onShiftOnly.setOpaque(false);
+		onShiftOnly.setSelected(false);
+		onCommandOnly.setEnabled(true);
+		onCommandOnly.setOpaque(false);
+		onCommandOnly.setSelected(false);
+
 		hasGlow.addActionListener(e -> updateGlowElements());
+		onShiftOnly.addActionListener(e -> updateShiftInfo());
+		onCommandOnly.addActionListener(e -> updateCommandInfo());
 
 		destal2.add("Center", PanelUtils.northAndCenterElement(destal, destal1, 10, 10));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
+		ComponentUtils.deriveFont(onShiftInfo, 16);
+		ComponentUtils.deriveFont(onCommandInfo, 16);
 
 		ComponentUtils.deriveFont(renderType, 16.0f);
 
@@ -227,7 +265,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		pane2.setOpaque(false);
 
-		JPanel subpane2 = new JPanel(new GridLayout(13, 2, 45, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(13, 2, 2, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -291,11 +329,35 @@ public class ItemGUI extends ModElementGUI<Item> {
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
 
+		subpane2.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		subpane2.setOpaque(false);
 
-		pane3.setOpaque(false);
+		JComponent canDispense = PanelUtils.join(FlowLayout.LEFT, 0, 20, HelpUtils
+				.wrapWithHelpButton(this.withEntry("item/has_dispense_behavior"),
+						L10N.label("elementgui.item.has_dispense_behavior")), hasDispenseBehavior);
+		JComponent dispenseProcedures = PanelUtils.gridElements(2, 1, 0, 8, dispenseSuccessCondition, dispenseResultItemstack);
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(subpane2));
+		hasDispenseBehavior.setOpaque(false);
+		hasDispenseBehavior.setSelected(false);
+		hasDispenseBehavior.addActionListener(e -> updateDispenseElements());
+
+		JComponent dispenseProperties = PanelUtils
+				.northAndCenterElement(canDispense, PanelUtils.centerInPanel(dispenseProcedures));
+
+		dispenseProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item.dispense_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		dispenseProperties.setOpaque(false);
+
+		JComponent generalAndDispenseProperties = PanelUtils.westAndEastElement(subpane2, PanelUtils.pullElementUp(dispenseProperties));
+		generalAndDispenseProperties.setOpaque(false);
+
+		pane3.setOpaque(false);
+		pane3.add("Center", PanelUtils.totalCenterInPanel(generalAndDispenseProperties));
 
 		JPanel events = new JPanel(new GridLayout(3, 3, 10, 10));
 		events.setOpaque(false);
@@ -351,6 +413,15 @@ public class ItemGUI extends ModElementGUI<Item> {
 		glowCondition.setEnabled(hasGlow.isSelected());
 	}
 
+	private void updateDispenseElements() {
+		dispenseSuccessCondition.setEnabled(hasDispenseBehavior.isSelected());
+		dispenseResultItemstack.setEnabled(hasDispenseBehavior.isSelected());
+	}
+  
+	private void updateShiftInfo() { onShiftInfo.setEnabled(onShiftOnly.isSelected());}
+
+	private void updateCommandInfo() { onCommandInfo.setEnabled(onCommandOnly.isSelected());}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onRightClickedInAir.refreshListKeepSelected();
@@ -363,6 +434,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onEntitySwing.refreshListKeepSelected();
 		onDroppedByPlayer.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
+		dispenseSuccessCondition.refreshListKeepSelected();
+		dispenseResultItemstack.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
@@ -389,8 +462,23 @@ public class ItemGUI extends ModElementGUI<Item> {
 		name.setText(item.name);
 		rarity.setSelectedItem(item.rarity);
 		texture.setTextureFromTextureName(item.texture);
-		specialInfo.setText(
-				item.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+
+		specialInfo.setText(item.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		try {
+			if (Item.class.getField("onShiftInfo").get(item) != null) {
+				onShiftInfo.setText(item.onShiftInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		try {
+			if (Item.class.getField("onCommandInfo").get(item) != null) {
+				onCommandInfo.setText(item.onCommandInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		onRightClickedInAir.setSelectedProcedure(item.onRightClickedInAir);
 		onRightClickedOnBlock.setSelectedProcedure(item.onRightClickedOnBlock);
 		onCrafted.setSelectedProcedure(item.onCrafted);
@@ -411,14 +499,22 @@ public class ItemGUI extends ModElementGUI<Item> {
 		stayInGridWhenCrafting.setSelected(item.stayInGridWhenCrafting);
 		damageOnCrafting.setSelected(item.damageOnCrafting);
 		hasGlow.setSelected(item.hasGlow);
+		onShiftOnly.setSelected(item.onShiftOnly);
+		onCommandOnly.setSelected(item.onCommandOnly);
 		glowCondition.setSelectedProcedure(item.glowCondition);
 		damageVsEntity.setValue(item.damageVsEntity);
 		enableMeleeDamage.setSelected(item.enableMeleeDamage);
 		guiBoundTo.setSelectedItem(item.guiBoundTo);
 		inventorySize.setValue(item.inventorySize);
 		inventoryStackSize.setValue(item.inventoryStackSize);
+		hasDispenseBehavior.setSelected(item.hasDispenseBehavior);
+		dispenseSuccessCondition.setSelectedProcedure(item.dispenseSuccessCondition);
+		dispenseResultItemstack.setSelectedProcedure(item.dispenseResultItemstack);
 
 		updateGlowElements();
+		updateDispenseElements();
+		updateShiftInfo();
+		updateCommandInfo();
 
 		Model model = item.getItemModel();
 		if (model != null)
@@ -440,6 +536,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		item.damageOnCrafting = damageOnCrafting.isSelected();
 		item.hasGlow = hasGlow.isSelected();
+		item.onShiftOnly = onShiftOnly.isSelected();
+		item.onCommandOnly = onCommandOnly.isSelected();
 		item.glowCondition = glowCondition.getSelectedProcedure();
 		item.onRightClickedInAir = onRightClickedInAir.getSelectedProcedure();
 		item.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();
@@ -455,8 +553,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.inventorySize = (int) inventorySize.getValue();
 		item.inventoryStackSize = (int) inventoryStackSize.getValue();
 		item.guiBoundTo = (String) guiBoundTo.getSelectedItem();
+		item.hasDispenseBehavior = hasDispenseBehavior.isSelected();
+		item.dispenseSuccessCondition = dispenseSuccessCondition.getSelectedProcedure();
+		item.dispenseResultItemstack = dispenseResultItemstack.getSelectedProcedure();
 
 		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
+		item.onShiftInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onShiftInfo.getText());
+		item.onCommandInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(onCommandInfo.getText());
 
 		item.texture = texture.getID();
 		Model.Type modelType = ((Model) Objects.requireNonNull(renderType.getSelectedItem())).getType();
