@@ -553,7 +553,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JPanel enderpanel = new JPanel(new GridLayout(8, 2, 20, 10));
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/armor_layer_texture"),
-				new JLabel(L10N.t("elementgui.armor.layer_texture") + L10N.t("elementgui.armor.layer_texture.info"))));
+				L10N.label("elementgui.armor.layer_texture")));
 		enderpanel.add(armorTextureFile);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
