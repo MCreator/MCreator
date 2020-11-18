@@ -25,7 +25,8 @@ import net.mcreator.workspace.Workspace;
 public enum VariableElementType {
 
 	@SerializedName("string") STRING(0x609986), @SerializedName("logic") LOGIC(
-			0x607c99), @SerializedName("number") NUMBER(0x606999), @SerializedName("itemstack") ITEMSTACK(0x996069);
+			0x607c99), @SerializedName("number") NUMBER(0x606999), @SerializedName("itemstack") ITEMSTACK(0x996069),
+			@SerializedName("blockstate") BLOCKSTATE(0xA6A65C);
 
 	private final int color;
 
@@ -47,6 +48,8 @@ public enum VariableElementType {
 			return "string";
 		case ITEMSTACK:
 			return "itemstack";
+		case BLOCKSTATE:
+			return "blockstate";
 		}
 
 		return null;
@@ -68,6 +71,8 @@ public enum VariableElementType {
 			return "\"\"";
 		case ITEMSTACK:
 			return "ItemStack.EMPTY";
+		case BLOCKSTATE:
+			return "Blocks.AIR.getDefaultState()";
 		}
 
 		return "";

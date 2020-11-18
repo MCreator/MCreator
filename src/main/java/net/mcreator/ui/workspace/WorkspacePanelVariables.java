@@ -59,7 +59,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 						L10N.t("workspace.variables.variable_scope"), L10N.t("workspace.variables.initial_value") },
 				0) {
 			@Override public boolean isCellEditable(int row, int column) {
-				if (getValueAt(row, 1).toString().equals("ITEMSTACK"))
+				if (getValueAt(row, 1).toString().equals("ITEMSTACK") || getValueAt(row, 1).toString().equals("BLOCKSTATE"))
 					return column != 3;
 				return true;
 			}
@@ -102,7 +102,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				} else if (modelColumn == 1) {
 					return new DefaultCellEditor(new JComboBox<>(
 							new VariableElementType[] { VariableElementType.NUMBER, VariableElementType.LOGIC,
-									VariableElementType.STRING, VariableElementType.ITEMSTACK }));
+									VariableElementType.STRING, VariableElementType.ITEMSTACK, VariableElementType.BLOCKSTATE }));
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
 					name.enableRealtimeValidation();
@@ -230,7 +230,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 									return validator.validate();
 								}
 							}, VariableElementType.LOGIC, VariableElementType.NUMBER, VariableElementType.STRING,
-							VariableElementType.ITEMSTACK);
+							VariableElementType.ITEMSTACK, VariableElementType.BLOCKSTATE);
 			if (element != null) {
 				workspacePanel.mcreator.getWorkspace().addVariableElement(element);
 				reloadElements();

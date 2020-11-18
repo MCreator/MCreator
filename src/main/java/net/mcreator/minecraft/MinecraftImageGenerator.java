@@ -857,6 +857,8 @@ public class MinecraftImageGenerator {
 					returnColor = new Color(0x609986);
 				} else if (procedurexml.contains("<block type=\"return_itemstack\"><value name=\"return\">")) {
 					returnColor = BlocklyBlockUtil.getBlockColorFromHUE(350);
+				} else if (procedurexml.contains("<block type=\"return_blockstate\"><value name=\"return\">")) {
+					returnColor = BlocklyBlockUtil.getBlockColorFromHUE(60);
 				}
 			}
 
