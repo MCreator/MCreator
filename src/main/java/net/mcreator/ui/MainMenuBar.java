@@ -56,6 +56,8 @@ public class MainMenuBar extends JMenuBar {
 		socialButtons.setBorder(BorderFactory.createEmptyBorder(3, 29, 7, 0));
 		logo.add(socialButtons);
 		logo.addSeparator();
+		logo.add(mcreator.actionRegistry.donate);
+		logo.addSeparator();
 		logo.add(mcreator.actionRegistry.mcreatorPublish);
 
 		add(logo);
@@ -243,6 +245,8 @@ public class MainMenuBar extends JMenuBar {
 		help.add(mcreator.actionRegistry.knowledgeBase);
 		help.addSeparator();
 		help.add(mcreator.actionRegistry.showShortcuts);
+		help.addSeparator();
+		help.add(mcreator.actionRegistry.donate);
 		help.addSeparator();
 		help.add(mcreator.actionRegistry.checkForUpdates);
 		help.add(mcreator.actionRegistry.aboutMCreator);
