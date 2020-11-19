@@ -22,6 +22,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.element.parts.Procedure;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
@@ -33,20 +34,25 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String type;
+		String java_type;
 
 		String blocktype = block.getAttribute("type");
 		switch (blocktype) {
 		case "procedure_retval_number":
 			type = "NUMBER";
+			java_type = "number";
 			break;
 		case "procedure_retval_string":
 			type = "STRING";
+			java_type = "string";
 			break;
 		case "procedure_retval_logic":
 			type = "LOGIC";
+			java_type = "boolean";
 			break;
 		case "procedure_retval_itemstack":
 			type = "ITEMSTACK";
+			java_type = "itemstack";
 			break;
 		default:
 			return;
@@ -68,6 +74,7 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("procedure", procedure.getName());
 				dataModel.put("type", type);
+				dataModel.put("java_type", new NameMapper(master.getWorkspace(), "types").getMapping(java_type));
 				dataModel.put("dependencies", procedure.getDependencies(master.getWorkspace()));
 				String code = master.getTemplateGenerator()
 						.generateFromTemplate("_procedure_retval.java.ftl", dataModel);
