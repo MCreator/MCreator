@@ -93,6 +93,11 @@ public class ExternalBlockLoader {
 						jsonresult.add("tooltip", new JsonPrimitive(localized_tooltip));
 					}
 
+					String localized_helpUrl = L10N.t("blockly.block." + toolboxBlock.machine_name + ".helpUrl");
+					if (localized_helpUrl != null) {
+						jsonresult.add("helpUrl", new JsonPrimitive(localized_helpUrl));
+					}
+
 					jsonresult.add("type", new JsonPrimitive(toolboxBlock.machine_name));
 
 					toolboxBlock.blocklyJSON = jsonresult;
@@ -148,8 +153,8 @@ public class ExternalBlockLoader {
 			StringBuilder categoryBuilder = new StringBuilder();
 			categoryBuilder.append("<category name=\"").append(category.getName()).append("\" colour=\"")
 					.append(category.color).append("\">");
-			if (category.description != null) {
-				categoryBuilder.append("<label text=\"").append(category.description)
+			if (category.getDescription() != null) {
+				categoryBuilder.append("<label text=\"").append(category.getDescription())
 						.append("\" web-class=\"whlab\"/>");
 			}
 			for (ToolboxBlock toolboxBlock : toolboxBlocks.values()) {

@@ -38,6 +38,14 @@ public class ToolboxCategory {
 		return name;
 	}
 
+	public String getDescription() {
+		String l10ndescription = L10N.t("blockly.category." + id + ".description");
+		if (l10ndescription != null)
+			return l10ndescription;
+
+		return description;
+	}
+
 	public Color getColor() {
 		return BlocklyBlockUtil.getBlockColorFromHUE(color);
 	}
