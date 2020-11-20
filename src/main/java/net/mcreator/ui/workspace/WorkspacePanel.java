@@ -658,11 +658,7 @@ public class WorkspacePanel extends JPanel {
 				}
 			}
 		});
-		but5a.setToolTipText("<html>Lock/unlock element's code<br><small>"
-				+ "When you lock the code, MCreator won't change the code, so the mod type becomes<br>"
-				+ "editable from the code view and the code is preserved even when switching workspaces.<br>"
-				+ "<b>Use this only if you intend to manually edit the code and are aware of the consequences<br>"
-				+ "of locking the code of a mod element!");
+		but5a.setToolTipText(L10N.t("workspace.elements.lock_code.tooltip"));
 		but5a.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but5a);
 
