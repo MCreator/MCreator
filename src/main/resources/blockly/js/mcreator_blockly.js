@@ -36,9 +36,10 @@ window.addEventListener('resize', function () {
 });
 Blockly.svgResize(workspace);
 
-Blockly.ContextMenu.blockHelpOption = function () {
-    return null;
-};
+// disable help entry
+Blockly.Block.prototype.setHelpUrl = function () {
+    return '';
+}
 
 // modify blockly to export all variables, not only used ones
 Blockly.Variables.allUsedVarModels = function () {
