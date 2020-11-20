@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.workspace.Workspace;
 
@@ -55,26 +56,27 @@ public class JSpawnListEntry extends JPanel {
 
 		ElementUtil.loadAllEntities(workspace).forEach(e -> entityType.addItem(e.getName()));
 
-		add(new JLabel("Entity: "));
+		add(L10N.label("elementgui.biome.spawnlist_entry.spawn_entity"));
 		add(entityType);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/spawn_type"), new JLabel("Spawn type: ")));
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/spawn_type"),
+				L10N.label("elementgui.biome.spawnlist_entry.spawn_type")));
 		add(mobSpawningType);
 
-		add(HelpUtils
-				.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/spawn_weight"), new JLabel("Spawn weight: ")));
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/spawn_weight"),
+				L10N.label("elementgui.biome.spawnlist_entry.spawn_weight")));
 		add(spawningProbability);
 
 		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/spawn_group_size"),
-				new JLabel("Min group size: ")));
+				L10N.label("elementgui.biome.spawnlist_entry.spawn_group_size_min")));
 		add(minNumberOfMobsPerGroup);
 
 		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/spawn_group_size"),
-				new JLabel("Max group size: ")));
+				L10N.label("elementgui.biome.spawnlist_entry.spawn_group_size_max")));
 		add(maxNumberOfMobsPerGroup);
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
-		remove.setText("Remove this entry");
+		remove.setText(L10N.t("elementgui.biome.spawnlist_entry.remove"));
 		remove.addActionListener(e -> {
 			entryList.remove(this);
 			parent.remove(container);
