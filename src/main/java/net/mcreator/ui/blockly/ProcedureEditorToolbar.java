@@ -57,7 +57,7 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 		ProcedureTemplateDropdown templateDropdown = new ProcedureTemplateDropdown(procedureGUI, blocklyPanel,
 				TemplatesLoader.loadTemplates("ptpl", "ptpl"));
 
-		JButton bs1 = L10N.button("blockly.templates.procedures");
+		JButton bs1 = L10N.button("dialog.blockly.templates.procedures");
 		bs1.setPreferredSize(new Dimension(169, 16));
 		bs1.setIcon(UIRES.get("18px.templatelib"));
 		bs1.setOpaque(false);
@@ -82,7 +82,7 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 				if (getText().equals("")) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
-					g.drawString(L10N.t("blockly.search_procedure_blocks"), 5, 18);
+					g.drawString(L10N.t("dialog.blockly.search_procedure_blocks"), 5, 18);
 				}
 			}
 		};
@@ -173,7 +173,7 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 
 		add(Box.createHorizontalGlue());
 
-		JButton bs2 = L10N.button("blockly.templates.procedures.export");
+		JButton bs2 = L10N.button("dialog.blockly.templates.procedures.export");
 		bs2.setIcon(UIRES.get("18px.export"));
 		bs2.setOpaque(false);
 		add(bs2);
@@ -185,8 +185,8 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane
-							.showMessageDialog(mcreator, L10N.t("blockly.templates.procedures.export_failed.message"),
-									L10N.t("blockly.templates.procedures.export_failed.title"),
+							.showMessageDialog(mcreator, L10N.t("dialog.blockly.templates.procedures.export_failed.message"),
+									L10N.t("dialog.blockly.templates.procedures.export_failed.title"),
 									JOptionPane.WARNING_MESSAGE);
 				}
 			}
@@ -194,7 +194,7 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 		ComponentUtils.normalizeButton4(bs2);
 		bs2.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 
-		JButton bs3 = L10N.button("blockly.templates.procedures.import");
+		JButton bs3 = L10N.button("dialog.blockly.templates.procedures.import");
 		bs3.setIcon(UIRES.get("18px.import"));
 		bs3.setOpaque(false);
 		add(bs3);
@@ -220,8 +220,8 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane
-							.showMessageDialog(mcreator, L10N.t("blockly.templates.procedures.import_failed.message"),
-									L10N.t("blockly.templates.procedures.import_failed.title"),
+							.showMessageDialog(mcreator, L10N.t("dialog.blockly.templates.procedures.import_failed.message"),
+									L10N.t("dialog.blockly.templates.procedures.import_failed.title"),
 									JOptionPane.WARNING_MESSAGE);
 				}
 			}

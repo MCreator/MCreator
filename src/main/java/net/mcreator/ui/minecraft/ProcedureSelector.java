@@ -141,7 +141,7 @@ public class ProcedureSelector extends JPanel {
 		JLabel eventNameLabel = new JLabel();
 		if (side == Side.CLIENT) {
 			eventNameLabel.setIcon(UIRES.get("16px.client"));
-			eventNameLabel.setToolTipText(L10N.t("trigger.triggers_on_client_side_only"));
+			eventNameLabel.setToolTipText(L10N.t("elementgui.common.procedure_trigger.triggers_on_client_side_only"));
 			if (helpContext == null)
 				top.add("North", PanelUtils
 						.westAndCenterElement(eventNameLabel, ComponentUtils.deriveFont(new JLabel(eventName), 14)));
@@ -150,7 +150,7 @@ public class ProcedureSelector extends JPanel {
 						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 14),
 								SwingConstants.LEFT)));
 		} else if (side == Side.SERVER) {
-			eventNameLabel.setToolTipText(L10N.t("trigger.triggers_on_server_side_only"));
+			eventNameLabel.setToolTipText(L10N.t("elementgui.common.procedure_trigger.triggers_on_server_side_only"));
 			eventNameLabel.setIcon(UIRES.get("16px.server"));
 			if (helpContext == null)
 				top.add("North", PanelUtils

@@ -31,7 +31,7 @@ import java.util.List;
 
 public class CompileNotesPanel extends JPanel {
 
-	private final JLabel compileNotesLabel = L10N.label("blockly.compile_notes", 0);
+	private final JLabel compileNotesLabel = L10N.label("dialog.blockly.compile_notes", 0);
 	private final DefaultListModel<BlocklyCompileNote> compileNotes = new DefaultListModel<>();
 
 	public CompileNotesPanel() {

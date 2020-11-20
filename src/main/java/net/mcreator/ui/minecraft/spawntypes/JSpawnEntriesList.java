@@ -50,7 +50,7 @@ public class JSpawnEntriesList extends JPanel {
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
-		add.setText(L10N.t("elementgui.spawnlist.add_entry"));
+		add.setText(L10N.t("elementgui.biome.spawnlist.add_entry"));
 		topbar.add(add);
 
 		add("North", topbar);
@@ -63,7 +63,7 @@ public class JSpawnEntriesList extends JPanel {
 
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.spawnlist.spawn_entries"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.biome.spawnlist.spawn_entries"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 	}
 
