@@ -1,1 +1,2 @@
-((EnchantmentHelper.getEnchantmentLevel(${generator.map(field$enhancement, "enchantments")}, ${input$item}) != 0))
+<#include "mcitems.ftl">
+((EnchantmentHelper.getEnchantmentLevel(${generator.map(field$enhancement, "enchantments")}, ${mappedMCItemToItemStackCode(input$item, 1)}) != 0))
