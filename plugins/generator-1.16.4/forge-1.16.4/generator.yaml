@@ -1,5 +1,5 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-basefeatures: []
+basefeatures: [variables]
 status: dev
 buildfileversion: 35.1.0
 

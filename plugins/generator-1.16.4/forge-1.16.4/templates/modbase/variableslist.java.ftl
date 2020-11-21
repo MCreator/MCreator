@@ -120,15 +120,15 @@ public class ${JavaModName}Variables {
 		public void syncData(IWorld world) {
 			this.markDirty();
 
-			if (!world.getWorld().isRemote)
-				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(world.getWorld().dimension::getType), new WorldSavedDataSyncMessage(1, this));
+			if (world instanceof World && !((World) world).isRemote)
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(((World) world)::getDimensionKey), new WorldSavedDataSyncMessage(1, this));
 		}
 
 		static WorldVariables clientSide = new WorldVariables();
 
 		public static WorldVariables get(IWorld world) {
-			if (world.getWorld() instanceof ServerWorld) {
-        		return ((ServerWorld) world.getWorld()).getSavedData().getOrCreate(WorldVariables::new, DATA_NAME);
+			if (world instanceof ServerWorld) {
+        		return ((ServerWorld) world).getSavedData().getOrCreate(WorldVariables::new, DATA_NAME);
         	} else {
 				return clientSide;
         	}
@@ -198,15 +198,15 @@ public class ${JavaModName}Variables {
 		public void syncData(IWorld world) {
 			this.markDirty();
 
-			if (!world.getWorld().isRemote)
+			if (world instanceof World && !((World) world).isRemote)
 				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new WorldSavedDataSyncMessage(0, this));
 		}
 
 		static MapVariables clientSide = new MapVariables();
 
 		public static MapVariables get(IWorld world) {
-			if (world.getWorld() instanceof ServerWorld) {
-        		return world.getWorld().getServer().getWorld(DimensionType.OVERWORLD).getSavedData().getOrCreate(MapVariables::new, DATA_NAME);
+			if (world instanceof IServerWorld) {
+        		return ((IServerWorld) world).getWorld().getServer().getWorld(World.OVERWORLD).getSavedData().getOrCreate(MapVariables::new, DATA_NAME);
         	} else {
 				return clientSide;
         	}
