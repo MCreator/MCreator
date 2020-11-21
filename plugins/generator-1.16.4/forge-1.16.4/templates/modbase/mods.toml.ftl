@@ -1,6 +1,6 @@
 modLoader="javafml"
 loaderVersion="[35,)"
-license=""
+license="${settings.getLicense()}"
 
 [[mods]]
 modId="${settings.getModID()}"
