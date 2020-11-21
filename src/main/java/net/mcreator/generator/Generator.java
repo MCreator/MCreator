@@ -106,7 +106,7 @@ public class Generator implements Closeable {
 		this.triggerGenerator = new TemplateGenerator(generatorConfiguration.getTriggerGeneratorConfiguration(), this);
 		this.jsonTriggerGenerator = new TemplateGenerator(generatorConfiguration.getJSONTriggerGeneratorConfiguration(), this);
 		this.aitaskGenerator = new TemplateGenerator(generatorConfiguration.getAITaskGeneratorConfiguration(), this);
-		this.tooltipGenerator = new TemplateGenerator(generatorConfiguration.getTooltipGeneratorConfiguretion(), this);
+		this.tooltipGenerator = new TemplateGenerator(generatorConfiguration.getTooltipGeneratorConfiguration(), this);
 
 		this.minecraftCodeProvider = new MinecraftCodeProvider(workspace);
 	}

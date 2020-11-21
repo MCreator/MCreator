@@ -205,7 +205,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return aitaskGeneratorConfiguration;
 	}
 
-	public TemplateGeneratorConfiguration getTooltipGeneratorConfiguretion() {
+	public TemplateGeneratorConfiguration getTooltipGeneratorConfiguration() {
 		return tooltipGeneratorConfiguration;
 	}
 
