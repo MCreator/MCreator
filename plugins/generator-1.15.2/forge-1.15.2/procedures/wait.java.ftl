@@ -1,10 +1,26 @@
-{
-    new java.lang.Thread(() -> {
-        	try {
-        		java.lang.Thread.sleep(java.time.Duration.ofSeconds(${input$SEC}).toMillis());
-        	} catch (InterruptedException e) {
-        		e.printStackTrace();
-        	}
-        	${statement$DO}
-    }).start();
-}
+new Object() {
+
+            private int ticks;
+            private float time;
+
+            public Object init() {
+                this.time = ${input$SEC} * 20F;
+                MinecraftForge.EVENT_BUS.register(this);
+                return this;
+            }
+
+            @SubscribeEvent
+            public void worldTick(TickEvent.WorldTickEvent event) {
+                if (!event.world.isRemote) {
+                    this.ticks += 1;
+                    if (this.ticks >= this.time) {
+                        run();
+                    }
+                }
+            }
+
+            private void run() {
+                ${statement$DO}
+                MinecraftForge.EVENT_BUS.unregister(this);
+            }
+}.init();
