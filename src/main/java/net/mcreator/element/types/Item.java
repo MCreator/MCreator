@@ -66,6 +66,9 @@ import java.util.Map;
 	public boolean hasGlow;
 	public Procedure glowCondition;
 
+	public boolean hasTooltip;
+	public String ttxml;
+
 	public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;

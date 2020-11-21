@@ -58,6 +58,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 	private final TemplateGeneratorConfiguration procedureGeneratorConfiguration;
 	private final TemplateGeneratorConfiguration triggerGeneratorConfiguration;
 	private final TemplateGeneratorConfiguration aitaskGeneratorConfiguration;
+	private final TemplateGeneratorConfiguration tooltipGeneratorConfiguration;
 	private final TemplateGeneratorConfiguration jsonTriggerGeneratorConfiguration;
 
 	public GeneratorConfiguration(String generatorName) {
@@ -86,6 +87,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		this.procedureGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "procedures");
 		this.triggerGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "triggers");
 		this.aitaskGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "aitasks");
+		this.tooltipGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "tooltips");
 		this.jsonTriggerGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "jsontriggers");
 
 		this.generatorStats = new GeneratorStats(this);
@@ -201,6 +203,10 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 	public TemplateGeneratorConfiguration getAITaskGeneratorConfiguration() {
 		return aitaskGeneratorConfiguration;
+	}
+
+	public TemplateGeneratorConfiguration getTooltipGeneratorConfiguretion() {
+		return tooltipGeneratorConfiguration;
 	}
 
 	public TemplateGeneratorConfiguration getJSONTriggerGeneratorConfiguration() {

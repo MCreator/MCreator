@@ -19,15 +19,6 @@ templates:
     variables: "type=item"
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
-localizationkeys:
-  - key: item.@modid.@registryname
-    mapto: name
-  - key: item.@modid.@registryname.tooltip
-    condition: itemInfoOnly
-    mapto: specialInfo
-  - key: item.@modid.@registryname.shift.tooltip
-    condition: itemShiftOnly
-    mapto: onShiftInfo
-  - key: item.@modid.@registryname.command.tooltip
-    condition: itemCommandOnly
-    mapto: onCommandInfo
+    localizationkeys:
+      - key: item.@modid.@registryname
+        mapto: name
