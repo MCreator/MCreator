@@ -29,6 +29,7 @@ import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.modgui.ProcedureGUI;
 import net.mcreator.workspace.elements.VariableElement;
@@ -56,7 +57,7 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 		ProcedureTemplateDropdown templateDropdown = new ProcedureTemplateDropdown(procedureGUI, blocklyPanel,
 				TemplatesLoader.loadTemplates("ptpl", "ptpl"));
 
-		JButton bs1 = new JButton("Template library");
+		JButton bs1 = L10N.button("blockly.templates.procedures");
 		bs1.setPreferredSize(new Dimension(169, 16));
 		bs1.setIcon(UIRES.get("18px.templatelib"));
 		bs1.setOpaque(false);
@@ -81,7 +82,7 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 				if (getText().equals("")) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
-					g.drawString("Search procedure blocks", 5, 18);
+					g.drawString(L10N.t("blockly.search_procedure_blocks"), 5, 18);
 				}
 			}
 		};
@@ -172,7 +173,7 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 
 		add(Box.createHorizontalGlue());
 
-		JButton bs2 = new JButton("Export procedure");
+		JButton bs2 = L10N.button("blockly.templates.procedures.export");
 		bs2.setIcon(UIRES.get("18px.export"));
 		bs2.setOpaque(false);
 		add(bs2);
@@ -183,16 +184,17 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 					ProcedureTemplateIO.exportProcedure(blocklyPanel.getXML(), exp);
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
-					JOptionPane.showMessageDialog(mcreator, "<html><b>Failed to export the procedure!</b><br>"
-									+ "Your procedure may be empty or corrupted.", "Export failed",
-							JOptionPane.WARNING_MESSAGE);
+					JOptionPane
+							.showMessageDialog(mcreator, L10N.t("blockly.templates.procedures.export_failed.message"),
+									L10N.t("blockly.templates.procedures.export_failed.title"),
+									JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
 		ComponentUtils.normalizeButton4(bs2);
 		bs2.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 
-		JButton bs3 = new JButton("Import procedure");
+		JButton bs3 = L10N.button("blockly.templates.procedures.import");
 		bs3.setIcon(UIRES.get("18px.import"));
 		bs3.setOpaque(false);
 		add(bs3);
@@ -217,9 +219,10 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 					blocklyPanel.addBlocksFromXML(procedureXml);
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
-					JOptionPane.showMessageDialog(mcreator, "<html><b>Failed to import the procedure!</b><br>"
-									+ "The procedure file you are importing is invalid.", "Import failed",
-							JOptionPane.WARNING_MESSAGE);
+					JOptionPane
+							.showMessageDialog(mcreator, L10N.t("blockly.templates.procedures.import_failed.message"),
+									L10N.t("blockly.templates.procedures.import_failed.title"),
+									JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

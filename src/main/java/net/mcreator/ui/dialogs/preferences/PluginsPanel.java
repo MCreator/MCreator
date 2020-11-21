@@ -81,7 +81,7 @@ class PluginsPanel {
 
 		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, new JScrollPane(plugins), 5, 5));
 
-		preferencesDialog.preferences.add(PanelUtils.pullElementUp(sectionPanel), "Manage plugins");
+		preferencesDialog.preferences.add(sectionPanel, "Manage plugins");
 	}
 
 	private void reloadPluginList() {

@@ -445,21 +445,23 @@ public class WYSIWYGEditor extends JPanel {
 		if (list.getSelectedValue() != null) {
 			GUIComponent component = list.getSelectedValue();
 			if (component instanceof Label) {
-				new LabelDialog(this, (Label) component);
+				component = new LabelDialog(this, (Label) component).getEditingComponent();
 			} else if (component instanceof Button) {
-				new ButtonDialog(this, (Button) component);
+				component = new ButtonDialog(this, (Button) component).getEditingComponent();
 			} else if (component instanceof TextField) {
-				new TextFieldDialog(this, (TextField) component);
+				component = new TextFieldDialog(this, (TextField) component).getEditingComponent();
 			} else if (component instanceof InputSlot) {
-				new InputSlotDialog(this, (InputSlot) component);
+				component = new InputSlotDialog(this, (InputSlot) component).getEditingComponent();
 			} else if (component instanceof OutputSlot) {
-				new OutputSlotDialog(this, (OutputSlot) component);
+				component = new OutputSlotDialog(this, (OutputSlot) component).getEditingComponent();
 			} else if (component instanceof Image) {
-				new ImageDialog(this, (Image) component);
+				component = new ImageDialog(this, (Image) component).getEditingComponent();
 			} else {
 				JOptionPane.showMessageDialog(mcreator, "This component can only be repositioned or removed!",
 						"Edit component", JOptionPane.WARNING_MESSAGE);
 			}
+
+			list.setSelectedValue(component, true);
 		}
 	}
 

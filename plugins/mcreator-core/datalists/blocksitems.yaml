@@ -4127,7 +4127,7 @@
   texture: CHAINMAIL_LEGGINGS
 
 - Items.CHAINMAIL_BOOTS:
-  readable_name: "Chainmail Leggings"
+  readable_name: "Chainmail Boots"
   type: item
   texture: CHAINMAIL_BOOTS
 
