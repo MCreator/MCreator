@@ -19,6 +19,6 @@ templates:
     variables: "type=item"
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
-    localizationkeys:
-      - key: item.@modid.@registryname
-        mapto: name
+localizationkeys:
+  - key: item.@modid.@registryname
+    mapto: name
