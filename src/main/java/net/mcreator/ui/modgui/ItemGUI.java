@@ -226,10 +226,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.item.texture"))));
 		visualPanel.add("North", visualProperties);
 
-		JPanel checkBoxes = new JPanel(new GridLayout(2,1,15,15));
-		checkBoxes.setOpaque(false);
-		checkBoxes.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"), hasGlow));
-		checkBoxes.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"), hasTooltip));
+		JComponent checkBoxes = PanelUtils.gridElements(2, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"), hasGlow),
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"), hasTooltip));
 
 		hasGlow.setOpaque(false);
 		hasGlow.setSelected(false);
