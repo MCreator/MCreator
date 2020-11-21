@@ -344,7 +344,7 @@ public class TestWorkspaceDataProvider {
 		case FOOD:
 			Food food = new Food(modElement);
 			food.name = modElement.getName();
-			food.rarity = ListUtils.getRandomItem(Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+			food.rarity = ListUtils.getRandomItem(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			food.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
 				food.specialInfo = StringUtils
@@ -383,7 +383,7 @@ public class TestWorkspaceDataProvider {
 			return command;
 		case KEYBIND:
 			KeyBinding keyBinding = new KeyBinding(modElement);
-			keyBinding.triggerKey = ListUtils.getRandomItem(
+			keyBinding.triggerKey = ListUtils.getRandomItem(random,
 					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName)
 							.toArray(String[]::new));
 			keyBinding.keyBindingName = modElement.getName();
@@ -498,7 +498,7 @@ public class TestWorkspaceDataProvider {
 							.getName());
 			mob.mobBehaviourType = _true ? "Creature" : "Mob";
 			mob.mobCreatureType = ListUtils
-					.getRandomItem(new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
+					.getRandomItem(random, new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
 			mob.attackStrength = 4;
 			mob.attackKnockback = 1.5;
 			mob.knockbackResistance = 0.5;
@@ -779,10 +779,10 @@ public class TestWorkspaceDataProvider {
 			plant.itemTexture = emptyLists ? "" : "itest";
 			plant.particleTexture = emptyLists ? "" : "test3";
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
-			plant.growapableSpawnType = ListUtils
-					.getRandomItem(new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
-			plant.staticPlantGenerationType = ListUtils.getRandomItem(new String[] { "Grass", "Flower" });
-			plant.doublePlantGenerationType = ListUtils.getRandomItem(new String[] { "Grass", "Flower" });
+			plant.growapableSpawnType = ListUtils.getRandomItem(random,
+					new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
+			plant.staticPlantGenerationType = ListUtils.getRandomItem(random, new String[] { "Grass", "Flower" });
+			plant.doublePlantGenerationType = ListUtils.getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.growapableMaxHeight = 5;
 			plant.hardness = 0.03;
 			plant.emissiveRendering = !_true;
@@ -842,7 +842,7 @@ public class TestWorkspaceDataProvider {
 		case ITEM:
 			Item item = new Item(modElement);
 			item.name = modElement.getName();
-			item.rarity = ListUtils.getRandomItem(Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+			item.rarity = ListUtils.getRandomItem(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			item.creativeTab = new TabEntry(modElement.getWorkspace(),
 					ListUtils.getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			item.stackSize = 52;
