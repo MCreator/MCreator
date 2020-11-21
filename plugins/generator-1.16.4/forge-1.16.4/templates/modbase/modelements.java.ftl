@@ -103,6 +103,9 @@ public class ${JavaModName}Elements {
 		public void init(FMLCommonSetupEvent event) {
 		}
 
+		public void serverLoad(FMLServerStartingEvent event) {
+		}
+
 		@OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
 		}
 

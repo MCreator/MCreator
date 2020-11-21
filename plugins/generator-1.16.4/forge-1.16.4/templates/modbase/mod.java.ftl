@@ -31,12 +31,11 @@ public class ${JavaModName} {
 	public ${JavaModName}() {
 		elements = new ${JavaModName}Elements();
 
+		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientLoad);
 
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
-
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new ${JavaModName}FMLBusEvents(this));
 	}
 
 	private void init(FMLCommonSetupEvent event) {
@@ -65,6 +64,20 @@ public class ${JavaModName} {
 
 	@SubscribeEvent public void registerSounds(RegistryEvent.Register<net.minecraft.util.SoundEvent> event) {
 		elements.registerSounds(event);
+	}
+
+	private static class ${JavaModName}FMLBusEvents {
+
+		private final ${JavaModName} parent;
+
+		${JavaModName}FMLBusEvents (${JavaModName} parent) {
+			this.parent = parent;
+		}
+
+		@SubscribeEvent public void serverLoad(FMLServerStartingEvent event) {
+			this.parent.elements.getElements().forEach(element -> element.serverLoad(event));
+		}
+
 	}
 
 }
