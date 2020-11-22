@@ -29,7 +29,7 @@ import java.util.Locale;
 public class BooleanBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
-		Element element = XMLUtil.getFirstChildrenWithName("field", block);
+		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		master.append("(");
 		if (element != null) {
 			master.append(element.getTextContent().toLowerCase(Locale.ENGLISH));

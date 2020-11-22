@@ -32,6 +32,7 @@ import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
@@ -45,19 +46,18 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 import java.util.Locale;
 
 public class ArmorPackMakerTool {
 
 	private static void open(MCreator mcreator) {
-		MCreatorDialog dialog = new MCreatorDialog(mcreator, "Armor pack maker", true);
+		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.tools.armor_pack_title"), true);
 		dialog.setLayout(new BorderLayout(10, 10));
 
 		dialog.setIconImage(UIRES.get("16px.armorpack").getImage());
 
-		dialog.add("North", PanelUtils.centerInPanel(new JLabel(
-				"<html><center>Using this tool, you can make the base for your armor in just a few clicks.<br>"
-						+ "This tool will make: <b>Armor, Armor Recipes")));
+		dialog.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools.armor_pack_info")));
 
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
 
@@ -69,7 +69,7 @@ public class ArmorPackMakerTool {
 		color.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		name.enableRealtimeValidation();
 
-		props.add(new JLabel("Armor pack base item:"));
+		props.add(L10N.label("dialog.tools.armor_pack_base_item"));
 		props.add(PanelUtils.centerInPanel(base));
 
 		base.setBlockSelectedListener(e -> {
@@ -88,20 +88,20 @@ public class ArmorPackMakerTool {
 			}
 		});
 
-		props.add(new JLabel("Armor name:"));
+		props.add(L10N.label("dialog.tools.armor_pack_name"));
 		props.add(name);
 
-		props.add(new JLabel("Armor color accent:"));
+		props.add(L10N.label("dialog.tools.armor_pack_color_accent"));
 		props.add(color);
 
-		props.add(new JLabel("<html>Armor power factor:<br><small>Relative to iron armor"));
+		props.add(L10N.label("dialog.tools.armor_pack_power_factor"));
 		props.add(power);
 
 		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name));
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
-		JButton ok = new JButton("Create armor pack");
-		JButton canecel = new JButton("Cancel");
+		JButton ok = L10N.button("dialog.tools.armor_pack_create");
+		JButton canecel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
 		canecel.addActionListener(e -> dialog.setVisible(false));
 		dialog.add("South", PanelUtils.join(ok, canecel));
 
@@ -146,6 +146,7 @@ public class ArmorPackMakerTool {
 		armor.damageValueBody = (int) Math.round(5 * factor);
 		armor.damageValueLeggings = (int) Math.round(6 * factor);
 		armor.damageValueBoots = (int) Math.round(2 * factor);
+		armor.repairItems = Collections.singletonList(base);
 
 		mcreator.getWorkspace().getModElementManager().storeModElementPicture(armor);
 		mcreator.getWorkspace().addModElement(armor.getModElement());
@@ -223,7 +224,8 @@ public class ArmorPackMakerTool {
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
-		return new BasicAction(actionRegistry, "Create armor pack...", e -> open(actionRegistry.getMCreator())) {
+		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.armor"),
+				e -> open(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getWorkspace().getGenerator()
 						.getGeneratorConfiguration();

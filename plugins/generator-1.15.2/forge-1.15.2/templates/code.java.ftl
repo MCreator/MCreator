@@ -67,5 +67,9 @@ package ${package};
 	@Override public void serverLoad(FMLServerStartingEvent event) {
 	}
 
+	@OnlyIn(Dist.CLIENT)
+	@Override public void clientLoad(FMLClientSetupEvent event) {
+    }
+
 }
 <#-- @formatter:on -->

@@ -20,15 +20,15 @@ package net.mcreator.blockly.java.blocks;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
-import net.mcreator.blockly.Dependency;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
 public class CustomDependencyBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
-		Element element = XMLUtil.getFirstChildrenWithName("field", block);
+		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null && element.getTextContent() != null && !element.getTextContent().equals("")) {
 			String depname = element.getTextContent();
 			String deptype = null;
@@ -43,8 +43,15 @@ public class CustomDependencyBlock implements IBlockGenerator {
 			case "custom_dependency_text":
 				deptype = "string";
 				break;
+			case "custom_dependency_itemstack":
+				deptype = "itemstack";
+				break;
 			}
 			master.addDependency(new Dependency(depname, deptype));
+
+			if (deptype != null && deptype.equals("itemstack"))
+				master.append("/*@ItemStack*/");
+
 			master.append("(").append(element.getTextContent()).append(")");
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
@@ -53,7 +60,8 @@ public class CustomDependencyBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "custom_dependency_logic", "custom_dependency_number", "custom_dependency_text" };
+		return new String[] { "custom_dependency_logic", "custom_dependency_number", "custom_dependency_text",
+				"custom_dependency_itemstack" };
 	}
 
 	@Override public BlockType getBlockType() {

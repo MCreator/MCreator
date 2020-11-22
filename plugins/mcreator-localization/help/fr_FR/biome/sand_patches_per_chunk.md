@@ -1,0 +1,1 @@
+This parameter controls the number of sand block groups per biome chunk.

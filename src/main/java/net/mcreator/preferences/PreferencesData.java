@@ -23,6 +23,7 @@ import net.mcreator.ui.laf.AbstractMCreatorTheme;
 
 import java.awt.*;
 import java.io.File;
+import java.util.Locale;
 
 public class PreferencesData {
 
@@ -39,10 +40,15 @@ public class PreferencesData {
 	public static class UISettings {
 
 		@PreferencesEntry public Color interfaceAccentColor = AbstractMCreatorTheme.MAIN_TINT_DEFAULT;
+
+		@PreferencesEntry public Locale language = new Locale("en", "US");
+
 		@PreferencesEntry public boolean aatext = true;
 
 		@PreferencesEntry(arrayData = { "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb", "lcd_vbgr" })
 		public String textAntialiasingType = "on";
+
+		@PreferencesEntry(arrayData = { "Dark theme", "Light theme" }) public String interfaceTheme = "Dark theme";
 
 		@PreferencesEntry public boolean expandSectionsByDefault = false;
 		@PreferencesEntry public boolean use2DAcceleration = false;
@@ -70,6 +76,7 @@ public class PreferencesData {
 
 	public static class BlocklySettings {
 
+		@PreferencesEntry(arrayData = { "Geras", "Thrasos" }) public String blockRenderer = "Thrasos";
 		@PreferencesEntry public boolean useSmartSort = true;
 		@PreferencesEntry public boolean enableComments = true;
 		@PreferencesEntry public boolean enableCollapse = true;

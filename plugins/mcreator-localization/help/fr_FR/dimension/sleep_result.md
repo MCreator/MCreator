@@ -1,0 +1,1 @@
+This parameter controls what happens if the player tries to sleep in bed in this dimension.

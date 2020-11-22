@@ -10,6 +10,11 @@ templates:
     writer: json
     variables: "model=cross;txname=cross"
     name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block.json.ftl
+    condition: "renderType #= 13"
+    writer: json
+    variables: "model=crop;txname=crop"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block_cmodel.json.ftl
     condition: "renderType #= 2"
     writer: json
@@ -18,6 +23,10 @@ templates:
     condition: "renderType #= 3"
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/plant_double_bottom.json.ftl
+    condition: "plantType %= double"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_bottom.json"
 
   - template: json/block_states.json.ftl
     writer: json
@@ -27,6 +36,10 @@ templates:
   - template: json/block_states_gplant.json.ftl
     writer: json
     condition: "plantType %= growapable"
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/block_states_dplant.json.ftl
+    writer: json
+    condition: "plantType %= double"
     name: "@MODASSETSROOT/blockstates/@registryname.json"
 
 localizationkeys:

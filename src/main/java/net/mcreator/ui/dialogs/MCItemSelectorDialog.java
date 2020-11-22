@@ -95,7 +95,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		});
 
 		JPanel buttons = new JPanel();
-		JButton naprej2 = new JButton("Cancel");
+		JButton naprej2 = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 
 		JButton naprej = new JButton("Use selected item");
 		naprej.addActionListener(e -> {
@@ -284,10 +284,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 
 	private void reloadElements() {
 		model.removeAllElements();
-		List<MCItem> mcItems = blocksConsumer.provide(mcreator.getWorkspace());
-		for (MCItem element : mcItems)
-			if (element.isSupportedInWorkspace(mcreator.getWorkspace()))
-				model.addElement(element);
+		blocksConsumer.provide(mcreator.getWorkspace()).forEach(model::addElement);
 	}
 
 	public MCItem getSelectedMCItem() {

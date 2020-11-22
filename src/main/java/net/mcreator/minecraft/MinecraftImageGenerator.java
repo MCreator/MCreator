@@ -18,6 +18,8 @@
 
 package net.mcreator.minecraft;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
@@ -38,7 +40,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 public class MinecraftImageGenerator {
 
@@ -399,12 +403,9 @@ public class MinecraftImageGenerator {
 				String name) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
-			graphics2D.setColor(new Color(255, 255, 255, 180));
+			graphics2D.setColor(new Color(190, 190, 190, 65));
 
-			graphics2D.drawLine(0, 8, 27, 8);
-			graphics2D.drawLine(0, 19, 27, 19);
-			graphics2D.drawLine(0, 9, 0, 18);
-			graphics2D.drawLine(27, 9, 27, 18);
+			graphics2D.fillRect(0, 8, 28, 12);
 
 			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
 					MCItem.getBlockIconBasedOnName(workspace, achievementIcon.getUnmappedValue()).getImage())), 2, 10,
@@ -485,12 +486,13 @@ public class MinecraftImageGenerator {
 		public static BufferedImage generateCreativeTabPreviewPicture(Workspace workspace, MItemBlock item) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
-			graphics2D.setColor(new Color(255, 255, 255, 180));
+			graphics2D.setColor(new Color(190, 190, 190, 65));
 			graphics2D.setFont(new Font(null, Font.PLAIN, 9));
 
 			graphics2D.drawLine(0, 1, 0, 27);
 			graphics2D.drawLine(27, 1, 27, 27);
 			graphics2D.drawLine(1, 0, 26, 0);
+			graphics2D.fillRect(1, 1, 26, 27);
 
 			int s = 16;
 
@@ -674,9 +676,23 @@ public class MinecraftImageGenerator {
 			return out;
 		}
 
+		/**
+		 * This method generates biome images.
+		 *
+		 * @param airColor         Biome's air color.
+		 * @param grassColor       Biome's grass color.
+		 * @param waterColor       Biome's water color.
+		 * @param groundBlock      Block used to calculate ground color. If grass, uses grass color instead
+		 * @param undergroundBlock Block used to calculate underground color.
+		 * @param treesPerChunk    If there are any, a tree renders.
+		 * @param treeType         Use default colors if vanilla.
+		 * @param treeStem         Item used to calculate tree stem color.
+		 * @param treeBranch       Item used to calculate tree branch/leaf color.
+		 * @return Returns generated image.
+		 */
 		public static BufferedImage generateBiomePreviewPicture(Workspace workspace, Color airColor, Color grassColor,
-				Color waterColor, MItemBlock groundBlock, MItemBlock undergroundBlock, boolean lakes, int treesPerChunk,
-				int treeType, MItemBlock treeStem, MItemBlock treeBranch) {
+				Color waterColor, MItemBlock groundBlock, MItemBlock undergroundBlock, int treesPerChunk, int treeType,
+				MItemBlock treeStem, MItemBlock treeBranch) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 
@@ -714,18 +730,8 @@ public class MinecraftImageGenerator {
 
 			//draw grass
 			graphics2D.setColor(topColor);
-			if (lakes) {
-				graphics2D.fillRect(0, 18, 5, 1);
-				graphics2D.fillRect(13, 18, 15, 1);
-				if (waterColor != null)
-					graphics2D.setColor(waterColor);
-				else
-					graphics2D.setColor(new Color(0x2559CB));
-				graphics2D.fillRect(3, 18, 10, 2);
-				graphics2D.fillRect(5, 20, 6, 1);
-			} else {
-				graphics2D.fillRect(0, 18, 28, 1);
-			}
+
+			graphics2D.fillRect(0, 18, 28, 1);
 
 			//draw trees: 0 = vanilla, 1 = modded
 			if (treesPerChunk > 0) {
@@ -733,9 +739,9 @@ public class MinecraftImageGenerator {
 				Color stem, leaves;
 				if (treeType == 1) {
 					stem = (ImageUtils.getAverageColor(ImageUtils.toBufferedImage(
-							MCItem.getBlockIconBasedOnName(workspace, groundBlock.getUnmappedValue()).getImage())));
+							MCItem.getBlockIconBasedOnName(workspace, treeStem.getUnmappedValue()).getImage())));
 					leaves = new Color((ImageUtils.getAverageColor(ImageUtils.toBufferedImage(
-							MCItem.getBlockIconBasedOnName(workspace, groundBlock.getUnmappedValue()).getImage()))
+							MCItem.getBlockIconBasedOnName(workspace, treeBranch.getUnmappedValue()).getImage()))
 							.getRGB() & 0x00ffffff) | 0xEE000000, false);
 				} else {
 					stem = new Color(95, 69, 32);
@@ -753,6 +759,15 @@ public class MinecraftImageGenerator {
 			return icon;
 		}
 
+		/**
+		 * This method generates mob images.
+		 *
+		 * @param mobModelTexture   Mob model full texture.
+		 * @param spawnEggBaseColor Spawn egg's base (egg) color.
+		 * @param spawnEggDotColor  Spawn egg's detail (dot) color.
+		 * @param hasSpawnEgg       Toggle spawn egg rendering.
+		 * @return Returns generated image.
+		 */
 		public static BufferedImage generateMobPreviewPicture(Workspace workspace, String mobModelTexture,
 				Color spawnEggBaseColor, Color spawnEggDotColor, boolean hasSpawnEgg) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
@@ -762,8 +777,9 @@ public class MinecraftImageGenerator {
 					workspace.getFolderManager().getOtherTextureFile(FilenameUtils.removeExtension(mobModelTexture))
 							.getAbsolutePath()).getImage()));
 
-			graphics2D.drawImage(ImageUtils.colorize(UIRES.get("entity_base"), textureColor, false).getImage(), 0, 0,
-					null);
+			graphics2D.drawImage(
+					ImageUtils.colorize(UIRES.get("mod_preview_bases.entity_base"), textureColor, false).getImage(), 0,
+					0, null);
 
 			if (hasSpawnEgg) {
 				graphics2D.setColor(spawnEggBaseColor);
@@ -778,6 +794,170 @@ public class MinecraftImageGenerator {
 				graphics2D.fillRect(21, 24, 1, 1);
 				graphics2D.fillRect(23, 26, 1, 1);
 				graphics2D.fillRect(25, 25, 1, 1);
+			}
+
+			graphics2D.dispose();
+			return icon;
+		}
+
+		/**
+		 * This method generates painting images.
+		 *
+		 * @param texture Painting's texture.
+		 * @param width   Painting's width.
+		 * @param height  Painting's height.
+		 * @return Returns generated image.
+		 */
+		public static BufferedImage generatePaintingPreviewPicture(File texture, int width, int height) {
+			if (!texture.isFile())
+				return null;
+			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2D = icon.createGraphics();
+
+			try {
+				Image tex = new ImageIcon(ImageUtils.autoCropTile(ImageIO.read(texture))).getImage();
+				double maxdim = Math.max(width, height);
+				int drawWidth = (int) ((width / maxdim) * 28), drawHeight = (int) ((height / maxdim) * 28);
+				graphics2D.drawImage(tex, 14 - drawWidth / 2, 14 - drawHeight / 2, drawWidth, drawHeight, null);
+			} catch (IOException e) {
+				LOG.error(e.getMessage(), e);
+			}
+
+			graphics2D.dispose();
+			return icon;
+		}
+
+		/**
+		 * This method generates procedure images.
+		 *
+		 * @param procedurexml Mob model full texture.
+		 * @param dependencies Spawn egg's base (egg) color.
+		 * @return Returns generated image.
+		 */
+		public static BufferedImage generateProcedurePreviewPicture(String procedurexml,
+				List<Dependency> dependencies) {
+			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2D = icon.createGraphics();
+
+			Color startColor = null;
+			Color returnColor = null;
+			Color blockColor = null;
+
+			// hacky xml scanning for performance reasons
+			// also this is only used for preview only, so it is fine
+			if (!procedurexml.contains("<field name=\"trigger\">no_ext_trigger</field>"))
+				startColor = BlocklyBlockUtil.getBlockColorFromHUE(76);
+
+			if (procedurexml.contains("<block type=\"return_")) {
+				if (procedurexml.contains("<block type=\"return_logic\"><value name=\"return\">")) {
+					returnColor = new Color(0x607c99);
+				} else if (procedurexml.contains("<block type=\"return_number\"><value name=\"return\">")) {
+					returnColor = new Color(0x606999);
+				} else if (procedurexml.contains("<block type=\"return_text\"><value name=\"return\">")) {
+					returnColor = new Color(0x609986);
+				} else if (procedurexml.contains("<block type=\"return_itemstack\"><value name=\"return\">")) {
+					returnColor = BlocklyBlockUtil.getBlockColorFromHUE(350);
+				}
+			}
+
+			if (dependencies.contains(new Dependency("advancement", ""))) {
+				blockColor = new Color(0x68712E);
+			} else if (procedurexml.contains("<block type=\"block_")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(60);
+			} else if (dependencies.contains(new Dependency("itemstack", ""))) {
+				blockColor = new Color(0x996069);
+			} else if (dependencies.contains(new Dependency("entity", "")) || dependencies
+					.contains(new Dependency("sourceentity", "")) || dependencies
+					.contains(new Dependency("imediatesourceentity", ""))) {
+				blockColor = new Color(0x608a99);
+			} else if (dependencies.contains(new Dependency("world", ""))) {
+				blockColor = new Color(0x998160);
+			}
+
+			if (startColor != null)
+				graphics2D.drawImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_base"), startColor, false)
+								.getImage(), 0, 0, null);
+			else {
+				graphics2D.drawImage(UIRES.get("mod_preview_bases.procedure_empty_base").getImage(), 0, 0, null);
+			}
+
+			if (blockColor != null) {
+				graphics2D.drawImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_block_base"), blockColor, false)
+								.getImage(), 0, 0, null);
+			} else
+				graphics2D.drawImage(UIRES.get("mod_preview_bases.procedure_block_base").getImage(), 0, 0, null);
+
+			if (returnColor != null)
+				graphics2D.drawImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_return_base"), returnColor, false)
+								.getImage(), 0, 0, null);
+			else
+				graphics2D.drawImage(UIRES.get("mod_preview_bases.procedure_return_base").getImage(), 0, 0, null);
+
+			graphics2D.dispose();
+			return icon;
+		}
+
+		/**
+		 * This method generates particle images.
+		 *
+		 * @param texture Particle's texture.
+		 * @param tiled   If the texture is tiled.
+		 * @return Returns generated image.
+		 */
+		public static BufferedImage generateParticlePreviewPicture(File texture, boolean tiled, String randomSeed) {
+			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2D = icon.createGraphics();
+
+			double maxdim = -1;
+			double width = -1, height = -1;
+			Image tex = null;
+			ArrayList<Image> rantex = new ArrayList<>();
+			try {
+				if (tiled) {
+					BufferedImage readImage = ImageIO.read(texture);
+					Random random = new Random(randomSeed.hashCode());
+					rantex.add(ImageUtils.randomTile(readImage, random));
+					rantex.add(ImageUtils.randomTile(readImage, random));
+					rantex.add(ImageUtils.randomTile(readImage, random));
+					width = Math.min(readImage.getWidth(), readImage.getHeight());
+					height = width;
+					maxdim = width;
+				} else {
+					tex = new ImageIcon(ImageIO.read(texture)).getImage();
+					width = tex.getWidth(null);
+					height = tex.getHeight(null);
+					maxdim = Math.max(width, height);
+				}
+			} catch (IOException e) {
+				LOG.error(e.getMessage(), e);
+			}
+
+			if ((maxdim > 0 & width > 0 & height > 0) & (tex != null || rantex.size() > 2)) {
+				BufferedImage tex1, tex2, tex3;
+				int drawWidth1 = (int) ((width / maxdim) * 7), drawHeight1 = (int) ((height / maxdim) * 7);
+				if (tex != null) {
+					tex1 = ImageUtils.resizeAA(tex, drawWidth1, drawHeight1);
+				} else {
+					tex1 = ImageUtils.resizeAA(rantex.get(0), drawWidth1, drawHeight1);
+				}
+				graphics2D.drawImage(tex1, 6 - drawWidth1 / 2, 3 - drawHeight1 / 2, null);
+
+				int drawWidth2 = (int) ((width / maxdim) * 9), drawHeight2 = (int) ((height / maxdim) * 9);
+				if (tex != null)
+					tex2 = ImageUtils.resizeAA(tex, drawWidth2, drawHeight2);
+				else
+					tex2 = ImageUtils.resizeAA(rantex.get(1), drawWidth2, drawHeight2);
+				graphics2D.drawImage(tex2, 21 - drawWidth2 / 2, 11 - drawHeight2 / 2, null);
+
+				int drawWidth3 = (int) ((width / maxdim) * 11), drawHeight3 = (int) ((height / maxdim) * 11);
+				if (tex != null)
+					tex3 = ImageUtils.resizeAA(tex, drawWidth3, drawHeight3);
+				else
+					tex3 = ImageUtils.resizeAA(rantex.get(2), drawWidth3, drawHeight3);
+				graphics2D.drawImage(tex3, 9 - drawWidth3 / 2, 20 - drawHeight3 / 2, null);
 			}
 
 			graphics2D.dispose();

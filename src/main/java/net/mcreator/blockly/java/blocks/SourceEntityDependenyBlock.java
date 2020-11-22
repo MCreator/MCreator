@@ -19,8 +19,8 @@
 package net.mcreator.blockly.java.blocks;
 
 import net.mcreator.blockly.BlocklyToCode;
-import net.mcreator.blockly.Dependency;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.data.Dependency;
 import org.w3c.dom.Element;
 
 public class SourceEntityDependenyBlock implements IBlockGenerator {

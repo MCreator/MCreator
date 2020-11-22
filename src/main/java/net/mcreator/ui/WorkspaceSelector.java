@@ -166,7 +166,7 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 		JPanel southcenter = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		southcenter.setBorder(BorderFactory.createEmptyBorder(0, 0, 26, 60 - 1));
 
-		JLabel donate = new JLabel(L10N.t("dialog.workspace_selector.donate"));
+		JLabel donate = L10N.label("dialog.workspace_selector.donate");
 		donate.setIcon(UIRES.get("donate"));
 		donate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.deriveFont(donate, 13);
@@ -182,7 +182,7 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 
 		southcenter.add(new JEmptyBox(5, 5));
 
-		JLabel prefs = new JLabel(L10N.t("dialog.workspace_selector.preferences"));
+		JLabel prefs = L10N.label("dialog.workspace_selector.preferences");
 		prefs.setIcon(UIRES.get("settings"));
 		prefs.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.deriveFont(prefs, 13);
@@ -372,14 +372,18 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 		CompletableFuture<String[]> newsFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getWebsiteNews(newsFuture);
 		JLabel nov = new JLabel(
-				"<html>Latest news from MCreator website:<br><div style=\"font-size: 14px;\">No data</div>");
+				"<html>Latest news from MCreator website:<br><div style=\"font-size: 14px;\">Loading news ...</div>");
 		nov.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		newsFuture.whenComplete((news, throwable) -> SwingUtilities.invokeLater(() -> {
-			nov.setText("<html>Latest news from MCreator website:<br><div style=\"font-size: 14px;\">" + StringUtils
-					.abbreviateString(news[0], 43) + "</div>");
+			if (news != null)
+				nov.setText("<html>Latest news from MCreator website:<br><div style=\"font-size: 14px;\">" + StringUtils
+						.abbreviateString(news[0], 43) + "</div>");
+			else
+				nov.setText("");
 			nov.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent en) {
-					DesktopUtils.browseSafe(news[1]);
+					if (news != null)
+						DesktopUtils.browseSafe(news[1]);
 				}
 			});
 		}));
@@ -395,13 +399,17 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 		motwFuture.whenComplete((motw, throwable) -> SwingUtilities.invokeLater(() -> {
 			motwpan.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent arg0) {
-					DesktopUtils.browseSafe(motw[1]);
+					if (motw != null)
+						DesktopUtils.browseSafe(motw[1]);
 				}
 			});
-			lab3.setText("<html>Mod of the week:<br><font style=\"font-size: 14px;\">" + StringUtils
-					.abbreviateString(motw[0], 33) + "&nbsp;&nbsp;&nbsp;&nbsp;");
+			if (motw != null)
+				lab3.setText("<html>Mod of the week:<br><font style=\"font-size: 14px;\">" + StringUtils
+						.abbreviateString(motw[0], 33) + "&nbsp;&nbsp;&nbsp;&nbsp;");
+			else
+				lab3.setText("");
 			ImageIcon defaultIcon;
-			if ((defaultIcon = WebIO.getIconFromURL(motw[4], 48, 48, null, true)) != null)
+			if (motw != null && (defaultIcon = WebIO.getIconFromURL(motw[4], 48, 48, null, true)) != null)
 				lab2.setIcon(defaultIcon);
 		}));
 

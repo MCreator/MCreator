@@ -19,6 +19,12 @@
       "type": "input_value",
       "name": "range",
       "check": "Number"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/null.png",
+      "width": 8,
+      "height": 24
     }
   ],
   "extensions": [

@@ -44,6 +44,7 @@ import org.w3c.dom.Text;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -84,9 +85,12 @@ public class BlocklyPanel extends JFXPanel {
 					// load CSS from file to select proper style for OS
 					Element styleNode = webEngine.getDocument().createElement("style");
 					String css = FileIO.readResourceToString("/blockly/css/mcreator_blockly.css");
+
 					if (OS.getOS() != OS.WINDOWS) {
 						css += FileIO.readResourceToString("/blockly/css/mcreator_blockly_unixfix.css");
 					}
+
+					css += FileIO.readResourceToString("/blockly/css/" + UIManager.get("MCreatorLAF.BLOCKLY_CSS"));
 
 					//remove font declaration if property set so
 					if (PreferencesManager.PREFERENCES.blockly.legacyFont) {
@@ -106,6 +110,7 @@ public class BlocklyPanel extends JFXPanel {
 					// @formatter:off
 					webEngine.executeScript("var MCR_BLCKLY_PREF = { "
 							+ "'comments' : " + PreferencesManager.PREFERENCES.blockly.enableComments + ","
+							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.toLowerCase(Locale.ENGLISH) + "',"
 							+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse + ","
 							+ "'trashcan' : " + PreferencesManager.PREFERENCES.blockly.enableTrashcan + ","
 							+ "'maxScale' : " + PreferencesManager.PREFERENCES.blockly.maxScale/100.0 + ","

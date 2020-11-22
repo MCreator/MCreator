@@ -1,0 +1,1 @@
+If this parameter is checked, any plant can be placed and grow on the block.

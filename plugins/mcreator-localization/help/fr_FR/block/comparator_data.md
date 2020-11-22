@@ -1,0 +1,1 @@
+Check this parameter if you want the block to work with comparators.

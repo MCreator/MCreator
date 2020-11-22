@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.IItemWithModel;
 import net.mcreator.element.IItemWithTexture;
 import net.mcreator.element.ITabContainedElement;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.util.image.ImageUtils;
@@ -41,12 +42,14 @@ import java.util.Map;
 	public String customModelName;
 
 	public String name;
+	public String rarity;
 	public TabEntry creativeTab;
 	public int stackSize;
 	public int enchantability;
 	public int useDuration;
 	public double toolType;
 	public int damageCount;
+	public MItemBlock recipeRemainder;
 	public boolean destroyAnyBlock;
 
 	public boolean stayInGridWhenCrafting;
@@ -57,6 +60,7 @@ import java.util.Map;
 
 	public List<String> specialInfo;
 	public boolean hasGlow;
+	public Procedure glowCondition;
 
 	public String guiBoundTo;
 	public int inventorySize;
@@ -70,6 +74,7 @@ import java.util.Map;
 	public Procedure onItemInUseTick;
 	public Procedure onStoppedUsing;
 	public Procedure onEntitySwing;
+	public Procedure onDroppedByPlayer;
 
 	private Item() {
 		this(null);
@@ -78,6 +83,7 @@ import java.util.Map;
 	public Item(ModElement element) {
 		super(element);
 
+		this.rarity = "COMMON";
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
 	}

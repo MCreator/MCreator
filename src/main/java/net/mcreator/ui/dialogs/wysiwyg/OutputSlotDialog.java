@@ -18,14 +18,14 @@
 
 package net.mcreator.ui.dialogs.wysiwyg;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.OutputSlot;
 import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.IHelpContext;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -35,10 +35,10 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class OutputSlotDialog extends MCreatorDialog {
+public class OutputSlotDialog extends AbstractWYSIWYGDialog {
 
 	public OutputSlotDialog(WYSIWYGEditor editor, @Nullable OutputSlot slot) {
-		super(editor.mcreator);
+		super(editor.mcreator, slot);
 		setModal(true);
 		setSize(850, 310);
 		setLocationRelativeTo(editor.mcreator);
@@ -59,59 +59,56 @@ public class OutputSlotDialog extends MCreatorDialog {
 						continue;
 					if (component instanceof Slot && component.name.equals("Slot #" + slotIDnum))
 						return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-								"This slot ID is already in use");
+								L10N.t("dialog.gui.slot_id_already_used"));
 				}
 			} catch (Exception exc) {
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, "Slot ID must be a number");
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("dialog.gui.slot_id_must_be_number"));
 			}
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 		slotID.setText("0");
-		options.add(PanelUtils.join(FlowLayout.LEFT, new JLabel("Slot ID: "), slotID));
+		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_id"), slotID));
 
-		JCheckBox disableStackInteraction = new JCheckBox(
-				"Disable player interaction with this slot (can't take item from it or insert in it)");
+		JCheckBox disableStackInteraction = L10N.checkbox("dialog.gui.slot_disable_player_interaction");
 		options.add(PanelUtils.join(FlowLayout.LEFT, disableStackInteraction));
 
-		JCheckBox dropItemsWhenNotBound = new JCheckBox(
-				"Drop items when GUI not bound to any external inventory is closed");
+		JCheckBox dropItemsWhenNotBound = L10N.checkbox("dialog.gui.slot_drop_item_when_gui_closed");
 		options.add(PanelUtils.join(FlowLayout.LEFT, dropItemsWhenNotBound));
 
 		dropItemsWhenNotBound.setSelected(true);
 
 		final JColor color = new JColor(editor.mcreator);
-		options.add(PanelUtils
-				.join(FlowLayout.LEFT, new JLabel("<html>Custom color<br><small>Set only if you want custom color: "),
-						color));
+		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_custom_color"), color));
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slot_changed"),
-				editor.mcreator, "When slot contents change", ProcedureSelector.Side.BOTH, false,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				editor.mcreator, L10N.t("dialog.gui.slot_event_slot_content_changes"), ProcedureSelector.Side.BOTH,
+				false, Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		eh.refreshList();
 
 		ProcedureSelector eh2 = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slot_item_taken"),
-				editor.mcreator, "When item taken from slot", ProcedureSelector.Side.BOTH, false,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				editor.mcreator, L10N.t("dialog.gui.slot_event_item_taken_from_slot"), ProcedureSelector.Side.BOTH,
+				false, Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		eh2.refreshList();
 
 		ProcedureSelector eh3 = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_transferred_from_slot"),
-				editor.mcreator, "When transferred from slot (shift-click)", ProcedureSelector.Side.BOTH, false,
-				Dependency
-						.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map/amount:number"));
+				editor.mcreator, L10N.t("dialog.gui.slot_event_transfered_from_slot"), ProcedureSelector.Side.BOTH,
+				false, Dependency
+				.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map/amount:number"));
 		eh3.refreshList();
 
 		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 3, 5, 5, eh, eh2, eh3))));
 
 		add("North", PanelUtils.join(FlowLayout.LEFT, options));
-		setTitle("Output slot editor");
-		JButton ok = new JButton("Save slot");
-		JButton cancel = new JButton("Cancel");
+		setTitle(L10N.t("dialog.gui.slot_output_editor_title"));
+		JButton ok = L10N.button("dialog.gui.save_slot");
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		add("South", PanelUtils.join(ok, cancel));
 
 		getRootPane().setDefaultButton(ok);
 
 		if (slot != null) {
-			ok.setText("Save changes");
+			ok.setText(L10N.t("dialog.common.save_changes"));
 			slotID.setText(String.valueOf(slot.id));
 			color.setColor(slot.color);
 			eh.setSelectedProcedure(slot.onSlotChanged);
@@ -140,13 +137,13 @@ public class OutputSlotDialog extends MCreatorDialog {
 				if (slot == null) {
 					editor.lol.setSelectedIndex(1);
 					editor.editor.setPositioningMode(18, 18);
-					editor.editor.setPositionDefinedListener(e1 -> editor.editor.addComponent(
+					editor.editor.setPositionDefinedListener(e1 -> editor.editor.addComponent(setEditingComponent(
 							new OutputSlot(slotIDnum, "Slot #" + slotIDnum, editor.editor.newlyAddedComponentPosX,
 									editor.editor.newlyAddedComponentPosY,
 									color.getColor().equals(Color.white) ? null : color.getColor(),
 									disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
 									eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
-									eh3.getSelectedProcedure())));
+									eh3.getSelectedProcedure()))));
 				} else {
 					int idx = editor.components.indexOf(slot);
 					editor.components.remove(slot);
@@ -155,6 +152,7 @@ public class OutputSlotDialog extends MCreatorDialog {
 							disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
 							eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure());
 					editor.components.add(idx, slotNew);
+					setEditingComponent(slotNew);
 				}
 			}
 		});

@@ -27,6 +27,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.DesktopUtils;
 
@@ -48,16 +49,13 @@ class PluginsPanel {
 
 		JPanel sectionPanel = new JPanel(new BorderLayout(15, 15));
 
-		sectionPanel.add("North", new JLabel("<html><font style=\"font-size: 16px;\">Manage plugins"
-				+ "</big><br><font style=\"font-size: 9px; color: gray;\">"
-				+ "Here you can load plugins that extend functionality or add new generator types.<br>"
-				+ "It is recommended to restart MCreator after adding new plugins!"));
+		sectionPanel.add("North", L10N.label("dialog.preferences.manage_plugins"));
 		sectionPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
 
 		JToolBar opts = new JToolBar();
 		opts.setFloatable(false);
 
-		JButton add = new JButton("Load plugin... ");
+		JButton add = L10N.button("dialog.preferences.load_plugins");
 		add.setIcon(UIRES.get("16px.add.gif"));
 		opts.add(add);
 		opts.add(new JEmptyBox(5, 5));
@@ -72,7 +70,7 @@ class PluginsPanel {
 			}
 		});
 
-		JButton explorePlugins = new JButton("Explore plugins");
+		JButton explorePlugins = L10N.button("dialog.preferences.explore_plugins");
 		explorePlugins.setIcon(UIRES.get("16px.search"));
 		opts.add(explorePlugins);
 		opts.add(new JEmptyBox(5, 5));
@@ -83,7 +81,7 @@ class PluginsPanel {
 
 		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, new JScrollPane(plugins), 5, 5));
 
-		preferencesDialog.preferences.add(PanelUtils.pullElementUp(sectionPanel), "Manage plugins");
+		preferencesDialog.preferences.add(sectionPanel, "Manage plugins");
 	}
 
 	private void reloadPluginList() {
@@ -108,12 +106,22 @@ class PluginsPanel {
 
 			ComponentUtils.deriveFont(this, 12);
 
-			if (value.getInfo().getAuthor() != null)
+			if ((value.getInfo().getAuthor() != null) && (value.getInfo().getName() != null) && (value.getInfo()
+					.getCredits().equals("None"))) {
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion() + ", author: " + value.getInfo().getAuthor());
+						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", loaded: " + (value
+						.isLoaded() ? "<html><font color=#a7ed1a>yes</font>" : "<html><font color=#f24122>no</font>"));
+			} else if (value.getInfo().getAuthor() != null)
+				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
+						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", credit: " + value
+						.getInfo().getCredits() + ", loaded: " + (value.isLoaded() ?
+						"<html><font color=#a7ed1a>yes</font>" :
+						"<html><font color=#f24122>no</font>"));
 			else
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion());
+						.getPluginVersion() + ", loaded: " + (value.isLoaded() ?
+						"<html><font color=#a7ed1a>yes</font>" :
+						"<html><font color=#f24122>no</font>"));
 
 			setToolTipText(value.getInfo().getDescription());
 			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));

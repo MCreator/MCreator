@@ -1,0 +1,1 @@
+Select this setting to have Shipwrecks in your biome.

@@ -21,6 +21,7 @@ package net.mcreator.ui.workspace.resources;
 import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.workspace.IReloadableFilterable;
@@ -63,7 +64,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton importnbt = new JButton("Import structure(s) ...");
+		JButton importnbt = L10N.button("action.workspace.resources.import_structure");
 		importnbt.setIcon(UIRES.get("16px.open.gif"));
 		importnbt.setContentAreaFilled(false);
 		importnbt.setOpaque(false);
@@ -71,7 +72,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		importnbt.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(importnbt);
 
-		JButton importmc = new JButton("Import structure from Minecraft ...");
+		JButton importmc = L10N.button("action.workspace.resources.import_structure_from_minecraft");
 		importmc.setIcon(UIRES.get("16px.open.gif"));
 		importmc.setContentAreaFilled(false);
 		importmc.setOpaque(false);
@@ -79,7 +80,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		importmc.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(importmc);
 
-		JButton del = new JButton("Delete selected");
+		JButton del = L10N.button("workspace.sounds.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
 		del.setContentAreaFilled(false);

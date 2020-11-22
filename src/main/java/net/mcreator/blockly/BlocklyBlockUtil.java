@@ -27,6 +27,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class BlocklyBlockUtil {
 
 	public static List<Element> getBlockProcedureStartingWithBlock(Element start_block) {
 		List<Element> base_blocks = new ArrayList<>();
-		List<Element> nextblock = XMLUtil.getChildrenWithName("block", start_block);
+		List<Element> nextblock = XMLUtil.getChildrenWithName(start_block, "block");
 		if (nextblock.size() != 0) {
 			Element block = nextblock.get(0);
 			if (block != null) {
@@ -88,14 +89,14 @@ public class BlocklyBlockUtil {
 		List<Element> base_blocks = new ArrayList<>();
 		while (true) {
 			// get next element if there is one
-			List<Element> nextchildren = XMLUtil.getChildrenWithName("next", current);
+			List<Element> nextchildren = XMLUtil.getChildrenWithName(current, "next");
 			if (nextchildren.size() == 0)
 				break;
 			Element next = nextchildren.get(0);
 			if (next == null)
 				break;
 
-			List<Element> nextblock = XMLUtil.getChildrenWithName("block", next);
+			List<Element> nextblock = XMLUtil.getChildrenWithName(next, "block");
 			if (nextblock.size() == 0)
 				break;
 			Element block = nextblock.get(0);
@@ -105,6 +106,16 @@ public class BlocklyBlockUtil {
 			}
 		}
 		return base_blocks;
+	}
+
+	/**
+	 * Calculates block's full color out of its hue value.
+	 *
+	 * @param hue The block's hue number
+	 * @return Block's render number
+	 */
+	public static Color getBlockColorFromHUE(int hue) {
+		return Color.getHSBColor(hue / 360f, 0.37f, 0.6f);
 	}
 
 }

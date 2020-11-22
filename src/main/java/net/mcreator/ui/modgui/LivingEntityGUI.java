@@ -20,9 +20,10 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToAITasks;
-import net.mcreator.blockly.Dependency;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalBlockLoader;
+import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
@@ -47,6 +48,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
@@ -99,6 +101,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 	private final JSpinner movementSpeed = new JSpinner(new SpinnerNumberModel(0.3, 0, 50, 0.1));
 	private final JSpinner armorBaseValue = new JSpinner(new SpinnerNumberModel(0.0, 0, 100, 0.1));
 	private final JSpinner health = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 1));
+	private final JSpinner knockbackResistance = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 0.1));
+	private final JSpinner attackKnockback = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 0.1));
 
 	private final JSpinner trackingRange = new JSpinner(new SpinnerNumberModel(64, 0, 10000, 1));
 
@@ -114,25 +118,22 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 	private final JSpinner xpAmount = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
 
-	private final JCheckBox hasAI = new JCheckBox(
-			"<html><b>Enable AI</b><br><small>When using AI, make sure to have some AI tasks defined below");
+	private final JCheckBox hasAI = L10N.checkbox("elementgui.living_entity.has_ai");
 	private final JCheckBox isBoss = new JCheckBox();
 
-	private final JCheckBox immuneToFire = new JCheckBox("Fire");
-	private final JCheckBox immuneToArrows = new JCheckBox("Arrows");
-	private final JCheckBox immuneToFallDamage = new JCheckBox("Fall damage");
-	private final JCheckBox immuneToCactus = new JCheckBox("Cactus");
-	private final JCheckBox immuneToDrowning = new JCheckBox("Drowning");
-	private final JCheckBox immuneToLightning = new JCheckBox("Lightning");
-	private final JCheckBox immuneToPotions = new JCheckBox("Potions");
-	private final JCheckBox immuneToPlayer = new JCheckBox("Direct player attack");
+	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.living_entity.immune_fire");
+	private final JCheckBox immuneToArrows = L10N.checkbox("elementgui.living_entity.immune_arrows");
+	private final JCheckBox immuneToFallDamage = L10N.checkbox("elementgui.living_entity.immune_fall_damage");
+	private final JCheckBox immuneToCactus = L10N.checkbox("elementgui.living_entity.immune_cactus");
+	private final JCheckBox immuneToDrowning = L10N.checkbox("elementgui.living_entity.immune_drowning");
+	private final JCheckBox immuneToLightning = L10N.checkbox("elementgui.living_entity.immune_lightning");
+	private final JCheckBox immuneToPotions = L10N.checkbox("elementgui.living_entity.immune_potions");
+	private final JCheckBox immuneToPlayer = L10N.checkbox("elementgui.living_entity.immune_player");
 
-	private final JCheckBox spawnParticles = new JCheckBox("Spawn particles around entity");
+	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.living_entity.spawn_particles_around");
 
-	private final JCheckBox waterMob = new JCheckBox(
-			"Is water entity (breathes underwater, is not pushed by water flow)");
-	private final JCheckBox flyingMob = new JCheckBox(
-			"Is flying entity (gravity does not pull it down, does not take fall damage)");
+	private final JCheckBox waterMob = L10N.checkbox("elementgui.living_entity.is_water_mob");
+	private final JCheckBox flyingMob = L10N.checkbox("elementgui.living_entity.is_flying_mob");
 
 	private final JCheckBox hasSpawnEgg = new JCheckBox();
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
@@ -158,7 +159,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 	private final JTextField mobLabel = new JTextField();
 
-	private final JCheckBox spawnInDungeons = new JCheckBox("Spawn in dungeons");
+	private final JCheckBox spawnInDungeons = L10N.checkbox("elementgui.living_entity.spawn_dungeons");
 	private final JColor spawnEggBaseColor = new JColor(mcreator);
 	private final JColor spawnEggDotColor = new JColor(mcreator);
 
@@ -187,33 +188,28 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature" });
 	private final JComboBox<String> mobCreatureType = new JComboBox<>(
-			new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER" });
+			new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
 	private final JComboBox<String> bossBarColor = new JComboBox<>(
 			new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
 	private final JComboBox<String> bossBarType = new JComboBox<>(
 			new String[] { "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" });
 
-	private final JComboBox<String> particleToSpawn = new JComboBox<>(ElementUtil.loadParticles());
+	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
 	private final JComboBox<String> particleSpawningShape = new JComboBox<>(
 			new String[] { "Spread", "Top", "Tube", "Plane" });
 	private final JSpinner particleSpawningRadious = new JSpinner(new SpinnerNumberModel(0.5, 0, 2, 0.1f));
 	private final JSpinner particleAmount = new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1));
 
-	private final JCheckBox ridable = new JCheckBox("Rideable");
+	private final JCheckBox ridable = L10N.checkbox("elementgui.living_entity.is_rideable");
 
-	private final JCheckBox canControlForward = new JCheckBox("Forward movement control");
-	private final JCheckBox canControlStrafe = new JCheckBox("Strafe movement control");
+	private final JCheckBox canControlForward = L10N.checkbox("elementgui.living_entity.control_forward");
+	private final JCheckBox canControlStrafe = L10N.checkbox("elementgui.living_entity.control_strafe");
 
-	private final JCheckBox breedable = new JCheckBox(
-			"<html>Check to make this entity <b>animal type</b>" + ", breed items:"
-					+ "<br><small>Entity base and behaviour type will be ignored if checked,<br>"
-					+ "animal entity type will be used");
+	private final JCheckBox breedable = L10N.checkbox("elementgui.living_entity.is_breedable");
 
-	private final JCheckBox tameable = new JCheckBox("<html><b>Can tame</b>");
+	private final JCheckBox tameable = L10N.checkbox("elementgui.living_entity.is_tameable");
 
-	private final JCheckBox ranged = new JCheckBox("<html>Check to make entity do <b>ranged</b> attacks."
-			+ "<br><small>Add at least one <b>Act aggressively against</b> AI task to define targets."
-			+ "<br>You need to select item that will be shot too.");
+	private final JCheckBox ranged = L10N.checkbox("elementgui.living_entity.is_ranged");
 
 	private MCItemListField breedTriggerItems;
 
@@ -225,7 +221,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private boolean hasErrors = false;
-	private Map<String, ExternalBlockLoader.ToolboxBlock> externalBlocks;
+	private Map<String, ToolboxBlock> externalBlocks;
 
 	private boolean disableMobModelCheckBoxListener = false;
 
@@ -273,36 +269,41 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 	@Override protected void initGUI() {
 		onStruckByLightning = new ProcedureSelector(this.withEntry("entity/when_struck_by_lightning"), mcreator,
-				"When it is struck by lightning",
+				L10N.t("elementgui.living_entity.event_struck_by_lightning"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		whenMobFalls = new ProcedureSelector(this.withEntry("entity/when_falls"), mcreator, "When entity falls",
+		whenMobFalls = new ProcedureSelector(this.withEntry("entity/when_falls"), mcreator,
+				L10N.t("elementgui.living_entity.event_mob_falls"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		whenMobDies = new ProcedureSelector(this.withEntry("entity/when_dies"), mcreator, "When entity dies",
+		whenMobDies = new ProcedureSelector(this.withEntry("entity/when_dies"), mcreator,
+				L10N.t("elementgui.living_entity.event_mob_dies"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
-		whenMobIsHurt = new ProcedureSelector(this.withEntry("entity/when_hurt"), mcreator, "When entity is hurt",
+		whenMobIsHurt = new ProcedureSelector(this.withEntry("entity/when_hurt"), mcreator,
+				L10N.t("elementgui.living_entity.event_mob_is_hurt"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
 		onRightClickedOn = new ProcedureSelector(this.withEntry("entity/when_right_clicked"), mcreator,
-				"When right clicked on entity", Dependency.fromString(
+				L10N.t("elementgui.living_entity.event_mob_right_clicked"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack"));
 		whenThisMobKillsAnother = new ProcedureSelector(this.withEntry("entity/when_kills_another"), mcreator,
-				"When this entity kills another one",
+				L10N.t("elementgui.living_entity.event_mob_kills_another"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
 		onMobTickUpdate = new ProcedureSelector(this.withEntry("entity/on_tick_update"), mcreator,
-				"On entity tick update", Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				L10N.t("elementgui.living_entity.event_mob_tick_update"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onPlayerCollidesWith = new ProcedureSelector(this.withEntry("entity/when_player_collides"), mcreator,
-				"When player collides with this entity",
+				L10N.t("elementgui.living_entity.event_player_collides_with"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
 		onInitialSpawn = new ProcedureSelector(this.withEntry("entity/on_initial_spawn"), mcreator,
-				"On initial entity spawn",
+				L10N.t("elementgui.living_entity.event_initial_spawn"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		particleCondition = new ProcedureSelector(this.withEntry("entity/particle_condition"), mcreator,
-				"Particle spawning condition", ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
+				L10N.t("elementgui.living_entity.condition_particle_spawn"), ProcedureSelector.Side.CLIENT, true,
+				VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		spawningCondition = new ProcedureSelector(this.withEntry("entity/condition_natural_spawning"), mcreator,
-				"Natural entity spawning condition", VariableElementType.LOGIC,
+				L10N.t("elementgui.living_entity.condition_natural_spawn"), VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName("(use vanilla condition)");
+				.setDefaultName(L10N.t("elementgui.living_entity.condition_use_vanilla"));
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
@@ -346,7 +347,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane7 = new JPanel(new BorderLayout(0, 0));
 
-		JPanel subpane1 = new JPanel(new GridLayout(11, 2, 0, 2));
+		JPanel subpane1 = new JPanel(new GridLayout(12, 2, 0, 2));
 
 		immuneToFire.setOpaque(false);
 		immuneToArrows.setOpaque(false);
@@ -360,55 +361,59 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		subpane1.setOpaque(false);
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/behaviour"),
-				new JLabel("<html>Behavioural characteristics (Mob is aggressive, Creature is passive):")));
+				L10N.label("elementgui.living_entity.behaviour")));
 		subpane1.add(mobBehaviourType);
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/creature_type"),
-				new JLabel("<html>Creature type (defines some special entity attributes):")));
+				L10N.label("elementgui.living_entity.creature_type")));
 		subpane1.add(mobCreatureType);
 
-		subpane1.add(new JLabel("Entity health value, experience amount: "));
+		subpane1.add(L10N.label("elementgui.living_entity.health_xp_amount"));
 		subpane1.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(this.withEntry("entity/health"), health),
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/xp_amount"), xpAmount)));
 
-		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/drop"),
-				new JLabel("<html>Mob default drop:<br><small>Drop is optional, leave blank for no drop")));
+		subpane1.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("entity/drop"), L10N.label("elementgui.living_entity.mob_drop")));
 		subpane1.add(PanelUtils.join(mobDrop));
 
-		subpane1.add(new JLabel("Movement speed, tracking range (\"render distance\"): "));
+		subpane1.add(L10N.label("elementgui.living_entity.movement_speed_tracking_range"));
 		subpane1.add(PanelUtils
 				.join(HelpUtils.wrapWithHelpButton(this.withEntry("entity/movement_speed"), movementSpeed),
 						HelpUtils.wrapWithHelpButton(this.withEntry("entity/tracking_range"), trackingRange)));
 
-		subpane1.add(new JLabel("Attack strength, armor protection base value: "));
+		subpane1.add(L10N.label("elementgui.living_entity.attack_strenght_armor_value"));
 		subpane1.add(PanelUtils
 				.join(HelpUtils.wrapWithHelpButton(this.withEntry("entity/attack_strength"), attackStrength),
 						HelpUtils.wrapWithHelpButton(this.withEntry("entity/armor_base_value"), armorBaseValue)));
 
-		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"), new JLabel(
-				"<html>Equipment (optional: main hand, off hand, helmet, body, leggings, boots):<br><small>Only works for Biped and Zombie models")));
+		subpane1.add(L10N.label("elementgui.living_entity.knockback"));
+		subpane1.add(PanelUtils
+				.join(HelpUtils.wrapWithHelpButton(this.withEntry("entity/attack_knockback"), attackKnockback),
+						HelpUtils.wrapWithHelpButton(this.withEntry("entity/knockback_resistance"),
+								knockbackResistance)));
+
+		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"),
+				L10N.label("elementgui.living_entity.equipment")));
 		subpane1.add(PanelUtils
 				.join(equipmentMainHand, equipmentOffHand, equipmentHelmet, equipmentBody, equipmentLeggings,
 						equipmentBoots));
 
-		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/immunity"), new JLabel("Entity immune to: ")));
+		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/immunity"),
+				L10N.label("elementgui.living_entity.is_immune_to")));
 		subpane1.add(PanelUtils
 				.gridElements(2, 4, 0, 0, immuneToFire, immuneToArrows, immuneToFallDamage, immuneToCactus,
 						immuneToDrowning, immuneToLightning, immuneToPotions, immuneToPlayer));
 
-		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/ridable"), new JLabel(
-				"<html>Check to make this entity rideable by player"
-						+ "<br><small>You can optionally turn on living entity controls too")));
+		subpane1.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("entity/ridable"), L10N.label("elementgui.living_entity.ridable")));
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, ridable, canControlForward, canControlStrafe));
 
-		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/water_entity"), new JLabel(
-				"<html>Check if this entity is water entity:"
-						+ "<br><small>NOTE: You still need AI tasks to make mob use these properties")));
+		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/water_entity"),
+				L10N.label("elementgui.living_entity.water_mob")));
 		subpane1.add(waterMob);
 
-		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/flying_entity"), new JLabel(
-				"<html>Check if this entity is flying entity:"
-						+ "<br><small>NOTE: You still need AI tasks to make mob use these properties")));
+		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/flying_entity"),
+				L10N.label("elementgui.living_entity.flying_mob")));
 		subpane1.add(flyingMob);
 
 		hasAI.setOpaque(false);
@@ -428,15 +433,16 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 		spo2.setOpaque(false);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/name"), new JLabel("Name of entity: ")));
+		spo2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("entity/name"), L10N.label("elementgui.living_entity.name")));
 		spo2.add(mobName);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/model"),
-				new JLabel("<html>Entity model:<br><small>Supported: JAVA")));
+				L10N.label("elementgui.living_entity.entity_model")));
 		spo2.add(mobModel);
 
 		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
-		importmobtexture.setToolTipText("Click this to import entity model texture");
+		importmobtexture.setToolTipText(L10N.t("elementgui.living_entity.entity_model_import"));
 		importmobtexture.setOpaque(false);
 		importmobtexture.addActionListener(e -> {
 			TextureImportDialogs.importOtherTextures(mcreator);
@@ -450,14 +456,12 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 					.forEach(el -> mobModelGlowTexture.addItem(el.getName()));
 		});
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/texture"), new JLabel(
-				"<html>Texture of entity:<br><small>"
-						+ "Texture needs to fit to the model (e.g. player skin texture is NOT biped model texture)")));
+		spo2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("entity/texture"), L10N.label("elementgui.living_entity.texture")));
 		spo2.add(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture));
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"), new JLabel(
-				"<html>Glow texture of entity (optional):<br><small>"
-						+ "Glow texture needs to fit to the model, image brightness determines glow")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"),
+				L10N.label("elementgui.living_entity.glow_texture")));
 		spo2.add(mobModelGlowTexture);
 
 		ComponentUtils.deriveFont(mobModelTexture, 16);
@@ -481,6 +485,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		movementSpeed.setPreferredSize(new Dimension(250, 32));
 		trackingRange.setPreferredSize(new Dimension(250, 32));
 		attackStrength.setPreferredSize(new Dimension(250, 32));
+		attackKnockback.setPreferredSize(new Dimension(250, 32));
+		knockbackResistance.setPreferredSize(new Dimension(250, 32));
 
 		health.setPreferredSize(new Dimension(250, 32));
 		xpAmount.setPreferredSize(new Dimension(250, 32));
@@ -522,37 +528,40 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 			}
 		});
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"), new JLabel(
-				"<html>Entity model bounding box:<br><small>Width/Depth, Height, Shadow Size, Mounted Entity Y Offset")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
+				L10N.label("elementgui.living_entity.bounding_box")));
 		spo2.add(PanelUtils.join(FlowLayout.LEFT, modelWidth, modelHeight, new JEmptyBox(7, 7), modelShadowSize,
 				new JEmptyBox(7, 7), mountedYOffset, new JEmptyBox(7, 7), disableCollisions));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_egg_options"),
-				new JLabel("<html>Spawn egg options:<br><small>Enable, base color, dot color, creative tab")));
+				L10N.label("elementgui.living_entity.spawn_egg_options")));
 		spo2.add(PanelUtils.join(hasSpawnEgg, spawnEggBaseColor, spawnEggDotColor, creativeTab));
 
 		bossBarColor.setEnabled(false);
 		bossBarType.setEnabled(false);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/boss_entity"),
-				new JLabel("Select if you want your entity to be boss with health bar: ")));
+				L10N.label("elementgui.living_entity.mob_boss")));
 		spo2.add(PanelUtils.join(isBoss, bossBarColor, bossBarType));
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/label"),
-				new JLabel("Entity label (leave blank to hide it):")));
+		spo2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("entity/label"), L10N.label("elementgui.living_entity.label")));
 		spo2.add(mobLabel);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/sound"), new JLabel("Living sound: ")));
+		spo2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("entity/sound"), L10N.label("elementgui.living_entity.sound")));
 		spo2.add(livingSound);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/step_sound"),
-				new JLabel("<html>Step sound:<br><small>" + "Leave empty for step sounds from blocks")));
+				L10N.label("elementgui.living_entity.step_sound")));
 		spo2.add(stepSound);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/hurt_sound"), new JLabel("Hurt sound: ")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/hurt_sound"),
+				L10N.label("elementgui.living_entity.hurt_sound")));
 		spo2.add(hurtSound);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/death_sound"), new JLabel("Death sound: ")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/death_sound"),
+				L10N.label("elementgui.living_entity.death_sound")));
 		spo2.add(deathSound);
 
 		ComponentUtils.deriveFont(mobLabel, 16);
@@ -567,9 +576,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 				.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("entity/enable_ai"), hasAI)));
 
 		aitop.add(PanelUtils.join(FlowLayout.LEFT, new JEmptyBox(20, 5), HelpUtils
-				.wrapWithHelpButton(this.withEntry("entity/base"), new JLabel(
-						"<html><b>Entity base:</b>" + "<br><small>This option will override some of the parameters!"
-								+ "<br>Using entity base can introduce problems so avoid using it")), aiBase));
+						.wrapWithHelpButton(this.withEntry("entity/base"), L10N.label("elementgui.living_entity.mob_base")),
+				aiBase));
 
 		aitop.add(PanelUtils
 				.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("entity/breedable"), breedable),
@@ -580,7 +588,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 		aitop.add(PanelUtils
 				.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("entity/do_ranged_attacks"), ranged),
-						new JLabel(" with "), rangedItemType, rangedAttackItem));
+						L10N.label("elementgui.living_entity.do_ranged_attacks"), rangedItemType, rangedAttackItem));
 
 		rangedAttackItem.setEnabled(false);
 
@@ -593,8 +601,9 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 		JPanel aitopwrp = PanelUtils.maxMargin(aitop, 2, true, true, true, true);
 		aitopwrp.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1), "AI parameters",
-				0, 0, getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.living_entity.ai_parameters"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JPanel aipan = new JPanel(new BorderLayout(0, 5));
 		aipan.setOpaque(false);
@@ -618,7 +627,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		bpb.setOpaque(false);
 		bpb.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Living entity AI tasks / goals builder", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				L10N.t("elementgui.living_entity.ai_tasks"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Color.white));
 		bpb.add(PanelUtils.northAndCenterElement(new AITasksEditorToolbar(mcreator, blocklyPanel), blocklyPanel));
 		aipan.add("Center", bpb);
@@ -677,19 +686,20 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		options.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_particles"), spawnParticles));
 		options.add(new JLabel());
 
-		options.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_type"), new JLabel("Particle type: ")));
+		options.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_type"),
+				L10N.label("elementgui.living_entity.particle_type")));
 		options.add(particleToSpawn);
 
 		options.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_shape"),
-				new JLabel("Particle spawning shape (determines shape boundary): ")));
+				L10N.label("elementgui.living_entity.particle_shape")));
 		options.add(particleSpawningShape);
 
 		options.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_spawn_radius"),
-				new JLabel("Average particle spawning radius: ")));
+				L10N.label("elementgui.living_entity.particle_spawn_radius")));
 		options.add(particleSpawningRadious);
 
 		options.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_average_amount"),
-				new JLabel("Average particle amount: ")));
+				L10N.label("elementgui.living_entity.particle_average_amount")));
 		options.add(particleAmount);
 
 		options.setOpaque(false);
@@ -714,45 +724,43 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 		hasSpawnEgg.setSelected(true);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("entity/enable_spawning"), new JLabel("Enable entity spawning: ")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/enable_spawning"),
+				L10N.label("elementgui.living_entity.enable_mob_spawning")));
 		selp.add(spawnThisMob);
 
-		selp.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/despawn_idle"), new JLabel("Despawn when idle: ")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/despawn_idle"),
+				L10N.label("elementgui.living_entity.despawn_idle")));
 		selp.add(doesDespawnWhenIdle);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_weight"), new JLabel("Spawn weight: ")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_weight"),
+				L10N.label("elementgui.living_entity.spawn_weight")));
 		selp.add(spawningProbability);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_type"),
-				new JLabel("<html>Mob natural spawning type (affects the spawning location and time range):")));
+				L10N.label("elementgui.living_entity.spawn_type")));
 		selp.add(mobSpawningType);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_group_size"),
-				new JLabel("Minimal number of entities in a spawn group: ")));
+				L10N.label("elementgui.living_entity.min_spawn_group_size")));
 		selp.add(minNumberOfMobsPerGroup);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_group_size"),
-				new JLabel("Maximal number of entities in a spawn group: ")));
+				L10N.label("elementgui.living_entity.max_spawn_group_size")));
 		selp.add(maxNumberOfMobsPerGroup);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"), new JLabel(
-				"<html>Biomes where the entity spawns (empty for no restriction):<br><small>"
-						+ "For custom biomes, this can be defined in biome editor too")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
+				L10N.label("elementgui.living_entity.restrict_to_biomes")));
 		selp.add(restrictionBiomes);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_in_dungeons"),
-				new JLabel("Does this entity spawn in dungeons? ")));
+				L10N.label("elementgui.living_entity.does_spawn_in_dungeons")));
 		selp.add(spawnInDungeons);
 
 		selp.setOpaque(false);
 
-		JComponent selpcont = PanelUtils.northAndCenterElement(selp, PanelUtils.westAndEastElement(new JLabel(
-						"<html>Custom spawning condition:<br>"
-								+ "<small>When custom spawning condition is used, spawning type condition will be overwritten<br>"
-								+ "with it, but spawning type grouping and weighting will still be used.<br>"),
-				PanelUtils.join(spawningCondition)));
+		JComponent selpcont = PanelUtils.northAndCenterElement(selp, PanelUtils
+				.westAndEastElement(L10N.label("elementgui.living_entity.spawn_general_condition"),
+						PanelUtils.join(spawningCondition)));
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(selpcont));
 
@@ -761,18 +769,16 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		JPanel props = new JPanel(new GridLayout(3, 2, 35, 2));
 		props.setOpaque(false);
 
-		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bind_gui"), new JLabel(
-				"<html>Bind this entity to GUI:<br>"
-						+ "<small>Set to Empty to disable inventory (you want this in most cases)<br>")));
+		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bind_gui"),
+				L10N.label("elementgui.living_entity.bind_to_gui")));
 		props.add(guiBoundTo);
 
-		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/inventory_size"), new JLabel(
-				"<html>Size of inventory (slot count):<br><small>"
-						+ "Set this value to the <i>biggest slot ID in the GUI</i> + 1")));
+		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/inventory_size"),
+				L10N.label("elementgui.living_entity.inventory_size")));
 		props.add(inventorySize);
 
-		props.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("entity/inventory_stack_size"), new JLabel("Max size of stack:")));
+		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/inventory_stack_size"),
+				L10N.label("elementgui.common.max_stack_size")));
 		props.add(inventoryStackSize);
 
 		pane7.add(PanelUtils.totalCenterInPanel(props));
@@ -782,23 +788,24 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		mobModelTexture.setValidator(() -> {
 			if (mobModelTexture.getSelectedItem() == null || mobModelTexture.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"Entity model needs to have a texture");
+						L10N.t("elementgui.living_entity.error_entity_model_needs_texture"));
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
-		mobName.setValidator(new TextFieldValidator(mobName, "Entity needs a name"));
+		mobName.setValidator(
+				new TextFieldValidator(mobName, L10N.t("elementgui.living_entity.error_entity_needs_name")));
 		mobName.enableRealtimeValidation();
 
 		pane1.setOpaque(false);
 		pane6.setOpaque(false);
 
-		addPage("Visual and sound", pane2);
-		addPage("Behaviour", pane1);
-		addPage("Particles", pane6);
-		addPage("Inventory", pane7);
-		addPage("Triggers", pane4);
-		addPage("AI and goals", pane3);
-		addPage("Spawning", pane5);
+		addPage(L10N.t("elementgui.living_entity.page_visual_and_sound"), pane2);
+		addPage(L10N.t("elementgui.living_entity.page_bahaviour"), pane1);
+		addPage(L10N.t("elementgui.living_entity.page_particles"), pane6);
+		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
+		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
+		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3);
+		addPage(L10N.t("elementgui.living_entity.page_spawning"), pane5);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -848,6 +855,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
 						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
 
+		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
+
 		disableMobModelCheckBoxListener = false;
 	}
 
@@ -889,6 +898,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		mobBehaviourType.setSelectedItem(mob.mobBehaviourType);
 		mobCreatureType.setSelectedItem(mob.mobCreatureType);
 		attackStrength.setValue(mob.attackStrength);
+		attackKnockback.setValue(mob.attackKnockback);
+		knockbackResistance.setValue(mob.knockbackResistance);
 		movementSpeed.setValue(mob.movementSpeed);
 		mobDrop.setBlock(mob.mobDrop);
 		equipmentMainHand.setBlock(mob.equipmentMainHand);
@@ -922,7 +933,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		spawnInDungeons.setSelected(mob.spawnInDungeons);
 		restrictionBiomes.setListElements(mob.restrictionBiomes);
 		spawnParticles.setSelected(mob.spawnParticles);
-		particleToSpawn.setSelectedItem(mob.particleToSpawn.getUnmappedValue());
+		particleToSpawn.setSelectedItem(mob.particleToSpawn);
 		particleSpawningShape.setSelectedItem(mob.particleSpawningShape);
 		particleCondition.setSelectedProcedure(mob.particleCondition);
 		spawningCondition.setSelectedProcedure(mob.spawningCondition);
@@ -1007,6 +1018,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		mob.mobBehaviourType = (String) mobBehaviourType.getSelectedItem();
 		mob.mobCreatureType = (String) mobCreatureType.getSelectedItem();
 		mob.attackStrength = (int) attackStrength.getValue();
+		mob.attackKnockback = (double) attackKnockback.getValue();
+		mob.knockbackResistance = (double) knockbackResistance.getValue();
 		mob.movementSpeed = (double) movementSpeed.getValue();
 		mob.health = (int) health.getValue();
 		mob.trackingRange = (int) trackingRange.getValue();
@@ -1028,7 +1041,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		mob.deathSound = deathSound.getSound();
 		mob.stepSound = stepSound.getSound();
 		mob.spawnParticles = spawnParticles.isSelected();
-		mob.particleToSpawn = new Particle(mcreator.getWorkspace(), (String) particleToSpawn.getSelectedItem());
+		mob.particleToSpawn = new Particle(mcreator.getWorkspace(), particleToSpawn.getSelectedItem());
 		mob.particleSpawningShape = (String) particleSpawningShape.getSelectedItem();
 		mob.particleSpawningRadious = (double) particleSpawningRadious.getValue();
 		mob.particleAmount = (int) particleAmount.getValue();

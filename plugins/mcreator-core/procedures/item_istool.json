@@ -1,0 +1,50 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "item",
+      "check": "MCItem"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "tool_type",
+      "options": [
+        [
+          "Sword",
+          "Sword"
+        ],
+        [
+          "Pickaxe",
+          "Pickaxe"
+        ],
+        [
+          "Axe",
+          "Axe"
+        ],
+        [
+          "Shovel",
+          "Shovel"
+        ],
+        [
+          "Hoe",
+          "Hoe"
+        ]
+      ]
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "itemmanagement",
+    "toolbox_init": [
+      "<value name=\"item\"><block type=\"itemstack_to_mcitem\"></block></value>"
+    ],
+    "inputs": [
+      "item"
+    ],
+    "fields": [
+      "tool_type"
+    ]
+  }
+}

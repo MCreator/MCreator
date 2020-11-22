@@ -60,8 +60,38 @@ public class PluginLoader extends URLClassLoader {
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
 
-		loadPluginsFromFolder(new File("./plugins/"), true);
-		loadPluginsFromFolder(UserFolderManager.getFileFromUserFolder("plugins"), false);
+		List<Plugin> pluginsLoadList = new ArrayList<>();
+		pluginsLoadList.addAll(listPluginsFromFolder(new File("./plugins/"), true));
+		pluginsLoadList.addAll(listPluginsFromFolder(UserFolderManager.getFileFromUserFolder("plugins"), false));
+
+		Collections.sort(pluginsLoadList);
+
+		List<String> idList = pluginsLoadList.stream().map(Plugin::getID).collect(Collectors.toList());
+
+		for (Plugin plugin : pluginsLoadList) {
+			if (plugin.getInfo().getDependencies() != null) {
+				if (!idList.containsAll(plugin.getInfo().getDependencies())) {
+					LOG.warn(plugin.getInfo().getName() + " can not be loaded. The plugin needs " + plugin.getInfo()
+							.getDependencies());
+					plugin.loaded = false;
+					continue;
+				}
+			}
+
+			try {
+				LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile() + ", weight: " + plugin
+						.getWeight());
+				if (plugin.getFile().isDirectory()) {
+					addURL(plugin.getFile().toURI().toURL());
+				} else {
+					addURL(new URL("jar:file:" + plugin.getFile().getAbsolutePath() + "!/"));
+				}
+
+				plugin.loaded = true;
+			} catch (MalformedURLException e) {
+				LOG.error("Failed to add plugin to the loader", e);
+			}
+		}
 
 		this.reflections = new Reflections(new ResourcesScanner(), this);
 	}
@@ -86,8 +116,9 @@ public class PluginLoader extends URLClassLoader {
 		return plugins;
 	}
 
-	synchronized private void loadPluginsFromFolder(File folder, boolean builtin) {
+	synchronized private List<Plugin> listPluginsFromFolder(File folder, boolean builtin) {
 		List<Plugin> loadList = new ArrayList<>();
+
 		File[] pluginFiles = folder.listFiles();
 		for (File pluginFile : pluginFiles != null ? pluginFiles : new File[0]) {
 			Plugin plugin = loadPlugin(pluginFile, builtin);
@@ -101,20 +132,7 @@ public class PluginLoader extends URLClassLoader {
 			}
 		}
 
-		Collections.sort(loadList);
-
-		for (Plugin plugin : loadList) {
-			try {
-				LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile());
-				if (plugin.getFile().isDirectory()) {
-					addURL(plugin.getFile().toURI().toURL());
-				} else {
-					addURL(new URL("jar:file:" + plugin.getFile().getAbsolutePath() + "!/"));
-				}
-			} catch (MalformedURLException e) {
-				LOG.error("Failed to add plugin to the loader", e);
-			}
-		}
+		return loadList;
 	}
 
 	@Nullable synchronized private Plugin loadPlugin(File pluginFile, boolean builtin) {
@@ -134,7 +152,7 @@ public class PluginLoader extends URLClassLoader {
 				File[] pluginFiles = pluginFile.listFiles();
 				for (File innerFile : pluginFiles != null ? pluginFiles : new File[0]) {
 					if (innerFile.isDirectory())
-						loadPluginsFromFolder(innerFile, builtin);
+						listPluginsFromFolder(innerFile, builtin);
 				}
 			}
 		} else if (ZipIO.checkIfZip(pluginFile)) {

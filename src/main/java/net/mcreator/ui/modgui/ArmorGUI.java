@@ -27,8 +27,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
-import net.mcreator.element.ModElementType;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Armor;
 import net.mcreator.minecraft.DataListEntry;
@@ -46,7 +45,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
 import net.mcreator.ui.help.HelpUtils;
-import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
@@ -121,10 +120,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 	private final VComboBox<String> armorTextureFile = new SearchableComboBox<>();
 
-	private final JCheckBox enableHelmet = new JCheckBox("Armor helmet");
-	private final JCheckBox enableBody = new JCheckBox("Armor body");
-	private final JCheckBox enableLeggings = new JCheckBox("Armor leggings");
-	private final JCheckBox enableBoots = new JCheckBox("Armor boots");
+	private final JCheckBox enableHelmet = L10N.checkbox("elementgui.armor.armor_helmet");
+	private final JCheckBox enableBody = L10N.checkbox("elementgui.armor.armor_body");
+	private final JCheckBox enableLeggings = L10N.checkbox("elementgui.armor.armor_leggings");
+	private final JCheckBox enableBoots = L10N.checkbox("elementgui.armor.armor_boots");
 
 	private final VComboBox<String> helmetModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> bodyModelTexture = new SearchableComboBox<>();
@@ -170,13 +169,17 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	}
 
 	@Override protected void initGUI() {
-		onHelmetTick = new ProcedureSelector(this.withEntry("armor/helmet_tick"), mcreator, "Helmet tick event",
+		onHelmetTick = new ProcedureSelector(this.withEntry("armor/helmet_tick"), mcreator,
+				L10N.t("elementgui.armor.helmet_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		onBodyTick = new ProcedureSelector(this.withEntry("armor/body_tick"), mcreator, "Body tick event",
+		onBodyTick = new ProcedureSelector(this.withEntry("armor/body_tick"), mcreator,
+				L10N.t("elementgui.armor.chestplate_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		onLeggingsTick = new ProcedureSelector(this.withEntry("armor/leggings_tick"), mcreator, "Leggings tick event",
+		onLeggingsTick = new ProcedureSelector(this.withEntry("armor/leggings_tick"), mcreator,
+				L10N.t("elementgui.armor.leggings_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		onBootsTick = new ProcedureSelector(this.withEntry("armor/boots_tick"), mcreator, "Boots tick event",
+		onBootsTick = new ProcedureSelector(this.withEntry("armor/boots_tick"), mcreator,
+				L10N.t("elementgui.armor.boots_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
@@ -268,10 +271,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		destal.setLayout(new BoxLayout(destal, BoxLayout.Y_AXIS));
 		destal.setOpaque(false);
 
-		textureHelmet = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
-		textureBody = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
-		textureLeggings = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
-		textureBoots = new TextureHolder(new BlockItemTextureSelector(mcreator, "Item"));
+		textureHelmet = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		textureBody = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		textureLeggings = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		textureBoots = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
 
 		textureHelmet.setOpaque(false);
 		textureBody.setOpaque(false);
@@ -288,12 +295,12 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enableLeggings.setOpaque(false);
 		enableBoots.setOpaque(false);
 
-		helmetModelPanel = new CollapsiblePanel("Advanced helmet settings", PanelUtils.northAndCenterElement(PanelUtils
-						.join(FlowLayout.LEFT, new JLabel("<html>Model: <br><small>Supported: JAVA"), helmetModel,
-								new JLabel(":"), helmetModelPart, new JLabel("<html><small>Texture: "), helmetModelTexture),
-				PanelUtils.join(FlowLayout.LEFT, new JLabel(
-								"<html>Special information:<br><small>Separate entries with comma, to use comma in description use \\,"),
-						helmetSpecialInfo)));
+		helmetModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"), PanelUtils
+				.northAndCenterElement(PanelUtils
+						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), helmetModel,
+								new JLabel(":"), helmetModelPart, L10N.label("elementgui.armor.texture"),
+								helmetModelTexture), PanelUtils
+						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), helmetSpecialInfo)));
 		helmetModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		JComponent helText = PanelUtils
@@ -303,8 +310,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						BorderFactory.createEmptyBorder(15, 12, 0, 12)));
 
 		destal.add(PanelUtils.westAndCenterElement(helText, PanelUtils.centerAndSouthElement(
-				PanelUtils.join(FlowLayout.LEFT, new JLabel("In-game helmet name: "), helmetName), helmetModelPanel), 5,
-				0));
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.helmet_name"), helmetName),
+				helmetModelPanel), 5, 0));
 
 		destal.add(new JEmptyBox(10, 10));
 
@@ -314,18 +321,18 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				.createCompoundBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
 						BorderFactory.createEmptyBorder(15, 17, 0, 17)));
 
-		bodyModelPanel = new CollapsiblePanel("Advanced body settings", PanelUtils.northAndCenterElement(PanelUtils
-				.join(FlowLayout.LEFT, new JLabel("<html>Model: <br><small>Supported: JAVA"), bodyModel,
-						new JLabel(":"), bodyModelPart, new JLabel("arms L"), armsModelPartL, new JLabel("arms R"),
-						armsModelPartR, new JLabel("<html><small>Texture: "), bodyModelTexture), PanelUtils
-				.join(FlowLayout.LEFT, new JLabel(
-								"<html>Special information:<br><small>Separate entries with comma, to use comma in description use \\,"),
-						bodySpecialInfo)));
+		bodyModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_body"), PanelUtils
+				.northAndCenterElement(PanelUtils
+						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bodyModel,
+								new JLabel(":"), bodyModelPart, new JLabel("arms L"), armsModelPartL,
+								new JLabel("arms R"), armsModelPartR, L10N.label("elementgui.armor.texture"),
+								bodyModelTexture), PanelUtils
+						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), bodySpecialInfo)));
 		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
-		destal.add(PanelUtils.westAndCenterElement(bodText, PanelUtils
-				.centerAndSouthElement(PanelUtils.join(FlowLayout.LEFT, new JLabel("In-game body name: "), bodyName),
-						bodyModelPanel), 5, 0));
+		destal.add(PanelUtils.westAndCenterElement(bodText, PanelUtils.centerAndSouthElement(
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.body_name"), bodyName), bodyModelPanel),
+				5, 0));
 
 		destal.add(new JEmptyBox(10, 10));
 
@@ -335,17 +342,17 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				.createCompoundBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
 						BorderFactory.createEmptyBorder(15, 8, 0, 8)));
 
-		leggingsModelPanel = new CollapsiblePanel("Advanced leggings settings", PanelUtils.northAndCenterElement(
-				PanelUtils.join(FlowLayout.LEFT, new JLabel("<html>Model: <br><small>Supported: JAVA"), leggingsModel,
-						new JLabel(": L"), leggingsModelPartL, new JLabel("R"), leggingsModelPartR,
-						new JLabel("<html><small>Texture: "), leggingsModelTexture), PanelUtils.join(FlowLayout.LEFT,
-						new JLabel(
-								"<html>Special information:<br><small>Separate entries with comma, to use comma in description use \\,"),
-						leggingsSpecialInfo)));
+		leggingsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"), PanelUtils
+				.northAndCenterElement(PanelUtils
+						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), leggingsModel,
+								new JLabel(": L"), leggingsModelPartL, new JLabel("R"), leggingsModelPartR,
+								L10N.label("elementgui.armor.texture"), leggingsModelTexture), PanelUtils
+						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+								leggingsSpecialInfo)));
 		leggingsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(legText, PanelUtils.centerAndSouthElement(
-				PanelUtils.join(FlowLayout.LEFT, new JLabel("In-game leggings name: "), leggingsName),
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
 				leggingsModelPanel), 5, 0));
 
 		destal.add(new JEmptyBox(10, 10));
@@ -356,18 +363,17 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				.createCompoundBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
 						BorderFactory.createEmptyBorder(15, 16, 0, 15)));
 
-		bootsModelPanel = new CollapsiblePanel("Advanced boots settings", PanelUtils.northAndCenterElement(PanelUtils
-				.join(FlowLayout.LEFT, new JLabel("<html>Model: <br><small>Supported: JAVA"), bootsModel,
-						new JLabel(": L"), bootsModelPartL, new JLabel("R"), bootsModelPartR,
-						new JLabel("<html><small>Texture: "), bootsModelTexture), PanelUtils.join(FlowLayout.LEFT,
-				new JLabel(
-						"<html>Special information:<br><small>Separate entries with comma, to use comma in description use \\,"),
-				bootsSpecialInfo)));
+		bootsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"), PanelUtils
+				.northAndCenterElement(PanelUtils
+						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bootsModel,
+								new JLabel(": L"), bootsModelPartL, new JLabel("R"), bootsModelPartR,
+								L10N.label("elementgui.armor.texture"), bootsModelTexture), PanelUtils
+						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), bootsSpecialInfo)));
 		bootsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
-		destal.add(PanelUtils.westAndCenterElement(bootText, PanelUtils
-				.centerAndSouthElement(PanelUtils.join(FlowLayout.LEFT, new JLabel("In-game boots name: "), bootsName),
-						bootsModelPanel), 5, 0));
+		destal.add(PanelUtils.westAndCenterElement(bootText, PanelUtils.centerAndSouthElement(
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),
+				bootsModelPanel), 5, 0));
 
 		enableHelmet.addActionListener(event -> {
 			textureHelmet.setEnabled(enableHelmet.isSelected());
@@ -419,38 +425,37 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		JPanel enderpanel = new JPanel(new GridLayout(8, 2, 20, 10));
 
-		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/armor_layer_texture"), new JLabel(
-				"<html>Armor layer texture:<br><small>"
-						+ "If the list is empty, you need to import or create an armor texture first")));
+		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/armor_layer_texture"),
+				L10N.label("elementgui.armor.layer_texture")));
 		enderpanel.add(armorTextureFile);
 
-		enderpanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/creative_tab"), new JLabel("Creative inventory tab:")));
+		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
+				L10N.label("elementgui.common.creative_tab")));
 		enderpanel.add(creativeTab);
 
 		enderpanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("armor/equip_sound"), new JLabel("Armor equip sound:")));
+				.wrapWithHelpButton(this.withEntry("armor/equip_sound"), L10N.label("elementgui.armor.equip_sound")));
 		enderpanel.add(equipSound);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/max_damage_absorbed"),
-				new JLabel("Maximal damage that armor absorbs: ")));
+				L10N.label("elementgui.armor.max_damage_absorption")));
 		enderpanel.add(maxDamage);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/damage_values"),
-				new JLabel("Damage values (helmet, body/chest, leggings, boots): ")));
+				L10N.label("elementgui.armor.damage_values")));
 		enderpanel.add(PanelUtils
 				.gridElements(1, 4, damageValueHelmet, damageValueBody, damageValueLeggings, damageValueBoots));
 
-		enderpanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("armor/enchantability"), new JLabel("Enchantability: ")));
+		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/enchantability"),
+				L10N.label("elementgui.common.enchantability")));
 		enderpanel.add(enchantability);
 
-		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/toughness"),
-				new JLabel("Toughness (default 0.0, diamond has 2.0): ")));
+		enderpanel.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("armor/toughness"), L10N.label("elementgui.armor.toughness")));
 		enderpanel.add(toughness);
 
-		enderpanel
-				.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/repair_items"), new JLabel("Repair items: ")));
+		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/repair_items"),
+				L10N.label("elementgui.common.repair_items")));
 		enderpanel.add(repairItems);
 
 		enderpanel.setOpaque(false);
@@ -467,7 +472,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		clop.setOpaque(false);
 
-		JPanel clopa = new JPanel(new BorderLayout());
+		JPanel clopa = new JPanel(new BorderLayout(35, 35));
 		clopa.add("Center", enderpanel);
 		clopa.add("South", clop);
 		clopa.setOpaque(false);
@@ -477,28 +482,28 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		textureHelmet.setValidator(() -> {
 			if (enableHelmet.isSelected() && !textureHelmet.has())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"Enabled armor part needs texture");
+						L10N.t("elementgui.armor.need_texture"));
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
 		textureBody.setValidator(() -> {
 			if (enableBody.isSelected() && !textureBody.has())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"Enabled armor part needs texture");
+						L10N.t("elementgui.armor.need_texture"));
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
 		textureLeggings.setValidator(() -> {
 			if (enableLeggings.isSelected() && !textureLeggings.has())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"Enabled armor part needs texture");
+						L10N.t("elementgui.armor.need_texture"));
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
 		textureBoots.setValidator(() -> {
 			if (enableBoots.isSelected() && !textureBoots.has())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"Enabled armor part needs texture");
+						L10N.t("elementgui.armor.need_texture"));
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
@@ -599,12 +604,17 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsModelListener.actionPerformed(new ActionEvent("", 0, ""));
 
 		bootsName.setValidator(
-				new ConditionalTextFieldValidator(bootsName, "Armor boots need a name", enableBoots, true));
-		bodyName.setValidator(new ConditionalTextFieldValidator(bodyName, "Armor body needs a name", enableBody, true));
+				new ConditionalTextFieldValidator(bootsName, L10N.t("elementgui.armor.boots_need_name"), enableBoots,
+						true));
+		bodyName.setValidator(
+				new ConditionalTextFieldValidator(bodyName, L10N.t("elementgui.armor.body_needs_name"), enableBody,
+						true));
 		leggingsName.setValidator(
-				new ConditionalTextFieldValidator(leggingsName, "Armor leggings need a name", enableLeggings, true));
+				new ConditionalTextFieldValidator(leggingsName, L10N.t("elementgui.armor.leggings_need_name"),
+						enableLeggings, true));
 		helmetName.setValidator(
-				new ConditionalTextFieldValidator(helmetName, "Armor helmet needs a name", enableHelmet, true));
+				new ConditionalTextFieldValidator(helmetName, L10N.t("elementgui.armor.helmet_needs_name"),
+						enableHelmet, true));
 
 		bootsName.enableRealtimeValidation();
 		bodyName.enableRealtimeValidation();
@@ -624,22 +634,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armorTextureFile.setValidator(() -> {
 			if (armorTextureFile.getSelectedItem() == null || armorTextureFile.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"Armor needs to have a texture");
+						L10N.t("elementgui.armor.armor_needs_texture"));
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
 		group2page.addValidationElement(armorTextureFile);
 
-		addPage("Visual", pane2);
-		addPage("Properties", pane5);
-		addPage("Triggers", pane6);
+		addPage(L10N.t("elementgui.common.page_visual"), pane2);
+		addPage(L10N.t("elementgui.common.page_properties"), pane5);
+		addPage(L10N.t("elementgui.common.page_triggers"), pane6);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
-			helmetName.setText(readableNameFromModElement + " Helmet");
-			bodyName.setText(readableNameFromModElement + " Body");
-			leggingsName.setText(readableNameFromModElement + " Leggings");
-			bootsName.setText(readableNameFromModElement + " Boots");
+			helmetName.setText(L10N.t("elementgui.armor.helmet", readableNameFromModElement));
+			bodyName.setText(L10N.t("elementgui.armor.body", readableNameFromModElement));
+			leggingsName.setText(L10N.t("elementgui.armor.leggings", readableNameFromModElement));
+			bootsName.setText(L10N.t("elementgui.armor.boots", readableNameFromModElement));
 		}
 	}
 
@@ -732,8 +742,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			clo1.setIcon(ImageUtils.drawOver(bg1, front1));
 			clo2.setIcon(ImageUtils.drawOver(bg2, front2));
 		} else {
-			clo1.setIcon(new ImageIcon());
-			clo2.setIcon(new ImageIcon());
+			clo1.setIcon(new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame1()));
+			clo2.setIcon(new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame2()));
 		}
 	}
 

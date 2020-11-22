@@ -39,6 +39,8 @@ public class TiledImageCache {
 	public static ImageIcon plantGrowingNo;
 	public static ImageIcon plantStaticYes;
 	public static ImageIcon plantStaticNo;
+	public static ImageIcon plantDoubleYes;
+	public static ImageIcon plantDoubleNo;
 
 	public static ImageIcon modTabRed;
 	public static ImageIcon modTabGreen;
@@ -71,6 +73,8 @@ public class TiledImageCache {
 			plantGrowingNo = plantGrowthTile.getIcon(2, 1);
 			plantStaticYes = plantGrowthTile.getIcon(3, 1);
 			plantStaticNo = plantGrowthTile.getIcon(4, 1);
+			plantDoubleYes = plantGrowthTile.getIcon(5, 1);
+			plantDoubleNo = plantGrowthTile.getIcon(6, 1);
 
 			modTabRed = modTabTile.getIcon(1, 1);
 			modTabGreen = modTabTile.getIcon(2, 1);
@@ -99,14 +103,14 @@ public class TiledImageCache {
 
 	public static ImageIcon getModTypeIcon(ModElementType modType) {
 		if (modType == null)
-			return modTypes.getIcon(25, 1);
+			return modTypes.getIcon(1, 1);
 
 		ModElementTypeRegistry.ModTypeRegistration<?> modRegistration = ModElementTypeRegistry.REGISTRY.get(modType);
 		if (modRegistration != null) {
 			return modTypes.getIcon(modRegistration.getIconID(), 1);
 		}
 
-		return modTypes.getIcon(25, 1);
+		return modTypes.getIcon(1, 1);
 	}
 
 }

@@ -30,6 +30,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -60,12 +61,12 @@ import java.util.stream.Collectors;
 public class WorkspaceDialogs {
 
 	public static WorkspaceSettingsChange workspaceSettings(MCreator mcreator, Workspace in) {
-		MCreatorDialog workspaceDialog = new MCreatorDialog(mcreator, "Workspace settings", true);
+		MCreatorDialog workspaceDialog = new MCreatorDialog(mcreator, L10N.t("dialog.workspace_settings.title"), true);
 
 		WorkspaceDialogPanel wdp = new WorkspaceDialogPanel(workspaceDialog, in);
 		workspaceDialog.add("Center", wdp);
 		JPanel buttons = new JPanel();
-		JButton ok = new JButton("Save changes");
+		JButton ok = L10N.button("dialog.workspace_settings.save_changes");
 		buttons.add(ok);
 		workspaceDialog.add("South", buttons);
 		ok.addActionListener(e -> {
@@ -85,7 +86,8 @@ public class WorkspaceDialogs {
 		});
 
 		workspaceDialog.getRootPane().setDefaultButton(ok);
-		workspaceDialog.setSize(590, 620);
+		workspaceDialog.pack();
+		workspaceDialog.setSize(workspaceDialog.getBounds().width, 620);
 		workspaceDialog.setLocationRelativeTo(mcreator);
 		workspaceDialog.setVisible(true);
 
@@ -95,11 +97,10 @@ public class WorkspaceDialogs {
 		WorkspaceSettingsChange change = new WorkspaceSettingsChange(newsettings, oldsettings);
 
 		if (change.refactorNeeded()) {
-			String[] options = new String[] { "Yes, refactor workspace", "No, revert changes" };
-			int option = JOptionPane.showOptionDialog(null,
-					"<html><b>You have changed some of the parameters that require the whole workspace to be refactored.</b><br><br>"
-							+ "If you have any locked mod elements you most likely will need to adapt their code after this change.<br>"
-							+ "Are you sure you want to proceed?", "Refactoring request", JOptionPane.YES_NO_OPTION,
+			String[] options = new String[] { L10N.t("dialog.workspace_settings.refactor.yes"),
+					L10N.t("dialog.workspace_settings.refactor.no") };
+			int option = JOptionPane.showOptionDialog(null, L10N.t("dialog.workspace_settings.refactor.text"),
+					L10N.t("dialog.workspace_settings.refactor.title"), JOptionPane.YES_NO_OPTION,
 					JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 			if (option == 1)
 				return new WorkspaceSettingsChange(oldsettings, null);
@@ -127,8 +128,8 @@ public class WorkspaceDialogs {
 		VTextField websiteURL = new VTextField(24);
 
 		JComboBox<String> modPicture = new JComboBox<>();
-		JCheckBox lockBaseModFiles = new JCheckBox("Lock base mod files");
-		JCheckBox serverSideOnly = new JCheckBox("This is server-side mod");
+		JCheckBox lockBaseModFiles = L10N.checkbox("dialog.workspace_settings.lock_base_files");
+		JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
 		JCheckBox disableForgeVersionCheck = new JCheckBox();
 		JTextField updateJSON = new JTextField(24);
 		JTextField requiredMods = new JTextField(24);
@@ -171,9 +172,11 @@ public class WorkspaceDialogs {
 					protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 					}
 				});
-				master.addTab("General settings", PanelUtils.centerInPanel(_basicSettings));
-				master.addTab("External APIs", PanelUtils.centerInPanel(_external_apis));
-				master.addTab("Advanced settings", PanelUtils.centerInPanel(_advancedSettings));
+				master.addTab(L10N.t("dialog.workspace_settings.tab.general"),
+						PanelUtils.centerInPanel(_basicSettings));
+				master.addTab(L10N.t("dialog.workspace_settings.tab.apis"), PanelUtils.centerInPanel(_external_apis));
+				master.addTab(L10N.t("dialog.workspace_settings.tab.advanced"),
+						PanelUtils.centerInPanel(_advancedSettings));
 				add("Center", PanelUtils.centerInPanel(master));
 			} else {
 				add("Center", _basicSettings);
@@ -215,23 +218,26 @@ public class WorkspaceDialogs {
 
 			modName.setValidator(new Validator() {
 				private final Validator parent = new TextFieldValidatorJSON(modName,
-						"Mod name can't be empty and can't contain quotes", false);
+						L10N.t("dialog.workspace_settings.mod_name.invalid"), false);
 
 				@Override public ValidationResult validate() {
 					if (modName.getText().matches(".*\\d+.*"))
 						return new ValidationResult(ValidationResultType.WARNING,
-								"Mod version should not be a part of the name");
+								L10N.t("dialog.workspace_settings.mod_name.verison_in_name"));
 
 					return parent.validate();
 				}
 			});
 
 			version.setValidator(
-					new TextFieldValidatorJSON(version, "Version can't be blank and can't contain quotes", false));
-			description.setValidator(new TextFieldValidatorJSON(description, "Description can't contain quotes", true));
-			author.setValidator(new TextFieldValidatorJSON(author, "Author name can't contain quotes", true));
-			websiteURL.setValidator(new TextFieldValidatorJSON(author, "Website URL can't contain quotes", true));
-			description.setValidator(new TextFieldValidatorJSON(description, "Description can't contain quotes", true));
+					new TextFieldValidatorJSON(version, L10N.t("dialog.workspace_settings.version.error"), false));
+			description.setValidator(
+					new TextFieldValidatorJSON(description, L10N.t("dialog.workspace_settings.description.error"),
+							true));
+			author.setValidator(
+					new TextFieldValidatorJSON(author, L10N.t("dialog.workspace_settings.author.error"), true));
+			websiteURL.setValidator(
+					new TextFieldValidatorJSON(author, L10N.t("dialog.workspace_settings.website.error"), true));
 
 			((AbstractDocument) modID.getDocument()).setDocumentFilter(new DocumentFilter() {
 				@Override
@@ -333,43 +339,43 @@ public class WorkspaceDialogs {
 			generatorSelector = PanelUtils.centerAndEastElement(generator, selectGenerator);
 
 			JPanel generalSettings = new JPanel(new GridLayout(4, 2, 5, 2));
-			generalSettings.setBorder(
-					BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), "Basic settings"));
+			generalSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+					L10N.t("dialog.workspace_settings.section.basic")));
 			_basicSettings.add(generalSettings);
-			generalSettings.add(new JLabel("<html>Mod display name:<br><small>This name is shown in game"));
+			generalSettings.add(L10N.label("dialog.workspace_settings.display_name"));
 			generalSettings.add(modName);
-			generalSettings.add(new JLabel("<html>Mod ID / namespace:<br><small>Used for mod identification"));
+			generalSettings.add(L10N.label("dialog.workspace_settings.mod_id"));
 			generalSettings.add(modID);
-			generalSettings.add(new JLabel("<html>Mod package name:<br><small>Must be a valid Java package name"));
+			generalSettings.add(L10N.label("dialog.workspace_settings.package"));
 			generalSettings.add(packageName);
-			generalSettings.add(new JLabel(
-					"<html>Minecraft version (generator):<br><small>Target Minecraft version/mod type"));
+			generalSettings.add(L10N.label("dialog.workspace_settings.generator"));
 			generalSettings.add(generatorSelector);
 
 			_basicSettings.add(new JEmptyBox(5, 15));
 
 			JPanel descriptionSettings = new JPanel(new GridLayout(workspace != null ? 6 : 2, 2, 5, 2));
-			descriptionSettings.setBorder(
-					BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), "Mod details"));
+			descriptionSettings.setBorder(BorderFactory
+					.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+							L10N.t("dialog.workspace_settings.section.details")));
 			_basicSettings.add(descriptionSettings);
-			descriptionSettings.add(new JLabel("<html>Mod version:<br><small>Should follow M.m.p format"));
+			descriptionSettings.add(L10N.label("dialog.workspace_settings.version"));
 			descriptionSettings.add(version);
-			descriptionSettings.add(new JLabel("<html>Mod description:<br><small>Short description of your mod"));
+			descriptionSettings.add(L10N.label("dialog.workspace_settings.description"));
 			descriptionSettings.add(description);
 			if (workspace != null) {
-				descriptionSettings.add(new JLabel("<html>Author name:"));
+				descriptionSettings.add(L10N.label("dialog.workspace_settings.author"));
 				descriptionSettings.add(author);
-				descriptionSettings.add(new JLabel("<html>Website URL:"));
+				descriptionSettings.add(L10N.label("dialog.workspace_settings.website"));
 				descriptionSettings.add(websiteURL);
-				descriptionSettings.add(new JLabel("Mod credits text:"));
+				descriptionSettings.add(L10N.label("dialog.workspace_settings.credits"));
 				descriptionSettings.add(credits);
-				descriptionSettings.add(new JLabel(
-						"<html>Mod logo/picture:<br><small>Add picture in resources tab (category: other)"));
+				descriptionSettings.add(L10N.label("dialog.workspace_settings.picture"));
 				descriptionSettings.add(modPicture);
 
 				_basicSettings.add(new JEmptyBox(5, 15));
 
-				credits.setValidator(new TextFieldValidatorJSON(credits, "Credits can't contain quotes", true));
+				credits.setValidator(
+						new TextFieldValidatorJSON(credits, L10N.t("dialog.workspace_settings.credits.error"), true));
 				credits.enableRealtimeValidation();
 
 				validationGroup.addValidationElement(credits);
@@ -421,11 +427,9 @@ public class WorkspaceDialogs {
 
 			if (workspace != null) {
 				JPanel apiSettings = new JPanel(new BorderLayout());
-				apiSettings.setBorder(BorderFactory
-						.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), "External API support"));
-				apiSettings.add("North", new JLabel(
-						"<html>Check boxes to add support and dependencies for the supported external APIs<br><small>"
-								+ "WARNING: If your mod uses external APIs, it won't work without them once you export it"));
+				apiSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+						L10N.t("dialog.workspace_settings.section.external_apis")));
+				apiSettings.add("North", L10N.label("dialog.workspace_settings.section.external_apis.tooltip"));
 
 				JPanel apiList = new JPanel();
 				apiList.setLayout(new BoxLayout(apiList, BoxLayout.PAGE_AXIS));
@@ -450,49 +454,44 @@ public class WorkspaceDialogs {
 
 				apiSettings.add("West", apiList);
 
-				JButton explorePlugins = new JButton("Explore plugins");
+				JButton explorePlugins = L10N.button("dialog.workspace_settings.explore_plugins");
 				explorePlugins.setIcon(UIRES.get("16px.search"));
-				explorePlugins.addActionListener(e -> {
-					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins");
-				});
+				explorePlugins.addActionListener(
+						e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins"));
 
 				apiSettings.add("South", PanelUtils
-						.join(FlowLayout.LEFT, new JLabel("Looking for more APIs? Check MCreator plugins."),
-								explorePlugins));
+						.join(FlowLayout.LEFT, L10N.label("dialog.workspace_settings.plugins_tip"), explorePlugins));
 
 				_external_apis.add(new JEmptyBox(5, 15));
 				_external_apis.add(apiSettings);
 			}
 
-			JComponent forgeVersionCheckPan = PanelUtils.westAndEastElement(new JLabel(
-					"<html>Disable Minecraft Forge version check?"
-							+ "<br><small>If you want to make sure users use the right Minecraft Forge version,<br>"
-							+ "uncheck this and enable Minecraft Forge version checking."), disableForgeVersionCheck);
+			JComponent forgeVersionCheckPan = PanelUtils
+					.westAndEastElement(L10N.label("dialog.workspace_settings.section.version_check"),
+							disableForgeVersionCheck);
 			forgeVersionCheckPan.setBorder(BorderFactory
-					.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), "Forge version check"));
+					.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+							L10N.t("dialog.workspace_settings.version_check")));
 			_advancedSettings.add(forgeVersionCheckPan);
 			_advancedSettings.add(new JEmptyBox(5, 15));
 
 			JPanel advancedSettings = new JPanel(new GridLayout(3, 2, 5, 2));
-			advancedSettings.setBorder(BorderFactory
-					.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), "Advanced settings"));
+			advancedSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+					L10N.t("dialog.workspace_settings.section.advanced")));
 			_advancedSettings.add(advancedSettings);
-			advancedSettings.add(new JLabel("<html>Is this mod server-side only?"));
+			advancedSettings.add(L10N.label("dialog.workspace_settings.server_side_only"));
 			advancedSettings.add(serverSideOnly);
-			advancedSettings.add(new JLabel(
-					"<html>Lock base mod files?<br><small>" + "Use ONLY if needed and you understand Java"));
+			advancedSettings.add(L10N.label("dialog.workspace_settings.lock_base_files_label"));
 			advancedSettings.add(lockBaseModFiles);
-			advancedSettings.add(new JLabel("<html>Mod update JSON URL:"));
+			advancedSettings.add(L10N.label("dialog.workspace_settings.update_url"));
 			advancedSettings.add(updateJSON);
 
 			JPanel dependencySettings = new JPanel(new GridLayout(3, 2, 5, 2));
-			dependencySettings
-					.add(new JLabel("<html>Additional required mods:<br><small>Separate mod ids using commas"));
+			dependencySettings.add(L10N.label("dialog.workspace_settings.required_mods"));
 			dependencySettings.add(requiredMods);
-			dependencySettings
-					.add(new JLabel("<html>Additional dependencies:<br><small>Separate mod ids using commas"));
+			dependencySettings.add(L10N.label("dialog.workspace_settings.dependencies"));
 			dependencySettings.add(dependencies);
-			dependencySettings.add(new JLabel("<html>Additional dependants:<br><small>Separate mod ids using commas"));
+			dependencySettings.add(L10N.label("dialog.workspace_settings.dependants"));
 			dependencySettings.add(dependants);
 
 			if (workspace != null) {
@@ -581,7 +580,7 @@ public class WorkspaceDialogs {
 	}
 
 	private static void showErrorsMessage(Window w, AggregatedValidationResult validationResult) {
-		StringBuilder stringBuilder = new StringBuilder("<html>Workspace settings have the following issues:");
+		StringBuilder stringBuilder = new StringBuilder(L10N.t("dialog.workspace_settings.error_list"));
 		stringBuilder.append("<ul>");
 		int count = 0;
 		for (String error : validationResult.getValidationProblemMessages()) {
@@ -596,11 +595,10 @@ public class WorkspaceDialogs {
 
 		}
 		stringBuilder.append("</ul>");
-		stringBuilder
-				.append("<small>Errors were marked on the window with red colors and error icons so you can locate them and fix<br>"
-						+ "them based on notes here.");
-		JOptionPane.showMessageDialog(w, stringBuilder.toString(), "Invalid workspace settings",
-				JOptionPane.ERROR_MESSAGE);
+		stringBuilder.append(L10N.t("dialog.workspace_settings.dialog.error"));
+		JOptionPane
+				.showMessageDialog(w, stringBuilder.toString(), L10N.t("dialog.workspace_settings.dialog.error.title"),
+						JOptionPane.ERROR_MESSAGE);
 	}
 
 }

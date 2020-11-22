@@ -39,13 +39,13 @@ public class BlocklyVariables {
 		List<String> varlist = new ArrayList<>();
 
 		if (variables_block != null) {
-			List<Element> variables = XMLUtil.getChildrenWithName("variable", variables_block);
+			List<Element> variables = XMLUtil.getChildrenWithName(variables_block, "variable");
 			for (Element variable : variables) {
 				String type = variable.getAttribute("type");
 				String name = variable.getAttribute("id");
 				if (JavaKeywordsMap.VARIABLE_TYPES.get(type) != null && name != null) {
 					generator.append(JavaKeywordsMap.VARIABLE_TYPES.get(type)[0]).append(" ").append(name).append(" = ")
-							.append(JavaKeywordsMap.VARIABLE_TYPES.get(type)[1]).append(";");
+							.append(JavaKeywordsMap.VARIABLE_TYPES.get(type)[1]).append(";\n");
 
 					// add variable to the array of variables
 					varlist.add(name);

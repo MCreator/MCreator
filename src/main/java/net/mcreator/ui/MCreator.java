@@ -34,6 +34,7 @@ import net.mcreator.ui.component.util.MacOSUIUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.ListUtils;
@@ -200,12 +201,12 @@ public final class MCreator extends JFrame {
 		pon.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
 
-		workspaceTab = new MCreatorTabs.Tab("Workspace", PanelUtils.maxMargin(mv, 5, true, true, true, true),
-				"Workspace", true, false);
+		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"),
+				PanelUtils.maxMargin(mv, 5, true, true, true, true), "Workspace", true, false);
 		mcreatorTabs.addTab(workspaceTab);
 		pon.add("West", workspaceTab);
 
-		consoleTab = new MCreatorTabs.Tab("Console ", gradleConsole, "Console", true, false) {
+		consoleTab = new MCreatorTabs.Tab(L10N.t("tab.console") + " ", gradleConsole, "Console", true, false) {
 			@Override public void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				switch (gradleConsole.getStatus()) {
@@ -238,8 +239,8 @@ public final class MCreator extends JFrame {
 
 		pon.add("Center", mcreatorTabs.getTabsStrip());
 
-		workspace.getFileManager().setDataSavedListener(() -> statusBar
-				.setPersistentMessage("Workspace auto-saved at " + new SimpleDateFormat("HH:mm").format(new Date())));
+		workspace.getFileManager().setDataSavedListener(() -> statusBar.setPersistentMessage(
+				L10N.t("workspace.statusbar.autosave_message", new SimpleDateFormat("HH:mm").format(new Date()))));
 
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, projectBrowser,
 				PanelUtils.northAndCenterElement(pon, mpan));
@@ -321,18 +322,15 @@ public final class MCreator extends JFrame {
 		boolean safetoexit = gradleConsole.getStatus() != GradleConsole.RUNNING;
 		if (!safetoexit) {
 			if (gradleConsole.isGradleSetupTaskRunning()) {
-				JOptionPane.showMessageDialog(this, "<html><b>Gradle is still setting up the workspace!</b><br>"
-								+ "You can not close MCreator while the Gradle is setting up. Wait until the setup is complete.<br>"
-								+ "You can monitor the progress of the setup in the Console tab.", "Gradle setting up",
-						JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(this, L10N.t("action.gradle.close_mcreator_while_installation_message"),
+						L10N.t("action.gradle.close_mcreator_while_installation_title"), JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
 
-			int reply = JOptionPane.showConfirmDialog(this,
-					"<html><b>There are some Gradle tasks running in the background.</b>"
-							+ "<br>Are you sure you want to close this workspace?<br><small>"
-							+ "<br>If you proceed, running tasks will be canceled!", "Close workspace",
-					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null);
+			int reply = JOptionPane
+					.showConfirmDialog(this, L10N.t("action.gradle.close_mcreator_while_running_message"),
+							L10N.t("action.gradle.close_mcreator_while_running_title"), JOptionPane.YES_NO_OPTION,
+							JOptionPane.WARNING_MESSAGE, null);
 			if (reply == JOptionPane.YES_OPTION) {
 				safetoexit = true;
 				gradleConsole.cancelTask();

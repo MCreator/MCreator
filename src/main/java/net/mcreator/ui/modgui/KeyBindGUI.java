@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.Dependency;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.KeyBinding;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
@@ -26,6 +26,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -58,11 +59,12 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 	}
 
 	@Override protected void initGUI() {
-		onKeyPressed = new ProcedureSelector(this.withEntry("keybinding/when_key_pressed"), mcreator, "On key pressed",
+		onKeyPressed = new ProcedureSelector(this.withEntry("keybinding/when_key_pressed"), mcreator,
+				L10N.t("elementgui.keybind.event_key_pressed"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		onKeyReleased = new ProcedureSelector(this.withEntry("keybinding/when_key_released"), mcreator,
-				"On key released",
+				L10N.t("elementgui.keybind.event_key_released"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/pressedms:number"));
 
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
@@ -73,17 +75,18 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 		JPanel enderpanel = new JPanel(new GridLayout(3, 2, 10, 10));
 
-		enderpanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("keybinding/key"), new JLabel("Key that triggers event: ")));
+		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("keybinding/key"),
+				L10N.label("elementgui.keybind.key_trigger_event")));
 		enderpanel.add(triggerKey);
 
-		enderpanel
-				.add(HelpUtils.wrapWithHelpButton(this.withEntry("keybinding/name"), new JLabel("Key binding name: ")));
+		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("keybinding/name"),
+				L10N.label("elementgui.keybind.key_binding_name")));
 		enderpanel.add(keyBindingName);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("keybinding/category"),
-				new JLabel("Key binding category translation key: ")));
-		enderpanel.add(PanelUtils.westAndCenterElement(new JLabel("key.categories."), keyBindingCategoryKey));
+				L10N.label("elementgui.keybind.key_binding_category")));
+		enderpanel.add(PanelUtils.westAndCenterElement(L10N.label("elementgui.keybind.key_binding_category_key"),
+				keyBindingCategoryKey));
 
 		keyBindingCategoryKey.setEditable(true);
 
@@ -93,7 +96,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 		evente.setOpaque(false);
 		evente.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				"Key binding procedure triggers", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.keybind.key_procedure_triggers"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		evente.add(onKeyPressed);
 		evente.add(onKeyReleased);
@@ -107,11 +110,12 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(merge)));
 
-		keyBindingName.setValidator(new TextFieldValidator(keyBindingName, "Key binding needs a name"));
+		keyBindingName.setValidator(
+				new TextFieldValidator(keyBindingName, L10N.t("elementgui.keybind.error_key_needs_name")));
 		keyBindingName.enableRealtimeValidation();
 
-		keyBindingCategoryKey
-				.setValidator(new RegistryNameValidator(keyBindingCategoryKey, "Key binding category key name"));
+		keyBindingCategoryKey.setValidator(new RegistryNameValidator(keyBindingCategoryKey,
+				L10N.t("elementgui.keybind.error_key_category_needs_name")));
 
 		addPage(pane5);
 

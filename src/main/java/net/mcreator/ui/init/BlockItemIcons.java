@@ -95,6 +95,11 @@ public class BlockItemIcons {
 		// food types
 		put("eat", 					"BREAD");
 		put("drink",				"POTIONITEM");
+		put("block",				"GRASS");
+		put("bow",					"BOW");
+		put("crossbow",				"CROSSBOW");
+		put("none",					"BARRIER");
+		put("spear",				"ARROW");
 
 		//Other
 		put("Not specified", 		"BLANK");

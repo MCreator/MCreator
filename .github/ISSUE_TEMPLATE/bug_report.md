@@ -15,8 +15,6 @@ A clear and concise description of what the bug is.
 
 When possible, attach your MCreator workspace (preferably a minimal example workspace required to reproduce the bug; use File -> Export workspace to a shareable ZIP...).
 
-Include game or build logs (full logs, do not crop them, in text format, screenshots of logs are not acceptable) from the Console tab or terminal and steps to reproduce the bug in your workspace. 
-
 Please specify which mod elements to check in your workspace too, if applicable.
 
 **Screenshots**
@@ -25,7 +23,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Details**
  - MCreator version: [e.g. 2020.5]
- - Generator type: [e.g. forge-2020.5]
+ - Generator type: [e.g. forge-1.15.2]
  - OS: [e.g. Windows]
 
 **Minimal reproducible example workspace**
@@ -34,7 +32,7 @@ If the bug is related to the workspace, *always* provide a minimal reproducible 
 workspace, export it to a shareable ZIP file, and attach it to the ticket.
 
 Keep in mind your workspace of the project is not minimal reproducible example.
-Make a workspace only with elements cruicial for the bug.
+Make a workspace only with elements crucial for the bug.
 
 **Logs**
 

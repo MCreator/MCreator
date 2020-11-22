@@ -30,10 +30,10 @@ import java.util.List;
 public class TextJoinBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		Element mutation = XMLUtil.getFirstChildrenWithName("mutation", block);
+		Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 		if (mutation != null) {
 			int sumnum = Integer.parseInt(mutation.getAttribute("items"));
-			List<Element> elements = XMLUtil.getChildrenWithName("value", block);
+			List<Element> elements = XMLUtil.getChildrenWithName(block, "value");
 
 			if (sumnum == 0) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,

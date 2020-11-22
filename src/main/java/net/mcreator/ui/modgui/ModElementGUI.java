@@ -28,6 +28,7 @@ import net.mcreator.ui.component.JModElementProgressPanel;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -185,7 +186,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			pager.add(forward);
 
-			JButton save = new JButton("Save mod element");
+			JButton save = L10N.button("elementgui.save_mod_element");
 			save.setMargin(new Insets(1, 40, 1, 40));
 			save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 			save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -212,7 +213,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					showErrorsMessage(validationResult);
 			});
 
-			JButton saveOnly = new JButton("Save and keep open");
+			JButton saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			saveOnly.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
@@ -262,7 +263,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				add("Center", split);
 			}
 		} else {
-			JButton saveOnly = new JButton("Save and keep open");
+			JButton saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			saveOnly.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
@@ -275,7 +276,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					showErrorsMessage(validationResult);
 			});
 
-			JButton save = new JButton("Save mod element");
+			JButton save = L10N.button("elementgui.save_mod_element");
 			save.setMargin(new Insets(1, 40, 1, 40));
 			save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 			save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -344,8 +345,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	private void showErrorsMessage(AggregatedValidationResult validationResult) {
-		StringBuilder stringBuilder = new StringBuilder(
-				"<html>The following mod element problems need to be resolved:");
+		StringBuilder stringBuilder = new StringBuilder(L10N.t("elementgui.errors.heading"));
 		stringBuilder.append("<ul>");
 		int count = 0;
 		for (String error : validationResult.getValidationProblemMessages()) {
@@ -360,10 +360,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		}
 		stringBuilder.append("</ul>");
-		stringBuilder
-				.append("<small>Errors were marked on the editor with red colors and error icons so you can locate them and fix<br>"
-						+ "them based on notes here.");
-		JOptionPane.showMessageDialog(mcreator, stringBuilder.toString(), "Errors/problems on page",
+		stringBuilder.append(L10N.t("elementgui.errors.note"));
+		JOptionPane.showMessageDialog(mcreator, stringBuilder.toString(), L10N.t("elementgui.errors.title"),
 				JOptionPane.ERROR_MESSAGE);
 	}
 
@@ -373,14 +371,16 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private void finishModCreation(boolean closeTab) {
 		GE element = getElementFromGUI();
 
-		// save custom mod element (preview) picture if it has one
-		generateModElementPreviewPicture(element);
-
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed
+		// add it before generating so all references are loaded
 		mcreator.getWorkspace().addModElement(modElement);
 
 		// generate mod element code
 		mcreator.getWorkspace().getGenerator().generateElement(element);
+
+		// save custom mod element (preview) picture if it has one
+		mcreator.getWorkspace().getModElementManager().storeModElementPicture(element);
+		modElement.reinit(); // re-init mod element to pick up the new mod element picture
 
 		// save the GeneratableElement definition
 		mcreator.getWorkspace().getModElementManager().storeModElement(element);
@@ -413,10 +413,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	public void reloadDataLists() {
-	}
-
-	protected void generateModElementPreviewPicture(GE element) {
-		mcreator.getWorkspace().getModElementManager().storeModElementPicture(element);
 	}
 
 	/**
