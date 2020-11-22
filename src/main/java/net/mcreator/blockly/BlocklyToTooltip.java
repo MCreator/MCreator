@@ -68,4 +68,12 @@ public class BlocklyToTooltip extends BlocklyToJava {
 			}
 		}
 	}
+
+	public static void processTooltipProcedure(List<Element> blocks) {
+		for (Element block : blocks) {
+			LOG.info(block.getAttribute("type"));
+			if (block.getAttribute("type") == "controls_if")
+				processTooltipProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithNext(block));
+		}
+	}
 }

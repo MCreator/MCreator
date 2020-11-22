@@ -3,6 +3,11 @@
   "args0": [
     {
       "type": "field_input",
+      "name": "untranslated_text",
+      "text": "Translatable text"
+    },
+    {
+      "type": "field_input",
       "name": "tooltip_text",
       "text": "translatable.text"
     }

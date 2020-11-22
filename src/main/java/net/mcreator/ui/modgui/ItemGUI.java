@@ -20,6 +20,8 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.*;
 import net.mcreator.blockly.data.*;
+import net.mcreator.element.parts.Enchantment;
+import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.ui.blockly.*;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
@@ -55,11 +57,21 @@ import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.xml.parsers.*;
 import java.awt.*;
+import java.io.StringReader;
+import java.text.ParseException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,6 +79,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class ItemGUI extends ModElementGUI<Item> {
+
+	private final Logger LOG = LogManager.getLogger("Tooltip Logger");
 
 	private TextureHolder texture;
 
@@ -135,7 +149,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		BlocklyToTooltip blocklyToJava;
 		try {
 			blocklyToJava = new BlocklyToTooltip(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
-					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+			        new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;
 		}
@@ -431,6 +446,29 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private void updateDispenseElements() {
 		dispenseSuccessCondition.setEnabled(hasDispenseBehavior.isSelected());
 		dispenseResultItemstack.setEnabled(hasDispenseBehavior.isSelected());
+	}
+
+	@Override public void onSave() {
+		super.onSave();
+		String xml = blocklyPanel.getXML();
+		String prettyXml = (String) blocklyPanel.executeJavaScriptSynchronously(
+				"Blockly.Xml.domToPrettyText(Blockly.Xml.textToDom('" + xml + "'))"
+		);
+		//LOG.info(prettyXml);
+		try {
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document doc = builder.parse(new InputSource(new StringReader(prettyXml)));
+			doc.getDocumentElement().normalize();
+
+			Element start_block = BlocklyBlockUtil.getStartBlock(doc, "tooltip_start");
+			List<Element> blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
+
+			BlocklyToTooltip.processTooltipProcedure(blocks);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override public void reloadDataLists() {
