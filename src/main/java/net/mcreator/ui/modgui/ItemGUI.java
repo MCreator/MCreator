@@ -70,7 +70,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 0, 64, 1));
 	private final VTextField name = new VTextField(20);
 	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
-	private final JCheckBox isImmuneToFire = L10N.checkbox("elementgui.common.enable");
 
 	private final MCItemHolder recipeRemainder = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -228,7 +227,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		pane2.setOpaque(false);
 
-		JPanel subpane2 = new JPanel(new GridLayout(14, 2, 45, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(13, 2, 45, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -247,13 +246,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		subpane2.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("item/stack_size"), L10N.label("elementgui.common.max_stack_size")));
 		subpane2.add(stackSize);
-
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/is_immune_to_fire"), L10N.label("elementgui.common.is_immune_to_fire")));
-		subpane2.add(isImmuneToFire);
-
-		isImmuneToFire.setOpaque(false);
-		isImmuneToFire.setSelected(false);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
 				L10N.label("elementgui.common.enchantability")));
@@ -410,7 +402,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onDroppedByPlayer.setSelectedProcedure(item.onDroppedByPlayer);
 		creativeTab.setSelectedItem(item.creativeTab);
 		stackSize.setValue(item.stackSize);
-		isImmuneToFire.setSelected(item.isImmuneToFire);
 		enchantability.setValue(item.enchantability);
 		toolType.setValue(item.toolType);
 		useDuration.setValue(item.useDuration);
@@ -440,7 +431,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.rarity = (String) rarity.getSelectedItem();
 		item.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		item.stackSize = (int) stackSize.getValue();
-		item.isImmuneToFire = isImmuneToFire.isSelected();
 		item.enchantability = (int) enchantability.getValue();
 		item.useDuration = (int) useDuration.getValue();
 		item.toolType = (double) toolType.getValue();
