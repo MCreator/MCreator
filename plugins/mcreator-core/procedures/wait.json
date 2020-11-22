@@ -1,6 +1,4 @@
 {
-  "type": "wait",
-  "message0": "Wait %1 %2 seconds %3 then %4",
   "args0": [
     {
       "type": "input_dummy"
@@ -22,11 +20,9 @@
   "previousStatement": null,
   "nextStatement": null,
   "colour": 120,
-  "tooltip": "",
-  "helpUrl": "",
   "mcreator": {
     "toolbox_id": "advanced",
-    "toolboxinit": [
+    "toolbox_init": [
         "<value name=\"SEC\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
       ],
     "inputs": [
