@@ -136,6 +136,19 @@ public class WorkspaceDialogs {
 		JTextField dependencies = new JTextField(24);
 		JTextField dependants = new JTextField(24);
 
+		JComboBox<String> license = new JComboBox<>(
+				new String[] { "Academic Free License v3.0", "Ace3 Style BSD", "All Rights Reserved",
+						"Apache License version 2.0", "Apple Public Source License version 2.0 (APSL)",
+						"BSD License Common Development and Distribution License (CDDL)",
+						"Creative Commons Attribution-NonCommercial 3.0",
+						"Unported GNU Affero General Public License version 3 (AGPLv3)",
+						"GNU General Public License version 2 (GPLv2)", "GNU General Public License version 3 (GPLv3)",
+						"GNU Lesser General Public License version 2.1 (LGPLv2.1)",
+						"GNU Lesser General Public License version 3 (LGPLv3)",
+						"ISC License (ISCL) Microsoft Public License (Ms-PL)", "Microsoft Reciprocal License (Ms-RL)",
+						"MIT License", "Mozilla Public License 1.0 (MPL)", "Mozilla Public License 1.1 (MPL 1.1)",
+						"Mozilla Public License 2.0", "Public Domain", "WTFPL", "Custom license" });
+
 		Map<String, JCheckBox> apis = new HashMap<>();
 
 		JComboBox<GeneratorConfiguration> generator = new JComboBox<>();
@@ -267,6 +280,9 @@ public class WorkspaceDialogs {
 				}
 			});
 
+			license.setEditable(true);
+			license.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXX");
+
 			modID.setValidator(new RegistryNameValidator(modID, "Mod ID").setMaxLength(32));
 
 			modName.enableRealtimeValidation();
@@ -353,7 +369,7 @@ public class WorkspaceDialogs {
 
 			_basicSettings.add(new JEmptyBox(5, 15));
 
-			JPanel descriptionSettings = new JPanel(new GridLayout(workspace != null ? 6 : 2, 2, 5, 2));
+			JPanel descriptionSettings = new JPanel(new GridLayout(workspace != null ? 7 : 2, 2, 5, 2));
 			descriptionSettings.setBorder(BorderFactory
 					.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 							L10N.t("dialog.workspace_settings.section.details")));
@@ -371,6 +387,8 @@ public class WorkspaceDialogs {
 				descriptionSettings.add(credits);
 				descriptionSettings.add(L10N.label("dialog.workspace_settings.picture"));
 				descriptionSettings.add(modPicture);
+				descriptionSettings.add(L10N.label("dialog.workspace_settings.license"));
+				descriptionSettings.add(license);
 
 				_basicSettings.add(new JEmptyBox(5, 15));
 
@@ -507,6 +525,7 @@ public class WorkspaceDialogs {
 				version.setText(workspace.getWorkspaceSettings().getVersion());
 				description.setText(workspace.getWorkspaceSettings().getDescription());
 				author.setText(workspace.getWorkspaceSettings().getAuthor());
+				license.setSelectedItem(workspace.getWorkspaceSettings().getLicense());
 				websiteURL.setText(workspace.getWorkspaceSettings().getWebsiteURL());
 				modPicture.setSelectedItem(workspace.getWorkspaceSettings().getModPicture() == null ?
 						"No picture / default picture" :
@@ -541,6 +560,9 @@ public class WorkspaceDialogs {
 			retVal.setVersion(version.getText());
 			retVal.setDescription(description.getText().equals("") ? null : description.getText());
 			retVal.setAuthor(author.getText().equals("") ? null : author.getText());
+			retVal.setLicense(license.getEditor().getItem().toString().equals("") ?
+					"Not specified" :
+					license.getEditor().getItem().toString());
 			retVal.setWebsiteURL(websiteURL.getText().equals("") ? null : websiteURL.getText());
 			retVal.setCredits(credits.getText().equals("") ? null : credits.getText());
 			retVal.setModPicture(Objects.equals(modPicture.getSelectedItem(), "No picture / default picture") ?

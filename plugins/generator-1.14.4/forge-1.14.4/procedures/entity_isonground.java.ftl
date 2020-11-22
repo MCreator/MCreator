@@ -1,1 +1,0 @@
-((${input$entity} instanceof LivingEntity)?(${input$entity}.onGround):false)
