@@ -454,17 +454,23 @@ public class ItemGUI extends ModElementGUI<Item> {
 		String prettyXml = (String) blocklyPanel.executeJavaScriptSynchronously(
 				"Blockly.Xml.domToPrettyText(Blockly.Xml.textToDom('" + xml + "'))"
 		);
+		// Map of `untranslated_text, translation_key`
+		Map<String, String> map = new HashMap<String, String>();
+
 		//LOG.info(prettyXml);
+
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document doc = builder.parse(new InputSource(new StringReader(prettyXml)));
+			Document doc = builder.parse(new InputSource(new StringReader(xml)));
 			doc.getDocumentElement().normalize();
 
 			Element start_block = BlocklyBlockUtil.getStartBlock(doc, "tooltip_start");
 			List<Element> blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
 
-			BlocklyToTooltip.processTooltipProcedure(blocks);
+			BlocklyToTooltip.processTooltipProcedure(map, blocks);
+
+			LOG.info(map);
 
 		} catch (Exception e) {
 			e.printStackTrace();

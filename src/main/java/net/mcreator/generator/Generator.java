@@ -27,6 +27,7 @@ import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ITooltipContainer;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Achievement;
 import net.mcreator.element.types.Item;
@@ -376,7 +377,7 @@ public class Generator implements Closeable {
 
 								additionalData.put("aicode", aicode);
 							});
-				} else if (element instanceof Item) {
+				} else if (element instanceof ITooltipContainer) {
 					code = templateGenerator
 							.generateElementFromTemplate(element, templateFileName, dataModel, additionalData -> {
 								BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
@@ -385,7 +386,7 @@ public class Generator implements Closeable {
 										generatorConfiguration.getGeneratorFlavor().getBaseLanguage().name()
 												.toLowerCase(Locale.ENGLISH));
 								BlocklyToTooltip blocklyToJava = new BlocklyToTooltip(this.getWorkspace(),
-										((Item) element).ttxml, this.getTooltipGenerator(),
+										((ITooltipContainer) element).getXml(), this.getTooltipGenerator(),
 										new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 								String tooltipCode = blocklyToJava.getGeneratedCode();

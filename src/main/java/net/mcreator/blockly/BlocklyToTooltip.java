@@ -21,12 +21,11 @@ package net.mcreator.blockly;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
-import net.mcreator.ui.blockly.BlocklyPanel;
+import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -34,6 +33,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 public class BlocklyToTooltip extends BlocklyToJava {
 
@@ -69,11 +69,33 @@ public class BlocklyToTooltip extends BlocklyToJava {
 		}
 	}
 
-	public static void processTooltipProcedure(List<Element> blocks) {
+	/**
+	 * A hard-coded method for finding translatable_text blocks from a list of elements and putting in a map
+	 * @param map A map to put
+	 * @param blocks A list of blockly blocks
+	 */
+	public static void processTooltipProcedure(Map<String, String> map, List<Element> blocks) {
 		for (Element block : blocks) {
-			LOG.info(block.getAttribute("type"));
-			if (block.getAttribute("type") == "controls_if")
-				processTooltipProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithNext(block));
+			String type = block.getAttribute("type");
+
+			// If its a `if block` we do some extra processing and re-run the method
+			if (type.equals("controls_if")) {
+				List<Element> statements = XMLUtil.getChildrenWithName(block, "statement");
+				for (Element block2 : statements) {
+					List<Element> blocks2 = BlocklyBlockUtil.getBlockProcedureStartingWithBlock(block2);
+					processTooltipProcedure(map, blocks2);
+				}
+			// If its the block we want, we get the fields and put them to the map
+			} else if (type.equals("translatable_text")) {
+				NodeList nodeList = block.getElementsByTagName("field");
+				// Default text
+				String untranslated_text = nodeList.item(0).getTextContent();
+				// Translation key
+				String translation_key = nodeList.item(1).getTextContent();
+				map.put(untranslated_text, translation_key);
+			} else {
+				// nothing
+			}
 		}
 	}
 }

@@ -18,10 +18,7 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.IItemWithModel;
-import net.mcreator.element.IItemWithTexture;
-import net.mcreator.element.ITabContainedElement;
+import net.mcreator.element.*;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.TabEntry;
@@ -35,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class Item extends GeneratableElement
-		implements IItemWithModel, ITabContainedElement, IItemWithTexture {
+		implements IItemWithModel, ITabContainedElement, IItemWithTexture, ITooltipContainer {
 
 	public int renderType;
 	public String texture;
@@ -58,11 +55,6 @@ import java.util.Map;
 	public boolean enableMeleeDamage;
 	public double damageVsEntity;
 
-	public List<String> specialInfo;
-	public boolean onShiftOnly;
-	public List<String> onShiftInfo;
-	public boolean onCommandOnly;
-	public List<String> onCommandInfo;
 	public boolean hasGlow;
 	public Procedure glowCondition;
 
@@ -121,16 +113,8 @@ import java.util.Map;
 		return null;
 	}
 
-	public boolean itemInfoOnly() {
-		return !specialInfo.isEmpty();
-	}
-
-	public boolean itemShiftOnly() {
-		return onShiftOnly;
-	}
-
-	public boolean itemCommandOnly() {
-		return onCommandOnly;
+	@Override public String getXml() {
+		return ttxml;
 	}
 
 	@Override public TabEntry getCreativeTab() {
@@ -148,5 +132,4 @@ import java.util.Map;
 	public boolean hasToolModel() {
 		return getItemModel().getType() == Model.Type.BUILTIN && getItemModel().getReadableName().equals("Tool");
 	}
-
 }
