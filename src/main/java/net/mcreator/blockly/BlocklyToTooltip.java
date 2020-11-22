@@ -92,7 +92,7 @@ public class BlocklyToTooltip extends BlocklyToJava {
 				String untranslated_text = nodeList.item(0).getTextContent();
 				// Translation key
 				String translation_key = nodeList.item(1).getTextContent();
-				map.put(untranslated_text, translation_key);
+				map.put(translation_key, untranslated_text);
 			} else {
 				// nothing
 			}

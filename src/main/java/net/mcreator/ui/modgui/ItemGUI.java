@@ -451,7 +451,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	@Override public void onSave() {
 		super.onSave();
 		String xml = blocklyPanel.getXML();
-		// Map of `untranslated_text, translation_key`
+		// Map of `translation_key, untranslated_text`
 		Map<String, String> map = new HashMap<String, String>();
 
 		try {
@@ -469,7 +469,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 			e.printStackTrace();
 		}
 
-		LOG.info(map);
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue();
+			mcreator.getWorkspace().setLocalization(key, value);
+		}
 
 	}
 
