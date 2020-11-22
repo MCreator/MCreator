@@ -28,42 +28,60 @@
 -->
 
 <#-- @formatter:off -->
-package ${package}.procedures;
+<#include "procedures.java.ftl">
+
+package ${package}.command;
 
 @${JavaModName}Elements.ModElement.Tag
-public class ${name}Procedure extends ${JavaModName}Elements.ModElement{
+public class ${name}Command extends ${JavaModName}Elements.ModElement{
 
-	public ${name}Procedure (${JavaModName}Elements instance) {
+	public ${name}Command (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
-		<#if has_trigger>
 		MinecraftForge.EVENT_BUS.register(this);
-		</#if>
 	}
 
-	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> executeProcedure(Map<String, Object> dependencies){
-		<#list dependencies as dependency>
-		if(dependencies.get("${dependency.getName()}") == null) {
-			if(!dependencies.containsKey("${dependency.getName()}"))
-				${JavaModName}.LOGGER.warn("Failed to load dependency ${dependency.getName()} for procedure ${name}!");
-			<#if return_type??>return ${return_type.getDefaultValue(generator.getWorkspace())}<#else>return</#if>;
-		}
-        </#list>
-
-		<#list dependencies as dependency>
-			<#if dependency.getType(generator.getWorkspace()) == "double">
-				double ${dependency.getName()} = dependencies.get("${dependency.getName()}") instanceof Integer
-					? (int) dependencies.get("${dependency.getName()}") : (double) dependencies.get("${dependency.getName()}");
-			<#else>
-				${dependency.getType(generator.getWorkspace())} ${dependency.getName()} = (${dependency.getType(generator.getWorkspace())}) dependencies.get("${dependency.getName()}");
-			</#if>
-		</#list>
-
-		${procedurecode}
-
+	@SubscribeEvent public void registerCommands(RegisterCommandsEvent event) {
+		event.getDispatcher().register(customCommand());
 	}
 
-	${trigger_code}
+	private LiteralArgumentBuilder<CommandSource> customCommand() {
+        return LiteralArgumentBuilder.<CommandSource>literal("${data.commandName}")
+			.requires(s -> s.hasPermissionLevel(${data.permissionLevel}))
+			.then(Commands.argument("arguments", StringArgumentType.greedyString())
+			<#if hasProcedure(data.onCommandExecuted)>
+            .executes(this::execute)
+            </#if>
+        	)
+			<#if hasProcedure(data.onCommandExecuted)>
+            .executes(this::execute)
+            </#if>
+			;
+    }
+
+    private int execute(CommandContext<CommandSource> ctx) {
+		ServerWorld world = ctx.getSource().getWorld();
+
+		double x = ctx.getSource().getPos().getX();
+		double y = ctx.getSource().getPos().getY();
+		double z = ctx.getSource().getPos().getZ();
+
+		Entity entity = ctx.getSource().getEntity();
+		if (entity == null)
+			entity = FakePlayerFactory.getMinecraft(world);
+
+		HashMap<String, String> cmdparams = new HashMap<>();
+		int[] index = { -1 };
+		Arrays.stream(ctx.getInput().split("\\s+")).forEach(param -> {
+			if(index[0] >= 0)
+				cmdparams.put(Integer.toString(index[0]), param);
+			index[0]++;
+		});
+
+		<@procedureOBJToCode data.onCommandExecuted/>
+
+		return 0;
+	}
 
 }
 <#-- @formatter:on -->
