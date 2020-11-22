@@ -70,6 +70,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 
 	private final VTextField name = new VTextField(20);
 	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
+	private final JCheckBox isImmuneToFire = L10N.checkbox("elementgui.common.enable");
 
 	private final JTextField specialInfo = new JTextField(20);
 
@@ -164,7 +165,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		pane2.add("Center", PanelUtils
 				.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.join(destal, rent), visualBottom)));
 
-		JPanel selp = new JPanel(new GridLayout(11, 2, 50, 2));
+		JPanel selp = new JPanel(new GridLayout(12, 2, 50, 2));
 		selp.setOpaque(false);
 
 		name.setPreferredSize(new Dimension(120, 31));
@@ -175,6 +176,9 @@ public class FoodGUI extends ModElementGUI<Food> {
 		stackSize.setOpaque(false);
 		nutritionalValue.setOpaque(false);
 		saturation.setOpaque(false);
+
+		isImmuneToFire.setOpaque(false);
+		isImmuneToFire.setSelected(false);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
@@ -190,6 +194,10 @@ public class FoodGUI extends ModElementGUI<Food> {
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("item/stack_size"), L10N.label("elementgui.common.stack_size")));
 		selp.add(stackSize);
+
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("item/is_immune_to_fire"), L10N.label("elementgui.common.is_immune_to_fire")));
+		selp.add(isImmuneToFire);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("food/nutritional_value"),
 				L10N.label("elementgui.food.nutritional_value")));
@@ -293,6 +301,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		name.setText(food.name);
 		rarity.setSelectedItem(food.rarity);
 		texture.setTextureFromTextureName(food.texture);
+		isImmuneToFire.setSelected(food.isImmuneToFire);
 		forDogs.setSelected(food.forDogs);
 		isAlwaysEdible.setSelected(food.isAlwaysEdible);
 		onRightClicked.setSelectedProcedure(food.onRightClicked);
@@ -322,6 +331,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		Food food = new Food(modElement);
 		food.name = name.getText();
 		food.rarity = (String) rarity.getSelectedItem();
+		food.isImmuneToFire = isImmuneToFire.isSelected();
 		food.texture = texture.getID();
 		food.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		food.stackSize = (int) stackSize.getValue();

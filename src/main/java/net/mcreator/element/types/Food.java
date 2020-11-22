@@ -44,6 +44,7 @@ import java.util.Map;
 
 	public String name;
 	public String rarity;
+	public boolean isImmuneToFire;
 	public List<String> specialInfo;
 	public TabEntry creativeTab;
 	public int stackSize;
