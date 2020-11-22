@@ -91,6 +91,7 @@ import static org.junit.Assert.fail;
 			workspaceSettings.setVersion("1.0.0");
 			workspaceSettings.setDescription("Test mod");
 			workspaceSettings.setAuthor("Unit tests");
+			workspaceSettings.setLicense("GPL 3.0");
 			workspaceSettings.setWebsiteURL("https://mcreator.net/");
 			workspaceSettings.setUpdateURL("https://mcreator.net/");
 			workspaceSettings.setModPicture("example");
