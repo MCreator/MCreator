@@ -10,6 +10,8 @@
   texture: IRON_BLOCK
 - GLASS:
   texture: GLASS
+- GRASS_BREAK:
+  texture: GLASS
 - CLOTH:
   texture: WOOL#0
 - SAND:
@@ -38,9 +40,53 @@
   texture: WHEAT
 - STEM:
   texture: MELON_STEM
+- VINE:
+  texture: VINE
 - NETHER_WART:
   texture: NETHER_WART
 - LANTERN:
   texture: LANTERN
 - HONEY:
   texture: HONEY_BLOCK
+- HYPHAE:
+  texture: CRIMSON_STEM
+- NYLIUM:
+  texture: CRIMSON_NYLIUM
+- FUNGUS:
+  texture: CRIMSON_FUNGUS
+- SHROOMLIGHT:
+  texture: SHROOMLIGHT
+- NETHER_VINE:
+  texture: WEEPING_VINES
+- NETHER_VINE_LOWER_PITCH:
+  texture: WEEPING_VINES
+- SOUL_SAND:
+  texture: SOUL_SAND
+- SOUL_SOIL:
+  texture: SOUL_SOIL
+- BASALT:
+  texture: BASALT
+- WART_BLOCK:
+  texture: NETHER_WART_BLOCK
+- NETHERRACK:
+  texture: NETHERRACK
+- NETHER_BRICKS:
+  texture: NETHER_BRICKS
+- NETHER_SPROUTS:
+  texture: NETHER_SPROUTS
+- NETHER_ORE:
+  texture: NETHER_GOLD_ORE
+- BONE:
+  texture: BONE_BLOCK
+- NETHERITE:
+  texture: NETHERITE_BLOCK
+- ANCIENT_DEBRIS:
+  texture: ANCIENT_DEBRIS
+- LODESTONE:
+  texture: LODESTONE
+- CHAIN:
+  texture: CHAIN
+- NETHER_GOLD_ORE:
+  texture: NETHER_GOLD_ORE
+- GILDED_BLACKSTONE:
+  texture: GILDED_BLACKSTONE
