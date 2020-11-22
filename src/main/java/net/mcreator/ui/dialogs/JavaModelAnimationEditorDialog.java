@@ -114,7 +114,9 @@ public class JavaModelAnimationEditorDialog {
 
 		int opt = JOptionPane.showOptionDialog(mcreator, sp, L10N.t("dialog.animation_editor.title_wizard"),
 				JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null,
-				new String[] { "Set new animations", "Keep current animations" }, "Set animations");
+				new String[] { L10N.t("dialog.animation_editor.action_set_new"),
+						L10N.t("dialog.animation_editor.action_keep_current") },
+				L10N.t("dialog.animation_editor.action_set"));
 
 		if (opt == 0) {
 			List<MethodSource<JavaClassSource>> methods = classJavaSource.getMethods();
