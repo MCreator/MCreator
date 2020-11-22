@@ -451,13 +451,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	@Override public void onSave() {
 		super.onSave();
 		String xml = blocklyPanel.getXML();
-		String prettyXml = (String) blocklyPanel.executeJavaScriptSynchronously(
-				"Blockly.Xml.domToPrettyText(Blockly.Xml.textToDom('" + xml + "'))"
-		);
 		// Map of `untranslated_text, translation_key`
 		Map<String, String> map = new HashMap<String, String>();
-
-		//LOG.info(prettyXml);
 
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -470,11 +465,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 			BlocklyToTooltip.processTooltipProcedure(map, blocks);
 
-			LOG.info(map);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		LOG.info(map);
+
 	}
 
 	@Override public void reloadDataLists() {
