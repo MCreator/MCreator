@@ -1,0 +1,1 @@
+If checked, the item will not burn when it falls into lava or fire (eg Netherite).

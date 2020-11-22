@@ -43,6 +43,7 @@ import java.util.Map;
 
 	public String name;
 	public String rarity;
+	public boolean isImmuneToFire;
 	public TabEntry creativeTab;
 	public int stackSize;
 	public int enchantability;
