@@ -1,0 +1,73 @@
+templates:
+  - template: armor.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: json/item.json.ftl
+    writer: json
+    condition: enableHelmet
+    deleteWhenConditionFalse: true
+    variables: "item=helmet"
+    name: "@MODASSETSROOT/models/item/@registryname_helmet.json"
+  - template: json/item.json.ftl
+    writer: json
+    condition: enableBody
+    deleteWhenConditionFalse: true
+    variables: "item=body"
+    name: "@MODASSETSROOT/models/item/@registryname_chestplate.json"
+  - template: json/item.json.ftl
+    writer: json
+    condition: enableLeggings
+    deleteWhenConditionFalse: true
+    variables: "item=leggings"
+    name: "@MODASSETSROOT/models/item/@registryname_leggings.json"
+  - template: json/item.json.ftl
+    writer: json
+    condition: enableBoots
+    deleteWhenConditionFalse: true
+    variables: "item=boots"
+    name: "@MODASSETSROOT/models/item/@registryname_boots.json"
+
+localizationkeys:
+  - key: item.@modid.@registryname_helmet
+    mapto: helmetName
+  - key: item.@modid.@registryname_chestplate
+    mapto: bodyName
+  - key: item.@modid.@registryname_leggings
+    mapto: leggingsName
+  - key: item.@modid.@registryname_boots
+    mapto: bootsName
+  - key: item.@modid.@registryname_helmet.tooltip
+    condition: armorHelmetInfoOnly
+    mapto: helmetSpecialInfo
+  - key: item.@modid.@registryname_chestplate.tooltip
+    condition: armorChestplateInfoOnly
+    mapto: bodySpecialInfo
+  - key: item.@modid.@registryname_leggings.tooltip
+    condition: armorLeggingsInfoOnly
+    mapto: leggingsSpecialInfo
+  - key: item.@modid.@registryname_boots.tooltip
+    condition: armorBootsInfoOnly
+    mapto: bootsSpecialInfo
+  - key: item.@modid.@registryname_helmet.shift.tooltip
+    condition: armorHelmetShiftOnly
+    mapto: helmetShiftInfo
+  - key: item.@modid.@registryname_chestplate.shift.tooltip
+    condition: armorChestplateShiftOnly
+    mapto: bodyShiftInfo
+  - key: item.@modid.@registryname_leggings.shift.tooltip
+    condition: armorLeggingsShiftOnly
+    mapto: leggingsShiftInfo
+  - key: item.@modid.@registryname_boots.shift.tooltip
+    condition: armorBootsShiftOnly
+    mapto: bootsShiftInfo
+  - key: item.@modid.@registryname_helmet.command.tooltip
+    condition: armorHelmetCommandOnly
+    mapto: helmetCommandInfo
+  - key: item.@modid.@registryname_chestplate.command.tooltip
+    condition: armorChestplateCommandOnly
+    mapto: bodyCommandInfo
+  - key: item.@modid.@registryname_leggings.command.tooltip
+    condition: armorLeggingsCommandOnly
+    mapto: leggingsCommandInfo
+  - key: item.@modid.@registryname_boots.command.tooltip
+    condition: armorBootsCommandOnly
+    mapto: bootsCommandInfo

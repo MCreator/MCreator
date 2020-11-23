@@ -1,0 +1,29 @@
+templates:
+  - template: tool.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: json/tool.json.ftl
+    writer: json
+    condition: "renderType #= 0"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/item_cmodel.json.ftl
+    writer: json
+    condition: "renderType #= 1"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/item_cmodel_obj.json.ftl
+    writer: json
+    condition: "renderType #= 2"
+    variables: "type=tool"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+
+localizationkeys:
+  - key: item.@modid.@registryname
+    mapto: name
+  - key: item.@modid.@registryname.tooltip
+    condition: toolInfoOnly
+    mapto: specialInfo
+  - key: item.@modid.@registryname.shift.tooltip
+    condition: toolShiftOnly
+    mapto: onShiftInfo
+  - key: item.@modid.@registryname.command.tooltip
+    condition: toolCommandOnly
+    mapto: onCommandInfo

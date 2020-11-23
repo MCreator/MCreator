@@ -20,7 +20,6 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import org.apache.commons.io.FilenameUtils;
-import org.jetbrains.annotations.Nullable;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
@@ -48,8 +47,8 @@ public class BlockItemIcons {
 		CACHE.putAll(tmp);
 	}
 
-	public static ImageIcon getIconForItem(@Nullable String itemName) {
-		if (itemName != null && CACHE.get(itemName) != null)
+	public static ImageIcon getIconForItem(String itemName) {
+		if (CACHE.get(itemName) != null)
 			return CACHE.get(itemName);
 		else
 			return UIRES.get("missingblockicon");

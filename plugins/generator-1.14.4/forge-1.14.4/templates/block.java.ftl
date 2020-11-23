@@ -1,0 +1,1020 @@
+<#--
+ # MCreator (https://mcreator.net/)
+ # Copyright (C) 2020 Pylo and contributors
+ # 
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ # 
+ # This program is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+ # 
+ # You should have received a copy of the GNU General Public License
+ # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ # 
+ # Additional permission for code generator templates (*.ftl files)
+ # 
+ # As a special exception, you may create a larger work that contains part or 
+ # all of the MCreator code generator templates (*.ftl files) and distribute 
+ # that work under terms of your choice, so long as that work isn't itself a 
+ # template for code generation. Alternatively, if you modify or redistribute 
+ # the template itself, you may (at your option) remove this special exception, 
+ # which will cause the template and the resulting code generator output files 
+ # to be licensed under the GNU General Public License without this special 
+ # exception.
+-->
+
+<#-- @formatter:off -->
+<#include "mcitems.ftl">
+<#include "procedures.java.ftl">
+<#include "particles.java.ftl">
+
+package ${package}.block;
+
+@${JavaModName}Elements.ModElement.Tag
+public class ${name}Block extends ${JavaModName}Elements.ModElement {
+
+	@ObjectHolder("${modid}:${registryname}")
+	public static final Block block = null;
+
+	<#if data.hasInventory>
+	@ObjectHolder("${modid}:${registryname}")
+	public static final TileEntityType<CustomTileEntity> tileEntityType = null;
+	</#if>
+
+	public ${name}Block (${JavaModName}Elements instance) {
+		super(instance, ${data.getModElement().getSortID()});
+
+		<#if data.hasInventory>
+		FMLJavaModLoadingContext.get().getModEventBus().register(this);
+		</#if>
+	}
+
+	@Override public void initElements() {
+		elements.blocks.add(() -> new CustomBlock());
+		elements.items.add(() -> new BlockItem(block, new Item.Properties()
+		                             .group(${data.creativeTab})
+		                             ).setRegistryName(block.getRegistryName()));
+	}
+
+	<#if data.hasInventory>
+	@SubscribeEvent public void registerTileEntity(RegistryEvent.Register<TileEntityType<?>> event) {
+		event.getRegistry().register(TileEntityType.Builder.create(CustomTileEntity::new, block).build(null).setRegistryName("${registryname}"));
+	}
+	</#if>
+
+	public static class CustomBlock extends
+			<#if data.hasGravity>
+				FallingBlock
+			<#elseif data.blockBase?has_content>
+				${data.blockBase}Block
+			<#else>
+				Block
+			</#if>
+			<#if data.isWaterloggable>
+            implements IWaterLoggable
+            </#if> {
+
+		<#if data.rotationMode == 1 || data.rotationMode == 3>
+		public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+		<#elseif data.rotationMode == 2 || data.rotationMode == 4 || data.rotationMode == 5>
+		public static final DirectionProperty FACING = DirectionalBlock.FACING;
+        </#if>
+        <#if data.isWaterloggable>
+        public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+        </#if>
+
+		public CustomBlock() {
+			<#if data.blockBase?has_content && data.blockBase == "Stairs">
+			super(new Block(Block.Properties.create(Material.ROCK)
+					<#if data.unbreakable>
+					.hardnessAndResistance(-1, 3600000)
+					<#else>
+					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
+					</#if>
+					).getDefaultState(),
+			<#elseif data.blockBase?has_content && data.blockBase == "Wall">
+			super(
+			<#elseif data.blockBase?has_content && data.blockBase == "Fence">
+			super(
+			<#else>
+			super(
+			</#if>
+
+			Block.Properties.create(Material.${data.material})
+					.sound(SoundType.${data.soundOnStep})
+					<#if data.unbreakable>
+					.hardnessAndResistance(-1, 3600000)
+					<#else>
+					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
+					</#if>
+					.lightValue(${(data.luminance * 15)?round})
+					<#if data.destroyTool != "Not specified">
+					.harvestLevel(${data.breakHarvestLevel})
+					.harvestTool(ToolType.${data.destroyTool?upper_case})
+					</#if>
+					<#if data.isNotColidable>
+					.doesNotBlockMovement()
+					</#if>
+					<#if data.slipperiness != 0.6>
+					.slipperiness(${data.slipperiness}f)
+					</#if>
+					<#if data.tickRandomly>
+					.tickRandomly()
+					</#if>
+			);
+
+            <#if data.rotationMode != 0 || data.isWaterloggable>
+			this.setDefaultState(this.stateContainer.getBaseState()
+                                     <#if data.rotationMode == 1 || data.rotationMode == 3>
+                                     .with(FACING, Direction.NORTH)
+                                     <#elseif data.rotationMode == 2 || data.rotationMode == 4>
+                                     .with(FACING, Direction.NORTH)
+                                     <#elseif data.rotationMode == 5>
+                                     .with(FACING, Direction.SOUTH)
+                                     </#if>
+                                     <#if data.isWaterloggable>
+                                     .with(WATERLOGGED, false)
+                                     </#if>
+            );
+			</#if>
+
+			setRegistryName("${registryname}");
+		}
+
+		<#if data.blockBase?has_content && data.blockBase == "Fence">
+		@Override public boolean func_220111_a(BlockState state, boolean checkattach, Direction face) {
+    	  boolean flag = state.getBlock() instanceof FenceBlock && state.getMaterial() == this.material;
+    	  boolean flag1 = state.getBlock() instanceof FenceGateBlock && FenceGateBlock.isParallel(state, face);
+    	  return !cannotAttach(state.getBlock()) && checkattach || flag || flag1;
+   		}
+   		<#elseif data.blockBase?has_content && data.blockBase == "Wall">
+		private boolean func_220113_a(BlockState state, boolean checkattach, Direction face) {
+      		boolean flag = state.getBlock() instanceof WallBlock || state.getBlock() instanceof FenceGateBlock && FenceGateBlock.isParallel(state, face);
+      		return !cannotAttach(state.getBlock()) && checkattach || flag;
+   		}
+   		@Override ${mcc.getMethod("net.minecraft.block.WallBlock", "getStateForPlacement", "BlockItemUseContext")}
+   		@Override ${mcc.getMethod("net.minecraft.block.WallBlock", "updatePostPlacement", "BlockState", "Direction", "BlockState", "IWorld", "BlockPos", "BlockPos")}
+		</#if>
+
+		<#if data.specialInfo?has_content || data.onShiftInfo?has_content || data.onCommandInfo?has_content>
+		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
+			super.addInformation(itemstack, world, list, flag);
+			<#if data.specialInfo?has_content>
+			<#assign line = 1>
+			<#list data.specialInfo as entry>
+			list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.tooltip${line}"));
+			<#assign line++>
+			</#list>
+			</#if>
+			<#if data.onShiftInfo?has_content && data.shiftOnly()>
+			if (Screen.hasShiftDown()) {
+				<#assign line = 1>
+				<#list data.onShiftInfo as entry>
+				list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.shift.tooltip${line}"));
+				<#assign line++>
+				</#list>
+			} else {
+				list.add(new StringTextComponent("\u00A77Press SHIFT for more information"));
+			}
+			</#if>
+			<#if data.onCommandInfo?has_content && data.commandOnly()>
+			if (Screen.hasControlDown()) {
+				<#assign line = 1>
+				<#list data.onCommandInfo as entry>
+				list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.command.tooltip${line}"));
+				<#assign line++>
+				</#list>
+			} else {
+				list.add(new StringTextComponent("\u00A77Press CTRL for more information"));
+			}
+			</#if>
+		}
+		</#if>
+
+		<#if data.transparencyType != "SOLID">
+		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+			return BlockRenderLayer.${data.transparencyType};
+		}
+		<#elseif data.hasTransparency> <#-- for cases when user selected SOLID but checked transparency -->
+		@OnlyIn(Dist.CLIENT) @Override public BlockRenderLayer getRenderLayer() {
+			return BlockRenderLayer.CUTOUT;
+		}
+		</#if>
+
+		<#if data.hasTransparency>
+        @Override public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+			return false;
+		}
+		</#if>
+
+		<#if data.connectedSides>
+        @OnlyIn(Dist.CLIENT) public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
+			return adjacentBlockState.getBlock() == this ? true : super.isSideInvisible(state, adjacentBlockState, side);
+		}
+		</#if>
+
+		<#if data.lightOpacity == 0>
+		@Override public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+			return true;
+		}
+		</#if>
+
+		<#if data.mx != 0 || data.my != 0 || data.mz != 0 || data.Mx != 1 || data.My != 1 || data.Mz != 1>
+		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+			Vec3d offset = state.getOffset(world, pos);
+			<#if data.rotationMode == 1 || data.rotationMode == 3>
+			switch ((Direction) state.get(FACING)) {
+			case UP:
+			case DOWN:
+			case SOUTH:
+			default:
+				return VoxelShapes.create(${1-data.mx}D, ${data.my}D, ${1-data.mz}D, ${1-data.Mx}D, ${data.My}D,
+                            ${1-data.Mz}D).withOffset(offset.x, offset.y, offset.z);
+			case NORTH:
+				return VoxelShapes.create(${data.mx}D, ${data.my}D, ${data.mz}D, ${data.Mx}D, ${data.My}D, ${data.Mz}D)
+						.withOffset(offset.x, offset.y, offset.z);
+			case WEST:
+				return VoxelShapes.create(${data.mz}D, ${data.my}D, ${1-data.mx}D, ${data.Mz}D, ${data.My}D,
+                            ${1-data.Mx}D).withOffset(offset.x, offset.y, offset.z);
+			case EAST:
+				return VoxelShapes.create(${1-data.mz}D, ${data.my}D, ${data.mx}D, ${1-data.Mz}D, ${data.My}D,
+                            ${data.Mx}D).withOffset(offset.x, offset.y, offset.z);
+			}
+			<#elseif data.rotationMode == 2 || data.rotationMode == 4>
+			switch ((Direction) state.get(FACING)) {
+			case SOUTH:
+			default:
+				return VoxelShapes.create(${1-data.mx}D, ${data.my}D, ${1-data.mz}D, ${1-data.Mx}D, ${data.My}D,
+                            ${1-data.Mz}D).withOffset(offset.x, offset.y, offset.z);
+			case NORTH:
+				return VoxelShapes.create(${data.mx}D, ${data.my}D, ${data.mz}D, ${data.Mx}D, ${data.My}D, ${data.Mz}D)
+						.withOffset(offset.x, offset.y, offset.z);
+			case WEST:
+				return VoxelShapes.create(${data.mz}D, ${data.my}D, ${1-data.mx}D, ${data.Mz}D, ${data.My}D,
+                            ${1-data.Mx}D).withOffset(offset.x, offset.y, offset.z);
+			case EAST:
+				return VoxelShapes.create(${1-data.mz}D, ${data.my}D, ${data.mx}D, ${1-data.Mz}D, ${data.My}D,
+                            ${data.Mx}D).withOffset(offset.x, offset.y, offset.z);
+			case UP:
+				return VoxelShapes.create(${data.mx}D, ${1-data.mz}D, ${data.my}D, ${data.Mx}D, ${1-data.Mz}D,
+                            ${data.My}D).withOffset(offset.x, offset.y, offset.z);
+			case DOWN:
+				return VoxelShapes.create(${data.mx}D, ${data.mz}D, ${1-data.my}D, ${data.Mx}D, ${data.Mz}D,
+                            ${1-data.My}D).withOffset(offset.x, offset.y, offset.z);
+			}
+			<#elseif data.rotationMode == 5>
+			switch ((Direction) state.get(FACING)) {
+			case SOUTH:
+			case NORTH:
+			default:
+				return VoxelShapes.create(${data.mx}D, ${data.my}D, ${data.mz}D, ${data.Mx}D, ${data.My}D, ${data.Mz}D)
+						.withOffset(offset.x, offset.y, offset.z);
+			case EAST:
+			case WEST:
+				return VoxelShapes.create(${data.mx}D, ${1-data.mz}D, ${data.my}D, ${data.Mx}D, ${1-data.Mz}D,
+							${data.My}D).withOffset(offset.x, offset.y, offset.z);
+			case UP:
+			case DOWN:
+				return VoxelShapes.create(${data.my}D, ${1-data.mx}D, ${1-data.mz}D, ${data.My}D, ${1-data.Mx}D,
+							${1-data.Mz}D).withOffset(offset.x, offset.y, offset.z);
+			}
+            <#else>
+			return VoxelShapes.create(${data.mx}D, ${data.my}D, ${data.mz}D, ${data.Mx}D, ${data.My}D, ${data.Mz}D)
+					.withOffset(offset.x, offset.y, offset.z);
+            </#if>
+		}
+        </#if>
+
+		<#if data.tickRate != 10>
+		@Override public int tickRate(IWorldReader world) {
+			return ${data.tickRate};
+		}
+        </#if>
+
+		<#if data.rotationMode != 0>
+		@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+      		<#if data.isWaterloggable>
+                builder.add(FACING, WATERLOGGED);
+            <#elseif data.rotationMode != 0>
+                builder.add(FACING);
+            </#if>
+   		}
+
+			<#if data.rotationMode != 5>
+			public BlockState rotate(BlockState state, Rotation rot) {
+      			return state.with(FACING, rot.rotate(state.get(FACING)));
+   			}
+
+   			public BlockState mirror(BlockState state, Mirror mirrorIn) {
+      			return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+   			}
+   			<#else>
+			@Override public BlockState rotate(BlockState state, Rotation rot) {
+				if(rot == Rotation.CLOCKWISE_90 || rot == Rotation.COUNTERCLOCKWISE_90) {
+					if((Direction) state.get(FACING) == Direction.WEST || (Direction) state.get(FACING) == Direction.EAST) {
+						return state.with(FACING, Direction.UP);
+					} else if((Direction) state.get(FACING) == Direction.UP || (Direction) state.get(FACING) == Direction.DOWN) {
+						return state.with(FACING, Direction.WEST);
+					}
+				}
+				return state;
+			}
+			</#if>
+
+		@Override
+		public BlockState getStateForPlacement(BlockItemUseContext context) {
+		    <#if data.rotationMode == 4>
+            Direction facing = context.getFace();
+            </#if>
+            <#if data.rotationMode == 5>
+            Direction facing = context.getFace();
+            if (facing == Direction.WEST || facing == Direction.EAST)
+                facing = Direction.UP;
+            else if (facing == Direction.NORTH || facing == Direction.SOUTH)
+                facing = Direction.EAST;
+            else
+                facing = Direction.SOUTH;
+            </#if>
+            <#if data.isWaterloggable>
+            boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
+            </#if>;
+			<#if data.rotationMode != 3>
+            return this.getDefaultState()
+                <#if data.rotationMode == 1>
+            	.with(FACING, context.getPlacementHorizontalFacing().getOpposite())
+            	<#elseif data.rotationMode == 2>
+            	.with(FACING, context.getNearestLookingDirection().getOpposite())
+                <#elseif data.rotationMode == 4 || data.rotationMode == 5>
+            	.with(FACING, facing)
+            	</#if>
+            	<#if data.isWaterloggable>
+            	.with(WATERLOGGED, false)
+            	</#if>
+            	<#elseif data.rotationMode == 3>
+                if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
+                    return this.getDefaultState()
+                               .with(FACING, Direction.NORTH)
+                               <#if data.isWaterloggable>
+                               .with(WATERLOGGED, flag)
+                               </#if>;
+                return this.getDefaultState()
+                            .with(FACING, context.getFace())
+                            <#if data.isWaterloggable>
+                            .with(WATERLOGGED, flag)
+                            </#if>
+            	</#if>;
+		}
+        </#if>
+
+        <#if data.isWaterloggable>
+            <#if data.rotationMode == 0>
+            @Override
+            public BlockState getStateForPlacement(BlockItemUseContext context) {
+            boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
+                return this.getDefaultState().with(WATERLOGGED, flag);
+            }
+            @Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+                builder.add(WATERLOGGED);
+            }
+            </#if>
+
+        @Override public IFluidState getFluidState(BlockState state) {
+            return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        }
+
+
+        @Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+	        if (state.get(WATERLOGGED)) {
+		        world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+	        }
+	        return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+        }
+        </#if>
+
+		<#if data.isBeaconBase>
+		@Override public boolean isBeaconBase(BlockState state, IWorldReader world, BlockPos pos, BlockPos beacon) {
+			return true;
+		}
+        </#if>
+
+		<#if data.enchantPowerBonus != 0>
+		@Override public float getEnchantPowerBonus(BlockState state, IWorldReader world, BlockPos pos) {
+			return ${data.enchantPowerBonus}f;
+		}
+        </#if>
+
+		<#if data.isReplaceable>
+        @Override public boolean isReplaceable(BlockState state, BlockItemUseContext context) {
+			return true;
+		}
+        </#if>
+
+        <#if data.emitsRedstone>
+        @Override public boolean canProvidePower(BlockState state) {
+            return true;
+        }
+
+        @Override public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+            return ${data.emittedRedstonePower};
+        }
+        </#if>
+
+		<#if data.beaconColorModifier?has_content>
+		@Override public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
+			return new float[] { ${data.beaconColorModifier.getRed()/255}f, ${data.beaconColorModifier.getGreen()/255}f, ${data.beaconColorModifier.getBlue()/255}f };
+		}
+		</#if>
+
+		<#if data.emissiveRendering>
+        @OnlyIn(Dist.CLIENT) @Override public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader worldIn, BlockPos pos) {
+			return 15728880;
+		}
+		</#if>
+
+		<#if data.flammability != 0>
+		@Override public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+			return ${data.flammability};
+		}
+		</#if>
+
+		<#if data.fireSpreadSpeed != 0>
+		@Override public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+			return ${data.fireSpreadSpeed};
+		}
+		</#if>
+
+		<#if data.creativePickItem?? && !data.creativePickItem.isEmpty()>
+		@Override public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+        	return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
+    	}
+        </#if>
+
+		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
+		@Override public MaterialColor getMaterialColor(BlockState state, IBlockReader blockAccess, BlockPos pos) {
+        	return MaterialColor.${generator.map(data.colorOnMap, "mapcolors")};
+    	}
+		</#if>
+
+		<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
+		@Override public PathNodeType getAiPathNodeType(BlockState state, IBlockReader world, BlockPos pos, MobEntity entity) {
+			return PathNodeType.${generator.map(data.aiPathNodeType, "pathnodetypes")};
+		}
+		</#if>
+
+		<#if data.offsetType != "NONE">
+		@Override public Block.OffsetType getOffsetType() {
+			return Block.OffsetType.${data.offsetType};
+		}
+		</#if>
+
+        <#if data.plantsGrowOn>
+        @Override
+		public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction direction, IPlantable plantable) {
+			return true;
+		}
+        </#if>
+
+		<#if data.isLadder>
+		@Override public boolean isLadder(BlockState state, IWorldReader world, BlockPos pos, LivingEntity entity) {
+			return true;
+		}
+		</#if>
+
+		<#if data.reactionToPushing != "NORMAL">
+		@Override public PushReaction getPushReaction(BlockState state) {
+			return PushReaction.${data.reactionToPushing};
+		}
+		</#if>
+
+        <#if data.canProvidePower>
+        @Override
+		public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+			return true;
+		}
+        </#if>
+
+		<#if !data.useLootTableForDrops>
+			<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
+			@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+				<#if data.blockBase?has_content && data.blockBase == "Door">
+				if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
+					return Collections.emptyList();
+				</#if>
+
+				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+				if(!dropsOriginal.isEmpty())
+					return dropsOriginal;
+				return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
+			}
+			<#elseif data.customDrop?? && !data.customDrop.isEmpty()>
+			@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+				<#if data.blockBase?has_content && data.blockBase == "Door">
+				if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
+					return Collections.emptyList();
+				</#if>
+
+				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+				if(!dropsOriginal.isEmpty())
+					return dropsOriginal;
+				return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
+			}
+			<#elseif data.blockBase?has_content && data.blockBase == "Slab">
+			@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+				if(!dropsOriginal.isEmpty())
+						return dropsOriginal;
+				return Collections.singletonList(new ItemStack(this, state.get(TYPE) == SlabType.DOUBLE ? 2 : 1));
+			}
+			<#else>
+			@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+				<#if data.blockBase?has_content && data.blockBase == "Door">
+				if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
+					return Collections.emptyList();
+				</#if>
+
+				List<ItemStack> dropsOriginal = super.getDrops(state, builder);
+				if(!dropsOriginal.isEmpty())
+					return dropsOriginal;
+				return Collections.singletonList(new ItemStack(this, 1));
+			}
+        	</#if>
+        </#if>
+
+        <#if (hasProcedure(data.onTickUpdate) && !data.tickRandomly) || hasProcedure(data.onBlockAdded) >
+		@Override public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
+			super.onBlockAdded(state, world, pos, oldState, moving);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			<#if hasProcedure(data.onTickUpdate) && !data.tickRandomly>
+			world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, this.tickRate(world));
+            </#if>
+			<@procedureOBJToCode data.onBlockAdded/>
+		}
+        </#if>
+
+		<#if hasProcedure(data.onRedstoneOn) || hasProcedure(data.onRedstoneOff) || hasProcedure(data.onNeighbourBlockChanges)>
+		@Override
+		public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
+			super.neighborChanged(state, world, pos, neighborBlock, fromPos, moving);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			if (world.getRedstonePowerFromNeighbors(new BlockPos(x, y, z)) > 0) {
+				<@procedureOBJToCode data.onRedstoneOn/>
+			} else {
+				<@procedureOBJToCode data.onRedstoneOff/>
+			}
+			<@procedureOBJToCode data.onNeighbourBlockChanges/>
+		}
+        </#if>
+
+        <#if hasProcedure(data.onTickUpdate)>
+		@Override public void tick(BlockState state, World world, BlockPos pos, Random random) {
+			super.tick(state, world, pos, random);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			<@procedureOBJToCode data.onTickUpdate/>
+			<#if !data.tickRandomly>
+			world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, this.tickRate(world));
+			</#if>
+		}
+        </#if>
+
+        <#if hasProcedure(data.onRandomUpdateEvent) || data.spawnParticles>
+		@OnlyIn(Dist.CLIENT) @Override
+		public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
+			super.animateTick(state, world, pos, random);
+			PlayerEntity entity = Minecraft.getInstance().player;
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			<#if data.spawnParticles>
+                <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious
+                data.particleAmount data.particleCondition/>
+            </#if>
+			<@procedureOBJToCode data.onRandomUpdateEvent/>
+		}
+        </#if>
+
+        <#if hasProcedure(data.onDestroyedByPlayer)>
+		@Override
+		public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity entity, boolean willHarvest, IFluidState fluid) {
+			boolean retval = super.removedByPlayer(state, world, pos, entity, willHarvest, fluid);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			<@procedureOBJToCode data.onDestroyedByPlayer/>
+			return retval;
+		}
+        </#if>
+
+        <#if hasProcedure(data.onDestroyedByExplosion)>
+		@Override public void onExplosionDestroy(World world, BlockPos pos, Explosion e) {
+			super.onExplosionDestroy(world, pos, e);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			<@procedureOBJToCode data.onDestroyedByExplosion/>
+		}
+        </#if>
+
+        <#if hasProcedure(data.onStartToDestroy)>
+		@Override public void onBlockClicked(BlockState state, World world, BlockPos pos, PlayerEntity entity) {
+			super.onBlockClicked(state, world, pos, entity);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			<@procedureOBJToCode data.onStartToDestroy/>
+		}
+        </#if>
+
+        <#if hasProcedure(data.onEntityCollides)>
+		@Override public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+			super.onEntityCollision(state, world, pos, entity);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			<@procedureOBJToCode data.onEntityCollides/>
+		}
+        </#if>
+
+		<#if hasProcedure(data.onEntityWalksOn)>
+		@Override public void onEntityWalk(World world, BlockPos pos, Entity entity) {
+			super.onEntityWalk(world, pos, entity);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			<@procedureOBJToCode data.onEntityWalksOn/>
+		}
+        </#if>
+
+        <#if hasProcedure(data.onBlockPlayedBy)>
+		@Override
+		public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemstack) {
+			super.onBlockPlacedBy(world, pos, state, entity, itemstack);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			<@procedureOBJToCode data.onBlockPlayedBy/>
+		}
+        </#if>
+
+        <#if hasProcedure(data.onRightClicked) || data.openGUIOnRightClick>
+		@Override
+		public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
+			boolean retval = super.onBlockActivated(state, world, pos, entity, hand, hit);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+
+			<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>" && data.openGUIOnRightClick && (data.guiBoundTo)?has_content>
+				if(entity instanceof ServerPlayerEntity) {
+					NetworkHooks.openGui((ServerPlayerEntity) entity, new INamedContainerProvider() {
+						@Override public ITextComponent getDisplayName() {
+							return new StringTextComponent("${data.name}");
+						}
+						@Override public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
+							return new ${(data.guiBoundTo)}Gui.GuiContainerMod(id, inventory, new PacketBuffer(Unpooled.buffer()).writeBlockPos(new BlockPos(x, y, z)));
+						}
+					}, new BlockPos(x, y, z));
+				}
+			</#if>
+
+			<#if hasProcedure(data.onRightClicked)>
+				Direction direction = hit.getFace();
+				<@procedureOBJToCode data.onRightClicked/>
+			</#if>
+
+			return true;
+		}
+        </#if>
+
+		<#if data.hasInventory>
+			@Override public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
+				TileEntity tileEntity = worldIn.getTileEntity(pos);
+				return tileEntity instanceof INamedContainerProvider ? (INamedContainerProvider) tileEntity : null;
+			}
+
+			@Override public boolean hasTileEntity(BlockState state) {
+				return true;
+			}
+
+			@Override public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    		    return new CustomTileEntity();
+    		}
+
+		    @Override
+			public boolean eventReceived(BlockState state, World world, BlockPos pos, int eventID, int eventParam) {
+				super.eventReceived(state, world, pos, eventID, eventParam);
+				TileEntity tileentity = world.getTileEntity(pos);
+				return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
+			}
+
+            <#if data.inventoryDropWhenDestroyed>
+			@Override public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+   			   if (state.getBlock() != newState.getBlock()) {
+   			      TileEntity tileentity = world.getTileEntity(pos);
+   			      if (tileentity instanceof CustomTileEntity) {
+   			         InventoryHelper.dropInventoryItems(world, pos, (CustomTileEntity) tileentity);
+   			         world.updateComparatorOutputLevel(pos, this);
+   			      }
+
+   			      super.onReplaced(state, world, pos, newState, isMoving);
+   			   }
+   			}
+            </#if>
+
+            <#if data.inventoryComparatorPower>
+            @Override public boolean hasComparatorInputOverride(BlockState state) {
+				return true;
+			}
+
+		    @Override public int getComparatorInputOverride(BlockState blockState, World world, BlockPos pos) {
+				TileEntity tileentity = world.getTileEntity(pos);
+				if (tileentity instanceof CustomTileEntity)
+					return Container.calcRedstoneFromInventory((CustomTileEntity) tileentity);
+				else
+					return 0;
+			}
+            </#if>
+        </#if>
+
+	}
+
+<#if data.hasInventory>
+    public static class CustomTileEntity extends LockableLootTileEntity implements ISidedInventory {
+
+		private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(${data.inventorySize}, ItemStack.EMPTY);
+
+		protected CustomTileEntity() {
+			super(tileEntityType);
+		}
+
+		@Override public void read(CompoundNBT compound) {
+			super.read(compound);
+
+			this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+
+			if (!this.checkLootAndRead(compound)) {
+			    ItemStackHelper.loadAllItems(compound, this.stacks);
+			}
+
+			<#if data.hasEnergyStorage>
+			if(compound.get("energyStorage") != null)
+				CapabilityEnergy.ENERGY.readNBT(energyStorage, null, compound.get("energyStorage"));
+			</#if>
+
+			<#if data.isFluidTank>
+			if(compound.get("fluidTank") != null)
+				CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.readNBT(fluidTank, null, compound.get("fluidTank"));
+			</#if>
+   		}
+
+   		@Override public CompoundNBT write(CompoundNBT compound) {
+			super.write(compound);
+
+			if (!this.checkLootAndWrite(compound)) {
+			    ItemStackHelper.saveAllItems(compound, this.stacks);
+			}
+
+			<#if data.hasEnergyStorage>
+			compound.put("energyStorage", CapabilityEnergy.ENERGY.writeNBT(energyStorage, null));
+			</#if>
+
+			<#if data.isFluidTank>
+			compound.put("fluidTank", CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.writeNBT(fluidTank, null));
+			</#if>
+
+			return compound;
+   		}
+
+		@Override public SUpdateTileEntityPacket getUpdatePacket() {
+			return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
+		}
+
+		@Override public CompoundNBT getUpdateTag() {
+			return this.write(new CompoundNBT());
+		}
+
+		@Override public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+			this.read(pkt.getNbtCompound());
+		}
+
+		@Override public int getSizeInventory() {
+			return stacks.size();
+		}
+
+		@Override public boolean isEmpty() {
+			for (ItemStack itemstack : this.stacks)
+				if (!itemstack.isEmpty())
+					return false;
+			return true;
+		}
+
+		@Override public ITextComponent getDefaultName() {
+			return new StringTextComponent("${registryname}");
+		}
+
+		@Override public int getInventoryStackLimit() {
+			return ${data.inventoryStackSize};
+		}
+
+		@Override public Container createMenu(int id, PlayerInventory player) {
+			<#if !data.guiBoundTo?has_content || data.guiBoundTo == "<NONE>" || !(data.guiBoundTo)?has_content>
+				return ChestContainer.createGeneric9X3(id, player, this);
+			<#else>
+				return new ${(data.guiBoundTo)}Gui.GuiContainerMod(id, player, new PacketBuffer(Unpooled.buffer()).writeBlockPos(this.getPos()));
+			</#if>
+		}
+
+		@Override public ITextComponent getDisplayName() {
+			return new StringTextComponent("${data.name}");
+		}
+
+		@Override protected NonNullList<ItemStack> getItems() {
+			return this.stacks;
+		}
+
+		@Override protected void setItems(NonNullList<ItemStack> stacks) {
+			this.stacks = stacks;
+		}
+
+		@Override public boolean isItemValidForSlot(int index, ItemStack stack) {
+			<#list data.inventoryOutSlotIDs as id>
+			    if (index == ${id})
+					return false;
+			</#list>
+			return true;
+		}
+
+		<#-- START: ISidedInventory -->
+		@Override public int[] getSlotsForFace(Direction side) {
+			return IntStream.range(0, this.getSizeInventory()).toArray();
+		}
+
+		@Override public boolean canInsertItem(int index, ItemStack stack, @Nullable Direction direction) {
+			return this.isItemValidForSlot(index, stack);
+		}
+
+		@Override public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+			<#list data.inventoryInSlotIDs as id>
+			    if (index == ${id})
+					return false;
+			</#list>
+			return true;
+		}
+		<#-- END: ISidedInventory -->
+
+		private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
+
+		<#if data.hasEnergyStorage>
+		private final EnergyStorage energyStorage = new EnergyStorage(${data.energyCapacity}, ${data.energyMaxReceive}, ${data.energyMaxExtract}, ${data.energyInitial}) {
+			@Override public int receiveEnergy(int maxReceive, boolean simulate) {
+				int retval = super.receiveEnergy(maxReceive, simulate);
+				if(!simulate) {
+					markDirty();
+					world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+				}
+				return retval;
+			}
+
+			@Override public int extractEnergy(int maxExtract, boolean simulate) {
+				int retval = super.extractEnergy(maxExtract, simulate);
+				if(!simulate) {
+					markDirty();
+					world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+				}
+				return retval;
+			}
+		};
+		</#if>
+
+		<#if data.isFluidTank>
+			<#if data.fluidRestrictions?has_content>
+			private final FluidTank fluidTank = new FluidTank(${data.fluidCapacity}, fs -> {
+				<#list data.fluidRestrictions as fluidRestriction>
+					<#if fluidRestriction.getUnmappedValue().startsWith("CUSTOM:")>
+						<#if fluidRestriction.getUnmappedValue().endsWith(":Flowing")>
+						if(fs.getFluid() == ${(fluidRestriction.getUnmappedValue().replace("CUSTOM:", "").replace(":Flowing", ""))}Block.flowing) return true;
+						<#else>
+						if(fs.getFluid() == ${(fluidRestriction.getUnmappedValue().replace("CUSTOM:", ""))}Block.still) return true;
+						</#if>
+					<#else>
+					if(fs.getFluid() == Fluids.${fluidRestriction}) return true;
+					</#if>
+				</#list>
+
+				return false;
+			}) {
+				@Override protected void onContentsChanged() {
+					super.onContentsChanged();
+					markDirty();
+					world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+				}
+			};
+			<#else>
+			private final FluidTank fluidTank = new FluidTank(${data.fluidCapacity}) {
+				@Override protected void onContentsChanged() {
+					super.onContentsChanged();
+					markDirty();
+					world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+				}
+			};
+			</#if>
+		</#if>
+
+		@Override public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
+			if (!this.removed && facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+				return handlers[facing.ordinal()].cast();
+
+			<#if data.hasEnergyStorage>
+			if (!this.removed && capability == CapabilityEnergy.ENERGY)
+				return LazyOptional.of(() -> energyStorage).cast();
+			</#if>
+
+			<#if data.isFluidTank>
+			if (!this.removed && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+				return LazyOptional.of(() -> fluidTank).cast();
+			</#if>
+
+			return super.getCapability(capability, facing);
+		}
+
+		@Override public void remove() {
+			super.remove();
+			for(LazyOptional<? extends IItemHandler> handler : handlers)
+				handler.invalidate();
+		}
+
+	}
+</#if>
+
+<#if (data.spawnWorldTypes?size > 0)>
+	@Override public void init(FMLCommonSetupEvent event) {
+		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
+			<#if data.restrictionBiomes?has_content>
+				boolean biomeCriteria = false;
+				<#list data.restrictionBiomes as restrictionBiome>
+					<#if restrictionBiome.canProperlyMap()>
+					if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
+						biomeCriteria = true;
+					</#if>
+				</#list>
+				if (!biomeCriteria)
+					continue;
+			</#if>
+
+			biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(new OreFeature(OreFeatureConfig::deserialize) {
+				@Override public boolean place(IWorld world, ChunkGenerator generator, Random rand, BlockPos pos, OreFeatureConfig config) {
+					DimensionType dimensionType = world.getDimension().getType();
+					boolean dimensionCriteria = false;
+
+    				<#list data.spawnWorldTypes as worldType>
+						<#if worldType=="Surface">
+							if(dimensionType == DimensionType.OVERWORLD)
+								dimensionCriteria = true;
+						<#elseif worldType=="Nether">
+							if(dimensionType == DimensionType.THE_NETHER)
+								dimensionCriteria = true;
+						<#elseif worldType=="End">
+							if(dimensionType == DimensionType.THE_END)
+								dimensionCriteria = true;
+						<#else>
+							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
+								dimensionCriteria = true;
+						</#if>
+					</#list>
+
+					if(!dimensionCriteria)
+						return false;
+
+					<#if hasCondition(data.generateCondition)>
+					int x = pos.getX();
+					int y = pos.getY();
+					int z = pos.getZ();
+					if (!<@procedureOBJToConditionCode data.generateCondition/>)
+						return false;
+					</#if>
+
+					return super.place(world, generator, rand, pos, config);
+			}}, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockAt -> {
+					boolean blockCriteria = false;
+					<#list data.blocksToReplace as replacementBlock>
+						if(blockAt.getBlock() == ${mappedBlockToBlockStateCode(replacementBlock)}.getBlock())
+							blockCriteria = true;
+    		        </#list>
+					return blockCriteria;
+				}), block.getDefaultState(), ${data.frequencyOnChunk}),
+					Placement.COUNT_RANGE, new CountRangeConfig(${data.frequencyPerChunks}, ${data.minGenerateHeight}, ${data.minGenerateHeight}, ${data.maxGenerateHeight})));
+		}
+	}
+</#if>
+
+}
+<#-- @formatter:on -->

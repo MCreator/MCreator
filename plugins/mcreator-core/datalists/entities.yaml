@@ -70,6 +70,7 @@
 - EntityPig
 - EntityPillager
 - EntityPufferfish
+- EntityPigZombie
 - EntityPlayer
 - EntityPlayerMP
 - EntityPolarBear
@@ -117,8 +118,3 @@
 - EntityRavager
 - EntityFishHook
 - EntityMonster
-- EntityHoglin
-- EntityPiglin
-- EntityPiglinBrute
-- EntityStrider
-- EntityZoglin
