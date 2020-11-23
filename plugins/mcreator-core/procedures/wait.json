@@ -31,9 +31,7 @@
     "statements": [
       {
         "name": "DO",
-        "provides": [
-
-        ]
+        "disable_local_variables": true
       }
     ]
   }

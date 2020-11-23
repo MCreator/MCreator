@@ -26,8 +26,8 @@
     </#if>
 <#elseif scope == "local">
     <#if type == "ITEMSTACK">
-        /*@ItemStack*/(${name}[0])
+        /*@ItemStack*/(${name})
     <#else>
-        (${name}[0])
+        (${name})
     </#if>
 </#if>

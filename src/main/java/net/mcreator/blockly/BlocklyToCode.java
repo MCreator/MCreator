@@ -18,6 +18,7 @@
 
 package net.mcreator.blockly;
 
+import com.sun.xml.internal.ws.util.xml.XmlUtil;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.generator.template.TemplateGenerator;
@@ -26,8 +27,10 @@ import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public abstract class BlocklyToCode {
@@ -124,10 +127,24 @@ public abstract class BlocklyToCode {
 		return false;
 	}
 
-	public final void processBlockProcedure(List<Element> blocks) throws TemplateGeneratorException {
+	public final void processBlockProcedure(List<Element> blocks, StatementInput statementInput) throws TemplateGeneratorException {
 		for (Element block : blocks) {
 			String type = block.getAttribute("type");
 			boolean generated = false;
+			if (statementInput != null) {
+				boolean hasVar = false;
+				List<Element> children = new ArrayList<>();
+				XmlUtil.getAllChildren(block).forEachRemaining(o -> children.add((Element) o));
+				for (Element child : children) {
+					if (child.getFirstChild() != null && child.getFirstChild().getAttributes().getLength() > 0 && child.getFirstChild().getAttributes().item(0).getNodeValue().startsWith("variables") && statementInput.disable_local_variables) {
+						hasVar = true;
+					}
+				}
+				if ((type.startsWith("variables") && statementInput.disable_local_variables) || hasVar) {
+					addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Statement " + statementInput.name + " doesn't support variables. Skipping this block."));
+					continue;
+				}
+			}
 			for (IBlockGenerator generator : blockGenerators) {
 				if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays
 						.asList(generator.getSupportedBlocks()).contains(type)) {
@@ -184,13 +201,13 @@ public abstract class BlocklyToCode {
 		return generatedCode;
 	}
 
-	public static String directProcessStatementBlock(BlocklyToCode master, Element element)
+	public static String directProcessStatementBlock(BlocklyToCode master, StatementInput statementInput, Element element)
 			throws TemplateGeneratorException {
 		// we do a little hack to get the code of the input only
 		String originalMasterCode = master.getGeneratedCode();
 		master.clearCodeGeneratorBuffer(); // we clear all the existing code
 		List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithBlock(element);
-		master.processBlockProcedure(base_blocks);
+		master.processBlockProcedure(base_blocks, statementInput);
 		String generatedCode = master.getGeneratedCode(); // get the generated code
 		master.clearCodeGeneratorBuffer(); // we clear the master again to remove the code we just generated
 		master.append(originalMasterCode); // set the master code to the original code

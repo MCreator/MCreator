@@ -81,10 +81,10 @@ public final class JavaKeywordsMap {
 	}};
 
 	public static final HashMap<String, String[]> VARIABLE_TYPES = new HashMap<String, String[]>() {{
-		put("Number", new String[] { "double[]", "new double[] {0}" });
-		put("Boolean", new String[] { "boolean[]", "new boolean[] {false}" });
-		put("String", new String[] { "String[]", "new String[] {\"\"}" });
-		put("MCItem", new String[] { "ItemStack[]", "new ItemStack[] {ItemStack.EMPTY}" });
+		put("Number", new String[] { "double", "0" });
+		put("Boolean", new String[] { "boolean", "false" });
+		put("String", new String[] { "String", "\"\"" });
+		put("MCItem", new String[] { "ItemStack", "ItemStack.EMPTY" });
 	}};
 
 }

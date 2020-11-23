@@ -158,7 +158,7 @@ public class BlocklyBlockCodeGenerator {
 						}
 
 						master.pushStatementInputStack(statementInput);
-						String generatedCode = BlocklyToCode.directProcessStatementBlock(master, element);
+						String generatedCode = BlocklyToCode.directProcessStatementBlock(master, statementInput, element);
 						master.popStatementInputStack();
 
 						dataModel.put("statement$" + statementInput.name, generatedCode);

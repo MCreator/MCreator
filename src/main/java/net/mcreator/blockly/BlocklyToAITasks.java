@@ -57,7 +57,7 @@ public class BlocklyToAITasks extends BlocklyToJava {
 
 				// find all blocks placed under start block
 				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
-				processBlockProcedure(base_blocks);
+				processBlockProcedure(base_blocks, null);
 			} catch (TemplateGeneratorException e) {
 				throw e;
 			} catch (Exception e) {

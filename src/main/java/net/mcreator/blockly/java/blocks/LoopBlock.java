@@ -51,7 +51,7 @@ public class LoopBlock implements IBlockGenerator {
 			else if ("controls_repeat_ext".equals(blocktype))
 				master.append("); index").append(index).append("++) {");
 
-			master.processBlockProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithBlock(statement));
+			master.processBlockProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithBlock(statement), null);
 			master.append("}");
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
