@@ -73,12 +73,12 @@
     </#if>
 <#elseif scope == "local">
     <#if type == "NUMBER">
-        ${name} =(double)${value};
+        ${name}[0] =(double)${value};
     <#elseif type == "LOGIC">
-        ${name} =(boolean)${value};
+        ${name}[0] =(boolean)${value};
     <#elseif type == "STRING">
-        ${name} =(String)${value};
+        ${name}[0] =(String)${value};
     <#elseif type == "ITEMSTACK">
-        ${name} = ${mappedMCItemToItemStackCode(value, 1)};
+        ${name}[0] = ${mappedMCItemToItemStackCode(value, 1)};
     </#if>
 </#if>

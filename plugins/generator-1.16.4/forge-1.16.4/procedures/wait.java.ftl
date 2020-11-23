@@ -3,8 +3,8 @@ new Object() {
             private int ticks;
             private float time;
 
-            public Object init() {
-                this.time = ${input$SEC} * 20F;
+            public Object init(float sec) {
+                this.time = sec * 20F;
                 MinecraftForge.EVENT_BUS.register(this);
                 return this;
             }
@@ -23,4 +23,4 @@ new Object() {
                 ${statement$DO}
                 MinecraftForge.EVENT_BUS.unregister(this);
             }
-}.init();
+}.init((float) ${input$SEC});
