@@ -1,5 +1,5 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-basefeatures: [variables, model_json, model_obj]
+basefeatures: [variables]
 status: dev
 buildfileversion: 35.1.0
 
@@ -71,4 +71,3 @@ resources_setup_tasks:
   - task: copy_models
     type: JSON_noinlinetextures
     to: "@MODASSETSROOT/models/custom"
-
