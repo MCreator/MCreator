@@ -27,10 +27,9 @@ import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import java.util.*;
-import java.util.function.Consumer;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public abstract class BlocklyToCode {
@@ -136,12 +135,15 @@ public abstract class BlocklyToCode {
 				List<Element> children = new ArrayList<>();
 				XmlUtil.getAllChildren(block).forEachRemaining(o -> children.add((Element) o));
 				for (Element child : children) {
-					if (child.getFirstChild() != null && child.getFirstChild().getAttributes().getLength() > 0 && child.getFirstChild().getAttributes().item(0).getNodeValue().startsWith("variables") && statementInput.disable_local_variables) {
+					if (child.getFirstChild().getAttributes() != null && child.getFirstChild().getAttributes().item(0).getNodeValue().startsWith("variables") && statementInput.disable_local_variables) {
 						hasVar = true;
+						break;
 					}
 				}
 				if ((type.startsWith("variables") && statementInput.disable_local_variables) || hasVar) {
-					addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Statement " + statementInput.name + " doesn't support variables. Skipping this block."));
+					AtomicBoolean flag = new AtomicBoolean(false);
+					getCompileNotes().forEach((note) -> {if (note.getMessage().equalsIgnoreCase("Statement " + statementInput.name + " doesn't support variables.")) flag.set(true);});
+					if (!flag.get()) addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, "Statement " + statementInput.name + " doesn't support variables."));
 					continue;
 				}
 			}
