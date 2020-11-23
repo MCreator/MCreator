@@ -80,8 +80,6 @@ import java.net.URISyntaxException;
 
 public class ItemGUI extends ModElementGUI<Item> {
 
-	private final Logger LOG = LogManager.getLogger("Tooltip Logger");
-
 	private TextureHolder texture;
 
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 0, 64, 1));
