@@ -1,2 +1,2 @@
 
-list.add(new TranslationTextComponent(${field$tooltip_text}));
+list.add(new TranslationTextComponent("${field$tooltip_text}"));

@@ -1,2 +1,2 @@
 
-list.add(new StringTextComponent(${field$tooltip_text}));
+list.add(new StringTextComponent("${field$tooltip_text}"));
