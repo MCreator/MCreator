@@ -141,6 +141,7 @@ public class GeneratorSelector {
 			JPanel supportedProcedures = new JPanel(new GridLayout(-1, 4, 7, 3));
 			addStatsBar("Procedure blocks", "procedures", supportedProcedures, stats);
 			addStatsBar("AI tasks / goals", "aitasks", supportedProcedures, stats);
+			addStatsBar("Tooltip blocks", "tooltips", supportedProcedures, stats);
 			addStatsBar("Global triggers", "triggers", supportedProcedures, stats);
 			addStatsBar("Advancement triggers", "jsontriggers", supportedProcedures, stats);
 			genStats.add(PanelUtils
