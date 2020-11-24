@@ -42,7 +42,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public class GeneratorSelector {
-	private static final String covpfx = "dialog.generator_selector.coverage.";
 
 	private static final String covpfx = "dialog.generator_selector.coverage.";
 
