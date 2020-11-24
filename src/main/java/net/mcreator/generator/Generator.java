@@ -387,7 +387,8 @@ public class Generator implements Closeable {
 												.toLowerCase(Locale.ENGLISH));
 								BlocklyToTooltip blocklyToJava = new BlocklyToTooltip(this.getWorkspace(),
 										((ITooltipContainer) element).getXml(), this.getTooltipGenerator(),
-										new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+										new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+										new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 								String tooltipCode = blocklyToJava.getGeneratedCode();
 								if (tooltipCode == null)
