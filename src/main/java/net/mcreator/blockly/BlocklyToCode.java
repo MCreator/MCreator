@@ -185,7 +185,7 @@ public abstract class BlocklyToCode {
 		return generatedCode;
 	}
 
-	public static String directProcessStatementBlock(BlocklyToCode master, StatementInput statementInput, Element element)
+	public static String directProcessStatementBlock(BlocklyToCode master, Element element)
 			throws TemplateGeneratorException {
 		// we do a little hack to get the code of the input only
 		String originalMasterCode = master.getGeneratedCode();
