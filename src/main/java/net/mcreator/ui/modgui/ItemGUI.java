@@ -280,9 +280,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.TOOLTIP);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(ItemGUI.this::regenerateTooltipProcedures).start());
-			if (!isEditingMode()) {
+
+			// If it's not editing mode (it's opened for the first time) set the xml data to default
+			if (!isEditingMode())
 				blocklyPanel.setXML("<xml><block type=\"tooltip_start\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>");
-			}
 		});
 
 		JPanel ttBlockly = new JPanel(new GridLayout());
@@ -561,6 +562,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		if (model != null)
 			renderType.setSelectedItem(model);
 
+		// Elements that are created before doesn't have the start block, xml data is null, so we set the data to default
+		if (item.ttxml == null)
+			item.ttxml = "<xml><block type=\"tooltip_start\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 		blocklyPanel.setXMLDataOnly(item.ttxml);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			blocklyPanel.clearWorkspace();

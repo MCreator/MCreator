@@ -22,5 +22,10 @@ package net.mcreator.element;
  * This is here for getting rid of a long else if statement in {@link net.mcreator.generator.Generator}
  */
 public interface ITooltipContainer {
+
+	/**
+	 * Gets the xml data of the procedure
+	 * @return Xml data of the procedure
+	 */
 	String getXml();
 }
