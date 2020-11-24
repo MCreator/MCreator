@@ -26,6 +26,7 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,6 +42,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class GeneratorSelector {
+	private static final String covpfx = "dialog.generator_selector.coverage.";
 
 	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable GeneratorConfiguration current,
 			@Nullable GeneratorFlavor currentFlavor) {
@@ -141,7 +143,7 @@ public class GeneratorSelector {
 			JPanel supportedProcedures = new JPanel(new GridLayout(-1, 4, 7, 3));
 			addStatsBar("Procedure blocks", "procedures", supportedProcedures, stats);
 			addStatsBar("AI tasks / goals", "aitasks", supportedProcedures, stats);
-			addStatsBar("Tooltip blocks", "tooltips", supportedProcedures, stats);
+			addStatsBar(L10N.t(covpfx + "tooltip"), "tooltips", supportedProcedures, stats);
 			addStatsBar("Global triggers", "triggers", supportedProcedures, stats);
 			addStatsBar("Advancement triggers", "jsontriggers", supportedProcedures, stats);
 			genStats.add(PanelUtils
