@@ -1,6 +1,6 @@
 If you are interested in helping with MCToolkit development, you are welcome to support this project by 
 opening pull requests. Even if you do not code, you can help by contributing translations, in-app tips, or
-by [donating](https://mcreator.net/donate).
+by [donating](https://mctoolkit.net/donate).
 
 # Tips
 
@@ -44,7 +44,7 @@ Some pull request tips and standards:
 
 # Localization (translation of the UI)
 
-If you would like to contribute to the translations, make Crowdin user account and visit https://crowdin.com/project/mcreator. If you would like a brand new language added, check [issue #15](https://github.com/MCreator/MCreator/issues/15) and leave a comment on this issue.
+If you would like to contribute to the translations, make Crowdin user account and visit https://crowdin.com/project/mctoolkit. If you would like a brand new language added, send a private message on Crowdin to Max094Reikeb or Goldorion.
 
 # CLA
 
