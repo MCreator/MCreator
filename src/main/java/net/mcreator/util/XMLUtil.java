@@ -46,6 +46,23 @@ public class XMLUtil {
 		return elements;
 	}
 
+	public static List<Element> getAllChildrenWithName(Element element, String... names) {
+		List<Element> elements = new ArrayList<>();
+		NodeList nodeList = element.getChildNodes();
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			Node node = nodeList.item(i);
+			if (node.getNodeType() == Node.ELEMENT_NODE) {
+				if (names == null || (names.length == 1 && names[0].equals(node.getNodeName())) || ArrayUtils
+						.contains(names, node.getNodeName()))
+					elements.add((Element) node);
+				for (Element grandElement : getAllChildrenWithName((Element) node, names)) {
+					elements.add(grandElement);
+				}
+			}
+		}
+		return elements;
+	}
+
 	public static Element getFirstChildrenWithName(Element element, String... names) {
 		List<Element> elements = getChildrenWithName(element, names);
 		if (elements.size() > 0) {

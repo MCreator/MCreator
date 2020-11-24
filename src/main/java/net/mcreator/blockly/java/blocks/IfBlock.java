@@ -65,7 +65,7 @@ public class IfBlock implements IBlockGenerator {
 				}
 				master.append("{");
 				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithBlock(element);
-				master.processBlockProcedure(base_blocks, null);
+				master.processBlockProcedure(base_blocks);
 				master.append("}");
 			}
 		}

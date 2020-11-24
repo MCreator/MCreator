@@ -18,7 +18,6 @@
 
 package net.mcreator.blockly;
 
-import com.sun.xml.internal.ws.util.xml.XmlUtil;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.generator.template.TemplateGenerator;
@@ -126,25 +125,22 @@ public abstract class BlocklyToCode {
 		return false;
 	}
 
-	public final void processBlockProcedure(List<Element> blocks, StatementInput statementInput) throws TemplateGeneratorException {
+	public final void processBlockProcedure(List<Element> blocks) throws TemplateGeneratorException {
 		for (Element block : blocks) {
 			String type = block.getAttribute("type");
 			boolean generated = false;
-			if (statementInput != null) {
-				boolean hasVar = false;
-				List<Element> children = new ArrayList<>();
-				XmlUtil.getAllChildren(block).forEachRemaining(o -> children.add((Element) o));
-				for (Element child : children) {
-					if (child.getFirstChild().getAttributes() != null && child.getFirstChild().getAttributes().item(0).getNodeValue().startsWith("variables") && statementInput.disable_local_variables) {
-						hasVar = true;
-						break;
+			for (StatementInput statementInput : this.statementInputStack) {
+				if (statementInput.disable_local_variables) {
+					List<Element> children = XMLUtil.getAllChildrenWithName(block, "block");
+					for (Element child : children) {
+						if (type.startsWith("variables") || child.getAttribute("type").startsWith("variables")) {
+							AtomicBoolean flag = new AtomicBoolean(false);
+							getCompileNotes().forEach((note) -> {if (note.getMessage().equalsIgnoreCase("Statement " + statementInput.name + " doesn't support local variables.")) flag.set(true);});
+							if (!flag.get()) addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+									"Statement " + statementInput.name + " doesn't support local variables."));
+							break;
+						}
 					}
-				}
-				if ((type.startsWith("variables") && statementInput.disable_local_variables) || hasVar) {
-					AtomicBoolean flag = new AtomicBoolean(false);
-					getCompileNotes().forEach((note) -> {if (note.getMessage().equalsIgnoreCase("Statement " + statementInput.name + " doesn't support variables.")) flag.set(true);});
-					if (!flag.get()) addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, "Statement " + statementInput.name + " doesn't support variables."));
-					continue;
 				}
 			}
 			for (IBlockGenerator generator : blockGenerators) {
@@ -209,11 +205,10 @@ public abstract class BlocklyToCode {
 		String originalMasterCode = master.getGeneratedCode();
 		master.clearCodeGeneratorBuffer(); // we clear all the existing code
 		List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithBlock(element);
-		master.processBlockProcedure(base_blocks, statementInput);
+		master.processBlockProcedure(base_blocks);
 		String generatedCode = master.getGeneratedCode(); // get the generated code
 		master.clearCodeGeneratorBuffer(); // we clear the master again to remove the code we just generated
 		master.append(originalMasterCode); // set the master code to the original code
 		return generatedCode;
 	}
-
 }

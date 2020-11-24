@@ -86,7 +86,7 @@ public class BlocklyToJSONTrigger extends BlocklyToCode {
 					String type = start_block.getAttribute("type");
 					if (!type.equals("advancement_trigger")) {
 						hasTrigger = true;
-						processBlockProcedure(Collections.singletonList(start_block), null);
+						processBlockProcedure(Collections.singletonList(start_block));
 					}
 				}
 			} catch (TemplateGeneratorException e) {

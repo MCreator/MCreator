@@ -79,7 +79,7 @@ public class BlocklyToProcedure extends BlocklyToJava {
 
 				// find all blocks placed under start block
 				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
-				processBlockProcedure(base_blocks, null);
+				processBlockProcedure(base_blocks);
 
 				if (getReturnType() != null) {
 					if (!ArrayUtils.contains(new ReturnBlock().getSupportedBlocks(), lastProceduralBlockType)) {
