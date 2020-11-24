@@ -129,20 +129,6 @@ public abstract class BlocklyToCode {
 		for (Element block : blocks) {
 			String type = block.getAttribute("type");
 			boolean generated = false;
-			for (StatementInput statementInput : this.statementInputStack) {
-				if (statementInput.disable_local_variables) {
-					List<Element> children = XMLUtil.getAllChildrenWithName(block, "block");
-					for (Element child : children) {
-						if (type.startsWith("variables") || child.getAttribute("type").startsWith("variables")) {
-							AtomicBoolean flag = new AtomicBoolean(false);
-							getCompileNotes().forEach((note) -> {if (note.getMessage().equalsIgnoreCase("Statement " + statementInput.name + " doesn't support local variables.")) flag.set(true);});
-							if (!flag.get()) addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-									"Statement " + statementInput.name + " doesn't support local variables."));
-							break;
-						}
-					}
-				}
-			}
 			for (IBlockGenerator generator : blockGenerators) {
 				if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays
 						.asList(generator.getSupportedBlocks()).contains(type)) {
@@ -210,5 +196,15 @@ public abstract class BlocklyToCode {
 		master.clearCodeGeneratorBuffer(); // we clear the master again to remove the code we just generated
 		master.append(originalMasterCode); // set the master code to the original code
 		return generatedCode;
+	}
+
+	public List<StatementInput> getLocalVariableDisablingStatements() {
+		List<StatementInput> statementInputs = new ArrayList<>();
+		for (StatementInput statementInput : this.statementInputStack) {
+			if (statementInput.disable_local_variables) {
+				statementInputs.add(statementInput);
+			}
+		}
+		return statementInputs;
 	}
 }
