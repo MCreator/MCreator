@@ -27,6 +27,7 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.GeneratorStats;
+import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
 import net.mcreator.util.ListUtils;
@@ -239,14 +240,14 @@ public class GTProcedureBlocks {
 
 			// set MCItem blocks to some value
 			testXML = testXML.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
-					"<block type=\"mcitem_allblocks\"><field name=\"value\">" + ListUtils
-							.getRandomItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()
+					"<block type=\"mcitem_allblocks\"><field name=\"value\">" + TestWorkspaceDataProvider
+							.getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()
 							+ "</field></block>");
 
 			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
-					"<block type=\"mcitem_all\"><field name=\"value\">" + ListUtils
-							.getRandomItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()
-							+ "</field></block>");
+					"<block type=\"mcitem_all\"><field name=\"value\">" + TestWorkspaceDataProvider
+							.getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
+							.getName() + "</field></block>");
 
 			// add additional xml to the block definition
 			testXML = testXML.replace("<block type=\"" + procedureBlock.machine_name + "\">",

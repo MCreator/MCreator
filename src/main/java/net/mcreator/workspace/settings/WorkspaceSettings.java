@@ -39,6 +39,7 @@ import java.util.stream.Stream;
 	private String description;
 	private String author;
 	private String websiteURL;
+	private String license;
 
 	private boolean disableForgeVersionCheck = true;
 	private boolean serverSideOnly = false;
@@ -67,6 +68,7 @@ import java.util.stream.Stream;
 		this.version = other.version;
 		this.description = other.description;
 		this.author = other.author;
+		this.license = other.license;
 		this.websiteURL = other.websiteURL;
 		this.disableForgeVersionCheck = other.disableForgeVersionCheck;
 		this.serverSideOnly = other.serverSideOnly;
@@ -150,6 +152,17 @@ import java.util.stream.Stream;
 
 	public void setMCreatorDependencies(Set<String> mcreatorDependencies) {
 		this.mcreatorDependencies = mcreatorDependencies;
+	}
+
+	public String getLicense() {
+		if (license == null || license.isEmpty())
+			return "Not specified";
+
+		return license;
+	}
+
+	public void setLicense(String license) {
+		this.license = license;
 	}
 
 	public Set<String> getRequiredMods() {
