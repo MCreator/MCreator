@@ -24,6 +24,7 @@ import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.Validator;
@@ -39,24 +40,19 @@ import java.awt.*;
 public class NewModElementDialog {
 
 	public static void showNameDialog(MCreator mcreator, ModElementType type) {
-		JLabel regName = new JLabel("Registry name: <enter mod element name first>");
+		JLabel regName = L10N.label("dialog.new_modelement.registry_name_default");
 		regName.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 		regName.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
-		String modName = VOptionPane.showInputDialog(mcreator,
-				"<html><font style=\"font-size: 13px;\">Enter the name of " + type.getReadableName() + ":</font><br>"
-						+ "<font style=\"font-size: 8px;\">"
-						+ "Do not use existing vanilla names (Dirt, Coal, Diamond, ...) for better compatibility.<br>"
-						+ "Use upper-camel-cased names if possible (eg. CustomGem)<br>"
-						+ "Avoid using type names in element names (eg. CustomGemItem, CustomTab, ...)",
-				"Enter " + type.getReadableName() + " name", TiledImageCache.getModTypeIcon(type),
+		String modName = VOptionPane.showInputDialog(mcreator, L10N.t("dialog.new_modelement.desc", type.getReadableName()),
+				L10N.t("dialog.new_modelement.title_window", type.getReadableName()), TiledImageCache.getModTypeIcon(type),
 				new OptionPaneValidatior() {
 					@Override public Validator.ValidationResult validate(JComponent component) {
 						regName.setText("Registry name: " + RegistryNameFixer
 								.fromCamelCase(((VTextField) component).getText()));
 						return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component).validate();
 					}
-				}, "Create new " + type.getReadableName(), "Cancel", null, regName);
+				}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()), L10N.t("dialog.new_modelement.cancel"), null, regName);
 
 		if (modName != null && !modName.equals("")) {
 			modName = JavaConventions.convertToValidClassName(modName);
