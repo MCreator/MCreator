@@ -4,13 +4,13 @@
   texture: PLANKS#0
 - PLANT:
   texture: RED_FLOWER#0
+- LILY_PADS:
+  texture: WATERLILY
 - STONE:
   texture: STONE
 - METAL:
   texture: IRON_BLOCK
 - GLASS:
-  texture: GLASS
-- GRASS_BREAK:
   texture: GLASS
 - CLOTH:
   texture: WOOL#0
@@ -54,6 +54,8 @@
   texture: CRIMSON_NYLIUM
 - FUNGUS:
   texture: CRIMSON_FUNGUS
+- ROOT:
+  texture: WARPED_ROOTS
 - SHROOMLIGHT:
   texture: SHROOMLIGHT
 - NETHER_VINE:
@@ -66,13 +68,13 @@
   texture: SOUL_SOIL
 - BASALT:
   texture: BASALT
-- WART_BLOCK:
+- WART:
   texture: NETHER_WART_BLOCK
 - NETHERRACK:
   texture: NETHERRACK
-- NETHER_BRICKS:
+- NETHER_BRICK:
   texture: NETHER_BRICKS
-- NETHER_SPROUTS:
+- NETHER_SPROUT:
   texture: NETHER_SPROUTS
 - NETHER_ORE:
   texture: NETHER_GOLD_ORE
@@ -86,7 +88,7 @@
   texture: LODESTONE
 - CHAIN:
   texture: CHAIN
-- NETHER_GOLD_ORE:
+- NETHER_GOLD:
   texture: NETHER_GOLD_ORE
 - GILDED_BLACKSTONE:
   texture: GILDED_BLACKSTONE
