@@ -292,7 +292,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.item.tooltip_procedures"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Color.white));
-		ttBlockly.add(PanelUtils.topToToeElement(new TooltipEditorToolbar(mcreator, blocklyPanel), blocklyPanel, compileNotesPanel));
+		ttBlockly.add(PanelUtils.topToToeElement(
+			new TooltipEditorToolbar(mcreator, blocklyPanel), blocklyPanel, compileNotesPanel
+		));
 
 		visual.add("Center", PanelUtils.centerInPanel(PanelUtils.centerAndSouthElement(visualPanel, ttBlockly)));
 
