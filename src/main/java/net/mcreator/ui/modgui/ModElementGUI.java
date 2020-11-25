@@ -207,9 +207,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				}
 
 				AggregatedValidationResult validationResult = new AggregatedValidationResult(errors);
-				if (validationResult.validateIsErrorFree())
+				if (validationResult.validateIsErrorFree()) {
+					onSave();
 					finishModCreation(true);
-				else
+				} else
 					showErrorsMessage(validationResult);
 			});
 
@@ -234,9 +235,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				}
 
 				AggregatedValidationResult validationResult = new AggregatedValidationResult(errors);
-				if (validationResult.validateIsErrorFree())
+				if (validationResult.validateIsErrorFree()) {
+					onSave();
 					finishModCreation(false);
-				else
+				} else
 					showErrorsMessage(validationResult);
 			});
 
@@ -404,6 +406,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	public @NotNull ModElement getModElement() {
 		return modElement;
 	}
+
+	public void onSave() {}
 
 	protected abstract void initGUI();
 
