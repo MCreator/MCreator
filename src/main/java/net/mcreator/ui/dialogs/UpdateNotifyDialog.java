@@ -25,6 +25,7 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.AbstractMCreatorTheme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.MCreatorVersionNumber;
@@ -51,12 +52,7 @@ public class UpdateNotifyDialog {
 				if (newMajor > oldMajor && (PreferencesManager.PREFERENCES.notification.checkAndNotifyForUpdates
 						|| Launcher.version.isSnapshot())) {
 					JPanel pan = new JPanel(new BorderLayout());
-					JLabel upde = new JLabel(
-							"<html><font size=5>You are using an outdated version of MCreator</font><br>"
-									+ "Consider updating your MCreator to get the latest features and bug fixes!<br>"
-									+ "<br>Your version: " + Launcher.version.major + "<br>The latest version: <b>"
-									+ updateInfo.getLatestMajor()
-									+ "</b><br><br>Changelog of the latest releases:<br>");
+					JLabel upde = L10N.label("dialog.update_notify.message", Launcher.version.major, updateInfo.getLatestMajor());
 
 					ComponentUtils.deriveFont(upde, 13);
 					pan.add("North", upde);
@@ -77,8 +73,8 @@ public class UpdateNotifyDialog {
 
 					Object[] options = { "Open download page", "Remind me later" };
 					int option = JOptionPane
-							.showOptionDialog(parent, pan, "MCreator update", JOptionPane.YES_NO_CANCEL_OPTION,
-									JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+							.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
+									JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 					if (option == 0) {
 						DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#update");
 					}
@@ -89,13 +85,7 @@ public class UpdateNotifyDialog {
 								PreferencesManager.PREFERENCES.notification.checkAndNotifyForPatches || Launcher.version
 										.isSnapshot())) {
 							JPanel pan = new JPanel(new BorderLayout());
-							JLabel upde = new JLabel("<html><font size=5>There is a more recent build for version "
-									+ Launcher.version.major + " available</font><br>"
-									+ "Consider <b>re-downloading the current version</b> to get the latest features and bug fixes!<br>"
-									+ "<br>Your build number: " + Launcher.version.build
-									+ "<br>The latest build number: <b>" + updateInfo.getReleases()
-									.get(Launcher.version.major).getLatestBuild() + "</b><br><br>Changelog of "
-									+ Launcher.version.major + " builds:<br>");
+							JLabel upde = L10N.label("dialog.update_notify.more_recent_build", Launcher.version.major, Launcher.version.build, updateInfo.getReleases().get(Launcher.version.major).getLatestBuild(), Launcher.version.major);
 
 							ComponentUtils.deriveFont(upde, 13);
 							pan.add("North", upde);
@@ -118,8 +108,8 @@ public class UpdateNotifyDialog {
 
 							Object[] options = { "Open download page", "Remind me later" };
 							int option = JOptionPane
-									.showOptionDialog(parent, pan, "MCreator update", JOptionPane.YES_NO_CANCEL_OPTION,
-											JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+									.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
+											JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 							if (option == 0) {
 								DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#updatebuild");
 							}
@@ -134,14 +124,14 @@ public class UpdateNotifyDialog {
 				showNoUpdates(parent);
 			}
 		} else if (showNoUpdates) {
-			JOptionPane.showMessageDialog(parent, "Failed to check for updates. Reason: no internet", "No internet",
-					JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(parent, L10N.t("dialog.update_notify.error_failed_check_internet_message"),
+					L10N.t("dialog.update_notify.error_failed_check_internet_title"), JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
 	private static void showNoUpdates(Window parent) {
-		JOptionPane.showMessageDialog(parent, "You have the latest version of MCreator installed!", "No updates",
-				JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(parent, L10N.t("dialog.update_notify.no_update_message"),
+				L10N.t("dialog.update_notify.no_update_title"), JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private static String fullChangelog(UpdateInfo updateInfo) {
