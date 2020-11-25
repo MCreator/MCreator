@@ -70,4 +70,4 @@ husbandry/breed_all_animals: minecraft:husbandry/breed_all_animals
 husbandry/complete_catalogue: minecraft:husbandry/complete_catalogue
 husbandry/tactical_fishing: minecraft:husbandry/tactical_fishing
 husbandry/balanced_diet: minecraft:husbandry/balanced_diet
-husbandry/break_diamond_hoe: minecraft:husbandry/break_diamond_hoe
+husbandry/obtain_netherite_hoe: minecraft:husbandry/break_diamond_hoe
