@@ -91,6 +91,7 @@ import static org.junit.Assert.fail;
 			workspaceSettings.setVersion("1.0.0");
 			workspaceSettings.setDescription("Test mod");
 			workspaceSettings.setAuthor("Unit tests");
+			workspaceSettings.setLicense("GPL 3.0");
 			workspaceSettings.setWebsiteURL("https://mcreator.net/");
 			workspaceSettings.setUpdateURL("https://mcreator.net/");
 			workspaceSettings.setModPicture("example");
@@ -167,19 +168,6 @@ import static org.junit.Assert.fail;
 						"<block type=\"return_logic\"><value name=\"return\">"
 								+ "<block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block>"
 								+ "</value></block>");
-				assertTrue(workspace.getGenerator().generateElement(procedure));
-				workspace.getModElementManager().storeModElement(procedure);
-			}
-
-			for (int i = 1; i <= 2; i++) {
-				ModElement me = new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE)
-						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "ITEMSTACK");
-				workspace.addModElement(me);
-
-				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
-				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
-						"<block type=\"return_itemstack\"><value name=\"return\">"
-								+ "<block type=\"empty_itemstack\"></block></value></block>");
 				assertTrue(workspace.getGenerator().generateElement(procedure));
 				workspace.getModElementManager().storeModElement(procedure);
 			}

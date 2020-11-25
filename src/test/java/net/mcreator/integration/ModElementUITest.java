@@ -69,8 +69,8 @@ public class ModElementUITest {
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
-		GeneratorConfiguration generatorConfiguration = Generator.GENERATOR_CACHE.values().stream()
-				.filter(e -> e.getGeneratorFlavor() == GeneratorFlavor.FORGE).findFirst().orElse(null);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration
+				.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
 
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
@@ -95,11 +95,6 @@ public class ModElementUITest {
 		for (int i = 1; i <= 4; i++) {
 			workspace.addModElement(new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE)
 					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
-		}
-
-		for (int i = 1; i <= 2; i++) {
-			workspace.addModElement(new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE)
-					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "ITEMSTACK"));
 		}
 
 		// reduce autosave interval for tests
