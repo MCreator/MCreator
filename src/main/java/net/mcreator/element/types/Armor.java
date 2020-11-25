@@ -92,6 +92,7 @@ import java.util.Set;
 	public int damageValueBoots;
 	public int enchantability;
 	public double toughness;
+	public double knockbackResistance;
 	public Sound equipSound;
 	public List<MItemBlock> repairItems;
 

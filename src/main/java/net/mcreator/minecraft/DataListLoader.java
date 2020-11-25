@@ -74,6 +74,8 @@ public class DataListLoader {
 				try {
 					((List<?>) reader.read()).forEach(elementObj -> {
 						if (elementObj instanceof String) {
+							if (list.get().containsKey(elementObj))
+								LOG.warn("Duplicate datalist key: " + elementObj);
 							list.get().put((String) elementObj, new DataListEntry((String) elementObj));
 						} else if (elementObj instanceof Map) {
 							String elementName = null;
@@ -100,8 +102,12 @@ public class DataListLoader {
 									if (element.get("subtypes") != null) {
 										mcitem.setSubtypes(Boolean.parseBoolean((String) element.get("subtypes")));
 									}
+									if (list.get().containsKey(elementName))
+										LOG.warn("Duplicate datalist key: " + elementName);
 									list.get().put(elementName, mcitem);
 								} else {
+									if (list.get().containsKey(elementName))
+										LOG.warn("Duplicate datalist key: " + elementName);
 									list.get().put(elementName, entry);
 								}
 							}
