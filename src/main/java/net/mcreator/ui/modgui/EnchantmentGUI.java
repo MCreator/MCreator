@@ -86,8 +86,6 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		isAllowedOnBooks.setSelected(true);
 
 		ComponentUtils.deriveFont(name, 16);
-		ComponentUtils.deriveFont(type, 16);
-		ComponentUtils.deriveFont(rarity, 16);
 
 		JPanel selp = new JPanel(new GridLayout(11, 2, 100, 2));
 		selp.setOpaque(false);
@@ -117,7 +115,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		selp.add(damageModifier);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/treasure_enchantment"),
-				L10N.label("elementgui.enchantment.teasure_enchantment")));
+				L10N.label("elementgui.enchantment.treasure_enchantment")));
 		selp.add(isTreasureEnchantment);
 
 		selp.add(HelpUtils

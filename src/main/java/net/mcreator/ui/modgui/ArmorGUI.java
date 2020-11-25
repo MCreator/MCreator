@@ -143,7 +143,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final JSpinner damageValueBody = new JSpinner(new SpinnerNumberModel(6, 0, 1024, 1));
 	private final JSpinner damageValueHelmet = new JSpinner(new SpinnerNumberModel(2, 0, 1024, 1));
 	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(9, 0, 100, 1));
-	private final JSpinner toughness = new JSpinner(new SpinnerNumberModel(0.0, 0, 5.0, 0.1));
+	private final JSpinner toughness = new JSpinner(new SpinnerNumberModel(0.0, 0, 10, 0.1));
+	private final JSpinner knockbackResistance = new JSpinner(new SpinnerNumberModel(0.0, 0, 5.0, 0.1));
 
 	private ProcedureSelector onHelmetTick;
 	private ProcedureSelector onBodyTick;
@@ -423,7 +424,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp22));
 
-		JPanel enderpanel = new JPanel(new GridLayout(8, 2, 20, 10));
+		JPanel enderpanel = new JPanel(new GridLayout(9, 2, 20, 10));
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/armor_layer_texture"),
 				L10N.label("elementgui.armor.layer_texture")));
@@ -453,6 +454,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enderpanel.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("armor/toughness"), L10N.label("elementgui.armor.toughness")));
 		enderpanel.add(toughness);
+
+		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/knockback_resistance"),
+				L10N.label("elementgui.armor.knockback_resistance")));
+		enderpanel.add(knockbackResistance);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/repair_items"),
 				L10N.label("elementgui.common.repair_items")));
@@ -760,6 +765,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		damageValueHelmet.setValue(armor.damageValueHelmet);
 		enchantability.setValue(armor.enchantability);
 		toughness.setValue(armor.toughness);
+		knockbackResistance.setValue(armor.knockbackResistance);
 		onHelmetTick.setSelectedProcedure(armor.onHelmetTick);
 		onBodyTick.setSelectedProcedure(armor.onBodyTick);
 		onLeggingsTick.setSelectedProcedure(armor.onLeggingsTick);
@@ -854,6 +860,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.damageValueBoots = (int) damageValueBoots.getValue();
 		armor.enchantability = (int) enchantability.getValue();
 		armor.toughness = (double) toughness.getValue();
+		armor.knockbackResistance = (double) knockbackResistance.getValue();
 		armor.helmetName = helmetName.getText();
 		armor.bodyName = bodyName.getText();
 		armor.leggingsName = leggingsName.getText();
