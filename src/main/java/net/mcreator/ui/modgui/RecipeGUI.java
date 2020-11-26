@@ -303,8 +303,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			cookingTime.setValue(recipe.cookingTime);
 		} else if ("Smithing".equals(recipe.recipeType)) {
 			smcm.cb1.setBlock(recipe.smithingInputStack);
-			smcm.cb3.setBlock(recipe.smithingInputAdditionStack);
-			smcm.cb2.setBlock(recipe.smithingReturnStack);
+			smcm.cb2.setBlock(recipe.smithingInputAdditionStack);
+			smcm.cb3.setBlock(recipe.smithingReturnStack);
 		}
 	}
 

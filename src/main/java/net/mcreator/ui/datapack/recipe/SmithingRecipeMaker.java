@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.datapack.recipe;
 
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
