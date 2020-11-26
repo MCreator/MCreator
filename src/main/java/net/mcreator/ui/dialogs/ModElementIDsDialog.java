@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
@@ -37,9 +38,8 @@ public class ModElementIDsDialog {
 
 	public static ModElement openModElementIDDialog(MCreator mcreator, ModElement modElement) {
 		if (modElement.isCodeLocked()) {
-			JOptionPane.showMessageDialog(mcreator, "<html>This mod element has locked code!<br>"
-							+ "When code is locked, MCreator can't alter its source code.", "Mod element code is locked",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.modelement_id.info_message"),
+					L10N.t("dialog.modelement_id.info_message_title"), JOptionPane.ERROR_MESSAGE);
 
 			return null;
 		}
@@ -48,21 +48,20 @@ public class ModElementIDsDialog {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
 		VTextField registryName = new VTextField();
-		JComponent reghol = PanelUtils.join(new JLabel("Registry name: "), registryName);
+		JComponent reghol = PanelUtils.join(L10N.label("dialog.modelement_id.registry_name"), registryName);
 		reghol.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				"Registry name (not all mod elements use it)", 0, 0, reghol.getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				L10N.t("dialog.modelement_id.registry_name_info"), 0, 0,
+				reghol.getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		panel.add(PanelUtils.centerInPanel(new JLabel(
-				"<html><b><font color=#F08080>Use this tool with caution!<br><br></font>Changing IDs can break your existing world saves and cause<br>"
-						+ "conflicts with other mod element from your mod!")));
+		panel.add(PanelUtils.centerInPanel(L10N.label("dialog.modelement_id.use_caution_warn")));
 
 		registryName.setPreferredSize(new Dimension(250, 32));
 
 		panel.add(new JEmptyBox(10, 10));
 
-		registryName.setValidator(new RegistryNameValidator(registryName, "Registry name"));
+		registryName.setValidator(new RegistryNameValidator(registryName,
+				L10N.t("dialog.modelement_id.registry_name_validator")));
 		registryName.enableRealtimeValidation();
 
 		panel.add(reghol);
@@ -70,8 +69,8 @@ public class ModElementIDsDialog {
 		JPanel ids = new JPanel();
 		ids.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				"Mod element numerical IDs (not all mod elements use them)", 0, 0, reghol.getFont().deriveFont(12.0f),
-				Color.white));
+				L10N.t("dialog.modelement_id.numerical_id"), 0, 0,
+				reghol.getFont().deriveFont(12.0f), Color.white));
 
 		ids.setLayout(new BorderLayout());
 
@@ -81,16 +80,14 @@ public class ModElementIDsDialog {
 			int offset = mcreator.getWorkspace().getGenerator()
 					.getStartIDFor(modElement.getType().getBaseType().name().toLowerCase(Locale.ENGLISH));
 			if (offset != -1) {
-				ids.add("North", PanelUtils.maxMargin(new JLabel(
-								"<html><small>" + modElement.getType().getReadableName()
-										+ " mod element type has IDs offset for " + offset
-										+ ".<br>Your ID + this offset is the final ID used in Minecraft."), 5, false, true,
-						false, false));
+				ids.add("North", PanelUtils.maxMargin(
+						L10N.label("dialog.modelement_id.id_offset", modElement.getType().getReadableName(), offset),
+						5, false, true, false, false));
 			}
 
 			JPanel idsmap = new JPanel(new GridLayout(modElement.getIDMap().size(), 2));
 			for (Map.Entry<Integer, Integer> mapping : modElement.getIDMap().entrySet()) {
-				idsmap.add(new JLabel("ID mapping #" + mapping.getKey() + ": "));
+				idsmap.add(L10N.label("dialog.modelement_id.id_mapping", mapping.getKey()));
 				JSpinner id = new JSpinner(
 						new SpinnerNumberModel((int) mapping.getValue(), Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
 				idspinners.put(mapping.getKey(), id);
@@ -99,7 +96,7 @@ public class ModElementIDsDialog {
 
 			ids.add("Center", PanelUtils.centerInPanel(idsmap));
 		} else {
-			ids.add(new JLabel("This mod element does not have any numerical IDs registered"));
+			ids.add(L10N.label("dialog.modelement_id.error_no_numerical_id"));
 		}
 
 		panel.add(new JEmptyBox(20, 20));
@@ -110,7 +107,8 @@ public class ModElementIDsDialog {
 
 		registryName.setText(modElement.getRegistryName());
 
-		int option = JOptionPane.showConfirmDialog(mcreator, panel, modElement.getName() + " - IDs and registry names",
+		int option = JOptionPane.showConfirmDialog(mcreator, panel,
+				L10N.t("dialog.modelement_id.id_and_registry_names",modElement.getName()),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (option == JOptionPane.OK_OPTION) {
@@ -126,16 +124,14 @@ public class ModElementIDsDialog {
 			if (!registryName.getText().equals(modElement.getRegistryName())) {
 				if (registryName.getValidationStatus().getValidationResultType()
 						== Validator.ValidationResultType.ERROR) { // if invalid registry name
-					JOptionPane.showMessageDialog(mcreator, "<html>The registry name you entered is not valid!<br>"
-							+ "The changes have not been saved.", "Invalid registry name", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.modelement_id.invalid_registry_name"),
+							L10N.t("dialog.modelement_id.invalid_registry_name_title"), JOptionPane.ERROR_MESSAGE);
 					return null;
 				}
 
 				option = JOptionPane.showConfirmDialog(mcreator,
-						"<html><b>You have changed registry name of your mod element!</b><br><br>"
-								+ "If this mod element is referenced in other mod element types, especially achievements or recipes,<br>"
-								+ "you may need to rebuild code to update references to the new name.<br>"
-								+ "<br>Do you want to start code rebuild now?", "Changed registry name",
+						L10N.t("dialog.modelement_id.registry_name_changed"),
+						L10N.t("dialog.modelement_id.registry_name_changed_title"),
 						JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 				if (option == JOptionPane.YES_OPTION) {
