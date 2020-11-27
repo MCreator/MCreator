@@ -68,7 +68,7 @@ public final class ModElementTypeRegistry {
 		private final Character shortcut;
 
 		private final ModElementGUIProvider<GE> modElementGUIProvider;
-		private final Class<? extends GeneratableElement> modElementStorageClass;
+		private final Class<? extends GE> modElementStorageClass;
 
 		private boolean hasProcedureTriggers;
 
