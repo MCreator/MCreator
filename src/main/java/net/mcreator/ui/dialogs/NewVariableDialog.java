@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.io.Transliteration;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
@@ -44,22 +45,22 @@ public class NewVariableDialog {
 
 		JComboBox<VariableElementType.Scope> scope = new JComboBox<>(VariableElementType.Scope.values());
 
-		inp.add("North", new JLabel("Enter the name and select the type of variable: "));
+		inp.add("North", L10N.label("dialog.variables.enter_name_select_type"));
 
 		JPanel data = new JPanel(new GridLayout(showScope ? 3 : 2, 2, 5, 5));
-		data.add(new JLabel("Variable name: "));
+		data.add(L10N.label("dialog.variables.variable_name"));
 		data.add(textField);
-		data.add(new JLabel("Variable type: "));
+		data.add(L10N.label("dialog.variables.variable_type"));
 		data.add(type);
 		if (showScope) {
-			data.add(new JLabel("Variable scope: "));
+			data.add(L10N.label("dialog.variables.variable_scope"));
 			data.add(scope);
 		}
 
 		inp.add("Center", data);
 
-		int option = JOptionPane.showConfirmDialog(frame, inp, "New variable", JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null);
+		int option = JOptionPane.showConfirmDialog(frame, inp, L10N.t("dialog.variables.new_title"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION
 				&& textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
 				&& type.getSelectedItem() != null) {
