@@ -1,0 +1,347 @@
+{
+  "ui": {
+    "icon": "woodpack",
+    "name": {
+      "length": 25
+    },
+    "color": true,
+    "power": {
+      "value": 1.0,
+      "min": 0.1,
+      "max": 100,
+      "stepSize": 0.1
+    }
+  },
+  "textures":[
+    {
+      "name": "_log_side",
+      "type": "block",
+      "textures":[
+        "log_side",
+        "log_side_1",
+        "log_side_2",
+        "log_side_3",
+        "log_side_4",
+        "log_side_5"
+      ]
+    },
+    {
+      "name": "_log_top",
+      "type": "block",
+      "textures":[
+        "log_top"
+      ]
+    },
+    {
+      "name": "_planks",
+      "type": "block",
+      "textures":[
+        "planks",
+        "planks_0",
+        "planks_1"
+      ]
+    },
+    {
+      "name": "_leaves",
+      "type": "block",
+      "textures":[
+        "leaves_0",
+        "leaves_1",
+        "leaves_2",
+        "leaves_3",
+        "leaves_4",
+        "leaves_5",
+        "leaves_new1",
+        "leaves_new2",
+        "leaves2"
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "elementType": "block",
+      "name": {
+        "name": "Wood",
+        "useTextField": true,
+        "location": "after"
+      },
+      "texture": "_log_side",
+      "renderType": 11,
+      "customModelName": "Single texture",
+      "material": "WOOD",
+      "soundOnStep": "WOOD",
+      "hardness": 2.0,
+      "resistance": 2.0,
+      "destroyTool": "axe",
+      "breakHarvestLevel": 0,
+      "flammability": 5,
+      "plantsGrowOn": true
+    },
+    {
+      "elementType": "block",
+      "name": {
+        "name": "Log",
+        "useTextField": true,
+        "location": "after"
+      },
+      "texture": "_log_top",
+      "textureTop": "_log_top",
+      "textureBack": "_log_side",
+      "textureFront": "_log_side",
+      "textureRight": "_log_side",
+      "textureLeft": "_log_side",
+      "renderType": 10,
+      "customModelName": "Normal",
+      "material": "WOOD",
+      "soundOnStep": "WOOD",
+      "hardness": 2.0,
+      "resistance": 2.0,
+      "destroyTool": "axe",
+      "breakHarvestLevel": 0,
+      "flammability": 5,
+      "plantsGrowOn": true
+    },
+    {
+      "elementType": "block",
+      "name": {
+        "name": "Planks",
+        "useTextField": true,
+        "location": "after"
+      },
+      "texture": "_planks",
+      "renderType": 11,
+      "customModelName": "Single texture",
+      "material": "WOOD",
+      "soundOnStep": "WOOD",
+      "hardness": 2.0,
+      "resistance": 3.0,
+      "destroyTool": "axe",
+      "breakHarvestLevel": 0,
+      "flammability": 5
+    },
+    {
+      "elementType": "block",
+      "name": {
+        "name": "Leaves",
+        "useTextField": true,
+        "location": "after"
+      },
+      "texture": "_leaves",
+      "renderType": 11,
+      "customModelName": "Single texture",
+      "material": "LEAVES",
+      "soundOnStep": "PLANT",
+      "hardness": 0.2,
+      "resistance": 0.2,
+      "destroyTool": "axe",
+      "breakHarvestLevel": 0,
+      "flammability": 30,
+      "plantsGrowOn": true
+    },
+    {
+      "elementType": "block",
+      "name": {
+        "name": "Stairs",
+        "useTextField": true,
+        "location": "after"
+      },
+      "blockBase": "Stairs",
+      "texture": "_planks",
+      "renderType": 11,
+      "customModelName": "Single texture",
+      "material": "WOOD",
+      "soundOnStep": "WOOD",
+      "hardness": 2.0,
+      "resistance": 3.0,
+      "destroyTool": "axe",
+      "breakHarvestLevel": 0,
+      "flammability": 5
+    },
+    {
+      "elementType": "block",
+      "name": {
+        "name": "Slab",
+        "useTextField": true,
+        "location": "after"
+      },
+      "blockBase": "Slab",
+      "texture": "_planks",
+      "renderType": 11,
+      "customModelName": "Single texture",
+      "material": "WOOD",
+      "soundOnStep": "WOOD",
+      "hardness": 2.0,
+      "resistance": 3.0,
+      "destroyTool": "axe",
+      "breakHarvestLevel": 0,
+      "flammability": 5
+    },
+    {
+      "elementType": "block",
+      "name": {
+        "name": "Fence",
+        "useTextField": true,
+        "location": "after"
+      },
+      "blockBase": "Fence",
+      "texture": "_planks",
+      "renderType": 11,
+      "customModelName": "Single texture",
+      "material": "WOOD",
+      "soundOnStep": "WOOD",
+      "hardness": 2.0,
+      "resistance": 3.0,
+      "destroyTool": "axe",
+      "breakHarvestLevel": 0,
+      "flammability": 5
+    },
+    {
+      "elementType": "block",
+      "name": {
+        "name": "Fence Gate",
+        "useTextField": true,
+        "location": "after"
+      },
+      "blockBase": "FenceGate",
+      "texture": "_planks",
+      "renderType": 11,
+      "customModelName": "Single texture",
+      "material": "WOOD",
+      "soundOnStep": "WOOD",
+      "hardness": 2.0,
+      "resistance": 3.0,
+      "destroyTool": "axe",
+      "breakHarvestLevel": 0,
+      "flammability": 5
+    },
+    {
+      "elementType": "block",
+      "name": {
+        "name": "Button",
+        "useTextField": true,
+        "location": "after"
+      },
+      "blockBase": "StoneButton",
+      "texture": "_planks",
+      "renderType": 11,
+      "customModelName": "Single texture",
+      "material": "WOOD",
+      "soundOnStep": "WOOD",
+      "hardness": 2.0,
+      "resistance": 3.0,
+      "destroyTool": "axe",
+      "breakHarvestLevel": 0,
+      "flammability": 5
+    },
+    {
+      "elementType": "block",
+      "name": {
+        "name": "PressurePlate",
+        "useTextField": true,
+        "location": "after"
+      },
+      "blockBase": "PressurePlate",
+      "texture": "_planks",
+      "renderType": 11,
+      "customModelName": "Single texture",
+      "material": "WOOD",
+      "soundOnStep": "WOOD",
+      "hardness": 2.0,
+      "resistance": 3.0,
+      "destroyTool": "axe",
+      "breakHarvestLevel": 0,
+      "flammability": 5
+    }
+  ],
+  "recipes":[
+    {
+      "type": "crafting",
+      "template": "four_block",
+      "recipeName": "WoodRecipe",
+      "block": "Log",
+      "returnItem": "Wood",
+      "stackSize": 3
+    },
+    {
+      "type": "crafting",
+      "template": "four_block",
+      "recipeName": "PlanksRecipe1",
+      "block": "Wood",
+      "returnItem": "Planks",
+      "stackSize": 4
+    },
+    {
+      "type": "crafting",
+      "template": "four_block",
+      "recipeName": "PlanksRecipe2",
+      "block": "Log",
+      "returnItem": "Planks",
+      "stackSize": 4
+    },
+    {
+      "type": "crafting",
+      "template": "stairs",
+      "recipeName": "StairsRecipe",
+      "block": "Planks",
+      "returnItem": "Stairs"
+    },
+    {
+      "type": "crafting",
+      "template": "slab",
+      "recipeName": "SlabRecipe",
+      "block": "Planks",
+      "returnItem": "Slab"
+    },
+    {
+      "type": "crafting",
+      "template": "fence",
+      "recipeName": "FenceRecipe",
+      "block": "Planks",
+      "returnItem": "Fence"
+    },
+    {
+      "type": "crafting",
+      "template": "fence_gate",
+      "recipeName": "FenceGateRecipe",
+      "block": "Planks",
+      "returnItem": "Fence Gate"
+    },
+    {
+      "type": "crafting",
+      "template": "button",
+      "recipeName": "ButtonRecipe",
+      "block": "Planks",
+      "returnItem": "Button"
+    },
+    {
+      "type": "crafting",
+      "template": "pressure_plate",
+      "recipeName": "PressurePlate",
+      "block": "Planks",
+      "returnItem": "PressurePlate"
+    },
+    {
+      "type": "crafting",
+      "template": "stick",
+      "recipeName": "StickRecipe",
+      "block": "Planks",
+      "returnItem": "Items.STICK"
+    }
+  ],
+  "tags":[
+    {
+      "namespace": "forge",
+      "name": "_log",
+      "type": "Items",
+      "blocks": [
+        "Wood",
+        "Log"
+      ]
+    }
+  ],
+  "mod_elements": [
+    "BLOCK",
+    "RECIPE",
+    "TAG"
+  ]
+}

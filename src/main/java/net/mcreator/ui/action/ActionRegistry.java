@@ -155,9 +155,7 @@ public class ActionRegistry {
 	// Tools actions
 	public final BasicAction openMaterialPackMaker;
 	public final BasicAction openOrePackMaker;
-	public final BasicAction openToolPackMaker;
 	public final BasicAction openArmorPackMaker;
-	public final BasicAction openWoodPackMaker;
 	public final BasicAction showEntityIDList;
 	public final BasicAction showItemBlockList;
 	public final BasicAction showParticleIDList;
@@ -293,9 +291,7 @@ public class ActionRegistry {
 		this.remoteWorkspaceSettings = new VCSInfoSettingsAction(this);
 		this.openMaterialPackMaker = MaterialPackMakerTool.getAction(this);
 		this.openOrePackMaker = OrePackMakerTool.getAction(this);
-		this.openToolPackMaker = ToolPackMakerTool.getAction(this);
 		this.openArmorPackMaker = ArmorPackMakerTool.getAction(this);
-		this.openWoodPackMaker = WoodPackMakerTool.getAction(this);
 		this.showShortcuts = new BasicAction(this, L10N.t("action.keyboard_shortcuts"),
 				e -> AcceleratorDialog.showAcceleratorMapDialog(mcreator, this.acceleratorMap));
 		this.showEntityIDList = new ShowDataListAction.EntityIDs(this);
