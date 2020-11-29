@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="ant-javafx1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jdk/jdk8_win_64/lib/ant-javafx.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdk/jdk8_win_64/lib/dt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdk/jdk8_win_64/lib/javafx-mx.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdk/jdk8_win_64/lib/jconsole.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdk/jdk8_win_64/lib/packager.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdk/jdk8_win_64/lib/sa-jdi.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdk/jdk8_win_64/lib/tools.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/jdk/jdk8_win_64/lib/tools.jar!/" />
+    </SOURCES>
+  </library>
+</component>

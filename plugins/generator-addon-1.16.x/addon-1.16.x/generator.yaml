@@ -16,9 +16,11 @@ mod_data_root: "@WORKSPACEROOT/src/main/@modid_behaviourpack"
 
 # specific resource folders
 sounds_dir: "@RESROOT/sounds"
-other_textures_dir: "@MODASSETSROOT/textures"
+other_textures_dir: "@MODASSETSROOT/textures/others"
 block_textures_dir: "@MODASSETSROOT/textures/blocks"
 item_textures_dir: "@MODASSETSROOT/textures/items"
+entity_textures_dir: "@MODASSETSROOT/textures/entities"
+painting_textures_dir: "@MODASSETSROOT/textures/paintings"
 
 base_templates:
   - template: manifest_behaviourpack.json.ftl

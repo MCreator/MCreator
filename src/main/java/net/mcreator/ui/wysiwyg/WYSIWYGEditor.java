@@ -30,6 +30,7 @@ import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.help.HelpUtils;
@@ -398,7 +399,7 @@ public class WYSIWYGEditor extends JPanel {
 			importmobtexture.setOpaque(false);
 			importmobtexture.setMargin(new Insets(0, 0, 0, 0));
 			importmobtexture.addActionListener(e -> {
-				TextureImportDialogs.importOtherTextures(mcreator);
+				TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.OTHER);
 				overlayBaseTexture.removeAllItems();
 				overlayBaseTexture.addItem("");
 				mcreator.getWorkspace().getFolderManager().getOtherTexturesList()

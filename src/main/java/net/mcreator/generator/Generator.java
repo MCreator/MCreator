@@ -20,14 +20,17 @@ package net.mcreator.generator;
 
 import com.google.gson.GsonBuilder;
 import net.mcreator.blockly.BlocklyToAITasks;
+import net.mcreator.blockly.BlocklyToTooltip;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ITooltipContainer;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Achievement;
+import net.mcreator.element.types.Item;
 import net.mcreator.element.types.Mob;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -81,6 +84,7 @@ public class Generator implements Closeable {
 	private final TemplateGenerator procedureGenerator;
 	private final TemplateGenerator triggerGenerator;
 	private final TemplateGenerator aitaskGenerator;
+	private final TemplateGenerator tooltipGenerator;
 	private final TemplateGenerator jsonTriggerGenerator;
 
 	private final MinecraftCodeProvider minecraftCodeProvider;
@@ -98,14 +102,12 @@ public class Generator implements Closeable {
 
 		this.generatorConfiguration = GENERATOR_CACHE.get(generatorName);
 
-		this.templateGenerator = new TemplateGenerator(generatorConfiguration.getTemplateGeneratorConfiguration(),
-				this);
-		this.procedureGenerator = new TemplateGenerator(generatorConfiguration.getProcedureGeneratorConfiguration(),
-				this);
+		this.templateGenerator = new TemplateGenerator(generatorConfiguration.getTemplateGeneratorConfiguration(), this);
+		this.procedureGenerator = new TemplateGenerator(generatorConfiguration.getProcedureGeneratorConfiguration(), this);
 		this.triggerGenerator = new TemplateGenerator(generatorConfiguration.getTriggerGeneratorConfiguration(), this);
-		this.jsonTriggerGenerator = new TemplateGenerator(generatorConfiguration.getJSONTriggerGeneratorConfiguration(),
-				this);
+		this.jsonTriggerGenerator = new TemplateGenerator(generatorConfiguration.getJSONTriggerGeneratorConfiguration(), this);
 		this.aitaskGenerator = new TemplateGenerator(generatorConfiguration.getAITaskGeneratorConfiguration(), this);
+		this.tooltipGenerator = new TemplateGenerator(generatorConfiguration.getTooltipGeneratorConfiguration(), this);
 
 		this.minecraftCodeProvider = new MinecraftCodeProvider(workspace);
 	}
@@ -145,6 +147,10 @@ public class Generator implements Closeable {
 
 	public TemplateGenerator getAITaskGenerator() {
 		return aitaskGenerator;
+	}
+
+	public TemplateGenerator getTooltipGenerator() {
+		return tooltipGenerator;
 	}
 
 	public TemplateGenerator getJSONTriggerGenerator() {
@@ -371,6 +377,26 @@ public class Generator implements Closeable {
 
 								additionalData.put("aicode", aicode);
 							});
+				} else if (element instanceof ITooltipContainer) {
+					code = templateGenerator
+							.generateElementFromTemplate(element, templateFileName, dataModel, additionalData -> {
+								BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
+										BlocklyLoader.INSTANCE.getTooltipBlockLoader().getDefinedBlocks(),
+										this.getTooltipGenerator(), additionalData).setTemplateExtension(
+										generatorConfiguration.getGeneratorFlavor().getBaseLanguage().name()
+												.toLowerCase(Locale.ENGLISH));
+								BlocklyToTooltip blocklyToJava = new BlocklyToTooltip(this.getWorkspace(),
+										((ITooltipContainer) element).getXml(), this.getTooltipGenerator(),
+										new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+										new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
+
+								String tooltipCode = blocklyToJava.getGeneratedCode();
+								if (tooltipCode == null)
+									tooltipCode = "";
+
+								additionalData.put("tooltipCode", tooltipCode);
+							});
+
 				} else {
 					code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel, null);
 				}
@@ -388,21 +414,48 @@ public class Generator implements Closeable {
 			for (Object template : localizationkeys) {
 				String key = (String) ((Map<?, ?>) template).get("key");
 				String mapto = (String) ((Map<?, ?>) template).get("mapto");
+				Boolean condition = ((Map<?, ?>) template).containsKey("condition");
 				key = GeneratorTokens.replaceTokens(workspace, key.replace("@NAME", element.getModElement().getName())
 						.replace("@modid", workspace.getWorkspaceSettings().getModID())
 						.replace("@registryname", element.getModElement().getRegistryName()));
 				try {
-					String value = (String) element.getClass().getField(mapto.trim()).get(element);
+					int i = 0;
+					int size;
+					for(String value : element.getClass().getField(mapto.trim()).get(element).toString().split(",")){
+						List<String> list = Arrays.asList(element.getClass().getField(mapto.trim()).get(element).toString().split(","));
+						value = list.get(i);
+						size = list.size();
+						if (!value.isEmpty()) {
+							String suffix = (String) ((Map<?, ?>) template).get("suffix");
+							if (suffix != null) {
+								value += suffix;
+							}
 
-					String suffix = (String) ((Map<?, ?>) template).get("suffix");
-					if (suffix != null)
-						value += suffix;
+							String prefix = (String) ((Map<?, ?>) template).get("prefix");
+							if (prefix != null) {
+								value = prefix + value;
+							}
 
-					String prefix = (String) ((Map<?, ?>) template).get("prefix");
-					if (prefix != null)
-						value = prefix + value;
+							if (value != null && !value.equals("[]")) {
+								if ((value.charAt(0) == '[') && condition && ((i+1) == 1)) {
+									value = value.substring(1);
+								}
+								if ((value.charAt(value.length() - 1) == ']') && condition && ((size == 1) || (i >= 1))) {
+									value = value.substring(0, value.length() - 1);
+								}
 
-					workspace.setLocalization(key, value);
+								if (condition) {
+									String newKey = key;
+									newKey += (i + 1);
+									workspace.setLocalization(newKey, value.trim());
+									i++;
+								} else {
+									workspace.setLocalization(key, value);
+								}
+							}
+						}
+					}
+
 				} catch (IllegalAccessException | NoSuchFieldException e) {
 					LOG.error(e.getMessage(), e);
 					LOG.error("[" + generatorName + "] " + e.getMessage());
@@ -452,9 +505,19 @@ public class Generator implements Closeable {
 		if (localizationkeys != null) {
 			for (Object template : localizationkeys) {
 				String key = (String) ((Map<?, ?>) template).get("key");
-				key = GeneratorTokens.replaceTokens(workspace,
-						key.replace("@NAME", element.getName()).replace("@registryname", element.getRegistryName()));
-				workspace.removeLocalizationEntryByKey(key);
+				Boolean condition = ((Map<?, ?>) template).containsKey("condition");
+				key = GeneratorTokens.replaceTokens(workspace, key.replace("@NAME", element.getName())
+						.replace("@modid", workspace.getWorkspaceSettings().getModID())
+						.replace("@registryname", element.getRegistryName()));
+				if (condition) {
+					for (int j=0; j <= 10; j++) {
+						String newKey = key;
+						newKey += (j + 1);
+						workspace.removeLocalizationEntryByKey(newKey);
+					}
+				} else {
+					workspace.removeLocalizationEntryByKey(key);
+				}
 			}
 		}
 	}

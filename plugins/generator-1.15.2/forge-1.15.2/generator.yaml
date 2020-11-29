@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 basefeatures: [variables, model_json, model_java, model_obj]
-status: lts
+status: stable
 buildfileversion: 31.2.0
 
 # gradle task definitions
@@ -19,9 +19,11 @@ mod_data_root: "@RESROOT/data/@modid"
 # specific resource folders
 structures_dir: "@MODDATAROOT/structures"
 sounds_dir: "@MODASSETSROOT/sounds"
-other_textures_dir: "@MODASSETSROOT/textures"
+other_textures_dir: "@MODASSETSROOT/textures/others"
 block_textures_dir: "@MODASSETSROOT/textures/blocks"
 item_textures_dir: "@MODASSETSROOT/textures/items"
+entity_textures_dir: "@MODASSETSROOT/textures/entities"
+painting_textures_dir: "@MODASSETSROOT/textures/painting"
 armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 
 base_templates:
