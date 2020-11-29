@@ -23,6 +23,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.validation.Validator;
@@ -67,22 +68,21 @@ public class TextureMappingDialog {
 			return null;
 		}
 
-		MCreatorDialog d = new MCreatorDialog(mcreator, "Texture mappings for model", true);
+		MCreatorDialog d = new MCreatorDialog(mcreator, L10N.t("dialog.textures_mapping.title_for_model"), true);
 
 		JTabbedPane pane = new JTabbedPane();
 		pane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		pane.setForeground(Color.white);
 
 		if (supportMultiple) {
-			pane.addTab("Add new texture mapping", null);
+			pane.addTab(L10N.t("dialog.textures_mapping.add_new"), null);
 			pane.setTabComponentAt(0, new JLabel(UIRES.get("16px.add.gif")));
 			Set<String> finalTexturesList = texturesList;
 			pane.addChangeListener(e -> {
 				if (pane.getSelectedIndex() == 0) { // new texture mapping
 					pane.setSelectedIndex(1);
-					String mapping = VOptionPane.showInputDialog(mcreator, "<html>Enter your texture mapping name.<br>"
-									+ "This name is used to identify your set of textures when<br>"
-									+ "selecting a texture mapping for your model.", "New texture mapping", null,
+					String mapping = VOptionPane.showInputDialog(mcreator, L10N.t("dialog.textures_mapping.enter_name_message"),
+							L10N.t("dialog.textures_mapping.enter_name_title"), null,
 							new OptionPaneValidatior() {
 								@Override public Validator.ValidationResult validate(JComponent component) {
 									return new JavaMemeberNameValidator((VTextField) component, false).validate();
@@ -103,7 +103,7 @@ public class TextureMappingDialog {
 		d.add("Center", pane);
 
 		if (currentState.keySet().size() > 5) {
-			JButton jumpto = new JButton("Jump to ...");
+			JButton jumpto = L10N.button("dialog.textures_mapping.jump_to");
 			jumpto.setMargin(new Insets(2, 5, 2, 5));
 			jumpto.addActionListener(e -> {
 				JScrollablePopupMenu popupMenu = new JScrollablePopupMenu();
@@ -124,7 +124,7 @@ public class TextureMappingDialog {
 		if (supportMultiple)
 			pane.setSelectedIndex(1);
 
-		JButton ok = new JButton("Save mappings");
+		JButton ok = L10N.button("dialog.textures_mapping.save");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 
 		d.add("South", PanelUtils.join(FlowLayout.CENTER, ok, cancel));
@@ -159,7 +159,7 @@ public class TextureMappingDialog {
 		TextureHolder[] tx = new TextureHolder[entries.size()];
 		int idx = 0;
 		for (Map.Entry<String, String> s : entries) {
-			panel.add(new JLabel("<html><small>Model texture part:</small><br><font size=5>" + s.getKey() + " "));
+			panel.add(L10N.label("dialog.textures_mapping.model_texture_part", s.getKey()));
 			tx[idx] = new TextureHolder(
 					new GeneralTextureSelector(mcreator, GeneralTextureSelector.TextureType.BLOCK));
 			if (s.getValue() != null && !s.getValue().equals(""))
@@ -180,8 +180,8 @@ public class TextureMappingDialog {
 		button.addActionListener(e -> {
 			Object[] options = { "Yes", "No" };
 			int n = JOptionPane.showOptionDialog(mcreator,
-					"<html>Are you sure that you want to delete this texture mapping?<br>"
-							+ "You can get broken textures if the mapping is still in use!", "Confirmation",
+					L10N.t("dialog.textures_mapping.confirm_deletion_message"),
+					L10N.t("dialog.textures_mapping.confirm_deletion_title"),
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 			if (n == 0) {
 				for (int i = 0; i < addTo.getTabCount(); i++) {

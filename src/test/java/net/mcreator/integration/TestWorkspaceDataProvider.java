@@ -799,6 +799,7 @@ public class TestWorkspaceDataProvider {
 			armor.damageValueBoots = 6;
 			armor.enchantability = 7;
 			armor.toughness = 1.23;
+			armor.knockbackResistance = 3.148;
 			armor.repairItems = new ArrayList<>();
 			if (!emptyLists) {
 				armor.repairItems.add(new MItemBlock(modElement.getWorkspace(),
