@@ -56,19 +56,19 @@ public class TextureHolder extends VButton {
 			if (td.list.getSelectedValue() != null) {
 				File file = td.list.getSelectedValue();
 				id = file.getPath();
-				if(id.contains("textures\\blocks\\")){
+				if(id.contains("textures\\blocks\\") || id.contains("textures/blocks/")){
 					id = textureNameReplace(
 							FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getBlocksTexturesDir().getPath(), "")));
-				} else if(id.contains("textures\\entities\\")){
+				} else if(id.contains("textures\\entities\\") || id.contains("textures/blocks/")){
 					id = textureNameReplace(
 							FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getEntitiesTexturesDir().getPath(), "")));
-				} else if(id.contains("textures\\items\\")){
+				} else if(id.contains("textures\\items\\") || id.contains("textures/items/")){
 					id = textureNameReplace(
 							FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getItemsTexturesDir().getPath(), "")));
-				} else if(id.contains("textures\\painting\\")){
+				} else if(id.contains("textures\\painting\\") || id.contains("textures/painting/")){
 					id = textureNameReplace(
 							FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getPaintingsTexturesDir().getPath(), "")));
-				} else if(id.contains("textures\\others\\")){
+				} else if(id.contains("textures\\others\\") || id.contains("textures/others/")){
 					id = textureNameReplace(FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getOtherTexturesDir().getPath(), "")));
 				}
 				setIcon(new ImageIcon(
