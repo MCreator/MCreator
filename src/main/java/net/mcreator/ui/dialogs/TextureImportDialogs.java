@@ -123,41 +123,6 @@ public class TextureImportDialogs {
 			}
 	}
 
-	public static void importTexturesBlockOrItem(MCreator fr, BlockItemTextureSelector.TextureType type) {
-		File[] hohe = FileDialogs.getMultiOpenDialog(fr, new String[] { ".png" });
-		if (hohe != null)
-			importTexturesBlockOrItem(fr, type, hohe);
-	}
-
-	public static void importTexturesBlockOrItem(MCreator fr, BlockItemTextureSelector.TextureType type, File[] hohe) {
-		Arrays.stream(hohe).forEach(hoh -> {
-			String namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(hoh.getName()));
-			File file;
-			if (type == BlockItemTextureSelector.TextureType.BLOCK) {
-				file = fr.getWorkspace().getFolderManager().getBlockTextureFile(namec);
-			} else {
-				file = fr.getWorkspace().getFolderManager().getItemTextureFile(namec);
-			}
-			if (file.isFile()) {
-				String name = JOptionPane.showInputDialog(fr,
-						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
-						L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.WARNING_MESSAGE);
-				if (name != null) {
-					namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(name));
-					if (type == BlockItemTextureSelector.TextureType.BLOCK) {
-						file = fr.getWorkspace().getFolderManager().getBlockTextureFile(namec);
-					} else {
-						file = fr.getWorkspace().getFolderManager().getItemTextureFile(namec);
-					}
-				} else {
-					return;
-				}
-			}
-			FileIO.copyFile(hoh, file);
-			fr.mv.resourcesPan.workspacePanelTextures.reloadElements();
-		});
-	}
-
 	public static void importTexturesGeneral(MCreator fr, TextureType type) {
 		File[] hohe = FileDialogs.getMultiOpenDialog(fr, new String[] { ".png" });
 		if (hohe != null)
@@ -167,61 +132,6 @@ public class TextureImportDialogs {
 	public static void importTexturesGeneral(MCreator fr, TextureType type, File[] hohe) {
 		Arrays.stream(hohe).forEach(hoh -> {
 			TextureFolderDialog.setTextureFolder(fr, hoh, type);
-			fr.mv.resourcesPan.workspacePanelTextures.reloadElements();
-		});
-	}
-
-	public static void importTexturesGeneral(MCreator fr, BlockItemTextureSelector.TextureType type, File[] hohe) {
-		Arrays.stream(hohe).forEach(hoh -> {
-			String namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(hoh.getName()));
-			File file;
-			if (type == BlockItemTextureSelector.TextureType.BLOCK) {
-				file = fr.getWorkspace().getFolderManager().getBlockTextureFile(namec);
-			} else {
-				file = fr.getWorkspace().getFolderManager().getItemTextureFile(namec);
-			}
-			if (file.isFile()) {
-				String name = JOptionPane.showInputDialog(fr,
-						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
-						L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.WARNING_MESSAGE);
-				if (name != null) {
-					namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(name));
-					if (type == BlockItemTextureSelector.TextureType.BLOCK) {
-						file = fr.getWorkspace().getFolderManager().getBlockTextureFile(namec);
-					} else {
-						file = fr.getWorkspace().getFolderManager().getItemTextureFile(namec);
-					}
-				} else {
-					return;
-				}
-			}
-			FileIO.copyFile(hoh, file);
-			fr.mv.resourcesPan.workspacePanelTextures.reloadElements();
-		});
-	}
-
-	public static void importOtherTextures(MCreator fr) {
-		File[] hohs = FileDialogs.getMultiOpenDialog(fr, new String[] { ".png" });
-		if (hohs != null)
-			importOtherTextures(fr, hohs);
-	}
-
-	public static void importOtherTextures(MCreator fr, File[] hohs) {
-		Arrays.stream(hohs).forEach(hoh -> {
-			String namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(hoh.getName()));
-			File file = fr.getWorkspace().getFolderManager().getOtherTextureFile(namec);
-			if (file.isFile()) {
-				String name = JOptionPane.showInputDialog(fr,
-						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
-						L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.WARNING_MESSAGE);
-				if (name != null) {
-					namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(name));
-					file = fr.getWorkspace().getFolderManager().getOtherTextureFile(namec);
-				} else {
-					return;
-				}
-			}
-			FileIO.copyFile(hoh, file);
 			fr.mv.resourcesPan.workspacePanelTextures.reloadElements();
 		});
 	}
