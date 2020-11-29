@@ -225,8 +225,12 @@ public class ExternalBlockLoader {
 		return toolboxBlocks;
 	}
 
+	/**
+	 * Used for getting procedure toolboxes and adding extra toolboxes
+	 * See {@link #loadBlocksAndCategoriesInPanel} for usage
+	 */
 	public enum ToolboxType {
-		PROCEDURE, EMPTY
+		PROCEDURE, TOOLTIP, EMPTY
 	}
 
 }

@@ -13,7 +13,7 @@ A clear and concise description of what the bug is.
 
 **Steps To Reproduce**
 
-When possible, attach your MCreator workspace (preferably a minimal example workspace required to reproduce the bug; use File -> Export workspace to a shareable ZIP...).
+When possible, attach your MCToolkit/MCreator workspace (preferably a minimal example workspace required to reproduce the bug; use File -> Export workspace to a shareable ZIP...).
 
 Please specify which mod elements to check in your workspace too, if applicable.
 
@@ -22,7 +22,7 @@ Please specify which mod elements to check in your workspace too, if applicable.
 If applicable, add screenshots to help explain your problem.
 
 **Details**
- - MCreator version: [e.g. 2020.5]
+ - MCToolkit/MCreator version: [e.g. 2020.5]
  - Generator type: [e.g. forge-1.15.2]
  - OS: [e.g. Windows]
 

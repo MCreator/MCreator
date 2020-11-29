@@ -40,8 +40,6 @@
   texture: WHEAT
 - STEM:
   texture: MELON_STEM
-- VINE:
-  texture: VINE
 - NETHER_WART:
   texture: NETHER_WART
 - LANTERN:

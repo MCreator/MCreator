@@ -38,6 +38,8 @@ import net.mcreator.ui.component.util.DiscordClient;
 import net.mcreator.ui.component.util.MacOSUIUtil;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
+import net.mcreator.ui.dialogs.tools.plugin.PackMakerToolIcons;
+import net.mcreator.ui.dialogs.tools.plugin.PackMakerToolLoader;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
@@ -61,7 +63,7 @@ public final class MCreatorApplication {
 	private static final Logger LOG = LogManager.getLogger("Application");
 
 	public static IWebAPI WEB_API = new D8WebAPI();
-	public static final String SERVER_DOMAIN = "https://mcreator.net";
+	public static final String SERVER_DOMAIN = "https://mctoolkit.net";
 	public static boolean isInternet = true;
 
 	private final Analytics analytics;
@@ -117,6 +119,10 @@ public final class MCreatorApplication {
 		// load blockly blocks after plugins are loaded
 		BlocklyLoader.init();
 
+		// load pack makers defined by plugins after plugins are loaded
+		PackMakerToolIcons.init();
+		PackMakerToolLoader.init();
+
 		splashScreen.setProgress(55, "Loading generators");
 
 		Set<String> fileNamesUnordered = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
@@ -146,7 +152,7 @@ public final class MCreatorApplication {
 		// we do async login attempt
 		UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
 
-		splashScreen.setProgress(100, "Loading MCreator windows");
+		splashScreen.setProgress(100, "Loading MCToolkit windows");
 
 		if (OS.getOS() == OS.MAC) {
 			MacOSUIUtil.registerAboutHandler(() -> AboutAction.showDialog(null));
