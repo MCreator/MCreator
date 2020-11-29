@@ -224,41 +224,6 @@ public class MinecraftImageGenerator {
 					19, 1 + oSlotOffsetY, 8, 8, null);
 		}
 
-		private static void drawThreeSlotRecipe(Graphics2D graphics2D, Workspace workspace, MItemBlock input,
-				MItemBlock addition, MItemBlock result) {
-			int slotOffsetY = 9;
-			int oSlotOffsetY = 9;
-
-			//box 1
-			graphics2D.drawLine(1, slotOffsetY, 8, slotOffsetY);
-			graphics2D.drawLine(1, 9 + slotOffsetY, 8, 9 + slotOffsetY);
-			graphics2D.drawLine(0, slotOffsetY, 0, 9 + slotOffsetY);
-			graphics2D.drawLine(9, slotOffsetY, 9, 9 + slotOffsetY);
-
-			//box 2
-			graphics2D.drawLine(8, slotOffsetY, 15, slotOffsetY);
-			graphics2D.drawLine(8, 9 + slotOffsetY, 15, 16 + slotOffsetY);
-			graphics2D.drawLine(7, slotOffsetY, 0, 16 + slotOffsetY);
-			graphics2D.drawLine(16, slotOffsetY, 16, 16 + slotOffsetY);
-
-			//box 3
-			graphics2D.drawLine(19, oSlotOffsetY, 26, oSlotOffsetY);
-			graphics2D.drawLine(19, 9 + oSlotOffsetY, 26, 9 + oSlotOffsetY);
-			graphics2D.drawLine(18, oSlotOffsetY, 18, 9 + oSlotOffsetY);
-			graphics2D.drawLine(27, oSlotOffsetY, 27, 9 + oSlotOffsetY);
-
-			//elements
-			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, input.getUnmappedValue()).getImage())),
-					1, 1 + slotOffsetY, 8, 8, null);
-			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, addition.getUnmappedValue()).getImage())),
-					10, 1 + slotOffsetY, 8, 8, null);
-			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, result.getUnmappedValue()).getImage())),
-					19, 1 + oSlotOffsetY, 8, 8, null);
-		}
-
 		/**
 		 * <p>This method generates blasting recipe images.</p>
 		 *
@@ -284,7 +249,7 @@ public class MinecraftImageGenerator {
 		}
 
 		/**
-		 * <p>This method generates blasting recipe images.</p>
+		 * <p>This method generates smithing recipe images.</p>
 		 *
 		 * @param input  Input of the recipe.
 		 * @param addition Addition of the recipe
@@ -298,11 +263,17 @@ public class MinecraftImageGenerator {
 			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			graphics2D.setColor(new Color(190, 190, 190, 65));
 
-			drawThreeSlotRecipe(graphics2D, workspace, input, addition, result);
+			drawTwoSlotRecipe(graphics2D, workspace, input, addition);
 
-			//explosion
-			graphics2D.drawPolygon(getStarPolygon(14, 13, 4, 2, 6, 0.5235987755982988));
+			//plus
+			graphics2D.drawLine(11, 13, 12, 13);
+			graphics2D.drawLine(11, 14, 12, 14);
 
+			graphics2D.drawLine(15, 13, 16, 13);
+			graphics2D.drawLine(15, 14, 16, 14);
+
+			graphics2D.drawLine(13, 11, 13, 16);
+			graphics2D.drawLine(14, 11, 14, 16);
 			graphics2D.dispose();
 
 			return icon;

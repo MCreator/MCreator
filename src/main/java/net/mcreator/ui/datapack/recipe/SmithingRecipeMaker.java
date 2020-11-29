@@ -72,9 +72,9 @@ public class SmithingRecipeMaker extends JPanel {
 			cb3.setValidationShownFlag(true);
 		});
 
-		cb1.setBounds(27, 60, 28, 28);
-		cb2.setBounds(120, 60, 28, 28);
-		cb3.setBounds(245, 60, 28, 28);
+		cb1.setBounds(50, 60, 28, 28);
+		cb2.setBounds(117, 60, 28, 28);
+		cb3.setBounds(211, 60, 28, 28);
 
 		ip.add(cb1);
 		ip.add(cb2);
