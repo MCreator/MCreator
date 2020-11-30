@@ -1,10 +1,10 @@
-If you are interested in helping with MCreator development, you are welcome to support this project by 
+If you are interested in helping with MCToolkit development, you are welcome to support this project by 
 opening pull requests. Even if you do not code, you can help by contributing translations, in-app tips, or
-by [donating](https://mcreator.net/donate).
+by [donating](https://mctoolkit.net/donate).
 
 # Tips
 
-* **Before contributing a brand new feature into MCreator, open an issue for the feature and tell you would like to work on this, so we can discuss and confirm the suggested 
+* **Before contributing a brand new feature into MCToolkit, open an issue for the feature and tell you would like to work on this, so we can discuss and confirm the suggested 
 changes, and the way how to implement them to fit the existing code base and UX flow as good as possible.**
 * **Check existing issues and consider fixing one before considering adding a brand new feature not discussed before**
 * **Prioritize bug fixes before new features, better stable interface with less features than buggy interface clogged with features**
@@ -18,9 +18,9 @@ changes, and the way how to implement them to fit the existing code base and UX 
 * Maintainers of this project do this for hobby. There might be cases of slow responses, or even inability to review or merge PR due to its scope and our (time) inability to review it properly or assist with changes needed to make it acceptable for merge.
 * Texts in UI should be written "Everywhere like this" and not "Do Not Write Like This"
 
-*Learn more about the development process and tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).*
+*Learn more about the development process and tips on [MCToolkit developers wiki](https://github.com/Team-MCToolkit/MCToolkit/wiki).*
 
-If you are looking for a good issues for a starter, check [good first issue candidates](https://github.com/MCreator/MCreator/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+If you are looking for a good issues for a starter, check [good first issue candidates](https://github.com/Team-MCToolkit/MCToolkit/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
 # Pull requests
 
@@ -29,7 +29,7 @@ Once you complete your feature and are sure you followed the tips and tried to m
 The contributed code must pass all tests and be mergeable into the master branch. Expect comments on code after the code review. You will likely
 need to change some code parts based on the maintainer's suggestions.
 
-Some features might not be accepted into the core if they do not follow our guidelines, are low quality, or steer MCreator away from its roadmap 
+Some features might not be accepted into the core if they do not follow our guidelines, are low quality, or steer MCToolkit away from its roadmap 
 or do not fit the current UX flow of the application. Too specific features that would make UI more complex, but would not be benefitical to the
 most of the users might be rejected too, or suggested to be distributed in a plugin format.
 
@@ -38,17 +38,17 @@ If maintainers are busy, it can take a few days (or more) to properly review you
 Some pull request tips and standards:
 * **Please separate different features in different pull requests**
 * **Avoid big PRs.** They will be likely take much more time to review. Too big PRs might not be accepted due to amount of code reviewing and testing needed. Similar rule applies to PRs that significantly change core implementation.
-* If possible, prepare a changelog of your pull request that is ready to be used in the final MCreator changelog
+* If possible, prepare a changelog of your pull request that is ready to be used in the final MCToolkit changelog
 * When adding features to generator, make sure to cover all generators currently supported
 * Add tests for features you added with the PR, if new fields were added to mod elements, update TestWorkspaceDataProvider
 
 # Localization (translation of the UI)
 
-If you would like to contribute to the translations, make Crowdin user account and visit https://crowdin.com/project/mcreator. If you would like a brand new language added, check [issue #15](https://github.com/MCreator/MCreator/issues/15) and leave a comment on this issue.
+If you would like to contribute to the translations, make Crowdin user account and visit https://crowdin.com/project/mctoolkit. If you would like a brand new language added, send a private message on Crowdin to Max094Reikeb or Goldorion.
 
 # CLA
 
-Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/MCreator/MCreator), which you can do online.
+Before we can use your code, you must sign the [MCToolkit CLA](https://cla-assistant.io/Team-MCToolkit/MCToolkit), which you can do online.
 The CLA is necessary mainly because you own the copyright to your changes, even after your contribution 
 becomes part of our codebase, so we need your permission to use and distribute your code. We also need to be sure 
 of various other things—for instance that you'll tell us if you know that your code infringes on other people's patents. 

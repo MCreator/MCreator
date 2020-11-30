@@ -1,4 +1,1 @@
-files:
-  - source: /plugins/mcreator-localization/lang/texts.properties
-    translation: >-
-      /plugins/mcreator-localization/lang/texts_%locale_with_underscore%.properties
+files: []

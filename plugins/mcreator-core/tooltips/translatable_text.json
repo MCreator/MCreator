@@ -1,0 +1,25 @@
+{
+  "type": "translatable_text",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "untranslated_text",
+      "text": "Translatable text"
+    },
+    {
+      "type": "field_input",
+      "name": "tooltip_text",
+      "text": "translatable.text"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 110,
+  "mcreator": {
+    "toolbox_id": "texts",
+    "fields": [
+      "tooltip_text"
+    ]
+  }
+}

@@ -215,7 +215,7 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 	}
 
 	private void reloadTitle() {
-		setTitle("MCreator " + Launcher.version.getMajorString());
+		setTitle("MCToolkit " + Launcher.version.getMajorString());
 	}
 
 	@Override public void dragEnter(DropTargetDragEvent dtde) {

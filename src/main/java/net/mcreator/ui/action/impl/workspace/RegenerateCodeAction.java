@@ -32,12 +32,14 @@ import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -106,8 +108,41 @@ public class RegenerateCodeAction extends GradleAction {
 			dial.refreshDisplay();
 
 			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
-					L10N.t("dialog.workspace.regenerate_and_build.progress.regenerating_code"));
+					L10N.t("dialog.workspace.regenerate_and_build.progress.moving_textures"));
 			dial.addProgress(p1);
+
+			File others = new File(mcreator.getWorkspace().getFolderManager().getOtherTexturesDir().getPath() + "/");
+			if(!others.exists()){
+				others.mkdirs();
+			}
+			List<File> textures = new ArrayList<>();
+			File[] elements = new File(mcreator.getWorkspace().getFolderManager().getWorkspaceFolder().getAbsolutePath() + "/src/main/resources/assets/"
+					+ mcreator.getWorkspace().getWorkspaceSettings().getModID() + "/textures/").listFiles();
+			for(File file : elements){
+				textures.add(file);
+			}
+
+			for(File file : textures){
+				if(file.getName().endsWith(".png")){
+					File newTexture = new File(mcreator.getWorkspace().getFolderManager().getOtherTexturesDir().getPath() +
+							"/" + file.getName());
+					try {
+						FileUtils.copyFile(file, newTexture);
+						file.delete();
+						LOG.debug("Moving " + file.getName());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+				}
+			}
+
+			p1.ok();
+			dial.refreshDisplay();
+
+			ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
+					L10N.t("dialog.workspace.regenerate_and_build.progress.regenerating_code"));
+			dial.addProgress(p2);
 
 			Set<ModElement> skippedElements = new HashSet<>(0);
 			boolean skipAll = !warnMissingDefinitions; // if warnMissingDefinitions is false, we skip all by default without warnings
@@ -168,7 +203,7 @@ public class RegenerateCodeAction extends GradleAction {
 					LOG.error("Failed to regenerate: " + mod.getName(), e);
 				}
 
-				p1.setPercent((int) (((float) i / (float) modstoload) * 100.0f));
+				p2.setPercent((int) (((float) i / (float) modstoload) * 100.0f));
 				dial.refreshDisplay();
 				i++;
 			}
@@ -197,12 +232,12 @@ public class RegenerateCodeAction extends GradleAction {
 						L10N.t("dialog.workspace.regenerate_and_build.warning.elements_with_locked_code.title"),
 						JOptionPane.WARNING_MESSAGE);
 
-			p1.ok();
+			p2.ok();
 			dial.refreshDisplay();
 
-			ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
+			ProgressDialog.ProgressUnit p3 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.workspace.regenerate_and_build.progress.regenerating_workspace_and_resources"));
-			dial.addProgress(p2);
+			dial.addProgress(p3);
 
 			mcreator.getWorkspace().getGenerator().runResourceSetupTasks();
 			mcreator.getWorkspace().getGenerator().generateBase(false);
@@ -211,23 +246,23 @@ public class RegenerateCodeAction extends GradleAction {
 			// remove custom API libraries so they get re-downloaded
 			ModAPIManager.deleteAPIs(mcreator.getWorkspace(), mcreator.getWorkspace().getWorkspaceSettings());
 
-			p2.ok();
+			p3.ok();
 			dial.refreshDisplay();
 
-			ProgressDialog.ProgressUnit p22 = new ProgressDialog.ProgressUnit(
+			ProgressDialog.ProgressUnit p32 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.workspace.regenerate_and_build.progress.reformating_code"));
-			dial.addProgress(p22);
+			dial.addProgress(p32);
 
 			int ftfCount = filesToReformat.size();
 			ClassWriter.formatAndOrganiseImportsForFiles(mcreator.getWorkspace(), filesToReformat,
-					idx -> p22.setPercent((int) (((float) idx / (float) ftfCount) * 100.0f)));
+					idx -> p32.setPercent((int) (((float) idx / (float) ftfCount) * 100.0f)));
 
-			p22.ok();
+			p32.ok();
 			dial.refreshDisplay();
 
-			ProgressDialog.ProgressUnit p23 = new ProgressDialog.ProgressUnit(
+			ProgressDialog.ProgressUnit p33 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.workspace.regenerate_and_build.progress.clean_up_workspace"));
-			dial.addProgress(p23);
+			dial.addProgress(p33);
 
 			FileIO.removeEmptyDirs(mcreator.getWorkspace().getGenerator().getSourceRoot());
 			FileIO.removeEmptyDirs(mcreator.getWorkspace().getGenerator().getResourceRoot());
@@ -235,12 +270,12 @@ public class RegenerateCodeAction extends GradleAction {
 			// delete old license file if present
 			new File(mcreator.getWorkspace().getGenerator().getResourceRoot(), "MCreator-README.txt").delete();
 
-			p23.ok();
+			p33.ok();
 			dial.refreshDisplay();
 
-			ProgressDialog.ProgressUnit p3 = new ProgressDialog.ProgressUnit(
+			ProgressDialog.ProgressUnit p4 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.workspace.regenerate_and_build.progress.rebuilding_workspace"));
-			dial.addProgress(p3);
+			dial.addProgress(p4);
 
 			mcreator.getGradleConsole().markRunning(); // so console gets locked while we generate code already
 			try {
@@ -251,7 +286,7 @@ public class RegenerateCodeAction extends GradleAction {
 				mcreator.getGradleConsole().markReady();
 			}
 
-			p3.ok();
+			p4.ok();
 			dial.refreshDisplay();
 
 			dial.hideAll();
