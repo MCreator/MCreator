@@ -1,0 +1,1 @@
+Quand la boîte est cochée, le champ à droite montrera son contenu dans la description quand le joueur pressera la touche commande ou contrôle.
