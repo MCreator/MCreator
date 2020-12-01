@@ -82,9 +82,15 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 	                <#assign x = component.x - 213>
 	                <#assign y = component.y - 120>
 	                <#if component.getClass().getSimpleName() == "Label">
+						<#if hasCondition(component.displayCondition)>
+						if (<@procedureOBJToConditionCode component.displayCondition/>)
+						</#if>
 						Minecraft.getInstance().fontRenderer.drawString("${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
 									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
 	                <#elseif component.getClass().getSimpleName() == "Image">
+						<#if hasCondition(component.displayCondition)>
+						if (<@procedureOBJToConditionCode component.displayCondition/>) {
+						</#if>
 						RenderSystem.disableDepthTest();
 						RenderSystem.depthMask(false);
 						RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
@@ -100,6 +106,9 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
       					RenderSystem.enableDepthTest();
       					RenderSystem.enableAlphaTest();
       					RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+						<#if hasCondition(component.displayCondition)>
+						}
+						</#if>
 	                </#if>
 	            </#list>
 			}
