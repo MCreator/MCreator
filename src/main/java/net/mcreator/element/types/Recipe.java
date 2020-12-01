@@ -60,6 +60,11 @@ import java.util.Locale;
 	public MItemBlock campfireCookingInputStack;
 	public MItemBlock campfireCookingReturnStack;
 
+	// Smithing recipe
+	public MItemBlock smithingInputStack;
+	public MItemBlock smithingInputAdditionStack;
+	public MItemBlock smithingReturnStack;
+
 	private Recipe() {
 		this(null);
 	}
@@ -109,6 +114,11 @@ import java.util.Locale;
 			mod = MinecraftImageGenerator.Preview
 					.generateCampfirePreviewPicture(getModElement().getWorkspace(), campfireCookingInputStack,
 							campfireCookingReturnStack);
+		} else if ("Smithing".equals(recipeType) && !smithingInputStack.isEmpty()
+				&& !smithingInputAdditionStack.isEmpty() && !smithingReturnStack.isEmpty()) {
+			mod = MinecraftImageGenerator.Preview
+					.generateSmithingPreviewPicture(getModElement().getWorkspace(), smithingInputStack,
+							smithingInputAdditionStack, smithingReturnStack);
 		}
 		return mod;
 	}
