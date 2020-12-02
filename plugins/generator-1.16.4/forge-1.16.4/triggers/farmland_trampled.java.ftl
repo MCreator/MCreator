@@ -1,6 +1,6 @@
 @SubscribeEvent public void onFarmlandTrampled(BlockEvent.FarmlandTrampleEvent event) {
 	Entity entity = event.getEntity();
-	(World) world = event.getWorld();
+	World world = (World) event.getWorld();
 	float falldistance = event.getFallDistance();
 	Map<String, Object> dependencies = new HashMap<>();
 	dependencies.put("x",event.getPos().getX());

@@ -1,5 +1,5 @@
 @SubscribeEvent public void onCropGrowPre(BlockEvent.CropGrowEvent.Pre event) {
-    World world = event.getWorld().getWorld();
+    World world = (World) event.getWorld();
 	Map<String, Object> dependencies = new HashMap<>();
 	dependencies.put("x",event.getPos().getX());
 	dependencies.put("y",event.getPos().getY());

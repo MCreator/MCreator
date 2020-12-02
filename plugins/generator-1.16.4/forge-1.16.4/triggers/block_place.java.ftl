@@ -1,6 +1,6 @@
 @SubscribeEvent public void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
 	Entity entity = event.getEntity();
-	World world = event.getWorld();
+	World world = (World) event.getWorld();
 	Map<String, Object> dependencies = new HashMap<>();
 	dependencies.put("x",(int)event.getPos().getX());
 	dependencies.put("y",(int)event.getPos().getY());
