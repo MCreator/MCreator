@@ -551,12 +551,22 @@ public class TestWorkspaceDataProvider {
 			}
 			mob.hasAI = _true;
 			mob.aiBase = "(none)";
-			mob.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\" x=\"40\" y=\"40\">"
-					+ "<next><block type=\"wander\"><field name=\"speed\">1</field>"
-					+ "<next><block type=\"look_around\"><next><block type=\"swim_in_water\">"
-					+ "<next><block type=\"panic_when_attacked\"><field name=\"speed\">1.2</field>"
-					+ "<next><block type=\"attack_action\"><field name=\"callhelp\">!_true</field>"
-					+ "</block></next></block></next></block></next></block></next></block></next></block></xml>";
+			if(!emptyLists) {
+				Set<String> aiTasks = modElement.getWorkspace().getGenerator().getGeneratorStats().getGeneratorAITasks();
+				if (aiTasks.contains("wander") && aiTasks.contains("look_around")
+						&& aiTasks.contains("panic_when_attacked") && aiTasks.contains("attack_action")) {
+					mob.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\">"
+							+ "<next><block type=\"wander\"><field name=\"speed\">1</field>"
+							+ "<next><block type=\"look_around\"><next><block type=\"swim_in_water\">"
+							+ "<next><block type=\"panic_when_attacked\"><field name=\"speed\">1.2</field>"
+							+ "<next><block type=\"attack_action\"><field name=\"callhelp\">!_true</field>"
+							+ "</block></next></block></next></block></next></block></next></block></next></block></xml>";
+				}
+			}
+			// fallback
+			if (mob.aixml == null) {
+				mob.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\"></block></xml>";
+			}
 			mob.breedable = _true;
 			mob.tameable = _true;
 			mob.breedTriggerItems = new ArrayList<>();
