@@ -102,7 +102,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				} else if (modelColumn == 1) {
 					return new DefaultCellEditor(new JComboBox<>(
 							new VariableElementType[] { VariableElementType.NUMBER, VariableElementType.LOGIC,
-									VariableElementType.STRING, VariableElementType.ITEMSTACK}));
+									VariableElementType.STRING, VariableElementType.ITEMSTACK, VariableElementType.BLOCKSTATE}));
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
 					name.enableRealtimeValidation();
