@@ -37,7 +37,7 @@ this.goalSelector.addGoal(${customBlockIndex+1}, new Goal() {
 
 	@Override public void startExecuting() {
 		LivingEntity livingentity = CustomEntity.this.getAttackTarget();
-		Vec3d vec3d = livingentity.getEyePosition(1);
+		Vector3d vec3d = livingentity.getEyePosition(1);
 		CustomEntity.this.moveController.setMoveTo(vec3d.x, vec3d.y, vec3d.z, ${field$speed});
 	}
 
@@ -48,7 +48,7 @@ this.goalSelector.addGoal(${customBlockIndex+1}, new Goal() {
 		} else {
 			double d0 = CustomEntity.this.getDistanceSq(livingentity);
 			if (d0 < ${field$radius}) {
-				Vec3d vec3d = livingentity.getEyePosition(1);
+				Vector3d vec3d = livingentity.getEyePosition(1);
 				CustomEntity.this.moveController.setMoveTo(vec3d.x, vec3d.y, vec3d.z, ${field$speed});
 			}
 		}
