@@ -990,7 +990,6 @@ public class TestWorkspaceDataProvider {
 			return rangedItem;
 		case POTION:
 			Potion potion = new Potion(modElement);
-			potion.name = modElement.getName();
 			potion.effectName = modElement.getName() + " Effect Name";
 			potion.color = Color.magenta;
 			potion.icon = "test.png";
@@ -999,11 +998,34 @@ public class TestWorkspaceDataProvider {
 			potion.isBenefitical = !_true;
 			potion.renderStatusInHUD = _true;
 			potion.renderStatusInInventory = _true;
-			potion.registerPotionType = _true;
 			potion.onStarted = new Procedure("procedure1");
 			potion.onActiveTick = new Procedure("procedure2");
 			potion.onExpired = new Procedure("procedure3");
 			return potion;
+		case POTIONITEM:
+			PotionItem potionItem = new PotionItem(modElement);
+			potionItem.potionName = modElement.getName();
+			potionItem.splashName = modElement.getName();
+			potionItem.lingeringName = modElement.getName();
+			potionItem.arrowName = modElement.getName();
+			List<PotionItem.CustomEffectEntry> effects = new ArrayList<>();
+			if (!emptyLists) {
+				PotionItem.CustomEffectEntry entry1 = new PotionItem.CustomEffectEntry();
+				entry1.effect = new EffectEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllPotionEffects(modElement.getWorkspace())));
+				entry1.duration = 3600;
+				entry1.amplifier = 1;
+				effects.add(entry1);
+
+				PotionItem.CustomEffectEntry entry2 = new PotionItem.CustomEffectEntry();
+				entry2.effect = new EffectEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllPotionEffects(modElement.getWorkspace())));
+				entry2.duration = 7200;
+				entry2.amplifier = 0;
+				effects.add(entry2);
+			}
+			potionItem.effects = effects;
+			return potionItem;
 		case BLOCK:
 			Block block = new Block(modElement);
 			block.name = modElement.getName();
