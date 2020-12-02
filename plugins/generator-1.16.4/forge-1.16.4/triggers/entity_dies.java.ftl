@@ -1,5 +1,5 @@
-@SubscribeEvent public void onEntityDeath(LivingDeathEvent event){
-	if(event!=null&&event.getEntity()!=null){
+@SubscribeEvent public void onEntityDeath(LivingDeathEvent event) {
+	if (event!=null && event.getEntity()!=null) {
 		Entity entity=event.getEntity();
 		Entity sourceentity=event.getSource().getTrueSource();
 		double i=entity.getPosX();

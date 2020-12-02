@@ -1,4 +1,4 @@
-@SubscribeEvent public void onEntityTravelToDimension(EntityTravelToDimensionEvent event){
+@SubscribeEvent public void onEntityTravelToDimension(EntityTravelToDimensionEvent event) {
 	int dimension=event.dimension.getId();
 	Entity entity=event.getEntity();
 	World world = entity.world;

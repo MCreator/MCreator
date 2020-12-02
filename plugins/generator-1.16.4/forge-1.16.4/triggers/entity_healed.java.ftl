@@ -1,4 +1,4 @@
-@SubscribeEvent public void onEntityHealed(LivingHealEvent event){
+@SubscribeEvent public void onEntityHealed(LivingHealEvent event) {
 	Entity entity = event.getEntity();
 	double i = entity.getPosX();
 	double j = entity.getPosY();

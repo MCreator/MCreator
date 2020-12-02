@@ -1,5 +1,5 @@
-@SubscribeEvent public void onEntityAttacked(LivingAttackEvent event){
-	if(event!=null&&event.getEntity()!=null){
+@SubscribeEvent public void onEntityAttacked(LivingAttackEvent event) {
+	if (event!=null && event.getEntity()!=null) {
 		Entity entity=event.getEntity();
 		Entity sourceentity=event.getSource().getTrueSource();
 		Entity imediatesourceentity=event.getSource().getImmediateSource();

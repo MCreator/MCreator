@@ -1,10 +1,9 @@
-@SubscribeEvent public void onEntityJump(LivingEvent.LivingJumpEvent event){
+@SubscribeEvent public void onEntityJump(LivingEvent.LivingJumpEvent event) {
 	LivingEntity entity=event.getEntityLiving();
 	double i=entity.getPosX();
 	double j=entity.getPosY();
 	double k=entity.getPosZ();
 	World world=entity.world;
-
 	Map<String, Object> dependencies = new HashMap<>();
 	dependencies.put("x",i);
 	dependencies.put("y",j);

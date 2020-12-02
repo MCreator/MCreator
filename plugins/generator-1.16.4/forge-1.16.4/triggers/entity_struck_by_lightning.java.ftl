@@ -1,4 +1,4 @@
-@SubscribeEvent public void onEntityStruckByLightning(EntityStruckByLightningEvent event){
+@SubscribeEvent public void onEntityStruckByLightning(EntityStruckByLightningEvent event) {
 	Entity entity=event.getEntity();
 	double i=entity.getPosX();
 	double j=entity.getPosY();

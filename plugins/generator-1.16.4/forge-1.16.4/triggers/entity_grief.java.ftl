@@ -1,4 +1,4 @@
-@SubscribeEvent public void onEntityGrief(EntityMobGriefingEvent event){
+@SubscribeEvent public void onEntityGrief(EntityMobGriefingEvent event) {
 	Entity entity=event.getEntity();
 	double i=entity.getPosX();
 	double j=entity.getPosY();

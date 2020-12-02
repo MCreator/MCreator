@@ -1,4 +1,4 @@
-@SubscribeEvent public void onItemCrafted(PlayerEvent.ItemCraftedEvent event){
+@SubscribeEvent public void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
 	Entity entity = event.getPlayer();
 	World world = entity.world;
 	double i=entity.getPosX();
