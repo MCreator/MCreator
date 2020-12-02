@@ -69,8 +69,8 @@ public class ModElementUITest {
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
-		GeneratorConfiguration generatorConfiguration = Generator.GENERATOR_CACHE.values().stream()
-				.filter(e -> e.getGeneratorFlavor() == GeneratorFlavor.FORGE).findFirst().orElse(null);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration
+				.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
 
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");

@@ -56,3 +56,11 @@
   type: number
 - SPAWN_RADIUS:
   type: number
+- DO_PATROL_SPAWNING:
+  type: boolean
+- DO_TRADER_SPAWNING:
+  type: boolean
+- FORGIVE_DEAD_PLAYERS:
+  type: boolean
+- UNIVERSAL_ANGER:
+  type: boolean

@@ -1,19 +1,3 @@
 templates:
   - template: potion.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/potion/@NAMEPotion.java"
-
-localizationkeys:
-  - key: effect.@registryname
-    mapto: effectName
-  - key: item.minecraft.potion.effect.@registryname
-    mapto: name
-    prefix: "Potion of "
-  - key: item.minecraft.splash_potion.effect.@registryname
-    mapto: name
-    prefix: "Splash Potion of "
-  - key: item.minecraft.tipped_arrow.effect.@registryname
-    mapto: name
-    prefix: "Arrow of "
-  - key: item.minecraft.lingering_potion.effect.@registryname
-    mapto: name
-    prefix: "Lingering Potion of "
+    name: "@SRCROOT/@BASEPACKAGEPATH/potion/@NAME.java"

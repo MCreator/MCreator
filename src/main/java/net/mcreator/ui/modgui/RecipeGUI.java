@@ -53,6 +53,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private SmokerRecipeMaker sm;
 	private StoneCutterRecipeMaker scm;
 	private CampfireCookingRecipeMaker ccm;
+	private SmithingRecipeMaker smcm;
 
 	private final JCheckBox recipeShapeless = L10N.checkbox("elementgui.recipe.is_shapeless");
 
@@ -66,7 +67,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private final VTextField group = new VTextField();
 
 	private final JComboBox<String> recipeType = new JComboBox<>(
-			new String[] { "Crafting", "Smelting", "Blasting", "Smoking", "Stone cutting", "Campfire cooking" });
+			new String[] { "Crafting", "Smelting", "Blasting", "Smoking", "Stone cutting", "Campfire cooking", "Smithing" });
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -85,6 +86,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				ElementUtil::loadBlocksAndItems);
 		ccm = new CampfireCookingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
 				ElementUtil::loadBlocksAndItems);
+		smcm = new SmithingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
 
 		name.setValidator(new RegistryNameValidator(name, "Loot table").setValidChars(Arrays.asList('_', '/')));
 		name.enableRealtimeValidation();
@@ -125,6 +127,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipesPanel.add(PanelUtils.totalCenterInPanel(sm), "smoking");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(scm), "stone cutting");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(ccm), "campfire cooking");
+		recipesPanel.add(PanelUtils.totalCenterInPanel(smcm), "smithing");
 
 		JPanel centerrecipes = new JPanel(new BorderLayout()) {
 			@Override protected void paintComponent(Graphics g) {
@@ -185,9 +188,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipeType.addActionListener(e -> {
 			if (recipeType.getSelectedItem() != null) {
 				xpReward.setEnabled(!recipeType.getSelectedItem().equals("Crafting") && !recipeType.getSelectedItem()
-						.equals("Stone cutting"));
+						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing"));
 				cookingTime.setEnabled(!recipeType.getSelectedItem().equals("Crafting") && !recipeType.getSelectedItem()
-						.equals("Stone cutting"));
+						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing"));
 
 				if (!isEditingMode() && cookingTime.isEnabled()) {
 					if (recipeType.getSelectedItem().equals("Smelting")) {
@@ -242,6 +245,11 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_campfire_no_ingredient_and_result"));
 			}
+		} else if ("Smithing".equals(recipeType.getSelectedItem())) {
+			if (!smcm.cb1.containsItem() || !smcm.cb2.containsItem() || !smcm.cb3.containsItem()) {
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.recipe.error_smithing_no_ingredient_addition_and_result"));
+			}
 		}
 
 		return new AggregatedValidationResult(name, group);
@@ -293,6 +301,10 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			ccm.cb2.setBlock(recipe.campfireCookingReturnStack);
 			xpReward.setValue(recipe.xpReward);
 			cookingTime.setValue(recipe.cookingTime);
+		} else if ("Smithing".equals(recipe.recipeType)) {
+			smcm.cb1.setBlock(recipe.smithingInputStack);
+			smcm.cb2.setBlock(recipe.smithingInputAdditionStack);
+			smcm.cb3.setBlock(recipe.smithingReturnStack);
 		}
 	}
 
@@ -339,6 +351,10 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			recipe.campfireCookingReturnStack = ccm.getBlock2();
 			recipe.xpReward = (double) xpReward.getValue();
 			recipe.cookingTime = (int) cookingTime.getValue();
+		} else if ("Smithing".equals(recipe.recipeType)){
+			recipe.smithingInputStack = smcm.cb1.getBlock();
+			recipe.smithingInputAdditionStack = smcm.cb2.getBlock();
+			recipe.smithingReturnStack = smcm.cb3.getBlock();
 		}
 
 		recipe.namespace = (String) namespace.getSelectedItem();

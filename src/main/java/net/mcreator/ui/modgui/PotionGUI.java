@@ -56,7 +56,6 @@ import java.util.stream.Collectors;
 
 public class PotionGUI extends ModElementGUI<Potion> {
 
-	private final VTextField name = new VTextField(20);
 	private final VTextField effectName = new VTextField(20);
 	private final JColor color = new JColor(mcreator);
 	private final VComboBox<String> icon = new SearchableComboBox<>();
@@ -66,8 +65,6 @@ public class PotionGUI extends ModElementGUI<Potion> {
 	private final JCheckBox isBenefitical = L10N.checkbox("elementgui.potion.is_benefitical");
 	private final JCheckBox renderStatusInInventory = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox renderStatusInHUD = L10N.checkbox("elementgui.common.enable");
-
-	private final JCheckBox registerPotionType = L10N.checkbox("elementgui.potion.enable_bottles");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -94,7 +91,6 @@ public class PotionGUI extends ModElementGUI<Potion> {
 
 		renderStatusInInventory.setSelected(true);
 		renderStatusInHUD.setSelected(true);
-		registerPotionType.setSelected(true);
 
 		icon.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
 
@@ -103,13 +99,11 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		JPanel pane4 = new JPanel(new BorderLayout());
 
-		JPanel selp = new JPanel(new GridLayout(10, 2, 50, 11));
+		JPanel selp = new JPanel(new GridLayout(9, 2, 50, 11));
 
-		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(effectName, 16);
 
 		isInstant.setOpaque(false);
-		registerPotionType.setOpaque(false);
 		isBad.setOpaque(false);
 		isBenefitical.setOpaque(false);
 		renderStatusInInventory.setOpaque(false);
@@ -134,14 +128,6 @@ public class PotionGUI extends ModElementGUI<Potion> {
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/icon"), L10N.label("elementgui.potion.icon")));
 		selp.add(PanelUtils.centerAndEastElement(icon, importicontexture));
-
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/has_bottles"), L10N.label("elementgui.potion.has_bottle")));
-		selp.add(registerPotionType);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/display_name"),
-				L10N.label("elementgui.potion.display_name")));
-		selp.add(name);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("potion/instant"), L10N.label("elementgui.potion.instant")));
@@ -186,13 +172,6 @@ public class PotionGUI extends ModElementGUI<Potion> {
 						L10N.t("elementgui.potion.error_potion_needs_icon"));
 			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
-
-		name.setValidator(
-				new ConditionalTextFieldValidator(name, L10N.t("elementgui.potion.error_potion_needs_display_name"),
-						registerPotionType, true));
-		name.enableRealtimeValidation();
-		page1group.addValidationElement(name);
-
 		effectName.setValidator(
 				new TextFieldValidator(effectName, L10N.t("elementgui.potion.error_potion_effect_needs_display_name")));
 		effectName.enableRealtimeValidation();
@@ -202,12 +181,6 @@ public class PotionGUI extends ModElementGUI<Potion> {
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
-
-		if (!isEditingMode()) {
-			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
-			name.setText(readableNameFromModElement);
-			effectName.setText(readableNameFromModElement);
-		}
 	}
 
 	@Override public void reloadDataLists() {
@@ -230,13 +203,11 @@ public class PotionGUI extends ModElementGUI<Potion> {
 	}
 
 	@Override public void openInEditingMode(Potion potion) {
-		name.setText(potion.name);
 		effectName.setText(potion.effectName);
 		icon.setSelectedItem(potion.icon);
 		color.setColor(potion.color);
 		isInstant.setSelected(potion.isInstant);
 		isBad.setSelected(potion.isBad);
-		registerPotionType.setSelected(potion.registerPotionType);
 		isBenefitical.setSelected(potion.isBenefitical);
 		renderStatusInInventory.setSelected(potion.renderStatusInInventory);
 		renderStatusInHUD.setSelected(potion.renderStatusInHUD);
@@ -247,12 +218,10 @@ public class PotionGUI extends ModElementGUI<Potion> {
 
 	@Override public Potion getElementFromGUI() {
 		Potion potion = new Potion(modElement);
-		potion.name = name.getText();
 		potion.effectName = effectName.getText();
 		potion.icon = icon.getSelectedItem();
 		potion.color = color.getColor();
 		potion.isInstant = isInstant.isSelected();
-		potion.registerPotionType = registerPotionType.isSelected();
 		potion.isBad = isBad.isSelected();
 		potion.isBenefitical = isBenefitical.isSelected();
 		potion.renderStatusInInventory = renderStatusInInventory.isSelected();

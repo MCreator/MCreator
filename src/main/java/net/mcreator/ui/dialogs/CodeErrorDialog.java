@@ -23,6 +23,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -83,13 +84,8 @@ public class CodeErrorDialog {
 
 		if (moddefinitionfileerrors) { // first we try to fix mod definition errors
 			Object[] options = { "Regenerate code", "Ignore error" };
-			int n = JOptionPane.showOptionDialog(mcreator,
-					"<html><b color=#ffc40d>Your main mod file did not compile properly.</b><br><br>"
-							+ "This is usually caused by inconsistencies in the mod code during builds.<br>"
-							+ "MCreator can solve this issue for you by regenerating entire mod's code."
-							+ "<br><br>If you have locked mod elements or mod base files, they can cause this error too.</small><br><br>"
-							+ "Click <b>Regenerate code</b> button to proceed with this action.<br>",
-					"Main mod file compilation errors", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE,
+			int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.code_error.compilation_desc"),
+					L10N.t("dialog.code_error.compilation_title"), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE,
 					null, options, options[0]);
 			if (n == 0) {
 				RegenerateCodeAction.regenerateCode(mcreator, true, true);
@@ -113,13 +109,7 @@ public class CodeErrorDialog {
 		problematicModsList.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
 		JPanel list = new JPanel(new BorderLayout());
-		list.add("North", new JLabel(
-				"<html><b color=#ffc40d>Your workspace contains mod elements that don't compile properly.</b><br>"
-						+ "<br>This was most likely caused by the last mod element you added or edited. Try altering the settings of mod elements<br>"
-						+ "that cause build errors (such elements are listed below) to try to fix this problem.<br>"
-						+ "<br>If you can't resolve this problem, export the workspace to shareable ZIP file from the <i>File</i> menu and send it to us via<br>"
-						+ "our Issue tracker on our website so we can try to help you.<br>"
-						+ "<br><b>List of mod elements that cause compilation errors (trimmed to up to 10 elements):<br><br>"));
+		list.add("North", L10N.label("dialog.code_error.compilation_list"));
 
 		list.add("Center", sp);
 

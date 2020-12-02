@@ -1,0 +1,17 @@
+<xml id="toolbox">
+    <custom-other/>
+    <sep/>
+    <category name="${t:blockly.category.logic}" colour="120">
+        <block type="controls_if"/>
+        <block type="controls_if">
+            <mutation else="1"/>
+        </block>
+        <block type="controls_if">
+            <mutation elseif="1"/>
+        </block>
+        <block type="logic_negate"/>
+        <block type="logic_boolean"/>
+        <block type="logic_binary_ops"/>
+        <custom-logicoperations/>
+    </category>
+</xml>

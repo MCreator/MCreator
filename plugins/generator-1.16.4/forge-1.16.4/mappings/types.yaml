@@ -1,0 +1,10 @@
+_default: Object
+world: IWorld
+number: double
+entity: Entity
+itemstack: ItemStack
+map: HashMap
+string: String
+boolean: boolean
+direction: Direction
+advancement: Advancement

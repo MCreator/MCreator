@@ -122,6 +122,15 @@ Blockly.Blocks['aitasks_container'] = {
     }
 };
 
+Blockly.Blocks['tooltip_start'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.tooltip_start"));
+        this.setNextStatement(true);
+        this.setStyle('hat_blocks');
+        this.setColour(350);
+    }
+};
+
 Blockly.Blocks['advancement_trigger'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.advancement_trigger"));

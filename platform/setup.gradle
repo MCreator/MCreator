@@ -1,10 +1,10 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-def jdk8_win_32 = 'https://download.bell-sw.com/java/8u265+1/bellsoft-jdk8u265+1-windows-i586-full.zip'
-def jdk8_win_64 = 'https://download.bell-sw.com/java/8u265+1/bellsoft-jdk8u265+1-windows-amd64-full.zip'
-def jdk8_linux_32 = 'https://download.bell-sw.com/java/8u265+1/bellsoft-jdk8u265+1-linux-i586-full.tar.gz'
-def jdk8_linux_64 = 'https://download.bell-sw.com/java/8u265+1/bellsoft-jdk8u265+1-linux-amd64-full.tar.gz'
-def jdk8_mac_64 = 'https://download.bell-sw.com/java/8u265+1/bellsoft-jdk8u265+1-macos-amd64-full.zip'
+def jdk8_win_32 = 'https://download.bell-sw.com/java/8u275+1/bellsoft-jdk8u275+1-windows-i586-full.zip'
+def jdk8_win_64 = 'https://download.bell-sw.com/java/8u275+1/bellsoft-jdk8u275+1-windows-amd64-full.zip'
+def jdk8_linux_32 = 'https://download.bell-sw.com/java/8u275+1/bellsoft-jdk8u275+1-linux-i586-full.tar.gz'
+def jdk8_linux_64 = 'https://download.bell-sw.com/java/8u275+1/bellsoft-jdk8u275+1-linux-amd64-full.tar.gz'
+def jdk8_mac_64 = 'https://download.bell-sw.com/java/8u275+1/bellsoft-jdk8u275+1-macos-amd64-full.zip'
 
 def nsis_url = 'https://netcologne.dl.sourceforge.net/project/nsis/NSIS%203/3.05/nsis-3.05.zip'
 def nsis_lockedlist_plugin_url = 'https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip'
@@ -24,8 +24,8 @@ task downloadJDKWin32(type: DefaultTask, group: 'setup') {
             copy { from zipTree('build/tmp/jdk8_win_32') into file('jdk/jdk8_win_32/') }
             delete 'build/tmp/jdk8_win_32'
 
-            copy { from file('jdk/jdk8_win_32/jdk8u265-full/') into file('jdk/jdk8_win_32/') }
-            delete 'jdk/jdk8_win_32/jdk8u265-full/'
+            copy { from file('jdk/jdk8_win_32/jdk8u275-full/') into file('jdk/jdk8_win_32/') }
+            delete 'jdk/jdk8_win_32/jdk8u275-full/'
         }
     }
 }
@@ -43,8 +43,8 @@ task downloadJDKWin64(type: DefaultTask, group: 'setup') {
             copy { from zipTree('build/tmp/jdk8_win_64') into file('jdk/jdk8_win_64/') }
             delete 'build/tmp/jdk8_win_64'
 
-            copy { from file('jdk/jdk8_win_64/jdk8u265-full/') into file('jdk/jdk8_win_64/') }
-            delete 'jdk/jdk8_win_64/jdk8u265-full/'
+            copy { from file('jdk/jdk8_win_64/jdk8u275-full/') into file('jdk/jdk8_win_64/') }
+            delete 'jdk/jdk8_win_64/jdk8u275-full/'
         }
     }
 }
@@ -62,8 +62,8 @@ task downloadJDKLinux32(type: DefaultTask, group: 'setup') {
             copy { from tarTree(resources.gzip('build/tmp/jdk8_linux_32')) into file('jdk/jdk8_linux_32/') }
             delete 'build/tmp/jdk8_linux_32'
 
-            copy { from file('jdk/jdk8_linux_32/jdk8u265-full/') into file('jdk/jdk8_linux_32/') }
-            delete 'jdk/jdk8_linux_32/jdk8u265-full/'
+            copy { from file('jdk/jdk8_linux_32/jdk8u275-full/') into file('jdk/jdk8_linux_32/') }
+            delete 'jdk/jdk8_linux_32/jdk8u275-full/'
         }
     }
 }
@@ -81,8 +81,8 @@ task downloadJDKLinux64(type: DefaultTask, group: 'setup') {
             copy { from tarTree(resources.gzip('build/tmp/jdk8_linux_64')) into file('jdk/jdk8_linux_64/') }
             delete 'build/tmp/jdk8_linux_64'
 
-            copy { from file('jdk/jdk8_linux_64/jdk8u265-full/') into file('jdk/jdk8_linux_64/') }
-            delete 'jdk/jdk8_linux_64/jdk8u265-full/'
+            copy { from file('jdk/jdk8_linux_64/jdk8u275-full/') into file('jdk/jdk8_linux_64/') }
+            delete 'jdk/jdk8_linux_64/jdk8u275-full/'
         }
     }
 }
@@ -100,8 +100,8 @@ task downloadJDKMac64(type: DefaultTask, group: 'setup') {
             copy { from zipTree('build/tmp/jdk8_mac_64') into file('jdk/jdk8_mac_64/') }
             delete 'build/tmp/jdk8_mac_64'
 
-            copy { from file('jdk/jdk8_mac_64/jdk8u265-full.jdk/') into file('jdk/jdk8_mac_64/') }
-            delete 'jdk/jdk8_mac_64/jdk8u265-full.jdk/'
+            copy { from file('jdk/jdk8_mac_64/jdk8u275-full.jdk/') into file('jdk/jdk8_mac_64/') }
+            delete 'jdk/jdk8_mac_64/jdk8u275-full.jdk/'
         }
     }
 }

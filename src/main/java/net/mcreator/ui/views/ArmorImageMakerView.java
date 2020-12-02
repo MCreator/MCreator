@@ -128,7 +128,7 @@ public class ArmorImageMakerView extends ViewBase {
 		});
 
 		type1.setSelected(true);
-		col.setColor(new Color(0, 235, 239));
+		col.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 
 		updateARM();
 	}

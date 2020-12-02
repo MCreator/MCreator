@@ -26,6 +26,7 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,6 +43,8 @@ import java.util.Objects;
 
 public class GeneratorSelector {
 
+	private static final String covpfx = "dialog.generator_selector.coverage.";
+
 	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable GeneratorConfiguration current,
 			@Nullable GeneratorFlavor currentFlavor) {
 		JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
@@ -49,7 +52,7 @@ public class GeneratorSelector {
 		JComboBox<CBoxEntry> generator = new JComboBox<>();
 
 		mainPanel.add("North",
-				PanelUtils.westAndCenterElement(new JLabel("<html><b>&nbsp;Selected generator:"), generator, 10, 10));
+				PanelUtils.westAndCenterElement(L10N.label("dialog.generator_selector.current"), generator, 10, 10));
 
 		CardLayout cardLayout = new CardLayout();
 		JPanel statsPan = new JPanel(cardLayout);
@@ -69,30 +72,37 @@ public class GeneratorSelector {
 			JPanel genStats = new JPanel();
 			genStats.setLayout(new BoxLayout(genStats, BoxLayout.PAGE_AXIS));
 
-			genStats.add(PanelUtils.northAndCenterElement(new JLabel("<html>Status: <b>" + stats.getStatus().getName()),
+			genStats.add(PanelUtils.northAndCenterElement(
+					L10N.label("dialog.generator_selector.generator_status", stats.getStatus().getName()),
 					new JLabel()));
 
 			genStats.add(new JEmptyBox(15, 15));
 
 			JPanel baseCoverageInfo = new JPanel(new GridLayout(-1, 5, 7, 2));
 
-			addStatusLabel("Textures", stats.getBaseCoverageInfo().get("textures"), baseCoverageInfo);
-			addStatusLabel("Sounds", stats.getBaseCoverageInfo().get("sounds"), baseCoverageInfo);
-			addStatusLabel("Structures", stats.getBaseCoverageInfo().get("structures"), baseCoverageInfo);
-			addStatusLabel("Translations", stats.getBaseCoverageInfo().get("i18n"), baseCoverageInfo);
+			addStatusLabel(L10N.t(covpfx + "textures"), stats.getBaseCoverageInfo().get("textures"), baseCoverageInfo);
+			addStatusLabel(L10N.t(covpfx + "sounds"), stats.getBaseCoverageInfo().get("sounds"), baseCoverageInfo);
+			addStatusLabel(L10N.t(covpfx + "structures"), stats.getBaseCoverageInfo().get("structures"),
+					baseCoverageInfo);
+			addStatusLabel(L10N.t(covpfx + "translations"), stats.getBaseCoverageInfo().get("i18n"), baseCoverageInfo);
 
 			if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA)
-				addStatusLabel("Variables", stats.getBaseCoverageInfo().get("variables"), baseCoverageInfo);
+				addStatusLabel(L10N.t(covpfx + "variables"), stats.getBaseCoverageInfo().get("variables"),
+						baseCoverageInfo);
 
 			if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA)
-				addStatusLabel("Java 3D models", stats.getBaseCoverageInfo().get("model_java"), baseCoverageInfo);
+				addStatusLabel(L10N.t(covpfx + "java_models"), stats.getBaseCoverageInfo().get("model_java"),
+						baseCoverageInfo);
 
-			addStatusLabel("JSON 3D models", stats.getBaseCoverageInfo().get("model_json"), baseCoverageInfo);
+			addStatusLabel(L10N.t(covpfx + "json_models"), stats.getBaseCoverageInfo().get("model_json"),
+					baseCoverageInfo);
 
 			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
-				addStatusLabel("OBJ 3D models", stats.getBaseCoverageInfo().get("model_obj"), baseCoverageInfo);
+				addStatusLabel(L10N.t(covpfx + "obj_models"), stats.getBaseCoverageInfo().get("model_obj"),
+						baseCoverageInfo);
 
-			genStats.add(PanelUtils.northAndCenterElement(new JLabel("Feature overview:"), baseCoverageInfo, 10, 10));
+			genStats.add(PanelUtils
+					.northAndCenterElement(L10N.label("dialog.generator_selector.features"), baseCoverageInfo, 10, 10));
 
 			genStats.add(new JEmptyBox(20, 20));
 
@@ -103,51 +113,53 @@ public class GeneratorSelector {
 						supportedModTypes);
 			}
 			genStats.add(PanelUtils
-					.northAndCenterElement(new JLabel("Supported mod element types:"), supportedModTypes, 10, 10));
+					.northAndCenterElement(L10N.label("dialog.generator_selector.mod_element_types"), supportedModTypes,
+							10, 10));
 
 			genStats.add(new JEmptyBox(20, 20));
 
 			JPanel supportedElements = new JPanel(new GridLayout(-1, 6, 7, 3));
 
-			addStatsBar("Achievements", "achievements", supportedElements, stats);
-			addStatsBar("Biomes", "biomes", supportedElements, stats);
-			addStatsBar("Blocks and items", "blocksitems", supportedElements, stats);
-			addStatsBar("Creative tabs", "tabs", supportedElements, stats);
-			addStatsBar("Damage sources", "damagesources", supportedElements, stats);
-			addStatsBar("Def. biome features", "defaultfeatures", supportedElements, stats);
-			addStatsBar("Enchantment", "enchantments", supportedElements, stats);
-			addStatsBar("Enchantment types", "enchantmenttypes", supportedElements, stats);
-			addStatsBar("Entities", "entities", supportedElements, stats);
-			addStatsBar("Fluids", "fluids", supportedElements, stats);
-			addStatsBar("Game modes", "gamemodes", supportedElements, stats);
-			addStatsBar("Game rules", "gamerules", supportedElements, stats);
-			addStatsBar("Map colors", "mapcolors", supportedElements, stats);
-			addStatsBar("Materials", "materials", supportedElements, stats);
-			addStatsBar("Particles", "particles", supportedElements, stats);
-			addStatsBar("Path node types", "pathnodetypes", supportedElements, stats);
-			addStatsBar("Potions", "potions", supportedElements, stats);
-			addStatsBar("Sounds", "sounds", supportedElements, stats);
-			addStatsBar("Step sounds", "stepsounds", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "achievements"), "achievements", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "biomes"), "biomes", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "blocksitems"), "blocksitems", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "tabs"), "tabs", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "damage_sources"), "damagesources", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "def_biome_features"), "defaultfeatures", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "enchantments"), "enchantments", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "enchantment_types"), "enchantmenttypes", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "entities"), "entities", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "fluids"), "fluids", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "game_modes"), "gamemodes", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "game_rules"), "gamerules", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "map_colors"), "mapcolors", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "materials"), "materials", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "particles"), "particles", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "path_node_types"), "pathnodetypes", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "potions"), "potions", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "sounds"), "sounds", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "step_sounds"), "stepsounds", supportedElements, stats);
 
 			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
-				addStatsBar("Biome dictionary", "biomedictionarytypes", supportedElements, stats);
+				addStatsBar(L10N.t(covpfx + "biome_dictionary"), "biomedictionarytypes", supportedElements, stats);
 
-			genStats.add(PanelUtils.northAndCenterElement(
-					new JLabel("Vanilla/Forge elements coverage (compared to the latest supported Minecraft version):"),
-					supportedElements, 10, 10));
+			genStats.add(PanelUtils
+					.northAndCenterElement(L10N.label("dialog.generator_selector.element_coverage"), supportedElements,
+							10, 10));
 
 			genStats.add(new JEmptyBox(20, 20));
 
 			JPanel supportedProcedures = new JPanel(new GridLayout(-1, 4, 7, 3));
-			addStatsBar("Procedure blocks", "procedures", supportedProcedures, stats);
-			addStatsBar("AI tasks / goals", "aitasks", supportedProcedures, stats);
-			addStatsBar("Global triggers", "triggers", supportedProcedures, stats);
-			addStatsBar("Advancement triggers", "jsontriggers", supportedProcedures, stats);
-			genStats.add(PanelUtils
-					.northAndCenterElement(new JLabel("Procedure system coverage:"), supportedProcedures, 10, 10));
+			addStatsBar(L10N.t(covpfx + "procedure_blocks"), "procedures", supportedProcedures, stats);
+			addStatsBar(L10N.t(covpfx + "ai_tasks"), "aitasks", supportedProcedures, stats);
+      addStatsBar(L10N.t(covpfx + "tooltips"), "tooltips", supportedProcedures, stats);
+			addStatsBar(L10N.t(covpfx + "global_triggers"), "triggers", supportedProcedures, stats);
+			addStatsBar(L10N.t(covpfx + "advancement_triggers"), "jsontriggers", supportedProcedures, stats);
+			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.procedure_coverage"),
+					supportedProcedures, 10, 10));
 
 			JPanel genStatsW = new JPanel();
-			genStatsW.setBorder(BorderFactory.createTitledBorder("Generator info"));
+			genStatsW.setBorder(BorderFactory.createTitledBorder(L10N.t("dialog.generator_selector.generator_info")));
 			genStatsW.add(PanelUtils.maxMargin(genStats, 5, true, true, true, false));
 			statsPan.add(genStatsW, generatorConfiguration.getGeneratorName());
 		}
@@ -174,9 +186,8 @@ public class GeneratorSelector {
 
 		generator.setSelectedItem(new CBoxEntry(current));
 
-		int resultval = JOptionPane
-				.showConfirmDialog(parent, mainPanel, "Generator selector", JOptionPane.OK_CANCEL_OPTION,
-						JOptionPane.PLAIN_MESSAGE);
+		int resultval = JOptionPane.showConfirmDialog(parent, mainPanel, L10N.t("dialog.generator_selector.title"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (resultval == JOptionPane.OK_OPTION && generator.getSelectedItem() != null) {
 			return ((CBoxEntry) generator.getSelectedItem()).generatorConfiguration;
@@ -245,9 +256,8 @@ public class GeneratorSelector {
 			if (!value.enabled) {
 				component.setBackground(list.getBackground());
 				component.setForeground(Color.gray.brighter());
-				component.setText(
-						"<html>" + component.getText() + "<small> - different type: " + value.generatorConfiguration
-								.getGeneratorFlavor().name().toLowerCase(Locale.ENGLISH));
+				component.setText(L10N.t("dialog.generator_selector.different_type", component.getText(),
+						value.generatorConfiguration.getGeneratorFlavor().name().toLowerCase(Locale.ENGLISH)));
 			}
 			return component;
 		}
