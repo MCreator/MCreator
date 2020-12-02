@@ -1,9 +1,9 @@
-@SubscribeEvent public void onEntitySpawned(EntityJoinWorldEvent event){
+@SubscribeEvent public void onEntitySpawned(EntityJoinWorldEvent event) {
 		Entity entity=event.getEntity();
 		double i=entity.getPosX();
 		double j=entity.getPosY();
 		double k=entity.getPosZ();
-		World world=event.getWorld().getWorld();
+		World world=event.getWorld();
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x",i);
 		dependencies.put("y",j);
