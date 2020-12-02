@@ -1,6 +1,6 @@
 @SubscribeEvent public void onBlockBreak(BlockEvent.BreakEvent event) {
 	Entity entity = event.getPlayer();
-	World world = (World) event.getWorld();
+	IWorld world = event.getWorld();
 	Map<String, Object> dependencies = new HashMap<>();
 	dependencies.put("xpAmount",event.getExpToDrop());
 	dependencies.put("x",(int)event.getPos().getX());
