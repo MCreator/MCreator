@@ -1,9 +1,9 @@
 @SubscribeEvent public void onPlayerXPChange(PlayerXpEvent.XpChange event) {
 	if (event != null && event.getEntity() != null) {
 		Entity entity = event.getEntity();
-		int i = (int) entity.getPosX();
-		int j = (int) entity.getPosY();
-		int k = (int) entity.getPosZ();
+		double i = entity.getPosX();
+		double j = entity.getPosY();
+		double k = entity.getPosZ();
 		int amount = event.getAmount();
 		World world = entity.world;
 		java.util.HashMap<String, Object> dependencies = new java.util.HashMap<>();

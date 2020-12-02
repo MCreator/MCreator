@@ -1,9 +1,9 @@
 @SubscribeEvent public void onUseItemStart(LivingEntityUseItemEvent.Stop event) {
 	if (event != null && event.getEntity() != null) {
 		Entity entity = event.getEntity();
-		int i = (int) entity.getPosX();
-		int j = (int) entity.getPosY();
-		int k = (int) entity.getPosZ();
+		double i = entity.getPosX();
+		double j = entity.getPosY();
+		double k = entity.getPosZ();
 		double duration = event.getDuration();
     	ItemStack itemstack = event.getItem();
 		World world = entity.world;
