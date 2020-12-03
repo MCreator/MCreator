@@ -54,6 +54,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private StoneCutterRecipeMaker scm;
 	private CampfireCookingRecipeMaker ccm;
 	private SmithingRecipeMaker smcm;
+	private BrewingRecipeMaker brm;
 
 	private final JCheckBox recipeShapeless = L10N.checkbox("elementgui.recipe.is_shapeless");
 
@@ -67,7 +68,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private final VTextField group = new VTextField();
 
 	private final JComboBox<String> recipeType = new JComboBox<>(
-			new String[] { "Crafting", "Smelting", "Blasting", "Smoking", "Stone cutting", "Campfire cooking", "Smithing" });
+			new String[] { "Crafting", "Smelting", "Blasting", "Smoking", "Stone cutting", "Campfire cooking", "Smithing", "Brewing" });
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -87,6 +88,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		ccm = new CampfireCookingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
 				ElementUtil::loadBlocksAndItems);
 		smcm = new SmithingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
+		brm = new BrewingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
 
 		name.setValidator(new RegistryNameValidator(name, "Loot table").setValidChars(Arrays.asList('_', '/')));
 		name.enableRealtimeValidation();
@@ -128,6 +130,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipesPanel.add(PanelUtils.totalCenterInPanel(scm), "stone cutting");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(ccm), "campfire cooking");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(smcm), "smithing");
+		recipesPanel.add(PanelUtils.totalCenterInPanel(brm), "brewing");
 
 		JPanel centerrecipes = new JPanel(new BorderLayout()) {
 			@Override protected void paintComponent(Graphics g) {
@@ -250,6 +253,11 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_smithing_no_ingredient_addition_and_result"));
 			}
+		} else if ("Brewing".equals(recipeType.getSelectedItem())) {
+			if (!brm.cb1.containsItem() || !brm.cb2.containsItem() || !brm.cb3.containsItem()) {
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.recipe.error_brewing_no_input_ingredient_and_result"));
+			}
 		}
 
 		return new AggregatedValidationResult(name, group);
@@ -305,6 +313,10 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			smcm.cb1.setBlock(recipe.smithingInputStack);
 			smcm.cb2.setBlock(recipe.smithingInputAdditionStack);
 			smcm.cb3.setBlock(recipe.smithingReturnStack);
+		} else if ("Brewing".equals(recipe.recipeType)) {
+			brm.cb1.setBlock(recipe.brewingInputItem);
+			brm.cb2.setBlock(recipe.brewingInputIngredient);
+			brm.cb3.setBlock(recipe.brewingReturnItem);
 		}
 	}
 
@@ -355,6 +367,10 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			recipe.smithingInputStack = smcm.cb1.getBlock();
 			recipe.smithingInputAdditionStack = smcm.cb2.getBlock();
 			recipe.smithingReturnStack = smcm.cb3.getBlock();
+		} else if ("Brewing".equals(recipe.recipeType)) {
+			recipe.brewingInputItem = brm.cb1.getBlock();
+			recipe.brewingInputIngredient = brm.cb2.getBlock();
+			recipe.brewingReturnItem = brm.cb3.getBlock();
 		}
 
 		recipe.namespace = (String) namespace.getSelectedItem();
