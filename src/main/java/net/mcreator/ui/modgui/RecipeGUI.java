@@ -191,9 +191,11 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipeType.addActionListener(e -> {
 			if (recipeType.getSelectedItem() != null) {
 				xpReward.setEnabled(!recipeType.getSelectedItem().equals("Crafting") && !recipeType.getSelectedItem()
-						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing"));
+						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing")
+						&& !recipeType.getSelectedItem().equals("Brewing"));
 				cookingTime.setEnabled(!recipeType.getSelectedItem().equals("Crafting") && !recipeType.getSelectedItem()
-						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing"));
+						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing")
+						&& !recipeType.getSelectedItem().equals("Brewing"));
 
 				if (!isEditingMode() && cookingTime.isEnabled()) {
 					if (recipeType.getSelectedItem().equals("Smelting")) {

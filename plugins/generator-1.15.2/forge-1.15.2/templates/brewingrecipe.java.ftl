@@ -29,4 +29,17 @@
 
 <#-- @formatter:off -->
 
-package ${package}.item;
+package ${package};
+
+@${JavaModName}Elements.ModElement.Tag
+public class ${name}BrewingRecipe extends ${JavaModName}Elements.ModElement {
+
+	public ${name}BrewingRecipe (${JavaModName}Elements instance) {
+		super(instance, ${data.getModElement().getSortID()});
+	}
+
+	@Override
+	public void init(FMLCommonSetupEvent event) {
+		BrewingRecipeRegistry.addRecipe(Ingredient.fromItems(${data.brewingInputItem}), Ingredient.fromItems(${data.brewingInputIngredient}), new ItemStack(${data.brewingReturnItem}));
+	}
+}
