@@ -1,0 +1,3 @@
+MCreatorLink.LINK_BLOCK:
+  - net.mcreator.minecraft.link.init.MCreatorLinkBlocks.LINK_BLOCK
+  - "mcreator_link:link"

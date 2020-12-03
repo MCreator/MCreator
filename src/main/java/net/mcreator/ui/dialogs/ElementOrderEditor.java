@@ -23,6 +23,7 @@ import net.mcreator.element.ITabContainedElement;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.component.ReordarableListTransferHandler;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.SmallIconModListRender;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -40,7 +41,7 @@ public class ElementOrderEditor {
 
 		JPanel top = new JPanel(new BorderLayout());
 
-		top.add("West", new JLabel("Click on the element or selection and drag to reorder them"));
+		top.add("West", L10N.label("dialog.element_order.instructions"));
 
 		mainPanel.add("North", top);
 
@@ -90,7 +91,7 @@ public class ElementOrderEditor {
 		mainPanel.add("Center", tabs);
 		mainPanel.setPreferredSize(new Dimension(748, 320));
 
-		int resultval = JOptionPane.showOptionDialog(mcreator, mainPanel, "Creative tab element order editor",
+		int resultval = JOptionPane.showOptionDialog(mcreator, mainPanel, L10N.t("dialog.element_order.editor_title"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { "Save layout", "Cancel" },
 				"");
 
@@ -113,10 +114,8 @@ public class ElementOrderEditor {
 					element.setSortID(currid++);
 			}
 
-			JOptionPane.showMessageDialog(mcreator,
-					"<html>MCreator will now rebuild the workspace code to apply changes."
-							+ "<br><br><b>Existing map saves will keep the old order!", "Elements order change",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.element_order.change_message"),
+					L10N.t("dialog.element_order.change_title"), JOptionPane.INFORMATION_MESSAGE);
 
 			RegenerateCodeAction.regenerateCode(mcreator, true, false);
 		}

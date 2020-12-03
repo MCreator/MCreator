@@ -40,6 +40,7 @@
 - EntityGolem
 - EntityGuardian
 - EntityHanging
+- EntityHoglin
 - EntityHorse
 - EntityHusk
 - EntityIllusionIllager
@@ -118,3 +119,7 @@
 - EntityRavager
 - EntityFishHook
 - EntityMonster
+- EntityPiglin
+- EntityPiglinBrute
+- EntityStrider
+- EntityZoglin

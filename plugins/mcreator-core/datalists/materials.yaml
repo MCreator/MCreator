@@ -82,3 +82,7 @@
   texture: BARRIER
 - PISTON:
   texture: PISTON
+- NETHER_WOOD:
+  texture: CRIMSON_STEM
+- NETHER_PLANTS:
+  texture: NETHER_WART

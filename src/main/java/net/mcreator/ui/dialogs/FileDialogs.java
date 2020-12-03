@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.WorkspaceFolderManager;
@@ -62,34 +63,27 @@ public class FileDialogs {
 				File selectedFile = getSelectedFile();
 				if (selectedFile != null && selectedFile.getAbsolutePath()
 						.equals(WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot().getAbsolutePath())) {
-					JOptionPane.showMessageDialog(this,
-							"You can not make a workspace inside workspaces root folder. Make a subdirectory here first!",
-							"Workspace error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this, L10N.t("dialog.file.error_save_inside_workspace_root_message"),
+							L10N.t("dialog.file.error_save_inside_workspace_root_title"), JOptionPane.ERROR_MESSAGE);
 					return;
 				} else if (selectedFile != null && selectedFile.isDirectory() && selectedFile.list() != null
 						&& Objects.requireNonNull(selectedFile.list()).length > 0) {
-					JOptionPane
-							.showMessageDialog(this, "The directory you have selected for the workspace is not empty!",
-									"Directory not empty", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this, L10N.t("dialog.file.error_save_inside_folder_not_empty_message"),
+									L10N.t("dialog.file.error_save_inside_folder_not_empty_title"), JOptionPane.ERROR_MESSAGE);
 					return;
 				} else if (selectedFile != null && selectedFile.isDirectory() && !selectedFile.getAbsolutePath()
 						.matches("[a-zA-Z0-9_/+\\-\\\\:()\\[\\].,@$=`' ]+")) {
 					JOptionPane.showMessageDialog(this,
-							"<html>The directory you have selected for the workspace has invalid path!<br><br>"
-									+ "You selected the following directory:<br><kbd>" + selectedFile.getAbsolutePath()
-									+ "</kbd><br><br>"
-									+ "Only English letters, numbers, <kbd>_/+-\\:()[].,@$=`</kbd> and whitespace are allowed in the path.",
-							"Invalid workspace directory path", JOptionPane.ERROR_MESSAGE);
+							L10N.t("dialog.file.error_invalid_path", selectedFile.getAbsolutePath()),
+							L10N.t("dialog.file.error_invalid_path_title"), JOptionPane.ERROR_MESSAGE);
 					return;
 				} else if (selectedFile != null && (selectedFile.getName().contains(" ") || selectedFile.getName()
 						.contains(":") || selectedFile.getName().contains("\\") || selectedFile.getName().contains("/")
 						|| selectedFile.getName().contains("|") || selectedFile.getName().contains("\"") || selectedFile
 						.getName().contains("?") || selectedFile.getName().contains("*") || selectedFile.getName()
 						.contains(">"))) {
-					JOptionPane.showMessageDialog(this,
-							"<html>The directory you have selected for the workspace has invalid name!<br><br>"
-									+ "Workspace folder should not contain the following characters: /\\:>\"?*| and whitespace.",
-							"Invalid workspace directory name", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this, L10N.t("dialog.file.error_invalid_name"),
+							L10N.t("dialog.file.error_invalid_name_title"), JOptionPane.ERROR_MESSAGE);
 					return;
 				} else if (selectedFile != null && !selectedFile.getParentFile().isDirectory()) {
 					try {
@@ -98,16 +92,14 @@ public class FileDialogs {
 							throw new IOException();
 						}
 					} catch (IOException e) {
-						JOptionPane.showMessageDialog(this,
-								"Directory in which you are trying to make a workspace does not exist!",
-								"Workspace error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(this, L10N.t("dialog.file.error_directory_doesnt_exist"),
+								L10N.t("dialog.file.error_directory_doesnt_exist_title"), JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 				} else if (selectedFile != null && (!Files.isWritable(selectedFile.getParentFile().toPath()) || !Files
 						.isReadable(selectedFile.getParentFile().toPath()))) {
-					JOptionPane.showMessageDialog(this, "<html>The directory you have selected for the workspace<br>"
-									+ "is located in a folder MCreator can't write or read to!",
-							"Workspace directory permissions error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this, L10N.t("dialog.file.error_no_access"),
+							L10N.t("dialog.file.error_no_access_title"), JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				super.approveSelection();
@@ -131,7 +123,7 @@ public class FileDialogs {
 			}
 		});
 
-		fc.setDialogTitle("Select directory for the workspace");
+		fc.setDialogTitle(L10N.t("dialog.file.select_directory_title"));
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
@@ -160,8 +152,9 @@ public class FileDialogs {
 				if (getDialogType() == SAVE_DIALOG) {
 					File selectedFile = getSelectedFile();
 					if ((selectedFile != null) && selectedFile.exists()) {
-						int response = JOptionPane.showConfirmDialog(this, "<html>The file <b>" + selectedFile.getName()
-										+ "</b> already exists. Do you want to replace the existing file?", "Overwrite file",
+						int response = JOptionPane.showConfirmDialog(this,
+								L10N.t("dialog.file.error_already_exists", selectedFile.getName()),
+								L10N.t("dialog.file.error_already_exists_title"),
 								JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 						if (response != JOptionPane.YES_OPTION)
 							return;

@@ -28,6 +28,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.StringUtils;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.FieldSource;
@@ -111,10 +112,11 @@ public class JavaModelAnimationEditorDialog {
 		if (animations.size() > 10)
 			sp.setPreferredSize(new Dimension(450, 400));
 
-		int opt = JOptionPane
-				.showOptionDialog(mcreator, sp, "Model animation definition wizard", JOptionPane.YES_NO_OPTION,
-						JOptionPane.PLAIN_MESSAGE, null,
-						new String[] { "Set new animations", "Keep current animations" }, "Set animations");
+		int opt = JOptionPane.showOptionDialog(mcreator, sp, L10N.t("dialog.animation_editor.title_wizard"),
+				JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+				new String[] { L10N.t("dialog.animation_editor.action_set_new"),
+						L10N.t("dialog.animation_editor.action_keep_current") },
+				L10N.t("dialog.animation_editor.action_set"));
 
 		if (opt == 0) {
 			List<MethodSource<JavaClassSource>> methods = classJavaSource.getMethods();

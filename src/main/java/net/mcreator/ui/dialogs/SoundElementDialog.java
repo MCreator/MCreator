@@ -22,6 +22,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.FileListField;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ResourceNameValidator;
@@ -45,7 +46,7 @@ public class SoundElementDialog {
 
 		VTextField soundName = new VTextField(20);
 
-		soundName.setValidator(new ResourceNameValidator(soundName, "Sound name"));
+		soundName.setValidator(new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name")));
 		soundName.enableRealtimeValidation();
 
 		JTextField subtitle = new JTextField();
@@ -61,21 +62,20 @@ public class SoundElementDialog {
 		JComboBox<String> soundCategory = new JComboBox<>(
 				new String[] { "master", "ambient", "player", "neutral", "hostile", "block", "record", "music" });
 
-		ui.add(new JLabel("<html>Sound registry name:"
-				+ "<br><small>If you rename the sound in use, existing references will break"));
+		ui.add(L10N.label("dialog.sounds.registry_name"));
 		ui.add(soundName);
 
-		ui.add(new JLabel("<html>Sound files:"));
+		ui.add(L10N.label("dialog.sounds.files"));
 		if (element == null) {
 			ui.add(fileListField);
 		} else {
 			ui.add(new JLabel(String.join(", ", element.getFiles())));
 		}
 
-		ui.add(new JLabel("<html>Sound category: "));
+		ui.add(L10N.label("dialog.sounds.category"));
 		ui.add(soundCategory);
 
-		ui.add(new JLabel("<html>Sound subtitle: "));
+		ui.add(L10N.label("dialog.sounds.subtitle"));
 		ui.add(subtitle);
 
 		if (element != null) {
@@ -85,7 +85,7 @@ public class SoundElementDialog {
 		}
 
 		int option = JOptionPane
-				.showOptionDialog(mcreator, ui, "Sound edit", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+				.showOptionDialog(mcreator, ui, L10N.t("dialog.sounds.edit"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
 						null,
 						element != null ? new String[] { "Save changes" } : new String[] { "Add sound", "Cancel" },
 						element != null ? "Save changes" : "Add sound");
@@ -93,14 +93,15 @@ public class SoundElementDialog {
 		if (option == 0) {
 			if (soundName.getValidationStatus().getValidationResultType() == Validator.ValidationResultType.ERROR) {
 				JOptionPane.showMessageDialog(mcreator,
-						"<html>The sound name you entered is not valid!<br>Changes will not be saved.",
-						"Invalid sound name", JOptionPane.ERROR_MESSAGE);
+						L10N.t("dialog.sounds.error_name_not_valid"),
+						L10N.t("dialog.sounds.error_name_not_valid_title"), JOptionPane.ERROR_MESSAGE);
 				return element;
 			} else {
 				if (element == null) { // new sound element
 					if (fileListField.getListElements().isEmpty()) {
 						JOptionPane.showMessageDialog(mcreator,
-								"<html>Select at least one sound file!<br>Changes will not be saved.", "No sound files",
+								L10N.t("dialog.sounds.error_select_valid_file"),
+								L10N.t("dialog.sounds.error_select_valid_file_title"),
 								JOptionPane.ERROR_MESSAGE);
 						return null;
 					} else {

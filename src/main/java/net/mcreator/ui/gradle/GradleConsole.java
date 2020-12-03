@@ -37,6 +37,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.util.HtmlUtils;
+import net.mcreator.util.TimeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.internal.impldep.org.apache.commons.lang.exception.ExceptionUtils;
@@ -459,8 +460,8 @@ public class GradleConsole extends JPanel {
 			}
 
 			private void taskComplete(int mcreatorGradleStatus) {
-				append("Task completed in " + (System.currentTimeMillis() - millis) + " milliseconds", Color.gray,
-						true);
+				append("Task completed in " + TimeUtils.millisToLongDHMS(System.currentTimeMillis() - millis),
+						Color.gray, true);
 
 				if (taskSpecificListener != null)
 					taskSpecificListener.onTaskFinished(new GradleTaskResult("", mcreatorGradleStatus));

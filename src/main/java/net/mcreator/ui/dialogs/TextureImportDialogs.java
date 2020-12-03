@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
 import org.apache.commons.io.FilenameUtils;
 
@@ -36,8 +37,8 @@ public class TextureImportDialogs {
 
 	public static void importTextureGeneral(final MCreator mcreator, File file, String message) {
 		Object[] options = { "Block", "Item", "Other" };
-		int n = JOptionPane.showOptionDialog(mcreator, message, "Texture type", JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		int n = JOptionPane.showOptionDialog(mcreator, message, L10N.t("dialog.textures_import.texture_type"),
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (n == 0) {
 			TextureImportDialogs.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.BLOCK,
 					new File[] { file });
@@ -54,11 +55,11 @@ public class TextureImportDialogs {
 		JPanel neno = new JPanel(new GridLayout(3, 2, 4, 4));
 		JButton p1 = new JButton("...");
 		JButton p2 = new JButton("...");
-		neno.add(new JLabel("Armor layer texture needs two files:"));
-		neno.add(new JLabel("*layer_1*.png and *layer_2*.png"));
-		neno.add(new JLabel("Armor texture part 1 (*layer_1*.png):"));
+		neno.add(L10N.label("dialog.textures_import.armor_needs_two_files"));
+		neno.add(L10N.label("dialog.textures_import.armor_layers"));
+		neno.add(L10N.label("dialog.textures_import.armor_part_one"));
 		neno.add(p1);
-		neno.add(new JLabel("Armor texture part 2 (*layer_2*.png):"));
+		neno.add(L10N.label("dialog.textures_import.armor_part_two"));
 		neno.add(p2);
 		p1.addActionListener(event -> {
 			File[] f1a = FileDialogs.getFileChooserDialog(fra, null, FileDialogs.FileChooserType.OPEN, false,
@@ -104,12 +105,12 @@ public class TextureImportDialogs {
 		});
 		od.add("Center", neno);
 
-		int ret = JOptionPane.showConfirmDialog(fra, od, "Import armor texture", JOptionPane.OK_CANCEL_OPTION,
+		int ret = JOptionPane.showConfirmDialog(fra, od, L10N.t("dialog.textures_import.import_armor_texture"), JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null);
 		if (ret == JOptionPane.OK_OPTION)
 			if (f1 == null || f2 == null) {
 				JOptionPane
-						.showMessageDialog(fra, "<html><font color=red>You haven't selected both texture files!", null,
+						.showMessageDialog(fra, L10N.t("dialog.textures_import.error_both_texture_files_not_selected"), null,
 								JOptionPane.ERROR_MESSAGE);
 			} else {
 				String namec = RegistryNameFixer
@@ -136,8 +137,9 @@ public class TextureImportDialogs {
 				file = fr.getWorkspace().getFolderManager().getItemTextureFile(namec);
 			}
 			if (file.isFile()) {
-				String name = JOptionPane.showInputDialog(fr, "<html>Texture " + namec + " already exists!<br>"
-						+ "You can enter a new name or cancel the import", "Import error", JOptionPane.WARNING_MESSAGE);
+				String name = JOptionPane.showInputDialog(fr,
+						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
+						L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.WARNING_MESSAGE);
 				if (name != null) {
 					namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(name));
 					if (type == BlockItemTextureSelector.TextureType.BLOCK) {
@@ -165,8 +167,9 @@ public class TextureImportDialogs {
 			String namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(hoh.getName()));
 			File file = fr.getWorkspace().getFolderManager().getOtherTextureFile(namec);
 			if (file.isFile()) {
-				String name = JOptionPane.showInputDialog(fr, "<html>Texture " + namec + " already exists!<br>"
-						+ "You can enter a new name or cancel the import", "Import error", JOptionPane.WARNING_MESSAGE);
+				String name = JOptionPane.showInputDialog(fr,
+						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
+						L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.WARNING_MESSAGE);
 				if (name != null) {
 					namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(name));
 					file = fr.getWorkspace().getFolderManager().getOtherTextureFile(namec);
