@@ -28,6 +28,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "mcitems.ftl">
 
 package ${package};
 
@@ -40,6 +41,8 @@ public class ${name}BrewingRecipe extends ${JavaModName}Elements.ModElement {
 
 	@Override
 	public void init(FMLCommonSetupEvent event) {
-		BrewingRecipeRegistry.addRecipe(Ingredient.fromItems(${data.brewingInputItem}), Ingredient.fromItems(${data.brewingInputIngredient}), new ItemStack(${data.brewingReturnItem}));
+		BrewingRecipeRegistry.addRecipe(Ingredient.fromItems(${mappedMCItemToItemStackCode(data.brewingInputItem, 1)?replace("new ItemStack(", "")?replace(", (int)(1))", "")}),
+		Ingredient.fromItems(${mappedMCItemToItemStackCode(data.brewingInputIngredient, 1)?replace("new ItemStack(", "")?replace(", (int)(1))", "")}),
+		new ItemStack(${mappedMCItemToItemStackCode(data.brewingReturnItem, 1)?replace("new ItemStack(", "")?replace(", (int)(1))", "")}));
 	}
 }
