@@ -1,9 +1,9 @@
 @SubscribeEvent public void onCommand(CommandEvent event) {
 	Entity entity = event.getParseResults().getContext().getSource().getEntity();
 	if (entity != null) {
-		double i = entity.getPosition().getX();
-		double j = entity.getPosition().getY();
-		double k = entity.getPosition().getZ();
+		double i = entity.getPosX();
+		double j = entity.getPosY();
+		double k = entity.getPosZ();
 		String command=event.getParseResults().getReader().getString();
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x",i);
