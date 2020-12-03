@@ -50,8 +50,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	public ${name}Block (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
+		<#if (data.spawnWorldTypes?size > 0)>
+		MinecraftForge.EVENT_BUS.register(this);
+		</#if>
+
 		<#if data.hasInventory>
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
+		FMLJavaModLoadingContext.get().getModEventBus().register(new TileEntityRegisterHandler());
 		</#if>
 	}
 
@@ -63,8 +67,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	}
 
 	<#if data.hasInventory>
-	@SubscribeEvent public void registerTileEntity(RegistryEvent.Register<TileEntityType<?>> event) {
-		event.getRegistry().register(TileEntityType.Builder.create(CustomTileEntity::new, block).build(null).setRegistryName("${registryname}"));
+	private static class TileEntityRegisterHandler {
+		@SubscribeEvent public void registerTileEntity(RegistryEvent.Register<TileEntityType<?>> event) {
+			event.getRegistry().register(TileEntityType.Builder.create(CustomTileEntity::new, block).build(null).setRegistryName("${registryname}"));
+		}
 	}
 	</#if>
 
@@ -120,18 +126,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			super(
 			<#elseif data.blockBase?has_content && data.blockBase == "Fence">
 			super(
-			<#elseif data.blockBase?has_content && data.blockBase == "StoneButton">
-			super(
-			<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
-            super(Sensitivity.${data.sensitivity},
-            <#elseif data.blockBase?has_content && data.blockBase == "Cake">
-            super(
-			<#elseif data.blockBase?has_content && data.blockBase == "Lever">
-			super(
-			<#elseif data.blockBase?has_content && data.blockBase == "Slime">
-			super(
-			<#elseif data.blockBase?has_content && data.blockBase == "Honey">
-			super(
 			<#else>
 			super(
 			</#if>
@@ -143,7 +137,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					<#else>
 					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
 					</#if>
-					.lightValue(${(data.luminance * 15)?round})
+					.setLightLevel(s -> ${(data.luminance * 15)?round})
 					<#if data.destroyTool != "Not specified">
 					.harvestLevel(${data.breakHarvestLevel})
 					.harvestTool(ToolType.${data.destroyTool?upper_case})
@@ -159,6 +153,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					</#if>
 					<#if data.tickRandomly>
 					.tickRandomly()
+					</#if>
+					<#if data.emissiveRendering>
+					.setNeedsPostProcessing((bs, br, bp) -> true).setEmmisiveRendering((bs, br, bp) -> true)
+					</#if>
+					<#if data.hasTransparency>
+					.setOpaque((bs, br, bp) -> false)
 					</#if>
 			);
 
@@ -187,57 +187,45 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
     	  return !cannotAttach(state.getBlock()) && checkattach || flag || flag1;
    		}
    		<#elseif data.blockBase?has_content && data.blockBase == "Wall">
-		private boolean func_220113_a(BlockState state, boolean checkattach, Direction face) {
+		private static final VoxelShape CENTER_POLE_SHAPE = Block.makeCuboidShape(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
+		private static final VoxelShape WALL_CONNECTION_NORTH_SIDE_SHAPE = Block.makeCuboidShape(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 9.0D);
+		private static final VoxelShape WALL_CONNECTION_SOUTH_SIDE_SHAPE = Block.makeCuboidShape(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 16.0D);
+		private static final VoxelShape WALL_CONNECTION_WEST_SIDE_SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
+		private static final VoxelShape WALL_CONNECTION_EAST_SIDE_SHAPE = Block.makeCuboidShape(7.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
+
+		private boolean shouldConnect(BlockState state, boolean checkattach, Direction face) {
       		boolean flag = state.getBlock() instanceof WallBlock || state.getBlock() instanceof FenceGateBlock && FenceGateBlock.isParallel(state, face);
       		return !cannotAttach(state.getBlock()) && checkattach || flag;
    		}
    		@Override ${mcc.getMethod("net.minecraft.block.WallBlock", "getStateForPlacement", "BlockItemUseContext")}
    		@Override ${mcc.getMethod("net.minecraft.block.WallBlock", "updatePostPlacement", "BlockState", "Direction", "BlockState", "IWorld", "BlockPos", "BlockPos")}
+   		${mcc.getMethod("net.minecraft.block.WallBlock", "func_235625_a_", "IWorldReader", "BlockState", "BlockPos", "BlockState")}
+   		${mcc.getMethod("net.minecraft.block.WallBlock", "func_235627_a_", "IWorldReader", "BlockPos", "BlockState", "BlockPos", "BlockState", "Direction")}
+   		${mcc.getMethod("net.minecraft.block.WallBlock", "func_235626_a_", "IWorldReader", "BlockState", "BlockPos", "BlockState", "boolean", "boolean", "boolean", "boolean")}
+   		${mcc.getMethod("net.minecraft.block.WallBlock", "func_235630_a_", "BlockState", "boolean", "boolean", "boolean", "boolean", "VoxelShape")}
+   		${mcc.getMethod("net.minecraft.block.WallBlock", "func_235633_a_", "boolean", "VoxelShape", "VoxelShape")}
+   		${mcc.getMethod("net.minecraft.block.WallBlock", "func_235628_a_", "BlockState", "BlockState", "VoxelShape")}
+
+		private static boolean hasHeightForProperty(BlockState state, Property<WallHeight> heightProperty) {
+			return state.get(heightProperty) != WallHeight.NONE;
+		}
+
+		private static boolean compareShapes(VoxelShape shape1, VoxelShape shape2) {
+			return !VoxelShapes.compare(shape2, shape1, IBooleanFunction.ONLY_FIRST);
+		}
 		</#if>
 
-		<#if data.specialInfo?has_content || data.onShiftInfo?has_content || data.onCommandInfo?has_content>
+		<#if data.specialInfo?has_content>
 		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
-			<#if data.specialInfo?has_content>
-			<#assign line = 1>
 			<#list data.specialInfo as entry>
-			list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.tooltip${line}"));
-			<#assign line++>
-			</#list>
-			</#if>
-			<#if data.onShiftInfo?has_content && data.shiftOnly()>
-			if (Screen.hasShiftDown()) {
-				<#assign line = 1>
-				<#list data.onShiftInfo as entry>
-				list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.shift.tooltip${line}"));
-				<#assign line++>
-				</#list>
-			} else {
-				list.add(new StringTextComponent("\u00A77Press SHIFT for more information"));
-			}
-			</#if>
-			<#if data.onCommandInfo?has_content && data.commandOnly()>
-			if (Screen.hasControlDown()) {
-				<#assign line = 1>
-				<#list data.onCommandInfo as entry>
-				list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.command.tooltip${line}"));
-				<#assign line++>
-				</#list>
-			} else {
-				list.add(new StringTextComponent("\u00A77Press CTRL for more information"));
-			}
-			</#if>
+			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+            </#list>
 		}
-		</#if>
-
-		<#if data.emissiveRendering>
-        @OnlyIn(Dist.CLIENT) @Override public boolean isEmissiveRendering(BlockState blockState) {
-			return true;
-		}
-		</#if>
+        </#if>
 
 		<#if data.displayFluidOverlay>
-		@Override public boolean shouldDisplayFluidOverlay(BlockState state, ILightReader world, BlockPos pos, IFluidState fluidstate) {
+		@Override public boolean shouldDisplayFluidOverlay(BlockState state, IBlockDisplayReader world, BlockPos pos, FluidState fluidstate) {
 			return true;
 		}
 		</#if>
@@ -245,12 +233,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		<#if data.beaconColorModifier?has_content>
 		@Override public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
 			return new float[] { ${data.beaconColorModifier.getRed()/255}f, ${data.beaconColorModifier.getGreen()/255}f, ${data.beaconColorModifier.getBlue()/255}f };
-		}
-		</#if>
-
-		<#if data.hasTransparency>
-        @Override public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-			return false;
 		}
 		</#if>
 
@@ -268,7 +250,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.mx != 0 || data.my != 0 || data.mz != 0 || data.Mx != 1 || data.My != 1 || data.Mz != 1>
 		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-			Vec3d offset = state.getOffset(world, pos);
+			Vector3d offset = state.getOffset(world, pos);
 			<#if data.rotationMode == 1 || data.rotationMode == 3>
 			switch ((Direction) state.get(FACING)) {
 			case UP:
@@ -329,12 +311,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			return VoxelShapes.create(${data.mx}D, ${data.my}D, ${data.mz}D, ${data.Mx}D, ${data.My}D, ${data.Mz}D)
 					.withOffset(offset.x, offset.y, offset.z);
             </#if>
-		}
-        </#if>
-
-		<#if data.tickRate != 10>
-		@Override public int tickRate(IWorldReader world) {
-			return ${data.tickRate};
 		}
         </#if>
 
@@ -425,7 +401,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
             }
             </#if>
 
-        @Override public IFluidState getFluidState(BlockState state) {
+        @Override public FluidState getFluidState(BlockState state) {
             return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
         }
 	
@@ -449,16 +425,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
-        <#if data.emitsRedstone>
-        @Override public boolean canProvidePower(BlockState state) {
-            return true;
-        }
-
-        @Override public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-            return ${data.emittedRedstonePower};
-        }
-        </#if>
-
 		<#if data.flammability != 0>
 		@Override public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
 			return ${data.flammability};
@@ -478,7 +444,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         </#if>
 
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-		@Override public MaterialColor getMaterialColor(BlockState state, IBlockReader blockAccess, BlockPos pos) {
+		@Override public MaterialColor getMaterialColor() {
         	return MaterialColor.${generator.map(data.colorOnMap, "mapcolors")};
     	}
 		</#if>
@@ -575,7 +541,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			int y = pos.getY();
 			int z = pos.getZ();
 			<#if hasProcedure(data.onTickUpdate) && !data.tickRandomly>
-			world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, this.tickRate(world));
+			world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
             </#if>
 			<@procedureOBJToCode data.onBlockAdded/>
 		}
@@ -605,7 +571,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			int z = pos.getZ();
 			<@procedureOBJToCode data.onTickUpdate/>
 			<#if !data.tickRandomly>
-			world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, this.tickRate(world));
+			world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
 			</#if>
 		}
         </#if>
@@ -628,7 +594,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
         <#if hasProcedure(data.onDestroyedByPlayer)>
 		@Override
-		public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity entity, boolean willHarvest, IFluidState fluid) {
+		public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity entity, boolean willHarvest, FluidState fluid) {
 			boolean retval = super.removedByPlayer(state, world, pos, entity, willHarvest, fluid);
 			int x = pos.getX();
 			int y = pos.getY();
@@ -781,8 +747,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			super(tileEntityType);
 		}
 
-		@Override public void read(CompoundNBT compound) {
-			super.read(compound);
+		@Override public void read(BlockState blockState, CompoundNBT compound) {
+			super.read(blockState, compound);
 
 			if (!this.checkLootAndRead(compound)) {
 			    this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
@@ -828,7 +794,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 
 		@Override public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-			this.read(pkt.getNbtCompound());
+			this.read(this.getBlockState(), pkt.getNbtCompound());
 		}
 
 		@Override public int getSizeInventory() {
@@ -981,64 +947,67 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 </#if>
 
 <#if (data.spawnWorldTypes?size > 0)>
-	@Override public void init(FMLCommonSetupEvent event) {
-		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-			<#if data.restrictionBiomes?has_content>
+	@SubscribeEvent public void addFeatureToBiomes(BiomeLoadingEvent event) {
+		<#if data.restrictionBiomes?has_content>
 				boolean biomeCriteria = false;
-				<#list data.restrictionBiomes as restrictionBiome>
-					<#if restrictionBiome.canProperlyMap()>
-					if (ForgeRegistries.BIOMES.getKey(biome).equals(new ResourceLocation("${restrictionBiome}")))
+			<#list data.restrictionBiomes as restrictionBiome>
+				<#if restrictionBiome.canProperlyMap()>
+					if (new ResourceLocation("${restrictionBiome}").equals(event.getName()))
 						biomeCriteria = true;
+				</#if>
+			</#list>
+				if (!biomeCriteria)
+					return;
+		</#if>
+		event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> new OreFeature(OreFeatureConfig.CODEC) {
+			@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, OreFeatureConfig config) {
+				RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
+				boolean dimensionCriteria = false;
+
+    			<#list data.spawnWorldTypes as worldType>
+					<#if worldType=="Surface">
+						if(dimensionType == World.OVERWORLD)
+							dimensionCriteria = true;
+					<#elseif worldType=="Nether">
+						if(dimensionType == World.THE_NETHER)
+							dimensionCriteria = true;
+					<#elseif worldType=="End">
+						if(dimensionType == World.THE_END)
+							dimensionCriteria = true;
+					<#else>
+						if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
+							dimensionCriteria = true;
 					</#if>
 				</#list>
-				if (!biomeCriteria)
-					continue;
-			</#if>
 
-			biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, new OreFeature(OreFeatureConfig::deserialize) {
-				@Override public boolean place(IWorld world, ChunkGenerator generator, Random rand, BlockPos pos, OreFeatureConfig config) {
-					DimensionType dimensionType = world.getDimension().getType();
-					boolean dimensionCriteria = false;
+				if(!dimensionCriteria)
+					return false;
 
-    				<#list data.spawnWorldTypes as worldType>
-						<#if worldType=="Surface">
-							if(dimensionType == DimensionType.OVERWORLD)
-								dimensionCriteria = true;
-						<#elseif worldType=="Nether">
-							if(dimensionType == DimensionType.THE_NETHER)
-								dimensionCriteria = true;
-						<#elseif worldType=="End">
-							if(dimensionType == DimensionType.THE_END)
-								dimensionCriteria = true;
-						<#else>
-							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
-								dimensionCriteria = true;
-						</#if>
-					</#list>
+				<#if hasCondition(data.generateCondition)>
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				if (!<@procedureOBJToConditionCode data.generateCondition/>)
+					return false;
+				</#if>
 
-					if(!dimensionCriteria)
-						return false;
-
-					<#if hasCondition(data.generateCondition)>
-					int x = pos.getX();
-					int y = pos.getY();
-					int z = pos.getZ();
-					if (!<@procedureOBJToConditionCode data.generateCondition/>)
-						return false;
-					</#if>
-
-					return super.place(world, generator, rand, pos, config);
-			}}.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockAt -> {
-						boolean blockCriteria = false;
+				return super.generate(world, generator, rand, pos, config);
+			}}
+			.withConfiguration(new OreFeatureConfig(new RuleTest() {
+				public boolean test(BlockState blockAt, Random random) {
+					boolean blockCriteria = false;
 					<#list data.blocksToReplace as replacementBlock>
-						if(blockAt.getBlock() == ${mappedBlockToBlockStateCode(replacementBlock)}.getBlock())
-							blockCriteria = true;
+					if(blockAt.getBlock() == ${mappedBlockToBlockStateCode(replacementBlock)}.getBlock())
+						blockCriteria = true;
 					</#list>
-						return blockCriteria;
-					}), block.getDefaultState(), ${data.frequencyOnChunk}))
-				.withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(${data.frequencyPerChunks}, ${data.minGenerateHeight}, ${data.minGenerateHeight}, ${data.maxGenerateHeight})))
-			);
-		}
+					return blockCriteria;
+				}
+
+				protected IRuleTestType<?> getType() {
+					return IRuleTestType.BLOCK_MATCH;
+				}
+			}, block.getDefaultState(), ${data.frequencyOnChunk}))
+			.range(${data.maxGenerateHeight}).square().func_242731_b(${data.frequencyPerChunks}));
 	}
 </#if>
 
