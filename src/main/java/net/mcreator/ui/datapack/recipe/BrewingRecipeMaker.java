@@ -72,9 +72,9 @@ public class BrewingRecipeMaker extends JPanel {
 			cb3.setValidationShownFlag(true);
 		});
 
-		cb1.setBounds(50, 60, 28, 28);
-		cb2.setBounds(117, 60, 28, 28);
-		cb3.setBounds(211, 60, 28, 28);
+		cb1.setBounds(65, 88, 28, 28);
+		cb2.setBounds(65, 26, 28, 28);
+		cb3.setBounds(210, 50, 41, 41);
 
 		ip.add(cb1);
 		ip.add(cb2);
