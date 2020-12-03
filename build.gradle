@@ -2,8 +2,8 @@ plugins {
     id "java"
     id "idea"
     id "de.undercouch.download" version "4.1.1"
-    id 'edu.sc.seis.launch4j' version '2.4.6'
-    id 'org.jetbrains.gradle.plugin.idea-ext' version '0.8.1'
+    id 'edu.sc.seis.launch4j' version '2.4.9'
+    id 'org.jetbrains.gradle.plugin.idea-ext' version '0.10'
 }
 
 repositories {
@@ -48,7 +48,7 @@ dependencies {
     implementation group: 'com.github.sps.junidecode', name: 'junidecode', version: '0.3'
     implementation group: 'org.jboss.forge.roaster', name: 'roaster-api', version: '2.22.2.Final'
     implementation group: 'org.jboss.forge.roaster', name: 'roaster-jdt', version: '2.22.2.Final'
-    implementation group: 'com.esotericsoftware.yamlbeans', name: 'yamlbeans', version: '1.14'
+    implementation group: 'com.esotericsoftware.yamlbeans', name: 'yamlbeans', version: '1.15'
     implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.1.1'
     implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.1.0'
     implementation (group: 'com.fifesoft', name: 'languagesupport', version: '3.1.0') { dep ->
@@ -56,12 +56,12 @@ dependencies {
     }
     implementation group: 'org.reflections', name: 'reflections', version: '0.9.9' // https://github.com/ronmamo/reflections/issues/81
     implementation group: 'de.javagl', name: 'obj', version: '0.3.0'
-    implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.8.4'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.3'
+    implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.0'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.8'
-    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.8.1.202007141445-r'
+    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.9.0.202009080501-r'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.30'
-    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '6.5.1'
+    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '6.7'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
 
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.15.2'

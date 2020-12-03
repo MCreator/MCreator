@@ -1039,6 +1039,11 @@
   type: block
   texture: BRICK_BLOCK
 
+- Blocks.BRICK_WALL:
+  readable_name: "Brick Wall"
+  type: block
+  texture: BRICK_WALL
+
 - Blocks.TNT:
   readable_name: "TNT"
   type: block
@@ -1766,7 +1771,7 @@
   texture: VINE
 
 - Blocks.WATERLILY:
-  readable_name: "Waterlily"
+  readable_name: "Lily Pad"
   type: block
   texture: WATERLILY
 
@@ -3654,6 +3659,421 @@
   type: block
   texture: HONEYCOMB_BLOCK
 
+- Blocks.NETHER_GOLD_ORE:
+  readable_name: "Nether Gold Ore"
+  type: block
+  texture: NETHER_GOLD_ORE
+
+- Blocks.SOUL_FIRE:
+  readable_name: "Soul Fire"
+  type: block
+  texture: SOUL_FIRE
+
+- Blocks.SOUL_SOIL:
+  readable_name: "Soul Soil"
+  type: block
+  texture: SOUL_SOIL
+
+- Blocks.BASALT:
+  readable_name: "Basalt"
+  type: block
+  texture: BASALT
+
+- Blocks.POLISHED_BASALT:
+  readable_name: "Polished Basalt"
+  type: block
+  texture: POLISHED_BASALT
+
+- Blocks.SOUL_TORCH:
+  readable_name: "Soul Torch"
+  type: block
+  texture: SOUL_TORCH
+
+- Blocks.SOUL_WALL_TORCH:
+  readable_name: "Soul Wall Torch"
+  type: block
+  texture: SOUL_WALL_TORCH
+
+- Blocks.CHAIN:
+  readable_name: "Chain"
+  type: block
+  texture: CHAIN
+
+- Blocks.SOUL_LANTERN:
+  readable_name: "Soul Lantern"
+  type: block
+  texture: SOUL_LANTERN
+
+- Blocks.SOUL_CAMPFIRE:
+  readable_name: "Soul Campfire"
+  type: block
+  texture: SOUL_CAMPFIRE
+
+- Blocks.WARPED_STEM:
+  readable_name: "Warped Stem"
+  type: block
+  texture: WARPED_STEM
+
+- Blocks.STRIPPED_WARPED_STEM:
+  readable_name: "Stripped Warped Stem"
+  type: block
+  texture: STRIPPED_WARPED_STEM
+
+- Blocks.WARPED_HYPHAE:
+  readable_name: "Warped Hyphae"
+  type: block
+  texture: WARPED_HYPHAE
+
+- Blocks.STRIPPED_WARPED_HYPHAE:
+  readable_name: "Stripped Warped Hyphae"
+  type: block
+  texture: STRIPPED_WARPED_HYPHAE
+
+- Blocks.WARPED_NYLIUM:
+  readable_name: "Warped Nylium"
+  type: block
+  texture: WARPED_NYLIUM
+
+- Blocks.WARPED_FUNGUS:
+  readable_name: "Warped Fungus"
+  type: block
+  texture: WARPED_FUNGUS
+
+- Blocks.WARPED_WART_BLOCK:
+  readable_name: "Warped Wart Block"
+  type: block
+  texture: WARPED_WART_BLOCK
+
+- Blocks.WARPED_ROOTS:
+  readable_name: "Warped Roots"
+  type: block
+  texture: WARPED_ROOTS
+
+- Blocks.NETHER_SPROUTS:
+  readable_name: "Nether Sprouts"
+  type: block
+  texture: NETHER_SPROUTS
+
+- Blocks.CRIMSON_STEM:
+  readable_name: "Crimson Stem"
+  type: block
+  texture: CRIMSON_STEM
+
+- Blocks.STRIPPED_CRIMSON_STEM:
+  readable_name: "Stripped Crimson Stem"
+  type: block
+  texture: STRIPPED_CRIMSON_STEM
+
+- Blocks.CRIMSON_HYPHAE:
+  readable_name: "Crimson Hyphae"
+  type: block
+  texture: CRIMSON_HYPHAE
+
+- Blocks.STRIPPED_CRIMSON_HYPHAE:
+  readable_name: "Stripped Crimson Hyphae"
+  type: block
+  texture: STRIPPED_CRIMSON_HYPHAE
+
+- Blocks.CRIMSON_NYLIUM:
+  readable_name: "Crimson Nylium"
+  type: block
+  texture: CRIMSON_NYLIUM
+
+- Blocks.CRIMSON_FUNGUS:
+  readable_name: "Crimson Fungus"
+  type: block
+  texture: CRIMSON_FUNGUS
+
+- Blocks.SHROOMLIGHT:
+  readable_name: "Shroomlight"
+  type: block
+  texture: SHROOMLIGHT
+
+- Blocks.WEEPING_VINES:
+  readable_name: "Weeping Vines"
+  type: block
+  texture: WEEPING_VINES
+
+- Blocks.WEEPING_VINES_PLANT:
+  readable_name: "Weeping Vines Plant"
+  type: block
+  texture: WEEPING_VINES_PLANT
+
+- Blocks.TWISTING_VINES:
+  readable_name: "Twisting Vines"
+  type: block
+  texture: TWISTING_VINES
+
+- Blocks.TWISTING_VINES_PLANT:
+  readable_name: "Twisting Vines Plant"
+  type: block
+  texture: TWISTING_VINES_PLANT
+
+- Blocks.CRIMSON_ROOTS:
+  readable_name: "Crimson Roots"
+  type: block
+  texture: CRIMSON_ROOTS
+
+- Blocks.CRIMSON_PLANKS:
+  readable_name: "Crimson Planks"
+  type: block
+  texture: CRIMSON_PLANKS
+
+- Blocks.WARPED_PLANKS:
+  readable_name: "Warped Planks"
+  type: block
+  texture: WARPED_PLANKS
+
+- Blocks.CRIMSON_SLAB:
+  readable_name: "Crimson Slab"
+  type: block
+  texture: CRIMSON_SLAB
+
+- Blocks.WARPED_SLAB:
+  readable_name: "Warped Slab"
+  type: block
+  texture: WARPED_SLAB
+
+- Blocks.CRIMSON_PRESSURE_PLATE:
+  readable_name: "Crimson Pressure Plate"
+  type: block
+  texture: CRIMSON_PRESSURE_PLATE
+
+- Blocks.WARPED_PRESSURE_PLATE:
+  readable_name: "Warped Pressure Plate"
+  type: block
+  texture: WARPED_PRESSURE_PLATE
+
+- Blocks.CRIMSON_FENCE:
+  readable_name: "Crimson Fence"
+  type: block
+  texture: CRIMSON_FENCE
+
+- Blocks.WARPED_FENCE:
+  readable_name: "Warped Fence"
+  type: block
+  texture: WARPED_FENCE
+
+- Blocks.CRIMSON_TRAPDOOR:
+  readable_name: "Crimson Trapdoor"
+  type: block
+  texture: CRIMSON_TRAPDOOR
+
+- Blocks.WARPED_TRAPDOOR:
+  readable_name: "Warped Trapdoor"
+  type: block
+  texture: WARPED_TRAPDOOR
+
+- Blocks.CRIMSON_FENCE_GATE:
+  readable_name: "Crimson Fence Gate"
+  type: block
+  texture: CRIMSON_FENCE_GATE
+
+- Blocks.WARPED_FENCE_GATE:
+  readable_name: "Warped Fence Gate"
+  type: block
+  texture: WARPED_FENCE_GATE
+
+- Blocks.CRIMSON_STAIRS:
+  readable_name: "Crimson Stairs"
+  type: block
+  texture: CRIMSON_STAIRS
+
+- Blocks.WARPED_STAIRS:
+  readable_name: "Warped Stairs"
+  type: block
+  texture: WARPED_STAIRS
+
+- Blocks.CRIMSON_BUTTON:
+  readable_name: "Crimson Button"
+  type: block
+  texture: CRIMSON_BUTTON
+
+- Blocks.WARPED_BUTTON:
+  readable_name: "Warped Button"
+  type: block
+  texture: WARPED_BUTTON
+
+- Blocks.CRIMSON_DOOR:
+  readable_name: "Crimson Door"
+  type: block
+  texture: CRIMSON_DOOR
+
+- Blocks.WARPED_DOOR:
+  readable_name: "Warped Door"
+  type: block
+  texture: WARPED_DOOR
+
+- Blocks.CRIMSON_SIGN:
+  readable_name: "Crimson Sign"
+  type: block
+  texture: CRIMSON_SIGN
+
+- Blocks.WARPED_SIGN:
+  readable_name: "Warped Sign"
+  type: block
+  texture: WARPED_SIGN
+
+- Blocks.CRIMSON_WALL_SIGN:
+  readable_name: "Crimson Wall Sign"
+  type: block
+  texture: CRIMSON_WALL_SIGN
+
+- Blocks.WARPED_WALL_SIGN:
+  readable_name: "Warped Wall Sign"
+  type: block
+  texture: WARPED_WALL_SIGN
+
+- Blocks.TARGET:
+  readable_name: "Target"
+  type: block
+  texture: TARGET
+
+- Blocks.NETHERITE_BLOCK:
+  readable_name: "Netherite Block"
+  type: block
+  texture: NETHERITE_BLOCK
+
+- Blocks.ANCIENT_DEBRIS:
+  readable_name: "Ancient Debris"
+  type: block
+  texture: ANCIENT_DEBRIS
+
+- Blocks.CRYING_OBSIDIAN:
+  readable_name: "Crying Obsidian"
+  type: block
+  texture: CRYING_OBSIDIAN
+
+- Blocks.RESPAWN_ANCHOR:
+  readable_name: "Respawn Anchor"
+  type: block
+  texture: RESPAWN_ANCHOR
+
+- Blocks.POTTED_CRIMSON_FUNGUS:
+  readable_name: "Potted Crimson Fungus"
+  type: block
+  texture: POTTED_CRIMSON_FUNGUS
+
+- Blocks.POTTED_WARPED_FUNGUS:
+  readable_name: "Potted Warped Fungus"
+  type: block
+  texture: POTTED_WARPED_FUNGUS
+
+- Blocks.POTTED_CRIMSON_ROOTS:
+  readable_name: "Potted Crimson Roots"
+  type: block
+  texture: POTTED_CRIMSON_ROOTS
+
+- Blocks.POTTED_WARPED_ROOTS:
+  readable_name: "Potted Warped Roots"
+  type: block
+  texture: POTTED_WARPED_ROOTS
+
+- Blocks.LODESTONE:
+  readable_name: "Lodestone"
+  type: block
+  texture: LODESTONE
+
+- Blocks.BLACKSTONE:
+  readable_name: "Blackstone"
+  type: block
+  texture: BLACKSTONE
+
+- Blocks.BLACKSTONE_STAIRS:
+  readable_name: "Blackstone Stairs"
+  type: block
+  texture: BLACKSTONE_STAIRS
+
+- Blocks.BLACKSTONE_WALL:
+  readable_name: "Blackstone Wall"
+  type: block
+  texture: BLACKSTONE_WALL
+
+- Blocks.BLACKSTONE_SLAB:
+  readable_name: "Blackstone Slab"
+  type: block
+  texture: BLACKSTONE_SLAB
+
+- Blocks.POLISHED_BLACKSTONE:
+  readable_name: "Polished Blackstone"
+  type: block
+  texture: POLISHED_BLACKSTONE
+
+- Blocks.POLISHED_BLACKSTONE_BRICKS:
+  readable_name: "Polished Blackstone Bricks"
+  type: block
+  texture: POLISHED_BLACKSTONE_BRICKS
+
+- Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS:
+  readable_name: "Cracked Polished Blackstone Bricks"
+  type: block
+  texture: CRACKED_POLISHED_BLACKSTONE_BRICKS
+
+- Blocks.CHISELED_POLISHED_BLACKSTONE:
+  readable_name: "Chiseled Polished Blackstone"
+  type: block
+  texture: CHISELED_POLISHED_BLACKSTONE
+
+- Blocks.POLISHED_BLACKSTONE_BRICK_SLAB:
+  readable_name: "Polished Blackstone Brick Slab"
+  type: block
+  texture: POLISHED_BLACKSTONE_BRICK_SLAB
+
+- Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS:
+  readable_name: "Polished Blackstone Brick Stairs"
+  type: block
+  texture: POLISHED_BLACKSTONE_BRICK_STAIRS
+
+- Blocks.POLISHED_BLACKSTONE_BRICK_WALL:
+  readable_name: "Polished Blackstone Brick Wall"
+  type: block
+  texture: POLISHED_BLACKSTONE_BRICK_WALL
+
+- Blocks.GILDED_BLACKSTONE:
+  readable_name: "Gilded Blackstone"
+  type: block
+  texture: GILDED_BLACKSTONE
+
+- Blocks.POLISHED_BLACKSTONE_STAIRS:
+  readable_name: "Polished Blackstone Stairs"
+  type: block
+  texture: POLISHED_BLACKSTONE_STAIRS
+
+- Blocks.POLISHED_BLACKSTONE_SLAB:
+  readable_name: "Polished Blackstone Slab"
+  type: block
+  texture: POLISHED_BLACKSTONE_SLAB
+
+- Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE:
+  readable_name: "Polished Blackstone Pressure Plate"
+  type: block
+  texture: POLISHED_BLACKSTONE_PRESSURE_PLATE
+
+- Blocks.POLISHED_BLACKSTONE_BUTTON:
+  readable_name: "Polished Blackstone Button"
+  type: block
+  texture: POLISHED_BLACKSTONE_BUTTON
+
+- Blocks.POLISHED_BLACKSTONE_WALL:
+  readable_name: "Polished Blackstone Wall"
+  type: block
+  texture: POLISHED_BLACKSTONE_WALL
+
+- Blocks.CHISELED_NETHER_BRICKS:
+  readable_name: "Chiseled Nether Bricks"
+  type: block
+  texture: CHISELED_NETHER_BRICKS
+
+- Blocks.CRACKED_NETHER_BRICKS:
+  readable_name: "Cracked Nether Bricks"
+  type: block
+  texture: CRACKED_NETHER_BRICKS
+
+- Blocks.QUARTZ_BRICKS:
+  readable_name: "Quartz Bricks"
+  type: block
+  texture: QUARTZ_BRICKS
+
 - Items.DYE:
   readable_name: "Any Dye"
   type: item
@@ -3907,27 +4327,32 @@
   texture: FILLED_MAP
 
 - Items.FLOWER_BANNER_PATTERN:
-  readable_name: "Flower Banner Pattern"
+  readable_name: "Banner Pattern"
+  description: "Flower"
   type: item
   texture: FLOWER_BANNER_PATTERN
 
 - Items.CREEPER_BANNER_PATTERN:
-  readable_name: "Creeper Banner Pattern"
+  readable_name: "Banner Pattern"
+  description: "Creeper"
   type: item
   texture: CREEPER_BANNER_PATTERN
 
 - Items.SKULL_BANNER_PATTERN:
-  readable_name: "Skull Banner Pattern"
+  readable_name: "Banner Pattern"
+  description: "Skull"
   type: item
   texture: SKULL_BANNER_PATTERN
 
 - Items.THING_BANNER_PATTERN:
-  readable_name: "Thing Banner Pattern"
+  readable_name: "Banner Pattern"
+  description: "Thing"
   type: item
   texture: THING_BANNER_PATTERN
 
 - Items.GLOBE_BANNER_PATTERN:
-  readable_name: "Globe Banner Pattern"
+  readable_name: "Banner Pattern"
+  description: "Globe"
   type: item
   texture: GLOBE_BANNER_PATTERN
 
@@ -4127,7 +4552,7 @@
   texture: CHAINMAIL_LEGGINGS
 
 - Items.CHAINMAIL_BOOTS:
-  readable_name: "Chainmail Leggings"
+  readable_name: "Chainmail Boots"
   type: item
   texture: CHAINMAIL_BOOTS
 
@@ -4392,6 +4817,16 @@
   type: item
   texture: IRON_DOOR
 
+- Items.CRIMSON_DOOR:
+  readable_name: "Crimson Door"
+  type: item
+  texture: CRIMSON_DOOR
+
+- Items.WARPED_DOOR:
+  readable_name: "Warped Door"
+  type: item
+  texture: WARPED_DOOR
+
 - Items.BUCKET:
   readable_name: "Bucket"
   type: item
@@ -4632,11 +5067,6 @@
   readable_name: "Brick"
   type: item
   texture: BRICK
-
-- Blocks.BRICK_WALL:
-  readable_name: "Brick Wall"
-  type: block
-  texture: BRICK_WALL
 
 - Items.NETHERBRICK:
   readable_name: "Nether Brick"
@@ -4987,7 +5417,7 @@
   texture: SPAWN_EGG#56
 
 - Items.SPAWN_EGG#57:
-  readable_name: "Spawn Zombie Pigmen"
+  readable_name: "Zombified Piglin Spawn Egg"
   type: item
   texture: SPAWN_EGG#57
 
@@ -5418,3 +5848,110 @@
   readable_name: "Honey Bottle"
   type: item
   texture: HONEY_BOTTLE
+
+- Items.NETHERITE_INGOT:
+  readable_name: "Netherite Ingot"
+  type: item
+  texture: NETHERITE_INGOT
+
+- Items.NETHERITE_SCRAP:
+  readable_name: "Netherite Scrap"
+  type: item
+  texture: NETHERITE_SCRAP
+
+- Items.NETHERITE_SWORD:
+  readable_name: "Netherite Sword"
+  type: item
+  texture: NETHERITE_SWORD
+
+- Items.NETHERITE_SHOVEL:
+  readable_name: "Netherite Shovel"
+  type: item
+  texture: NETHERITE_SHOVEL
+
+- Items.NETHERITE_PICKAXE:
+  readable_name: "Netherite Pickaxe"
+  type: item
+  texture: NETHERITE_PICKAXE
+
+- Items.NETHERITE_AXE:
+  readable_name: "Netherite Axe"
+  type: item
+  texture: NETHERITE_AXE
+
+- Items.NETHERITE_HOE:
+  readable_name: "Netherite Hoe"
+  type: item
+  texture: NETHERITE_HOE
+
+- Items.NETHERITE_HELMET:
+  readable_name: "Netherite Helmet"
+  type: item
+  texture: NETHERITE_HELMET
+
+- Items.NETHERITE_CHESTPLATE:
+  readable_name: "Netherite Chestplate"
+  type: item
+  texture: NETHERITE_CHESTPLATE
+
+- Items.NETHERITE_LEGGINGS:
+  readable_name: "Netherite Leggings"
+  type: item
+  texture: NETHERITE_LEGGINGS
+
+- Items.NETHERITE_BOOTS:
+  readable_name: "Netherite Boots"
+  type: item
+  texture: NETHERITE_BOOTS
+
+- Items.CRIMSON_SIGN:
+  readable_name: "Crimson Sign"
+  type: item
+  texture: CRIMSON_SIGN
+
+- Items.WARPED_SIGN:
+  readable_name: "Warped Sign"
+  type: item
+  texture: WARPED_SIGN
+
+- Items.HOGLIN_SPAWN_EGG:
+  readable_name: "Hoglin Spawn Egg"
+  type: item
+  texture: HOGLIN_SPAWN_EGG
+
+- Items.PIGLIN_SPAWN_EGG:
+  readable_name: "Piglin Spawn Egg"
+  type: item
+  texture: PIGLIN_SPAWN_EGG
+
+- Items.PIGLIN_BRUTE_SPAWN_EGG:
+  readable_name: "Piglin Brute Spawn Eggl"
+  type: item
+  texture: PIGLIN_BRUTE_SPAWN_EGG
+
+- Items.STRIDER_SPAWN_EGG:
+  readable_name: "Strider Spawn Egg"
+  type: item
+  texture: STRIDER_SPAWN_EGG
+
+- Items.ZOGLIN_SPAWN_EGG:
+  readable_name: "Zoglin Spawn Egg"
+  type: item
+  texture: ZOGLIN_SPAWN_EGG
+
+- Items.WARPED_FUNGUS_ON_A_STICK:
+  readable_name: "Warped Fungus on a Stick"
+  type: item
+  texture: WARPED_FUNGUS_ON_A_STICK
+
+- Items.MUSIC_DISC_PIGSTEP:
+  readable_name: "Music Disc"
+  description: "Pigstep"
+  type: item
+  texture: MUSIC_DISC_PIGSTEP
+
+- Items.PIGLIN_BANNER_PATTERN:
+  readable_name: "Banner Pattern"
+  description: "Snout"
+  type: item
+  texture: PIGLIN_BANNER_PATTERN

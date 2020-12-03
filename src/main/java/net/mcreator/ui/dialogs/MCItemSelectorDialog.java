@@ -22,6 +22,7 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -61,7 +62,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		this.mcreator = mcreator;
 		this.blocksConsumer = blocksConsumer;
 
-		setTitle("Block/item selector");
+		setTitle(L10N.t("dialog.item_selector.title"));
 		setModal(true);
 		setIconImage(UIRES.get("icon").getImage());
 		list.setCellRenderer(new Render());
@@ -97,7 +98,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		JPanel buttons = new JPanel();
 		JButton naprej2 = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 
-		JButton naprej = new JButton("Use selected item");
+		JButton naprej = L10N.button("dialog.item_selector.use_selected");
 		naprej.addActionListener(e -> {
 			setVisible(false);
 			if (itemSelectedListener != null)
@@ -105,7 +106,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		});
 
 		if (supportTags) {
-			JButton useTags = new JButton("Use tag");
+			JButton useTags = L10N.button("dialog.item_selector.use_tag");
 			buttons.add(useTags);
 
 			VComboBox<String> tagName = new VComboBox<>();
@@ -124,9 +125,9 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 			tagName.enableRealtimeValidation();
 
 			useTags.addActionListener(e -> {
-				int result = JOptionPane.showConfirmDialog(this, PanelUtils.northAndCenterElement(
-						new JLabel("<html>Enter the tag name below (check the list for templates):<br>"), tagName),
-						"Use tag", JOptionPane.OK_CANCEL_OPTION);
+				int result = JOptionPane.showConfirmDialog(this,
+						PanelUtils.northAndCenterElement(L10N.label("dialog.item_selector.enter_tag_name"), tagName),
+						L10N.t("dialog.item_selector.use_tag"), JOptionPane.OK_CANCEL_OPTION);
 				if (result == JOptionPane.OK_OPTION) {
 					if (tagName.getValidationStatus().getValidationResultType()
 							!= Validator.ValidationResultType.ERROR) {
@@ -141,8 +142,10 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 								itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
 						}
 					} else {
-						JOptionPane.showMessageDialog(this, "The name you have entered is not a valid tag name!",
-								"Invalid tag name", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(this,
+								L10N.t("dialog.item_selector.error_invalid_tag_name_message"),
+								L10N.t("dialog.item_selector.error_invalid_tag_name_title"),
+								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			});
@@ -165,18 +168,18 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		ComponentUtils.deriveFont(jtf, 15);
 		ComponentUtils.deriveFont(filterField, 15);
 
-		JButton all = new JButton("<html><small>All");
+		JButton all = L10N.button("dialog.item_selector.all");
 		all.addActionListener(event -> filterField.setText(""));
-		JButton blocks = new JButton("<html><small>Blocks");
+		JButton blocks = L10N.button("dialog.item_selector.blocks");
 		blocks.addActionListener(event -> filterField.setText("block"));
-		JButton items = new JButton("<html><small>Items");
+		JButton items = L10N.button("dialog.item_selector.items");
 		items.addActionListener(event -> filterField.setText("item"));
-		JButton mods = new JButton("<html><small>Custom elements");
+		JButton mods = L10N.button("dialog.item_selector.custom_elements");
 		mods.addActionListener(event -> filterField.setText("mcreator"));
 
-		JComponent top = PanelUtils
-				.join(FlowLayout.LEFT, new JLabel("Name: "), jtf, new JLabel("  Display filter: "), filterField,
-						new JLabel(""), all, blocks, items, mods);
+		JComponent top = PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.item_selector.name"), jtf,
+				L10N.label("dialog.item_selector.display_filter"), filterField, new JLabel(""),
+				all, blocks, items, mods);
 
 		top.setBorder(BorderFactory.createEmptyBorder(0, 0, 7, 0));
 
@@ -313,7 +316,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		bsd.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		JOptionPane pane = new JOptionPane(mainComponent);
-		JDialog dialog = pane.createDialog(parent, "Block/item selector");
+		JDialog dialog = pane.createDialog(parent, L10N.t("dialog.item_selector.title"));
 		bsd.setItemSelectedListener(e -> dialog.dispose());
 		dialog.setVisible(true);
 

@@ -1,9 +1,9 @@
 @SubscribeEvent public void onBlockMultiPlace(BlockEvent.EntityMultiPlaceEvent event) {
 	Entity entity = event.getEntity();
 	Map<String, Object> dependencies = new HashMap<>();
-	dependencies.put("x",(int) event.getPos().getX());
-	dependencies.put("y",(int) event.getPos().getY());
-	dependencies.put("z",(int) event.getPos().getZ());
+	dependencies.put("x",event.getPos().getX());
+	dependencies.put("y",event.getPos().getY());
+	dependencies.put("z",event.getPos().getZ());
 	dependencies.put("px",entity.getPosX());
 	dependencies.put("py",entity.getPosY());
 	dependencies.put("pz",entity.getPosZ());

@@ -142,6 +142,7 @@ public class ArmorPackMakerTool {
 		armor.maxDamage = (int) Math.round(15 * factor);
 		armor.enchantability = (int) Math.round(9 * factor);
 		armor.toughness = 0;
+		armor.knockbackResistance = 0;
 		armor.damageValueHelmet = (int) Math.round(2 * factor);
 		armor.damageValueBody = (int) Math.round(5 * factor);
 		armor.damageValueLeggings = (int) Math.round(6 * factor);
@@ -224,7 +225,8 @@ public class ArmorPackMakerTool {
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
-		return new BasicAction(actionRegistry, "Create armor pack...", e -> open(actionRegistry.getMCreator())) {
+		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.armor"),
+				e -> open(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getWorkspace().getGenerator()
 						.getGeneratorConfiguration();

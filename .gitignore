@@ -19,6 +19,7 @@
 #===============================
 /jdk/
 /src/main/resources/snapshot.conf
+/logs
 
 #SYSTEM AND JAVA FILES
 #=====================

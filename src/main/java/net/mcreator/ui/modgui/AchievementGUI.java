@@ -106,8 +106,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		achievementIcon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
-		JPanel selp = new JPanel(new GridLayout(10, 2, 15, 10));
-		JPanel selp2 = new JPanel(new GridLayout(4, 2, 10, 10));
+		JPanel selp = new JPanel(new GridLayout(10, 2, 15, 2));
+		JPanel selp2 = new JPanel(new GridLayout(4, 2, 10, 2));
 
 		rewardLoot = new ModElementListField(mcreator, ModElementType.LOOTTABLE);
 		rewardRecipes = new ModElementListField(mcreator, ModElementType.RECIPE);
@@ -135,7 +135,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		selp.add(achievementDescription);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("advancement/icon"), new JLabel("elementgui.advancement.icon")));
+				.wrapWithHelpButton(this.withEntry("advancement/icon"), L10N.label("elementgui.advancement.icon")));
 		selp.add(PanelUtils.join(FlowLayout.LEFT, achievementIcon));
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/background"),
@@ -143,7 +143,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		selp.add(background);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("advancement/type"), new JLabel("elementgui.advancement.type")));
+				.wrapWithHelpButton(this.withEntry("advancement/type"), L10N.label("elementgui.advancement.type")));
 		selp.add(achievementType);
 
 		selp.add(HelpUtils
@@ -182,14 +182,15 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 				L10N.label("elementgui.advancement.reward_recipes")));
 		selp2.add(rewardRecipes);
 
-		selp.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.advancement.display_paramters"), 0, 0, selp.getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
 		selp2.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.advancement.logic"), 0, 0, selp2.getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		JComponent selpouter = PanelUtils.pullElementUp(selp);
+		selpouter.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.advancement.display_paramters"), 0, 0, selp.getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		selp.setOpaque(false);
@@ -229,7 +230,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		advancementTrigger.setPreferredSize(new Dimension(0, 330));
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(PanelUtils
-				.westAndEastElement(PanelUtils.centerInPanel(selp),
+				.westAndEastElement(selpouter,
 						PanelUtils.northAndCenterElement(selp2, advancementTrigger)))));
 
 		pane3.setOpaque(false);
