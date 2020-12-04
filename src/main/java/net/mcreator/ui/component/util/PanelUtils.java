@@ -87,6 +87,15 @@ public class PanelUtils {
 		return p;
 	}
 
+	public static  JComponent topToToeElement(Component top, Component center, Component toe) {
+		JPanel p = new JPanel(new BorderLayout());
+		p.setOpaque(false);
+		p.add("North", top);
+		p.add("Center", center);
+		p.add("South", toe);
+		return p;
+	}
+
 	public static JComponent centerAndSouthElement(Component top, Component center) {
 		JPanel p = new JPanel(new BorderLayout());
 		p.setOpaque(false);

@@ -171,10 +171,9 @@ public class PreferencesDialog extends MCreatorDialog {
 
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ui_backgrounds"), "backgrounds", "png");
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_procedure_templates"), "templates/ptpl", "ptpl");
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ai_builder_templates"), "templates/aitpl",
-				"aitpl");
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_texture_templates"),
-				"templates/textures/texturemaker", "png");
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ai_builder_templates"), "templates/aitpl", "aitpl");
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_tooltip_templates"), "templates/tttpl", "tttpl");
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_texture_templates"), "templates/textures/texturemaker", "png");
 		new PluginsPanel(this);
 	}
 

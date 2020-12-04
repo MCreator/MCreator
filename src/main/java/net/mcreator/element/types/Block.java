@@ -54,6 +54,7 @@ import java.util.Map;
 
 	public String itemTexture;
 	public String particleTexture;
+	public String sensitivity;
 
 	public String blockBase;
 
@@ -64,6 +65,10 @@ import java.util.Map;
 
 	public String name;
 	public List<String> specialInfo;
+	public boolean onShiftOnly;
+	public List<String> onShiftInfo;
+	public boolean onCommandOnly;
+	public List<String> onCommandInfo;
 	public double hardness;
 	public double resistance;
 	public boolean hasGravity;
@@ -85,6 +90,8 @@ import java.util.Map;
 	public boolean tickRandomly;
 
 	public boolean isReplaceable;
+	public boolean emitsRedstone;
+	public int emittedRedstonePower;
 	public String colorOnMap;
 	public MItemBlock creativePickItem;
 	public String offsetType;
@@ -170,6 +177,7 @@ import java.util.Map;
 		this.offsetType = "NONE";
 		this.inventoryInSlotIDs = new ArrayList<>();
 		this.inventoryOutSlotIDs = new ArrayList<>();
+		this.sensitivity = "EVERYTHING";
 
 		this.energyCapacity = 400000;
 		this.energyMaxReceive = 200;
@@ -181,6 +189,18 @@ import java.util.Map;
 		if (blockBase != null && !blockBase.equals(""))
 			return -1;
 		return renderType;
+	}
+
+	public boolean infoOnly() {
+		return !specialInfo.isEmpty();
+	}
+
+	public boolean shiftOnly() {
+		return onShiftOnly;
+	}
+
+	public boolean commandOnly() {
+		return onCommandOnly;
 	}
 
 	public boolean hasCustomDrop() {

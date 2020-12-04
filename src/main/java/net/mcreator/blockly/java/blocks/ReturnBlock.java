@@ -35,7 +35,6 @@ public class ReturnBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String type = block.getAttribute("type");
 		VariableElementType returnType = null;
-
 		switch (type) {
 		case "return_logic":
 			returnType = VariableElementType.LOGIC;

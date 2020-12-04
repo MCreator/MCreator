@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class WorkspaceFolderManager {
@@ -65,6 +66,14 @@ public class WorkspaceFolderManager {
 		return new File(getItemsTexturesDir(), textureIdentifier + ".png");
 	}
 
+	public File getEntityTextureFile(String textureIdentifier) {
+		return new File(getEntitiesTexturesDir(), textureIdentifier + ".png");
+	}
+
+	public File getPaintingTextureFile(String textureIdentifier) {
+		return new File(getPaintingsTexturesDir(), textureIdentifier + ".png");
+	}
+
 	public File getOtherTextureFile(String textureIdentifier) {
 		return new File(getOtherTexturesDir(), textureIdentifier + ".png");
 	}
@@ -94,6 +103,14 @@ public class WorkspaceFolderManager {
 		return listPNGsInDir(getItemsTexturesDir());
 	}
 
+	public List<File> getEntityTexturesList() {
+		return listPNGsInDir(getEntitiesTexturesDir());
+	}
+
+	public List<File> getPaintingTexturesList() {
+		return listPNGsInDir(getPaintingsTexturesDir());
+	}
+
 	public List<File> getArmorTexturesList() {
 		return listPNGsInDir(getArmorTexturesDir());
 	}
@@ -110,12 +127,34 @@ public class WorkspaceFolderManager {
 		if (dir == null)
 			return Collections.emptyList();
 
-		List<File> retval = new ArrayList<>();
-		File[] block = dir.listFiles();
-		for (File element : block != null ? block : new File[0])
-			if (element.getName().endsWith(".png"))
-				retval.add(element);
+		List<File> retval = new LinkedList<>();
+		retval = listPNGsInDir(dir, retval);
+
 		return retval;
+	}
+
+	private static List<File> listPNGsInDir(File dir, List<File> list){
+		File[] block = dir.listFiles();
+		for (File f : block != null ? block : new File[0]) {
+			if (f.isFile()) {
+				if (f.getName().endsWith(".png")) {
+					list.add(f);
+				}
+			} else if (f.isDirectory()) {
+				if(defaultDirectoryNames(f)) {
+					listPNGsInDir(f, list);
+				}
+			}
+		}
+		return list;
+	}
+	private static boolean defaultDirectoryNames(File file){
+		if (file.getName().contains("block") || file.getName().contains("ïtem") || file.getName().contains("entity")
+				|| file.getName().contains("entities") || file.getName().contains("painting") || file.getName().contains("models")){
+			return false;
+		} else
+			return true;
+
 	}
 
 	@Nullable public File getBlocksTexturesDir() {
@@ -126,6 +165,16 @@ public class WorkspaceFolderManager {
 	@Nullable public File getItemsTexturesDir() {
 		return GeneratorUtils
 				.getSpecificRoot(workspace, workspace.getGenerator().getGeneratorConfiguration(), "item_textures_dir");
+	}
+
+	@Nullable public File getEntitiesTexturesDir() {
+		return GeneratorUtils
+				.getSpecificRoot(workspace, workspace.getGenerator().getGeneratorConfiguration(), "entity_textures_dir");
+	}
+
+	@Nullable public File getPaintingsTexturesDir() {
+		return GeneratorUtils
+				.getSpecificRoot(workspace, workspace.getGenerator().getGeneratorConfiguration(), "painting_textures_dir");
 	}
 
 	@Nullable public File getArmorTexturesDir() {

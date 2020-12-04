@@ -1,0 +1,21 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "upper_bound",
+      "check": "Number"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Number",
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "toolbox_init": [
+      "<value name=\"upper_bound\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value>"
+    ],
+    "inputs": [
+      "upper_bound"
+    ],
+    "toolbox_id": "math"
+  }
+}
