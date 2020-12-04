@@ -1,0 +1,1 @@
+((new java.util.Random()).nextInt((int)${input$upper_bound} + 1))

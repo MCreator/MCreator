@@ -42,12 +42,4 @@ public class Painting extends GeneratableElement {
 				getModElement().getWorkspace().getFolderManager()
 						.getOtherTextureFile(FilenameUtils.removeExtension(texture)), width, height);
 	}
-
-	@Override public void finalizeModElementGeneration() {
-		File originalTextureFileLocation = getModElement().getWorkspace().getFolderManager()
-				.getOtherTextureFile(FilenameUtils.removeExtension(texture));
-		File newLocation = new File(getModElement().getWorkspace().getFolderManager().getOtherTexturesDir(),
-				"painting/" + getModElement().getRegistryName() + ".png");
-		FileIO.copyFile(originalTextureFileLocation, newLocation);
-	}
 }

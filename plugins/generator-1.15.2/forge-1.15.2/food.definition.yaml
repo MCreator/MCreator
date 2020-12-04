@@ -18,3 +18,12 @@ templates:
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: name
+  - key: item.@modid.@registryname.tooltip
+    condition: foodInfoOnly
+    mapto: specialInfo
+  - key: item.@modid.@registryname.shift.tooltip
+    condition: foodShiftOnly
+    mapto: onShiftInfo
+  - key: item.@modid.@registryname.command.tooltip
+    condition: foodCommandOnly
+    mapto: onCommandInfo

@@ -1,0 +1,1 @@
+((new java.util.Random()).nextBoolean())
