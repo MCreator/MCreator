@@ -399,12 +399,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         }
         </#if>
 
-		<#if data.isBeaconBase>
-		@Override public boolean isBeaconBase(BlockState state, IWorldReader world, BlockPos pos, BlockPos beacon) {
-			return true;
-		}
-        </#if>
-
 		<#if data.enchantPowerBonus != 0>
 		@Override public float getEnchantPowerBonus(BlockState state, IWorldReader world, BlockPos pos) {
 			return ${data.enchantPowerBonus}f;

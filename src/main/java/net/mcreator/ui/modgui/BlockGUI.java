@@ -161,7 +161,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private DimensionListField spawnWorldTypes;
 
 	private final JCheckBox plantsGrowOn = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox isBeaconBase = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
 
 	private final JComboBox<String> reactionToPushing = new JComboBox<>(
@@ -473,7 +472,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		sbbp2.setOpaque(false);
 
 		plantsGrowOn.setOpaque(false);
-		isBeaconBase.setOpaque(false);
 
 		sbbp22.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -629,7 +627,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel selp = new JPanel(new GridLayout(12, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 
-		JPanel advancedProperties = new JPanel(new GridLayout(14, 2, 0, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(13, 2, 0, 2));
 
 		hasGravity.setOpaque(false);
 		tickRandomly.setOpaque(false);
@@ -750,10 +748,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/beacon_color_modifier"),
 				L10N.label("elementgui.block.beacon_color_modifier")));
 		advancedProperties.add(beaconColorModifier);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_beacon_base"),
-				L10N.label("elementgui.block.is_beacon_base")));
-		advancedProperties.add(isBeaconBase);
 
 		advancedProperties.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/is_ladder"), L10N.label("elementgui.block.is_ladder")));
@@ -1311,7 +1305,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		inventorySize.setValue(block.inventorySize);
 		inventoryStackSize.setValue(block.inventoryStackSize);
 		tickRate.setValue(block.tickRate);
-		isBeaconBase.setSelected(block.isBeaconBase);
 
 		spawnWorldTypes.setListElements(block.spawnWorldTypes);
 		blocksToReplace.setListElements(block.blocksToReplace);
@@ -1374,7 +1367,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.tickRandomly = tickRandomly.isSelected();
 		block.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		block.destroyTool = (String) destroyTool.getSelectedItem();
-		block.isBeaconBase = isBeaconBase.isSelected();
 		block.customDrop = customDrop.getBlock();
 		block.dropAmount = (int) dropAmount.getValue();
 		block.plantsGrowOn = plantsGrowOn.isSelected();
