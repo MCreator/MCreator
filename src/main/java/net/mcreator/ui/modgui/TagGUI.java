@@ -74,6 +74,8 @@ public class TagGUI extends ModElementGUI<Tag> {
 		name.addItem("category/tag");
 		name.addItem("tick");
 		name.addItem("load");
+		name.addItem("logs");
+		name.addItem("beacon_base_blocks");
 
 		name.setEditable(true);
 		name.setOpaque(false);
