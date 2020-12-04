@@ -60,6 +60,7 @@ public final class ModElementTypeRegistry {
 		put(ModElementType.MUSICDISC, new ModTypeRegistration<>(null, 28, MusicDiscGUI::new, MusicDisc.class));
 		put(ModElementType.PAINTING, new ModTypeRegistration<>(null, 30, PaintingGUI::new, Painting.class));
 		put(ModElementType.PARTICLE, new ModTypeRegistration<>(null, 31, ParticleGUI::new, Particle.class));
+		put(ModElementType.POTIONITEM, new ModTypeRegistration<>(null, 23, PotionItemGUI::new, PotionItem.class));
 	}};
 
 	public static class ModTypeRegistration<GE extends GeneratableElement> {

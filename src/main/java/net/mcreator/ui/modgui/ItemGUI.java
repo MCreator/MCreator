@@ -18,12 +18,19 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.data.Dependency;
+import net.mcreator.blockly.*;
+import net.mcreator.blockly.data.*;
+import net.mcreator.element.parts.Enchantment;
+import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
+import net.mcreator.ui.blockly.*;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.Item;
+import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
+import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -32,7 +39,7 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
@@ -50,22 +57,30 @@ import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import javax.xml.parsers.*;
 import java.awt.*;
+import java.io.StringReader;
+import java.text.ParseException;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class ItemGUI extends ModElementGUI<Item> {
 
 	private TextureHolder texture;
-
-	private final JTextField specialInfo = new JTextField(20);
 
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 0, 64, 1));
 	private final VTextField name = new VTextField(20);
@@ -81,7 +96,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox destroyAnyBlock = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox hasGlow = L10N.checkbox("elementgui.item.glowing_effect");
+	private final JCheckBox hasTooltip = L10N.checkbox("elementgui.item.has_tooltip");
 	private ProcedureSelector glowCondition;
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
@@ -100,6 +116,15 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private ProcedureSelector onEntitySwing;
 	private ProcedureSelector onDroppedByPlayer;
 
+	private final JCheckBox hasDispenseBehavior = L10N.checkbox("elementgui.common.enable");
+	private ProcedureSelector dispenseSuccessCondition;
+	private ProcedureSelector dispenseResultItemstack;
+
+	private BlocklyPanel blocklyPanel;
+	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
+	private boolean hasErrors = false;
+	private Map<String, ToolboxBlock> externalBlocks;
+
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
@@ -115,6 +140,33 @@ public class ItemGUI extends ModElementGUI<Item> {
 		super.finalizeGUI();
 	}
 
+	private void regenerateTooltipProcedures() {
+		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
+				mcreator.getWorkspace().getGenerator().getGeneratorStats().getTooltipProcedures());
+
+		BlocklyToTooltip blocklyToJava;
+		try {
+			blocklyToJava = new BlocklyToTooltip(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
+					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+			        new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
+		} catch (TemplateGeneratorException e) {
+			return;
+		}
+
+		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
+
+		SwingUtilities.invokeLater(() -> {
+			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
+			hasErrors = false;
+			for (BlocklyCompileNote note : compileNotesArrayList) {
+				if (note.getType() == BlocklyCompileNote.Type.ERROR) {
+					hasErrors = true;
+					break;
+				}
+			}
+		});
+	}
+
 	@Override protected void initGUI() {
 		onRightClickedInAir = new ProcedureSelector(this.withEntry("item/when_right_clicked"), mcreator,
 				L10N.t("elementgui.common.event_right_clicked_air"),
@@ -123,20 +175,20 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.common.event_on_crafted"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
-				L10N.t("elementgui.common.event_right_clicked_block"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction"));
+				L10N.t("elementgui.common.event_right_clicked_block"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction"));
 		onEntityHitWith = new ProcedureSelector(this.withEntry("item/when_entity_hit"), mcreator,
-				L10N.t("elementgui.item.event_entity_hit"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack"));
+				L10N.t("elementgui.item.event_entity_hit"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack"));
 		onItemInInventoryTick = new ProcedureSelector(this.withEntry("item/inventory_tick"), mcreator,
-				L10N.t("elementgui.item.event_inventory_tick"), Dependency
-				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
+				L10N.t("elementgui.item.event_inventory_tick"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
 		onItemInUseTick = new ProcedureSelector(this.withEntry("item/hand_tick"), mcreator,
-				L10N.t("elementgui.item.event_hand_tick"), Dependency
-				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
+				L10N.t("elementgui.item.event_hand_tick"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
 		onStoppedUsing = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
-				L10N.t("elementgui.item.event_stopped_using"), Dependency
-				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
+				L10N.t("elementgui.item.event_stopped_using"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.item.event_entity_swings"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
@@ -147,6 +199,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		dispenseSuccessCondition = new ProcedureSelector(this.withEntry("item/dispense_success_condition"), mcreator,
+				L10N.t("elementgui.item.dispense_success_condition"), VariableElementType.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction"));
+		dispenseResultItemstack = new ProcedureSelector(this.withEntry("item/dispense_result_itemstack"), mcreator,
+				L10N.t("elementgui.item.dispense_result_itemstack"), VariableElementType.ITEMSTACK,
+				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:boolean"))
+				.setDefaultName("(provided itemstack)");
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -163,125 +222,139 @@ public class ItemGUI extends ModElementGUI<Item> {
 			}
 		});
 
-		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
-		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
-		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
-		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
+		JPanel visual = new JPanel(new BorderLayout(10, 10));
+		JPanel properties = new JPanel(new BorderLayout(10, 10));
+		JPanel inventory = new JPanel(new BorderLayout(10, 10));
+		JPanel triggers = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		texture = new TextureHolder(new GeneralTextureSelector(mcreator, GeneralTextureSelector.TextureType.ITEM));
 		texture.setOpaque(false);
 
-		JPanel destal2 = new JPanel(new BorderLayout(0, 10));
-		destal2.setOpaque(false);
-		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
-		destal3.setOpaque(false);
-		destal3.add("West", PanelUtils
-				.totalCenterInPanel(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))));
-		destal2.add("North", destal3);
+		JPanel visualPanel = new JPanel(new BorderLayout(0, 10));
+		visualPanel.setOpaque(false);
+		JPanel visualProperties = new JPanel(new BorderLayout(15, 15));
+		visualProperties.setOpaque(false);
+		visualProperties.add("West", PanelUtils.totalCenterInPanel(
+				ComponentUtils.squareAndBorder(texture,
+				L10N.t("elementgui.item.texture"))));
+		visualPanel.add("North", visualProperties);
 
-		JPanel destal = new JPanel(new GridLayout(1, 2, 15, 15));
-		destal.setOpaque(false);
-		JComponent destal1 = PanelUtils.join(FlowLayout.LEFT, HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-						L10N.label("elementgui.item.glowing_effect")), hasGlow, glowCondition);
-
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.item.tooltip_tip")));
-		destal.add(specialInfo);
+		JComponent checkBoxes = PanelUtils.gridElements(2, 1,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"), hasGlow),
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"), hasTooltip));
 
 		hasGlow.setOpaque(false);
 		hasGlow.setSelected(false);
+		hasTooltip.setOpaque(false);
+		hasTooltip.setSelected(false);
 
 		hasGlow.addActionListener(e -> updateGlowElements());
 
-		destal2.add("Center", PanelUtils.northAndCenterElement(destal, destal1, 10, 10));
-
-		ComponentUtils.deriveFont(specialInfo, 16);
-
 		ComponentUtils.deriveFont(renderType, 16.0f);
 
-		JPanel rent = new JPanel();
-		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
+		JPanel modelPanel = new JPanel();
+		modelPanel.setLayout(new BoxLayout(modelPanel, BoxLayout.PAGE_AXIS));
 
-		rent.setOpaque(false);
-		rent.add(PanelUtils.join(HelpUtils
-						.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
+		modelPanel.setOpaque(false);
+		modelPanel.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(
+				this.withEntry("item/model"),
+				L10N.label("elementgui.common.item_model")),
 				PanelUtils.join(renderType)));
 
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
-		destal3.add("Center", rent);
+		visualProperties.add("Center", modelPanel);
+		visualProperties.add("East", PanelUtils.join(FlowLayout.LEFT, checkBoxes, glowCondition));
 
-		rent.setBorder(BorderFactory.createTitledBorder(
+		modelPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
 				L10N.t("elementgui.item.item_3d_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JPanel sbbp2 = new JPanel(new BorderLayout());
-		sbbp2.setOpaque(false);
+		externalBlocks = BlocklyLoader.INSTANCE.getTooltipBlockLoader().getDefinedBlocks();
 
-		sbbp2.add("West", destal2);
+		blocklyPanel = new BlocklyPanel(mcreator);
+		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			BlocklyLoader.INSTANCE.getTooltipBlockLoader()
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.TOOLTIP);
+			blocklyPanel.getJSBridge()
+					.setJavaScriptEventListener(() -> new Thread(ItemGUI.this::regenerateTooltipProcedures).start());
 
-		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(sbbp2)));
+			// If it's not editing mode (it's opened for the first time) set the xml data to default
+			if (!isEditingMode())
+				blocklyPanel.setXML("<xml><block type=\"tooltip_start\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>");
+		});
 
-		pane2.setOpaque(false);
+		JPanel ttBlockly = new JPanel(new GridLayout());
+		ttBlockly.setOpaque(false);
+		ttBlockly.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item.tooltip_procedures"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Color.white));
+		ttBlockly.add(PanelUtils.topToToeElement(
+			new TooltipEditorToolbar(mcreator, blocklyPanel), blocklyPanel, compileNotesPanel
+		));
 
-		JPanel subpane2 = new JPanel(new GridLayout(13, 2, 45, 2));
+		visual.add("Center", PanelUtils.centerInPanel(PanelUtils.centerAndSouthElement(visualPanel, ttBlockly)));
+
+		visual.setOpaque(false);
+
+		JPanel generalProperties = new JPanel(new GridLayout(13, 2, 2, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
-		subpane2.add(name);
+		generalProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				L10N.label("elementgui.common.name_in_gui")));
+		generalProperties.add(name);
 
-		subpane2.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
-		subpane2.add(rarity);
+		generalProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"),
+				L10N.label("elementgui.common.rarity")));
+		generalProperties.add(rarity);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
+		generalProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.common.creative_tab")));
-		subpane2.add(creativeTab);
+		generalProperties.add(creativeTab);
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/stack_size"), L10N.label("elementgui.common.max_stack_size")));
-		subpane2.add(stackSize);
+		generalProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
+				L10N.label("elementgui.common.max_stack_size")));
+		generalProperties.add(stackSize);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
+		generalProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
 				L10N.label("elementgui.common.enchantability")));
-		subpane2.add(enchantability);
+		generalProperties.add(enchantability);
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/destroy_speed"), L10N.label("elementgui.item.destroy_speed")));
-		subpane2.add(toolType);
+		generalProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/destroy_speed"),
+				L10N.label("elementgui.item.destroy_speed")));
+		generalProperties.add(toolType);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
+		generalProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
 				L10N.label("elementgui.item.damage_vs_entity")));
-		subpane2.add(PanelUtils.westAndCenterElement(enableMeleeDamage, damageVsEntity));
+		generalProperties.add(PanelUtils.westAndCenterElement(enableMeleeDamage, damageVsEntity));
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
+		generalProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
 				L10N.label("elementgui.item.number_of_uses")));
-		subpane2.add(damageCount);
+		generalProperties.add(damageCount);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/can_destroy_any_block"),
+		generalProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/can_destroy_any_block"),
 				L10N.label("elementgui.item.can_destroy_any_block")));
-		subpane2.add(destroyAnyBlock);
+		generalProperties.add(destroyAnyBlock);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item"),
+		generalProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item"),
 				L10N.label("elementgui.item.container_item")));
-		subpane2.add(stayInGridWhenCrafting);
+		generalProperties.add(stayInGridWhenCrafting);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
+		generalProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
 				L10N.label("elementgui.item.container_item_damage")));
-		subpane2.add(damageOnCrafting);
+		generalProperties.add(damageOnCrafting);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/recipe_remainder"),
+		generalProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/recipe_remainder"),
 				L10N.label("elementgui.item.recipe_remainder")));
-		subpane2.add(PanelUtils.centerInPanel(recipeRemainder));
+		generalProperties.add(PanelUtils.centerInPanel(recipeRemainder));
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/use_duration"), L10N.label("elementgui.item.use_duration")));
-		subpane2.add(useDuration);
+		generalProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/use_duration"),
+				L10N.label("elementgui.item.use_duration")));
+		generalProperties.add(useDuration);
 
 		enchantability.setOpaque(false);
 		useDuration.setOpaque(false);
@@ -291,43 +364,63 @@ public class ItemGUI extends ModElementGUI<Item> {
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
 
-		subpane2.setOpaque(false);
+		generalProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		generalProperties.setOpaque(false);
 
-		pane3.setOpaque(false);
+		JComponent canDispense =  PanelUtils.gridElements(2,1, PanelUtils.centerInPanel(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/has_dispense_behavior"),
+						L10N.label("elementgui.item.has_dispense_behavior"))),
+				PanelUtils.centerInPanel(hasDispenseBehavior));
+		JComponent dispenseProcedures = PanelUtils.gridElements(2, 1, 0, 8, dispenseSuccessCondition, dispenseResultItemstack);
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(subpane2));
+		hasDispenseBehavior.setOpaque(false);
+		hasDispenseBehavior.setSelected(false);
+		hasDispenseBehavior.addActionListener(e -> updateDispenseElements());
 
-		JPanel events = new JPanel(new GridLayout(3, 3, 10, 10));
-		events.setOpaque(false);
-		events.add(onRightClickedInAir);
-		events.add(onRightClickedOnBlock);
-		events.add(onCrafted);
-		events.add(onEntityHitWith);
-		events.add(onItemInInventoryTick);
-		events.add(onItemInUseTick);
-		events.add(onStoppedUsing);
-		events.add(onEntitySwing);
-		events.add(onDroppedByPlayer);
-		pane4.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
-		pane4.setOpaque(false);
+		JComponent dispenseProperties = PanelUtils.northAndCenterElement(canDispense, PanelUtils.centerInPanel(dispenseProcedures));
+		dispenseProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item.dispense_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")
+				)
+		);
+		dispenseProperties.setOpaque(false);
 
-		JPanel props = new JPanel(new GridLayout(3, 2, 35, 2));
-		props.setOpaque(false);
+		properties.setOpaque(false);
+		properties.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.westAndEastElement(generalProperties, PanelUtils.pullElementUp(dispenseProperties)))
+		);
 
-		props.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"), L10N.label("elementgui.item.bind_gui")));
-		props.add(guiBoundTo);
+		JComponent events = PanelUtils.gridElements(3,3,
+				onRightClickedInAir, onRightClickedOnBlock, onCrafted,
+				onEntityHitWith, onItemInInventoryTick, onItemInUseTick,
+				onStoppedUsing, onEntitySwing, onDroppedByPlayer);
 
-		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_size"),
+		triggers.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.maxMargin(events, 20, true, true, true, true))
+		);
+		triggers.setOpaque(false);
+
+		JPanel invPanel = new JPanel(new GridLayout(3, 2, 35, 2));
+		invPanel.setOpaque(false);
+
+		invPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"),
+				L10N.label("elementgui.item.bind_gui")));
+		invPanel.add(guiBoundTo);
+
+		invPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_size"),
 				L10N.label("elementgui.item.inventory_size")));
-		props.add(inventorySize);
+		invPanel.add(inventorySize);
 
-		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_stack_size"),
+		invPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_stack_size"),
 				L10N.label("elementgui.common.max_stack_size")));
-		props.add(inventoryStackSize);
+		invPanel.add(inventoryStackSize);
 
-		pane5.add(PanelUtils.totalCenterInPanel(props));
-		pane5.setOpaque(false);
+		inventory.add(PanelUtils.totalCenterInPanel(invPanel));
+		inventory.setOpaque(false);
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -336,10 +429,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.item.error_item_needs_name")));
 		name.enableRealtimeValidation();
 
-		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
-		addPage(L10N.t("elementgui.common.page_inventory"), pane5);
-		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
+		addPage(L10N.t("elementgui.common.page_visual"), visual);
+		addPage(L10N.t("elementgui.common.page_properties"), properties);
+		addPage(L10N.t("elementgui.common.page_inventory"), inventory);
+		addPage(L10N.t("elementgui.common.page_triggers"), triggers);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -349,6 +442,40 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private void updateGlowElements() {
 		glowCondition.setEnabled(hasGlow.isSelected());
+	}
+
+	private void updateDispenseElements() {
+		dispenseSuccessCondition.setEnabled(hasDispenseBehavior.isSelected());
+		dispenseResultItemstack.setEnabled(hasDispenseBehavior.isSelected());
+	}
+
+	@Override public void onSave() {
+		super.onSave();
+		String xml = blocklyPanel.getXML();
+		// Map of `translation_key, untranslated_text`
+		Map<String, String> map = new HashMap<String, String>();
+
+		try {
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document doc = builder.parse(new InputSource(new StringReader(xml)));
+			doc.getDocumentElement().normalize();
+
+			Element start_block = BlocklyBlockUtil.getStartBlock(doc, "tooltip_start");
+			List<Element> blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
+
+			BlocklyToTooltip.processTooltipProcedure(map, blocks);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue();
+			mcreator.getWorkspace().setLocalization(key, value);
+		}
+
 	}
 
 	@Override public void reloadDataLists() {
@@ -363,6 +490,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onEntitySwing.refreshListKeepSelected();
 		onDroppedByPlayer.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
+		dispenseSuccessCondition.refreshListKeepSelected();
+		dispenseResultItemstack.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
@@ -378,19 +507,25 @@ public class ItemGUI extends ModElementGUI<Item> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 1)
+		if (page == 1) {
 			return new AggregatedValidationResult(name);
-		else if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		return new AggregatedValidationResult.PASS();
+		} else if (page == 0) {
+			if (hasErrors) {
+				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
+						.map(compileNote -> "Tooltip builder: " + compileNote.getMessage())
+						.collect(Collectors.toList()));
+			}
+		    return new AggregatedValidationResult(page1group);
+	    } else {
+		    return new AggregatedValidationResult.PASS();
+	}
 	}
 
 	@Override public void openInEditingMode(Item item) {
 		name.setText(item.name);
 		rarity.setSelectedItem(item.rarity);
 		texture.setTextureFromTextureName(item.texture);
-		specialInfo.setText(
-				item.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+
 		onRightClickedInAir.setSelectedProcedure(item.onRightClickedInAir);
 		onRightClickedOnBlock.setSelectedProcedure(item.onRightClickedOnBlock);
 		onCrafted.setSelectedProcedure(item.onCrafted);
@@ -411,18 +546,33 @@ public class ItemGUI extends ModElementGUI<Item> {
 		stayInGridWhenCrafting.setSelected(item.stayInGridWhenCrafting);
 		damageOnCrafting.setSelected(item.damageOnCrafting);
 		hasGlow.setSelected(item.hasGlow);
+		hasTooltip.setSelected(item.hasTooltip);
 		glowCondition.setSelectedProcedure(item.glowCondition);
 		damageVsEntity.setValue(item.damageVsEntity);
 		enableMeleeDamage.setSelected(item.enableMeleeDamage);
 		guiBoundTo.setSelectedItem(item.guiBoundTo);
 		inventorySize.setValue(item.inventorySize);
 		inventoryStackSize.setValue(item.inventoryStackSize);
+		hasDispenseBehavior.setSelected(item.hasDispenseBehavior);
+		dispenseSuccessCondition.setSelectedProcedure(item.dispenseSuccessCondition);
+		dispenseResultItemstack.setSelectedProcedure(item.dispenseResultItemstack);
 
 		updateGlowElements();
+		updateDispenseElements();
 
 		Model model = item.getItemModel();
 		if (model != null)
 			renderType.setSelectedItem(model);
+
+		// Elements that are created before doesn't have the start block, xml data is null, so we set the data to default
+		if (item.ttxml == null)
+			item.ttxml = "<xml><block type=\"tooltip_start\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
+		blocklyPanel.setXMLDataOnly(item.ttxml);
+		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			blocklyPanel.clearWorkspace();
+			blocklyPanel.setXML(item.ttxml);
+			regenerateTooltipProcedures();
+		});
 	}
 
 	@Override public Item getElementFromGUI() {
@@ -440,7 +590,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		item.damageOnCrafting = damageOnCrafting.isSelected();
 		item.hasGlow = hasGlow.isSelected();
+		item.hasTooltip = hasTooltip.isSelected();
 		item.glowCondition = glowCondition.getSelectedProcedure();
+		item.ttxml = blocklyPanel.getXML();
 		item.onRightClickedInAir = onRightClickedInAir.getSelectedProcedure();
 		item.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();
 		item.onCrafted = onCrafted.getSelectedProcedure();
@@ -455,8 +607,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.inventorySize = (int) inventorySize.getValue();
 		item.inventoryStackSize = (int) inventoryStackSize.getValue();
 		item.guiBoundTo = (String) guiBoundTo.getSelectedItem();
-
-		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
+		item.hasDispenseBehavior = hasDispenseBehavior.isSelected();
+		item.dispenseSuccessCondition = dispenseSuccessCondition.getSelectedProcedure();
+		item.dispenseResultItemstack = dispenseResultItemstack.getSelectedProcedure();
 
 		item.texture = texture.getID();
 		Model.Type modelType = ((Model) Objects.requireNonNull(renderType.getSelectedItem())).getType();

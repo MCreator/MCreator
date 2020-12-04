@@ -31,14 +31,12 @@ import java.io.File;
 
 public class Potion extends GeneratableElement {
 
-	public String name;
 	public String effectName;
 	public String icon;
 	public Color color;
 	public boolean isInstant;
 	public boolean isBad;
 	public boolean isBenefitical;
-	public boolean registerPotionType;
 	public boolean renderStatusInInventory;
 	public boolean renderStatusInHUD;
 

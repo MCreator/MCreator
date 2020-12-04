@@ -1,0 +1,8 @@
+{
+  "type": "has_shift_down",
+  "output": "Boolean",
+  "colour": 210,
+  "mcreator": {
+    "toolbox_id": "checks"
+  }
+}
