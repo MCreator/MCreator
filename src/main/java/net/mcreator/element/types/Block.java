@@ -75,7 +75,6 @@ import java.util.Map;
 	public int dropAmount;
 	public boolean useLootTableForDrops;
 
-	public boolean isBeaconBase;
 	public double enchantPowerBonus;
 	public boolean plantsGrowOn;
 	public boolean canProvidePower;
