@@ -998,8 +998,8 @@ public class TestWorkspaceDataProvider {
 			rangedItem.enableMeleeDamage = !_true;
 			rangedItem.damageVsEntity = 2;
 			return rangedItem;
-		case POTION:
-			Potion potion = new Potion(modElement);
+		case POTIONEFFECT:
+			PotionEffect potion = new PotionEffect(modElement);
 			potion.effectName = modElement.getName() + " Effect Name";
 			potion.color = Color.magenta;
 			potion.icon = "test.png";

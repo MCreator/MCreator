@@ -1,8 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="MCreator (macOS UI Thread model)" type="Application" factoryName="Application" singleton="true">
+  <configuration default="false" name="MCToolkit" type="Application" factoryName="Application" singleton="true">
     <option name="MAIN_CLASS_NAME" value="net.mcreator.Launcher" />
     <module name="MCreator.main" />
-    <option name="VM_PARAMETERS" value="-Djavafx.embed.singleThread=true" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
