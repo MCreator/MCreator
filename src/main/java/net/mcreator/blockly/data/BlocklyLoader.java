@@ -29,12 +29,14 @@ public class BlocklyLoader {
 	private final ExternalBlockLoader procedureBlockLoader;
 	private final ExternalBlockLoader jsonTriggerLoader;
 	private final ExternalBlockLoader aitaskBlockLoader;
+	private final ExternalBlockLoader tooltipBlockLoader;
 	private final ExternalTriggerLoader externalTriggerLoader;
 
 	private BlocklyLoader() {
 		procedureBlockLoader = new ExternalBlockLoader("procedures");
 		aitaskBlockLoader = new ExternalBlockLoader("aitasks");
 		externalTriggerLoader = new ExternalTriggerLoader("triggers");
+		tooltipBlockLoader = new ExternalBlockLoader("tooltips");
 		jsonTriggerLoader = new ExternalBlockLoader("jsontriggers");
 	}
 
@@ -48,6 +50,10 @@ public class BlocklyLoader {
 
 	public ExternalTriggerLoader getExternalTriggerLoader() {
 		return externalTriggerLoader;
+	}
+
+	public ExternalBlockLoader getTooltipBlockLoader() {
+		return tooltipBlockLoader;
 	}
 
 	public ExternalBlockLoader getJSONTriggerLoader() {

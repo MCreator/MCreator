@@ -77,42 +77,46 @@ public class L10N {
 	}
 
 	/**
-	 * Test mode will make JVM crash with runtime exception if translation key is not found when requested
+	 * Test mode will make {@link #t} and {@link #t_en} log errors if translation key is not found when requested
 	 */
 	public static void enterTestingMode() {
 		isTestingEnvironment = true;
 	}
 
-	public static String t(String key, Object... parameters) {
-		if (key == null)
-			return null;
-
-		if (rb.containsKey(key))
+	public static String t(@NotNull String key, Object... parameters) {
+		if (rb.containsKey(key)) {
 			return MessageFormat.format(rb.getString(key), parameters);
-		else if (key.startsWith("blockly.") && key.endsWith(".tooltip"))
-			return null;
-		else if (isTestingEnvironment)
-			throw new RuntimeException("Failed to load any translation for key: " + key);
-		else if (key.startsWith("blockly.") || key.startsWith("trigger."))
-			return null;
-		else
-			return key;
+	    } else {
+			//This is for procedure tooltips, most doesn't have tooltips
+			// So we'll return null to not show a unnecessary translation key when hovered on a procedure
+			if (key.startsWith("blockly.") && key.endsWith(".tooltip"))
+				return null;
+			else if (isTestingEnvironment)
+				LOG.error("Failed to load any translation for key: " + key + " from your current language.");
+			if (rb_en.containsKey(key)) {
+				if (isTestingEnvironment)
+				    LOG.error("Loading translation for key: " + key + " from English language.");
+				return MessageFormat.format(rb_en.getString(key), parameters);
+			} else {
+				if (isTestingEnvironment)
+					LOG.error("Failed to load any translation for key: " + key);
+				return key;
+			}
+		}
 	}
 
-	public static String t_en(String key, Object... parameters) {
-		if (key == null)
-			return null;
-
+	public static String t_en(@NotNull String key, Object... parameters) {
 		if (rb_en.containsKey(key))
 			return MessageFormat.format(rb_en.getString(key), parameters);
-		else if (key.startsWith("blockly.") && key.endsWith(".tooltip"))
-			return null;
-		else if (isTestingEnvironment)
-			throw new RuntimeException("Failed to load any translation for key: " + key);
-		else if (key.startsWith("blockly.") || key.startsWith("trigger."))
-			return null;
-		else
+		else {
+			//This is for procedure tooltips, most doesn't have tooltips
+			// So we'll return null to not show a unnecessary translation key when hovered on a procedure
+			if (key.startsWith("blockly.") && key.endsWith(".tooltip"))
+				return null;
+			else if (isTestingEnvironment)
+			    LOG.error("Failed to load any translation for key: " + key);
 			return key;
+		}
 	}
 
 	public static JLabel label(String key, Object... parameter) {

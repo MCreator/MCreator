@@ -341,15 +341,17 @@ public class AnimationMakerView extends ViewBase {
 			return;
 
 		String namec = JOptionPane.showInputDialog("Enter name of texture (without spaces): ");
+		String folderName = JOptionPane.showInputDialog("Folder name of armor texture (without spaces): ");
 		if (namec != null) {
 			File exportFile;
 			namec = RegistryNameFixer.fix(namec);
+			folderName = RegistryNameFixer.fix(folderName);
 			if (n == 0)
-				exportFile = mcreator.getWorkspace().getFolderManager().getBlockTextureFile(namec);
+				exportFile = mcreator.getWorkspace().getFolderManager().getBlockTextureFile(folderName + "/" + namec);
 			else if (n == 1)
-				exportFile = mcreator.getWorkspace().getFolderManager().getItemTextureFile(namec);
+				exportFile = mcreator.getWorkspace().getFolderManager().getItemTextureFile(folderName + "/" + namec);
 			else
-				exportFile = mcreator.getWorkspace().getFolderManager().getOtherTextureFile(namec);
+				exportFile = mcreator.getWorkspace().getFolderManager().getOtherTextureFile(folderName + "/" + namec);
 
 			if (exportFile.isFile()) {
 				JOptionPane

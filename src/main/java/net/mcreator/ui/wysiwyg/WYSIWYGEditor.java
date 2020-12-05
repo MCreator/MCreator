@@ -30,6 +30,7 @@ import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.help.HelpUtils;
@@ -64,6 +65,13 @@ public class WYSIWYGEditor extends JPanel {
 
 	public JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -256, 256, 1));
 	public JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -256, 256, 1));
+
+	public JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
+	public JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
+	public JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
+	public JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
+
+	public JCheckBox snapOnGrid = new JCheckBox((L10N.t("elementgui.gui.snap_components_on_grid")));
 
 	public JButton button = new JButton(UIRES.get("32px.addbutton"));
 	public JButton text = new JButton(UIRES.get("32px.addtextinput"));
@@ -251,17 +259,11 @@ public class WYSIWYGEditor extends JPanel {
 		slot1.addActionListener(e -> new InputSlotDialog(this, null));
 		slot2.addActionListener(e -> new OutputSlotDialog(this, null));
 
-		JCheckBox snapOnGrid = new JCheckBox((L10N.t("elementgui.gui.snap_components_on_grid")));
 		snapOnGrid.setOpaque(false);
 		snapOnGrid.addActionListener(event -> {
 			editor.showGrid = snapOnGrid.isSelected();
 			editor.repaint();
 		});
-
-		JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-		JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-		JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
-		JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
 
 		sx.addChangeListener(e -> {
 			editor.grid_x_spacing = (int) sx.getValue();
@@ -398,7 +400,7 @@ public class WYSIWYGEditor extends JPanel {
 			importmobtexture.setOpaque(false);
 			importmobtexture.setMargin(new Insets(0, 0, 0, 0));
 			importmobtexture.addActionListener(e -> {
-				TextureImportDialogs.importOtherTextures(mcreator);
+				TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.OTHER);
 				overlayBaseTexture.removeAllItems();
 				overlayBaseTexture.addItem("");
 				mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
