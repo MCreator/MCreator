@@ -6,7 +6,7 @@
 		double k = entity.getPosZ();
 		int amount = event.getLevels();
 		World world = entity.world;
-		java.util.HashMap<String, Object> dependencies = new java.util.HashMap<>();
+		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x", i);
 		dependencies.put("y", j);
 		dependencies.put("z", k);
