@@ -1,0 +1,1 @@
+Ce paramètre défini la durée de l'effet spécifique sur la gauche.
