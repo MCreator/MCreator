@@ -8,6 +8,6 @@ localizationkeys:
   - key: item.minecraft.splash_potion.effect.@registryname
     mapto: splashName
   - key: item.minecraft.tipped_arrow.effect.@registryname
-    mapto: lingeringName
-  - key: item.minecraft.lingering_potion.effect.@registryname
     mapto: arrowName
+  - key: item.minecraft.lingering_potion.effect.@registryname
+    mapto: lingeringName
