@@ -1,0 +1,1 @@
+This parameter defines the amplifier of the specific effect on left.
