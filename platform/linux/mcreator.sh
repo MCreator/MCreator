@@ -6,11 +6,11 @@
 #
 
 # make launcher desktop file
-if [[ ! -f "mcreator.desktop" ]]; then
+if [[ ! -f "mctoolkit.desktop" ]]; then
 
 pwd=$(pwd)
 
-cat > mcreator.desktop <<EOL
+cat > mctoolkit.desktop <<EOL
 [Desktop Entry]
 Exec=/bin/bash -c 'cd "${pwd}" && ./mcreator.sh'
 Type=Application
@@ -19,8 +19,8 @@ Name=MCreator
 Icon=${pwd}/icon.png
 EOL
 
-chmod +x mcreator.desktop
-cp mcreator.desktop ~/Desktop/mcreator.desktop
+chmod +x mctoolkit.desktop
+cp mctoolkit.desktop ~/Desktop/mctoolkit.desktop
 
 fi
 
