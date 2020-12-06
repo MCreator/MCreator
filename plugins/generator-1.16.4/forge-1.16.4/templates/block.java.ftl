@@ -433,7 +433,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.isReplaceable>
         @Override public boolean isReplaceable(BlockState state, BlockItemUseContext context) {
-			return true;
+			return context.getItem().getItem() != this.asItem();
 		}
         </#if>
 

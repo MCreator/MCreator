@@ -256,7 +256,7 @@ import net.minecraft.block.material.Material;
 
         <#if data.isReplaceable>
         @Override public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
-			return true;
+			return useContext.getItem().getItem() != this.asItem();
 		}
         </#if>
 

@@ -191,7 +191,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					"<html>Log rotation (X/Y/Z)<br><small>Imitates vanilla log rotation" });
 
 	private final JComboBox<String> destroyTool = new JComboBox<>(
-			new String[] { "Not specified", "pickaxe", "axe", "shovel" });
+			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 	private final JSpinner breakHarvestLevel = new JSpinner(new SpinnerNumberModel(1, -1, 100, 1));
 
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.block.spawn_particles");
