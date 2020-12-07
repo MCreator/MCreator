@@ -4,5 +4,6 @@ L'outil avec le niveau de récolte donné (aussi appelé "tiers") ne peut être 
 * 1 est la pierre
 * 2 est le fer
 * 3 est le diamant
+* 4 est la netherite
 
-Vous pouvez définir des tiers plus haut que le diamant en mettant le tier à 4 ou plus.
+Vous pouvez définir des tiers plus haut que la netherite en mettant le tier à 5 ou plus.
