@@ -77,6 +77,7 @@ public class BlockItemIcons {
 		put("pickaxe", 				"IRON_PICKAXE");
 		put("axe", 					"IRON_AXE");
 		put("shovel", 				"IRON_SHOVEL");
+		put("hoe",					"IRON_HOE");
 
 		// biome types
 		put("WARM", 				"GRASS");
