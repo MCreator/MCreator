@@ -1,9 +1,5 @@
-Current vanilla limit for a single structure is 32x32x32 blocks for performance reasons.
+La limite actuelle pour une structure simple est de 32x32x32 blocs pour des raisons de performances.
 
-Structure block is a built-in vanilla block that can save builds as .NBT structures. 
+Les blocs de structure sont des blocs vanilla qui peuvent sauvegarder des structures en format .NBT
 
-You can use structural voids to allow the structure to let other blocks override air blocks in your structure 
-when it is generated. For example, if you want your structure to be buried on the inside you can fill the 
-inside of the structure with structure voids using the /fill command to allow natural blocks to 
-spawn where the voids are. Voids will not generate in your structures they are just placeholder blocks to let other 
-blocks override the area on generation.
+Vous pouvez utiliser des "structure voids" pour autoriser la structure à avoir des blocs à la place des blocs d'air lors de sa génération. Par exemple, si vous voulez que votre structure soit enterrée à l'interrieur, mettez des vides de structure à l'interrieur pour faire en sorte que les blocs générés normalement se mettent à la place des vides de structures. Les vides de structures ne se génèrent pas, ce sont juste des "bouche-trous" pour laisser les blocs normaux dans votre structure.
