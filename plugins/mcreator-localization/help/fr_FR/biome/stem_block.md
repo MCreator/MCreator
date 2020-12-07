@@ -1,1 +1,1 @@
-This parameter controls the block used to make the stem of your tree if custom trees are selected.
+Ce paramètre contrôle le bloc utilisé pour créer la tige de votre arbre si des arbres personnalisés sont sélectionnés.

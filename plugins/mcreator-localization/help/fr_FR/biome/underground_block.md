@@ -1,3 +1,4 @@
-This parameter controls the underground block below the ground block layer.
 
-Generally, vanilla or custom dirt is used here for most biomes.
+Ce paramètre contrôle le bloc souterrain sous la couche de bloc de sol.
+
+Généralement, la terre vanilla ou personnalisée est utilisée ici pour la plupart des biomes.

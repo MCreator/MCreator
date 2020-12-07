@@ -1,3 +1,4 @@
-This parameter controls the number of trees (the type you selected) per biome chunk.
 
-Set to 0 to disable trees.
+Ce paramètre contrôle le nombre d'arbres (le type que vous avez sélectionné) par tronçon de biome.
+
+Réglez sur 0 pour désactiver les arbres.

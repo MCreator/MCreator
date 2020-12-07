@@ -1,3 +1,3 @@
-This paremeter controls the block used to replace vines.
+Ce paramètre contrôle le bloc utilisé pour remplacer les vignes.
 
-Select air block to don't have vines.
+Sélectionnez le bloc d'air pour ne pas avoir de vignes.
