@@ -1,9 +1,9 @@
 Ce paramètre définit la durabilité de l'armure et est effectivement appliqué comme:
 
-* casque: max_damage_absorbed * 13
-* plastron: max_damage_absorbed * 15
-* jambières: max_damage_absorbed * 16
-* bottes: max_damage_absorbed * 11
+* casque: dégâts_maximum_absorbés * 13
+* plastron: dégâts_maximum_absorbés * 15
+* jambières: dégâts_maximum_absorbés * 16
+* bottes: dégâts_maximum_absorbés * 11
 
 L'armure vanilla utilise les facteurs suivants:
 

@@ -1,8 +1,8 @@
-The tool with given harvest level (tier) can only break blocks with the same tier or below.
+L'outil avec le niveau de récolte donné (aussi appelé "tiers") ne peut être utilisé seulement par le même tier, ou en dessous.
 
-* 0 is hand/wood
-* 1 is stone
-* 2 is iron
-* 3 is diamond
+* 0 est à main nue/bois
+* 1 est la pierre
+* 2 est le fer
+* 3 est le diamant
 
-You can define larger tiers than diamond too by setting the tier to 4 or larger.
+Vous pouvez définir des tiers plus haut que le diamant en mettant le tier à 4 ou plus.
