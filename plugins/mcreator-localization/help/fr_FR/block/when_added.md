@@ -1,1 +1,1 @@
-Triggers a procedure when the block is added to the world (might not be called by some natural generators).
+Déclenche une procédure lorsque le bloc est ajouté au monde (peut ne pas être appelé par certains générateurs naturels).

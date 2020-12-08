@@ -1,1 +1,1 @@
-Triggers a procedure when the block is destroyed by an explosion.
+Déclenche une procédure lorsque le bloc est détruit par une explosion.

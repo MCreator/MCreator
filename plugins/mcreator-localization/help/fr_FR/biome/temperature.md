@@ -1,7 +1,7 @@
-This parameter controls the temperature of the biome.
+Ce paramètre contrôle la température du biome.
 
-0.0 is like the Snowy Tundra, and 2.0 is like the Desert.
+0.0 est comme la toundra enneigée, et 2.0 est comme le désert.
 
-* Values less than 0.15 will make custom biome snow when downfall is happening
-* Values between 0.15 and 1.5 make the biome rain
-* Values larger than 1.5 will make the biome dry (disable rain, deserts for example)
+* Les valeurs inférieures à 0,15 créeront de la neige de biome personnalisée en cas de chute
+* Des valeurs comprises entre 0,15 et 1,5 font pleuvoir le biome
+* Des valeurs supérieures à 1,5 rendront le biome sec (désactiver la pluie, les déserts par exemple)

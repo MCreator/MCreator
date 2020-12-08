@@ -1,4 +1,4 @@
-Triggers a procedure randomly.
+Déclenche une procédure de manière aléatoire.
 
-This trigger is triggered on client-side only so no real world modifications except for 
-playing sounds and placing particles should be done from here.
+Ce déclencheur est déclenché côté client uniquement, donc aucune modification du monde réel à l'exception de
+jouer des sons et placer des particules doit être fait à partir d'ici.

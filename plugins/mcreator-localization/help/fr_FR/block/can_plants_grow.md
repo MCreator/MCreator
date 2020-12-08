@@ -1,1 +1,1 @@
-If this parameter is checked, any plant can be placed and grow on the block.
+Si ce paramètre est coché, n'importe quelle plante peut être placée et pousser sur le bloc.

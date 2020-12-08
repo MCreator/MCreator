@@ -1,1 +1,1 @@
-When a player right-clicks on the block, the procedure will be executed.
+Lorsqu'un joueur fait clique-droit sur le bloc, la procédure est exécutée.

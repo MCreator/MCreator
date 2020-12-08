@@ -1,4 +1,4 @@
-This parameter should only be used in combination with transparent blocks.
+Ce paramètre ne doit être utilisé qu'en combinaison avec des blocs transparents.
 
-This will make internal sides of the block connect similar to how glass, ice and
-other similar blocks do this.
+Cela permettra aux côtés internes du bloc de se connecter de la même manière que le verre, la glace et
+d'autres blocs similaires qui le font.

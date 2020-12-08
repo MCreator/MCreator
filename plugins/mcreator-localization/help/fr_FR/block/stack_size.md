@@ -1,4 +1,4 @@
-This is how many items in the slots in this block's inventory can stack too.
+C'est le nombre d'items dans les slots de l'inventaire de ce bloc qui peuvent également se stack.
 
-Keep in mind that there is another slot stack size limit set for the specific items, so this is an upper limit
-of the slots that can be further limited by items.
+Gardez à l'esprit qu'il existe une autre limite de taille du stack du slot définie pour les items spécifiques, il s'agit donc d'une limite supérieure
+des emplacements qui peuvent être encore limités par des items.

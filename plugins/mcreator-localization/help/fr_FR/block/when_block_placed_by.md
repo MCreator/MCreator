@@ -1,1 +1,1 @@
-Triggers a procedure when something places the block (entity/block) besides this block.
+Déclenche une procédure lorsque quelque chose place le bloc (entité/bloc) à côté de ce bloc.
