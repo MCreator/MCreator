@@ -48,9 +48,24 @@ import net.minecraft.block.material.Material;
 		<#if hasProcedure(data.onPlayerLeavesDimension) || hasProcedure(data.onPlayerEntersDimension)>
 		MinecraftForge.EVENT_BUS.register(this);
 		</#if>
+
+		<#if data.enablePortal>
+		FMLJavaModLoadingContext.get().getModEventBus().register(new POIRegisterHandler());
+		</#if>
 	}
 
 	<#if data.enablePortal>
+		private static PointOfInterestType poi = null;
+		public static final TicketType<BlockPos> CUSTOM_PORTAL = TicketType.create("${registryname}_portal", Vector3i::compareTo, 300);
+
+		public static class POIRegisterHandler {
+			@SubscribeEvent public void registerPointOfInterest(RegistryEvent.Register<PointOfInterestType> event) {
+				poi = new PointOfInterestType("${registryname}_portal",
+						Sets.newHashSet(ImmutableSet.copyOf(portal.getStateContainer().getValidStates())), 0, 1).setRegistryName("${registryname}_portal");
+				ForgeRegistries.POI_TYPES.register(poi);
+			}
+		}
+
 		@Override public void initElements() {
 			elements.blocks.add(() -> new CustomPortalBlock());
 			elements.items.add(() -> new ${name}Item().setRegistryName("${registryname}"));
