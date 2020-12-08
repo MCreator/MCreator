@@ -1,0 +1,1 @@
+Si une condition est spécifiée, ce label ne peut être affiché que si la condition est passée.
