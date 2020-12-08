@@ -1,10 +1,10 @@
-Sets the average number of ore veins to spawn per chunk.
+Définit le nombre moyen de veines de minerai à engendrer par morceau.
 
-Vanilla ore group per chunk values:
+Groupe de minerai vanilla par valeurs de tronçon:
 
-* Coal Ore - 20
-* Iron Ore - 20
-* Gold Ore - 2
-* Redstone Ore - 8
-* Diamond Ore - 1
+* Minerai de charbon - 20
+* Minerai de fer - 20
+* Minerai d'or - 2
+* Minerai de Redstone - 8
+* Minerai de diamant - 1
 * Lapis Lazuli - 1

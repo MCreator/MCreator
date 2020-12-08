@@ -1,3 +1,3 @@
-This is the color your block appears as on maps. 
+Il s'agit de la couleur de votre bloc sur les cartes.
 
-If set to Default, the color is based on the material of the block.
+S'il est défini sur Par défaut, la couleur est basée sur le matériau du bloc.

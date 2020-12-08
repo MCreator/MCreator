@@ -1,3 +1,3 @@
-This parameter controls the power bonus that the block has for the enchanting table. 
+Ce paramètre contrôle le bonus de puissance du bloc pour la table d'enchantement.
 
-The power bonus of the bookshelf is 1, of normal blocks, it is 0.
+Le bonus de puissance de la bibliothèque est de 1, des blocs normaux, il est de 0.

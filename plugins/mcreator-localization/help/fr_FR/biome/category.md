@@ -1,1 +1,1 @@
-This parameter controls the category of the biome
+Ce paramètre contrôle la catégorie du biome

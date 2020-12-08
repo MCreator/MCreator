@@ -1,1 +1,1 @@
-This parameter controls the number of dead bushes in one biome chunk
+Ce paramètre contrôle le nombre de buissons morts dans un tronçon de biome

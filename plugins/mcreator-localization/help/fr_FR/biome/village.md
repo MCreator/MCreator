@@ -1,0 +1,1 @@
+Utilisez ce paramètre pour avoir des Villages Minecraft dans votre biome.

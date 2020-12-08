@@ -4,5 +4,6 @@ The tool with given harvest level (tier) can only break blocks with the same tie
 * 1 is stone
 * 2 is iron
 * 3 is diamond
+* 4 is netherite
 
-You can define larger tiers than diamond too by setting the tier to 4 or larger.
+You can define larger tiers than netherite too by setting the tier to 5 or larger.
