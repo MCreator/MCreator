@@ -1,9 +1,9 @@
-Select the model to be used with this block. Model only defines visual look and not the
-bounding box of the block.
+Sélectionnez le modèle à utiliser avec ce bloc. Le modèle définit uniquement l'aspect visuel et non le
+boîte englobante du bloc.
 
-* **Normal** - Normal block with textures on each side
-* **Single texture** - Block with same texture on all sides
-* **Cross** - Model used by plants
-* Custom - you can define custom JSON and OBJ models too
+* ** Normal ** - Bloc normal avec des textures de chaque côté
+* ** Texture unique ** - Bloc avec la même texture sur tous les côtés
+* ** Croix ** - Modèle utilisé par les plantes
+* Personnalisé - vous pouvez également définir des modèles JSON et OBJ personnalisés
 
-When making custom models, JSON is recommended due to vanilla support for this model type.
+Lors de la création de modèles personnalisés, JSON est recommandé en raison de la prise en charge de ce type de modèle.

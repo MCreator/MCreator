@@ -1,1 +1,1 @@
-Triggers a procedure when the block is not powered by the redstone power.
+Déclenche une procédure lorsque le bloc n'est pas alimenté par la redstone.

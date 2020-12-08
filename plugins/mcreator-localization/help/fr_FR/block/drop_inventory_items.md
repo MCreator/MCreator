@@ -1,3 +1,3 @@
-Check this parameter if you want the items to drop when the block is broken. 
+Cochez ce paramètre si vous souhaitez que les items soient jetés(drop) lorsque le bloc est cassé.
 
-Chests use this parameter, for example.
+Les coffres utilisent ce paramètre, par exemple.

@@ -1,3 +1,3 @@
-Triggers a procedure when the block is ticked.
+Déclenche une procédure lorsque le bloc est coché.
 
-Naturally spawned blocks with tick by default only if random ticking is used for performance reasons.
+Blocs générés naturellement avec tick par défaut uniquement si le ticking aléatoire est utilisé pour des raisons de performances.

@@ -1,1 +1,1 @@
-This parameter controls how quickly the fire spreads to other blocks.
+Ce paramètre contrôle la rapidité avec laquelle le feu se propage à d'autres blocs.

@@ -1,4 +1,4 @@
-This parameter controls how the block will be "seen" by the AI path navigators of the mobs.
+Ce paramètre contrôle la manière dont le bloc sera "vu" par les navigateurs de chemin AI des mobs.
 
-Different AI path node types lead to different decisions on how to proceed with the movement when
-near block, depending on the AI path node type.
+Différents types de nœuds de chemin AI conduisent à différentes décisions sur la façon de procéder au mouvement lorsque
+le bloc est proche, selon le type de nœud de chemin AI.

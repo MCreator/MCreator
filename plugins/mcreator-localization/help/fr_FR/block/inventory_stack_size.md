@@ -1,4 +1,4 @@
-This parameter controls maximal size of the stack that can be placed in its internal inventory slots.
+Ce paramètre contrôle la taille maximale du stack qui peut être placée dans ses emplacements d'inventaire internes.
 
-Keep in mind that the smaller number between this parameter and max item stack size
-determines the actual max stack size.
+Gardez à l'esprit que le plus petit nombre entre ce paramètre et la taille maximale du stack d'items
+détermine la taille de stack maximale réelle.

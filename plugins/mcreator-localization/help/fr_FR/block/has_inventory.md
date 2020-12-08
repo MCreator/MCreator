@@ -1,8 +1,8 @@
-This parameter will give an inventory to your block. The block will be a tile entity.
+Ce paramètre donnera un inventaire à votre bloc. Le bloc sera une entité tuile.
 
-This parameter enables features such as:
-* NBT tags on block
-* Inventory for item storage of block
-* Comparator interaction
+Ce paramètre active des fonctionnalités telles que:
+* Tags NBT sur bloc
+* Inventaire pour le stockage d'items du bloc
+* Interaction avec le comparateur
 
-These features will not work without this parameter checked.
+Ces fonctionnalités ne fonctionneront pas sans ce paramètre coché.

@@ -1,3 +1,3 @@
-This parameter defines a custom item or block that is dropped when this block is mined/broken.
+Ce paramètre définit un item personnalisé ou un bloc qui est jeté(drop) lorsque ce bloc est miné/cassé.
 
-If harvest level is used, only proper level harvest tools will make the block drop.
+Si le niveau de récolte est utilisé, seuls les outils de récolte de niveau approprié feront tomber le bloc

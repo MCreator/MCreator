@@ -1,3 +1,3 @@
-If this parameter is checked, the player will be able to walk through it, like tall grass and vines, if you check it.
+Si ce paramètre est coché, le joueur pourra passer à travers comme les hautes herbes et les vignes, si vous le cochez.
 
-Block will have bounding box, but it will not be collidable.
+Le bloc aura un cadre de délimitation, mais il ne sera pas collidable.

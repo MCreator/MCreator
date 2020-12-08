@@ -1,2 +1,2 @@
-This parameter controls how long it takes to mine the block. 
-A higher value means it takes longer to mine this block.
+Ce paramètre contrôle le temps nécessaire pour miner le bloc.
+Une valeur plus élevée signifie qu'il faut plus de temps pour miner ce bloc.

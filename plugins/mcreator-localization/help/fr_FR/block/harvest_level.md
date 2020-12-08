@@ -1,13 +1,13 @@
-This is the tier of tool required to break this block.
+C'est le niveau d'outil requis pour briser ce bloc.
 
-* 0 is hand/wood
-* 1 is stone
-* 2 is iron
-* 3 is diamond.
+* 0 est la main/bois
+* 1 est de la pierre
+* 2 est du fer
+* 3 est un diamant.
 
-Only the tier of tool you specify will be able to break your block. 
-You can define larger tiers than diamond too by setting the tier to 4 or larger.
+Seul le niveau d'outil que vous spécifiez pourra briser votre blocage.
+Vous pouvez également définir des niveaux plus grands que le diamant en définissant le niveau sur 4 ou plus.
 
-Condition for the block to drop the items when broken is:
+La condition pour que le bloc laisse tomber les items lorsqu'il est cassé est:
 
-`IF BLOCK HARVEST LEVEL <= TOOL HARVEST LEVEL`
+`SI NIVEAU DE RÉCOLTE DE BLOC <= NIVEAU DE RÉCOLTE DE L'OUTIL`

@@ -1,1 +1,1 @@
-Check this property to have a glowing effect (similar to the magma block) applied to your block.
+Cochez cette propriété pour avoir un effet lumineux (similaire au bloc magma) appliqué à votre bloc.

@@ -1,6 +1,6 @@
-Blocks naturally generated will usually not tick by default, unless tick randomly is used.
+Les blocs générés naturellement ne sont généralement pas tické par défaut, à moins que le tick ne soit utilisé au hasard.
 
-This parameter makes block tick randomly, where speed is controled by a global world tick
-parameter.
+Ce paramètre fait tické le bloc de manière aléatoire, où la vitesse est contrôlée par un tick mondial global
+paramètre.
 
-This type of ticking is used by plants, for example.
+Ce type de coutil est utilisé par exemple par les plantes.

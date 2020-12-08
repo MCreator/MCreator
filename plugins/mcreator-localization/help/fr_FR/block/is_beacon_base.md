@@ -1,8 +1,8 @@
-If this parameter is checked, the block can be used to make a beacon base. 
+Si ce paramètre est coché, le bloc peut être utilisé pour créer une base de balise.
 
-Vanilla beacon base blocks:
+Blocs de base de balise vanilla:
 
-* Iron Block
-* Gold Block
-* Diamond Block
-* Emerald Block 
+* Bloc de fer
+* Bloc d'or
+* Bloc de diamant
+* Bloc d'émeraude
