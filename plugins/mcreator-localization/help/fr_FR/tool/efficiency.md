@@ -8,4 +8,4 @@ Valeurs par défaut:
 * Outils en fer: 6.
 * Outils en diamant: 8.
 * Outils en netherite: 9.
-* Outils en or: 10.
+* Outils en or: 12.
