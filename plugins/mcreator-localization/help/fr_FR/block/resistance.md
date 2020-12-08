@@ -1,2 +1,2 @@
-This parameter controls how the block reacts to explosions. 
-A higher value makes the block more resistant to explosions.
+Ce paramètre contrôle la façon dont le bloc réagit aux explosions.
+Une valeur plus élevée rend le bloc plus résistant aux explosions.

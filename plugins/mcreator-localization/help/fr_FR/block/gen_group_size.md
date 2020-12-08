@@ -1,10 +1,10 @@
-This parameter controls the average amount of block per ore veins.
+Ce paramètre contrôle la quantité moyenne de bloc par veines de minerais.
 
-Vanilla ore group sizes:
+Taille des groupes de minerai vanilla:
 
-* Coal Ore - 17
-* Iron Ore - 9
-* Gold Ore - 9
-* Redstone Ore - 8
-* Diamond Ore - 8
+* Minerai de charbon - 17
+* Minerai de fer - 9
+* Minerai d'or - 9
+* Minerai de Redstone - 8
+* Minerai de diamant - 8
 * Lapis Lazuli - 7

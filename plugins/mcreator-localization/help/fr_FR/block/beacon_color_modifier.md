@@ -1,3 +1,3 @@
-Select the color your block will apply to the beacon beam (like the red glass, orange glass, etc).
+Sélectionnez la couleur que votre bloc appliquera au faisceau de la balise (comme le verre rouge, le verre orange, etc.).
 
-Leave to DEFAULT to keep vanilla handling (no color change).
+Laisser à DÉFAUT pour conserver la manipulation vanilla (pas de changement de couleur).

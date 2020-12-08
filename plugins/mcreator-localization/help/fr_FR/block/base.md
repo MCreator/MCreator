@@ -1,5 +1,5 @@
-If block base is used, some parameters might be disabled or might not work due to the base block
-requiring them on default values from the base block.
+Si la base de bloc est utilisée, certains paramètres peuvent être désactivés ou peuvent ne pas fonctionner en raison de la base du bloc
+les exigeant sur les valeurs par défaut du bloc de base.
 
-Only use this parameter if there is a good reason for it, most blocks should have this set
-to Default basic block.
+N'utilisez ce paramètre que s'il y a une bonne raison à cela, la plupart des blocs devraient avoir cet ensemble
+au bloc de base par défaut.

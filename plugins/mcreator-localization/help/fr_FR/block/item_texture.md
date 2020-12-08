@@ -1,3 +1,3 @@
-This optional property will change the texture of the block in the inventory.
+Cette propriété optionnelle modifiera la texture du bloc dans l'inventaire.
 
-Commonly used with doors or custom models.
+Couramment utilisé avec des portes ou des modèles personnalisés.

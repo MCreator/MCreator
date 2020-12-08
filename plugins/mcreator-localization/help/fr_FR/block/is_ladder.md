@@ -1,3 +1,3 @@
-If checked, entities will be able to climb on the block. 
+Si coché, les entités pourront grimper sur le bloc.
 
-Vanilla examples: Ladder and Vines
+Exemples vanilla: échelle et vignes
