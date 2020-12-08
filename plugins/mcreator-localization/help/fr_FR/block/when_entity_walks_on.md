@@ -1,0 +1,1 @@
+Déclenche une procédure quand une entité marche sur le dessus du bloc.
