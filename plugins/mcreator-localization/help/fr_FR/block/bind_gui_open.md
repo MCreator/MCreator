@@ -1,2 +1,1 @@
-
 Si ce paramètre est coché, ce bloc ouvrira l'interface graphique liée lors d'un clic droit.

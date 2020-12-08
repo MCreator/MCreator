@@ -1,4 +1,4 @@
-Ce paramètre donnera un inventaire à votre bloc. Le bloc sera une entité tuile.
+Ce paramètre donnera un inventaire à votre bloc. Le bloc sera une Tile Entity.
 
 Ce paramètre active des fonctionnalités telles que:
 * Tags NBT sur bloc

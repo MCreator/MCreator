@@ -4,6 +4,7 @@ This is the tier of tool required to break this block.
 * 1 is stone
 * 2 is iron
 * 3 is diamond.
+* 4 is netherite
 
 Only the tier of tool you specify will be able to break your block. 
 You can define larger tiers than diamond too by setting the tier to 4 or larger.

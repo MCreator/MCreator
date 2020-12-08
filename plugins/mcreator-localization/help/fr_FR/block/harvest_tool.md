@@ -1,3 +1,3 @@
-Ce paramètre contrôle quel outil vous souhaitez miner le bloc.
+Ce paramètre contrôle quel outil est utilisé pour miner (tout court ou plus facilement) le bloc.
 
-Les minerais utilisent ici une pioche, une hache des bûches, par exemple.
+Les minerais nécessitent une pioche, une hache pour des bûches, par exemple.
