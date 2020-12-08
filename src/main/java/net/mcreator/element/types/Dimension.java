@@ -32,6 +32,27 @@ import java.util.List;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement implements ITabContainedElement {
 
+	public List<BiomeEntry> biomesInDimension;
+
+	public String worldGenType;
+
+	public MItemBlock mainFillerBlock;//
+	public MItemBlock fluidBlock;//
+
+	public Color airColor;//
+	public boolean canRespawnHere;//
+	public boolean hasFog;//
+	public boolean hasWeather;//
+	public boolean isDark;//
+	public boolean doesWaterVaporize;//
+
+	public String sleepResult;//
+	public boolean hasSkyLight;//
+	public boolean imitateOverworldBehaviour;//
+
+	public Procedure onPlayerEntersDimension;//
+	public Procedure onPlayerLeavesDimension;//
+
 	public MItemBlock portalFrame;
 	public Particle portalParticles;
 	public double portalLuminance;
@@ -43,28 +64,8 @@ import java.util.List;
 	public boolean enablePortal;
 	public Procedure portalMakeCondition;
 	public Procedure portalUseCondition;
-
-	public List<BiomeEntry> biomesInDimension;
-
-	public String worldGenType;
-	public MItemBlock mainFillerBlock;
-	public MItemBlock fluidBlock;
-
-	public Color airColor;
-	public boolean canRespawnHere;
-	public boolean hasFog;
-	public boolean hasWeather;
-	public boolean isDark;
-	public boolean doesWaterVaporize;
-
-	public String sleepResult;
-	public boolean hasSkyLight;
-	public boolean imitateOverworldBehaviour;
-
 	public Procedure whenPortaTriggerlUsed;
 	public Procedure onPortalTickUpdate;
-	public Procedure onPlayerEntersDimension;
-	public Procedure onPlayerLeavesDimension;
 
 	private Dimension() {
 		this(null);
