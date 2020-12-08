@@ -1,4 +1,4 @@
-The recipe ID of your recipe (For example: diamond_block). 
+L'ID de votre recette (par exemple : diamond_block).
 
-If you want to override a vanilla recipe, 
-you have to enter the same name as the vanilla registry name of the given recipe in this field.
+Si vous voulez remplacer une recette vanilla,
+vous devez entrer dans ce champ le même nom que le nom du registre de la recette vanilla donnée.
