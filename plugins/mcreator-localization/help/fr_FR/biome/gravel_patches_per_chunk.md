@@ -1,1 +1,1 @@
-This parameter controls the number of gravel block groups per chunk in this biome.
+Ce paramètre contrôle le nombre de groupes de blocs de gravier par tronçon dans ce biome.

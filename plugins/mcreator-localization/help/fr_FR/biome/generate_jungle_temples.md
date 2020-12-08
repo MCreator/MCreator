@@ -1,0 +1,1 @@
+Utilisez ce paramètre pour avoir des Temples de la Jungle dans votre biome.

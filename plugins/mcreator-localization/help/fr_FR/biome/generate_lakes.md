@@ -1,1 +1,1 @@
-This parameter controls if lakes should be generated in this biome.
+Ce paramètre contrôle si des lacs doivent être générés dans ce biome.

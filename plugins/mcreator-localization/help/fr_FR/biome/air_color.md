@@ -1,1 +1,1 @@
-This parameter controls the color of the sky in this biome.
+Ce paramètre contrôle la couleur du ciel dans ce biome.
