@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Dimension;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -217,7 +218,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		texture.setOpaque(false);
 		enablePortal.setOpaque(false);
 
-		enablePortal.setSelected(true);
+		// Currently only Java based mods support dimension portals
+		enablePortal.setSelected(modElement.getWorkspace().getGenerator()
+				.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage() ==  GeneratorFlavor.BaseLanguage.JAVA);
 
 		JPanel proper = new JPanel(new GridLayout(7, 2, 5, 2));
 

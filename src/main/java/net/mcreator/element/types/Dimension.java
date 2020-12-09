@@ -36,22 +36,22 @@ import java.util.List;
 
 	public String worldGenType;
 
-	public MItemBlock mainFillerBlock;//
-	public MItemBlock fluidBlock;//
+	public MItemBlock mainFillerBlock;
+	public MItemBlock fluidBlock;
 
-	public Color airColor;//
-	public boolean canRespawnHere;//
-	public boolean hasFog;//
-	public boolean hasWeather;//
-	public boolean isDark;//
-	public boolean doesWaterVaporize;//
+	public Color airColor;
+	public boolean canRespawnHere;
+	public boolean hasFog;
+	public boolean hasWeather;
+	public boolean isDark;
+	public boolean doesWaterVaporize;
 
-	public String sleepResult;//
-	public boolean hasSkyLight;//
-	public boolean imitateOverworldBehaviour;//
+	public String sleepResult;
+	public boolean hasSkyLight;
+	public boolean imitateOverworldBehaviour;
 
-	public Procedure onPlayerEntersDimension;//
-	public Procedure onPlayerLeavesDimension;//
+	public Procedure onPlayerEntersDimension;
+	public Procedure onPlayerLeavesDimension;
 
 	public MItemBlock portalFrame;
 	public Particle portalParticles;
