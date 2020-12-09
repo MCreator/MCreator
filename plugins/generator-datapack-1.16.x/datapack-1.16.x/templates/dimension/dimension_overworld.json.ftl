@@ -62,7 +62,10 @@
         "Name": "${mappedMCItemToIngameNameNoTags(data.mainFillerBlock)}"
       },
       "default_fluid": {
-        "Name": "${mappedMCItemToIngameNameNoTags(data.fluidBlock)}"
+        "Name": "${mappedMCItemToIngameNameNoTags(data.fluidBlock)}",
+        "Properties": {
+          "level": "0"
+        }
       },
       "noise": {
         "min_y": 0,
