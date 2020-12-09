@@ -280,7 +280,7 @@ public class MinecraftImageGenerator {
 		}
 
 		/**
-		 * <p>This method generates smithing recipe images.</p>
+		 * <p>This method generates brewing recipe images.</p>
 		 *
 		 * @param input  Input of the recipe.
 		 * @param ingredient Ingredient of the recipe
