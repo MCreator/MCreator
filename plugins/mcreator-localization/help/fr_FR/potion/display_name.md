@@ -1,3 +1,3 @@
-This parameter controls is the name of the potions and the tipped arrows. 
+Ce paramètre contrôle le nom des potions et les flèches pointées.
 
-You don't have to write Potion of or Arrow of. MCreator automatically includes them.
+Vous n'avez pas besoin d'écrire Potion de ou Flèche de. MCreator les inclut automatiquement.

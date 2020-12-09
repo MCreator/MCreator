@@ -1,1 +1,1 @@
-Check this parameter if your effect should apply one time like the Instant health.
+Cochez ce paramètre si votre effet doit s'appliquer une fois comme la soin instantanée.

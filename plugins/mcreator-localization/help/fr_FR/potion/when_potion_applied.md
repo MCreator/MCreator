@@ -1,1 +1,1 @@
-This procedure will be executed when the potion effect is applied to an entity. 
+Cette procédure sera exécutée lorsque l'effet de potion sera appliqué à une entité.

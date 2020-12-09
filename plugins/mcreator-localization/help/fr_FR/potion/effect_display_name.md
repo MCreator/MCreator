@@ -1,1 +1,1 @@
-This parameter controls the name of the effect (the name displayed inside the player's inventory).
+Ce paramètre contrôle le nom de l'effet (le nom affiché dans l'inventaire du joueur).
