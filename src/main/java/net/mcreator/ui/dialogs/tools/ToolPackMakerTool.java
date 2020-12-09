@@ -68,7 +68,7 @@ public class ToolPackMakerTool {
 		VTextField name = new VTextField(25);
 		JColor color = new JColor(mcreator);
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
-		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems, true);
 
 		color.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		name.enableRealtimeValidation();
