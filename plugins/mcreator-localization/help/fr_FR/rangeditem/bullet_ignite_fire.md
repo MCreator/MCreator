@@ -1,3 +1,3 @@
-Check this parameter if you want it to light a fire when the ranged item hits a block.
+Cochez ce paramètre si vous voulez qu'il allume un feu lorsque l'objet à distance frappe un bloc.
 
-Note: this does not catch mobs on fire
+Remarque: cela n'attrape pas les mobs en feu

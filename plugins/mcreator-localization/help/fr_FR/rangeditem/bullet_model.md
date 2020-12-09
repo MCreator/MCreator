@@ -1,3 +1,3 @@
-Bullet model is the model of your ranged item.
+Le modèle de balle est le modèle de votre arme à distance en balle.
 
-This parameter will override item for texture parameter when used.
+Ce paramètre remplacera le paramètre d'item comme texture lorsqu'il est utilisé.

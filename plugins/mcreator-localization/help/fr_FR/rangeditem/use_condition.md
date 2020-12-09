@@ -1,4 +1,4 @@
-This procedure will be called before the ranged item fires to check if the return value of the
-selected procedure is true.
+Cette procédure sera appelée avant le déclenchement de l'arme à distance pour vérifier si la valeur de retour du
+la procédure sélectionnée est vraie.
 
-Keep "(always)" to disable any additional conditions. Ammo checks still apply in this case.
+Gardez «(toujours)» pour désactiver toute condition supplémentaire. Les contrôles de munitions s'appliquent toujours dans ce cas.

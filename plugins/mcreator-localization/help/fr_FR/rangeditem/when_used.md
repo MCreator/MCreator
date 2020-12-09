@@ -1,1 +1,1 @@
-When the ranged item is used, the selected procedure will be triggered.
+Lorsque l'arme à distance est utilisé, la procédure sélectionnée sera déclenchée.

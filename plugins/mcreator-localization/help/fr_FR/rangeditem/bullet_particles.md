@@ -1,1 +1,1 @@
-Check this parameter if you want particles to be emitted in mid-air.
+Cochez ce paramètre si vous souhaitez que des particules soient émises dans les airs.
