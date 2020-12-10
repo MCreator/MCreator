@@ -1,1 +1,1 @@
-Lorsque l'arme à distance est utilisé, la procédure sélectionnée sera déclenchée.
+Lorsque l'arme à distance est utilisée, la procédure sélectionnée sera déclenchée.

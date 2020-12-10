@@ -1,1 +1,1 @@
-Cochez ce paramètre si vous souhaitez que des particules soient émises dans les airs.
+Cochez ce paramètre si vous souhaitez que des particules soient émises dans l'air.
