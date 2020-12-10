@@ -42,7 +42,6 @@ import java.util.List;
 	public Color airColor;
 	public boolean canRespawnHere;
 	public boolean hasFog;
-	public boolean hasWeather;
 	public boolean isDark;
 	public boolean doesWaterVaporize;
 
@@ -75,7 +74,6 @@ import java.util.List;
 		super(element);
 
 		// DEFAULT VALUES
-		this.hasWeather = true;
 		this.enablePortal = true;
 		this.sleepResult = "ALLOW";
 	}
