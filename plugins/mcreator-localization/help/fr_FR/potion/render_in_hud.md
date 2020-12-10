@@ -1,1 +1,1 @@
-Check to make the effect visible in the game
+Cochez pour rendre l'effet visible dans le jeu
