@@ -1,1 +1,1 @@
-The higher the number, the further the entity hit will be pushed by the ranged item.
+Plus le nombre est élevé, l'entité touchée sera poussée plus loin par l'arme à distance.
