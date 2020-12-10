@@ -1,1 +1,1 @@
-Ce paramètre contrôle la hauteur de ce tableau (en unités de bloc).
+Ce paramètre contrôle la hauteur de ce tableau (en pixels).
