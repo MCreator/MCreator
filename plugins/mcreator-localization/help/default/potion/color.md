@@ -1,1 +1,0 @@
-Select the color of the potion effect.
