@@ -1,0 +1,1 @@
+Ce paramètre défini l'amplification de l'effet spécifique sur la gauche.

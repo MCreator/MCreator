@@ -67,7 +67,7 @@ public enum ModElementType {
 
 	@SerializedName("procedure") PROCEDURE(BaseType.PROCEDURE, RecipeElementType.NONE),
 
-	@SerializedName("potion") POTION(BaseType.POTION, RecipeElementType.NONE),
+	@SerializedName("potion") POTIONEFFECT(BaseType.POTIONEFFECT, RecipeElementType.NONE),
 
 	@SerializedName("particle") PARTICLE(BaseType.PARTICLE, RecipeElementType.NONE),
 
@@ -83,7 +83,9 @@ public enum ModElementType {
 
 	@SerializedName("function") FUNCTION(BaseType.DATAPACK, RecipeElementType.NONE),
 
-	@SerializedName("painting") PAINTING(BaseType.OTHER, RecipeElementType.NONE);
+	@SerializedName("painting") PAINTING(BaseType.OTHER, RecipeElementType.NONE),
+
+	@SerializedName("potionitem") POTIONITEM(BaseType.POTIONITEM, RecipeElementType.NONE);
 
 	private final BaseType baseType;
 	private final String description;
@@ -119,7 +121,7 @@ public enum ModElementType {
 	}
 
 	public enum BaseType {
-		BLOCK, ITEM, ARMOR, BIOME, COMMAND, FUEL, ENTITY, TAB, DIMENSION, STRUCTURE, GUI, KEYBIND, PROCEDURE, OVERLAY, POTION, OTHER, DATAPACK, ENCHANTMENT, PARTICLE, /* legacy: */ ACHIEVEMENT
+		BLOCK, ITEM, ARMOR, BIOME, COMMAND, FUEL, ENTITY, TAB, DIMENSION, STRUCTURE, GUI, KEYBIND, PROCEDURE, OVERLAY, POTIONEFFECT, OTHER, DATAPACK, ENCHANTMENT, PARTICLE, POTIONITEM, /* legacy: */ ACHIEVEMENT
 	}
 
 }

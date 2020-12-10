@@ -41,6 +41,10 @@ import java.util.Map;
 	public String customModelName;
 	public String name;
 	public List<String> specialInfo;
+	public boolean onShiftOnly;
+	public List<String> onShiftInfo;
+	public boolean onCommandOnly;
+	public List<String> onCommandInfo;
 	public TabEntry creativeTab;
 	public int stackSize;
 	public MItemBlock ammoItem;
@@ -110,6 +114,18 @@ import java.util.Map;
 		if (!bulletModel.equals("Default"))
 			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), bulletModel, modelType);
+	}
+
+	public boolean rangedItemInfoOnly() {
+		return !specialInfo.isEmpty();
+	}
+
+	public boolean rangedItemShiftOnly() {
+		return onShiftOnly;
+	}
+
+	public boolean rangedItemCommandOnly() {
+		return onCommandOnly;
 	}
 
 	@Override public TabEntry getCreativeTab() {

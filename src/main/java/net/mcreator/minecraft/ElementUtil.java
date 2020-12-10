@@ -125,7 +125,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.BaseType.POTION);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.BaseType.POTIONEFFECT);
 		retval.addAll(DataListLoader.loadDataList("potions"));
 		return retval;
 	}
@@ -161,7 +161,7 @@ public class ElementUtil {
 		ArrayList<String> retval = new ArrayList<>();
 
 		for (SoundElement soundElement : workspace.getSoundElements()) {
-			retval.add("CUSTOM:" + soundElement.getName());
+			retval.add("CUSTOM:" + soundElement.getDirectory() + "/" + soundElement.getName());
 		}
 
 		retval.addAll(DataListLoader.loadDataList("sounds").stream().map(DataListEntry::getName)

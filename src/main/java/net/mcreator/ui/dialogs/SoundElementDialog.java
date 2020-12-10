@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 public class SoundElementDialog {
 
 	public static SoundElement soundDialog(MCreator mcreator, @Nullable SoundElement element, @Nullable File[] files) {
-		JPanel ui = new JPanel(new GridLayout(4, 2, 10, 10));
+		JPanel ui = new JPanel(new GridLayout(5, 2, 10, 10));
 
 		VTextField soundName = new VTextField(20);
 
@@ -52,6 +52,8 @@ public class SoundElementDialog {
 		JTextField subtitle = new JTextField();
 
 		FileListField fileListField = new FileListField(mcreator);
+
+		JTextField directory = new JTextField();
 
 		if (element == null && files != null) {
 			fileListField.setListElements(
@@ -82,6 +84,14 @@ public class SoundElementDialog {
 			soundCategory.setSelectedItem(element.getCategory());
 			soundName.setText(element.getName());
 			subtitle.setText(element.getSubtitle());
+			directory.setText(element.getDirectory());
+		}
+
+		ui.add(new JLabel("<html>Sound's directory: "));
+		if (element == null) {
+			ui.add(directory);
+		} else {
+			ui.add(new JLabel(element.getDirectory()));
 		}
 
 		int option = JOptionPane
@@ -110,7 +120,8 @@ public class SoundElementDialog {
 						fileListField.getListElements().forEach(file -> {
 							String fileName = RegistryNameFixer.fix(file.getName());
 							FileIO.copyFile(file,
-									new File(mcreator.getWorkspace().getFolderManager().getSoundsDir(), fileName));
+									new File(mcreator.getWorkspace().getFolderManager().getSoundsDir() + "/" +
+											directory.getText() + "/", fileName));
 							fileNames.add(FilenameUtils.removeExtension(fileName));
 						});
 
@@ -119,7 +130,7 @@ public class SoundElementDialog {
 						mcreator.getWorkspace().setLocalization("subtitles." + registryname, subtitle.getText());
 
 						return new SoundElement(registryname, fileNames, (String) soundCategory.getSelectedItem(),
-								subtitle.getText());
+								subtitle.getText(), directory.getText());
 					}
 				} else { // existing sound element
 					String registryname = RegistryNameFixer.fix(soundName.getText());
@@ -127,7 +138,7 @@ public class SoundElementDialog {
 					mcreator.getWorkspace().setLocalization("subtitles." + registryname, subtitle.getText());
 
 					return new SoundElement(registryname, element.getFiles(), (String) soundCategory.getSelectedItem(),
-							subtitle.getText());
+							subtitle.getText(), directory.getText());
 				}
 			}
 		} else {

@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.minecraft;
 
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
 import net.mcreator.util.image.ImageUtils;
@@ -27,11 +27,12 @@ import org.apache.commons.io.FilenameUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 
 public class TextureHolder extends VButton {
 
 	private String id = "";
-	private final BlockItemTextureSelector td;
+	private final GeneralTextureSelector td;
 
 	private ActionListener actionListener;
 
@@ -39,11 +40,11 @@ public class TextureHolder extends VButton {
 
 	private boolean removeButtonHover;
 
-	public TextureHolder(BlockItemTextureSelector td) {
+	public TextureHolder(GeneralTextureSelector td) {
 		this(td, 70);
 	}
 
-	public TextureHolder(BlockItemTextureSelector td, int size) {
+	public TextureHolder(GeneralTextureSelector td, int size) {
 		super("");
 		this.td = td;
 
@@ -53,14 +54,30 @@ public class TextureHolder extends VButton {
 		setPreferredSize(new Dimension(this.size, this.size));
 		td.getConfirmButton().addActionListener(event -> {
 			if (td.list.getSelectedValue() != null) {
-				id = FilenameUtils.removeExtension(td.list.getSelectedValue().getName());
+				File file = td.list.getSelectedValue();
+				id = file.getPath();
+				if(id.contains("textures\\blocks\\") || id.contains("textures/blocks/")){
+					id = textureNameReplace(
+							FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getBlocksTexturesDir().getPath(), "")));
+				} else if(id.contains("textures\\entities\\") || id.contains("textures/blocks/")){
+					id = textureNameReplace(
+							FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getEntitiesTexturesDir().getPath(), "")));
+				} else if(id.contains("textures\\items\\") || id.contains("textures/items/")){
+					id = textureNameReplace(
+							FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getItemsTexturesDir().getPath(), "")));
+				} else if(id.contains("textures\\painting\\") || id.contains("textures/painting/")){
+					id = textureNameReplace(
+							FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getPaintingsTexturesDir().getPath(), "")));
+				} else if(id.contains("textures\\others\\") || id.contains("textures/others/")){
+					id = textureNameReplace(FilenameUtils.removeExtension(id.replace(td.getMCreator().getWorkspace().getFolderManager().getOtherTexturesDir().getPath(), "")));
+				}
 				setIcon(new ImageIcon(
 						ImageUtils.resize(new ImageIcon(td.list.getSelectedValue().toString()).getImage(), this.size)));
 				td.setVisible(false);
 				if (actionListener != null)
 					actionListener.actionPerformed(new ActionEvent(this, 0, ""));
 				getValidationStatus();
-				setToolTipText(id);
+				setToolTipText(id.substring(1));
 			}
 		});
 
@@ -95,6 +112,10 @@ public class TextureHolder extends VButton {
 		});
 	}
 
+	public static String textureNameReplace(String string){
+		return string.replace("\\", "/").replace("//", "");
+	}
+
 	@Override public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -117,7 +138,7 @@ public class TextureHolder extends VButton {
 		if (texture != null && !texture.equals("")) {
 			id = texture;
 			setToolTipText(texture);
-			if (td.getTextureType() == BlockItemTextureSelector.TextureType.BLOCK)
+			if (td.getTextureType() == GeneralTextureSelector.TextureType.BLOCK)
 				setIcon(new ImageIcon(ImageUtils
 						.resize(td.getMCreator().getWorkspace().getFolderManager().getBlockImageIcon(texture)
 								.getImage(), this.size)));

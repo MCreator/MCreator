@@ -42,7 +42,7 @@ task exportRelease(type: DefaultTask, group: 'export') {
             from file('LICENSE.txt') into 'build/export' rename("LICENSE.txt", "LICENSE")
         }
 
-        project.logger.lifecycle('\nFinished export for MCREATOR ' +
+        project.logger.lifecycle('\nFinished export for MCToolkit ' +
                 (String) project.mcreatorconf.getProperty('mcreator') + "." + new Date().format("wwuHH"))
     }
 }
@@ -61,7 +61,7 @@ task exportSnapshot(type: DefaultTask, group: 'export') {
 
         delete 'src/main/resources/snapshot.conf'
 
-        project.logger.lifecycle('\nFinished export for MCREATOR EAP ' +
+        project.logger.lifecycle('\nFinished export for MCToolkit EAP ' +
                 (String) project.mcreatorconf.getProperty('mcreator') + "." + new Date().format("wwuHH"))
     }
 }

@@ -25,6 +25,8 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.ui.dialogs.tools.plugin.PackMakerToolIcons;
+import net.mcreator.ui.dialogs.tools.plugin.PackMakerToolLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
@@ -76,6 +78,10 @@ public class TestSetup {
 
 		// blockly mod elements need blockly blocks loaded
 		BlocklyLoader.init();
+
+		// load pack makers defined by plugins after plugins are loaded
+		PackMakerToolIcons.init();
+		PackMakerToolLoader.init();
 
 		// load generator configurations
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));

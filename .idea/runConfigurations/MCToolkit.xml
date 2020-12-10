@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="MCToolkit" type="Application" factoryName="Application" singleton="true">
+    <option name="MAIN_CLASS_NAME" value="net.mcreator.Launcher" />
+    <module name="MCreator.main" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

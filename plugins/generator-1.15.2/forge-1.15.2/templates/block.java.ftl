@@ -120,6 +120,18 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			super(
 			<#elseif data.blockBase?has_content && data.blockBase == "Fence">
 			super(
+			<#elseif data.blockBase?has_content && data.blockBase == "StoneButton">
+			super(
+			<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
+            super(Sensitivity.${data.sensitivity},
+            <#elseif data.blockBase?has_content && data.blockBase == "Cake">
+            super(
+			<#elseif data.blockBase?has_content && data.blockBase == "Lever">
+			super(
+			<#elseif data.blockBase?has_content && data.blockBase == "Slime">
+			super(
+			<#elseif data.blockBase?has_content && data.blockBase == "Honey">
+			super(
 			<#else>
 			super(
 			</#if>
@@ -183,14 +195,40 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
    		@Override ${mcc.getMethod("net.minecraft.block.WallBlock", "updatePostPlacement", "BlockState", "Direction", "BlockState", "IWorld", "BlockPos", "BlockPos")}
 		</#if>
 
-		<#if data.specialInfo?has_content>
+		<#if data.specialInfo?has_content || data.onShiftInfo?has_content || data.onCommandInfo?has_content>
 		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
+			<#if data.specialInfo?has_content>
+			<#assign line = 1>
 			<#list data.specialInfo as entry>
-			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-            </#list>
+			list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.tooltip${line}"));
+			<#assign line++>
+			</#list>
+			</#if>
+			<#if data.onShiftInfo?has_content && data.shiftOnly()>
+			if (Screen.hasShiftDown()) {
+				<#assign line = 1>
+				<#list data.onShiftInfo as entry>
+				list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.shift.tooltip${line}"));
+				<#assign line++>
+				</#list>
+			} else {
+				list.add(new StringTextComponent("\u00A77Press SHIFT for more information"));
+			}
+			</#if>
+			<#if data.onCommandInfo?has_content && data.commandOnly()>
+			if (Screen.hasControlDown()) {
+				<#assign line = 1>
+				<#list data.onCommandInfo as entry>
+				list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.command.tooltip${line}"));
+				<#assign line++>
+				</#list>
+			} else {
+				list.add(new StringTextComponent("\u00A77Press CTRL for more information"));
+			}
+			</#if>
 		}
-        </#if>
+		</#if>
 
 		<#if data.emissiveRendering>
         @OnlyIn(Dist.CLIENT) @Override public boolean isEmissiveRendering(BlockState blockState) {
@@ -409,6 +447,16 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         @Override public boolean isReplaceable(BlockState state, BlockItemUseContext context) {
 			return context.getItem().getItem() != this.asItem();
 		}
+        </#if>
+
+        <#if data.emitsRedstone>
+        @Override public boolean canProvidePower(BlockState state) {
+            return true;
+        }
+
+        @Override public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+            return ${data.emittedRedstonePower};
+        }
         </#if>
 
 		<#if data.flammability != 0>
