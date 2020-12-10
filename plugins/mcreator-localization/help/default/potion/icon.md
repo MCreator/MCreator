@@ -1,1 +1,0 @@
-This parameter controls is the icon displayed inside the player's inventory when the effect is active.

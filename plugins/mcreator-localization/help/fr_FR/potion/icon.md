@@ -1,1 +1,0 @@
-Ce paramètre contrôle l'icône affichée dans l'inventaire du joueur quand l'effet est actif.

@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.browser;
 
+import net.mcreator.generator.GeneratorFlavor;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -37,18 +39,33 @@ class AddFileDropdown extends JPopupMenu {
 					if (file.isFile())
 						file = file.getParentFile();
 
-					if (file.isDirectory() && file.getCanonicalPath().startsWith(
-							projectBrowser.mcreator.getWorkspace().getGenerator().getSourceRoot().getCanonicalPath())) {
-						add(projectBrowser.mcreator.actionRegistry.newClass);
-						addSeparator();
-						add(projectBrowser.mcreator.actionRegistry.newPackage);
-					} else if (file.isDirectory() && (file.getCanonicalPath().startsWith(
-							projectBrowser.mcreator.getWorkspace().getGenerator().getResourceRoot()
-									.getCanonicalPath()))) {
-						add(projectBrowser.mcreator.actionRegistry.newJson);
-						add(projectBrowser.mcreator.actionRegistry.newImage);
-						addSeparator();
-						add(projectBrowser.mcreator.actionRegistry.newFolder);
+					if (projectBrowser.mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
+							.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA) {
+						if (file.isDirectory() && file.getCanonicalPath().startsWith(
+								projectBrowser.mcreator.getWorkspace().getGenerator().getSourceRoot()
+										.getCanonicalPath())) {
+							add(projectBrowser.mcreator.actionRegistry.newClass);
+							addSeparator();
+							add(projectBrowser.mcreator.actionRegistry.newPackage);
+						} else if (file.isDirectory() && (file.getCanonicalPath().startsWith(
+								projectBrowser.mcreator.getWorkspace().getGenerator().getResourceRoot()
+										.getCanonicalPath()))) {
+							add(projectBrowser.mcreator.actionRegistry.newJson);
+							add(projectBrowser.mcreator.actionRegistry.newImage);
+							addSeparator();
+							add(projectBrowser.mcreator.actionRegistry.newFolder);
+						}
+					} else {
+						if (file.isDirectory() && file.getCanonicalPath().startsWith(
+								projectBrowser.mcreator.getWorkspace().getGenerator().getSourceRoot()
+										.getCanonicalPath()) || file.isDirectory() && (file.getCanonicalPath()
+								.startsWith(projectBrowser.mcreator.getWorkspace().getGenerator().getResourceRoot()
+										.getCanonicalPath()))) {
+							add(projectBrowser.mcreator.actionRegistry.newJson);
+							add(projectBrowser.mcreator.actionRegistry.newImage);
+							addSeparator();
+							add(projectBrowser.mcreator.actionRegistry.newFolder);
+						}
 					}
 				} else if (selected == projectBrowser.sourceCode) {
 					add(projectBrowser.mcreator.actionRegistry.newClass);
