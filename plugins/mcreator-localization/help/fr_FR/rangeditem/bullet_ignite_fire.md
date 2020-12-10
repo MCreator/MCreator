@@ -1,3 +1,3 @@
-Cochez ce paramètre si vous voulez qu'il allume un feu lorsque l'objet à distance frappe un bloc.
+Cochez ce paramètre si vous voulez que l'arme à distance allume un feu lorsqu'il frappe un bloc.
 
-Remarque: cela n'attrape pas les entités en feu
+Remarque: cela ne met pas les entités en feu
