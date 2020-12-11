@@ -1,4 +1,4 @@
-Select the entities to spawn naturally inside your biome. 
+Sélectionnez les entités à faire apparaître naturellement dans votre biome.
 
-Select only passive or hostile mobs. Don't select the player or special entities here as this might
-cause the world to crash when trying to spawn such entities.
+Sélectionnez uniquement les monstres passifs ou hostiles. Ne sélectionnez pas le joueur ou les entités spéciales ici car cela pourrait
+faire planter le monde en essayant de générer de telles entités.

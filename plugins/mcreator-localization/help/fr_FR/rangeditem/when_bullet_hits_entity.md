@@ -1,1 +1,1 @@
-If a bullet hits a living entity (cow, creeper, player, etc.), it will execute the selected procedure.
+Si une balle touche une entité vivante (vache, creeper, joueur, etc.), elle exécutera la procédure sélectionnée.

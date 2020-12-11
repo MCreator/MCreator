@@ -34,6 +34,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.ProcedureSelector;
+import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
@@ -51,7 +52,9 @@ import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
@@ -190,9 +193,15 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		onActiveTick.refreshListKeepSelected();
 		onExpired.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(icon, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
-						.collect(Collectors.toList())), "");
+		java.util.List<String> files = mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getPath)
+				.collect(Collectors.toList());
+		List<String> textures = new ArrayList<>();
+		for(String name : files){
+			name = TextureHolder.textureNameReplace(name.replace(
+					mcreator.getWorkspace().getFolderManager().getOtherTexturesDir().getPath(), "")).substring(1);
+			textures.add(name);
+		}
+		ComboBoxUtil.updateComboBoxContents(icon, ListUtils.merge(Collections.singleton(""), textures), "");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

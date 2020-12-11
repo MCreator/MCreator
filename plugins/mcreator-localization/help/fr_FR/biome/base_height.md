@@ -1,1 +1,1 @@
-This parameter controls the height at which the biome is. Mountains have this parameter set to a big value for example.
+Ce paramètre contrôle la hauteur de ce biome. Par exemple, les montagnes ont ce paramètre défini sur une valeur élevée.

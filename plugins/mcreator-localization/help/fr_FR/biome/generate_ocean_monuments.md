@@ -1,0 +1,1 @@
+Utilisez ce paramètre pour avoir des Temples de l'Océan dans votre biome.

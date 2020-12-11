@@ -1,1 +1,0 @@
-This procedure will be executed each tick for each entity that has this potion effect.

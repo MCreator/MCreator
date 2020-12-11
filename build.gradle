@@ -84,11 +84,11 @@ test {
 }
 
 jar {
-    archiveFileName = 'mcreator.jar'
+    archiveFileName = 'mctoolkit.jar'
     manifest {
         attributes(
                 'Main-Class': 'net.mcreator.Launcher',
-                'MCreator-Version': project.mcreatorconf.getProperty('mcreator'),
+                'MCToolkit-Version': project.mcreatorconf.getProperty('mcreator'),
                 'Build-Date': new Date().format('wwuHH')
         )
     }

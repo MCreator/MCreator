@@ -1,1 +1,1 @@
-This parameter controls the number of tall grass per chunk in this biome
+Ce paramètre contrôle le nombre d'herbes hautes par tronçon dans ce biome

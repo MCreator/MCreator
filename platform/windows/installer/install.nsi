@@ -14,26 +14,26 @@ SetCompressor "lzma" ; to improve installer open performance and its size
 
 !searchreplace MCREATOR_VERSION_SHORT ${MCREATOR_VERSION} "." ""
 
-Name "MCreator ${MCREATOR_VERSION}"
-BrandingText "MCreator ${MCREATOR_VERSION}.${BUILD} - Developed by Pylo"
+Name "MCToolkit ${MCREATOR_VERSION}"
+BrandingText "MCToolkit ${MCREATOR_VERSION}.${BUILD} - The project to continue MCreator originally developed by Pylo"
 
-!define MUI_PRODUCT "MCreator"
+!define MUI_PRODUCT "MCToolkit"
 !define MUI_ICON "..\..\platform\windows\installer\installer.ico"
 !define MUI_UNICON "..\..\platform\windows\installer\uninstaller.ico"
 
 RequestExecutionLevel admin
 
-VIAddVersionKey ProductName      "MCreator ${MCREATOR_VERSION} Installer"
-VIAddVersionKey Comments         "Installer for MCreator ${MCREATOR_VERSION}"
-VIAddVersionKey CompanyName      "Pylo"
+VIAddVersionKey ProductName      "MCToolkit ${MCREATOR_VERSION} Installer"
+VIAddVersionKey Comments         "Installer for MCToolkit ${MCREATOR_VERSION}"
+VIAddVersionKey CompanyName      "MCToolkit"
 VIAddVersionKey FileVersion      "${MCREATOR_VERSION}.${BUILD}"
-VIAddVersionKey LegalCopyright   "Copyright %year% (C) Pylo"
-VIAddVersionKey FileDescription  "Installer for MCreator ${MCREATOR_VERSION}.${BUILD}"
+VIAddVersionKey LegalCopyright   "Copyright %year% (C) MCToolkit"
+VIAddVersionKey FileDescription  "Installer for MCToolkit ${MCREATOR_VERSION}.${BUILD}"
 VIProductVersion                 "${MCREATOR_VERSION}.${BUILD}.0"
 
-OutFile "MCreator ${MCREATOR_VERSION} Windows ${BITS}bit.exe"
+OutFile "MCToolkit ${MCREATOR_VERSION} Windows ${BITS}bit.exe"
 
-InstallDir "$PROGRAMFILES${BITS}\Pylo\MCreator"
+InstallDir "$PROGRAMFILES${BITS}\MCToolkit"
 !define INSTALLSIZE 306000
 
 !define MUI_HEADERIMAGE
@@ -43,11 +43,11 @@ InstallDir "$PROGRAMFILES${BITS}\Pylo\MCreator"
 
 !define MUI_LICENSEPAGE_TEXT_TOP "Please read our terms of use published on our website. You can find the links below."
 
-!define MUI_FINISHPAGE_RUN_TEXT "Start MCreator after finish"
-!define MUI_FINISHPAGE_RUN "$INSTDIR\mcreator.exe"
+!define MUI_FINISHPAGE_RUN_TEXT "Start MCToolkit after finish"
+!define MUI_FINISHPAGE_RUN "$INSTDIR\mctoolkit.exe"
 
-!define MUI_FINISHPAGE_LINK "Donate and support MCreator project"
-!define MUI_FINISHPAGE_LINK_LOCATION "http://mcreator.net/donate"
+!define MUI_FINISHPAGE_LINK "Donate and support MCToolkit project"
+!define MUI_FINISHPAGE_LINK_LOCATION "http://mctoolkit.net/donate"
 
 !define MUI_ABORTWARNING
 
@@ -71,7 +71,7 @@ Function .onInit
 ReadRegStr $0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${MUI_PRODUCT}" "UninstallString"
 
 ${If} $0 != ""
-${AndIf} ${Cmd} `MessageBox MB_YESNO|MB_ICONQUESTION "Installer has detected a previous version of MCreator installed. \
+${AndIf} ${Cmd} `MessageBox MB_YESNO|MB_ICONQUESTION "Installer has detected a previous version of MCToolkit installed. \
                  If you intend to install the new version in the same folder as the \
                  old version, you NEED to uninstall the old version first. \
                  Do you want to uninstall previous version?" /SD IDYES IDYES`
@@ -91,8 +91,8 @@ Section "MCreator ${MCREATOR_VERSION}" Installation
   CreateShortCut "$DESKTOP\MCreator.lnk" "$INSTDIR\mcreator.exe"
 
   ;create start menu entry
-  CreateDirectory "$SMPROGRAMS\Pylo"
-  CreateShortCut "$SMPROGRAMS\Pylo\MCreator.lnk" "$INSTDIR\mcreator.exe"
+  CreateDirectory "$SMPROGRAMS\MCToolkit"
+  CreateShortCut "$SMPROGRAMS\MCToolkit.lnk" "$INSTDIR\mctoolkit.exe"
 
   ;write uninstall information to the registry
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${MUI_PRODUCT}" "DisplayName" "MCreator ${MCREATOR_VERSION}"
@@ -144,8 +144,8 @@ Section "Uninstall"
   RMDir /r "$INSTDIR\plugins\*.*"
 
   ;Delete Files of MCreator
-  Delete "$INSTDIR\mcreator.exe"
-  Delete "$INSTDIR\mcreator.bat"
+  Delete "$INSTDIR\mctoolkit.exe"
+  Delete "$INSTDIR\mctoolkit.bat"
   Delete "$INSTDIR\LICENSE.txt"
 
   ;Remove uninstaller
@@ -158,8 +158,8 @@ Section "Uninstall"
   Delete "$DESKTOP\MCreator.lnk"
 
   ;Remove start menu entry
-  Delete "$SMPROGRAMS\Pylo\MCreator.lnk"
-  RMDir "$SMPROGRAMS\Pylo"
+  Delete "$SMPROGRAMS\MCToolkit.lnk"
+  RMDir "$SMPROGRAMS\MCToolkit"
 
   ;Delete user data if preserve option was not selected
   ${If} $keepUserDataState <> 1

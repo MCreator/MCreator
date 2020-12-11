@@ -4,7 +4,7 @@ task dummyTask {
 }
 
 createExe {
-    outfile = 'mcreator.exe'
+    outfile = 'mctoolkit.exe'
     mainClassName = 'net.mcreator.Launcher'
     dontWrapJar = true
     copyConfigurable = dummyTask.outputs.files
@@ -17,11 +17,11 @@ createExe {
     bundledJrePath = 'jdk/jre'
 
     errTitle = 'MCreator'
-    supportUrl = 'https://mcreator.net/support'
+    supportUrl = 'https://mctoolkit.net/support'
 
-    fileDescription = "MCreator " + (String) project.mcreatorconf.getProperty('mcreator')
-    productName = "MCreator"
-    companyName = "Pylo"
+    fileDescription = "MCToolkit " + (String) project.mcreatorconf.getProperty('mcreator')
+    productName = "MCToolkit"
+    companyName = "MCToolkit"
 
     icon = "${projectDir}/src/main/resources/net/mcreator/ui/res/icon.ico"
 }
@@ -30,8 +30,8 @@ task exportWin64(type: Copy, dependsOn: [downloadJDKWin64, createExe, jar, expor
     into 'build/export/win64'
     into('') {
         from file('LICENSE.txt')
-        from file('platform/windows/mcreator.bat')
-        from file('build/launch4j/mcreator.exe')
+        from file('platform/windows/mctoolkit.bat')
+        from file('build/launch4j/mctoolkit.exe')
     }
     into('lib') {
         with copySpec {
@@ -48,15 +48,15 @@ task zipWin64(type: Zip, dependsOn: exportWin64) {
     from 'build/export/win64/'
     into 'MCreator' + (String) project.mcreatorconf.getProperty('mcreator').replace(".", "").replace(" ", "")
     destinationDirectory = file('build/export/')
-    archiveFileName = 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Windows 64bit.zip'
+    archiveFileName = 'MCToolkit ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Windows 64bit.zip'
 }
 
 task exportWin32(type: Copy, dependsOn: [downloadJDKWin32, createExe, jar, exportPlugins]) {
     into 'build/export/win32'
     into('') {
         from file('LICENSE.txt')
-        from file('platform/windows/mcreator.bat')
-        from file('build/launch4j/mcreator.exe')
+        from file('platform/windows/mctoolkit.bat')
+        from file('build/launch4j/mctoolkit.exe')
     }
     into('lib') {
         with copySpec {
@@ -71,9 +71,9 @@ task exportWin32(type: Copy, dependsOn: [downloadJDKWin32, createExe, jar, expor
 
 task zipWin32(type: Zip, dependsOn: exportWin32) {
     from 'build/export/win32/'
-    into 'MCreator' + (String) project.mcreatorconf.getProperty('mcreator').replace(".", "")
+    into 'MCToolkit' + (String) project.mcreatorconf.getProperty('mcreator').replace(".", "")
     destinationDirectory = file('build/export/')
-    archiveFileName = 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Windows 32bit.zip'
+    archiveFileName = 'MCToolkit ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Windows 32bit.zip'
 }
 
 task buildInstallerWin64(type: Exec, dependsOn: [downloadNSIS, exportWin64]) {

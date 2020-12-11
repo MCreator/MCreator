@@ -144,7 +144,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
 					</#if>
 					.lightValue(${(data.luminance * 15)?round})
-					<#if data.destroyTool != "Not specified">
+					<#if data.destroyTool != "Not specified" && data.destroyTool != "hoe">
 					.harvestLevel(${data.breakHarvestLevel})
 					.harvestTool(ToolType.${data.destroyTool?upper_case})
 					</#if>
@@ -445,7 +445,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.isReplaceable>
         @Override public boolean isReplaceable(BlockState state, BlockItemUseContext context) {
-			return true;
+			return context.getItem().getItem() != this.asItem();
 		}
         </#if>
 
