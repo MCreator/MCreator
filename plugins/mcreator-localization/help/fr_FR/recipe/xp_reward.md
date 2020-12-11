@@ -1,1 +1,1 @@
-This parameter controls how many experience points the player will receive after completing the recipe.
+Ce paramètre contrôle le nombre de points d'expérience que le joueur recevra après avoir terminé la recette.
