@@ -3,7 +3,7 @@
 		int retval = _world.getWorldInfo().getSpawnZ();
 		if (_ent instanceof PlayerEntity) {
 			Optional<BlockPos> _bp = ((PlayerEntity) _ent).getBedPosition();
-			if (_bp != null)
+			if (_bp.isPresent())
 				return _bp.get().getZ();
 			else
 				return retval;
