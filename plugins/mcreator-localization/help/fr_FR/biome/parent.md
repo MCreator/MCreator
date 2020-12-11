@@ -1,3 +1,3 @@
-Your biome will always spawn near to the biome selected (it will be used for biome borders and transitions).
+Votre biome apparaîtra toujours à proximité du biome sélectionné (il sera utilisé pour les frontières et les transitions du biome).
 
-Example: Deep ocean always spawns near ocean biome.
+Exemple: l'océan profond apparaît toujours près du biome océan.

@@ -1,4 +1,4 @@
-If you check this parameter, the player will be able to place another block 
-on it (this block can be replaced by other blocks being placed).
+Si vous cochez ce paramètre, le joueur pourra placer un autre bloc
+dessus (ce bloc peut être remplacé par d'autres blocs placés).
 
-Examples: air, most plants
+Exemples: l'air, la plupart des plantes

@@ -1,4 +1,4 @@
-List of blocks this block can replace when generating.
+Liste des blocs que ce bloc peut remplacer lors de la génération.
 
-If you leave this list empty, the block will not naturally generate as it will not be able
-to place itself on the world.
+Si vous laissez cette liste vide, le bloc ne se générera pas naturellement car il ne pourra pas
+se placer sur le monde.

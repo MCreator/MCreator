@@ -1,7 +1,5 @@
-This parameter controls how the structure ground will be detected.
+Ce paramètre contrôle la détection du sol de la structure.
 
-Example: If we make a structure for a water-based biome, the **first motion blocking block** 
-will generate the structure below the water as the water is not considered montion blocking block
-as the entities can go through it.
+Exemple : Si vous faites une structure pour un biome aquatique, le premier **bloc bloquant la génération** générera la structure sous l'eau, car l'eau n'est pas considéré comme bloc bloquant la génération, car les entités peuvent la traverser.
 
-The **first block** detection type will generate the structure above the water.
+La détection de type **premier bloc** générera la structure au dessus de l'eau.

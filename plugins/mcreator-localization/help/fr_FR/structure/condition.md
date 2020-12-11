@@ -1,7 +1,7 @@
-Add your generation condition(s) to generate or not the structure.
+Ajoutez vo(s) condition(s) de génération pour générer (ou non) votre structure.
 
-Existing conditions like biome and block limitations will be checked too.
+Les conditions existantes, comme les limitations de blocs ou de biomes seront vérifiées aussi.
 
-The structure will only generate if the condition procedure returns true.
+La structure ne se générera que si la procédure de condition retourne "vrai".
 
-Keep in mind some procedure blocks might not work properly in this trigger during early world generation.
+Gardez en tête que quelques blocs de procédure pourraient ne pas fonctionner normalement dans ce déclencheur durant la génération du monde.

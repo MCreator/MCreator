@@ -1,5 +1,5 @@
-To add more conditions to the generator of this block, add your procedure with return value here.
+Pour ajouter plus de conditions au générateur de ce bloc, ajoutez ici votre procédure avec valeur de retour.
 
-This condition will be used alongside with conditions such as generation biomes and replacement blocks.
+Cette condition sera utilisée parallèlement à des conditions telles que les biomes de génération et les blocs de remplacement.
 
-Keep in mind some procedure blocks might not work properly in this trigger during early world generation.
+Gardez à l'esprit que certains blocs de procédure peuvent ne pas fonctionner correctement dans ce déclencheur au début de la génération du monde.

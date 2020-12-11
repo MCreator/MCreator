@@ -1,1 +1,1 @@
-While the bullet is flying, the selected procedure will be executed each tick.
+Pendant que la balle vole, la procédure sélectionnée sera exécutée à chaque tick.
