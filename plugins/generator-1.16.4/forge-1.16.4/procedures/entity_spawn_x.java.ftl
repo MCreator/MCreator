@@ -1,14 +1,14 @@
 (new Object() {
 	public int getSpawnX(World _world, Entity _ent) {
-		int retval = _world.getSpawnPoint().getX();
+		int retval = _world.getWorldInfo().getSpawnX();
 		if (_ent instanceof PlayerEntity) {
-			BlockPos _bp = ((PlayerEntity) _ent).getBedLocation(_world.getDimension().getType());
+			Optional<BlockPos> _bp = ((PlayerEntity) _ent).getBedPosition();
 			if (_bp != null)
-				return _bp.getX();
+				return _bp.get().getX();
 			else
 				return retval;
 		} else {
 			return retval;
 		}
 	}
-}.getSpawnX(world, ${input$entity}))
+}.getSpawnX((World) world, ${input$entity}))

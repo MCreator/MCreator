@@ -1,14 +1,14 @@
 (new Object() {
 	public int getSpawnY(World _world, Entity _ent) {
-		int retval = _world.getSpawnPoint().getY();
+		int retval = _world.getWorldInfo().getSpawnY();
 		if (_ent instanceof PlayerEntity) {
-			BlockPos _bp = ((PlayerEntity) _ent).getBedLocation(_world.getDimension().getType());
+			Optional<BlockPos> _bp = ((PlayerEntity) _ent).getBedPosition();
 			if (_bp != null)
-				return _bp.getY();
+				return _bp.get().getY();
 			else
 				return retval;
 		} else {
 			return retval;
 		}
 	}
-}.getSpawnY(world, ${input$entity}))
+}.getSpawnY((World) world, ${input$entity}))
