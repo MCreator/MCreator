@@ -13,4 +13,4 @@
 			}
 			return 0;
 		}
-		}.getAmount((int)(${input$slotid})))
+}.getAmount((int)(${input$slotid})))
