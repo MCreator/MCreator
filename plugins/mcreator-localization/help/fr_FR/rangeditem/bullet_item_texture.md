@@ -1,3 +1,3 @@
-The item texture representing the bullet. Bullet will look the same as the item selected here.
+La texture de l'item représentant la balle. La balle aura la même apparence que l'item sélectionné ici.
 
-For custom shapes, use bullet model parameter.
+Pour les formes personnalisées, utilisez le paramètre de modèle de balle.

@@ -1,3 +1,3 @@
-Check this parameter in case if your effect is bad for the player. 
+Cochez ce paramètre si votre effet est mauvais pour le joueur.
 
-Example: the Poison or the Instant Damage.
+Exemple: le poison ou les dégâts instantanés.

@@ -1,1 +1,1 @@
-If checked then the structure will be rotated in different directions randomly on spawning.
+Si coché, la structure sera tournée dans une direction différente et aléatoire à chaque apparition.

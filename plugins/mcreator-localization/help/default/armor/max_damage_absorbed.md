@@ -7,7 +7,8 @@ This parameter defines armor durability and is effectively applied as:
 
 Vanilla armor uses the following factors:
 
-* leather armor: 5
-* chainmail armor: 15
-* gold armor: 7
-* diamond armor: 33
+* Leather armor: 5
+* Chainmail armor: 15
+* Gold armor: 7
+* Diamond armor: 33
+* Netherite armor: 37

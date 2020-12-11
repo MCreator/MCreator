@@ -1,1 +1,1 @@
-The radius is the diameter in blocks where the particles will spawn.
+Ce radius est le diamètre en blocs dans lequel les particules apparaitront.

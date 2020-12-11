@@ -6,3 +6,4 @@ This parameter controls in which crafting system your recipe will be available.
 * Smoking is a recipe inside the Smoker.
 * Stone cutting is a Stone cutter recipe.
 * Campfire cooking is a recipe for when we right click on a campfire
+* Smithing is a recipe inside the Smithing Table
