@@ -2,9 +2,13 @@ templates:
   - template: json/biome.json.ftl
     writer: json
     name: "@MODDATAROOT/worldgen/biome/@registryname.json"
-  - template: json/biome_builder.json.ftl
+  - template: json/biome/biome_builder.json.ftl
     writer: json
     name: "@MODDATAROOT/worldgen/configured_surface_builder/@registryname.json"
+  - template: json/biome/oak_tree.json.ftl
+    writer: json
+    name: "@MODDATAROOT/worldgen/configured_feature/@registryname_tree.json"
+    condition: "treeType #= 1"
 
 localizationkeys:
   - key: biome.@modid.@registryname
