@@ -831,13 +831,17 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		particleCondition.refreshListKeepSelected();
 		spawningCondition.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getEntityTexturesList().stream().map(File::getName)
-						.collect(Collectors.toList())), "");
+		java.util.List<String> files = mcreator.getWorkspace().getFolderManager().getEntityTexturesList().stream().map(File::getPath)
+				.collect(Collectors.toList());
+		List<String> textures = new ArrayList<>();
+		for(String name : files){
+			name = TextureHolder.textureNameReplace(name.replace(
+					mcreator.getWorkspace().getFolderManager().getEntitiesTexturesDir().getPath(), "")).substring(1);
+			textures.add(name);
+		}
+		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""), textures), "");
 
-		ComboBoxUtil.updateComboBoxContents(mobModelGlowTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getEntityTexturesList().stream().map(File::getName)
-						.collect(Collectors.toList())), "");
+		ComboBoxUtil.updateComboBoxContents(mobModelGlowTexture, ListUtils.merge(Collections.singleton(""), textures), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()

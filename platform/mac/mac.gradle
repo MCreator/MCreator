@@ -1,7 +1,7 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
 task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) {
-    def exportPath = 'build/export/mac64/MCreator.app/Contents/'
+    def exportPath = 'build/export/mac64/MCToolkit.app/Contents/'
     into exportPath
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->

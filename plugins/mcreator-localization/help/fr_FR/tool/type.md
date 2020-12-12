@@ -1,3 +1,3 @@
-The type of tool this tool is.
+Le type d'outil que l'outil est.
 
-Some of the parameters below are not used by some of the tool types.
+Certains des paramètres ci-dessous ne sont pas utilisés chez certains types d'outils.

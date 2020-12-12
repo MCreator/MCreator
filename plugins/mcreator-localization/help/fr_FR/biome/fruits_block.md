@@ -1,3 +1,3 @@
-This parameter controls the block used for fruit like the Cocoa Beans with the Jungle trees in case custom trees are enabled.
+Ce paramètre contrôle le bloc utilisé pour les fruits comme les fèves de cacao avec les arbres de la jungle au cas où les arbres personnalisés sont activés.
 
-Select air block to disable tree fruits.
+Sélectionnez le bloc d'air pour désactiver les fruits des arbres.

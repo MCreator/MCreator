@@ -593,12 +593,22 @@ public class TestWorkspaceDataProvider {
 			}
 			mob.hasAI = _true;
 			mob.aiBase = "(none)";
-			mob.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\" x=\"40\" y=\"40\">"
-					+ "<next><block type=\"wander\"><field name=\"speed\">1</field>"
-					+ "<next><block type=\"look_around\"><next><block type=\"swim_in_water\">"
-					+ "<next><block type=\"panic_when_attacked\"><field name=\"speed\">1.2</field>"
-					+ "<next><block type=\"attack_action\"><field name=\"callhelp\">!_true</field>"
-					+ "</block></next></block></next></block></next></block></next></block></next></block></xml>";
+			if(!emptyLists) {
+				Set<String> aiTasks = modElement.getWorkspace().getGenerator().getGeneratorStats().getGeneratorAITasks();
+				if (aiTasks.contains("wander") && aiTasks.contains("look_around")
+						&& aiTasks.contains("panic_when_attacked") && aiTasks.contains("attack_action")) {
+					mob.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\">"
+							+ "<next><block type=\"wander\"><field name=\"speed\">1</field>"
+							+ "<next><block type=\"look_around\"><next><block type=\"swim_in_water\">"
+							+ "<next><block type=\"panic_when_attacked\"><field name=\"speed\">1.2</field>"
+							+ "<next><block type=\"attack_action\"><field name=\"callhelp\">!_true</field>"
+							+ "</block></next></block></next></block></next></block></next></block></next></block></xml>";
+				}
+			}
+			// fallback
+			if (mob.aixml == null) {
+				mob.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\"></block></xml>";
+			}
 			mob.breedable = _true;
 			mob.tameable = _true;
 			mob.breedTriggerItems = new ArrayList<>();
@@ -672,7 +682,6 @@ public class TestWorkspaceDataProvider {
 			dimension.imitateOverworldBehaviour = _true;
 			dimension.isDark = _true;
 			dimension.doesWaterVaporize = !_true;
-			dimension.hasWeather = !_true;
 			dimension.enablePortal = true; // we always want it as it can be referenced in other tests
 			dimension.portalLuminance = 0.4;
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),
@@ -988,8 +997,8 @@ public class TestWorkspaceDataProvider {
 			rangedItem.enableMeleeDamage = !_true;
 			rangedItem.damageVsEntity = 2;
 			return rangedItem;
-		case POTION:
-			Potion potion = new Potion(modElement);
+		case POTIONEFFECT:
+			PotionEffect potion = new PotionEffect(modElement);
 			potion.effectName = modElement.getName() + " Effect Name";
 			potion.color = Color.magenta;
 			potion.icon = "test.png";
@@ -1048,7 +1057,7 @@ public class TestWorkspaceDataProvider {
 			block.useLootTableForDrops = !_true;
 			block.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			block.destroyTool = new String[] { "Not specified", "pickaxe", "axe", "shovel" }[valueIndex];
+			block.destroyTool = getRandomItem(random, new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 			block.customDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			block.flammability = 5;
@@ -1057,7 +1066,6 @@ public class TestWorkspaceDataProvider {
 			block.plantsGrowOn = _true;
 			block.isNotColidable = _true;
 			block.canProvidePower = _true;
-			block.isBeaconBase = _true;
 			block.isWaterloggable = !block.hasGravity; // only works if block has no gravity, emptyLists for more randomness
 			block.isLadder = _true;
 			block.enchantPowerBonus = 1.2342;

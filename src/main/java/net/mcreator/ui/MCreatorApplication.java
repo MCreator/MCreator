@@ -323,6 +323,9 @@ public final class MCreatorApplication {
 	}
 
 	List<WorkspaceSelector.RecentWorkspaceEntry> getRecentWorkspaces() {
+		if (workspaceSelector.recentWorkspaces == null)
+			workspaceSelector.recentWorkspaces = new WorkspaceSelector.RecentWorkspaces();
+
 		return workspaceSelector.recentWorkspaces.list;
 	}
 

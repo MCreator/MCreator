@@ -77,7 +77,7 @@ public class TextureHolder extends VButton {
 				if (actionListener != null)
 					actionListener.actionPerformed(new ActionEvent(this, 0, ""));
 				getValidationStatus();
-				setToolTipText(id);
+				setToolTipText(id.substring(1));
 			}
 		});
 
@@ -112,7 +112,7 @@ public class TextureHolder extends VButton {
 		});
 	}
 
-	private String textureNameReplace(String string){
+	public static String textureNameReplace(String string){
 		return string.replace("\\", "/").replace("//", "");
 	}
 

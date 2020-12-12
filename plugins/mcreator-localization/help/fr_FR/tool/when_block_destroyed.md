@@ -1,1 +1,1 @@
-If the tool destroys a block, this procedure will be executed.
+Si l'outil détruit un bloc, cette procédure sera exécutée.

@@ -1,1 +1,1 @@
-This parameter controls the number of cacti in one biome chunk
+Ce paramètre contrôle le nombre de cactus dans un tronçon de biome

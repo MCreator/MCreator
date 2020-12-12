@@ -110,7 +110,7 @@ import net.minecraft.block.material.Material;
 			this.nether = <#if data.worldGenType == "Nether like gen">true<#else>false</#if>;
 		}
 
-		<#if !data.hasWeather>
+		<#if !data.imitateOverworldBehaviour>
 		@Override public void calculateInitialWeather() {
 		}
 

@@ -1,3 +1,3 @@
-This parameter controls if the crafting recipe needs to have a specified shape.
+Ce paramètre contrôle si la recette de fabrication doit avoir une forme spécifique.
 
-If checked, any item configuration with said items will be accepted as a recipe.
+Si ce paramètre est coché, toute configuration d'items avec ces items sera acceptée comme recette.

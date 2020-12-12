@@ -9,3 +9,4 @@ string: String
 boolean: boolean
 direction: Direction
 advancement: Advancement
+dimensiontype: RegistryKey<World>

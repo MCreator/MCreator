@@ -29,7 +29,7 @@ Big thanks to [all the people](https://github.com/Team-MCToolkit/MCToolkit/graph
 
 To clone this repository, run `git clone --recursive https://github.com/Team-MCToolkit/MCToolkit.git`.
 
-MCToolkit uses Gradle build system to manage the building and exporting. Use `runMCreator` task to run test MCToolkit.
+MCToolkit uses Gradle build system to manage the building and exporting. Use `runMCToolkit` task to run test MCToolkit.
 
 It is recommended to use Intellij IDEA for development and testing. Learn more about the development process, and 
 tips on [MCToolkit developers wiki](https://github.com/Team-MCToolkit/MCToolkit/wiki).

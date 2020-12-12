@@ -52,7 +52,7 @@ package ${package}.item;
 		public PotionCustom() {
 			super(
 			<#list data.effects as effect>
-			new EffectInstance(${effect.effect?replace("Effect.effect", ".potion")}, ${effect.duration}, ${effect.amplifier})<#if effect?has_next>,</#if>
+			new EffectInstance(${effect.effect?replace("Effect.effect", ".potion")?replace("Potion.potion", "PotionEffect.potion")}, ${effect.duration}, ${effect.amplifier})<#if effect?has_next>,</#if>
 			</#list>);
 			setRegistryName("${registryname}");
 		}

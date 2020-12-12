@@ -1,8 +1,9 @@
-This parameter controls in which crafting system your recipe will be available.
+Ce paramètre contrôle dans quel système d'artisanat votre recette sera disponible.
 
-* Crafting is the crafting table.
-* Smelting is furnace recipe.
-* Blasting is a recipe inside the blast furnace.
-* Smoking is a recipe inside the Smoker.
-* Stone cutting is a Stone cutter recipe.
-* Campfire cooking is a recipe for when we right click on a campfire
+* "Crafting" se passe dans l'établi.
+* "Smelting" se passe dans le four.
+* "Blasting" se passe dans un haut fourneau.
+* "Smoking" se passe dans le fumoir.
+* "Stone cutting" se passe dans le tailleur de pierre.
+* "Campfire cooking" est un clic droit sur un feu de camp.
+* "Smithing" se passe dans une table de forgeron.
