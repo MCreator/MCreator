@@ -72,7 +72,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(0, -1, 64000, 0.1));
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(0, 0, 64000, 0.5));
-	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0.00, 0, 1, 0.01));
+	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner frequencyOnChunks = new JSpinner(new SpinnerNumberModel(5, 0, 40, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 200, 1));
 
