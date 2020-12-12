@@ -682,7 +682,6 @@ public class TestWorkspaceDataProvider {
 			dimension.imitateOverworldBehaviour = _true;
 			dimension.isDark = _true;
 			dimension.doesWaterVaporize = !_true;
-			dimension.hasWeather = !_true;
 			dimension.enablePortal = true; // we always want it as it can be referenced in other tests
 			dimension.portalLuminance = 0.4;
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),

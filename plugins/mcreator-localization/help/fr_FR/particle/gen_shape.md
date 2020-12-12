@@ -1,1 +1,1 @@
-This parameter sets the shape to spawn the particles in.
+Ce paramètre permet de définir une forme dans laquelle les particules apparaitront.
