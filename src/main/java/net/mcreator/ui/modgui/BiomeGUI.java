@@ -636,17 +636,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.defaultFeatures = defaultFeatures.getListElements();
 		biome.vanillaTreeType = (String) vanillaTreeType.getSelectedItem();
 		biome.spawnEntries = spawnEntries.getSpawns();
-		for(Biome.SpawnEntry entry : spawnEntries.getSpawns()){
-			if(entry.spawnType.equals("monster")){
-				biome.spawnMonsters.add(entry);
-			} else if(entry.spawnType.equals("creature")){
-				biome.spawnCreatures.add(entry);
-			} else if(entry.spawnType.equals("ambient")){
-				biome.spawnAmbients.add(entry);
-			} else if(entry.spawnType.equals("waterCreature")){
-				biome.spawnWaterCreatures.add(entry);
-			}
-		}
 		biome.minHeight = (int) minHeight.getValue();
 		biome.spawnVines = spawnVines.isSelected();
 		biome.treeVines = treeVines.getBlock();

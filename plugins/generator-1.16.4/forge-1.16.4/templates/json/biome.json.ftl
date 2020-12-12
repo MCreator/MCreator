@@ -45,8 +45,10 @@
   "features": [
     [],
     [
+    <#if data.generateLakes>
     "minecraft:lake_water",
     "minecraft:lake_lava"
+    </#if>
     ],
     [],
     [
@@ -146,7 +148,7 @@
     <#if data.spawnDesertPyramid>
     "minecraft:desert_pyramid" <#if (data.spawnJungleTemple) || (data.spawnIgloo) || (data.villageType != "none")> , </#if>
     </#if>
-    <#if data.spawnJungleTemple>
+    <#if data.spawnJungleTenmple>
     "minecraft:jungle_pyramid" <#if (data.spawnIgloo) || (data.villageType != "none")> , </#if>
     </#if>
     <#if data.spawnIgloo>
@@ -158,87 +160,14 @@
   ],
   "spawners": {
     "monster": [
-    <#list data.spawnMonsters as entry>
-    <#assign entity = generator.map(entry.entity.getUnmappedValue(), "entities", 1)!"null">
-    <#if !entity.toString().contains(".CustomEntity")>
-    {
-      "type": "minecraft:${entity?lower_case?replace("entity", "")}",
-      "weight": ${entry.weight},
-      "minCount": ${entry.minGroup},
-      "maxCount": ${entry.maxGroup}
-    }
-    <#else>
-    {
-      "type": "${modid}:${entity.toString().replace(".CustomEntity", "")?lower_case}",
-      "weight": ${entry.weight},
-      "minCount": ${entry.minGroup},
-      "maxCount": ${entry.maxGroup}
-    }
-    </#if><#if entry?has_next>,</#if>
-    </#list>
     ],
     "creature": [
-    <#list data.spawnCreatures as entry>
-    <#assign entity = generator.map(entry.entity.getUnmappedValue(), "entities", 1)!"null">
-    <#if !entity.toString().contains(".CustomEntity")>
-    {
-      "type": "minecraft:${entity?lower_case?replace("entity", "")}",
-      "weight": ${entry.weight},
-      "minCount": ${entry.minGroup},
-      "maxCount": ${entry.maxGroup}
-    }
-    <#else>
-    {
-      "type": "${modid}:${entity.toString().replace(".CustomEntity", "")?lower_case}",
-      "weight": ${entry.weight},
-      "minCount": ${entry.minGroup},
-      "maxCount": ${entry.maxGroup}
-    }
-    </#if><#if entry?has_next>,</#if>
-    </#list>
     ],
     "ambient": [
-    <#list data.spawnAmbients as entry>
-    <#assign entity = generator.map(entry.entity.getUnmappedValue(), "entities", 1)!"null">
-    <#if !entity.toString().contains(".CustomEntity")>
-    {
-      "type": "minecraft:${entity?lower_case?replace("entity", "")}",
-      "weight": ${entry.weight},
-      "minCount": ${entry.minGroup},
-      "maxCount": ${entry.maxGroup}
-    }
-    <#else>
-    {
-      "type": "${modid}:${entity.toString().replace(".CustomEntity", "")?lower_case}",
-      "weight": ${entry.weight},
-      "minCount": ${entry.minGroup},
-      "maxCount": ${entry.maxGroup}
-    }
-    </#if><#if entry?has_next>,</#if>
-    </#list>
     ],
     "water_creature": [
-    <#list data.spawnWaterCreatures as entry>
-    <#assign entity = generator.map(entry.entity.getUnmappedValue(), "entities", 1)!"null">
-    <#if !entity.toString().contains(".CustomEntity")>
-    {
-      "type": "minecraft:${entity?lower_case?replace("entity", "")}",
-      "weight": ${entry.weight},
-      "minCount": ${entry.minGroup},
-      "maxCount": ${entry.maxGroup}
-    }
-    <#else>
-    {
-      "type": "${modid}:${entity.toString().replace(".CustomEntity", "")?lower_case}",
-      "weight": ${entry.weight},
-      "minCount": ${entry.minGroup},
-      "maxCount": ${entry.maxGroup}
-    }
-    </#if><#if entry?has_next>,</#if>
-    </#list>
     ],
-    "water_ambient": [
-    ],
+    "water_ambient": [],
     "misc": []
   },
   "spawn_costs": {},

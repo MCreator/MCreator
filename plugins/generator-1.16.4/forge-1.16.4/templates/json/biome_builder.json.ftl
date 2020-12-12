@@ -1,4 +1,4 @@
-<#include "../mcitems.ftl">
+<#include "mcitems.ftl">
 {
   "config": {
     "top_material": {
