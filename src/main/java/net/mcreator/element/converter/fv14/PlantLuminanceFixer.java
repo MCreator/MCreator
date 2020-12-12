@@ -23,13 +23,24 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Plant;
 import net.mcreator.workspace.Workspace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PlantLuminanceFixer implements IConverter {
+	private static final Logger LOG = LogManager.getLogger(PlantLuminanceFixer.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Plant plant = (Plant) input;
-		plant.luminance = Math.floor(plant.luminance * 15);
+		try {
+			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("luminance") != null) {
+				double oldLuminance = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+						.get("luminance").getAsDouble();
+				plant.luminance = (int) Math.floor(oldLuminance * 15);
+			}
+		} catch (Exception e) {
+			LOG.warn("Could not update luminance field of: " + plant.getModElement().getName());
+		}
 		return plant;
 	}
 

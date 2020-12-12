@@ -23,13 +23,24 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Block;
 import net.mcreator.workspace.Workspace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class BlockLuminanceFixer implements IConverter {
+	private static final Logger LOG = LogManager.getLogger(BlockLuminanceFixer.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Block block = (Block) input;
-		block.luminance = Math.floor(block.luminance * 15);
+		try {
+			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("luminance") != null) {
+				double oldLuminance = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+						.get("luminance").getAsDouble();
+				block.luminance = (int) Math.floor(oldLuminance * 15);
+			}
+		} catch (Exception e) {
+			LOG.warn("Could not update luminance field of: " + block.getModElement().getName());
+		}
 		return block;
 	}
 

@@ -54,7 +54,7 @@ import java.util.List;
 
 	public MItemBlock portalFrame;
 	public Particle portalParticles;
-	public double portalLuminance;
+	public int portalLuminance;
 	public Sound portalSound;
 	public String igniterName;
 	public TabEntry igniterTab;
