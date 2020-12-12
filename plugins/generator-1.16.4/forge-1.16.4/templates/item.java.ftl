@@ -73,7 +73,7 @@ package ${package}.item;
 				int y = blockSource.getBlockPos().getY();
 				int z = blockSource.getBlockPos().getZ();
 
-				this.successful = <@procedureOBJToConditionCode data.dispenseSuccessCondition/>;
+				this.setSuccessful(<@procedureOBJToConditionCode data.dispenseSuccessCondition/>);
 
 				<#if hasProcedure(data.dispenseResultItemstack)>
 					boolean success = this.isSuccessful();
