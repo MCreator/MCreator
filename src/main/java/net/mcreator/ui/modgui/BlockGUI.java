@@ -1279,7 +1279,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		creativeTab.setSelectedItem(block.creativeTab);
 		destroyTool.setSelectedItem(block.destroyTool);
 		soundOnStep.setSelectedItem(block.soundOnStep.getUnmappedValue());
-		luminance.setValue((int) block.luminance);
+		luminance.setValue(block.luminance);
 		breakHarvestLevel.setValue(block.breakHarvestLevel);
 		customDrop.setBlock(block.customDrop);
 		dropAmount.setValue(block.dropAmount);

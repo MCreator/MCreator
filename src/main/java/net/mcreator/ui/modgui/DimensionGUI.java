@@ -378,7 +378,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		onPortalTickUpdate.setSelectedProcedure(dimension.onPortalTickUpdate);
 		onPlayerEntersDimension.setSelectedProcedure(dimension.onPlayerEntersDimension);
 		onPlayerLeavesDimension.setSelectedProcedure(dimension.onPlayerLeavesDimension);
-		luminance.setValue((int) dimension.portalLuminance);
+		luminance.setValue(dimension.portalLuminance);
 		portalMakeCondition.setSelectedProcedure(dimension.portalMakeCondition);
 		portalUseCondition.setSelectedProcedure(dimension.portalUseCondition);
 

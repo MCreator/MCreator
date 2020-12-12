@@ -574,7 +574,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		hardness.setValue(plant.hardness);
 		resistance.setValue(plant.resistance);
 		soundOnStep.setSelectedItem(plant.soundOnStep.getUnmappedValue());
-		luminance.setValue((int) plant.luminance);
+		luminance.setValue(plant.luminance);
 		unbreakable.setSelected(plant.unbreakable);
 		forceTicking.setSelected(plant.forceTicking);
 		hasTileEntity.setSelected(plant.hasTileEntity);
