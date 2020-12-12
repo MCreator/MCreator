@@ -2,11 +2,11 @@
   "output": "DimensionType",
   "colour": 123,
   "mcreator": {
-    "toolbox_id": "worlddata",
+    "toolbox_id": "mcelements",
     "dependencies": [
       {
-        "name": "world",
-        "type": "world"
+        "name": "dimension",
+        "type": "dimensiontype"
       }
     ]
   }
