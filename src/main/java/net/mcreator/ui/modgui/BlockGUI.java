@@ -1279,7 +1279,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		creativeTab.setSelectedItem(block.creativeTab);
 		destroyTool.setSelectedItem(block.destroyTool);
 		soundOnStep.setSelectedItem(block.soundOnStep.getUnmappedValue());
-		luminance.setValue(block.luminance);
+		luminance.setValue((int) block.luminance);
 		breakHarvestLevel.setValue(block.breakHarvestLevel);
 		customDrop.setBlock(block.customDrop);
 		dropAmount.setValue(block.dropAmount);
@@ -1383,7 +1383,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.material = new Material(mcreator.getWorkspace(), material.getSelectedItem());
 		block.tickRate = (int) tickRate.getValue();
 		block.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
-		block.luminance = (double) luminance.getValue();
+		block.luminance = (int) luminance.getValue();
 		block.unbreakable = unbreakable.isSelected();
 		block.breakHarvestLevel = (int) breakHarvestLevel.getValue();
 		block.spawnParticles = spawnParticles.isSelected();

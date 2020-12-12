@@ -574,7 +574,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		hardness.setValue(plant.hardness);
 		resistance.setValue(plant.resistance);
 		soundOnStep.setSelectedItem(plant.soundOnStep.getUnmappedValue());
-		luminance.setValue(plant.luminance);
+		luminance.setValue((int) plant.luminance);
 		unbreakable.setSelected(plant.unbreakable);
 		forceTicking.setSelected(plant.forceTicking);
 		hasTileEntity.setSelected(plant.hasTileEntity);
@@ -673,7 +673,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.growapableMaxHeight = (int) growapableMaxHeight.getValue();
 		plant.hardness = (double) hardness.getValue();
 		plant.resistance = (double) resistance.getValue();
-		plant.luminance = (double) luminance.getValue();
+		plant.luminance = (int) luminance.getValue();
 		plant.unbreakable = unbreakable.isSelected();
 		plant.forceTicking = forceTicking.isSelected();
 		plant.hasTileEntity = hasTileEntity.isSelected();

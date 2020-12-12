@@ -378,7 +378,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		onPortalTickUpdate.setSelectedProcedure(dimension.onPortalTickUpdate);
 		onPlayerEntersDimension.setSelectedProcedure(dimension.onPlayerEntersDimension);
 		onPlayerLeavesDimension.setSelectedProcedure(dimension.onPlayerLeavesDimension);
-		luminance.setValue(dimension.portalLuminance);
+		luminance.setValue((int) dimension.portalLuminance);
 		portalMakeCondition.setSelectedProcedure(dimension.portalMakeCondition);
 		portalUseCondition.setSelectedProcedure(dimension.portalUseCondition);
 
@@ -410,7 +410,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.onPortalTickUpdate = onPortalTickUpdate.getSelectedProcedure();
 		dimension.onPlayerEntersDimension = onPlayerEntersDimension.getSelectedProcedure();
 		dimension.onPlayerLeavesDimension = onPlayerLeavesDimension.getSelectedProcedure();
-		dimension.portalLuminance = (double) luminance.getValue();
+		dimension.portalLuminance = (int) luminance.getValue();
 		dimension.doesWaterVaporize = doesWaterVaporize.isSelected();
 		dimension.portalMakeCondition = portalMakeCondition.getSelectedProcedure();
 		dimension.portalUseCondition = portalUseCondition.getSelectedProcedure();
