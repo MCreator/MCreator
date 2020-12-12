@@ -177,7 +177,7 @@ package ${package}.item;
 		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(stack, world, list, flag);
 			<#if tooltipCode??>
-                 ${tooltipCode}
+				${tooltipCode}
             </#if>
 		}
 		</#if>
