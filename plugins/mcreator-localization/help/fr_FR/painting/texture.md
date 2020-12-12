@@ -1,0 +1,1 @@
+Sélectionnez une texture qui doit être utilisée comme premier plan de ce tableau.

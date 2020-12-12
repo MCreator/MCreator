@@ -1,6 +1,6 @@
 {
-  "output": "Number",
-  "colour": "%{BKY_MATH_HUE}",
+  "output": "DimensionType",
+  "colour": 123,
   "mcreator": {
     "toolbox_id": "worlddata",
     "dependencies": [

@@ -2180,6 +2180,26 @@
   type: block
   texture: POTTED_BAMBOO
 
+- Blocks.POTTED_CRIMSON_FUNGUS:
+  readable_name: "Potted Crimson Fungus"
+  type: block
+  texture: POTTED_CRIMSON_FUNGUS
+
+- Blocks.POTTED_WARPED_FUNGUS:
+  readable_name: "Potted Warped Fungus"
+  type: block
+  texture: POTTED_WARPED_FUNGUS
+
+- Blocks.POTTED_CRIMSON_ROOTS:
+  readable_name: "Potted Crimson Roots"
+  type: block
+  texture: POTTED_CRIMSON_ROOTS
+
+- Blocks.POTTED_WARPED_ROOTS:
+  readable_name: "Potted Warped Roots"
+  type: block
+  texture: POTTED_WARPED_ROOTS
+
 - Blocks.CARROTS:
   readable_name: "Carrots Plant Block"
   type: block
@@ -3692,7 +3712,7 @@
 - Blocks.SOUL_WALL_TORCH:
   readable_name: "Soul Wall Torch"
   type: block
-  texture: SOUL_WALL_TORCH
+  texture: SOUL_TORCH
 
 - Blocks.CHAIN:
   readable_name: "Chain"
@@ -3797,7 +3817,7 @@
 - Blocks.WEEPING_VINES_PLANT:
   readable_name: "Weeping Vines Plant"
   type: block
-  texture: WEEPING_VINES_PLANT
+  texture: WEEPING_VINES
 
 - Blocks.TWISTING_VINES:
   readable_name: "Twisting Vines"
@@ -3807,7 +3827,7 @@
 - Blocks.TWISTING_VINES_PLANT:
   readable_name: "Twisting Vines Plant"
   type: block
-  texture: TWISTING_VINES_PLANT
+  texture: TWISTING_VINES
 
 - Blocks.CRIMSON_ROOTS:
   readable_name: "Crimson Roots"
@@ -3907,12 +3927,12 @@
 - Blocks.CRIMSON_SIGN:
   readable_name: "Crimson Sign"
   type: block
-  texture: CRIMSON_SIGN
+  texture: STANDING_CRIMSON_SIGN
 
 - Blocks.WARPED_SIGN:
   readable_name: "Warped Sign"
   type: block
-  texture: WARPED_SIGN
+  texture: STANDING_WARPED_SIGN
 
 - Blocks.CRIMSON_WALL_SIGN:
   readable_name: "Crimson Wall Sign"
@@ -3948,26 +3968,6 @@
   readable_name: "Respawn Anchor"
   type: block
   texture: RESPAWN_ANCHOR
-
-- Blocks.POTTED_CRIMSON_FUNGUS:
-  readable_name: "Potted Crimson Fungus"
-  type: block
-  texture: POTTED_CRIMSON_FUNGUS
-
-- Blocks.POTTED_WARPED_FUNGUS:
-  readable_name: "Potted Warped Fungus"
-  type: block
-  texture: POTTED_WARPED_FUNGUS
-
-- Blocks.POTTED_CRIMSON_ROOTS:
-  readable_name: "Potted Crimson Roots"
-  type: block
-  texture: POTTED_CRIMSON_ROOTS
-
-- Blocks.POTTED_WARPED_ROOTS:
-  readable_name: "Potted Warped Roots"
-  type: block
-  texture: POTTED_WARPED_ROOTS
 
 - Blocks.LODESTONE:
   readable_name: "Lodestone"
@@ -4226,6 +4226,16 @@
   type: item
   texture: DIAMOND
 
+- Items.NETHERITE_INGOT:
+  readable_name: "Netherite Ingot"
+  type: item
+  texture: NETHERITE_INGOT
+
+- Items.NETHERITE_SCRAP:
+  readable_name: "Netherite Scrap"
+  type: item
+  texture: NETHERITE_SCRAP
+
 - Items.EMERALD:
   readable_name: "Emerald"
   type: item
@@ -4306,6 +4316,11 @@
   type: item
   texture: CARROT_ON_A_STICK
 
+- Items.WARPED_FUNGUS_ON_A_STICK:
+  readable_name: "Warped Fungus on a Stick"
+  type: item
+  texture: WARPED_FUNGUS_ON_A_STICK
+
 - Items.COMPASS:
   readable_name: "Compass"
   type: item
@@ -4355,6 +4370,12 @@
   description: "Globe"
   type: item
   texture: GLOBE_BANNER_PATTERN
+
+- Items.PIGLIN_BANNER_PATTERN:
+  readable_name: "Banner Pattern"
+  description: "Snout"
+  type: item
+  texture: PIGLIN_BANNER_PATTERN
 
 - Items.TOTEM_OF_UNDYING:
   readable_name: "Totem of Undying"
@@ -4511,6 +4532,31 @@
   type: item
   texture: DIAMOND_HOE
 
+- Items.NETHERITE_SWORD:
+  readable_name: "Netherite Sword"
+  type: item
+  texture: NETHERITE_SWORD
+
+- Items.NETHERITE_SHOVEL:
+  readable_name: "Netherite Shovel"
+  type: item
+  texture: NETHERITE_SHOVEL
+
+- Items.NETHERITE_PICKAXE:
+  readable_name: "Netherite Pickaxe"
+  type: item
+  texture: NETHERITE_PICKAXE
+
+- Items.NETHERITE_AXE:
+  readable_name: "Netherite Axe"
+  type: item
+  texture: NETHERITE_AXE
+
+- Items.NETHERITE_HOE:
+  readable_name: "Netherite Hoe"
+  type: item
+  texture: NETHERITE_HOE
+
 - Items.TRIDENT:
   readable_name: "Trident"
   type: item
@@ -4620,6 +4666,26 @@
   readable_name: "Diamond Boots"
   type: item
   texture: DIAMOND_BOOTS
+
+- Items.NETHERITE_HELMET:
+  readable_name: "Netherite Helmet"
+  type: item
+  texture: NETHERITE_HELMET
+
+- Items.NETHERITE_CHESTPLATE:
+  readable_name: "Netherite Chestplate"
+  type: item
+  texture: NETHERITE_CHESTPLATE
+
+- Items.NETHERITE_LEGGINGS:
+  readable_name: "Netherite Leggings"
+  type: item
+  texture: NETHERITE_LEGGINGS
+
+- Items.NETHERITE_BOOTS:
+  readable_name: "Netherite Boots"
+  type: item
+  texture: NETHERITE_BOOTS
 
 - Items.ELYTRA:
   readable_name: "Elytra"
@@ -4781,6 +4847,16 @@
   readable_name: "Dark Oak Sign"
   type: item
   texture: DARK_OAK_SIGN
+
+- Items.CRIMSON_SIGN:
+  readable_name: "Crimson Sign"
+  type: item
+  texture: CRIMSON_SIGN
+
+- Items.WARPED_SIGN:
+  readable_name: "Warped Sign"
+  type: item
+  texture: WARPED_SIGN
 
 - Items.OAK_DOOR:
   readable_name: "Oak Door"
@@ -5681,6 +5757,31 @@
   type: item
   texture: ZOMBIE_VILLAGER_SPAWN_EGG
 
+- Items.HOGLIN_SPAWN_EGG:
+  readable_name: "Hoglin Spawn Egg"
+  type: item
+  texture: HOGLIN_SPAWN_EGG
+
+- Items.PIGLIN_SPAWN_EGG:
+  readable_name: "Piglin Spawn Egg"
+  type: item
+  texture: PIGLIN_SPAWN_EGG
+
+- Items.PIGLIN_BRUTE_SPAWN_EGG:
+  readable_name: "Piglin Brute Spawn Egg"
+  type: item
+  texture: PIGLIN_BRUTE_SPAWN_EGG
+
+- Items.STRIDER_SPAWN_EGG:
+  readable_name: "Strider Spawn Egg"
+  type: item
+  texture: STRIDER_SPAWN_EGG
+
+- Items.ZOGLIN_SPAWN_EGG:
+  readable_name: "Zoglin Spawn Egg"
+  type: item
+  texture: ZOGLIN_SPAWN_EGG
+
 - Items.EXPERIENCE_BOTTLE:
   readable_name: "Bottle o' Enchanting"
   type: item
@@ -5793,6 +5894,12 @@
   texture: RECORD_WAIT
   description: "C418 - wait"
 
+- Items.MUSIC_DISC_PIGSTEP:
+  readable_name: "Music Disc"
+  description: "Pigstep"
+  type: item
+  texture: MUSIC_DISC_PIGSTEP
+
 - Items.SKULL:
   readable_name: "Any Skull"
   type: item
@@ -5848,110 +5955,3 @@
   readable_name: "Honey Bottle"
   type: item
   texture: HONEY_BOTTLE
-
-- Items.NETHERITE_INGOT:
-  readable_name: "Netherite Ingot"
-  type: item
-  texture: NETHERITE_INGOT
-
-- Items.NETHERITE_SCRAP:
-  readable_name: "Netherite Scrap"
-  type: item
-  texture: NETHERITE_SCRAP
-
-- Items.NETHERITE_SWORD:
-  readable_name: "Netherite Sword"
-  type: item
-  texture: NETHERITE_SWORD
-
-- Items.NETHERITE_SHOVEL:
-  readable_name: "Netherite Shovel"
-  type: item
-  texture: NETHERITE_SHOVEL
-
-- Items.NETHERITE_PICKAXE:
-  readable_name: "Netherite Pickaxe"
-  type: item
-  texture: NETHERITE_PICKAXE
-
-- Items.NETHERITE_AXE:
-  readable_name: "Netherite Axe"
-  type: item
-  texture: NETHERITE_AXE
-
-- Items.NETHERITE_HOE:
-  readable_name: "Netherite Hoe"
-  type: item
-  texture: NETHERITE_HOE
-
-- Items.NETHERITE_HELMET:
-  readable_name: "Netherite Helmet"
-  type: item
-  texture: NETHERITE_HELMET
-
-- Items.NETHERITE_CHESTPLATE:
-  readable_name: "Netherite Chestplate"
-  type: item
-  texture: NETHERITE_CHESTPLATE
-
-- Items.NETHERITE_LEGGINGS:
-  readable_name: "Netherite Leggings"
-  type: item
-  texture: NETHERITE_LEGGINGS
-
-- Items.NETHERITE_BOOTS:
-  readable_name: "Netherite Boots"
-  type: item
-  texture: NETHERITE_BOOTS
-
-- Items.CRIMSON_SIGN:
-  readable_name: "Crimson Sign"
-  type: item
-  texture: CRIMSON_SIGN
-
-- Items.WARPED_SIGN:
-  readable_name: "Warped Sign"
-  type: item
-  texture: WARPED_SIGN
-
-- Items.HOGLIN_SPAWN_EGG:
-  readable_name: "Hoglin Spawn Egg"
-  type: item
-  texture: HOGLIN_SPAWN_EGG
-
-- Items.PIGLIN_SPAWN_EGG:
-  readable_name: "Piglin Spawn Egg"
-  type: item
-  texture: PIGLIN_SPAWN_EGG
-
-- Items.PIGLIN_BRUTE_SPAWN_EGG:
-  readable_name: "Piglin Brute Spawn Eggl"
-  type: item
-  texture: PIGLIN_BRUTE_SPAWN_EGG
-
-- Items.STRIDER_SPAWN_EGG:
-  readable_name: "Strider Spawn Egg"
-  type: item
-  texture: STRIDER_SPAWN_EGG
-
-- Items.ZOGLIN_SPAWN_EGG:
-  readable_name: "Zoglin Spawn Egg"
-  type: item
-  texture: ZOGLIN_SPAWN_EGG
-
-- Items.WARPED_FUNGUS_ON_A_STICK:
-  readable_name: "Warped Fungus on a Stick"
-  type: item
-  texture: WARPED_FUNGUS_ON_A_STICK
-
-- Items.MUSIC_DISC_PIGSTEP:
-  readable_name: "Music Disc"
-  description: "Pigstep"
-  type: item
-  texture: MUSIC_DISC_PIGSTEP
-
-- Items.PIGLIN_BANNER_PATTERN:
-  readable_name: "Banner Pattern"
-  description: "Snout"
-  type: item
-  texture: PIGLIN_BANNER_PATTERN

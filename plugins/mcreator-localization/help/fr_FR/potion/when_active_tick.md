@@ -1,1 +1,1 @@
-This procedure will be executed each tick for each entity that has this potion effect.
+Cette procédure sera exécutée à chaque tick pour chaque entité ayant cet effet de potion.
