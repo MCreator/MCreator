@@ -2,7 +2,7 @@
 {
 	Entity _ent = ${input$entity};
 	if(!_ent.world.isRemote&&_ent instanceof ServerPlayerEntity) {
-		<#if field$dimension=="Surface">Type destinati
+		<#if field$dimension=="Surface">
 			RegistryKey<World> destinationType = World.OVERWORLD;
 		<#elseif field$dimension=="Nether">
 			RegistryKey<World> destinationType = World.THE_NETHER;
