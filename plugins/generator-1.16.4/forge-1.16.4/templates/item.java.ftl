@@ -76,7 +76,7 @@ package ${package}.item;
 				this.successful = <@procedureOBJToConditionCode data.dispenseSuccessCondition/>;
 
 				<#if hasProcedure(data.dispenseResultItemstack)>
-					boolean success = this.successful;
+					boolean success = this.isSuccessful();
 					return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
 				<#else>
 					return itemstack;
