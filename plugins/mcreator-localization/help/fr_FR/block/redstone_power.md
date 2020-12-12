@@ -1,0 +1,1 @@
+Si le paramètre de génération de redstone est activé, ce paramètre vous permettra la configuration du pouvoir d'emission de redstone.

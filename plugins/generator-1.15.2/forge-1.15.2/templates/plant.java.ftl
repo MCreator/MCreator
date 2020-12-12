@@ -284,12 +284,38 @@ import net.minecraft.block.material.Material;
 		}
 		</#if>
 
-		<#if data.specialInfo?has_content>
+		<#if data.specialInfo?has_content || data.onShiftInfo?has_content || data.onCommandInfo?has_content>
 		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
+			<#if data.specialInfo?has_content>
+			<#assign line = 1>
 			<#list data.specialInfo as entry>
-			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+			list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.tooltip${line}"));
+			<#assign line++>
 			</#list>
+			</#if>
+			<#if data.onShiftInfo?has_content && data.plantShiftOnly()>
+			if (Screen.hasShiftDown()) {
+				<#assign line = 1>
+				<#list data.onShiftInfo as entry>
+				list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.shift.tooltip${line}"));
+				<#assign line++>
+				</#list>
+			} else {
+				list.add(new StringTextComponent("\u00A77Press SHIFT for more information"));
+			}
+			</#if>
+			<#if data.onCommandInfo?has_content && data.plantCommandOnly()>
+			if (Screen.hasControlDown()) {
+				<#assign line = 1>
+				<#list data.onCommandInfo as entry>
+				list.add(new TranslationTextComponent("block.${modid?lower_case}.${registryname?lower_case}.command.tooltip${line}"));
+				<#assign line++>
+				</#list>
+			} else {
+				list.add(new StringTextComponent("\u00A77Press CTRL for more information"));
+			}
+			</#if>
 		}
 		</#if>
 

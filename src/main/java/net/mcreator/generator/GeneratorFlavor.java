@@ -21,7 +21,7 @@ package net.mcreator.generator;
 public enum GeneratorFlavor {
 
 	FORGE(BaseLanguage.JAVA), FABRIC(BaseLanguage.JAVA), SPIGOT(BaseLanguage.JAVA), DATAPACK(BaseLanguage.JSON), ADDON(
-			BaseLanguage.JSON);
+			BaseLanguage.JSON), RESOURCEPACK(BaseLanguage.JSON);
 
 	private final BaseLanguage baseLanguage;
 

@@ -8,7 +8,7 @@ supportLabel: Support
 supportComment: >
   :wave: @{issue-author}, we use the issue tracker exclusively for bug reports
   and feature requests. However, this issue appears to be a support request.
-  Please use our [Forums on the website](https://mcreator.net/forum) for support requests.
+  Please use our [Forums on the website](https://mctoolkit.net/forum) for support requests.
 
 # Close issues marked as support requests
 close: true

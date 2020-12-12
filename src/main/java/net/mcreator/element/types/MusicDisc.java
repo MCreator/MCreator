@@ -37,6 +37,10 @@ public class MusicDisc extends GeneratableElement implements ITabContainedElemen
 	public TabEntry creativeTab;
 	public Sound music;
 	public List<String> specialInfo;
+	public boolean onShiftOnly;
+	public List<String> onShiftInfo;
+	public boolean onCommandOnly;
+	public List<String> onCommandInfo;
 	public boolean hasGlow;
 
 	public Procedure onRightClickedInAir;
@@ -56,6 +60,18 @@ public class MusicDisc extends GeneratableElement implements ITabContainedElemen
 		return ImageUtils
 				.resizeAndCrop(getModElement().getWorkspace().getFolderManager().getItemImageIcon(texture).getImage(),
 						32);
+	}
+
+	public boolean musicInfoOnly() {
+		return !specialInfo.isEmpty();
+	}
+
+	public boolean musicShiftOnly() {
+		return onShiftOnly;
+	}
+
+	public boolean musicCommandOnly() {
+		return onCommandOnly;
 	}
 
 	@Override public TabEntry getCreativeTab() {
