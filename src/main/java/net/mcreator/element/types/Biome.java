@@ -93,6 +93,10 @@ import java.util.List;
 	public List<String> defaultFeatures;
 
 	public List<SpawnEntry> spawnEntries;
+	public List<SpawnEntry> spawnMonsters;
+	public List<SpawnEntry> spawnCreatures;
+	public List<SpawnEntry> spawnAmbients;
+	public List<SpawnEntry> spawnWaterCreatures;
 
 	private Biome() {
 		this(null);
@@ -116,6 +120,10 @@ import java.util.List;
 		biomeCategory = "NONE";
 		biomeDictionaryTypes = new ArrayList<>();
 		spawnEntries = new ArrayList<>();
+		spawnMonsters = new ArrayList<>();
+		spawnCreatures = new ArrayList<>();
+		spawnAmbients = new ArrayList<>();
+		spawnWaterCreatures = new ArrayList<>();
 		defaultFeatures = new ArrayList<>();
 	}
 
