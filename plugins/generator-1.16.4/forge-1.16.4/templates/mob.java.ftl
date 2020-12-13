@@ -548,7 +548,7 @@ import net.minecraft.block.material.Material;
 		<#if hasProcedure(data.onRightClickedOn) || data.ridable || data.tameable || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 		@Override public ActionResultType func_230254_b_(PlayerEntity sourceentity, Hand hand) {
 			ItemStack itemstack = sourceentity.getHeldItem(hand);
-			ActionResultType retval = ActionResultType.func_233537_a_(this.world.isRemote);
+			ActionResultType retval = ActionResultType.func_233537_a_(this.world.isRemote());
 
 			<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 				<#if data.ridable>
@@ -576,7 +576,7 @@ import net.minecraft.block.material.Material;
 						});
 					}
 				<#if data.ridable>
-						return ActionResultType.func_233537_a_(this.world.isRemote);
+						return ActionResultType.func_233537_a_(this.world.isRemote());
 					}
 				</#if>
 			</#if>
@@ -585,20 +585,20 @@ import net.minecraft.block.material.Material;
 				Item item = itemstack.getItem();
 				if (itemstack.getItem() instanceof SpawnEggItem) {
 					retval = super.func_230254_b_(sourceentity, hand);
-				} else if (this.world.isRemote) {
+				} else if (this.world.isRemote()) {
 					retval = (this.isTamed() && this.isOwner(sourceentity) || this.isBreedingItem(itemstack))
-							? ActionResultType.func_233537_a_(this.world.isRemote) : ActionResultType.PASS;
+							? ActionResultType.func_233537_a_(this.world.isRemote()) : ActionResultType.PASS;
 				} else {
 					if (this.isTamed()) {
 						if (this.isOwner(sourceentity)) {
 							if (item.isFood() && this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
 								this.consumeItemFromStack(sourceentity, itemstack);
 								this.heal((float)item.getFood().getHealing());
-								retval = ActionResultType.func_233537_a_(this.world.isRemote);
+								retval = ActionResultType.func_233537_a_(this.world.isRemote());
 							} else if (this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
 								this.consumeItemFromStack(sourceentity, itemstack);
 								this.heal(4);
-								retval = ActionResultType.func_233537_a_(this.world.isRemote);
+								retval = ActionResultType.func_233537_a_(this.world.isRemote());
 							} else {
 								retval = super.func_230254_b_(sourceentity, hand);
 							}
@@ -613,7 +613,7 @@ import net.minecraft.block.material.Material;
 						}
 
 						this.enablePersistence();
-						retval = ActionResultType.func_233537_a_(this.world.isRemote);
+						retval = ActionResultType.func_233537_a_(this.world.isRemote());
 					} else {
 						retval = super.func_230254_b_(sourceentity, hand);
 						if (retval == ActionResultType.SUCCESS || retval == ActionResultType.CONSUME)

@@ -1,0 +1,1 @@
+(<#include "world_entity_inrange.java.ftl"> != null)

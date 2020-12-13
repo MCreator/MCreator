@@ -103,7 +103,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector generateCondition;
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
-	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, 64000, 0.5));
+	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
 	private final VTextField name = new VTextField(19);
 
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
