@@ -1,1 +1,1 @@
-((world instanceof World)?((World) world).isRemote:false)
+world.isRemote()

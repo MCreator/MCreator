@@ -1,1 +1,1 @@
-((world instanceof World)?((World) world).isThundering():false)
+world.getWorldInfo().isThundering()

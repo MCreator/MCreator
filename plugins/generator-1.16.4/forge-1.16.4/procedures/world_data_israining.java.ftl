@@ -1,1 +1,1 @@
-((world instanceof World)?((World) world).isRaining():false)
+world.getWorldInfo().isRaining()
