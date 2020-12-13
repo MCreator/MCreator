@@ -1,1 +1,1 @@
-(world.getCurrentMoonPhaseFactor())
+(((World) world).getCurrentMoonPhaseFactor())
