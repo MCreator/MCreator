@@ -1,1 +1,1 @@
-if(world instanceof World) world.getWorld().setSpawnPoint(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}));
+if(world instanceof World) ((World) world).getWorld().setSpawnPoint(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}));
