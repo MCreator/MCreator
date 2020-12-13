@@ -25,6 +25,8 @@
         <block type="variables_set_text"/>
         <block type="variables_get_itemstack"/>
         <block type="variables_set_itemstack"/>
+        <block type="variables_get_blockstate"/>
+        <block type="variables_set_blockstate"/>
         <custom-customvariables/>
     </category>
     <sep/>
@@ -40,6 +42,7 @@
         <block type="return_number"/>
         <block type="return_text"/>
         <block type="return_itemstack"/>
+        <block type="return_blockstate"/>
         <block type="controls_repeat_ext"/>
         <block type="controls_while"/>
         <block type="controls_flow_statements"/>
@@ -99,10 +102,12 @@
         <block type="procedure_retval_number"/>
         <block type="procedure_retval_string"/>
         <block type="procedure_retval_itemstack"/>
+        <block type="procedure_retval_blockstate"/>
         <block type="custom_dependency_logic"/>
         <block type="custom_dependency_number"/>
         <block type="custom_dependency_text"/>
         <block type="custom_dependency_itemstack"/>
+        <block type="custom_dependency_blockstate"/>
         <block type="java_code"/>
         <block type="java_code_get"/>
         <custom-advanced/>

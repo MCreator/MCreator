@@ -137,6 +137,8 @@ public class ProcedureTemplateIO {
 			"<block type=\"(?:variables_set_text|variables_get_text)\"><field name=\"VAR\">local:(.*?)</field>");
 	private static final Pattern itemstackLocalVariables = Pattern.compile(
 			"<block type=\"(?:variables_set_itemstack|variables_get_itemstack)\"><field name=\"VAR\">local:(.*?)</field>");
+	private static final Pattern blockstateLocalVariables = Pattern.compile(
+			"<block type=\"(?:variables_set_blockstate|variables_get_blockstate)\"><field name=\"VAR\">local:(.*?)</field>");
 
 	public static Set<VariableElement> tryToExtractVariables(String xml) {
 		Set<VariableElement> retval = new HashSet<>();
@@ -171,6 +173,14 @@ public class ProcedureTemplateIO {
 				VariableElement element = new VariableElement();
 				element.setName(m.group(1));
 				element.setType(VariableElementType.ITEMSTACK);
+				retval.add(element);
+			}
+
+			m = blockstateLocalVariables.matcher(xml);
+			while (m.find()) {
+				VariableElement element = new VariableElement();
+				element.setName(m.group(1));
+				element.setType(VariableElementType.BLOCKSTATE);
 				retval.add(element);
 			}
 		} catch (Exception ignored) {
