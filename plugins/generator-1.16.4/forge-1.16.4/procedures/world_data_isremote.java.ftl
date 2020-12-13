@@ -1,1 +1,1 @@
-world.isRemote()
+(world.isRemote())
