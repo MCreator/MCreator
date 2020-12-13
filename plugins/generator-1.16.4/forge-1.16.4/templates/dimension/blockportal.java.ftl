@@ -31,7 +31,7 @@ public static class CustomPortalBlock extends NetherPortalBlock {
 
 	public CustomPortalBlock() {
 		super(Block.Properties.create(Material.PORTAL).doesNotBlockMovement().tickRandomly()
-				.hardnessAndResistance(-1.0F).sound(SoundType.GLASS).setLightLevel(s -> ${(data.portalLuminance * 15)?round}).noDrops());
+				.hardnessAndResistance(-1.0F).sound(SoundType.GLASS).setLightLevel(s -> ${data.portalLuminance}).noDrops());
 		setRegistryName("${registryname}_portal");
 	}
 

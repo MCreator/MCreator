@@ -107,7 +107,7 @@ import java.util.Map;
 
 	public boolean isNotColidable;
 	public StepSound soundOnStep;
-	public double luminance;
+	public int luminance;
 	public boolean unbreakable;
 	public int breakHarvestLevel;
 

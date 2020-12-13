@@ -103,10 +103,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector generateCondition;
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
-	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, 64000, 0.5));
+	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
 	private final VTextField name = new VTextField(19);
 
-	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0.00, 0.00, 1.00, 0.01));
+	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 64, 1));
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(255, 0, 255, 1));
 
@@ -1502,7 +1502,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.material = new Material(mcreator.getWorkspace(), material.getSelectedItem());
 		block.tickRate = (int) tickRate.getValue();
 		block.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
-		block.luminance = (double) luminance.getValue();
+		block.luminance = (int) luminance.getValue();
 		block.unbreakable = unbreakable.isSelected();
 		block.breakHarvestLevel = (int) breakHarvestLevel.getValue();
 		block.spawnParticles = spawnParticles.isSelected();

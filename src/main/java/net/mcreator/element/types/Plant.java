@@ -62,7 +62,7 @@ import java.util.Map;
 	public TabEntry creativeTab;
 	public double hardness;
 	public double resistance;
-	public double luminance;
+	public int luminance;
 	public boolean unbreakable;
 	public StepSound soundOnStep;
 	public boolean useLootTableForDrops;

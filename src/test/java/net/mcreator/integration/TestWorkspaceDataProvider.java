@@ -683,7 +683,7 @@ public class TestWorkspaceDataProvider {
 			dimension.isDark = _true;
 			dimension.doesWaterVaporize = !_true;
 			dimension.enablePortal = true; // we always want it as it can be referenced in other tests
-			dimension.portalLuminance = 0.4;
+			dimension.portalLuminance = 8;
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			dimension.igniterName = modElement.getName();
@@ -848,7 +848,7 @@ public class TestWorkspaceDataProvider {
 			plant.hardness = 0.03;
 			plant.emissiveRendering = !_true;
 			plant.resistance = 3;
-			plant.luminance = 0.2;
+			plant.luminance = 3;
 			plant.isReplaceable = !_true;
 			plant.forceTicking = !_true;
 			plant.hasTileEntity = !_true;
