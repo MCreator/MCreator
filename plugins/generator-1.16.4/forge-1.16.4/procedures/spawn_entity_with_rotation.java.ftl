@@ -1,6 +1,6 @@
 <#assign entity = generator.map(field$entity, "entities", 1)!"null">
 <#if entity != "null">
-	if(world instanceof World && !world.getWorld().isRemote) {
+	if(world instanceof World && !world.isRemote()) {
     <#if !entity.toString().contains(".CustomEntity")>
 			Entity entityToSpawn = new ${generator.map(field$entity, "entities", 0)}(EntityType.${entity}, world.getWorld());
     <#else>

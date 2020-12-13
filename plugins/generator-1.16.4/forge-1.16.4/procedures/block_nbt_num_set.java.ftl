@@ -1,4 +1,4 @@
-if(!((World) world).isRemote) {
+if(!world.isRemote()) {
 	BlockPos _bp = new BlockPos((int)${input$x},(int)${input$y},(int)${input$z});
 	TileEntity _tileEntity=world.getTileEntity(_bp);
 	BlockState _bs = world.getBlockState(_bp);
