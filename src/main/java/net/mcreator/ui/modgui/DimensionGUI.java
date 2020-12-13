@@ -90,7 +90,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final DataListComboBox igniterTab = new DataListComboBox(mcreator);
 
-	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0.00, 0, 1, 0.01));
+	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 
 	private ProcedureSelector portalMakeCondition;
 	private ProcedureSelector portalUseCondition;
@@ -410,7 +410,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.onPortalTickUpdate = onPortalTickUpdate.getSelectedProcedure();
 		dimension.onPlayerEntersDimension = onPlayerEntersDimension.getSelectedProcedure();
 		dimension.onPlayerLeavesDimension = onPlayerLeavesDimension.getSelectedProcedure();
-		dimension.portalLuminance = (double) luminance.getValue();
+		dimension.portalLuminance = (int) luminance.getValue();
 		dimension.doesWaterVaporize = doesWaterVaporize.isSelected();
 		dimension.portalMakeCondition = portalMakeCondition.getSelectedProcedure();
 		dimension.portalUseCondition = portalUseCondition.getSelectedProcedure();

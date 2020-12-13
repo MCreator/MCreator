@@ -137,7 +137,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					<#else>
 					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
 					</#if>
-					.setLightLevel(s -> ${(data.luminance * 15)?round})
+					.setLightLevel(s -> ${data.luminance})
 					<#if data.destroyTool != "Not specified">
 					.harvestLevel(${data.breakHarvestLevel})
 					.harvestTool(ToolType.${data.destroyTool?upper_case})
