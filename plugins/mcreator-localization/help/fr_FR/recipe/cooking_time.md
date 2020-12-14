@@ -1,3 +1,3 @@
-This parameter is used by cooking type recipes to determine how long one item will cook.
+Ce paramètre est utilisé par les recettes de type cuisson pour déterminer la durée de cuisson d'un item.
 
-Unit are ticks, so for one second of cooking time, one needs to set cooking time to 20 ticks.
+Les unités sont des ticks, donc pour une seconde de temps de cuisson, il faut régler le temps de cuisson à 20 ticks.

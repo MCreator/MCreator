@@ -1,0 +1,1 @@
+Ce paramètre contrôle la hauteur de ce tableau (en pixels).

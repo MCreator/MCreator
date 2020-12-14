@@ -1,1 +1,1 @@
-Enable this parameter to have the effect displayed in the player's inventory when active.
+Activez ce paramètre pour afficher l'effet dans l'inventaire du joueur lorsqu'il est actif.

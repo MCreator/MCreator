@@ -1,3 +1,3 @@
-When the bullet hits a player, it will execute the selected procedure.
+Lorsque la balle touchera un joueur, la procédure sélectionnée sera exécutée.
 
-Keep in mind this procedure might trigger when the bullet hits the entity firing the bullet too.
+Gardez à l'esprit que cette procédure peut se déclencher lorsque la balle frappe également l'entité qui tire la balle.

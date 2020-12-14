@@ -1,0 +1,24 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "a",
+      "check": "DimensionType"
+    },
+    {
+      "type": "input_value",
+      "name": "b",
+      "check": "DimensionType"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": 123,
+  "mcreator": {
+    "toolbox_id": "logicoperations",
+    "inputs": [
+      "a",
+      "b"
+    ]
+  }
+}
