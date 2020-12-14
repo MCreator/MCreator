@@ -58,8 +58,8 @@ import net.minecraft.block.material.Material;
 					.addAll((Set<Block>) ObfuscationReflectionHelper.getPrivateValue(WorldCarver.class, WorldCarver.CAVE, "field_222718_j"))
 					.add(${mappedBlockToBlockStateCode(data.mainFillerBlock)}.getBlock()).build(), "field_222718_j");
 
-			ObfuscationReflectionHelper.setPrivateValue(WorldCarver.class, WorldCarver.CAVE, new ImmutableSet.Builder<Block>()
-					.addAll((Set<Block>) ObfuscationReflectionHelper.getPrivateValue(WorldCarver.class, WorldCarver.CAVE, "field_222718_j"))
+			ObfuscationReflectionHelper.setPrivateValue(WorldCarver.class, WorldCarver.CANYON, new ImmutableSet.Builder<Block>()
+					.addAll((Set<Block>) ObfuscationReflectionHelper.getPrivateValue(WorldCarver.class, WorldCarver.CANYON, "field_222718_j"))
 					.add(${mappedBlockToBlockStateCode(data.mainFillerBlock)}.getBlock()).build(), "field_222718_j");
 		});
 	}
