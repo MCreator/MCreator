@@ -162,6 +162,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JCheckBox plantsGrowOn = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isVine = L10N.checkbox("elementgui.common.enable");
 
 	private final JComboBox<String> reactionToPushing = new JComboBox<>(
 			new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" });
@@ -753,6 +754,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 				.wrapWithHelpButton(this.withEntry("block/is_ladder"), L10N.label("elementgui.block.is_ladder")));
 		advancedProperties.add(isLadder);
 
+		advancedProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/is_vine"), L10N.label("elementgui.block.is_vine")));
+		advancedProperties.add(isVine);
+
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/redstone_connect"),
 				L10N.label("elementgui.block.redstone_connect")));
 		advancedProperties.add(canProvidePower);
@@ -784,6 +789,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isWaterloggable.setOpaque(false);
 		canProvidePower.setOpaque(false);
 		isLadder.setOpaque(false);
+		isVine.setOpaque(false);
 
 		useLootTableForDrops.addActionListener(e -> {
 			customDrop.setEnabled(!useLootTableForDrops.isSelected());
@@ -1323,6 +1329,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		fireSpreadSpeed.setValue(block.fireSpreadSpeed);
 
 		isLadder.setSelected(block.isLadder);
+		isVine.setSelected(block.isVine);
 		reactionToPushing.setSelectedItem(block.reactionToPushing);
 		slipperiness.setValue(block.slipperiness);
 
@@ -1453,6 +1460,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 
 		block.isLadder = isLadder.isSelected();
+		block.isVine = isVine.isSelected();
 		block.reactionToPushing = (String) reactionToPushing.getSelectedItem();
 		block.slipperiness = (double) slipperiness.getValue();
 

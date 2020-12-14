@@ -273,6 +273,12 @@ import net.minecraft.block.material.Material;
 			setRegistryName("${registryname}");
 		}
 
+		<#if data.isVine>
+		@Override public boolean doesNotBlockMovement() {
+			return false
+		}
+		</#if>
+
         <#if data.isReplaceable>
         @Override public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
 			return useContext.getItem().getItem() != this.asItem();

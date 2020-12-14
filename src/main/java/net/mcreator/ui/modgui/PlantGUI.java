@@ -88,6 +88,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator);
 
+	private final JCheckBox isVine = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.plant.is_replaceable");
 	private final JComboBox<String> colorOnMap = new JComboBox<>();
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -265,6 +266,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		emissiveRendering.setOpaque(false);
 
+		isVine.setOpaque(false);
 		isReplaceable.setOpaque(false);
 
 		ActionListener planttypeselected = event -> {
@@ -347,7 +349,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
 		JPanel selp = new JPanel(new GridLayout(10, 2, 25, 4));
-		JPanel selp2 = new JPanel(new GridLayout(11, 2, 25, 4));
+		JPanel selp2 = new JPanel(new GridLayout(12, 2, 25, 4));
 
 		useLootTableForDrops.setOpaque(false);
 		unbreakable.setOpaque(false);
@@ -413,6 +415,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
 				L10N.label("elementgui.plant.plant_is_replaceable")));
 		selp2.add(isReplaceable);
+
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_vine"),
+				L10N.label("elementgui.plant.is_vine")));
+		selp2.add(isVine);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
 				L10N.label("elementgui.common.creative_pick_item")));
@@ -598,6 +604,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		spawnWorldTypes.setListElements(plant.spawnWorldTypes);
 		restrictionBiomes.setListElements(plant.restrictionBiomes);
 		isReplaceable.setSelected(plant.isReplaceable);
+		isVine.setSelected(plant.isVine);
 		colorOnMap.setSelectedItem(plant.colorOnMap);
 		offsetType.setSelectedItem(plant.offsetType);
 		aiPathNodeType.setSelectedItem(plant.aiPathNodeType);
@@ -695,6 +702,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.spawnWorldTypes = spawnWorldTypes.getListElements();
 		plant.restrictionBiomes = restrictionBiomes.getListElements();
 		plant.isReplaceable = isReplaceable.isSelected();
+		plant.isVine = isVine.isSelected();
 		plant.colorOnMap = (String) colorOnMap.getSelectedItem();
 		plant.offsetType = (String) offsetType.getSelectedItem();
 		plant.aiPathNodeType = (String) aiPathNodeType.getSelectedItem();

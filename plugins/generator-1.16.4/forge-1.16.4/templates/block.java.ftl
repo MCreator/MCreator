@@ -474,6 +474,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
+		<#if data.isVine>
+		@Override public boolean doesNotBlockMovement() {
+			return false
+		}
+		</#if>
+
 		<#if data.reactionToPushing != "NORMAL">
 		@Override public PushReaction getPushReaction(BlockState state) {
 			return PushReaction.${data.reactionToPushing};

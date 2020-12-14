@@ -95,6 +95,7 @@ import java.util.Map;
 	public int fireSpreadSpeed;
 
 	public boolean isLadder;
+	public boolean isVine;
 	public double slipperiness;
 	public String reactionToPushing;
 

@@ -69,6 +69,7 @@ import java.util.Map;
 
 	public boolean hasTileEntity;
 
+	public boolean isVine;
 	public boolean isReplaceable;
 	public String colorOnMap;
 	public MItemBlock creativePickItem;
