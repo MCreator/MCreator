@@ -99,6 +99,8 @@ import java.util.stream.Collectors;
 		ModElement element = generator.getWorkspace().getModElementByName(modElement);
 		if (element != null)
 			return element.getRegistryName();
+
+		generator.LOG.warn("Failed to determine registry name for: " + modElement);
 		return "unknown_element";
 	}
 
@@ -117,6 +119,8 @@ import java.util.stream.Collectors;
 			// otherwise use normal registry name
 			return generator.getWorkspace().getWorkspaceSettings().getModID() + ":" + element.getRegistryName();
 		}
+
+		generator.LOG.warn("Failed to determine resource location for: " + modElement);
 		return "unknown_element";
 	}
 
