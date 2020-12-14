@@ -79,9 +79,20 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 					</#if>
 				}
 			}, <#if data.toolType=="Sword">3<#elseif data.toolType=="Hoe">0<#else>1</#if>
-			 ,${data.attackSpeed - 4}f, new Item.Properties().group(${data.creativeTab})) {
+			 ,${data.attackSpeed - 4}f, new Item.Properties()
+			 	.group(${data.creativeTab})
+			 	<#if data.immuneToFire>
+			 	.isImmuneToFire()
+			 	</#if>
+			 ) {
 		<#elseif data.toolType=="Shears">
-			new ShearsItem(new Item.Properties().group(${data.creativeTab}).maxDamage(${data.usageCount})) {
+			new ShearsItem(new Item.Properties()
+				.group(${data.creativeTab})
+				.maxDamage(${data.usageCount})
+				<#if data.immuneToFire>
+				.isImmuneToFire()
+				</#if>
+			) {
 				@Override public int getItemEnchantability() {
 					return ${data.enchantability};
 				}
@@ -91,12 +102,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 				}
 		<#else>
         	new ItemToolCustom() {
-		</#if>
-
-		<#if data.immuneToFire>
-			@Override public boolean isImmuneToFire() {
-				return true;
-			}
 		</#if>
 
 		<#if data.stayInGridWhenCrafting>
@@ -249,7 +254,13 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
     private static class ItemToolCustom extends Item {
 
 		protected ItemToolCustom() {
-			super(new Item.Properties().group(${data.creativeTab}).maxDamage(${data.usageCount}));
+			super(new Item.Properties()
+				.group(${data.creativeTab})
+				.maxDamage(${data.usageCount})
+				<#if data.immuneToFire>
+				.isImmuneToFire()
+				</#if>
+			);
 		}
 
 		@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {

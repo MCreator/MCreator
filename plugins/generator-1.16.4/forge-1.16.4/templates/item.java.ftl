@@ -72,6 +72,9 @@ package ${package}.item;
 					<#else>
 					.maxStackSize(${data.stackSize})
 					</#if>
+					<#if data.immuneToFire>
+					.isImmuneToFire()
+					</#if>
 					.rarity(Rarity.${data.rarity})
 			);
 			setRegistryName("${registryname}");
@@ -141,12 +144,6 @@ package ${package}.item;
 			return true;
 		}
         </#if>
-
-		<#if data.immuneToFire>
-		@Override public boolean isImmuneToFire() {
-			return true;
-		}
-		</#if>
 
 		<#if data.destroyAnyBlock>
 		@Override public boolean canHarvestBlock(BlockState state) {
