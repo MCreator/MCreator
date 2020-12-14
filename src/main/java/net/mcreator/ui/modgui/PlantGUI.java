@@ -71,8 +71,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JLabel dbl = new JLabel(TiledImageCache.plantDoubleNo);
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(0, -1, 64000, 0.1));
+	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 0.5));
-	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0.00, 0, 1, 0.01));
 	private final JSpinner frequencyOnChunks = new JSpinner(new SpinnerNumberModel(5, 0, 40, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 200, 1));
 
@@ -673,7 +673,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.growapableMaxHeight = (int) growapableMaxHeight.getValue();
 		plant.hardness = (double) hardness.getValue();
 		plant.resistance = (double) resistance.getValue();
-		plant.luminance = (double) luminance.getValue();
+		plant.luminance = (int) luminance.getValue();
 		plant.unbreakable = unbreakable.isSelected();
 		plant.forceTicking = forceTicking.isSelected();
 		plant.hasTileEntity = hasTileEntity.isSelected();
