@@ -137,7 +137,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					<#else>
 					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
 					</#if>
-					.setLightLevel(s -> ${(data.luminance * 15)?round})
+					.setLightLevel(s -> ${data.luminance})
 					<#if data.destroyTool != "Not specified">
 					.harvestLevel(${data.breakHarvestLevel})
 					.harvestTool(ToolType.${data.destroyTool?upper_case})
@@ -975,7 +975,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 						if(dimensionType == World.THE_END)
 							dimensionCriteria = true;
 					<#else>
-						if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
+						if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
+								new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
 							dimensionCriteria = true;
 					</#if>
 				</#list>

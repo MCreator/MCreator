@@ -42,8 +42,13 @@
             "biome": "${biome}",
             "parameters": {
               "altitude": 0,
+              <#if data.biomesInDimension?size == 1>
+              "temperature": 0,
+              "humidity": 0,
+              <#else>
               "temperature": ${0.3 + ((1 - biome?index / (data.biomesInDimension?size - 1)) * 2 - 1) / 5},
               "humidity": ${0.3 + ((biome?index / (data.biomesInDimension?size - 1)) * 2 - 1) / 5},
+              </#if>
               "weirdness": 0,
               "offset": 0
             }

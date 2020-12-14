@@ -310,7 +310,7 @@ import ${package}.${JavaModName};
 		}
 
 		private void slotChanged(int slotid, int ctype, int meta) {
-			if(this.world != null && this.world.isRemote) {
+			if(this.world != null && this.world.isRemote()) {
 				${JavaModName}.PACKET_HANDLER.sendToServer(new GUISlotChangedMessage(slotid, x, y, z, ctype, meta));
 				handleSlotAction(entity, slotid, ctype, meta, x, y, z);
 			}
