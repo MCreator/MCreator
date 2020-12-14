@@ -2,7 +2,7 @@ _default:
   - ZombieEntity
   - ZOMBIE
 _mcreator_prefix: "CUSTOM:"
-_mcreator_map_template: "@NAMEEntity.CustomEntity"
+_mcreator_map_template: "@modid:@registryname"
 EntityAgeable: AgeableEntity
 EntityAmbientCreature: AmbientEntity
 EntityAnimal: AnimalEntity
