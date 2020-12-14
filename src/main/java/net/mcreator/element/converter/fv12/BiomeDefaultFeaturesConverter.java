@@ -37,7 +37,6 @@ public class BiomeDefaultFeaturesConverter implements IConverter {
 		try {
 			biome.defaultFeatures.add("Caves");
 			biome.defaultFeatures.add("MonsterRooms");
-			biome.defaultFeatures.add("Structures");
 			biome.defaultFeatures.add("Ores");
 
 			biome.foliageColor = biome.grassColor;
