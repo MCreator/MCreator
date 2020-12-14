@@ -1,0 +1,13 @@
+{
+  "output": "DimensionType",
+  "colour": 123,
+  "mcreator": {
+    "toolbox_id": "mcelements",
+    "dependencies": [
+      {
+        "name": "dimension",
+        "type": "dimensiontype"
+      }
+    ]
+  }
+}

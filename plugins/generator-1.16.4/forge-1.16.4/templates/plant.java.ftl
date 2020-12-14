@@ -115,7 +115,8 @@ import net.minecraft.block.material.Material;
 							if(dimensionType == World.THE_END)
 								dimensionCriteria = true;
 						<#else>
-							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
+							if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
+									new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
 								dimensionCriteria = true;
 						</#if>
 					</#list>
@@ -151,7 +152,8 @@ import net.minecraft.block.material.Material;
 							if(dimensionType == World.THE_END)
 								dimensionCriteria = true;
 						<#else>
-							if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
+							if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
+									new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
 								dimensionCriteria = true;
 						</#if>
 					</#list>
@@ -202,7 +204,8 @@ import net.minecraft.block.material.Material;
             				if(dimensionType == World.THE_END)
             					dimensionCriteria = true;
             			<#else>
-            				if(dimensionType == ${(worldType.toString().replace("CUSTOM:", ""))}Dimension.type)
+            				if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
+									new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
             					dimensionCriteria = true;
             			</#if>
             		</#list>
@@ -265,7 +268,7 @@ import net.minecraft.block.material.Material;
 					<#if data.emissiveRendering>
 					.setNeedsPostProcessing((bs, br, bp) -> true).setEmmisiveRendering((bs, br, bp) -> true)
 					</#if>
-					.setLightLevel(s -> ${(data.luminance * 15)?round})
+					.setLightLevel(s -> ${data.luminance})
 			);
 			setRegistryName("${registryname}");
 		}
