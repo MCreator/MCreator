@@ -142,6 +142,12 @@ package ${package}.item;
 		}
         </#if>
 
+		<#if data.immuneToFire>
+		@Override public boolean isImmuneToFire() {
+			return true;
+		}
+		</#if>
+
 		<#if data.destroyAnyBlock>
 		@Override public boolean canHarvestBlock(BlockState state) {
 			return true;

@@ -78,6 +78,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner toolType = new JSpinner(new SpinnerNumberModel(1.0, -100.0, 128000.0, 0.1));
 	private final JSpinner damageCount = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
 
+	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox destroyAnyBlock = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
@@ -227,7 +228,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		pane2.setOpaque(false);
 
-		JPanel subpane2 = new JPanel(new GridLayout(13, 2, 45, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(14, 2, 45, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -263,6 +264,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.number_of_uses")));
 		subpane2.add(damageCount);
 
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+				L10N.label("elementgui.item.is_immune_to_fire")));
+		subpane2.add(immuneToFire);
+
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/can_destroy_any_block"),
 				L10N.label("elementgui.item.can_destroy_any_block")));
 		subpane2.add(destroyAnyBlock);
@@ -287,6 +292,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		useDuration.setOpaque(false);
 		toolType.setOpaque(false);
 		damageCount.setOpaque(false);
+		immuneToFire.setOpaque(false);
 		destroyAnyBlock.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
@@ -407,6 +413,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		useDuration.setValue(item.useDuration);
 		damageCount.setValue(item.damageCount);
 		recipeRemainder.setBlock(item.recipeRemainder);
+		immuneToFire.setSelected(item.immuneToFire);
 		destroyAnyBlock.setSelected(item.destroyAnyBlock);
 		stayInGridWhenCrafting.setSelected(item.stayInGridWhenCrafting);
 		damageOnCrafting.setSelected(item.damageOnCrafting);
@@ -436,6 +443,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.toolType = (double) toolType.getValue();
 		item.damageCount = (int) damageCount.getValue();
 		item.recipeRemainder = recipeRemainder.getBlock();
+		item.immuneToFire = immuneToFire.isSelected();
 		item.destroyAnyBlock = destroyAnyBlock.isSelected();
 		item.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		item.damageOnCrafting = damageOnCrafting.isSelected();

@@ -57,6 +57,7 @@ import java.util.Map;
 	public Procedure glowCondition;
 	public List<MItemBlock> repairItems;
 
+	public boolean immuneToFire;
 	public boolean stayInGridWhenCrafting;
 	public boolean damageOnCrafting;
 

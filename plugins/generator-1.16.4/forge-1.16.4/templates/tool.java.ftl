@@ -93,6 +93,12 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
         	new ItemToolCustom() {
 		</#if>
 
+		<#if data.immuneToFire>
+			@Override public boolean isImmuneToFire() {
+				return true;
+			}
+		</#if>
+
 		<#if data.stayInGridWhenCrafting>
 			@Override public boolean hasContainerItem() {
 				return true;
