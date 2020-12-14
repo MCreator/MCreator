@@ -76,7 +76,7 @@ public class Generator implements Closeable {
 	public static final Map<String, GeneratorConfiguration> GENERATOR_CACHE = Collections
 			.synchronizedMap(new LinkedHashMap<>());
 
-	private final Logger LOG;
+	protected final Logger LOG;
 	private final String generatorName;
 	private final GeneratorConfiguration generatorConfiguration;
 

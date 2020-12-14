@@ -235,7 +235,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane2.setOpaque(false);
 		pane5.setOpaque(false);
 
-		JPanel spawnproperties = new JPanel(new GridLayout(8, 2, 5, 2));
+		JPanel spawnproperties = new JPanel(new GridLayout(10, 2, 5, 2));
 		spawnproperties.setOpaque(false);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld"),
@@ -247,6 +247,14 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("biome/weight"), L10N.label("elementgui.biome.weight")));
 		spawnproperties.add(biomeWeight);
+
+		spawnproperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("biome/temperature"), L10N.label("elementgui.biome.temperature")));
+		spawnproperties.add(temperature);
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/raining_possibility"),
+				L10N.label("elementgui.biome.raining_possibility")));
+		spawnproperties.add(rainingPossibility);
 
 		spawnproperties
 				.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/type"), L10N.label("elementgui.biome.type")));
@@ -275,7 +283,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane5.add("Center", PanelUtils.totalCenterInPanel(spawnproperties));
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
-		JPanel sbbp3 = new JPanel(new GridLayout(13, 2, 10, 2));
+		JPanel sbbp3 = new JPanel(new GridLayout(11, 2, 10, 2));
 
 		defaultFeatures.setPreferredSize(new Dimension(340, 36));
 
@@ -318,14 +326,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/cacti_per_chunk"),
 				L10N.label("elementgui.biome.cacti_per_chunk")));
 		sbbp3.add(cactiPerChunk);
-
-		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/raining_possibility"),
-				L10N.label("elementgui.biome.raining_possibility")));
-		sbbp3.add(rainingPossibility);
-
-		sbbp3.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/temperature"), L10N.label("elementgui.biome.temperature")));
-		sbbp3.add(temperature);
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/default_features"),
 				L10N.label("elementgui.biome.default_features")));
@@ -500,7 +500,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 
-			defaultFeatures.setListElements(Arrays.asList("Caves", "MonsterRooms", "Structures", "Ores"));
+			defaultFeatures.setListElements(Arrays.asList("Caves", "Ores"));
 		}
 	}
 
