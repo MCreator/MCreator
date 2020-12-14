@@ -66,7 +66,7 @@ import java.util.Map;
 				if (jarManager != null) {
 					SourceLocation sourceLocation = jarManager.getSourceLocForClass(template);
 					CACHE.put(template, ZipIO.readCodeInZip(new File(sourceLocation.getLocationAsString()),
-							template.replace(".", "/") + ".java"));
+							template.replace("." , "/") + ".java"));
 				}
 			}
 
@@ -115,6 +115,18 @@ import java.util.Map;
 
 			if (inner != null)
 				return code.substring(inner.getBodyStartOffset(), inner.getBodyEndOffset() + 1);
+		}
+
+		return "/* failed to load code for " + template + " */";
+	}
+
+	public String getClassBody(@NotNull String template) {
+		String code = readCode(template);
+		if (code != null) {
+			CompilationUnit cu = new ASTFactory().getCompilationUnit(template, new Scanner(new StringReader(code)));
+			TypeDeclaration mainClass = cu.getTypeDeclaration(0);
+			if (mainClass != null)
+				return code.substring(mainClass.getBodyStartOffset(), mainClass.getBodyEndOffset() + 1);
 		}
 
 		return "/* failed to load code for " + template + " */";

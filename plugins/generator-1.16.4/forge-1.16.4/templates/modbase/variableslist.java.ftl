@@ -40,7 +40,7 @@ public class ${JavaModName}Variables {
 
 	<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
 	@SubscribeEvent public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getPlayer().world.isRemote) {
+		if (!event.getPlayer().world.isRemote()) {
 			WorldSavedData mapdata = MapVariables.get(event.getPlayer().world);
 			WorldSavedData worlddata = WorldVariables.get(event.getPlayer().world);
 			if(mapdata != null)
@@ -51,7 +51,7 @@ public class ${JavaModName}Variables {
 	}
 
 	@SubscribeEvent public void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getPlayer().world.isRemote) {
+		if (!event.getPlayer().world.isRemote()) {
 			WorldSavedData worlddata = WorldVariables.get(event.getPlayer().world);
 			if(worlddata != null)
 				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new WorldSavedDataSyncMessage(1, worlddata));
@@ -120,7 +120,7 @@ public class ${JavaModName}Variables {
 		public void syncData(IWorld world) {
 			this.markDirty();
 
-			if (world instanceof World && !((World) world).isRemote)
+			if (world instanceof World && !world.isRemote())
 				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(((World) world)::getDimensionKey), new WorldSavedDataSyncMessage(1, this));
 		}
 
@@ -198,7 +198,7 @@ public class ${JavaModName}Variables {
 		public void syncData(IWorld world) {
 			this.markDirty();
 
-			if (world instanceof World && !((World) world).isRemote)
+			if (world instanceof World && !world.isRemote())
 				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new WorldSavedDataSyncMessage(0, this));
 		}
 
@@ -340,17 +340,17 @@ public class ${JavaModName}Variables {
 	}
 
 	@SubscribeEvent public void onPlayerLoggedInSyncPlayerVariables(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getPlayer().world.isRemote)
+		if (!event.getPlayer().world.isRemote())
 			((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
 	}
 
 	@SubscribeEvent public void onPlayerRespawnedSyncPlayerVariables(PlayerEvent.PlayerRespawnEvent event) {
-		if (!event.getPlayer().world.isRemote)
+		if (!event.getPlayer().world.isRemote())
 			((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
 	}
 
 	@SubscribeEvent public void onPlayerChangedDimensionSyncPlayerVariables(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getPlayer().world.isRemote)
+		if (!event.getPlayer().world.isRemote())
 			((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
 	}
 

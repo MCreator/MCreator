@@ -249,7 +249,7 @@ import net.minecraft.block.material.Material;
 					<#else>
 					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
 					</#if>
-					.lightValue(${(data.luminance * 15)?round})
+					.lightValue(${data.luminance})
 			);
 			setRegistryName("${registryname}");
 		}

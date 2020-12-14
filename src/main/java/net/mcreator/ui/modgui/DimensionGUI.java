@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Dimension;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -75,8 +76,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
 
-	private final JCheckBox hasWeather = L10N.checkbox("elementgui.dimension.enable_weather");
-
 	private final SoundSelector portalSound = new SoundSelector(mcreator);
 	private final JColor airColor = new JColor(mcreator);
 
@@ -91,7 +90,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final DataListComboBox igniterTab = new DataListComboBox(mcreator);
 
-	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0.00, 0, 1, 0.01));
+	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 
 	private ProcedureSelector portalMakeCondition;
 	private ProcedureSelector portalUseCondition;
@@ -136,8 +135,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		portalParticles.setSelectedItem("PORTAL");
 
-		hasWeather.setSelected(true);
-
 		portalFrame = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		mainFillerBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		fluidBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
@@ -152,13 +149,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.dimension.world_gen_type"), worldGenType),
 				PanelUtils.join(new JLabel(UIRES.get("dimension_types")))));
 
-		JPanel proper2 = new JPanel(new GridLayout(9, 2, 3, 3));
+		JPanel proper2 = new JPanel(new GridLayout(8, 2, 3, 3));
 		proper2.setOpaque(false);
 
 		airColor.setOpaque(false);
 		airColor.setColor(new Color(0.753f, 0.847f, 1f));
 
-		hasWeather.setOpaque(false);
 		canRespawnHere.setOpaque(false);
 		hasFog.setOpaque(false);
 		doesWaterVaporize.setOpaque(false);
@@ -185,14 +181,11 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/imitate_overworld"), imitateOverworldBehaviour));
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/can_respawn"), canRespawnHere));
 
-		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/has_fog"), hasFog));
-		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/has_weather"), hasWeather));
-
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/has_skylight"), hasSkyLight));
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/is_dark"), isDark));
 
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/does_water_vaporize"), doesWaterVaporize));
-		proper2.add(new JLabel());
+		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/has_fog"), hasFog));
 
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fog_color"),
 				L10N.label("elementgui.dimension.fog_air_color")));
@@ -217,7 +210,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		texture.setOpaque(false);
 		enablePortal.setOpaque(false);
 
-		enablePortal.setSelected(true);
+		// Currently only Java based mods support dimension portals
+		enablePortal.setSelected(modElement.getWorkspace().getGenerator()
+				.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage() ==  GeneratorFlavor.BaseLanguage.JAVA);
 
 		JPanel proper = new JPanel(new GridLayout(7, 2, 5, 2));
 
@@ -379,7 +374,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		imitateOverworldBehaviour.setSelected(dimension.imitateOverworldBehaviour);
 		hasSkyLight.setSelected(dimension.hasSkyLight);
 		enablePortal.setSelected(dimension.enablePortal);
-		hasWeather.setSelected(dimension.hasWeather);
 		whenPortaTriggerlUsed.setSelectedProcedure(dimension.whenPortaTriggerlUsed);
 		onPortalTickUpdate.setSelectedProcedure(dimension.onPortalTickUpdate);
 		onPlayerEntersDimension.setSelectedProcedure(dimension.onPlayerEntersDimension);
@@ -406,7 +400,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.imitateOverworldBehaviour = imitateOverworldBehaviour.isSelected();
 		dimension.hasSkyLight = hasSkyLight.isSelected();
 		dimension.enablePortal = enablePortal.isSelected();
-		dimension.hasWeather = hasWeather.isSelected();
 		dimension.portalFrame = portalFrame.getBlock();
 		dimension.igniterName = igniterName.getText();
 		dimension.worldGenType = (String) worldGenType.getSelectedItem();
@@ -417,7 +410,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.onPortalTickUpdate = onPortalTickUpdate.getSelectedProcedure();
 		dimension.onPlayerEntersDimension = onPlayerEntersDimension.getSelectedProcedure();
 		dimension.onPlayerLeavesDimension = onPlayerLeavesDimension.getSelectedProcedure();
-		dimension.portalLuminance = (double) luminance.getValue();
+		dimension.portalLuminance = (int) luminance.getValue();
 		dimension.doesWaterVaporize = doesWaterVaporize.isSelected();
 		dimension.portalMakeCondition = portalMakeCondition.getSelectedProcedure();
 		dimension.portalUseCondition = portalUseCondition.getSelectedProcedure();
