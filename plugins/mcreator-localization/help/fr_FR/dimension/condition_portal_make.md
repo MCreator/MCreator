@@ -1,2 +1,2 @@
 Si la condition est spécifiée, le joueur doit la passer afin de construire un portail vers cette dimension.
-La dépendance de la pile d'item est l'item utilisé pour l'activation du portail.
+La dépendance itemstack est l'item utilisé pour l'activation du portail.

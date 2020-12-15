@@ -1,1 +1,1 @@
-Quand le bloc de portail est présent dans le monde, cette procédure sera exécutée chaque tick.
+Quand le bloc de portail est présent dans le monde, cette procédure sera exécutée à chaque tick.
