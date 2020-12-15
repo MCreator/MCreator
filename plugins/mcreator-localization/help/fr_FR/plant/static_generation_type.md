@@ -1,4 +1,4 @@
-This parameter controls how your static plant will be generated. 
+Ce paramètre contrôle comment votre plante statique sera générée.
 
-* **Flower:** The plant will be generated like veins.
-* **Grass:** The plant will be generated in masses.
+* **Flower:** Cette plante sera générée en fillons.
+* **Grass:** Cette plante sera générée en masse.
