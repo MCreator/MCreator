@@ -1,1 +1,1 @@
-When an entity uses the portal, the procedure will be executed.
+Quand une entité utilise le portail, cette procédure sera exécutée.
