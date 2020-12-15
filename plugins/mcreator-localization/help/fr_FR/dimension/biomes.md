@@ -1,4 +1,4 @@
-List of biomes to generate in this dimension. Biomes define all the features for dimension
-regions such as plant types, trees, structures and mob spawning properties.
+Liste des biomes qui se génèrent dans cette dimension. Les biomes définissent toutes les propriétés
+pour les régions des dimensions comme les types de plantes, les arbres, structures, et les apparitions d'entités.
 
-Dimension will evently distribute biomes according to the biome properties.
+Les biomes seront distribués dans la dimension selon les propriétés de biome.
