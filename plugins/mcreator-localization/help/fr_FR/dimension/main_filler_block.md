@@ -1,1 +1,1 @@
-The main block of the dimension like the Stone for the Overword
+Le bloc principal de la dimension comme la Pierre pour l'Overworld.

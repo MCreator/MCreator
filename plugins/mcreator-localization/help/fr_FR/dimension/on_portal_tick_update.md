@@ -1,1 +1,1 @@
-When the portal block is present in the world, the procedure will be executed each tick.
+Quand le bloc de portail est présent dans le monde, cette procédure sera exécutée chaque tick.
