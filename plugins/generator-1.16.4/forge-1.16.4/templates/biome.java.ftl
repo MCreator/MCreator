@@ -266,7 +266,27 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 				biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
 						Feature.DISK.withConfiguration(new SphereReplaceConfig(Blocks.SAND.getDefaultState(), FeatureSpread.func_242253_a(2, 4), 2,
 								ImmutableList.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})))
-								.withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).func_242731_b(${data.sandPatchesPerChunk});
+								.withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).func_242731_b(${data.sandPatchesPerChunk}));
+				</#if>
+
+				<#if (data.gravelPatchesPerChunk > 0)>
+				biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+						Feature.DISK.withConfiguration(new SphereReplaceConfig(Blocks.GRAVEL.getDefaultState(), FeatureSpread.func_242253_a(2, 3), 2,
+								ImmutableList.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})))
+								.withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).func_242731_b(${data.gravelPatchesPerChunk}));
+				</#if>
+
+				<#if (data.reedsPerChunk > 0)>
+				biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+						Feature.RANDOM_PATCH.withConfiguration(Features.Configs.SUGAR_CANE_PATCH_CONFIG)
+								.withPlacement(Features.Placements.PATCH_PLACEMENT).func_242731_b(${data.reedsPerChunk}));
+				</#if>
+
+				<#if (data.cactiPerChunk > 0)>
+				biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+						Feature.RANDOM_PATCH.withConfiguration((new BlockClusterFeatureConfig.Builder(
+								new SimpleBlockStateProvider(Blocks.CACTUS.getDefaultState()), new ColumnBlockPlacer(1, 2)))
+								.tries(${data.cactiPerChunk}).func_227317_b_().build()));
 				</#if>
 
 				MobSpawnInfo.Builder mobSpawnInfo = new MobSpawnInfo.Builder().isValidSpawnBiomeForPlayer();

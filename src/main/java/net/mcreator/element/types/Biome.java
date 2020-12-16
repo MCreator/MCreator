@@ -64,9 +64,9 @@ import java.util.List;
 	public int mushroomsPerChunk;
 	public int bigMushroomsChunk;
 	public int sandPatchesPerChunk;
-	public int gravelPatchesPerChunk;//
-	public int reedsPerChunk;//
-	public int cactiPerChunk;//
+	public int gravelPatchesPerChunk;
+	public int reedsPerChunk;
+	public int cactiPerChunk;
 
 	public int treesPerChunk;
 	public String vanillaTreeType;
