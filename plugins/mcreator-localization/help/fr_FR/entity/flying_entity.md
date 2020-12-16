@@ -1,4 +1,4 @@
-Checking this parameter makes this entity a flying entity.
+Activer ce paramètre fait de cette entité une entité volante.
 
-This means it has flying path navigator and montion controller and has gravity and fall
-damage disabled.
+Cela signifie qu'elle dispose d'un navigateur de trajectoire et d'un contrôleur de trajectoire,
+et que les dégâts de gravité et de chute désactivés.

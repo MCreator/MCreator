@@ -1,5 +1,5 @@
-If checked, this will activate the AI tasks for the entity.
+Si cochée, cela activera les tâches d'IA pour l'entité.
 
-AI tasks defined in the AI task builder will have no effect unless this is enabled.
+Les tâches d'IA définies dans le générateur de tâches d'IA n'auront aucun effet si elles ne sont pas activées.
 
-Unless you are doing some sort of misc entity, you want this to leave enabled.
+À moins que vous ne fassiez une sorte d'entité mixée, vous voulez que cela reste activé.

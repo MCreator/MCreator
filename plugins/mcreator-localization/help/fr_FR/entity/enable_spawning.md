@@ -1,1 +1,1 @@
-If checked, the entity will spawn in the world naturally via mob spawning process.
+Si coché, l'entité apparaitera dans le monde naturellement via le processus d'apparition d'entité.
