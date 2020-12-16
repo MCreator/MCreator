@@ -1,1 +1,1 @@
-If checked, it will allow the player to respawn inside the dimension when the player dies iside this dimension.
+Si coché, cela autorisera le joueur à réapparaitre dans la dimension quand le joueur meurt dans cette dimension.
