@@ -1,1 +1,1 @@
-Check this parameter if you want it to destroy any block with this item or tool, even bedrock.
+Cochez ce paramètre si vous voulez qu'il détruise tout bloc avec cet item ou cet outil, même la bedrock.

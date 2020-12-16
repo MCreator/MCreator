@@ -1,7 +1,7 @@
-Select the model to be used with this item. Model only defines visual look.
+Sélectionnez le modèle à utiliser avec cet item. Le modèle définit uniquement l'aspect visuel.
 
-* **Normal** - Normal item
-* Tool - Model used by tools
-* Custom - you can define custom JSON and OBJ models too
+* **Normal** - Item normal
+* Outil - Modèle utilisé par les outils
+* Personnalisé - vous pouvez également définir des modèles JSON et OBJ personnalisés
 
-When making custom models, JSON is recommended due to vanilla support for this model type.
+Lors de la fabrication de modèles personnalisés, il est recommandé d'utiliser le JSON en raison du support vanilla pour ce type de modèle.
