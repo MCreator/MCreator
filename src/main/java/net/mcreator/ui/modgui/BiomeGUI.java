@@ -397,7 +397,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp4.add(waterFogColor);
 
 		sbbp4.add(PanelUtils.join(FlowLayout.LEFT, vanillaTrees, customTrees, new JEmptyBox(15, 2), L10N.label("elementgui.biome.tree_type")));
-		sbbp4.add(PanelUtils.join(vanillaTreeType));
+		sbbp4.add(vanillaTreeType);
 
 		JPanel sbbp5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -432,9 +432,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		minHeight.setOpaque(false);
 
 		sbbp4.setOpaque(false);
-
 		pane4.setOpaque(false);
-
 		sbbp5.setOpaque(false);
 
 		sbbp5.setBorder(BorderFactory.createTitledBorder(
@@ -445,7 +443,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		JPanel panels = new JPanel(new BorderLayout(10, 10));
 		panels.setOpaque(false);
 
-		panels.add("Center", PanelUtils.northAndCenterElement(sbbp4n, sbbp4, 0, 0));
+		panels.add("Center", PanelUtils.northAndCenterElement(sbbp4n, sbbp4, 5, 5));
 		panels.add("East", new JLabel(UIRES.get("biomeblocks")));
 
 		pane4.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(panels, sbbp5, 15, 15)));
@@ -465,18 +463,14 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(groundBlock);
 		page1group.addValidationElement(undergroundBlock);
-		page1group.addValidationElement(treeVines);
 		page1group.addValidationElement(treeStem);
 		page1group.addValidationElement(treeBranch);
-		page1group.addValidationElement(treeFruits);
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.biome.needs_name")));
 		groundBlock.setValidator(new MCItemHolderValidator(groundBlock));
 		undergroundBlock.setValidator(new MCItemHolderValidator(undergroundBlock));
 		treeStem.setValidator(new MCItemHolderValidator(treeStem, customTrees));
 		treeBranch.setValidator(new MCItemHolderValidator(treeBranch, customTrees));
-		treeVines.setValidator(new MCItemHolderValidator(treeVines, customTrees));
-		treeFruits.setValidator(new MCItemHolderValidator(treeFruits, customTrees));
 
 		addPage(L10N.t("elementgui.biome.general_properties"), pane4);
 		addPage(L10N.t("elementgui.biome.features"), pane3);

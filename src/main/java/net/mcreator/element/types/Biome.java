@@ -70,12 +70,12 @@ import java.util.List;
 
 	public int treesPerChunk;
 	public String vanillaTreeType;
-	public int treeType;//
-	public int minHeight;//
-	public MItemBlock treeVines;//
-	public MItemBlock treeStem;//
-	public MItemBlock treeBranch;//
-	public MItemBlock treeFruits;//
+	public int treeType;
+	public int minHeight;
+	public MItemBlock treeStem;
+	public MItemBlock treeBranch;
+	public MItemBlock treeVines;
+	public MItemBlock treeFruits;
 
 	public boolean spawnStronghold;
 	public boolean spawnMineshaft;

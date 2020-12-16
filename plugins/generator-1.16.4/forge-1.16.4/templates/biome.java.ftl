@@ -113,74 +113,105 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 				</#if>
 
 				<#if (data.treesPerChunk > 0)>
-					<#if data.treeType == data.TREES_CUSTOM>
-					// TODO: custom tree
+					<#assign ct = data.treeType == data.TREES_CUSTOM>
+					<#if ct>
 					</#if>
 
 					<#if data.vanillaTreeType == "Big trees">
 					biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
 							Feature.TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(
-									new SimpleBlockStateProvider(Blocks.JUNGLE_LOG.getDefaultState()),
-									new SimpleBlockStateProvider(Blocks.JUNGLE_LEAVES.getDefaultState()),
-									new JungleFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0), 2),
-									new MegaJungleTrunkPlacer(10, 2, 19),
-									new TwoLayerFeature(1, 1, 2))
-							).setDecorators(ImmutableList.of(TrunkVineTreeDecorator.field_236879_b_, LeaveVineTreeDecorator.field_236871_b_)).build())
+								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.JUNGLE_LOG.getDefaultState()")}),
+								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.JUNGLE_LEAVES.getDefaultState()")}),
+								new JungleFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0), 2),
+								new MegaJungleTrunkPlacer(${ct?then(data.minHeight, 10)}, 2, 19),
+								new TwoLayerFeature(1, 1, 2)))
+								<#if !data.treeVines.isEmpty() || !data.treeFruits.isEmpty()>
+									<@vinesAndCocoa/>
+								<#else>
+									.setDecorators(ImmutableList.of(TrunkVineTreeDecorator.field_236879_b_, LeaveVineTreeDecorator.field_236871_b_))
+								</#if>
+							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
 					);
 					<#elseif data.vanillaTreeType == "Savanna trees">
 					biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
 							Feature.TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(
-									new SimpleBlockStateProvider(Blocks.ACACIA_LOG.getDefaultState()),
-									new SimpleBlockStateProvider(Blocks.ACACIA_LEAVES.getDefaultState()),
-									new AcaciaFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0)), new ForkyTrunkPlacer(5, 2, 2), new TwoLayerFeature(1, 0, 2))
-							).setIgnoreVines().build())
+								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.ACACIA_LOG.getDefaultState()")}),
+								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.ACACIA_LEAVES.getDefaultState()")}),
+								new AcaciaFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0)),
+								new ForkyTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 2),
+								new TwoLayerFeature(1, 0, 2)))
+								<#if !data.treeVines.isEmpty() || !data.treeFruits.isEmpty()>
+									<@vinesAndCocoa/>
+								<#else>
+									.setIgnoreVines()
+								</#if>
+							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
 					);
 					<#elseif data.vanillaTreeType == "Mega pine trees">
 					biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
 							Feature.TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(
-									new SimpleBlockStateProvider(Blocks.SPRUCE_LOG.getDefaultState()),
-									new SimpleBlockStateProvider(Blocks.SPRUCE_LEAVES.getDefaultState()),
-									new MegaPineFoliagePlacer(FeatureSpread.func_242252_a(0), FeatureSpread.func_242252_a(0), FeatureSpread.func_242253_a(3, 4)),
-									new GiantTrunkPlacer(13, 2, 14),
-									new TwoLayerFeature(1, 1, 2))
-							).build())
+								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.getDefaultState()")}),
+								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.getDefaultState()")}),
+								new MegaPineFoliagePlacer(FeatureSpread.func_242252_a(0), FeatureSpread.func_242252_a(0), FeatureSpread.func_242253_a(3, 4)),
+								new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
+								new TwoLayerFeature(1, 1, 2)))
+								<#if !data.treeVines.isEmpty() || !data.treeFruits.isEmpty()>
+									<@vinesAndCocoa/>
+								</#if>
+							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
 					);
 					<#elseif data.vanillaTreeType == "Mega spruce trees">
 					biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
 							Feature.TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(
-									new SimpleBlockStateProvider(Blocks.SPRUCE_LOG.getDefaultState()),
-									new SimpleBlockStateProvider(Blocks.SPRUCE_LEAVES.getDefaultState()),
-									new MegaPineFoliagePlacer(FeatureSpread.func_242252_a(0), FeatureSpread.func_242252_a(0), FeatureSpread.func_242253_a(13, 4)),
-									new GiantTrunkPlacer(13, 2, 14),
-									new TwoLayerFeature(1, 1, 2))
-							).build())
+								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.getDefaultState()")}),
+								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.getDefaultState()")}),
+								new MegaPineFoliagePlacer(FeatureSpread.func_242252_a(0), FeatureSpread.func_242252_a(0), FeatureSpread.func_242253_a(13, 4)),
+								new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
+								new TwoLayerFeature(1, 1, 2)))
+								<#if !data.treeVines.isEmpty() || !data.treeFruits.isEmpty()>
+									<@vinesAndCocoa/>
+								</#if>
+							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
 					);
 					<#elseif data.vanillaTreeType == "Birch trees">
 					biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
 							Feature.TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(
-									new SimpleBlockStateProvider(Blocks.BIRCH_LOG.getDefaultState()),
-									new SimpleBlockStateProvider(Blocks.BIRCH_LEAVES.getDefaultState()),
-									new BlobFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0), 3), new StraightTrunkPlacer(5, 2, 0), new TwoLayerFeature(1, 0, 1))
-							).setIgnoreVines().build())
+								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.BIRCH_LOG.getDefaultState()")}),
+								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.BIRCH_LEAVES.getDefaultState()")}),
+								new BlobFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0), 3),
+								new StraightTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 0),
+								new TwoLayerFeature(1, 0, 1)))
+								<#if !data.treeVines.isEmpty() || !data.treeFruits.isEmpty()>
+									<@vinesAndCocoa/>
+								<#else>
+									.setIgnoreVines()
+								</#if>
+							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
 					);
 					<#else>
 					biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
 							Feature.TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(
-								new SimpleBlockStateProvider(Blocks.OAK_LOG.getDefaultState()),
-								new SimpleBlockStateProvider(Blocks.OAK_LEAVES.getDefaultState()),
+								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.OAK_LOG.getDefaultState()")}),
+								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.OAK_LEAVES.getDefaultState()")}),
 								new BlobFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0), 3),
-								new StraightTrunkPlacer(4, 2, 0), new TwoLayerFeature(1, 0, 1))
-							).setIgnoreVines().build())
+								new StraightTrunkPlacer(${ct?then(data.minHeight, 4)}, 2, 0),
+								new TwoLayerFeature(1, 0, 1)))
+								<#if !data.treeVines.isEmpty() || !data.treeFruits.isEmpty()>
+									<@vinesAndCocoa/>
+								<#else>
+									.setIgnoreVines()
+								</#if>
+							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
 					);
@@ -238,5 +269,97 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
         </#if>
 	}
 
+	<#if !data.treeVines.isEmpty()>
+	private static class CustomLeaveVineTreeDecorator extends LeaveVineTreeDecorator {
+
+		public static final CustomLeaveVineTreeDecorator instance = new CustomLeaveVineTreeDecorator();
+		public static com.mojang.serialization.Codec<LeaveVineTreeDecorator> codec;
+		public static TreeDecoratorType tdt;
+
+		static {
+			codec = com.mojang.serialization.Codec.unit(() -> instance);
+			tdt = new TreeDecoratorType(codec);
+			tdt.setRegistryName("${registryname}_lvtd");
+			ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
+		}
+
+		@Override protected TreeDecoratorType<?> func_230380_a_() {
+			return tdt;
+		}
+
+		@Override protected void func_227424_a_(IWorldWriter ww, BlockPos bp, BooleanProperty bpr, Set<BlockPos> sbc, MutableBoundingBox mbb) {
+			this.func_227423_a_(ww, bp, ${mappedBlockToBlockStateCode(data.treeVines)}, sbc, mbb);
+		}
+
+	}
+
+	private static class CustomTrunkVineTreeDecorator extends TrunkVineTreeDecorator {
+
+		public static final CustomTrunkVineTreeDecorator instance = new CustomTrunkVineTreeDecorator();
+		public static com.mojang.serialization.Codec<CustomTrunkVineTreeDecorator> codec;
+		public static TreeDecoratorType tdt;
+
+		static {
+			codec = com.mojang.serialization.Codec.unit(() -> instance);
+			tdt = new TreeDecoratorType(codec);
+			tdt.setRegistryName("${registryname}_tvtd");
+			ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
+		}
+
+		@Override protected TreeDecoratorType<?> func_230380_a_() {
+			return tdt;
+		}
+
+		@Override protected void func_227424_a_(IWorldWriter ww, BlockPos bp, BooleanProperty bpr, Set<BlockPos> sbc, MutableBoundingBox mbb) {
+			this.func_227423_a_(ww, bp, ${mappedBlockToBlockStateCode(data.treeVines)}, sbc, mbb);
+		}
+
+	}
+	</#if>
+
+	<#if !data.treeFruits.isEmpty()>
+	private static class CustomCocoaTreeDecorator extends CocoaTreeDecorator {
+
+		public static final CustomCocoaTreeDecorator instance = new CustomCocoaTreeDecorator();
+		public static com.mojang.serialization.Codec<CustomCocoaTreeDecorator> codec;
+		public static TreeDecoratorType tdt;
+
+		static {
+			codec = com.mojang.serialization.Codec.unit(() -> instance);
+			tdt = new TreeDecoratorType(codec);
+			tdt.setRegistryName("${registryname}_ctd");
+			ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
+		}
+
+		public CustomCocoaTreeDecorator() {
+			super(0.2f);
+		}
+
+		@Override protected TreeDecoratorType<?> func_230380_a_() {
+			return tdt;
+		}
+
+		@Override ${mcc.getMethod("net.minecraft.world.gen.treedecorator.CocoaTreeDecorator", "func_225576_a_", "ISeedReader", "Random", "List", "List", "Set", "MutableBoundingBox")
+			.replace("this.field_227417_b_", "0.2F")
+			.replace("Blocks.COCOA.getDefaultState().with(CocoaBlock.AGE,Integer.valueOf(p_225576_2_.nextInt(3))).with(CocoaBlock.HORIZONTAL_FACING,direction)",
+				mappedBlockToBlockStateCode(data.treeFruits))}
+
+	}
+	</#if>
+
 }
+
+<#macro vinesAndCocoa>
+.setDecorators(ImmutableList.of(
+	<#if !data.treeVines.isEmpty()>
+		CustomLeaveVineTreeDecorator.instance,
+		CustomTrunkVineTreeDecorator.instance
+	</#if>
+
+	<#if !data.treeFruits.isEmpty()>
+		<#if !data.treeVines.isEmpty()>,</#if>
+		new CustomCocoaTreeDecorator()
+	</#if>
+))
+</#macro>
 <#-- @formatter:on -->

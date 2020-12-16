@@ -201,8 +201,10 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			biome.vanillaTreeType = "Mega spruce trees";
+			biome.vanillaTreeType = getRandomItem(random, new String[]{ "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
+					"Mega spruce trees" });
 			biome.airColor = Color.red;
+			biome.treeType = _true ? 0 : 1;
 			if (!emptyLists) {
 				biome.grassColor = Color.green;
 				biome.foliageColor = Color.magenta;
