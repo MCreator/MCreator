@@ -59,11 +59,11 @@ import java.util.List;
 	public List<String> biomeDictionaryTypes;
 
 	public int grassPerChunk;
-	public int seagrassPerChunk;//
-	public int flowersPerChunk;//
-	public int mushroomsPerChunk;//
-	public int bigMushroomsChunk;//
-	public int sandPathcesPerChunk;//
+	public int seagrassPerChunk;
+	public int flowersPerChunk;
+	public int mushroomsPerChunk;
+	public int bigMushroomsChunk;
+	public int sandPatchesPerChunk;
 	public int gravelPatchesPerChunk;//
 	public int reedsPerChunk;//
 	public int cactiPerChunk;//

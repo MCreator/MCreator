@@ -225,6 +225,50 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 						.withPlacement(Placement.COUNT_NOISE.configure(new NoiseDependant(-0.8D, 5, ${data.grassPerChunk}))));
 				</#if>
 
+				<#if (data.seagrassPerChunk > 0)>
+				biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+						Feature.SEAGRASS.withConfiguration(new ProbabilityConfig(0.3F))
+								.func_242731_b(${data.seagrassPerChunk})
+								.withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT));
+				</#if>
+
+				<#if (data.flowersPerChunk > 0)>
+				biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+						Feature.FLOWER.withConfiguration(Features.Configs.NORMAL_FLOWER_CONFIG)
+								.withPlacement(Features.Placements.VEGETATION_PLACEMENT)
+								.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
+								.func_242731_b(${data.flowersPerChunk}));
+				</#if>
+
+				<#if (data.mushroomsPerChunk > 0)>
+				biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+						Feature.RANDOM_PATCH.withConfiguration((new BlockClusterFeatureConfig.Builder(
+								new SimpleBlockStateProvider(Blocks.BROWN_MUSHROOM.getDefaultState()), SimpleBlockPlacer.PLACER))
+								.tries(${data.mushroomsPerChunk}).func_227317_b_().build()));
+				biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+						Feature.RANDOM_PATCH.withConfiguration((new BlockClusterFeatureConfig.Builder(
+								new SimpleBlockStateProvider(Blocks.RED_MUSHROOM.getDefaultState()), SimpleBlockPlacer.PLACER))
+								.tries(${data.mushroomsPerChunk}).func_227317_b_().build()));
+				</#if>
+
+				<#if (data.bigMushroomsChunk > 0)>
+				biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+						Feature.HUGE_BROWN_MUSHROOM.withConfiguration(new BigMushroomFeatureConfig(
+								new SimpleBlockStateProvider(Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().with(HugeMushroomBlock.UP, Boolean.TRUE).with(HugeMushroomBlock.DOWN, Boolean.FALSE)),
+								new SimpleBlockStateProvider(Blocks.MUSHROOM_STEM.getDefaultState().with(HugeMushroomBlock.UP, Boolean.FALSE).with(HugeMushroomBlock.DOWN, Boolean.FALSE)), ${data.bigMushroomsChunk})));
+				biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+						Feature.HUGE_RED_MUSHROOM.withConfiguration(new BigMushroomFeatureConfig(
+								new SimpleBlockStateProvider(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(HugeMushroomBlock.DOWN, Boolean.FALSE)),
+								new SimpleBlockStateProvider(Blocks.MUSHROOM_STEM.getDefaultState().with(HugeMushroomBlock.UP, Boolean.FALSE).with(HugeMushroomBlock.DOWN, Boolean.FALSE)), ${data.bigMushroomsChunk})));
+				</#if>
+
+				<#if (data.sandPatchesPerChunk > 0)>
+				biomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+						Feature.DISK.withConfiguration(new SphereReplaceConfig(Blocks.SAND.getDefaultState(), FeatureSpread.func_242253_a(2, 4), 2,
+								ImmutableList.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})))
+								.withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).func_242731_b(${data.sandPatchesPerChunk});
+				</#if>
+
 				MobSpawnInfo.Builder mobSpawnInfo = new MobSpawnInfo.Builder().isValidSpawnBiomeForPlayer();
 				<#list data.spawnEntries as spawnEntry>
 					<#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">

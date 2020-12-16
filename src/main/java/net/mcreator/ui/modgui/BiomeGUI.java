@@ -66,7 +66,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner flowersPerChunk = new JSpinner(new SpinnerNumberModel(4, 0, 256, 1));
 	private final JSpinner mushroomsPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner bigMushroomsChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
-	private final JSpinner sandPathcesPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
+	private final JSpinner sandPatchesPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner gravelPatchesPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner reedsPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner cactiPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
@@ -313,7 +313,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/sand_patches_per_chunk"),
 				L10N.label("elementgui.biome.sand_patches_per_chunk")));
-		sbbp3.add(sandPathcesPerChunk);
+		sbbp3.add(sandPatchesPerChunk);
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/gravel_patches_per_chunk"),
 				L10N.label("elementgui.biome.gravel_patches_per_chunk")));
@@ -545,7 +545,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		seagrassPerChunk.setValue(biome.seagrassPerChunk);
 		flowersPerChunk.setValue(biome.flowersPerChunk);
 		mushroomsPerChunk.setValue(biome.mushroomsPerChunk);
-		sandPathcesPerChunk.setValue(biome.sandPathcesPerChunk);
+		sandPatchesPerChunk.setValue(biome.sandPatchesPerChunk);
 		reedsPerChunk.setValue(biome.reedsPerChunk);
 		cactiPerChunk.setValue(biome.cactiPerChunk);
 		rainingPossibility.setValue(biome.rainingPossibility);
@@ -599,7 +599,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.flowersPerChunk = (int) flowersPerChunk.getValue();
 		biome.mushroomsPerChunk = (int) mushroomsPerChunk.getValue();
 		biome.bigMushroomsChunk = (int) bigMushroomsChunk.getValue();
-		biome.sandPathcesPerChunk = (int) sandPathcesPerChunk.getValue();
+		biome.sandPatchesPerChunk = (int) sandPatchesPerChunk.getValue();
 		biome.gravelPatchesPerChunk = (int) gravelPatchesPerChunk.getValue();
 		biome.reedsPerChunk = (int) reedsPerChunk.getValue();
 		biome.cactiPerChunk = (int) cactiPerChunk.getValue();
