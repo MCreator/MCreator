@@ -297,7 +297,6 @@ public class TestWorkspaceDataProvider {
 				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDefaultFeatures()));
 			}
 			biome.defaultFeatures = biomeDefaultFeatures;
-			biome.spawnVines = _true;
 			biome.treeVines = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.treeStem = new MItemBlock(modElement.getWorkspace(),

@@ -72,7 +72,6 @@ import java.util.List;
 	public String vanillaTreeType;
 	public int treeType;//
 	public int minHeight;//
-	public boolean spawnVines;//
 	public MItemBlock treeVines;//
 	public MItemBlock treeStem;//
 	public MItemBlock treeBranch;//
