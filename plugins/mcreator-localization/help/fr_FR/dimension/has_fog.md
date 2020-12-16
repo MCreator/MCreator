@@ -1,2 +1,2 @@
-Check this parameter to enable dense fog in the dimension, even if the render
-distance is set to big values.
+Vérifiez ce paramètre pour permettre un brouillard dense dans la dimension, même
+si la distance de rendu est fixée à de grandes valeurs.

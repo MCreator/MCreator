@@ -1,4 +1,4 @@
-Check this parameter to enable Nether-like portal for this dimension.
+Cochez ce paramètre pour activer le portail de type Nether pour cette dimension.
 
-You can leave this disabled and use procedures to define custom way
-of entering this dimension.
+Vous pouvez laisser cette option désactivée et utiliser les procédures pour définir une manière personnalisée
+d'entrer dans cette dimension.

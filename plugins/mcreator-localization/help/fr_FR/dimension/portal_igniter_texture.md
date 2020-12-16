@@ -1,1 +1,1 @@
-The texture of the portal igniter used to create the portal from the portal frame.
+La texture de l'allumeur du portail utilisé pour créer le portail avec le cadre du portail.
