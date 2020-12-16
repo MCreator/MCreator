@@ -36,17 +36,9 @@ import java.util.List;
 	public final transient int TREES_CUSTOM;
 
 	public String name;
+
 	public MItemBlock groundBlock;
 	public MItemBlock undergroundBlock;
-
-	public int treeType;
-	public String vanillaTreeType;
-	public int minHeight;
-	public boolean spawnVines;
-	public MItemBlock treeVines;
-	public MItemBlock treeStem;
-	public MItemBlock treeBranch;
-	public MItemBlock treeFruits;
 
 	public Color airColor;
 	public Color grassColor;
@@ -54,28 +46,37 @@ import java.util.List;
 	public Color waterColor;
 	public Color waterFogColor;
 
-	public int treesPerChunk;
-	public int grassPerChunk;
-	public int seagrassPerChunk;
-	public int flowersPerChunk;
-	public int mushroomsPerChunk;
-	public int bigMushroomsChunk;
-	public int sandPathcesPerChunk;
-	public int gravelPatchesPerChunk;
-	public int reedsPerChunk;
-	public int cactiPerChunk;
-
+	public String biomeCategory;
+	public BiomeEntry parent;
 	public double rainingPossibility;
 	public double temperature;
 	public double baseHeight;
 	public double heightVariation;
+	public String biomeType;
 
 	public boolean spawnBiome;
 	public int biomeWeight;
-	public String biomeType;
+	public List<String> biomeDictionaryTypes;
 
-	public String biomeCategory;
-	public BiomeEntry parent;
+	public int grassPerChunk;
+	public int seagrassPerChunk;//
+	public int flowersPerChunk;//
+	public int mushroomsPerChunk;//
+	public int bigMushroomsChunk;//
+	public int sandPathcesPerChunk;//
+	public int gravelPatchesPerChunk;//
+	public int reedsPerChunk;//
+	public int cactiPerChunk;//
+
+	public int treesPerChunk;
+	public String vanillaTreeType;
+	public int treeType;//
+	public int minHeight;//
+	public boolean spawnVines;//
+	public MItemBlock treeVines;//
+	public MItemBlock treeStem;//
+	public MItemBlock treeBranch;//
+	public MItemBlock treeFruits;//
 
 	public boolean spawnStronghold;
 	public boolean spawnMineshaft;
@@ -89,7 +90,6 @@ import java.util.List;
 	public boolean spawnShipwreck;
 	public String oceanRuinType;
 
-	public List<String> biomeDictionaryTypes;
 	public List<String> defaultFeatures;
 
 	public List<SpawnEntry> spawnEntries;
