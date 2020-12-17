@@ -1,1 +1,1 @@
-This trigger triggers the procedure when a player right-clicks on this entity.
+Déclenche la procédure quand le joueur fait un clic droit sur l'entité.

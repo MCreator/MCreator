@@ -1,1 +1,1 @@
-This trigger triggers the procedure when the entity dies.
+Déclenche la procédure quand l'entité meurt.
