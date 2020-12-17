@@ -77,7 +77,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
 
 	private final SoundSelector portalSound = new SoundSelector(mcreator);
-	private final JColor airColor = new JColor(mcreator);
+	private final JColor airColor = new JColor(mcreator, true);
 
 	private final DataListComboBox portalParticles = new DataListComboBox(mcreator);
 
@@ -153,15 +153,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		proper2.setOpaque(false);
 
 		airColor.setOpaque(false);
-		airColor.setColor(new Color(0.753f, 0.847f, 1f));
 
 		canRespawnHere.setOpaque(false);
 		hasFog.setOpaque(false);
 		doesWaterVaporize.setOpaque(false);
-
-		proper2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("dimension/biomes"), L10N.label("elementgui.dimension.biomes_in")));
-		proper2.add(biomesInDimension);
 
 		biomesInDimension.setPreferredSize(new java.awt.Dimension(300, 42));
 
@@ -173,9 +168,17 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.fluid_block"), new Color(0xB8E700)));
 		proper2.add(PanelUtils.join(fluidBlock));
 
+		proper2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("dimension/biomes"), L10N.label("elementgui.dimension.biomes_in")));
+		proper2.add(biomesInDimension);
+
+		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fog_color"),
+				L10N.label("elementgui.dimension.fog_air_color")));
+		proper2.add(airColor);
+
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sleep_result"),
 				L10N.label("elementgui.dimension.sleep_result")));
-		proper2.add(PanelUtils.join(sleepResult));
+		proper2.add(sleepResult);
 
 		proper2.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/imitate_overworld"), imitateOverworldBehaviour));
@@ -184,12 +187,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/has_skylight"), hasSkyLight));
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/is_dark"), isDark));
 
-		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/does_water_vaporize"), doesWaterVaporize));
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/has_fog"), hasFog));
-
-		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fog_color"),
-				L10N.label("elementgui.dimension.fog_air_color")));
-		proper2.add(PanelUtils.join(airColor));
+		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/does_water_vaporize"), doesWaterVaporize));
 
 		isDark.setOpaque(false);
 		hasSkyLight.setOpaque(false);
