@@ -1,4 +1,4 @@
-If this parameter is checked, the first color will be the background of the egg. 
-The second color will be the circles on the egg. 
+Si ce paramètre est coché, la première couleur sera l'arrière-plan de l'œuf. 
+La deuxième couleur sera les cercles de l'œuf. 
 
-You can choose the creative tab for the spawn egg too.
+Vous pouvez également choisir l'onglet créatif pour l'œuf.

@@ -1,1 +1,2 @@
-If checked, dungeons (structures with mob spawner) might spawn with your entity in a mob spawner.
+Si coché, les dongeons (les structures avec un générateur d'entités) pourraient apparaitre avec
+votre entité dans un générateur d'entités.
