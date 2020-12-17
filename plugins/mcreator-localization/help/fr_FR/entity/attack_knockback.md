@@ -1,2 +1,2 @@
-The attack knockback defines the knockback value of each attack of this entity
-Most vanilla entities do not use it. Some do, such as the ravager, which has a knockback value of 1.5.
+Le recul de l'attaque définit la valeur du recul de chaque attaque de cette entité
+La plupart des entités vanilla ne l'utilisent pas. Certaines le font, comme le ravager, qui a une valeur de recul de 1,5.
