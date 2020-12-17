@@ -1,1 +1,1 @@
-The sound played when tye entity walks.
+The sound played when the entity walks.
