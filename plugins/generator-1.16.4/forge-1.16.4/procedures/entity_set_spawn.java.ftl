@@ -1,0 +1,2 @@
+if(${input$entity} instanceof ServerPlayerEntity)
+    ((ServerPlayerEntity)${input$entity}).func_242111_a(((ServerPlayerEntity) ${input$entity}).world.getDimensionKey(), new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), 0, true, false);
