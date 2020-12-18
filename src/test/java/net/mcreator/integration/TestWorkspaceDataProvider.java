@@ -1258,6 +1258,12 @@ public class TestWorkspaceDataProvider {
 			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "LIT" }[valueIndex];
 			particle.additionalExpiryCondition = new Procedure("condition1");
 			return particle;
+		case GAMERULE:
+			Gamerule gamerule = new Gamerule(modElement);
+			gamerule.name = modElement.getName();
+			gamerule.ID = modElement.getName();
+			gamerule.isInteger = _true;
+			gamerule.isBoolean = !_true;
 		default:
 			return null;
 		}
