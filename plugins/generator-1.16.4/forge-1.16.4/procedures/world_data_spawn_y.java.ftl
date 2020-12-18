@@ -1,1 +1,1 @@
-(((World) world).getWorldInfo().getSpawnY())
+(world.getWorldInfo().getSpawnY())
