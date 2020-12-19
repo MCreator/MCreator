@@ -994,7 +994,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 				return super.generate(world, generator, rand, pos, config);
 			}}
-			.withConfiguration(new OreFeatureConfig(new RuleTest() {
+			.withConfiguration(new OreFeatureConfig(new BlockMatchRuleTest(
+				${data.blocksToReplace?has_content?then(mappedBlockToBlockStateCode(data.blocksToReplace[0]) + ".getBlock()", "Blocks.BARRIER")}
+			) {
 				public boolean test(BlockState blockAt, Random random) {
 					boolean blockCriteria = false;
 					<#list data.blocksToReplace as replacementBlock>
