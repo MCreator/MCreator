@@ -1,1 +1,1 @@
-Si coché, l'entité apparaitera dans le monde naturellement via le processus d'apparition d'entité.
+Si coché, l'entité apparaîtra dans le monde naturellement via le processus d'apparition d'entité.

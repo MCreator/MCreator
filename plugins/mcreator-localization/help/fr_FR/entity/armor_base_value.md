@@ -1,1 +1,1 @@
-Le nombre de points d'armure intégrée que l'entité a. Les zombies ont 4 points d'armure par défaut.
+Le nombre de points d'armure intégrée que l'entité possède. Les zombies ont 4 points d'armure par défaut.
