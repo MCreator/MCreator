@@ -1,1 +1,1 @@
-This procedure is executed when a living entity (cow, creeper, player, etc.) is hit using this item.
+Cette procédure est exécutée quand une entité (vache, creeper, joueur, etc.) est frappée avec cet item.
