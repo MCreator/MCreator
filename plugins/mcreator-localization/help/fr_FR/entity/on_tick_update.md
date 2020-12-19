@@ -1,1 +1,1 @@
-Triggers the procedure each tick the entity exists in the world.
+Déclenche la procédure à chaque tick tant que l'entité existe dans le monde.

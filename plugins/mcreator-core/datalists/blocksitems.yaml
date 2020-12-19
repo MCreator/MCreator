@@ -236,6 +236,16 @@
   type: block
   texture: PLANKS#5
 
+- Blocks.CRIMSON_PLANKS:
+  readable_name: "Crimson Planks"
+  type: block
+  texture: CRIMSON_PLANKS
+
+- Blocks.WARPED_PLANKS:
+  readable_name: "Warped Planks"
+  type: block
+  texture: WARPED_PLANKS
+
 - Blocks.SAPLING:
   readable_name: "Any Sapling"
   type: block
@@ -338,6 +348,11 @@
   type: block
   texture: OBSIDIAN
 
+- Blocks.CRYING_OBSIDIAN:
+  readable_name: "Crying Obsidian"
+  type: block
+  texture: CRYING_OBSIDIAN
+
 - Blocks.COAL_ORE:
   readable_name: "Coal Ore"
   type: block
@@ -383,6 +398,16 @@
   type: block
   texture: QUARTZ_ORE
 
+- Blocks.NETHER_GOLD_ORE:
+  readable_name: "Nether Gold Ore"
+  type: block
+  texture: NETHER_GOLD_ORE
+
+- Blocks.GILDED_BLACKSTONE:
+  readable_name: "Gilded Blackstone"
+  type: block
+  texture: GILDED_BLACKSTONE
+
 - Blocks.COAL_BLOCK:
   readable_name: "Coal Block"
   type: block
@@ -418,6 +443,11 @@
   type: block
   texture: EMERALD_BLOCK
 
+- Blocks.NETHERITE_BLOCK:
+  readable_name: "Netherite Block"
+  type: block
+  texture: NETHERITE_BLOCK
+
 - Blocks.QUARTZ_BLOCK:
   readable_name: "Any Block of Quartz"
   type: block
@@ -443,6 +473,11 @@
   readable_name: "Block of Quartz"
   type: block
   texture: QUARTZ_BLOCK#3
+
+- Blocks.QUARTZ_BRICKS:
+  readable_name: "Quartz Bricks"
+  type: block
+  texture: QUARTZ_BRICKS
 
 - Blocks.SMOOTH_QUARTZ_STAIRS:
   readable_name: "Smooth Quartz Stairs"
@@ -499,6 +534,16 @@
   type: block
   texture: LOG2#1
 
+- Blocks.WARPED_STEM:
+  readable_name: "Warped Stem"
+  type: block
+  texture: WARPED_STEM
+
+- Blocks.CRIMSON_STEM:
+  readable_name: "Crimson Stem"
+  type: block
+  texture: CRIMSON_STEM
+
 - Blocks.STRIPPED_OAK_LOG:
   readable_name: "Stripped Oak Log"
   type: block
@@ -528,6 +573,16 @@
   readable_name: "Stripped Dark Oak Log"
   type: block
   texture: STRIPPED_DARK_OAK_LOG
+
+- Blocks.STRIPPED_WARPED_STEM:
+  readable_name: "Stripped Warped Stem"
+  type: block
+  texture: STRIPPED_WARPED_STEM
+
+- Blocks.STRIPPED_CRIMSON_STEM:
+  readable_name: "Stripped Crimson Stem"
+  type: block
+  texture: STRIPPED_CRIMSON_STEM
 
 - Blocks.OAK_WOOD:
   readable_name: "Oak Wood"
@@ -559,6 +614,16 @@
   type: block
   texture: DARK_OAK_WOOD
 
+- Blocks.WARPED_HYPHAE:
+  readable_name: "Warped Hyphae"
+  type: block
+  texture: WARPED_HYPHAE
+
+- Blocks.CRIMSON_HYPHAE:
+  readable_name: "Crimson Hyphae"
+  type: block
+  texture: CRIMSON_HYPHAE
+
 - Blocks.STRIPPED_OAK_WOOD:
   readable_name: "Stripped Oak Wood"
   type: block
@@ -588,6 +653,16 @@
   readable_name: "Stripped Dark Oak Wood"
   type: block
   texture: STRIPPED_DARK_OAK_WOOD
+
+- Blocks.STRIPPED_WARPED_HYPHAE:
+  readable_name: "Stripped Warped Hyphae"
+  type: block
+  texture: STRIPPED_WARPED_HYPHAE
+
+- Blocks.STRIPPED_CRIMSON_HYPHAE:
+  readable_name: "Stripped Crimson Hyphae"
+  type: block
+  texture: STRIPPED_CRIMSON_HYPHAE
 
 - Blocks.LEAVES:
   readable_name: "Oak/Spruce/Birch/Jungle Leaves"
@@ -1019,6 +1094,16 @@
   type: block
   texture: RED_MUSHROOM
 
+- Blocks.WARPED_FUNGUS:
+  readable_name: "Warped Fungus"
+  type: block
+  texture: WARPED_FUNGUS
+
+- Blocks.CRIMSON_FUNGUS:
+  readable_name: "Crimson Fungus"
+  type: block
+  texture: CRIMSON_FUNGUS
+
 - Blocks.BROWN_MUSHROOM_BLOCK:
   readable_name: "Brown Mushroom Block"
   type: block
@@ -1028,6 +1113,11 @@
   readable_name: "Red Mushroom Block"
   type: block
   texture: RED_MUSHROOM_BLOCK
+
+- Blocks.WARPED_WART_BLOCK:
+  readable_name: "Warped Wart Block"
+  type: block
+  texture: WARPED_WART_BLOCK
 
 - Blocks.MUSHROOM_STEM:
   readable_name: "Mushroom Stem"
@@ -1064,10 +1154,25 @@
   type: block
   texture: TORCH
 
+- Blocks.SOUL_TORCH:
+  readable_name: "Soul Torch"
+  type: block
+  texture: SOUL_TORCH
+
+- Blocks.SOUL_WALL_TORCH:
+  readable_name: "Soul Wall Torch"
+  type: block
+  texture: SOUL_TORCH
+
 - Blocks.FIRE:
   readable_name: "Fire"
   type: block
   texture: FIRE
+
+- Blocks.SOUL_FIRE:
+  readable_name: "Soul Fire"
+  type: block
+  texture: SOUL_FIRE
 
 - Blocks.MOB_SPAWNER:
   readable_name: "Mob Spawner"
@@ -1103,6 +1208,16 @@
   readable_name: "Dark Oak Stairs"
   type: block
   texture: DARK_OAK_STAIRS
+
+- Blocks.CRIMSON_STAIRS:
+  readable_name: "Crimson Stairs"
+  type: block
+  texture: CRIMSON_STAIRS
+
+- Blocks.WARPED_STAIRS:
+  readable_name: "Warped Stairs"
+  type: block
+  texture: WARPED_STAIRS
 
 - Blocks.STONE_STAIRS:
   readable_name: "Cobblestone Stairs"
@@ -1199,8 +1314,18 @@
   type: block
   texture: STANDING_DARK_OAK_SIGN
 
+- Blocks.CRIMSON_SIGN:
+  readable_name: "Crimson Sign"
+  type: block
+  texture: STANDING_CRIMSON_SIGN
+
+- Blocks.WARPED_SIGN:
+  readable_name: "Warped Sign"
+  type: block
+  texture: STANDING_WARPED_SIGN
+
 - Blocks.WALL_SIGN:
-  readable_name: "Oak// Wall Sign"
+  readable_name: "Oak Wall Sign"
   type: block
   texture: WALL_SIGN
 
@@ -1228,6 +1353,16 @@
   readable_name: "Dark Oak Wall Sign"
   type: block
   texture: DARK_OAK_WALL_SIGN
+
+- Blocks.CRIMSON_WALL_SIGN:
+  readable_name: "Crimson Wall Sign"
+  type: block
+  texture: CRIMSON_WALL_SIGN
+
+- Blocks.WARPED_WALL_SIGN:
+  readable_name: "Warped Wall Sign"
+  type: block
+  texture: WARPED_WALL_SIGN
 
 - Blocks.OAK_DOOR:
   readable_name: "Oak Door"
@@ -1258,6 +1393,16 @@
   readable_name: "Dark Oak Door"
   type: block
   texture: DARK_OAK_DOOR
+
+- Blocks.CRIMSON_DOOR:
+  readable_name: "Crimson Door"
+  type: block
+  texture: CRIMSON_DOOR
+
+- Blocks.WARPED_DOOR:
+  readable_name: "Warped Door"
+  type: block
+  texture: WARPED_DOOR
 
 - Blocks.IRON_DOOR:
   readable_name: "Iron Door"
@@ -1294,6 +1439,16 @@
   type: block
   texture: DARK_OAK_TRAPDOOR
 
+- Blocks.CRIMSON_TRAPDOOR:
+  readable_name: "Crimson Trapdoor"
+  type: block
+  texture: CRIMSON_TRAPDOOR
+
+- Blocks.WARPED_TRAPDOOR:
+  readable_name: "Warped Trapdoor"
+  type: block
+  texture: WARPED_TRAPDOOR
+
 - Blocks.IRON_TRAPDOOR:
   readable_name: "Iron Trapdoor"
   type: block
@@ -1313,6 +1468,11 @@
   readable_name: "Stone Button"
   type: block
   texture: STONE_BUTTON
+
+- Blocks.POLISHED_BLACKSTONE_BUTTON:
+  readable_name: "Polished Blackstone Button"
+  type: block
+  texture: POLISHED_BLACKSTONE_BUTTON
 
 - Blocks.WOODEN_BUTTON:
   readable_name: "Oak Button"
@@ -1344,6 +1504,16 @@
   type: block
   texture: DARK_OAK_BUTTON
 
+- Blocks.CRIMSON_BUTTON:
+  readable_name: "Crimson Button"
+  type: block
+  texture: CRIMSON_BUTTON
+
+- Blocks.WARPED_BUTTON:
+  readable_name: "Warped Button"
+  type: block
+  texture: WARPED_BUTTON
+
 - Blocks.WOODEN_PRESSURE_PLATE:
   readable_name: "Oak Pressure Plate"
   type: block
@@ -1374,10 +1544,25 @@
   type: block
   texture: DARK_OAK_PRESSURE_PLATE
 
+- Blocks.CRIMSON_PRESSURE_PLATE:
+  readable_name: "Crimson Pressure Plate"
+  type: block
+  texture: CRIMSON_PRESSURE_PLATE
+
+- Blocks.WARPED_PRESSURE_PLATE:
+  readable_name: "Warped Pressure Plate"
+  type: block
+  texture: WARPED_PRESSURE_PLATE
+
 - Blocks.STONE_PRESSURE_PLATE:
   readable_name: "Stone Pressure Plate"
   type: block
   texture: STONE_PRESSURE_PLATE
+
+- Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE:
+  readable_name: "Polished Blackstone Pressure Plate"
+  type: block
+  texture: POLISHED_BLACKSTONE_PRESSURE_PLATE
 
 - Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE:
   readable_name: "Light Weighted Pressure Plate"
@@ -1479,6 +1664,11 @@
   type: block
   texture: HOPPER
 
+- Blocks.TARGET:
+  readable_name: "Target"
+  type: block
+  texture: TARGET
+
 - Blocks.COMMAND_BLOCK:
   readable_name: "Command Block"
   type: block
@@ -1569,6 +1759,16 @@
   type: block
   texture: DARK_OAK_FENCE
 
+- Blocks.CRIMSON_FENCE:
+  readable_name: "Crimson Fence"
+  type: block
+  texture: CRIMSON_FENCE
+
+- Blocks.WARPED_FENCE:
+  readable_name: "Warped Fence"
+  type: block
+  texture: WARPED_FENCE
+
 - Blocks.OAK_FENCE_GATE:
   readable_name: "Oak Fence Gate"
   type: block
@@ -1599,6 +1799,16 @@
   type: block
   texture: DARK_OAK_FENCE_GATE
 
+- Blocks.CRIMSON_FENCE_GATE:
+  readable_name: "Crimson Fence Gate"
+  type: block
+  texture: CRIMSON_FENCE_GATE
+
+- Blocks.WARPED_FENCE_GATE:
+  readable_name: "Warped Fence Gate"
+  type: block
+  texture: WARPED_FENCE_GATE
+
 - Blocks.NETHER_BRICK_FENCE:
   readable_name: "Nether Brick Fence"
   type: block
@@ -1608,6 +1818,16 @@
   readable_name: "Nether Bricks"
   type: block
   texture: NETHER_BRICK
+
+- Blocks.CHISELED_NETHER_BRICKS:
+  readable_name: "Chiseled Nether Bricks"
+  type: block
+  texture: CHISELED_NETHER_BRICKS
+
+- Blocks.CRACKED_NETHER_BRICKS:
+  readable_name: "Cracked Nether Bricks"
+  type: block
+  texture: CRACKED_NETHER_BRICKS
 
 - Blocks.RED_NETHER_BRICK:
   readable_name: "Red Nether Bricks"
@@ -1639,15 +1859,35 @@
   type: block
   texture: NETHERRACK
 
+- Blocks.WARPED_NYLIUM:
+  readable_name: "Warped Nylium"
+  type: block
+  texture: WARPED_NYLIUM
+
+- Blocks.CRIMSON_NYLIUM:
+  readable_name: "Crimson Nylium"
+  type: block
+  texture: CRIMSON_NYLIUM
+
 - Blocks.SOUL_SAND:
   readable_name: "Soul Sand"
   type: block
   texture: SOUL_SAND
 
+- Blocks.SOUL_SOIL:
+  readable_name: "Soul Soil"
+  type: block
+  texture: SOUL_SOIL
+
 - Blocks.GLOWSTONE:
   readable_name: "Glowstone"
   type: block
   texture: GLOWSTONE
+
+- Blocks.SHROOMLIGHT:
+  readable_name: "Shroomlight"
+  type: block
+  texture: SHROOMLIGHT
 
 - Blocks.BONE_BLOCK:
   readable_name: "Bone Block"
@@ -1946,6 +2186,16 @@
   readable_name: "Dark Oak Slab"
   type: block
   texture: WOODEN_SLAB#5
+
+- Blocks.CRIMSON_SLAB:
+  readable_name: "Crimson Slab"
+  type: block
+  texture: CRIMSON_SLAB
+
+- Blocks.WARPED_SLAB:
+  readable_name: "Warped Slab"
+  type: block
+  texture: WARPED_SLAB
 
 - Blocks.STONE_SLAB:
   readable_name: "Any Stone Slab"
@@ -3599,10 +3849,25 @@
   type: block
   texture: LANTERN
 
+- Blocks.SOUL_LANTERN:
+  readable_name: "Soul Lantern"
+  type: block
+  texture: SOUL_LANTERN
+
+- Blocks.CHAIN:
+  readable_name: "Chain"
+  type: block
+  texture: CHAIN
+
 - Blocks.CAMPFIRE:
   readable_name: "Campfire"
   type: block
   texture: CAMPFIRE
+
+- Blocks.SOUL_CAMPFIRE:
+  readable_name: "Soul Campfire"
+  type: block
+  texture: SOUL_CAMPFIRE
 
 - Blocks.LOOM:
   readable_name: "Loom"
@@ -3679,21 +3944,6 @@
   type: block
   texture: HONEYCOMB_BLOCK
 
-- Blocks.NETHER_GOLD_ORE:
-  readable_name: "Nether Gold Ore"
-  type: block
-  texture: NETHER_GOLD_ORE
-
-- Blocks.SOUL_FIRE:
-  readable_name: "Soul Fire"
-  type: block
-  texture: SOUL_FIRE
-
-- Blocks.SOUL_SOIL:
-  readable_name: "Soul Soil"
-  type: block
-  texture: SOUL_SOIL
-
 - Blocks.BASALT:
   readable_name: "Basalt"
   type: block
@@ -3704,66 +3954,6 @@
   type: block
   texture: POLISHED_BASALT
 
-- Blocks.SOUL_TORCH:
-  readable_name: "Soul Torch"
-  type: block
-  texture: SOUL_TORCH
-
-- Blocks.SOUL_WALL_TORCH:
-  readable_name: "Soul Wall Torch"
-  type: block
-  texture: SOUL_TORCH
-
-- Blocks.CHAIN:
-  readable_name: "Chain"
-  type: block
-  texture: CHAIN
-
-- Blocks.SOUL_LANTERN:
-  readable_name: "Soul Lantern"
-  type: block
-  texture: SOUL_LANTERN
-
-- Blocks.SOUL_CAMPFIRE:
-  readable_name: "Soul Campfire"
-  type: block
-  texture: SOUL_CAMPFIRE
-
-- Blocks.WARPED_STEM:
-  readable_name: "Warped Stem"
-  type: block
-  texture: WARPED_STEM
-
-- Blocks.STRIPPED_WARPED_STEM:
-  readable_name: "Stripped Warped Stem"
-  type: block
-  texture: STRIPPED_WARPED_STEM
-
-- Blocks.WARPED_HYPHAE:
-  readable_name: "Warped Hyphae"
-  type: block
-  texture: WARPED_HYPHAE
-
-- Blocks.STRIPPED_WARPED_HYPHAE:
-  readable_name: "Stripped Warped Hyphae"
-  type: block
-  texture: STRIPPED_WARPED_HYPHAE
-
-- Blocks.WARPED_NYLIUM:
-  readable_name: "Warped Nylium"
-  type: block
-  texture: WARPED_NYLIUM
-
-- Blocks.WARPED_FUNGUS:
-  readable_name: "Warped Fungus"
-  type: block
-  texture: WARPED_FUNGUS
-
-- Blocks.WARPED_WART_BLOCK:
-  readable_name: "Warped Wart Block"
-  type: block
-  texture: WARPED_WART_BLOCK
-
 - Blocks.WARPED_ROOTS:
   readable_name: "Warped Roots"
   type: block
@@ -3773,41 +3963,6 @@
   readable_name: "Nether Sprouts"
   type: block
   texture: NETHER_SPROUTS
-
-- Blocks.CRIMSON_STEM:
-  readable_name: "Crimson Stem"
-  type: block
-  texture: CRIMSON_STEM
-
-- Blocks.STRIPPED_CRIMSON_STEM:
-  readable_name: "Stripped Crimson Stem"
-  type: block
-  texture: STRIPPED_CRIMSON_STEM
-
-- Blocks.CRIMSON_HYPHAE:
-  readable_name: "Crimson Hyphae"
-  type: block
-  texture: CRIMSON_HYPHAE
-
-- Blocks.STRIPPED_CRIMSON_HYPHAE:
-  readable_name: "Stripped Crimson Hyphae"
-  type: block
-  texture: STRIPPED_CRIMSON_HYPHAE
-
-- Blocks.CRIMSON_NYLIUM:
-  readable_name: "Crimson Nylium"
-  type: block
-  texture: CRIMSON_NYLIUM
-
-- Blocks.CRIMSON_FUNGUS:
-  readable_name: "Crimson Fungus"
-  type: block
-  texture: CRIMSON_FUNGUS
-
-- Blocks.SHROOMLIGHT:
-  readable_name: "Shroomlight"
-  type: block
-  texture: SHROOMLIGHT
 
 - Blocks.WEEPING_VINES:
   readable_name: "Weeping Vines"
@@ -3834,135 +3989,10 @@
   type: block
   texture: CRIMSON_ROOTS
 
-- Blocks.CRIMSON_PLANKS:
-  readable_name: "Crimson Planks"
-  type: block
-  texture: CRIMSON_PLANKS
-
-- Blocks.WARPED_PLANKS:
-  readable_name: "Warped Planks"
-  type: block
-  texture: WARPED_PLANKS
-
-- Blocks.CRIMSON_SLAB:
-  readable_name: "Crimson Slab"
-  type: block
-  texture: CRIMSON_SLAB
-
-- Blocks.WARPED_SLAB:
-  readable_name: "Warped Slab"
-  type: block
-  texture: WARPED_SLAB
-
-- Blocks.CRIMSON_PRESSURE_PLATE:
-  readable_name: "Crimson Pressure Plate"
-  type: block
-  texture: CRIMSON_PRESSURE_PLATE
-
-- Blocks.WARPED_PRESSURE_PLATE:
-  readable_name: "Warped Pressure Plate"
-  type: block
-  texture: WARPED_PRESSURE_PLATE
-
-- Blocks.CRIMSON_FENCE:
-  readable_name: "Crimson Fence"
-  type: block
-  texture: CRIMSON_FENCE
-
-- Blocks.WARPED_FENCE:
-  readable_name: "Warped Fence"
-  type: block
-  texture: WARPED_FENCE
-
-- Blocks.CRIMSON_TRAPDOOR:
-  readable_name: "Crimson Trapdoor"
-  type: block
-  texture: CRIMSON_TRAPDOOR
-
-- Blocks.WARPED_TRAPDOOR:
-  readable_name: "Warped Trapdoor"
-  type: block
-  texture: WARPED_TRAPDOOR
-
-- Blocks.CRIMSON_FENCE_GATE:
-  readable_name: "Crimson Fence Gate"
-  type: block
-  texture: CRIMSON_FENCE_GATE
-
-- Blocks.WARPED_FENCE_GATE:
-  readable_name: "Warped Fence Gate"
-  type: block
-  texture: WARPED_FENCE_GATE
-
-- Blocks.CRIMSON_STAIRS:
-  readable_name: "Crimson Stairs"
-  type: block
-  texture: CRIMSON_STAIRS
-
-- Blocks.WARPED_STAIRS:
-  readable_name: "Warped Stairs"
-  type: block
-  texture: WARPED_STAIRS
-
-- Blocks.CRIMSON_BUTTON:
-  readable_name: "Crimson Button"
-  type: block
-  texture: CRIMSON_BUTTON
-
-- Blocks.WARPED_BUTTON:
-  readable_name: "Warped Button"
-  type: block
-  texture: WARPED_BUTTON
-
-- Blocks.CRIMSON_DOOR:
-  readable_name: "Crimson Door"
-  type: block
-  texture: CRIMSON_DOOR
-
-- Blocks.WARPED_DOOR:
-  readable_name: "Warped Door"
-  type: block
-  texture: WARPED_DOOR
-
-- Blocks.CRIMSON_SIGN:
-  readable_name: "Crimson Sign"
-  type: block
-  texture: STANDING_CRIMSON_SIGN
-
-- Blocks.WARPED_SIGN:
-  readable_name: "Warped Sign"
-  type: block
-  texture: STANDING_WARPED_SIGN
-
-- Blocks.CRIMSON_WALL_SIGN:
-  readable_name: "Crimson Wall Sign"
-  type: block
-  texture: CRIMSON_WALL_SIGN
-
-- Blocks.WARPED_WALL_SIGN:
-  readable_name: "Warped Wall Sign"
-  type: block
-  texture: WARPED_WALL_SIGN
-
-- Blocks.TARGET:
-  readable_name: "Target"
-  type: block
-  texture: TARGET
-
-- Blocks.NETHERITE_BLOCK:
-  readable_name: "Netherite Block"
-  type: block
-  texture: NETHERITE_BLOCK
-
 - Blocks.ANCIENT_DEBRIS:
   readable_name: "Ancient Debris"
   type: block
   texture: ANCIENT_DEBRIS
-
-- Blocks.CRYING_OBSIDIAN:
-  readable_name: "Crying Obsidian"
-  type: block
-  texture: CRYING_OBSIDIAN
 
 - Blocks.RESPAWN_ANCHOR:
   readable_name: "Respawn Anchor"
@@ -4029,11 +4059,6 @@
   type: block
   texture: POLISHED_BLACKSTONE_BRICK_WALL
 
-- Blocks.GILDED_BLACKSTONE:
-  readable_name: "Gilded Blackstone"
-  type: block
-  texture: GILDED_BLACKSTONE
-
 - Blocks.POLISHED_BLACKSTONE_STAIRS:
   readable_name: "Polished Blackstone Stairs"
   type: block
@@ -4044,35 +4069,10 @@
   type: block
   texture: POLISHED_BLACKSTONE_SLAB
 
-- Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE:
-  readable_name: "Polished Blackstone Pressure Plate"
-  type: block
-  texture: POLISHED_BLACKSTONE_PRESSURE_PLATE
-
-- Blocks.POLISHED_BLACKSTONE_BUTTON:
-  readable_name: "Polished Blackstone Button"
-  type: block
-  texture: POLISHED_BLACKSTONE_BUTTON
-
 - Blocks.POLISHED_BLACKSTONE_WALL:
   readable_name: "Polished Blackstone Wall"
   type: block
   texture: POLISHED_BLACKSTONE_WALL
-
-- Blocks.CHISELED_NETHER_BRICKS:
-  readable_name: "Chiseled Nether Bricks"
-  type: block
-  texture: CHISELED_NETHER_BRICKS
-
-- Blocks.CRACKED_NETHER_BRICKS:
-  readable_name: "Cracked Nether Bricks"
-  type: block
-  texture: CRACKED_NETHER_BRICKS
-
-- Blocks.QUARTZ_BRICKS:
-  readable_name: "Quartz Bricks"
-  type: block
-  texture: QUARTZ_BRICKS
 
 - Items.DYE:
   readable_name: "Any Dye"
