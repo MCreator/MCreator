@@ -16,12 +16,12 @@
       "check": "Entity"
     }
   ],
-  "colour": 175,
+  "colour": 195,
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,
   "mcreator": {
-    "toolbox_id": "playermanagement",
+    "toolbox_id": "entitymanagement",
     "toolbox_init": [
       "<value name=\"slotid\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
       "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",

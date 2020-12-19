@@ -1,1 +1,1 @@
-/*@ItemStack*/((${input$entity} instanceof PlayerEntity)?((PlayerEntity)${input$entity}).inventory.armorInventory.get((int) ${input$slotid}):ItemStack.EMPTY)
+/*@ItemStack*/((${input$entity} instanceof LivingEntity)?((LivingEntity)${input$entity}).getItemStackFromSlot(EquipmentSlotType.fromSlotTypeAndIndex(EquipmentSlotType.Group.ARMOR, (int) ${input$slotid})):ItemStack.EMPTY)
