@@ -1,1 +1,1 @@
-The procedure is executed each tick when the item is held in hand by the player.
+Cette procédure est exécutée chaque tick quand l'item est tenu dans la main du joueur.

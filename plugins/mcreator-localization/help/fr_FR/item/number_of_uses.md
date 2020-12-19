@@ -1,20 +1,21 @@
-This parameter controls the durability of the item (how many times the item can be used).
+Ce paramètre contrôle la durabilité de l'item (combien de fois l'item peut être utilisé).
 
-Set this value to 0 to disable use count mechanic on the given item.
+Réglez cette valeur sur 0 pour désactiver le mécanisme de comptage de l'utilisation de l'item.
 
-Vanilla values for the reference:
+Valeurs vanilla pour la référence :
 
-* Gold: 32 uses:
-* Wood: 59 uses.
-* Stone: 131 uses.
-* Iron: 250 uses.
-* Diamond: 1561 uses.
-* Fishing rod: 64 uses.
-* Flint and steel: 64 uses.
-* Carrot on a stick: 25 uses.
-* Shears: 238 uses.
-* Trident 250 uses.
-* Crossbow: 326 uses.
-* Shield: 336 uses.
-* Bow: 384 uses.
-* Elytra: 432 uses.
+* Or : 32 utilisations :
+* Bois : 59 utilisations.
+* Pierre : 131 utilisations.
+* Fer : 250 utilisations.
+* Diamant : 1561 utilisations.
+* Netherite : 2031 utilisations.
+* Canne à pêche : 64 utilisations.
+* Briquet : 64 utilisations.
+* Carotte sur un bâton : 25 utilisations.
+* Ciseaux : 238 utilisations.
+* Trident : 250 utilisations.
+* Arbalète : 326 utilisations.
+* Bouclier : 336 utilisations.
+* Arc : 384 utilisations.
+* Elytre : 432 utilisations.

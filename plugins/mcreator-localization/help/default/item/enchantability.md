@@ -8,4 +8,5 @@ Vanilla values:
 * Iron tools: 14
 * Gold tools: 22
 * Diamond tools: 10
+* Netherite tools: 15
 * Books: 1
