@@ -52,7 +52,9 @@ import net.minecraft.block.material.Material;
 		<#if data.enablePortal>
 		FMLJavaModLoadingContext.get().getModEventBus().register(new POIRegisterHandler());
 		</#if>
+	}
 
+	@Override public void init(FMLCommonSetupEvent event) {
 		<#-- register filler block to carvers -->
 		DeferredWorkQueue.runLater(() -> {
 			try {
