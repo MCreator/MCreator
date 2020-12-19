@@ -1,6 +1,6 @@
 if (${input$entity} instanceof LivingEntity) {
 	Entity _ent = ${input$entity};
-	if(!_ent.world.isRemote) {
+	if(!_ent.world.isRemote()) {
 		<#if field$rangeditem?has_content && field$rangeditem != "Arrow">
 			${field$rangeditem}Item.shoot(_ent.world, (LivingEntity) ${input$entity}, new Random(), (float) ${input$speed}, (float) ${input$damage}, (int) ${input$knockback});
 		<#else>
