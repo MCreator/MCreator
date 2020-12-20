@@ -1,1 +1,1 @@
-((world.getBlockState(new BlockPos((int) x, (int) y, (int) z))).getPushReaction() == PushReaction.${field$reaction})
+((world.getBlockState(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}))).getPushReaction() == PushReaction.${field$reaction})
