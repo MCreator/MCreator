@@ -157,7 +157,7 @@
             </#if>
         </#if>
     <#elseif !mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
+        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems") />
         <#if !mapped.startsWith("#")>
             <#if !mapped.contains(":")>
                 <#assign mapped = "minecraft:" + mapped />

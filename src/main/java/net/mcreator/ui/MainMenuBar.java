@@ -145,6 +145,7 @@ public class MainMenuBar extends JMenuBar {
 
 		workspace.addSeparator();
 		workspace.add(mcreator.actionRegistry.setCreativeTabItemOrder);
+		workspace.add(mcreator.actionRegistry.injectDefaultTags);
 		workspace.addSeparator();
 		workspace.add(mcreator.actionRegistry.openWorkspaceFolder);
 		workspace.addSeparator();

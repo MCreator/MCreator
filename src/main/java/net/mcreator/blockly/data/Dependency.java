@@ -80,6 +80,10 @@ public class Dependency implements Comparable<Dependency> {
 	}
 
 	public Color getColor() {
+		return getColor(type);
+	}
+
+	public static Color getColor(String type) {
 		switch (type) {
 		case "number":
 			return new Color(0x606999);
