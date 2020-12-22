@@ -110,13 +110,15 @@ public class CodeErrorDialog {
 
 		JPanel list = new JPanel(new BorderLayout());
 		list.add("North", L10N.label("dialog.code_error.compilation_list"));
-
 		list.add("Center", sp);
 
-		Object[] options = { "OK", "Show console tab", "Support page" };
+		Object[] options = { "Show in workspace", "Show build log", "Do nothing", "Support" };
 		int n = JOptionPane.showOptionDialog(mcreator, list, "Some mod elements cause compilation errors",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-		if (n == 1) {
+		if (n == 0) {
+			mcreator.mcreatorTabs.showTab(mcreator.workspaceTab);
+			mcreator.mv.search.setText("f:err");
+		} else if (n == 1) {
 			mcreator.mcreatorTabs.showTab(mcreator.consoleTab);
 		} else if (n == 2) {
 			DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/support");
