@@ -1,0 +1,1 @@
+Cette procédure est exécutée lorsque l'effet de potion est appliqué à une entité.

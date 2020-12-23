@@ -82,13 +82,13 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	}
 
 	@Override protected void initGUI() {
-		onStarted = new ProcedureSelector(this.withEntry("potion/when_potion_applied"), mcreator,
+		onStarted = new ProcedureSelector(this.withEntry("potioneffect/when_potion_applied"), mcreator,
 				L10N.t("elementgui.potioneffect.event_potion_applied"),
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
-		onActiveTick = new ProcedureSelector(this.withEntry("potion/when_active_tick"), mcreator,
+		onActiveTick = new ProcedureSelector(this.withEntry("potioneffect/when_active_tick"), mcreator,
 				L10N.t("elementgui.potioneffect.event_potion_tick"),
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
-		onExpired = new ProcedureSelector(this.withEntry("potion/when_potion_expires"), mcreator,
+		onExpired = new ProcedureSelector(this.withEntry("potioneffect/when_potion_expires"), mcreator,
 				L10N.t("elementgui.potioneffect.event_potion_expires"),
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
 
@@ -112,7 +112,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		renderStatusInInventory.setOpaque(false);
 		renderStatusInHUD.setOpaque(false);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/effect_display_name"),
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/effect_display_name"),
 				L10N.label("elementgui.potioneffect.display_name")));
 		selp.add(effectName);
 
@@ -126,28 +126,28 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 			mcreator.getWorkspace().getFolderManager().getOtherTexturesList().forEach(el -> icon.addItem(el.getName()));
 		});
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/color"), L10N.label("elementgui.potioneffect.color")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/color"), L10N.label("elementgui.potioneffect.color")));
 		selp.add(color);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/icon"), L10N.label("elementgui.potioneffect.icon")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/icon"), L10N.label("elementgui.potioneffect.icon")));
 		selp.add(PanelUtils.centerAndEastElement(icon, importicontexture));
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/instant"), L10N.label("elementgui.potioneffect.instant")));
+				.wrapWithHelpButton(this.withEntry("potioneffect/instant"), L10N.label("elementgui.potioneffect.instant")));
 		selp.add(isInstant);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/bad"), L10N.label("elementgui.potioneffect.bad")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/bad"), L10N.label("elementgui.potioneffect.bad")));
 		selp.add(isBad);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/benefitical"), L10N.label("elementgui.potioneffect.benefitical")));
+				.wrapWithHelpButton(this.withEntry("potioneffect/benefitical"), L10N.label("elementgui.potioneffect.benefitical")));
 		selp.add(isBenefitical);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/render_in_inventory"),
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/render_in_inventory"),
 				L10N.label("elementgui.potioneffect.render_status_inventory")));
 		selp.add(renderStatusInInventory);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/render_in_hud"),
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/render_in_hud"),
 				L10N.label("elementgui.potioneffect.render_status_hud")));
 		selp.add(renderStatusInHUD);
 

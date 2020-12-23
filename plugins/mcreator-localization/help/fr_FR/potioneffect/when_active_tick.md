@@ -1,0 +1,1 @@
+Cette procédure sera exécutée à chaque tick pour chaque entité ayant cet effet de potion.
