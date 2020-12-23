@@ -120,7 +120,7 @@ public class CodeErrorDialog {
 			mcreator.mv.search.setText("f:err");
 		} else if (n == 1) {
 			mcreator.mcreatorTabs.showTab(mcreator.consoleTab);
-		} else if (n == 2) {
+		} else if (n == 3) {
 			DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/support");
 		}
 
