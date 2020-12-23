@@ -280,6 +280,10 @@ public final class MCreator extends JFrame {
 			}
 
 			// if we need to setup MCreator, we do so
+			if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
+				WorkspaceGeneratorSetupDialog.runSetup(this, false);
+			}
+
 			if (workspace.getMCreatorVersion()
 					< Launcher.version.versionlong) { // if this is the case, update the workspace files
 				RegenerateCodeAction.regenerateCode(this, true, true);
