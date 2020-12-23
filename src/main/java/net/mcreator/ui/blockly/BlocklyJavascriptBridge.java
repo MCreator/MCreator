@@ -207,6 +207,17 @@ public class BlocklyJavascriptBridge {
 				return false;
 			}).map(ModElement::getName).collect(Collectors.toList());
 			break;
+		case "procedure_retval_blockstate":
+			retval = workspace.getModElements().stream().filter(mod -> {
+				if (mod.getType() == ModElementType.PROCEDURE) {
+					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
+							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
+							null;
+					return returnTypeCurrent == VariableElementType.BLOCKSTATE;
+				}
+				return false;
+			}).map(ModElement::getName).collect(Collectors.toList());
+			break;
 		case "entity":
 			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "gui":

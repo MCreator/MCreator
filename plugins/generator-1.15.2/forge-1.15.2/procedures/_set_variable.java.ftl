@@ -8,6 +8,8 @@
         ${JavaModName}Variables.${name} =(String)${value};
     <#elseif type == "ITEMSTACK">
         ${JavaModName}Variables.${name} =${mappedMCItemToItemStackCode(value, 1)};
+    <#elseif type == "BLOCKSTATE">
+        ${JavaModName}Variables.${name} =${mappedBlockToBlockStateCode(value)};
     </#if>
 <#elseif scope == "GLOBAL_WORLD">
     <#if type == "NUMBER">
@@ -22,6 +24,9 @@
     <#elseif type == "ITEMSTACK">
         ${JavaModName}Variables.WorldVariables.get(world).${name} =${mappedMCItemToItemStackCode(value, 1)};
         ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
+    <#elseif type == "BLOCKSTATE">
+        ${JavaModName}Variables.WorldVariables.get(world).${name} =${mappedBlockToBlockStateCode(value)};
+        ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
     </#if>
 <#elseif scope == "GLOBAL_MAP">
     <#if type == "NUMBER">
@@ -35,6 +40,9 @@
         ${JavaModName}Variables.MapVariables.get(world).syncData(world);
     <#elseif type == "ITEMSTACK">
         ${JavaModName}Variables.MapVariables.get(world).${name} =${mappedMCItemToItemStackCode(value, 1)};
+        ${JavaModName}Variables.MapVariables.get(world).syncData(world);
+    <#elseif type == "BLOCKSTATE">
+        ${JavaModName}Variables.MapVariables.get(world).${name} =${mappedBlockToBlockStateCode(value)};
         ${JavaModName}Variables.MapVariables.get(world).syncData(world);
     </#if>
 <#elseif scope == "PLAYER_LIFETIME" || scope == "PLAYER_PERSISTENT">
@@ -70,6 +78,14 @@
         	capability.syncPlayerVariables(entity);
 		});
     }
+    <#elseif type == "BLOCKSTATE">
+    {
+        BlockState _setval = ${mappedBlockToBlockStateCode(value)};
+        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+        	capability.${name} = _setval;
+        	capability.syncPlayerVariables(entity);
+		});
+    }
     </#if>
 <#elseif scope == "local">
     <#if type == "NUMBER">
@@ -80,5 +96,7 @@
         ${name} =(String)${value};
     <#elseif type == "ITEMSTACK">
         ${name} = ${mappedMCItemToItemStackCode(value, 1)};
+    <#elseif type == "BLOCKSTATE">
+        ${name} = ${mappedBlockToBlockStateCode(value)};
     </#if>
 </#if>

@@ -65,6 +65,26 @@ import java.util.Set;
 	public List<String> leggingsSpecialInfo;
 	public List<String> bootsSpecialInfo;
 
+	public List<String> helmetShiftInfo;
+	public List<String> bodyShiftInfo;
+	public List<String> leggingsShiftInfo;
+	public List<String> bootsShiftInfo;
+
+	public List<String> helmetCommandInfo;
+	public List<String> bodyCommandInfo;
+	public List<String> leggingsCommandInfo;
+	public List<String> bootsCommandInfo;
+
+	public boolean helmetShiftOnly;
+	public boolean bodyShiftOnly;
+	public boolean leggingsShiftOnly;
+	public boolean bootsShiftOnly;
+
+	public boolean helmetCommandOnly;
+	public boolean bodyCommandOnly;
+	public boolean leggingsCommandOnly;
+	public boolean bootsCommandOnly;
+
 	public String helmetModelName;
 	public String helmetModelPart;
 	public String helmetModelTexture;
@@ -178,6 +198,54 @@ import java.util.Set;
 			modelsCode.append(FileIO.readFileToString(model.getFile())).append("\n\n");
 
 		return modelsCode.toString();
+	}
+
+	public boolean armorHelmetInfoOnly() {
+		return !helmetSpecialInfo.isEmpty();
+	}
+
+	public boolean armorChestplateInfoOnly() {
+		return !bodySpecialInfo.isEmpty();
+	}
+
+	public boolean armorLeggingsInfoOnly() {
+		return !leggingsSpecialInfo.isEmpty();
+	}
+
+	public boolean armorBootsInfoOnly() {
+		return !bootsSpecialInfo.isEmpty();
+	}
+
+	public boolean armorHelmetShiftOnly() {
+		return helmetShiftOnly;
+	}
+
+	public boolean armorChestplateShiftOnly() {
+		return bodyShiftOnly;
+	}
+
+	public boolean armorLeggingsShiftOnly() {
+		return leggingsShiftOnly;
+	}
+
+	public boolean armorBootsShiftOnly() {
+		return bootsShiftOnly;
+	}
+
+	public boolean armorHelmetCommandOnly() {
+		return helmetCommandOnly;
+	}
+
+	public boolean armorChestplateCommandOnly() {
+		return bodyCommandOnly;
+	}
+
+	public boolean armorLeggingsCommandOnly() {
+		return leggingsCommandOnly;
+	}
+
+	public boolean armorBootsCommandOnly() {
+		return bootsCommandOnly;
 	}
 
 	@Override public TabEntry getCreativeTab() {

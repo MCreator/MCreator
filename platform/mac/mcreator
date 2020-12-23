@@ -9,4 +9,4 @@ DIR=$(cd "$(dirname "$0")"; pwd)
 
 cd "$DIR"
 
-./jdk/Contents/Home/bin/java -Xdock:name=MCreator -Xdock:icon=../Resources/mcreatorapp.icns -cp .:./lib/mcreator.jar:./lib/* net.mcreator.Launcher
+./jdk/Contents/Home/bin/java -Xdock:name=MCToolkit -Xdock:icon=../Resources/mcreatorapp.icns -cp .:./lib/mcreator.jar:./lib/* net.mcreator.Launcher

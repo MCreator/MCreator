@@ -44,6 +44,10 @@ import java.util.Map;
 
 	public String name;
 	public List<String> specialInfo;
+	public boolean onShiftOnly;
+	public List<String> onShiftInfo;
+	public boolean onCommandOnly;
+	public List<String> onCommandInfo;
 	public TabEntry creativeTab;
 	public String toolType;
 	public int harvestLevel;
@@ -102,6 +106,18 @@ import java.util.Map;
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
 		return null;
+	}
+
+	public boolean toolInfoOnly() {
+		return !specialInfo.isEmpty();
+	}
+
+	public boolean toolShiftOnly() {
+		return onShiftOnly;
+	}
+
+	public boolean toolCommandOnly() {
+		return onCommandOnly;
 	}
 
 	@Override public TabEntry getCreativeTab() {

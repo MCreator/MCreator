@@ -152,6 +152,7 @@ public class GeneratorSelector {
 			JPanel supportedProcedures = new JPanel(new GridLayout(-1, 4, 7, 3));
 			addStatsBar(L10N.t(covpfx + "procedure_blocks"), "procedures", supportedProcedures, stats);
 			addStatsBar(L10N.t(covpfx + "ai_tasks"), "aitasks", supportedProcedures, stats);
+      addStatsBar(L10N.t(covpfx + "tooltips"), "tooltips", supportedProcedures, stats);
 			addStatsBar(L10N.t(covpfx + "global_triggers"), "triggers", supportedProcedures, stats);
 			addStatsBar(L10N.t(covpfx + "advancement_triggers"), "jsontriggers", supportedProcedures, stats);
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.procedure_coverage"),

@@ -45,7 +45,7 @@ public class ${name}Procedure extends ${JavaModName}Elements.ModElement{
 		<#list dependencies as dependency>
 		if(dependencies.get("${dependency.getName()}") == null) {
 			if(!dependencies.containsKey("${dependency.getName()}"))
-				${JavaModName}.LOGGER.warn("Failed to load dependency ${dependency.getName()} for procedure ${name}!");
+				System.err.println("Failed to load dependency ${dependency.getName()} for procedure ${name}!");
 			<#if return_type??>return ${return_type.getDefaultValue(generator.getWorkspace())}<#else>return</#if>;
 		}
         </#list>

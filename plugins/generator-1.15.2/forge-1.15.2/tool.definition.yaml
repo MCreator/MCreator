@@ -18,3 +18,12 @@ templates:
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: name
+  - key: item.@modid.@registryname.tooltip
+    condition: toolInfoOnly
+    mapto: specialInfo
+  - key: item.@modid.@registryname.shift.tooltip
+    condition: toolShiftOnly
+    mapto: onShiftInfo
+  - key: item.@modid.@registryname.command.tooltip
+    condition: toolCommandOnly
+    mapto: onCommandInfo

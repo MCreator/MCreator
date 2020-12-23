@@ -66,7 +66,6 @@
 - adventure/adventuring_time
 - adventure/very_very_frightening
 - adventure/sniper_duel
-- adventure/bullseye
 - husbandry/root
 - husbandry/safely_harvest_honey
 - husbandry/breed_an_animal
@@ -78,4 +77,4 @@
 - husbandry/complete_catalogue
 - husbandry/tactical_fishing
 - husbandry/balanced_diet
-- husbandry/obtain_netherite_hoe
+- husbandry/break_diamond_hoe
