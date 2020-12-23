@@ -69,6 +69,8 @@ public class BlocklyVariables {
 			return "Boolean";
 		case STRING:
 			return "String";
+		case BLOCKSTATE:
+			return "MCItemBlock";
 		}
 		return null;
 	}
@@ -83,6 +85,8 @@ public class BlocklyVariables {
 			return VariableElementType.STRING;
 		case "MCItem":
 			return VariableElementType.ITEMSTACK;
+		case "MCItemBlock":
+			return VariableElementType.BLOCKSTATE;
 		}
 		return null;
 	}

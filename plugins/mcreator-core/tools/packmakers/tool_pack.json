@@ -1,0 +1,266 @@
+{
+  "ui": {
+    "icon": "toolpack",
+    "name": {
+      "length": 25
+    },
+    "color": true,
+    "power": {
+      "value": 1.0,
+      "min": 0.1,
+      "max": 100,
+      "stepSize": 0.1
+    },
+    "baseItem": true
+  },
+  "textures":[
+    {
+      "name": "_pickaxe",
+      "type": "item",
+      "baseTexture": [
+        "tool_base_stick"
+      ],
+      "textures":[
+        "tool_pickaxe"
+      ],
+      "baseTextureTop": false
+    },
+    {
+      "name": "_axe",
+      "type": "item",
+      "baseTexture": [
+        "tool_base_stick"
+      ],
+      "textures":[
+        "tool_axe"
+      ],
+      "baseTextureTop": false
+    },
+    {
+      "name": "_sword",
+      "type": "item",
+      "baseTexture": [
+        "tool_base_stick"
+      ],
+      "textures":[
+        "tool_sword"
+      ],
+      "baseTextureTop": false
+    },
+    {
+      "name": "_shovel",
+      "type": "item",
+      "baseTexture": [
+        "tool_shovel_base"
+      ],
+      "textures":[
+        "tool_shovel_top"
+      ],
+      "baseTextureTop": false
+    },
+    {
+      "name": "_hoe",
+      "type": "item",
+      "baseTexture": [
+        "tool_base_stick"
+      ],
+      "textures":[
+        "tool_hoe"
+      ],
+      "baseTextureTop": false
+    }
+  ],
+  "items": [
+    {
+      "elementType": "tool",
+      "name": {
+        "name": "Pickaxe",
+        "useTextField": true,
+        "location": "after"
+      },
+      "texture": "_pickaxe",
+      "toolType": "Pickaxe",
+      "harvestLevel": 2,
+      "damageVsEntity": 2,
+      "efficiency": 6,
+      "enchantability": 14,
+      "usageCount": 250
+    },
+    {
+      "elementType": "tool",
+      "name": {
+        "name": "Axe",
+        "useTextField": true,
+        "location": "after"
+      },
+      "texture": "_axe",
+      "toolType": "Axe",
+      "harvestLevel": 2,
+      "damageVsEntity": 9,
+      "efficiency": 6,
+      "enchantability": 14,
+      "usageCount": 250
+    },
+    {
+      "elementType": "tool",
+      "name": {
+        "name": "Sword",
+        "useTextField": true,
+        "location": "after"
+      },
+      "texture": "_sword",
+      "toolType": "Sword",
+      "harvestLevel": 2,
+      "damageVsEntity": 6,
+      "efficiency": 6,
+      "enchantability": 14,
+      "usageCount": 250
+    },
+    {
+      "elementType": "tool",
+      "name": {
+        "name": "Shovel",
+        "useTextField": true,
+        "location": "after"
+      },
+      "texture": "_shovel",
+      "toolType": "Shovel",
+      "harvestLevel": 2,
+      "damageVsEntity": 2,
+      "efficiency": 6,
+      "enchantability": 14,
+      "usageCount": 250
+    },
+    {
+      "elementType": "tool",
+      "name": {
+        "name": "Hoe",
+        "useTextField": true,
+        "location": "after"
+      },
+      "texture": "_hoe",
+      "toolType": "Hoe",
+      "harvestLevel": 2,
+      "damageVsEntity": 2,
+      "efficiency": 6,
+      "enchantability": 14,
+      "usageCount": 250
+    }
+  ],
+  "recipes":[
+    {
+      "type": "crafting",
+      "template": "custom",
+      "recipeName": "PickaxeRecipe",
+      "pattern": [
+        "bbb",
+        " s ",
+        " s "
+      ],
+      "keys": [
+        {
+          "keyName": "b",
+          "useBaseItem": true
+        },
+        {
+          "keyName": "s",
+          "item": "Items.STICK"
+        }
+      ],
+      "returnItem": "Pickaxe",
+      "stackSize": 1
+    },
+    {
+      "type": "crafting",
+      "template": "custom",
+      "recipeName": "AxeRecipe",
+      "pattern": [
+        "bb ",
+        "bs ",
+        " s "
+      ],
+      "keys": [
+        {
+          "keyName": "b",
+          "useBaseItem": true
+        },
+        {
+          "keyName": "s",
+          "item": "Items.STICK"
+        }
+      ],
+      "returnItem": "Axe",
+      "stackSize": 1
+    },
+    {
+      "type": "crafting",
+      "template": "custom",
+      "recipeName": "SwordRecipe",
+      "pattern": [
+        " b ",
+        " b ",
+        " s "
+      ],
+      "keys": [
+        {
+          "keyName": "b",
+          "useBaseItem": true
+        },
+        {
+          "keyName": "s",
+          "item": "Items.STICK"
+        }
+      ],
+      "returnItem": "Sword",
+      "stackSize": 1
+    },
+    {
+      "type": "crafting",
+      "template": "custom",
+      "recipeName": "ShovelRecipe",
+      "pattern": [
+        " b ",
+        " s ",
+        " s "
+      ],
+      "keys": [
+        {
+          "keyName": "b",
+          "useBaseItem": true
+        },
+        {
+          "keyName": "s",
+          "item": "Items.STICK"
+        }
+      ],
+      "returnItem": "Shovel",
+      "stackSize": 1
+    },
+    {
+      "type": "crafting",
+      "template": "custom",
+      "recipeName": "HoeRecipe",
+      "pattern": [
+        "bb ",
+        " s ",
+        " s "
+      ],
+      "keys": [
+        {
+          "keyName": "b",
+          "useBaseItem": true
+        },
+        {
+          "keyName": "s",
+          "item": "Items.STICK"
+        }
+      ],
+      "returnItem": "Hoe",
+      "stackSize": 1
+    }
+  ],
+  "mod_elements": [
+    "TOOL",
+    "RECIPE"
+  ]
+}

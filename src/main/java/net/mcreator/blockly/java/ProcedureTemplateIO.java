@@ -88,6 +88,28 @@ public class ProcedureTemplateIO {
 		exportBlocklyXML(block, file);
 	}
 
+	public static void exportTooltipSetup(String procedure, File file)
+			throws ParserConfigurationException, IOException, SAXException, ParseException {
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(new InputSource(new StringReader(procedure)));
+		doc.getDocumentElement().normalize();
+
+		Element start_block = BlocklyBlockUtil.getStartBlock(doc, "tooltip_start");
+
+		// if there is no start block, we return empty string
+		if (start_block == null)
+			throw new ParseException("Could not find start block!", -1);
+
+		Element next = XMLUtil.getFirstChildrenWithName(start_block, "next");
+		Element block = XMLUtil.getFirstChildrenWithName(next, "block");
+
+		if (block == null)
+			throw new ParseException("Could not export block!", -1);
+
+		exportBlocklyXML(block, file);
+	}
+
 	private static void exportBlocklyXML(Element element, File file) {
 		DOMImplementationLS lsImpl = (DOMImplementationLS) element.getOwnerDocument().getImplementation()
 				.getFeature("LS", "3.0");
@@ -115,6 +137,8 @@ public class ProcedureTemplateIO {
 			"<block type=\"(?:variables_set_text|variables_get_text)\"><field name=\"VAR\">local:(.*?)</field>");
 	private static final Pattern itemstackLocalVariables = Pattern.compile(
 			"<block type=\"(?:variables_set_itemstack|variables_get_itemstack)\"><field name=\"VAR\">local:(.*?)</field>");
+	private static final Pattern blockstateLocalVariables = Pattern.compile(
+			"<block type=\"(?:variables_set_blockstate|variables_get_blockstate)\"><field name=\"VAR\">local:(.*?)</field>");
 
 	public static Set<VariableElement> tryToExtractVariables(String xml) {
 		Set<VariableElement> retval = new HashSet<>();
@@ -149,6 +173,14 @@ public class ProcedureTemplateIO {
 				VariableElement element = new VariableElement();
 				element.setName(m.group(1));
 				element.setType(VariableElementType.ITEMSTACK);
+				retval.add(element);
+			}
+
+			m = blockstateLocalVariables.matcher(xml);
+			while (m.find()) {
+				VariableElement element = new VariableElement();
+				element.setName(m.group(1));
+				element.setType(VariableElementType.BLOCKSTATE);
 				retval.add(element);
 			}
 		} catch (Exception ignored) {

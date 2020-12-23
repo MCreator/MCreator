@@ -55,6 +55,10 @@ import java.util.Map;
 
 	public String name;
 	public List<String> specialInfo;
+	public boolean onShiftOnly;
+	public List<String> onShiftInfo;
+	public boolean onCommandOnly;
+	public List<String> onCommandInfo;
 	public TabEntry creativeTab;
 	public double hardness;
 	public double resistance;
@@ -137,6 +141,18 @@ import java.util.Map;
 		return ImageUtils
 				.resizeAndCrop(getModElement().getWorkspace().getFolderManager().getBlockImageIcon(texture).getImage(),
 						32);
+	}
+
+	public boolean plantInfoOnly() {
+		return !specialInfo.isEmpty();
+	}
+
+	public boolean plantShiftOnly() {
+		return onShiftOnly;
+	}
+
+	public boolean plantCommandOnly() {
+		return onCommandOnly;
 	}
 
 	@Override public TabEntry getCreativeTab() {

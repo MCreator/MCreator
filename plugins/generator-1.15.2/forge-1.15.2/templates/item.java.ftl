@@ -60,6 +60,32 @@ package ${package}.item;
 		elements.items.add(() -> new ItemCustom());
 	}
 
+	<#if data.hasDispenseBehavior>
+	@Override
+	public void init(FMLCommonSetupEvent event) {
+		DispenserBlock.registerDispenseBehavior(this.block, new OptionalDispenseBehavior() {
+			public ItemStack dispenseStack(IBlockSource blockSource, ItemStack stack) {
+				this.successful = true;
+				ItemStack itemstack = stack.copy();
+				World world = blockSource.getWorld();
+				Direction direction = blockSource.getBlockState().get(DispenserBlock.FACING);
+				int x = blockSource.getBlockPos().getX();
+				int y = blockSource.getBlockPos().getY();
+				int z = blockSource.getBlockPos().getZ();
+
+				this.successful = <@procedureOBJToConditionCode data.dispenseSuccessCondition/>;
+
+				<#if hasProcedure(data.dispenseResultItemstack)>
+					boolean success = this.successful;
+                    return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
+				<#else>
+					return itemstack;
+				</#if>
+			}
+		});
+	}
+	</#if>
+
 	public static class ItemCustom extends Item {
 
 		public ItemCustom() {
@@ -147,14 +173,14 @@ package ${package}.item;
 		}
         </#if>
 
-		<#if data.specialInfo?has_content>
-		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
-			super.addInformation(itemstack, world, list, flag);
-			<#list data.specialInfo as entry>
-			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-            </#list>
+		<#if data.hasTooltip>
+		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+			super.addInformation(stack, world, list, flag);
+			<#if tooltipCode??>
+				${tooltipCode}
+            </#if>
 		}
-        </#if>
+		</#if>
 
 		<#if hasProcedure(data.onRightClickedInAir) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 		@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {

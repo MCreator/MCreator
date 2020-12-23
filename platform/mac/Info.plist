@@ -8,9 +8,9 @@
         <string>English</string>
 
         <key>CFBundleName</key>
-        <string>MCreator</string>
+        <string>MCToolkit</string>
         <key>CFBundleGetInfoString</key>
-        <string>MCreator Minecraft Mod Maker</string>
+        <string>MCToolkit</string>
         <key>CFBundleIdentifier</key>
         <string>net.mcreator</string>
 

@@ -1,0 +1,31 @@
+name: Curios API
+
+forge-1.15.2:
+  update_files:
+    - ~
+  gradle: |
+    repositories {
+      maven {
+        url = "https://maven.theillusivec4.top/"
+      }
+    }
+
+    dependencies {
+      runtimeOnly fg.deobf("top.theillusivec4.curios:curios:FORGE-1.15.2-2.0.2.5")
+      compileOnly fg.deobf("top.theillusivec4.curios:curios:FORGE-1.15.2-2.0.2.5:api")
+    }
+
+forge-1.16.4:
+  update_files:
+    - ~
+  gradle: |
+    repositories {
+      maven {
+        url = "https://maven.theillusivec4.top/"
+      }
+    }
+
+    dependencies {
+      runtimeOnly fg.deobf("top.theillusivec4.curios:curios:FORGE-1.16.1-3.0.0.2")
+      compileOnly fg.deobf("top.theillusivec4.curios:curios:FORGE-1.16.1-3.0.0.2:api")
+    }

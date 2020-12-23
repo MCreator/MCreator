@@ -26,6 +26,7 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -102,7 +103,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		importmobtexture.setToolTipText(L10N.t("elementgui.particle.texture.import_tooltip"));
 		importmobtexture.setOpaque(false);
 		importmobtexture.addActionListener(e -> {
-			TextureImportDialogs.importOtherTextures(mcreator);
+			TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.OTHER);
 			texture.removeAllItems();
 			texture.addItem("");
 			mcreator.getWorkspace().getFolderManager().getOtherTexturesList()

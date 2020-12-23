@@ -46,6 +46,7 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -308,8 +309,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 
-		mobModelTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
-		mobModelGlowTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		mobModelTexture.setRenderer(new WTextureComboBoxRenderer.EntityTextures(mcreator.getWorkspace()));
+		mobModelGlowTexture.setRenderer(new WTextureComboBoxRenderer.EntityTextures(mcreator.getWorkspace()));
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -445,14 +446,14 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		importmobtexture.setToolTipText(L10N.t("elementgui.living_entity.entity_model_import"));
 		importmobtexture.setOpaque(false);
 		importmobtexture.addActionListener(e -> {
-			TextureImportDialogs.importOtherTextures(mcreator);
+			TextureImportDialogs.importTexturesGeneral(mcreator, GeneralTextureSelector.TextureType.ENTITY);
 			mobModelTexture.removeAllItems();
 			mobModelTexture.addItem("");
-			mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
+			mcreator.getWorkspace().getFolderManager().getEntityTexturesList()
 					.forEach(el -> mobModelTexture.addItem(el.getName()));
 			mobModelGlowTexture.removeAllItems();
 			mobModelGlowTexture.addItem("");
-			mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
+			mcreator.getWorkspace().getFolderManager().getEntityTexturesList()
 					.forEach(el -> mobModelGlowTexture.addItem(el.getName()));
 		});
 
@@ -830,13 +831,17 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		particleCondition.refreshListKeepSelected();
 		spawningCondition.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
-						.collect(Collectors.toList())), "");
+		java.util.List<String> files = mcreator.getWorkspace().getFolderManager().getEntityTexturesList().stream().map(File::getPath)
+				.collect(Collectors.toList());
+		List<String> textures = new ArrayList<>();
+		for(String name : files){
+			name = TextureHolder.textureNameReplace(name.replace(
+					mcreator.getWorkspace().getFolderManager().getEntitiesTexturesDir().getPath(), "")).substring(1);
+			textures.add(name);
+		}
+		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""), textures), "");
 
-		ComboBoxUtil.updateComboBoxContents(mobModelGlowTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
-						.collect(Collectors.toList())), "");
+		ComboBoxUtil.updateComboBoxContents(mobModelGlowTexture, ListUtils.merge(Collections.singleton(""), textures), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()

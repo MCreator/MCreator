@@ -1,1 +1,0 @@
-Check this parameter if your effect should apply one time like the Instant health.
