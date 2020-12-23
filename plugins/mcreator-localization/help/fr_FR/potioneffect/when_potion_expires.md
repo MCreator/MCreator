@@ -1,0 +1,1 @@
+Cette procédure sera exécutée lorsqu'une entité perdra l'effet de potion.
