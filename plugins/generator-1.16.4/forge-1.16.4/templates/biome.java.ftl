@@ -61,13 +61,6 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 									${mappedBlockToBlockStateCode(data.undergroundBlock)},
 									${mappedBlockToBlockStateCode(data.undergroundBlock)})));
 
-				<#list data.defaultFeatures as defaultFeature>
-					<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
-					<#if mfeat != "null">
-						DefaultBiomeFeatures.with${mfeat}(biomeGenerationSettings);
-					</#if>
-				</#list>
-
 				<#if data.spawnStronghold>
 				biomeGenerationSettings.withStructure(StructureFeatures.STRONGHOLD);
 				</#if>
@@ -288,6 +281,13 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								new SimpleBlockStateProvider(Blocks.CACTUS.getDefaultState()), new ColumnBlockPlacer(1, 2)))
 								.tries(${data.cactiPerChunk}).func_227317_b_().build()));
 				</#if>
+
+				<#list data.defaultFeatures as defaultFeature>
+					<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
+					<#if mfeat != "null">
+						DefaultBiomeFeatures.with${mfeat}(biomeGenerationSettings);
+					</#if>
+				</#list>
 
 				MobSpawnInfo.Builder mobSpawnInfo = new MobSpawnInfo.Builder().isValidSpawnBiomeForPlayer();
 				<#list data.spawnEntries as spawnEntry>
