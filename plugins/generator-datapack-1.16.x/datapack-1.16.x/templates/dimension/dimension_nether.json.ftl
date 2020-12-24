@@ -63,15 +63,8 @@
       "bedrock_floor_position": 0,
       "sea_level": 32,
       "disable_mob_generation": ${!data.imitateOverworldBehaviour},
-      "default_block": {
-        "Name": "${mappedMCItemToIngameNameNoTags(data.mainFillerBlock)}"
-      },
-      "default_fluid": {
-        "Name": "${mappedMCItemToIngameNameNoTags(data.fluidBlock)}",
-        "Properties": {
-          "level": "0"
-        }
-      },
+      "default_block": ${mappedMCItemToBlockStateJSON(data.mainFillerBlock)},
+      "default_fluid": ${mappedMCItemToBlockStateJSON(data.fluidBlock)},
       "noise": {
         "density_factor": 0,
         "density_offset": 0.019921875,
