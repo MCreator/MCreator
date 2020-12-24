@@ -20,8 +20,10 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,6 +41,10 @@ import java.util.Locale;
 
 	public String tagType() {
 		return type.toLowerCase(Locale.ENGLISH);
+	}
+
+	@Override public BufferedImage generateModElementPicture() {
+		return MinecraftImageGenerator.Preview.generateTagPreviewPicture(type);
 	}
 
 }

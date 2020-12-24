@@ -63,6 +63,7 @@ public class MainToolBar extends JToolBar {
 
 		addSeparator(new Dimension(10, 4));
 		add(mcreator.actionRegistry.setCreativeTabItemOrder);
+		add(mcreator.actionRegistry.injectDefaultTags);
 
 		add(Box.createHorizontalGlue());
 

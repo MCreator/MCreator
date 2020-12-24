@@ -1,5 +1,5 @@
-A Vanilla entity AI to make an entity like a Vanilla one. 
+Une IA d'entité vanilla pour faire une entité de type vanilla.
 
-It will also override some parameters like the drops.
+Elle permet également de passer outre certains paramètres comme les drops.
 
-Usually this parameter should be avoided and left default.
+Habituellement, ce paramètre doit être évité et laissé par défaut.

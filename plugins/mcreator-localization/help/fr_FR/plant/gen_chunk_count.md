@@ -1,8 +1,8 @@
-This parameter controls how many times per chunk plant patch will be generated.
+Ce paramètre contrôle le nombre de fois par tronçon qu'un patch de plante sera généré.
 
-Plants aren't generated individually, but in patches. 
+Les plantes ne sont pas générées individuellement, mais par patchs. 
 
-For example, setting this value to 1 does NOT mean there's only one plant in each chunk; 
-instead, each chunk will have (at most) one cluster of these plants. 
+Par exemple, le réglage de cette valeur à 1 ne signifie PAS qu'il n'y a qu'une seule plante dans chaque tronçon ; 
+au lieu de cela, chaque tronçon aura (au maximum) un groupe de ces plantes. 
 
-Because of this, setting this value to a low amount (4 or less) is enough for most purposes.
+C'est pourquoi il suffit de régler cette valeur à une faible quantité (4 ou moins) pour la plupart des besoins.

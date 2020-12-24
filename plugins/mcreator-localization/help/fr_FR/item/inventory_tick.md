@@ -1,1 +1,1 @@
-This procedure will be executed each tick when the item is inside the inventory of a player.
+Cette procédure est exécutée chaque tick quand l'item est dans l'inventaire du joueur.

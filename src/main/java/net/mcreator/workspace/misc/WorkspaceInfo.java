@@ -21,18 +21,20 @@ package net.mcreator.workspace.misc;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.IItemWithTexture;
 import net.mcreator.element.ModElementType;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class WorkspaceInfo {
+
+	private static final Logger LOG = LogManager.getLogger("Workspace info");
 
 	private final Workspace workspace;
 
@@ -83,6 +85,23 @@ import java.util.stream.Collectors;
 	public String getUUID() {
 		return UUID.nameUUIDFromBytes(workspace.getWorkspaceSettings().getModID().getBytes(StandardCharsets.UTF_8))
 				.toString();
+	}
+
+	public <T extends MappableElement> List<T> filterBrokenReferences(List<T> input) {
+		List<T> retval = new ArrayList<>();
+		for (T t : input) {
+			if (t.getUnmappedValue().startsWith("CUSTOM:")) {
+				if (workspace.getModElementByName(t.getUnmappedValue().replaceFirst("CUSTOM:", "")) != null) {
+					retval.add(t);
+				} else {
+					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
+							.replaceFirst("CUSTOM:", ""));
+				}
+			} else {
+				retval.add(t);
+			}
+		}
+		return retval;
 	}
 
 	public Workspace getWorkspace() {

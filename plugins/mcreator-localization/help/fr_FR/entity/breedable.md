@@ -1,1 +1,1 @@
-The items used to breed the entity with another one if breedable parameter is enabled.
+Les items utilisés pour reproduire l'entité avec une autre si le paramètre de reproduction est activé.

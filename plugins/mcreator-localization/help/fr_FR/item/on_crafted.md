@@ -1,1 +1,1 @@
-This procedure is executed when this item is crafted or smelted.
+Cette procédure est exécutée quand cet item est fabriqué ou fondu.
