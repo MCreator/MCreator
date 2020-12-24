@@ -1,6 +1,6 @@
-This parameter adds a tooltip to the block when you hold your icon over the block in your inventory.
+Ce paramètre ajoute une info-bulle au bloc lorsque vous tenez votre icône au-dessus du bloc dans votre inventaire.
 
-Tips:
+Astuces :
 
-* Use commas "," to separate entries to a new line.
-* Use the backslash with a comma after "\," to insert comma in the text instead of separating entries.
+* Utilisez des virgules "," pour séparer les entrées d'une nouvelle ligne.
+* Utilisez la barre oblique inverse avec une virgule après "\", pour insérer une virgule dans le texte au lieu de séparer les entrées.

@@ -1,1 +1,1 @@
-This trigger triggers the procedure when this entity is struck by a lightning.
+Déclenche la procédure quand l'entité est frappée par un éclair.

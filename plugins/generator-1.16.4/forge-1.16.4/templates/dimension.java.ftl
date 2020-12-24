@@ -52,16 +52,61 @@ import net.minecraft.block.material.Material;
 		<#if data.enablePortal>
 		FMLJavaModLoadingContext.get().getModEventBus().register(new POIRegisterHandler());
 		</#if>
+	}
+
+	@Override public void init(FMLCommonSetupEvent event) {
+		<#-- register filler block to carvers -->
+		DeferredWorkQueue.runLater(() -> {
+			try {
+				ObfuscationReflectionHelper.setPrivateValue(WorldCarver.class, WorldCarver.CAVE, new ImmutableSet.Builder<Block>()
+						.addAll((Set<Block>) ObfuscationReflectionHelper.getPrivateValue(WorldCarver.class, WorldCarver.CAVE, "field_222718_j"))
+						.add(${mappedBlockToBlockStateCode(data.mainFillerBlock)}.getBlock()).build(), "field_222718_j");
+
+				ObfuscationReflectionHelper.setPrivateValue(WorldCarver.class, WorldCarver.CANYON, new ImmutableSet.Builder<Block>()
+						.addAll((Set<Block>) ObfuscationReflectionHelper.getPrivateValue(WorldCarver.class, WorldCarver.CANYON, "field_222718_j"))
+						.add(${mappedBlockToBlockStateCode(data.mainFillerBlock)}.getBlock()).build(), "field_222718_j");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+	}
+
+	@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
+		<#-- custom dimension effect -->
+		DimensionRenderInfo customEffect = new DimensionRenderInfo(<#if data.imitateOverworldBehaviour>128<#else>Float.NaN</#if>,
+				true, <#if data.imitateOverworldBehaviour>DimensionRenderInfo.FogType.NORMAL<#else>DimensionRenderInfo.FogType.NONE</#if>, false, false) {
+
+			@Override public Vector3d func_230494_a_(Vector3d color, float sunHeight) {
+				<#if data.airColor?has_content>
+					return new Vector3d(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255});
+				<#else>
+					<#if data.imitateOverworldBehaviour>
+						return color.mul(sunHeight * 0.94 + 0.06, sunHeight * 0.94 + 0.06, sunHeight * 0.91 + 0.09);
+					<#else>
+						return color;
+					</#if>
+				</#if>
+			}
+
+			@Override public boolean func_230493_a_(int x, int y) {
+				return ${data.hasFog};
+			}
+
+		};
 
 		DeferredWorkQueue.runLater(() -> {
-			ObfuscationReflectionHelper.setPrivateValue(WorldCarver.class, WorldCarver.CAVE, new ImmutableSet.Builder<Block>()
-					.addAll((Set<Block>) ObfuscationReflectionHelper.getPrivateValue(WorldCarver.class, WorldCarver.CAVE, "field_222718_j"))
-					.add(${mappedBlockToBlockStateCode(data.mainFillerBlock)}.getBlock()).build(), "field_222718_j");
-
-			ObfuscationReflectionHelper.setPrivateValue(WorldCarver.class, WorldCarver.CANYON, new ImmutableSet.Builder<Block>()
-					.addAll((Set<Block>) ObfuscationReflectionHelper.getPrivateValue(WorldCarver.class, WorldCarver.CANYON, "field_222718_j"))
-					.add(${mappedBlockToBlockStateCode(data.mainFillerBlock)}.getBlock()).build(), "field_222718_j");
+			try {
+				Object2ObjectMap<ResourceLocation, DimensionRenderInfo> effectsRegistry =
+						(Object2ObjectMap<ResourceLocation, DimensionRenderInfo>) ObfuscationReflectionHelper.getPrivateValue(DimensionRenderInfo.class, null, "field_239208_a_");
+				effectsRegistry.put(new ResourceLocation("${modid}:${registryname}"), customEffect);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		});
+
+		<#if data.enablePortal>
+		RenderTypeLookup.setRenderLayer(portal, RenderType.getTranslucent());
+		</#if>
 	}
 
 	<#if data.enablePortal>
@@ -79,10 +124,6 @@ import net.minecraft.block.material.Material;
 		@Override public void initElements() {
 			elements.blocks.add(() -> new CustomPortalBlock());
 			elements.items.add(() -> new ${name}Item().setRegistryName("${registryname}"));
-		}
-
-		@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
-			RenderTypeLookup.setRenderLayer(portal, RenderType.getTranslucent());
 		}
 
 		<#include "dimension/blockportal.java.ftl">

@@ -27,6 +27,7 @@ import net.mcreator.element.converter.fv13.ProcedureSpawnGemPickupDelayFixer;
 import net.mcreator.element.converter.fv14.BlockLuminanceFixer;
 import net.mcreator.element.converter.fv14.DimensionLuminanceFixer;
 import net.mcreator.element.converter.fv14.PlantLuminanceFixer;
+import net.mcreator.element.converter.fv15.DimensionPortalSelectedFixer;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -48,7 +49,7 @@ public class ConverterRegistry {
 		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
 		put(ModElementType.BLOCK, Collections.singletonList(new BlockLuminanceFixer()));
 		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
-		put(ModElementType.DIMENSION, Collections.singletonList(new DimensionLuminanceFixer()));
+		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType modElementType) {

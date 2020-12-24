@@ -1,1 +1,1 @@
-The sound played when the entity dies.
+Le son joué quand l'entité meurt.

@@ -1,1 +1,1 @@
-This trigger triggers the procedure when the player collides with this entity.
+Déclenche la procédure quand le joueur rentre en contact physique avec l'entité.

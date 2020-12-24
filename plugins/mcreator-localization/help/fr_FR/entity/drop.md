@@ -1,3 +1,3 @@
-The block/item the mob will drop when he dies. 
+Le bloc/item que l'entité lâchera à sa mort.
 
-You can alternatively use loot tables to have more drops, and decide the rarity of each drop.
+Vous pouvez aussi utiliser des tables de butin pour avoir plus de drops, et décider de la rareté de chaque drop.

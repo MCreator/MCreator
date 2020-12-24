@@ -1,0 +1,1 @@
+Cette procédure est exécutée quand cet item est lâché.

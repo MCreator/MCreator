@@ -1,3 +1,3 @@
-This parameter controls how many slots your entity will use for its internal inventory.
+Ce paramètre contrôle combien de slots votre entité utilise pour son inventaire interne.
 
-Set this value to `the biggest slot ID in the GUI + 1`.
+Définissez cette valeur comme étant `l'ID du plus grand slot du GUI + 1`.
