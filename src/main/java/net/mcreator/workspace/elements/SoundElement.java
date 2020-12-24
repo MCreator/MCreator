@@ -32,11 +32,11 @@ public class SoundElement {
 	private String name;
 	private List<String> files;
 	private String category;
-	private String directory;
+	@Nullable private String directory;
 
 	@Nullable private String subtitle;
 
-	public SoundElement(String name, List<String> files, String category, @Nullable String subtitle, String directory) {
+	public SoundElement(String name, List<String> files, String category, @Nullable String subtitle, @Nullable String directory) {
 		this.name = name;
 		this.files = files;
 		this.category = category;
@@ -88,7 +88,7 @@ public class SoundElement {
 		this.subtitle = subtitle;
 	}
 
-	public String getDirectory() {
+	@Nullable public String getDirectory() {
 		return directory;
 	}
 
@@ -116,8 +116,9 @@ public class SoundElement {
 			return new SoundElement(jsonObject.getAsJsonPrimitive("name").getAsString(), files,
 					jsonObject.getAsJsonPrimitive("category").getAsString(),
 					jsonObject.getAsJsonPrimitive("subtitle") != null ?
-							jsonObject.getAsJsonPrimitive("subtitle").getAsString() :
-							null, jsonObject.getAsJsonPrimitive("directory").getAsString());
+							jsonObject.getAsJsonPrimitive("subtitle").getAsString() : null,
+					jsonObject.getAsJsonPrimitive("directory") != null ?
+							jsonObject.getAsJsonPrimitive("directory").getAsString() : null);
 		}
 	}
 
