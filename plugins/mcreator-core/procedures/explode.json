@@ -19,6 +19,24 @@
       "type": "input_value",
       "name": "z",
       "check": "Number"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "mode",
+      "options": [
+        [
+          "BREAK",
+          "BREAK"
+        ],
+        [
+          "DESTROY",
+          "DESTROY"
+        ],
+        [
+          "NONE",
+          "NONE"
+        ]
+      ]
     }
   ],
   "inputsInline": true,
