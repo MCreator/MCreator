@@ -415,6 +415,13 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		return dimension;
 	}
 
+	@Override protected void afterGeneratableElementStored() {
+		super.afterGeneratableElementStored();
+		modElement.clearMetadata();
+		modElement.putMetadata("ep", enablePortal.isSelected());
+		modElement.reinit();
+	}
+
 	@Override public @Nullable URI getContextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-dimension");
 	}
