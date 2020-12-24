@@ -1,5 +1,5 @@
-Check this option to change your plant in a Tile entity. 
+Cochez cette option pour changer votre plante en une entité de bloc.
 
-You will be able to store data (like NBT Tags) inside your plant when this is enabled.
+Vous pourrez stocker des données (comme les NBT Tags) à l'intérieur de votre plante lorsque cette option est activée.
 
-Do not enable this option unless really needed for performance reasons.
+N'activez pas cette option, à moins que cela ne soit vraiment nécessaire pour des raisons de performance.

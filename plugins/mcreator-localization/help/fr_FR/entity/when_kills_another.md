@@ -1,1 +1,1 @@
-This trigger triggers the procedure when this entity kills another entity.
+Déclenche la procédure quand l'entité tue une autre entité.

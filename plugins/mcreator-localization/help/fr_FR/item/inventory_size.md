@@ -1,3 +1,3 @@
-Select the number of slots your GUI/inventory has. Don't forget to add 1 to the biggest slot ID.
+Sélectionnez le nombre de slots dont dispose votre GUI/inventaire. N'oubliez pas d'ajouter 1 à l'ID du plus grand slot.
 
-If the block is bound to GUI, set this value to `the biggest slot ID in the GUI + 1`
+Si le bloc est lié à un GUI, définissez cette valeur comme étant `l'ID du plus grand slot du GUI + 1`.

@@ -1,6 +1,6 @@
-This parameter controls the priority that the mob has over others when the game is choosing what mob to spawn. 
+Ce paramètre contrôle la priorité que l'entité a sur les autres lorsque le jeu choisis quelle entité faire apparaitre. 
 
-A higher weight means more mob spawns in the game will create this mob. 
-Make this lower for animals, compared to monsters.
+Un poids plus élevé signifie qu'un plus grand nombre d'entités apparaissant dans le jeu créeront votre entité. 
+Pour les animaux, le poids nécessaire est plus faible que pour les monstres.
 
-Spawning weight system is in-depth explained [here](https://mcreator.net/wiki/mob-spawning-parameters)
+Le système de poids d'apparition est expliqué en détail [ici] (https://mcreator.net/wiki/mob-spawning-parameters)

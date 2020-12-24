@@ -1,3 +1,3 @@
- If ticked, this mob will despawn upon the player moving far away enough (default behaviour for most mobs).
- 
- Turn this off for bosses and summonable mobs to stop them despawning.
+ Si coché, cette entité va disparaitre quand le joueur sera assez loin (le comportement par défaut de la plupart des entités).
+
+ Désactivez pour les Boss et les entités convoquables pour les empêcher de disparaitre.

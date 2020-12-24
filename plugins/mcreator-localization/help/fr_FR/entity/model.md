@@ -1,1 +1,1 @@
-This parameter defines the visual model (the visual shape) of the entity.
+Ce paramètre défini le modèle visuel (la forme visuelle) de l'entité.

@@ -251,9 +251,9 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates smithing recipe images.</p>
 		 *
-		 * @param input  Input of the recipe.
+		 * @param input    Input of the recipe.
 		 * @param addition Addition of the recipe
-		 * @param result Result of the recipe.
+		 * @param result   Result of the recipe.
 		 * @return Returns the generated image.
 		 */
 		public static BufferedImage generateSmithingPreviewPicture(Workspace workspace, MItemBlock input,
@@ -1024,6 +1024,24 @@ public class MinecraftImageGenerator {
 
 			graphics2D.dispose();
 			return icon;
+		}
+
+		public static BufferedImage generateTagPreviewPicture(String type) {
+			switch (type) {
+			case "Items":
+				return ImageUtils.toBufferedImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("itemstack"), false)
+								.getImage());
+			case "Blocks":
+				return ImageUtils.toBufferedImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), new Color(0x999960), false).getImage());
+			case "Functions":
+				return ImageUtils.toBufferedImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("string"), false)
+								.getImage());
+			default:
+				return null;
+			}
 		}
 	}
 }
