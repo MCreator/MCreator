@@ -1,2 +1,2 @@
-If you want to bind a GUI to your entity (to make a villager or custom horse-like inventory, for example), 
-check this box to enable the inventory and bind it to a selected GUI.
+Si vous voulez lier un GUI à votre entité (pour faire un villageois ou un inventaire personnalisé de type cheval, par exemple),
+cochez cette option pour activer l'inventaire et le lier au GUI sélectionné.

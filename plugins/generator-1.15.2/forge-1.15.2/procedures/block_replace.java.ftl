@@ -7,8 +7,10 @@
 	BlockState _bso = world.getBlockState(_bp);
 	for(Map.Entry<IProperty<?>, Comparable<?>> entry : _bso.getValues().entrySet()) {
 		IProperty _property = _bs.getBlock().getStateContainer().getProperty(entry.getKey().getName());
-		if (_bs.has(_property))
-			_bs = _bs.with(_property, (Comparable) entry.getValue());
+		if (_property != null && _bs.has(_property))
+			try {
+				_bs = _bs.with(_property, (Comparable) entry.getValue());
+			} catch (Exception e) {}
 	}
 	</#if>
 
