@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Element;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public abstract class BlocklyToCode {
@@ -197,4 +198,13 @@ public abstract class BlocklyToCode {
 		return generatedCode;
 	}
 
+	public List<StatementInput> getLocalVariableDisablingStatements() {
+		List<StatementInput> statementInputs = new ArrayList<>();
+		for (StatementInput statementInput : this.statementInputStack) {
+			if (statementInput.disable_local_variables) {
+				statementInputs.add(statementInput);
+			}
+		}
+		return statementInputs;
+	}
 }

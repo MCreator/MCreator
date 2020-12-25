@@ -22,6 +22,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
@@ -29,7 +30,9 @@ import net.mcreator.workspace.elements.VariableElement;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class GetVariableBlock implements IBlockGenerator {
@@ -77,6 +80,18 @@ public class GetVariableBlock implements IBlockGenerator {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							"This editor does not support local variables!"));
 					return;
+				}
+				else if (scope.equalsIgnoreCase("local")) {
+					List<StatementInput> statementInputList = master.getLocalVariableDisablingStatements();
+					if (statementInputList.size() > 0) {
+						for (StatementInput statementInput : statementInputList) {
+							AtomicBoolean flag = new AtomicBoolean(false);
+							master.getCompileNotes().forEach((note) -> {if (note.getMessage().equalsIgnoreCase("Statement " + statementInput.name + " doesn't support local variables.")) flag.set(true);});
+							if (!flag.get())
+								master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, "Statement " + statementInput.name + " doesn't support local variables."));
+							return;
+						}
+					}
 				}
 
 				if (scope.equals("global")) {
