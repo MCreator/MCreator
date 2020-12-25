@@ -32,7 +32,6 @@ import org.w3c.dom.Element;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class SetVariableBlock implements IBlockGenerator {
@@ -81,17 +80,16 @@ public class SetVariableBlock implements IBlockGenerator {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							"This editor does not support local variables! Skipping this block"));
 					return;
-				}
-				else if (scope.equalsIgnoreCase("local")) {
-					List<StatementInput> statementInputList = master.getLocalVariableDisablingStatements();
-					if (statementInputList.size() > 0) {
+				} else if (scope.equalsIgnoreCase("local")) {
+					List<StatementInput> statementInputList = master
+							.getStatementInputsMatching(statementInput -> statementInput.disable_local_variables);
+					if (!statementInputList.isEmpty()) {
 						for (StatementInput statementInput : statementInputList) {
-							AtomicBoolean flag = new AtomicBoolean(false);
-							master.getCompileNotes().forEach((note) -> {if (note.getMessage().equalsIgnoreCase("Statement " + statementInput.name + " doesn't support local variables.")) flag.set(true);});
-							if (!flag.get())
-								master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, "Statement " + statementInput.name + " doesn't support local variables."));
-							return;
+							master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+									"Statement " + statementInput.name + " does not support local variables."));
+							break;
 						}
+						return;
 					}
 				}
 

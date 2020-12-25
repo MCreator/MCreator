@@ -29,6 +29,7 @@ import org.w3c.dom.Element;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public abstract class BlocklyToCode {
@@ -125,6 +126,10 @@ public abstract class BlocklyToCode {
 		return false;
 	}
 
+	public List<StatementInput> getStatementInputsMatching(Predicate<StatementInput> predicate) {
+		return this.statementInputStack.stream().filter(predicate).collect(Collectors.toList());
+	}
+
 	public final void processBlockProcedure(List<Element> blocks) throws TemplateGeneratorException {
 		for (Element block : blocks) {
 			String type = block.getAttribute("type");
@@ -198,13 +203,4 @@ public abstract class BlocklyToCode {
 		return generatedCode;
 	}
 
-	public List<StatementInput> getLocalVariableDisablingStatements() {
-		List<StatementInput> statementInputs = new ArrayList<>();
-		for (StatementInput statementInput : this.statementInputStack) {
-			if (statementInput.disable_local_variables) {
-				statementInputs.add(statementInput);
-			}
-		}
-		return statementInputs;
-	}
 }

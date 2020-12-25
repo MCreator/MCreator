@@ -5,7 +5,7 @@
     },
     {
       "type": "input_value",
-      "name": "SEC",
+      "name": "ticks",
       "check": "Number"
     },
     {
@@ -13,7 +13,7 @@
     },
     {
       "type": "input_statement",
-      "name": "DO"
+      "name": "do"
     }
   ],
   "inputsInline": true,
@@ -21,16 +21,22 @@
   "nextStatement": null,
   "colour": 120,
   "mcreator": {
-    "toolbox_id": "advanced",
+    "toolbox_id": "logicloops",
     "toolbox_init": [
-      "<value name=\"SEC\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
+      "<value name=\"ticks\"><block type=\"math_number\"><field name=\"NUM\">20</field></block></value>"
     ],
     "inputs": [
-      "SEC"
+      "ticks"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ],
     "statements": [
       {
-        "name": "DO",
+        "name": "do",
         "disable_local_variables": true
       }
     ]

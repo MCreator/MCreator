@@ -1,26 +1,27 @@
+<#-- @formatter:off -->
 new Object() {
 
-            private int ticks;
-            private float time;
+    private int ticks = 0;
+    private float waitTicks;
 
-            public Object init(float sec) {
-                this.time = sec * 20F;
-                MinecraftForge.EVENT_BUS.register(this);
-                return this;
-            }
+    public void start(int waitTicks) {
+		this.waitTicks = waitTicks;
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
-            @SubscribeEvent
-            public void tick(TickEvent.ServerTickEvent event) {
-                if (event.phase == TickEvent.Phase.END) {
-                    this.ticks += 1;
-                    if (this.ticks >= this.time) {
-                        run();
-                    }
-                }
-            }
+    @SubscribeEvent
+    public void tick(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            this.ticks += 1;
+            if (this.ticks >= this.waitTicks)
+                run();
+        }
+    }
 
-            private void run() {
-                ${statement$DO}
-                MinecraftForge.EVENT_BUS.unregister(this);
-            }
-}.init((float) ${input$SEC});
+    private void run() {
+        ${statement$do}
+        MinecraftForge.EVENT_BUS.unregister(this);
+    }
+
+}.start((int) ${input$ticks});
+<#-- @formatter:on -->
