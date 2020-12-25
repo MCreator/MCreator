@@ -28,12 +28,6 @@
     "inputs": [
       "ticks"
     ],
-    "dependencies": [
-      {
-        "name": "world",
-        "type": "world"
-      }
-    ],
     "statements": [
       {
         "name": "do",
