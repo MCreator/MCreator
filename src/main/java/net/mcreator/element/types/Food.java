@@ -60,9 +60,14 @@ import java.util.Map;
 	public Procedure glowCondition;
 
 	public Procedure onRightClicked;
+	public Procedure onRightClickedOnBlock;
 	public Procedure onEaten;
+	public Procedure onEntityHitWith;
+	public Procedure onItemInInventoryTick;
+	public Procedure onItemInUseTick;
 	public Procedure onCrafted;
 	public Procedure onEntitySwing;
+	public Procedure onDroppedByPlayer;
 
 	private Food() {
 		this(null);
