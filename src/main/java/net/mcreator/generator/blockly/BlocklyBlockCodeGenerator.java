@@ -88,6 +88,13 @@ public class BlocklyBlockCodeGenerator {
 			}
 		}
 
+		// check if the block does work inside statement blocks
+		if (toolboxBlock.error_in_statement_blocks && !master.getStatementInputsMatching(si -> true).isEmpty()) {
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					"Block " + type + " does not work inside statement blocks!"));
+			return;
+		}
+
 		// add dependencies to the master
 		if (toolboxBlock.dependencies != null)
 			toolboxBlock.dependencies.forEach(master::addDependency);

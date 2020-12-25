@@ -28,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Element;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 

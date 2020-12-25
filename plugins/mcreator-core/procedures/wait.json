@@ -33,6 +33,7 @@
         "name": "do",
         "disable_local_variables": true
       }
-    ]
+    ],
+    "error_in_statement_blocks": true
   }
 }
