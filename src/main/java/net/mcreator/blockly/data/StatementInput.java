@@ -27,5 +27,6 @@ public class StatementInput {
 	public String name;
 
 	@Nullable public List<Dependency> provides;
+	public boolean disable_local_variables;
 
 }

@@ -60,7 +60,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final VTextField name = new VTextField(20);
 
-	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(3, 0, 256, 1));
+	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(1, 0, 256, 1));
 	private final JSpinner grassPerChunk = new JSpinner(new SpinnerNumberModel(4, 0, 256, 1));
 	private final JSpinner seagrassPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner flowersPerChunk = new JSpinner(new SpinnerNumberModel(4, 0, 256, 1));

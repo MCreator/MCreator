@@ -101,7 +101,7 @@ import java.util.stream.Collectors;
 			return element.getRegistryName();
 
 		generator.LOG.warn("Failed to determine registry name for: " + modElement);
-		return "unknown_element";
+		return NameMapper.UNKNOWN_ELEMENT;
 	}
 
 	public String getResourceLocationForModElement(String modElement) {
@@ -121,7 +121,7 @@ import java.util.stream.Collectors;
 		}
 
 		generator.LOG.warn("Failed to determine resource location for: " + modElement);
-		return "unknown_element";
+		return generator.getWorkspace().getWorkspaceSettings().getModID() + ":" + NameMapper.UNKNOWN_ELEMENT;
 	}
 
 }

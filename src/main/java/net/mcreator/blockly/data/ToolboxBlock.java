@@ -30,6 +30,8 @@ public class ToolboxBlock {
 	public String machine_name;
 	public IBlockGenerator.BlockType type;
 
+	public boolean error_in_statement_blocks = false;
+
 	@Nullable public List<String> toolbox_init;
 
 	@Nullable public List<String> fields;
@@ -39,8 +41,8 @@ public class ToolboxBlock {
 
 	@Nullable public List<String> required_apis;
 
+	/* Fields below are not included in block JSON but loaded dynamically */
 	public JsonElement blocklyJSON;
-
 	@Nullable public String toolboxXML;
 	@Nullable public ToolboxCategory toolboxCategory;
 
