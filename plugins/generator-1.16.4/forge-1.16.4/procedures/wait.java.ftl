@@ -3,10 +3,12 @@ new Object() {
 
     private int ticks = 0;
     private float waitTicks;
+    private IWorld world;
 
-    public void start(int waitTicks) {
+    public void start(IWorld world, int waitTicks) {
 		this.waitTicks = waitTicks;
 		MinecraftForge.EVENT_BUS.register(this);
+		this.world = world;
 	}
 
     @SubscribeEvent
@@ -23,5 +25,5 @@ new Object() {
         MinecraftForge.EVENT_BUS.unregister(this);
     }
 
-}.start((int) ${input$ticks});
+}.start(world, (int) ${input$ticks});
 <#-- @formatter:on -->

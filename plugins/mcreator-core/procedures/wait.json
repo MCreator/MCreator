@@ -28,12 +28,17 @@
     "inputs": [
       "ticks"
     ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ],
     "statements": [
       {
         "name": "do",
         "disable_local_variables": true
       }
-    ],
-    "error_in_statement_blocks": true
+    ]
   }
 }
