@@ -257,6 +257,10 @@ import net.minecraft.block.material.Material;
 		ammma = ammma.createMutableAttribute(ForgeMod.SWIM_SPEED.get(), ${data.movementSpeed});
 		</#if>
 
+		<#if data.aiBase == "Zombie">
+		ammma = ammma.createMutableAttribute(Attributes.ZOMBIE_SPAWN_REINFORCEMENTS);
+		</#if>
+
 		GlobalEntityTypeAttributes.put(entity, ammma.create());
 	}
 
