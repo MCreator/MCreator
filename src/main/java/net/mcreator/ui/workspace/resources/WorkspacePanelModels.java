@@ -71,7 +71,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 				int idx = modelList.locationToIndex(e.getPoint());
 				Model model = modelList.getModel().getElementAt(idx);
 				if (model != null) {
-					workspacePanel.mcreator.getStatusBar().setMessage(model.getReadableName());
+					workspacePanel.getMcreator().getStatusBar().setMessage(model.getReadableName());
 				}
 			}
 		});
@@ -97,11 +97,11 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		ComponentUtils.deriveFont(imp1, 12);
 		imp1.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 
-		if (workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
 				.get("model_java") != GeneratorStats.CoverageStatus.NONE)
 			bar.add(imp1);
 
-		imp1.addActionListener(e -> workspacePanel.mcreator.actionRegistry.importJavaModel.doAction());
+		imp1.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importJavaModel.doAction());
 
 		JButton imp2 = L10N.button("action.workspace.resources.import_json_model");
 		imp2.setIcon(UIRES.get("16px.importjsonmodel"));
@@ -110,11 +110,11 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		ComponentUtils.deriveFont(imp2, 12);
 		imp2.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 
-		if (workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
 				.get("model_json") != GeneratorStats.CoverageStatus.NONE)
 			bar.add(imp2);
 
-		imp2.addActionListener(e -> workspacePanel.mcreator.actionRegistry.importJSONModel.doAction());
+		imp2.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importJSONModel.doAction());
 
 		JButton imp3 = L10N.button("action.workspace.resources.import_obj_mtl_model");
 		imp3.setIcon(UIRES.get("16px.importobjmodel"));
@@ -123,11 +123,11 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		ComponentUtils.deriveFont(imp3, 12);
 		imp3.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 
-		if (workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
 				.get("model_obj") != GeneratorStats.CoverageStatus.NONE)
 			bar.add(imp3);
 
-		imp3.addActionListener(e -> workspacePanel.mcreator.actionRegistry.importOBJModel.doAction());
+		imp3.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importOBJModel.doAction());
 
 		JButton editTextureMappings = L10N.button("workspace.3dmodels.edit_texture_mappings");
 		editTextureMappings.setIcon(UIRES.get("16px.edit.gif"));
@@ -155,7 +155,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 			Model model = modelList.getSelectedValue();
 			if (model != null) {
 				Object[] options = { "Yes", "No" };
-				int n = JOptionPane.showOptionDialog(workspacePanel.mcreator,
+				int n = JOptionPane.showOptionDialog(workspacePanel.getMcreator(),
 						"<html>Are you sure that you want to delete this model?"
 								+ "<br>NOTE: If you use this model anywhere, you might have broken textures<br>"
 								+ "and some mod elements might not compile!", "Confirmation",
@@ -189,29 +189,29 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		if (model.getType() == Model.Type.JAVA) {
 			File file = model.getFile();
 			String code = FileIO.readFileToString(file);
-			code = JavaModelAnimationEditorDialog.openAnimationEditorDialog(workspacePanel.mcreator, code);
+			code = JavaModelAnimationEditorDialog.openAnimationEditorDialog(workspacePanel.getMcreator(), code);
 			if (code != null) {
 				FileIO.writeStringToFile(code, file);
 
-				ProgressDialog dial = new ProgressDialog(workspacePanel.mcreator, "Regenerating code");
+				ProgressDialog dial = new ProgressDialog(workspacePanel.getMcreator(), "Regenerating code");
 				Thread t = new Thread(() -> {
 					ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit("Regenerating code of entities");
 					dial.addProgress(p0);
 
 					AtomicInteger i = new AtomicInteger();
 					// this model might be in use, we need to regenerate code of mobs
-					workspacePanel.mcreator.getWorkspace().getModElements().forEach(e -> {
+					workspacePanel.getMcreator().getWorkspace().getModElements().forEach(e -> {
 						if (e.getType() == ModElementType.MOB && !e.isCodeLocked()) {
 							GeneratableElement generatableElement = e.getGeneratableElement();
 							if (generatableElement != null) {
 								// generate mod element
-								workspacePanel.mcreator.getWorkspace().getGenerator()
+								workspacePanel.getMcreator().getWorkspace().getGenerator()
 										.generateElement(generatableElement);
 							}
 						}
 
 						i.getAndIncrement();
-						p0.setPercent((int) (((float) i.get() / (float) workspacePanel.mcreator.getWorkspace()
+						p0.setPercent((int) (((float) i.get() / (float) workspacePanel.getMcreator().getWorkspace()
 								.getModElements().size()) * 100.0f));
 						dial.refreshDisplay();
 					});
@@ -221,7 +221,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 
 					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit("Rebuilding workspace");
 					dial.addProgress(p2);
-					workspacePanel.mcreator.actionRegistry.buildWorkspace.doAction();
+					workspacePanel.getMcreator().actionRegistry.buildWorkspace.doAction();
 					p2.ok();
 					dial.refreshDisplay();
 
@@ -231,7 +231,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 				dial.setVisible(true);
 			}
 		} else {
-			JOptionPane.showMessageDialog(workspacePanel.mcreator, "This model does not support animations!",
+			JOptionPane.showMessageDialog(workspacePanel.getMcreator(), "This model does not support animations!",
 					"Animations not supported", JOptionPane.WARNING_MESSAGE);
 		}
 	}
@@ -241,22 +241,22 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(model);
 		if (textureMappingMap != null) {
 			textureMappingMap = new TextureMappingDialog(textureMappingMap)
-					.openMappingDialog(workspacePanel.mcreator, null, model.getType() == Model.Type.JSON);
+					.openMappingDialog(workspacePanel.getMcreator(), null, model.getType() == Model.Type.JSON);
 			if (textureMappingMap != null) {
 				String data = TexturedModel.getJSONForTextureMapping(textureMappingMap);
 				FileIO.writeStringToFile(data,
-						new File(workspacePanel.mcreator.getWorkspace().getFolderManager().getModelsDir(),
+						new File(workspacePanel.getMcreator().getWorkspace().getFolderManager().getModelsDir(),
 								model.getFile().getName() + ".textures"));
 			}
 		} else {
-			JOptionPane.showMessageDialog(workspacePanel.mcreator, "This model does not support texture mappings!",
+			JOptionPane.showMessageDialog(workspacePanel.getMcreator(), "This model does not support texture mappings!",
 					"No mapping", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
 	public void reloadElements() {
 		listmodel.removeAllElements();
-		Model.getModels(workspacePanel.mcreator.getWorkspace()).forEach(listmodel::addElement);
+		Model.getModels(workspacePanel.getMcreator().getWorkspace()).forEach(listmodel::addElement);
 		refilterElements();
 	}
 

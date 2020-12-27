@@ -103,34 +103,34 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		del.addActionListener(actionEvent -> {
 			List<SoundElement> file = soundElementList.getSelectedValuesList();
 			if (file.size() > 0) {
-				int n = JOptionPane.showConfirmDialog(workspacePanel.mcreator,
+				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
 						"<html>Are you sure that you want to delete this sound?"
 								+ "<br>NOTE: If you use this sound anywhere, it won't work anymore!", "Confirmation",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (n == 0) {
-					file.forEach(workspacePanel.mcreator.getWorkspace()::removeSoundElement);
+					file.forEach(workspacePanel.getMcreator().getWorkspace()::removeSoundElement);
 					reloadElements();
 				}
 			}
 		});
 
 		edit.addActionListener(e -> editSelectedSound(soundElementList.getSelectedValue()));
-		importsound.addActionListener(e -> workspacePanel.mcreator.actionRegistry.importSound.doAction());
+		importsound.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importSound.doAction());
 		add("North", bar);
 
 	}
 
 	private void editSelectedSound(SoundElement selectedValue) {
 		if (selectedValue != null) {
-			SoundElement newElement = SoundElementDialog.soundDialog(workspacePanel.mcreator, selectedValue, null);
-			workspacePanel.mcreator.getWorkspace().updateSoundElement(selectedValue, newElement);
+			SoundElement newElement = SoundElementDialog.soundDialog(workspacePanel.getMcreator(), selectedValue, null);
+			workspacePanel.getMcreator().getWorkspace().updateSoundElement(selectedValue, newElement);
 			reloadElements();
 		}
 	}
 
 	public void reloadElements() {
 		listmodel.removeAllElements();
-		workspacePanel.mcreator.getWorkspace().getSoundElements().forEach(listmodel::addElement);
+		workspacePanel.getMcreator().getWorkspace().getSoundElements().forEach(listmodel::addElement);
 		refilterElements();
 	}
 
