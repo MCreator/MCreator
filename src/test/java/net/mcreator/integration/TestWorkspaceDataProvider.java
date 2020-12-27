@@ -846,6 +846,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			item.stayInGridWhenCrafting = _true;
 			item.damageOnCrafting = _true;
+			item.immuneToFire = _true;
 			item.hasGlow = _true;
 			item.onRightClickedInAir = new Procedure("procedure1");
 			item.onRightClickedOnBlock = new Procedure("procedure2");
@@ -1278,6 +1279,7 @@ public class TestWorkspaceDataProvider {
 		tool.usageCount = 24;
 		tool.stayInGridWhenCrafting = _true;
 		tool.damageOnCrafting = _true;
+		tool.immuneToFire = _true;
 		tool.blocksAffected = new ArrayList<>();
 		tool.hasGlow = _true;
 		tool.specialInfo = new ArrayList<>();
