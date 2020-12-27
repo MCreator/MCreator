@@ -15,10 +15,11 @@
 /build/
 **/build/
 
-#FILES FOR MCREATOR DEV WORKSPACE
+#FILES FOR MCTOOlKIT DEV WORKSPACE
 #===============================
 /jdk/
 /src/main/resources/snapshot.conf
+logs/latest.log
 
 #SYSTEM AND JAVA FILES
 #=====================

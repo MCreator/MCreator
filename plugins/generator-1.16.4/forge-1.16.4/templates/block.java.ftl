@@ -35,6 +35,7 @@
 package ${package}.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.util.SoundEvent;
 
 @${JavaModName}Elements.ModElement.Tag
 public class ${name}Block extends ${JavaModName}Elements.ModElement {
@@ -143,7 +144,15 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			</#if>
 
 			Block.Properties.create(Material.${data.material})
+					<#if data.isCustomSoundType>
+					.sound(new SoundType(1.0f, 1.0f, new SoundEvent(new ResourceLocation("${data.breakSound}")),
+					                     new SoundEvent(new ResourceLocation("${data.stepSound}")),
+					                     new SoundEvent(new ResourceLocation("${data.placeSound}")),
+					                     new SoundEvent(new ResourceLocation("${data.hitSound}")),
+					                     new SoundEvent(new ResourceLocation("${data.fallSound}"))))
+                     <#else>
 					.sound(SoundType.${data.soundOnStep})
+					</#if>
 					<#if data.unbreakable>
 					.hardnessAndResistance(-1, 3600000)
 					<#else>

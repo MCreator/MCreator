@@ -161,7 +161,10 @@ public class ElementUtil {
 		ArrayList<String> retval = new ArrayList<>();
 
 		for (SoundElement soundElement : workspace.getSoundElements()) {
-			retval.add("CUSTOM:" + soundElement.getDirectory() + "/" + soundElement.getName());
+			if(soundElement.getDirectory().isEmpty() || soundElement.getDirectory() == null){
+				retval.add("CUSTOM:" + soundElement.getName());
+			} else
+				retval.add("CUSTOM:" + soundElement.getDirectory() + "/" + soundElement.getName());
 		}
 
 		retval.addAll(DataListLoader.loadDataList("sounds").stream().map(DataListEntry::getName)
