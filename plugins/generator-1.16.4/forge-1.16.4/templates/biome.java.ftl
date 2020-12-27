@@ -53,7 +53,11 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 						.setWaterFogColor(${data.waterFogColor?has_content?then(data.waterFogColor.getRGB(), 329011)})
 						.withSkyColor(${data.airColor?has_content?then(data.airColor.getRGB(), 7972607)})
 						.withFoliageColor(${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)})
-						.withGrassColor(${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)}).build();
+						.withGrassColor(${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)})
+						.setAmbientSound((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.ambientSound}")))
+                        .setMoodSound(new MoodSoundAmbience((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.moodSound}")), ${data.moodSoundDelay}, 8, 2.0D))
+                        .setAdditionsSound(new SoundAdditionsAmbience((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.additionsSound}")), 0.0111D))
+                        .setMusic(BackgroundMusicTracks.getDefaultBackgroundMusicSelector((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")))).build();
 
 				BiomeGenerationSettings.Builder biomeGenerationSettings = new BiomeGenerationSettings.Builder()
 						.withSurfaceBuilder(SurfaceBuilder.DEFAULT.func_242929_a(
