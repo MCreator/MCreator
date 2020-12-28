@@ -4,11 +4,8 @@
 		if (_ent instanceof PlayerEntity) {
 			BlockPos _bp = ((PlayerEntity) _ent).getBedLocation(_world.getDimension().getType());
 			if (_bp != null)
-				return _bp.getY();
-			else
-				return retval;
-		} else {
-			return retval;
+				retval = _bp.getY();
 		}
+		return retval;
 	}
 }.getSpawnY(world, ${input$entity}))

@@ -4,11 +4,8 @@
 		if (_ent instanceof PlayerEntity) {
 			Optional<BlockPos> _bp = ((PlayerEntity) _ent).getBedPosition();
 			if (_bp.isPresent())
-				return _bp.get().getY();
-			else
-				return retval;
-		} else {
-			return retval;
+				retval = _bp.get().getY();
 		}
+		return retval;
 	}
 }.getSpawnY((World) world, ${input$entity}))
