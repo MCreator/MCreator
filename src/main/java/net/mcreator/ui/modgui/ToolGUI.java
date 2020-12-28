@@ -74,6 +74,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JComboBox<String> toolType = new JComboBox<>(
 			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Special", "MultiTool" });
 
+	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
 
@@ -160,6 +161,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		hasGlow.setOpaque(false);
 		hasGlow.setSelected(false);
 
+		immuneToFire.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
 
@@ -201,7 +203,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		pane2.add("Center", PanelUtils
 				.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.join(destal, rent), visualBottom)));
 
-		JPanel selp = new JPanel(new GridLayout(13, 2, 10, 2));
+		JPanel selp = new JPanel(new GridLayout(14, 2, 10, 2));
 		selp.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -253,6 +255,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
 				L10N.label("elementgui.tool.blocks_affected")));
 		selp.add(blocksAffected);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+				L10N.label("elementgui.tool.is_immune_to_fire")));
+		selp.add(immuneToFire);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item"),
 				L10N.label("elementgui.tool.stays_in_grid_when_crafting")));
@@ -365,6 +371,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		specialInfo.setText(
 				tool.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		stayInGridWhenCrafting.setSelected(tool.stayInGridWhenCrafting);
+		immuneToFire.setSelected(tool.immuneToFire);
 		damageOnCrafting.setSelected(tool.damageOnCrafting);
 
 		blocksAffected.setListElements(tool.blocksAffected);
@@ -406,6 +413,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
 		tool.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
+		tool.immuneToFire = immuneToFire.isSelected();
 		tool.damageOnCrafting = damageOnCrafting.isSelected();
 
 		tool.texture = texture.getID();
