@@ -1,2 +1,2 @@
-C'est la musique du biome. Ce son sera joué aléatoirement dans le biome.
-NOTE: Uniquement disponible pour Minecraft 1.16.4+
+This is the music of the biome. This sound will be randomly played.
+NOTE: Only available for Minecraft 1.16.4+

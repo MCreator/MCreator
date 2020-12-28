@@ -54,10 +54,22 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 						.withSkyColor(${data.airColor?has_content?then(data.airColor.getRGB(), 7972607)})
 						.withFoliageColor(${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)})
 						.withGrassColor(${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)})
+						<#if data.ambientSound.getMappedValue()?has_content>
 						.setAmbientSound((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.ambientSound}")))
+                        </#if>
+						<#if data.moodSound.getMappedValue()?has_content>
                         .setMoodSound(new MoodSoundAmbience((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.moodSound}")), ${data.moodSoundDelay}, 8, 2.0D))
+                        </#if>
+						<#if data.additionsSound.getMappedValue()?has_content>
                         .setAdditionsSound(new SoundAdditionsAmbience((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.additionsSound}")), 0.0111D))
-                        .setMusic(BackgroundMusicTracks.getDefaultBackgroundMusicSelector((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")))).build();
+                        </#if>
+						<#if data.music.getMappedValue()?has_content>
+                        .setMusic(BackgroundMusicTracks.getDefaultBackgroundMusicSelector((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}"))))
+                        </#if>
+                        <#if data.spawnParticle>
+                        .setParticle(new ParticleEffectAmbience(${data.particleEffect}, ${data.particleProbability}f))
+                        </#if>
+                        .build();
 
 				BiomeGenerationSettings.Builder biomeGenerationSettings = new BiomeGenerationSettings.Builder()
 						.withSurfaceBuilder(SurfaceBuilder.DEFAULT.func_242929_a(

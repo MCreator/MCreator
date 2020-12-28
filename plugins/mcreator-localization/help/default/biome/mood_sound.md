@@ -1,2 +1,2 @@
-Le son d'ambiance est le son utilisé pour les grottes (par exemple : Ambient Caves).
-NOTE : Uniquement disponible pour Minecraft 1.16.4+
+The ambient sound is the sound used for caves (e.g. Ambient Caves)
+NOTE: Only available for Minecraft 1.16.4+

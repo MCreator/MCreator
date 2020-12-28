@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.Particle;
 import net.mcreator.element.types.Biome;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
@@ -112,6 +113,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner moodSoundDelay = new JSpinner(new SpinnerNumberModel(6000, 1, 30000, 1));
 	private final SoundSelector additionsSound = new SoundSelector(mcreator);
 	private final SoundSelector music = new SoundSelector(mcreator);
+	private final JCheckBox spawnParticle = L10N.checkbox("elementgui.common.enable");
+	private final DataListComboBox particleEffect = new DataListComboBox(mcreator);
+	private final JSpinner particleProbability = new JSpinner(new SpinnerNumberModel(25, 0, 100, 0.1));
 
 	private final JSpinner biomeWeight = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 1));
 	private final JComboBox<String> biomeType = new JComboBox<>(new String[] { "WARM", "DESERT", "COOL", "ICY" });
@@ -489,8 +493,21 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		sounds.setOpaque(false);
+
+
+		JPanel subeffects = new JPanel(new GridLayout(1, 2, 0, 2));
+
+		subeffects.add(L10N.label("elementgui.biome.particle_effect"));
+		subeffects.add(PanelUtils
+				.join(HelpUtils.wrapWithHelpButton(this.withEntry("biome/spawn_particle"), spawnParticle),
+						HelpUtils.wrapWithHelpButton(this.withEntry("biome/particle_effect"), particleEffect),
+						HelpUtils.wrapWithHelpButton(this.withEntry("biome/particle_probability"), particleProbability)));
+		spawnParticle.setOpaque(false);
+		spawnParticle.addActionListener(event -> updateParticleParameters());
+		subeffects.setOpaque(false);
+
 		effectsPane.setOpaque(false);
-		effectsPane.add("Center", PanelUtils.totalCenterInPanel(sounds));
+		effectsPane.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(sounds, subeffects)));
 
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(groundBlock);
@@ -512,6 +529,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		addPage(L10N.t("elementgui.biome.biome_generation"), pane5);
 
 		updateBiomeTreesForm();
+		updateParticleParameters();
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -526,6 +544,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		ComboBoxUtil.updateComboBoxContents(parent,
 				ListUtils.merge(Collections.singleton(noparent), ElementUtil.loadAllBiomes(mcreator.getWorkspace())),
 				noparent);
+		ComboBoxUtil.updateComboBoxContents(particleEffect, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -547,6 +566,16 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			treeStem.setEnabled(false);
 			treeBranch.setEnabled(false);
 			treeFruits.setEnabled(false);
+		}
+	}
+
+	private void updateParticleParameters(){
+		if(spawnParticle.isSelected()){
+			particleEffect.setEnabled(true);
+			particleProbability.setEnabled(true);
+		}else {
+			particleEffect.setEnabled(false);
+			particleProbability.setEnabled(false);
 		}
 	}
 
@@ -572,6 +601,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		moodSoundDelay.setValue(biome.moodSoundDelay);
 		additionsSound.setSound(biome.additionsSound);
 		music.setSound(biome.music);
+		spawnParticle.setSelected(biome.spawnParticle);
+		particleEffect.setSelectedItem(biome.particleEffect);
+		particleProbability.setValue(biome.particleProbability * 100);
 
 		minHeight.setValue(biome.minHeight);
 		airColor.setColor(biome.airColor);
@@ -638,6 +670,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.moodSoundDelay = (int) moodSoundDelay.getValue();
 		biome.additionsSound = additionsSound.getSound();
 		biome.music = music.getSound();
+		biome.spawnParticle = spawnParticle.isSelected();
+		biome.particleEffect = new Particle(mcreator.getWorkspace(), particleEffect.getSelectedItem());
+		biome.particleProbability = (double) particleProbability.getValue() / 100;
 
 		biome.treesPerChunk = (int) treesPerChunk.getValue();
 		biome.grassPerChunk = (int) grassPerChunk.getValue();
