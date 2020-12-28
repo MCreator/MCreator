@@ -76,6 +76,7 @@ import java.util.List;
 	public MItemBlock treeBranch;
 	public MItemBlock treeVines;
 	public MItemBlock treeFruits;
+	public int maxWaterDepth;
 
 	public boolean spawnStronghold;
 	public boolean spawnMineshaft;

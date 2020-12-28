@@ -103,6 +103,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private MCItemHolder treeStem;
 	private MCItemHolder treeBranch;
 	private MCItemHolder treeFruits;
+	private JSpinner maxWaterDepth = new JSpinner(new SpinnerNumberModel(0, 0, 50, 1));
 
 	private final JColor airColor = new JColor(mcreator, true);
 	private final JColor grassColor = new JColor(mcreator, true);
@@ -424,6 +425,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 						new Color(255, 255, 0)));
 		sbbp5.add(PanelUtils.join(treeFruits));
 
+		sbbp5.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("biome/max_water_depth"), L10N.label("elementgui.biome.max_water_depth")));
+		sbbp5.add(maxWaterDepth);
+
 		customTrees.addActionListener(event -> updateBiomeTreesForm());
 		vanillaTrees.addActionListener(event -> updateBiomeTreesForm());
 
@@ -508,12 +513,14 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			treeStem.setEnabled(true);
 			treeBranch.setEnabled(true);
 			treeFruits.setEnabled(true);
+			maxWaterDepth.setEnabled(true);
 		} else {
 			minHeight.setEnabled(false);
 			treeVines.setEnabled(false);
 			treeStem.setEnabled(false);
 			treeBranch.setEnabled(false);
 			treeFruits.setEnabled(false);
+			maxWaterDepth.setEnabled(true);
 		}
 	}
 
@@ -525,6 +532,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		treeStem.setBlock(biome.treeStem);
 		treeBranch.setBlock(biome.treeBranch);
 		treeFruits.setBlock(biome.treeFruits);
+		maxWaterDepth.setValue(biome.maxWaterDepth);
 
 		if (biome.treeType == biome.TREES_CUSTOM) {
 			vanillaTrees.setSelected(false);
@@ -620,6 +628,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.treeStem = treeStem.getBlock();
 		biome.treeBranch = treeBranch.getBlock();
 		biome.treeFruits = treeFruits.getBlock();
+		biome.maxWaterDepth = (int) maxWaterDepth.getValue();
 		biome.spawnBiome = spawnBiome.isSelected();
 		biome.spawnMineshaft = spawnMineshaft.isSelected();
 		biome.spawnStronghold = spawnStronghold.isSelected();
