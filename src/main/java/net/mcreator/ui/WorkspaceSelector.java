@@ -49,16 +49,19 @@ import net.mcreator.workspace.WorkspaceUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 public class WorkspaceSelector extends JFrame implements DropTargetListener {
@@ -180,9 +183,25 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 		});
 		southcenter.add(donate);
 
-		southcenter.add(new JEmptyBox(5, 5));
+		southcenter.add(new JEmptyBox(7, 5));
 
-		JLabel prefs = L10N.label("dialog.workspace_selector.preferences");
+		JLabel prefs = new JLabel(L10N.t("dialog.workspace_selector.preferences")) {
+			@Override protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+
+				try {
+					String flagpath =
+							"/flags/" + L10N.getLocale().toString().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
+					BufferedImage image = ImageIO.read(getClass().getResourceAsStream(flagpath));
+					g.drawImage(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11)), getWidth() - 15, 5, this);
+				} catch (Exception ignored) { // flag not found, ignore
+				}
+			}
+
+			@Override public Dimension getPreferredSize() {
+				return new Dimension(super.getPreferredSize().width + 21, super.getPreferredSize().height);
+			}
+		};
 		prefs.setIcon(UIRES.get("settings"));
 		prefs.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.deriveFont(prefs, 13);
