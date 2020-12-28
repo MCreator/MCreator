@@ -68,7 +68,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private final VTextField group = new VTextField();
 
 	private final JComboBox<String> recipeType = new JComboBox<>(
-			new String[] { "Crafting", "Smelting", "Blasting", "Smoking", "Stone cutting", "Campfire cooking", "Smithing", "Brewing" });
+			new String[] { "Crafting", "Smelting", "Brewing", "Blasting", "Smoking", "Stone cutting", "Campfire cooking", "Smithing" });
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -316,9 +316,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			smcm.cb2.setBlock(recipe.smithingInputAdditionStack);
 			smcm.cb3.setBlock(recipe.smithingReturnStack);
 		} else if ("Brewing".equals(recipe.recipeType)) {
-			brm.cb1.setBlock(recipe.brewingInputItem);
-			brm.cb2.setBlock(recipe.brewingInputIngredient);
-			brm.cb3.setBlock(recipe.brewingReturnItem);
+			brm.cb1.setBlock(recipe.brewingInputItemStack);
+			brm.cb2.setBlock(recipe.brewingIngredientStack);
+			brm.cb3.setBlock(recipe.brewingReturnStack);
 		}
 	}
 
@@ -370,9 +370,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			recipe.smithingInputAdditionStack = smcm.cb2.getBlock();
 			recipe.smithingReturnStack = smcm.cb3.getBlock();
 		} else if ("Brewing".equals(recipe.recipeType)) {
-			recipe.brewingInputItem = brm.cb1.getBlock();
-			recipe.brewingInputIngredient = brm.cb2.getBlock();
-			recipe.brewingReturnItem = brm.cb3.getBlock();
+			recipe.brewingInputItemStack = brm.cb1.getBlock();
+			recipe.brewingIngredientStack = brm.cb2.getBlock();
+			recipe.brewingReturnStack = brm.cb3.getBlock();
 		}
 
 		recipe.namespace = (String) namespace.getSelectedItem();

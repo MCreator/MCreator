@@ -1430,13 +1430,13 @@ public class TestWorkspaceDataProvider {
 			recipe.smithingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 		} else if ("Brewing".equals(recipe.recipeType)) {
-			recipe.brewingInputItem = new MItemBlock(modElement.getWorkspace(),
+			recipe.brewingInputItemStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
 							.getName());
-			recipe.brewingInputIngredient = new MItemBlock(modElement.getWorkspace(),
+			recipe.brewingIngredientStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
 							.getName());
-			recipe.brewingReturnItem = new MItemBlock(modElement.getWorkspace(),
+			recipe.brewingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 		} else {
 			throw new RuntimeException("Unknown recipe type");
