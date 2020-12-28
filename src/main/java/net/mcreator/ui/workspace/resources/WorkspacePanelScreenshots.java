@@ -114,14 +114,14 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 	private void useSelectedAsBackgrounds() {
 		modelList.getSelectedValuesList().forEach(
 				f -> FileIO.copyFile(f, new File(UserFolderManager.getFileFromUserFolder("backgrounds"), f.getName())));
-		JOptionPane.showMessageDialog(workspacePanel.mcreator,
+		JOptionPane.showMessageDialog(workspacePanel.getMcreator(),
 				"Selected screenshots will be used as potential background on the next launch.", "Action complete",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void exportSelectedScreenshots() {
 		modelList.getSelectedValuesList().forEach(f -> {
-			File to = FileDialogs.getSaveDialog(workspacePanel.mcreator, new String[] { ".png" });
+			File to = FileDialogs.getSaveDialog(workspacePanel.getMcreator(), new String[] { ".png" });
 			if (to != null)
 				FileIO.copyFile(f, to);
 		});
@@ -131,7 +131,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		List<File> selected = modelList.getSelectedValuesList();
 
 		listmodel.removeAllElements();
-		File[] screenshots = new File(workspacePanel.mcreator.getWorkspace().getFolderManager().getWorkspaceFolder(),
+		File[] screenshots = new File(workspacePanel.getMcreator().getWorkspace().getFolderManager().getWorkspaceFolder(),
 				"run/screenshots/").listFiles();
 		if (screenshots != null)
 			Arrays.stream(screenshots).forEach(listmodel::addElement);

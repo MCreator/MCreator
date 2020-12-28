@@ -73,7 +73,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 		uncommited.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(uncommited);
 
-		uncommited.addActionListener(e -> workspacePanel.mcreator.actionRegistry.showUnsyncedChanges.doAction());
+		uncommited.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.showUnsyncedChanges.doAction());
 
 		JButton checkout = L10N.button("workspace.vcs.jump_to_selected_commit");
 		checkout.setIcon(UIRES.get("16px.rwd"));
@@ -93,7 +93,8 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 		bar.add(switchBranch);
 
 		switchBranch.addActionListener(
-				e -> new BranchesPopup(workspacePanel.mcreator.getWorkspace().getVCS(), workspacePanel.mcreator)
+				e -> new BranchesPopup(workspacePanel.getMcreator().getWorkspace().getVCS(),
+						workspacePanel.getMcreator())
 						.show(switchBranch, 4, 20));
 
 		bar.add(switchBranch);
@@ -159,11 +160,11 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 
 		if (shortCommitId != null) {
 			try {
-				Git git = workspacePanel.mcreator.getWorkspace().getVCS().getGit();
+				Git git = workspacePanel.getMcreator().getWorkspace().getVCS().getGit();
 				for (RevCommit commit : git.log().add(git.getRepository().resolve(git.getRepository().getFullBranch()))
 						.call()) {
 					if (commit.abbreviate(7).name().equals(shortCommitId)) {
-						int option = JOptionPane.showOptionDialog(workspacePanel.mcreator,
+						int option = JOptionPane.showOptionDialog(workspacePanel.getMcreator(),
 								"<html><b>Are you sure you want to jump to commit " + commit.getShortMessage()
 										+ "?</b><br>"
 										+ "All your local unsynced changes will be dropped after this action!<br><br>"
@@ -201,9 +202,9 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 							} catch (Exception ignored) {
 							}
 
-							workspacePanel.mcreator.getWorkspace().reloadFromFS();
+							workspacePanel.getMcreator().getWorkspace().reloadFromFS();
 							workspacePanel.updateMods();
-							workspacePanel.mcreator.actionRegistry.buildWorkspace.doAction();
+							workspacePanel.getMcreator().actionRegistry.buildWorkspace.doAction();
 						}
 
 						break;
@@ -216,17 +217,17 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 	}
 
 	boolean panelShown() {
-		return SetupVCSAction.setupVCSForWorkspaceIfNotYet(workspacePanel.mcreator);
+		return SetupVCSAction.setupVCSForWorkspaceIfNotYet(workspacePanel.getMcreator());
 	}
 
 	public void reloadElements() {
-		if (workspacePanel.mcreator.getWorkspace().getVCS() != null) {
+		if (workspacePanel.getMcreator().getWorkspace().getVCS() != null) {
 			int row = commits.getSelectedRow();
 
 			DefaultTableModel model = (DefaultTableModel) commits.getModel();
 			model.setRowCount(0);
 
-			Git git = workspacePanel.mcreator.getWorkspace().getVCS().getGit();
+			Git git = workspacePanel.getMcreator().getWorkspace().getVCS().getGit();
 			try {
 				for (RevCommit commit : git.log().add(git.getRepository().resolve(git.getRepository().getFullBranch()))
 						.call()) {
@@ -249,7 +250,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 	}
 
 	public void refilterElements() {
-		if (workspacePanel.mcreator.getWorkspace().getVCS() != null)
+		if (workspacePanel.getMcreator().getWorkspace().getVCS() != null)
 			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
 	}
 

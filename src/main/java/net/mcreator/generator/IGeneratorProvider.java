@@ -16,17 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.blockly.data;
+package net.mcreator.generator;
 
-import org.jetbrains.annotations.Nullable;
+import net.mcreator.workspace.IWorkspaceProvider;
 
-import java.util.List;
+public interface IGeneratorProvider extends IWorkspaceProvider {
 
-public class StatementInput {
+	default Generator getGenerator() {
+		return getWorkspace().getGenerator();
+	}
 
-	public String name;
-
-	@Nullable public List<Dependency> provides;
-	public boolean disable_local_variables;
+	default GeneratorConfiguration getGeneratorConfiguration() {
+		return getGenerator().getGeneratorConfiguration();
+	}
 
 }

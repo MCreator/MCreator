@@ -12,7 +12,9 @@ if (world instanceof ServerWorld) {
 				new ResourceLocation("${generator.getResourceLocationForModElement(field$dimension.replace("CUSTOM:", ""))}")));
     </#if>
 
-    ${statement$worldstatements}
+    if (world != null) {
+        ${statement$worldstatements}
+    }
 
     world = _worldorig;
 }

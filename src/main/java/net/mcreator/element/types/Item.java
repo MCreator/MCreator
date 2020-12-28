@@ -51,6 +51,7 @@ import java.util.Map;
 	public int damageCount;
 	public MItemBlock recipeRemainder;
 	public boolean destroyAnyBlock;
+	public boolean immuneToFire;
 
 	public boolean stayInGridWhenCrafting;
 	public boolean damageOnCrafting;

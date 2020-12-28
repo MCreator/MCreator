@@ -16,17 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.blockly.data;
+package net.mcreator.workspace;
 
-import org.jetbrains.annotations.Nullable;
+import net.mcreator.workspace.elements.ModElementManager;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+public interface IWorkspaceProvider {
 
-public class StatementInput {
+	@NotNull Workspace getWorkspace();
 
-	public String name;
+	default WorkspaceFileManager getFileManager() {
+		return getWorkspace().getFileManager();
+	}
 
-	@Nullable public List<Dependency> provides;
-	public boolean disable_local_variables;
+	default WorkspaceFolderManager getFolderManager() {
+		return getWorkspace().getFolderManager();
+	}
+
+	default ModElementManager getModElementManager() {
+		return getWorkspace().getModElementManager();
+	}
 
 }

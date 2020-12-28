@@ -19,6 +19,7 @@
 package net.mcreator.ui;
 
 import net.mcreator.Launcher;
+import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.gradle.GradleTaskResult;
@@ -41,6 +42,7 @@ import net.mcreator.util.ListUtils;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.vcs.WorkspaceVCS;
+import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
@@ -59,7 +61,7 @@ import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public final class MCreator extends JFrame {
+public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider {
 
 	private static final Logger LOG = LogManager.getLogger("MCreator");
 
@@ -310,7 +312,7 @@ public final class MCreator extends JFrame {
 		return projectBrowser;
 	}
 
-	public Workspace getWorkspace() {
+	public @NotNull Workspace getWorkspace() {
 		return workspace;
 	}
 

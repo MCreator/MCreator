@@ -65,13 +65,19 @@ import java.util.Map;
 				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
 				if (jarManager != null) {
 					SourceLocation sourceLocation = jarManager.getSourceLocForClass(template);
-					CACHE.put(template, ZipIO.readCodeInZip(new File(sourceLocation.getLocationAsString()),
-							template.replace("." , "/") + ".java"));
+					String code = ZipIO.readCodeInZip(new File(sourceLocation.getLocationAsString()),
+							template.replace("." , "/") + ".java");
+					if (code == null)
+						throw new NullPointerException();
+
+					CACHE.put(template, code);
 				}
 			}
 
 			return CACHE.get(template);
 		} catch (Exception e) {
+			this.workspace.markFailingGradleDependencies();
+
 			LOG.error("Failed to load code provider for " + template, e);
 			return null;
 		}

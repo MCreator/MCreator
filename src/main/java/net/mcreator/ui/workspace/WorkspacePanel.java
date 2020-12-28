@@ -94,7 +94,7 @@ public class WorkspacePanel extends JPanel {
 
 	private String currentTab;
 
-	public MCreator mcreator;
+	private MCreator mcreator;
 
 	private final JLabel but2 = new JLabel(TiledImageCache.workspaceEdit);
 	private final JLabel but2a = new JLabel(TiledImageCache.workspaceDuplicate);
@@ -1026,6 +1026,10 @@ public class WorkspacePanel extends JPanel {
 		localePan.refilterElements();
 		variablesPan.refilterElements();
 		vcsPan.refilterElements();
+	}
+
+	public MCreator getMcreator() {
+		return mcreator;
 	}
 
 	private class FilterModel extends DefaultListModel<ModElement> {

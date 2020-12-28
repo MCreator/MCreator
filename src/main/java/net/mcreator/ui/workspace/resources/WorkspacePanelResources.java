@@ -43,28 +43,28 @@ public class WorkspacePanelResources extends JTabbedPane {
 		this.workspacePanelStructures = new WorkspacePanelStructures(workspacePanel);
 		this.workspacePanelScreenshots = new WorkspacePanelScreenshots(workspacePanel);
 
-		if (workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
 				.get("textures") != GeneratorStats.CoverageStatus.NONE)
 			addTab(L10N.t("workspace.resources.tab.textures"), workspacePanelTextures);
 
-		if (workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
 				.get("model_json") != GeneratorStats.CoverageStatus.NONE ||
-				workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+				workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
 						.get("model_java") != GeneratorStats.CoverageStatus.NONE ||
-				workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+				workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
 						.get("model_obj") != GeneratorStats.CoverageStatus.NONE)
 			addTab(L10N.t("workspace.resources.tab.3d_models"), workspacePanelModels);
 
-		if (workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
 				.get("sounds") != GeneratorStats.CoverageStatus.NONE)
 			addTab(L10N.t("workspace.resources.tab.sounds"), workspacePanelSounds);
 
-		if (workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
 				.get("structures") != GeneratorStats.CoverageStatus.NONE)
 			addTab(L10N.t("workspace.resources.tab.structures"), workspacePanelStructures);
 
-		if (workspacePanel.mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
-				.getGradleTaskFor("run_client") != null && !workspacePanel.mcreator.getWorkspace().getGenerator()
+		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorConfiguration()
+				.getGradleTaskFor("run_client") != null && !workspacePanel.getMcreator().getWorkspace().getGenerator()
 				.getGeneratorConfiguration().getGradleTaskFor("run_client").contains("@"))
 			addTab(L10N.t("workspace.resources.tab.screenshots"), workspacePanelScreenshots);
 
