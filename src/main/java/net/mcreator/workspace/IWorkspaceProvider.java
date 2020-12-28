@@ -18,12 +18,12 @@
 
 package net.mcreator.workspace;
 
-import net.mcreator.generator.Generator;
 import net.mcreator.workspace.elements.ModElementManager;
+import org.jetbrains.annotations.NotNull;
 
 public interface IWorkspaceProvider {
 
-	Workspace getWorkspace();
+	@NotNull Workspace getWorkspace();
 
 	default WorkspaceFileManager getFileManager() {
 		return getWorkspace().getFileManager();
@@ -31,10 +31,6 @@ public interface IWorkspaceProvider {
 
 	default WorkspaceFolderManager getFolderManager() {
 		return getWorkspace().getFolderManager();
-	}
-
-	default Generator getGenerator() {
-		return getWorkspace().getGenerator();
 	}
 
 	default ModElementManager getModElementManager() {

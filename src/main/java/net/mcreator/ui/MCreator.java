@@ -312,7 +312,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		return projectBrowser;
 	}
 
-	public Workspace getWorkspace() {
+	public @NotNull Workspace getWorkspace() {
 		return workspace;
 	}
 
