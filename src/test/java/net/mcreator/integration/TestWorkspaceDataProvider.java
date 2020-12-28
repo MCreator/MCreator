@@ -1430,7 +1430,7 @@ public class TestWorkspaceDataProvider {
 			recipe.smithingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 		} else if ("Brewing".equals(recipe.recipeType)) {
-			recipe.brewingInputItemStack = new MItemBlock(modElement.getWorkspace(),
+			recipe.brewingInputStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
 							.getName());
 			recipe.brewingIngredientStack = new MItemBlock(modElement.getWorkspace(),

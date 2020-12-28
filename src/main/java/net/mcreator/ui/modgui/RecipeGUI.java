@@ -316,7 +316,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			smcm.cb2.setBlock(recipe.smithingInputAdditionStack);
 			smcm.cb3.setBlock(recipe.smithingReturnStack);
 		} else if ("Brewing".equals(recipe.recipeType)) {
-			brm.cb1.setBlock(recipe.brewingInputItemStack);
+			brm.cb1.setBlock(recipe.brewingInputStack);
 			brm.cb2.setBlock(recipe.brewingIngredientStack);
 			brm.cb3.setBlock(recipe.brewingReturnStack);
 		}
@@ -370,7 +370,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			recipe.smithingInputAdditionStack = smcm.cb2.getBlock();
 			recipe.smithingReturnStack = smcm.cb3.getBlock();
 		} else if ("Brewing".equals(recipe.recipeType)) {
-			recipe.brewingInputItemStack = brm.cb1.getBlock();
+			recipe.brewingInputStack = brm.cb1.getBlock();
 			recipe.brewingIngredientStack = brm.cb2.getBlock();
 			recipe.brewingReturnStack = brm.cb3.getBlock();
 		}

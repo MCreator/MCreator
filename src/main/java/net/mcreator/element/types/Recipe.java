@@ -66,7 +66,7 @@ import java.util.Locale;
 	public MItemBlock smithingReturnStack;
 
 	// Brewing recipe
-	public MItemBlock brewingInputItemStack;
+	public MItemBlock brewingInputStack;
 	public MItemBlock brewingIngredientStack;
 	public MItemBlock brewingReturnStack;
 
@@ -124,10 +124,10 @@ import java.util.Locale;
 			mod = MinecraftImageGenerator.Preview
 					.generateSmithingPreviewPicture(getModElement().getWorkspace(), smithingInputStack,
 							smithingInputAdditionStack, smithingReturnStack);
-		} else if ("Brewing".equals(recipeType) && !brewingInputItemStack.isEmpty()
+		} else if ("Brewing".equals(recipeType) && !brewingInputStack.isEmpty()
 				&& !brewingIngredientStack.isEmpty() && !brewingReturnStack.isEmpty()) {
 			mod = MinecraftImageGenerator.Preview
-					.generateBrewingPreviewPicture(getModElement().getWorkspace(), brewingInputItemStack,
+					.generateBrewingPreviewPicture(getModElement().getWorkspace(), brewingInputStack,
 							brewingIngredientStack, brewingReturnStack);
 		}
 		return mod;

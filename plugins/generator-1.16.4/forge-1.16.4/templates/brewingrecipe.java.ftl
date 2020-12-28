@@ -42,7 +42,7 @@ public class ${name}BrewingRecipe extends ${JavaModName}Elements.ModElement {
 	@Override
 	public void init(FMLCommonSetupEvent event) {
 		BrewingRecipeRegistry.addRecipe(
-			Ingredient.fromStacks(${mappedMCItemToItemStackCode(data.brewingInputItemStack, 1)}),
+			Ingredient.fromStacks(${mappedMCItemToItemStackCode(data.brewingInputStack, 1)}),
 			Ingredient.fromStacks(${mappedMCItemToItemStackCode(data.brewingIngredientStack, 1)}),
 			${mappedMCItemToItemStackCode(data.brewingReturnStack, 1)}
 		);
