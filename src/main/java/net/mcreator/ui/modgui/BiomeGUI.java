@@ -601,7 +601,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		moodSoundDelay.setValue(biome.moodSoundDelay);
 		additionsSound.setSound(biome.additionsSound);
 		music.setSound(biome.music);
-		spawnParticle.setSelected(biome.spawnParticle);
+		spawnParticle.setSelected(biome.spawnParticles);
 		particleEffect.setSelectedItem(biome.particleEffect);
 		particleProbability.setValue(biome.particleProbability * 100);
 
@@ -670,7 +670,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.moodSoundDelay = (int) moodSoundDelay.getValue();
 		biome.additionsSound = additionsSound.getSound();
 		biome.music = music.getSound();
-		biome.spawnParticle = spawnParticle.isSelected();
+		biome.spawnParticles = spawnParticle.isSelected();
 		biome.particleEffect = new Particle(mcreator.getWorkspace(), particleEffect.getSelectedItem());
 		biome.particleProbability = (double) particleProbability.getValue() / 100;
 

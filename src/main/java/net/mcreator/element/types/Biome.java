@@ -48,13 +48,13 @@ import java.util.List;
 	public Color waterColor;
 	public Color waterFogColor;
 
-	//Effects
 	public Sound ambientSound;
-	public Sound moodSound;
-	public int moodSoundDelay;
 	public Sound additionsSound;
 	public Sound music;
-	public boolean spawnParticle;
+	public Sound moodSound;
+	public int moodSoundDelay;
+
+	public boolean spawnParticles;
 	public Particle particleEffect;
 	public double particleProbability;
 
