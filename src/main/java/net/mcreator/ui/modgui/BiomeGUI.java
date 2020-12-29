@@ -524,7 +524,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnParticle.addActionListener(event -> updateParticleParameters());
 
 		effectsPane.setOpaque(false);
-		effectsPane.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(sounds, particles)));
+		effectsPane.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(sounds, PanelUtils.pullElementUp(particles))));
 
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(groundBlock);
