@@ -665,6 +665,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnEntries.setSpawns(biome.spawnEntries);
 
 		updateBiomeTreesForm();
+		updateParticleParameters();
 	}
 
 	@Override public Biome getElementFromGUI() {
