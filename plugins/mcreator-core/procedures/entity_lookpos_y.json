@@ -53,7 +53,7 @@
   "mcreator": {
     "toolbox_id": "entitydata",
     "toolbox_init": [
-      "<value name=\"maxdistance\"><block type=\"math_number\"><field name=\"NUM\">100</field></block></value>",
+      "<value name=\"maxdistance\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value>",
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "inputs": [
