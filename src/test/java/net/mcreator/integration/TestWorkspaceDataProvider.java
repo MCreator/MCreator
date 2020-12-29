@@ -221,9 +221,9 @@ public class TestWorkspaceDataProvider {
 			biome.music = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			biome.spawnParticles = _true;
-			biome.particleEffect = new Particle(modElement.getWorkspace(),
+			biome.particleToSpawn = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			biome.particleProbability = 0.025d;
+			biome.particlesProbability = 0.025d;
 			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];
 			biome.grassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 1;
 			biome.seagrassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 2;

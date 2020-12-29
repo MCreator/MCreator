@@ -114,8 +114,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final SoundSelector additionsSound = new SoundSelector(mcreator);
 	private final SoundSelector music = new SoundSelector(mcreator);
 	private final JCheckBox spawnParticle = L10N.checkbox("elementgui.common.enable");
-	private final DataListComboBox particleEffect = new DataListComboBox(mcreator);
-	private final JSpinner particleProbability = new JSpinner(new SpinnerNumberModel(25, 0, 100, 0.1));
+	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
+	private final JSpinner particlesProbability = new JSpinner(new SpinnerNumberModel(25, 0, 100, 0.1));
 
 	private final JSpinner biomeWeight = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 1));
 	private final JComboBox<String> biomeType = new JComboBox<>(new String[] { "WARM", "DESERT", "COOL", "ICY" });
@@ -469,23 +469,28 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 
 		JPanel effectsPane = new JPanel(new BorderLayout());
-		JPanel sounds = new JPanel(new GridLayout(4, 2, 0, 2));
+
+		JPanel sounds = new JPanel(new GridLayout(5, 2, 0, 2));
+
+		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/music"),
+				L10N.label("elementgui.biome.music")));
+		sounds.add(music);
+
 		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ambient_sound"),
 				L10N.label("elementgui.biome.ambient_sound")));
 		sounds.add(ambientSound);
-
-		sounds.add(L10N.label("elementgui.biome.mood_sound"));
-		sounds.add(PanelUtils
-				.join(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mood_sound"), moodSound),
-						HelpUtils.wrapWithHelpButton(this.withEntry("biome/mood_sound_delay"), moodSoundDelay)));
 
 		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/additions_sound"),
 				L10N.label("elementgui.biome.additions_sound")));
 		sounds.add(additionsSound);
 
-		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/music"),
-				L10N.label("elementgui.biome.music")));
-		sounds.add(music);
+		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mood_sound"),
+				L10N.label("elementgui.biome.mood_sound")));
+		sounds.add(moodSound);
+
+		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mood_sound_delay"),
+				L10N.label("elementgui.biome.mood_sound_delay")));
+		sounds.add(moodSoundDelay);
 
 		sounds.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -494,20 +499,32 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		sounds.setOpaque(false);
 
+		JPanel particles = new JPanel(new GridLayout(3, 2, 0, 2));
 
-		JPanel subeffects = new JPanel(new GridLayout(1, 2, 0, 2));
+		particles.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/spawn_particle"),
+				L10N.label("elementgui.biome.enable_particles")));
+		particles.add(spawnParticle);
 
-		subeffects.add(L10N.label("elementgui.biome.particle_effect"));
-		subeffects.add(PanelUtils
-				.join(HelpUtils.wrapWithHelpButton(this.withEntry("biome/spawn_particle"), spawnParticle),
-						HelpUtils.wrapWithHelpButton(this.withEntry("biome/particle_effect"), particleEffect),
-						HelpUtils.wrapWithHelpButton(this.withEntry("biome/particle_probability"), particleProbability)));
+		particles.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/particle_type"),
+				L10N.label("elementgui.biome.particle_type")));
+		particles.add(particleToSpawn);
+
+		particles.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/particle_probability"),
+				L10N.label("elementgui.biome.particle_probability")));
+		particles.add(particlesProbability);
+
+		particles.setOpaque(false);
+
+		particles.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.biome.particles"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
 		spawnParticle.setOpaque(false);
 		spawnParticle.addActionListener(event -> updateParticleParameters());
-		subeffects.setOpaque(false);
 
 		effectsPane.setOpaque(false);
-		effectsPane.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(sounds, subeffects)));
+		effectsPane.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(sounds, particles)));
 
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(groundBlock);
@@ -522,9 +539,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		treeBranch.setValidator(new MCItemHolderValidator(treeBranch, customTrees));
 
 		addPage(L10N.t("elementgui.biome.general_properties"), pane4);
-		addPage(L10N.t("elementgui.biome.effects"), effectsPane);
 		addPage(L10N.t("elementgui.biome.features"), pane3);
 		addPage(L10N.t("elementgui.biome.structures"), pane2);
+		addPage(L10N.t("elementgui.biome.effects"), effectsPane);
 		addPage(L10N.t("elementgui.biome.entity_spawning"), pane1);
 		addPage(L10N.t("elementgui.biome.biome_generation"), pane5);
 
@@ -544,7 +561,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		ComboBoxUtil.updateComboBoxContents(parent,
 				ListUtils.merge(Collections.singleton(noparent), ElementUtil.loadAllBiomes(mcreator.getWorkspace())),
 				noparent);
-		ComboBoxUtil.updateComboBoxContents(particleEffect, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
+		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -571,11 +588,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private void updateParticleParameters(){
 		if(spawnParticle.isSelected()){
-			particleEffect.setEnabled(true);
-			particleProbability.setEnabled(true);
+			particleToSpawn.setEnabled(true);
+			particlesProbability.setEnabled(true);
 		}else {
-			particleEffect.setEnabled(false);
-			particleProbability.setEnabled(false);
+			particleToSpawn.setEnabled(false);
+			particlesProbability.setEnabled(false);
 		}
 	}
 
@@ -602,8 +619,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		additionsSound.setSound(biome.additionsSound);
 		music.setSound(biome.music);
 		spawnParticle.setSelected(biome.spawnParticles);
-		particleEffect.setSelectedItem(biome.particleEffect);
-		particleProbability.setValue(biome.particleProbability * 100);
+		particleToSpawn.setSelectedItem(biome.particleToSpawn);
+		particlesProbability.setValue(biome.particlesProbability * 100);
 
 		minHeight.setValue(biome.minHeight);
 		airColor.setColor(biome.airColor);
@@ -671,8 +688,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.additionsSound = additionsSound.getSound();
 		biome.music = music.getSound();
 		biome.spawnParticles = spawnParticle.isSelected();
-		biome.particleEffect = new Particle(mcreator.getWorkspace(), particleEffect.getSelectedItem());
-		biome.particleProbability = (double) particleProbability.getValue() / 100;
+		biome.particleToSpawn = new Particle(mcreator.getWorkspace(), particleToSpawn.getSelectedItem());
+		biome.particlesProbability = (double) particlesProbability.getValue() / 100;
 
 		biome.treesPerChunk = (int) treesPerChunk.getValue();
 		biome.grassPerChunk = (int) grassPerChunk.getValue();

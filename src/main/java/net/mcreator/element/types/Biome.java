@@ -55,8 +55,8 @@ import java.util.List;
 	public int moodSoundDelay;
 
 	public boolean spawnParticles;
-	public Particle particleEffect;
-	public double particleProbability;
+	public Particle particleToSpawn;
+	public double particlesProbability;
 
 	public String biomeCategory;
 	public BiomeEntry parent;

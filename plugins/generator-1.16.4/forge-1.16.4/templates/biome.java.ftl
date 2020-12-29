@@ -67,7 +67,7 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
                         .setMusic(BackgroundMusicTracks.getDefaultBackgroundMusicSelector((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}"))))
                         </#if>
                         <#if data.spawnParticles>
-                        .setParticle(new ParticleEffectAmbience(${data.particleEffect}, ${data.particleProbability}f))
+                        .setParticle(new particleToSpawnAmbience(${data.particleToSpawn}, ${data.particlesProbability}f))
                         </#if>
                         .build();
 
