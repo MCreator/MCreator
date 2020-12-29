@@ -20,17 +20,13 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.util.locale.LocaleRegistration;
+import net.mcreator.util.locale.UTF8Control;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,23 +38,55 @@ public class L10N {
 	private static ResourceBundle rb;
 	private static ResourceBundle rb_en;
 
-	private static Set<Locale> supportedLocales = null;
+	private static Map<Locale, LocaleRegistration> supportedLocales;
 
 	private static boolean isTestingEnvironment = false;
 
-	public static Set<Locale> getSupportedLocales() {
-		if (supportedLocales == null) { // lazy-load supported locales
-			Set<String> localeFiles = PluginLoader.INSTANCE.getResourcesInPackage("lang");
-			supportedLocales = localeFiles.stream().map(FilenameUtils::getBaseName).filter(e -> e.contains("_"))
-					.map(e -> e.split("_")).map(e -> new Locale(e[1], e[2])).collect(Collectors.toSet());
-			supportedLocales.add(new Locale("en", "US"));
-		}
+	private static Locale selectedLocale = null;
 
-		return supportedLocales;
+	public static void initTranslations() {
+		initLocalesImpl();
+
+		rb = supportedLocales.get(getLocale()).getResourceBundle();
+
+		LOG.info("Setting default locale to: " + getLocale());
+		Locale.setDefault(getLocale());
+	}
+
+	private static void initLocalesImpl() {
+		rb_en = ResourceBundle.getBundle("lang/texts", Locale.ROOT, PluginLoader.INSTANCE, new UTF8Control());
+
+		double countAll = Collections.list(rb_en.getKeys()).size();
+
+		Set<String> localeFiles = PluginLoader.INSTANCE.getResourcesInPackage("lang");
+		supportedLocales = localeFiles.stream().map(FilenameUtils::getBaseName).filter(e -> e.contains("_"))
+				.map(e -> e.split("_")).map(e -> new Locale(e[1], e[2])).collect(Collectors.toMap(key -> key, value -> {
+					ResourceBundle rb = ResourceBundle
+							.getBundle("lang/texts", value, PluginLoader.INSTANCE, new UTF8Control());
+					return new LocaleRegistration(rb,
+							(int) Math.round(Collections.list(rb.getKeys()).size() / countAll * 100d));
+				}));
+
+		supportedLocales.put(new Locale("en", "US"), new LocaleRegistration(rb_en, 100));
+	}
+
+	public static Set<Locale> getSupportedLocales() {
+		return supportedLocales.keySet();
+	}
+
+	public static int getLocaleSupport(Locale locale) {
+		LocaleRegistration localeRegistration = supportedLocales.get(locale);
+		if (localeRegistration != null)
+			return localeRegistration.getPercentage();
+
+		return 0;
 	}
 
 	public static Locale getLocale() {
-		return PreferencesManager.PREFERENCES.ui.language;
+		if (selectedLocale == null)
+			selectedLocale = PreferencesManager.PREFERENCES.ui.language;
+
+		return selectedLocale;
 	}
 
 	public static String getLocaleString() {
@@ -67,13 +95,6 @@ public class L10N {
 
 	public static String getLangString() {
 		return getLocaleString().split("_")[0];
-	}
-
-	public static void initTranslations() {
-		rb = ResourceBundle.getBundle("lang/texts", getLocale(), PluginLoader.INSTANCE, new UTF8Control());
-		rb_en = ResourceBundle
-				.getBundle("lang/texts", new Locale("en", "US"), PluginLoader.INSTANCE, new UTF8Control());
-		Locale.setDefault(getLocale());
 	}
 
 	/**
@@ -129,57 +150,6 @@ public class L10N {
 
 	public static JRadioButton radiobutton(String key, Object... parameter) {
 		return new JRadioButton(t(key, parameter));
-	}
-
-	private static class UTF8Control extends ResourceBundle.Control {
-
-		public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader,
-				boolean reload) throws IOException {
-			String bundleName = toBundleName(baseName, locale);
-			String resourceName = toResourceName(bundleName, "properties");
-
-			List<ResourceBundle> resourceBundles = new ArrayList<>();
-
-			Collections.list(loader.getResources(resourceName)).forEach(url -> {
-				try {
-					URLConnection connection = url.openConnection();
-					connection.setUseCaches(!reload);
-					try (InputStream stream = connection.getInputStream()) {
-						resourceBundles
-								.add(new PropertyResourceBundle(new InputStreamReader(stream, StandardCharsets.UTF_8)));
-					}
-				} catch (IOException e) {
-					LOG.warn("Failed to load localization", e);
-				}
-			});
-
-			return new MultiResourceBundle(resourceBundles);
-		}
-
-	}
-
-	private static class MultiResourceBundle extends ResourceBundle {
-
-		private final List<ResourceBundle> delegates;
-
-		public MultiResourceBundle(List<ResourceBundle> resourceBundles) {
-			this.delegates = resourceBundles == null ? new ArrayList<>() : resourceBundles;
-		}
-
-		@Override protected Object handleGetObject(@NotNull String key) {
-			Optional<Object> firstPropertyValue = this.delegates.stream()
-					.filter(delegate -> delegate != null && delegate.containsKey(key))
-					.map(delegate -> delegate.getObject(key)).findFirst();
-
-			return firstPropertyValue.orElse(null);
-		}
-
-		@Override @NotNull public Enumeration<String> getKeys() {
-			List<String> keys = this.delegates.stream().filter(Objects::nonNull)
-					.flatMap(delegate -> Collections.list(delegate.getKeys()).stream()).collect(Collectors.toList());
-
-			return Collections.enumeration(keys);
-		}
 	}
 
 }
