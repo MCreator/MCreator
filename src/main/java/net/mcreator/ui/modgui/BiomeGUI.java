@@ -115,7 +115,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final SoundSelector music = new SoundSelector(mcreator);
 	private final JCheckBox spawnParticle = L10N.checkbox("elementgui.common.enable");
 	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
-	private final JSpinner particlesProbability = new JSpinner(new SpinnerNumberModel(25, 0, 100, 0.1));
+	private final JSpinner particlesProbability = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
 
 	private final JSpinner biomeWeight = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 1));
 	private final JComboBox<String> biomeType = new JComboBox<>(new String[] { "WARM", "DESERT", "COOL", "ICY" });
@@ -620,7 +620,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		music.setSound(biome.music);
 		spawnParticle.setSelected(biome.spawnParticles);
 		particleToSpawn.setSelectedItem(biome.particleToSpawn);
-		particlesProbability.setValue(biome.particlesProbability * 100);
+		particlesProbability.setValue(biome.particlesProbability);
 
 		minHeight.setValue(biome.minHeight);
 		airColor.setColor(biome.airColor);
@@ -689,7 +689,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.music = music.getSound();
 		biome.spawnParticles = spawnParticle.isSelected();
 		biome.particleToSpawn = new Particle(mcreator.getWorkspace(), particleToSpawn.getSelectedItem());
-		biome.particlesProbability = (double) particlesProbability.getValue() / 100;
+		biome.particlesProbability = (double) particlesProbability.getValue();
 
 		biome.treesPerChunk = (int) treesPerChunk.getValue();
 		biome.grassPerChunk = (int) grassPerChunk.getValue();
