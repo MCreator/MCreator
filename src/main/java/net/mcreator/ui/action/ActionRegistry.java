@@ -278,7 +278,7 @@ public class ActionRegistry {
 		this.newWorkspace = new NewWorkspaceAction(this);
 		this.importWorkspace = new ImportWorkspaceAction(this);
 		this.openWorkspaceFolder = new BasicAction(this, L10N.t("action.open_workspace_folder"),
-				e -> DesktopUtils.openSafe(mcreator.getWorkspace().getFolderManager().getWorkspaceFolder()));
+				e -> DesktopUtils.openSafe(mcreator.getWorkspaceFolder()));
 		this.setupVCS = new SetupVCSAction(this);
 		this.unlinkVCS = new UnlinkVCSAction(this);
 		this.setupVCSOrSettings = new SetupOrSettingsVCSAction(this);

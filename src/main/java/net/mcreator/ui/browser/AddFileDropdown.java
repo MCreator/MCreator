@@ -39,28 +39,25 @@ class AddFileDropdown extends JPopupMenu {
 					if (file.isFile())
 						file = file.getParentFile();
 
-					if (projectBrowser.mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
-							.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA) {
+					if (projectBrowser.mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+							== GeneratorFlavor.BaseLanguage.JAVA) {
 						if (file.isDirectory() && file.getCanonicalPath().startsWith(
-								projectBrowser.mcreator.getWorkspace().getGenerator().getSourceRoot()
-										.getCanonicalPath())) {
+								projectBrowser.mcreator.getGenerator().getSourceRoot().getCanonicalPath())) {
 							add(projectBrowser.mcreator.actionRegistry.newClass);
 							addSeparator();
 							add(projectBrowser.mcreator.actionRegistry.newPackage);
 						} else if (file.isDirectory() && (file.getCanonicalPath().startsWith(
-								projectBrowser.mcreator.getWorkspace().getGenerator().getResourceRoot()
-										.getCanonicalPath()))) {
+								projectBrowser.mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
 							add(projectBrowser.mcreator.actionRegistry.newJson);
 							add(projectBrowser.mcreator.actionRegistry.newImage);
 							addSeparator();
 							add(projectBrowser.mcreator.actionRegistry.newFolder);
 						}
 					} else {
-						if (file.isDirectory() && file.getCanonicalPath().startsWith(
-								projectBrowser.mcreator.getWorkspace().getGenerator().getSourceRoot()
-										.getCanonicalPath()) || file.isDirectory() && (file.getCanonicalPath()
-								.startsWith(projectBrowser.mcreator.getWorkspace().getGenerator().getResourceRoot()
-										.getCanonicalPath()))) {
+						if (file.isDirectory() && file.getCanonicalPath()
+								.startsWith(projectBrowser.mcreator.getGenerator().getSourceRoot().getCanonicalPath())
+								|| file.isDirectory() && (file.getCanonicalPath().startsWith(
+								projectBrowser.mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
 							add(projectBrowser.mcreator.actionRegistry.newJson);
 							add(projectBrowser.mcreator.actionRegistry.newImage);
 							addSeparator();

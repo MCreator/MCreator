@@ -56,11 +56,11 @@ import java.util.List;
 	private Dimension getBaseTextureSize() {
 		if (this.baseTexture != null && !this.baseTexture.equals("")) {
 			try {
-				ImageIcon texture = new ImageIcon(getModElement().getWorkspace().getFolderManager()
+				ImageIcon texture = new ImageIcon(getModElement().getFolderManager()
 						.getOtherTextureFile(FilenameUtils.removeExtension(this.baseTexture)).getAbsolutePath());
 				texture.getImage().flush();
 
-				texture = new ImageIcon(getModElement().getWorkspace().getFolderManager()
+				texture = new ImageIcon(getModElement().getFolderManager()
 						.getOtherTextureFile(FilenameUtils.removeExtension(this.baseTexture)).getAbsolutePath());
 
 				return new Dimension(texture.getIconWidth(), texture.getIconHeight());

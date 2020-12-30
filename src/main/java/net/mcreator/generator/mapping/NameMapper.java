@@ -21,6 +21,8 @@ package net.mcreator.generator.mapping;
 import net.mcreator.generator.GeneratorTokens;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -28,6 +30,10 @@ import java.util.Locale;
 import java.util.Map;
 
 public class NameMapper {
+
+	private static final Logger LOG = LogManager.getLogger("Name Mapper");
+
+	public static final String UNKNOWN_ELEMENT = "deleted_mod_element";
 
 	String mappingSource;
 	public Workspace workspace;
@@ -72,6 +78,9 @@ public class NameMapper {
 					ModElement element = workspace.getModElementByName(origName);
 					if (element != null) {
 						retval = retval.replaceAll("@registryname", element.getRegistryName());
+					} else {
+						LOG.warn("Failed to determine registry name for: " + origName);
+						retval = retval.replaceAll("@registryname", UNKNOWN_ELEMENT);
 					}
 				}
 				return retval;

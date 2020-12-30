@@ -40,7 +40,6 @@ public class ${name}Particle extends ${JavaModName}Elements.ModElement{
 	public ${name}Particle (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
-		MinecraftForge.EVENT_BUS.register(this);
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 	}
 

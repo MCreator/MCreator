@@ -101,13 +101,13 @@ public class JScrollablePopupMenu extends JPopupMenu {
 		repaint();
 	}
 
-	public void paintChildren(Graphics g) {
+	@Override public void paintChildren(Graphics g) {
 		Insets insets = getInsets();
 		g.clipRect(insets.left, insets.top, getWidth(), getHeight() - insets.top - insets.bottom);
 		super.paintChildren(g);
 	}
 
-	protected void addImpl(Component comp, Object constraints, int index) {
+	@Override protected void addImpl(Component comp, Object constraints, int index) {
 		super.addImpl(comp, constraints, index);
 
 		if (maximumVisibleRows < getComponentCount() - 1) {
@@ -115,7 +115,7 @@ public class JScrollablePopupMenu extends JPopupMenu {
 		}
 	}
 
-	public void remove(int index) {
+	@Override public void remove(int index) {
 		// can't remove the scrollbar
 		++index;
 
@@ -126,7 +126,7 @@ public class JScrollablePopupMenu extends JPopupMenu {
 		}
 	}
 
-	public void show(Component invoker, int x, int y) {
+	@Override public void show(Component invoker, int x, int y) {
 		JScrollBar scrollBar = getScrollBar();
 		if (scrollBar.isVisible()) {
 			int extent = 0;

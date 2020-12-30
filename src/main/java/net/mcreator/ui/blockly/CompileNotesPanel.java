@@ -90,7 +90,7 @@ public class CompileNotesPanel extends JPanel {
 		return retval;
 	}
 
-	class CompileNotesListRenderer extends JLabel implements ListCellRenderer<BlocklyCompileNote> {
+	static class CompileNotesListRenderer extends JLabel implements ListCellRenderer<BlocklyCompileNote> {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends BlocklyCompileNote> list,
 				BlocklyCompileNote value, int index, boolean isSelected, boolean cellHasFocus) {

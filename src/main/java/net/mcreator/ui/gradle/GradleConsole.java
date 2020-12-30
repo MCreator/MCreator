@@ -103,7 +103,7 @@ public class GradleConsole extends JPanel {
 					ProjectFileOpener.openFileAtLine(ref, file, linenum);
 				} else { // we got FQDN instead
 					try {
-						ProjectJarManager jarManager = ref.getWorkspace().getGenerator().getProjectJarManager();
+						ProjectJarManager jarManager = ref.getGenerator().getProjectJarManager();
 						if (jarManager != null) {
 							DeclarationFinder.InClassPosition position = ClassFinder
 									.fqdnToInClassPosition(ref.getWorkspace(), fileurl, "mod.mcreator", jarManager);
@@ -302,8 +302,7 @@ public class GradleConsole extends JPanel {
 		}
 
 		// reset mod problems
-		if (ref.getWorkspace() != null)
-			ref.getWorkspace().resetModElementCompilesStatus();
+		ref.getWorkspace().resetModElementCompilesStatus();
 
 		long millis = System.currentTimeMillis();
 
@@ -370,6 +369,8 @@ public class GradleConsole extends JPanel {
 		task.run(new ResultHandler<Void>() {
 			@Override public void onComplete(Void result) {
 				SwingUtilities.invokeLater(() -> {
+					ref.getWorkspace().checkFailingGradleDependenciesAndClear(); // clear flag without checking
+
 					succeed();
 					taskComplete(GradleErrorCodes.STATUS_OK);
 				});
@@ -379,10 +380,14 @@ public class GradleConsole extends JPanel {
 				SwingUtilities.invokeLater(() -> {
 					boolean errorhandled = false;
 
+					boolean workspaceReportedFailingGradleDependencies = ref.getWorkspace()
+							.checkFailingGradleDependenciesAndClear();
+
 					if (failure instanceof BuildException) {
-						if (GradleErrorDecoder
+						if (workspaceReportedFailingGradleDependencies || GradleErrorDecoder
 								.isErrorCausedByCorruptedCaches(taskErr.toString() + taskOut.toString())) {
-							Object[] options = { "Clear Gradle caches", "Clear entire Gradle folder", "Do nothing" };
+							Object[] options = { "Clear Gradle caches", "Clear entire Gradle folder",
+									"<html><font color=gray>Do nothing" };
 							int reply = JOptionPane.showOptionDialog(ref,
 									"<html><b>MCreator detected Gradle caches got corrupted.</b><br>"
 											+ "Don't worry, we can fix this for you, we just need to rebuild these caches.<br><br>"
@@ -393,9 +398,11 @@ public class GradleConsole extends JPanel {
 									"Gradle caches corrupted", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
 									null, options, options[0]);
 							if (reply == 0 || reply == 1) {
-								ClearAllGradleCachesAction.clearAllGradleCaches(ref, reply == 1);
-								succeed();
-								taskComplete(GradleErrorCodes.STATUS_OK);
+								taskComplete(GradleErrorCodes.GRADLE_CACHEDATA_ERROR);
+
+								ClearAllGradleCachesAction.clearAllGradleCaches(ref, reply == 1,
+										workspaceReportedFailingGradleDependencies);
+
 								return;
 							}
 							errorhandled = true;

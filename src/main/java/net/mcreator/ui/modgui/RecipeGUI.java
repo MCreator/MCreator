@@ -68,7 +68,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private final VTextField group = new VTextField();
 
 	private final JComboBox<String> recipeType = new JComboBox<>(
-			new String[] { "Crafting", "Smelting", "Brewing", "Blasting", "Smoking", "Stone cutting", "Campfire cooking", "Smithing" });
+			new String[] { "Crafting", "Smelting", "Brewing", "Blasting", "Smoking", "Stone cutting", "Campfire cooking",
+					"Smithing" });
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -87,8 +88,10 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				ElementUtil::loadBlocksAndItems);
 		ccm = new CampfireCookingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
 				ElementUtil::loadBlocksAndItems);
-		smcm = new SmithingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
-		brm = new BrewingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
+		smcm = new SmithingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
+				ElementUtil::loadBlocksAndItems);
+    brm = new BrewingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
+        ElementUtil::loadBlocksAndItems);
 
 		name.setValidator(new RegistryNameValidator(name, "Loot table").setValidChars(Arrays.asList('_', '/')));
 		name.enableRealtimeValidation();
@@ -365,7 +368,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			recipe.campfireCookingReturnStack = ccm.getBlock2();
 			recipe.xpReward = (double) xpReward.getValue();
 			recipe.cookingTime = (int) cookingTime.getValue();
-		} else if ("Smithing".equals(recipe.recipeType)){
+		} else if ("Smithing".equals(recipe.recipeType)) {
 			recipe.smithingInputStack = smcm.cb1.getBlock();
 			recipe.smithingInputAdditionStack = smcm.cb2.getBlock();
 			recipe.smithingReturnStack = smcm.cb3.getBlock();

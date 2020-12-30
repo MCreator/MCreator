@@ -202,8 +202,9 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			biome.vanillaTreeType = getRandomItem(random, new String[]{ "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
-					"Mega spruce trees" });
+			biome.vanillaTreeType = getRandomItem(random,
+					new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
+							"Mega spruce trees" });
 			biome.airColor = Color.red;
 			biome.treeType = _true ? 0 : 1;
 			if (!emptyLists) {
@@ -369,9 +370,14 @@ public class TestWorkspaceDataProvider {
 					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 			food.hasGlow = _true;
 			food.onRightClicked = new Procedure("procedure1");
-			food.onEaten = new Procedure("procedure2");
-			food.onCrafted = new Procedure("procedure3");
+			food.onRightClickedOnBlock = new Procedure("procedure2");
+			food.onEaten = new Procedure("procedure3");
+			food.onEntityHitWith = new Procedure("procedure4");
+			food.onItemInInventoryTick = new Procedure("procedure5");
+			food.onItemInUseTick = new Procedure("procedure6");
+			food.onCrafted = new Procedure("procedure7");
 			food.onEntitySwing = new Procedure("procedure8");
+			food.onDroppedByPlayer = new Procedure("procedure9");
 			food.renderType = 0;
 			food.customModelName = "Normal";
 			return food;
@@ -553,10 +559,10 @@ public class TestWorkspaceDataProvider {
 			}
 			mob.hasAI = _true;
 			mob.aiBase = "(none)";
-			if(!emptyLists) {
-				Set<String> aiTasks = modElement.getWorkspace().getGenerator().getGeneratorStats().getGeneratorAITasks();
-				if (aiTasks.contains("wander") && aiTasks.contains("look_around")
-						&& aiTasks.contains("panic_when_attacked") && aiTasks.contains("attack_action")) {
+			if (!emptyLists) {
+				Set<String> aiTasks = modElement.getGeneratorStats().getGeneratorAITasks();
+				if (aiTasks.contains("wander") && aiTasks.contains("look_around") && aiTasks
+						.contains("panic_when_attacked") && aiTasks.contains("attack_action")) {
 					mob.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\">"
 							+ "<next><block type=\"wander\"><field name=\"speed\">1</field>"
 							+ "<next><block type=\"look_around\"><next><block type=\"swim_in_water\">"
@@ -847,6 +853,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			item.stayInGridWhenCrafting = _true;
 			item.damageOnCrafting = _true;
+			item.immuneToFire = _true;
 			item.hasGlow = _true;
 			item.onRightClickedInAir = new Procedure("procedure1");
 			item.onRightClickedOnBlock = new Procedure("procedure2");
@@ -950,7 +957,8 @@ public class TestWorkspaceDataProvider {
 			block.useLootTableForDrops = !_true;
 			block.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			block.destroyTool = getRandomItem(random, new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
+			block.destroyTool = getRandomItem(random,
+					new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 			block.customDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			block.flammability = 5;
@@ -1279,6 +1287,7 @@ public class TestWorkspaceDataProvider {
 		tool.usageCount = 24;
 		tool.stayInGridWhenCrafting = _true;
 		tool.damageOnCrafting = _true;
+		tool.immuneToFire = _true;
 		tool.blocksAffected = new ArrayList<>();
 		tool.hasGlow = _true;
 		tool.specialInfo = new ArrayList<>();

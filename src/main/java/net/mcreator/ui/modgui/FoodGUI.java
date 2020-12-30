@@ -25,7 +25,6 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -77,9 +76,14 @@ public class FoodGUI extends ModElementGUI<Food> {
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
 
 	private ProcedureSelector onRightClicked;
+	private ProcedureSelector onRightClickedOnBlock;
 	private ProcedureSelector onEaten;
+	private ProcedureSelector onEntityHitWith;
+	private ProcedureSelector onItemInInventoryTick;
+	private ProcedureSelector onItemInUseTick;
 	private ProcedureSelector onCrafted;
 	private ProcedureSelector onEntitySwing;
+	private ProcedureSelector onDroppedByPlayer;
 
 	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
@@ -104,14 +108,29 @@ public class FoodGUI extends ModElementGUI<Food> {
 		onRightClicked = new ProcedureSelector(this.withEntry("item/when_right_clicked"), mcreator,
 				L10N.t("elementgui.common.event_right_clicked_air"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
+				L10N.t("elementgui.common.event_right_clicked_block"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction"));
 		onEaten = new ProcedureSelector(this.withEntry("food/when_eaten"), mcreator,
 				L10N.t("elementgui.food.event_on_eaten"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		onEntityHitWith = new ProcedureSelector(this.withEntry("item/when_entity_hit"), mcreator,
+				L10N.t("elementgui.item.event_entity_hit"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack"));
+		onItemInInventoryTick = new ProcedureSelector(this.withEntry("item/inventory_tick"), mcreator,
+				L10N.t("elementgui.item.event_inventory_tick"), Dependency
+				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
+		onItemInUseTick = new ProcedureSelector(this.withEntry("item/hand_tick"), mcreator,
+				L10N.t("elementgui.item.event_hand_tick"), Dependency
+				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
 		onCrafted = new ProcedureSelector(this.withEntry("item/on_crafted"), mcreator,
 				L10N.t("elementgui.common.event_on_crafted"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.food.event_on_swing"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		onDroppedByPlayer = new ProcedureSelector(this.withEntry("item/on_dropped"), mcreator,
+				L10N.t("elementgui.item.event_on_dropped"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.food.event_make_glow"), ProcedureSelector.Side.CLIENT, true,
@@ -227,13 +246,16 @@ public class FoodGUI extends ModElementGUI<Food> {
 		pane1.setOpaque(false);
 
 		JPanel events = new JPanel();
-		events.setLayout(new GridLayout(2, 3, 10, 10));
+		events.setLayout(new GridLayout(3, 3, 10, 10));
 		events.add(onRightClicked);
+		events.add(onRightClickedOnBlock);
 		events.add(onEaten);
+		events.add(onEntityHitWith);
+		events.add(onItemInInventoryTick);
+		events.add(onItemInUseTick);
 		events.add(onCrafted);
 		events.add(onEntitySwing);
-		events.add(new JEmptyBox());
-		events.add(new JEmptyBox());
+		events.add(onDroppedByPlayer);
 		events.setOpaque(false);
 
 		JPanel wrap = new JPanel();
@@ -267,9 +289,14 @@ public class FoodGUI extends ModElementGUI<Food> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onRightClicked.refreshListKeepSelected();
+		onRightClickedOnBlock.refreshListKeepSelected();
 		onEaten.refreshListKeepSelected();
+		onEntityHitWith.refreshListKeepSelected();
+		onItemInInventoryTick.refreshListKeepSelected();
+		onItemInUseTick.refreshListKeepSelected();
 		onCrafted.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
+		onDroppedByPlayer.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
@@ -296,9 +323,14 @@ public class FoodGUI extends ModElementGUI<Food> {
 		forDogs.setSelected(food.forDogs);
 		isAlwaysEdible.setSelected(food.isAlwaysEdible);
 		onRightClicked.setSelectedProcedure(food.onRightClicked);
+		onRightClickedOnBlock.setSelectedProcedure(food.onRightClickedOnBlock);
 		onEaten.setSelectedProcedure(food.onEaten);
+		onEntityHitWith.setSelectedProcedure(food.onEntityHitWith);
+		onItemInInventoryTick.setSelectedProcedure(food.onItemInInventoryTick);
+		onItemInUseTick.setSelectedProcedure(food.onItemInUseTick);
 		onCrafted.setSelectedProcedure(food.onCrafted);
 		onEntitySwing.setSelectedProcedure(food.onEntitySwing);
+		onDroppedByPlayer.setSelectedProcedure(food.onDroppedByPlayer);
 		stackSize.setValue(food.stackSize);
 		nutritionalValue.setValue(food.nutritionalValue);
 		saturation.setValue(food.saturation);
@@ -332,9 +364,14 @@ public class FoodGUI extends ModElementGUI<Food> {
 		food.isAlwaysEdible = isAlwaysEdible.isSelected();
 		food.animation = (String) animation.getSelectedItem();
 		food.onRightClicked = onRightClicked.getSelectedProcedure();
+		food.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();
 		food.onEaten = onEaten.getSelectedProcedure();
+		food.onEntityHitWith = onEntityHitWith.getSelectedProcedure();
+		food.onItemInInventoryTick = onItemInInventoryTick.getSelectedProcedure();
+		food.onItemInUseTick = onItemInUseTick.getSelectedProcedure();
 		food.onCrafted = onCrafted.getSelectedProcedure();
 		food.onEntitySwing = onEntitySwing.getSelectedProcedure();
+		food.onDroppedByPlayer = onDroppedByPlayer.getSelectedProcedure();
 		food.hasGlow = hasGlow.isSelected();
 		food.glowCondition = glowCondition.getSelectedProcedure();
 		food.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());

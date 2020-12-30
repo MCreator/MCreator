@@ -182,7 +182,7 @@ public class WorkspaceDialogs {
 				master.setBorder(BorderFactory.createEmptyBorder());
 				master.setForeground(Color.white);
 				master.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
-					protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
+					@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 					}
 				});
 				master.addTab(L10N.t("dialog.workspace_settings.tab.general"),
@@ -334,7 +334,7 @@ public class WorkspaceDialogs {
 				GeneratorConfiguration gc = GeneratorSelector
 						.getGeneratorSelector(parent, (GeneratorConfiguration) generator.getSelectedItem(),
 								workspace != null ?
-										workspace.getGenerator().getGeneratorConfiguration().getGeneratorFlavor() :
+										workspace.getGeneratorConfiguration().getGeneratorFlavor() :
 										flavorFilter);
 				if (gc != null)
 					generator.setSelectedItem(gc);
@@ -345,7 +345,7 @@ public class WorkspaceDialogs {
 					GeneratorConfiguration gc = GeneratorSelector
 							.getGeneratorSelector(parent, (GeneratorConfiguration) generator.getSelectedItem(),
 									workspace != null ?
-											workspace.getGenerator().getGeneratorConfiguration().getGeneratorFlavor() :
+											workspace.getGeneratorConfiguration().getGeneratorFlavor() :
 											flavorFilter);
 					if (gc != null)
 						generator.setSelectedItem(gc);

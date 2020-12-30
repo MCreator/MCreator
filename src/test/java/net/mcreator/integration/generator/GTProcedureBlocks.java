@@ -44,14 +44,14 @@ import static org.junit.Assert.fail;
 public class GTProcedureBlocks {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
-		if (workspace.getGenerator().getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE) {
 			LOG.warn("[" + generatorName
 					+ "] Skipping procedure blocks test as the current generator does not support them.");
 			return;
 		}
 
-		Set<String> generatorBlocks = workspace.getGenerator().getGeneratorStats().getGeneratorProcedures();
+		Set<String> generatorBlocks = workspace.getGeneratorStats().getGeneratorProcedures();
 
 		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
 				.values()) {

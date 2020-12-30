@@ -51,8 +51,8 @@ public class ModElementIDsDialog {
 		JComponent reghol = PanelUtils.join(L10N.label("dialog.modelement_id.registry_name"), registryName);
 		reghol.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("dialog.modelement_id.registry_name_info"), 0, 0,
-				reghol.getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				L10N.t("dialog.modelement_id.registry_name_info"), 0, 0, reghol.getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		panel.add(PanelUtils.centerInPanel(L10N.label("dialog.modelement_id.use_caution_warn")));
 
@@ -60,8 +60,8 @@ public class ModElementIDsDialog {
 
 		panel.add(new JEmptyBox(10, 10));
 
-		registryName.setValidator(new RegistryNameValidator(registryName,
-				L10N.t("dialog.modelement_id.registry_name_validator")));
+		registryName.setValidator(
+				new RegistryNameValidator(registryName, L10N.t("dialog.modelement_id.registry_name_validator")));
 		registryName.enableRealtimeValidation();
 
 		panel.add(reghol);
@@ -69,20 +69,19 @@ public class ModElementIDsDialog {
 		JPanel ids = new JPanel();
 		ids.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("dialog.modelement_id.numerical_id"), 0, 0,
-				reghol.getFont().deriveFont(12.0f), Color.white));
+				L10N.t("dialog.modelement_id.numerical_id"), 0, 0, reghol.getFont().deriveFont(12.0f), Color.white));
 
 		ids.setLayout(new BorderLayout());
 
 		Map<Integer, JSpinner> idspinners = new HashMap<>();
 
 		if (!modElement.getIDMap().isEmpty()) {
-			int offset = mcreator.getWorkspace().getGenerator()
+			int offset = mcreator.getGenerator()
 					.getStartIDFor(modElement.getType().getBaseType().name().toLowerCase(Locale.ENGLISH));
 			if (offset != -1) {
 				ids.add("North", PanelUtils.maxMargin(
-						L10N.label("dialog.modelement_id.id_offset", modElement.getType().getReadableName(), offset),
-						5, false, true, false, false));
+						L10N.label("dialog.modelement_id.id_offset", modElement.getType().getReadableName(), offset), 5,
+						false, true, false, false));
 			}
 
 			JPanel idsmap = new JPanel(new GridLayout(modElement.getIDMap().size(), 2));
@@ -108,7 +107,7 @@ public class ModElementIDsDialog {
 		registryName.setText(modElement.getRegistryName());
 
 		int option = JOptionPane.showConfirmDialog(mcreator, panel,
-				L10N.t("dialog.modelement_id.id_and_registry_names",modElement.getName()),
+				L10N.t("dialog.modelement_id.id_and_registry_names", modElement.getName()),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (option == JOptionPane.OK_OPTION) {
@@ -129,21 +128,20 @@ public class ModElementIDsDialog {
 					return null;
 				}
 
-				option = JOptionPane.showConfirmDialog(mcreator,
-						L10N.t("dialog.modelement_id.registry_name_changed"),
-						L10N.t("dialog.modelement_id.registry_name_changed_title"),
-						JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+				option = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.modelement_id.registry_name_changed"),
+						L10N.t("dialog.modelement_id.registry_name_changed_title"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.PLAIN_MESSAGE);
 
 				if (option == JOptionPane.YES_OPTION) {
 					regenerateCode = true;
 				}
 			}
 
-			mcreator.getWorkspace().getGenerator().removeElementFilesAndLangKeys(
+			mcreator.getGenerator().removeElementFilesAndLangKeys(
 					modElement); // we remove current files as new ones will be made for the new registry name
 			modElement.setRegistryName(registryName.getText()); // set new name
 			GeneratableElement generatableElement = modElement.getGeneratableElement();
-			mcreator.getWorkspace().getGenerator().generateElement(
+			mcreator.getGenerator().generateElement(
 					generatableElement); // regenerate mod element code to use new registry id and to regenerate resource files, ...
 
 			if (regenerateCode) {

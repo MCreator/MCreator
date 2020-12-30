@@ -59,8 +59,9 @@ public class NewVariableDialog {
 
 		inp.add("Center", data);
 
-		int option = JOptionPane.showConfirmDialog(frame, inp, L10N.t("dialog.variables.new_title"),
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+		int option = JOptionPane
+				.showConfirmDialog(frame, inp, L10N.t("dialog.variables.new_title"), JOptionPane.OK_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION
 				&& textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
 				&& type.getSelectedItem() != null) {

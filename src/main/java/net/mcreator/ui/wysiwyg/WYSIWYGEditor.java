@@ -126,7 +126,7 @@ public class WYSIWYGEditor extends JPanel {
 		});
 
 		list.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent evt) {
+			@Override public void mouseClicked(MouseEvent evt) {
 				if (evt.getClickCount() == 2) {
 					editComponent.doClick();
 				}
@@ -401,7 +401,7 @@ public class WYSIWYGEditor extends JPanel {
 				TextureImportDialogs.importOtherTextures(mcreator);
 				overlayBaseTexture.removeAllItems();
 				overlayBaseTexture.addItem("");
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
+				mcreator.getFolderManager().getOtherTexturesList()
 						.forEach(el -> overlayBaseTexture.addItem(el.getName()));
 			});
 

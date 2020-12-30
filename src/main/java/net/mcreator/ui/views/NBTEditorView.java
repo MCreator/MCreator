@@ -118,7 +118,7 @@ public class NBTEditorView extends ViewBase {
 		}
 	}
 
-	private class NBTCellRenderer extends DefaultTreeCellRenderer {
+	private static class NBTCellRenderer extends DefaultTreeCellRenderer {
 
 		@Override
 		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,

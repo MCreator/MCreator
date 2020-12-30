@@ -60,7 +60,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final VTextField name = new VTextField(20);
 
-	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(3, 0, 256, 1));
+	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(1, 0, 256, 1));
 	private final JSpinner grassPerChunk = new JSpinner(new SpinnerNumberModel(4, 0, 256, 1));
 	private final JSpinner seagrassPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 	private final JSpinner flowersPerChunk = new JSpinner(new SpinnerNumberModel(4, 0, 256, 1));
@@ -396,7 +396,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.water_fog_color")));
 		sbbp4.add(waterFogColor);
 
-		sbbp4.add(PanelUtils.join(FlowLayout.LEFT, vanillaTrees, customTrees, new JEmptyBox(15, 2), L10N.label("elementgui.biome.tree_type")));
+		sbbp4.add(PanelUtils.join(FlowLayout.LEFT, vanillaTrees, customTrees, new JEmptyBox(15, 2),
+				L10N.label("elementgui.biome.tree_type")));
 		sbbp4.add(vanillaTreeType);
 
 		JPanel sbbp5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
