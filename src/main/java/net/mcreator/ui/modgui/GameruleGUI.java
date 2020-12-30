@@ -42,13 +42,12 @@ public class GameruleGUI extends ModElementGUI<Gamerule> {
 
 	private final VTextField name = new VTextField(20);
 	private final VTextField ID = new VTextField(20);
-
 	private final VTextField description = new VTextField(20);
+
 	private final JComboBox<String> gameruleCategory = new JComboBox<>(
 			new String[] { "Player", "Updates", "Chat", "Drops", "Misc", "Mobs", "Spawning" });
-
 	private final JComboBox<String> gameruleType = new JComboBox<>(
-			new String[] { "Integer", "Boolean" });
+			new String[] { "Number", "Logic" });
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
