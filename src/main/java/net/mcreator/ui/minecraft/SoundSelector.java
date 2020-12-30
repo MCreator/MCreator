@@ -28,6 +28,7 @@ import net.mcreator.ui.validation.component.VTextField;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class SoundSelector extends JPanel {
 
@@ -43,6 +44,8 @@ public class SoundSelector extends JPanel {
 		setOpaque(false);
 		bt.addActionListener(event -> {
 			String[] sounds = ElementUtil.getAllSounds(frame.getWorkspace());
+			Arrays.sort(sounds);
+
 			String s = (String) JOptionPane
 					.showInputDialog(frame, "Please select sound:", "Selection", JOptionPane.PLAIN_MESSAGE, null,
 							sounds, sounds[0]);
