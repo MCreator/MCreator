@@ -38,15 +38,15 @@ public class RunServerAction extends GradleAction {
 	public RunServerAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.run_server_and_client"), evt -> {
 			String eula;
-			if (!new File(actionRegistry.getMCreator().getWorkspace().getFolderManager().getWorkspaceFolder(),
+			if (!new File(actionRegistry.getMCreator().getWorkspaceFolder(),
 					"run/eula.txt").isFile())
 				eula = "eula=false";
 			else
 				eula = FileIO.readFileToString(
-						new File(actionRegistry.getMCreator().getWorkspace().getFolderManager().getWorkspaceFolder(),
+						new File(actionRegistry.getMCreator().getWorkspaceFolder(),
 								"run/eula.txt"));
 			if (eula.contains("eula=false") || !new File(
-					actionRegistry.getMCreator().getWorkspace().getFolderManager().getWorkspaceFolder(), "run/eula.txt")
+					actionRegistry.getMCreator().getWorkspaceFolder(), "run/eula.txt")
 					.isFile()) {
 				JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
 						L10N.t("dialog.run_server_and_client.eula_intro"));
@@ -64,7 +64,7 @@ public class RunServerAction extends GradleAction {
 					Properties por = new Properties();
 					try {
 						por.load(new FileInputStream(new File(
-								actionRegistry.getMCreator().getWorkspace().getFolderManager().getWorkspaceFolder(),
+								actionRegistry.getMCreator().getWorkspaceFolder(),
 								"run/eula.txt")));
 					} catch (IOException e) {
 						LOG.warn(e.getMessage());
@@ -72,7 +72,7 @@ public class RunServerAction extends GradleAction {
 					por.setProperty("eula", "true");
 					try {
 						por.store(new FileOutputStream(new File(
-								actionRegistry.getMCreator().getWorkspace().getFolderManager().getWorkspaceFolder(),
+								actionRegistry.getMCreator().getWorkspaceFolder(),
 								"run/eula.txt")), "#Edited by MCreator - User agreed with EULA inside MCreator");
 					} catch (FileNotFoundException e) {
 						LOG.error(e.getMessage());
@@ -82,17 +82,15 @@ public class RunServerAction extends GradleAction {
 					actionRegistry.getMCreator().getGradleConsole()
 							.markRunning(); // so console gets locked while we generate code already
 					try {
-						actionRegistry.getMCreator().getWorkspace().getGenerator().runResourceSetupTasks();
-						actionRegistry.getMCreator().getWorkspace().getGenerator().generateBase();
+						actionRegistry.getMCreator().getGenerator().runResourceSetupTasks();
+						actionRegistry.getMCreator().getGenerator().generateBase();
 						actionRegistry.getMCreator().getGradleConsole()
-								.exec(actionRegistry.getMCreator().getWorkspace().getGenerator()
-										.getGeneratorConfiguration().getGradleTaskFor("run_server"));
+								.exec(actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_server"));
 
-						if (actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorConfiguration()
+						if (actionRegistry.getMCreator().getGeneratorConfiguration()
 								.getGradleTaskFor("run_client") != null)
 							actionRegistry.getMCreator().getGradleConsole()
-									.exec(actionRegistry.getMCreator().getWorkspace().getGenerator()
-											.getGeneratorConfiguration().getGradleTaskFor("run_client"));
+									.exec(actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client"));
 					} catch (Exception e) { // if something fails, we still need to free the gradle console
 						LOG.error(e.getMessage(), e);
 						actionRegistry.getMCreator().getGradleConsole().markReady();
@@ -105,21 +103,21 @@ public class RunServerAction extends GradleAction {
 				actionRegistry.getMCreator().getGradleConsole()
 						.markRunning(); // so console gets locked while we generate code already
 				try {
-					actionRegistry.getMCreator().getWorkspace().getGenerator().runResourceSetupTasks();
-					actionRegistry.getMCreator().getWorkspace().getGenerator().generateBase();
+					actionRegistry.getMCreator().getGenerator().runResourceSetupTasks();
+					actionRegistry.getMCreator().getGenerator().generateBase();
 
 					if (PreferencesManager.PREFERENCES.gradle.passLangToMinecraft)
 						MinecraftOptionsUtils
 								.setLangTo(actionRegistry.getMCreator().getWorkspace(), L10N.getLocaleString());
 
 					actionRegistry.getMCreator().getGradleConsole()
-							.exec(actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorConfiguration()
+							.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
 									.getGradleTaskFor("run_server"));
 
-					if (actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorConfiguration()
+					if (actionRegistry.getMCreator().getGeneratorConfiguration()
 							.getGradleTaskFor("run_client") != null)
 						actionRegistry.getMCreator().getGradleConsole()
-								.exec(actionRegistry.getMCreator().getWorkspace().getGenerator()
+								.exec(actionRegistry.getMCreator().getGenerator()
 										.getGeneratorConfiguration().getGradleTaskFor("run_client"));
 				} catch (Exception e) { // if something fails, we still need to free the gradle console
 					LOG.error(e.getMessage(), e);
@@ -130,7 +128,7 @@ public class RunServerAction extends GradleAction {
 	}
 
 	@Override public boolean isEnabled() {
-		return actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorConfiguration()
+		return actionRegistry.getMCreator().getGeneratorConfiguration()
 				.getGradleTaskFor("run_server") != null && super.isEnabled();
 	}
 }

@@ -84,7 +84,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.workspaceInfo = new WorkspaceInfo(this);
 	}
 
-	public WorkspaceSettings getWorkspaceSettings() {
+	@Override public WorkspaceSettings getWorkspaceSettings() {
 		return workspaceSettings;
 	}
 
@@ -282,19 +282,19 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return mcreatorVersion;
 	}
 
-	public WorkspaceFileManager getFileManager() {
+	@Override public WorkspaceFileManager getFileManager() {
 		return fileManager;
 	}
 
-	public WorkspaceFolderManager getFolderManager() {
+	@Override public WorkspaceFolderManager getFolderManager() {
 		return fileManager.getFolderManager();
 	}
 
-	public Generator getGenerator() {
+	@Override public Generator getGenerator() {
 		return generator;
 	}
 
-	public ModElementManager getModElementManager() {
+	@Override public ModElementManager getModElementManager() {
 		return fileManager.getModElementManager();
 	}
 

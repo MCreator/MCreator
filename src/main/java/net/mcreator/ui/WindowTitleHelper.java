@@ -36,19 +36,19 @@ public class WindowTitleHelper {
 		} else if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
 				.getContent() instanceof CodeEditorView) {
 			try {
-				appendix = "- " + mcreator.getWorkspace().getFolderManager().getWorkspaceFolder().toPath().relativize(
+				appendix = "- " + mcreator.getWorkspaceFolder().toPath().relativize(
 						((CodeEditorView) mcreator.mcreatorTabs.getCurrentTab().getContent()).fileWorkingOn.toPath());
 			} catch (Exception e) {
 				appendix = "- " + ((CodeEditorView) mcreator.mcreatorTabs.getCurrentTab().getContent()).fileWorkingOn
 						.toPath();
 			}
 		}
-		String workspaceBaseName = mcreator.getWorkspace().getWorkspaceSettings().getModName();
+		String workspaceBaseName = mcreator.getWorkspaceSettings().getModName();
 		try {
-			return (workspaceBaseName + " [" + mcreator.getWorkspace().getFolderManager().getWorkspaceFolder()
+			return (workspaceBaseName + " [" + mcreator.getWorkspaceFolder()
 					.getCanonicalPath() + "] " + appendix + " - MCreator " + Launcher.version.getMajorString());
 		} catch (IOException e) {
-			return (workspaceBaseName + " [" + mcreator.getWorkspace().getFolderManager().getWorkspaceFolder()
+			return (workspaceBaseName + " [" + mcreator.getWorkspaceFolder()
 					.getAbsolutePath() + "] " + appendix + " - MCreator " + Launcher.version.getMajorString());
 		}
 	}

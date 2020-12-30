@@ -34,7 +34,7 @@ public class SpinnerCellEditor extends AbstractCellEditor implements TableCellEd
 	public SpinnerCellEditor(JSpinner spinner) {
 		this.spinner = spinner;
 		((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent fe) {
+			@Override public void focusGained(FocusEvent fe) {
 				SwingUtilities.invokeLater(() -> {
 					if (initialValSet) {
 						((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().setCaretPosition(1);
@@ -45,7 +45,7 @@ public class SpinnerCellEditor extends AbstractCellEditor implements TableCellEd
 		((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().addActionListener(ae -> stopCellEditing());
 	}
 
-	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+	@Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 		if (!initialValSet) {
 			try {
 				spinner.setValue(Integer.valueOf((String) value));
@@ -57,7 +57,7 @@ public class SpinnerCellEditor extends AbstractCellEditor implements TableCellEd
 		return spinner;
 	}
 
-	public boolean isCellEditable(EventObject eo) {
+	@Override public boolean isCellEditable(EventObject eo) {
 		if (eo instanceof KeyEvent) {
 			KeyEvent ke = (KeyEvent) eo;
 			((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().setText(String.valueOf(ke.getKeyChar()));
@@ -68,11 +68,11 @@ public class SpinnerCellEditor extends AbstractCellEditor implements TableCellEd
 		return true;
 	}
 
-	public Object getCellEditorValue() {
+	@Override public Object getCellEditorValue() {
 		return spinner.getValue().toString();
 	}
 
-	public boolean stopCellEditing() {
+	@Override public boolean stopCellEditing() {
 		try {
 			spinner.commitEdit();
 		} catch (java.text.ParseException ignored) {

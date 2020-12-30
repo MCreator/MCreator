@@ -312,7 +312,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		return projectBrowser;
 	}
 
-	public @NotNull Workspace getWorkspace() {
+	@Override public @NotNull Workspace getWorkspace() {
 		return workspace;
 	}
 
@@ -379,7 +379,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 					.updatePresence("Working on " + workspace.getWorkspaceSettings().getModName() + tabAddition,
 							Launcher.version.getMajorString() + " for " + workspace.getGenerator()
 									.getGeneratorMinecraftVersion(),
-							"type-" + workspace.getGenerator().getGeneratorConfiguration().getGeneratorFlavor().name()
+							"type-" + workspace.getGeneratorConfiguration().getGeneratorFlavor().name()
 									.toLowerCase(Locale.ENGLISH));
 		}
 	}

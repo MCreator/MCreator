@@ -110,7 +110,7 @@ public class SoundElementDialog {
 						fileListField.getListElements().forEach(file -> {
 							String fileName = RegistryNameFixer.fix(file.getName());
 							FileIO.copyFile(file,
-									new File(mcreator.getWorkspace().getFolderManager().getSoundsDir(), fileName));
+									new File(mcreator.getFolderManager().getSoundsDir(), fileName));
 							fileNames.add(FilenameUtils.removeExtension(fileName));
 						});
 

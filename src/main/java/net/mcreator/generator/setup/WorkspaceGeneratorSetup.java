@@ -45,7 +45,7 @@ public class WorkspaceGeneratorSetup {
 
 	public static void cleanupGeneratorForSwitchTo(Workspace workspace, GeneratorConfiguration newGenerator) {
 		// skip if there is no generator change
-		if (workspace.getGenerator().getGeneratorConfiguration().getGeneratorName()
+		if (workspace.getGeneratorConfiguration().getGeneratorName()
 				.equals(newGenerator.getGeneratorName()))
 			return;
 
@@ -55,7 +55,7 @@ public class WorkspaceGeneratorSetup {
 		Set<String> fileNames = PluginLoader.INSTANCE
 				.getResourcesInPackage(workspace.getGenerator().getGeneratorName() + ".workspacebase");
 		for (String file : fileNames) {
-			File generatorFile = new File(workspace.getFolderManager().getWorkspaceFolder(),
+			File generatorFile = new File(workspace.getWorkspaceFolder(),
 					file.replace(workspace.getGenerator().getGeneratorName() + "/workspacebase", ""));
 			if (generatorFile.isFile())
 				generatorFile.delete();
@@ -64,14 +64,14 @@ public class WorkspaceGeneratorSetup {
 		}
 
 		// delete gradle dirs if present
-		if (new File(workspace.getFolderManager().getWorkspaceFolder(), ".gradle/").isDirectory()) {
-			FileIO.deleteDir(new File(workspace.getFolderManager().getWorkspaceFolder(), ".gradle/"));
-			FileIO.deleteDir(new File(workspace.getFolderManager().getWorkspaceFolder(), "build/"));
+		if (new File(workspace.getWorkspaceFolder(), ".gradle/").isDirectory()) {
+			FileIO.deleteDir(new File(workspace.getWorkspaceFolder(), ".gradle/"));
+			FileIO.deleteDir(new File(workspace.getWorkspaceFolder(), "build/"));
 		}
 
 		// delete lib dir if present (we need new up-to-date libs)
-		if (new File(workspace.getFolderManager().getWorkspaceFolder(), "lib/").isDirectory()) {
-			FileIO.deleteDir(new File(workspace.getFolderManager().getWorkspaceFolder(), "lib/"));
+		if (new File(workspace.getWorkspaceFolder(), "lib/").isDirectory()) {
+			FileIO.deleteDir(new File(workspace.getWorkspaceFolder(), "lib/"));
 		}
 
 		// move folders to the new locations, starting from more nested folders down
@@ -125,7 +125,7 @@ public class WorkspaceGeneratorSetup {
 			try {
 				InputStream stream = PluginLoader.INSTANCE.getResourceAsStream(file);
 				if (stream != null) {
-					File outFile = new File(workspace.getFolderManager().getWorkspaceFolder(),
+					File outFile = new File(workspace.getWorkspaceFolder(),
 							file.replace(workspace.getGenerator().getGeneratorName() + "/workspacebase", ""));
 					if (file.endsWith(".gradle") || file.endsWith(".properties") || file.endsWith(".txt")) {
 						String contents = IOUtils.toString(stream, StandardCharsets.UTF_8);
@@ -145,7 +145,7 @@ public class WorkspaceGeneratorSetup {
 	}
 
 	public static boolean shouldSetupBeRan(Generator generator) {
-		File setupFile = new File(generator.getWorkspace().getFolderManager().getWorkspaceCacheDir(), "setupInfo");
+		File setupFile = new File(generator.getFolderManager().getWorkspaceCacheDir(), "setupInfo");
 		if (setupFile.isFile()) {
 			Properties properties = new Properties();
 			try {
@@ -161,7 +161,7 @@ public class WorkspaceGeneratorSetup {
 
 	public static void completeSetup(Generator generator) {
 		FileIO.writeStringToFile("buildFileVersion=" + generator.getGeneratorBuildFileVersion(),
-				new File(generator.getWorkspace().getFolderManager().getWorkspaceCacheDir(), "setupInfo"));
+				new File(generator.getFolderManager().getWorkspaceCacheDir(), "setupInfo"));
 	}
 
 	public static void requestSetup(Workspace workspace) {

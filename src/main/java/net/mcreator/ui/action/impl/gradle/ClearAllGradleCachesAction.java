@@ -87,13 +87,13 @@ public class ClearAllGradleCachesAction extends GradleAction {
 
 			mcreator.getGradleConsole().markRunning(); // so console gets locked while we generate code already
 			try {
-				mcreator.getWorkspace().getGenerator().generateBase();
+				mcreator.getGenerator().generateBase();
 
 				String tasks = "build";
 
-				if (mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGradleTaskFor("setup_task")
+				if (mcreator.getGeneratorConfiguration().getGradleTaskFor("setup_task")
 						!= null) {
-					tasks = mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
+					tasks = mcreator.getGeneratorConfiguration()
 							.getGradleTaskFor("setup_task") + (regenerateCodeFlag ? "" : " build");
 				}
 
@@ -107,7 +107,7 @@ public class ClearAllGradleCachesAction extends GradleAction {
 						progressDialogSecondStage.addProgress(p33a);
 
 						try {
-							mcreator.getWorkspace().getGenerator().reloadGradleCaches();
+							mcreator.getGenerator().reloadGradleCaches();
 							p33a.ok();
 							progressDialogSecondStage.hideAll();
 						} catch (Exception e) {

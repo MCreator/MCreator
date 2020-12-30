@@ -35,14 +35,14 @@ import static org.junit.Assert.fail;
 public class GTProcedureTriggers {
 
 	public static void runTest(Logger LOG, String generatorName, Workspace workspace) {
-		if (workspace.getGenerator().getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE) {
 			LOG.warn("[" + generatorName
 					+ "] Skipping procedure triggers test as the current generator does not support them.");
 			return;
 		}
 
-		Set<String> generatorTriggers = workspace.getGenerator().getGeneratorStats().getGeneratorTriggers();
+		Set<String> generatorTriggers = workspace.getGeneratorStats().getGeneratorTriggers();
 
 		for (ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()) {
 			if (!generatorTriggers.contains(externalTrigger.getID())) {

@@ -73,7 +73,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		pane.setForeground(Color.white);
 		pane.setOpaque(false);
 		pane.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
-			protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
+			@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 			}
 		});
 		pane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
@@ -132,7 +132,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		});
 	}
 
-	public void reloadElements() {
+	@Override public void reloadElements() {
 		for (ActionListener al : del.getActionListeners())
 			del.removeActionListener(al);
 
@@ -381,7 +381,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		}
 	}
 
-	public void refilterElements() {
+	@Override public void refilterElements() {
 		for (TableRowSorter<TableModel> sorter : sorters)
 			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
 	}

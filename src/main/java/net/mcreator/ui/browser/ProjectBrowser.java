@@ -240,49 +240,49 @@ public class ProjectBrowser extends JPanel {
 
 			ProjectBrowserFilterTreeNode root = new ProjectBrowserFilterTreeNode("");
 			ProjectBrowserFilterTreeNode node = new ProjectBrowserFilterTreeNode(
-					mcreator.getWorkspace().getWorkspaceSettings().getModName());
+					mcreator.getWorkspaceSettings().getModName());
 
 			sourceCode = new ProjectBrowserFilterTreeNode("Source (Gradle)");
-			addNodes(sourceCode, mcreator.getWorkspace().getGenerator().getSourceRoot(), true);
+			addNodes(sourceCode, mcreator.getGenerator().getSourceRoot(), true);
 			node.add(sourceCode);
 
 			ProjectBrowserFilterTreeNode currRes = new ProjectBrowserFilterTreeNode("Resources (Gradle)");
-			addNodes(currRes, mcreator.getWorkspace().getGenerator().getResourceRoot(), true);
+			addNodes(currRes, mcreator.getGenerator().getResourceRoot(), true);
 			node.add(currRes);
 
-			if (mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo().get("sounds")
+			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("sounds")
 					!= GeneratorStats.CoverageStatus.NONE) {
 				ProjectBrowserFilterTreeNode sounds = new ProjectBrowserFilterTreeNode("Sounds");
-				addNodes(sounds, mcreator.getWorkspace().getFolderManager().getSoundsDir(), true);
+				addNodes(sounds, mcreator.getFolderManager().getSoundsDir(), true);
 				node.add(sounds);
 			}
 
-			if (mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo().get("structures")
+			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("structures")
 					!= GeneratorStats.CoverageStatus.NONE) {
 				ProjectBrowserFilterTreeNode structures = new ProjectBrowserFilterTreeNode("Structures");
-				addNodes(structures, mcreator.getWorkspace().getFolderManager().getStructuresDir(), true);
+				addNodes(structures, mcreator.getFolderManager().getStructuresDir(), true);
 				node.add(structures);
 			}
 
-			if (mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
+			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_json")
 					!= GeneratorStats.CoverageStatus.NONE ||
-					mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
+					mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_java")
 							!= GeneratorStats.CoverageStatus.NONE
-					|| mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
+					|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 					!= GeneratorStats.CoverageStatus.NONE) {
 				ProjectBrowserFilterTreeNode models = new ProjectBrowserFilterTreeNode("Models");
-				addNodes(models, mcreator.getWorkspace().getFolderManager().getModelsDir(), true);
+				addNodes(models, mcreator.getFolderManager().getModelsDir(), true);
 				node.add(models);
 			}
 
-			if (new File(mcreator.getWorkspace().getFolderManager().getWorkspaceFolder(), "run/debug").isDirectory()) {
+			if (new File(mcreator.getWorkspaceFolder(), "run/debug").isDirectory()) {
 				ProjectBrowserFilterTreeNode debugFolder = new ProjectBrowserFilterTreeNode("Debug profiler results");
 				addNodes(debugFolder,
-						new File(mcreator.getWorkspace().getFolderManager().getWorkspaceFolder(), "run/debug"), true);
+						new File(mcreator.getWorkspaceFolder(), "run/debug"), true);
 				node.add(debugFolder);
 			}
 
-			File[] rootFiles = mcreator.getWorkspace().getFolderManager().getWorkspaceFolder().listFiles();
+			File[] rootFiles = mcreator.getWorkspaceFolder().listFiles();
 			for (File file : rootFiles != null ? rootFiles : new File[0]) {
 				if (file.isFile() && !file.isHidden() && !file.getName().startsWith("."))
 					if (!file.getName().startsWith("gradlew") && !file.getName().endsWith(".mcreator"))
@@ -291,18 +291,18 @@ public class ProjectBrowser extends JPanel {
 
 			root.add(node);
 
-			if (new File(mcreator.getWorkspace().getFolderManager().getWorkspaceFolder(), "run/").isDirectory()) {
+			if (new File(mcreator.getWorkspaceFolder(), "run/").isDirectory()) {
 				ProjectBrowserFilterTreeNode minecraft = new ProjectBrowserFilterTreeNode("Minecraft run folder");
-				addNodes(minecraft, new File(mcreator.getWorkspace().getFolderManager().getWorkspaceFolder(), "run/"),
+				addNodes(minecraft, new File(mcreator.getWorkspaceFolder(), "run/"),
 						true);
 				root.add(minecraft);
 			}
 
-			if (mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
+			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor()
 					.getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA)
 				loadExtSoruces(root);
 
-			if (mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
+			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor()
 					== GeneratorFlavor.ADDON && MinecraftFolderUtils.getBedrockEditionFolder() != null) {
 				ProjectBrowserFilterTreeNode minecraft = new ProjectBrowserFilterTreeNode("Bedrock Edition");
 				addNodes(minecraft, MinecraftFolderUtils.getBedrockEditionFolder(), true);
@@ -323,8 +323,8 @@ public class ProjectBrowser extends JPanel {
 	private void loadExtSoruces(ProjectBrowserFilterTreeNode node) {
 		ProjectBrowserFilterTreeNode extDeps = new ProjectBrowserFilterTreeNode("External libraries");
 
-		if (mcreator.getWorkspace().getGenerator().getProjectJarManager() != null) {
-			List<LibraryInfo> libraryInfos = mcreator.getWorkspace().getGenerator().getProjectJarManager()
+		if (mcreator.getGenerator().getProjectJarManager() != null) {
+			List<LibraryInfo> libraryInfos = mcreator.getGenerator().getProjectJarManager()
 					.getClassFileSources();
 			for (LibraryInfo libraryInfo : libraryInfos) {
 				File libraryFile = new File(libraryInfo.getLocationAsString());
@@ -415,7 +415,7 @@ public class ProjectBrowser extends JPanel {
 			if (node.getUserObject() instanceof String) {
 				String tsi = (String) node.getUserObject();
 				a.setText(tsi);
-				if (tsi.equals(mcreator.getWorkspace().getWorkspaceSettings().getModName()))
+				if (tsi.equals(mcreator.getWorkspaceSettings().getModName()))
 					a.setIcon(UIRES.get("16px.package.gif"));
 				else if (tsi.equals("Source (Gradle)"))
 					a.setIcon(UIRES.get("16px.mod.png"));

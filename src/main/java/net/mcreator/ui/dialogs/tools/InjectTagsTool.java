@@ -166,8 +166,7 @@ public class InjectTagsTool {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.tag"),
 				e -> open(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
-				GeneratorConfiguration gc = actionRegistry.getMCreator().getWorkspace().getGenerator()
-						.getGeneratorConfiguration();
+				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
 				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TAG)
 						!= GeneratorStats.CoverageStatus.NONE;
 			}

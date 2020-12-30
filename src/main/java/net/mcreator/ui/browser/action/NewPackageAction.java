@@ -35,7 +35,7 @@ public class NewPackageAction extends BasicAction {
 							+ "All package names start from default package declaration!", "Package name",
 					JOptionPane.QUESTION_MESSAGE);
 			if (packagein != null) {
-				new File(actionRegistry.getMCreator().getWorkspace().getGenerator().getSourceRoot(),
+				new File(actionRegistry.getMCreator().getGenerator().getSourceRoot(),
 						packagein.replace(".", "/")).mkdirs();
 				actionRegistry.getMCreator().getProjectBrowser().reloadTree();
 			}

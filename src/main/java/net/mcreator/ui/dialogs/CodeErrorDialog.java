@@ -62,14 +62,14 @@ public class CodeErrorDialog {
 		boolean moddefinitionfileerrors = false;
 
 		for (File problematicFile : problematicFiles) {
-			ModElement modElementWithError = mcreator.getWorkspace().getGenerator()
+			ModElement modElementWithError = mcreator.getGenerator()
 					.getModElementThisFileBelongsTo(problematicFile);
 			if (modElementWithError != null) {
 				problematicMods.add(modElementWithError);
 				modElementWithError.setCompiles(false);
 				mcreator.getWorkspace().updateModElement(modElementWithError);
 			} else if (FileIO.isFileOnFileList(
-					mcreator.getWorkspace().getGenerator().getModBaseGeneratorTemplatesList(false).stream()
+					mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).stream()
 							.map(GeneratorTemplate::getFile).collect(Collectors.toList()), problematicFile)) {
 				moddefinitionfileerrors = true;
 			} else {

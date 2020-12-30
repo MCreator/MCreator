@@ -32,7 +32,7 @@ public class ProjectFileOpener {
 	public static CodeEditorView openCodeFile(MCreator mcreator, File file) {
 		if (file.isFile()) {
 			CodeEditorView cev = new CodeEditorView(mcreator, file);
-			ModElement owner = mcreator.getWorkspace().getGenerator().getModElementThisFileBelongsTo(file);
+			ModElement owner = mcreator.getGenerator().getModElementThisFileBelongsTo(file);
 			if (owner != null)
 				cev.setFileOwnerModElement(owner);
 			return (CodeEditorView) cev.showView();

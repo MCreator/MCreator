@@ -523,7 +523,7 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 
 	private boolean isVCSPathThisFile(Workspace workspace, String vcsPath, File file) throws IOException {
 		return file.getCanonicalPath()
-				.equals(new File(workspace.getFolderManager().getWorkspaceFolder(), vcsPath).getCanonicalPath());
+				.equals(new File(workspace.getWorkspaceFolder(), vcsPath).getCanonicalPath());
 	}
 
 	private void mergeNormalFile(Workspace workspace, FileSyncHandle fileSyncHandle, MergeHandle<?> mergeHandle) {

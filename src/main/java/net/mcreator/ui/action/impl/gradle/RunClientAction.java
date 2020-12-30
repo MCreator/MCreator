@@ -37,20 +37,20 @@ public class RunClientAction extends GradleAction {
 			actionRegistry.getMCreator().getGradleConsole()
 					.markRunning(); // so console gets locked while we generate code already
 			try {
-				actionRegistry.getMCreator().getWorkspace().getGenerator().runResourceSetupTasks();
-				actionRegistry.getMCreator().getWorkspace().getGenerator().generateBase();
+				actionRegistry.getMCreator().getGenerator().runResourceSetupTasks();
+				actionRegistry.getMCreator().getGenerator().generateBase();
 
 				if (PreferencesManager.PREFERENCES.gradle.passLangToMinecraft)
 					MinecraftOptionsUtils
 							.setLangTo(actionRegistry.getMCreator().getWorkspace(), L10N.getLocaleString());
 
-				if (actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorConfiguration()
+				if (actionRegistry.getMCreator().getGeneratorConfiguration()
 						.getGradleTaskFor("run_client").equals("@bedrock_run_client")) {
 					BedrockUtils
 							.reinstallAddon(actionRegistry.getMCreator(), actionRegistry.getMCreator().getWorkspace());
 				} else {
 					SwingUtilities.invokeLater(() -> actionRegistry.getMCreator().getGradleConsole()
-							.exec(actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorConfiguration()
+							.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
 									.getGradleTaskFor("run_client")));
 				}
 			} catch (Exception e) { // if something fails, we still need to free the gradle console
@@ -61,7 +61,7 @@ public class RunClientAction extends GradleAction {
 	}
 
 	@Override public boolean isEnabled() {
-		return actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorConfiguration()
+		return actionRegistry.getMCreator().getGeneratorConfiguration()
 				.getGradleTaskFor("run_client") != null && super.isEnabled();
 	}
 

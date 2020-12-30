@@ -95,7 +95,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 								+ "<br>NOTE: If you use them anywhere, they won't spawn anymore!", "Confirmation",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (n == 0) {
-					files.forEach(workspacePanel.getMcreator().getWorkspace().getFolderManager()::removeStructure);
+					files.forEach(workspacePanel.getMcreator().getFolderManager()::removeStructure);
 					reloadElements();
 				}
 			}
@@ -108,13 +108,13 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 
 	}
 
-	public void reloadElements() {
+	@Override public void reloadElements() {
 		listmodel.removeAllElements();
-		workspacePanel.getMcreator().getWorkspace().getFolderManager().getStructureList().forEach(listmodel::addElement);
+		workspacePanel.getMcreator().getFolderManager().getStructureList().forEach(listmodel::addElement);
 		refilterElements();
 	}
 
-	public void refilterElements() {
+	@Override public void refilterElements() {
 		listmodel.refilter();
 	}
 

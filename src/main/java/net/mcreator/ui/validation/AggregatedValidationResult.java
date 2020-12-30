@@ -41,7 +41,7 @@ public class AggregatedValidationResult extends ValidationGroup {
 		this.validationGroups.addAll(validationGroups);
 	}
 
-	public <T extends JComponent & IValidable> void addValidationElement(T validable) {
+	@Override public <T extends JComponent & IValidable> void addValidationElement(T validable) {
 		validationElements.add(validable);
 	}
 

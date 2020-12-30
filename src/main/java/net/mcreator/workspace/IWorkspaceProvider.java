@@ -19,11 +19,18 @@
 package net.mcreator.workspace;
 
 import net.mcreator.workspace.elements.ModElementManager;
+import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 
 public interface IWorkspaceProvider {
 
 	@NotNull Workspace getWorkspace();
+
+	default WorkspaceSettings getWorkspaceSettings() {
+		return getWorkspace().getWorkspaceSettings();
+	}
 
 	default WorkspaceFileManager getFileManager() {
 		return getWorkspace().getFileManager();
@@ -35,6 +42,10 @@ public interface IWorkspaceProvider {
 
 	default ModElementManager getModElementManager() {
 		return getWorkspace().getModElementManager();
+	}
+
+	default File getWorkspaceFolder() {
+		return getFolderManager().getWorkspaceFolder();
 	}
 
 }

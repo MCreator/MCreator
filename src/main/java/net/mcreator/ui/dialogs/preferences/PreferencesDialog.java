@@ -80,9 +80,9 @@ public class PreferencesDialog extends MCreatorDialog {
 		spne.setLeftComponent(new JScrollPane(sections));
 		spne.setContinuousLayout(true);
 		spne.setUI(new BasicSplitPaneUI() {
-			public BasicSplitPaneDivider createDefaultDivider() {
+			@Override public BasicSplitPaneDivider createDefaultDivider() {
 				return new BasicSplitPaneDivider(this) {
-					public void setBorder(Border b) {
+					@Override public void setBorder(Border b) {
 					}
 
 					@Override public void paint(Graphics g) {

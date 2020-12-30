@@ -109,12 +109,12 @@ public class ShareableZIPManager {
 
 			try {
 				if (excludeRunDir) {
-					ZipIO.zipDir(mcreator.getWorkspace().getFolderManager().getWorkspaceFolder().getAbsolutePath(),
+					ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(),
 							file.getAbsolutePath(), ".gradle/", ".mcreator/", "build/", "gradle/", "run/",
 							"#build.gradle", "#gradlew", "#gradlew.bat", "#mcreator.gradle", ".git/", "#.classpath",
 							"#.project", ".idea/", ".settings/");
 				} else {
-					ZipIO.zipDir(mcreator.getWorkspace().getFolderManager().getWorkspaceFolder().getAbsolutePath(),
+					ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(),
 							file.getAbsolutePath(), ".gradle/", ".mcreator/", "build/", "gradle/", "#build.gradle",
 							"#gradlew", "#gradlew.bat", "#mcreator.gradle", ".git/", "#.classpath", "#.project",
 							".idea/", ".settings/");

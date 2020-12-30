@@ -42,7 +42,7 @@ public class ReloadGradleProjectAction extends GradleAction {
 
 					new Thread(() -> {
 						try {
-							actionRegistry.getMCreator().getWorkspace().getGenerator().reloadGradleCaches();
+							actionRegistry.getMCreator().getGenerator().reloadGradleCaches();
 							p3.ok();
 							progressDialog.hideAll();
 						} catch (Exception e) {

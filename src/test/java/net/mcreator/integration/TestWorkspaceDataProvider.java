@@ -558,7 +558,7 @@ public class TestWorkspaceDataProvider {
 			mob.hasAI = _true;
 			mob.aiBase = "(none)";
 			if(!emptyLists) {
-				Set<String> aiTasks = modElement.getWorkspace().getGenerator().getGeneratorStats().getGeneratorAITasks();
+				Set<String> aiTasks = modElement.getGeneratorStats().getGeneratorAITasks();
 				if (aiTasks.contains("wander") && aiTasks.contains("look_around")
 						&& aiTasks.contains("panic_when_attacked") && aiTasks.contains("attack_action")) {
 					mob.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\">"

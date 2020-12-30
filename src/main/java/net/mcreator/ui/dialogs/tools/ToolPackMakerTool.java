@@ -134,7 +134,7 @@ public class ToolPackMakerTool {
 						.get(new ResourcePointer("templates/textures/texturemaker/tool_pickaxe.png")), color, true));
 		String pickaxeTextureName = (name + "_pickaxe").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(pickaxe.getImage()),
-				mcreator.getWorkspace().getFolderManager()
+				mcreator.getFolderManager()
 						.getItemTextureFile(RegistryNameFixer.fix(pickaxeTextureName)));
 
 		// then we generate axe texture
@@ -144,7 +144,7 @@ public class ToolPackMakerTool {
 				color, true));
 		String axeTextureName = (name + "_axe").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
-				mcreator.getWorkspace().getFolderManager().getItemTextureFile(RegistryNameFixer.fix(axeTextureName)));
+				mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(axeTextureName)));
 
 		// then we generate sword texture
 		ImageIcon sword = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE
@@ -153,7 +153,7 @@ public class ToolPackMakerTool {
 						.get(new ResourcePointer("templates/textures/texturemaker/tool_sword.png")), color, true));
 		String swordTextureName = (name + "_sword").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(sword.getImage()),
-				mcreator.getWorkspace().getFolderManager().getItemTextureFile(RegistryNameFixer.fix(swordTextureName)));
+				mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(swordTextureName)));
 
 		// then we generate sword texture
 		ImageIcon shovel = ImageUtils.drawOver(ImageUtils.drawOver(ImageMakerTexturesCache.CACHE
@@ -164,7 +164,7 @@ public class ToolPackMakerTool {
 						.get(new ResourcePointer("templates/textures/texturemaker/tool_shovel_top.png")), color, true));
 		String shovelTextureName = (name + "_shovel").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(shovel.getImage()),
-				mcreator.getWorkspace().getFolderManager()
+				mcreator.getFolderManager()
 						.getItemTextureFile(RegistryNameFixer.fix(shovelTextureName)));
 
 		// then we generate hoe texture
@@ -174,7 +174,7 @@ public class ToolPackMakerTool {
 				color, true));
 		String hoeTextureName = (name + "_hoe").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hoe.getImage()),
-				mcreator.getWorkspace().getFolderManager().getItemTextureFile(RegistryNameFixer.fix(hoeTextureName)));
+				mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(hoeTextureName)));
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool pickaxeTool = (Tool) ModElementTypeRegistry.REGISTRY.get(ModElementType.TOOL)
@@ -238,10 +238,10 @@ public class ToolPackMakerTool {
 		pickaxeRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		pickaxeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		pickaxeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Pickaxe");
-		mcreator.getWorkspace().getModElementManager().storeModElementPicture(pickaxeRecipe);
+		mcreator.getModElementManager().storeModElementPicture(pickaxeRecipe);
 		mcreator.getWorkspace().addModElement(pickaxeRecipe.getModElement());
-		mcreator.getWorkspace().getGenerator().generateElement(pickaxeRecipe);
-		mcreator.getWorkspace().getModElementManager().storeModElement(pickaxeRecipe);
+		mcreator.getGenerator().generateElement(pickaxeRecipe);
+		mcreator.getModElementManager().storeModElement(pickaxeRecipe);
 
 		Recipe axeRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
 				.getModElement(mcreator, new ModElement(workspace, name + "AxeRecipe", ModElementType.RECIPE), false)
@@ -252,10 +252,10 @@ public class ToolPackMakerTool {
 		axeRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		axeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		axeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Axe");
-		mcreator.getWorkspace().getModElementManager().storeModElementPicture(axeRecipe);
+		mcreator.getModElementManager().storeModElementPicture(axeRecipe);
 		mcreator.getWorkspace().addModElement(axeRecipe.getModElement());
-		mcreator.getWorkspace().getGenerator().generateElement(axeRecipe);
-		mcreator.getWorkspace().getModElementManager().storeModElement(axeRecipe);
+		mcreator.getGenerator().generateElement(axeRecipe);
+		mcreator.getModElementManager().storeModElement(axeRecipe);
 
 		Recipe swordRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
 				.getModElement(mcreator, new ModElement(workspace, name + "SwordRecipe", ModElementType.RECIPE), false)
@@ -264,10 +264,10 @@ public class ToolPackMakerTool {
 		swordRecipe.recipeSlots[4] = base;
 		swordRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		swordRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Sword");
-		mcreator.getWorkspace().getModElementManager().storeModElementPicture(swordRecipe);
+		mcreator.getModElementManager().storeModElementPicture(swordRecipe);
 		mcreator.getWorkspace().addModElement(swordRecipe.getModElement());
-		mcreator.getWorkspace().getGenerator().generateElement(swordRecipe);
-		mcreator.getWorkspace().getModElementManager().storeModElement(swordRecipe);
+		mcreator.getGenerator().generateElement(swordRecipe);
+		mcreator.getModElementManager().storeModElement(swordRecipe);
 
 		Recipe shovelRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
 				.getModElement(mcreator, new ModElement(workspace, name + "ShovelRecipe", ModElementType.RECIPE), false)
@@ -276,10 +276,10 @@ public class ToolPackMakerTool {
 		shovelRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		shovelRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		shovelRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Shovel");
-		mcreator.getWorkspace().getModElementManager().storeModElementPicture(shovelRecipe);
+		mcreator.getModElementManager().storeModElementPicture(shovelRecipe);
 		mcreator.getWorkspace().addModElement(shovelRecipe.getModElement());
-		mcreator.getWorkspace().getGenerator().generateElement(shovelRecipe);
-		mcreator.getWorkspace().getModElementManager().storeModElement(shovelRecipe);
+		mcreator.getGenerator().generateElement(shovelRecipe);
+		mcreator.getModElementManager().storeModElement(shovelRecipe);
 
 		Recipe hoeRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
 				.getModElement(mcreator, new ModElement(workspace, name + "HoeRecipe", ModElementType.RECIPE), false)
@@ -289,10 +289,10 @@ public class ToolPackMakerTool {
 		hoeRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		hoeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		hoeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Hoe");
-		mcreator.getWorkspace().getModElementManager().storeModElementPicture(hoeRecipe);
+		mcreator.getModElementManager().storeModElementPicture(hoeRecipe);
 		mcreator.getWorkspace().addModElement(hoeRecipe.getModElement());
-		mcreator.getWorkspace().getGenerator().generateElement(hoeRecipe);
-		mcreator.getWorkspace().getModElementManager().storeModElement(hoeRecipe);
+		mcreator.getGenerator().generateElement(hoeRecipe);
+		mcreator.getModElementManager().storeModElement(hoeRecipe);
 	}
 
 	private static void setParametersBasedOnFactorAndAddElement(MCreator mcreator, double factor, Tool tool) {
@@ -301,18 +301,17 @@ public class ToolPackMakerTool {
 		tool.enchantability = (int) Math.round(14 * factor);
 		tool.damageVsEntity = (double) Math.round(2.0f * factor);
 		tool.usageCount = (int) Math.round(250 * Math.pow(factor, 1.4));
-		mcreator.getWorkspace().getModElementManager().storeModElementPicture(tool);
+		mcreator.getModElementManager().storeModElementPicture(tool);
 		mcreator.getWorkspace().addModElement(tool.getModElement());
-		mcreator.getWorkspace().getGenerator().generateElement(tool);
-		mcreator.getWorkspace().getModElementManager().storeModElement(tool);
+		mcreator.getGenerator().generateElement(tool);
+		mcreator.getModElementManager().storeModElement(tool);
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.tool"),
 				e -> open(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
-				GeneratorConfiguration gc = actionRegistry.getMCreator().getWorkspace().getGenerator()
-						.getGeneratorConfiguration();
+				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
 				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
 						!= GeneratorStats.CoverageStatus.NONE
 						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TOOL)

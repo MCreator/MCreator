@@ -73,7 +73,7 @@ public class MainMenuBar extends JMenuBar {
 			int number = 0;
 			for (WorkspaceSelector.RecentWorkspaceEntry recentWorkspaceEntry : mcreator.getApplication()
 					.getRecentWorkspaces()) {
-				if (recentWorkspaceEntry.getPath().equals(mcreator.getWorkspace().getFileManager().getWorkspaceFile()))
+				if (recentWorkspaceEntry.getPath().equals(mcreator.getFileManager().getWorkspaceFile()))
 					continue;
 
 				JMenuItem recent = new JMenuItem(recentWorkspaceEntry.getName());

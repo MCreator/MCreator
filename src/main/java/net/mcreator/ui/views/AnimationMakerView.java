@@ -345,11 +345,11 @@ public class AnimationMakerView extends ViewBase {
 			File exportFile;
 			namec = RegistryNameFixer.fix(namec);
 			if (n == 0)
-				exportFile = mcreator.getWorkspace().getFolderManager().getBlockTextureFile(namec);
+				exportFile = mcreator.getFolderManager().getBlockTextureFile(namec);
 			else if (n == 1)
-				exportFile = mcreator.getWorkspace().getFolderManager().getItemTextureFile(namec);
+				exportFile = mcreator.getFolderManager().getItemTextureFile(namec);
 			else
-				exportFile = mcreator.getWorkspace().getFolderManager().getOtherTextureFile(namec);
+				exportFile = mcreator.getFolderManager().getOtherTextureFile(namec);
 
 			if (exportFile.isFile()) {
 				JOptionPane

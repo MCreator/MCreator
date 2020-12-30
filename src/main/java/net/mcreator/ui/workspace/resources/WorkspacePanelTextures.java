@@ -257,7 +257,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		return new JComponentWithList<>(PanelUtils.gridElements(1, 1, listElement), listElement);
 	}
 
-	public void reloadElements() {
+	@Override public void reloadElements() {
 		new Thread(() -> {
 			List<File> selectedb = listb.getList().getSelectedValuesList();
 			List<File> selectedi = listi.getList().getSelectedValuesList();
@@ -269,13 +269,13 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			FilterModel newdmla = new FilterModel();
 			FilterModel newdmlo = new FilterModel();
 
-			workspacePanel.getMcreator().getWorkspace().getFolderManager().getBlockTexturesList()
+			workspacePanel.getMcreator().getFolderManager().getBlockTexturesList()
 					.forEach(newdmlb::addElement);
-			workspacePanel.getMcreator().getWorkspace().getFolderManager().getItemTexturesList()
+			workspacePanel.getMcreator().getFolderManager().getItemTexturesList()
 					.forEach(newdmli::addElement);
-			workspacePanel.getMcreator().getWorkspace().getFolderManager().getArmorTexturesList()
+			workspacePanel.getMcreator().getFolderManager().getArmorTexturesList()
 					.forEach(newdmla::addElement);
-			workspacePanel.getMcreator().getWorkspace().getFolderManager().getOtherTexturesList()
+			workspacePanel.getMcreator().getFolderManager().getOtherTexturesList()
 					.forEach(newdmlo::addElement);
 
 			SwingUtilities.invokeLater(() -> {
@@ -296,7 +296,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		}).start();
 	}
 
-	public void refilterElements() {
+	@Override public void refilterElements() {
 		dmli.refilter();
 		dmlb.refilter();
 		dmla.refilter();

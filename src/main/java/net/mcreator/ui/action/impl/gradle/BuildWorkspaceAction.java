@@ -34,7 +34,7 @@ public class BuildWorkspaceAction extends GradleAction {
 			actionRegistry.getMCreator().getGradleConsole()
 					.markRunning(); // so console gets locked while we generate code already
 			try {
-				actionRegistry.getMCreator().getWorkspace().getGenerator().generateBase();
+				actionRegistry.getMCreator().getGenerator().generateBase();
 				SwingUtilities.invokeLater(() -> actionRegistry.getMCreator().getGradleConsole().exec("build"));
 			} catch (Exception e) { // if something fails, we still need to free the gradle console
 				LOG.error(e.getMessage(), e);

@@ -102,7 +102,7 @@ public class ModElementUITest {
 	}
 
 	@Test public void testModElements() throws Exception {
-		LOG.info("Test workspace folder: " + workspace.getFolderManager().getWorkspaceFolder());
+		LOG.info("Test workspace folder: " + workspace.getWorkspaceFolder());
 
 		long rgenseed = System.currentTimeMillis();
 		Random random = new Random(rgenseed);

@@ -39,16 +39,16 @@ class AddFileDropdown extends JPopupMenu {
 					if (file.isFile())
 						file = file.getParentFile();
 
-					if (projectBrowser.mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
+					if (projectBrowser.mcreator.getGeneratorConfiguration()
 							.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA) {
 						if (file.isDirectory() && file.getCanonicalPath().startsWith(
-								projectBrowser.mcreator.getWorkspace().getGenerator().getSourceRoot()
+								projectBrowser.mcreator.getGenerator().getSourceRoot()
 										.getCanonicalPath())) {
 							add(projectBrowser.mcreator.actionRegistry.newClass);
 							addSeparator();
 							add(projectBrowser.mcreator.actionRegistry.newPackage);
 						} else if (file.isDirectory() && (file.getCanonicalPath().startsWith(
-								projectBrowser.mcreator.getWorkspace().getGenerator().getResourceRoot()
+								projectBrowser.mcreator.getGenerator().getResourceRoot()
 										.getCanonicalPath()))) {
 							add(projectBrowser.mcreator.actionRegistry.newJson);
 							add(projectBrowser.mcreator.actionRegistry.newImage);
@@ -57,9 +57,9 @@ class AddFileDropdown extends JPopupMenu {
 						}
 					} else {
 						if (file.isDirectory() && file.getCanonicalPath().startsWith(
-								projectBrowser.mcreator.getWorkspace().getGenerator().getSourceRoot()
+								projectBrowser.mcreator.getGenerator().getSourceRoot()
 										.getCanonicalPath()) || file.isDirectory() && (file.getCanonicalPath()
-								.startsWith(projectBrowser.mcreator.getWorkspace().getGenerator().getResourceRoot()
+								.startsWith(projectBrowser.mcreator.getGenerator().getResourceRoot()
 										.getCanonicalPath()))) {
 							add(projectBrowser.mcreator.actionRegistry.newJson);
 							add(projectBrowser.mcreator.actionRegistry.newImage);

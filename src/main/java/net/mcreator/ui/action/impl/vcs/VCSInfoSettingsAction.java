@@ -44,7 +44,7 @@ public class VCSInfoSettingsAction extends VCSAction {
 			if (newInfo != null) {
 				actionRegistry.getMCreator().getWorkspace().getVCS().setInfo(newInfo);
 				VCSInfo.saveToFile(newInfo,
-						new File(actionRegistry.getMCreator().getWorkspace().getFolderManager().getWorkspaceCacheDir(),
+						new File(actionRegistry.getMCreator().getFolderManager().getWorkspaceCacheDir(),
 								"vcsInfo"));
 			}
 		});

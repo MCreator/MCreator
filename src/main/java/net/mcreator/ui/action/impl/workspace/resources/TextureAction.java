@@ -31,7 +31,7 @@ public class TextureAction extends BasicAction {
 	}
 
 	@Override public boolean isEnabled() {
-		return actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+		return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo()
 				.get("textures") != GeneratorStats.CoverageStatus.NONE;
 	}
 

@@ -91,7 +91,7 @@ import java.util.Map;
 
 	@Override public BufferedImage generateModElementPicture() {
 		return ImageUtils
-				.resizeAndCrop(getModElement().getWorkspace().getFolderManager().getItemImageIcon(texture).getImage(),
+				.resizeAndCrop(getModElement().getFolderManager().getItemImageIcon(texture).getImage(),
 						32);
 	}
 

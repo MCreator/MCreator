@@ -194,17 +194,17 @@ import java.util.Map;
 	@Override public BufferedImage generateModElementPicture() {
 		if (renderType() == 10 && !textureTop.equals("") && !textureFront.equals("") && !textureLeft.equals("")) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(
-					getModElement().getWorkspace().getFolderManager().getBlockImageIcon(textureTop).getImage(),
-					getModElement().getWorkspace().getFolderManager().getBlockImageIcon(textureLeft).getImage(),
-					getModElement().getWorkspace().getFolderManager().getBlockImageIcon(textureFront).getImage());
+					getModElement().getFolderManager().getBlockImageIcon(textureTop).getImage(),
+					getModElement().getFolderManager().getBlockImageIcon(textureLeft).getImage(),
+					getModElement().getFolderManager().getBlockImageIcon(textureFront).getImage());
 		} else if (renderType() == 11 && !texture.equals("")) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(
-					getModElement().getWorkspace().getFolderManager().getBlockImageIcon(texture).getImage(),
-					getModElement().getWorkspace().getFolderManager().getBlockImageIcon(texture).getImage(),
-					getModElement().getWorkspace().getFolderManager().getBlockImageIcon(texture).getImage());
+					getModElement().getFolderManager().getBlockImageIcon(texture).getImage(),
+					getModElement().getFolderManager().getBlockImageIcon(texture).getImage(),
+					getModElement().getFolderManager().getBlockImageIcon(texture).getImage());
 		} else {
 			return ImageUtils.resizeAndCrop(
-					getModElement().getWorkspace().getFolderManager().getBlockImageIcon(texture).getImage(), 32);
+					getModElement().getFolderManager().getBlockImageIcon(texture).getImage(), 32);
 		}
 	}
 

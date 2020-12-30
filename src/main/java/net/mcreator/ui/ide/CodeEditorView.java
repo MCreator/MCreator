@@ -138,7 +138,7 @@ public class CodeEditorView extends ViewBase {
 		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 
 		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, fileWorkingOn,
-				fa.getWorkspace().getFolderManager().getWorkspaceFolder());
+				fa.getWorkspaceFolder());
 
 		te.addFocusListener(new FocusAdapter() {
 			@Override public void focusGained(FocusEvent focusEvent) {
@@ -258,9 +258,9 @@ public class CodeEditorView extends ViewBase {
 		spne.setContinuousLayout(true);
 
 		spne.setUI(new BasicSplitPaneUI() {
-			public BasicSplitPaneDivider createDefaultDivider() {
+			@Override public BasicSplitPaneDivider createDefaultDivider() {
 				return new BasicSplitPaneDivider(this) {
-					public void setBorder(Border b) {
+					@Override public void setBorder(Border b) {
 					}
 
 					@Override public void paint(Graphics g) {
@@ -384,7 +384,7 @@ public class CodeEditorView extends ViewBase {
 			try {
 				Field field = jls.getClass().getDeclaredField("jarManager");
 				field.setAccessible(true);
-				field.set(jls, mcreator.getWorkspace().getGenerator().getProjectJarManager());
+				field.set(jls, mcreator.getGenerator().getProjectJarManager());
 			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
 				LOG.error(e1.getMessage(), e1);
 			}

@@ -30,4 +30,9 @@ public interface IGeneratorProvider extends IWorkspaceProvider {
 		return getGenerator().getGeneratorConfiguration();
 	}
 
+	default GeneratorStats getGeneratorStats() {
+		return getGeneratorConfiguration().getGeneratorStats();
+	}
+
+
 }

@@ -43,28 +43,28 @@ public class WorkspacePanelResources extends JTabbedPane {
 		this.workspacePanelStructures = new WorkspacePanelStructures(workspacePanel);
 		this.workspacePanelScreenshots = new WorkspacePanelScreenshots(workspacePanel);
 
-		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo()
 				.get("textures") != GeneratorStats.CoverageStatus.NONE)
 			addTab(L10N.t("workspace.resources.tab.textures"), workspacePanelTextures);
 
-		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo()
 				.get("model_json") != GeneratorStats.CoverageStatus.NONE ||
-				workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+				workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo()
 						.get("model_java") != GeneratorStats.CoverageStatus.NONE ||
-				workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+				workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo()
 						.get("model_obj") != GeneratorStats.CoverageStatus.NONE)
 			addTab(L10N.t("workspace.resources.tab.3d_models"), workspacePanelModels);
 
-		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo()
 				.get("sounds") != GeneratorStats.CoverageStatus.NONE)
 			addTab(L10N.t("workspace.resources.tab.sounds"), workspacePanelSounds);
 
-		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo()
 				.get("structures") != GeneratorStats.CoverageStatus.NONE)
 			addTab(L10N.t("workspace.resources.tab.structures"), workspacePanelStructures);
 
-		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorConfiguration()
-				.getGradleTaskFor("run_client") != null && !workspacePanel.getMcreator().getWorkspace().getGenerator()
+		if (workspacePanel.getMcreator().getGeneratorConfiguration()
+				.getGradleTaskFor("run_client") != null && !workspacePanel.getMcreator().getGenerator()
 				.getGeneratorConfiguration().getGradleTaskFor("run_client").contains("@"))
 			addTab(L10N.t("workspace.resources.tab.screenshots"), workspacePanelScreenshots);
 
@@ -73,7 +73,7 @@ public class WorkspacePanelResources extends JTabbedPane {
 		}
 
 		setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
-			protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
+			@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 			}
 		});
 

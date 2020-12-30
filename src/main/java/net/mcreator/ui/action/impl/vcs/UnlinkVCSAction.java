@@ -35,7 +35,7 @@ public class UnlinkVCSAction extends VCSAction {
 			if (n == JOptionPane.YES_OPTION) {
 				Git git = actionRegistry.getMCreator().getWorkspace().getVCS().getGit();
 				FileIO.deleteDir(git.getRepository().getDirectory());
-				new File(actionRegistry.getMCreator().getWorkspace().getFolderManager().getWorkspaceCacheDir(),
+				new File(actionRegistry.getMCreator().getFolderManager().getWorkspaceCacheDir(),
 						"vcsInfo").delete();
 				actionRegistry.getMCreator().getWorkspace().setVCS(null);
 				actionRegistry.getActions().stream().filter(action -> action instanceof VCSAction)

@@ -103,7 +103,7 @@ public class GradleConsole extends JPanel {
 					ProjectFileOpener.openFileAtLine(ref, file, linenum);
 				} else { // we got FQDN instead
 					try {
-						ProjectJarManager jarManager = ref.getWorkspace().getGenerator().getProjectJarManager();
+						ProjectJarManager jarManager = ref.getGenerator().getProjectJarManager();
 						if (jarManager != null) {
 							DeclarationFinder.InClassPosition position = ClassFinder
 									.fqdnToInClassPosition(ref.getWorkspace(), fileurl, "mod.mcreator", jarManager);

@@ -126,7 +126,7 @@ public class DataListEntry {
 			}
 		}
 
-		return supportedGenerators.contains(workspace.getGenerator().getGeneratorConfiguration());
+		return supportedGenerators.contains(workspace.getGeneratorConfiguration());
 	}
 
 	public static class Null extends DataListEntry {

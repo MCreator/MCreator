@@ -44,7 +44,7 @@ public class ModTypeDropdown extends JPopupMenu {
 
 		List<Map.Entry<ModElementType, ModElementTypeRegistry.ModTypeRegistration<?>>> types = map.entrySet().stream()
 				.filter(entry ->
-						mcreator.getWorkspace().getGenerator().getGeneratorStats().getModElementTypeCoverageInfo()
+						mcreator.getGeneratorStats().getModElementTypeCoverageInfo()
 								.get(entry.getKey()) != GeneratorStats.CoverageStatus.NONE)
 				.collect(Collectors.toList());
 

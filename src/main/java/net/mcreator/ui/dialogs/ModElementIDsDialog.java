@@ -77,7 +77,7 @@ public class ModElementIDsDialog {
 		Map<Integer, JSpinner> idspinners = new HashMap<>();
 
 		if (!modElement.getIDMap().isEmpty()) {
-			int offset = mcreator.getWorkspace().getGenerator()
+			int offset = mcreator.getGenerator()
 					.getStartIDFor(modElement.getType().getBaseType().name().toLowerCase(Locale.ENGLISH));
 			if (offset != -1) {
 				ids.add("North", PanelUtils.maxMargin(
@@ -139,11 +139,11 @@ public class ModElementIDsDialog {
 				}
 			}
 
-			mcreator.getWorkspace().getGenerator().removeElementFilesAndLangKeys(
+			mcreator.getGenerator().removeElementFilesAndLangKeys(
 					modElement); // we remove current files as new ones will be made for the new registry name
 			modElement.setRegistryName(registryName.getText()); // set new name
 			GeneratableElement generatableElement = modElement.getGeneratableElement();
-			mcreator.getWorkspace().getGenerator().generateElement(
+			mcreator.getGenerator().generateElement(
 					generatableElement); // regenerate mod element code to use new registry id and to regenerate resource files, ...
 
 			if (regenerateCode) {

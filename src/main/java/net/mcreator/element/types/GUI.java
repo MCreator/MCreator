@@ -78,7 +78,7 @@ import java.util.List;
 	}
 
 	@Override public void finalizeModElementGeneration() {
-		File guiTextureFile = getModElement().getWorkspace().getFolderManager()
+		File guiTextureFile = getModElement().getFolderManager()
 				.getOtherTextureFile(getModElement().getRegistryName());
 
 		if (renderBgLayer) {

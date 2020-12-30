@@ -243,7 +243,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 	private void regenerateAITasks() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
-				mcreator.getWorkspace().getGenerator().getGeneratorStats().getGeneratorAITasks());
+				mcreator.getGeneratorStats().getGeneratorAITasks());
 
 		BlocklyToAITasks blocklyToJava;
 		try {
@@ -448,11 +448,11 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			mobModelTexture.removeAllItems();
 			mobModelTexture.addItem("");
-			mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
+			mcreator.getFolderManager().getOtherTexturesList()
 					.forEach(el -> mobModelTexture.addItem(el.getName()));
 			mobModelGlowTexture.removeAllItems();
 			mobModelGlowTexture.addItem("");
-			mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
+			mcreator.getFolderManager().getOtherTexturesList()
 					.forEach(el -> mobModelGlowTexture.addItem(el.getName()));
 		});
 
@@ -831,11 +831,11 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		spawningCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModelGlowTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),

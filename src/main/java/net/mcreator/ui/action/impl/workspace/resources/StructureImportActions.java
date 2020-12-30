@@ -46,18 +46,18 @@ public class StructureImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo()
 					.get("structures") != GeneratorStats.CoverageStatus.NONE;
 		}
 	}
 
 	public static void importStructure(MCreator mcreator, File[] schs) {
 		Arrays.stream(schs).forEach(sch -> FileIO.copyFile(sch,
-				new File(mcreator.getWorkspace().getFolderManager().getStructuresDir(),
+				new File(mcreator.getFolderManager().getStructuresDir(),
 						Objects.requireNonNull(RegistryNameFixer.fix(sch.getName())))));
 		mcreator.mv.resourcesPan.workspacePanelStructures.reloadElements();
 		if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
-			((ModElementGUI) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
+			((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
 	}
 
 	public static class ImportStructureFromMinecraft extends BasicAction {
@@ -65,7 +65,7 @@ public class StructureImportActions {
 			super(actionRegistry, L10N.t("action.workspace.resources.import_structure_from_minecraft"), actionEvent -> {
 				List<Structure> mcstucts = new ArrayList<>();
 				File[] saves = new File(
-						actionRegistry.getMCreator().getWorkspace().getFolderManager().getWorkspaceFolder(),
+						actionRegistry.getMCreator().getWorkspaceFolder(),
 						"run/saves/").listFiles();
 				for (File save : saves != null ? saves : new File[0]) {
 					if (save.isDirectory()) {
@@ -97,7 +97,7 @@ public class StructureImportActions {
 					File sch = selected.getFile();
 					if (sch.isFile()) {
 						FileIO.copyFile(sch, new File(
-								actionRegistry.getMCreator().getWorkspace().getFolderManager().getStructuresDir(),
+								actionRegistry.getMCreator().getFolderManager().getStructuresDir(),
 								Transliteration.transliterateString(sch.getName()).toLowerCase(Locale.ENGLISH)
 										.replace(" ", "_")));
 					}
@@ -110,7 +110,7 @@ public class StructureImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
+			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo()
 					.get("structures") != GeneratorStats.CoverageStatus.NONE;
 		}
 	}

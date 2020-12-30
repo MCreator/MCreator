@@ -64,10 +64,10 @@ public class BedrockUtils {
 				}
 
 				mcreator.getGradleConsole().exec("build", taskResult -> {
-					String exportFile = workspace.getGenerator().getGeneratorConfiguration()
+					String exportFile = workspace.getGeneratorConfiguration()
 							.getGradleTaskFor("export_file");
 
-					File addonFile = new File(workspace.getFolderManager().getWorkspaceFolder(), exportFile);
+					File addonFile = new File(workspace.getWorkspaceFolder(), exportFile);
 					if (addonFile.isFile()) {
 						try {
 							// stop running MC if any
