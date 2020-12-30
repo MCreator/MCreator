@@ -74,8 +74,8 @@ public class ModelImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo()
-					.get("model_java") != GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
+					!= GeneratorStats.CoverageStatus.NONE;
 		}
 	}
 
@@ -136,8 +136,7 @@ public class ModelImportActions {
 		if (finalModelCode == null)
 			finalModelCode = classJavaSource.toString();
 
-		if (new File(mcreator.getFolderManager().getModelsDir(), classJavaSource.getName() + ".java")
-				.exists()) {
+		if (new File(mcreator.getFolderManager().getModelsDir(), classJavaSource.getName() + ".java").exists()) {
 			JOptionPane.showMessageDialog(mcreator,
 					L10N.t("dialog.workspace.resources.import_java_model.model_already_exists.message",
 							classJavaSource.getName()),
@@ -147,8 +146,7 @@ public class ModelImportActions {
 		}
 		FileIO.writeStringToFile(finalModelCode.replace("setRotationAngles(f, f1, f2, f3, f4, f5);",
 				"setRotationAngles(f, f1, f2, f3, f4, f5, entity);"),
-				new File(mcreator.getFolderManager().getModelsDir(),
-						classJavaSource.getName() + ".java"));
+				new File(mcreator.getFolderManager().getModelsDir(), classJavaSource.getName() + ".java"));
 		mcreator.mv.resourcesPan.workspacePanelModels.reloadElements();
 		if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
 			((ModElementGUI) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
@@ -164,8 +162,8 @@ public class ModelImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo()
-					.get("model_json") != GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
+					!= GeneratorStats.CoverageStatus.NONE;
 		}
 	}
 
@@ -202,8 +200,8 @@ public class ModelImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo()
-					.get("model_obj") != GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
+					!= GeneratorStats.CoverageStatus.NONE;
 		}
 	}
 

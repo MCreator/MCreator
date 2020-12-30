@@ -269,14 +269,10 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			FilterModel newdmla = new FilterModel();
 			FilterModel newdmlo = new FilterModel();
 
-			workspacePanel.getMcreator().getFolderManager().getBlockTexturesList()
-					.forEach(newdmlb::addElement);
-			workspacePanel.getMcreator().getFolderManager().getItemTexturesList()
-					.forEach(newdmli::addElement);
-			workspacePanel.getMcreator().getFolderManager().getArmorTexturesList()
-					.forEach(newdmla::addElement);
-			workspacePanel.getMcreator().getFolderManager().getOtherTexturesList()
-					.forEach(newdmlo::addElement);
+			workspacePanel.getMcreator().getFolderManager().getBlockTexturesList().forEach(newdmlb::addElement);
+			workspacePanel.getMcreator().getFolderManager().getItemTexturesList().forEach(newdmli::addElement);
+			workspacePanel.getMcreator().getFolderManager().getArmorTexturesList().forEach(newdmla::addElement);
+			workspacePanel.getMcreator().getFolderManager().getOtherTexturesList().forEach(newdmlo::addElement);
 
 			SwingUtilities.invokeLater(() -> {
 				listb.getList().setModel(dmlb = newdmlb);

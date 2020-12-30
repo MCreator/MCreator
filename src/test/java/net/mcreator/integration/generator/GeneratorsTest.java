@@ -114,15 +114,14 @@ import static org.junit.Assert.fail;
 				GradleDaemonUtils.stopAllDaemons(workspace);
 
 				new MCreator(null, workspace).getGradleConsole()
-						.exec(workspace.getGeneratorConfiguration().getGradleTaskFor("setup_task"),
-								taskResult -> {
-									if (taskResult.getStatusByMCreator() == GradleErrorCodes.STATUS_OK) {
-										workspace.getGenerator().reloadGradleCaches();
-									} else {
-										fail("Gradle MDK setup failed!");
-									}
-									latch.countDown();
-								});
+						.exec(workspace.getGeneratorConfiguration().getGradleTaskFor("setup_task"), taskResult -> {
+							if (taskResult.getStatusByMCreator() == GradleErrorCodes.STATUS_OK) {
+								workspace.getGenerator().reloadGradleCaches();
+							} else {
+								fail("Gradle MDK setup failed!");
+							}
+							latch.countDown();
+						});
 				latch.await();
 			}
 

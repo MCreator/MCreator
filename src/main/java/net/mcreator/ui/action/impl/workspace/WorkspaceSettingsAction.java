@@ -62,10 +62,8 @@ public class WorkspaceSettingsAction extends GradleAction {
 			}
 
 			if (change.modidchanged) { // we need to refactor structures (modid in nbt files), change workspace file modid and reference in file manager
-				File originalWorkspaceFile = new File(
-						mcreator.getFileManager().getWorkspaceFile().getPath());
-				File newWorkspaceFile = new File(
-						mcreator.getFileManager().getWorkspaceFile().getParentFile().getPath(),
+				File originalWorkspaceFile = new File(mcreator.getFileManager().getWorkspaceFile().getPath());
+				File newWorkspaceFile = new File(mcreator.getFileManager().getWorkspaceFile().getParentFile().getPath(),
 						change.workspaceSettings.getModID() + ".mcreator");
 
 				// first save current workspace state
@@ -79,34 +77,28 @@ public class WorkspaceSettingsAction extends GradleAction {
 				originalWorkspaceFile.delete();
 
 				// refactor assets folder if it contains modid
-				if (mcreator.getGeneratorConfiguration().getModAssetsRoot() != null
-						&& mcreator.getGeneratorConfiguration().getModAssetsRoot()
-						.contains("@modid")) {
+				if (mcreator.getGeneratorConfiguration().getModAssetsRoot() != null && mcreator
+						.getGeneratorConfiguration().getModAssetsRoot().contains("@modid")) {
 					File originalAssetsFolder = new File(GeneratorTokens
 							.replaceTokens(mcreator.getWorkspace(), change.oldSettings,
-									mcreator.getGeneratorConfiguration()
-											.getModAssetsRoot()));
+									mcreator.getGeneratorConfiguration().getModAssetsRoot()));
 					File newAssetsFolder = new File(GeneratorTokens
 							.replaceTokens(mcreator.getWorkspace(), change.workspaceSettings,
-									mcreator.getGeneratorConfiguration()
-											.getModAssetsRoot()));
+									mcreator.getGeneratorConfiguration().getModAssetsRoot()));
 
 					FileIO.copyDirectory(originalAssetsFolder, newAssetsFolder);
 					FileIO.deleteDir(originalAssetsFolder);
 				}
 
 				// refactor data folder if it contains modid
-				if (mcreator.getGeneratorConfiguration().getModDataRoot() != null
-						&& mcreator.getGeneratorConfiguration().getModDataRoot()
-						.contains("@modid")) {
+				if (mcreator.getGeneratorConfiguration().getModDataRoot() != null && mcreator
+						.getGeneratorConfiguration().getModDataRoot().contains("@modid")) {
 					File originalDataFolder = new File(GeneratorTokens
 							.replaceTokens(mcreator.getWorkspace(), change.oldSettings,
-									mcreator.getGeneratorConfiguration()
-											.getModDataRoot()));
+									mcreator.getGeneratorConfiguration().getModDataRoot()));
 					File newDataFolder = new File(GeneratorTokens
 							.replaceTokens(mcreator.getWorkspace(), change.workspaceSettings,
-									mcreator.getGeneratorConfiguration()
-											.getModDataRoot()));
+									mcreator.getGeneratorConfiguration().getModDataRoot()));
 
 					FileIO.copyDirectory(originalDataFolder, newDataFolder);
 					FileIO.deleteDir(originalDataFolder);
@@ -124,8 +116,8 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 				// add new modid workspace to the recent workspaces so it does not get removed from the list
 				mcreator.getApplication().getWorkspaceSelector().addRecentWorkspace(
-						new WorkspaceSelector.RecentWorkspaceEntry(
-								mcreator.getWorkspaceSettings().getModName(), newWorkspaceFile));
+						new WorkspaceSelector.RecentWorkspaceEntry(mcreator.getWorkspaceSettings().getModName(),
+								newWorkspaceFile));
 			}
 
 			// handle change of generator in a different manner

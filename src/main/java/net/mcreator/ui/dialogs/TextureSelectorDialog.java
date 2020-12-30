@@ -63,7 +63,7 @@ public class TextureSelectorDialog extends MCreatorDialog {
 		setLocationRelativeTo(f);
 	}
 
-	class Render extends JLabel implements ListCellRenderer<ResourcePointer> {
+	static class Render extends JLabel implements ListCellRenderer<ResourcePointer> {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends ResourcePointer> list, ResourcePointer ma,
 				int index, boolean isSelected, boolean cellHasFocus) {

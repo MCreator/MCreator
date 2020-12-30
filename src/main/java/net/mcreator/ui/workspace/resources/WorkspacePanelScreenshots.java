@@ -131,8 +131,8 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		List<File> selected = modelList.getSelectedValuesList();
 
 		listmodel.removeAllElements();
-		File[] screenshots = new File(workspacePanel.getMcreator().getWorkspaceFolder(),
-				"run/screenshots/").listFiles();
+		File[] screenshots = new File(workspacePanel.getMcreator().getWorkspaceFolder(), "run/screenshots/")
+				.listFiles();
 		if (screenshots != null)
 			Arrays.stream(screenshots).forEach(listmodel::addElement);
 

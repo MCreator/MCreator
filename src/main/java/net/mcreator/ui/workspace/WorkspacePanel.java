@@ -501,8 +501,7 @@ public class WorkspacePanel extends JPanel {
 			bar.setVisible(false);
 		});
 
-		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("variables")
-				!= GeneratorStats.CoverageStatus.NONE)
+		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("variables") != GeneratorStats.CoverageStatus.NONE)
 			rotatablePanel.add(btt3);
 
 		btt6.setContentAreaFilled(false);
@@ -523,8 +522,7 @@ public class WorkspacePanel extends JPanel {
 			bar.setVisible(false);
 		});
 
-		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("i18n")
-				!= GeneratorStats.CoverageStatus.NONE)
+		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("i18n") != GeneratorStats.CoverageStatus.NONE)
 			rotatablePanel.add(btt6);
 
 		btt7.setContentAreaFilled(false);
@@ -620,8 +618,7 @@ public class WorkspacePanel extends JPanel {
 							list.getSelectedValuesList().forEach(re -> {
 								if (!buildNeeded[0]) {
 									GeneratableElement ge = re.getGeneratableElement();
-									if (ge != null && mcreator.getModElementManager()
-											.usesGeneratableElementJava(ge))
+									if (ge != null && mcreator.getModElementManager().usesGeneratableElementJava(ge))
 										buildNeeded[0] = true;
 								}
 
@@ -858,8 +855,7 @@ public class WorkspacePanel extends JPanel {
 						}
 
 						mcreator.getGenerator().generateElement(generatableElementDuplicate);
-						mcreator.getModElementManager()
-								.storeModElementPicture(generatableElementDuplicate);
+						mcreator.getModElementManager().storeModElementPicture(generatableElementDuplicate);
 						mcreator.getModElementManager().storeModElement(generatableElementDuplicate);
 
 						if (mu.getType() == ModElementType.CODE || mu.isCodeLocked()) {
@@ -924,8 +920,8 @@ public class WorkspacePanel extends JPanel {
 		if (list.getSelectedValue() != null) {
 			ModElement mu = list.getSelectedValue();
 
-			List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu)
-					.stream().map(GeneratorTemplate::getFile).collect(Collectors.toList());
+			List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu).stream()
+					.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 
 			if (modElementFiles.size() > 1) {
 				JPopupMenu codeDropdown = new JPopupMenu();
@@ -935,8 +931,7 @@ public class WorkspacePanel extends JPanel {
 				for (File modElementFile : modElementFiles) {
 					JMenuItem item = new JMenuItem(
 							"<html>" + modElementFile.getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
-									.getWorkspaceFolder().toPath()
-									.relativize(modElementFile.toPath()));
+									.getWorkspaceFolder().toPath().relativize(modElementFile.toPath()));
 					item.setIcon(FileIcons.getIconForFile(modElementFile));
 					item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 					item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
@@ -984,10 +979,10 @@ public class WorkspacePanel extends JPanel {
 	public void reloadElements() {
 		if (mcreator.getWorkspace() != null && mcreator.getWorkspaceSettings() != null) {
 			if (mcreator.getWorkspace().getModElements().size() > 0) {
-				elementsCount.setText(L10N.t("workspace.stats.current_workspace",
-						mcreator.getWorkspaceSettings().getModName(),
-						mcreator.getGenerator().getGeneratorName(),
-						mcreator.getWorkspace().getModElements().size()));
+				elementsCount.setText(
+						L10N.t("workspace.stats.current_workspace", mcreator.getWorkspaceSettings().getModName(),
+								mcreator.getGenerator().getGeneratorName(),
+								mcreator.getWorkspace().getModElements().size()));
 				mainpcl.show(mainp, "sp");
 
 				// reload list model partially in the background
@@ -1006,9 +1001,8 @@ public class WorkspacePanel extends JPanel {
 					});
 				}).start();
 			} else {
-				elementsCount.setText(
-						L10N.t("workspace.stats.empty", mcreator.getWorkspaceSettings().getModName(),
-								mcreator.getGenerator().getGeneratorName()));
+				elementsCount.setText(L10N.t("workspace.stats.empty", mcreator.getWorkspaceSettings().getModName(),
+						mcreator.getGenerator().getGeneratorName()));
 				mainpcl.show(mainp, "ep");
 			}
 

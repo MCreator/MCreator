@@ -37,9 +37,8 @@ public class CustomElementGUI extends ModElementGUI<CustomElement> {
 
 	public CustomElementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
-		List<File> modElementFiles = mcreator.getGenerator()
-				.getModElementGeneratorTemplatesList(modElement).stream().map(GeneratorTemplate::getFile)
-				.collect(Collectors.toList());
+		List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(modElement).stream()
+				.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 
 		File modElementFile = modElementFiles.get(0);
 

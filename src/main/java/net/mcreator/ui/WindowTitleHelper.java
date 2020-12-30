@@ -45,11 +45,11 @@ public class WindowTitleHelper {
 		}
 		String workspaceBaseName = mcreator.getWorkspaceSettings().getModName();
 		try {
-			return (workspaceBaseName + " [" + mcreator.getWorkspaceFolder()
-					.getCanonicalPath() + "] " + appendix + " - MCreator " + Launcher.version.getMajorString());
+			return (workspaceBaseName + " [" + mcreator.getWorkspaceFolder().getCanonicalPath() + "] " + appendix
+					+ " - MCreator " + Launcher.version.getMajorString());
 		} catch (IOException e) {
-			return (workspaceBaseName + " [" + mcreator.getWorkspaceFolder()
-					.getAbsolutePath() + "] " + appendix + " - MCreator " + Launcher.version.getMajorString());
+			return (workspaceBaseName + " [" + mcreator.getWorkspaceFolder().getAbsolutePath() + "] " + appendix
+					+ " - MCreator " + Launcher.version.getMajorString());
 		}
 	}
 

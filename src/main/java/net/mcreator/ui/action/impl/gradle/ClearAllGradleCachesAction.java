@@ -91,10 +91,10 @@ public class ClearAllGradleCachesAction extends GradleAction {
 
 				String tasks = "build";
 
-				if (mcreator.getGeneratorConfiguration().getGradleTaskFor("setup_task")
-						!= null) {
-					tasks = mcreator.getGeneratorConfiguration()
-							.getGradleTaskFor("setup_task") + (regenerateCodeFlag ? "" : " build");
+				if (mcreator.getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
+					tasks = mcreator.getGeneratorConfiguration().getGradleTaskFor("setup_task") + (regenerateCodeFlag ?
+							"" :
+							" build");
 				}
 
 				mcreator.getGradleConsole().exec(tasks, result -> {

@@ -105,8 +105,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			texture.removeAllItems();
 			texture.addItem("");
-			mcreator.getFolderManager().getOtherTexturesList()
-					.forEach(el -> texture.addItem(el.getName()));
+			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> texture.addItem(el.getName()));
 		});
 
 		spo2.add(HelpUtils

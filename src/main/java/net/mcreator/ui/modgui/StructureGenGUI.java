@@ -198,8 +198,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 		generateCondition.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(structureSelector,
-				mcreator.getFolderManager().getStructureList());
+		ComboBoxUtil.updateComboBoxContents(structureSelector, mcreator.getFolderManager().getStructureList());
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

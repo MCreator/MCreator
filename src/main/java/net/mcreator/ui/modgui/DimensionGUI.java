@@ -210,8 +210,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		enablePortal.setOpaque(false);
 
 		// Currently only Java based mods support dimension portals
-		enablePortal.setSelected(modElement.getGenerator()
-				.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage() ==  GeneratorFlavor.BaseLanguage.JAVA);
+		enablePortal.setSelected(
+				modElement.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+						== GeneratorFlavor.BaseLanguage.JAVA);
 
 		JPanel proper = new JPanel(new GridLayout(7, 2, 5, 2));
 

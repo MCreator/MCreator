@@ -197,16 +197,14 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						hasResultTriggerLabel.setIcon(UIRES.get("info"));
 					}
 
-					if (!mcreator.getGeneratorStats().getGeneratorTriggers()
-							.contains(trigger.getID())) {
+					if (!mcreator.getGeneratorStats().getGeneratorTriggers().contains(trigger.getID())) {
 						compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 								L10N.t("elementgui.procedure.global_trigger_unsupported")));
 					}
 
 					if (trigger.required_apis != null) {
 						for (String required_api : trigger.required_apis) {
-							if (!mcreator.getWorkspaceSettings().getMCreatorDependencies()
-									.contains(required_api)) {
+							if (!mcreator.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
 								compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 										L10N.t("elementgui.procedure.global_trigger_not_activated", required_api)));
 							}

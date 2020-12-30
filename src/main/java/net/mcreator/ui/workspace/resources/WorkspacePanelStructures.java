@@ -102,7 +102,8 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		});
 
 		importnbt.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importStructure.doAction());
-		importmc.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importStructureFromMinecraft.doAction());
+		importmc.addActionListener(
+				e -> workspacePanel.getMcreator().actionRegistry.importStructureFromMinecraft.doAction());
 
 		add("North", bar);
 

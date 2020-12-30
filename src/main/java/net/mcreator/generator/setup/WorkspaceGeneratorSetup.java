@@ -45,8 +45,7 @@ public class WorkspaceGeneratorSetup {
 
 	public static void cleanupGeneratorForSwitchTo(Workspace workspace, GeneratorConfiguration newGenerator) {
 		// skip if there is no generator change
-		if (workspace.getGeneratorConfiguration().getGeneratorName()
-				.equals(newGenerator.getGeneratorName()))
+		if (workspace.getGeneratorConfiguration().getGeneratorName().equals(newGenerator.getGeneratorName()))
 			return;
 
 		workspace.getGenerator().close(); // close gradle connection

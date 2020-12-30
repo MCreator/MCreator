@@ -201,8 +201,9 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			biome.vanillaTreeType = getRandomItem(random, new String[]{ "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
-					"Mega spruce trees" });
+			biome.vanillaTreeType = getRandomItem(random,
+					new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
+							"Mega spruce trees" });
 			biome.airColor = Color.red;
 			biome.treeType = _true ? 0 : 1;
 			if (!emptyLists) {
@@ -557,10 +558,10 @@ public class TestWorkspaceDataProvider {
 			}
 			mob.hasAI = _true;
 			mob.aiBase = "(none)";
-			if(!emptyLists) {
+			if (!emptyLists) {
 				Set<String> aiTasks = modElement.getGeneratorStats().getGeneratorAITasks();
-				if (aiTasks.contains("wander") && aiTasks.contains("look_around")
-						&& aiTasks.contains("panic_when_attacked") && aiTasks.contains("attack_action")) {
+				if (aiTasks.contains("wander") && aiTasks.contains("look_around") && aiTasks
+						.contains("panic_when_attacked") && aiTasks.contains("attack_action")) {
 					mob.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\">"
 							+ "<next><block type=\"wander\"><field name=\"speed\">1</field>"
 							+ "<next><block type=\"look_around\"><next><block type=\"swim_in_water\">"
@@ -955,7 +956,8 @@ public class TestWorkspaceDataProvider {
 			block.useLootTableForDrops = !_true;
 			block.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			block.destroyTool = getRandomItem(random, new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
+			block.destroyTool = getRandomItem(random,
+					new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 			block.customDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			block.flammability = 5;

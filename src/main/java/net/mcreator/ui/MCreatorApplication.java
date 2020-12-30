@@ -232,8 +232,9 @@ public final class MCreatorApplication {
 						}
 					}
 				}
-				this.workspaceSelector.addRecentWorkspace(new WorkspaceSelector.RecentWorkspaceEntry(
-						mcreator.getWorkspaceSettings().getModName(), workspaceFile));
+				this.workspaceSelector.addRecentWorkspace(
+						new WorkspaceSelector.RecentWorkspaceEntry(mcreator.getWorkspaceSettings().getModName(),
+								workspaceFile));
 			}
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
 			LOG.fatal("Failed to open workspace!", corruptedWorkspaceFile);

@@ -44,15 +44,18 @@ public class NewModElementDialog {
 		regName.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 		regName.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
-		String modName = VOptionPane.showInputDialog(mcreator, L10N.t("dialog.new_modelement.desc", type.getReadableName()),
-				L10N.t("dialog.new_modelement.title_window", type.getReadableName()), TiledImageCache.getModTypeIcon(type),
-				new OptionPaneValidatior() {
-					@Override public Validator.ValidationResult validate(JComponent component) {
-						regName.setText("Registry name: " + RegistryNameFixer
-								.fromCamelCase(((VTextField) component).getText()));
-						return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component).validate();
-					}
-				}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()), L10N.t("dialog.new_modelement.cancel"), null, regName);
+		String modName = VOptionPane
+				.showInputDialog(mcreator, L10N.t("dialog.new_modelement.desc", type.getReadableName()),
+						L10N.t("dialog.new_modelement.title_window", type.getReadableName()),
+						TiledImageCache.getModTypeIcon(type), new OptionPaneValidatior() {
+							@Override public Validator.ValidationResult validate(JComponent component) {
+								regName.setText("Registry name: " + RegistryNameFixer
+										.fromCamelCase(((VTextField) component).getText()));
+								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component)
+										.validate();
+							}
+						}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()),
+						L10N.t("dialog.new_modelement.cancel"), null, regName);
 
 		if (modName != null && !modName.equals("")) {
 			modName = JavaConventions.convertToValidClassName(modName);

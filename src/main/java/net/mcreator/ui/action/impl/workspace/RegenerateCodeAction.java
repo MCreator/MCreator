@@ -69,8 +69,7 @@ public class RegenerateCodeAction extends GradleAction {
 
 			// remove all sources of mod elements that are not locked
 			for (ModElement mod : mcreator.getWorkspace().getModElements()) {
-				List<GeneratorTemplate> templates = mcreator.getGenerator()
-						.getModElementGeneratorTemplatesList(mod);
+				List<GeneratorTemplate> templates = mcreator.getGenerator().getModElementGeneratorTemplatesList(mod);
 				if (templates == null)
 					continue;
 				List<File> modElementFiles = templates.stream().map(GeneratorTemplate::getFile)
@@ -82,20 +81,18 @@ public class RegenerateCodeAction extends GradleAction {
 
 			// keep base mod files that can be locked if selected so in the workspace settings
 			if (mcreator.getWorkspaceSettings().isLockBaseModFiles()) {
-				mcreator.getGenerator().getModBaseGeneratorTemplatesList(false)
-						.forEach(generatorTemplate -> {
-							if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
-									&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
-									.equals("true")) // can this file be locked
-								// are mod base file locked
-								toBePreserved.add(generatorTemplate
-										.getFile()); // we add locked base mod files on the to be preserved list
-						});
+				mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).forEach(generatorTemplate -> {
+					if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
+							&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
+							.equals("true")) // can this file be locked
+						// are mod base file locked
+						toBePreserved.add(generatorTemplate
+								.getFile()); // we add locked base mod files on the to be preserved list
+				});
 			}
 
 			// delete all non mod element related files from code base package
-			File[] files = FileIO
-					.listFilesRecursively(mcreator.getGenerator().getGeneratorPackageRoot());
+			File[] files = FileIO.listFilesRecursively(mcreator.getGenerator().getGeneratorPackageRoot());
 			for (File a : files) {
 				if (!FileIO.isFileOnFileList(toBePreserved,
 						a)) // if file is not part of one of the mod elements, it can be removed
@@ -174,8 +171,7 @@ public class RegenerateCodeAction extends GradleAction {
 			}
 
 			// save all updated generatable mod elements
-			generatableElementsToSave.parallelStream()
-					.forEach(mcreator.getModElementManager()::storeModElement);
+			generatableElementsToSave.parallelStream().forEach(mcreator.getModElementManager()::storeModElement);
 
 			if (warnMissingDefinitions && skippedElements.size() > 0) {
 				skippedElements.forEach(el -> {

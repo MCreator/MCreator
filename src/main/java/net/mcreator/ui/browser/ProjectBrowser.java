@@ -265,9 +265,9 @@ public class ProjectBrowser extends JPanel {
 			}
 
 			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_json")
-					!= GeneratorStats.CoverageStatus.NONE ||
-					mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_java")
-							!= GeneratorStats.CoverageStatus.NONE
+					!= GeneratorStats.CoverageStatus.NONE
+					|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_java")
+					!= GeneratorStats.CoverageStatus.NONE
 					|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 					!= GeneratorStats.CoverageStatus.NONE) {
 				ProjectBrowserFilterTreeNode models = new ProjectBrowserFilterTreeNode("Models");
@@ -277,8 +277,7 @@ public class ProjectBrowser extends JPanel {
 
 			if (new File(mcreator.getWorkspaceFolder(), "run/debug").isDirectory()) {
 				ProjectBrowserFilterTreeNode debugFolder = new ProjectBrowserFilterTreeNode("Debug profiler results");
-				addNodes(debugFolder,
-						new File(mcreator.getWorkspaceFolder(), "run/debug"), true);
+				addNodes(debugFolder, new File(mcreator.getWorkspaceFolder(), "run/debug"), true);
 				node.add(debugFolder);
 			}
 
@@ -293,17 +292,16 @@ public class ProjectBrowser extends JPanel {
 
 			if (new File(mcreator.getWorkspaceFolder(), "run/").isDirectory()) {
 				ProjectBrowserFilterTreeNode minecraft = new ProjectBrowserFilterTreeNode("Minecraft run folder");
-				addNodes(minecraft, new File(mcreator.getWorkspaceFolder(), "run/"),
-						true);
+				addNodes(minecraft, new File(mcreator.getWorkspaceFolder(), "run/"), true);
 				root.add(minecraft);
 			}
 
-			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor()
-					.getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA)
+			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+					== GeneratorFlavor.BaseLanguage.JAVA)
 				loadExtSoruces(root);
 
-			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor()
-					== GeneratorFlavor.ADDON && MinecraftFolderUtils.getBedrockEditionFolder() != null) {
+			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON
+					&& MinecraftFolderUtils.getBedrockEditionFolder() != null) {
 				ProjectBrowserFilterTreeNode minecraft = new ProjectBrowserFilterTreeNode("Bedrock Edition");
 				addNodes(minecraft, MinecraftFolderUtils.getBedrockEditionFolder(), true);
 				root.add(minecraft);
@@ -324,8 +322,7 @@ public class ProjectBrowser extends JPanel {
 		ProjectBrowserFilterTreeNode extDeps = new ProjectBrowserFilterTreeNode("External libraries");
 
 		if (mcreator.getGenerator().getProjectJarManager() != null) {
-			List<LibraryInfo> libraryInfos = mcreator.getGenerator().getProjectJarManager()
-					.getClassFileSources();
+			List<LibraryInfo> libraryInfos = mcreator.getGenerator().getProjectJarManager().getClassFileSources();
 			for (LibraryInfo libraryInfo : libraryInfos) {
 				File libraryFile = new File(libraryInfo.getLocationAsString());
 				if (libraryFile.isFile() && ZipIO.checkIfZip(libraryFile)) {

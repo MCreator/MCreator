@@ -396,7 +396,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.water_fog_color")));
 		sbbp4.add(waterFogColor);
 
-		sbbp4.add(PanelUtils.join(FlowLayout.LEFT, vanillaTrees, customTrees, new JEmptyBox(15, 2), L10N.label("elementgui.biome.tree_type")));
+		sbbp4.add(PanelUtils.join(FlowLayout.LEFT, vanillaTrees, customTrees, new JEmptyBox(15, 2),
+				L10N.label("elementgui.biome.tree_type")));
 		sbbp4.add(vanillaTreeType);
 
 		JPanel sbbp5 = new JPanel(new FlowLayout(FlowLayout.LEFT));

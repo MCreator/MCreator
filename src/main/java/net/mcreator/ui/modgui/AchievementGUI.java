@@ -230,8 +230,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		advancementTrigger.setPreferredSize(new Dimension(0, 330));
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(PanelUtils
-				.westAndEastElement(selpouter,
-						PanelUtils.northAndCenterElement(selp2, advancementTrigger)))));
+				.westAndEastElement(selpouter, PanelUtils.northAndCenterElement(selp2, advancementTrigger)))));
 
 		pane3.setOpaque(false);
 

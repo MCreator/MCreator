@@ -134,8 +134,7 @@ public class ToolPackMakerTool {
 						.get(new ResourcePointer("templates/textures/texturemaker/tool_pickaxe.png")), color, true));
 		String pickaxeTextureName = (name + "_pickaxe").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(pickaxe.getImage()),
-				mcreator.getFolderManager()
-						.getItemTextureFile(RegistryNameFixer.fix(pickaxeTextureName)));
+				mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(pickaxeTextureName)));
 
 		// then we generate axe texture
 		ImageIcon axe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE
@@ -164,8 +163,7 @@ public class ToolPackMakerTool {
 						.get(new ResourcePointer("templates/textures/texturemaker/tool_shovel_top.png")), color, true));
 		String shovelTextureName = (name + "_shovel").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(shovel.getImage()),
-				mcreator.getFolderManager()
-						.getItemTextureFile(RegistryNameFixer.fix(shovelTextureName)));
+				mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(shovelTextureName)));
 
 		// then we generate hoe texture
 		ImageIcon hoe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE

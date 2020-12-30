@@ -53,8 +53,8 @@ public class GTModElements {
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		for (Map.Entry<ModElementType, ModElementTypeRegistry.ModTypeRegistration<?>> modElementRegistration : ModElementTypeRegistry.REGISTRY
 				.entrySet()) {
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo()
-					.get(modElementRegistration.getKey()) == GeneratorStats.CoverageStatus.NONE) {
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(modElementRegistration.getKey())
+					== GeneratorStats.CoverageStatus.NONE) {
 				LOG.warn("Skipping unsupported mod element type " + modElementRegistration.getKey() + " for generator "
 						+ generatorName);
 				continue;

@@ -78,8 +78,7 @@ public class WorkspaceGeneratorSetupDialog {
 
 				m.mcreatorTabs.showTab(m.consoleTab);
 
-				m.getGradleConsole().exec(m.getGeneratorConfiguration()
-						.getGradleTaskFor("setup_task"), taskResult -> {
+				m.getGradleConsole().exec(m.getGeneratorConfiguration().getGradleTaskFor("setup_task"), taskResult -> {
 					m.getGradleConsole().setGradleSetupTaskRunningFlag(false);
 					if (taskResult.getStatusByMCreator() == GradleErrorCodes.STATUS_OK) {
 						p2.ok();

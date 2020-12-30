@@ -114,8 +114,8 @@ import java.util.Locale;
 			mod = MinecraftImageGenerator.Preview
 					.generateCampfirePreviewPicture(getModElement().getWorkspace(), campfireCookingInputStack,
 							campfireCookingReturnStack);
-		} else if ("Smithing".equals(recipeType) && !smithingInputStack.isEmpty()
-				&& !smithingInputAdditionStack.isEmpty() && !smithingReturnStack.isEmpty()) {
+		} else if ("Smithing".equals(recipeType) && !smithingInputStack.isEmpty() && !smithingInputAdditionStack
+				.isEmpty() && !smithingReturnStack.isEmpty()) {
 			mod = MinecraftImageGenerator.Preview
 					.generateSmithingPreviewPicture(getModElement().getWorkspace(), smithingInputStack,
 							smithingInputAdditionStack, smithingReturnStack);

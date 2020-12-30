@@ -60,8 +60,7 @@ public class SyncRemoteToLocalAction extends VCSAction {
 			Git git = actionRegistry.getMCreator().getWorkspace().getVCS().getGit();
 
 			CredentialsProvider credentialsProvider = actionRegistry.getMCreator().getWorkspace().getVCS()
-					.getCredentialsProvider(
-							actionRegistry.getMCreator().getWorkspaceFolder(),
+					.getCredentialsProvider(actionRegistry.getMCreator().getWorkspaceFolder(),
 							actionRegistry.getMCreator());
 
 			ICustomSyncHandler mergeHandler = new MCreatorWorkspaceSyncHandler(actionRegistry.getMCreator());

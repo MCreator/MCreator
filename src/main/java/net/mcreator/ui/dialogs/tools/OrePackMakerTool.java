@@ -131,8 +131,7 @@ public class OrePackMakerTool {
 								"oreblock7", "oreblock8")) + ".png")), color, true);
 		String oreBlockTextureName = (oreTextureName + "_block").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(oreBlockIc.getImage()),
-				mcreator.getFolderManager()
-						.getBlockTextureFile(RegistryNameFixer.fix(oreBlockTextureName)));
+				mcreator.getFolderManager().getBlockTextureFile(RegistryNameFixer.fix(oreBlockTextureName)));
 
 		// next, gem texture
 		ImageIcon gem;

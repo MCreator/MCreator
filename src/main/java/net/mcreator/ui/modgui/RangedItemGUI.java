@@ -380,9 +380,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(customBulletModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getOtherTexturesList().stream()
-						.filter(element -> element.getName().endsWith(".png")).map(File::getName)
-						.collect(Collectors.toList())), "");
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bulletModel, ListUtils.merge(Collections.singletonList(adefault),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()

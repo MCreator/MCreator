@@ -39,8 +39,8 @@ public class Painting extends GeneratableElement {
 
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generatePaintingPreviewPicture(
-				getModElement().getFolderManager()
-						.getOtherTextureFile(FilenameUtils.removeExtension(texture)), width, height);
+				getModElement().getFolderManager().getOtherTextureFile(FilenameUtils.removeExtension(texture)), width,
+				height);
 	}
 
 	@Override public void finalizeModElementGeneration() {

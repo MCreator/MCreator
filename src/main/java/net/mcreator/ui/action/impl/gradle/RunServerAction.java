@@ -38,16 +38,13 @@ public class RunServerAction extends GradleAction {
 	public RunServerAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.run_server_and_client"), evt -> {
 			String eula;
-			if (!new File(actionRegistry.getMCreator().getWorkspaceFolder(),
-					"run/eula.txt").isFile())
+			if (!new File(actionRegistry.getMCreator().getWorkspaceFolder(), "run/eula.txt").isFile())
 				eula = "eula=false";
 			else
-				eula = FileIO.readFileToString(
-						new File(actionRegistry.getMCreator().getWorkspaceFolder(),
-								"run/eula.txt"));
-			if (eula.contains("eula=false") || !new File(
-					actionRegistry.getMCreator().getWorkspaceFolder(), "run/eula.txt")
-					.isFile()) {
+				eula = FileIO
+						.readFileToString(new File(actionRegistry.getMCreator().getWorkspaceFolder(), "run/eula.txt"));
+			if (eula.contains("eula=false") || !new File(actionRegistry.getMCreator().getWorkspaceFolder(),
+					"run/eula.txt").isFile()) {
 				JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
 						L10N.t("dialog.run_server_and_client.eula_intro"));
 
@@ -63,17 +60,16 @@ public class RunServerAction extends GradleAction {
 				if (n == 0) {
 					Properties por = new Properties();
 					try {
-						por.load(new FileInputStream(new File(
-								actionRegistry.getMCreator().getWorkspaceFolder(),
-								"run/eula.txt")));
+						por.load(new FileInputStream(
+								new File(actionRegistry.getMCreator().getWorkspaceFolder(), "run/eula.txt")));
 					} catch (IOException e) {
 						LOG.warn(e.getMessage());
 					}
 					por.setProperty("eula", "true");
 					try {
-						por.store(new FileOutputStream(new File(
-								actionRegistry.getMCreator().getWorkspaceFolder(),
-								"run/eula.txt")), "#Edited by MCreator - User agreed with EULA inside MCreator");
+						por.store(new FileOutputStream(
+										new File(actionRegistry.getMCreator().getWorkspaceFolder(), "run/eula.txt")),
+								"#Edited by MCreator - User agreed with EULA inside MCreator");
 					} catch (FileNotFoundException e) {
 						LOG.error(e.getMessage());
 					} catch (IOException e) {
@@ -85,12 +81,14 @@ public class RunServerAction extends GradleAction {
 						actionRegistry.getMCreator().getGenerator().runResourceSetupTasks();
 						actionRegistry.getMCreator().getGenerator().generateBase();
 						actionRegistry.getMCreator().getGradleConsole()
-								.exec(actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_server"));
+								.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
+										.getGradleTaskFor("run_server"));
 
-						if (actionRegistry.getMCreator().getGeneratorConfiguration()
-								.getGradleTaskFor("run_client") != null)
+						if (actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client")
+								!= null)
 							actionRegistry.getMCreator().getGradleConsole()
-									.exec(actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client"));
+									.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
+											.getGradleTaskFor("run_client"));
 					} catch (Exception e) { // if something fails, we still need to free the gradle console
 						LOG.error(e.getMessage(), e);
 						actionRegistry.getMCreator().getGradleConsole().markReady();
@@ -114,11 +112,10 @@ public class RunServerAction extends GradleAction {
 							.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
 									.getGradleTaskFor("run_server"));
 
-					if (actionRegistry.getMCreator().getGeneratorConfiguration()
-							.getGradleTaskFor("run_client") != null)
+					if (actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null)
 						actionRegistry.getMCreator().getGradleConsole()
-								.exec(actionRegistry.getMCreator().getGenerator()
-										.getGeneratorConfiguration().getGradleTaskFor("run_client"));
+								.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
+										.getGradleTaskFor("run_client"));
 				} catch (Exception e) { // if something fails, we still need to free the gradle console
 					LOG.error(e.getMessage(), e);
 					actionRegistry.getMCreator().getGradleConsole().markReady();
@@ -128,7 +125,7 @@ public class RunServerAction extends GradleAction {
 	}
 
 	@Override public boolean isEnabled() {
-		return actionRegistry.getMCreator().getGeneratorConfiguration()
-				.getGradleTaskFor("run_server") != null && super.isEnabled();
+		return actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_server") != null && super
+				.isEnabled();
 	}
 }

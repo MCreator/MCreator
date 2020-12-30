@@ -448,12 +448,10 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			mobModelTexture.removeAllItems();
 			mobModelTexture.addItem("");
-			mcreator.getFolderManager().getOtherTexturesList()
-					.forEach(el -> mobModelTexture.addItem(el.getName()));
+			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> mobModelTexture.addItem(el.getName()));
 			mobModelGlowTexture.removeAllItems();
 			mobModelGlowTexture.addItem("");
-			mcreator.getFolderManager().getOtherTexturesList()
-					.forEach(el -> mobModelGlowTexture.addItem(el.getName()));
+			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> mobModelGlowTexture.addItem(el.getName()));
 		});
 
 		spo2.add(HelpUtils

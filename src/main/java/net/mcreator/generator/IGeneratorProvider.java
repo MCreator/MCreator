@@ -34,5 +34,4 @@ public interface IGeneratorProvider extends IWorkspaceProvider {
 		return getGeneratorConfiguration().getGeneratorStats();
 	}
 
-
 }

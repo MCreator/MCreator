@@ -36,8 +36,7 @@ public class EditTabOrderAction extends BasicAction {
 	}
 
 	@Override public boolean isEnabled() {
-		GeneratorConfiguration gc = actionRegistry.getMCreator().getGenerator()
-				.getGeneratorConfiguration();
+		GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
 		return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TAB)
 				!= GeneratorStats.CoverageStatus.NONE;
 	}

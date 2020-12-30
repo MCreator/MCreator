@@ -32,7 +32,6 @@ import org.w3c.dom.Element;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class GetVariableBlock implements IBlockGenerator {

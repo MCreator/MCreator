@@ -62,15 +62,13 @@ public class CodeErrorDialog {
 		boolean moddefinitionfileerrors = false;
 
 		for (File problematicFile : problematicFiles) {
-			ModElement modElementWithError = mcreator.getGenerator()
-					.getModElementThisFileBelongsTo(problematicFile);
+			ModElement modElementWithError = mcreator.getGenerator().getModElementThisFileBelongsTo(problematicFile);
 			if (modElementWithError != null) {
 				problematicMods.add(modElementWithError);
 				modElementWithError.setCompiles(false);
 				mcreator.getWorkspace().updateModElement(modElementWithError);
-			} else if (FileIO.isFileOnFileList(
-					mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).stream()
-							.map(GeneratorTemplate::getFile).collect(Collectors.toList()), problematicFile)) {
+			} else if (FileIO.isFileOnFileList(mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).stream()
+					.map(GeneratorTemplate::getFile).collect(Collectors.toList()), problematicFile)) {
 				moddefinitionfileerrors = true;
 			} else {
 				LOG.warn("[ForgeGradleUtil] Error from non MCreator generated class!");
@@ -85,8 +83,8 @@ public class CodeErrorDialog {
 		if (moddefinitionfileerrors) { // first we try to fix mod definition errors
 			Object[] options = { "Regenerate code", "Ignore error" };
 			int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.code_error.compilation_desc"),
-					L10N.t("dialog.code_error.compilation_title"), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE,
-					null, options, options[0]);
+					L10N.t("dialog.code_error.compilation_title"), JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 			if (n == 0) {
 				RegenerateCodeAction.regenerateCode(mcreator, true, true);
 			}

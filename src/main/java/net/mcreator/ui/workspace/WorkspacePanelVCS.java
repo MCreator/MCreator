@@ -92,10 +92,8 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 		switchBranch.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(switchBranch);
 
-		switchBranch.addActionListener(
-				e -> new BranchesPopup(workspacePanel.getMcreator().getWorkspace().getVCS(),
-						workspacePanel.getMcreator())
-						.show(switchBranch, 4, 20));
+		switchBranch.addActionListener(e -> new BranchesPopup(workspacePanel.getMcreator().getWorkspace().getVCS(),
+				workspacePanel.getMcreator()).show(switchBranch, 4, 20));
 
 		bar.add(switchBranch);
 

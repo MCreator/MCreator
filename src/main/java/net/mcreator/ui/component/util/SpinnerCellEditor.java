@@ -45,7 +45,8 @@ public class SpinnerCellEditor extends AbstractCellEditor implements TableCellEd
 		((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().addActionListener(ae -> stopCellEditing());
 	}
 
-	@Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+	@Override
+	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 		if (!initialValSet) {
 			try {
 				spinner.setValue(Integer.valueOf((String) value));

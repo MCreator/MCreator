@@ -66,7 +66,7 @@ import java.util.Map;
 				if (jarManager != null) {
 					SourceLocation sourceLocation = jarManager.getSourceLocForClass(template);
 					String code = ZipIO.readCodeInZip(new File(sourceLocation.getLocationAsString()),
-							template.replace("." , "/") + ".java");
+							template.replace(".", "/") + ".java");
 					if (code == null)
 						throw new NullPointerException();
 
