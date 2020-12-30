@@ -223,6 +223,7 @@ public class TestWorkspaceDataProvider {
 			biome.cactiPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 9;
 			biome.rainingPossibility = 3.5;
 			biome.baseHeight = -0.3;
+			biome.maxWaterDepth = 4;
 			biome.heightVariation = 0.7;
 			biome.temperature = 4.0;
 			biome.spawnShipwreck = _true;

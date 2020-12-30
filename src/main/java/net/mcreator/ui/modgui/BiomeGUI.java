@@ -406,6 +406,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp5.add(minHeight);
 
 		sbbp5.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("biome/max_water_depth"), L10N.label("elementgui.biome.max_water_depth")));
+		sbbp5.add(maxWaterDepth);
+
+		sbbp5.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("biome/stem_block"), L10N.label("elementgui.biome.stem_block"),
 						new Color(49, 148, 53)));
 		sbbp5.add(PanelUtils.join(treeStem));
@@ -424,10 +428,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				.wrapWithHelpButton(this.withEntry("biome/fruits_block"), L10N.label("elementgui.biome.fruits_block"),
 						new Color(255, 255, 0)));
 		sbbp5.add(PanelUtils.join(treeFruits));
-
-		sbbp5.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/max_water_depth"), L10N.label("elementgui.biome.max_water_depth")));
-		sbbp5.add(maxWaterDepth);
 
 		customTrees.addActionListener(event -> updateBiomeTreesForm());
 		vanillaTrees.addActionListener(event -> updateBiomeTreesForm());
@@ -509,6 +509,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private void updateBiomeTreesForm() {
 		if (customTrees.isSelected()) {
 			minHeight.setEnabled(true);
+			maxWaterDepth.setEnabled(true);
 			treeVines.setEnabled(true);
 			treeStem.setEnabled(true);
 			treeBranch.setEnabled(true);
@@ -516,6 +517,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			maxWaterDepth.setEnabled(true);
 		} else {
 			minHeight.setEnabled(false);
+			maxWaterDepth.setEnabled(false);
 			treeVines.setEnabled(false);
 			treeStem.setEnabled(false);
 			treeBranch.setEnabled(false);
