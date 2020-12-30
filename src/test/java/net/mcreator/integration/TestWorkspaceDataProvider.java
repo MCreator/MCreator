@@ -1268,11 +1268,9 @@ public class TestWorkspaceDataProvider {
 			Gamerule gamerule = new Gamerule(modElement);
 			gamerule.name = modElement.getName();
 			gamerule.ID = modElement.getName();
-			gamerule.gameruleType = "Player";
-			gamerule.isInteger = _true;
-			gamerule.defaultIntegerValue = 0;
-			gamerule.isBoolean = !_true;
-			gamerule.defaultBooleanValue = _true;
+			gamerule.description = "Description test";
+			gamerule.gameruleCategory = "Player";
+			gamerule.gameruleType = "Integer";
 		default:
 			return null;
 		}

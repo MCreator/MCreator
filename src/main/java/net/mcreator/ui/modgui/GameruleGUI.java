@@ -44,14 +44,11 @@ public class GameruleGUI extends ModElementGUI<Gamerule> {
 	private final VTextField ID = new VTextField(20);
 
 	private final VTextField description = new VTextField(20);
-	private final JComboBox<String> gameruleType = new JComboBox<>(
+	private final JComboBox<String> gameruleCategory = new JComboBox<>(
 			new String[] { "Player", "Updates", "Chat", "Drops", "Misc", "Mobs", "Spawning" });
 
-	private final JCheckBox isInteger = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner defaultIntegerValue = new JSpinner(new SpinnerNumberModel(0, 0, 64000, 1));
-
-	private final JCheckBox isBoolean = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox defaultBooleanValue = L10N.checkbox("elementgui.gamerule.check_true");
+	private final JComboBox<String> gameruleType = new JComboBox<>(
+			new String[] { "Integer", "Boolean" });
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -62,18 +59,13 @@ public class GameruleGUI extends ModElementGUI<Gamerule> {
 	}
 
 	@Override protected void initGUI() {
-		isInteger.setOpaque(false);
-		defaultIntegerValue.setOpaque(false);
-		isBoolean.setOpaque(false);
-		defaultBooleanValue.setOpaque(false);
-
 		JPanel pane3 = new JPanel(new BorderLayout());
 
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(ID, 16);
 		ComponentUtils.deriveFont(description, 16);
 
-		JPanel subpane2 = new JPanel(new GridLayout(8, 2, 45, 8));
+		JPanel subpane2 = new JPanel(new GridLayout(5, 2, 45, 8));
 		subpane2.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -90,29 +82,13 @@ public class GameruleGUI extends ModElementGUI<Gamerule> {
 				L10N.label("elementgui.gamerule.description")));
 		subpane2.add(description);
 
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/category"),
+				L10N.label("elementgui.gamerule.category")));
+		subpane2.add(gameruleCategory);
+
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/type"),
 				L10N.label("elementgui.gamerule.type")));
 		subpane2.add(gameruleType);
-
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/is_integer"),
-				L10N.label("elementgui.gamerule.is_integer")));
-		subpane2.add(isInteger);
-
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/integer_value"),
-				L10N.label("elementgui.gamerule.default_integer_value")));
-		subpane2.add(defaultIntegerValue);
-
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/is_boolean"),
-				L10N.label("elementgui.gamerule.is_boolean")));
-		subpane2.add(isBoolean);
-
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/boolean_value"),
-				L10N.label("elementgui.gamerule.default_boolean_value")));
-		subpane2.add(defaultBooleanValue);
-
-		isInteger.addActionListener(e -> refreshGameruleInfo());
-		isBoolean.addActionListener(e -> refreshGameruleInfo());
-		refreshGameruleInfo();
 
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(ID);
@@ -138,13 +114,6 @@ public class GameruleGUI extends ModElementGUI<Gamerule> {
 		}
 	}
 
-	private void refreshGameruleInfo() {
-		isInteger.setEnabled(!isBoolean.isSelected());
-		isBoolean.setEnabled(!isInteger.isSelected());
-		defaultIntegerValue.setEnabled(isInteger.isSelected());
-		defaultBooleanValue.setEnabled(isBoolean.isSelected());
-	}
-
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
 			return new AggregatedValidationResult(page1group);
@@ -155,11 +124,8 @@ public class GameruleGUI extends ModElementGUI<Gamerule> {
 		name.setText(gamerule.name);
 		ID.setText(gamerule.ID);
 		description.setText(gamerule.description);
+		gameruleCategory.setSelectedItem(gamerule.gameruleCategory);
 		gameruleType.setSelectedItem(gamerule.gameruleType);
-		isInteger.setSelected(gamerule.isInteger);
-		isBoolean.setSelected(gamerule.isBoolean);
-
-		refreshGameruleInfo();
 	}
 
 	@Override public Gamerule getElementFromGUI() {
@@ -167,13 +133,12 @@ public class GameruleGUI extends ModElementGUI<Gamerule> {
 		gamerule.name = name.getText();
 		gamerule.ID = ID.getText();
 		gamerule.description = description.getText();
+		gamerule.gameruleCategory = (String) gameruleCategory.getSelectedItem();
 		gamerule.gameruleType = (String) gameruleType.getSelectedItem();
-		gamerule.isInteger = isInteger.isSelected();
-		gamerule.isBoolean = isBoolean.isSelected();
 		return gamerule;
 	}
 
 	@Override public @Nullable URI getContextURL() throws URISyntaxException {
-		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-music-disc");
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-gamerule");
 	}
 }

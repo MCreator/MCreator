@@ -25,14 +25,10 @@ public class Gamerule extends GeneratableElement {
 
 	public String name;
 	public String ID;
-
 	public String description;
-	public String gameruleType;
 
-	public boolean isInteger;
-	public int defaultIntegerValue;
-	public boolean isBoolean;
-	public boolean defaultBooleanValue;
+	public String gameruleCategory;
+	public String gameruleType;
 
 	public Gamerule(ModElement element) {
 		super(element);
