@@ -10,7 +10,7 @@
   "output": "Direction",
   "colour": 20,
   "mcreator": {
-    "toolbox_id": "mcelements",
+    "toolbox_id": "directionactions",
     "inputs": [
       "direction"
     ]
