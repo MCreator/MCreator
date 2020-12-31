@@ -48,8 +48,8 @@
     }
   ],
   "inputsInline": true,
-  "output": "Number",
-  "colour": "%{BKY_MATH_HUE}",
+  "output": "Direction",
+  "colour": "20",
   "mcreator": {
     "toolbox_id": "entitydata",
     "toolbox_init": [
