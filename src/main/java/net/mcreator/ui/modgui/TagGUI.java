@@ -104,7 +104,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 			});
 		}
 
-		JPanel main = new JPanel(new GridLayout(4, 2, 10, 10));
+		JPanel main = new JPanel(new GridLayout(4, 2, 10, 2));
 		main.setOpaque(false);
 
 		main.add(HelpUtils
