@@ -14,32 +14,6 @@
       "type": "input_value",
       "name": "z",
       "check": "Number"
-    },
-    {
-      "type": "field_dropdown",
-      "name": "reaction",
-      "options": [
-        [
-          "NORMAL",
-          "NORMAL"
-        ],
-        [
-          "DESTROY",
-          "DESTROY"
-        ],
-        [
-          "BLOCK",
-          "BLOCK"
-        ],
-        [
-          "PUSH_ONLY",
-          "PUSH_ONLY"
-        ],
-        [
-          "IGNORE",
-          "IGNORE"
-        ]
-      ]
     }
   ],
   "inputsInline": true,
@@ -56,9 +30,6 @@
       "x",
       "y",
       "z"
-    ],
-    "fields": [
-      "reaction"
     ],
     "dependencies": [
       {
