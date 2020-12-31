@@ -224,6 +224,41 @@ public class MinecraftImageGenerator {
 					19, 1 + oSlotOffsetY, 8, 8, null);
 		}
 
+		private static void drawThreeSlotRecipe(Graphics2D graphics2D, Workspace workspace, MItemBlock input0,
+				MItemBlock input1, MItemBlock result) {
+			int slotOffsetY = 9;
+			int oSlotOffsetY = 9;
+
+			//box 1
+			graphics2D.drawLine(1, slotOffsetY - 9, 8, slotOffsetY - 9);
+			graphics2D.drawLine(1, 9 + slotOffsetY - 9, 8, 9 + slotOffsetY - 9);
+			graphics2D.drawLine(0, slotOffsetY - 9, 0, 9 + slotOffsetY - 9);
+			graphics2D.drawLine(9, slotOffsetY - 9, 9, 9 + slotOffsetY - 9);
+
+			//box 2
+			graphics2D.drawLine(1, slotOffsetY + 9, 8, slotOffsetY + 9);
+			graphics2D.drawLine(1, 9 + slotOffsetY + 9, 8, 9 + slotOffsetY + 9);
+			graphics2D.drawLine(0, slotOffsetY + 9, 0, 9 + slotOffsetY + 9);
+			graphics2D.drawLine(9, slotOffsetY + 9, 9, 9 + slotOffsetY + 9);
+
+			//box 3
+			graphics2D.drawLine(19, oSlotOffsetY, 26, oSlotOffsetY);
+			graphics2D.drawLine(19, 9 + oSlotOffsetY, 26, 9 + oSlotOffsetY);
+			graphics2D.drawLine(18, oSlotOffsetY, 18, 9 + oSlotOffsetY);
+			graphics2D.drawLine(27, oSlotOffsetY, 27, 9 + oSlotOffsetY);
+
+			//elements
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
+							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, input0.getUnmappedValue()).getImage())),
+					8), 1, 1 + slotOffsetY - 9, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
+							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, input1.getUnmappedValue()).getImage())),
+					8), 1, 1 + slotOffsetY + 9, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
+							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, result.getUnmappedValue()).getImage())),
+					8), 19, 1 + oSlotOffsetY, null);
+		}
+
 		/**
 		 * <p>This method generates blasting recipe images.</p>
 		 *
@@ -282,9 +317,9 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates brewing recipe images.</p>
 		 *
-		 * @param input  Input of the recipe.
+		 * @param input      Input of the recipe.
 		 * @param ingredient Ingredient of the recipe
-		 * @param result Result of the recipe.
+		 * @param result     Result of the recipe.
 		 * @return Returns the generated image.
 		 */
 		public static BufferedImage generateBrewingPreviewPicture(Workspace workspace, MItemBlock input,
@@ -294,17 +329,17 @@ public class MinecraftImageGenerator {
 			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			graphics2D.setColor(new Color(190, 190, 190, 65));
 
-			drawTwoSlotRecipe(graphics2D, workspace, input, ingredient);
+			drawThreeSlotRecipe(graphics2D, workspace, ingredient, input, result);
 
-			//plus
-			graphics2D.drawLine(11, 13, 12, 13);
-			graphics2D.drawLine(11, 14, 12, 14);
+			//arrow
+			graphics2D.drawLine(10, 13, 16, 13);
+			graphics2D.drawLine(10, 14, 16, 14);
 
-			graphics2D.drawLine(15, 13, 16, 13);
-			graphics2D.drawLine(15, 14, 16, 14);
+			graphics2D.drawLine(14, 11, 14, 12);
+			graphics2D.drawLine(15, 12, 15, 12);
 
-			graphics2D.drawLine(13, 11, 13, 16);
-			graphics2D.drawLine(14, 11, 14, 16);
+			graphics2D.drawLine(14, 15, 14, 16);
+			graphics2D.drawLine(15, 15, 15, 15);
 			graphics2D.dispose();
 
 			return icon;
