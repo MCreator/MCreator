@@ -82,9 +82,14 @@ public class InjectTagsTool {
 		callables.add(addTag(mcreator, props, "dragon_immune", "minecraft", "Blocks", false));
 		callables.add(addTag(mcreator, props, "wither_immune", "minecraft", "Blocks", false));
 		callables.add(addTag(mcreator, props, "arrows", "minecraft", "Items", false));
+		callables.add(addTag(mcreator, props, "arrows", "minecraft", "Entities", false));
+		callables.add(addTag(mcreator, props, "impact_projectiles", "minecraft", "Entities", false));
 		callables.add(addTag(mcreator, props, "planks", "minecraft", "Items", false));
 		callables.add(addTag(mcreator, props, "flowers", "minecraft", "Items", false));
 		callables.add(addTag(mcreator, props, "small_flowers", "minecraft", "Items", false));
+		callables.add(addTag(mcreator, props, "beehive_inhabitors", "minecraft", "Entities", false));
+		callables.add(addTag(mcreator, props, "raiders", "minecraft", "Entities", false));
+		callables.add(addTag(mcreator, props, "skeletons", "minecraft", "Entities", false));
 		callables.add(addTag(mcreator, props, "tick", "minecraft", "Functions", false));
 		callables.add(addTag(mcreator, props, "load", "minecraft", "Functions", false));
 
