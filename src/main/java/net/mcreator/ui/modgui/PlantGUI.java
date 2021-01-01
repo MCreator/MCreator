@@ -26,6 +26,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -96,6 +97,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
+	private final Model tintedCross = new Model.BuiltInModel("Tinted cross model");
 	private final JRadioButton normalType = L10N.radiobutton("elementgui.plant.use_static_plant_type");
 	private final JComboBox<String> growapableSpawnType = new JComboBox<>(
 			new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
@@ -112,6 +114,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
 	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
+
+	private final JCheckBox isPlantTinted = L10N.checkbox("elementgui.common.enable");
+	private final JComboBox<String> tintType = new JComboBox<>(new String[] { "Grass", "Foliage", "Water" });
+	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
+	private final JColor itemTint = new JColor(mcreator, true);
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourBlockChanges;
@@ -220,6 +227,28 @@ public class PlantGUI extends ModElementGUI<Plant> {
 								L10N.label("elementgui.plant.particle_texture")),
 				PanelUtils.centerInPanel(particleTexture)));
 
+		JPanel tintPanel = new JPanel(new GridLayout(4, 2, 0, 2));
+		tintPanel.setOpaque(false);
+		isPlantTinted.setOpaque(false);
+		isItemTinted.setOpaque(false);
+		tintPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.plant.plant_tint"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_block_tinted"),
+				L10N.label("elementgui.plant.is_plant_tinted")));
+		tintPanel.add(isPlantTinted);
+		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tint_type"),
+				L10N.label("elementgui.common.tint_type")));
+		tintPanel.add(tintType);
+		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
+				L10N.label("elementgui.plant.is_item_tinted")));
+		tintPanel.add(isItemTinted);
+		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/item_tint"),
+				L10N.label("elementgui.plant.item_tint")));
+		tintPanel.add(itemTint);
+
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
 		rent.setOpaque(false);
@@ -242,6 +271,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.plant.texture_title"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
+		JPanel render = new JPanel();
+		render.setLayout(new BoxLayout(render, BoxLayout.PAGE_AXIS));
+		render.setOpaque(false);
+
+		render.add(rent);
+		render.add(tintPanel);
+		render.add(infopanel);
+
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 
 		JPanel sbbp22 = new JPanel();
@@ -250,7 +287,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		sbbp2.setOpaque(false);
 
 		sbbp22.add("East", destal);
-		sbbp22.add("Center", PanelUtils.northAndCenterElement(rent, infopanel));
+		sbbp22.add("Center", render);
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(normalType);
@@ -549,7 +586,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.loadMapColors()), "DEFAULT");
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(cross, crop),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(cross, crop, tintedCross),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
@@ -632,6 +669,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		staticPlantGenerationType.setSelectedItem(plant.staticPlantGenerationType);
 		doublePlantGenerationType.setSelectedItem(plant.doublePlantGenerationType);
 
+		isPlantTinted.setSelected(plant.isPlantTinted);
+		tintType.setSelectedItem(plant.tintType);
+		isItemTinted.setSelected(plant.isItemTinted);
+		itemTint.setColor(plant.itemTint);
+
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 
@@ -661,6 +703,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.textureBottom = textureBottom.getID();
 		plant.itemTexture = itemTexture.getID();
 		plant.particleTexture = particleTexture.getID();
+		plant.isPlantTinted = isPlantTinted.isSelected();
+		plant.tintType = (String) tintType.getSelectedItem();
+		plant.isItemTinted = isItemTinted.isSelected();
+		plant.itemTint = itemTint.getColor();
 		if (normalType.isSelected())
 			plant.plantType = "normal";
 		else if (growapableType.isSelected())
@@ -715,6 +761,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			plant.renderType = 12;
 		else if (model.equals(crop))
 			plant.renderType = 13;
+		else if (model.equals(tintedCross))
+			plant.renderType = 15;
 		plant.customModelName = model.getReadableName();
 
 		return plant;
