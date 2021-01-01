@@ -15,6 +15,11 @@
             "${generator.getResourceLocationForModElement(value)}"
             <#if value?has_next>,</#if>
           </#list>
+      <#elseif data.type == "Entities">
+          <#list data.entities as value>
+            "${generator.getResourceLocationForModElement(value)}"
+            <#if value?has_next>,</#if>
+          </#list>
       </#if>
     ]
 }

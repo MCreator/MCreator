@@ -1116,6 +1116,7 @@ public class TestWorkspaceDataProvider {
 			tag.items = new ArrayList<>();
 			tag.blocks = new ArrayList<>();
 			tag.functions = new ArrayList<>();
+			tag.entities = new ArrayList<>();
 			if (!emptyLists) {
 				tag.items.add(new MItemBlock(modElement.getWorkspace(),
 						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
@@ -1130,6 +1131,10 @@ public class TestWorkspaceDataProvider {
 						getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
 				tag.functions.add("test1");
 				tag.functions.add("test2");
+				tag.entities.add(new EntityEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace()))));
+				tag.entities.add(new EntityEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace()))));
 			}
 			return tag;
 		case LOOTTABLE:

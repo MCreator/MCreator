@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.NamespacedGeneratableElement;
+import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
@@ -34,6 +35,7 @@ import java.util.Locale;
 	public List<MItemBlock> items;
 	public List<MItemBlock> blocks;
 	public List<String> functions;
+	public List<EntityEntry> entities;
 
 	public Tag(ModElement element) {
 		super(element);
