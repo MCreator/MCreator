@@ -50,7 +50,7 @@ public class ${name}Gamerule extends ${JavaModName}Elements.ModElement {
 			try {
 				Method createGameruleMethod = ObfuscationReflectionHelper.findMethod(GameRules.class, "func_223559_b", GameRules.class);
 				createGameruleMethod.setAccessible(true);
-				createGameruleMethod.invoke(null, defaultValue);
+				return (GameRules.RuleType<GameRules.IntegerValue>) createGameruleMethod.invoke(null, defaultValue);
 			} catch (Exception ignored) {
 			}
 			return null;
@@ -60,7 +60,7 @@ public class ${name}Gamerule extends ${JavaModName}Elements.ModElement {
 			try {
 				Method createGameruleMethod = ObfuscationReflectionHelper.findMethod(GameRules.class, "func_223567_b", GameRules.class);
 				createGameruleMethod.setAccessible(true);
-				createGameruleMethod.invoke(null, defaultValue);
+				return (GameRules.RuleType<GameRules.BooleanValue>) createGameruleMethod.invoke(null, defaultValue);
 			} catch (Exception ignored) {
 			}
 			return null;

@@ -47,22 +47,20 @@ public class ${name}Gamerule extends ${JavaModName}Elements.ModElement {
 
 	<#if data.type == "Number">
 		public static GameRules.RuleType<GameRules.IntegerValue> create(int defaultValue) {
-			Method method;
 			try {
-				method = ObfuscationReflectionHelper.findMethod(GameRules.class, "func_223564_a", GameRules.class);
-				method.setAccessible(true);
-				return (GameRules.RuleType<GameRules.IntegerValue>) method.invoke(null, defaultValue);
+				Method createGameruleMethod = ObfuscationReflectionHelper.findMethod(GameRules.class, "func_223564_a", GameRules.class);
+				createGameruleMethod.setAccessible(true);
+				return (GameRules.RuleType<GameRules.IntegerValue>) createGameruleMethod.invoke(null, defaultValue);
 			} catch (Exception ignored) {
 			}
 			return null;
 		}
 	<#else>
 		public static GameRules.RuleType<GameRules.BooleanValue> create(boolean defaultValue) {
-			Method method;
 			try {
-				method = ObfuscationReflectionHelper.findMethod(GameRules.class, "func_223568_b", GameRules.class);
-				method.setAccessible(true);
-				return (GameRules.RuleType<GameRules.BooleanValue>) method.invoke(null, defaultValue);
+				Method createGameruleMethod = ObfuscationReflectionHelper.findMethod(GameRules.class, "func_223568_b", GameRules.class);
+				createGameruleMethod.setAccessible(true);
+				return (GameRules.RuleType<GameRules.BooleanValue>) createGameruleMethod.invoke(null, defaultValue);
 			} catch (Exception ignored) {
 			}
 			return null;
