@@ -11,6 +11,9 @@
   "colour": 20,
   "mcreator": {
     "toolbox_id": "directionactions",
+    "toolbox_init": [
+      "<value name=\"direction\"><block type=\"direction_from_deps\">DOWN</block></value>"
+    ],
     "inputs": [
       "direction"
     ]

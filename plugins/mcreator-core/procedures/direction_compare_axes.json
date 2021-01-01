@@ -16,6 +16,10 @@
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
     "toolbox_id": "directionactions",
+    "toolbox_init": [
+      "<value name=\"a\"><block type=\"direction_from_deps\">DOWN</block></value>",
+      "<value name=\"b\"><block type=\"direction_constant\">DOWN</block></value>"
+    ],
     "inputs": [
       "a",
       "b"
