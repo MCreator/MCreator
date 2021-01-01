@@ -1,0 +1,1 @@
+Cette valeur définit le temps, en ticks, avant que le son ne soit joué (boucle).

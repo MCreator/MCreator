@@ -216,12 +216,47 @@ public class MinecraftImageGenerator {
 			graphics2D.drawLine(27, oSlotOffsetY, 27, 9 + oSlotOffsetY);
 
 			//elements
-			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
 							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, input.getUnmappedValue()).getImage())),
-					1, 1 + slotOffsetY, 8, 8, null);
-			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils
+					8), 1, 1 + slotOffsetY, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
 							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, result.getUnmappedValue()).getImage())),
-					19, 1 + oSlotOffsetY, 8, 8, null);
+					8), 19, 1 + oSlotOffsetY, null);
+		}
+
+		private static void drawThreeSlotRecipe(Graphics2D graphics2D, Workspace workspace, MItemBlock input0,
+				MItemBlock input1, MItemBlock result) {
+			int slotOffsetY = 9;
+			int oSlotOffsetY = 9;
+
+			//box 1
+			graphics2D.drawLine(1, slotOffsetY - 9, 8, slotOffsetY - 9);
+			graphics2D.drawLine(1, 9 + slotOffsetY - 9, 8, 9 + slotOffsetY - 9);
+			graphics2D.drawLine(0, slotOffsetY - 9, 0, 9 + slotOffsetY - 9);
+			graphics2D.drawLine(9, slotOffsetY - 9, 9, 9 + slotOffsetY - 9);
+
+			//box 2
+			graphics2D.drawLine(1, slotOffsetY + 9, 8, slotOffsetY + 9);
+			graphics2D.drawLine(1, 9 + slotOffsetY + 9, 8, 9 + slotOffsetY + 9);
+			graphics2D.drawLine(0, slotOffsetY + 9, 0, 9 + slotOffsetY + 9);
+			graphics2D.drawLine(9, slotOffsetY + 9, 9, 9 + slotOffsetY + 9);
+
+			//box 3
+			graphics2D.drawLine(19, oSlotOffsetY, 26, oSlotOffsetY);
+			graphics2D.drawLine(19, 9 + oSlotOffsetY, 26, 9 + oSlotOffsetY);
+			graphics2D.drawLine(18, oSlotOffsetY, 18, 9 + oSlotOffsetY);
+			graphics2D.drawLine(27, oSlotOffsetY, 27, 9 + oSlotOffsetY);
+
+			//elements
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
+							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, input0.getUnmappedValue()).getImage())),
+					8), 1, 1 + slotOffsetY - 9, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
+							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, input1.getUnmappedValue()).getImage())),
+					8), 1, 1 + slotOffsetY + 9, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
+							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, result.getUnmappedValue()).getImage())),
+					8), 19, 1 + oSlotOffsetY, null);
 		}
 
 		private static void drawThreeSlotRecipe(Graphics2D graphics2D, Workspace workspace, MItemBlock input0,
@@ -479,9 +514,9 @@ public class MinecraftImageGenerator {
 				for (int i = 0; i < 9; i++)
 					if (recipe[i] != null) {
 						int x = (i % 3) * 9 + 1, y = (i / 3) * 9 + 1;
-						graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
-								MCItem.getBlockIconBasedOnName(workspace, recipe[i].getUnmappedValue()).getImage())), x,
-								y, 8, 8, null);
+						graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+								MCItem.getBlockIconBasedOnName(workspace, recipe[i].getUnmappedValue()).getImage())),
+								8), x, y, null);
 					}
 			}
 
@@ -504,9 +539,9 @@ public class MinecraftImageGenerator {
 
 			graphics2D.fillRect(0, 8, 28, 12);
 
-			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
-					MCItem.getBlockIconBasedOnName(workspace, achievementIcon.getUnmappedValue()).getImage())), 2, 10,
-					8, 8, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+					MCItem.getBlockIconBasedOnName(workspace, achievementIcon.getUnmappedValue()).getImage())), 8), 2,
+					10, null);
 
 			graphics2D.setFont(new Font(null, Font.PLAIN, 9));
 
@@ -677,9 +712,9 @@ public class MinecraftImageGenerator {
 			graphics2D.drawLine(16, 12 + zamik, 16, 11 + zamik);
 			graphics2D.drawLine(17, 10 + zamik, 17, 10 + zamik);
 
-			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, fuel.getUnmappedValue()).getImage())), 9,
-					15, 10, 10, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
+							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, fuel.getUnmappedValue()).getImage())),
+					10), 9, 15, null);
 
 			graphics2D.dispose();
 			return icon;
@@ -698,28 +733,42 @@ public class MinecraftImageGenerator {
 			try {
 				switch (armorPieces.size()) {
 				case 1:
-					graphics2D.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 0, 0, 28, 28, null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 28), 0, 0,
+							null);
 					break;
 				case 2:
-					graphics2D.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 0, 7, 14, 14, null);
-					graphics2D
-							.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 14, 7, 14, 14, null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 14), 0, 7,
+							null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 14), 14, 7,
+							null);
 					break;
 				case 3:
-					graphics2D.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 7, 0, 14, 14, null);
-					graphics2D
-							.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 0, 14, 14, 14, null);
-					graphics2D
-							.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(2))), 14, 14, 14, 14, null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 14), 7, 0,
+							null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 14), 0, 14,
+							null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(2))), 14), 14, 14,
+							null);
 					break;
 				case 4:
-					graphics2D.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 0, 0, 14, 14, null);
-					graphics2D
-							.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 14, 0, 14, 14, null);
-					graphics2D
-							.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(2))), 0, 14, 14, 14, null);
-					graphics2D
-							.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(3))), 14, 14, 14, 14, null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 14), 0, 0,
+							null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 14), 14, 0,
+							null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(2))), 14), 0, 14,
+							null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(3))), 14), 14, 14,
+							null);
 					break;
 				}
 			} catch (IOException e) {
@@ -755,6 +804,7 @@ public class MinecraftImageGenerator {
 			g2d.drawImage(ImageTransformUtil
 							.computeImage(ImageUtils.darken(ImageUtils.resizeAndCrop(front, 32)), t3f4r1, f3r2, r3, t4r4), null,
 					null);
+			g2d.dispose();
 			return out;
 		}
 
@@ -1061,6 +1111,12 @@ public class MinecraftImageGenerator {
 			return icon;
 		}
 
+		/**
+		 * This method generates tag images.
+		 *
+		 * @param type Tag type string.
+		 * @return Returns generated image of the appropriate colour.
+		 */
 		public static BufferedImage generateTagPreviewPicture(String type) {
 			switch (type) {
 			case "Items":

@@ -28,8 +28,10 @@ import net.mcreator.minecraft.MinecraftFolderUtils;
 import net.mcreator.ui.FileOpener;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
 import net.mcreator.ui.component.util.WrapLayout;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
@@ -52,7 +54,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
 
-public class ProjectBrowser extends JPanel {
+public class WorkspaceFileBrowser extends JPanel {
 
 	private final FilteredTreeModel mods = new FilteredTreeModel(null);
 
@@ -87,7 +89,7 @@ public class ProjectBrowser extends JPanel {
 
 	final MCreator mcreator;
 
-	public ProjectBrowser(MCreator mcreator) {
+	public WorkspaceFileBrowser(MCreator mcreator) {
 		setLayout(new BorderLayout(0, 0));
 		this.mcreator = mcreator;
 
@@ -122,6 +124,8 @@ public class ProjectBrowser extends JPanel {
 
 		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
+		jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+
 		add("Center", jsp);
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
@@ -153,7 +157,7 @@ public class ProjectBrowser extends JPanel {
 
 		JPanel tools = new JPanel(new WrapLayout(FlowLayout.LEFT, 0, 4));
 
-		JButton create = new JButton("Add ...");
+		JButton create = L10N.button("workspace_file_browser.add");
 		create.setIcon(UIRES.get("16px.add.gif"));
 		create.setContentAreaFilled(false);
 		create.setOpaque(false);
@@ -169,17 +173,27 @@ public class ProjectBrowser extends JPanel {
 		delete.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 7));
 		tools.add(delete);
 
-		tools.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		tools.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 
 		JPanel bar = new JPanel(new BorderLayout());
 		bar.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		bar.add(jtf1);
-		bar.setBorder(BorderFactory.createMatteBorder(0, 0, 6, 5, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		bar.setBorder(BorderFactory.createMatteBorder(0, 5, 6, 5, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 
-		add("North", tools);
+		JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		topBar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		topBar.add(ComponentUtils
+				.setForeground(ComponentUtils.deriveFont(L10N.label("workspace_file_browser.title"), 10f),
+						(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")));
+
+		topBar.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
+				BorderFactory.createEmptyBorder(2, 5, 2, 0)));
+
+		add("North", PanelUtils.northAndCenterElement(topBar, tools));
 		add("South", bar);
-
-		setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 
 		create.addActionListener(e -> new AddFileDropdown(this).show(create, 0, 20));
 
@@ -187,10 +201,9 @@ public class ProjectBrowser extends JPanel {
 			ProjectBrowserFilterTreeNode selected = (ProjectBrowserFilterTreeNode) tree.getLastSelectedPathComponent();
 			if (selected != null) {
 				if (selected.getUserObject() instanceof File) {
-					int n = JOptionPane.showConfirmDialog(mcreator,
-							"<html>Are you sure that you want to remove selected file?"
-									+ "<br>NOTE: You can break workspace by removing wrong files", "Confirmation",
-							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("workspace_file_browser.remove_file"),
+							L10N.t("workspace_file_browser.remove_file.title"), JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE);
 					if (n == 0) {
 						File file = (File) selected.getUserObject();
 						if (file.isFile())

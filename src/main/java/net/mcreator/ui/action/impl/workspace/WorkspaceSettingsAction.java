@@ -25,13 +25,13 @@ import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.StructureUtils;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.WorkspaceSelector;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.gradle.GradleAction;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 
 import java.io.File;
@@ -115,9 +115,8 @@ public class WorkspaceSettingsAction extends GradleAction {
 				}
 
 				// add new modid workspace to the recent workspaces so it does not get removed from the list
-				mcreator.getApplication().getWorkspaceSelector().addRecentWorkspace(
-						new WorkspaceSelector.RecentWorkspaceEntry(mcreator.getWorkspaceSettings().getModName(),
-								newWorkspaceFile));
+				mcreator.getApplication().getWorkspaceSelector()
+						.addOrUpdateRecentWorkspace(new RecentWorkspaceEntry(mcreator.getWorkspace(), newWorkspaceFile));
 			}
 
 			// handle change of generator in a different manner

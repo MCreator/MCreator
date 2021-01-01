@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.Particle;
 import net.mcreator.element.types.Biome;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
@@ -32,10 +33,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
-import net.mcreator.ui.minecraft.BiomeDictionaryTypeListField;
-import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.ui.minecraft.DefaultFeaturesListField;
-import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -109,6 +107,15 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JColor foliageColor = new JColor(mcreator, true);
 	private final JColor waterColor = new JColor(mcreator, true);
 	private final JColor waterFogColor = new JColor(mcreator, true);
+
+	private final SoundSelector ambientSound = new SoundSelector(mcreator);
+	private final SoundSelector moodSound = new SoundSelector(mcreator);
+	private final JSpinner moodSoundDelay = new JSpinner(new SpinnerNumberModel(6000, 1, 30000, 1));
+	private final SoundSelector additionsSound = new SoundSelector(mcreator);
+	private final SoundSelector music = new SoundSelector(mcreator);
+	private final JCheckBox spawnParticle = L10N.checkbox("elementgui.common.enable");
+	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
+	private final JSpinner particlesProbability = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
 
 	private final JSpinner biomeWeight = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 1));
 	private final JComboBox<String> biomeType = new JComboBox<>(new String[] { "WARM", "DESERT", "COOL", "ICY" });
@@ -461,6 +468,65 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		pane1.setOpaque(false);
 
+
+		JPanel effectsPane = new JPanel(new BorderLayout());
+
+		JPanel sounds = new JPanel(new GridLayout(5, 2, 0, 2));
+
+		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/music"),
+				L10N.label("elementgui.biome.music")));
+		sounds.add(music);
+
+		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ambient_sound"),
+				L10N.label("elementgui.biome.ambient_sound")));
+		sounds.add(ambientSound);
+
+		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/additions_sound"),
+				L10N.label("elementgui.biome.additions_sound")));
+		sounds.add(additionsSound);
+
+		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mood_sound"),
+				L10N.label("elementgui.biome.mood_sound")));
+		sounds.add(moodSound);
+
+		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mood_sound_delay"),
+				L10N.label("elementgui.biome.mood_sound_delay")));
+		sounds.add(moodSoundDelay);
+
+		sounds.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.biome.sounds"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		sounds.setOpaque(false);
+
+		JPanel particles = new JPanel(new GridLayout(3, 2, 0, 2));
+
+		particles.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/spawn_particle"),
+				L10N.label("elementgui.biome.enable_particles")));
+		particles.add(spawnParticle);
+
+		particles.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/particle_type"),
+				L10N.label("elementgui.biome.particle_type")));
+		particles.add(particleToSpawn);
+
+		particles.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/particle_probability"),
+				L10N.label("elementgui.biome.particle_probability")));
+		particles.add(particlesProbability);
+
+		particles.setOpaque(false);
+
+		particles.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.biome.particles"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		spawnParticle.setOpaque(false);
+		spawnParticle.addActionListener(event -> updateParticleParameters());
+
+		effectsPane.setOpaque(false);
+		effectsPane.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(sounds, PanelUtils.pullElementUp(particles))));
+
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(groundBlock);
 		page1group.addValidationElement(undergroundBlock);
@@ -476,10 +542,12 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		addPage(L10N.t("elementgui.biome.general_properties"), pane4);
 		addPage(L10N.t("elementgui.biome.features"), pane3);
 		addPage(L10N.t("elementgui.biome.structures"), pane2);
+		addPage(L10N.t("elementgui.biome.effects"), effectsPane);
 		addPage(L10N.t("elementgui.biome.entity_spawning"), pane1);
 		addPage(L10N.t("elementgui.biome.biome_generation"), pane5);
 
 		updateBiomeTreesForm();
+		updateParticleParameters();
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -494,6 +562,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		ComboBoxUtil.updateComboBoxContents(parent,
 				ListUtils.merge(Collections.singleton(noparent), ElementUtil.loadAllBiomes(mcreator.getWorkspace())),
 				noparent);
+		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -518,6 +587,16 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		}
 	}
 
+	private void updateParticleParameters(){
+		if(spawnParticle.isSelected()){
+			particleToSpawn.setEnabled(true);
+			particlesProbability.setEnabled(true);
+		}else {
+			particleToSpawn.setEnabled(false);
+			particlesProbability.setEnabled(false);
+		}
+	}
+
 	@Override public void openInEditingMode(Biome biome) {
 		name.setText(biome.name);
 		groundBlock.setBlock(biome.groundBlock);
@@ -534,6 +613,15 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			vanillaTrees.setSelected(true);
 			customTrees.setSelected(false);
 		}
+
+		ambientSound.setSound(biome.ambientSound);
+		moodSound.setSound(biome.moodSound);
+		moodSoundDelay.setValue(biome.moodSoundDelay);
+		additionsSound.setSound(biome.additionsSound);
+		music.setSound(biome.music);
+		spawnParticle.setSelected(biome.spawnParticles);
+		particleToSpawn.setSelectedItem(biome.particleToSpawn);
+		particlesProbability.setValue(biome.particlesProbability);
 
 		minHeight.setValue(biome.minHeight);
 		airColor.setColor(biome.airColor);
@@ -578,6 +666,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnEntries.setSpawns(biome.spawnEntries);
 
 		updateBiomeTreesForm();
+		updateParticleParameters();
 	}
 
 	@Override public Biome getElementFromGUI() {
@@ -594,6 +683,16 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.foliageColor = foliageColor.getColor();
 		biome.waterColor = waterColor.getColor();
 		biome.waterFogColor = waterFogColor.getColor();
+
+		biome.ambientSound = ambientSound.getSound();
+		biome.moodSound = moodSound.getSound();
+		biome.moodSoundDelay = (int) moodSoundDelay.getValue();
+		biome.additionsSound = additionsSound.getSound();
+		biome.music = music.getSound();
+		biome.spawnParticles = spawnParticle.isSelected();
+		biome.particleToSpawn = new Particle(mcreator.getWorkspace(), particleToSpawn.getSelectedItem());
+		biome.particlesProbability = (double) particlesProbability.getValue();
+
 		biome.treesPerChunk = (int) treesPerChunk.getValue();
 		biome.grassPerChunk = (int) grassPerChunk.getValue();
 		biome.seagrassPerChunk = (int) seagrassPerChunk.getValue();
