@@ -53,7 +53,7 @@ import ${package}.${JavaModName};
 		try {
 			method = ObfuscationReflectionHelper.findMethod(GameRules.class, "func_223564_a", GameRules.class);
 			method.setAccessible(true);
-			method.invoke(defaultValue);
+			method.invoke(null, defaultValue);
 		} catch (Exception ignored) {
 		}
 		return null;

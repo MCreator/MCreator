@@ -35,4 +35,39 @@ import ${package}.${JavaModName};
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Gamerule extends ${JavaModName}Elements.ModElement {
 
+	<#if data.gameruleType == "Number">
+	public static final GameRules.RuleKey<GameRules.IntegerValue> ${data.ID} = GameRules.register("${data.name}",
+		create(0));
+	<#else>
+	public static final GameRules.RuleKey<GameRules.BooleanValue> ${data.ID} = GameRules.register("${data.name}",
+		create(false));
+	</#if>
+
+	public ${name}Gamerule (${JavaModName}Elements instance) {
+		super(instance, ${data.getModElement().getSortID()});
+	}
+
+	<#if data.gameruleType == "Number">
+	public static GameRules.RuleType<GameRules.IntegerValue> create(int defaultValue) {
+		Method method;
+		try {
+			method = ObfuscationReflectionHelper.findMethod(GameRules.class, "func_223559_b", GameRules.class);
+			method.setAccessible(true);
+			method.invoke(null, defaultValue);
+		} catch (Exception ignored) {
+		}
+		return null;
+	}
+	<#else>
+	public static GameRules.RuleType<GameRules.BooleanValue> create(boolean defaultValue) {
+		Method method;
+		try {
+			method = ObfuscationReflectionHelper.findMethod(GameRules.class, "func_223567_b", GameRules.class);
+			method.setAccessible(true);
+			method.invoke(null, defaultValue);
+		} catch (Exception ignored) {
+		}
+		return null;
+	}
+	</#if>
 }
