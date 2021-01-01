@@ -198,6 +198,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final Model singleTexture = new Model.BuiltInModel("Single texture");
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
+	private final Model tintedCross = new Model.BuiltInModel("Tinted cross model");
+	private final Model tintedSingleTexture = new Model.BuiltInModel("Tinted single texture");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
 
 	private final JComboBox<String> transparencyType = new JComboBox<>(
@@ -1070,7 +1072,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		renderType.addActionListener(e -> {
 			Model selected = renderType.getSelectedItem();
 			if (selected != null) {
-				if (!selected.equals(normal) && !selected.equals(singleTexture)) {
+				if (!selected.equals(normal) && !selected.equals(singleTexture) && !selected.equals(tintedSingleTexture)) {
 					hasTransparency.setSelected(true);
 					lightOpacity.setValue(0);
 				}
@@ -1183,7 +1185,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		generateCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils
-				.merge(Arrays.asList(normal, singleTexture, cross, crop),
+				.merge(Arrays.asList(normal, singleTexture, cross, crop, tintedCross, tintedSingleTexture),
 						Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 								.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 								.collect(Collectors.toList())));
@@ -1473,6 +1475,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 			block.renderType = 12;
 		else if (model.equals(crop))
 			block.renderType = 13;
+		else if (model.equals(tintedSingleTexture))
+			block.renderType = 14;
+		else if (model.equals(tintedCross))
+			block.renderType = 15;
 		block.customModelName = model.getReadableName();
 
 		return block;
