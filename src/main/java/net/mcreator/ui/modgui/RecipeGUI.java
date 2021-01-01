@@ -68,8 +68,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private final VTextField group = new VTextField();
 
 	private final JComboBox<String> recipeType = new JComboBox<>(
-			new String[] { "Crafting", "Smelting", "Brewing", "Blasting", "Smoking", "Stone cutting", "Campfire cooking",
-					"Smithing" });
+			new String[] { "Crafting", "Smelting", "Brewing", "Blasting", "Smoking", "Stone cutting",
+					"Campfire cooking", "Smithing" });
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -90,8 +90,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				ElementUtil::loadBlocksAndItems);
 		smcm = new SmithingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
 				ElementUtil::loadBlocksAndItems);
-    brm = new BrewingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
-        ElementUtil::loadBlocksAndItems);
+		brm = new BrewingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
 
 		name.setValidator(new RegistryNameValidator(name, "Loot table").setValidChars(Arrays.asList('_', '/')));
 		name.enableRealtimeValidation();
@@ -194,11 +193,11 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipeType.addActionListener(e -> {
 			if (recipeType.getSelectedItem() != null) {
 				xpReward.setEnabled(!recipeType.getSelectedItem().equals("Crafting") && !recipeType.getSelectedItem()
-						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing")
-						&& !recipeType.getSelectedItem().equals("Brewing"));
+						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing") && !recipeType
+						.getSelectedItem().equals("Brewing"));
 				cookingTime.setEnabled(!recipeType.getSelectedItem().equals("Crafting") && !recipeType.getSelectedItem()
-						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing")
-						&& !recipeType.getSelectedItem().equals("Brewing"));
+						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing") && !recipeType
+						.getSelectedItem().equals("Brewing"));
 
 				if (!isEditingMode() && cookingTime.isEnabled()) {
 					if (recipeType.getSelectedItem().equals("Smelting")) {
