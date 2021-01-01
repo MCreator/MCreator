@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.element.types.Gamerule;
+import net.mcreator.element.types.GameRule;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -38,10 +38,10 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class GameruleGUI extends ModElementGUI<Gamerule> {
+public class GameRuleGUI extends ModElementGUI<GameRule> {
 
 	private final VTextField name = new VTextField(20);
-	private final VTextField ID = new VTextField(20);
+	private final VTextField rule_id = new VTextField(20);
 	private final VTextField description = new VTextField(20);
 
 	private final JComboBox<String> gameruleCategory = new JComboBox<>(
@@ -51,7 +51,7 @@ public class GameruleGUI extends ModElementGUI<Gamerule> {
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
-	public GameruleGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
+	public GameRuleGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
@@ -61,10 +61,10 @@ public class GameruleGUI extends ModElementGUI<Gamerule> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 
 		ComponentUtils.deriveFont(name, 16);
-		ComponentUtils.deriveFont(ID, 16);
+		ComponentUtils.deriveFont(rule_id, 16);
 		ComponentUtils.deriveFont(description, 16);
 
-		JPanel subpane2 = new JPanel(new GridLayout(5, 2, 45, 8));
+		JPanel subpane2 = new JPanel(new GridLayout(4, 2, 45, 2));
 		subpane2.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -72,10 +72,6 @@ public class GameruleGUI extends ModElementGUI<Gamerule> {
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/name"),
 				L10N.label("elementgui.gamerule.name")));
 		subpane2.add(name);
-
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/id"),
-				L10N.label("elementgui.gamerule.id")));
-		subpane2.add(ID);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/description"),
 				L10N.label("elementgui.gamerule.description")));
@@ -90,14 +86,14 @@ public class GameruleGUI extends ModElementGUI<Gamerule> {
 		subpane2.add(gameruleType);
 
 		page1group.addValidationElement(name);
-		page1group.addValidationElement(ID);
+		page1group.addValidationElement(rule_id);
 		page1group.addValidationElement(description);
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.gamerule.gamerule_needs_name")));
 		name.enableRealtimeValidation();
 
-		ID.setValidator(new TextFieldValidator(ID, L10N.t("elementgui.gamerule.gamerule_needs_id")));
-		ID.enableRealtimeValidation();
+		rule_id.setValidator(new TextFieldValidator(rule_id, L10N.t("elementgui.gamerule.gamerule_needs_id")));
+		rule_id.enableRealtimeValidation();
 
 		description.setValidator(new TextFieldValidator(description, L10N.t("elementgui.gamerule.gamerule_needs_description")));
 		description.enableRealtimeValidation();
@@ -119,21 +115,19 @@ public class GameruleGUI extends ModElementGUI<Gamerule> {
 		return new AggregatedValidationResult.PASS();
 	}
 
-	@Override public void openInEditingMode(Gamerule gamerule) {
+	@Override public void openInEditingMode(GameRule gamerule) {
 		name.setText(gamerule.name);
-		ID.setText(gamerule.ID);
 		description.setText(gamerule.description);
-		gameruleCategory.setSelectedItem(gamerule.gameruleCategory);
-		gameruleType.setSelectedItem(gamerule.gameruleType);
+		gameruleCategory.setSelectedItem(gamerule.category);
+		gameruleType.setSelectedItem(gamerule.type);
 	}
 
-	@Override public Gamerule getElementFromGUI() {
-		Gamerule gamerule = new Gamerule(modElement);
+	@Override public GameRule getElementFromGUI() {
+		GameRule gamerule = new GameRule(modElement);
 		gamerule.name = name.getText();
-		gamerule.ID = ID.getText();
 		gamerule.description = description.getText();
-		gamerule.gameruleCategory = (String) gameruleCategory.getSelectedItem();
-		gamerule.gameruleType = (String) gameruleType.getSelectedItem();
+		gamerule.category = (String) gameruleCategory.getSelectedItem();
+		gamerule.type = (String) gameruleType.getSelectedItem();
 		return gamerule;
 	}
 

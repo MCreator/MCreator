@@ -21,16 +21,15 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.workspace.elements.ModElement;
 
-public class Gamerule extends GeneratableElement {
+public class GameRule extends GeneratableElement {
 
 	public String name;
-	public String ID;
+	public String type;
+
 	public String description;
+	public String category;
 
-	public String gameruleCategory;
-	public String gameruleType;
-
-	public Gamerule(ModElement element) {
+	public GameRule(ModElement element) {
 		super(element);
 	}
 }
