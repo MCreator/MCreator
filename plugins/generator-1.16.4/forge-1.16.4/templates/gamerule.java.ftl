@@ -36,9 +36,9 @@ import ${package}.${JavaModName};
 public class ${name}Gamerule extends ${JavaModName}Elements.ModElement {
 
 	<#if data.type == "Number">
-	public static final GameRules.RuleKey<GameRules.IntegerValue> gamerule = GameRules.register("${data.name}", GameRules.Category.${data.category}, create(0));
+	public static final GameRules.RuleKey<GameRules.IntegerValue> gamerule = GameRules.register("${registryname}", GameRules.Category.${data.category}, create(0));
 	<#else>
-	public static final GameRules.RuleKey<GameRules.BooleanValue> gamerule = GameRules.register("${data.name}", GameRules.Category.${data.category}, create(false));
+	public static final GameRules.RuleKey<GameRules.BooleanValue> gamerule = GameRules.register("${registryname}", GameRules.Category.${data.category}, create(false));
 	</#if>
 
 	public ${name}Gamerule (${JavaModName}Elements instance) {
@@ -48,20 +48,22 @@ public class ${name}Gamerule extends ${JavaModName}Elements.ModElement {
 	<#if data.type == "Number">
 		public static GameRules.RuleType<GameRules.IntegerValue> create(int defaultValue) {
 			try {
-				Method createGameruleMethod = ObfuscationReflectionHelper.findMethod(GameRules.class, "func_223564_a", GameRules.class);
+				Method createGameruleMethod = ObfuscationReflectionHelper.findMethod(GameRules.IntegerValue.class, "func_223564_a", int.class);
 				createGameruleMethod.setAccessible(true);
 				return (GameRules.RuleType<GameRules.IntegerValue>) createGameruleMethod.invoke(null, defaultValue);
-			} catch (Exception ignored) {
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			return null;
 		}
 	<#else>
 		public static GameRules.RuleType<GameRules.BooleanValue> create(boolean defaultValue) {
 			try {
-				Method createGameruleMethod = ObfuscationReflectionHelper.findMethod(GameRules.class, "func_223568_b", GameRules.class);
+				Method createGameruleMethod = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "func_223568_b", boolean.class);
 				createGameruleMethod.setAccessible(true);
 				return (GameRules.RuleType<GameRules.BooleanValue>) createGameruleMethod.invoke(null, defaultValue);
-			} catch (Exception ignored) {
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			return null;
 		}
