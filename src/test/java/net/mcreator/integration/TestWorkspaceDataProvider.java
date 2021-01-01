@@ -1268,9 +1268,9 @@ public class TestWorkspaceDataProvider {
 			Gamerule gamerule = new Gamerule(modElement);
 			gamerule.name = modElement.getName();
 			gamerule.ID = modElement.getName();
-			gamerule.description = "Description test";
-			gamerule.gameruleCategory = "Player";
-			gamerule.gameruleType = "Integer";
+			gamerule.description = modElement.getName();
+			gamerule.gameruleCategory = new String[] { "PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING" }[valueIndex];
+			gamerule.gameruleType = new String[] { "Number", "Logic" }[valueIndex];
 		default:
 			return null;
 		}
