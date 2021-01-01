@@ -50,7 +50,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	public ${name}Block (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
-		<#if data.hasInventory>
+		<#if data.hasInventory || data.isBlockTinted || data.isItemTinted>
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 		</#if>
 	}
@@ -87,7 +87,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	</#if>
 
 	<#if data.isBlockTinted>
-	@Override @OnlyIn(Dist.CLIENT) public void blockColorLoad(ColorHandlerEvent.Block event) {
+	@OnlyIn(Dist.CLIENT) @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
 		event.getBlockColors().register((bs, world, pos, index) -> {
 			return world != null && pos != null ?
 			<#if data.tintType == "Grass">
@@ -102,7 +102,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	</#if>
 
 	<#if data.isItemTinted>
-	@Override @OnlyIn(Dist.CLIENT) public void itemColorLoad(ColorHandlerEvent.Item event) {
+	@OnlyIn(Dist.CLIENT) @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
 		event.getItemColors().register((stack, index) -> {
 			<#if data.itemTint?has_content>
 				return ${data.itemTint.getRGB()};

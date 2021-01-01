@@ -57,6 +57,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		<#if data.hasInventory>
 		FMLJavaModLoadingContext.get().getModEventBus().register(new TileEntityRegisterHandler());
 		</#if>
+		<#if data.isBlockTinted>
+		FMLJavaModLoadingContext.get().getModEventBus().register(new BlockColorRegisterHandler());
+		</#if>
+		<#if data.isItemTinted>
+		FMLJavaModLoadingContext.get().getModEventBus().register(new ItemColorRegisterHandler());
+		</#if>
 	}
 
 	@Override public void initElements() {
@@ -93,35 +99,39 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	</#if>
 
 	<#if data.isBlockTinted>
-	@Override @OnlyIn(Dist.CLIENT) public void blockColorLoad(ColorHandlerEvent.Block event) {
-		event.getBlockColors().register((bs, world, pos, index) -> {
-			return world != null && pos != null ?
-			<#if data.tintType == "Grass">
-				BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
-			<#elseif data.tintType == "Foliage">
-				BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
-			<#else>
-				BiomeColors.getWaterColor(world, pos) : -1;
-			</#if>
-		}, block);
+	private static class BlockColorRegisterHandler {
+		@OnlyIn(Dist.CLIENT) @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
+			event.getBlockColors().register((bs, world, pos, index) -> {
+				return world != null && pos != null ?
+				<#if data.tintType == "Grass">
+					BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
+				<#elseif data.tintType == "Foliage">
+					BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
+				<#else>
+					BiomeColors.getWaterColor(world, pos) : -1;
+				</#if>
+			}, block);
+		}
 	}
 	</#if>
 
 	<#if data.isItemTinted>
-	@Override @OnlyIn(Dist.CLIENT) public void itemColorLoad(ColorHandlerEvent.Item event) {
-		event.getItemColors().register((stack, index) -> {
-			<#if data.itemTint?has_content>
-				return ${data.itemTint.getRGB()};
-			<#else>
-				<#if data.tintType == "Grass">
-					return GrassColors.get(0.5D, 1.0D);
-				<#elseif data.tintType == "Foliage">
-					return FoliageColors.getDefault();
+	private static class ItemColorRegisterHandler {
+		@OnlyIn(Dist.CLIENT) @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
+			event.getItemColors().register((stack, index) -> {
+				<#if data.itemTint?has_content>
+					return ${data.itemTint.getRGB()};
 				<#else>
-					return 3694022;
+					<#if data.tintType == "Grass">
+						return GrassColors.get(0.5D, 1.0D);
+					<#elseif data.tintType == "Foliage">
+						return FoliageColors.getDefault();
+					<#else>
+						return 3694022;
+					</#if>
 				</#if>
-			</#if>
-		}, block);
+			}, block);
+		}
 	}
 	</#if>
 

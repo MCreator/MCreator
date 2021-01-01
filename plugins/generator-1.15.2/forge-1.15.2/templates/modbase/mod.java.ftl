@@ -84,14 +84,6 @@ public class ${JavaModName} {
 		elements.getElements().forEach(element -> element.clientLoad(event));
 	}
 
-	@SubscribeEvent @OnlyIn(Dist.CLIENT) public void blockColorLoad(ColorHandlerEvent.Block event) {
-		elements.getElements().forEach(element -> element.blockColorLoad(event));
-	}
-
-	@SubscribeEvent @OnlyIn(Dist.CLIENT) public void itemColorLoad(ColorHandlerEvent.Item event) {
-		elements.getElements().forEach(element -> element.itemColorLoad(event));
-	}
-
 	@SubscribeEvent public void registerBlocks(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(elements.getBlocks().stream().map(Supplier::get).toArray(Block[]::new));
 	}
