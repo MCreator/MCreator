@@ -1111,7 +1111,7 @@ public class TestWorkspaceDataProvider {
 		case TAG:
 			Tag tag = new Tag(modElement);
 			tag.namespace = getRandomItem(random, new String[] { "forge", "minecraft", "test1", "test2" });
-			tag.type = getRandomItem(random, new String[] { "Items", "Blocks", "Functions" });
+			tag.type = getRandomItem(random, new String[] { "Items", "Blocks", "Entities", "Functions" });
 			tag.name = modElement.getName();
 			tag.items = new ArrayList<>();
 			tag.blocks = new ArrayList<>();
