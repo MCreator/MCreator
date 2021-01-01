@@ -57,6 +57,11 @@ import java.util.Map;
 
 	public String blockBase;
 
+	public boolean isBlockTinted;
+	public String tintType;
+	public boolean isItemTinted;
+	public Color itemTint;
+
 	public boolean hasTransparency;
 	public boolean connectedSides;
 	public String transparencyType;
@@ -161,6 +166,7 @@ import java.util.Map;
 	public Block(ModElement element) {
 		super(element);
 
+		this.tintType = "Grass";
 		this.spawnWorldTypes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
 		this.reactionToPushing = "NORMAL";

@@ -129,6 +129,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox isNotColidable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
 
+	private final JCheckBox isBlockTinted = L10N.checkbox("elementgui.common.enable");
+	private final JComboBox<String> tintType = new JComboBox<>(new String[] { "Grass", "Foliage", "Water" });
+	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
+	private final JColor itemTint = new JColor(mcreator, true);
+
 	private final JCheckBox hasTransparency = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox connectedSides = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
@@ -578,6 +583,24 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.bounding_block_max_z")));
 		bound.add(Mz);
 
+		JPanel tintPanel = new JPanel(new GridLayout(4, 2, 0, 2));
+		tintPanel.setOpaque(false);
+		isBlockTinted.setOpaque(false);
+		isItemTinted.setOpaque(false);
+
+		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_block_tinted"),
+				L10N.label("elementgui.block.is_block_tinted")));
+		tintPanel.add(isBlockTinted);
+		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tint_type"),
+				L10N.label("elementgui.common.tint_type")));
+		tintPanel.add(tintType);
+		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
+				L10N.label("elementgui.block.is_item_tinted")));
+		tintPanel.add(isItemTinted);
+		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/item_tint"),
+				L10N.label("elementgui.block.item_tint")));
+		tintPanel.add(itemTint);
+
 		bound.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.bounding_block_title"), 0, 0, getFont().deriveFont(12.0f),
@@ -586,14 +609,18 @@ public class BlockGUI extends ModElementGUI<Block> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.render_type"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
 		transparencySettings.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.transparency"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		tintPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.block.block_tint"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		render.add(rent);
 		render.add(transparencySettings);
+		render.add(tintPanel);
 		render.add(bound);
 		render.add(txblock3);
 
@@ -1291,6 +1318,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		lightOpacity.setValue(block.lightOpacity);
 		material.setSelectedItem(block.material.getUnmappedValue());
 		transparencyType.setSelectedItem(block.transparencyType);
+		isBlockTinted.setSelected(block.isBlockTinted);
+		tintType.setSelectedItem(block.tintType);
+		isItemTinted.setSelected(block.isItemTinted);
+		itemTint.setColor(block.itemTint);
 
 		if (block.blockBase == null) {
 			blockBase.setSelectedIndex(0);
@@ -1352,6 +1383,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.connectedSides = connectedSides.isSelected();
 		block.displayFluidOverlay = displayFluidOverlay.isSelected();
 		block.transparencyType = (String) transparencyType.getSelectedItem();
+		block.isBlockTinted = isBlockTinted.isSelected();
+		block.tintType = (String) tintType.getSelectedItem();
+		block.isItemTinted = isItemTinted.isSelected();
+		block.itemTint = itemTint.getColor();
 		block.mx = (double) mx.getValue();
 		block.my = (double) my.getValue();
 		block.mz = (double) mz.getValue();
