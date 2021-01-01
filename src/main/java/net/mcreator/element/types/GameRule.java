@@ -32,4 +32,5 @@ public class GameRule extends GeneratableElement {
 	public GameRule(ModElement element) {
 		super(element);
 	}
+
 }

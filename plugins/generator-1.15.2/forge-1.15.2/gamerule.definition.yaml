@@ -3,5 +3,5 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/gamerule/@NAMEGamerule.java"
 
 localizationkeys:
-  - key: gamerule.@name
+  - key: gamerule.@registryname
     mapto: description

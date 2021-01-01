@@ -40,9 +40,8 @@ import java.net.URISyntaxException;
 
 public class GameRuleGUI extends ModElementGUI<GameRule> {
 
-	private final VTextField name = new VTextField(20);
-	private final VTextField rule_id = new VTextField(20);
-	private final VTextField description = new VTextField(20);
+	private final VTextField name = new VTextField(30);
+	private final VTextField description = new VTextField(30);
 
 	private final JComboBox<String> gameruleCategory = new JComboBox<>(
 			new String[] { "PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING" });
@@ -61,11 +60,12 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 
 		ComponentUtils.deriveFont(name, 16);
-		ComponentUtils.deriveFont(rule_id, 16);
 		ComponentUtils.deriveFont(description, 16);
 
 		JPanel subpane2 = new JPanel(new GridLayout(4, 2, 45, 2));
 		subpane2.setOpaque(false);
+
+		name.setEnabled(false);
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -86,14 +86,10 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		subpane2.add(gameruleType);
 
 		page1group.addValidationElement(name);
-		page1group.addValidationElement(rule_id);
 		page1group.addValidationElement(description);
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.gamerule.gamerule_needs_name")));
 		name.enableRealtimeValidation();
-
-		rule_id.setValidator(new TextFieldValidator(rule_id, L10N.t("elementgui.gamerule.gamerule_needs_id")));
-		rule_id.enableRealtimeValidation();
 
 		description.setValidator(new TextFieldValidator(description, L10N.t("elementgui.gamerule.gamerule_needs_description")));
 		description.enableRealtimeValidation();
@@ -104,8 +100,7 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 
 		if (!isEditingMode()) {
-			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
-			name.setText(readableNameFromModElement);
+			name.setText(StringUtils.lowercaseFirstLetter(getModElement().getName()));
 		}
 	}
 
@@ -116,19 +111,24 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 	}
 
 	@Override public void openInEditingMode(GameRule gamerule) {
-		name.setText(gamerule.name);
 		description.setText(gamerule.description);
 		gameruleCategory.setSelectedItem(gamerule.category);
 		gameruleType.setSelectedItem(gamerule.type);
+
+		name.setText(StringUtils.lowercaseFirstLetter(getModElement().getName()));
 	}
 
 	@Override public GameRule getElementFromGUI() {
 		GameRule gamerule = new GameRule(modElement);
-		gamerule.name = name.getText();
 		gamerule.description = description.getText();
 		gamerule.category = (String) gameruleCategory.getSelectedItem();
 		gamerule.type = (String) gameruleType.getSelectedItem();
 		return gamerule;
+	}
+
+	@Override protected void beforeGeneratableElementGenerated() {
+		super.beforeGeneratableElementGenerated();
+		modElement.setRegistryName(StringUtils.lowercaseFirstLetter(getModElement().getName()));
 	}
 
 	@Override public @Nullable URI getContextURL() throws URISyntaxException {
