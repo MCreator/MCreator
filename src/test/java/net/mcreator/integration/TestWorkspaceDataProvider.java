@@ -1265,12 +1265,11 @@ public class TestWorkspaceDataProvider {
 			particle.additionalExpiryCondition = new Procedure("condition1");
 			return particle;
 		case GAMERULE:
-			net.mcreator.element.types.Gamerule gamerule = new net.mcreator.element.types.Gamerule(modElement);
+			GameRule gamerule = new GameRule(modElement);
 			gamerule.name = modElement.getName();
-			gamerule.ID = modElement.getName();
 			gamerule.description = modElement.getName();
-			gamerule.gameruleCategory = new String[] { "PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING" }[valueIndex];
-			gamerule.gameruleType = new String[] { "Number", "Logic" }[valueIndex];
+			gamerule.category = getRandomString(random, Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
+			gamerule.type = new String[] { "Number", "Logic", "Number", "Logic" }[valueIndex];
 		default:
 			return null;
 		}
