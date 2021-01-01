@@ -35,4 +35,39 @@ import ${package}.${JavaModName};
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Gamerule extends ${JavaModName}Elements.ModElement {
 
+	<#if data.gameruleType == "Number">
+	public static final GameRules.RuleKey<GameRules.IntegerValue> ${data.ID} = GameRules.register("${data.name}",
+		GameRules.Category.${data.gameruleCategory}, create(0));
+	<#else>
+	public static final GameRules.RuleKey<GameRules.BooleanValue> ${data.ID} = GameRules.register("${data.name}",
+		GameRules.Category.${data.gameruleCategory}, create(false));
+	</#if>
+
+	public ${name}Gamerule (${JavaModName}Elements instance) {
+		super(instance, ${data.getModElement().getSortID()});
+	}
+
+	<#if data.gameruleType == "Number">
+	public static GameRules.RuleType<GameRules.IntegerValue> create(int defaultValue) {
+		Method method;
+		try {
+			method = ObfuscationReflectionHelper.findMethod(GameRules.class, "func_223564_a", GameRules.class);
+			method.setAccessible(true);
+			method.invoke(defaultValue);
+		} catch (Exception ignored) {
+		}
+		return null;
+	}
+	<#else>
+	public static GameRules.RuleType<GameRules.BooleanValue> create(boolean defaultValue) {
+		Method method;
+		try {
+			method = ObfuscationReflectionHelper.findMethod(GameRules.class, "func_223568_b", GameRules.class);
+			method.setAccessible(true);
+			method.invoke(null, defaultValue);
+		} catch (Exception ignored) {
+		}
+		return null;
+	}
+	</#if>
 }

@@ -45,7 +45,7 @@ public class GameruleGUI extends ModElementGUI<Gamerule> {
 	private final VTextField description = new VTextField(20);
 
 	private final JComboBox<String> gameruleCategory = new JComboBox<>(
-			new String[] { "Player", "Updates", "Chat", "Drops", "Misc", "Mobs", "Spawning" });
+			new String[] { "PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING" });
 	private final JComboBox<String> gameruleType = new JComboBox<>(
 			new String[] { "Number", "Logic" });
 
