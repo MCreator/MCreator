@@ -1265,7 +1265,7 @@ public class TestWorkspaceDataProvider {
 			particle.additionalExpiryCondition = new Procedure("condition1");
 			return particle;
 		case GAMERULE:
-			net.mcreator.element.types.Gamerule gamerule = new net.mcreator.element.types.Gamerule(modElement);
+			Gamerule gamerule = new Gamerule(modElement);
 			gamerule.name = modElement.getName();
 			gamerule.ID = modElement.getName();
 			gamerule.description = modElement.getName();
