@@ -143,6 +143,12 @@ public class ${JavaModName}Elements {
 		@OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
 		}
 
+		@OnlyIn(Dist.CLIENT) public void blockColorLoad(ColorHandlerEvent.Block event) {
+		}
+
+		@OnlyIn(Dist.CLIENT) public void itemColorLoad(ColorHandlerEvent.Item event) {
+		}
+
 		@Override public int compareTo(ModElement other){
         	return this.sortid - other.sortid;
     	}

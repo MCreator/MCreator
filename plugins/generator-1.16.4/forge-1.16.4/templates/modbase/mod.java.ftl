@@ -39,6 +39,8 @@ public class ${JavaModName} {
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientLoad);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::blockColorLoad);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::itemColorLoad);
 
 		MinecraftForge.EVENT_BUS.register(new ${JavaModName}FMLBusEvents(this));
 	}
@@ -49,6 +51,14 @@ public class ${JavaModName} {
 
 	public void clientLoad(FMLClientSetupEvent event) {
 		elements.getElements().forEach(element -> element.clientLoad(event));
+	}
+
+	public void blockColorLoad(ColorHandlerEvent.Block event) {
+		elements.getElements().forEach(element -> element.blockColorLoad(event));
+	}
+
+	public void itemColorLoad(ColorHandlerEvent.Item event) {
+		elements.getElements().forEach(element -> element.itemColorLoad(event));
 	}
 
 	@SubscribeEvent public void registerBlocks(RegistryEvent.Register<Block> event) {
