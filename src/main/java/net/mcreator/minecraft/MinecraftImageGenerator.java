@@ -259,41 +259,6 @@ public class MinecraftImageGenerator {
 					8), 19, 1 + oSlotOffsetY, null);
 		}
 
-		private static void drawThreeSlotRecipe(Graphics2D graphics2D, Workspace workspace, MItemBlock input0,
-				MItemBlock input1, MItemBlock result) {
-			int slotOffsetY = 9;
-			int oSlotOffsetY = 9;
-
-			//box 1
-			graphics2D.drawLine(1, slotOffsetY - 9, 8, slotOffsetY - 9);
-			graphics2D.drawLine(1, 9 + slotOffsetY - 9, 8, 9 + slotOffsetY - 9);
-			graphics2D.drawLine(0, slotOffsetY - 9, 0, 9 + slotOffsetY - 9);
-			graphics2D.drawLine(9, slotOffsetY - 9, 9, 9 + slotOffsetY - 9);
-
-			//box 2
-			graphics2D.drawLine(1, slotOffsetY + 9, 8, slotOffsetY + 9);
-			graphics2D.drawLine(1, 9 + slotOffsetY + 9, 8, 9 + slotOffsetY + 9);
-			graphics2D.drawLine(0, slotOffsetY + 9, 0, 9 + slotOffsetY + 9);
-			graphics2D.drawLine(9, slotOffsetY + 9, 9, 9 + slotOffsetY + 9);
-
-			//box 3
-			graphics2D.drawLine(19, oSlotOffsetY, 26, oSlotOffsetY);
-			graphics2D.drawLine(19, 9 + oSlotOffsetY, 26, 9 + oSlotOffsetY);
-			graphics2D.drawLine(18, oSlotOffsetY, 18, 9 + oSlotOffsetY);
-			graphics2D.drawLine(27, oSlotOffsetY, 27, 9 + oSlotOffsetY);
-
-			//elements
-			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, input0.getUnmappedValue()).getImage())),
-					8), 1, 1 + slotOffsetY - 9, null);
-			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, input1.getUnmappedValue()).getImage())),
-					8), 1, 1 + slotOffsetY + 9, null);
-			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, result.getUnmappedValue()).getImage())),
-					8), 19, 1 + oSlotOffsetY, null);
-		}
-
 		/**
 		 * <p>This method generates blasting recipe images.</p>
 		 *
