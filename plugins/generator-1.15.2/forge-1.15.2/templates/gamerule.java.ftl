@@ -36,9 +36,9 @@ import ${package}.${JavaModName};
 public class ${name}Gamerule extends ${JavaModName}Elements.ModElement {
 
 	<#if data.type == "Number">
-	public static final GameRules.RuleKey<GameRules.IntegerValue> gamerule = GameRules.register("${registryname}", create(0));
+	public static final GameRules.RuleKey<GameRules.IntegerValue> gamerule = GameRules.register("${registryname}", create(${data.defaultValueNumber}));
 	<#else>
-	public static final GameRules.RuleKey<GameRules.BooleanValue> gamerule = GameRules.register("${registryname}", create(false));
+	public static final GameRules.RuleKey<GameRules.BooleanValue> gamerule = GameRules.register("${registryname}", create(${data.defaultValueLogic}));
 	</#if>
 
 	public ${name}Gamerule (${JavaModName}Elements instance) {
