@@ -131,7 +131,7 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static List<DataListEntry> getAllBooleanGamerules(Workspace workspace) {
+	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
 
 			return true;
@@ -142,7 +142,7 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static List<DataListEntry> getAllNumberGamerules(Workspace workspace) {
+	public static List<DataListEntry> getAllNumberGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
 
 			return true;
