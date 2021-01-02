@@ -75,7 +75,7 @@ public enum ModElementType {
 
 	@SerializedName("code") CODE(BaseType.OTHER, RecipeElementType.NONE),
 
-	@SerializedName("tag") TAG(BaseType.OTHER, RecipeElementType.NONE),
+	@SerializedName("tag") TAG(BaseType.DATAPACK, RecipeElementType.NONE),
 
 	@SerializedName("musicdisc") MUSICDISC(BaseType.OTHER, RecipeElementType.ITEM),
 
