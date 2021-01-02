@@ -1,6 +1,6 @@
 templates:
   - template: gamerule.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/gamerule/@NAMEGamerule.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/gamerule/@NAMEGameRule.java"
 
 localizationkeys:
   - key: gamerule.@registryname
