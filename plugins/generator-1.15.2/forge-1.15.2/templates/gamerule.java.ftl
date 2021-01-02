@@ -28,12 +28,12 @@
 -->
 
 <#-- @formatter:off -->
-package ${package}.gamerule;
+package ${package}.world;
 
 import ${package}.${JavaModName};
 
 @${JavaModName}Elements.ModElement.Tag
-public class ${name}Gamerule extends ${JavaModName}Elements.ModElement {
+public class ${name}GameRule extends ${JavaModName}Elements.ModElement {
 
 	<#if data.type == "Number">
 	public static final GameRules.RuleKey<GameRules.IntegerValue> gamerule = GameRules.register("${registryname}", create(${data.defaultValueNumber}));

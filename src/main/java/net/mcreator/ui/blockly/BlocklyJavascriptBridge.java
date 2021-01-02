@@ -225,9 +225,11 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllPotionEffects(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "gamerulesboolean":
-			return ElementUtil.getAllBooleanGamerules();
+			return ElementUtil.getAllBooleanGamerules(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
 		case "gamerulesnumber":
-			return ElementUtil.getAllNumberGamerules();
+			return ElementUtil.getAllNumberGamerules(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
 		case "fluid":
 			return ElementUtil.loadAllFluids(workspace);
 		case "sound":

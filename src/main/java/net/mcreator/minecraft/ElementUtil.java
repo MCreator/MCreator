@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ElementUtil {
@@ -130,15 +131,26 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static String[] getAllBooleanGamerules() {
-		return DataListLoader.loadDataList("gamerules").stream().filter(e -> e.getType().equals("boolean"))
+	public static List<DataListEntry> getAllBooleanGamerules(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
 
-				.map(DataListEntry::getName).toArray(String[]::new);
+			return true;
+		});
+
+		retval.addAll(DataListLoader.loadDataList("gamerules").stream().filter(e -> e.getType().equals("boolean"))
+				.collect(Collectors.toList()));
+		return retval;
 	}
 
-	public static String[] getAllNumberGamerules() {
-		return DataListLoader.loadDataList("gamerules").stream().filter(e -> e.getType().equals("number"))
-				.map(DataListEntry::getName).toArray(String[]::new);
+	public static List<DataListEntry> getAllNumberGamerules(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
+
+			return true;
+		});
+
+		retval.addAll(DataListLoader.loadDataList("gamerules").stream().filter(e -> e.getType().equals("number"))
+				.collect(Collectors.toList()));
+		return retval;
 	}
 
 	public static String[] loadAllFluids(Workspace workspace) {
@@ -226,6 +238,12 @@ public class ElementUtil {
 		}
 
 		return blocks;
+	}
+
+	private static List<DataListEntry> getCustomElements(@NotNull Workspace workspace,
+			Predicate<ModElement> predicate) {
+		return workspace.getModElements().stream().filter(predicate).map(DataListEntry.Custom::new)
+				.collect(Collectors.toList());
 	}
 
 	private static List<DataListEntry> getCustomElementsOfType(@NotNull Workspace workspace, ModElementType type) {

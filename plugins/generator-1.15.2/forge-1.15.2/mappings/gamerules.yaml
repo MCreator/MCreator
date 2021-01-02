@@ -1,6 +1,6 @@
 _default: null
 _mcreator_prefix: "CUSTOM:"
-_mcreator_map_template: "GameRules.@ID"
+_mcreator_map_template: "@NAMEGameRule.gamerule"
 ANNOUNCE_ADVANCEMENTS: GameRules.ANNOUNCE_ADVANCEMENTS
 COMMAND_BLOCK_OUTPUT: GameRules.COMMAND_BLOCK_OUTPUT
 DISABLE_ELYTRA_MOVEMENT_CHECK: GameRules.DISABLE_ELYTRA_MOVEMENT_CHECK

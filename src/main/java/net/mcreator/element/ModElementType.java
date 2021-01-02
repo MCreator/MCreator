@@ -85,7 +85,7 @@ public enum ModElementType {
 
 	@SerializedName("painting") PAINTING(BaseType.OTHER, RecipeElementType.NONE),
 
-	@SerializedName("gamerule") GAMERULE(BaseType.GAMERULE, RecipeElementType.NONE);
+	@SerializedName("gamerule") GAMERULE(BaseType.OTHER, RecipeElementType.NONE);
 
 	private final BaseType baseType;
 	private final String description;
@@ -121,7 +121,7 @@ public enum ModElementType {
 	}
 
 	public enum BaseType {
-		BLOCK, ITEM, ARMOR, BIOME, COMMAND, FUEL, ENTITY, TAB, DIMENSION, STRUCTURE, GUI, KEYBIND, PROCEDURE, OVERLAY, POTION, OTHER, DATAPACK, ENCHANTMENT, PARTICLE, GAMERULE, /* legacy: */ ACHIEVEMENT
+		BLOCK, ITEM, ARMOR, BIOME, COMMAND, FUEL, ENTITY, TAB, DIMENSION, STRUCTURE, GUI, KEYBIND, PROCEDURE, OVERLAY, POTION, OTHER, DATAPACK, ENCHANTMENT, PARTICLE, /* legacy: */ ACHIEVEMENT
 	}
 
 }
