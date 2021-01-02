@@ -29,8 +29,8 @@ public class GameRule extends GeneratableElement {
 	public String description;
 	public String category;
 
-	public boolean defaultValueLogic; // TODO: UI, tests
-	public int defaultValueNumber; // TODO: UI, tests
+	public boolean defaultValueLogic;
+	public int defaultValueNumber;
 
 	public GameRule(ModElement element) {
 		super(element);

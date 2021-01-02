@@ -45,10 +45,16 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 
 	private final JComboBox<String> gameruleCategory = new JComboBox<>(
 			new String[] { "PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING" });
-	private final JComboBox<String> gameruleType = new JComboBox<>(
-			new String[] { "Number", "Logic" });
+	private final JComboBox<String> gameruleType = new JComboBox<>(new String[] { "Number", "Logic" });
+
+	private final JComboBox<String> defaultValueLogic = new JComboBox<>(new String[] { "false", "true" });
+	private final JSpinner defaultValueNumber = new JSpinner(
+			new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
 
 	private final ValidationGroup page1group = new ValidationGroup();
+
+	private final CardLayout cl = new CardLayout();
+	private final JPanel defalutValue = new JPanel(cl);
 
 	public GameRuleGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -62,28 +68,35 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(description, 16);
 
-		JPanel subpane2 = new JPanel(new GridLayout(4, 2, 45, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(5, 2, 0, 2));
 		subpane2.setOpaque(false);
 
 		name.setEnabled(false);
 
 		ComponentUtils.deriveFont(name, 16);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/name"),
-				L10N.label("elementgui.gamerule.name")));
+		subpane2.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/name"), L10N.label("elementgui.gamerule.name")));
 		subpane2.add(name);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/description"),
 				L10N.label("elementgui.gamerule.description")));
 		subpane2.add(description);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/category"),
-				L10N.label("elementgui.gamerule.category")));
+		subpane2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("gamerule/category"), L10N.label("elementgui.gamerule.category")));
 		subpane2.add(gameruleCategory);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/type"),
-				L10N.label("elementgui.gamerule.type")));
+		subpane2.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/type"), L10N.label("elementgui.gamerule.type")));
 		subpane2.add(gameruleType);
+
+		defalutValue.add(defaultValueLogic, "Logic");
+		defalutValue.add(defaultValueNumber, "Number");
+
+		subpane2.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/default_value"), L10N.label("elementgui.gamerule.default_value")));
+		subpane2.add(defalutValue);
 
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(description);
@@ -91,17 +104,26 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.gamerule.gamerule_needs_name")));
 		name.enableRealtimeValidation();
 
-		description.setValidator(new TextFieldValidator(description, L10N.t("elementgui.gamerule.gamerule_needs_description")));
+		description.setValidator(
+				new TextFieldValidator(description, L10N.t("elementgui.gamerule.gamerule_needs_description")));
 		description.enableRealtimeValidation();
 
 		pane3.add(PanelUtils.totalCenterInPanel(subpane2));
 		pane3.setOpaque(false);
 
+		gameruleType.addActionListener(e -> updateDefaultValueUI());
+
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 
 		if (!isEditingMode()) {
 			name.setText(StringUtils.lowercaseFirstLetter(getModElement().getName()));
+
+			updateDefaultValueUI();
 		}
+	}
+
+	private void updateDefaultValueUI() {
+		cl.show(defalutValue, (String) gameruleType.getSelectedItem());
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -114,8 +136,12 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		description.setText(gamerule.description);
 		gameruleCategory.setSelectedItem(gamerule.category);
 		gameruleType.setSelectedItem(gamerule.type);
+		defaultValueLogic.setSelectedItem(Boolean.toString(gamerule.defaultValueLogic));
+		defaultValueNumber.setValue(gamerule.defaultValueNumber);
 
 		name.setText(StringUtils.lowercaseFirstLetter(getModElement().getName()));
+
+		updateDefaultValueUI();
 	}
 
 	@Override public GameRule getElementFromGUI() {
@@ -123,6 +149,8 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		gamerule.description = description.getText();
 		gamerule.category = (String) gameruleCategory.getSelectedItem();
 		gamerule.type = (String) gameruleType.getSelectedItem();
+		gamerule.defaultValueLogic = Boolean.parseBoolean((String) defaultValueLogic.getSelectedItem());
+		gamerule.defaultValueNumber = (int) defaultValueNumber.getValue();
 		return gamerule;
 	}
 
