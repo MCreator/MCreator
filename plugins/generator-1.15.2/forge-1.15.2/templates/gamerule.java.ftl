@@ -41,7 +41,7 @@ public class ${name}GameRule extends ${JavaModName}Elements.ModElement {
 	public static final GameRules.RuleKey<GameRules.BooleanValue> gamerule = GameRules.register("${registryname}", create(${data.defaultValueLogic}));
 	</#if>
 
-	public ${name}Gamerule (${JavaModName}Elements instance) {
+	public ${name}GameRule (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 	}
 
