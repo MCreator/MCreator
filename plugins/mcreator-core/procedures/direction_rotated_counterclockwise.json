@@ -6,13 +6,14 @@
       "check": "Direction"
     }
   ],
-  "output": "Number",
-  "colour": "%{BKY_MATH_HUE}",
+  "inputsInline": true,
+  "output": "Direction",
+  "colour": 20,
   "mcreator": {
-    "toolbox_id": "directionactions",
     "toolbox_init": [
-      "<value name=\"direction\"><block type=\"direction_constant\">DOWN</block></value>"
+      "<value name=\"direction\"><block type=\"direction_from_deps\"></block></value>"
     ],
+    "toolbox_id": "directionactions",
     "inputs": [
       "direction"
     ]
