@@ -127,6 +127,9 @@ public class InjectTagsTool {
 		if (type.equals("Functions"))
 			icon.setIcon(new ImageIcon(
 					ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(ModElementType.FUNCTION).getImage(), 32)));
+		if (type.equals("Entities"))
+			icon.setIcon(new ImageIcon(
+					ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(ModElementType.MOB).getImage(), 32)));
 
 		panel.add(PanelUtils.centerAndEastElement(box, icon));
 
@@ -159,6 +162,7 @@ public class InjectTagsTool {
 			tag.blocks = Collections.emptyList();
 			tag.items = Collections.emptyList();
 			tag.functions = Collections.emptyList();
+			tag.entities = Collections.emptyList();
 
 			workspace.getModElementManager().storeModElementPicture(tag);
 			workspace.addModElement(tag.getModElement());
