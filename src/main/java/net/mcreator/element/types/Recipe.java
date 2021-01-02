@@ -31,7 +31,7 @@ import java.util.Locale;
 
 	public String recipeType;
 	public double xpReward;
-	public int cookingTime; ///////
+	public int cookingTime;
 	public int recipeRetstackSize;
 	public String group;
 
@@ -64,6 +64,11 @@ import java.util.Locale;
 	public MItemBlock smithingInputStack;
 	public MItemBlock smithingInputAdditionStack;
 	public MItemBlock smithingReturnStack;
+
+	// Brewing recipe
+	public MItemBlock brewingInputStack;
+	public MItemBlock brewingIngredientStack;
+	public MItemBlock brewingReturnStack;
 
 	private Recipe() {
 		this(null);
@@ -119,6 +124,11 @@ import java.util.Locale;
 			mod = MinecraftImageGenerator.Preview
 					.generateSmithingPreviewPicture(getModElement().getWorkspace(), smithingInputStack,
 							smithingInputAdditionStack, smithingReturnStack);
+		} else if ("Brewing".equals(recipeType) && !brewingInputStack.isEmpty()
+				&& !brewingIngredientStack.isEmpty() && !brewingReturnStack.isEmpty()) {
+			mod = MinecraftImageGenerator.Preview
+					.generateBrewingPreviewPicture(getModElement().getWorkspace(), brewingInputStack,
+							brewingIngredientStack, brewingReturnStack);
 		}
 		return mod;
 	}

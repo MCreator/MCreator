@@ -1,0 +1,28 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "a",
+      "check": "Direction"
+    },
+    {
+      "type": "input_value",
+      "name": "b",
+      "check": "Direction"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "directionactions",
+    "toolbox_init": [
+      "<value name=\"a\"><block type=\"direction_from_deps\">DOWN</block></value>",
+      "<value name=\"b\"><block type=\"direction_constant\">DOWN</block></value>"
+    ],
+    "inputs": [
+      "a",
+      "b"
+    ]
+  }
+}
