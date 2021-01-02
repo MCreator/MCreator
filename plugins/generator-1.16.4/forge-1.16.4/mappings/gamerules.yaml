@@ -1,4 +1,4 @@
-_default: GameRules.ANNOUNCE_ADVANCEMENTS
+_default: null
 _mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "GameRules.@ID"
 ANNOUNCE_ADVANCEMENTS: GameRules.ANNOUNCE_ADVANCEMENTS
