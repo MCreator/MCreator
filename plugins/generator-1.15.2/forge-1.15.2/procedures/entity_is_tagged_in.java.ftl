@@ -1,2 +1,1 @@
-<#include "mcitems.ftl">
-(BlockTags.getCollection().getOrCreate(new ResourceLocation((${input$tag}).toLowerCase(java.util.Locale.ENGLISH))).contains(${mappedBlockToBlockStateCode(input$entity)}.getBlock()))
+(EntityTypeTags.getCollection().getOrCreate(new ResourceLocation((${input$tag}).toLowerCase(java.util.Locale.ENGLISH))).contains(${input$entity}.getType()))
