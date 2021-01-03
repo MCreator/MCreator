@@ -1,3 +1,3 @@
- If ticked, this mob will despawn upon the player moving far away enough (default behaviour for most mobs).
+If ticked, this mob will despawn upon the player moving far away enough (default behaviour for most mobs).
  
- Turn this off for bosses and summonable mobs to stop them despawning.
+Turn this off for bosses and summonable mobs to stop them despawning.
