@@ -18,11 +18,11 @@
       <#elseif data.type == "Entities">
           <#list data.entities as value>
             <#if value.getUnmappedValue().startsWith("CUSTOM:")>
-            "${generator.getResourceLocationForModElement(value)}"
-            <#if value?has_next>,</#if>
+                "${generator.getResourceLocationForModElement(value.getUnmappedValue()?replace("CUSTOM:", ""))}"
             <#else>
-            "${generator.map(value, "entities", 2)}"<#if value?has_next>,</#if>
+                "${generator.map(value.getUnmappedValue(), "entities", 2)}"
             </#if>
+            <#if value?has_next>,</#if>
           </#list>
       </#if>
     ]
