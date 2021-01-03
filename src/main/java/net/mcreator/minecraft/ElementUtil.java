@@ -133,8 +133,9 @@ public class ElementUtil {
 
 	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
-
-			return true;
+			if (modelement.getType() == ModElementType.GAMERULE)
+				return modelement.getMetadata("type").equals("boolean");
+			return false;
 		});
 
 		retval.addAll(DataListLoader.loadDataList("gamerules").stream().filter(e -> e.getType().equals("boolean"))
@@ -144,8 +145,9 @@ public class ElementUtil {
 
 	public static List<DataListEntry> getAllNumberGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
-
-			return true;
+			if (modelement.getType() == ModElementType.GAMERULE)
+				return modelement.getMetadata("type").equals("number");
+			return false;
 		});
 
 		retval.addAll(DataListLoader.loadDataList("gamerules").stream().filter(e -> e.getType().equals("number"))

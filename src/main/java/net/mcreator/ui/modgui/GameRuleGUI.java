@@ -94,8 +94,8 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		defalutValue.add(defaultValueLogic, "Logic");
 		defalutValue.add(defaultValueNumber, "Number");
 
-		subpane2.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/default_value"), L10N.label("elementgui.gamerule.default_value")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/default_value"),
+				L10N.label("elementgui.gamerule.default_value")));
 		subpane2.add(defalutValue);
 
 		page1group.addValidationElement(name);
@@ -157,6 +157,13 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 	@Override protected void beforeGeneratableElementGenerated() {
 		super.beforeGeneratableElementGenerated();
 		modElement.setRegistryName(StringUtils.lowercaseFirstLetter(getModElement().getName()));
+	}
+
+	@Override protected void afterGeneratableElementStored() {
+		super.afterGeneratableElementStored();
+		modElement.clearMetadata();
+		modElement.putMetadata("type", "Number".equals(gameruleType.getSelectedItem()) ? "number" : "boolean");
+		modElement.reinit();
 	}
 
 	@Override public @Nullable URI getContextURL() throws URISyntaxException {
