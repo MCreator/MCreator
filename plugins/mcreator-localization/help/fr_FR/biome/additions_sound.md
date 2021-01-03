@@ -1,2 +1,3 @@
 Sons additionnels joués dans le biome.
-NOTE : Uniquement disponible pour Minecraft 1.16.4+
+
+NOTE: Disponible seulement pour Minecraft 1.16.x et plus
