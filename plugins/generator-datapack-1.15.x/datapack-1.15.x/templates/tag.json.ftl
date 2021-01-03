@@ -20,7 +20,7 @@
               <#if value.getUnmappedValue().startsWith("CUSTOM:")>
                 "${generator.getResourceLocationForModElement(value.getUnmappedValue()?replace("CUSTOM:", ""))}"
               <#else>
-                "${generator.map(value.getUnmappedValue(), "entities", 2)}"
+                "${generator.map(value.getUnmappedValue(), "entities", 0)}"
               </#if>
               <#if value?has_next>,</#if>
           </#list>
