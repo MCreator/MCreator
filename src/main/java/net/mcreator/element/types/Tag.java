@@ -42,6 +42,9 @@ import java.util.Locale;
 	}
 
 	public String tagType() {
+		if (type.equals("Entities"))
+			return "entity_types";
+
 		return type.toLowerCase(Locale.ENGLISH);
 	}
 
