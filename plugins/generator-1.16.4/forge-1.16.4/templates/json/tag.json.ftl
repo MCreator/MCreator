@@ -16,7 +16,7 @@
             <#if value?has_next>,</#if>
           </#list>
       <#elseif data.type == "Entities">
-          <#list data.entities as value>
+          <#list w.filterBrokenReferences(data.entities) as value>
             <#if value.getUnmappedValue().startsWith("CUSTOM:")>
                 "${generator.getResourceLocationForModElement(value.getUnmappedValue()?replace("CUSTOM:", ""))}"
             <#else>
