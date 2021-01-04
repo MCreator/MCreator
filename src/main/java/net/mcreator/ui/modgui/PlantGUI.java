@@ -115,8 +115,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
 	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
 
-	private final JCheckBox isPlantTinted = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> tintType = new JComboBox<>(new String[] { "Grass", "Foliage", "Water" });
+	//private final JCheckBox isPlantTinted = L10N.checkbox("elementgui.common.enable");
+	private final JComboBox<String> tintType = new JComboBox<>(new String[] { "No tint", "Grass", "Foliage", "Water" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 	private final JColor itemTint = new JColor(mcreator, true);
 
@@ -227,18 +227,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 								L10N.label("elementgui.plant.particle_texture")),
 				PanelUtils.centerInPanel(particleTexture)));
 
-		JPanel tintPanel = new JPanel(new GridLayout(4, 2, 0, 2));
+		JPanel tintPanel = new JPanel(new GridLayout(3, 2, 0, 2));
 		tintPanel.setOpaque(false);
-		isPlantTinted.setOpaque(false);
 		isItemTinted.setOpaque(false);
 		tintPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.plant_tint"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_block_tinted"),
-				L10N.label("elementgui.plant.is_plant_tinted")));
-		tintPanel.add(isPlantTinted);
 		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tint_type"),
 				L10N.label("elementgui.common.tint_type")));
 		tintPanel.add(tintType);
@@ -669,7 +665,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		staticPlantGenerationType.setSelectedItem(plant.staticPlantGenerationType);
 		doublePlantGenerationType.setSelectedItem(plant.doublePlantGenerationType);
 
-		isPlantTinted.setSelected(plant.isPlantTinted);
 		tintType.setSelectedItem(plant.tintType);
 		isItemTinted.setSelected(plant.isItemTinted);
 		itemTint.setColor(plant.itemTint);
@@ -703,7 +698,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.textureBottom = textureBottom.getID();
 		plant.itemTexture = itemTexture.getID();
 		plant.particleTexture = particleTexture.getID();
-		plant.isPlantTinted = isPlantTinted.isSelected();
 		plant.tintType = (String) tintType.getSelectedItem();
 		plant.isItemTinted = isItemTinted.isSelected();
 		plant.itemTint = itemTint.getColor();

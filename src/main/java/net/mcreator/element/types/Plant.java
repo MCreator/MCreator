@@ -45,7 +45,6 @@ import java.util.Map;
 	public String itemTexture;
 	public String particleTexture;
 
-	public boolean isPlantTinted;
 	public String tintType;
 	public boolean isItemTinted;
 	public Color itemTint;
@@ -116,7 +115,7 @@ import java.util.Map;
 		this.colorOnMap = "DEFAULT";
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "XZ";
-		this.tintType = "Grass";
+		this.tintType = "No tint";
 
 		this.staticPlantGenerationType = "Flower";
 		this.doublePlantGenerationType = "Flower";

@@ -129,8 +129,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox isNotColidable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
 
-	private final JCheckBox isBlockTinted = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> tintType = new JComboBox<>(new String[] { "Grass", "Foliage", "Water" });
+	//private final JCheckBox isBlockTinted = L10N.checkbox("elementgui.common.enable");
+	private final JComboBox<String> tintType = new JComboBox<>(new String[] { "No tint", "Grass", "Foliage", "Water" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 	private final JColor itemTint = new JColor(mcreator, true);
 
@@ -583,14 +583,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.bounding_block_max_z")));
 		bound.add(Mz);
 
-		JPanel tintPanel = new JPanel(new GridLayout(4, 2, 0, 2));
+		JPanel tintPanel = new JPanel(new GridLayout(3, 2, 0, 2));
 		tintPanel.setOpaque(false);
-		isBlockTinted.setOpaque(false);
 		isItemTinted.setOpaque(false);
 
-		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_block_tinted"),
-				L10N.label("elementgui.block.is_block_tinted")));
-		tintPanel.add(isBlockTinted);
 		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tint_type"),
 				L10N.label("elementgui.common.tint_type")));
 		tintPanel.add(tintType);
@@ -1318,7 +1314,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		lightOpacity.setValue(block.lightOpacity);
 		material.setSelectedItem(block.material.getUnmappedValue());
 		transparencyType.setSelectedItem(block.transparencyType);
-		isBlockTinted.setSelected(block.isBlockTinted);
 		tintType.setSelectedItem(block.tintType);
 		isItemTinted.setSelected(block.isItemTinted);
 		itemTint.setColor(block.itemTint);
@@ -1383,7 +1378,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.connectedSides = connectedSides.isSelected();
 		block.displayFluidOverlay = displayFluidOverlay.isSelected();
 		block.transparencyType = (String) transparencyType.getSelectedItem();
-		block.isBlockTinted = isBlockTinted.isSelected();
 		block.tintType = (String) tintType.getSelectedItem();
 		block.isItemTinted = isItemTinted.isSelected();
 		block.itemTint = itemTint.getColor();

@@ -57,7 +57,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		<#if data.hasInventory>
 		FMLJavaModLoadingContext.get().getModEventBus().register(new TileEntityRegisterHandler());
 		</#if>
-		<#if data.isBlockTinted>
+		<#if data.tintType != "No tint">
 		FMLJavaModLoadingContext.get().getModEventBus().register(new BlockColorRegisterHandler());
 		</#if>
 		<#if data.isItemTinted>
@@ -98,7 +98,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	}
 	</#if>
 
-	<#if data.isBlockTinted>
+	<#if data.tintType != "No tint">
 	private static class BlockColorRegisterHandler {
 		@OnlyIn(Dist.CLIENT) @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
 			event.getBlockColors().register((bs, world, pos, index) -> {

@@ -48,7 +48,7 @@ import net.minecraft.block.material.Material;
 	public ${name}Block(${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
-		<#if data.hasTileEntity || data.isPlantTinted || data.isItemTinted>
+		<#if data.hasTileEntity || data.tintType != "No tint" || data.isItemTinted>
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 		</#if>
 	}
@@ -68,7 +68,7 @@ import net.minecraft.block.material.Material;
 		RenderTypeLookup.setRenderLayer(block, RenderType.getCutout());
 	}
 
-	<#if data.isPlantTinted>
+	<#if data.tintType != "No tint">
 	@OnlyIn(Dist.CLIENT) @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
 		event.getBlockColors().register((bs, world, pos, index) -> {
 			return world != null && pos != null ?

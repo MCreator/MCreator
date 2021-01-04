@@ -845,8 +845,7 @@ public class TestWorkspaceDataProvider {
 			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
 			plant.renderType = 12;
 			plant.customModelName = "Cross model";
-			plant.isPlantTinted = _true;
-			plant.tintType = getRandomString(random, Arrays.asList("Grass", "Foliage", "Water"));
+			plant.tintType = getRandomString(random, Arrays.asList("No tint", "Grass", "Foliage", "Water"));
 			plant.isItemTinted = _true;
 			if (!emptyLists)
 				plant.itemTint = Color.red;
@@ -1114,8 +1113,7 @@ public class TestWorkspaceDataProvider {
 			block.renderType = new int[] { 10, 11, 12, 11 }[valueIndex];
 			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",
 					"Single texture" }[valueIndex];
-			block.isBlockTinted = _true;
-			block.tintType = getRandomString(random, Arrays.asList("Grass", "Foliage", "Water"));
+			block.tintType = getRandomString(random, Arrays.asList("No tint", "Grass", "Foliage", "Water"));
 			block.isItemTinted = _true;
 			if (!emptyLists)
 				block.itemTint = Color.red;
