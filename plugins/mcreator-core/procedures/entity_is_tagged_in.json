@@ -18,7 +18,7 @@
     "toolbox_id": "entitydata",
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
-      "<value name=\"tag\"><block type=\"text\"><field name=\"TEXT\">logs</field></block></value>"
+      "<value name=\"tag\"><block type=\"text\"><field name=\"TEXT\">minecraft:skeletons</field></block></value>"
     ],
     "inputs": [
       "entity",
