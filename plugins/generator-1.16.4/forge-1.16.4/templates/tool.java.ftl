@@ -43,9 +43,33 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		super(instance, ${data.getModElement().getSortID()});
 	}
 
+	<#if data.toolType=="Shield">
+	@Override
+	public void init(FMLCommonSetupEvent event) {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	@SubscribeEvent
+	public void onEntityAttacked(LivingAttackEvent event) {
+		Entity entity = event != null ? event.getEntity() : null;
+		float damage = event != null ? event.getAmount() : 0;
+		int damageInt = (int) damage;
+		if (entity != null && entity instanceof PlayerEntity) {
+			PlayerEntity player = (PlayerEntity)entity;
+			ItemStack activeItem = player.getActiveItemStack();
+			if (player.isActiveItemStackBlocking() && ((activeItem).getItem() == new ItemStack(${name}Item.block, (int) (1)).getItem())) {
+				if (activeItem.attemptDamageItem(damageInt, new Random(), null)) {
+					activeItem.shrink(damageInt);
+					activeItem.setDamage(0);
+				}
+			}
+		}
+	}
+	</#if>
+
 	@Override public void initElements() {
 		elements.items.add(() ->
-		<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe">
+		<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "Shield">
 			new ${data.toolType.toString().replace("Spade", "Shovel")}Item(new IItemTier() {
 				public int getMaxUses() {
 					return ${data.usageCount};
@@ -84,6 +108,14 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			 	<#if data.immuneToFire>
 			 	.isImmuneToFire()
 			 	</#if>
+			 	<#if data.toolType=="Shield">
+				.addPropertyOverride(new ResourceLocation("blocking"), new IItemPropertyGetter() {
+					@OnlyIn(Dist.CLIENT)
+					public float apply(ItemStack stack, @Nullable World worldIn, @Nullable LivingEntity entityIn) {
+						return entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F;
+					}
+				})
+				</#if>
 			 ) {
 		<#elseif data.toolType=="Shears">
 			new ShearsItem(new Item.Properties()
@@ -102,6 +134,22 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 				}
 		<#else>
         	new ItemToolCustom() {
+		</#if>
+
+		<#if data.toolType=="Shield">
+		public UseAction getItemUseAction(ItemStack stack) {
+			return UseAction.BLOCK;
+		}
+
+		public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+			return 72000;
+		}
+
+		public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+			ItemStack itemstack = playerIn.getHeldItem(handIn);
+			playerIn.setActiveHand(handIn);
+			return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemstack);
+		}
 		</#if>
 
 		<#if data.stayInGridWhenCrafting>

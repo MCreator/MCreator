@@ -72,7 +72,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final VTextField name = new VTextField(28);
 
 	private final JComboBox<String> toolType = new JComboBox<>(
-			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Special", "MultiTool" });
+			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Shield", "Special", "MultiTool" });
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
@@ -147,6 +147,16 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 
 		toolType.setRenderer(new ItemTexturesComboBoxRenderer());
+
+		toolType.addActionListener(e -> {
+			if (toolType.getSelectedItem().equals("Shield")) {
+				harvestLevel.setEnabled(false);
+				efficiency.setEnabled(false);
+			} else {
+				harvestLevel.setEnabled(true);
+				efficiency.setEnabled(true);
+			}
+		});
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
