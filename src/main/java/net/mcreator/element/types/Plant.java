@@ -47,7 +47,6 @@ import java.util.Map;
 
 	public String tintType;
 	public boolean isItemTinted;
-	public Color itemTint;
 
 	public String plantType;
 

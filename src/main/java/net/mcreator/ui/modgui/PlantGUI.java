@@ -115,10 +115,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
 	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
 
-	//private final JCheckBox isPlantTinted = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> tintType = new JComboBox<>(new String[] { "No tint", "Grass", "Foliage", "Water" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
-	private final JColor itemTint = new JColor(mcreator, true);
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourBlockChanges;
@@ -227,7 +225,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 								L10N.label("elementgui.plant.particle_texture")),
 				PanelUtils.centerInPanel(particleTexture)));
 
-		JPanel tintPanel = new JPanel(new GridLayout(3, 2, 0, 2));
+		JPanel tintPanel = new JPanel(new GridLayout(2, 2, 0, 2));
 		tintPanel.setOpaque(false);
 		isItemTinted.setOpaque(false);
 		tintPanel.setBorder(BorderFactory.createTitledBorder(
@@ -241,9 +239,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
 				L10N.label("elementgui.plant.is_item_tinted")));
 		tintPanel.add(isItemTinted);
-		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/item_tint"),
-				L10N.label("elementgui.plant.item_tint")));
-		tintPanel.add(itemTint);
 
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
@@ -667,7 +662,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		tintType.setSelectedItem(plant.tintType);
 		isItemTinted.setSelected(plant.isItemTinted);
-		itemTint.setColor(plant.itemTint);
 
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
@@ -700,7 +694,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.particleTexture = particleTexture.getID();
 		plant.tintType = (String) tintType.getSelectedItem();
 		plant.isItemTinted = isItemTinted.isSelected();
-		plant.itemTint = itemTint.getColor();
 		if (normalType.isSelected())
 			plant.plantType = "normal";
 		else if (growapableType.isSelected())

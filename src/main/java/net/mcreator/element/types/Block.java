@@ -59,7 +59,6 @@ import java.util.Map;
 
 	public String tintType;
 	public boolean isItemTinted;
-	public Color itemTint;
 
 	public boolean hasTransparency;
 	public boolean connectedSides;

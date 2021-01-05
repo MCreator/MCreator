@@ -847,10 +847,6 @@ public class TestWorkspaceDataProvider {
 			plant.customModelName = "Cross model";
 			plant.tintType = getRandomString(random, Arrays.asList("No tint", "Grass", "Foliage", "Water"));
 			plant.isItemTinted = _true;
-			if (!emptyLists)
-				plant.itemTint = Color.red;
-			else
-				plant.itemTint = null;
 			return plant;
 		case ITEM:
 			Item item = new Item(modElement);
@@ -1115,10 +1111,6 @@ public class TestWorkspaceDataProvider {
 					"Single texture" }[valueIndex];
 			block.tintType = getRandomString(random, Arrays.asList("No tint", "Grass", "Foliage", "Water"));
 			block.isItemTinted = _true;
-			if (!emptyLists)
-				block.itemTint = Color.red;
-			else
-				block.itemTint = null;
 			return block;
 		case TAG:
 			Tag tag = new Tag(modElement);

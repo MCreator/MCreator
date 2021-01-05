@@ -129,10 +129,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox isNotColidable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
 
-	//private final JCheckBox isBlockTinted = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> tintType = new JComboBox<>(new String[] { "No tint", "Grass", "Foliage", "Water" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
-	private final JColor itemTint = new JColor(mcreator, true);
 
 	private final JCheckBox hasTransparency = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox connectedSides = L10N.checkbox("elementgui.common.enable");
@@ -583,7 +581,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.bounding_block_max_z")));
 		bound.add(Mz);
 
-		JPanel tintPanel = new JPanel(new GridLayout(3, 2, 0, 2));
+		JPanel tintPanel = new JPanel(new GridLayout(2, 2, 0, 2));
 		tintPanel.setOpaque(false);
 		isItemTinted.setOpaque(false);
 
@@ -593,9 +591,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
 				L10N.label("elementgui.block.is_item_tinted")));
 		tintPanel.add(isItemTinted);
-		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/item_tint"),
-				L10N.label("elementgui.block.item_tint")));
-		tintPanel.add(itemTint);
 
 		bound.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -1316,7 +1311,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		transparencyType.setSelectedItem(block.transparencyType);
 		tintType.setSelectedItem(block.tintType);
 		isItemTinted.setSelected(block.isItemTinted);
-		itemTint.setColor(block.itemTint);
 
 		if (block.blockBase == null) {
 			blockBase.setSelectedIndex(0);
@@ -1380,7 +1374,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.transparencyType = (String) transparencyType.getSelectedItem();
 		block.tintType = (String) tintType.getSelectedItem();
 		block.isItemTinted = isItemTinted.isSelected();
-		block.itemTint = itemTint.getColor();
 		block.mx = (double) mx.getValue();
 		block.my = (double) my.getValue();
 		block.mz = (double) mz.getValue();

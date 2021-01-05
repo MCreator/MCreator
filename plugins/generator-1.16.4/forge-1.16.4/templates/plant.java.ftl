@@ -103,16 +103,12 @@ import net.minecraft.block.material.Material;
 	private static class ItemColorRegisterHandler {
 		@OnlyIn(Dist.CLIENT) @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
 			event.getItemColors().register((stack, index) -> {
-				<#if data.itemTint?has_content>
-					return ${data.itemTint.getRGB()};
+				<#if data.tintType == "Grass">
+					return GrassColors.get(0.5D, 1.0D);
+				<#elseif data.tintType == "Foliage">
+					return FoliageColors.getDefault();
 				<#else>
-					<#if data.tintType == "Grass">
-						return GrassColors.get(0.5D, 1.0D);
-					<#elseif data.tintType == "Foliage">
-						return FoliageColors.getDefault();
-					<#else>
-						return 3694022;
-					</#if>
+					return 3694022;
 				</#if>
 			}, block);
 		}
