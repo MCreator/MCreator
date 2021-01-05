@@ -22,6 +22,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
@@ -44,9 +45,9 @@ public class ModElementListField extends JItemListField<String> {
 				frame.getWorkspace().getModElements().stream().filter(e -> e.getType() == this.type)
 						.map(ModElement::getName).toArray(String[]::new));
 
-		int option = JOptionPane.showOptionDialog(frame, PanelUtils.northAndCenterElement(new JLabel(
-						"Select " + type.getReadableName().toLowerCase(Locale.ENGLISH)
-								+ "(s) you would like to add to the list:"), new JScrollPane(vlist)), "Select elements",
+		int option = JOptionPane.showOptionDialog(frame, PanelUtils
+						.northAndCenterElement(L10N.label("dialog.list_field.mod_element_message", type.getReadableName().toLowerCase(Locale.ENGLISH)),
+								new JScrollPane(vlist)), L10N.t("dialog.list_field.mod_element_title"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 
 		if (option == JOptionPane.OK_OPTION && vlist.getSelectedValue() != null) {
