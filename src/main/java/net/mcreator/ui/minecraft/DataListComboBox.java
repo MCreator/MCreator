@@ -109,7 +109,7 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 				Icon imageIcon = getIcon();
 				if (imageIcon instanceof ImageIcon)
 					setIcon(ImageUtils.changeSaturation((ImageIcon) imageIcon, 0.1f));
-				setText(L10N.t("dialog.list_field.data_not_supported", getText()));
+				setText(L10N.t("datalist_combobox.not_supported", getText()));
 				setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 			}
 
