@@ -50,7 +50,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	public ${name}Block (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
-		<#if data.hasInventory || data.tintType != "No tint" || data.isItemTinted>
+		<#if data.hasInventory || data.tintType != "No tint">
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 		</#if>
 	}
@@ -99,20 +99,20 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			</#if>
 		}, block);
 	}
-	</#if>
 
-	<#if data.isItemTinted>
-	@OnlyIn(Dist.CLIENT) @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
-		event.getItemColors().register((stack, index) -> {
-			<#if data.tintType == "Grass">
-				return GrassColors.get(0.5D, 1.0D);
-			<#elseif data.tintType == "Foliage">
-				return FoliageColors.getDefault();
-			<#else>
-				return 3694022;
-			</#if>
-		}, block);
-	}
+		<#if data.isItemTinted>
+		@OnlyIn(Dist.CLIENT) @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
+			event.getItemColors().register((stack, index) -> {
+				<#if data.tintType == "Grass">
+					return GrassColors.get(0.5D, 1.0D);
+				<#elseif data.tintType == "Foliage">
+					return FoliageColors.getDefault();
+				<#else>
+					return 3694022;
+				</#if>
+			}, block);
+		}
+		</#if>
 	</#if>
 
 

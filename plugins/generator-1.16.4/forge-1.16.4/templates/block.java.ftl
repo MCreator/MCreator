@@ -58,10 +58,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		FMLJavaModLoadingContext.get().getModEventBus().register(new TileEntityRegisterHandler());
 		</#if>
 		<#if data.tintType != "No tint">
-		FMLJavaModLoadingContext.get().getModEventBus().register(new BlockColorRegisterHandler());
-		</#if>
-		<#if data.isItemTinted>
-		FMLJavaModLoadingContext.get().getModEventBus().register(new ItemColorRegisterHandler());
+			FMLJavaModLoadingContext.get().getModEventBus().register(new BlockColorRegisterHandler());
+			<#if data.isItemTinted>
+			FMLJavaModLoadingContext.get().getModEventBus().register(new ItemColorRegisterHandler());
+			</#if>
 		</#if>
 	}
 
@@ -113,22 +113,22 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			}, block);
 		}
 	}
-	</#if>
 
-	<#if data.isItemTinted>
-	private static class ItemColorRegisterHandler {
-		@OnlyIn(Dist.CLIENT) @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
-			event.getItemColors().register((stack, index) -> {
-				<#if data.tintType == "Grass">
-					return GrassColors.get(0.5D, 1.0D);
-				<#elseif data.tintType == "Foliage">
-					return FoliageColors.getDefault();
-				<#else>
-					return 3694022;
-				</#if>
-			}, block);
+		<#if data.isItemTinted>
+		private static class ItemColorRegisterHandler {
+			@OnlyIn(Dist.CLIENT) @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
+				event.getItemColors().register((stack, index) -> {
+					<#if data.tintType == "Grass">
+						return GrassColors.get(0.5D, 1.0D);
+					<#elseif data.tintType == "Foliage">
+						return FoliageColors.getDefault();
+					<#else>
+						return 3694022;
+					</#if>
+				}, block);
+			}
 		}
-	}
+		</#if>
 	</#if>
 
 	public static class CustomBlock extends

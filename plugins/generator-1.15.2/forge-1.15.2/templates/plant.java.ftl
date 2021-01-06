@@ -48,7 +48,7 @@ import net.minecraft.block.material.Material;
 	public ${name}Block(${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
-		<#if data.hasTileEntity || data.tintType != "No tint" || data.isItemTinted>
+		<#if data.hasTileEntity || data.tintType != "No tint">
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 		</#if>
 	}
@@ -81,20 +81,20 @@ import net.minecraft.block.material.Material;
 			</#if>
 		}, block);
 	}
-	</#if>
 
-	<#if data.isItemTinted>
-	@OnlyIn(Dist.CLIENT) @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
-		event.getItemColors().register((stack, index) -> {
-			<#if data.tintType == "Grass">
-				return GrassColors.get(0.5D, 1.0D);
-			<#elseif data.tintType == "Foliage">
-				return FoliageColors.getDefault();
-			<#else>
-				return 3694022;
-			</#if>
-		}, block);
-	}
+		<#if data.isItemTinted>
+		@OnlyIn(Dist.CLIENT) @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
+			event.getItemColors().register((stack, index) -> {
+				<#if data.tintType == "Grass">
+					return GrassColors.get(0.5D, 1.0D);
+				<#elseif data.tintType == "Foliage">
+					return FoliageColors.getDefault();
+				<#else>
+					return 3694022;
+				</#if>
+			}, block);
+		}
+		</#if>
 	</#if>
 
 	<#if (data.spawnWorldTypes?size > 0)>
