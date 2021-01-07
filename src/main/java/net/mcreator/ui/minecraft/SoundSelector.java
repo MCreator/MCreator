@@ -48,8 +48,8 @@ public class SoundSelector extends JPanel {
 			Arrays.sort(sounds);
 
 			String s = (String) JOptionPane
-					.showInputDialog(frame, L10N.t("dialog.list_field.sound_message"),
-							L10N.t("dialog.list_field.sound_title"),
+					.showInputDialog(frame, L10N.t("dialog.selector.sound_message"),
+							L10N.t("dialog.selector.sound_title"),
 							JOptionPane.PLAIN_MESSAGE, null, sounds, sounds[0]);
 			tfe.setText(s);
 			tfe.getValidationStatus();
