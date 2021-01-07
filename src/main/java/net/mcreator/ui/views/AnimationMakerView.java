@@ -30,6 +30,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.FileDialogs;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.GifUtil;
 import net.mcreator.util.StringUtils;
@@ -129,15 +130,15 @@ public class AnimationMakerView extends ViewBase {
 
 		JPanel settings = new JPanel(new GridLayout(2, 2, 15, 20));
 		settings.setOpaque(false);
-		settings.add(new JLabel("<html>Duration of one frame:<br><small>In ticks; 20 ticks = 1s)"));
+		settings.add(L10N.label("dialog.animation_maker.frame_duration"));
 		settings.add(bd1);
-		settings.add(new JLabel("<html>Interpolate frames:<br><small>Not visible in preview"));
+		settings.add(L10N.label("dialog.animation_maker.interpolate_frame"));
 		settings.add(interpolate);
 
 		JComponent stp = PanelUtils.centerInPanel(settings);
 		stp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				"Animation settings", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("dialog.animation_maker.settings"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		editor.add("Center", PanelUtils.centerAndEastElement(preview2, stp));
@@ -407,14 +408,14 @@ public class AnimationMakerView extends ViewBase {
 		JPanel od = new JPanel(new BorderLayout());
 		JPanel centerPanel = new JPanel(new GridLayout(3, 2, 4, 4));
 
-		JLabel lab1 = new JLabel("Choose template and color");
-		JLabel lab2 = new JLabel("Animation template:");
-		JLabel lab3 = new JLabel("Animation color:");
-		JLabel lab4 = new JLabel("Lock saturation and lightness:");
+		JLabel lab1 = L10N.label("dialog.animation_maker.template_cplor_choice");
+		JLabel lab2 = L10N.label("dialog.animation_maker.template");
+		JLabel lab3 = L10N.label("dialog.animation_maker.color");
+		JLabel lab4 = L10N.label("dialog.animation_maker.saturation_lightness_lock");
 
 		JLabel preview = new JLabel();
 		preview.setBorder(BorderFactory
-				.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), "Preview", 0, 0,
+				.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), L10N.t("dialog.animation_maker.preview"), 0, 0,
 						getFont().deriveFont(12.0f), Color.gray));
 
 		JComboBox<ResourcePointer> types = new JComboBox<>();
@@ -469,11 +470,11 @@ public class AnimationMakerView extends ViewBase {
 		JPanel od = new JPanel(new BorderLayout());
 		JPanel centerPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 
-		JLabel lab1 = new JLabel("<html><b>Choose texture strip and optionally a color\n\n");
-		JLabel lab2 = new JLabel("Texture strip file:");
-		JLabel lab3 = new JLabel("Animation color:");
-		JLabel lab4 = new JLabel("Lock saturation and lightness:");
-		JLabel lab5 = new JLabel("Colorize:");
+		JLabel lab1 = L10N.label("dialog.animation_maker.strip_color_choice");
+		JLabel lab2 = L10N.label("dialog.animation_maker.strip");
+		JLabel lab3 = L10N.label("dialog.animation_maker.color");
+		JLabel lab4 = L10N.label("dialog.animation_maker.saturation_lightness_lock");
+		JLabel lab5 = L10N.label("dialog.animation_maker.colorize");
 
 		JLabel preview = new JLabel(new ImageIcon(new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB)));
 		preview.setBorder(BorderFactory

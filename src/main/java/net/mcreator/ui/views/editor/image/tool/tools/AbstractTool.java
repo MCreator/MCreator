@@ -20,6 +20,7 @@ package net.mcreator.ui.views.editor.image.tool.tools;
 
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
@@ -81,7 +82,7 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 		((BorderLayout) propertiesPanel.getLayout()).getLayoutComponent(BorderLayout.CENTER);
 		if (no)
 			propertiesPanel
-					.add(PanelUtils.totalCenterInPanel(new JLabel("Click on the canvas to use")), BorderLayout.CENTER);
+					.add(PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor_tool.use_canvas")), BorderLayout.CENTER);
 		else
 			propertiesPanel.add(PanelUtils.pullElementUp(settingsPanel), BorderLayout.CENTER);
 
