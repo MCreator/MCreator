@@ -1,2 +1,3 @@
-Ce paramètre contrôle le nombre de blocs que le tronc de l'arbre personalisé peut avoir dans l'eau.
-NOTE : Uniquement disponible pour Minecraft 1.16.4+
+Ce paramètre contrôle de combien de blocs le tronc de l'arbre personnalisé peut être immergé.
+
+NOTE: Disponible seulement pour Minecraft 1.16.x et plus
