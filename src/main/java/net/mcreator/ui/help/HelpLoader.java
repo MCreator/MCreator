@@ -88,19 +88,19 @@ public class HelpLoader {
 				if (getFromCache(helpContext.getEntry()) != null) {
 					helpString.append(renderer.render(parser.parse(getFromCache(helpContext.getEntry()))));
 				} else {
-					helpString.append("No help entry is defined for <tt>").append(helpContext.getEntry())
+					helpString.append(L10N.t("help.loader.no_help_entry")).append(helpContext.getEntry())
 							.append("</tt> yet.<br>");
 				}
 
 				if (uri != null && helpContext.getContextName() != null) {
-					helpString.append("<br>Learn more about <a href=\"").append(uri.toString()).append("\">")
-							.append(helpContext.getContextName()).append("</a> on MCreator's wiki.");
+					helpString.append(L10N.t("help.loader.learn_about")).append(uri.toString()).append("\">")
+							.append(helpContext.getContextName()).append(L10N.t("help.loader.wiki"));
 				}
 
 				return helpString.toString();
 			} else if (uri != null && helpContext.getContextName() != null) {
-				return "<html><body>No help entry is defined. Learn more about <a href=\"" + uri.toString() + "\">"
-						+ helpContext.getContextName() + "</a> on MCreator's wiki.";
+				return L10N.t("help.loader.no_entry_learn") + uri.toString() + "\">"
+						+ helpContext.getContextName() + L10N.t("help.loader.wiki");
 			}
 		}
 
