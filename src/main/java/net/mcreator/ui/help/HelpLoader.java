@@ -92,8 +92,8 @@ public class HelpLoader {
 				}
 
 				if (uri != null && helpContext.getContextName() != null) {
-					helpString.append(L10N.t("help.loader.learn_about")).append(uri.toString()).append("\">")
-							.append(helpContext.getContextName()).append(L10N.t("help.loader.wiki"));
+					helpString.append(L10N.t("help.loader.learn_about", uri.toString(), "\">", helpContext.getContextName(),
+							"</a> on MCreator's wiki."));
 				}
 
 				return helpString.toString();
