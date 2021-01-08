@@ -103,7 +103,7 @@ public class HelpLoader {
 			}
 		}
 
-		return "<html><body>No help was found for the given help context.";
+		return L10N.t("help.loader.no_help_found");
 	}
 
 }
