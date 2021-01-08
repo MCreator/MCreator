@@ -56,27 +56,27 @@ public class JSpawnListEntry extends JPanel {
 
 		ElementUtil.loadAllEntities(workspace).forEach(e -> entityType.addItem(e.getName()));
 
-		add(L10N.label("dialog.list_entry.spawn_entity"));
+		add(L10N.label("dialog.spawn_list_entry.entity"));
 		add(entityType);
 
 		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/spawn_type"),
-				L10N.label("dialog.list_entry.spawn_type")));
+				L10N.label("dialog.spawn_list_entry.type")));
 		add(mobSpawningType);
 
 		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/spawn_weight"),
-				L10N.label("dialog.list_entry.spawn_weight")));
+				L10N.label("dialog.spawn_list_entry.weight")));
 		add(spawningProbability);
 
 		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/spawn_group_size"),
-				L10N.label("dialog.list_entry.spawn_min_group_size")));
+				L10N.label("dialog.spawn_list_entry.min_group_size")));
 		add(minNumberOfMobsPerGroup);
 
 		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/spawn_group_size"),
-				L10N.label("dialog.list_entry.spawn_max_group_size")));
+				L10N.label("dialog.spawn_list_entry.max_group_size")));
 		add(maxNumberOfMobsPerGroup);
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
-		remove.setText(L10N.t("dialog.list_entry.spawn_remove_entry"));
+		remove.setText(L10N.t("dialog.spawn_list_entry.remove_entry"));
 		remove.addActionListener(e -> {
 			entryList.remove(this);
 			parent.remove(container);
