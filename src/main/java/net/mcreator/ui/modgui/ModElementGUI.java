@@ -323,7 +323,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	private void disableUnsupportedFields() {
-		List<String> inclusions = mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
+		List<String> inclusions = mcreator.getGeneratorConfiguration()
 				.getSupportedDefinitionFields(modElement.getType());
 
 		if (inclusions != null) {
@@ -376,20 +376,20 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		mcreator.getWorkspace().addModElement(modElement);
 
 		// generate mod element code
-		mcreator.getWorkspace().getGenerator().generateElement(element);
+		mcreator.getGenerator().generateElement(element);
 
 		// save custom mod element (preview) picture if it has one
-		mcreator.getWorkspace().getModElementManager().storeModElementPicture(element);
+		mcreator.getModElementManager().storeModElementPicture(element);
 		modElement.reinit(); // re-init mod element to pick up the new mod element picture
 
 		// save the GeneratableElement definition
-		mcreator.getWorkspace().getModElementManager().storeModElement(element);
+		mcreator.getModElementManager().storeModElement(element);
 
 		// we perform any custom defined after all other operations are complete
 		afterGeneratableElementStored();
 
 		// build if selected and needed
-		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getWorkspace().getModElementManager()
+		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
 				.usesGeneratableElementJava(element))
 			mcreator.actionRegistry.buildWorkspace.doAction();
 

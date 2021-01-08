@@ -108,21 +108,20 @@ import static org.junit.Assert.fail;
 			LOG.info("[" + generator + "] ----- Setting up workspace base for selected generator");
 			WorkspaceGeneratorSetup.setupWorkspaceBase(workspace);
 
-			if (workspace.getGenerator().getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
+			if (workspace.getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
 				CountDownLatch latch = new CountDownLatch(1);
 
 				GradleDaemonUtils.stopAllDaemons(workspace);
 
 				new MCreator(null, workspace).getGradleConsole()
-						.exec(workspace.getGenerator().getGeneratorConfiguration().getGradleTaskFor("setup_task"),
-								taskResult -> {
-									if (taskResult.getStatusByMCreator() == GradleErrorCodes.STATUS_OK) {
-										workspace.getGenerator().reloadGradleCaches();
-									} else {
-										fail("Gradle MDK setup failed!");
-									}
-									latch.countDown();
-								});
+						.exec(workspace.getGeneratorConfiguration().getGradleTaskFor("setup_task"), taskResult -> {
+							if (taskResult.getStatusByMCreator() == GradleErrorCodes.STATUS_OK) {
+								workspace.getGenerator().reloadGradleCaches();
+							} else {
+								fail("Gradle MDK setup failed!");
+							}
+							latch.countDown();
+						});
 				latch.await();
 			}
 

@@ -74,13 +74,13 @@ public class VOptionPane {
 
 		textField.addAncestorListener(new AncestorListener() {
 
-			public void ancestorRemoved(AncestorEvent event) {
+			@Override public void ancestorRemoved(AncestorEvent event) {
 			}
 
-			public void ancestorMoved(AncestorEvent event) {
+			@Override public void ancestorMoved(AncestorEvent event) {
 			}
 
-			public void ancestorAdded(AncestorEvent event) {
+			@Override public void ancestorAdded(AncestorEvent event) {
 				event.getComponent().requestFocusInWindow();
 			}
 		});

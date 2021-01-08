@@ -22,6 +22,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import java.util.Collections;
@@ -38,8 +39,8 @@ public class BiomeDictionaryTypeListField extends JItemListField<String> {
 	@Override protected List<String> getElementsToAdd() {
 		JList<String> vlist = new JList<>(ElementUtil.loadBiomeDictionaryTypes());
 		int option = JOptionPane.showOptionDialog(frame, PanelUtils
-						.northAndCenterElement(new JLabel("Select biome dictionary types you would like to add to the list:"),
-								new JScrollPane(vlist)), "Select biome dictionary types", JOptionPane.OK_CANCEL_OPTION,
+						.northAndCenterElement(L10N.label("dialog.list_field.biome_dictionary_message"),
+								new JScrollPane(vlist)), L10N.t("dialog.list_field.biome_dictionary_title"), JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, null, null);
 
 		if (option == JOptionPane.OK_OPTION && vlist.getSelectedValue() != null) {

@@ -97,8 +97,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		ComponentUtils.deriveFont(imp1, 12);
 		imp1.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 
-		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
-				.get("model_java") != GeneratorStats.CoverageStatus.NONE)
+		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
+				!= GeneratorStats.CoverageStatus.NONE)
 			bar.add(imp1);
 
 		imp1.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importJavaModel.doAction());
@@ -110,8 +110,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		ComponentUtils.deriveFont(imp2, 12);
 		imp2.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 
-		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
-				.get("model_json") != GeneratorStats.CoverageStatus.NONE)
+		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
+				!= GeneratorStats.CoverageStatus.NONE)
 			bar.add(imp2);
 
 		imp2.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importJSONModel.doAction());
@@ -123,8 +123,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		ComponentUtils.deriveFont(imp3, 12);
 		imp3.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 
-		if (workspacePanel.getMcreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
-				.get("model_obj") != GeneratorStats.CoverageStatus.NONE)
+		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
+				!= GeneratorStats.CoverageStatus.NONE)
 			bar.add(imp3);
 
 		imp3.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importOBJModel.doAction());
@@ -205,8 +205,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 							GeneratableElement generatableElement = e.getGeneratableElement();
 							if (generatableElement != null) {
 								// generate mod element
-								workspacePanel.getMcreator().getWorkspace().getGenerator()
-										.generateElement(generatableElement);
+								workspacePanel.getMcreator().getGenerator().generateElement(generatableElement);
 							}
 						}
 
@@ -244,9 +243,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 					.openMappingDialog(workspacePanel.getMcreator(), null, model.getType() == Model.Type.JSON);
 			if (textureMappingMap != null) {
 				String data = TexturedModel.getJSONForTextureMapping(textureMappingMap);
-				FileIO.writeStringToFile(data,
-						new File(workspacePanel.getMcreator().getWorkspace().getFolderManager().getModelsDir(),
-								model.getFile().getName() + ".textures"));
+				FileIO.writeStringToFile(data, new File(workspacePanel.getMcreator().getFolderManager().getModelsDir(),
+						model.getFile().getName() + ".textures"));
 			}
 		} else {
 			JOptionPane.showMessageDialog(workspacePanel.getMcreator(), "This model does not support texture mappings!",
@@ -254,13 +252,13 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		}
 	}
 
-	public void reloadElements() {
+	@Override public void reloadElements() {
 		listmodel.removeAllElements();
 		Model.getModels(workspacePanel.getMcreator().getWorkspace()).forEach(listmodel::addElement);
 		refilterElements();
 	}
 
-	public void refilterElements() {
+	@Override public void refilterElements() {
 		listmodel.refilter();
 	}
 

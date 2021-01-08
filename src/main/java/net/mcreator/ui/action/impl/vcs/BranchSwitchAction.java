@@ -50,7 +50,7 @@ public class BranchSwitchAction {
 			Git git = workspaceVCS.getGit();
 
 			CredentialsProvider credentialsProvider = workspaceVCS
-					.getCredentialsProvider(mcreator.getWorkspace().getFolderManager().getWorkspaceFolder(), mcreator);
+					.getCredentialsProvider(mcreator.getWorkspaceFolder(), mcreator);
 
 			try {
 				Workspace localWorkspace = mcreator.getWorkspace();

@@ -92,10 +92,8 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 		switchBranch.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(switchBranch);
 
-		switchBranch.addActionListener(
-				e -> new BranchesPopup(workspacePanel.getMcreator().getWorkspace().getVCS(),
-						workspacePanel.getMcreator())
-						.show(switchBranch, 4, 20));
+		switchBranch.addActionListener(e -> new BranchesPopup(workspacePanel.getMcreator().getWorkspace().getVCS(),
+				workspacePanel.getMcreator()).show(switchBranch, 4, 20));
 
 		bar.add(switchBranch);
 
@@ -220,7 +218,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 		return SetupVCSAction.setupVCSForWorkspaceIfNotYet(workspacePanel.getMcreator());
 	}
 
-	public void reloadElements() {
+	@Override public void reloadElements() {
 		if (workspacePanel.getMcreator().getWorkspace().getVCS() != null) {
 			int row = commits.getSelectedRow();
 
@@ -249,7 +247,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 		}
 	}
 
-	public void refilterElements() {
+	@Override public void refilterElements() {
 		if (workspacePanel.getMcreator().getWorkspace().getVCS() != null)
 			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
 	}

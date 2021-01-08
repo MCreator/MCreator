@@ -49,7 +49,7 @@ public class ElementOrderEditor {
 		JTabbedPane tabs = new JTabbedPane();
 		tabs.setBorder(BorderFactory.createEmptyBorder());
 		tabs.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
-			protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
+			@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 			}
 		});
 

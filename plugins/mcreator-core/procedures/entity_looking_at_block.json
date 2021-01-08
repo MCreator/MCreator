@@ -1,0 +1,68 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "maxdistance",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "fluid_mode",
+      "options": [
+        [
+          "NONE",
+          "NONE"
+        ],
+        [
+          "SOURCE_ONLY",
+          "SOURCE_ONLY"
+        ],
+        [
+          "ANY",
+          "ANY"
+        ]
+      ]
+    },
+    {
+      "type": "field_dropdown",
+      "name": "block_mode",
+      "options": [
+        [
+          "OUTLINE",
+          "OUTLINE"
+        ],
+        [
+          "COLLIDER",
+          "COLLIDER"
+        ],
+        [
+          "VISUAL",
+          "VISUAL"
+        ]
+      ]
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "entitydata",
+    "toolbox_init": [
+      "<value name=\"maxdistance\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value>",
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "inputs": [
+      "maxdistance",
+      "entity"
+    ],
+    "fields": [
+      "fluid_mode",
+      "block_mode"
+    ]
+  }
+}

@@ -112,7 +112,7 @@ public class ArmorImageMakerView extends ViewBase {
 			String namec = JOptionPane.showInputDialog("Name of armor texture (without spaces): ");
 			if (namec != null && !namec.trim().equals("")) {
 				namec = RegistryNameFixer.fix(namec);
-				File[] armorPars = mcreator.getWorkspace().getFolderManager().getArmorTextureFilesForName(namec);
+				File[] armorPars = mcreator.getFolderManager().getArmorTextureFilesForName(namec);
 				if (armorPars[0].isFile() || armorPars[1].isFile()) {
 					JOptionPane.showMessageDialog(mcreator, "Armor with this name already exists!", "Resource error",
 							JOptionPane.ERROR_MESSAGE);

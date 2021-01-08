@@ -52,14 +52,14 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 		}
 
 		@Override public boolean isEnabled() {
-			return super.isEnabled() &&
-					actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorConfiguration()
-							.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA;
+			return super.isEnabled()
+					&& actionRegistry.getMCreator().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+					== GeneratorFlavor.BaseLanguage.JAVA;
 		}
 
 		@Override public void setEnabled(boolean b) {
-			if (actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorConfiguration()
-					.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA)
+			if (actionRegistry.getMCreator().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+					== GeneratorFlavor.BaseLanguage.JAVA)
 				super.setEnabled(b);
 			else
 				super.setEnabled(false);
@@ -68,17 +68,16 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 	}
 
 	private static void exportImpl(ActionRegistry actionRegistry, String task) {
-		actionRegistry.getMCreator().getWorkspace().getGenerator().runResourceSetupTasks();
-		actionRegistry.getMCreator().getWorkspace().getGenerator().generateBase();
+		actionRegistry.getMCreator().getGenerator().runResourceSetupTasks();
+		actionRegistry.getMCreator().getGenerator().generateBase();
 
 		actionRegistry.getMCreator().mcreatorTabs.showTab(actionRegistry.getMCreator().consoleTab);
 
 		actionRegistry.getMCreator().getGradleConsole().exec(task, taskResult -> {
-			String exportFile = actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorConfiguration()
+			String exportFile = actionRegistry.getMCreator().getGeneratorConfiguration()
 					.getGradleTaskFor("export_file");
 
-			if (new File(actionRegistry.getMCreator().getWorkspace().getFolderManager().getWorkspaceFolder(),
-					exportFile).isFile()) {
+			if (new File(actionRegistry.getMCreator().getWorkspaceFolder(), exportFile).isFile()) {
 				Object[] options2 = { L10N.t("dialog.workspace.export.option.donate_and_export"),
 						L10N.t("dialog.workspace.export.option.just_export"),
 						UIManager.getString("OptionPane.cancelButtonText") };
@@ -95,9 +94,7 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 				File loc = FileDialogs.getSaveDialog(actionRegistry.getMCreator(),
 						new String[] { "." + FilenameUtils.getExtension(exportFile) });
 				if (loc != null)
-					FileIO.copyFile(new File(
-							actionRegistry.getMCreator().getWorkspace().getFolderManager().getWorkspaceFolder(),
-							exportFile), loc);
+					FileIO.copyFile(new File(actionRegistry.getMCreator().getWorkspaceFolder(), exportFile), loc);
 			} else {
 				JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
 						L10N.t("dialog.workspace.export.error.message"), L10N.t("dialog.workspace.export.error.title"),

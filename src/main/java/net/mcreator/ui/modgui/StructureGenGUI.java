@@ -124,9 +124,9 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 			if (sch != null) {
 				String strname = Transliteration.transliterateString(sch.getName().toLowerCase(Locale.ENGLISH))
 						.replace(" ", "_");
-				FileIO.copyFile(sch, new File(mcreator.getWorkspace().getFolderManager().getStructuresDir(), strname));
+				FileIO.copyFile(sch, new File(mcreator.getFolderManager().getStructuresDir(), strname));
 				structureSelector.removeAllItems();
-				mcreator.getWorkspace().getFolderManager().getStructureList().forEach(structureSelector::addItem);
+				mcreator.getFolderManager().getStructureList().forEach(structureSelector::addItem);
 				structureSelector.setSelectedItem(FilenameUtils.removeExtension(strname));
 			}
 		});
@@ -198,8 +198,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 		generateCondition.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(structureSelector,
-				mcreator.getWorkspace().getFolderManager().getStructureList());
+		ComboBoxUtil.updateComboBoxContents(structureSelector, mcreator.getFolderManager().getStructureList());
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

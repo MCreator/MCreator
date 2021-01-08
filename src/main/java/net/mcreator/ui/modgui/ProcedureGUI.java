@@ -101,7 +101,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private void regenerateProcedure() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
-				mcreator.getWorkspace().getGenerator().getGeneratorStats().getGeneratorProcedures());
+				mcreator.getGeneratorStats().getGeneratorProcedures());
 		BlocklyToProcedure blocklyToJava;
 
 		try {
@@ -197,16 +197,14 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						hasResultTriggerLabel.setIcon(UIRES.get("info"));
 					}
 
-					if (!mcreator.getWorkspace().getGenerator().getGeneratorStats().getGeneratorTriggers()
-							.contains(trigger.getID())) {
+					if (!mcreator.getGeneratorStats().getGeneratorTriggers().contains(trigger.getID())) {
 						compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 								L10N.t("elementgui.procedure.global_trigger_unsupported")));
 					}
 
 					if (trigger.required_apis != null) {
 						for (String required_api : trigger.required_apis) {
-							if (!mcreator.getWorkspace().getWorkspaceSettings().getMCreatorDependencies()
-									.contains(required_api)) {
+							if (!mcreator.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
 								compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 										L10N.t("elementgui.procedure.global_trigger_not_activated", required_api)));
 							}
@@ -558,11 +556,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 							}
 						}
 						if (procedureUsedByGUI)
-							mcreator.getWorkspace().getGenerator().generateElement(generatableElement);
+							mcreator.getGenerator().generateElement(generatableElement);
 					} else if (generatableElement != null && ModElementTypeRegistry.REGISTRY.get(element.getType())
 							.hasProcedureTriggers()) {
 						if (Procedure.isElementUsingProcedure(generatableElement, modElement.getName())) {
-							mcreator.getWorkspace().getGenerator().generateElement(generatableElement);
+							mcreator.getGenerator().generateElement(generatableElement);
 						}
 					}
 				}

@@ -23,6 +23,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.init.L10N;
 
@@ -43,12 +44,12 @@ public class ClearAllGradleCachesAction extends GradleAction {
 							L10N.t("action.gradle.clear_caches.option.title"), JOptionPane.YES_NO_OPTION,
 							JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 			if (reply == 0 || reply == 1) {
-				clearAllGradleCaches(actionRegistry.getMCreator(), reply == 1);
+				clearAllGradleCaches(actionRegistry.getMCreator(), reply == 1, false);
 			}
 		});
 	}
 
-	public static void clearAllGradleCaches(MCreator mcreator, boolean entireGradleFolder) {
+	public static void clearAllGradleCaches(MCreator mcreator, boolean entireGradleFolder, boolean regenerateCodeFlag) {
 		ProgressDialog progressDialog = new ProgressDialog(mcreator, L10N.t("dialog.cache_cleanup.title"));
 		new Thread(() -> {
 			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
@@ -86,8 +87,41 @@ public class ClearAllGradleCachesAction extends GradleAction {
 
 			mcreator.getGradleConsole().markRunning(); // so console gets locked while we generate code already
 			try {
-				mcreator.getWorkspace().getGenerator().generateBase();
-				mcreator.getGradleConsole().exec("build", null);
+				mcreator.getGenerator().generateBase();
+
+				String tasks = "build";
+
+				if (mcreator.getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
+					tasks = mcreator.getGeneratorConfiguration().getGradleTaskFor("setup_task") + (regenerateCodeFlag ?
+							"" :
+							" build");
+				}
+
+				mcreator.getGradleConsole().exec(tasks, result -> {
+					ProgressDialog progressDialogSecondStage = new ProgressDialog(mcreator,
+							L10N.t("dialog.reload_gradle_project.title"));
+
+					new Thread(() -> {
+						ProgressDialog.ProgressUnit p33a = new ProgressDialog.ProgressUnit(
+								L10N.t("dialog.setup_workspace.progress.reloading_gradle_project"));
+						progressDialogSecondStage.addProgress(p33a);
+
+						try {
+							mcreator.getGenerator().reloadGradleCaches();
+							p33a.ok();
+							progressDialogSecondStage.hideAll();
+						} catch (Exception e) {
+							p33a.err();
+							progressDialogSecondStage.hideAll();
+						}
+
+						if (regenerateCodeFlag) {
+							RegenerateCodeAction.regenerateCode(mcreator, false, true);
+						}
+					}).start();
+
+					progressDialogSecondStage.setVisible(true);
+				});
 			} catch (Exception e) { // if something fails, we still need to free the gradle console
 				mcreator.getGradleConsole().markReady();
 			}

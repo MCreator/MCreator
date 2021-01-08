@@ -74,8 +74,8 @@ public class ModelImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
-					.get("model_java") != GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
+					!= GeneratorStats.CoverageStatus.NONE;
 		}
 	}
 
@@ -85,7 +85,7 @@ public class ModelImportActions {
 				.replace("ModelRenderer ;", "");
 
 		if (origCode.contains("software.bernie.geckolib.animation.model.AnimatedEntityModel") && !mcreator
-				.getWorkspace().getWorkspaceSettings().getMCreatorDependencies().contains("geckolib")) {
+				.getWorkspaceSettings().getMCreatorDependencies().contains("geckolib")) {
 			JOptionPane.showMessageDialog(mcreator,
 					L10N.t("dialog.workspace.resources.import_java_model.geckolib_needed.message"),
 					L10N.t("dialog.workspace.resources.import_java_model.geckolib_needed.title"),
@@ -136,8 +136,7 @@ public class ModelImportActions {
 		if (finalModelCode == null)
 			finalModelCode = classJavaSource.toString();
 
-		if (new File(mcreator.getWorkspace().getFolderManager().getModelsDir(), classJavaSource.getName() + ".java")
-				.exists()) {
+		if (new File(mcreator.getFolderManager().getModelsDir(), classJavaSource.getName() + ".java").exists()) {
 			JOptionPane.showMessageDialog(mcreator,
 					L10N.t("dialog.workspace.resources.import_java_model.model_already_exists.message",
 							classJavaSource.getName()),
@@ -147,8 +146,7 @@ public class ModelImportActions {
 		}
 		FileIO.writeStringToFile(finalModelCode.replace("setRotationAngles(f, f1, f2, f3, f4, f5);",
 				"setRotationAngles(f, f1, f2, f3, f4, f5, entity);"),
-				new File(mcreator.getWorkspace().getFolderManager().getModelsDir(),
-						classJavaSource.getName() + ".java"));
+				new File(mcreator.getFolderManager().getModelsDir(), classJavaSource.getName() + ".java"));
 		mcreator.mv.resourcesPan.workspacePanelModels.reloadElements();
 		if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
 			((ModElementGUI) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
@@ -164,8 +162,8 @@ public class ModelImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
-					.get("model_json") != GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
+					!= GeneratorStats.CoverageStatus.NONE;
 		}
 	}
 
@@ -202,8 +200,8 @@ public class ModelImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo()
-					.get("model_obj") != GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
+					!= GeneratorStats.CoverageStatus.NONE;
 		}
 	}
 
@@ -225,9 +223,9 @@ public class ModelImportActions {
 
 		String modelName = Transliteration.transliterateString(obj.getName()).toLowerCase(Locale.ENGLISH).trim()
 				.replace(" ", "_").replace(":", "");
-		File objFile = new File(mcreator.getWorkspace().getFolderManager().getModelsDir(), modelName);
+		File objFile = new File(mcreator.getFolderManager().getModelsDir(), modelName);
 		FileIO.copyFile(obj, objFile);
-		File mtlFile = new File(mcreator.getWorkspace().getFolderManager().getModelsDir(),
+		File mtlFile = new File(mcreator.getFolderManager().getModelsDir(),
 				modelName.substring(0, modelName.lastIndexOf('.')) + ".mtl");
 		FileIO.copyFile(mtl, mtlFile);
 
@@ -257,11 +255,11 @@ public class ModelImportActions {
 				.openMappingDialog(mcreator, txs, supportMultiple);
 		if (textureMappingMap != null) {
 			String data = TexturedModel.getJSONForTextureMapping(textureMappingMap);
-			FileIO.writeStringToFile(data, new File(mcreator.getWorkspace().getFolderManager().getModelsDir(),
+			FileIO.writeStringToFile(data, new File(mcreator.getFolderManager().getModelsDir(),
 					Transliteration.transliterateString(modelFile.getName()).toLowerCase(Locale.ENGLISH).trim()
 							.replace(":", "").replace(" ", "_") + ".textures"));
 			// copy the actual model
-			FileIO.copyFile(modelFile, new File(mcreator.getWorkspace().getFolderManager().getModelsDir(),
+			FileIO.copyFile(modelFile, new File(mcreator.getFolderManager().getModelsDir(),
 					Transliteration.transliterateString(modelFile.getName()).toLowerCase(Locale.ENGLISH).trim()
 							.replace(":", "").replace(" ", "_")));
 		}

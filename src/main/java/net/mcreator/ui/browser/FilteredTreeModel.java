@@ -47,14 +47,14 @@ public class FilteredTreeModel extends DefaultTreeModel {
 		}
 	}
 
-	public int getChildCount(Object parent) {
+	@Override public int getChildCount(Object parent) {
 		if (parent instanceof ProjectBrowserFilterTreeNode) {
 			return (((ProjectBrowserFilterTreeNode) parent).getChildCount());
 		}
 		return 0;
 	}
 
-	public Object getChild(Object parent, int index) {
+	@Override public Object getChild(Object parent, int index) {
 		if (parent instanceof ProjectBrowserFilterTreeNode) {
 			return (((ProjectBrowserFilterTreeNode) parent).getChildAt(index));
 		}

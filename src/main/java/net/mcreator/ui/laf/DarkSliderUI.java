@@ -33,7 +33,7 @@ public class DarkSliderUI extends BasicSliderUI {
 		return new DarkSliderUI(c);
 	}
 
-	public void paint(Graphics g, JComponent c) {
+	@Override public void paint(Graphics g, JComponent c) {
 		recalculateIfInsetsChanged();
 		recalculateIfOrientationChanged();
 		Rectangle clip = g.getClipBounds();

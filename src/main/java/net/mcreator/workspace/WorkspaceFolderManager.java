@@ -119,33 +119,27 @@ public class WorkspaceFolderManager {
 	}
 
 	@Nullable public File getBlocksTexturesDir() {
-		return GeneratorUtils
-				.getSpecificRoot(workspace, workspace.getGenerator().getGeneratorConfiguration(), "block_textures_dir");
+		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "block_textures_dir");
 	}
 
 	@Nullable public File getItemsTexturesDir() {
-		return GeneratorUtils
-				.getSpecificRoot(workspace, workspace.getGenerator().getGeneratorConfiguration(), "item_textures_dir");
+		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "item_textures_dir");
 	}
 
 	@Nullable public File getArmorTexturesDir() {
-		return GeneratorUtils
-				.getSpecificRoot(workspace, workspace.getGenerator().getGeneratorConfiguration(), "armor_textures_dir");
+		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "armor_textures_dir");
 	}
 
 	@Nullable public File getOtherTexturesDir() {
-		return GeneratorUtils
-				.getSpecificRoot(workspace, workspace.getGenerator().getGeneratorConfiguration(), "other_textures_dir");
+		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "other_textures_dir");
 	}
 
 	@Nullable public File getStructuresDir() {
-		return GeneratorUtils
-				.getSpecificRoot(workspace, workspace.getGenerator().getGeneratorConfiguration(), "structures_dir");
+		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "structures_dir");
 	}
 
 	@Nullable public File getSoundsDir() {
-		return GeneratorUtils
-				.getSpecificRoot(workspace, workspace.getGenerator().getGeneratorConfiguration(), "sounds_dir");
+		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "sounds_dir");
 	}
 
 	public File getModElementsDir() {

@@ -86,7 +86,7 @@ public class ProjectBrowserFilterTreeNode extends DefaultMutableTreeNode {
 	 *
 	 * @see javax.swing.tree.DefaultMutableTreeNode#remove(int)
 	 */
-	public void remove(int childIndex) {
+	@Override public void remove(int childIndex) {
 		if (filter != null) {
 			setFilter("");
 		}
@@ -98,7 +98,7 @@ public class ProjectBrowserFilterTreeNode extends DefaultMutableTreeNode {
 	 *
 	 * @see javax.swing.tree.DefaultMutableTreeNode#getChildCount()
 	 */
-	public int getChildCount() {
+	@Override public int getChildCount() {
 		if (filter == null) {
 			return super.getChildCount();
 		}
@@ -110,7 +110,7 @@ public class ProjectBrowserFilterTreeNode extends DefaultMutableTreeNode {
 	 *
 	 * @see javax.swing.tree.DefaultMutableTreeNode#getChildAt(int)
 	 */
-	public ProjectBrowserFilterTreeNode getChildAt(int index) {
+	@Override public ProjectBrowserFilterTreeNode getChildAt(int index) {
 		if (filter == null) {
 			return (ProjectBrowserFilterTreeNode) super.getChildAt(index);
 		}

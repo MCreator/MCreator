@@ -89,7 +89,7 @@ public class GradleUtils {
 			}
 
 			FileIO.writeStringToFile(mcreatorGradleConfBuilder.toString(),
-					new File(workspace.getFolderManager().getWorkspaceFolder(), "mcreator.gradle"));
+					new File(workspace.getWorkspaceFolder(), "mcreator.gradle"));
 		}
 	}
 

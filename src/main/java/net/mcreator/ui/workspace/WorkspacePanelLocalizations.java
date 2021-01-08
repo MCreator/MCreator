@@ -73,7 +73,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		pane.setForeground(Color.white);
 		pane.setOpaque(false);
 		pane.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
-			protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
+			@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 			}
 		});
 		pane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
@@ -132,7 +132,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		});
 	}
 
-	public void reloadElements() {
+	@Override public void reloadElements() {
 		for (ActionListener al : del.getActionListeners())
 			del.removeActionListener(al);
 
@@ -267,7 +267,8 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 
 				File expFile = FileDialogs.getSaveDialog(workspacePanel.getMcreator(), new String[] { ".csv" });
 				if (expFile != null) {
-					Map<String, String> en_us = workspacePanel.getMcreator().getWorkspace().getLanguageMap().get("en_us");
+					Map<String, String> en_us = workspacePanel.getMcreator().getWorkspace().getLanguageMap()
+							.get("en_us");
 
 					ByteArrayOutputStream csvResult = new ByteArrayOutputStream();
 					Writer outputWriter = new OutputStreamWriter(csvResult);
@@ -298,8 +299,8 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 
 				File impFile = FileDialogs.getOpenDialog(workspacePanel.getMcreator(), new String[] { ".csv" });
 				if (impFile != null) {
-					ConcurrentHashMap<String, String> en_us = workspacePanel.getMcreator().getWorkspace().getLanguageMap()
-							.get("en_us");
+					ConcurrentHashMap<String, String> en_us = workspacePanel.getMcreator().getWorkspace()
+							.getLanguageMap().get("en_us");
 					CsvParserSettings settings = new CsvParserSettings();
 					settings.setDelimiterDetectionEnabled(true);
 					CsvParser parser = new CsvParser(settings);
@@ -381,7 +382,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		}
 	}
 
-	public void refilterElements() {
+	@Override public void refilterElements() {
 		for (TableRowSorter<TableModel> sorter : sorters)
 			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
 	}

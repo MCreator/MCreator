@@ -183,7 +183,7 @@ public class BlocklyBlockCodeGenerator {
 
 		if (toolboxBlock.required_apis != null) {
 			for (String required_api : toolboxBlock.required_apis) {
-				if (!master.getWorkspace().getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
+				if (!master.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							"Block " + type + " requires " + required_api
 									+ " enabled in workspace settings, or the current generator does not support it"));
