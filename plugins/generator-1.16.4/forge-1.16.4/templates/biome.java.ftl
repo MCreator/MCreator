@@ -123,7 +123,9 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#else>
 									.setDecorators(ImmutableList.of(TrunkVineTreeDecorator.field_236879_b_, LeaveVineTreeDecorator.field_236871_b_))
 								</#if>
-							.setMaxWaterDepth(${data.maxWaterDepth})
+								<#if data.treeType == data.TREES_CUSTOM>
+								.setMaxWaterDepth(${data.maxWaterDepth})
+								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -141,7 +143,9 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#else>
 									.setIgnoreVines()
 								</#if>
-							.setMaxWaterDepth(${data.maxWaterDepth})
+								<#if data.treeType == data.TREES_CUSTOM>
+								.setMaxWaterDepth(${data.maxWaterDepth})
+								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -157,7 +161,9 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
 									<@vinesAndCocoa/>
 								</#if>
-							.setMaxWaterDepth(${data.maxWaterDepth})
+								<#if data.treeType == data.TREES_CUSTOM>
+								.setMaxWaterDepth(${data.maxWaterDepth})
+								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -173,7 +179,9 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
 									<@vinesAndCocoa/>
 								</#if>
-							.setMaxWaterDepth(${data.maxWaterDepth})
+								<#if data.treeType == data.TREES_CUSTOM>
+								.setMaxWaterDepth(${data.maxWaterDepth})
+								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -191,7 +199,9 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#else>
 									.setIgnoreVines()
 								</#if>
-							.setMaxWaterDepth(${data.maxWaterDepth})
+								<#if data.treeType == data.TREES_CUSTOM>
+								.setMaxWaterDepth(${data.maxWaterDepth})
+								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -209,7 +219,9 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#else>
 									.setIgnoreVines()
 								</#if>
-							.setMaxWaterDepth(${data.maxWaterDepth})
+								<#if data.treeType == data.TREES_CUSTOM>
+								.setMaxWaterDepth(${data.maxWaterDepth})
+								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
