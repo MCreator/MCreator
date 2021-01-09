@@ -97,7 +97,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
-	private final Model tintedCross = new Model.BuiltInModel("Tinted cross model");
 	private final JRadioButton normalType = L10N.radiobutton("elementgui.plant.use_static_plant_type");
 	private final JComboBox<String> growapableSpawnType = new JComboBox<>(
 			new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
@@ -577,7 +576,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.loadMapColors()), "DEFAULT");
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(cross, crop, tintedCross),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(cross, crop),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
@@ -745,11 +744,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		else if (model.getType() == Model.Type.OBJ)
 			plant.renderType = 3;
 		else if (model.equals(cross))
-			plant.renderType = 12;
+			plant.renderType = "No tint".equals(tintType.getSelectedItem()) ? 12 : 120;
 		else if (model.equals(crop))
 			plant.renderType = 13;
-		else if (model.equals(tintedCross))
-			plant.renderType = 15;
 		plant.customModelName = model.getReadableName();
 
 		return plant;

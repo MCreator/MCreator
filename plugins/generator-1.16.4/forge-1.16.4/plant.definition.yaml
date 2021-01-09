@@ -16,7 +16,7 @@ templates:
     variables: "model=crop;txname=crop"
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block.json.ftl
-    condition: "renderType #= 15"
+    condition: "renderType #= 120"
     writer: json
     variables: "model=tinted_cross;txname=cross"
     name: "@MODASSETSROOT/models/block/@registryname.json"
