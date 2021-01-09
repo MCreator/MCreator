@@ -26,7 +26,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -191,9 +191,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
-		JPanel destal = new JPanel(new GridLayout(2, 1));
-
-		destal.setOpaque(false);
 
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
 		textureBottom = new TextureHolder(
@@ -209,75 +206,68 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK), 32);
 		particleTexture.setOpaque(false);
 
-		JPanel infopanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-		infopanel.setOpaque(false);
-		infopanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.plant.special_information_title"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		infopanel.add("South", PanelUtils.gridElements(3, 2, HelpUtils
-						.wrapWithHelpButton(this.withEntry("item/special_information"),
-								L10N.label("elementgui.plant.special_information_tip")), specialInfo, HelpUtils
-						.wrapWithHelpButton(this.withEntry("block/item_texture"), L10N.label("elementgui.plant.item_texture")),
-				PanelUtils.centerInPanel(itemTexture), HelpUtils
-						.wrapWithHelpButton(this.withEntry("block/particle_texture"),
-								L10N.label("elementgui.plant.particle_texture")),
-				PanelUtils.centerInPanel(particleTexture)));
-
-		JPanel tintPanel = new JPanel(new GridLayout(2, 2, 0, 2));
+		JPanel tintPanel = new JPanel(new GridLayout(3, 2, 0, 2));
 		tintPanel.setOpaque(false);
 		isItemTinted.setOpaque(false);
 		tintPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.plant.plant_tint"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.plant.plant_tint_and_info"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tint_type"),
-				L10N.label("elementgui.common.tint_type")));
+		tintPanel.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/tint_type"), L10N.label("elementgui.common.tint_type")));
 		tintPanel.add(tintType);
 		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
 				L10N.label("elementgui.plant.is_item_tinted")));
 		tintPanel.add(isItemTinted);
 
-		JPanel rent = new JPanel();
-		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
+		tintPanel.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("item/special_information"),
+						L10N.label("elementgui.plant.special_information_tip")));
+		tintPanel.add(specialInfo);
+
+		JPanel rent = new JPanel(new GridLayout(3, 2, 2, 2));
 		rent.setOpaque(false);
-		rent.add(PanelUtils.join(HelpUtils
-						.wrapWithHelpButton(this.withEntry("block/model"), L10N.label("elementgui.plant.block_model")),
-				renderType));
+
+		rent.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/model"), L10N.label("elementgui.plant.block_model")));
+		rent.add(renderType);
+
+		rent.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/item_texture"), L10N.label("elementgui.plant.item_texture")));
+		rent.add(PanelUtils.centerInPanel(itemTexture));
+
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
+				L10N.label("elementgui.plant.particle_texture")));
+		rent.add(PanelUtils.centerInPanel(particleTexture));
+
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
-		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.plant.3dmodel"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		destal.add(ComponentUtils
-				.squareAndBorder(texture, new Color(125, 255, 174), L10N.t("elementgui.plant.texture_place_top_main")));
-		destal.add(ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom")));
-		destal.setBorder(BorderFactory.createTitledBorder(
+		JPanel texturesAndRent = new JPanel(new BorderLayout(50, 0));
+		texturesAndRent.setOpaque(false);
+
+		texturesAndRent.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.gridElements(1, 2, ComponentUtils
+						.squareAndBorder(texture, new Color(125, 255, 174), L10N.t("elementgui.plant.texture_place_top_main")),
+				ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom")))));
+		texturesAndRent.add("East", rent);
+
+		texturesAndRent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.plant.texture_title"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.plant.textures_and_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JPanel render = new JPanel();
 		render.setLayout(new BoxLayout(render, BoxLayout.PAGE_AXIS));
 		render.setOpaque(false);
 
-		render.add(rent);
+		render.add(texturesAndRent);
 		render.add(tintPanel);
-		render.add(infopanel);
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 
-		JPanel sbbp22 = new JPanel();
-
-		sbbp22.setOpaque(false);
 		sbbp2.setOpaque(false);
-
-		sbbp22.add("East", destal);
-		sbbp22.add("Center", render);
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(normalType);
@@ -367,7 +357,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		ptipe.add("Center", ptipe3);
 		ptipe.add("East", ptipe2);
 
-		sbbp2.add("North", sbbp22);
+		sbbp2.add("North", render);
 		sbbp2.add("Center", PanelUtils.totalCenterInPanel(ptipe));
 
 		pane2.setOpaque(false);
