@@ -62,8 +62,8 @@ public class LayerPanel extends JPanel {
 		this.versionManager = versionManager;
 		TransparentToolBar controls = new TransparentToolBar();
 
-		JLabel closed = L10N.label("dialog.imageeditor_layer_panel_no_image");
-		JLabel empty = L10N.label("dialog.imageeditor_layer_panel_no_layers");
+		JLabel closed = L10N.label("dialog.imageeditor.layer_panel_no_image");
+		JLabel empty = L10N.label("dialog.imageeditor.layer_panel_no_layers");
 
 		add = new JButton(UIRES.get("18px.add"));
 		up = new JButton(UIRES.get("18px.up"));
@@ -72,35 +72,35 @@ public class LayerPanel extends JPanel {
 		toggleVisibility = new JButton(UIRES.get("18px.visibility"));
 		delete = new JButton(UIRES.get("18px.remove"));
 
-		add.setToolTipText(L10N.t("dialog.imageeditor_layer_panel_new_layer"));
+		add.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_new_layer"));
 		add.setMargin(new Insets(0, 0, 0, 0));
 		add.setOpaque(false);
 		add.setBorder(BorderFactory.createEmptyBorder());
 		add.setEnabled(false);
 
-		up.setToolTipText(L10N.t("dialog.imageeditor_layer_panel_move_up"));
+		up.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_move_up"));
 		up.setMargin(new Insets(0, 0, 0, 0));
 		up.setOpaque(false);
 		up.setBorder(BorderFactory.createEmptyBorder());
 		up.setEnabled(false);
 
-		down.setToolTipText(L10N.t("dialog.imageeditor_layer_panel_move_down"));
+		down.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_move_down"));
 		down.setMargin(new Insets(0, 0, 0, 0));
 		down.setOpaque(false);
 		down.setBorder(BorderFactory.createEmptyBorder());
 		down.setEnabled(false);
 
-		editMeta.setToolTipText(L10N.t("dialog.imageeditor_layer_panel_rename_layer"));
+		editMeta.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_rename_layer"));
 		editMeta.setMargin(new Insets(0, 0, 0, 0));
 		editMeta.setOpaque(false);
 		editMeta.setBorder(BorderFactory.createEmptyBorder());
 
-		toggleVisibility.setToolTipText(L10N.t("dialog.imageeditor_layer_panel_toggle_visibility"));
+		toggleVisibility.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_toggle_visibility"));
 		toggleVisibility.setMargin(new Insets(0, 0, 0, 0));
 		toggleVisibility.setOpaque(false);
 		toggleVisibility.setBorder(BorderFactory.createEmptyBorder());
 
-		delete.setToolTipText(L10N.t("dialog.imageeditor_layer_panel_delete_layer"));
+		delete.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_delete_layer"));
 		delete.setMargin(new Insets(0, 0, 0, 0));
 		delete.setOpaque(false);
 		delete.setBorder(BorderFactory.createEmptyBorder());
@@ -133,8 +133,8 @@ public class LayerPanel extends JPanel {
 
 		delete.addActionListener(e -> {
 			int confirmDialog = JOptionPane
-					.showConfirmDialog(f, L10N.t("dialog.imageeditor_layer_panel_confirm_layer_deletion_message") + selected(),
-							L10N.t("dialog.imageeditor_layer_panel_confirm_layer_deletion_title"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					.showConfirmDialog(f, L10N.t("dialog.imageeditor.layer_panel_confirm_layer_deletion_message") + selected(),
+							L10N.t("dialog.imageeditor.layer_panel_confirm_layer_deletion_title"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (confirmDialog == 0)
 				canvas.remove(selectedID());
 		});
@@ -186,7 +186,7 @@ public class LayerPanel extends JPanel {
 		Layer current = selected();
 		Rename rename = new Rename(canvas, current);
 		String newName = (String) JOptionPane
-				.showInputDialog(f, L10N.t("dialog.imageeditor_layer_panel_enter_new_name"), L10N.t("dialog.imageeditor_layer_panel_rename_layer"), JOptionPane.PLAIN_MESSAGE, null, null,
+				.showInputDialog(f, L10N.t("dialog.imageeditor.layer_panel_enter_new_name"), L10N.t("dialog.imageeditor.layer_panel_rename_layer"), JOptionPane.PLAIN_MESSAGE, null, null,
 						current.toString());
 		if (newName != null) {
 			current.setName(newName);
