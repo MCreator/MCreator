@@ -487,7 +487,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		topnbot.setOpaque(false);
 
 		topnbot.add("Center", sbbp22);
-		topnbot.add("South", txblock4);
 
 		JPanel txblock3 = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		txblock3.setOpaque(false);
@@ -592,6 +591,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.is_item_tinted")));
 		tintPanel.add(isItemTinted);
 
+		topnbot.add("South", PanelUtils.northAndCenterElement(tintPanel, txblock4));
+
 		bound.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.bounding_block_title"), 0, 0, getFont().deriveFont(12.0f),
@@ -611,7 +612,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		render.add(rent);
 		render.add(transparencySettings);
-		render.add(tintPanel);
 		render.add(bound);
 		render.add(txblock3);
 
