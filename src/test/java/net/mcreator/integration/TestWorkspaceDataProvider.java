@@ -1285,6 +1285,14 @@ public class TestWorkspaceDataProvider {
 			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "LIT" }[valueIndex];
 			particle.additionalExpiryCondition = new Procedure("condition1");
 			return particle;
+		case GAMERULE:
+			GameRule gamerule = new GameRule(modElement);
+			gamerule.name = modElement.getName();
+			gamerule.description = modElement.getName();
+			gamerule.category = getRandomString(random, Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
+			gamerule.type = new String[] { "Number", "Logic", "Number", "Logic" }[valueIndex];
+			gamerule.defaultValueLogic = _true;
+			gamerule.defaultValueNumber = -45;
 		default:
 			return null;
 		}
