@@ -19,7 +19,10 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
+
+import java.awt.image.BufferedImage;
 
 public class GameRule extends GeneratableElement {
 
@@ -36,4 +39,7 @@ public class GameRule extends GeneratableElement {
 		super(element);
 	}
 
+	@Override public BufferedImage generateModElementPicture() {
+		return MinecraftImageGenerator.Preview.generateGameRulePreviewPicture(type);
+	}
 }
