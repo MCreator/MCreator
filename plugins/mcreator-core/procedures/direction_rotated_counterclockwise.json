@@ -1,0 +1,21 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "direction",
+      "check": "Direction"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Direction",
+  "colour": 20,
+  "mcreator": {
+    "toolbox_init": [
+      "<value name=\"direction\"><block type=\"direction_from_deps\"></block></value>"
+    ],
+    "toolbox_id": "directionactions",
+    "inputs": [
+      "direction"
+    ]
+  }
+}

@@ -70,6 +70,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getRecipeExample(me(workspace, type, "6"), "Stone cutting", random, true));
 			generatableElements.add(getRecipeExample(me(workspace, type, "7"), "Campfire cooking", random, true));
 			generatableElements.add(getRecipeExample(me(workspace, type, "8"), "Smithing", random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "9"), "Brewing", random, true));
 		} else if (type == ModElementType.TOOL) {
 			generatableElements.add(getToolExample(me(workspace, type, "1"), "Pickaxe", random, false, false));
 			generatableElements.add(getToolExample(me(workspace, type, "2"), "Pickaxe", random, true, false));
@@ -1115,11 +1116,12 @@ public class TestWorkspaceDataProvider {
 		case TAG:
 			Tag tag = new Tag(modElement);
 			tag.namespace = getRandomItem(random, new String[] { "forge", "minecraft", "test1", "test2" });
-			tag.type = getRandomItem(random, new String[] { "Items", "Blocks", "Functions" });
+			tag.type = getRandomItem(random, new String[] { "Items", "Blocks", "Entities", "Functions" });
 			tag.name = modElement.getName();
 			tag.items = new ArrayList<>();
 			tag.blocks = new ArrayList<>();
 			tag.functions = new ArrayList<>();
+			tag.entities = new ArrayList<>();
 			if (!emptyLists) {
 				tag.items.add(new MItemBlock(modElement.getWorkspace(),
 						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
@@ -1134,6 +1136,10 @@ public class TestWorkspaceDataProvider {
 						getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
 				tag.functions.add("test1");
 				tag.functions.add("test2");
+				tag.entities.add(new EntityEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace()))));
+				tag.entities.add(new EntityEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace()))));
 			}
 			return tag;
 		case LOOTTABLE:
@@ -1453,6 +1459,15 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
 							.getName());
 			recipe.smithingReturnStack = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+		} else if ("Brewing".equals(recipe.recipeType)) {
+			recipe.brewingInputStack = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+							.getName());
+			recipe.brewingIngredientStack = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
+							.getName());
+			recipe.brewingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 		} else {
 			throw new RuntimeException("Unknown recipe type");
