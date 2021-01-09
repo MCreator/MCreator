@@ -201,9 +201,14 @@ templates:
     variables: "variant= "
     name: "@MODASSETSROOT/blockstates/@registryname.json"
   - template: json/block.json.ftl
-    condition: "blockBase %= Leaves"
+    condition: [ "blockBase %= Leaves", "tintType %= No tint" ]
     writer: json
     variables: "model=cube_all;txname=all"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block.json.ftl
+    condition: [ "blockBase %= Leaves", "isBlockTinted()" ]
+    writer: json
+    variables: "model=leaves;txname=all"
     name: "@MODASSETSROOT/models/block/@registryname.json"
 
   # TX: Pane templates

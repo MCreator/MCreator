@@ -195,6 +195,10 @@ import java.util.Map;
 		return !spawnWorldTypes.isEmpty();
 	}
 
+	public boolean isBlockTinted() {
+		return !"No tint".equals(tintType);
+	}
+
 	@Override public BufferedImage generateModElementPicture() {
 		if (renderType() == 10 && !textureTop.equals("") && !textureFront.equals("") && !textureLeft.equals("")) {
 			return (BufferedImage) MinecraftImageGenerator.Preview
