@@ -57,6 +57,9 @@ import java.util.Map;
 
 	public String blockBase;
 
+	public String tintType;
+	public boolean isItemTinted;
+
 	public boolean hasTransparency;
 	public boolean connectedSides;
 	public String transparencyType;
@@ -161,6 +164,7 @@ import java.util.Map;
 	public Block(ModElement element) {
 		super(element);
 
+		this.tintType = "No tint";
 		this.spawnWorldTypes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
 		this.reactionToPushing = "NORMAL";
@@ -189,6 +193,10 @@ import java.util.Map;
 
 	public boolean isGeneratedInWorld() {
 		return !spawnWorldTypes.isEmpty();
+	}
+
+	public boolean isBlockTinted() {
+		return !"No tint".equals(tintType);
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

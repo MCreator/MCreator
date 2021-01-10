@@ -15,6 +15,11 @@ templates:
     writer: json
     variables: "model=crop;txname=crop"
     name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block.json.ftl
+    condition: "renderType #= 120"
+    writer: json
+    variables: "model=tinted_cross;txname=cross"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block_cmodel.json.ftl
     condition: "renderType #= 2"
     writer: json
@@ -24,8 +29,14 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/plant_double_bottom.json.ftl
-    condition: "plantType %= double"
+    condition: [ "plantType %= double", "tintType %= noTint" ]
     writer: json
+    variables: "model=cross"
+    name: "@MODASSETSROOT/models/block/@registryname_bottom.json"
+  - template: json/plant_double_bottom.json.ftl
+    condition: [ "plantType %= double", "isBlockTinted()" ]
+    writer: json
+    variables: "model=tinted_cross"
     name: "@MODASSETSROOT/models/block/@registryname_bottom.json"
 
   - template: json/block_states.json.ftl
