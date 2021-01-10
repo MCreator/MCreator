@@ -176,10 +176,10 @@ public class MinecraftCommandsTokenMaker extends AbstractJFlexTokenMaker {
 	private static int zzUnpackRowMap(String packed, int offset, int[] result) {
 		int i = 0;  /* index in packed string  */
 		int j = offset;  /* index in unpacked array */
-		int l = packed.length();
+		int l = MinecraftCommandsTokenMaker.ZZ_ROWMAP_PACKED_0.length();
 		while (i < l) {
-			int high = packed.charAt(i++) << 16;
-			result[j++] = high | packed.charAt(i++);
+			int high = MinecraftCommandsTokenMaker.ZZ_ROWMAP_PACKED_0.charAt(i++) << 16;
+			result[j++] = high | MinecraftCommandsTokenMaker.ZZ_ROWMAP_PACKED_0.charAt(i++);
 		}
 		return j;
 	}
@@ -920,7 +920,8 @@ public class MinecraftCommandsTokenMaker extends AbstractJFlexTokenMaker {
 	 *                    occurs.
 	 * @param hyperlink   Whether this token is a hyperlink.
 	 */
-	public void addToken(char[] array, int start, int end, int tokenType, int startOffset, boolean hyperlink) {
+	@Override public void addToken(char[] array, int start, int end, int tokenType, int startOffset,
+			boolean hyperlink) {
 		super.addToken(array, start, end, tokenType, startOffset, hyperlink);
 		zzStartRead = zzMarkedPos;
 	}
@@ -928,7 +929,7 @@ public class MinecraftCommandsTokenMaker extends AbstractJFlexTokenMaker {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String[] getLineCommentStartAndEnd(int languageIndex) {
+	@Override public String[] getLineCommentStartAndEnd(int languageIndex) {
 		return new String[] { "#", null };
 	}
 
@@ -944,7 +945,7 @@ public class MinecraftCommandsTokenMaker extends AbstractJFlexTokenMaker {
 	 * @return The first <code>Token</code> in a linked list representing
 	 * the syntax highlighted text.
 	 */
-	public Token getTokenList(Segment text, int initialTokenType, int startOffset) {
+	@Override public Token getTokenList(Segment text, int initialTokenType, int startOffset) {
 
 		resetTokenList();
 		this.offsetShift = -text.offset + startOffset;
@@ -1064,7 +1065,7 @@ public class MinecraftCommandsTokenMaker extends AbstractJFlexTokenMaker {
 	 *
 	 * @param newState the new lexical state
 	 */
-	public final void yybegin(int newState) {
+	@Override public final void yybegin(int newState) {
 		zzLexicalState = newState;
 	}
 

@@ -274,7 +274,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 
 	}
 
-	public void reloadElements() {
+	@Override public void reloadElements() {
 		int row = elements.getSelectedRow();
 
 		DefaultTableModel model = (DefaultTableModel) elements.getModel();
@@ -292,7 +292,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		}
 	}
 
-	public void refilterElements() {
+	@Override public void refilterElements() {
 		try {
 			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
 		} catch (Exception ignored) {

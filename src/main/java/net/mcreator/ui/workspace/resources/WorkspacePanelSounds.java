@@ -128,13 +128,13 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		}
 	}
 
-	public void reloadElements() {
+	@Override public void reloadElements() {
 		listmodel.removeAllElements();
 		workspacePanel.getMcreator().getWorkspace().getSoundElements().forEach(listmodel::addElement);
 		refilterElements();
 	}
 
-	public void refilterElements() {
+	@Override public void refilterElements() {
 		listmodel.refilter();
 	}
 

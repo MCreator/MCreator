@@ -80,9 +80,9 @@ public class PreferencesDialog extends MCreatorDialog {
 		spne.setLeftComponent(new JScrollPane(sections));
 		spne.setContinuousLayout(true);
 		spne.setUI(new BasicSplitPaneUI() {
-			public BasicSplitPaneDivider createDefaultDivider() {
+			@Override public BasicSplitPaneDivider createDefaultDivider() {
 				return new BasicSplitPaneDivider(this) {
-					public void setBorder(Border b) {
+					@Override public void setBorder(Border b) {
 					}
 
 					@Override public void paint(Graphics g) {
@@ -317,15 +317,21 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private static class LocaleListRenderer extends JLabel implements ListCellRenderer<Locale> {
+
+		private int percent = 0;
+
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Locale> list, Locale value, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 			setForeground(Color.white);
+			setBorder(new EmptyBorder(0, 1, 0, 0));
 
 			ComponentUtils.deriveFont(this, 12);
-			setText(" " + value.getDisplayName());
+			setText(" " + value.getDisplayName(Locale.ROOT));
+
+			percent = L10N.getLocaleSupport(value);
 
 			try {
 				String flagpath = "/flags/" + value.toString().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
@@ -336,6 +342,30 @@ public class PreferencesDialog extends MCreatorDialog {
 
 			return this;
 		}
+
+		@Override public Dimension getPreferredSize() {
+			return new Dimension(super.getPreferredSize().width, super.getPreferredSize().height + 15);
+		}
+
+		@Override protected void paintComponent(Graphics gx) {
+			Graphics2D g = (Graphics2D) gx;
+
+			g.translate(0, -5);
+			super.paintComponent(g);
+			g.translate(0, 5);
+
+			g.setColor(Color.lightGray);
+			g.fillRect(0, getHeight() - 11, getWidth(), 11);
+
+			g.setColor(Color.getHSBColor((float) (1 / 3d - ((100 - percent) / 3d / 100d)), 0.65f, 0.9f));
+			g.fillRect(0, getHeight() - 11, (int) (getWidth() * (percent / 100d)), 11);
+
+			g.setFont(getFont().deriveFont(9f));
+			g.setColor(Color.darkGray);
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.drawString("Coverage: " + percent + "%", 2, getHeight() - 2);
+		}
+
 	}
 
 }

@@ -17,7 +17,7 @@
   "mcreator": {
     "toolbox_id": "blockactions",
     "toolbox_init": [
-      "<value name=\"b\"><block type=\"text\"><field name=\"TEXT\">logs</field></block></value>",
+      "<value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:logs</field></block></value>",
       "<value name=\"a\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
     ],
     "inputs": [

@@ -69,7 +69,7 @@ public class NewClassAction extends BasicAction {
 							String packagenm = "";
 
 							try {
-								String root = actionRegistry.getMCreator().getWorkspace().getGenerator().getSourceRoot()
+								String root = actionRegistry.getMCreator().getGenerator().getSourceRoot()
 										.getCanonicalPath();
 								String pathCan = new File(path).getCanonicalPath();
 								String packagetm = pathCan.replace(root, "").replaceFirst("\\\\", "")

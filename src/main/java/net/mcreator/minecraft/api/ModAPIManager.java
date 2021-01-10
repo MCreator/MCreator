@@ -110,7 +110,7 @@ public class ModAPIManager {
 		for (ModAPI.Implementation api : apis) {
 			if (api.update_files != null) {
 				for (String fileRelative : api.update_files) {
-					File file = new File(workspace.getFolderManager().getWorkspaceFolder(), fileRelative);
+					File file = new File(workspace.getWorkspaceFolder(), fileRelative);
 					if (workspace.getFolderManager().isFileInWorkspace(file)) {
 						if (file.isFile()) {
 							file.delete();

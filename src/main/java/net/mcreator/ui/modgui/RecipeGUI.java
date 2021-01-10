@@ -24,7 +24,6 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.datapack.recipe.*;
@@ -54,20 +53,22 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private StoneCutterRecipeMaker scm;
 	private CampfireCookingRecipeMaker ccm;
 	private SmithingRecipeMaker smcm;
+	private BrewingRecipeMaker brm;
 
 	private final JCheckBox recipeShapeless = L10N.checkbox("elementgui.recipe.is_shapeless");
 
 	private final JSpinner xpReward = new JSpinner(new SpinnerNumberModel(1.0, 0, 256, 1));
 	private final JSpinner cookingTime = new JSpinner(new SpinnerNumberModel(200, 0, 1000000, 1));
 
-	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
+	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod" , "minecraft" });
 
 	private final VComboBox<String> name = new VComboBox<>();
 
 	private final VTextField group = new VTextField();
 
 	private final JComboBox<String> recipeType = new JComboBox<>(
-			new String[] { "Crafting", "Smelting", "Blasting", "Smoking", "Stone cutting", "Campfire cooking", "Smithing" });
+			new String[] { "Crafting" , "Smelting" , "Brewing" , "Blasting" , "Smoking" , "Stone cutting" ,
+					"Campfire cooking" , "Smithing" });
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -86,7 +87,18 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				ElementUtil::loadBlocksAndItems);
 		ccm = new CampfireCookingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
 				ElementUtil::loadBlocksAndItems);
-		smcm = new SmithingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
+		smcm = new SmithingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
+				ElementUtil::loadBlocksAndItems);
+		brm = new BrewingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
+
+		rm.setOpaque(false);
+		fm.setOpaque(false);
+		bm.setOpaque(false);
+		sm.setOpaque(false);
+		scm.setOpaque(false);
+		ccm.setOpaque(false);
+		smcm.setOpaque(false);
+		brm.setOpaque(false);
 
 		name.setValidator(new RegistryNameValidator(name, "Loot table").setValidChars(Arrays.asList('_', '/')));
 		name.enableRealtimeValidation();
@@ -110,12 +122,13 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 		CardLayout recipesPanelLayout = new CardLayout();
 		JPanel recipesPanel = new JPanel(recipesPanelLayout);
+		recipesPanel.setOpaque(false);
 
 		JPanel crafting = new JPanel(new BorderLayout());
 		crafting.setOpaque(false);
 
-		crafting.add("West", rm);
-		crafting.add("North", PanelUtils.join(FlowLayout.LEFT,
+		crafting.add("West" , rm);
+		crafting.add("North" , PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("recipe/shapeless"), recipeShapeless)));
 
 		recipeShapeless.setOpaque(false);
@@ -128,28 +141,19 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipesPanel.add(PanelUtils.totalCenterInPanel(scm), "stone cutting");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(ccm), "campfire cooking");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(smcm), "smithing");
-
-		JPanel centerrecipes = new JPanel(new BorderLayout()) {
-			@Override protected void paintComponent(Graphics g) {
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-				g2d.fillRect(0, 0, getWidth(), getHeight());
-				g2d.dispose();
-				super.paintComponent(g);
-			}
-		};
-		centerrecipes.setOpaque(false);
+		recipesPanel.add(PanelUtils.totalCenterInPanel(brm), "brewing");
 
 		JComponent recwrap = PanelUtils.maxMargin(recipesPanel, 10, true, true, true, true);
 		recwrap.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Recipe parameters", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
-
-		recipesPanel.setOpaque(false);
+				"Recipe parameters" , TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
 
 		JPanel northPanel = new JPanel(new GridLayout(6, 2, 10, 2));
 		northPanel.setOpaque(false);
+
+		northPanel
+				.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/type"), L10N.label("elementgui.recipe.type")));
+		northPanel.add(recipeType);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/registry_name"),
 				L10N.label("elementgui.recipe.registry_name")));
@@ -163,10 +167,6 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				.wrapWithHelpButton(this.withEntry("recipe/group_name"), L10N.label("elementgui.recipe.group")));
 		northPanel.add(group);
 
-		northPanel
-				.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/type"), L10N.label("elementgui.recipe.type")));
-		northPanel.add(recipeType);
-
 		northPanel.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("recipe/xp_reward"), L10N.label("elementgui.recipe.xp_reward")));
 		northPanel.add(xpReward);
@@ -175,12 +175,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				L10N.label("elementgui.recipe.cooking_time")));
 		northPanel.add(cookingTime);
 
-		centerrecipes.add("Center", PanelUtils.centerInPanel(recwrap));
-		centerrecipes.add("North", new JEmptyBox(100, 100));
-
 		pane5.setOpaque(false);
-		pane5.add(
-				PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), centerrecipes, 15, 15));
+		pane5.add(PanelUtils.totalCenterInPanel(
+				PanelUtils.westAndEastElement(PanelUtils.join(FlowLayout.LEFT, northPanel), recwrap, 15, 15)));
 
 		xpReward.setEnabled(false);
 		cookingTime.setEnabled(false);
@@ -188,9 +185,13 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipeType.addActionListener(e -> {
 			if (recipeType.getSelectedItem() != null) {
 				xpReward.setEnabled(!recipeType.getSelectedItem().equals("Crafting") && !recipeType.getSelectedItem()
-						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing"));
+						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing") && !recipeType
+						.getSelectedItem().equals("Brewing"));
 				cookingTime.setEnabled(!recipeType.getSelectedItem().equals("Crafting") && !recipeType.getSelectedItem()
-						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing"));
+						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing") && !recipeType
+						.getSelectedItem().equals("Brewing"));
+
+				group.setEnabled(!recipeType.getSelectedItem().equals("Brewing"));
 
 				if (!isEditingMode() && cookingTime.isEnabled()) {
 					if (recipeType.getSelectedItem().equals("Smelting")) {
@@ -250,6 +251,11 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_smithing_no_ingredient_addition_and_result"));
 			}
+		} else if ("Brewing".equals(recipeType.getSelectedItem())) {
+			if (!brm.cb1.containsItem() || !brm.cb2.containsItem() || !brm.cb3.containsItem()) {
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.recipe.error_brewing_no_input_ingredient_and_result"));
+			}
 		}
 
 		return new AggregatedValidationResult(name, group);
@@ -305,6 +311,10 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			smcm.cb1.setBlock(recipe.smithingInputStack);
 			smcm.cb2.setBlock(recipe.smithingInputAdditionStack);
 			smcm.cb3.setBlock(recipe.smithingReturnStack);
+		} else if ("Brewing".equals(recipe.recipeType)) {
+			brm.cb1.setBlock(recipe.brewingInputStack);
+			brm.cb2.setBlock(recipe.brewingIngredientStack);
+			brm.cb3.setBlock(recipe.brewingReturnStack);
 		}
 	}
 
@@ -351,10 +361,14 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			recipe.campfireCookingReturnStack = ccm.getBlock2();
 			recipe.xpReward = (double) xpReward.getValue();
 			recipe.cookingTime = (int) cookingTime.getValue();
-		} else if ("Smithing".equals(recipe.recipeType)){
+		} else if ("Smithing".equals(recipe.recipeType)) {
 			recipe.smithingInputStack = smcm.cb1.getBlock();
 			recipe.smithingInputAdditionStack = smcm.cb2.getBlock();
 			recipe.smithingReturnStack = smcm.cb3.getBlock();
+		} else if ("Brewing".equals(recipe.recipeType)) {
+			recipe.brewingInputStack = brm.cb1.getBlock();
+			recipe.brewingIngredientStack = brm.cb2.getBlock();
+			recipe.brewingReturnStack = brm.cb3.getBlock();
 		}
 
 		recipe.namespace = (String) namespace.getSelectedItem();

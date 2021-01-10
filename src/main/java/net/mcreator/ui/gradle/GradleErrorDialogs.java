@@ -83,7 +83,7 @@ public class GradleErrorDialogs {
 			int option = JOptionPane.showOptionDialog(whereToShow, msg + appendx, GradleErrorDialogs.MESSAGE_TITLE,
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 			if (option == 0) {
-				ClearAllGradleCachesAction.clearAllGradleCaches(whereToShow, false);
+				ClearAllGradleCachesAction.clearAllGradleCaches(whereToShow, false, false);
 			}
 		}
 	}

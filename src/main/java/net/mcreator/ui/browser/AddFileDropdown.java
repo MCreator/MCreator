@@ -26,12 +26,12 @@ import java.io.File;
 
 class AddFileDropdown extends JPopupMenu {
 
-	AddFileDropdown(ProjectBrowser projectBrowser) {
+	AddFileDropdown(WorkspaceFileBrowser workspaceFileBrowser) {
 		setBorder(BorderFactory.createMatteBorder(0, 2, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 		setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 
 		try {
-			ProjectBrowserFilterTreeNode selected = (ProjectBrowserFilterTreeNode) projectBrowser.tree
+			ProjectBrowserFilterTreeNode selected = (ProjectBrowserFilterTreeNode) workspaceFileBrowser.tree
 					.getLastSelectedPathComponent();
 			if (selected != null) {
 				if (selected.getUserObject() instanceof File) {
@@ -39,38 +39,35 @@ class AddFileDropdown extends JPopupMenu {
 					if (file.isFile())
 						file = file.getParentFile();
 
-					if (projectBrowser.mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
-							.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA) {
+					if (workspaceFileBrowser.mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+							== GeneratorFlavor.BaseLanguage.JAVA) {
 						if (file.isDirectory() && file.getCanonicalPath().startsWith(
-								projectBrowser.mcreator.getWorkspace().getGenerator().getSourceRoot()
-										.getCanonicalPath())) {
-							add(projectBrowser.mcreator.actionRegistry.newClass);
+								workspaceFileBrowser.mcreator.getGenerator().getSourceRoot().getCanonicalPath())) {
+							add(workspaceFileBrowser.mcreator.actionRegistry.newClass);
 							addSeparator();
-							add(projectBrowser.mcreator.actionRegistry.newPackage);
+							add(workspaceFileBrowser.mcreator.actionRegistry.newPackage);
 						} else if (file.isDirectory() && (file.getCanonicalPath().startsWith(
-								projectBrowser.mcreator.getWorkspace().getGenerator().getResourceRoot()
-										.getCanonicalPath()))) {
-							add(projectBrowser.mcreator.actionRegistry.newJson);
-							add(projectBrowser.mcreator.actionRegistry.newImage);
+								workspaceFileBrowser.mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
+							add(workspaceFileBrowser.mcreator.actionRegistry.newJson);
+							add(workspaceFileBrowser.mcreator.actionRegistry.newImage);
 							addSeparator();
-							add(projectBrowser.mcreator.actionRegistry.newFolder);
+							add(workspaceFileBrowser.mcreator.actionRegistry.newFolder);
 						}
 					} else {
-						if (file.isDirectory() && file.getCanonicalPath().startsWith(
-								projectBrowser.mcreator.getWorkspace().getGenerator().getSourceRoot()
-										.getCanonicalPath()) || file.isDirectory() && (file.getCanonicalPath()
-								.startsWith(projectBrowser.mcreator.getWorkspace().getGenerator().getResourceRoot()
-										.getCanonicalPath()))) {
-							add(projectBrowser.mcreator.actionRegistry.newJson);
-							add(projectBrowser.mcreator.actionRegistry.newImage);
+						if (file.isDirectory() && file.getCanonicalPath()
+								.startsWith(workspaceFileBrowser.mcreator.getGenerator().getSourceRoot().getCanonicalPath())
+								|| file.isDirectory() && (file.getCanonicalPath().startsWith(
+								workspaceFileBrowser.mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
+							add(workspaceFileBrowser.mcreator.actionRegistry.newJson);
+							add(workspaceFileBrowser.mcreator.actionRegistry.newImage);
 							addSeparator();
-							add(projectBrowser.mcreator.actionRegistry.newFolder);
+							add(workspaceFileBrowser.mcreator.actionRegistry.newFolder);
 						}
 					}
-				} else if (selected == projectBrowser.sourceCode) {
-					add(projectBrowser.mcreator.actionRegistry.newClass);
+				} else if (selected == workspaceFileBrowser.sourceCode) {
+					add(workspaceFileBrowser.mcreator.actionRegistry.newClass);
 					addSeparator();
-					add(projectBrowser.mcreator.actionRegistry.newPackage);
+					add(workspaceFileBrowser.mcreator.actionRegistry.newPackage);
 				}
 			}
 		} catch (Exception ignored) {

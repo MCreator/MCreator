@@ -53,7 +53,23 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 						.setWaterFogColor(${data.waterFogColor?has_content?then(data.waterFogColor.getRGB(), 329011)})
 						.withSkyColor(${data.airColor?has_content?then(data.airColor.getRGB(), 7972607)})
 						.withFoliageColor(${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)})
-						.withGrassColor(${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)}).build();
+						.withGrassColor(${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)})
+						<#if data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
+						.setAmbientSound((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.ambientSound}")))
+                        </#if>
+						<#if data.moodSound?has_content && data.moodSound.getMappedValue()?has_content>
+                        .setMoodSound(new MoodSoundAmbience((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.moodSound}")), ${data.moodSoundDelay}, 8, 2))
+                        </#if>
+						<#if data.additionsSound?has_content && data.additionsSound.getMappedValue()?has_content>
+                        .setAdditionsSound(new SoundAdditionsAmbience((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.additionsSound}")), 0.0111D))
+                        </#if>
+						<#if data.music?has_content && data.music.getMappedValue()?has_content>
+                        .setMusic(new BackgroundMusicSelector((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")), 12000, 24000, true))
+                        </#if>
+                        <#if data.spawnParticles>
+                        .setParticle(new ParticleEffectAmbience(${data.particleToSpawn}, ${data.particlesProbability / 100}f))
+                        </#if>
+                        .build();
 
 				BiomeGenerationSettings.Builder biomeGenerationSettings = new BiomeGenerationSettings.Builder()
 						.withSurfaceBuilder(SurfaceBuilder.DEFAULT.func_242929_a(
@@ -123,7 +139,9 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#else>
 									.setDecorators(ImmutableList.of(TrunkVineTreeDecorator.field_236879_b_, LeaveVineTreeDecorator.field_236871_b_))
 								</#if>
-							.setMaxWaterDepth(${data.maxWaterDepth})
+								<#if data.treeType == data.TREES_CUSTOM>
+								.setMaxWaterDepth(${data.maxWaterDepth})
+								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -141,7 +159,9 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#else>
 									.setIgnoreVines()
 								</#if>
-							.setMaxWaterDepth(${data.maxWaterDepth})
+								<#if data.treeType == data.TREES_CUSTOM>
+								.setMaxWaterDepth(${data.maxWaterDepth})
+								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -157,7 +177,9 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
 									<@vinesAndCocoa/>
 								</#if>
-							.setMaxWaterDepth(${data.maxWaterDepth})
+								<#if data.treeType == data.TREES_CUSTOM>
+								.setMaxWaterDepth(${data.maxWaterDepth})
+								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -173,7 +195,9 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
 									<@vinesAndCocoa/>
 								</#if>
-							.setMaxWaterDepth(${data.maxWaterDepth})
+								<#if data.treeType == data.TREES_CUSTOM>
+								.setMaxWaterDepth(${data.maxWaterDepth})
+								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -191,7 +215,9 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#else>
 									.setIgnoreVines()
 								</#if>
-							.setMaxWaterDepth(${data.maxWaterDepth})
+								<#if data.treeType == data.TREES_CUSTOM>
+								.setMaxWaterDepth(${data.maxWaterDepth})
+								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -209,7 +235,9 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#else>
 									.setIgnoreVines()
 								</#if>
-							.setMaxWaterDepth(${data.maxWaterDepth})
+								<#if data.treeType == data.TREES_CUSTOM>
+								.setMaxWaterDepth(${data.maxWaterDepth})
+								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))

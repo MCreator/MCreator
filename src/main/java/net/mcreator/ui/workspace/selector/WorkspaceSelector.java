@@ -16,7 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui;
+/*
+ * MCreator (https://mcreator.net/)
+ * Copyright (C) 2020 Pylo and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package net.mcreator.ui.workspace.selector;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,6 +42,7 @@ import net.mcreator.Launcher;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.JEmptyBox;
@@ -35,7 +54,6 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.AbstractMCreatorTheme;
 import net.mcreator.ui.vcs.VCSSetupDialogs;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.ListUtils;
@@ -48,28 +66,31 @@ import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.WorkspaceUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
-public class WorkspaceSelector extends JFrame implements DropTargetListener {
+public final class WorkspaceSelector extends JFrame implements DropTargetListener {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace Selector");
 
 	private final JPanel recentPanel = new JPanel(new GridLayout());
 	private final WorkspaceOpenListener workspaceOpenListener;
-	RecentWorkspaces recentWorkspaces = new RecentWorkspaces();
+	private RecentWorkspaces recentWorkspaces = new RecentWorkspaces();
 
-	WorkspaceSelector(MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
+	public WorkspaceSelector(MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
 
 		reloadTitle();
@@ -180,9 +201,25 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 		});
 		southcenter.add(donate);
 
-		southcenter.add(new JEmptyBox(5, 5));
+		southcenter.add(new JEmptyBox(7, 5));
 
-		JLabel prefs = L10N.label("dialog.workspace_selector.preferences");
+		JLabel prefs = new JLabel(L10N.t("dialog.workspace_selector.preferences")) {
+			@Override protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+
+				try {
+					String flagpath =
+							"/flags/" + L10N.getLocale().toString().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
+					BufferedImage image = ImageIO.read(getClass().getResourceAsStream(flagpath));
+					g.drawImage(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11)), getWidth() - 15, 5, this);
+				} catch (Exception ignored) { // flag not found, ignore
+				}
+			}
+
+			@Override public Dimension getPreferredSize() {
+				return new Dimension(super.getPreferredSize().width + 21, super.getPreferredSize().height);
+			}
+		};
 		prefs.setIcon(UIRES.get("settings"));
 		prefs.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.deriveFont(prefs, 13);
@@ -267,18 +304,19 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 		}
 	}
 
-	public void addRecentWorkspace(RecentWorkspaceEntry recentWorkspaceEntry) {
-		if (!recentWorkspaces.list.contains(recentWorkspaceEntry))
-			recentWorkspaces.list.add(recentWorkspaceEntry);
+	public void addOrUpdateRecentWorkspace(RecentWorkspaceEntry recentWorkspaceEntry) {
+		if (!recentWorkspaces.getList().contains(recentWorkspaceEntry))
+			recentWorkspaces.getList().add(recentWorkspaceEntry);
 		else
-			recentWorkspaces.list
-					.get(recentWorkspaces.list.indexOf(recentWorkspaceEntry)).name = recentWorkspaceEntry.name;
-		ListUtils.rearrange(recentWorkspaces.list, recentWorkspaceEntry);
+			recentWorkspaces.getList().get(recentWorkspaces.getList().indexOf(recentWorkspaceEntry))
+					.update(recentWorkspaceEntry);
+
+		ListUtils.rearrange(recentWorkspaces.getList(), recentWorkspaceEntry);
 		saveRecentWorkspaces();
 	}
 
 	private void removeRecentWorkspace(RecentWorkspaceEntry recentWorkspace) {
-		recentWorkspaces.list.remove(recentWorkspace);
+		recentWorkspaces.getList().remove(recentWorkspace);
 		saveRecentWorkspaces();
 	}
 
@@ -299,7 +337,7 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 								RecentWorkspaces.class);
 				if (recentWorkspaces != null) {
 					List<RecentWorkspaceEntry> recentWorkspacesFiltered = new ArrayList<>();
-					for (RecentWorkspaceEntry recentWorkspaceEntry : recentWorkspaces.list)
+					for (RecentWorkspaceEntry recentWorkspaceEntry : recentWorkspaces.getList())
 						if (recentWorkspaceEntry.getPath().isFile())
 							recentWorkspacesFiltered.add(recentWorkspaceEntry);
 					recentWorkspaces = new RecentWorkspaces(recentWorkspacesFiltered);
@@ -312,9 +350,9 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 
 		recentPanel.removeAll();
 
-		if (recentWorkspaces != null && recentWorkspaces.list.size() > 0) {
+		if (recentWorkspaces != null && recentWorkspaces.getList().size() > 0) {
 			DefaultListModel<RecentWorkspaceEntry> defaultListModel = new DefaultListModel<>();
-			recentWorkspaces.list.forEach(defaultListModel::addElement);
+			recentWorkspaces.getList().forEach(defaultListModel::addElement);
 			JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);
 			recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			recentsList.addMouseListener(new MouseAdapter() {
@@ -436,72 +474,11 @@ public class WorkspaceSelector extends JFrame implements DropTargetListener {
 		add("South", soim);
 	}
 
-	static class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<RecentWorkspaceEntry> {
-		@Override
-		public Component getListCellRendererComponent(JList<? extends RecentWorkspaceEntry> list,
-				RecentWorkspaceEntry value, int index, boolean isSelected, boolean cellHasFocus) {
-			setOpaque(isSelected);
-			setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			setForeground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.MAIN_TINT") :
-					(Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
-			setBorder(BorderFactory.createEmptyBorder(2, 5, 3, 0));
+	@NotNull public RecentWorkspaces getRecentWorkspaces() {
+		if (recentWorkspaces == null)
+			this.recentWorkspaces = new RecentWorkspaces();
 
-			setFont(AbstractMCreatorTheme.light_font.deriveFont(16.0f));
-
-			String path = value.getPath().getParentFile().getAbsolutePath().replace("\\", "/");
-			setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.name, 20)
-					+ "</font><small><br>" + StringUtils.abbreviateStringInverse(path, 37));
-
-			return this;
-		}
-	}
-
-	interface WorkspaceOpenListener {
-		void workspaceOpened(File workspaceFolder);
-	}
-
-	static class RecentWorkspaces {
-		List<RecentWorkspaceEntry> list;
-
-		RecentWorkspaces() {
-			list = new ArrayList<>();
-		}
-
-		RecentWorkspaces(Collection<RecentWorkspaceEntry> recentWorkspacesFiltered) {
-			list = new ArrayList<>(recentWorkspacesFiltered);
-		}
-	}
-
-	public static class RecentWorkspaceEntry {
-
-		private String name;
-		private String path;
-
-		public RecentWorkspaceEntry(String name, File path) {
-			this.name = name;
-			this.path = path.toString();
-		}
-
-		public File getPath() {
-			return new File(path);
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		@Override public int hashCode() {
-			return path.hashCode();
-		}
-
-		@Override public boolean equals(Object obj) {
-			if (obj instanceof RecentWorkspaceEntry) {
-				RecentWorkspaceEntry cmpObj = (RecentWorkspaceEntry) obj;
-				return cmpObj.path.equals(path);
-			}
-			return false;
-		}
+		return recentWorkspaces;
 	}
 
 }

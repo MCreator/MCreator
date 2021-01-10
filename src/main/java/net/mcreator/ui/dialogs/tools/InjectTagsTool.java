@@ -87,6 +87,11 @@ public class InjectTagsTool {
 		callables.add(addTag(mcreator, props, "small_flowers", "minecraft", "Items", false));
 		callables.add(addTag(mcreator, props, "tick", "minecraft", "Functions", false));
 		callables.add(addTag(mcreator, props, "load", "minecraft", "Functions", false));
+		callables.add(addTag(mcreator, props, "arrows", "minecraft", "Entities", false));
+		callables.add(addTag(mcreator, props, "impact_projectiles", "minecraft", "Entities", false));
+		callables.add(addTag(mcreator, props, "beehive_inhabitors", "minecraft", "Entities", false));
+		callables.add(addTag(mcreator, props, "raiders", "minecraft", "Entities", false));
+		callables.add(addTag(mcreator, props, "skeletons", "minecraft", "Entities", false));
 
 		ok.addActionListener(e -> {
 			dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -122,6 +127,9 @@ public class InjectTagsTool {
 		if (type.equals("Functions"))
 			icon.setIcon(new ImageIcon(
 					ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(ModElementType.FUNCTION).getImage(), 32)));
+		if (type.equals("Entities"))
+			icon.setIcon(new ImageIcon(
+					ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(ModElementType.MOB).getImage(), 32)));
 
 		panel.add(PanelUtils.centerAndEastElement(box, icon));
 
@@ -154,6 +162,7 @@ public class InjectTagsTool {
 			tag.blocks = Collections.emptyList();
 			tag.items = Collections.emptyList();
 			tag.functions = Collections.emptyList();
+			tag.entities = Collections.emptyList();
 
 			workspace.getModElementManager().storeModElementPicture(tag);
 			workspace.addModElement(tag.getModElement());
@@ -166,8 +175,7 @@ public class InjectTagsTool {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.tag"),
 				e -> open(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
-				GeneratorConfiguration gc = actionRegistry.getMCreator().getWorkspace().getGenerator()
-						.getGeneratorConfiguration();
+				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
 				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TAG)
 						!= GeneratorStats.CoverageStatus.NONE;
 			}

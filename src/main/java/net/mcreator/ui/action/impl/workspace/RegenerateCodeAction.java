@@ -69,8 +69,7 @@ public class RegenerateCodeAction extends GradleAction {
 
 			// remove all sources of mod elements that are not locked
 			for (ModElement mod : mcreator.getWorkspace().getModElements()) {
-				List<GeneratorTemplate> templates = mcreator.getWorkspace().getGenerator()
-						.getModElementGeneratorTemplatesList(mod);
+				List<GeneratorTemplate> templates = mcreator.getGenerator().getModElementGeneratorTemplatesList(mod);
 				if (templates == null)
 					continue;
 				List<File> modElementFiles = templates.stream().map(GeneratorTemplate::getFile)
@@ -81,21 +80,19 @@ public class RegenerateCodeAction extends GradleAction {
 			}
 
 			// keep base mod files that can be locked if selected so in the workspace settings
-			if (mcreator.getWorkspace().getWorkspaceSettings().isLockBaseModFiles()) {
-				mcreator.getWorkspace().getGenerator().getModBaseGeneratorTemplatesList(false)
-						.forEach(generatorTemplate -> {
-							if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
-									&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
-									.equals("true")) // can this file be locked
-								// are mod base file locked
-								toBePreserved.add(generatorTemplate
-										.getFile()); // we add locked base mod files on the to be preserved list
-						});
+			if (mcreator.getWorkspaceSettings().isLockBaseModFiles()) {
+				mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).forEach(generatorTemplate -> {
+					if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
+							&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
+							.equals("true")) // can this file be locked
+						// are mod base file locked
+						toBePreserved.add(generatorTemplate
+								.getFile()); // we add locked base mod files on the to be preserved list
+				});
 			}
 
 			// delete all non mod element related files from code base package
-			File[] files = FileIO
-					.listFilesRecursively(mcreator.getWorkspace().getGenerator().getGeneratorPackageRoot());
+			File[] files = FileIO.listFilesRecursively(mcreator.getGenerator().getGeneratorPackageRoot());
 			for (File a : files) {
 				if (!FileIO.isFileOnFileList(toBePreserved,
 						a)) // if file is not part of one of the mod elements, it can be removed
@@ -123,7 +120,7 @@ public class RegenerateCodeAction extends GradleAction {
 					hasLockedElements = true;
 				}
 
-				if (!mcreator.getWorkspace().getModElementManager().hasModElementGeneratableElement(mod)) {
+				if (!mcreator.getModElementManager().hasModElementGeneratableElement(mod)) {
 					if (!skipAll) {
 						int opt = JOptionPane.showOptionDialog(mcreator,
 								L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.message",
@@ -146,7 +143,7 @@ public class RegenerateCodeAction extends GradleAction {
 					LOG.debug("Regenerating " + mod.getType().getReadableName() + " mod element: " + mod.getName());
 
 					// generate mod element code
-					List<GeneratorFile> generatedFiles = mcreator.getWorkspace().getGenerator()
+					List<GeneratorFile> generatedFiles = mcreator.getGenerator()
 							.generateElement(generatableElement, false);
 
 					if (!mod.isCodeLocked()) {
@@ -155,7 +152,7 @@ public class RegenerateCodeAction extends GradleAction {
 					}
 
 					// save custom mod element picture if it has one
-					mcreator.getWorkspace().getModElementManager().storeModElementPicture(generatableElement);
+					mcreator.getModElementManager().storeModElementPicture(generatableElement);
 
 					// add mod element to workspace again, so the icons get reloaded
 					mcreator.getWorkspace().addModElement(mod);
@@ -174,8 +171,7 @@ public class RegenerateCodeAction extends GradleAction {
 			}
 
 			// save all updated generatable mod elements
-			generatableElementsToSave.parallelStream()
-					.forEach(mcreator.getWorkspace().getModElementManager()::storeModElement);
+			generatableElementsToSave.parallelStream().forEach(mcreator.getModElementManager()::storeModElement);
 
 			if (warnMissingDefinitions && skippedElements.size() > 0) {
 				skippedElements.forEach(el -> {
@@ -204,12 +200,12 @@ public class RegenerateCodeAction extends GradleAction {
 					L10N.t("dialog.workspace.regenerate_and_build.progress.regenerating_workspace_and_resources"));
 			dial.addProgress(p2);
 
-			mcreator.getWorkspace().getGenerator().runResourceSetupTasks();
-			mcreator.getWorkspace().getGenerator().generateBase(false);
+			mcreator.getGenerator().runResourceSetupTasks();
+			mcreator.getGenerator().generateBase(false);
 			mcreator.mv.updateMods();
 
 			// remove custom API libraries so they get re-downloaded
-			ModAPIManager.deleteAPIs(mcreator.getWorkspace(), mcreator.getWorkspace().getWorkspaceSettings());
+			ModAPIManager.deleteAPIs(mcreator.getWorkspace(), mcreator.getWorkspaceSettings());
 
 			p2.ok();
 			dial.refreshDisplay();
@@ -229,11 +225,11 @@ public class RegenerateCodeAction extends GradleAction {
 					L10N.t("dialog.workspace.regenerate_and_build.progress.clean_up_workspace"));
 			dial.addProgress(p23);
 
-			FileIO.removeEmptyDirs(mcreator.getWorkspace().getGenerator().getSourceRoot());
-			FileIO.removeEmptyDirs(mcreator.getWorkspace().getGenerator().getResourceRoot());
+			FileIO.removeEmptyDirs(mcreator.getGenerator().getSourceRoot());
+			FileIO.removeEmptyDirs(mcreator.getGenerator().getResourceRoot());
 
 			// delete old license file if present
-			new File(mcreator.getWorkspace().getGenerator().getResourceRoot(), "MCreator-README.txt").delete();
+			new File(mcreator.getGenerator().getResourceRoot(), "MCreator-README.txt").delete();
 
 			p23.ok();
 			dial.refreshDisplay();
@@ -244,7 +240,7 @@ public class RegenerateCodeAction extends GradleAction {
 
 			mcreator.getGradleConsole().markRunning(); // so console gets locked while we generate code already
 			try {
-				mcreator.getWorkspace().getGenerator().generateBase();
+				mcreator.getGenerator().generateBase();
 				mcreator.getGradleConsole().exec("build", taskSpecificListener);
 			} catch (Exception e) { // if something fails, we still need to free the gradle console
 				LOG.error(e.getMessage(), e);

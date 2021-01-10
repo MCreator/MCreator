@@ -23,6 +23,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
@@ -49,7 +50,7 @@ import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Workspace implements Closeable {
+public class Workspace implements Closeable, IGeneratorProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace");
 
@@ -70,6 +71,7 @@ public class Workspace implements Closeable {
 	protected transient Generator generator;
 	@Nullable private transient WorkspaceVCS vcs;
 	private transient boolean regenerateRequired = false;
+	private transient boolean failingGradleDependencies = false;
 
 	@NotNull private final transient WorkspaceInfo workspaceInfo;
 
@@ -82,7 +84,7 @@ public class Workspace implements Closeable {
 		this.workspaceInfo = new WorkspaceInfo(this);
 	}
 
-	public WorkspaceSettings getWorkspaceSettings() {
+	@Override public WorkspaceSettings getWorkspaceSettings() {
 		return workspaceSettings;
 	}
 
@@ -280,19 +282,19 @@ public class Workspace implements Closeable {
 		return mcreatorVersion;
 	}
 
-	public WorkspaceFileManager getFileManager() {
+	@Override public WorkspaceFileManager getFileManager() {
 		return fileManager;
 	}
 
-	public WorkspaceFolderManager getFolderManager() {
+	@Override public WorkspaceFolderManager getFolderManager() {
 		return fileManager.getFolderManager();
 	}
 
-	public Generator getGenerator() {
+	@Override public Generator getGenerator() {
 		return generator;
 	}
 
-	public ModElementManager getModElementManager() {
+	@Override public ModElementManager getModElementManager() {
 		return fileManager.getModElementManager();
 	}
 
@@ -345,6 +347,24 @@ public class Workspace implements Closeable {
 		this.fileManager.close(); // first close current workspace file
 		this.fileManager = null; // reset reference
 		this.fileManager = new WorkspaceFileManager(workspaceFile, this); // new file manager instance for the new file
+	}
+
+	public void markFailingGradleDependencies() {
+		this.failingGradleDependencies = true;
+		LOG.error("Detected failing Gradle dependencies. Will try to recover on next build.");
+	}
+
+	public boolean checkFailingGradleDependenciesAndClear() {
+		boolean retval = failingGradleDependencies;
+		if (retval)
+			LOG.warn("Reported failing Gradle dependencies in the workspace");
+
+		this.failingGradleDependencies = false;
+		return retval;
+	}
+
+	@Override public @NotNull Workspace getWorkspace() {
+		return this;
 	}
 
 	public static Workspace readFromFS(File workspaceFile, @Nullable Window ui)

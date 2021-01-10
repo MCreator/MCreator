@@ -127,12 +127,12 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		});
 	}
 
-	public void reloadElements() {
+	@Override public void reloadElements() {
 		List<File> selected = modelList.getSelectedValuesList();
 
 		listmodel.removeAllElements();
-		File[] screenshots = new File(workspacePanel.getMcreator().getWorkspace().getFolderManager().getWorkspaceFolder(),
-				"run/screenshots/").listFiles();
+		File[] screenshots = new File(workspacePanel.getMcreator().getWorkspaceFolder(), "run/screenshots/")
+				.listFiles();
 		if (screenshots != null)
 			Arrays.stream(screenshots).forEach(listmodel::addElement);
 
@@ -141,7 +141,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		refilterElements();
 	}
 
-	public void refilterElements() {
+	@Override public void refilterElements() {
 		listmodel.refilter();
 	}
 

@@ -57,6 +57,9 @@
       "z",
       "power"
     ],
+    "fields": [
+      "mode"
+    ],
     "dependencies": [
       {
         "name": "world",

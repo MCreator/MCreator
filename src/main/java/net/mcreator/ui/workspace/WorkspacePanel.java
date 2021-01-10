@@ -501,8 +501,7 @@ public class WorkspacePanel extends JPanel {
 			bar.setVisible(false);
 		});
 
-		if (mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo().get("variables")
-				!= GeneratorStats.CoverageStatus.NONE)
+		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("variables") != GeneratorStats.CoverageStatus.NONE)
 			rotatablePanel.add(btt3);
 
 		btt6.setContentAreaFilled(false);
@@ -523,8 +522,7 @@ public class WorkspacePanel extends JPanel {
 			bar.setVisible(false);
 		});
 
-		if (mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo().get("i18n")
-				!= GeneratorStats.CoverageStatus.NONE)
+		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("i18n") != GeneratorStats.CoverageStatus.NONE)
 			rotatablePanel.add(btt6);
 
 		btt7.setContentAreaFilled(false);
@@ -620,8 +618,7 @@ public class WorkspacePanel extends JPanel {
 							list.getSelectedValuesList().forEach(re -> {
 								if (!buildNeeded[0]) {
 									GeneratableElement ge = re.getGeneratableElement();
-									if (ge != null && mcreator.getWorkspace().getModElementManager()
-											.usesGeneratableElementJava(ge))
+									if (ge != null && mcreator.getModElementManager().usesGeneratableElementJava(ge))
 										buildNeeded[0] = true;
 								}
 
@@ -805,7 +802,7 @@ public class WorkspacePanel extends JPanel {
 						GeneratableElement generatableElement = mod.getGeneratableElement();
 						if (generatableElement != null) {
 							// generate mod element
-							mcreator.getWorkspace().getGenerator().generateElement(generatableElement);
+							mcreator.getGenerator().generateElement(generatableElement);
 						}
 						i++;
 						p1.setPercent((int) (((float) i / (float) elementsThatGotUnlocked.size()) * 100.0f));
@@ -830,7 +827,7 @@ public class WorkspacePanel extends JPanel {
 	private void duplicateCurrentlySelectedModElement() {
 		if (list.getSelectedValue() != null) {
 			ModElement mu = list.getSelectedValue();
-			if (mcreator.getWorkspace().getModElementManager().hasModElementGeneratableElement(mu)) {
+			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
 				String modName = VOptionPane.showInputDialog(mcreator,
 						"<html><font style=\"font-size: 13px;\">Enter the name of the new mod element:</font><br><small>"
 								+ "This mod element will be the same as " + mu.getName()
@@ -848,8 +845,8 @@ public class WorkspacePanel extends JPanel {
 					if (generatableElementOriginal != null) {
 						ModElement duplicateModElement = new ModElement(mcreator.getWorkspace(), mu, modName);
 
-						GeneratableElement generatableElementDuplicate = mcreator.getWorkspace().getModElementManager()
-								.fromJSONtoGeneratableElement(mcreator.getWorkspace().getModElementManager()
+						GeneratableElement generatableElementDuplicate = mcreator.getModElementManager()
+								.fromJSONtoGeneratableElement(mcreator.getModElementManager()
 										.generatableElementToJSON(generatableElementOriginal), duplicateModElement);
 
 						if (generatableElementDuplicate instanceof NamespacedGeneratableElement) {
@@ -857,15 +854,14 @@ public class WorkspacePanel extends JPanel {
 									.fromCamelCase(modName);
 						}
 
-						mcreator.getWorkspace().getGenerator().generateElement(generatableElementDuplicate);
-						mcreator.getWorkspace().getModElementManager()
-								.storeModElementPicture(generatableElementDuplicate);
-						mcreator.getWorkspace().getModElementManager().storeModElement(generatableElementDuplicate);
+						mcreator.getGenerator().generateElement(generatableElementDuplicate);
+						mcreator.getModElementManager().storeModElementPicture(generatableElementDuplicate);
+						mcreator.getModElementManager().storeModElement(generatableElementDuplicate);
 
 						if (mu.getType() == ModElementType.CODE || mu.isCodeLocked()) {
-							List<GeneratorTemplate> originalFiles = mcreator.getWorkspace().getGenerator()
+							List<GeneratorTemplate> originalFiles = mcreator.getGenerator()
 									.getModElementGeneratorTemplatesList(mu);
-							List<GeneratorTemplate> duplicateFiles = mcreator.getWorkspace().getGenerator()
+							List<GeneratorTemplate> duplicateFiles = mcreator.getGenerator()
 									.getModElementGeneratorTemplatesList(duplicateModElement);
 
 							for (GeneratorTemplate originalTemplate : originalFiles) {
@@ -898,7 +894,7 @@ public class WorkspacePanel extends JPanel {
 	private void editCurrentlySelectedModElement(JComponent component, int x, int y) {
 		if (list.getSelectedValue() != null) {
 			ModElement mu = list.getSelectedValue();
-			if (mcreator.getWorkspace().getModElementManager().hasModElementGeneratableElement(mu)) {
+			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
 				if (mu.isCodeLocked()) {
 					editCurrentlySelectedModElementAsCode(component, x, y);
 				} else {
@@ -924,8 +920,8 @@ public class WorkspacePanel extends JPanel {
 		if (list.getSelectedValue() != null) {
 			ModElement mu = list.getSelectedValue();
 
-			List<File> modElementFiles = mcreator.getWorkspace().getGenerator().getModElementGeneratorTemplatesList(mu)
-					.stream().map(GeneratorTemplate::getFile).collect(Collectors.toList());
+			List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu).stream()
+					.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 
 			if (modElementFiles.size() > 1) {
 				JPopupMenu codeDropdown = new JPopupMenu();
@@ -935,8 +931,7 @@ public class WorkspacePanel extends JPanel {
 				for (File modElementFile : modElementFiles) {
 					JMenuItem item = new JMenuItem(
 							"<html>" + modElementFile.getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
-									.getFolderManager().getWorkspaceFolder().toPath()
-									.relativize(modElementFile.toPath()));
+									.getWorkspaceFolder().toPath().relativize(modElementFile.toPath()));
 					item.setIcon(FileIcons.getIconForFile(modElementFile));
 					item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 					item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
@@ -982,12 +977,12 @@ public class WorkspacePanel extends JPanel {
 	}
 
 	public void reloadElements() {
-		if (mcreator.getWorkspace() != null && mcreator.getWorkspace().getWorkspaceSettings() != null) {
+		if (mcreator.getWorkspace() != null && mcreator.getWorkspaceSettings() != null) {
 			if (mcreator.getWorkspace().getModElements().size() > 0) {
-				elementsCount.setText(L10N.t("workspace.stats.current_workspace",
-						mcreator.getWorkspace().getWorkspaceSettings().getModName(),
-						mcreator.getWorkspace().getGenerator().getGeneratorName(),
-						mcreator.getWorkspace().getModElements().size()));
+				elementsCount.setText(
+						L10N.t("workspace.stats.current_workspace", mcreator.getWorkspaceSettings().getModName(),
+								mcreator.getGenerator().getGeneratorName(),
+								mcreator.getWorkspace().getModElements().size()));
 				mainpcl.show(mainp, "sp");
 
 				// reload list model partially in the background
@@ -1006,13 +1001,12 @@ public class WorkspacePanel extends JPanel {
 					});
 				}).start();
 			} else {
-				elementsCount.setText(
-						L10N.t("workspace.stats.empty", mcreator.getWorkspace().getWorkspaceSettings().getModName(),
-								mcreator.getWorkspace().getGenerator().getGeneratorName()));
+				elementsCount.setText(L10N.t("workspace.stats.empty", mcreator.getWorkspaceSettings().getModName(),
+						mcreator.getGenerator().getGeneratorName()));
 				mainpcl.show(mainp, "ep");
 			}
 
-			if (mcreator.getWorkspace().getWorkspaceSettings().getMCreatorDependencies().contains("mcreator_link")) {
+			if (mcreator.getWorkspaceSettings().getMCreatorDependencies().contains("mcreator_link")) {
 				elementsCount.setIcon(UIRES.get("16px.link"));
 			} else {
 				elementsCount.setIcon(new EmptyIcon(0, 0));

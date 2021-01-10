@@ -51,7 +51,7 @@ public class LoggingOutputStream extends OutputStream {
 		count = 0;
 	}
 
-	public void write(final int b) throws IOException {
+	@Override public void write(final int b) throws IOException {
 		if (hasBeenClosed) {
 			throw new IOException("The stream has been closed.");
 		}
@@ -73,7 +73,7 @@ public class LoggingOutputStream extends OutputStream {
 		count++;
 	}
 
-	public void flush() {
+	@Override public void flush() {
 		if (count == 0) {
 			return;
 		}
@@ -86,7 +86,7 @@ public class LoggingOutputStream extends OutputStream {
 		count = 0;
 	}
 
-	public void close() {
+	@Override public void close() {
 		flush();
 		hasBeenClosed = true;
 	}

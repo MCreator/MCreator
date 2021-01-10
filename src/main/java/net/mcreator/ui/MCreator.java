@@ -28,7 +28,7 @@ import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
-import net.mcreator.ui.browser.ProjectBrowser;
+import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.util.EDTUtils;
 import net.mcreator.ui.component.util.MacOSUIUtil;
@@ -68,7 +68,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 	public WorkspacePanel mv;
 	private final GradleConsole gradleConsole;
 
-	private final ProjectBrowser projectBrowser;
+	private final WorkspaceFileBrowser workspaceFileBrowser;
 
 	public final ActionRegistry actionRegistry;
 
@@ -115,7 +115,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		this.actionRegistry = new ActionRegistry(this);
 		this.statusBar = new StatusBar(this);
 
-		this.projectBrowser = new ProjectBrowser(this);
+		this.workspaceFileBrowser = new WorkspaceFileBrowser(this);
 
 		new MCreatorDropTarget(this);
 
@@ -244,7 +244,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		workspace.getFileManager().setDataSavedListener(() -> statusBar.setPersistentMessage(
 				L10N.t("workspace.statusbar.autosave_message", new SimpleDateFormat("HH:mm").format(new Date()))));
 
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, projectBrowser,
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser,
 				PanelUtils.northAndCenterElement(pon, mpan));
 		splitPane.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		splitPane.setOneTouchExpandable(true);
@@ -252,7 +252,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		splitPane.setDividerLocation(280);
 		splitPane.setDividerLocation(PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos);
 
-		projectBrowser.setMinimumSize(new Dimension(0, 0));
+		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
 
 		add("South", statusBar);
 		add("North", toolBar);
@@ -271,7 +271,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 						Launcher.version.versionlong); // if we open dev version, store new version number in it
 			}
 
-			new Thread(this.projectBrowser::reloadTree).start();
+			new Thread(this.workspaceFileBrowser::reloadTree).start();
 
 			// backup if new version and backups are enabled
 			if (workspace.getMCreatorVersion() < Launcher.version.versionlong
@@ -308,11 +308,11 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		return gradleConsole;
 	}
 
-	public ProjectBrowser getProjectBrowser() {
-		return projectBrowser;
+	public WorkspaceFileBrowser getProjectBrowser() {
+		return workspaceFileBrowser;
 	}
 
-	public Workspace getWorkspace() {
+	@Override public @NotNull Workspace getWorkspace() {
 		return workspace;
 	}
 
@@ -379,7 +379,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 					.updatePresence("Working on " + workspace.getWorkspaceSettings().getModName() + tabAddition,
 							Launcher.version.getMajorString() + " for " + workspace.getGenerator()
 									.getGeneratorMinecraftVersion(),
-							"type-" + workspace.getGenerator().getGeneratorConfiguration().getGeneratorFlavor().name()
+							"type-" + workspace.getGeneratorConfiguration().getGeneratorFlavor().name()
 									.toLowerCase(Locale.ENGLISH));
 		}
 	}
