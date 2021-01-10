@@ -145,4 +145,8 @@ import java.util.Map;
 	@Override public TabEntry getCreativeTab() {
 		return creativeTab;
 	}
+
+	public boolean isBlockTinted() {
+		return !"No tint".equals(tintType);
+	}
 }
