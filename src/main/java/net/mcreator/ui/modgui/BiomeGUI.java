@@ -73,7 +73,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner rainingPossibility = new JSpinner(new SpinnerNumberModel(0.5, 0, 1, 0.1));
 	private final JSpinner baseHeight = new JSpinner(new SpinnerNumberModel(0.1, -10, 10, 0.1));
 	private final JSpinner heightVariation = new JSpinner(new SpinnerNumberModel(0.2, 0, 2, 0.1));
-	private final JSpinner minHeight = new JSpinner(new SpinnerNumberModel(7, 0, 1000, 1));
 	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, -1.0, 2.0, 0.1));
 
 	private final JRadioButton customTrees = L10N.radiobutton("elementgui.biome.custom_trees");
@@ -99,11 +98,12 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private MCItemHolder groundBlock;
 	private MCItemHolder undergroundBlock;
 
+	private final JSpinner minHeight = new JSpinner(new SpinnerNumberModel(7, 0, 1000, 1));
+	private final JSpinner maxWaterDepth = new JSpinner(new SpinnerNumberModel(0, 0, 50, 1));
 	private MCItemHolder treeVines;
 	private MCItemHolder treeStem;
 	private MCItemHolder treeBranch;
 	private MCItemHolder treeFruits;
-	private JSpinner maxWaterDepth = new JSpinner(new SpinnerNumberModel(0, 0, 50, 1));
 
 	private final JColor airColor = new JColor(mcreator, true);
 	private final JColor grassColor = new JColor(mcreator, true);
@@ -522,7 +522,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			treeStem.setEnabled(false);
 			treeBranch.setEnabled(false);
 			treeFruits.setEnabled(false);
-			maxWaterDepth.setEnabled(true);
+			maxWaterDepth.setEnabled(false);
 		}
 	}
 
