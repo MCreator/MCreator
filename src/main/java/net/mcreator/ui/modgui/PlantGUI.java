@@ -26,7 +26,6 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -206,27 +205,19 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK), 32);
 		particleTexture.setOpaque(false);
 
-		JPanel tintPanel = new JPanel(new GridLayout(3, 2, 0, 2));
+		JPanel tintPanel = new JPanel(new GridLayout(1, 2, 0, 2));
 		tintPanel.setOpaque(false);
 		isItemTinted.setOpaque(false);
 		tintPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.plant.plant_tint_and_info"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.plant.plant_info"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		tintPanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/tint_type"), L10N.label("elementgui.common.tint_type")));
-		tintPanel.add(tintType);
-		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
-				L10N.label("elementgui.plant.is_item_tinted")));
-		tintPanel.add(isItemTinted);
-
-		tintPanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/special_information"),
-						L10N.label("elementgui.plant.special_information_tip")));
+		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				L10N.label("elementgui.plant.special_information_tip")));
 		tintPanel.add(specialInfo);
 
-		JPanel rent = new JPanel(new GridLayout(3, 2, 2, 2));
+		JPanel rent = new JPanel(new GridLayout(5, 2, 2, 2));
 		rent.setOpaque(false);
 
 		rent.add(HelpUtils
@@ -241,6 +232,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.particle_texture")));
 		rent.add(PanelUtils.centerInPanel(particleTexture));
 
+		rent.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/tint_type"), L10N.label("elementgui.common.tint_type")));
+		rent.add(tintType);
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
+				L10N.label("elementgui.plant.is_item_tinted")));
+		rent.add(isItemTinted);
+
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
@@ -248,7 +246,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel texturesAndRent = new JPanel(new BorderLayout(50, 0));
 		texturesAndRent.setOpaque(false);
 
-		texturesAndRent.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.gridElements(1, 2, ComponentUtils
+		texturesAndRent.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.gridElements(2, 1, ComponentUtils
 						.squareAndBorder(texture, new Color(125, 255, 174), L10N.t("elementgui.plant.texture_place_top_main")),
 				ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom")))));
 		texturesAndRent.add("East", rent);
