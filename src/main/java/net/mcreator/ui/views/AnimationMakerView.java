@@ -408,7 +408,7 @@ public class AnimationMakerView extends ViewBase {
 		JPanel od = new JPanel(new BorderLayout());
 		JPanel centerPanel = new JPanel(new GridLayout(3, 2, 4, 4));
 
-		JLabel lab1 = L10N.label("dialog.animation_maker.template_cplor_choice");
+		JLabel lab1 = L10N.label("dialog.animation_maker.template_color_choice");
 		JLabel lab2 = L10N.label("dialog.animation_maker.template");
 		JLabel lab3 = L10N.label("dialog.animation_maker.color");
 		JLabel lab4 = L10N.label("dialog.animation_maker.saturation_lightness_lock");

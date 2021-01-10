@@ -47,7 +47,9 @@ public class SplashScreen extends JWindow {
 		pylo.setBounds(540 - 15 - 10, 348 - 15 - 10, 90, 24);
 		imagePanel.add(pylo);
 
-		JLabel label = L10N.label("dialog.splash_screen.credits");
+		JLabel label = new JLabel(
+				"<html><p>MCreator is a Minecraft mod making toolkit developed by Pylo. Minecraft is a registered</p>"
+						+ "<p style='margin-top:-2'>trademark of Mojang AB. MCreator is not an official Minecraft product. It is not approved<br>by or associated with Mojang AB.");
 		label.setFont(splashFont.deriveFont(10f));
 		label.setForeground(Color.white);
 		label.setBounds(30 + 10 - 4, 330 - 10 - 10, 500, 45);
@@ -65,7 +67,7 @@ public class SplashScreen extends JWindow {
 		imagePanel.add(version);
 
 		if (Launcher.version != null && Launcher.version.isSnapshot()) {
-			JLabel snpashot = L10N.label("dialog.splash_screen.snapshot_warning");
+			JLabel snpashot = new JLabel("Snapshot - not for production use!");
 			snpashot.setFont(splashFont.deriveFont(14f));
 			snpashot.setForeground(new Color(255, 92, 82));
 			snpashot.setBounds(30 + 10 - 4, 165, 500, 45);

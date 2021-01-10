@@ -365,7 +365,7 @@ public class WYSIWYGEditor extends JPanel {
 			});
 
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, pon));
-		adds2.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.gui.wh"), spa1, new JLabel("x"), spa2));
+		adds2.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.gui.width_height"), spa1, new JLabel("x"), spa2));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.gui.inventory_offset"), invOffX, invOffY));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, renderBgLayer));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, doesPauseGame));

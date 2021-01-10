@@ -371,7 +371,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			String locale = new_locale_id.split(":")[1].trim();
 
 			String based_from_id = (String) JOptionPane.showInputDialog(workspacePanel.getMcreator(),
-					L10N.t("workspace.localization.language_copy="),
+					L10N.t("workspace.localization.language_copy"),
 					L10N.t("workspace.localization.add_localization"), JOptionPane.QUESTION_MESSAGE, null, language_map.keySet().toArray(),
 					"en_us");
 			if (based_from_id != null) {

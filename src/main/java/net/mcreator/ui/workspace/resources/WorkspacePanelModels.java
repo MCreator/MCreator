@@ -193,7 +193,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 
 				ProgressDialog dial = new ProgressDialog(workspacePanel.getMcreator(), L10N.t("workspace.3dmodels.regenerating_code"));
 				Thread t = new Thread(() -> {
-					ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit("Regenerating code of entities");
+					ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(L10N.t("workspace.3dmodels.regenerating_entity_code"));
 					dial.addProgress(p0);
 
 					AtomicInteger i = new AtomicInteger();

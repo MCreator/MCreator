@@ -236,10 +236,9 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 			String rightText;
 
 			if (ma.getSubtitle() != null && !ma.getSubtitle().isEmpty()) {
-				rightText = L10N.t("workspace.sounds.subtitles") + ma.getSubtitle() +
-						L10N.t("workspace.sounds.category_2") + ma.getCategory();
+				rightText = L10N.t("workspace.sounds.subtitle_and_category", ma.getSubtitle(), ma.getCategory());
 			} else {
-				rightText = L10N.t("workspace.sounds.category") + ma.getCategory();
+				rightText = L10N.t("workspace.sounds.category", ma.getCategory());
 			}
 
 			JLabel rightTextLabel = new JLabel(rightText);

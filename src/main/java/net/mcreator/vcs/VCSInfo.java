@@ -71,7 +71,7 @@ public class VCSInfo {
 			JPasswordField passwordFiled = new JPasswordField(25);
 			JCheckBox remember = L10N.checkbox("dialog.vcs.info_remember_password");
 			JPanel panel = new JPanel(new GridLayout(3, 1, 5, 5));
-			panel.add(L10N.label("dialog.vcs.info_enter_password"));
+			panel.add(L10N.label("dialog.vcs.info_enter_password", username));
 			panel.add(passwordFiled);
 			panel.add(remember);
 			JOptionPane.showMessageDialog(parent, panel, L10N.t("dialog.vcs.info_account_authentication"), JOptionPane.QUESTION_MESSAGE);
