@@ -190,7 +190,7 @@ public class AnimationMakerView extends ViewBase {
 
 		controls.addSeparator();
 
-		JButton next = new JButton("Next frame");
+		JButton next = L10N.button("dialog.animation_maker.next_frame");
 		next.addActionListener(event -> {
 			animindex++;
 			if (animindex >= timelinevector.getSize())
@@ -201,7 +201,7 @@ public class AnimationMakerView extends ViewBase {
 		next.setIcon(UIRES.get("16px.fwd"));
 		controls.add(next);
 
-		JButton prev = new JButton("Previous frame");
+		JButton prev = L10N.button("dialog.animation_maker.previous_frame");
 		prev.addActionListener(event -> {
 			animindex--;
 			if (animindex < 0)
@@ -216,12 +216,12 @@ public class AnimationMakerView extends ViewBase {
 		timelinee.setOpaque(false);
 		timelinee.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				"Animation timeline", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("dialog.animation_maker.animation_timeline"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JToolBar timelinebar = new JToolBar();
 		timelinebar.setFloatable(false);
-		JButton add = new JButton("Add frame(s) ...");
+		JButton add = L10N.button("dialog.animation_maker.add_frames");
 		add.addActionListener(event -> {
 			File[] frames = FileDialogs.getMultiOpenDialog(fra, new String[] { ".png" });
 			if (frames != null) {
@@ -237,17 +237,17 @@ public class AnimationMakerView extends ViewBase {
 		add.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add);
 
-		JButton add3 = new JButton("Add frames from template ...");
+		JButton add3 = L10N.button("dialog.animation_maker.add_frames_from_template");
 		add3.addActionListener(event -> addFramesFromTemplate());
 		add3.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add3);
 
-		JButton add4 = new JButton("Add frames from animation strip ...");
+		JButton add4 = L10N.button("dialog.animation_maker.add_frames_from_strip");
 		add4.addActionListener(event -> addFramesFromStrip());
 		add4.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add4);
 
-		JButton add2 = new JButton("Add frames from GIF ...");
+		JButton add2 = L10N.button("dialog.animation_maker.add_frames_from_gif");
 		add2.addActionListener(event -> {
 			File frame = FileDialogs.getOpenDialog(fra, new String[] { ".gif" });
 			if (frame != null) {
@@ -261,7 +261,7 @@ public class AnimationMakerView extends ViewBase {
 							p1.ok();
 						else {
 							p1.err();
-							dial.setTopInfoText("Compressed GIF format is not supported!");
+							dial.setTopInfoText(L10N.t("dialog.animation_maker.gif_format_unsupported"));
 							Thread.sleep(3500);
 							dial.hideAll();
 							return;
@@ -292,7 +292,7 @@ public class AnimationMakerView extends ViewBase {
 		add2.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add2);
 
-		JButton remove = new JButton("Remove selected frames");
+		JButton remove = L10N.button("dialog.animation_maker.remove_selected_frames");
 		remove.addActionListener(event -> {
 			if (timeline.getSelectedValue() != null)
 				timeline.getSelectedValuesList().forEach(timelinevector::removeElement);
@@ -321,7 +321,7 @@ public class AnimationMakerView extends ViewBase {
 
 		editor.add("South", timelinee);
 
-		JButton save = new JButton("Save this animated texture");
+		JButton save = L10N.button("dialog.animation_maker.save_animated_texture");
 		save.setMargin(new Insets(1, 40, 1, 40));
 		save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -336,12 +336,13 @@ public class AnimationMakerView extends ViewBase {
 
 	protected void use() {
 		Object[] options = { "Block", "Item", "Other" };
-		int n = JOptionPane.showOptionDialog(mcreator, "What kind of texture is this?", "Texture type",
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.animation_maker.kind_of_texture"),
+				L10N.t("dialog.animation_maker.type_of_texture"), JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (n < 0)
 			return;
 
-		String namec = JOptionPane.showInputDialog("Enter name of texture (without spaces): ");
+		String namec = JOptionPane.showInputDialog(L10N.t("dialog.animation_maker.enter_texture_name"));
 		if (namec != null) {
 			File exportFile;
 			namec = RegistryNameFixer.fix(namec);
@@ -354,13 +355,14 @@ public class AnimationMakerView extends ViewBase {
 
 			if (exportFile.isFile()) {
 				JOptionPane
-						.showMessageDialog(mcreator, options[n] + " with this name already exists!", "Resource error",
-								JOptionPane.ERROR_MESSAGE);
+						.showMessageDialog(mcreator, L10N.t("dialog.animation_maker.texture_already_exists", options[n]),
+								L10N.t("dialog.animation_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
 			} else {
 				Object[] possibilities = { "4 x 4", "8 x 8", "16 x 16", "32 x 32", "64 x 64", "128 x 128", "256 x 256",
 						"512 x 512" };
 				String s = (String) JOptionPane
-						.showInputDialog(mcreator, "Select the size of the animation:", "Size selection",
+						.showInputDialog(mcreator, L10N.t("dialog.animation_maker.animation_size"),
+								L10N.t("dialog.animation_maker.size_selection"),
 								JOptionPane.PLAIN_MESSAGE, null, possibilities, "16 x 16");
 				int sizetwocubes = 16;
 				if (s != null) {
@@ -451,7 +453,7 @@ public class AnimationMakerView extends ViewBase {
 		centerPanel.add(lab4);
 		centerPanel.add(cbox);
 
-		if (JOptionPane.showOptionDialog(mcreator, od, "Add frames from template", JOptionPane.YES_NO_CANCEL_OPTION,
+		if (JOptionPane.showOptionDialog(mcreator, od, L10N.t("dialog.animation_maker.add_frame_from_template"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" }, "Add") == 0) {
 			try {
 				BufferedImage imge = TiledImageUtils
@@ -536,7 +538,7 @@ public class AnimationMakerView extends ViewBase {
 		centerPanel.add(lab5);
 		centerPanel.add(cbox2);
 
-		if (JOptionPane.showOptionDialog(mcreator, od, "Add frames from file", JOptionPane.YES_NO_CANCEL_OPTION,
+		if (JOptionPane.showOptionDialog(mcreator, od, L10N.t("dialog.animation_maker.add_frames_from_file"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" }, "Add") == 0) {
 			try {
 				BufferedImage imge = TiledImageUtils.convert(ImageIO.read(f.get()), BufferedImage.TYPE_INT_ARGB);
