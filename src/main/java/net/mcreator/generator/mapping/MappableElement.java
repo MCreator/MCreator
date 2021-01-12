@@ -58,7 +58,8 @@ public abstract class MappableElement {
 	public String getMappedValueOrFallbackToUnmapped() {
 		try {
 			String retval = mapper.getMapping(value);
-			if (retval.contains("@") || retval.contains(NameMapper.UNKNOWN_ELEMENT)) // we failed to map some of the values
+			if (retval.contains("@") || retval
+					.contains(NameMapper.UNKNOWN_ELEMENT)) // we failed to map some of the values
 				return value;
 			else
 				return retval;
@@ -69,7 +70,8 @@ public abstract class MappableElement {
 
 	public boolean canProperlyMap() {
 		String mapped = mapper.getMapping(value);
-		return !mapped.contains("@") && !mapped.contains(NameMapper.UNKNOWN_ELEMENT); // if there are still @tokens, we failed to map some of the values
+		return !mapped.contains("@") && !mapped.contains(
+				NameMapper.UNKNOWN_ELEMENT); // if there are still @tokens, we failed to map some of the values
 	}
 
 	@Override public int hashCode() {

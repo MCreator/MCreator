@@ -39,9 +39,9 @@ public class DimensionListField extends JItemListField<String> {
 	@Override protected List<String> getElementsToAdd() {
 		JList<String> vlist = new JList<>(ElementUtil.loadAllDimensions(frame.getWorkspace()));
 		int option = JOptionPane.showOptionDialog(frame, PanelUtils
-						.northAndCenterElement(L10N.label("dialog.list_field.dimension_message"),
-								new JScrollPane(vlist)), L10N.t("dialog.list_field.dimension_title"), JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, null, null);
+						.northAndCenterElement(L10N.label("dialog.list_field.dimension_message"), new JScrollPane(vlist)),
+				L10N.t("dialog.list_field.dimension_title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+				null, null, null);
 
 		if (option == JOptionPane.OK_OPTION && vlist.getSelectedValue() != null) {
 			return vlist.getSelectedValuesList();
