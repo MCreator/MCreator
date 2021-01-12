@@ -24,6 +24,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import java.util.Collections;
@@ -43,8 +44,8 @@ public class EnchantmentListField extends JItemListField<Enchantment> {
 				ElementUtil.loadAllEnchantments(mcreator.getWorkspace()).stream().map(DataListEntry::getName)
 						.toArray(String[]::new));
 		int option = JOptionPane.showOptionDialog(mcreator, PanelUtils
-						.northAndCenterElement(new JLabel("Select enchantments you would like to add to the list:"),
-								new JScrollPane(vlist)), "Select enchantments", JOptionPane.OK_CANCEL_OPTION,
+						.northAndCenterElement(L10N.label("dialog.list_field.enchantment_message"),
+								new JScrollPane(vlist)), L10N.t("dialog.list_field.enchantment_title"), JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, null, null);
 
 		if (option == JOptionPane.OK_OPTION && vlist.getSelectedValue() != null) {

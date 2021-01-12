@@ -57,6 +57,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		<#if data.hasInventory>
 		FMLJavaModLoadingContext.get().getModEventBus().register(new TileEntityRegisterHandler());
 		</#if>
+		<#if data.tintType != "No tint">
+			FMLJavaModLoadingContext.get().getModEventBus().register(new BlockColorRegisterHandler());
+			<#if data.isItemTinted>
+			FMLJavaModLoadingContext.get().getModEventBus().register(new ItemColorRegisterHandler());
+			</#if>
+		</#if>
 	}
 
 	@Override public void initElements() {
@@ -90,6 +96,39 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
 		RenderTypeLookup.setRenderLayer(block, RenderType.getCutout());
 	}
+	</#if>
+
+	<#if data.tintType != "No tint">
+	private static class BlockColorRegisterHandler {
+		@OnlyIn(Dist.CLIENT) @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
+			event.getBlockColors().register((bs, world, pos, index) -> {
+				return world != null && pos != null ?
+				<#if data.tintType == "Grass">
+					BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
+				<#elseif data.tintType == "Foliage">
+					BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
+				<#else>
+					BiomeColors.getWaterColor(world, pos) : -1;
+				</#if>
+			}, block);
+		}
+	}
+
+		<#if data.isItemTinted>
+		private static class ItemColorRegisterHandler {
+			@OnlyIn(Dist.CLIENT) @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
+				event.getItemColors().register((stack, index) -> {
+					<#if data.tintType == "Grass">
+						return GrassColors.get(0.5D, 1.0D);
+					<#elseif data.tintType == "Foliage">
+						return FoliageColors.getDefault();
+					<#else>
+						return 3694022;
+					</#if>
+				}, block);
+			}
+		}
+		</#if>
 	</#if>
 
 	public static class CustomBlock extends

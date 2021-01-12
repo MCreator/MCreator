@@ -129,6 +129,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox isNotColidable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
 
+	private final JComboBox<String> tintType = new JComboBox<>(new String[] { "No tint", "Grass", "Foliage", "Water" });
+	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
+
 	private final JCheckBox hasTransparency = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox connectedSides = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
@@ -482,7 +485,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		topnbot.setOpaque(false);
 
 		topnbot.add("Center", sbbp22);
-		topnbot.add("South", txblock4);
 
 		JPanel txblock3 = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		txblock3.setOpaque(false);
@@ -504,6 +506,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComponentUtils.deriveFont(transparencyType, 16);
 		ComponentUtils.deriveFont(blockBase, 16);
+		ComponentUtils.deriveFont(tintType, 16);
 
 		JPanel transparencySettings = new JPanel(new GridLayout(4, 2, 0, 2));
 		transparencySettings.setOpaque(false);
@@ -576,6 +579,19 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.bounding_block_max_z")));
 		bound.add(Mz);
 
+		JPanel tintPanel = new JPanel(new GridLayout(2, 2, 0, 2));
+		tintPanel.setOpaque(false);
+		isItemTinted.setOpaque(false);
+
+		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tint_type"),
+				L10N.label("elementgui.common.tint_type")));
+		tintPanel.add(tintType);
+		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
+				L10N.label("elementgui.block.is_item_tinted")));
+		tintPanel.add(isItemTinted);
+
+		topnbot.add("South", PanelUtils.northAndCenterElement(tintPanel, txblock4));
+
 		bound.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.bounding_block_title"), 0, 0, getFont().deriveFont(12.0f),
@@ -584,10 +600,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.render_type"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
 		transparencySettings.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.transparency"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		tintPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.block.block_tint"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		render.add(rent);
@@ -1289,6 +1308,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		lightOpacity.setValue(block.lightOpacity);
 		material.setSelectedItem(block.material.getUnmappedValue());
 		transparencyType.setSelectedItem(block.transparencyType);
+		tintType.setSelectedItem(block.tintType);
+		isItemTinted.setSelected(block.isItemTinted);
 
 		if (block.blockBase == null) {
 			blockBase.setSelectedIndex(0);
@@ -1350,6 +1371,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.connectedSides = connectedSides.isSelected();
 		block.displayFluidOverlay = displayFluidOverlay.isSelected();
 		block.transparencyType = (String) transparencyType.getSelectedItem();
+		block.tintType = (String) tintType.getSelectedItem();
+		block.isItemTinted = isItemTinted.isSelected();
 		block.mx = (double) mx.getValue();
 		block.my = (double) my.getValue();
 		block.mz = (double) mz.getValue();
@@ -1468,9 +1491,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		else if (model.getType() == Model.Type.OBJ)
 			block.renderType = 3;
 		else if (model.equals(singleTexture))
-			block.renderType = 11;
+			block.renderType = "No tint".equals(tintType.getSelectedItem()) ? 11 : 110;
 		else if (model.equals(cross))
-			block.renderType = 12;
+			block.renderType = "No tint".equals(tintType.getSelectedItem()) ? 12 : 120;
 		else if (model.equals(crop))
 			block.renderType = 13;
 		block.customModelName = model.getReadableName();

@@ -4,7 +4,7 @@ templates:
 
   # Block item templates
   - template: json/block_item.json.ftl
-    condition: "renderType() #?= 10,11,12,2"
+    condition: "renderType() #?= 10,11,12,110,120,2"
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/block_item_cmodel.json.ftl
@@ -35,6 +35,16 @@ templates:
     condition: "renderType() #= 13"
     writer: json
     variables: "model=crop;txname=crop"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block.json.ftl
+    condition: "renderType() #= 110"
+    writer: json
+    variables: "model=leaves;txname=all"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block.json.ftl
+    condition: "renderType() #= 120"
+    writer: json
+    variables: "model=tinted_cross;txname=cross"
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block_cmodel.json.ftl
     condition: "renderType() #= 2"
@@ -191,9 +201,14 @@ templates:
     variables: "variant= "
     name: "@MODASSETSROOT/blockstates/@registryname.json"
   - template: json/block.json.ftl
-    condition: "blockBase %= Leaves"
+    condition: [ "blockBase %= Leaves", "tintType %= No tint" ]
     writer: json
     variables: "model=cube_all;txname=all"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block.json.ftl
+    condition: [ "blockBase %= Leaves", "isBlockTinted()" ]
+    writer: json
+    variables: "model=leaves;txname=all"
     name: "@MODASSETSROOT/models/block/@registryname.json"
 
   # TX: Pane templates
