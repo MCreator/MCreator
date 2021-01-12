@@ -1,6 +1,6 @@
 <#-- @formatter:off -->
 (new Object(){
-	public int extractEnergySimulate(BlockPos pos, int _amount) {
+	public int extractEnergySimulate(IWorld world, BlockPos pos, int _amount) {
 		AtomicInteger _retval = new AtomicInteger(0);
 		TileEntity _ent = world.getTileEntity(pos);
 		if (_ent != null)
@@ -8,5 +8,5 @@
 				_retval.set(capability.extractEnergy(_amount, true)));
 		return _retval.get();
 	}
-}.extractEnergySimulate(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
+}.extractEnergySimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
 <#-- @formatter:on -->

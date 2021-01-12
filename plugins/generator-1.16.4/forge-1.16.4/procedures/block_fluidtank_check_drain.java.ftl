@@ -1,6 +1,6 @@
 <#-- @formatter:off -->
 (new Object(){
-	public int drainTankSimulate(BlockPos pos, int amount) {
+	public int drainTankSimulate(IWorld world, BlockPos pos, int amount) {
 		AtomicInteger _retval = new AtomicInteger(0);
 		TileEntity _ent = world.getTileEntity(pos);
 		if (_ent != null)
@@ -8,5 +8,5 @@
 				_retval.set(capability.drain(amount, IFluidHandler.FluidAction.SIMULATE).getAmount()));
 		return _retval.get();
 	}
-}.drainTankSimulate(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
+}.drainTankSimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
 <#-- @formatter:on -->
