@@ -453,7 +453,7 @@ public class AnimationMakerView extends ViewBase {
 		centerPanel.add(lab4);
 		centerPanel.add(cbox);
 
-		if (JOptionPane.showOptionDialog(mcreator, od, L10N.t("dialog.animation_maker.add_frame_from_template"), JOptionPane.YES_NO_CANCEL_OPTION,
+		if (JOptionPane.showOptionDialog(mcreator, od, L10N.t("dialog.animation_maker.add_frames_from_template"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" }, "Add") == 0) {
 			try {
 				BufferedImage imge = TiledImageUtils
