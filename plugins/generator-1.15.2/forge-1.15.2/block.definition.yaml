@@ -36,6 +36,10 @@ templates:
     writer: json
     variables: "model=crop;txname=crop"
     name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block_grass_model.json.ftl
+    condition: "renderType() #= 14"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block.json.ftl
     condition: "renderType() #= 110"
     writer: json

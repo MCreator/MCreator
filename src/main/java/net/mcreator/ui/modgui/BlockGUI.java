@@ -201,6 +201,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final Model singleTexture = new Model.BuiltInModel("Single texture");
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
+	private final Model grassBlock = new Model.BuiltInModel("Grass block");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
 
 	private final JComboBox<String> transparencyType = new JComboBox<>(
@@ -1089,9 +1090,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		renderType.addActionListener(e -> {
 			Model selected = renderType.getSelectedItem();
 			if (selected != null) {
-				if (!selected.equals(normal) && !selected.equals(singleTexture)) {
+				if (!selected.equals(normal) && !selected.equals(singleTexture) && !selected.equals(grassBlock)) {
 					hasTransparency.setSelected(true);
 					lightOpacity.setValue(0);
+				}
+				if (selected.equals(grassBlock)) {
+					transparencyType.setSelectedItem("CUTOUT_MIPPED");
 				}
 			}
 		});
@@ -1159,6 +1163,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 			textureFront.setVisible(true);
 			textureRight.setVisible(true);
 			textureBack.setVisible(true);
+		} else if (grassBlock.equals(renderType.getSelectedItem())) {
+			texture.setVisible(true);
+			textureTop.setVisible(true);
+			textureLeft.setVisible(true);
+			textureFront.setVisible(true);
 		} else if ("Pane".equals(blockBase.getSelectedItem()) || "Door".equals(blockBase.getSelectedItem())) {
 			textureTop.setVisible(true);
 			texture.setVisible(true);
@@ -1202,7 +1211,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		generateCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils
-				.merge(Arrays.asList(normal, singleTexture, cross, crop),
+				.merge(Arrays.asList(normal, singleTexture, cross, crop, grassBlock),
 						Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 								.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 								.collect(Collectors.toList())));
@@ -1496,6 +1505,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			block.renderType = "No tint".equals(tintType.getSelectedItem()) ? 12 : 120;
 		else if (model.equals(crop))
 			block.renderType = 13;
+		else if (model.equals(grassBlock))
+			block.renderType = 14;
 		block.customModelName = model.getReadableName();
 
 		return block;
