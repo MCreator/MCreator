@@ -1,0 +1,1 @@
+If condition is specified, this button can only be displayed in case the condition is passed.

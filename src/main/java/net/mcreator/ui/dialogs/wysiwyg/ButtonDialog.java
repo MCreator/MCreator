@@ -75,6 +75,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 			ok.setText(L10N.t("dialog.common.save_changes"));
 			nameField.setText(button.name);
 			eh.setSelectedProcedure(button.onClick);
+			displayCondition.setSelectedProcedure(button.displayCondition);
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));
@@ -88,12 +89,12 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(
 							new Button(text, editor.editor.newlyAddedComponentPosX,
 									editor.editor.newlyAddedComponentPosY, text, editor.editor.ow, editor.editor.oh,
-									eh.getSelectedProcedure())));
+									eh.getSelectedProcedure(), displayCondition.getSelectedProcedure())));
 				} else {
 					int idx = editor.components.indexOf(button);
 					editor.components.remove(button);
 					Button buttonNew = new Button(text, button.getX(), button.getY(), text, button.width, button.height,
-							eh.getSelectedProcedure());
+							eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
 					editor.components.add(idx, buttonNew);
 					setEditingComponent(buttonNew);
 				}
