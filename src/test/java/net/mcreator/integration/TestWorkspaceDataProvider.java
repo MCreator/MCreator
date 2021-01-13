@@ -464,7 +464,8 @@ public class TestWorkspaceDataProvider {
 				components.add(new Image("picture2", 22, 31, "picture2", false, new Procedure("condition2")));
 				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure1"), null));
 				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null));
-				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("procedure2")));
+				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
+				components.add(new Button("button4", 10, 10, "button4", 100, 200, new Procedure("procedure2"), new Procedure("condition4")));
 				components.add(new InputSlot(0, "slot1", 20, 30, Color.red, _true, _true, new Procedure("procedure3"),
 						new Procedure("procedure1"), new Procedure("procedure2"),
 						new MItemBlock(modElement.getWorkspace(), "")));
