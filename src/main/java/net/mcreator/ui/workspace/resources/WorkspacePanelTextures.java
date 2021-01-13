@@ -187,9 +187,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			if (files.size() > 0) {
 				Object[] options = { "Yes", "No" };
 				int n = JOptionPane.showOptionDialog(workspacePanel.getMcreator(),
-						"<html>Are you sure that you want to delete this file?"
-								+ "<br>NOTE: If you use this file anywhere, you might have broken textures!",
-						"Confirmation", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
+						L10N.t("workspace.textures.confirm_deletion_message"),
+						L10N.t("workspace.textures.confirm_deletion_title"),
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
 						options[1]);
 
 				if (n == 0) {
@@ -229,7 +229,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		File file = listGroup.getSelectedItem();
 		if (file != null) {
 			TextureImportDialogs.importTextureGeneral(workspacePanel.getMcreator(), file,
-					"Select the type of texture you would like to duplicate into:");
+					L10N.t("workspace.textures.select_dupplicate_type"));
 		}
 	}
 

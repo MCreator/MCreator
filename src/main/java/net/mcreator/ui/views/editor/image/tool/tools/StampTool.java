@@ -24,6 +24,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
 import net.mcreator.ui.dialogs.TextureSelectorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
@@ -63,7 +64,8 @@ public class StampTool extends AbstractModificationTool {
 
 	public StampTool(Canvas canvas, ColorSelector colorSelector, LayerPanel layerPanel, VersionManager versionManager,
 			MCreator window) {
-		super("Stamp", "A tool for applying textures from templates", UIRES.get("img_editor.stamp"), canvas,
+		super(L10N.t("dialog.imageeditor.stamp_tool_name"),
+				L10N.t("dialog.imageeditor.stamp_tool_description"), UIRES.get("img_editor.stamp"), canvas,
 				colorSelector, versionManager);
 		setLayerPanel(layerPanel);
 
@@ -96,19 +98,20 @@ public class StampTool extends AbstractModificationTool {
 		JSlidingSpinner saturationSlider = new JSlidingSpinner("Saturation:");
 		saturationSlider.addChangeListener(e -> saturation = saturationSlider.getValue() / 100.0);
 
-		colorize = new JCheckBox("Colorize");
-		colorType = new JCheckBox("Lock saturation and brightness");
+		colorize = L10N.checkbox("dialog.imageeditor.stamp_tool_colorize");
+		colorType = L10N.checkbox("dialog.imageeditor.stamp_tool_lock_saturation_brightness");
 		colorize.addActionListener(e -> colorType.setEnabled(colorize.isSelected()));
 		colorize.setSelected(false);
 		colorType.setEnabled(false);
 
-		aliasing = new JCheckBox("Smooth resizing");
-		connect = new JCheckBox("Connect points");
+		aliasing = L10N.checkbox("dialog.imageeditor.stamp_tool_smooth_resizing");
+		connect = L10N.checkbox("dialog.imageeditor.stamp_tool_connect_points");
 		connect.setSelected(true);
 
 		settingsPanel.add(opacitySlider);
-		settingsPanel.add(PanelUtils
-				.westAndCenterElement(new JLabel("Base texture:"), PanelUtils.centerInPanel(templateChooserButton)));
+		settingsPanel.add(PanelUtils.westAndCenterElement(
+				L10N.label("dialog.imageeditor.stamp_tool_base_texture"),
+				PanelUtils.centerInPanel(templateChooserButton)));
 		settingsPanel.add(width);
 		settingsPanel.add(height);
 		settingsPanel.add(saturationSlider);
