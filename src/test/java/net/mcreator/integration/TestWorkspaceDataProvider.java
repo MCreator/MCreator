@@ -217,7 +217,7 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			biome.moodSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			biome.moodSoundDelay = new int[] {1, 266, 479, 393}[valueIndex];
+			biome.moodSoundDelay = new int[] { 1, 266, 479, 393 }[valueIndex];
 			biome.additionsSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			biome.music = new Sound(modElement.getWorkspace(),
@@ -238,6 +238,7 @@ public class TestWorkspaceDataProvider {
 			biome.cactiPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 9;
 			biome.rainingPossibility = 3.5;
 			biome.baseHeight = -0.3;
+			biome.maxWaterDepth = 4;
 			biome.heightVariation = 0.7;
 			biome.temperature = 4.0;
 			biome.spawnShipwreck = _true;
@@ -844,8 +845,12 @@ public class TestWorkspaceDataProvider {
 			plant.onBlockPlacedBy = new Procedure("procedure9");
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
 			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
-			plant.renderType = 12;
-			plant.customModelName = "Cross model";
+			plant.tintType = getRandomString(random, Arrays.asList("No tint", "Grass", "Foliage", "Water"));
+			plant.renderType = new int[] { 13, !"No tint".equals(plant.tintType) ? 120 : 12, 13,
+					!"No tint".equals(plant.tintType) ? 120 : 12 }[valueIndex];
+			plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
+					"Cross model" }[valueIndex];
+			plant.isItemTinted = _true;
 			return plant;
 		case ITEM:
 			Item item = new Item(modElement);
@@ -1105,9 +1110,12 @@ public class TestWorkspaceDataProvider {
 			} else {
 				block.specialInfo = new ArrayList<>();
 			}
-			block.renderType = new int[] { 10, 11, 12, 11 }[valueIndex];
+			block.tintType = getRandomString(random, Arrays.asList("No tint", "Grass", "Foliage", "Water"));
+			block.isItemTinted = _true;
+			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
+					10 }[valueIndex];
 			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",
-					"Single texture" }[valueIndex];
+					"Normal" }[valueIndex];
 			return block;
 		case TAG:
 			Tag tag = new Tag(modElement);
@@ -1285,6 +1293,14 @@ public class TestWorkspaceDataProvider {
 			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "LIT" }[valueIndex];
 			particle.additionalExpiryCondition = new Procedure("condition1");
 			return particle;
+		case GAMERULE:
+			GameRule gamerule = new GameRule(modElement);
+			gamerule.name = modElement.getName();
+			gamerule.description = modElement.getName();
+			gamerule.category = getRandomString(random, Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
+			gamerule.type = new String[] { "Number", "Logic", "Number", "Logic" }[valueIndex];
+			gamerule.defaultValueLogic = _true;
+			gamerule.defaultValueNumber = -45;
 		default:
 			return null;
 		}

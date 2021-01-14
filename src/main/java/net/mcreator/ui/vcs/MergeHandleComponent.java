@@ -19,6 +19,7 @@
 package net.mcreator.ui.vcs;
 
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.vcs.FileSyncHandle;
 import net.mcreator.vcs.diff.MergeHandle;
 import net.mcreator.vcs.diff.ResultSide;
@@ -37,17 +38,16 @@ class MergeHandleComponent extends JPanel {
 	MergeHandleComponent(List<MergeHandleComponent> mergeHandleComponents, MergeHandle<?> mergeHandle) {
 		super(new BorderLayout(40, 2));
 		setMinimumSize(new Dimension(400, 10));
-
-		local = new JRadioButton("<html>Accept mine<br><small>Local, " + mergeHandle.getLocalChange().name()
+		local = L10N.radiobutton("dialog.vcs.merge_handle_accept_mine", mergeHandle.getLocalChange().name()
 				.toLowerCase(Locale.ENGLISH));
-		remote = new JRadioButton("<html>Accept theirs<br><small>Remote, " + mergeHandle.getLocalChange().name()
+		remote = L10N.radiobutton("dialog.vcs.merge_handle_accept_theirs", mergeHandle.getLocalChange().name()
 				.toLowerCase(Locale.ENGLISH));
 
 		if (mergeHandle.getLocal() instanceof FileSyncHandle) {
 			add("Center",
 					PanelUtils.centerInPanel(new JLabel(((FileSyncHandle) mergeHandle.getLocal()).getLocalPath())));
 		} else if (mergeHandle.getLocal() instanceof WorkspaceSettings) {
-			add("Center", PanelUtils.centerInPanel(new JLabel("Workspace Settings")));
+			add("Center", PanelUtils.centerInPanel(L10N.label("dialog.vcs.merge_handle_workspace_settings")));
 		} else {
 			add("Center", PanelUtils.centerInPanel(new JLabel(mergeHandle.getLocal().toString())));
 		}

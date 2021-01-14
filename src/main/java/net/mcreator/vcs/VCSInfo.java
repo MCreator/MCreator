@@ -21,6 +21,7 @@ package net.mcreator.vcs;
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.PasswordVault;
+import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
@@ -68,12 +69,12 @@ public class VCSInfo {
 	public String getPassword(File workspaceFolder, Window parent) {
 		if (password == null) {
 			JPasswordField passwordFiled = new JPasswordField(25);
-			JCheckBox remember = new JCheckBox("Remember password (stored in a local store)");
+			JCheckBox remember = L10N.checkbox("dialog.vcs.info_remember_password");
 			JPanel panel = new JPanel(new GridLayout(3, 1, 5, 5));
-			panel.add(new JLabel("<html>Enter the password for your Git account <b>" + username + "</b>:"));
+			panel.add(L10N.label("dialog.vcs.info_enter_password", username));
 			panel.add(passwordFiled);
 			panel.add(remember);
-			JOptionPane.showMessageDialog(parent, panel, "Git account authentication", JOptionPane.QUESTION_MESSAGE);
+			JOptionPane.showMessageDialog(parent, panel, L10N.t("dialog.vcs.info_account_authentication"), JOptionPane.QUESTION_MESSAGE);
 			if (remember.isSelected()) {
 				this.password = new String(passwordFiled.getPassword());
 				try {

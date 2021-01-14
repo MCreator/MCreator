@@ -52,7 +52,7 @@ public class HSVNoiseDialog extends MCreatorDialog {
 		textField.setText(generateSeed());
 		randomize.addActionListener(e -> textField.setText(generateSeed()));
 
-		seedControls.add(new JLabel("Seed:"));
+		seedControls.add(L10N.label("dialog.imageeditor.noise_seed"));
 		seedControls.add(textField);
 		seedControls.add(new JLabel(""));
 		seedControls.add(randomize);

@@ -115,7 +115,8 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		modelList.getSelectedValuesList().forEach(
 				f -> FileIO.copyFile(f, new File(UserFolderManager.getFileFromUserFolder("backgrounds"), f.getName())));
 		JOptionPane.showMessageDialog(workspacePanel.getMcreator(),
-				"Selected screenshots will be used as potential background on the next launch.", "Action complete",
+				L10N.t("workspace.screenshots.use_background_message"),
+				L10N.t("workspace.screenshots.action_complete"),
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 

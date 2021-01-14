@@ -124,8 +124,8 @@ import java.util.Locale;
 			mod = MinecraftImageGenerator.Preview
 					.generateSmithingPreviewPicture(getModElement().getWorkspace(), smithingInputStack,
 							smithingInputAdditionStack, smithingReturnStack);
-		} else if ("Brewing".equals(recipeType) && !brewingInputStack.isEmpty()
-				&& !brewingIngredientStack.isEmpty() && !brewingReturnStack.isEmpty()) {
+		} else if ("Brewing".equals(recipeType) && !brewingInputStack.isEmpty() && !brewingIngredientStack.isEmpty()
+				&& !brewingReturnStack.isEmpty()) {
 			mod = MinecraftImageGenerator.Preview
 					.generateBrewingPreviewPicture(getModElement().getWorkspace(), brewingInputStack,
 							brewingIngredientStack, brewingReturnStack);

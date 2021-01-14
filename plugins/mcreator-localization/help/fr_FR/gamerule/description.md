@@ -1,0 +1,1 @@
+C'est la description de la GameRule. Elle est utilisée pour l'écran de configuration des GameRules.

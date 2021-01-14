@@ -1103,5 +1103,37 @@ public class MinecraftImageGenerator {
 				return null;
 			}
 		}
+
+		/**
+		 * This method generates game rule images.
+		 *
+		 * @param type Game rule type string.
+		 * @return Returns generated image.
+		 */
+		public static BufferedImage generateGameRulePreviewPicture(String type) {
+			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2D = icon.createGraphics();
+
+			Color textureColor;
+
+			switch (type) {
+			case "Number":
+				textureColor = new Color(0x606999);
+				break;
+			case "Logic":
+				textureColor = new Color(0x607c99);
+				break;
+			default:
+				textureColor = Color.WHITE;
+				break;
+			}
+
+			graphics2D.drawImage(
+					ImageUtils.colorize(UIRES.get("mod_preview_bases.gamerule_base"), textureColor, false).getImage(),
+					0, 0, null);
+
+			graphics2D.dispose();
+			return icon;
+		}
 	}
 }

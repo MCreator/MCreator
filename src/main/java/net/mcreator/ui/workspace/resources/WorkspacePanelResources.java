@@ -64,8 +64,8 @@ public class WorkspacePanelResources extends JTabbedPane {
 			addTab(L10N.t("workspace.resources.tab.structures"), workspacePanelStructures);
 
 		if (workspacePanel.getMcreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null
-				&& !workspacePanel.getMcreator().getGeneratorConfiguration()
-				.getGradleTaskFor("run_client").contains("@"))
+				&& !workspacePanel.getMcreator().getGeneratorConfiguration().getGradleTaskFor("run_client")
+				.contains("@"))
 			addTab(L10N.t("workspace.resources.tab.screenshots"), workspacePanelScreenshots);
 
 		for (int i = 0; i < getTabCount(); i++) {
