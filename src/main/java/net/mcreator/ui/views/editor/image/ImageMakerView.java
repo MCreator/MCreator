@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.dialogs.imageeditor.FromTemplateDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
@@ -87,7 +88,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		JPanel leftControls = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel rightControls = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-		save = new JButton("Save this texture");
+		save = L10N.button("dialog.image_maker.save");
 		save.setMargin(new Insets(1, 40, 1, 40));
 		save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -96,13 +97,13 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		imageInfo.setForeground(((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")).darker());
 		imageInfo.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
-		JButton saveNew = new JButton("Save as a new texture");
+		JButton saveNew = L10N.button("dialog.image_maker.save_as_new");
 		saveNew.setMargin(new Insets(1, 40, 1, 40));
 		saveNew.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		saveNew.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 		saveNew.setFocusPainted(false);
 
-		JButton template = new JButton("Generate from template");
+		JButton template = L10N.button("dialog.image_maker.generate_from_template");
 		template.setMargin(new Insets(1, 40, 1, 40));
 		template.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		template.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
@@ -206,14 +207,14 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	public void saveAs() {
 		Image image = canvasRenderer.render();
 		Object[] options = { "Block", "Item", "Other" };
-		int n = JOptionPane.showOptionDialog(mcreator, "What kind of texture is this?", "Texture type",
+		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.image_maker.texture_kind"), L10N.t("dialog.image_maker.texture_type"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		String namec = VOptionPane
-				.showInputDialog(mcreator, "Enter name of texture (without spaces): ", "Image name", null,
+				.showInputDialog(mcreator, L10N.t("dialog.image_maker.enter_name"), L10N.t("dialog.image_maker.image_name"), null,
 						new OptionPaneValidatior() {
 
 							@Override public ValidationResult validate(JComponent component) {
-								return new RegistryNameValidator((VTextField) component, "Texture name").validate();
+								return new RegistryNameValidator((VTextField) component, L10N.t("dialog.image_maker.texture_name")).validate();
 							}
 						});
 		if (namec != null) {
@@ -228,8 +229,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				return;
 
 			if (exportFile.isFile())
-				JOptionPane.showMessageDialog(mcreator, "Texture of this type with this name already exists!",
-						"Resource error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.image_maker.texture_type_name_exists"),
+						L10N.t("dialog.image_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
 			else
 				FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), exportFile);
 			this.image = exportFile;

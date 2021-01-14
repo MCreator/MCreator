@@ -156,9 +156,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 			if (model != null) {
 				Object[] options = { "Yes", "No" };
 				int n = JOptionPane.showOptionDialog(workspacePanel.getMcreator(),
-						"<html>Are you sure that you want to delete this model?"
-								+ "<br>NOTE: If you use this model anywhere, you might have broken textures<br>"
-								+ "and some mod elements might not compile!", "Confirmation",
+						L10N.t("workspace.3dmodels.delete_confirm_message"), L10N.t("workspace.3dmodels.delete_confirm_title"),
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
 				if (n == 0) {
@@ -193,9 +191,9 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 			if (code != null) {
 				FileIO.writeStringToFile(code, file);
 
-				ProgressDialog dial = new ProgressDialog(workspacePanel.getMcreator(), "Regenerating code");
+				ProgressDialog dial = new ProgressDialog(workspacePanel.getMcreator(), L10N.t("workspace.3dmodels.regenerating_code"));
 				Thread t = new Thread(() -> {
-					ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit("Regenerating code of entities");
+					ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(L10N.t("workspace.3dmodels.regenerating_entity_code"));
 					dial.addProgress(p0);
 
 					AtomicInteger i = new AtomicInteger();
@@ -230,8 +228,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 				dial.setVisible(true);
 			}
 		} else {
-			JOptionPane.showMessageDialog(workspacePanel.getMcreator(), "This model does not support animations!",
-					"Animations not supported", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(workspacePanel.getMcreator(), L10N.t("workspace.3dmodels.animation_unsupported_message"),
+					L10N.t("workspace.3dmodels.animation_unsupported_title"), JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
@@ -247,8 +245,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 						model.getFile().getName() + ".textures"));
 			}
 		} else {
-			JOptionPane.showMessageDialog(workspacePanel.getMcreator(), "This model does not support texture mappings!",
-					"No mapping", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(workspacePanel.getMcreator(), L10N.t("workspace.3dmodels.mappings_unsupported_message"),
+					L10N.t("workspace.3dmodels.mappings_unsupported_title"), JOptionPane.WARNING_MESSAGE);
 		}
 	}
 

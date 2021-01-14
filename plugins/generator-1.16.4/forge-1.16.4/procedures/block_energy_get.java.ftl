@@ -1,6 +1,6 @@
 <#-- @formatter:off -->
 (new Object(){
-	public int getEnergyStored(BlockPos pos) {
+	public int getEnergyStored(IWorld world, BlockPos pos) {
 		AtomicInteger _retval = new AtomicInteger(0);
 		TileEntity _ent = world.getTileEntity(pos);
 		if (_ent != null)
@@ -8,5 +8,5 @@
 				_retval.set(capability.getEnergyStored()));
 		return _retval.get();
 	}
-}.getEnergyStored(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+}.getEnergyStored(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
 <#-- @formatter:on -->

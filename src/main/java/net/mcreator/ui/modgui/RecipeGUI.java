@@ -60,15 +60,15 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private final JSpinner xpReward = new JSpinner(new SpinnerNumberModel(1.0, 0, 256, 1));
 	private final JSpinner cookingTime = new JSpinner(new SpinnerNumberModel(200, 0, 1000000, 1));
 
-	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod" , "minecraft" });
+	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
 
 	private final VComboBox<String> name = new VComboBox<>();
 
 	private final VTextField group = new VTextField();
 
 	private final JComboBox<String> recipeType = new JComboBox<>(
-			new String[] { "Crafting" , "Smelting" , "Brewing" , "Blasting" , "Smoking" , "Stone cutting" ,
-					"Campfire cooking" , "Smithing" });
+			new String[] { "Crafting", "Smelting", "Brewing", "Blasting", "Smoking", "Stone cutting",
+					"Campfire cooking", "Smithing" });
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -127,8 +127,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		JPanel crafting = new JPanel(new BorderLayout());
 		crafting.setOpaque(false);
 
-		crafting.add("West" , rm);
-		crafting.add("North" , PanelUtils.join(FlowLayout.LEFT,
+		crafting.add("West", rm);
+		crafting.add("North", PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("recipe/shapeless"), recipeShapeless)));
 
 		recipeShapeless.setOpaque(false);
@@ -146,7 +146,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		JComponent recwrap = PanelUtils.maxMargin(recipesPanel, 10, true, true, true, true);
 		recwrap.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Recipe parameters" , TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
+				"Recipe parameters", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
 
 		JPanel northPanel = new JPanel(new GridLayout(6, 2, 10, 2));
 		northPanel.setOpaque(false);
