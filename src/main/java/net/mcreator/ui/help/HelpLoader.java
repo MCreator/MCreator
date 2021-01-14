@@ -88,19 +88,18 @@ public class HelpLoader {
 				if (getFromCache(helpContext.getEntry()) != null) {
 					helpString.append(renderer.render(parser.parse(getFromCache(helpContext.getEntry()))));
 				} else {
-					helpString.append(L10N.t("help.loader.no_help_entry")).append(helpContext.getEntry()).append("</tt>")
-							.append(L10N.t("help.loader.yet")).append("<br>");
+					helpString.append(L10N.t("help.loader.no_help_entry",helpContext.getEntry(), "</tt> yet.<br>"));
 				}
 
 				if (uri != null && helpContext.getContextName() != null) {
-					helpString.append(L10N.t("help.loader.learn_about")).append(uri.toString()).append("\">")
-							.append(helpContext.getContextName()).append("</a>").append(L10N.t("help.loader.wiki"));
+					helpString.append(L10N.t("help.loader.learn_about", uri.toString(), "\">", helpContext.getContextName(),
+							"</a> on MCreator's wiki."));
 				}
 
 				return helpString.toString();
 			} else if (uri != null && helpContext.getContextName() != null) {
-				return L10N.t("help.loader.no_entry_learn") + uri.toString() + "\">"
-						+ helpContext.getContextName() + "</a>" + L10N.t("help.loader.wiki");
+				return L10N.t("help.loader.no_entry_learn", uri.toString(), "\">", helpContext.getContextName(),
+						"</a> on MCreator's wiki.");
 			}
 		}
 
