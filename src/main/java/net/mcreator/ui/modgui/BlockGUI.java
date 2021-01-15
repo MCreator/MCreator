@@ -1094,7 +1094,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					hasTransparency.setSelected(true);
 					lightOpacity.setValue(0);
 				}
-				if (selected.equals(grassBlock)) {
+				if (!isEditingMode() && selected.equals(grassBlock)) {
 					transparencyType.setSelectedItem("CUTOUT_MIPPED");
 				}
 			}

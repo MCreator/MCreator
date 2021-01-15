@@ -1113,7 +1113,7 @@ public class TestWorkspaceDataProvider {
 			block.tintType = getRandomString(random, Arrays.asList("No tint", "Grass", "Foliage", "Water"));
 			block.isItemTinted = _true;
 			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
-					10 }[valueIndex];
+					14 }[valueIndex];
 			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",
 					"Grass block" }[valueIndex];
 			return block;
