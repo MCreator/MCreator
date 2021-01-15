@@ -51,7 +51,7 @@
     }
   ],
   "inputsInline": true,
-  "output": "Logic",
+  "output": "Boolean",
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
     "toolbox_id": "blockactions",
