@@ -1,0 +1,78 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "x",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "y",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "z",
+      "check": "Number"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "type",
+      "options": [
+        [
+          "Plains",
+          "Plains"
+        ],
+        [
+          "Desert",
+          "Desert"
+        ],
+        [
+          "Beach",
+          "Beach"
+        ],
+        [
+          "Cave",
+          "Cave"
+        ],
+        [
+          "Water",
+          "Water"
+        ],
+        [
+          "Nether",
+          "Nether"
+        ],
+        [
+          "Crop",
+          "Crop"
+        ]
+      ]
+    }
+  ],
+  "inputsInline": true,
+  "output": "Logic",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "blockactions",
+    "toolbox_init": [
+      "<value name=\"x\"><block type=\"coord_x\"></block></value>",
+      "<value name=\"y\"><block type=\"coord_y\"></block></value>",
+      "<value name=\"z\"><block type=\"coord_z\"></block></value>"
+    ],
+    "inputs": [
+      "x",
+      "y",
+      "z"
+    ],
+    "fields": [
+      "type"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}
