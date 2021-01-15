@@ -20,9 +20,9 @@ package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.minecraft.DataListEntry;
-import net.mcreator.ui.component.JItemListField;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 
@@ -40,12 +40,13 @@ public class EntityListField extends JItemListField<EntityEntry> {
 	}
 
 	@Override protected List<EntityEntry> getElementsToAdd() {
-		JList<String> vlist = new JList<>(ElementUtil.loadAllEntities(mcreator.getWorkspace()).stream()
-				.map(DataListEntry::getName).toArray(String[]::new));
+		JList<String> vlist = new JList<>(
+				ElementUtil.loadAllEntities(mcreator.getWorkspace()).stream().map(DataListEntry::getName)
+						.toArray(String[]::new));
 		int option = JOptionPane.showOptionDialog(mcreator, PanelUtils
-						.northAndCenterElement(L10N.label("dialog.list_field.entity_message"),
-								new JScrollPane(vlist)), L10N.t("dialog.list_field.entity_title"), JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, null, null);
+						.northAndCenterElement(L10N.label("dialog.list_field.entity_message"), new JScrollPane(vlist)),
+				L10N.t("dialog.list_field.entity_title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+				null, null);
 
 		if (option == JOptionPane.OK_OPTION && vlist.getSelectedValue() != null) {
 			return vlist.getSelectedValuesList().stream().map(e -> new EntityEntry(mcreator.getWorkspace(), e))

@@ -584,8 +584,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		tintPanel.setOpaque(false);
 		isItemTinted.setOpaque(false);
 
-		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tint_type"),
-				L10N.label("elementgui.common.tint_type")));
+		tintPanel.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/tint_type"), L10N.label("elementgui.common.tint_type")));
 		tintPanel.add(tintType);
 		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
 				L10N.label("elementgui.block.is_item_tinted")));

@@ -413,8 +413,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp5.add(L10N.label("elementgui.biome.minimal_height"));
 		sbbp5.add(minHeight);
 
-		sbbp5.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/max_water_depth"), L10N.label("elementgui.biome.max_water_depth")));
+		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/max_water_depth"),
+				L10N.label("elementgui.biome.max_water_depth")));
 		sbbp5.add(maxWaterDepth);
 
 		sbbp5.add(HelpUtils
@@ -473,13 +473,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		pane1.setOpaque(false);
 
-
 		JPanel effectsPane = new JPanel(new BorderLayout());
 
 		JPanel sounds = new JPanel(new GridLayout(5, 2, 0, 2));
 
-		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/music"),
-				L10N.label("elementgui.biome.music")));
+		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/music"), L10N.label("elementgui.biome.music")));
 		sounds.add(music);
 
 		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ambient_sound"),
@@ -490,8 +488,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.additions_sound")));
 		sounds.add(additionsSound);
 
-		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mood_sound"),
-				L10N.label("elementgui.biome.mood_sound")));
+		sounds.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("biome/mood_sound"), L10N.label("elementgui.biome.mood_sound")));
 		sounds.add(moodSound);
 
 		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mood_sound_delay"),
@@ -530,7 +528,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnParticle.addActionListener(event -> updateParticleParameters());
 
 		effectsPane.setOpaque(false);
-		effectsPane.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(sounds, PanelUtils.pullElementUp(particles))));
+		effectsPane.add("Center", PanelUtils
+				.totalCenterInPanel(PanelUtils.westAndEastElement(sounds, PanelUtils.pullElementUp(particles))));
 
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(groundBlock);
@@ -596,11 +595,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		}
 	}
 
-	private void updateParticleParameters(){
-		if(spawnParticle.isSelected()){
+	private void updateParticleParameters() {
+		if (spawnParticle.isSelected()) {
 			particleToSpawn.setEnabled(true);
 			particlesProbability.setEnabled(true);
-		}else {
+		} else {
 			particleToSpawn.setEnabled(false);
 			particlesProbability.setEnabled(false);
 		}
