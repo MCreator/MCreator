@@ -1115,7 +1115,7 @@ public class TestWorkspaceDataProvider {
 			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
 					10 }[valueIndex];
 			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",
-					"Normal" }[valueIndex];
+					"Grass block" }[valueIndex];
 			return block;
 		case TAG:
 			Tag tag = new Tag(modElement);
