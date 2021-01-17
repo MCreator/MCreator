@@ -88,20 +88,20 @@ public class HelpLoader {
 				if (getFromCache(helpContext.getEntry()) != null) {
 					helpString.append(renderer.render(parser.parse(getFromCache(helpContext.getEntry()))));
 				} else {
-					helpString.append(L10N.t("help.loader.no_help_entry",helpContext.getEntry()));
+					helpString.append(L10N.t("help_loader.no_help_entry", helpContext.getEntry()));
 				}
 
 				if (uri != null && helpContext.getContextName() != null) {
-					helpString.append(L10N.t("help.loader.learn_about", uri.toString(), helpContext.getContextName()));
+					helpString.append(L10N.t("help_loader.learn_about", uri.toString(), helpContext.getContextName()));
 				}
 
 				return helpString.toString();
 			} else if (uri != null && helpContext.getContextName() != null) {
-				return L10N.t("help.loader.no_entry_learn", uri.toString(), helpContext.getContextName());
+				return L10N.t("help_loader.no_entry_learn_more", uri.toString(), helpContext.getContextName());
 			}
 		}
 
-		return L10N.t("help.loader.no_help_found");
+		return L10N.t("help_loader.no_help_found");
 	}
 
 }
