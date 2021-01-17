@@ -81,8 +81,8 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 	public void noSettings(boolean no) {
 		((BorderLayout) propertiesPanel.getLayout()).getLayoutComponent(BorderLayout.CENTER);
 		if (no)
-			propertiesPanel
-					.add(PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor_tool.use_canvas")), BorderLayout.CENTER);
+			propertiesPanel.add(PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor_tool.use_canvas")),
+					BorderLayout.CENTER);
 		else
 			propertiesPanel.add(PanelUtils.pullElementUp(settingsPanel), BorderLayout.CENTER);
 

@@ -606,9 +606,10 @@ public class WorkspacePanel extends JPanel {
 					if (list.getSelectedValue() != null) {
 						Object[] options = { "Yes", "No" };
 						int n = JOptionPane.showOptionDialog(mcreator,
-								L10N.t("workspace.elements.confirm_delete_message", list.getSelectedValuesList().size()),
-								L10N.t("workspace.elements.confirm_delete_title"), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-								options, options[1]);
+								L10N.t("workspace.elements.confirm_delete_message",
+										list.getSelectedValuesList().size()),
+								L10N.t("workspace.elements.confirm_delete_title"), JOptionPane.YES_NO_CANCEL_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
 						if (n == 0) {
 							final boolean[] buildNeeded = { false };
@@ -753,10 +754,9 @@ public class WorkspacePanel extends JPanel {
 
 	private void lockCode() {
 		Object[] options = { "Lock/unlock the code", "Cancel" };
-		int n = JOptionPane.showOptionDialog(mcreator,
-				L10N.t("workspace.elements.lock_modelement_message"),
-				L10N.t("workspace.elements.lock_modelement_confirm"), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
-				options, options[1]);
+		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("workspace.elements.lock_modelement_message"),
+				L10N.t("workspace.elements.lock_modelement_confirm"), JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.WARNING_MESSAGE, null, options, options[1]);
 		if (n == 0) {
 			ProgressDialog dial = new ProgressDialog(mcreator, L10N.t("workspace.elements.lock_modelement_title"));
 			Thread t = new Thread(() -> {

@@ -114,10 +114,9 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 	private void useSelectedAsBackgrounds() {
 		modelList.getSelectedValuesList().forEach(
 				f -> FileIO.copyFile(f, new File(UserFolderManager.getFileFromUserFolder("backgrounds"), f.getName())));
-		JOptionPane.showMessageDialog(workspacePanel.getMcreator(),
-				L10N.t("workspace.screenshots.use_background_message"),
-				L10N.t("workspace.screenshots.action_complete"),
-				JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane
+				.showMessageDialog(workspacePanel.getMcreator(), L10N.t("workspace.screenshots.use_background_message"),
+						L10N.t("workspace.screenshots.action_complete"), JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void exportSelectedScreenshots() {

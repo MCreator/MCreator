@@ -66,9 +66,9 @@ public class VCSSetupDialogs {
 
 		main.add("North", new JLabel(text));
 
-		int option = JOptionPane.showOptionDialog(parent, main, L10N.t("dialog.vcs.setup_remote_workspace_details"), JOptionPane.DEFAULT_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, new String[] { "Setup remote workspace", "Cancel" },
-				"Setup remote workspace");
+		int option = JOptionPane.showOptionDialog(parent, main, L10N.t("dialog.vcs.setup_remote_workspace_details"),
+				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+				new String[] { "Setup remote workspace", "Cancel" }, "Setup remote workspace");
 
 		if (option == 0) {
 			VCSInfo info = new VCSInfo(remote.getText(), username.getText(), new String(password.getPassword()),
@@ -79,16 +79,13 @@ public class VCSSetupDialogs {
 				valid = info.isValid();
 			} catch (Exception e) {
 				if (e instanceof TransportException && e.getMessage().contains("not authorized")) {
-					JOptionPane.showMessageDialog(parent,
-							L10N.t("dialog.vcs.setup_incorrect_username_password"),
+					JOptionPane.showMessageDialog(parent, L10N.t("dialog.vcs.setup_incorrect_username_password"),
 							L10N.t("dialog.vcs.setup_invalid_parameters"), JOptionPane.WARNING_MESSAGE);
 				} else if (e instanceof TransportException && e.getMessage().contains("not found")) {
-					JOptionPane.showMessageDialog(parent,
-							L10N.t("dialog.vcs.setup_url_unaccessible"),
+					JOptionPane.showMessageDialog(parent, L10N.t("dialog.vcs.setup_url_unaccessible"),
 							L10N.t("dialog.vcs.setup_invalid_parameters"), JOptionPane.WARNING_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(parent,
-							L10N.t("dialog.vcs.setup_one_invalid_parameter"),
+					JOptionPane.showMessageDialog(parent, L10N.t("dialog.vcs.setup_one_invalid_parameter"),
 							L10N.t("dialog.vcs.setup_invalid_parameters"), JOptionPane.WARNING_MESSAGE);
 				}
 				parent.setCursor(Cursor.getDefaultCursor());

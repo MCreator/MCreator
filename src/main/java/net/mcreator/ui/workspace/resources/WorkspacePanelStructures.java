@@ -92,8 +92,8 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 			if (files.size() > 0) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
 						L10N.t("workspace.structure.confirm_deletion_message"),
-						L10N.t("workspace.structure.confirm_deletion_title"),
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+						L10N.t("workspace.structure.confirm_deletion_title"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
 				if (n == 0) {
 					files.forEach(workspacePanel.getMcreator().getFolderManager()::removeStructure);
 					reloadElements();

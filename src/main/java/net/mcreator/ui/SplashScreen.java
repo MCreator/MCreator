@@ -22,7 +22,6 @@ import net.mcreator.Launcher;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.ProgressBar;
 import net.mcreator.ui.component.util.EDTUtils;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
 

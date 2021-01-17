@@ -44,9 +44,10 @@ public class VCSCommitDialog {
 
 		main.add("South", PanelUtils.northAndCenterElement(label, spane));
 
-		int option = JOptionPane.showOptionDialog(parent, main, L10N.t("dialog.vcs.commit_enter_message"), JOptionPane.DEFAULT_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, new String[] { "Create commit and sync", "Cancel" },
-				"Create commit and sync");
+		int option = JOptionPane
+				.showOptionDialog(parent, main, L10N.t("dialog.vcs.commit_enter_message"), JOptionPane.DEFAULT_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, new String[] { "Create commit and sync", "Cancel" },
+						"Create commit and sync");
 
 		if (option == 0)
 			return commitMessage.getText();

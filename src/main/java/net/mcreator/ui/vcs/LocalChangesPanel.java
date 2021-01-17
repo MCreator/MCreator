@@ -35,32 +35,30 @@ public class LocalChangesPanel extends JPanel {
 		changelist.setLayout(new BoxLayout(changelist, BoxLayout.PAGE_AXIS));
 
 		for (String file : status.getAdded())
-			changelist.add(ComponentUtils.deriveFont(
-					ComponentUtils.setForeground(L10N.label("dialog.remote_workspace.added", file), new Color(155, 255, 185)),
-					11));
+			changelist.add(ComponentUtils.deriveFont(ComponentUtils
+					.setForeground(L10N.label("dialog.remote_workspace.added", file), new Color(155, 255, 185)), 11));
 
 		for (String file : status.getChanged())
-			changelist.add(ComponentUtils.deriveFont(
-					ComponentUtils.setForeground(L10N.label("dialog.remote_workspace.changed", file), new Color(225, 255, 164)),
-					11));
+			changelist.add(ComponentUtils.deriveFont(ComponentUtils
+					.setForeground(L10N.label("dialog.remote_workspace.changed", file), new Color(225, 255, 164)), 11));
 
 		for (String file : status.getRemoved())
-			changelist.add(ComponentUtils.deriveFont(
-					ComponentUtils.setForeground(L10N.label("dialog.remote_workspace.removed", file), new Color(251, 255, 154)),
-					11));
+			changelist.add(ComponentUtils.deriveFont(ComponentUtils
+					.setForeground(L10N.label("dialog.remote_workspace.removed", file), new Color(251, 255, 154)), 11));
 
 		for (String file : status.getMissing())
-			changelist.add(ComponentUtils.deriveFont(
-					ComponentUtils.setForeground(L10N.label("dialog.remote_workspace.missing", file), new Color(255, 165, 139)),
-					11));
+			changelist.add(ComponentUtils.deriveFont(ComponentUtils
+					.setForeground(L10N.label("dialog.remote_workspace.missing", file), new Color(255, 165, 139)), 11));
 
 		for (String file : status.getModified())
 			changelist.add(ComponentUtils.deriveFont(ComponentUtils
-					.setForeground(L10N.label("dialog.remote_workspace.modified", file), new Color(225, 255, 164)), 11));
+							.setForeground(L10N.label("dialog.remote_workspace.modified", file), new Color(225, 255, 164)),
+					11));
 
 		for (String file : status.getConflicting())
 			changelist.add(ComponentUtils.deriveFont(ComponentUtils
-					.setForeground(L10N.label("dialog.remote_workspace.conflicting", file), new Color(255, 165, 139)), 11));
+							.setForeground(L10N.label("dialog.remote_workspace.conflicting", file), new Color(255, 165, 139)),
+					11));
 
 		JScrollPane cscroll = new JScrollPane(changelist);
 		cscroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

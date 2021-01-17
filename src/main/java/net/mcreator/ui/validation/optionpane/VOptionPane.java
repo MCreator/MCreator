@@ -94,8 +94,8 @@ public class VOptionPane {
 			return textField.getText();
 		} else if (option == 0) { // user confirmed, but the validation returned error
 			JOptionPane.showMessageDialog(frame,
-					L10N.t("dialog.option_pane.invalid_text") + textField
-							.getValidationStatus().getMessage(), L10N.t("dialog.option_pane.invalid_input"), JOptionPane.ERROR_MESSAGE);
+					L10N.t("dialog.option_pane.invalid_text") + textField.getValidationStatus().getMessage(),
+					L10N.t("dialog.option_pane.invalid_input"), JOptionPane.ERROR_MESSAGE);
 		}
 
 		return null;
