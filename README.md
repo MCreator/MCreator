@@ -18,17 +18,6 @@ This repository page is for people looking to contribute to MCreator. Visit http
 
 Download MCreator binary distributions on https://mcreator.net/download.
 
-## Contributing
-
-You are welcome to support this project by opening pull requests. Read more about contributing in our [contributing guidelines](CONTRIBUTING.md).
-Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/MCreator/MCreator).
-
-Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contributors) who already contributed to MCreator! 💚
-
-<a href="https://github.com/MCreator/MCreator/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=MCreator/MCreator" width="600"/>
-</a>
-
 ## Development
 
 To clone this repository, run `git clone --recursive https://github.com/MCreator/MCreator.git`.
@@ -44,6 +33,17 @@ MCreator is licensed under the GPL-3.0 license (with exceptions implemented as s
 
 MCreator is a trademark of Pylo. Custom distributions of this software may not include Pylo or MCreator trademark (trademark name and logo) to not confuse the software with the official distribution of MCreator project.
 MCreator and Pylo brand files in this repository are not covered by the GPL-3.0 license.
+
+## Contributing
+
+You are welcome to support this project by opening pull requests. Read more about contributing in our [contributing guidelines](CONTRIBUTING.md).
+Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/MCreator/MCreator).
+
+Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contributors) who already contributed to MCreator! 💚
+
+<a href="https://github.com/MCreator/MCreator/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=MCreator/MCreator" width="600"/>
+</a>
 
 ## Notice
 
