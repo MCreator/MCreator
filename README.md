@@ -25,6 +25,10 @@ Before we can use your code, you must sign the [MCreator CLA](https://cla-assist
 
 Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contributors) who already contributed to MCreator! 💚
 
+<a href="https://github.com/MCreator/MCreator/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=MCreator/MCreator" />
+</a>
+
 ## Development
 
 To clone this repository, run `git clone --recursive https://github.com/MCreator/MCreator.git`.
