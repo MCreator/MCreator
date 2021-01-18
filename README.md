@@ -27,13 +27,6 @@ MCreator uses Gradle build system to manage the building and exporting. Use `run
 It is recommended to use Intellij IDEA for development and testing. Learn more about the development process, and 
 tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).
 
-## License and trademark
-
-MCreator is licensed under the GPL-3.0 license (with exceptions implemented as specified in section 7 of GPL-3.0) if not otherwise stated in source files or other files of this project. Copyright 2020 Pylo and [contributors](https://github.com/MCreator/MCreator/graphs/contributors).
-
-MCreator is a trademark of Pylo. Custom distributions of this software may not include Pylo or MCreator trademark (trademark name and logo) to not confuse the software with the official distribution of MCreator project.
-MCreator and Pylo brand files in this repository are not covered by the GPL-3.0 license.
-
 ## Contributing
 
 You are welcome to support this project by opening pull requests. Read more about contributing in our [contributing guidelines](CONTRIBUTING.md).
@@ -42,8 +35,15 @@ Before we can use your code, you must sign the [MCreator CLA](https://cla-assist
 Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contributors) who already contributed to MCreator! 💚
 
 <a href="https://github.com/MCreator/MCreator/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=MCreator/MCreator" width="600"/>
+  <img src="https://contrib.rocks/image?repo=MCreator/MCreator" width="620"/>
 </a>
+
+## License and trademark
+
+MCreator is licensed under the GPL-3.0 license (with exceptions implemented as specified in section 7 of GPL-3.0) if not otherwise stated in source files or other files of this project. Copyright 2020 Pylo and [contributors](https://github.com/MCreator/MCreator/graphs/contributors).
+
+MCreator is a trademark of Pylo. Custom distributions of this software may not include Pylo or MCreator trademark (trademark name and logo) to not confuse the software with the official distribution of MCreator project.
+MCreator and Pylo brand files in this repository are not covered by the GPL-3.0 license.
 
 ## Notice
 
