@@ -29,10 +29,7 @@ import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.vcs.WorkspaceVCS;
-import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.ModElementManager;
-import net.mcreator.workspace.elements.SoundElement;
-import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.misc.WorkspaceInfo;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
@@ -61,6 +58,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language_map = new ConcurrentHashMap<String, ConcurrentHashMap<String, String>>() {{
 		put("en_us", new ConcurrentHashMap<>());
 	}};
+
+	private FolderElement foldersRoot = new FolderElement.Root();
 
 	private WorkspaceSettings workspaceSettings;
 	private long mcreatorVersion;
@@ -111,6 +110,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public ConcurrentHashMap<ModElementType.BaseType, Integer> getIDMap() {
 		return id_map;
+	}
+
+	public FolderElement getFoldersRoot() {
+		return foldersRoot;
 	}
 
 	@NotNull public WorkspaceInfo getWorkspaceInfo() {
@@ -437,6 +440,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			}
 
 			retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
+			retval.foldersRoot.updateStructure(); // assign parents to the folders
 			LOG.info("Loaded workspace file " + workspaceFile);
 			return retval;
 		} else {
@@ -462,6 +466,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		Workspace workspace_on_fs = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
 		loadStoredDataFrom(workspace_on_fs);
 		reloadModElements();
+		this.foldersRoot.updateStructure();
 		LOG.info("Reloaded current workspace from the workspace file");
 	}
 
@@ -471,6 +476,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;
 		this.language_map = other.language_map;
+		this.foldersRoot = other.foldersRoot;
 		this.mcreatorVersion = other.mcreatorVersion;
 		this.workspaceSettings = other.workspaceSettings;
 		this.workspaceSettings.setWorkspace(this);

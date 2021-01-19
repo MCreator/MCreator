@@ -43,9 +43,11 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	private boolean locked_code = false;
 
 	private Map<Integer, Integer> ids = new HashMap<>();
-	private String registry_name = null;
+	@Nullable private String registry_name;
 
-	private Map<String, Object> metadata = null;
+	@Nullable private Map<String, Object> metadata = null;
+
+	@Nullable private FolderElement parent;
 
 	// MCItem representations of this element
 	// it is transient so it does not get serialized
@@ -305,6 +307,14 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	public void setRegistryName(String registry_name) {
 		this.registry_name = registry_name;
+	}
+
+	public @Nullable FolderElement getParent() {
+		return parent;
+	}
+
+	public void setParent(@Nullable FolderElement parent) {
+		this.parent = parent;
 	}
 
 }
