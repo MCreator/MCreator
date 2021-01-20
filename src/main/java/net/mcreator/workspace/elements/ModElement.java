@@ -32,7 +32,7 @@ import javax.swing.*;
 import java.io.Serializable;
 import java.util.*;
 
-public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorProvider {
+public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorProvider, IElement {
 
 	private String name;
 	private ModElementType type;
@@ -268,7 +268,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.compiles = compiles;
 	}
 
-	public String getName() {
+	@Override public String getName() {
 		return name;
 	}
 

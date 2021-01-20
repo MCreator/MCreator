@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FolderElement {
+public class FolderElement implements IElement {
 
 	public static final FolderElement ROOT = new FolderElement("<root>", null);
 
@@ -43,7 +43,7 @@ public class FolderElement {
 		});
 	}
 
-	public String getName() {
+	@Override public String getName() {
 		return name;
 	}
 
