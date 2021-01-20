@@ -18,7 +18,6 @@
 
 package net.mcreator.workspace.elements;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,16 +30,16 @@ public class FolderElement implements IElement {
 
 	// Must not be serialized due to circular references!
 	// Populated by call to updateStructure from workspace loading mechanism
-	private transient FolderElement optionalParent;
+	private transient FolderElement parent;
 
 	public FolderElement(String name, FolderElement parent) {
 		this.name = name;
-		this.optionalParent = parent;
+		this.parent = parent;
 	}
 
 	public void updateStructure() {
 		children.forEach(child -> {
-			child.optionalParent = this;
+			child.parent = this;
 			child.updateStructure();
 		});
 	}
@@ -55,12 +54,11 @@ public class FolderElement implements IElement {
 
 	public void addChild(FolderElement child) {
 		this.children.add(child);
-		child.optionalParent = this;
+		child.parent = this;
 	}
 
 	public void removeChild(FolderElement child) {
 		this.children.remove(child);
-		child.optionalParent = null;
 	}
 
 	public List<FolderElement> getDirectFolderChildren() {
@@ -78,8 +76,8 @@ public class FolderElement implements IElement {
 		return childrenList;
 	}
 
-	@Nullable public FolderElement getParent() {
-		return this.optionalParent;
+	public FolderElement getParent() {
+		return this.parent;
 	}
 
 	@Override public String toString() {
