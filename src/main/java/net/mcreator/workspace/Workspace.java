@@ -59,7 +59,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		put("en_us", new ConcurrentHashMap<>());
 	}};
 
-	private FolderElement foldersRoot = new FolderElement.Root();
+	private FolderElement foldersRoot = FolderElement.ROOT;
 
 	private WorkspaceSettings workspaceSettings;
 	private long mcreatorVersion;

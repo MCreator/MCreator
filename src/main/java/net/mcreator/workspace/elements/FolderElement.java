@@ -24,6 +24,8 @@ import java.util.List;
 
 public class FolderElement {
 
+	public static final FolderElement ROOT = new FolderElement("<root>", null);
+
 	private String name;
 	private final List<FolderElement> children = new ArrayList<>();
 
@@ -63,6 +65,11 @@ public class FolderElement {
 		return children;
 	}
 
+	/**
+	 * Used to determine all folders from the root element down, when called on the root element
+	 *
+	 * @return List of all children
+	 */
 	public List<FolderElement> getRecursiveFolderChildren() {
 		List<FolderElement> childrenList = new ArrayList<>(children);
 		children.forEach(child -> childrenList.addAll(child.getRecursiveFolderChildren()));
@@ -78,21 +85,16 @@ public class FolderElement {
 	}
 
 	@Override public boolean equals(Object element) {
-		return element instanceof FolderElement && name.equals(((FolderElement) element).getName()) && (getParent() == null
-				|| getParent().equals(((FolderElement) element).getParent()));
+		if (element == null && this.getName().equals(ROOT.getName()))
+			return true;
+
+		return element instanceof FolderElement && name.equals(((FolderElement) element).getName()) && (
+				getParent() == null || getParent().equals(((FolderElement) element).getParent()));
 	}
 
 	@Override public int hashCode() {
 		// Josh Bloch's Hash Code with prime numbers
 		return name.hashCode() + 23 * (getParent() != null ? getParent().hashCode() : 0);
-	}
-
-	public static class Root extends FolderElement {
-
-		public Root() {
-			super("<root>", null);
-		}
-
 	}
 
 }
