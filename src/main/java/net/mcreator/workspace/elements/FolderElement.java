@@ -29,7 +29,9 @@ public class FolderElement implements IElement {
 	private String name;
 	private final List<FolderElement> children = new ArrayList<>();
 
-	private FolderElement optionalParent;
+	// Must not be serialized due to circular references!
+	// Populated by call to updateStructure from workspace loading mechanism
+	private transient FolderElement optionalParent;
 
 	public FolderElement(String name, FolderElement parent) {
 		this.name = name;
