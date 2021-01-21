@@ -400,7 +400,9 @@ import net.minecraft.block.material.Material;
         </#if>
 
 		<#if hasProcedure(data.whenMobIsHurt) || data.immuneToArrows || data.immuneToFallDamage
-			|| data.immuneToCactus || data.immuneToDrowning || data.immuneToLightning || data.immuneToPotions || data.immuneToPlayer>
+			|| data.immuneToCactus || data.immuneToDrowning || data.immuneToLightning || data.immuneToPotions
+			|| data.immuneToPlayer || data.immuneToExplosion || data.immuneToTrident || data.immuneToAnvil
+			|| data.immuneToDragonBreath || data.immuneToWither>
 		@Override public boolean attackEntityFrom(DamageSource source, float amount) {
 			<#if hasProcedure(data.whenMobIsHurt)>
 				double x = this.getPosX();
@@ -436,6 +438,26 @@ import net.minecraft.block.material.Material;
 			</#if>
 			<#if data.immuneToLightning>
 				if (source == DamageSource.LIGHTNING_BOLT)
+					return false;
+			</#if>
+			<#if data.immuneToExplosion>
+				if (source == DamageSource.causeExplosionDamage(this))
+					return false;
+			</#if>
+			<#if data.immuneToTrident>
+				if (source == DamageSource.causeTridentDamage(this, source.getTrueSource()))
+					return false;
+			</#if>
+			<#if data.immuneToAnvil>
+				if (source == DamageSource.ANVIL)
+					return false;
+			</#if>
+			<#if data.immuneToDragonBreath>
+				if (source == DamageSource.DRAGON_BREATH)
+					return false;
+			</#if>
+			<#if data.immuneToWither>
+				if (source == DamageSource.WITHER)
 					return false;
 			</#if>
 			return super.attackEntityFrom(source, amount);

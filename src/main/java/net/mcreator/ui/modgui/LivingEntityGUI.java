@@ -129,6 +129,11 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 	private final JCheckBox immuneToLightning = L10N.checkbox("elementgui.living_entity.immune_lightning");
 	private final JCheckBox immuneToPotions = L10N.checkbox("elementgui.living_entity.immune_potions");
 	private final JCheckBox immuneToPlayer = L10N.checkbox("elementgui.living_entity.immune_player");
+	private final JCheckBox immuneToExplosion = L10N.checkbox("elementgui.living_entity.immune_explosions");
+	private final JCheckBox immuneToTrident = L10N.checkbox("elementgui.living_entity.immune_trident");
+	private final JCheckBox immuneToAnvil = L10N.checkbox("elementgui.living_entity.immune_anvil");
+	private final JCheckBox immuneToWither = L10N.checkbox("elementgui.living_entity.immune_wither");
+	private final JCheckBox immuneToDragonBreath = L10N.checkbox("elementgui.living_entity.immune_dragon_breath");
 
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.living_entity.spawn_particles_around");
 
@@ -357,6 +362,11 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		immuneToLightning.setOpaque(false);
 		immuneToPotions.setOpaque(false);
 		immuneToPlayer.setOpaque(false);
+		immuneToExplosion.setOpaque(false);
+		immuneToTrident.setOpaque(false);
+		immuneToAnvil.setOpaque(false);
+		immuneToDragonBreath.setOpaque(false);
+		immuneToWither.setOpaque(false);
 
 		subpane1.setOpaque(false);
 
@@ -401,8 +411,9 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/immunity"),
 				L10N.label("elementgui.living_entity.is_immune_to")));
 		subpane1.add(PanelUtils
-				.gridElements(2, 4, 0, 0, immuneToFire, immuneToArrows, immuneToFallDamage, immuneToCactus,
-						immuneToDrowning, immuneToLightning, immuneToPotions, immuneToPlayer));
+				.gridElements(4, 4, 0, 0, immuneToFire, immuneToArrows, immuneToFallDamage, immuneToCactus,
+						immuneToDrowning, immuneToLightning, immuneToPotions, immuneToPlayer, immuneToExplosion, immuneToAnvil,
+						immuneToTrident, immuneToDragonBreath, immuneToWither));
 
 		subpane1.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("entity/ridable"), L10N.label("elementgui.living_entity.ridable")));
@@ -915,6 +926,11 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		immuneToLightning.setSelected(mob.immuneToLightning);
 		immuneToPotions.setSelected(mob.immuneToPotions);
 		immuneToPlayer.setSelected(mob.immuneToPlayer);
+		immuneToExplosion.setSelected(mob.immuneToExplosion);
+		immuneToTrident.setSelected(mob.immuneToTrident);
+		immuneToAnvil.setSelected(mob.immuneToAnvil);
+		immuneToWither.setSelected(mob.immuneToWither);
+		immuneToDragonBreath.setSelected(mob.immuneToDragonBreath);
 		xpAmount.setValue(mob.xpAmount);
 		livingSound.setSound(mob.livingSound);
 		hurtSound.setSound(mob.hurtSound);
@@ -1029,6 +1045,11 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		mob.immuneToLightning = immuneToLightning.isSelected();
 		mob.immuneToPotions = immuneToPotions.isSelected();
 		mob.immuneToPlayer = immuneToPlayer.isSelected();
+		mob.immuneToExplosion = immuneToExplosion.isSelected();
+		mob.immuneToTrident = immuneToTrident.isSelected();
+		mob.immuneToAnvil = immuneToAnvil.isSelected();
+		mob.immuneToWither = immuneToWither.isSelected();
+		mob.immuneToDragonBreath = immuneToDragonBreath.isSelected();
 		mob.xpAmount = (int) xpAmount.getValue();
 		mob.ridable = ridable.isSelected();
 		mob.canControlForward = canControlForward.isSelected();
