@@ -207,16 +207,17 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	public void saveAs() {
 		Image image = canvasRenderer.render();
 		Object[] options = { "Block", "Item", "Other" };
-		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.image_maker.texture_kind"), L10N.t("dialog.image_maker.texture_type"),
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-		String namec = VOptionPane
-				.showInputDialog(mcreator, L10N.t("dialog.image_maker.enter_name"), L10N.t("dialog.image_maker.image_name"), null,
-						new OptionPaneValidatior() {
+		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.image_maker.texture_kind"),
+				L10N.t("dialog.image_maker.texture_type"), JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		String namec = VOptionPane.showInputDialog(mcreator, L10N.t("dialog.image_maker.enter_name"),
+				L10N.t("dialog.image_maker.image_name"), null, new OptionPaneValidatior() {
 
-							@Override public ValidationResult validate(JComponent component) {
-								return new RegistryNameValidator((VTextField) component, L10N.t("dialog.image_maker.texture_name")).validate();
-							}
-						});
+					@Override public ValidationResult validate(JComponent component) {
+						return new RegistryNameValidator((VTextField) component,
+								L10N.t("dialog.image_maker.texture_name")).validate();
+					}
+				});
 		if (namec != null) {
 			File exportFile;
 			if (n == 0)

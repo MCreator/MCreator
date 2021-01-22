@@ -1114,8 +1114,7 @@ public class TestWorkspaceDataProvider {
 			block.isItemTinted = _true;
 			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
 					14 }[valueIndex];
-			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",
-					"Grass block" }[valueIndex];
+			block.customModelName = new String[] { "Normal", "Single texture", "Cross model", "Grass block" }[valueIndex];
 			return block;
 		case TAG:
 			Tag tag = new Tag(modElement);
@@ -1297,7 +1296,8 @@ public class TestWorkspaceDataProvider {
 			GameRule gamerule = new GameRule(modElement);
 			gamerule.name = modElement.getName();
 			gamerule.description = modElement.getName();
-			gamerule.category = getRandomString(random, Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
+			gamerule.category = getRandomString(random,
+					Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
 			gamerule.type = new String[] { "Number", "Logic", "Number", "Logic" }[valueIndex];
 			gamerule.defaultValueLogic = _true;
 			gamerule.defaultValueNumber = -45;

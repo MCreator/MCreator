@@ -354,16 +354,16 @@ public class AnimationMakerView extends ViewBase {
 				exportFile = mcreator.getFolderManager().getOtherTextureFile(namec);
 
 			if (exportFile.isFile()) {
-				JOptionPane
-						.showMessageDialog(mcreator, L10N.t("dialog.animation_maker.texture_already_exists", options[n]),
-								L10N.t("dialog.animation_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("dialog.animation_maker.texture_already_exists", options[n]),
+						L10N.t("dialog.animation_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
 			} else {
 				Object[] possibilities = { "4 x 4", "8 x 8", "16 x 16", "32 x 32", "64 x 64", "128 x 128", "256 x 256",
 						"512 x 512" };
 				String s = (String) JOptionPane
 						.showInputDialog(mcreator, L10N.t("dialog.animation_maker.animation_size"),
-								L10N.t("dialog.animation_maker.size_selection"),
-								JOptionPane.PLAIN_MESSAGE, null, possibilities, "16 x 16");
+								L10N.t("dialog.animation_maker.size_selection"), JOptionPane.PLAIN_MESSAGE, null,
+								possibilities, "16 x 16");
 				int sizetwocubes = 16;
 				if (s != null) {
 					switch (s) {
@@ -416,9 +416,8 @@ public class AnimationMakerView extends ViewBase {
 		JLabel lab4 = L10N.label("dialog.animation_maker.saturation_lightness_lock");
 
 		JLabel preview = new JLabel();
-		preview.setBorder(BorderFactory
-				.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), L10N.t("dialog.animation_maker.preview"), 0, 0,
-						getFont().deriveFont(12.0f), Color.gray));
+		preview.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+				L10N.t("dialog.animation_maker.preview"), 0, 0, getFont().deriveFont(12.0f), Color.gray));
 
 		JComboBox<ResourcePointer> types = new JComboBox<>();
 		templatesSorted.forEach(types::addItem);
@@ -453,8 +452,9 @@ public class AnimationMakerView extends ViewBase {
 		centerPanel.add(lab4);
 		centerPanel.add(cbox);
 
-		if (JOptionPane.showOptionDialog(mcreator, od, L10N.t("dialog.animation_maker.add_frames_from_template"), JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" }, "Add") == 0) {
+		if (JOptionPane.showOptionDialog(mcreator, od, L10N.t("dialog.animation_maker.add_frames_from_template"),
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" },
+				"Add") == 0) {
 			try {
 				BufferedImage imge = TiledImageUtils
 						.convert(ImageIO.read(templatesSorted.get(types.getSelectedIndex()).getStream()),
@@ -538,8 +538,9 @@ public class AnimationMakerView extends ViewBase {
 		centerPanel.add(lab5);
 		centerPanel.add(cbox2);
 
-		if (JOptionPane.showOptionDialog(mcreator, od, L10N.t("dialog.animation_maker.add_frames_from_file"), JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" }, "Add") == 0) {
+		if (JOptionPane.showOptionDialog(mcreator, od, L10N.t("dialog.animation_maker.add_frames_from_file"),
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" },
+				"Add") == 0) {
 			try {
 				BufferedImage imge = TiledImageUtils.convert(ImageIO.read(f.get()), BufferedImage.TYPE_INT_ARGB);
 				addFramesFromBufferedImage(imge, cbox2.isSelected(), !cbox.isSelected(), colors.getColor());

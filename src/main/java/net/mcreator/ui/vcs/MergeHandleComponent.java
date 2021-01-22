@@ -38,10 +38,10 @@ class MergeHandleComponent extends JPanel {
 	MergeHandleComponent(List<MergeHandleComponent> mergeHandleComponents, MergeHandle<?> mergeHandle) {
 		super(new BorderLayout(40, 2));
 		setMinimumSize(new Dimension(400, 10));
-		local = L10N.radiobutton("dialog.vcs.merge_handle_accept_mine", mergeHandle.getLocalChange().name()
-				.toLowerCase(Locale.ENGLISH));
-		remote = L10N.radiobutton("dialog.vcs.merge_handle_accept_theirs", mergeHandle.getLocalChange().name()
-				.toLowerCase(Locale.ENGLISH));
+		local = L10N.radiobutton("dialog.vcs.merge_handle_accept_mine",
+				mergeHandle.getLocalChange().name().toLowerCase(Locale.ENGLISH));
+		remote = L10N.radiobutton("dialog.vcs.merge_handle_accept_theirs",
+				mergeHandle.getLocalChange().name().toLowerCase(Locale.ENGLISH));
 
 		if (mergeHandle.getLocal() instanceof FileSyncHandle) {
 			add("Center",

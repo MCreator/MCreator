@@ -132,9 +132,10 @@ public class LayerPanel extends JPanel {
 		});
 
 		delete.addActionListener(e -> {
-			int confirmDialog = JOptionPane
-					.showConfirmDialog(f, L10N.t("dialog.imageeditor.layer_panel_confirm_layer_deletion_message") + selected(),
-							L10N.t("dialog.imageeditor.layer_panel_confirm_layer_deletion_title"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			int confirmDialog = JOptionPane.showConfirmDialog(f,
+					L10N.t("dialog.imageeditor.layer_panel_confirm_layer_deletion_message") + selected(),
+					L10N.t("dialog.imageeditor.layer_panel_confirm_layer_deletion_title"), JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
 			if (confirmDialog == 0)
 				canvas.remove(selectedID());
 		});
@@ -186,7 +187,8 @@ public class LayerPanel extends JPanel {
 		Layer current = selected();
 		Rename rename = new Rename(canvas, current);
 		String newName = (String) JOptionPane
-				.showInputDialog(f, L10N.t("dialog.imageeditor.layer_panel_enter_new_name"), L10N.t("dialog.imageeditor.layer_panel_rename_layer"), JOptionPane.PLAIN_MESSAGE, null, null,
+				.showInputDialog(f, L10N.t("dialog.imageeditor.layer_panel_enter_new_name"),
+						L10N.t("dialog.imageeditor.layer_panel_rename_layer"), JOptionPane.PLAIN_MESSAGE, null, null,
 						current.toString());
 		if (newName != null) {
 			current.setName(newName);

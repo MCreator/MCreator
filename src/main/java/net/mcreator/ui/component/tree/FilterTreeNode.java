@@ -16,20 +16,38 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.browser;
+/*
+ * MCreator (https://mcreator.net/)
+ * Copyright (C) 2020 Pylo and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package net.mcreator.ui.component.tree;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class ProjectBrowserFilterTreeNode extends DefaultMutableTreeNode {
+public class FilterTreeNode extends DefaultMutableTreeNode {
 
 	private String filter;
 	private boolean passed = true;
-	private final List<ProjectBrowserFilterTreeNode> filteredChildren = new ArrayList<>();
+	private final List<FilterTreeNode> filteredChildren = new ArrayList<>();
 
-	ProjectBrowserFilterTreeNode(Object userObject) {
+	public FilterTreeNode(Object userObject) {
 		super(userObject);
 	}
 
@@ -53,7 +71,7 @@ public class ProjectBrowserFilterTreeNode extends DefaultMutableTreeNode {
 		}
 	}
 
-	private boolean pass(ProjectBrowserFilterTreeNode node) {
+	private boolean pass(FilterTreeNode node) {
 		if (getFilter().trim().equals(""))
 			return true;
 
@@ -65,7 +83,7 @@ public class ProjectBrowserFilterTreeNode extends DefaultMutableTreeNode {
 	private void passFilterDown(String filter) {
 		int realChildCount = super.getChildCount();
 		for (int i = 0; i < realChildCount; i++) {
-			ProjectBrowserFilterTreeNode realChild = (ProjectBrowserFilterTreeNode) super.getChildAt(i);
+			FilterTreeNode realChild = (FilterTreeNode) super.getChildAt(i);
 			realChild.setFilter(filter);
 			if (realChild.isPassed()) {
 				filteredChildren.add(realChild);
@@ -73,7 +91,7 @@ public class ProjectBrowserFilterTreeNode extends DefaultMutableTreeNode {
 		}
 	}
 
-	public void add(ProjectBrowserFilterTreeNode node) {
+	public void add(FilterTreeNode node) {
 		super.add(node);
 		node.setFilter(filter);
 		if (node.isPassed()) {
@@ -110,9 +128,9 @@ public class ProjectBrowserFilterTreeNode extends DefaultMutableTreeNode {
 	 *
 	 * @see javax.swing.tree.DefaultMutableTreeNode#getChildAt(int)
 	 */
-	@Override public ProjectBrowserFilterTreeNode getChildAt(int index) {
+	@Override public FilterTreeNode getChildAt(int index) {
 		if (filter == null) {
-			return (ProjectBrowserFilterTreeNode) super.getChildAt(index);
+			return (FilterTreeNode) super.getChildAt(index);
 		}
 		return filteredChildren.get(index);
 	}

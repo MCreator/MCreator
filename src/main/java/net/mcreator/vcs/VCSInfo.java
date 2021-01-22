@@ -74,7 +74,8 @@ public class VCSInfo {
 			panel.add(L10N.label("dialog.vcs.info_enter_password", username));
 			panel.add(passwordFiled);
 			panel.add(remember);
-			JOptionPane.showMessageDialog(parent, panel, L10N.t("dialog.vcs.info_account_authentication"), JOptionPane.QUESTION_MESSAGE);
+			JOptionPane.showMessageDialog(parent, panel, L10N.t("dialog.vcs.info_account_authentication"),
+					JOptionPane.QUESTION_MESSAGE);
 			if (remember.isSelected()) {
 				this.password = new String(passwordFiled.getPassword());
 				try {

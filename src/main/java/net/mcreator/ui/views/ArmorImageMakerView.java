@@ -61,11 +61,11 @@ public class ArmorImageMakerView extends ViewBase {
 
 		type1.setOpaque(false);
 
-		controls.add(new JLabel("Armor texture type: "));
+		controls.add(L10N.label("dialog.armor_image_maker.type"));
 		controls.add(str);
-		controls.add(new JLabel("Texture color: "));
+		controls.add(L10N.label("dialog.armor_image_maker.color"));
 		controls.add(PanelUtils.join(col));
-		controls.add(new JLabel("Lock saturation and lightness: "));
+		controls.add(L10N.label("dialog.armor_image_maker.saturation_lightness_lock"));
 		controls.add(type1);
 
 		col.setColorSelectedListener(event -> updateARM());
