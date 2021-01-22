@@ -46,6 +46,7 @@ import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
@@ -115,6 +116,11 @@ public class OrePackMakerTool {
 
 	static MItemBlock addOrePackToWorkspace(MCreator mcreator, Workspace workspace, String name, String type,
 			Color color, double factor) {
+		// select folder the mod pack should be in
+		FolderElement folder = null;
+		if (!mcreator.mv.currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
+			folder = mcreator.mv.currentFolder;
+
 		// first we generate ore texture
 		ImageIcon ore = ImageUtils.drawOver(
 				ImageMakerTexturesCache.CACHE.get(new ResourcePointer("templates/textures/texturemaker/noise5.png")),
@@ -172,6 +178,8 @@ public class OrePackMakerTool {
 				.getElementFromGUI();
 		oreItem.name = name;
 		oreItem.texture = gemTextureName;
+
+		oreItem.getModElement().setParent(folder);
 		mcreator.getModElementManager().storeModElementPicture(oreItem);
 		mcreator.getWorkspace().addModElement(oreItem.getModElement());
 		mcreator.getGenerator().generateElement(oreItem);
@@ -200,6 +208,8 @@ public class OrePackMakerTool {
 			oreBlock.dropAmount = 3;
 		}
 		oreBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
+
+		oreBlock.getModElement().setParent(folder);
 		mcreator.getModElementManager().storeModElementPicture(oreBlock);
 		mcreator.getWorkspace().addModElement(oreBlock.getModElement());
 		mcreator.getGenerator().generateElement(oreBlock);
@@ -219,6 +229,8 @@ public class OrePackMakerTool {
 		oreBlockBlock.destroyTool = "pickaxe";
 		oreBlockBlock.breakHarvestLevel = (int) Math.round(2 * factor);
 		oreBlockBlock.renderType = 11; // single texture
+
+		oreBlockBlock.getModElement().setParent(folder);
 		mcreator.getModElementManager().storeModElementPicture(oreBlockBlock);
 		mcreator.getWorkspace().addModElement(oreBlockBlock.getModElement());
 		mcreator.getGenerator().generateElement(oreBlockBlock);
@@ -237,6 +249,8 @@ public class OrePackMakerTool {
 		itemToBlockRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		itemToBlockRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		itemToBlockRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Block");
+
+		itemToBlockRecipe.getModElement().setParent(folder);
 		mcreator.getModElementManager().storeModElementPicture(itemToBlockRecipe);
 		mcreator.getWorkspace().addModElement(itemToBlockRecipe.getModElement());
 		mcreator.getGenerator().generateElement(itemToBlockRecipe);
@@ -249,6 +263,8 @@ public class OrePackMakerTool {
 		blockToItemRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		blockToItemRecipe.recipeShapeless = true;
 		blockToItemRecipe.recipeRetstackSize = 9;
+
+		blockToItemRecipe.getModElement().setParent(folder);
 		mcreator.getModElementManager().storeModElementPicture(blockToItemRecipe);
 		mcreator.getWorkspace().addModElement(blockToItemRecipe.getModElement());
 		mcreator.getGenerator().generateElement(blockToItemRecipe);
@@ -262,6 +278,8 @@ public class OrePackMakerTool {
 		oreSmeltingRecipe.smeltingReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		oreSmeltingRecipe.xpReward = 0.7 * factor;
 		oreSmeltingRecipe.cookingTime = 200;
+
+		oreSmeltingRecipe.getModElement().setParent(folder);
 		mcreator.getModElementManager().storeModElementPicture(oreSmeltingRecipe);
 		mcreator.getWorkspace().addModElement(oreSmeltingRecipe.getModElement());
 		mcreator.getGenerator().generateElement(oreSmeltingRecipe);
