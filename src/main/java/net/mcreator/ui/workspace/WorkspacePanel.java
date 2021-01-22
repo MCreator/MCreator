@@ -88,6 +88,7 @@ public class WorkspacePanel extends JPanel {
 		@Override public void show(Container container, String s) {
 			super.show(container, s);
 			currentTab = s;
+			search.repaint();
 		}
 	};
 	private final JPanel panels = new JPanel(cardLayout);
@@ -97,7 +98,7 @@ public class WorkspacePanel extends JPanel {
 	private final WorkspacePanelVariables variablesPan;
 	private final WorkspacePanelVCS vcsPan;
 
-	private String currentTab;
+	private String currentTab = "mods";
 
 	private final MCreator mcreator;
 
@@ -199,7 +200,11 @@ public class WorkspacePanel extends JPanel {
 				if (getText().equals("")) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
-					g.drawString(L10N.t("workspace.elements.list.search"), 8, 18);
+					if (!currentTab.equals("mods")) {
+						g.drawString(L10N.t("workspace.elements.list.search_list"), 8, 18);
+					} else {
+						g.drawString(L10N.t("workspace.elements.list.search_folder"), 8, 18);
+					}
 				}
 			}
 		};
@@ -283,6 +288,7 @@ public class WorkspacePanel extends JPanel {
 
 		upFolder.addActionListener(e -> {
 			if (!currentFolder.equals(FolderElement.ROOT)) {
+				search.setText(null); // clear the search bar
 				currentFolder = currentFolder.getParent();
 				reloadElements();
 			}
@@ -645,6 +651,7 @@ public class WorkspacePanel extends JPanel {
 					IElement selected = list.getSelectedValue();
 					if (selected instanceof FolderElement) {
 						currentFolder = (FolderElement) selected;
+						search.setText(null); // clear the search bar
 						reloadElements();
 					} else {
 						if (((e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK))
@@ -1197,22 +1204,25 @@ public class WorkspacePanel extends JPanel {
 			}
 
 			filterItems.addAll(items.stream().filter(e -> e instanceof FolderElement)
-					.filter(item -> currentFolder.getDirectFolderChildren().contains(item)).filter(item -> {
+					.filter(item -> currentFolder.getDirectFolderChildren().contains(item) || (!keyWords.isEmpty()
+							&& currentFolder.getRecursiveFolderChildren().contains(item))).filter(item -> {
+						if (!filters.isEmpty() || !metfilters.isEmpty())
+							return false;
+
 						if (keyWords.size() == 0)
 							return true;
 
-						for (String key : keyWords) {
-							boolean match = item.getName().toLowerCase(Locale.ENGLISH)
-									.contains(key.toLowerCase(Locale.ENGLISH));
-							if (match)
+						for (String key : keyWords)
+							if (item.getName().toLowerCase(Locale.ENGLISH).contains(key.toLowerCase(Locale.ENGLISH)))
 								return true;
-						}
 
 						return false;
 					}).collect(Collectors.toList()));
 
 			List<ModElement> modElements = items.stream().filter(e -> e instanceof ModElement).map(e -> (ModElement) e)
-					.filter(item -> currentFolder.equals(item.getParent())).filter(item -> {
+					.filter(item -> currentFolder.equals(item.getParent()) || (!keyWords.isEmpty() && currentFolder
+							.getRecursiveFolderChildren().stream().anyMatch(folder -> folder.equals(item.getParent()))))
+					.filter(item -> {
 						if (keyWords.size() == 0)
 							return true;
 
