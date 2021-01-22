@@ -705,13 +705,13 @@ public class WorkspacePanel extends JPanel {
 									// re-assign mod-elements using deleted folder to root folder
 									for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
 										if (folder.equals(modElement.getParent())) {
-											modElement.setParent(null);
+											modElement.setParent(folder.getParent());
 										}
 									}
 
 									// re-assign deleted children to root
 									for (FolderElement childFolder : folder.getDirectFolderChildren()) {
-										mcreator.getWorkspace().getFoldersRoot().addChild(childFolder);
+										folder.getParent().addChild(childFolder);
 									}
 
 									// remove folder from the parent's child list
