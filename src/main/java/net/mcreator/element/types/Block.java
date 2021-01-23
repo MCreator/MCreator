@@ -182,7 +182,7 @@ import java.util.Map;
 	}
 
 	public int renderType() {
-		if (blockBase != null && !blockBase.equals("") && !blockBase.equals("Leaves"))
+		if (blockBase != null && !blockBase.equals(""))
 			return -1;
 		return renderType;
 	}
@@ -205,7 +205,7 @@ import java.util.Map;
 					.generateBlockIcon(getModElement().getFolderManager().getBlockImageIcon(textureTop).getImage(),
 							getModElement().getFolderManager().getBlockImageIcon(textureLeft).getImage(),
 							getModElement().getFolderManager().getBlockImageIcon(textureFront).getImage());
-		} else if (renderType() == 11 || renderType() == 110) {
+		} else if (renderType() == 11 || renderType() == 110 || blockBase.equals("Leaves")) {
 			return (BufferedImage) MinecraftImageGenerator.Preview
 					.generateBlockIcon(getModElement().getFolderManager().getBlockImageIcon(texture).getImage(),
 							getModElement().getFolderManager().getBlockImageIcon(texture).getImage(),
