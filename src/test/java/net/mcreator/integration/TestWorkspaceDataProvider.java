@@ -531,6 +531,11 @@ public class TestWorkspaceDataProvider {
 			mob.immuneToLightning = !_true;
 			mob.immuneToPotions = !_true;
 			mob.immuneToPlayer = !_true;
+			mob.immuneToExplosion = !_true;
+			mob.immuneToTrident = !_true;
+			mob.immuneToAnvil = !_true;
+			mob.immuneToDragonBreath = !_true;
+			mob.immuneToWither = !_true;
 			mob.hasSpawnEgg = !_true;
 			mob.xpAmount = 8;
 			mob.ridable = _true;
