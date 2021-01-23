@@ -205,11 +205,18 @@ import java.util.Map;
 					.generateBlockIcon(getModElement().getFolderManager().getBlockImageIcon(textureTop).getImage(),
 							getModElement().getFolderManager().getBlockImageIcon(textureLeft).getImage(),
 							getModElement().getFolderManager().getBlockImageIcon(textureFront).getImage());
-		} else if (renderType() == 11 && !texture.equals("")) {
+		} else if (renderType() == 11 || renderType() == 110 || (blockBase != null && blockBase.equals("Leaves"))) {
 			return (BufferedImage) MinecraftImageGenerator.Preview
 					.generateBlockIcon(getModElement().getFolderManager().getBlockImageIcon(texture).getImage(),
 							getModElement().getFolderManager().getBlockImageIcon(texture).getImage(),
 							getModElement().getFolderManager().getBlockImageIcon(texture).getImage());
+		} else if (renderType() == 14 && !textureTop.equals("") && !textureFront.equals("") && !textureLeft
+				.equals("")) {
+			Image side = ImageUtils.drawOver(getModElement().getFolderManager().getBlockImageIcon(textureFront),
+					getModElement().getFolderManager().getBlockImageIcon(textureLeft)).getImage();
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateBlockIcon(getModElement().getFolderManager().getBlockImageIcon(textureTop).getImage(),
+							side, side);
 		} else {
 			return ImageUtils
 					.resizeAndCrop(getModElement().getFolderManager().getBlockImageIcon(texture).getImage(), 32);
