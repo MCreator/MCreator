@@ -54,6 +54,7 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
@@ -114,6 +115,8 @@ public class WorkspacePanel extends JPanel {
 
 	private final TransparentToolBar modElementsBar = new TransparentToolBar();
 
+	private final WorkspaceFolderBreadcrumb elementsBreadcrumb;
+
 	private final JLabel elementsCount = new JLabel();
 
 	private final ModTypeDropdown modTypeDropdown;
@@ -138,7 +141,9 @@ public class WorkspacePanel extends JPanel {
 		this.variablesPan = new WorkspacePanelVariables(this);
 		this.vcsPan = new WorkspacePanelVCS(this);
 
-		modTypeDropdown = new ModTypeDropdown(mcreator);
+		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator);
+
+		this.modTypeDropdown = new ModTypeDropdown(mcreator);
 
 		panels.setOpaque(false);
 
@@ -188,14 +193,12 @@ public class WorkspacePanel extends JPanel {
 
 					IElement selected = list.getSelectedValue();
 					if (selected instanceof FolderElement) {
-						currentFolder = (FolderElement) selected;
-						search.setText(null); // clear the search bar
-						reloadElements();
+						switchFolder((FolderElement) selected);
 					} else {
 						if (((e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK))
-							editCurrentlySelectedModElementAsCode(list, e.getX(), e.getY());
+							editCurrentlySelectedModElementAsCode((ModElement) selected, list, e.getX(), e.getY());
 						else
-							editCurrentlySelectedModElement(list, e.getX(), e.getY());
+							editCurrentlySelectedModElement((ModElement) selected, list, e.getX(), e.getY());
 					}
 				}
 			}
@@ -214,8 +217,6 @@ public class WorkspacePanel extends JPanel {
 		JPanel modElementsPanel = new JPanel(new BorderLayout(0, 0));
 		modElementsPanel.setOpaque(false);
 
-		modElementsPanel.setBorder(
-				BorderFactory.createMatteBorder(4, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 		resourcesPan.setBorder(
 				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 		localePan.setBorder(
@@ -329,9 +330,7 @@ public class WorkspacePanel extends JPanel {
 
 		upFolder.addActionListener(e -> {
 			if (!currentFolder.equals(FolderElement.ROOT)) {
-				search.setText(null); // clear the search bar
-				currentFolder = currentFolder.getParent();
-				reloadElements();
+				switchFolder(currentFolder.getParent());
 			}
 		});
 
@@ -539,7 +538,7 @@ public class WorkspacePanel extends JPanel {
 
 		mainp.setOpaque(false);
 
-		modElementsPanel.add("Center", mainp);
+		modElementsPanel.add("Center", PanelUtils.northAndCenterElement(elementsBreadcrumb, mainp));
 
 		panels.add(modElementsPanel, "mods");
 		panels.add(resourcesPan, "res");
@@ -688,8 +687,9 @@ public class WorkspacePanel extends JPanel {
 
 		but2.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (but2.isEnabled())
-					editCurrentlySelectedModElement(but2, e.getComponent().getWidth() + 8, 0);
+				if (but2.isEnabled() && list.getSelectedValue() instanceof ModElement)
+					editCurrentlySelectedModElement((ModElement) list.getSelectedValue(), but2,
+							e.getComponent().getWidth() + 8, 0);
 			}
 		});
 		but2.setToolTipText(L10N.t("workspace.elements.edit.tooltip"));
@@ -763,8 +763,9 @@ public class WorkspacePanel extends JPanel {
 
 		but5.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (but5.isEnabled()) {
-					editCurrentlySelectedModElementAsCode(but5, e.getComponent().getWidth() + 8, 0);
+				if (but5.isEnabled() && list.getSelectedValue() instanceof ModElement) {
+					editCurrentlySelectedModElementAsCode((ModElement) list.getSelectedValue(), but5,
+							e.getComponent().getWidth() + 8, 0);
 				}
 			}
 		});
@@ -834,6 +835,18 @@ public class WorkspacePanel extends JPanel {
 		mainp.add("sp", sp);
 
 		updateElementListRenderer();
+
+		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
+	}
+
+	public void switchFolder(FolderElement switchTo) {
+		search.setText(null); // clear the search bar
+		currentFolder = switchTo;
+
+		reloadElements();
+
+		// reload breadcrumb
+		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 	}
 
 	private void resort() {
@@ -1008,59 +1021,52 @@ public class WorkspacePanel extends JPanel {
 		}
 	}
 
-	private void editCurrentlySelectedModElement(JComponent component, int x, int y) {
-		if (list.getSelectedValue() instanceof ModElement) {
-			ModElement mu = (ModElement) list.getSelectedValue();
-			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
-				if (mu.isCodeLocked()) {
-					editCurrentlySelectedModElementAsCode(component, x, y);
-				} else {
-					ModElementGUI<?> modeditor = ModElementTypeRegistry.REGISTRY.get(mu.getType())
-							.getModElement(mcreator, mu, true);
-					if (modeditor != null) {
-						modeditor.showView();
-					}
-				}
+	public void editCurrentlySelectedModElement(ModElement mu, JComponent component, int x, int y) {
+		if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
+			if (mu.isCodeLocked()) {
+				editCurrentlySelectedModElementAsCode(mu, component, x, y);
 			} else {
-				if (mu.isCodeLocked()) {
-					editCurrentlySelectedModElementAsCode(component, x, y);
-				} else {
-					JOptionPane.showMessageDialog(null,
-							"<html>This mod does not have saved instance. If you want to make it editable,<br>you need to remake it.<br>"
-									+ "<small>You probably see this because you have updated MCreator and your mod was made before saving was possible.");
+				ModElementGUI<?> modeditor = ModElementTypeRegistry.REGISTRY.get(mu.getType())
+						.getModElement(mcreator, mu, true);
+				if (modeditor != null) {
+					modeditor.showView();
 				}
+			}
+		} else {
+			if (mu.isCodeLocked()) {
+				editCurrentlySelectedModElementAsCode(mu, component, x, y);
+			} else {
+				JOptionPane.showMessageDialog(null,
+						"<html>This mod does not have saved instance. If you want to make it editable,<br>you need to remake it.<br>"
+								+ "<small>You probably see this because you have updated MCreator and your mod was made before saving was possible.");
 			}
 		}
 	}
 
-	private void editCurrentlySelectedModElementAsCode(JComponent component, int x, int y) {
-		if (list.getSelectedValue() instanceof ModElement) {
-			ModElement mu = (ModElement) list.getSelectedValue();
+	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
+		List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu).stream()
+				.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 
-			List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu).stream()
-					.map(GeneratorTemplate::getFile).collect(Collectors.toList());
+		if (modElementFiles.size() > 1) {
+			JPopupMenu codeDropdown = new JPopupMenu();
+			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
+			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 
-			if (modElementFiles.size() > 1) {
-				JPopupMenu codeDropdown = new JPopupMenu();
-				codeDropdown.setBorder(BorderFactory.createEmptyBorder());
-				codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-
-				for (File modElementFile : modElementFiles) {
-					JMenuItem item = new JMenuItem(
-							"<html>" + modElementFile.getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
-									.getWorkspaceFolder().toPath().relativize(modElementFile.toPath()));
-					item.setIcon(FileIcons.getIconForFile(modElementFile));
-					item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-					item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-					item.setIconTextGap(8);
-					item.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
-					item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, modElementFile));
-					codeDropdown.add(item);
-				}
-				codeDropdown.show(component, x, y);
-			} else if (modElementFiles.size() == 1) {
-				ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0));
+			for (File modElementFile : modElementFiles) {
+				JMenuItem item = new JMenuItem(
+						"<html>" + modElementFile.getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
+								.getWorkspaceFolder().toPath().relativize(modElementFile.toPath()));
+				item.setIcon(FileIcons.getIconForFile(modElementFile));
+				item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+				item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				item.setIconTextGap(8);
+				item.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
+				item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, modElementFile));
+				codeDropdown.add(item);
 			}
+			codeDropdown.show(component, x, y);
+		} else if (modElementFiles.size() == 1) {
+			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0));
 		}
 	}
 

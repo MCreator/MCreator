@@ -18,13 +18,12 @@
 
 package net.mcreator.ui.component;
 
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.ModElementManager;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
@@ -74,18 +73,9 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 					if (element instanceof FolderElement) {
 						list.setCursor(DRAG_FOLDER);
 					} else if (element instanceof ModElement) {
-						ImageIcon icon = ((ModElement) element).getElementIcon();
-						if (icon == null || icon.getImage() == null || icon.getIconWidth() <= 0
-								|| icon.getIconHeight() <= 0) {
-							icon = TiledImageCache.getModTypeIcon(((ModElement) element).getType());
-						}
-
-						if (icon != null)
-							list.setCursor(Toolkit.getDefaultToolkit()
-									.createCustomCursor(icon.getImage(), new Point(0, 0),
-											((ModElement) element).getName()));
-						else
-							list.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+						list.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(
+								ModElementManager.getModElementIcon((ModElement) element).getImage(), new Point(0, 0),
+								((ModElement) element).getName()));
 					}
 				}
 
