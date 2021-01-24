@@ -18,20 +18,46 @@
 
 package net.mcreator.ui.component;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseListener;
 import java.awt.geom.Path2D;
+import java.util.List;
 
 public class JSelectableList<E> extends JList<E> {
 
 	private final Path2D rubberBand = new Path2D.Double();
 
+	protected boolean dndCustom = false;
+
+	protected CustomDNDListener<E> listener;
+
+	private final JSelectableListMouseListenerWithDND<E> slmlwdnd;
+
 	public JSelectableList(ListModel<E> dataModel) {
+		this(dataModel, null);
+	}
+
+	public JSelectableList(ListModel<E> dataModel, @Nullable MouseListener priorityMouseListener) {
 		super(dataModel);
 
-		ListElementMouseSelector lems = new ListElementMouseSelector();
-		addMouseListener(lems);
-		addMouseMotionListener(lems);
+		slmlwdnd = new JSelectableListMouseListenerWithDND<>(this);
+		addMouseListener(slmlwdnd);
+		addMouseMotionListener(slmlwdnd);
+
+		if (priorityMouseListener != null)
+			addMouseListener(priorityMouseListener);
+	}
+
+	public void enableDNDCustom(CustomDNDListener<E> listener) {
+		this.dndCustom = true;
+		this.listener = listener;
+	}
+
+	public void cancelDND() {
+		this.slmlwdnd.stopDNDAction();
 	}
 
 	Path2D getRubberBand() {
@@ -54,6 +80,12 @@ public class JSelectableList<E> extends JList<E> {
 		g2.setStroke(defaultStroke);
 		g2.fill(rubberBand);
 		g2.dispose();
+	}
+
+	public interface CustomDNDListener<E> {
+
+		void dndComplete(E target, List<E> sources);
+
 	}
 
 }

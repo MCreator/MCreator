@@ -26,7 +26,7 @@ public class FolderElement implements IElement {
 	public static final FolderElement ROOT = new FolderElement("<root>", null);
 
 	private String name;
-	private final List<FolderElement> children = new ArrayList<>();
+	protected final List<FolderElement> children = new ArrayList<>();
 
 	// Must not be serialized due to circular references!
 	// Populated by call to updateStructure from workspace loading mechanism
@@ -85,10 +85,13 @@ public class FolderElement implements IElement {
 	}
 
 	@Override public boolean equals(Object element) {
-		if (element == null && this.getName().equals(ROOT.getName()))
+		if (element == this)
 			return true;
 
-		return element instanceof FolderElement && name.equals(((FolderElement) element).getName()) && (
+		if (element == null && this.name.equals(ROOT.name))
+			return true;
+
+		return element instanceof FolderElement && name.equals(((FolderElement) element).name) && (
 				getParent() == null || getParent().equals(((FolderElement) element).getParent()));
 	}
 

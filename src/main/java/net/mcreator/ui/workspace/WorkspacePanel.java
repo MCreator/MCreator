@@ -78,11 +78,11 @@ import java.util.stream.Collectors;
 public class WorkspacePanel extends JPanel {
 
 	private FilterModel dml = new FilterModel();
-	public JTextField search;
+	public final JTextField search;
 
 	public FolderElement currentFolder;
 
-	public JSelectableList<IElement> list = new JSelectableList<>(dml);
+	public final JSelectableList<IElement> list;
 
 	private final CardLayout cardLayout = new CardLayout() {
 		@Override public void show(Container container, String s) {
@@ -118,7 +118,7 @@ public class WorkspacePanel extends JPanel {
 
 	private final ModTypeDropdown modTypeDropdown;
 
-	public JRadioButtonMenuItem desc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.descending"));
+	public final JRadioButtonMenuItem desc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.descending"));
 
 	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem(
 			L10N.t("workspace.elements.list.sort_date"));
@@ -142,10 +142,31 @@ public class WorkspacePanel extends JPanel {
 
 		panels.setOpaque(false);
 
+		list = new JSelectableList<>(dml);
 		list.setOpaque(false);
 		list.setBorder(BorderFactory.createEmptyBorder(2, 7, 0, 0));
 		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		list.setVisibleRowCount(-1);
+
+		list.enableDNDCustom((target, sources) -> {
+			if (target instanceof FolderElement) {
+				for (IElement element : sources) {
+					if (element instanceof ModElement) {
+						((ModElement) element).setParent((FolderElement) target);
+					} else if (element instanceof FolderElement) {
+						if (element.equals(target))
+							continue;
+
+						FolderElement folder = (FolderElement) element;
+						folder.getParent().removeChild(folder);
+						((FolderElement) target).addChild(folder);
+					}
+				}
+				reloadElements();
+			} else {
+				Toolkit.getDefaultToolkit().beep();
+			}
+		});
 
 		list.addMouseMotionListener(new MouseAdapter() {
 			@Override public void mouseMoved(MouseEvent e) {
@@ -156,6 +177,26 @@ public class WorkspacePanel extends JPanel {
 					ModElement modElement = (ModElement) element;
 					mcreator.getStatusBar()
 							.setMessage(modElement.getType().getReadableName() + ": " + modElement.getName());
+				}
+			}
+		});
+
+		list.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2 && !e.isConsumed()) {
+					list.cancelDND();
+
+					IElement selected = list.getSelectedValue();
+					if (selected instanceof FolderElement) {
+						currentFolder = (FolderElement) selected;
+						search.setText(null); // clear the search bar
+						reloadElements();
+					} else {
+						if (((e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK))
+							editCurrentlySelectedModElementAsCode(list, e.getX(), e.getY());
+						else
+							editCurrentlySelectedModElement(list, e.getX(), e.getY());
+					}
 				}
 			}
 		});
@@ -644,24 +685,6 @@ public class WorkspacePanel extends JPanel {
 		but1.setToolTipText(L10N.t("workspace.elements.add.tooltip"));
 		but1.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but1);
-
-		list.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2 && !e.isConsumed()) {
-					IElement selected = list.getSelectedValue();
-					if (selected instanceof FolderElement) {
-						currentFolder = (FolderElement) selected;
-						search.setText(null); // clear the search bar
-						reloadElements();
-					} else {
-						if (((e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK))
-							editCurrentlySelectedModElementAsCode(list, e.getX(), e.getY());
-						else
-							editCurrentlySelectedModElement(list, e.getX(), e.getY());
-					}
-				}
-			}
-		});
 
 		but2.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
