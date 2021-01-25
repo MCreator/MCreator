@@ -49,7 +49,7 @@ package ${package}.item;
 	<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 	@SubscribeEvent @OnlyIn(Dist.CLIENT) public void onItemDropped(ItemTossEvent event) {
 		if(event.getEntityItem().getItem().getItem() == block) {
-			if (Minecraft.getInstance().currentScreen instanceof ${(data.guiBoundTo)}Gui.GuiWindow) {
+			if (Minecraft.getInstance().currentScreen instanceof ${(data.guiBoundTo)}GuiWindow) {
 				Minecraft.getInstance().player.closeScreen();
 			}
 		}
