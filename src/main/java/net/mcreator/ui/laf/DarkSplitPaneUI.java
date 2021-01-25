@@ -30,7 +30,7 @@ public class DarkSplitPaneUI extends MetalSplitPaneUI {
 		return new DarkSplitPaneUI();
 	}
 
-	public BasicSplitPaneDivider createDefaultDivider() {
+	@Override public BasicSplitPaneDivider createDefaultDivider() {
 		BasicSplitPaneDivider divider = super.createDefaultDivider();
 		divider.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		return divider;

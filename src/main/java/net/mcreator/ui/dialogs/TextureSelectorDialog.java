@@ -22,6 +22,7 @@ import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
 
@@ -37,7 +38,7 @@ public class TextureSelectorDialog extends MCreatorDialog {
 	public JList<ResourcePointer> list = new JList<>(model);
 
 	public TextureSelectorDialog(Iterable<ResourcePointer> block, JFrame f) {
-		super(f, "Texture selector", true);
+		super(f, L10N.t("dialog.textures_selector.title_window"), true);
 		setIconImage(UIRES.get("icon").getImage());
 		list.setCellRenderer(new Render());
 
@@ -52,7 +53,7 @@ public class TextureSelectorDialog extends MCreatorDialog {
 		list.addListSelectionListener(event -> naprej.doClick());
 		naprej2.addActionListener(event -> setVisible(false));
 
-		JLabel jtf = new JLabel("Select the texture:");
+		JLabel jtf = L10N.label("dialog.textures_selector.select_texture");
 		ComponentUtils.deriveFont(jtf, 17);
 
 		add("North", PanelUtils.join(FlowLayout.LEFT, jtf));
@@ -63,7 +64,7 @@ public class TextureSelectorDialog extends MCreatorDialog {
 		setLocationRelativeTo(f);
 	}
 
-	class Render extends JLabel implements ListCellRenderer<ResourcePointer> {
+	static class Render extends JLabel implements ListCellRenderer<ResourcePointer> {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends ResourcePointer> list, ResourcePointer ma,
 				int index, boolean isSelected, boolean cellHasFocus) {

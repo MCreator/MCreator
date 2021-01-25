@@ -27,9 +27,13 @@ import net.mcreator.io.zip.ZipIO;
 import net.mcreator.minecraft.MinecraftFolderUtils;
 import net.mcreator.ui.FileOpener;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.tree.FilteredTreeModel;
+import net.mcreator.ui.component.tree.FilterTreeNode;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
 import net.mcreator.ui.component.util.WrapLayout;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
@@ -52,11 +56,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
 
-public class ProjectBrowser extends JPanel {
+public class WorkspaceFileBrowser extends JPanel {
 
 	private final FilteredTreeModel mods = new FilteredTreeModel(null);
 
-	ProjectBrowserFilterTreeNode sourceCode = null;
+	FilterTreeNode sourceCode = null;
 
 	public JTree tree = new JTree(mods) {
 		@Override public void paintComponent(Graphics g) {
@@ -87,7 +91,7 @@ public class ProjectBrowser extends JPanel {
 
 	final MCreator mcreator;
 
-	public ProjectBrowser(MCreator mcreator) {
+	public WorkspaceFileBrowser(MCreator mcreator) {
 		setLayout(new BorderLayout(0, 0));
 		this.mcreator = mcreator;
 
@@ -122,6 +126,8 @@ public class ProjectBrowser extends JPanel {
 
 		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
+		jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+
 		add("Center", jsp);
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
@@ -153,7 +159,7 @@ public class ProjectBrowser extends JPanel {
 
 		JPanel tools = new JPanel(new WrapLayout(FlowLayout.LEFT, 0, 4));
 
-		JButton create = new JButton("Add ...");
+		JButton create = L10N.button("workspace_file_browser.add");
 		create.setIcon(UIRES.get("16px.add.gif"));
 		create.setContentAreaFilled(false);
 		create.setOpaque(false);
@@ -169,28 +175,37 @@ public class ProjectBrowser extends JPanel {
 		delete.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 7));
 		tools.add(delete);
 
-		tools.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		tools.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createEmptyBorder(0, 5, 0, 0)));
 
 		JPanel bar = new JPanel(new BorderLayout());
 		bar.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		bar.add(jtf1);
-		bar.setBorder(BorderFactory.createMatteBorder(0, 0, 6, 5, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		bar.setBorder(BorderFactory.createMatteBorder(0, 5, 6, 5, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 
-		add("North", tools);
+		JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		topBar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		topBar.add(ComponentUtils
+				.setForeground(ComponentUtils.deriveFont(L10N.label("workspace_file_browser.title"), 10f),
+						(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")));
+
+		topBar.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
+				BorderFactory.createEmptyBorder(2, 5, 2, 0)));
+
+		add("North", PanelUtils.northAndCenterElement(topBar, tools));
 		add("South", bar);
-
-		setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 
 		create.addActionListener(e -> new AddFileDropdown(this).show(create, 0, 20));
 
 		delete.addActionListener(e -> {
-			ProjectBrowserFilterTreeNode selected = (ProjectBrowserFilterTreeNode) tree.getLastSelectedPathComponent();
+			FilterTreeNode selected = (FilterTreeNode) tree.getLastSelectedPathComponent();
 			if (selected != null) {
 				if (selected.getUserObject() instanceof File) {
-					int n = JOptionPane.showConfirmDialog(mcreator,
-							"<html>Are you sure that you want to remove selected file?"
-									+ "<br>NOTE: You can break workspace by removing wrong files", "Confirmation",
-							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("workspace_file_browser.remove_file"),
+							L10N.t("workspace_file_browser.remove_file.title"), JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE);
 					if (n == 0) {
 						File file = (File) selected.getUserObject();
 						if (file.isFile())
@@ -238,73 +253,71 @@ public class ProjectBrowser extends JPanel {
 		if (jtf1.getText().isEmpty()) {
 			List<DefaultMutableTreeNode> state = TreeUtils.getExpansionState(tree);
 
-			ProjectBrowserFilterTreeNode root = new ProjectBrowserFilterTreeNode("");
-			ProjectBrowserFilterTreeNode node = new ProjectBrowserFilterTreeNode(
-					mcreator.getWorkspace().getWorkspaceSettings().getModName());
+			FilterTreeNode root = new FilterTreeNode("");
+			FilterTreeNode node = new FilterTreeNode(
+					mcreator.getWorkspaceSettings().getModName());
 
-			sourceCode = new ProjectBrowserFilterTreeNode("Source (Gradle)");
-			addNodes(sourceCode, mcreator.getWorkspace().getGenerator().getSourceRoot(), true);
+			sourceCode = new FilterTreeNode("Source (Gradle)");
+			addNodes(sourceCode, mcreator.getGenerator().getSourceRoot(), true);
 			node.add(sourceCode);
 
-			ProjectBrowserFilterTreeNode currRes = new ProjectBrowserFilterTreeNode("Resources (Gradle)");
-			addNodes(currRes, mcreator.getWorkspace().getGenerator().getResourceRoot(), true);
+			FilterTreeNode currRes = new FilterTreeNode("Resources (Gradle)");
+			addNodes(currRes, mcreator.getGenerator().getResourceRoot(), true);
 			node.add(currRes);
 
-			if (mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo().get("sounds")
+			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("sounds")
 					!= GeneratorStats.CoverageStatus.NONE) {
-				ProjectBrowserFilterTreeNode sounds = new ProjectBrowserFilterTreeNode("Sounds");
-				addNodes(sounds, mcreator.getWorkspace().getFolderManager().getSoundsDir(), true);
+				FilterTreeNode sounds = new FilterTreeNode("Sounds");
+				addNodes(sounds, mcreator.getFolderManager().getSoundsDir(), true);
 				node.add(sounds);
 			}
 
-			if (mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo().get("structures")
+			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("structures")
 					!= GeneratorStats.CoverageStatus.NONE) {
-				ProjectBrowserFilterTreeNode structures = new ProjectBrowserFilterTreeNode("Structures");
-				addNodes(structures, mcreator.getWorkspace().getFolderManager().getStructuresDir(), true);
+				FilterTreeNode structures = new FilterTreeNode("Structures");
+				addNodes(structures, mcreator.getFolderManager().getStructuresDir(), true);
 				node.add(structures);
 			}
 
-			if (mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
-					!= GeneratorStats.CoverageStatus.NONE ||
-					mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
-							!= GeneratorStats.CoverageStatus.NONE
-					|| mcreator.getWorkspace().getGenerator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
+			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_json")
+					!= GeneratorStats.CoverageStatus.NONE
+					|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_java")
+					!= GeneratorStats.CoverageStatus.NONE
+					|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 					!= GeneratorStats.CoverageStatus.NONE) {
-				ProjectBrowserFilterTreeNode models = new ProjectBrowserFilterTreeNode("Models");
-				addNodes(models, mcreator.getWorkspace().getFolderManager().getModelsDir(), true);
+				FilterTreeNode models = new FilterTreeNode("Models");
+				addNodes(models, mcreator.getFolderManager().getModelsDir(), true);
 				node.add(models);
 			}
 
-			if (new File(mcreator.getWorkspace().getFolderManager().getWorkspaceFolder(), "run/debug").isDirectory()) {
-				ProjectBrowserFilterTreeNode debugFolder = new ProjectBrowserFilterTreeNode("Debug profiler results");
-				addNodes(debugFolder,
-						new File(mcreator.getWorkspace().getFolderManager().getWorkspaceFolder(), "run/debug"), true);
+			if (new File(mcreator.getWorkspaceFolder(), "run/debug").isDirectory()) {
+				FilterTreeNode debugFolder = new FilterTreeNode("Debug profiler results");
+				addNodes(debugFolder, new File(mcreator.getWorkspaceFolder(), "run/debug"), true);
 				node.add(debugFolder);
 			}
 
-			File[] rootFiles = mcreator.getWorkspace().getFolderManager().getWorkspaceFolder().listFiles();
+			File[] rootFiles = mcreator.getWorkspaceFolder().listFiles();
 			for (File file : rootFiles != null ? rootFiles : new File[0]) {
 				if (file.isFile() && !file.isHidden() && !file.getName().startsWith("."))
 					if (!file.getName().startsWith("gradlew") && !file.getName().endsWith(".mcreator"))
-						node.add(new ProjectBrowserFilterTreeNode(file));
+						node.add(new FilterTreeNode(file));
 			}
 
 			root.add(node);
 
-			if (new File(mcreator.getWorkspace().getFolderManager().getWorkspaceFolder(), "run/").isDirectory()) {
-				ProjectBrowserFilterTreeNode minecraft = new ProjectBrowserFilterTreeNode("Minecraft run folder");
-				addNodes(minecraft, new File(mcreator.getWorkspace().getFolderManager().getWorkspaceFolder(), "run/"),
-						true);
+			if (new File(mcreator.getWorkspaceFolder(), "run/").isDirectory()) {
+				FilterTreeNode minecraft = new FilterTreeNode("Minecraft run folder");
+				addNodes(minecraft, new File(mcreator.getWorkspaceFolder(), "run/"), true);
 				root.add(minecraft);
 			}
 
-			if (mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-					.getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA)
+			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+					== GeneratorFlavor.BaseLanguage.JAVA)
 				loadExtSoruces(root);
 
-			if (mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-					== GeneratorFlavor.ADDON && MinecraftFolderUtils.getBedrockEditionFolder() != null) {
-				ProjectBrowserFilterTreeNode minecraft = new ProjectBrowserFilterTreeNode("Bedrock Edition");
+			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON
+					&& MinecraftFolderUtils.getBedrockEditionFolder() != null) {
+				FilterTreeNode minecraft = new FilterTreeNode("Bedrock Edition");
 				addNodes(minecraft, MinecraftFolderUtils.getBedrockEditionFolder(), true);
 				root.add(minecraft);
 			}
@@ -320,12 +333,11 @@ public class ProjectBrowser extends JPanel {
 		}
 	}
 
-	private void loadExtSoruces(ProjectBrowserFilterTreeNode node) {
-		ProjectBrowserFilterTreeNode extDeps = new ProjectBrowserFilterTreeNode("External libraries");
+	private void loadExtSoruces(FilterTreeNode node) {
+		FilterTreeNode extDeps = new FilterTreeNode("External libraries");
 
-		if (mcreator.getWorkspace().getGenerator().getProjectJarManager() != null) {
-			List<LibraryInfo> libraryInfos = mcreator.getWorkspace().getGenerator().getProjectJarManager()
-					.getClassFileSources();
+		if (mcreator.getGenerator().getProjectJarManager() != null) {
+			List<LibraryInfo> libraryInfos = mcreator.getGenerator().getProjectJarManager().getClassFileSources();
 			for (LibraryInfo libraryInfo : libraryInfos) {
 				File libraryFile = new File(libraryInfo.getLocationAsString());
 				if (libraryFile.isFile() && ZipIO.checkIfZip(libraryFile)) {
@@ -351,8 +363,8 @@ public class ProjectBrowser extends JPanel {
 		node.add(extDeps);
 	}
 
-	private void addFileNodeToFilterTreeNode(ProjectBrowserFilterTreeNode node, FileNode root) {
-		ProjectBrowserFilterTreeNode treeNode = new ProjectBrowserFilterTreeNode(root);
+	private void addFileNodeToFilterTreeNode(FilterTreeNode node, FileNode root) {
+		FilterTreeNode treeNode = new FilterTreeNode(root);
 		node.add(treeNode);
 		for (FileNode child : root.childs)
 			addFileNodeToFilterTreeNode(treeNode, child);
@@ -361,12 +373,12 @@ public class ProjectBrowser extends JPanel {
 
 	}
 
-	private void addNodes(ProjectBrowserFilterTreeNode curTop, File dir, boolean first) {
+	private void addNodes(FilterTreeNode curTop, File dir, boolean first) {
 		if (dir == null)
 			return;
 
 		String curPath = dir.getPath();
-		ProjectBrowserFilterTreeNode curDir = new ProjectBrowserFilterTreeNode(dir);
+		FilterTreeNode curDir = new FilterTreeNode(dir);
 		if (curTop != null && !first) {
 			curTop.add(curDir);
 		} else {
@@ -393,7 +405,7 @@ public class ProjectBrowser extends JPanel {
 		}
 		for (int fnum = 0; fnum < files.size(); fnum++)
 			if (curDir != null)
-				curDir.add(new ProjectBrowserFilterTreeNode(files.elementAt(fnum)));
+				curDir.add(new FilterTreeNode(files.elementAt(fnum)));
 	}
 
 	private class ProjectBrowserCellRenderer extends DefaultTreeCellRenderer {
@@ -406,7 +418,7 @@ public class ProjectBrowser extends JPanel {
 		@Override
 		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
 				boolean leaf, int row, boolean hasFocus) {
-			ProjectBrowserFilterTreeNode node = (ProjectBrowserFilterTreeNode) value;
+			FilterTreeNode node = (FilterTreeNode) value;
 			setOpaque(false);
 			JLabel a = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 			a.setOpaque(true);
@@ -415,7 +427,7 @@ public class ProjectBrowser extends JPanel {
 			if (node.getUserObject() instanceof String) {
 				String tsi = (String) node.getUserObject();
 				a.setText(tsi);
-				if (tsi.equals(mcreator.getWorkspace().getWorkspaceSettings().getModName()))
+				if (tsi.equals(mcreator.getWorkspaceSettings().getModName()))
 					a.setIcon(UIRES.get("16px.package.gif"));
 				else if (tsi.equals("Source (Gradle)"))
 					a.setIcon(UIRES.get("16px.mod.png"));

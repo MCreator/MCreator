@@ -219,11 +219,11 @@ public class GeneratorSelector {
 		}
 
 		bar.setUI(new BasicProgressBarUI() {
-			protected Color getSelectionBackground() {
+			@Override protected Color getSelectionBackground() {
 				return (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
 			}
 
-			protected Color getSelectionForeground() {
+			@Override protected Color getSelectionForeground() {
 				return (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT");
 			}
 		});

@@ -1,0 +1,1 @@
+Ce paramètre contrôle si le fluide peut être mis dans un sceau.

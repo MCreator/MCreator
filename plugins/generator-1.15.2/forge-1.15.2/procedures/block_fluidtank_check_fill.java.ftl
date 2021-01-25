@@ -1,6 +1,6 @@
 <#-- @formatter:off -->
 (new Object(){
-	public int fillTankSimulate(BlockPos pos, int amount) {
+	public int fillTankSimulate(IWorld world, BlockPos pos, int amount) {
 		AtomicInteger _retval = new AtomicInteger(0);
 		TileEntity _ent = world.getTileEntity(pos);
 		if (_ent != null)
@@ -17,5 +17,5 @@
 		);
 		return _retval.get();
 	}
-}.fillTankSimulate(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
+}.fillTankSimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
 <#-- @formatter:on -->

@@ -85,32 +85,28 @@ public class SoundElementDialog {
 		}
 
 		int option = JOptionPane
-				.showOptionDialog(mcreator, ui, L10N.t("dialog.sounds.edit"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
-						null,
+				.showOptionDialog(mcreator, ui, L10N.t("dialog.sounds.edit"), JOptionPane.DEFAULT_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null,
 						element != null ? new String[] { "Save changes" } : new String[] { "Add sound", "Cancel" },
 						element != null ? "Save changes" : "Add sound");
 
 		if (option == 0) {
 			if (soundName.getValidationStatus().getValidationResultType() == Validator.ValidationResultType.ERROR) {
-				JOptionPane.showMessageDialog(mcreator,
-						L10N.t("dialog.sounds.error_name_not_valid"),
+				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_name_not_valid"),
 						L10N.t("dialog.sounds.error_name_not_valid_title"), JOptionPane.ERROR_MESSAGE);
 				return element;
 			} else {
 				if (element == null) { // new sound element
 					if (fileListField.getListElements().isEmpty()) {
-						JOptionPane.showMessageDialog(mcreator,
-								L10N.t("dialog.sounds.error_select_valid_file"),
-								L10N.t("dialog.sounds.error_select_valid_file_title"),
-								JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_select_valid_file"),
+								L10N.t("dialog.sounds.error_select_valid_file_title"), JOptionPane.ERROR_MESSAGE);
 						return null;
 					} else {
 						List<String> fileNames = new ArrayList<>();
 
 						fileListField.getListElements().forEach(file -> {
 							String fileName = RegistryNameFixer.fix(file.getName());
-							FileIO.copyFile(file,
-									new File(mcreator.getWorkspace().getFolderManager().getSoundsDir(), fileName));
+							FileIO.copyFile(file, new File(mcreator.getFolderManager().getSoundsDir(), fileName));
 							fileNames.add(FilenameUtils.removeExtension(fileName));
 						});
 

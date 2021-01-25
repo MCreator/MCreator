@@ -75,7 +75,7 @@ public enum ModElementType {
 
 	@SerializedName("code") CODE(BaseType.OTHER, RecipeElementType.NONE),
 
-	@SerializedName("tag") TAG(BaseType.OTHER, RecipeElementType.NONE),
+	@SerializedName("tag") TAG(BaseType.DATAPACK, RecipeElementType.NONE),
 
 	@SerializedName("musicdisc") MUSICDISC(BaseType.OTHER, RecipeElementType.ITEM),
 
@@ -83,7 +83,9 @@ public enum ModElementType {
 
 	@SerializedName("function") FUNCTION(BaseType.DATAPACK, RecipeElementType.NONE),
 
-	@SerializedName("painting") PAINTING(BaseType.OTHER, RecipeElementType.NONE);
+	@SerializedName("painting") PAINTING(BaseType.OTHER, RecipeElementType.NONE),
+
+	@SerializedName("gamerule") GAMERULE(BaseType.OTHER, RecipeElementType.NONE);
 
 	private final BaseType baseType;
 	private final String description;

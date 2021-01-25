@@ -18,10 +18,16 @@
 
 package net.mcreator.generator;
 
+import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.image.EmptyIcon;
+
+import javax.swing.*;
+import java.util.Locale;
+
 public enum GeneratorFlavor {
 
 	FORGE(BaseLanguage.JAVA), FABRIC(BaseLanguage.JAVA), SPIGOT(BaseLanguage.JAVA), DATAPACK(BaseLanguage.JSON), ADDON(
-			BaseLanguage.JSON);
+			BaseLanguage.JSON), UNKNOWN(null);
 
 	private final BaseLanguage baseLanguage;
 
@@ -31,6 +37,16 @@ public enum GeneratorFlavor {
 
 	public BaseLanguage getBaseLanguage() {
 		return baseLanguage;
+	}
+
+	public ImageIcon getIcon() {
+		if (this == ADDON) {
+			return UIRES.get("16px.bedrock");
+		} else if (this == UNKNOWN) {
+			return new EmptyIcon.ImageIcon(16, 16);
+		}
+
+		return UIRES.get("16px." + name().toLowerCase(Locale.ENGLISH));
 	}
 
 	public enum BaseLanguage {

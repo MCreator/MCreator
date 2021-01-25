@@ -1,6 +1,6 @@
 <#-- @formatter:off -->
 (new Object(){
-	public int receiveEnergySimulate(BlockPos pos, int _amount) {
+	public int receiveEnergySimulate(IWorld world, BlockPos pos, int _amount) {
 		AtomicInteger _retval = new AtomicInteger(0);
 		TileEntity _ent = world.getTileEntity(pos);
 		if (_ent != null)
@@ -8,5 +8,5 @@
 				_retval.set(capability.receiveEnergy(_amount, true)));
 		return _retval.get();
 	}
-}.receiveEnergySimulate(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
+}.receiveEnergySimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
 <#-- @formatter:on -->

@@ -1,6 +1,6 @@
 <#-- @formatter:off -->
 (new Object(){
-	public int getAmount(BlockPos pos,int sltid) {
+	public int getAmount(IWorld world, BlockPos pos,int sltid) {
 		AtomicInteger _retval = new AtomicInteger(0);
 		TileEntity _ent = world.getTileEntity(pos);
 		if (_ent != null) {
@@ -10,5 +10,5 @@
 		}
 		return _retval.get();
 	}
-}.getAmount(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)(${input$slotid})))
+}.getAmount(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)(${input$slotid})))
 <#-- @formatter:on -->

@@ -19,9 +19,8 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.BiomeEntry;
-import net.mcreator.element.parts.EntityEntry;
-import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.*;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -45,6 +44,16 @@ import java.util.List;
 	public Color foliageColor;
 	public Color waterColor;
 	public Color waterFogColor;
+
+	public Sound ambientSound;
+	public Sound additionsSound;
+	public Sound music;
+	public Sound moodSound;
+	public int moodSoundDelay;
+
+	public boolean spawnParticles;
+	public Particle particleToSpawn;
+	public double particlesProbability;
 
 	public String biomeCategory;
 	public BiomeEntry parent;
@@ -72,6 +81,7 @@ import java.util.List;
 	public String vanillaTreeType;
 	public int treeType;
 	public int minHeight;
+	public int maxWaterDepth;
 	public MItemBlock treeStem;
 	public MItemBlock treeBranch;
 	public MItemBlock treeVines;

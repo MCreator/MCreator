@@ -243,7 +243,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 	private void regenerateAITasks() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
-				mcreator.getWorkspace().getGenerator().getGeneratorStats().getGeneratorAITasks());
+				mcreator.getGeneratorStats().getGeneratorAITasks());
 
 		BlocklyToAITasks blocklyToJava;
 		try {
@@ -448,12 +448,10 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			mobModelTexture.removeAllItems();
 			mobModelTexture.addItem("");
-			mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
-					.forEach(el -> mobModelTexture.addItem(el.getName()));
+			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> mobModelTexture.addItem(el.getName()));
 			mobModelGlowTexture.removeAllItems();
 			mobModelGlowTexture.addItem("");
-			mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
-					.forEach(el -> mobModelGlowTexture.addItem(el.getName()));
+			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> mobModelGlowTexture.addItem(el.getName()));
 		});
 
 		spo2.add(HelpUtils
@@ -800,7 +798,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		pane6.setOpaque(false);
 
 		addPage(L10N.t("elementgui.living_entity.page_visual_and_sound"), pane2);
-		addPage(L10N.t("elementgui.living_entity.page_bahaviour"), pane1);
+		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
 		addPage(L10N.t("elementgui.living_entity.page_particles"), pane6);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
@@ -831,11 +829,11 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		spawningCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModelGlowTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),

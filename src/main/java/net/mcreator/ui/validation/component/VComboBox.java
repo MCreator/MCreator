@@ -48,7 +48,7 @@ public class VComboBox<T> extends JComboBox<T> implements IValidable {
 	}
 
 	// Hack to make return value typed
-	@SuppressWarnings("unchecked") public T getSelectedItem() {
+	@Override @SuppressWarnings("unchecked") public T getSelectedItem() {
 		return (T) super.getSelectedItem();
 	}
 

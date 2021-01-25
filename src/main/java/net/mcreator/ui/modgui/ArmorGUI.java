@@ -186,7 +186,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 
 		armorTextureFile.setRenderer(new WTextureComboBoxRenderer(element -> {
-			File[] armorTextures = mcreator.getWorkspace().getFolderManager().getArmorTextureFilesForName(element);
+			File[] armorTextures = mcreator.getFolderManager().getArmorTextureFilesForName(element);
 			if (armorTextures[0].isFile() && armorTextures[1].isFile()) {
 				return new ImageIcon(armorTextures[0].getAbsolutePath());
 			}
@@ -325,9 +325,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodyModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_body"), PanelUtils
 				.northAndCenterElement(PanelUtils
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bodyModel,
-								new JLabel(":"), bodyModelPart, new JLabel("arms L"), armsModelPartL,
-								new JLabel("arms R"), armsModelPartR, L10N.label("elementgui.armor.texture"),
-								bodyModelTexture), PanelUtils
+								new JLabel(":"), bodyModelPart, L10N.label("elementgui.armor.part_arm_left"),
+								armsModelPartL, L10N.label("elementgui.armor.part_arm_right"), armsModelPartR,
+								L10N.label("elementgui.armor.texture"), bodyModelTexture), PanelUtils
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), bodySpecialInfo)));
 		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
@@ -694,26 +694,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(helmetModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
-						.filter(element -> element.getName().endsWith(".png")).map(File::getName)
-						.collect(Collectors.toList())), "");
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bodyModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
-						.filter(element -> element.getName().endsWith(".png")).map(File::getName)
-						.collect(Collectors.toList())), "");
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(leggingsModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
-						.filter(element -> element.getName().endsWith(".png")).map(File::getName)
-						.collect(Collectors.toList())), "");
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bootsModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
-						.filter(element -> element.getName().endsWith(".png")).map(File::getName)
-						.collect(Collectors.toList())), "");
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
-		List<File> armors = mcreator.getWorkspace().getFolderManager().getArmorTexturesList();
+		List<File> armors = mcreator.getFolderManager().getArmorTexturesList();
 		List<String> armorPart1s = new ArrayList<>();
 		for (File texture : armors)
 			if (texture.getName().endsWith("_layer_1.png"))
@@ -735,7 +731,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	}
 
 	private void updateArmorTexturePreview() {
-		File[] armorTextures = mcreator.getWorkspace().getFolderManager()
+		File[] armorTextures = mcreator.getFolderManager()
 				.getArmorTextureFilesForName(armorTextureFile.getSelectedItem());
 		if (armorTextures[0].isFile() && armorTextures[1].isFile()) {
 			ImageIcon bg1 = new ImageIcon(ImageUtils

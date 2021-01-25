@@ -20,6 +20,7 @@ package net.mcreator.ui.validation.optionpane;
 
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import org.jetbrains.annotations.Nullable;
@@ -74,13 +75,13 @@ public class VOptionPane {
 
 		textField.addAncestorListener(new AncestorListener() {
 
-			public void ancestorRemoved(AncestorEvent event) {
+			@Override public void ancestorRemoved(AncestorEvent event) {
 			}
 
-			public void ancestorMoved(AncestorEvent event) {
+			@Override public void ancestorMoved(AncestorEvent event) {
 			}
 
-			public void ancestorAdded(AncestorEvent event) {
+			@Override public void ancestorAdded(AncestorEvent event) {
 				event.getComponent().requestFocusInWindow();
 			}
 		});
@@ -93,8 +94,8 @@ public class VOptionPane {
 			return textField.getText();
 		} else if (option == 0) { // user confirmed, but the validation returned error
 			JOptionPane.showMessageDialog(frame,
-					"<html>You have entered invalid text.<br><br>Error message:<br><b>" + textField
-							.getValidationStatus().getMessage(), "Invalid input", JOptionPane.ERROR_MESSAGE);
+					L10N.t("dialog.option_pane.invalid_text") + textField.getValidationStatus().getMessage(),
+					L10N.t("dialog.option_pane.invalid_input"), JOptionPane.ERROR_MESSAGE);
 		}
 
 		return null;

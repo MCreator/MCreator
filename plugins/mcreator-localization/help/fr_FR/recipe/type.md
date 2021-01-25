@@ -7,3 +7,4 @@ Ce paramètre contrôle dans quel système d'artisanat votre recette sera dispon
 * "Stone cutting" se passe dans le tailleur de pierre.
 * "Campfire cooking" est un clic droit sur un feu de camp.
 * "Smithing" se passe dans une table de forgeron.
+* "Brewing" se passe dans un alambic.

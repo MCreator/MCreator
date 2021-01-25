@@ -30,6 +30,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.FileDialogs;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.GifUtil;
 import net.mcreator.util.StringUtils;
@@ -129,15 +130,15 @@ public class AnimationMakerView extends ViewBase {
 
 		JPanel settings = new JPanel(new GridLayout(2, 2, 15, 20));
 		settings.setOpaque(false);
-		settings.add(new JLabel("<html>Duration of one frame:<br><small>In ticks; 20 ticks = 1s)"));
+		settings.add(L10N.label("dialog.animation_maker.frame_duration"));
 		settings.add(bd1);
-		settings.add(new JLabel("<html>Interpolate frames:<br><small>Not visible in preview"));
+		settings.add(L10N.label("dialog.animation_maker.interpolate_frame"));
 		settings.add(interpolate);
 
 		JComponent stp = PanelUtils.centerInPanel(settings);
 		stp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				"Animation settings", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("dialog.animation_maker.settings"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		editor.add("Center", PanelUtils.centerAndEastElement(preview2, stp));
@@ -189,7 +190,7 @@ public class AnimationMakerView extends ViewBase {
 
 		controls.addSeparator();
 
-		JButton next = new JButton("Next frame");
+		JButton next = L10N.button("dialog.animation_maker.next_frame");
 		next.addActionListener(event -> {
 			animindex++;
 			if (animindex >= timelinevector.getSize())
@@ -200,7 +201,7 @@ public class AnimationMakerView extends ViewBase {
 		next.setIcon(UIRES.get("16px.fwd"));
 		controls.add(next);
 
-		JButton prev = new JButton("Previous frame");
+		JButton prev = L10N.button("dialog.animation_maker.previous_frame");
 		prev.addActionListener(event -> {
 			animindex--;
 			if (animindex < 0)
@@ -215,12 +216,12 @@ public class AnimationMakerView extends ViewBase {
 		timelinee.setOpaque(false);
 		timelinee.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				"Animation timeline", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("dialog.animation_maker.animation_timeline"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JToolBar timelinebar = new JToolBar();
 		timelinebar.setFloatable(false);
-		JButton add = new JButton("Add frame(s) ...");
+		JButton add = L10N.button("dialog.animation_maker.add_frames");
 		add.addActionListener(event -> {
 			File[] frames = FileDialogs.getMultiOpenDialog(fra, new String[] { ".png" });
 			if (frames != null) {
@@ -236,17 +237,17 @@ public class AnimationMakerView extends ViewBase {
 		add.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add);
 
-		JButton add3 = new JButton("Add frames from template ...");
+		JButton add3 = L10N.button("dialog.animation_maker.add_frames_from_template");
 		add3.addActionListener(event -> addFramesFromTemplate());
 		add3.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add3);
 
-		JButton add4 = new JButton("Add frames from animation strip ...");
+		JButton add4 = L10N.button("dialog.animation_maker.add_frames_from_strip");
 		add4.addActionListener(event -> addFramesFromStrip());
 		add4.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add4);
 
-		JButton add2 = new JButton("Add frames from GIF ...");
+		JButton add2 = L10N.button("dialog.animation_maker.add_frames_from_gif");
 		add2.addActionListener(event -> {
 			File frame = FileDialogs.getOpenDialog(fra, new String[] { ".gif" });
 			if (frame != null) {
@@ -260,7 +261,7 @@ public class AnimationMakerView extends ViewBase {
 							p1.ok();
 						else {
 							p1.err();
-							dial.setTopInfoText("Compressed GIF format is not supported!");
+							dial.setTopInfoText(L10N.t("dialog.animation_maker.gif_format_unsupported"));
 							Thread.sleep(3500);
 							dial.hideAll();
 							return;
@@ -291,7 +292,7 @@ public class AnimationMakerView extends ViewBase {
 		add2.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add2);
 
-		JButton remove = new JButton("Remove selected frames");
+		JButton remove = L10N.button("dialog.animation_maker.remove_selected_frames");
 		remove.addActionListener(event -> {
 			if (timeline.getSelectedValue() != null)
 				timeline.getSelectedValuesList().forEach(timelinevector::removeElement);
@@ -320,7 +321,7 @@ public class AnimationMakerView extends ViewBase {
 
 		editor.add("South", timelinee);
 
-		JButton save = new JButton("Save this animated texture");
+		JButton save = L10N.button("dialog.animation_maker.save_animated_texture");
 		save.setMargin(new Insets(1, 40, 1, 40));
 		save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -335,32 +336,34 @@ public class AnimationMakerView extends ViewBase {
 
 	protected void use() {
 		Object[] options = { "Block", "Item", "Other" };
-		int n = JOptionPane.showOptionDialog(mcreator, "What kind of texture is this?", "Texture type",
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.animation_maker.kind_of_texture"),
+				L10N.t("dialog.animation_maker.type_of_texture"), JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (n < 0)
 			return;
 
-		String namec = JOptionPane.showInputDialog("Enter name of texture (without spaces): ");
+		String namec = JOptionPane.showInputDialog(L10N.t("dialog.animation_maker.enter_texture_name"));
 		if (namec != null) {
 			File exportFile;
 			namec = RegistryNameFixer.fix(namec);
 			if (n == 0)
-				exportFile = mcreator.getWorkspace().getFolderManager().getBlockTextureFile(namec);
+				exportFile = mcreator.getFolderManager().getBlockTextureFile(namec);
 			else if (n == 1)
-				exportFile = mcreator.getWorkspace().getFolderManager().getItemTextureFile(namec);
+				exportFile = mcreator.getFolderManager().getItemTextureFile(namec);
 			else
-				exportFile = mcreator.getWorkspace().getFolderManager().getOtherTextureFile(namec);
+				exportFile = mcreator.getFolderManager().getOtherTextureFile(namec);
 
 			if (exportFile.isFile()) {
-				JOptionPane
-						.showMessageDialog(mcreator, options[n] + " with this name already exists!", "Resource error",
-								JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("dialog.animation_maker.texture_already_exists", options[n]),
+						L10N.t("dialog.animation_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
 			} else {
 				Object[] possibilities = { "4 x 4", "8 x 8", "16 x 16", "32 x 32", "64 x 64", "128 x 128", "256 x 256",
 						"512 x 512" };
 				String s = (String) JOptionPane
-						.showInputDialog(mcreator, "Select the size of the animation:", "Size selection",
-								JOptionPane.PLAIN_MESSAGE, null, possibilities, "16 x 16");
+						.showInputDialog(mcreator, L10N.t("dialog.animation_maker.animation_size"),
+								L10N.t("dialog.animation_maker.size_selection"), JOptionPane.PLAIN_MESSAGE, null,
+								possibilities, "16 x 16");
 				int sizetwocubes = 16;
 				if (s != null) {
 					switch (s) {
@@ -407,15 +410,14 @@ public class AnimationMakerView extends ViewBase {
 		JPanel od = new JPanel(new BorderLayout());
 		JPanel centerPanel = new JPanel(new GridLayout(3, 2, 4, 4));
 
-		JLabel lab1 = new JLabel("Choose template and color");
-		JLabel lab2 = new JLabel("Animation template:");
-		JLabel lab3 = new JLabel("Animation color:");
-		JLabel lab4 = new JLabel("Lock saturation and lightness:");
+		JLabel lab1 = L10N.label("dialog.animation_maker.template_color_choice");
+		JLabel lab2 = L10N.label("dialog.animation_maker.template");
+		JLabel lab3 = L10N.label("dialog.animation_maker.color");
+		JLabel lab4 = L10N.label("dialog.animation_maker.saturation_lightness_lock");
 
 		JLabel preview = new JLabel();
-		preview.setBorder(BorderFactory
-				.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), "Preview", 0, 0,
-						getFont().deriveFont(12.0f), Color.gray));
+		preview.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+				L10N.t("dialog.animation_maker.preview"), 0, 0, getFont().deriveFont(12.0f), Color.gray));
 
 		JComboBox<ResourcePointer> types = new JComboBox<>();
 		templatesSorted.forEach(types::addItem);
@@ -450,8 +452,9 @@ public class AnimationMakerView extends ViewBase {
 		centerPanel.add(lab4);
 		centerPanel.add(cbox);
 
-		if (JOptionPane.showOptionDialog(mcreator, od, "Add frames from template", JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" }, "Add") == 0) {
+		if (JOptionPane.showOptionDialog(mcreator, od, L10N.t("dialog.animation_maker.add_frames_from_template"),
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" },
+				"Add") == 0) {
 			try {
 				BufferedImage imge = TiledImageUtils
 						.convert(ImageIO.read(templatesSorted.get(types.getSelectedIndex()).getStream()),
@@ -469,11 +472,11 @@ public class AnimationMakerView extends ViewBase {
 		JPanel od = new JPanel(new BorderLayout());
 		JPanel centerPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 
-		JLabel lab1 = new JLabel("<html><b>Choose texture strip and optionally a color\n\n");
-		JLabel lab2 = new JLabel("Texture strip file:");
-		JLabel lab3 = new JLabel("Animation color:");
-		JLabel lab4 = new JLabel("Lock saturation and lightness:");
-		JLabel lab5 = new JLabel("Colorize:");
+		JLabel lab1 = L10N.label("dialog.animation_maker.strip_color_choice");
+		JLabel lab2 = L10N.label("dialog.animation_maker.strip");
+		JLabel lab3 = L10N.label("dialog.animation_maker.color");
+		JLabel lab4 = L10N.label("dialog.animation_maker.saturation_lightness_lock");
+		JLabel lab5 = L10N.label("dialog.animation_maker.colorize");
 
 		JLabel preview = new JLabel(new ImageIcon(new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB)));
 		preview.setBorder(BorderFactory
@@ -535,8 +538,9 @@ public class AnimationMakerView extends ViewBase {
 		centerPanel.add(lab5);
 		centerPanel.add(cbox2);
 
-		if (JOptionPane.showOptionDialog(mcreator, od, "Add frames from file", JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" }, "Add") == 0) {
+		if (JOptionPane.showOptionDialog(mcreator, od, L10N.t("dialog.animation_maker.add_frames_from_file"),
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" },
+				"Add") == 0) {
 			try {
 				BufferedImage imge = TiledImageUtils.convert(ImageIO.read(f.get()), BufferedImage.TYPE_INT_ARGB);
 				addFramesFromBufferedImage(imge, cbox2.isSelected(), !cbox.isSelected(), colors.getColor());

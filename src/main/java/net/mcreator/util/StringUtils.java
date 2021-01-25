@@ -61,6 +61,12 @@ public class StringUtils {
 		return name.substring(0, 1).toUpperCase(Locale.ENGLISH) + name.substring(1);
 	}
 
+	public static String lowercaseFirstLetter(String name) {
+		if (name.length() <= 1)
+			return name.toLowerCase(Locale.ENGLISH);
+		return name.substring(0, 1).toLowerCase(Locale.ENGLISH) + name.substring(1);
+	}
+
 	public static String camelToSnake(String original) {
 		return String.join("_", original.split(NAME_PARTS_SPLITTER_REGEX)).replaceAll("(?<=\\d)_(?=\\d)", "");
 	}

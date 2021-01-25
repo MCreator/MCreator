@@ -33,7 +33,7 @@ public class GradleDaemonUtils {
 
 	private static Process getGradleCompatibleBashProcess(Workspace workspace) throws IOException {
 		ProcessBuilder processBuilder = new ProcessBuilder(OS.getRuntimeProvider());
-		processBuilder.directory(workspace.getFolderManager().getWorkspaceFolder());
+		processBuilder.directory(workspace.getWorkspaceFolder());
 		Map<String, String> env = processBuilder.environment();
 		env.remove("_JAVA_OPTIONS"); // to avoid global overrides
 		env.put("GRADLE_USER_HOME", UserFolderManager.getGradleHome().getAbsolutePath());

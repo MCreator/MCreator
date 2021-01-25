@@ -23,14 +23,17 @@ import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
+import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Element;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public abstract class BlocklyToCode {
+public abstract class BlocklyToCode implements IWorkspaceProvider {
 
 	private final StringBuilder code;
 	private final List<BlocklyCompileNote> compile_notes;
@@ -103,7 +106,7 @@ public abstract class BlocklyToCode {
 		return templateGenerator;
 	}
 
-	public final Workspace getWorkspace() {
+	@Override public final @NotNull Workspace getWorkspace() {
 		return workspace;
 	}
 
@@ -122,6 +125,10 @@ public abstract class BlocklyToCode {
 		}
 
 		return false;
+	}
+
+	public List<StatementInput> getStatementInputsMatching(Predicate<StatementInput> predicate) {
+		return this.statementInputStack.stream().filter(predicate).collect(Collectors.toList());
 	}
 
 	public final void processBlockProcedure(List<Element> blocks) throws TemplateGeneratorException {

@@ -28,7 +28,7 @@ import java.util.Locale;
 public class MinecraftOptionsUtils {
 
 	public static File getOptionsFile(@NotNull Workspace workspace) {
-		return new File(workspace.getFolderManager().getWorkspaceFolder(), "run/options.txt");
+		return new File(workspace.getWorkspaceFolder(), "run/options.txt");
 	}
 
 	public static void setLangTo(@NotNull Workspace workspace, String lang) {

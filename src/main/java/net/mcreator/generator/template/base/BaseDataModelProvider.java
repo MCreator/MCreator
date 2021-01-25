@@ -56,10 +56,10 @@ public class BaseDataModelProvider {
 		retval.put("generator", generatorWrapper);
 
 		retval.put("w", generator.getWorkspace().getWorkspaceInfo());
-		retval.put("modid", generator.getWorkspace().getWorkspaceSettings().getModID());
-		retval.put("JavaModName", generator.getWorkspace().getWorkspaceSettings().getJavaModName());
-		retval.put("package", generator.getWorkspace().getWorkspaceSettings().getModElementsPackage());
-		retval.put("settings", generator.getWorkspace().getWorkspaceSettings());
+		retval.put("modid", generator.getWorkspaceSettings().getModID());
+		retval.put("JavaModName", generator.getWorkspaceSettings().getJavaModName());
+		retval.put("package", generator.getWorkspaceSettings().getModElementsPackage());
+		retval.put("settings", generator.getWorkspaceSettings());
 		retval.put("fp", fileProvider);
 
 		retval.put("mcc", generator.getMinecraftCodeProvider());

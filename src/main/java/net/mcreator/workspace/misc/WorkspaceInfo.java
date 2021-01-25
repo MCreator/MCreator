@@ -88,6 +88,9 @@ import java.util.stream.Collectors;
 	}
 
 	public <T extends MappableElement> List<T> filterBrokenReferences(List<T> input) {
+		if (input == null)
+			return Collections.emptyList();
+
 		List<T> retval = new ArrayList<>();
 		for (T t : input) {
 			if (t.getUnmappedValue().startsWith("CUSTOM:")) {

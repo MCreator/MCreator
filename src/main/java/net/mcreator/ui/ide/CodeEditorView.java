@@ -137,8 +137,7 @@ public class CodeEditorView extends ViewBase {
 
 		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 
-		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, fileWorkingOn,
-				fa.getWorkspace().getFolderManager().getWorkspaceFolder());
+		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, fileWorkingOn, fa.getWorkspaceFolder());
 
 		te.addFocusListener(new FocusAdapter() {
 			@Override public void focusGained(FocusEvent focusEvent) {
@@ -258,9 +257,9 @@ public class CodeEditorView extends ViewBase {
 		spne.setContinuousLayout(true);
 
 		spne.setUI(new BasicSplitPaneUI() {
-			public BasicSplitPaneDivider createDefaultDivider() {
+			@Override public BasicSplitPaneDivider createDefaultDivider() {
 				return new BasicSplitPaneDivider(this) {
-					public void setBorder(Border b) {
+					@Override public void setBorder(Border b) {
 					}
 
 					@Override public void paint(Graphics g) {
@@ -384,7 +383,7 @@ public class CodeEditorView extends ViewBase {
 			try {
 				Field field = jls.getClass().getDeclaredField("jarManager");
 				field.setAccessible(true);
-				field.set(jls, mcreator.getWorkspace().getGenerator().getProjectJarManager());
+				field.set(jls, mcreator.getGenerator().getProjectJarManager());
 			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
 				LOG.error(e1.getMessage(), e1);
 			}
@@ -507,6 +506,8 @@ public class CodeEditorView extends ViewBase {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE));
 		} else if (fileName.endsWith(".gradle")) {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_GROOVY));
+		} else if (fileName.endsWith(".md")) {
+			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_MARKDOWN));
 		} else if (fileName.endsWith(".js")) {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT));
 
@@ -730,7 +731,7 @@ public class CodeEditorView extends ViewBase {
 	public static boolean isFileSupported(String fileName) {
 		return Arrays
 				.asList("java", "info", "txt", "json", "mcmeta", "lang", "gradle", "ini", "conf", "xml", "properties",
-						"mcfunction", "toml", "js", "yaml", "yml").contains(FilenameUtils.getExtension(fileName));
+						"mcfunction", "toml", "js", "yaml", "yml", "md").contains(FilenameUtils.getExtension(fileName));
 	}
 
 	public void jumpToLine(int linenum) {

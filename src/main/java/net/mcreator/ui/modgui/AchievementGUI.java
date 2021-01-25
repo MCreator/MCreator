@@ -230,8 +230,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		advancementTrigger.setPreferredSize(new Dimension(0, 330));
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(PanelUtils
-				.westAndEastElement(selpouter,
-						PanelUtils.northAndCenterElement(selp2, advancementTrigger)))));
+				.westAndEastElement(selpouter, PanelUtils.northAndCenterElement(selp2, advancementTrigger)))));
 
 		pane3.setOpaque(false);
 
@@ -245,7 +244,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 
 	private void regenerateTrigger() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
-				mcreator.getWorkspace().getGenerator().getGeneratorStats().getJsonTriggers());
+				mcreator.getGeneratorStats().getJsonTriggers());
 
 		BlocklyToJSONTrigger blocklyToJSONTrigger;
 		try {
@@ -285,7 +284,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 						.map(ModElement::getName).collect(Collectors.toList())), "No function");
 
 		ComboBoxUtil.updateComboBoxContents(background, ListUtils.merge(Collections.singleton("Default"),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
 						.collect(Collectors.toList())), "Default");
 	}
 

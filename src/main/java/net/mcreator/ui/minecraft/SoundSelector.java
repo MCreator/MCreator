@@ -23,11 +23,13 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VTextField;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class SoundSelector extends JPanel {
 
@@ -43,9 +45,10 @@ public class SoundSelector extends JPanel {
 		setOpaque(false);
 		bt.addActionListener(event -> {
 			String[] sounds = ElementUtil.getAllSounds(frame.getWorkspace());
-			String s = (String) JOptionPane
-					.showInputDialog(frame, "Please select sound:", "Selection", JOptionPane.PLAIN_MESSAGE, null,
-							sounds, sounds[0]);
+			Arrays.sort(sounds);
+
+			String s = (String) JOptionPane.showInputDialog(frame, L10N.t("dialog.selector.sound_message"),
+					L10N.t("dialog.selector.sound_title"), JOptionPane.PLAIN_MESSAGE, null, sounds, sounds[0]);
 			tfe.setText(s);
 			tfe.getValidationStatus();
 		});

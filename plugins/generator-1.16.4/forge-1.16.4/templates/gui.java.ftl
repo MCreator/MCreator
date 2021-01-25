@@ -55,11 +55,19 @@ import ${package}.${JavaModName};
 
 		containerType = new ContainerType<>(new GuiContainerModFactory());
 
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
+		FMLJavaModLoadingContext.get().getModEventBus().register(new ContainerRegisterHandler());
 
 		<#if hasProcedure(data.onTick)>
 		MinecraftForge.EVENT_BUS.register(this);
 		</#if>
+	}
+
+	private static class ContainerRegisterHandler {
+
+		@SubscribeEvent public void registerContainer(RegistryEvent.Register<ContainerType<?>> event) {
+			event.getRegistry().register(containerType.setRegistryName("${registryname}"));
+		}
+
 	}
 
 	@OnlyIn(Dist.CLIENT) public void initElements() {
@@ -78,10 +86,6 @@ import ${package}.${JavaModName};
 			}
 		}
 	</#if>
-
-	@SubscribeEvent public void registerContainer(RegistryEvent.Register<ContainerType<?>> event) {
-		event.getRegistry().register(containerType.setRegistryName("${registryname}"));
-	}
 
 	public static class GuiContainerModFactory implements IContainerFactory {
 

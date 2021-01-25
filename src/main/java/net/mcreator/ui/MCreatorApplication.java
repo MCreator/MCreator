@@ -41,6 +41,8 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
+import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
+import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
@@ -232,8 +234,8 @@ public final class MCreatorApplication {
 						}
 					}
 				}
-				this.workspaceSelector.addRecentWorkspace(new WorkspaceSelector.RecentWorkspaceEntry(
-						mcreator.getWorkspace().getWorkspaceSettings().getModName(), workspaceFile));
+				this.workspaceSelector
+						.addOrUpdateRecentWorkspace(new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile));
 			}
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
 			LOG.fatal("Failed to open workspace!", corruptedWorkspaceFile);
@@ -316,11 +318,8 @@ public final class MCreatorApplication {
 		workspaceSelector.setVisible(true);
 	}
 
-	List<WorkspaceSelector.RecentWorkspaceEntry> getRecentWorkspaces() {
-		if (workspaceSelector.recentWorkspaces == null)
-			workspaceSelector.recentWorkspaces = new WorkspaceSelector.RecentWorkspaces();
-
-		return workspaceSelector.recentWorkspaces.list;
+	List<RecentWorkspaceEntry> getRecentWorkspaces() {
+		return workspaceSelector.getRecentWorkspaces().getList();
 	}
 
 	public List<MCreator> getOpenMCreators() {
