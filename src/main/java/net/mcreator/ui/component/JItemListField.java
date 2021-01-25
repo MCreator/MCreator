@@ -18,8 +18,10 @@
 
 package net.mcreator.ui.component;
 
+import ca.goldorion.audager.utils.AudioUtils;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
@@ -39,6 +41,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	private final JButton bt = new JButton(UIRES.get("18px.add"));
 	private final JButton bt2 = new JButton(UIRES.get("18px.remove"));
 	private final JButton bt3 = new JButton(UIRES.get("18px.removeall"));
+	private final JButton playsound = new JButton(UIRES.get("18px.play"));
 
 	private Validator validator = null;
 	private Validator.ValidationResult currentValidationResult = null;
@@ -67,6 +70,11 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		bt3.setBorder(BorderFactory.createEmptyBorder());
 		bt3.setContentAreaFilled(false);
 
+		playsound.setOpaque(false);
+		playsound.setMargin(new Insets(0, 0, 0, 0));
+		playsound.setBorder(BorderFactory.createEmptyBorder());
+		playsound.setContentAreaFilled(false);
+
 		bt.addActionListener(e -> {
 			List<T> list = getElementsToAdd();
 			for (T el : list)
@@ -82,6 +90,15 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		});
 
 		bt3.addActionListener(e -> elementsListModel.removeAllElements());
+
+		playsound.addActionListener(e -> {
+			if(elementsList.getSelectedValue() != null) {
+				AudioUtils.playSound((File) elementsList.getSelectedValue());
+			} else{
+				JOptionPane.showMessageDialog(this.getParent(), L10N.t("dialog.sounds.error_no_sound_selected"),
+						L10N.t("dialog.sounds.error_no_sound_selected.title"),JOptionPane.ERROR_MESSAGE, null);
+			}
+		});
 
 		JScrollPane pane = new JScrollPane(PanelUtils.totalCenterInPanel(elementsList));
 		pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -111,6 +128,9 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		pane.setPreferredSize(getPreferredSize());
 
 		JComponent buttons = PanelUtils.totalCenterInPanel(PanelUtils.join(bt, bt2, bt3));
+		if(this instanceof FileListField){
+			buttons.add(playsound);
+		}
 		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 		buttons.setOpaque(true);
 		buttons.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
