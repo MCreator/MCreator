@@ -32,9 +32,11 @@ public class JSelectableList<E> extends JList<E> {
 
 	protected boolean dndCustom = false;
 
-	protected CustomDNDListener<E> listener;
+	@Nullable protected CustomDNDListener<E> listener;
 
 	private final JSelectableListMouseListenerWithDND<E> slmlwdnd;
+
+	@Nullable protected JComponent additionalDNDComponent;
 
 	public JSelectableList(ListModel<E> dataModel) {
 		this(dataModel, null);
@@ -54,6 +56,10 @@ public class JSelectableList<E> extends JList<E> {
 	public void enableDNDCustom(CustomDNDListener<E> listener) {
 		this.dndCustom = true;
 		this.listener = listener;
+	}
+
+	public void setAdditionalDNDComponent(@Nullable JComponent additionalDNDComponent) {
+		this.additionalDNDComponent = additionalDNDComponent;
 	}
 
 	public void cancelDND() {
@@ -84,7 +90,7 @@ public class JSelectableList<E> extends JList<E> {
 
 	public interface CustomDNDListener<E> {
 
-		void dndComplete(E target, List<E> sources);
+		void dndComplete(Object target, List<E> sources);
 
 	}
 

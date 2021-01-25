@@ -172,6 +172,7 @@ public class WorkspacePanel extends JPanel {
 				Toolkit.getDefaultToolkit().beep();
 			}
 		});
+		list.setAdditionalDNDComponent(elementsBreadcrumb);
 
 		list.addMouseMotionListener(new MouseAdapter() {
 			@Override public void mouseMoved(MouseEvent e) {
@@ -301,7 +302,7 @@ public class WorkspacePanel extends JPanel {
 
 		addFolder.addActionListener(e -> {
 			String name = VOptionPane
-					.showInputDialog(mcreator, "Enter the folder name:", "", null, new OptionPaneValidatior() {
+					.showInputDialog(mcreator, "Enter the folder name:" , "" , null, new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
 							ValidationResult result = new Validator.ValidationResult(
 									Validator.ValidationResultType.PASSED, "");
@@ -448,7 +449,7 @@ public class WorkspacePanel extends JPanel {
 		modElementsBar.add(ComponentUtils.deriveFont(elementsCount, 12));
 		modElementsBar.add(new JEmptyBox(5, 1));
 
-		se.add("East", modElementsBar);
+		se.add("East" , modElementsBar);
 
 		JPanel leftPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		leftPan.setOpaque(false);
@@ -472,7 +473,7 @@ public class WorkspacePanel extends JPanel {
 		leftPan.add(new JEmptyBox(2, 2));
 		leftPan.add(sort);
 
-		se.add("West", leftPan);
+		se.add("West" , leftPan);
 
 		JScrollablePopupMenu filterPopup = new JScrollablePopupMenu();
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
@@ -485,7 +486,7 @@ public class WorkspacePanel extends JPanel {
 		for (ModElementType type : Arrays.stream(ModElementType.values())
 				.sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
-					e -> search.setText("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
+					e -> search.setText("f:" + type.getReadableName().replace(" " , "").toLowerCase(Locale.ENGLISH)))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
 
 		}
@@ -534,11 +535,11 @@ public class WorkspacePanel extends JPanel {
 		slo.setOpaque(false);
 		se.setOpaque(false);
 
-		slo.add("North", se);
+		slo.add("North" , se);
 
 		mainp.setOpaque(false);
 
-		modElementsPanel.add("Center", PanelUtils.northAndCenterElement(elementsBreadcrumb, mainp));
+		modElementsPanel.add("Center" , PanelUtils.northAndCenterElement(elementsBreadcrumb, mainp));
 
 		panels.add(modElementsPanel, "mods");
 		panels.add(resourcesPan, "res");
@@ -548,7 +549,7 @@ public class WorkspacePanel extends JPanel {
 
 		cardLayout.show(panels, "mods");
 
-		slo.add("Center", panels);
+		slo.add("Center" , panels);
 
 		slo.setBorder(null);
 
@@ -666,9 +667,9 @@ public class WorkspacePanel extends JPanel {
 
 		rotatablePanel.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 
-		slo.add("West", rotatablePanel);
+		slo.add("West" , rotatablePanel);
 
-		add("Center", slo);
+		add("Center" , slo);
 		setOpaque(false);
 
 		JPanel pne = new JPanel(new GridLayout(8, 1, 6, 6));
@@ -710,9 +711,9 @@ public class WorkspacePanel extends JPanel {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but3.isEnabled()) {
 					if (list.getSelectedValue() != null) {
-						Object[] options = { "Yes", "No" };
+						Object[] options = { "Yes" , "No" };
 						int n = JOptionPane.showOptionDialog(mcreator,
-								L10N.t("workspace.elements.confirm_delete_message",
+								L10N.t("workspace.elements.confirm_delete_message" ,
 										list.getSelectedValuesList().size()),
 								L10N.t("workspace.elements.confirm_delete_title"), JOptionPane.YES_NO_CANCEL_OPTION,
 								JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
@@ -811,9 +812,9 @@ public class WorkspacePanel extends JPanel {
 		toolp.setOpaque(false);
 		toolp.setBorder(BorderFactory.createEmptyBorder(3, 5, 0, 5));
 
-		toolp.add("North", pne);
+		toolp.add("North" , pne);
 
-		modElementsPanel.add("West", toolp);
+		modElementsPanel.add("West" , toolp);
 
 		JPanel emptct = new JPanel();
 		emptct.setLayout(new BoxLayout(emptct, BoxLayout.LINE_AXIS));
@@ -828,11 +829,11 @@ public class WorkspacePanel extends JPanel {
 
 		JPanel emptbtpd = new JPanel(new BorderLayout());
 		emptbtpd.setOpaque(false);
-		emptbtpd.add("Center", emptct);
-		emptbtpd.add("South", new JEmptyBox(1, 40));
+		emptbtpd.add("Center" , emptct);
+		emptbtpd.add("South" , new JEmptyBox(1, 40));
 
-		mainp.add("ep", PanelUtils.totalCenterInPanel(emptbtpd));
-		mainp.add("sp", sp);
+		mainp.add("ep" , PanelUtils.totalCenterInPanel(emptbtpd));
+		mainp.add("sp" , sp);
 
 		updateElementListRenderer();
 
@@ -893,7 +894,7 @@ public class WorkspacePanel extends JPanel {
 	}
 
 	private void lockCode() {
-		Object[] options = { "Lock/unlock the code", "Cancel" };
+		Object[] options = { "Lock/unlock the code" , "Cancel" };
 		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("workspace.elements.lock_modelement_message"),
 				L10N.t("workspace.elements.lock_modelement_confirm"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.WARNING_MESSAGE, null, options, options[1]);
@@ -961,13 +962,13 @@ public class WorkspacePanel extends JPanel {
 				String modName = VOptionPane.showInputDialog(mcreator,
 						"<html><font style=\"font-size: 13px;\">Enter the name of the new mod element:</font><br><small>"
 								+ "This mod element will be the same as " + mu.getName()
-								+ ", but with this name.</font>", "Duplicate " + mu.getName(), mu.getElementIcon(),
+								+ ", but with this name.</font>" , "Duplicate " + mu.getName(), mu.getElementIcon(),
 						new OptionPaneValidatior() {
 							@Override public Validator.ValidationResult validate(JComponent component) {
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component)
 										.validate();
 							}
-						}, "Duplicate", "Cancel");
+						}, "Duplicate" , "Cancel");
 				if (modName != null && !modName.equals("")) {
 					modName = JavaConventions.convertToValidClassName(modName);
 
@@ -1130,11 +1131,11 @@ public class WorkspacePanel extends JPanel {
 			}
 
 			if (mcreator.getWorkspace().getModElements().isEmpty()) {
-				elementsCount.setText(L10N.t("workspace.stats.empty", mcreator.getWorkspaceSettings().getModName(),
+				elementsCount.setText(L10N.t("workspace.stats.empty" , mcreator.getWorkspaceSettings().getModName(),
 						mcreator.getGenerator().getGeneratorName()));
 			} else {
 				elementsCount.setText(
-						L10N.t("workspace.stats.current_workspace", mcreator.getWorkspaceSettings().getModName(),
+						L10N.t("workspace.stats.current_workspace" , mcreator.getWorkspaceSettings().getModName(),
 								mcreator.getGenerator().getGeneratorName(),
 								mcreator.getWorkspace().getModElements().size()));
 			}
@@ -1220,16 +1221,16 @@ public class WorkspacePanel extends JPanel {
 			while (m.find()) {
 				String pat = m.group(1);
 				if (pat.contains("f:")) {
-					pat = pat.replaceFirst("f:", "");
+					pat = pat.replaceFirst("f:" , "");
 					if (pat.equals("locked") || pat.equals("ok") || pat.equals("err"))
 						filters.add(pat);
 					for (ModElementType type : ModElementType.values()) {
-						if (pat.equals(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))) {
+						if (pat.equals(type.getReadableName().replace(" " , "").toLowerCase(Locale.ENGLISH))) {
 							metfilters.add(type);
 						}
 					}
 				} else
-					keyWords.add(pat.replace("\"", ""));
+					keyWords.add(pat.replace("\"" , ""));
 			}
 
 			filterItems.addAll(items.stream().filter(e -> e instanceof FolderElement)

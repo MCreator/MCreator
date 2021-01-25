@@ -75,8 +75,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 		int idx = 0;
 		MouseAdapter adapter = null;
 		for (FolderElement filePathPart : path) {
-			JLabel entry = new JLabel(filePathPart.getName());
-			entry.setIcon(UIRES.get("laf.directory.gif"));
+			JLabel entry = new FolderElementCrumb(filePathPart);
 
 			if (filePathPart.equals(mcreator.getWorkspace().getFoldersRoot())) {
 				entry.setText(mcreator.getWorkspaceSettings().getModName());
