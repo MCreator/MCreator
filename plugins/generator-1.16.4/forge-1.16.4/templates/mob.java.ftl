@@ -484,11 +484,11 @@ import net.minecraft.block.material.Material;
 					return false;
 			</#if>
 			<#if data.immuneToExplosion>
-				if (source == DamageSource.causeExplosionDamage(this))
+				if (source.isExplosion())
 					return false;
 			</#if>
 			<#if data.immuneToTrident>
-				if (source == DamageSource.causeTridentDamage(this, source.getTrueSource()))
+				if (source.getDamageType().equals("trident"))
 					return false;
 			</#if>
 			<#if data.immuneToAnvil>
