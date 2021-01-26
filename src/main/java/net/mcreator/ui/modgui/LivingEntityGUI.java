@@ -404,9 +404,9 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"),
 				L10N.label("elementgui.living_entity.equipment")));
-		subpane1.add(PanelUtils
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, PanelUtils.totalCenterInPanel(PanelUtils
 				.join(FlowLayout.LEFT, 2, 0, equipmentMainHand, equipmentOffHand, equipmentHelmet, equipmentBody,
-						equipmentLeggings, equipmentBoots));
+						equipmentLeggings, equipmentBoots))));
 
 		subpane1.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("entity/ridable"), L10N.label("elementgui.living_entity.ridable")));
