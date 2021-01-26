@@ -23,7 +23,7 @@ import java.util.List;
 
 public class FolderElement implements IElement {
 
-	public static final FolderElement ROOT = new FolderElement("<root>", null);
+	public static final FolderElement ROOT = new FolderElement("~" , null);
 
 	private String name;
 	protected List<FolderElement> children = new ArrayList<>();
@@ -95,8 +95,8 @@ public class FolderElement implements IElement {
 		if (element == null && this.name.equals(ROOT.name))
 			return true;
 
-		return element instanceof FolderElement && name.equals(((FolderElement) element).name) && (
-				getParent() == null || getParent().equals(((FolderElement) element).getParent()));
+		return element instanceof FolderElement && name.equals(((FolderElement) element).name) && (getParent() == null
+				|| getParent().equals(((FolderElement) element).getParent()));
 	}
 
 	@Override public int hashCode() {
