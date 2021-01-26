@@ -19,14 +19,15 @@
 package net.mcreator.workspace.elements;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FolderElement implements IElement {
 
-	public static final FolderElement ROOT = new FolderElement("~" , null);
+	public static final FolderElement ROOT = new FolderElement("~", null);
 
 	private String name;
-	protected List<FolderElement> children = new ArrayList<>();
+	protected List<FolderElement> children;
 
 	// Must not be serialized due to circular references!
 	// Populated by call to updateStructure from workspace loading mechanism
@@ -35,6 +36,7 @@ public class FolderElement implements IElement {
 	public FolderElement(String name, FolderElement parent) {
 		this.name = name;
 		this.parent = parent;
+		this.children = new ArrayList<>();
 	}
 
 	public void updateStructure() {
@@ -42,14 +44,6 @@ public class FolderElement implements IElement {
 			child.parent = this;
 			child.updateStructure();
 		});
-	}
-
-	@Override public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public void addChild(FolderElement child) {
@@ -80,12 +74,39 @@ public class FolderElement implements IElement {
 		return childrenList;
 	}
 
+	public boolean isRoot() {
+		return this.equals(ROOT);
+	}
+
 	public FolderElement getParent() {
 		return this.parent;
 	}
 
+	public String getPath() {
+		List<String> elements = buildPath(new ArrayList<>());
+		Collections.reverse(elements);
+		return String.join("/", elements);
+	}
+
+	private List<String> buildPath(List<String> storage) {
+		storage.add(this.name);
+
+		if (!this.isRoot())
+			return parent.buildPath(storage);
+		else
+			return storage;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override public String getName() {
+		return name;
+	}
+
 	@Override public String toString() {
-		return getName();
+		return name;
 	}
 
 	@Override public boolean equals(Object element) {
@@ -94,6 +115,10 @@ public class FolderElement implements IElement {
 
 		if (element == null && this.name.equals(ROOT.name))
 			return true;
+
+		// comparing by path
+		if (element instanceof String)
+			return element.equals(this.getPath());
 
 		return element instanceof FolderElement && name.equals(((FolderElement) element).name) && (getParent() == null
 				|| getParent().equals(((FolderElement) element).getParent()));

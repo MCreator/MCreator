@@ -243,7 +243,7 @@ public class ToolPackMakerTool {
 		pickaxeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		pickaxeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Pickaxe");
 
-		pickaxeRecipe.getModElement().setParent(folder);
+		pickaxeRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(pickaxeRecipe);
 		mcreator.getWorkspace().addModElement(pickaxeRecipe.getModElement());
 		mcreator.getGenerator().generateElement(pickaxeRecipe);
@@ -259,7 +259,7 @@ public class ToolPackMakerTool {
 		axeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		axeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Axe");
 
-		axeRecipe.getModElement().setParent(folder);
+		axeRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(axeRecipe);
 		mcreator.getWorkspace().addModElement(axeRecipe.getModElement());
 		mcreator.getGenerator().generateElement(axeRecipe);
@@ -273,7 +273,7 @@ public class ToolPackMakerTool {
 		swordRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		swordRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Sword");
 
-		swordRecipe.getModElement().setParent(folder);
+		swordRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(swordRecipe);
 		mcreator.getWorkspace().addModElement(swordRecipe.getModElement());
 		mcreator.getGenerator().generateElement(swordRecipe);
@@ -287,7 +287,7 @@ public class ToolPackMakerTool {
 		shovelRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		shovelRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Shovel");
 
-		shovelRecipe.getModElement().setParent(folder);
+		shovelRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(shovelRecipe);
 		mcreator.getWorkspace().addModElement(shovelRecipe.getModElement());
 		mcreator.getGenerator().generateElement(shovelRecipe);
@@ -302,7 +302,7 @@ public class ToolPackMakerTool {
 		hoeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		hoeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Hoe");
 
-		hoeRecipe.getModElement().setParent(folder);
+		hoeRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(hoeRecipe);
 		mcreator.getWorkspace().addModElement(hoeRecipe.getModElement());
 		mcreator.getGenerator().generateElement(hoeRecipe);
@@ -316,7 +316,7 @@ public class ToolPackMakerTool {
 		tool.damageVsEntity = (double) Math.round(2.0f * factor);
 		tool.usageCount = (int) Math.round(250 * Math.pow(factor, 1.4));
 
-		tool.getModElement().setParent(folder);
+		tool.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(tool);
 		mcreator.getWorkspace().addModElement(tool.getModElement());
 		mcreator.getGenerator().generateElement(tool);

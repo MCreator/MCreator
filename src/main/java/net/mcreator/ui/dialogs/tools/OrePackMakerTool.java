@@ -179,7 +179,7 @@ public class OrePackMakerTool {
 		oreItem.name = name;
 		oreItem.texture = gemTextureName;
 
-		oreItem.getModElement().setParent(folder);
+		oreItem.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(oreItem);
 		mcreator.getWorkspace().addModElement(oreItem.getModElement());
 		mcreator.getGenerator().generateElement(oreItem);
@@ -209,7 +209,7 @@ public class OrePackMakerTool {
 		}
 		oreBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 
-		oreBlock.getModElement().setParent(folder);
+		oreBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(oreBlock);
 		mcreator.getWorkspace().addModElement(oreBlock.getModElement());
 		mcreator.getGenerator().generateElement(oreBlock);
@@ -230,7 +230,7 @@ public class OrePackMakerTool {
 		oreBlockBlock.breakHarvestLevel = (int) Math.round(2 * factor);
 		oreBlockBlock.renderType = 11; // single texture
 
-		oreBlockBlock.getModElement().setParent(folder);
+		oreBlockBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(oreBlockBlock);
 		mcreator.getWorkspace().addModElement(oreBlockBlock.getModElement());
 		mcreator.getGenerator().generateElement(oreBlockBlock);
@@ -250,7 +250,7 @@ public class OrePackMakerTool {
 		itemToBlockRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		itemToBlockRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Block");
 
-		itemToBlockRecipe.getModElement().setParent(folder);
+		itemToBlockRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(itemToBlockRecipe);
 		mcreator.getWorkspace().addModElement(itemToBlockRecipe.getModElement());
 		mcreator.getGenerator().generateElement(itemToBlockRecipe);
@@ -264,7 +264,7 @@ public class OrePackMakerTool {
 		blockToItemRecipe.recipeShapeless = true;
 		blockToItemRecipe.recipeRetstackSize = 9;
 
-		blockToItemRecipe.getModElement().setParent(folder);
+		blockToItemRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(blockToItemRecipe);
 		mcreator.getWorkspace().addModElement(blockToItemRecipe.getModElement());
 		mcreator.getGenerator().generateElement(blockToItemRecipe);
@@ -279,7 +279,7 @@ public class OrePackMakerTool {
 		oreSmeltingRecipe.xpReward = 0.7 * factor;
 		oreSmeltingRecipe.cookingTime = 200;
 
-		oreSmeltingRecipe.getModElement().setParent(folder);
+		oreSmeltingRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(oreSmeltingRecipe);
 		mcreator.getWorkspace().addModElement(oreSmeltingRecipe.getModElement());
 		mcreator.getGenerator().generateElement(oreSmeltingRecipe);

@@ -54,6 +54,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 		super.paintComponent(g);
 	}
 
+	@SuppressWarnings("EqualsBetweenInconvertibleTypes")
 	public void reloadPath(FolderElement file, Class<? extends IElement> childElement) {
 		removeAll();
 
@@ -97,7 +98,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 						if (childElement == ModElement.class) {
 							for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-								if (filePathPart.equals(modElement.getParent())) {
+								if (filePathPart.equals(modElement.getFolderPath())) {
 									files.add(modElement);
 								}
 							}

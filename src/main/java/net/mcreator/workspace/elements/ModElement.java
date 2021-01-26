@@ -47,7 +47,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	@Nullable private Map<String, Object> metadata = null;
 
-	@Nullable private FolderElement parent;
+	@Nullable private String path;
 
 	// MCItem representations of this element
 	// it is transient so it does not get serialized
@@ -116,20 +116,20 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		mcItems = new ArrayList<>();
 
 		if (type == ModElementType.DIMENSION) {
-			if (getMetadata("ep") != null && (Boolean) getMetadata("ep"))
+			if (getMetadata("ep" ) != null && (Boolean) getMetadata("ep" ))
 				mcItems.add(new MCItem.Custom(this, null));
 		} else if (type.getRecipeElementType() == ModElementType.RecipeElementType.ITEM
 				|| type.getRecipeElementType() == ModElementType.RecipeElementType.BLOCK) {
 			mcItems.add(new MCItem.Custom(this, null));
 		} else if (type.getBaseType() == ModElementType.BaseType.ARMOR) {
-			if (getMetadata("eh") != null && (Boolean) getMetadata("eh"))
-				mcItems.add(new MCItem.Custom(this, "helmet"));
-			if (getMetadata("ec") != null && (Boolean) getMetadata("ec"))
-				mcItems.add(new MCItem.Custom(this, "body"));
-			if (getMetadata("el") != null && (Boolean) getMetadata("el"))
-				mcItems.add(new MCItem.Custom(this, "legs"));
-			if (getMetadata("eb") != null && (Boolean) getMetadata("eb"))
-				mcItems.add(new MCItem.Custom(this, "boots"));
+			if (getMetadata("eh" ) != null && (Boolean) getMetadata("eh" ))
+				mcItems.add(new MCItem.Custom(this, "helmet" ));
+			if (getMetadata("ec" ) != null && (Boolean) getMetadata("ec" ))
+				mcItems.add(new MCItem.Custom(this, "body" ));
+			if (getMetadata("el" ) != null && (Boolean) getMetadata("el" ))
+				mcItems.add(new MCItem.Custom(this, "legs" ));
+			if (getMetadata("eb" ) != null && (Boolean) getMetadata("eb" ))
+				mcItems.add(new MCItem.Custom(this, "boots" ));
 		}
 	}
 
@@ -138,7 +138,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 			elementIcon.getImage().flush();
 
 		elementIcon = new ImageIcon(
-				workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/" + name + ".png");
+				workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/" + name + ".png" );
 	}
 
 	@Override public @NotNull Workspace getWorkspace() {
@@ -250,7 +250,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	 * @param baseType The base type under which to look for the free IDs
 	 * @return The ID of the element for the given index, could be newly created
 	 */
-	@SuppressWarnings("unused") public int getID(int index, String baseType) {
+	@SuppressWarnings("unused" ) public int getID(int index, String baseType) {
 		if (ids.get(index) == null) { // id at this index is not set yet, create id
 			int free_id = workspace
 					.getNextFreeIDAndIncrease(ModElementType.BaseType.valueOf(baseType.toUpperCase(Locale.ENGLISH)));
@@ -300,7 +300,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	public String getRegistryName() {
 		if (registry_name == null)
-			return getName().toLowerCase(Locale.ENGLISH).replaceAll("[^a-z0-9/._-]+", "");
+			return getName().toLowerCase(Locale.ENGLISH).replaceAll("[^a-z0-9/._-]+" , "" );
 		else
 			return registry_name;
 	}
@@ -309,12 +309,15 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.registry_name = registry_name;
 	}
 
-	public @Nullable FolderElement getParent() {
-		return parent;
+	public @Nullable String getFolderPath() {
+		return path;
 	}
 
-	public void setParent(@Nullable FolderElement parent) {
-		this.parent = parent;
+	public void setParentFolder(@Nullable FolderElement parent) {
+		if (parent == null || parent.isRoot())
+			this.path = null;
+		else
+			this.path = parent.getPath();
 	}
 
 }

@@ -164,7 +164,7 @@ public class WoodPackMakerTool {
 		woodBlock.plantsGrowOn = true;
 		woodBlock.flammability = (int) Math.round(5 * factor);
 
-		woodBlock.getModElement().setParent(folder);
+		woodBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(woodBlock);
 		mcreator.getWorkspace().addModElement(woodBlock.getModElement());
 		mcreator.getGenerator().generateElement(woodBlock);
@@ -192,7 +192,7 @@ public class WoodPackMakerTool {
 		logBlock.plantsGrowOn = true;
 		logBlock.flammability = (int) Math.round(5 * factor);
 
-		logBlock.getModElement().setParent(folder);
+		logBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(logBlock);
 		mcreator.getWorkspace().addModElement(logBlock.getModElement());
 		mcreator.getGenerator().generateElement(logBlock);
@@ -214,7 +214,7 @@ public class WoodPackMakerTool {
 		planksBlock.breakHarvestLevel = 0;
 		planksBlock.flammability = (int) Math.round(5 * factor);
 
-		planksBlock.getModElement().setParent(folder);
+		planksBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(planksBlock);
 		mcreator.getWorkspace().addModElement(planksBlock.getModElement());
 		mcreator.getGenerator().generateElement(planksBlock);
@@ -234,7 +234,7 @@ public class WoodPackMakerTool {
 		leavesBlock.breakHarvestLevel = 0;
 		leavesBlock.flammability = (int) Math.round(30 * factor);
 
-		leavesBlock.getModElement().setParent(folder);
+		leavesBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(leavesBlock);
 		mcreator.getWorkspace().addModElement(leavesBlock.getModElement());
 		mcreator.getGenerator().generateElement(leavesBlock);
@@ -256,7 +256,7 @@ public class WoodPackMakerTool {
 		stairsBlock.breakHarvestLevel = 0;
 		stairsBlock.flammability = (int) Math.round(5 * factor);
 
-		stairsBlock.getModElement().setParent(folder);
+		stairsBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(stairsBlock);
 		mcreator.getWorkspace().addModElement(stairsBlock.getModElement());
 		mcreator.getGenerator().generateElement(stairsBlock);
@@ -278,7 +278,7 @@ public class WoodPackMakerTool {
 		slabBlock.breakHarvestLevel = 0;
 		slabBlock.flammability = (int) Math.round(5 * factor);
 
-		slabBlock.getModElement().setParent(folder);
+		slabBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(slabBlock);
 		mcreator.getWorkspace().addModElement(slabBlock.getModElement());
 		mcreator.getGenerator().generateElement(slabBlock);
@@ -298,7 +298,7 @@ public class WoodPackMakerTool {
 		fenceBlock.breakHarvestLevel = 0;
 		fenceBlock.flammability = (int) Math.round(5 * factor);
 
-		fenceBlock.getModElement().setParent(folder);
+		fenceBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(fenceBlock);
 		mcreator.getWorkspace().addModElement(fenceBlock.getModElement());
 		mcreator.getGenerator().generateElement(fenceBlock);
@@ -318,7 +318,7 @@ public class WoodPackMakerTool {
 		fenceGateBlock.breakHarvestLevel = 0;
 		fenceGateBlock.flammability = (int) Math.round(5 * factor);
 
-		fenceGateBlock.getModElement().setParent(folder);
+		fenceGateBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(fenceGateBlock);
 		mcreator.getWorkspace().addModElement(fenceGateBlock.getModElement());
 		mcreator.getGenerator().generateElement(fenceGateBlock);
@@ -336,7 +336,7 @@ public class WoodPackMakerTool {
 		woodItemTag.items.add(new MItemBlock(workspace, "CUSTOM:" + woodBlock.getModElement().getName()));
 		woodItemTag.items.add(new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName()));
 
-		woodItemTag.getModElement().setParent(folder);
+		woodItemTag.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(woodItemTag);
 		mcreator.getWorkspace().addModElement(woodItemTag.getModElement());
 		mcreator.getGenerator().generateElement(woodItemTag);
@@ -353,7 +353,7 @@ public class WoodPackMakerTool {
 		woodRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Wood");
 		woodRecipe.recipeRetstackSize = 3;
 
-		woodRecipe.getModElement().setParent(folder);
+		woodRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(woodRecipe);
 		mcreator.getWorkspace().addModElement(woodRecipe.getModElement());
 		mcreator.getGenerator().generateElement(woodRecipe);
@@ -368,7 +368,7 @@ public class WoodPackMakerTool {
 		planksRecipe.recipeShapeless = true;
 		planksRecipe.recipeRetstackSize = 4;
 
-		planksRecipe.getModElement().setParent(folder);
+		planksRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(planksRecipe);
 		mcreator.getWorkspace().addModElement(planksRecipe.getModElement());
 		mcreator.getGenerator().generateElement(planksRecipe);
@@ -386,7 +386,7 @@ public class WoodPackMakerTool {
 		stairsRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Stairs");
 		stairsRecipe.recipeRetstackSize = 4;
 
-		stairsRecipe.getModElement().setParent(folder);
+		stairsRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(stairsRecipe);
 		mcreator.getWorkspace().addModElement(stairsRecipe.getModElement());
 		mcreator.getGenerator().generateElement(stairsRecipe);
@@ -401,7 +401,7 @@ public class WoodPackMakerTool {
 		slabRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Slab");
 		slabRecipe.recipeRetstackSize = 6;
 
-		slabRecipe.getModElement().setParent(folder);
+		slabRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(slabRecipe);
 		mcreator.getWorkspace().addModElement(slabRecipe.getModElement());
 		mcreator.getGenerator().generateElement(slabRecipe);
@@ -419,7 +419,7 @@ public class WoodPackMakerTool {
 		fenceRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Fence");
 		fenceRecipe.recipeRetstackSize = 3;
 
-		fenceRecipe.getModElement().setParent(folder);
+		fenceRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(fenceRecipe);
 		mcreator.getWorkspace().addModElement(fenceRecipe.getModElement());
 		mcreator.getGenerator().generateElement(fenceRecipe);
@@ -437,7 +437,7 @@ public class WoodPackMakerTool {
 		fenceGateRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "FenceGate");
 		fenceGateRecipe.recipeRetstackSize = 1;
 
-		fenceGateRecipe.getModElement().setParent(folder);
+		fenceGateRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(fenceGateRecipe);
 		mcreator.getWorkspace().addModElement(fenceGateRecipe.getModElement());
 		mcreator.getGenerator().generateElement(fenceGateRecipe);
@@ -451,7 +451,7 @@ public class WoodPackMakerTool {
 		stickRecipe.recipeReturnStack = new MItemBlock(workspace, "Items.STICK");
 		stickRecipe.recipeRetstackSize = 4;
 
-		stickRecipe.getModElement().setParent(folder);
+		stickRecipe.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(stickRecipe);
 		mcreator.getWorkspace().addModElement(stickRecipe.getModElement());
 		mcreator.getGenerator().generateElement(stickRecipe);
