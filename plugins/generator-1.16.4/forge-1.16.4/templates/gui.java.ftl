@@ -422,8 +422,7 @@ import ${package}.${JavaModName};
         <#list data.components as component>
 			<#if component.getClass().getSimpleName() == "Button">
 
-			<#if component.externalLink?length == 0>
-			<#else>
+			<#if component.externalLink?length gt 0>
 			Minecraft.getInstance().displayGuiScreen(new ConfirmOpenLinkScreen((open) -> {
 					 if (open) {
 							Util.getOSType().openURI("${component.externalLink}");
