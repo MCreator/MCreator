@@ -459,6 +459,8 @@ import net.minecraft.block.material.Material;
 			<#if data.immuneToWither>
 				if (source == DamageSource.WITHER)
 					return false;
+				if (source.getDamageType().equals("witherSkull"))
+					return false;
 			</#if>
 			return super.attackEntityFrom(source, amount);
 		}
