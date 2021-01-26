@@ -26,7 +26,7 @@ public class FolderElement implements IElement {
 	public static final FolderElement ROOT = new FolderElement("<root>", null);
 
 	private String name;
-	protected final List<FolderElement> children = new ArrayList<>();
+	protected List<FolderElement> children = new ArrayList<>();
 
 	// Must not be serialized due to circular references!
 	// Populated by call to updateStructure from workspace loading mechanism
@@ -59,6 +59,10 @@ public class FolderElement implements IElement {
 
 	public void removeChild(FolderElement child) {
 		this.children.remove(child);
+	}
+
+	public void setChildren(ArrayList<FolderElement> children) {
+		this.children = children;
 	}
 
 	public List<FolderElement> getDirectFolderChildren() {

@@ -39,7 +39,7 @@ class AffectedObjectWithType<T> {
 	}
 
 	@Override public boolean equals(Object o) {
-		return o instanceof AffectedObjectWithType && ((AffectedObjectWithType) o).affected.equals(affected);
+		return o instanceof AffectedObjectWithType && ((AffectedObjectWithType<?>) o).affected.equals(affected);
 	}
 
 	@Override public int hashCode() {

@@ -59,7 +59,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		put("en_us", new ConcurrentHashMap<>());
 	}};
 
-	private FolderElement foldersRoot = FolderElement.ROOT;
+	protected FolderElement foldersRoot = FolderElement.ROOT;
 
 	private WorkspaceSettings workspaceSettings;
 	private long mcreatorVersion;
@@ -89,6 +89,11 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void setWorkspaceSettings(WorkspaceSettings workspaceSettings) {
 		this.workspaceSettings = workspaceSettings;
+		markDirty();
+	}
+
+	public void setFoldersRoot(FolderElement foldersRoot) {
+		this.foldersRoot = foldersRoot;
 		markDirty();
 	}
 
@@ -498,6 +503,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			this.generator.setGradleCache(this.generator.getGradleCache());
 			this.fileManager = original.getFileManager();
 			this.reloadModElements();
+			this.foldersRoot.updateStructure();
 		}
 
 	}
