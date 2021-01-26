@@ -35,10 +35,11 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 	public ButtonDialog(WYSIWYGEditor editor, @Nullable Button button) {
 		super(editor.mcreator, button);
 		setModal(true);
-		setSize(480, 200);
+		setSize(480, 230);
 		setLocationRelativeTo(editor.mcreator);
 		setTitle(L10N.t("dialog.gui.button_add_title"));
 		JTextField nameField = new JTextField(20);
+		JTextField linkField = new JTextField(20);
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
@@ -48,6 +49,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_resize")));
 
 		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), nameField));
+		options.add(PanelUtils.join(L10N.label("dialog.gui.button_link"), linkField));
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
@@ -65,6 +67,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 		if (button != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
 			nameField.setText(button.name);
+			linkField.setText(button.externalLink);
 			eh.setSelectedProcedure(button.onClick);
 		}
 
@@ -79,12 +82,12 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(
 							new Button(text, editor.editor.newlyAddedComponentPosX,
 									editor.editor.newlyAddedComponentPosY, text, editor.editor.ow, editor.editor.oh,
-									eh.getSelectedProcedure())));
+									eh.getSelectedProcedure(), linkField.getText())));
 				} else {
 					int idx = editor.components.indexOf(button);
 					editor.components.remove(button);
 					Button buttonNew = new Button(text, button.getX(), button.getY(), text, button.width, button.height,
-							eh.getSelectedProcedure());
+							eh.getSelectedProcedure(), linkField.getText());
 					editor.components.add(idx, buttonNew);
 					setEditingComponent(buttonNew);
 				}
