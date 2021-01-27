@@ -178,6 +178,7 @@ import java.util.stream.Collectors;
 						}
 					}
 				}
+				mcreator.getWorkspace().markDirty();
 				reloadElements();
 			} else {
 				Toolkit.getDefaultToolkit().beep();
@@ -340,6 +341,7 @@ import java.util.stream.Collectors;
 
 			if (name != null) {
 				currentFolder.addChild(new FolderElement(name, currentFolder));
+				mcreator.getWorkspace().markDirty();
 				reloadElements();
 			}
 		});

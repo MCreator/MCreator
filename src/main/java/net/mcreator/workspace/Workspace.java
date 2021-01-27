@@ -317,7 +317,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return workspaceSettings.getModID();
 	}
 
-	void markDirty() {
+	public void markDirty() {
 		changed = true;
 	}
 
