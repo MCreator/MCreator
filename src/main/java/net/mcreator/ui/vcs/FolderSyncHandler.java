@@ -66,7 +66,7 @@ public class FolderSyncHandler {
 
 		// if not in dry run, update the base workspace with new children
 		if (!dryRun)
-			base.setChildren(new ArrayList<>(mergedChildren));
+			base.setChildren(mergedChildren);
 
 		for (FolderElement baseChild : mergedChildren) {
 			int localIdx = local.getDirectFolderChildren().indexOf(baseChild);

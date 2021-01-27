@@ -18,16 +18,14 @@
 
 package net.mcreator.workspace.elements;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class FolderElement implements IElement {
 
 	public static final FolderElement ROOT = new FolderElement("~", null);
 
 	private String name;
-	protected List<FolderElement> children;
+	protected Set<FolderElement> children;
 
 	// Must not be serialized due to circular references!
 	// Populated by call to updateStructure from workspace loading mechanism
@@ -36,7 +34,7 @@ public class FolderElement implements IElement {
 	public FolderElement(String name, FolderElement parent) {
 		this.name = name;
 		this.parent = parent;
-		this.children = new ArrayList<>();
+		this.children = new HashSet<>();
 	}
 
 	public void updateStructure() {
@@ -55,12 +53,12 @@ public class FolderElement implements IElement {
 		this.children.remove(child);
 	}
 
-	public void setChildren(ArrayList<FolderElement> children) {
+	public void setChildren(Set<FolderElement> children) {
 		this.children = children;
 	}
 
 	public List<FolderElement> getDirectFolderChildren() {
-		return children;
+		return new ArrayList<>(children);
 	}
 
 	/**
@@ -69,9 +67,9 @@ public class FolderElement implements IElement {
 	 * @return List of all children
 	 */
 	public List<FolderElement> getRecursiveFolderChildren() {
-		List<FolderElement> childrenList = new ArrayList<>(children);
+		Set<FolderElement> childrenList = new HashSet<>(children);
 		children.forEach(child -> childrenList.addAll(child.getRecursiveFolderChildren()));
-		return childrenList;
+		return new ArrayList<>(childrenList);
 	}
 
 	public boolean isRoot() {
