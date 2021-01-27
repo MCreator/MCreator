@@ -13,7 +13,7 @@
   "mcreator": {
     "toolbox_id": "guimanagement",
     "toolbox_init": [
-      "<value name=\"url\"><block type=\"text\"><field name=\"URL\">tagName</field></block></value>"
+      "<value name=\"url\"><block type=\"text\"><field name=\"TEXT\">url</field></block></value>"
     ],
     "inputs": [
       "url"
