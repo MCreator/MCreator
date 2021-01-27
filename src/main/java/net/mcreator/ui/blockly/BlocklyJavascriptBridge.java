@@ -261,6 +261,9 @@ public class BlocklyJavascriptBridge {
 					workspace.getModElements().stream().filter(var -> var.getType() == ModElementType.RANGEDITEM)
 							.map(ModElement::getName).collect(Collectors.toList()));
 			break;
+		case "other_textures":
+			retval = ElementUtil.loadAllOtherTextures(workspace);
+			break;
 		default:
 			retval = new ArrayList<>();
 		}
