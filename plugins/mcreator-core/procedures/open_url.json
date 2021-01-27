@@ -1,0 +1,22 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "url",
+      "check": "String"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": "%{BKY_TEXTS_HUE}",
+  "mcreator": {
+    "toolbox_id": "guimanagement",
+    "toolbox_init": [
+      "<value name=\"url\"><block type=\"text\"><field name=\"URL\">tagName</field></block></value>"
+    ],
+    "inputs": [
+      "url"
+    ]
+  }
+}

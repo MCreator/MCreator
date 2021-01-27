@@ -29,13 +29,11 @@ public class Button extends SizedComponent {
 
 	public String text;
 	public Procedure onClick;
-	public String externalLink;
 
-	public Button(String name, int x, int y, String text, int width, int height, Procedure onClick, String externalLink) {
+	public Button(String name, int x, int y, String text, int width, int height, Procedure onClick) {
 		super(name, x, y, width, height);
 		this.text = text;
 		this.onClick = onClick;
-		this.externalLink = externalLink;
 	}
 
 	@Override public int getWeight() {

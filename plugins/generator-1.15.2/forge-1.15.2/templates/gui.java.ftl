@@ -584,28 +584,6 @@ import ${package}.${JavaModName};
 		<#assign btid = 0>
         <#list data.components as component>
 			<#if component.getClass().getSimpleName() == "Button">
-			<#if component.externalLink?length gt 0>
-			Minecraft.getInstance().displayGuiScreen(new ConfirmOpenLinkScreen((open) -> {
-					 if (open) {
-							Util.getOSType().openURI("${component.externalLink}");
-					 }
-
-					 	Entity _ent = entity;
-					 	if(_ent instanceof ServerPlayerEntity) {
-					 		BlockPos _bpos = new BlockPos((int)x,(int)y,(int)z);
-					 		NetworkHooks.openGui((ServerPlayerEntity) _ent, new INamedContainerProvider() {
-					 			@Override public ITextComponent getDisplayName() {
-					 				return new StringTextComponent("${name}");
-					 			}
-					 			@Override public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
-					 				return new ${name}Gui.GuiContainerMod(id, inventory, new PacketBuffer(Unpooled.buffer()).writeBlockPos(_bpos));
-					 			}
-					 		}, _bpos);
-					 	}
-
-				}, "${component.externalLink}", true));
-				</#if>
-
 				<#if hasProcedure(component.onClick)>
         	    	if (buttonID == ${btid}) {
         	    	    <@procedureOBJToCode component.onClick/>
