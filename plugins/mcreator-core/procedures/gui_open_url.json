@@ -9,11 +9,11 @@
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,
-  "colour": "%{BKY_TEXTS_HUE}",
+  "colour": 110,
   "mcreator": {
     "toolbox_id": "guimanagement",
     "toolbox_init": [
-      "<value name=\"url\"><block type=\"text\"><field name=\"TEXT\">url</field></block></value>"
+      "<value name=\"url\"><block type=\"text\"><field name=\"TEXT\">https://mcreator.net/</field></block></value>"
     ],
     "inputs": [
       "url"
