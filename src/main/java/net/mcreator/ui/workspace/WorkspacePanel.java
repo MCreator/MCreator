@@ -748,19 +748,25 @@ import java.util.stream.Collectors;
 								} else if (re instanceof FolderElement) {
 									FolderElement folder = (FolderElement) re;
 
-									// re-assign mod-elements using deleted folder to root folder
+									// re-assign mod-elements from deleted folder to parent folder
 									for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
 										if (folder.equals(modElement.getFolderPath())) {
 											modElement.setParentFolder(folder.getParent());
 										}
 									}
 
-									// re-assign deleted children to root
-									for (FolderElement childFolder : folder.getDirectFolderChildren()) {
-										folder.getParent().addChild(childFolder);
+									// re-assign deleted recursive children folder's elements to parent folder too
+									for (FolderElement childFolder : folder.getRecursiveFolderChildren()) {
+										for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+											if (childFolder.equals(modElement.getFolderPath())) {
+												modElement.setParentFolder(folder.getParent());
+											}
+										}
 									}
 
 									// remove folder from the parent's child list
+									// all folder's child folders will be orphaned at this point too
+									// and thus removed
 									folder.getParent().removeChild(folder);
 								}
 							});
