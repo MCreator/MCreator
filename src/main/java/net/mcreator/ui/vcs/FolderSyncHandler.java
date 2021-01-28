@@ -24,7 +24,6 @@ import net.mcreator.vcs.diff.ListDiff;
 import net.mcreator.vcs.diff.MergeHandle;
 import net.mcreator.workspace.elements.FolderElement;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
