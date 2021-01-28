@@ -77,15 +77,15 @@ public static class TeleporterDimensionMod implements ITeleporter {
 	}
 
 	private PortalInfo getPortalInfo(Entity entity, ServerWorld server) {
-		WorldBorder worldborder = entity.world.getWorldBorder();
-		double d0 = Math.max(-2.9999872E7D, worldborder.minX() + 16);
-		double d1 = Math.max(-2.9999872E7D, worldborder.minZ() + 16);
-		double d2 = Math.min(2.9999872E7D, worldborder.maxX() - 16);
-		double d3 = Math.min(2.9999872E7D, worldborder.maxZ() - 16);
+		WorldBorder worldborder = server.getWorldBorder();
+		double d0 = Math.max(-2.9999872E7D, worldborder.minX() + 16.);
+		double d1 = Math.max(-2.9999872E7D, worldborder.minZ() + 16.);
+		double d2 = Math.min(2.9999872E7D, worldborder.maxX() - 16.);
+		double d3 = Math.min(2.9999872E7D, worldborder.maxZ() - 16.);
 		double d4 = DimensionType.getCoordinateDifference(entity.world.getDimensionType(), server.getDimensionType());
 		BlockPos blockpos1 = new BlockPos(MathHelper.clamp(entity.getPosX() * d4, d0, d2), entity.getPosY(),
 				MathHelper.clamp(entity.getPosZ() * d4, d1, d3));
-		return this.getPortalRepositioner(entity, server, blockpos1).map(repositioner -> {
+		return this.getPortalRepositioner(entity, blockpos1).map(repositioner -> {
 			BlockState blockstate = entity.world.getBlockState(this.entityEnterPos);
 			Direction.Axis direction$axis;
 			Vector3d vector3d;
@@ -106,14 +106,14 @@ public static class TeleporterDimensionMod implements ITeleporter {
 		}).orElse(new PortalInfo(entity.getPositionVec(), Vector3d.ZERO, entity.rotationYaw, entity.rotationPitch));
 	}
 
-	protected Optional<TeleportationRepositioner.Result> getPortalRepositioner(Entity entity, ServerWorld server, BlockPos pos) {
+	protected Optional<TeleportationRepositioner.Result> getPortalRepositioner(Entity entity, BlockPos pos) {
 		Optional<TeleportationRepositioner.Result> optional = this.getExistingPortal(pos, false);
 
 		if (entity instanceof ServerPlayerEntity) {
 			if (optional.isPresent()) {
 				return optional;
 			} else {
-				Direction.Axis direction$axis = this.world.getBlockState(this.entityEnterPos).func_235903_d_(NetherPortalBlock.AXIS).orElse(Direction.Axis.X);
+				Direction.Axis direction$axis = entity.world.getBlockState(this.entityEnterPos).func_235903_d_(NetherPortalBlock.AXIS).orElse(Direction.Axis.X);
 				return this.makePortal(pos, direction$axis);
 			}
 		} else {
