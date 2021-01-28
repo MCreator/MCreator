@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class Workspace implements Closeable, IGeneratorProvider {
 
@@ -336,6 +337,25 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		}
 	}
 
+	void reloadFolderStructure() {
+		this.foldersRoot.updateStructure();
+
+		Set<String> validPaths = foldersRoot.getRecursiveFolderChildren().stream().map(FolderElement::getPath)
+				.collect(Collectors.toSet());
+
+		for (ModElement modElement : mod_elements) {
+			if (modElement.getFolderPath() != null && !modElement.getFolderPath()
+					.equals(FolderElement.ROOT.getName())) {
+				if (!validPaths.contains(modElement.getFolderPath())) {
+					LOG.warn("Mod element: " + modElement.getName() + " has invalid path: " + modElement
+							.getFolderPath());
+					// reset orphaned elements to root
+					modElement.setParentFolder(null);
+				}
+			}
+		}
+	}
+
 	public WorkspaceVCS getVCS() {
 		return vcs;
 	}
@@ -445,7 +465,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			}
 
 			retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
-			retval.foldersRoot.updateStructure(); // assign parents to the folders
+			retval.reloadFolderStructure(); // assign parents to the folders
 			LOG.info("Loaded workspace file " + workspaceFile);
 			return retval;
 		} else {
@@ -471,7 +491,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		Workspace workspace_on_fs = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
 		loadStoredDataFrom(workspace_on_fs);
 		reloadModElements();
-		this.foldersRoot.updateStructure();
+		reloadFolderStructure();
 		LOG.info("Reloaded current workspace from the workspace file");
 	}
 
@@ -503,7 +523,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			this.generator.setGradleCache(this.generator.getGradleCache());
 			this.fileManager = original.getFileManager();
 			this.reloadModElements();
-			this.foldersRoot.updateStructure();
+			this.reloadFolderStructure();
 		}
 
 	}
