@@ -379,7 +379,7 @@ import net.minecraft.block.material.Material;
 					    <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}");
 					    </#if>
 					}
-				});
+				};
 				customRender.addLayer(new BipedArmorLayer(customRender, new BipedModel(0.5f), new BipedModel(1)));
 				<#if data.mobModelGlowTexture?has_content>customRender.addLayer(new GlowingLayer<>(customRender));</#if>
 				return customRender;
