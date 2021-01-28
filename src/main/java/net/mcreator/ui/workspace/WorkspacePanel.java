@@ -1125,6 +1125,16 @@ import java.util.stream.Collectors;
 
 	public void reloadElements() {
 		if (mcreator.getWorkspaceSettings() != null) {
+			// first we need to get current folder from the workspace
+			// as current reference to the folder may be out of date (eg. reload from disk)
+			List<FolderElement> folders = mcreator.getWorkspace().getFoldersRoot().getRecursiveFolderChildren();
+			int folderIdx = folders.indexOf(currentFolder);
+			if (folderIdx == -1) {
+				currentFolder = mcreator.getWorkspace().getFoldersRoot();
+			} else {
+				currentFolder = folders.get(folderIdx);
+			}
+
 			if (mcreator.getWorkspace().getModElements().stream()
 					.anyMatch(el -> currentFolder.equals(el.getFolderPath())) || !currentFolder
 					.getDirectFolderChildren().isEmpty()) {
