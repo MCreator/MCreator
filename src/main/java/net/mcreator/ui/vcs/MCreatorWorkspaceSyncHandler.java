@@ -105,7 +105,7 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 			// test if this file belongs to mod element definitions folder
 			if (file.getCanonicalPath()
 					.startsWith(localWorkspace.getFolderManager().getModElementsDir().getCanonicalPath())) {
-				String modElement = file.getName().replace(".mod.json" , "" );
+				String modElement = file.getName().replace(".mod.json", "");
 				ModElement testModElementDefinition = localWorkspace.getModElementByName(modElement);
 				if (testModElementDefinition != null) {
 					conflictingModElements.add(new MergeHandle<>(testModElementDefinition, testModElementDefinition,
@@ -488,9 +488,9 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 		// process workspace base files
 		List<GeneratorTemplate> modBaseTemplates = localWorkspace.getGenerator().getModBaseGeneratorTemplatesList(true);
 		for (GeneratorTemplate generatorTemplate : modBaseTemplates) {
-			if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock" ) != null
-					&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock" )
-					.equals("true" )) // can this file be locked
+			if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
+					&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
+					.equals("true")) // can this file be locked
 				if (localWorkspace.getWorkspaceSettings()
 						.isLockBaseModFiles()) // are mod base file locked in local workspace
 					continue; // if they are, we skip this file
@@ -530,8 +530,8 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 
 		// At the end of sync/merge, we mark all handles resolved, if it is not a dry run
 		if (!dryRun) {
-			git.rm().addFilepattern("." ).call();
-			git.add().addFilepattern("." ).call();
+			git.rm().addFilepattern(".").call();
+			git.add().addFilepattern(".").call();
 		}
 
 		return required_user_action;
