@@ -67,6 +67,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -84,6 +85,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private TextureHolder itemTexture;
 	private TextureHolder particleTexture;
+
+	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
+	private final List<JBoundingBoxEntry> boundingBoxList = new ArrayList<>();
+	private final JPanel boundingBoxes = new JPanel(new GridLayout(0, 1, 5, 5));
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourBlockChanges;
@@ -392,6 +397,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel pane7 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane8 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane9 = new JPanel(new BorderLayout(10, 10));
+		JPanel bbPane = new JPanel(new BorderLayout(10, 10));
 
 		pane8.setOpaque(false);
 
@@ -643,6 +649,53 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
+
+		JPanel northPanel = new JPanel(new GridLayout(1, 2, 10, 2));
+		northPanel.setOpaque(false);
+
+		northPanel.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/disable_offset"), L10N.label("elementgui.common.disable_offset")));
+		northPanel.add(disableOffset);
+		disableOffset.setOpaque(false);
+
+		JPanel boundingBoxEditor = new JPanel(new BorderLayout());
+		boundingBoxEditor.setOpaque(false);
+
+		JToolBar boundingBoxBar = new JToolBar();
+		boundingBoxBar.setFloatable(false);
+
+		JButton addBoundingBox = L10N.button("elementgui.common.add_bounding_box");
+		addBoundingBox.setIcon(UIRES.get("16px.add.gif"));
+		boundingBoxBar.add(addBoundingBox);
+
+		boundingBoxEditor.add("North", boundingBoxBar);
+
+		boundingBoxes.setOpaque(false);
+
+		JScrollPane bbScrollPane = new JScrollPane(PanelUtils.pullElementUp(boundingBoxes)) {
+			@Override protected void paintComponent(Graphics g) {
+				Graphics2D g2d = (Graphics2D) g.create();
+				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+				g2d.dispose();
+				super.paintComponent(g);
+			}
+		};
+		bbScrollPane.setOpaque(false);
+		bbScrollPane.getViewport().setOpaque(false);
+		bbScrollPane.getVerticalScrollBar().setUnitIncrement(11);
+		bbScrollPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		boundingBoxEditor.add("Center", bbScrollPane);
+
+		bbPane.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), boundingBoxEditor));
+		bbPane.setOpaque(false);
+
+		addBoundingBox.addActionListener(e -> new JBoundingBoxEntry(boundingBoxes, boundingBoxList));
+
+		if (!isEditingMode()) { // Add first bounding box
+			new JBoundingBoxEntry(boundingBoxes, boundingBoxList);
+		}
 
 		JPanel selp = new JPanel(new GridLayout(12, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
@@ -1118,6 +1171,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page2group.addValidationElement(name);
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
+		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.block.page_advanced_properties"), pane7);
 		addPage(L10N.t("elementgui.block.page_tile_entity"), pane8);
@@ -1356,6 +1410,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		reactionToPushing.setSelectedItem(block.reactionToPushing);
 		slipperiness.setValue(block.slipperiness);
 
+		disableOffset.setSelected(block.disableOffset);
+		if (block.boundingBoxes != null)
+			block.boundingBoxes.forEach(e -> new JBoundingBoxEntry(boundingBoxes, boundingBoxList).setEntry(e));
+
 		specialInfo.setText(
 				block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 
@@ -1467,6 +1525,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.textureFront = textureFront.getID();
 		block.textureRight = textureRight.getID();
 		block.textureBack = textureBack.getID();
+
+		block.disableOffset = disableOffset.isSelected();
+		block.boundingBoxes = boundingBoxList.stream().map(JBoundingBoxEntry::getEntry).filter(Objects::nonNull)
+				.collect(Collectors.toList());
 
 		block.beaconColorModifier = beaconColorModifier.getColor();
 

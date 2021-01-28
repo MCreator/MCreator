@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.IBoundingBox;
 import net.mcreator.element.IItemWithModel;
 import net.mcreator.element.ITabContainedElement;
 import net.mcreator.element.parts.Procedure;
@@ -34,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class Plant extends GeneratableElement
-		implements IItemWithModel, ITabContainedElement {
+		implements IItemWithModel, ITabContainedElement, IBoundingBox {
 
 	public int renderType;
 	public String texture;
@@ -55,6 +56,10 @@ import java.util.Map;
 	public int growapableMaxHeight;
 
 	public String doublePlantGenerationType;
+
+	public boolean customBoundingBox;
+	public boolean disableOffset;
+	public List<BoxEntry> boundingBoxes;
 
 	public String name;
 	public List<String> specialInfo;
@@ -119,6 +124,7 @@ import java.util.Map;
 		this.doublePlantGenerationType = "Flower";
 
 		this.specialInfo = new ArrayList<>();
+		this.boundingBoxes = new ArrayList<>();
 	}
 
 	@Override public Model getItemModel() {
@@ -147,5 +153,9 @@ import java.util.Map;
 
 	public boolean isBlockTinted() {
 		return !"No tint".equals(tintType);
+	}
+
+	@Override public List<BoxEntry> getBoundingBox() {
+		return boundingBoxes;
 	}
 }

@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.IBoundingBox;
 import net.mcreator.element.IItemWithModel;
 import net.mcreator.element.ITabContainedElement;
 import net.mcreator.element.parts.Fluid;
@@ -38,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
-		implements IItemWithModel, ITabContainedElement {
+		implements IItemWithModel, ITabContainedElement, IBoundingBox {
 
 	public String texture;
 	public String textureTop;
@@ -64,6 +65,9 @@ import java.util.Map;
 	public boolean connectedSides;
 	public String transparencyType;
 	public double mx, my, mz, Mx, My, Mz;
+
+	public boolean disableOffset;
+	public List<BoxEntry> boundingBoxes;
 
 	public String name;
 	public List<String> specialInfo;
@@ -165,6 +169,7 @@ import java.util.Map;
 		super(element);
 
 		this.tintType = "No tint";
+		this.boundingBoxes = new ArrayList<>();
 		this.spawnWorldTypes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
 		this.reactionToPushing = "NORMAL";
@@ -243,4 +248,7 @@ import java.util.Map;
 		return creativeTab;
 	}
 
+	@Override public List<BoxEntry> getBoundingBox() {
+		return boundingBoxes;
+	}
 }
