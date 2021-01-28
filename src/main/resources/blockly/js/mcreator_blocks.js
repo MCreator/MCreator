@@ -782,5 +782,5 @@ Blockly.Extensions.register('dimension_custom_list_provider',
 Blockly.Extensions.register('other_textures_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("other_textures"))), 'other_textures');
+            arrayToBlocklyDropDownArray(javabridge.getListOf("other_textures"))), 'other_texture');
     });

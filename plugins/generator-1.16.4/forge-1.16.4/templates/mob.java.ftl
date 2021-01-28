@@ -169,7 +169,7 @@ import net.minecraft.block.material.Material;
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType = MULTIPLE_TEXTURES>
+					<#if data.textureType == MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -180,16 +180,17 @@ import net.minecraft.block.material.Material;
 							World world = ent.world;
 							return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
 				
-					<#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
-					</#if>
+							<#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
+							</#if>
 					}
+					</#if>
 				});
 		<#elseif data.mobModelName == "Cow">
 			RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new CowModel(), ${data.modelShadowSize}f) {
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType = MULTIPLE_TEXTURES>
+					<#if data.textureType == MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -203,13 +204,14 @@ import net.minecraft.block.material.Material;
 					<#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
 					</#if>
 					}
+					</#if>
 				});
 		<#elseif data.mobModelName == "Creeper">
 			RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new CreeperModel(), ${data.modelShadowSize}f) {
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType = MULTIPLE_TEXTURES>
+					<#if data.textureType == MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -223,13 +225,14 @@ import net.minecraft.block.material.Material;
 					<#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
 					</#if>
 					}
+					</#if>
 				});
 		<#elseif data.mobModelName == "Ghast">
 			RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new GhastModel(), ${data.modelShadowSize}f) {
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType = MULTIPLE_TEXTURES>
+					<#if data.textureType == MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -243,13 +246,14 @@ import net.minecraft.block.material.Material;
 					<#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
 					</#if>
 					}
+					</#if>
 				});
 		<#elseif data.mobModelName == "Pig">
 			RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new PigModel(), ${data.modelShadowSize}f) {
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType = MULTIPLE_TEXTURES>
+					<#if data.textureType == MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -263,13 +267,14 @@ import net.minecraft.block.material.Material;
 					<#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
 					</#if>
 					}
+					</#if>
 				});
 		<#elseif data.mobModelName == "Slime">
 			RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new SlimeModel(0), ${data.modelShadowSize}f) {
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType = MULTIPLE_TEXTURES>
+					<#if data.textureType == MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -283,13 +288,14 @@ import net.minecraft.block.material.Material;
 					<#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
 					</#if>
 					}
+					</#if>
 				});
 		<#elseif data.mobModelName == "Spider">
 			RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new SpiderModel(), ${data.modelShadowSize}f) {
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType = MULTIPLE_TEXTURES>
+					<#if data.textureType == MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -303,13 +309,14 @@ import net.minecraft.block.material.Material;
 					<#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
 					</#if>
 					}
+					</#if>
 				});
 		<#elseif data.mobModelName == "Villager">
 			RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new VillagerModel(0), ${data.modelShadowSize}f) {
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType = MULTIPLE_TEXTURES>
+					<#if data.textureType == MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -323,13 +330,14 @@ import net.minecraft.block.material.Material;
 					<#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
 					</#if>
 					}
+					</#if>
 				});
 		<#elseif data.mobModelName == "Silverfish">
 			RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new SilverfishModel(), ${data.modelShadowSize}f) {
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType = MULTIPLE_TEXTURES>
+					<#if data.textureType == MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -343,6 +351,7 @@ import net.minecraft.block.material.Material;
 					<#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
 					</#if>
 					}
+					</#if>
 				});
 		<#elseif !data.isBuiltInModel()>
 			RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> {
@@ -350,7 +359,7 @@ import net.minecraft.block.material.Material;
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType = MULTIPLE_TEXTURES>
+					<#if data.textureType == MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -364,6 +373,7 @@ import net.minecraft.block.material.Material;
 					<#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
 					</#if>
 					}
+					</#if>
 				});
 		<#else>
 			RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> {

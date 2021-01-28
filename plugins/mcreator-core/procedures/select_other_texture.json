@@ -1,0 +1,14 @@
+{
+  "extensions": [
+    "other_textures_list_provider"
+  ],
+  "inputsInline": true,
+  "output": "String",
+  "colour": "%{BKY_TEXTS_HUE}",
+  "mcreator": {
+    "toolbox_id": "mcelements",
+    "fields": [
+      "other_texture"
+    ]
+  }
+}

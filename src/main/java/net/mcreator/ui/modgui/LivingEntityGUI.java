@@ -936,12 +936,12 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 	@Override public void openInEditingMode(Mob mob) {
 		disableMobModelCheckBoxListener = true;
 		mobName.setText(mob.mobName);
-		if(mob.mobTextureType == mob.ONE_TEXTURE){
-			oneTexture.setSelected(true);
-			multipleTextures.setSelected(false);
-		} else {
+		if(mob.mobTextureType == mob.MULTIPLE_TEXTURES){
 			oneTexture.setSelected(false);
 			multipleTextures.setSelected(true);
+		} else {
+			oneTexture.setSelected(true);
+			multipleTextures.setSelected(false);
 		}
 		mobModelTexture.setSelectedItem(mob.mobModelTexture);
 		mobModelGlowTexture.setSelectedItem(mob.mobModelGlowTexture);
@@ -1073,10 +1073,10 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		mob.mobName = mobName.getText();
 		mob.mobLabel = mobLabel.getText();
 		mob.mobModelTexture = mobModelTexture.getSelectedItem();
-		if(oneTexture.isSelected())
-			mob.mobTextureType = mob.ONE_TEXTURE;
-		else
+		if(multipleTextures.isSelected())
 			mob.mobTextureType = mob.MULTIPLE_TEXTURES;
+		else
+			mob.mobTextureType = mob.ONE_TEXTURE;
 		mob.mobModelGlowTexture = mobModelGlowTexture.getSelectedItem();
 		mob.spawnEggBaseColor = spawnEggBaseColor.getColor();
 		mob.spawnEggDotColor = spawnEggDotColor.getColor();
