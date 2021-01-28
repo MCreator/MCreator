@@ -169,7 +169,7 @@ import net.minecraft.block.material.Material;
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType == MULTIPLE_TEXTURES>
+					<#if data.mobTextureType == data.MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -190,7 +190,7 @@ import net.minecraft.block.material.Material;
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType == MULTIPLE_TEXTURES>
+					<#if data.mobTextureType == data.MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -211,7 +211,7 @@ import net.minecraft.block.material.Material;
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType == MULTIPLE_TEXTURES>
+					<#if data.mobTextureType == data.MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -232,7 +232,7 @@ import net.minecraft.block.material.Material;
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType == MULTIPLE_TEXTURES>
+					<#if data.mobTextureType == data.MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -253,7 +253,7 @@ import net.minecraft.block.material.Material;
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType == MULTIPLE_TEXTURES>
+					<#if data.mobTextureType == data.MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -274,7 +274,7 @@ import net.minecraft.block.material.Material;
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType == MULTIPLE_TEXTURES>
+					<#if data.mobTextureType == data.MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -295,7 +295,7 @@ import net.minecraft.block.material.Material;
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType == MULTIPLE_TEXTURES>
+					<#if data.mobTextureType == data.MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -316,7 +316,7 @@ import net.minecraft.block.material.Material;
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType == MULTIPLE_TEXTURES>
+					<#if data.mobTextureType == data.MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -337,7 +337,7 @@ import net.minecraft.block.material.Material;
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType == MULTIPLE_TEXTURES>
+					<#if data.mobTextureType == data.MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -359,7 +359,7 @@ import net.minecraft.block.material.Material;
 					<#if data.mobModelGlowTexture?has_content>{ 
 						this.addLayer(new GlowingLayer<>(this)); 
 					}</#if>
-					<#if data.textureType == MULTIPLE_TEXTURES>
+					<#if data.mobTextureType == data.MULTIPLE_TEXTURES>
 					@Override 
 					public ResourceLocation getEntityTexture(Entity entity) { 
 						<#if hasCondition(data.entityTextureSelector)>
@@ -388,8 +388,8 @@ import net.minecraft.block.material.Material;
 							World world = ent.world;
 							return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
 				
-					<#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
-					</#if>
+					    <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}");
+					    </#if>
 					}
 				});
 				customRender.addLayer(new BipedArmorLayer(customRender, new BipedModel(0.5f), new BipedModel(1)));
