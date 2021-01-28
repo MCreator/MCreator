@@ -25,7 +25,7 @@ public class FolderElement implements IElement {
 	public static final FolderElement ROOT = new FolderElement("~", null);
 
 	private String name;
-	protected Set<FolderElement> children;
+	protected List<FolderElement> children;
 
 	// Must not be serialized due to circular references!
 	// Populated by call to updateStructure from workspace loading mechanism
@@ -34,7 +34,7 @@ public class FolderElement implements IElement {
 	public FolderElement(String name, FolderElement parent) {
 		this.name = name;
 		this.parent = parent;
-		this.children = new HashSet<>();
+		this.children = new ArrayList<>();
 	}
 
 	public void updateStructure() {
@@ -45,6 +45,10 @@ public class FolderElement implements IElement {
 	}
 
 	public void addChild(FolderElement child) {
+		// prevent duplicates
+		if (this.children.contains(child))
+			return;
+
 		this.children.add(child);
 		child.parent = this;
 	}
@@ -53,8 +57,8 @@ public class FolderElement implements IElement {
 		this.children.remove(child);
 	}
 
-	public void setChildren(Set<FolderElement> children) {
-		this.children = children;
+	public void setChildren(Collection<FolderElement> children) {
+		this.children = new ArrayList<>(children);
 	}
 
 	public List<FolderElement> getDirectFolderChildren() {
@@ -67,9 +71,9 @@ public class FolderElement implements IElement {
 	 * @return List of all children
 	 */
 	public List<FolderElement> getRecursiveFolderChildren() {
-		Set<FolderElement> childrenList = new HashSet<>(children);
+		List<FolderElement> childrenList = new ArrayList<>(children);
 		children.forEach(child -> childrenList.addAll(child.getRecursiveFolderChildren()));
-		return new ArrayList<>(childrenList);
+		return childrenList;
 	}
 
 	public boolean isRoot() {
@@ -123,8 +127,7 @@ public class FolderElement implements IElement {
 	}
 
 	@Override public int hashCode() {
-		// Josh Bloch's Hash Code with prime numbers
-		return name.hashCode() + 23 * (getParent() != null ? getParent().hashCode() : 0);
+		return getPath().hashCode();
 	}
 
 }
