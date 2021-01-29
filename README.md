@@ -38,6 +38,10 @@ Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contr
   <img src="https://contrib.rocks/image?repo=MCreator/MCreator" width="615"/>
 </a>
 
+### Translations
+
+If you would like to help us translate MCreator to your language, join us on [translate.mcreator.net](https://translate.mcreator.net/)! If your language is not on the list yet, feel free to suggest us to add it.
+
 ## License and trademark
 
 MCreator is licensed under the GPL-3.0 license (with exceptions implemented as specified in section 7 of GPL-3.0) if not otherwise stated in source files or other files of this project. Copyright 2020 Pylo and [contributors](https://github.com/MCreator/MCreator/graphs/contributors).
