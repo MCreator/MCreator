@@ -1337,7 +1337,7 @@ import java.util.stream.Collectors;
 			}
 
 			if (!sortDateCreated.isSelected()) {
-				modElements.sort(Comparator.comparing(ModElement::getName));
+				filterItems.sort(Comparator.comparing(IElement::getName));
 			}
 
 			if (desc.isSelected()) {
