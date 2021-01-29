@@ -1,3 +1,4 @@
+commit_message: '[skip travis]'
 files:
   - source: /plugins/mcreator-localization/lang/texts.properties
     translation: >-
