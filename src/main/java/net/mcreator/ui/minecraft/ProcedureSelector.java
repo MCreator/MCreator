@@ -38,7 +38,6 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.modgui.ModElementGUI;
-import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
@@ -57,7 +56,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.*;
 
-public class ProcedureSelector extends JPanel implements IValidable {
+public class ProcedureSelector extends JPanel{
 
 	private static final Gson gson = new GsonBuilder().setLenient().create();
 
@@ -377,30 +376,6 @@ public class ProcedureSelector extends JPanel implements IValidable {
 	public void setSelectedProcedure(Procedure procedure) {
 		if (procedure != null)
 			procedures.setSelectedItem(new CBoxEntry(procedure.getName()));
-	}
-
-	@Override public Validator.ValidationResult getValidationStatus() {
-		Validator.ValidationResult validationResult = validator == null ? null : validator.validate();
-
-		if (validator != null && validationResult != null) {
-			if (validationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
-				setBorder(BorderFactory.createLineBorder(new Color(238, 229, 113), 1));
-			} else if (validationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
-				setBorder(BorderFactory.createLineBorder(new Color(204, 108, 108), 1));
-			} else {
-				setBorder(BorderFactory.createLineBorder(new Color(79, 192, 121), 1));
-			}
-		}
-
-		return validationResult;
-	}
-
-	@Override public void setValidator(Validator validator) {
-		this.validator = validator;
-	}
-
-	@Override public Validator getValidator() {
-		return validator;
 	}
 
 	static class ConditionalComboBoxRenderer implements ListCellRenderer<CBoxEntry> {

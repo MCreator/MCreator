@@ -91,9 +91,6 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 	private ProcedureSelector spawningCondition;
 	private ProcedureSelector entityTextureSelector;
 
-	private final JRadioButton oneTexture = L10N.radiobutton("elementgui.living_entity.one_texture_button");
-	private final JRadioButton multipleTextures = L10N.radiobutton("elementgui.living_entity.multiple_textures_button");
-
 	private final SoundSelector livingSound = new SoundSelector(mcreator);
 	private final SoundSelector hurtSound = new SoundSelector(mcreator);
 	private final SoundSelector deathSound = new SoundSelector(mcreator);
@@ -314,9 +311,10 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.setDefaultName(L10N.t("elementgui.living_entity.condition_use_vanilla"));
 		entityTextureSelector = new ProcedureSelector(this.withEntry("entity/multiple_textures_selector"), mcreator,
-				L10N.t("elementgui.living_entity.multiple_textures_selector.title"), VariableElementType.STRING,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
-						L10N.t("elementgui.living_entity.multiple_textures_selector.no_texture"));
+				L10N.t("elementgui.living_entity.multiple_textures_selector.title"), ProcedureSelector.Side.CLIENT,
+				true, VariableElementType.STRING, Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(L10N.t(
+								"elementgui.living_entity.multiple_textures_selector.no_texture"));
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
@@ -464,6 +462,28 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 				L10N.label("elementgui.living_entity.entity_model")));
 		spo2.add(mobModel);
 
+		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
+		importmobtexture.setToolTipText(L10N.t("elementgui.living_entity.entity_model_import"));
+		importmobtexture.setOpaque(false);
+		importmobtexture.addActionListener(e -> {
+			TextureImportDialogs.importOtherTextures(mcreator);
+			mobModelTexture.removeAllItems();
+			mobModelTexture.addItem("");
+			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> mobModelTexture.addItem(el.getName()));
+			mobModelGlowTexture.removeAllItems();
+			mobModelGlowTexture.addItem("");
+			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> mobModelGlowTexture.addItem(el.getName()));
+		});
+
+		spo2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("entity/texture"), L10N.label("elementgui.living_entity.texture")));
+
+		spo2.add(PanelUtils.join(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture), entityTextureSelector));
+
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"),
+				L10N.label("elementgui.living_entity.glow_texture")));
+		spo2.add(mobModelGlowTexture);
+
 		ComponentUtils.deriveFont(mobModelTexture, 16);
 		ComponentUtils.deriveFont(mobModelGlowTexture, 16);
 		ComponentUtils.deriveFont(aiBase, 16);
@@ -562,46 +582,11 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 				L10N.label("elementgui.living_entity.death_sound")));
 		spo2.add(deathSound);
 
-		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
-		importmobtexture.setToolTipText(L10N.t("elementgui.living_entity.entity_model_import"));
-		importmobtexture.setOpaque(false);
-		importmobtexture.addActionListener(e -> {
-			TextureImportDialogs.importOtherTextures(mcreator);
-			mobModelTexture.removeAllItems();
-			mobModelTexture.addItem("");
-			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> mobModelTexture.addItem(el.getName()));
-			mobModelGlowTexture.removeAllItems();
-			mobModelGlowTexture.addItem("");
-			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> mobModelGlowTexture.addItem(el.getName()));
-		});
-
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("entity/texture"), L10N.label("elementgui.living_entity.texture")));
-		ButtonGroup bg = new ButtonGroup();
-		bg.add(oneTexture);
-		bg.add(multipleTextures);
-		oneTexture.setOpaque(false);
-		multipleTextures.setOpaque(false);
-		oneTexture.setSelected(true);
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture),
-				oneTexture));
-		oneTexture.addActionListener(e -> updateTextureFields());
-		multipleTextures.addActionListener(e -> updateTextureFields());
-
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"),
-				L10N.label("elementgui.living_entity.glow_texture")));
-		spo2.add(mobModelGlowTexture);
-
 		ComponentUtils.deriveFont(mobLabel, 16);
 
 		pane2.setOpaque(false);
 
-		JComponent fspo2 = PanelUtils.northAndCenterElement(spo2, PanelUtils
-				.westAndEastElement(L10N.label("elementgui.living_entity.multiple_textures_selector"),
-						PanelUtils.join(multipleTextures, entityTextureSelector)));
-		fspo2.setOpaque(false);
-
-		pane2.add("Center", PanelUtils.totalCenterInPanel(fspo2));
+		pane2.add("Center", PanelUtils.totalCenterInPanel(spo2));
 
 		JPanel aitop = new JPanel(new GridLayout(2, 2, 10, 10));
 		aitop.setOpaque(false);
@@ -819,21 +804,11 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		pane7.setOpaque(false);
 
 		mobModelTexture.setValidator(() -> {
-			if(oneTexture.isSelected())
+			if(entityTextureSelector.getSelectedProcedure() == null)
 				if (mobModelTexture.getSelectedItem() == null || mobModelTexture.getSelectedItem().equals(""))
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 							L10N.t("elementgui.living_entity.error_entity_model_needs_texture"));
 				return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
-		});
-
-		entityTextureSelector.setValidator(() -> {
-			if(multipleTextures.isSelected()){
-				if (entityTextureSelector.getSelectedProcedure() == null)
-					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							L10N.t("elementgui.living_entity.error_entity_model_needs_texture"));
-				return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
-			}
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
 		mobName.setValidator(
@@ -851,21 +826,9 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3);
 		addPage(L10N.t("elementgui.living_entity.page_spawning"), pane5);
 
-		updateTextureFields();
-
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			mobName.setText(readableNameFromModElement);
-		}
-	}
-
-	private void updateTextureFields() {
-		if(multipleTextures.isSelected()){
-			mobModelTexture.setEnabled(false);
-			entityTextureSelector.setEnabled(true);
-		} else{
-			mobModelTexture.setEnabled(true);
-			entityTextureSelector.setEnabled(false);
 		}
 	}
 
@@ -919,7 +882,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0) {
-			return new AggregatedValidationResult(mobModelTexture, mobName, entityTextureSelector);
+			return new AggregatedValidationResult(mobModelTexture, mobName);
 		} else if (page == 5) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
@@ -936,13 +899,6 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 	@Override public void openInEditingMode(Mob mob) {
 		disableMobModelCheckBoxListener = true;
 		mobName.setText(mob.mobName);
-		if(mob.mobTextureType == mob.MULTIPLE_TEXTURES){
-			oneTexture.setSelected(false);
-			multipleTextures.setSelected(true);
-		} else {
-			oneTexture.setSelected(true);
-			multipleTextures.setSelected(false);
-		}
 		mobModelTexture.setSelectedItem(mob.mobModelTexture);
 		mobModelGlowTexture.setSelectedItem(mob.mobModelGlowTexture);
 		mobSpawningType.setSelectedItem(mob.mobSpawningType);
@@ -1064,8 +1020,6 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
 
 		disableMobModelCheckBoxListener = false;
-
-		updateTextureFields();
 	}
 
 	@Override public Mob getElementFromGUI() {
@@ -1073,10 +1027,6 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		mob.mobName = mobName.getText();
 		mob.mobLabel = mobLabel.getText();
 		mob.mobModelTexture = mobModelTexture.getSelectedItem();
-		if(multipleTextures.isSelected())
-			mob.mobTextureType = mob.MULTIPLE_TEXTURES;
-		else
-			mob.mobTextureType = mob.ONE_TEXTURE;
 		mob.mobModelGlowTexture = mobModelGlowTexture.getSelectedItem();
 		mob.spawnEggBaseColor = spawnEggBaseColor.getColor();
 		mob.spawnEggDotColor = spawnEggDotColor.getColor();

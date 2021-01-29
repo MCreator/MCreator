@@ -37,16 +37,12 @@ import java.util.List;
 @SuppressWarnings("unused") public class Mob extends GeneratableElement
 		implements IEntityWithModel, ITabContainedElement {
 
-	public final transient int ONE_TEXTURE;
-	public final transient int MULTIPLE_TEXTURES;
-
 	public String mobName;
 	public String mobLabel;
 
 	public String mobModelName;
 	public String mobModelTexture;
 	public Procedure entityTextureSelector;
-	public int mobTextureType;
 	public String mobModelGlowTexture;
 
 	public double modelWidth, modelHeight, modelShadowSize;
@@ -157,8 +153,6 @@ import java.util.List;
 
 	public Mob(ModElement element) {
 		super(element);
-		ONE_TEXTURE = 0;
-		MULTIPLE_TEXTURES = 1;
 		this.modelShadowSize = 0.5;
 		this.mobCreatureType = "UNDEFINED";
 		this.trackingRange = 64;

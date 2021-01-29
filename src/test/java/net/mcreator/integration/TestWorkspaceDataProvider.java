@@ -485,7 +485,6 @@ public class TestWorkspaceDataProvider {
 			mob.mobName = modElement.getName();
 			mob.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
 			mob.mobModelTexture = "test.png";
-			mob.mobTextureType = _true ? 0 : 1;
 			mob.mobModelGlowTexture = emptyLists ? "" : "test.png";
 			mob.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
 			mob.spawnEggBaseColor = Color.red;
