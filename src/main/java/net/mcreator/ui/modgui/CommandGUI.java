@@ -46,7 +46,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 	private final VTextField commandName = new VTextField(25);
 
-	private final JSpinner permissionLevel = new JSpinner(new SpinnerNumberModel(2, 1, 4, 1));
+	private final JComboBox<String> permissionLevel = new JComboBox<>(new String[] { "No requirement", "1", "2", "3", "4" });
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -118,14 +118,14 @@ public class CommandGUI extends ModElementGUI<Command> {
 	@Override public void openInEditingMode(Command command) {
 		onCommandExecuted.setSelectedProcedure(command.onCommandExecuted);
 		commandName.setText(command.commandName);
-		permissionLevel.setValue(command.permissionLevel);
+		permissionLevel.setSelectedItem(command.permissionLevel);
 	}
 
 	@Override public Command getElementFromGUI() {
 		Command command = new Command(modElement);
 		command.commandName = commandName.getText();
 		command.onCommandExecuted = onCommandExecuted.getSelectedProcedure();
-		command.permissionLevel = (int) permissionLevel.getValue();
+		command.permissionLevel = (String) permissionLevel.getSelectedItem();
 		return command;
 	}
 

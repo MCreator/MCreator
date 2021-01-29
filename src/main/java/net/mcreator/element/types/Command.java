@@ -29,7 +29,7 @@ import java.awt.image.BufferedImage;
 
 	public String commandName;
 
-	public int permissionLevel;
+	public String permissionLevel;
 
 	public Procedure onCommandExecuted;
 
@@ -40,7 +40,7 @@ import java.awt.image.BufferedImage;
 	public Command(ModElement element) {
 		super(element);
 
-		this.permissionLevel = 4;
+		this.permissionLevel = "4";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
