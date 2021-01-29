@@ -94,6 +94,11 @@ import java.util.List;
 	public boolean immuneToLightning;
 	public boolean immuneToPotions;
 	public boolean immuneToPlayer;
+	public boolean immuneToExplosion;
+	public boolean immuneToTrident;
+	public boolean immuneToAnvil;
+	public boolean immuneToWither;
+	public boolean immuneToDragonBreath;
 
 	public MItemBlock mobDrop;
 

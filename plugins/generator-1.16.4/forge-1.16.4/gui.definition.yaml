@@ -1,3 +1,5 @@
 templates:
   - template: gui.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/gui/@NAMEGui.java"
+  - template: gui_window.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/gui/@NAMEGuiWindow.java"

@@ -398,7 +398,7 @@ public class TestWorkspaceDataProvider {
 		case COMMAND:
 			Command command = new Command(modElement);
 			command.commandName = modElement.getName();
-			command.permissionLevel = 3;
+			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
 			command.onCommandExecuted = new Procedure("procedure2");
 			return command;
 		case KEYBIND:
@@ -531,6 +531,11 @@ public class TestWorkspaceDataProvider {
 			mob.immuneToLightning = !_true;
 			mob.immuneToPotions = !_true;
 			mob.immuneToPlayer = !_true;
+			mob.immuneToExplosion = !_true;
+			mob.immuneToTrident = !_true;
+			mob.immuneToAnvil = !_true;
+			mob.immuneToDragonBreath = !_true;
+			mob.immuneToWither = !_true;
 			mob.hasSpawnEgg = !_true;
 			mob.xpAmount = 8;
 			mob.ridable = _true;
@@ -1114,7 +1119,8 @@ public class TestWorkspaceDataProvider {
 			block.isItemTinted = _true;
 			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
 					14 }[valueIndex];
-			block.customModelName = new String[] { "Normal", "Single texture", "Cross model", "Grass block" }[valueIndex];
+			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",
+					"Grass block" }[valueIndex];
 			return block;
 		case TAG:
 			Tag tag = new Tag(modElement);
