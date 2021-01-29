@@ -68,13 +68,14 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 			String type = null;
 			if (element.isJsonNull())
 				type = "null";
-			if (element.isJsonPrimitive())
+			if (element.isJsonPrimitive()) {
 				if (element.getAsJsonPrimitive().isBoolean())
 					type = "bool";
-			if (element.getAsJsonPrimitive().isString())
-				type = "text";
-			if (element.getAsJsonPrimitive().isNumber())
-				type = "number";
+				if (element.getAsJsonPrimitive().isString())
+					type = "text";
+				if (element.getAsJsonPrimitive().isNumber())
+					type = "number";
+			}
 			setText("<html>" + value.toString() + (type == null ?
 					"" :
 					("&nbsp;&nbsp;<small color=gray>[" + type + "]")));
