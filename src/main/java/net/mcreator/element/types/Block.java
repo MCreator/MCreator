@@ -251,4 +251,8 @@ import java.util.Map;
 	@Override public List<BoxEntry> getBoundingBox() {
 		return boundingBoxes;
 	}
+
+	public boolean allowsCustomBoundingBox() {
+		return blockBase == null || blockBase.equals("Leaves") || blockBase.equals("Pane");
+	}
 }
