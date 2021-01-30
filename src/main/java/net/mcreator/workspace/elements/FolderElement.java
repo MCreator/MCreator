@@ -18,7 +18,10 @@
 
 package net.mcreator.workspace.elements;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class FolderElement implements IElement {
 
@@ -45,12 +48,20 @@ public class FolderElement implements IElement {
 	}
 
 	public void addChild(FolderElement child) {
-		// prevent duplicates
-		if (this.children.contains(child))
+		child.parent = this;
+
+		// merge child children, if child already exists
+		int childIdx = this.children.indexOf(child);
+		if (childIdx != -1) {
+			for (FolderElement childChild : child.getDirectFolderChildren()) {
+				this.children.get(childIdx).addChild(childChild);
+			}
+
+			// we will not add the same child again
 			return;
+		}
 
 		this.children.add(child);
-		child.parent = this;
 	}
 
 	public void removeChild(FolderElement child) {
