@@ -306,21 +306,23 @@ import java.util.stream.Collectors;
 		addFolder.setBorderPainted(false);
 		addFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		addFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		addFolder.setToolTipText(L10N.t("workspace.elements.folders.add_tooltip"));
 
 		upFolder.setContentAreaFilled(false);
 		upFolder.setBorderPainted(false);
 		upFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		upFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		upFolder.setToolTipText(L10N.t("workspace.elements.folders.up_tooltip"));
 
 		addFolder.addActionListener(e -> {
-			String name = VOptionPane
-					.showInputDialog(mcreator, "Enter the folder name:", "", null, new OptionPaneValidatior() {
+			String name = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.folders.add.message"),
+					L10N.t("workspace.elements.folders.add.title"), null, new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
 							String text = ((JTextField) component).getText();
 
 							if (!text.matches("[A-Za-z0-9._ -]+")) {
 								return new Validator.ValidationResult(ValidationResultType.ERROR,
-										"Folder name can only contain English alphabet letters, numbers, ._- and whitespace.");
+										L10N.t("workspace.elements.folders.add.error_letters"));
 							}
 
 							List<FolderElement> folderElements = mcreator.getWorkspace().getFoldersRoot()
@@ -331,7 +333,7 @@ import java.util.stream.Collectors;
 							for (FolderElement folderElement : folderElements) {
 								if (folderElement.equals(tmpFolder)) {
 									return new Validator.ValidationResult(ValidationResultType.ERROR,
-											"Folder with this name already exists");
+											L10N.t("workspace.elements.folders.add.error_exists"));
 								}
 							}
 
