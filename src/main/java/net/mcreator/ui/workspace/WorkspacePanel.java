@@ -103,6 +103,8 @@ import java.util.stream.Collectors;
 
 	private final MCreator mcreator;
 
+	private final JButton upFolder;
+
 	private final JLabel but2 = new JLabel(TiledImageCache.workspaceEdit);
 	private final JLabel but2a = new JLabel(TiledImageCache.workspaceDuplicate);
 	private final JLabel but3 = new JLabel(TiledImageCache.workspaceDelete);
@@ -298,7 +300,7 @@ import java.util.stream.Collectors;
 		JButton addFolder = new JButton(new ImageIcon(ImageUtils
 				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.newFolder.gif").getImage()),
 						new Rectangle(1, 1, 16, 16))));
-		JButton upFolder = new JButton(new ImageIcon(ImageUtils
+		upFolder = new JButton(new ImageIcon(ImageUtils
 				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.upFolder.gif").getImage()),
 						new Rectangle(1, 1, 16, 16))));
 
@@ -313,6 +315,7 @@ import java.util.stream.Collectors;
 		upFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		upFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		upFolder.setToolTipText(L10N.t("workspace.elements.folders.up_tooltip"));
+		upFolder.setEnabled(false);
 
 		addFolder.addActionListener(e -> {
 			String name = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.folders.add.message"),
@@ -873,6 +876,8 @@ import java.util.stream.Collectors;
 
 		// reload breadcrumb
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
+
+		upFolder.setEnabled(!currentFolder.isRoot());
 	}
 
 	private void resort() {
