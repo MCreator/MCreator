@@ -18,30 +18,30 @@
 
 package net.mcreator.element;
 
+import org.eclipse.jgit.annotations.NonNull;
+
 import java.util.List;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused") public interface IBoundingBox {
-	@Nullable List<BoxEntry> getBoundingBox();
+	// A list of non-empty bounding box entries
+	@NonNull List<BoxEntry> getBoundingBox();
 
+	// Empty list or all bounding boxes are in subtract mode
 	default boolean isBoundingBoxEmpty() {
-		return getBoundingBox() == null || getBoundingBox().stream().allMatch(box -> box.subtract || box.isEmpty());
+		return positiveBoundingBoxes().isEmpty();
 	}
 
 	default boolean isFullCube() {
-		return getBoundingBox() != null && getBoundingBox().size() > 0 &&
-				getBoundingBox().stream().allMatch(BoxEntry::isFullCube);
+		return getBoundingBox().size() > 0 && getBoundingBox().stream().allMatch(BoxEntry::isFullCube);
 	}
 
 	default List<BoxEntry> positiveBoundingBoxes() {
-		return getBoundingBox() == null ? null :
-				getBoundingBox().stream().filter(box -> !box.subtract && !box.isEmpty()).collect(Collectors.toList());
+		return getBoundingBox().stream().filter(box -> !box.subtract).collect(Collectors.toList());
 	}
 
 	default List<BoxEntry> negativeBoundingBoxes() {
-		return getBoundingBox() == null ? null :
-				getBoundingBox().stream().filter(box -> box.subtract && !box.isEmpty()).collect(Collectors.toList());
+		return getBoundingBox().stream().filter(box -> box.subtract).collect(Collectors.toList());
 	}
 
 	class BoxEntry {
@@ -59,8 +59,8 @@ import org.jetbrains.annotations.Nullable;
 			this.Mz = 16;
 		}
 
-		public boolean isEmpty() {
-			return mx == Mx || my == My || mz == Mz;
+		public boolean isNotEmpty() {
+			return mx != Mx && my != My && mz != Mz;
 		}
 
 		public boolean isFullCube() {

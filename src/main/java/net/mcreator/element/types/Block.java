@@ -37,6 +37,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
 		implements IItemWithModel, ITabContainedElement, IBoundingBox {
@@ -249,7 +250,7 @@ import java.util.Map;
 	}
 
 	@Override public List<BoxEntry> getBoundingBox() {
-		return boundingBoxes;
+		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
 	}
 
 	public boolean allowsCustomBoundingBox() {
