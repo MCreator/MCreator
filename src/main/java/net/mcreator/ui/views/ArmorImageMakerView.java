@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.views;
 
-import net.mcreator.element.types.Armor;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
