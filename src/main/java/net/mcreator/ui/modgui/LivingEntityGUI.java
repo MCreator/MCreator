@@ -313,8 +313,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		entityTextureSelector = new ProcedureSelector(this.withEntry("entity/multiple_textures_selector"), mcreator,
 				L10N.t("elementgui.living_entity.multiple_textures_selector.title"), ProcedureSelector.Side.CLIENT,
 				true, VariableElementType.STRING, Dependency.fromString(
-						"x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(L10N.t(
-								"elementgui.living_entity.multiple_textures_selector.no_texture"));
+						"x:number/y:number/z:number/world:world/entity:entity"));
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);

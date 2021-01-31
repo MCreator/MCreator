@@ -77,9 +77,6 @@ public class ProcedureSelector extends JPanel{
 
 	private String defaultName = "(no procedure)";
 
-	//validation code
-	private Validator validator = null;
-
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName,
 			Dependency... providedDependencies) {
 		this(helpContext, mcreator, eventName, Side.BOTH, providedDependencies);
@@ -120,6 +117,9 @@ public class ProcedureSelector extends JPanel{
 			defaultName = "(always)";
 			setBorder(BorderFactory
 					.createLineBorder(new Dependency("", VariableElementType.LOGIC.toDependencyType()).getColor()));
+		} else if(returnType == VariableElementType.STRING){
+			setBorder(BorderFactory
+					.createLineBorder(new Dependency("", VariableElementType.STRING.toDependencyType()).getColor()));
 		}
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
