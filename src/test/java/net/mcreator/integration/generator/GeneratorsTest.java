@@ -172,19 +172,17 @@ import static org.junit.Assert.fail;
 				workspace.getModElementManager().storeModElement(procedure);
 			}
 
-			for(int i = 1; i<= 1; i++){
-				ModElement me = new ModElement(workspace, "textureSelector" + i, ModElementType.PROCEDURE)
-						.putMetadata("dependencies", new ArrayList<>()).putMetadata("return_type", "STRING");
-				workspace.addModElement(me);
+			ModElement me = new ModElement(workspace, "textureSelector1", ModElementType.PROCEDURE)
+					.putMetadata("dependencies", new ArrayList<>()).putMetadata("return_type", "STRING");
+			workspace.addModElement(me);
 
-				Procedure procedure = new Procedure(me);
-				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
-						"<block type=\"return_text\"><value name=\"return\">"
-								+ "<block type=\"select_other_texture\"><field name=\"other_texture\">test.png</field></block>"
-								+ "</value></block>");
-				assertTrue(workspace.getGenerator().generateElement(procedure));
-				workspace.getModElementManager().storeModElement(procedure);
-			}
+			Procedure procedure = new Procedure(me);
+			procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
+					"<block type=\"return_text\"><value name=\"return\">"
+							+ "<block type=\"select_other_texture\"><field name=\"other_texture\">test.png</field></block>"
+							+ "</value></block>");
+			assertTrue(workspace.getGenerator().generateElement(procedure));
+			workspace.getModElementManager().storeModElement(procedure);
 
 			GTModElements.runTest(LOG, generator, random, workspace);
 

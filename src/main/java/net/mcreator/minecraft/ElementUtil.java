@@ -24,6 +24,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -248,10 +249,8 @@ public class ElementUtil {
 				.collect(Collectors.toList());
 	}
 
-	public static List<String> loadAllOtherTextures(Workspace workspace){
-		List<String> retval = new ArrayList<>();
-		workspace.getFolderManager().getOtherTexturesList().forEach(el -> retval.add(el.getName()));
-		return retval;
+	public static List<String> loadAllOtherTextures(Workspace workspace) {
+		return workspace.getFolderManager().getOtherTexturesList().stream().map(File::getName).collect(Collectors.toList());
 	}
 
 	private static List<DataListEntry> getCustomElementsOfType(@NotNull Workspace workspace, ModElementType type) {
