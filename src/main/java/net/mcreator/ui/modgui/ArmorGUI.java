@@ -325,9 +325,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodyModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_body"), PanelUtils
 				.northAndCenterElement(PanelUtils
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bodyModel,
-								new JLabel(":"), bodyModelPart, new JLabel("arms L"), armsModelPartL,
-								new JLabel("arms R"), armsModelPartR, L10N.label("elementgui.armor.texture"),
-								bodyModelTexture), PanelUtils
+								new JLabel(":"), bodyModelPart, L10N.label("elementgui.armor.part_arm_left"),
+								armsModelPartL, L10N.label("elementgui.armor.part_arm_right"), armsModelPartR,
+								L10N.label("elementgui.armor.texture"), bodyModelTexture), PanelUtils
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), bodySpecialInfo)));
 		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 

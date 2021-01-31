@@ -606,12 +606,10 @@ public class WorkspacePanel extends JPanel {
 					if (list.getSelectedValue() != null) {
 						Object[] options = { "Yes", "No" };
 						int n = JOptionPane.showOptionDialog(mcreator,
-								"<html><b>Are you sure that you want to delete selected (" + list
-										.getSelectedValuesList().size() + ") mod elements?</b>"
-										+ "<br><small>If you used these mod elements's data in other mod elements (as recipe, in event, as tab, ...) you"
-										+ "<br>have to delete elements that are dependent on this one too! Otherwise your will get build errors.",
-								"Confirmation", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-								options, options[1]);
+								L10N.t("workspace.elements.confirm_delete_message",
+										list.getSelectedValuesList().size()),
+								L10N.t("workspace.elements.confirm_delete_title"), JOptionPane.YES_NO_CANCEL_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
 						if (n == 0) {
 							final boolean[] buildNeeded = { false };
@@ -655,11 +653,7 @@ public class WorkspacePanel extends JPanel {
 				}
 			}
 		});
-		but5a.setToolTipText("<html>Lock/unlock element's code<br><small>"
-				+ "When you lock the code, MCreator won't change the code, so the mod type becomes<br>"
-				+ "editable from the code view and the code is preserved even when switching workspaces.<br>"
-				+ "<b>Use this only if you intend to manually edit the code and are aware of the consequences<br>"
-				+ "of locking the code of a mod element!");
+		but5a.setToolTipText(L10N.t("workspace.elements.lock_code_tooltip"));
 		but5a.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but5a);
 
@@ -760,18 +754,11 @@ public class WorkspacePanel extends JPanel {
 
 	private void lockCode() {
 		Object[] options = { "Lock/unlock the code", "Cancel" };
-		int n = JOptionPane.showOptionDialog(mcreator,
-				"<html><b>You are trying to lock/unlock the code of the mod element!</b><br><br>"
-						+ "When the code is locked, MCreator won't change the source code, but this means<br>"
-						+ "that when updating MCreator, bug fixes and Minecraft version upgrades won't be<br>"
-						+ "applied to the elements that are locked.<br><br>"
-						+ "The mod elements that are locked right now and were selected will be unlocked.<br>"
-						+ "This means that any custom code for these mod element will be overwritten by MCreator.<br>"
-						+ "<br><small>Please read the wiki page on MCreator's website about locking code before using this action.",
-				"Lock/unlock mod element code?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
-				options, options[1]);
+		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("workspace.elements.lock_modelement_message"),
+				L10N.t("workspace.elements.lock_modelement_confirm"), JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.WARNING_MESSAGE, null, options, options[1]);
 		if (n == 0) {
-			ProgressDialog dial = new ProgressDialog(mcreator, "Mod element lock/unlock");
+			ProgressDialog dial = new ProgressDialog(mcreator, L10N.t("workspace.elements.lock_modelement_title"));
 			Thread t = new Thread(() -> {
 				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit("Locking/unlocking mod elements");
 				dial.addProgress(p0);

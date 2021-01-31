@@ -4,7 +4,7 @@ templates:
 
   # Block item templates
   - template: json/block_item.json.ftl
-    condition: "renderType() #?= 10,11,12,110,120,2"
+    condition: "renderType() #?= 10,11,12,14,110,120,2"
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/block_item_cmodel.json.ftl
@@ -35,6 +35,10 @@ templates:
     condition: "renderType() #= 13"
     writer: json
     variables: "model=crop;txname=crop"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block_grass_model.json.ftl
+    condition: "renderType() #= 14"
+    writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block.json.ftl
     condition: "renderType() #= 110"

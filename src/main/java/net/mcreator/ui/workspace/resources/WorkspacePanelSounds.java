@@ -104,9 +104,9 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 			List<SoundElement> file = soundElementList.getSelectedValuesList();
 			if (file.size() > 0) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-						"<html>Are you sure that you want to delete this sound?"
-								+ "<br>NOTE: If you use this sound anywhere, it won't work anymore!", "Confirmation",
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+						L10N.t("workspace.sounds.confirm_deletion_message"),
+						L10N.t("workspace.sounds.confirm_deletion_title"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
 				if (n == 0) {
 					file.forEach(workspacePanel.getMcreator().getWorkspace()::removeSoundElement);
 					reloadElements();
@@ -223,7 +223,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 			name.setFont(AbstractMCreatorTheme.light_font.deriveFont(20.0f));
 			namepan.add("North", name);
 
-			JLabel name2 = new JLabel("Sound files: " + String.join(", ", ma.getFiles()));
+			JLabel name2 = L10N.label("workspace.sounds.files", String.join(", ", ma.getFiles()));
 			ComponentUtils.deriveFont(name2, 11);
 			namepan.add("South", name2);
 
@@ -236,11 +236,9 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 			String rightText;
 
 			if (ma.getSubtitle() != null && !ma.getSubtitle().isEmpty()) {
-				rightText =
-						"<html><small>Subtitle:</small> " + ma.getSubtitle() + ", <small>Sound category:</small> " + ma
-								.getCategory();
+				rightText = L10N.t("workspace.sounds.subtitle_and_category", ma.getSubtitle(), ma.getCategory());
 			} else {
-				rightText = "<html><small>Sound category:</small> " + ma.getCategory();
+				rightText = L10N.t("workspace.sounds.category", ma.getCategory());
 			}
 
 			JLabel rightTextLabel = new JLabel(rightText);

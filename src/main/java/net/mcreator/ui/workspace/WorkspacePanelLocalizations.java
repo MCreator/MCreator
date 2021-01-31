@@ -123,8 +123,8 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 
 		add.addActionListener(e -> {
 			String key = JOptionPane
-					.showInputDialog(workspacePanel.getMcreator(), "Enter the key name for your custom language entry:",
-							"Key name", JOptionPane.QUESTION_MESSAGE);
+					.showInputDialog(workspacePanel.getMcreator(), L10N.t("workspace.localization.key_name_message"),
+							L10N.t("workspace.localization.key_name_title"), JOptionPane.QUESTION_MESSAGE);
 			if (key != null && !key.equals("")) {
 				workspacePanel.getMcreator().getWorkspace().setLocalization(key, "");
 				reloadElements();
@@ -213,8 +213,9 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			button.addActionListener(e -> {
 				Object[] options = { "Yes", "No" };
 				int n = JOptionPane.showOptionDialog(workspacePanel.getMcreator(),
-						"<html>Are you sure that you want to delete this localization map?", "Confirmation",
-						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+						L10N.t("workspace.localization.confirm_delete_map"),
+						L10N.t("workspace.localization.confirmation"), JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 				if (n == 0) {
 					workspacePanel.getMcreator().getWorkspace().removeLocalizationLanguage(entry.getKey());
 					reloadElements();
@@ -243,9 +244,9 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 				String key = (String) elements.getValueAt(elements.getSelectedRow(), 0);
 				if (key != null) {
 					int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-							"<html>Are you sure that you want to remove selected entries?"
-									+ "<br>NOTE: If they are still in use, the names of elements bound to them won't work!",
-							"Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+							L10N.t("workspace.localization.confirm_delete_entry"),
+							L10N.t("workspace.localization.confirmation"), JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE);
 					if (n == 0) {
 						Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
 								.forEach(workspacePanel.getMcreator().getWorkspace()::removeLocalizationEntryByKey);
@@ -260,8 +261,8 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 
 				if (entry.getKey().equals("en_us")) {
 					JOptionPane.showMessageDialog(workspacePanel.getMcreator(),
-							"<html>Default translation (en_us) can't be exported!<br>English texts are defined in mod elements.",
-							"Export translation", JOptionPane.WARNING_MESSAGE);
+							L10N.t("workspace.localization.confirm_export"),
+							L10N.t("workspace.localization.export_translation"), JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 
@@ -292,8 +293,8 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 
 				if (entry.getKey().equals("en_us")) {
 					JOptionPane.showMessageDialog(workspacePanel.getMcreator(),
-							"<html>You can't import CSV to default translation (en_us)!<br>English texts are defined in mod elements.",
-							"Export translation", JOptionPane.WARNING_MESSAGE);
+							L10N.t("workspace.localization.warning_export"),
+							L10N.t("workspace.localization.export_translation"), JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 
@@ -364,16 +365,17 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		sortedLocales.sort(String::compareToIgnoreCase);
 
 		String[] options = sortedLocales.toArray(new String[0]);
-		String new_locale_id = (String) JOptionPane.showInputDialog(workspacePanel.getMcreator(),
-				"<html>Select the language of the localization you<br>" + "would like to choose:",
-				"Add new localization", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		String new_locale_id = (String) JOptionPane
+				.showInputDialog(workspacePanel.getMcreator(), L10N.t("workspace.localization.language_choose"),
+						L10N.t("workspace.localization.add_localization"), JOptionPane.QUESTION_MESSAGE, null, options,
+						options[0]);
 		if (new_locale_id != null) {
 			String locale = new_locale_id.split(":")[1].trim();
 
-			String based_from_id = (String) JOptionPane.showInputDialog(workspacePanel.getMcreator(),
-					"<html>Select the language from which to copy<br>" + "existing translations:",
-					"Add new localization", JOptionPane.QUESTION_MESSAGE, null, language_map.keySet().toArray(),
-					"en_us");
+			String based_from_id = (String) JOptionPane
+					.showInputDialog(workspacePanel.getMcreator(), L10N.t("workspace.localization.language_copy"),
+							L10N.t("workspace.localization.add_localization"), JOptionPane.QUESTION_MESSAGE, null,
+							language_map.keySet().toArray(), "en_us");
 			if (based_from_id != null) {
 				ConcurrentHashMap<String, String> en_us = language_map.get(based_from_id);
 				workspacePanel.getMcreator().getWorkspace().addLanguage(locale, en_us);

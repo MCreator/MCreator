@@ -19,6 +19,7 @@
 package net.mcreator.ui.gradle;
 
 import net.mcreator.ui.component.ConsolePane;
+import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -33,8 +34,8 @@ import java.awt.event.KeyEvent;
 public class ConsoleSearchBar extends JToolBar {
 
 	private final JTextField jtf1 = new JTextField(40);
-	private final JCheckBox cb3 = new JCheckBox("Match Case");
-	private final JLabel results = new JLabel("No results");
+	private final JCheckBox cb3 = L10N.checkbox("dialog.console_search.match");
+	private final JLabel results = L10N.label("dialog.console_search.no_result");
 
 	private Highlighter hilite;
 

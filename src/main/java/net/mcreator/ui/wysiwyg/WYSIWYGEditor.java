@@ -365,7 +365,8 @@ public class WYSIWYGEditor extends JPanel {
 			});
 
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, pon));
-		adds2.add(PanelUtils.join(FlowLayout.LEFT, new JLabel("GUI WxH: "), spa1, new JLabel("x"), spa2));
+		adds2.add(PanelUtils
+				.join(FlowLayout.LEFT, L10N.label("elementgui.gui.width_height"), spa1, new JLabel("x"), spa2));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.gui.inventory_offset"), invOffX, invOffY));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, renderBgLayer));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, doesPauseGame));
@@ -382,7 +383,7 @@ public class WYSIWYGEditor extends JPanel {
 			ovst.setLayout(new BoxLayout(ovst, BoxLayout.PAGE_AXIS));
 			ovst.setBorder(BorderFactory.createTitledBorder(
 					BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
-					"Overlay properties", 0, 0, getFont().deriveFont(12.0f),
+					L10N.t("elementgui.gui.overlay_properties"), 0, 0, getFont().deriveFont(12.0f),
 					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 			overlayBaseTexture.addActionListener(e -> editor.repaint());
@@ -391,10 +392,10 @@ public class WYSIWYGEditor extends JPanel {
 
 			ovst.add(PanelUtils.join(FlowLayout.LEFT, HelpUtils
 					.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/rendering_priority"),
-							new JLabel("Rendering priority:")), priority));
+							L10N.label("elementgui.gui.rendering_priority")), priority));
 
 			JButton importmobtexture = new JButton(UIRES.get("18px.add"));
-			importmobtexture.setToolTipText("Click this to import overlay base texture");
+			importmobtexture.setToolTipText(L10N.t("elementgui.gui.import_overlay_base_texture"));
 			importmobtexture.setOpaque(false);
 			importmobtexture.setMargin(new Insets(0, 0, 0, 0));
 			importmobtexture.addActionListener(e -> {
@@ -407,7 +408,7 @@ public class WYSIWYGEditor extends JPanel {
 
 			ovst.add(PanelUtils.northAndCenterElement(HelpUtils
 							.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/base_texture"),
-									new JLabel("Overlay base texture:")),
+									L10N.label("elementgui.gui.overlay_base_texture")),
 					PanelUtils.join(FlowLayout.LEFT, overlayBaseTexture, importmobtexture)));
 
 			sidebar.add("North", ovst);
@@ -457,8 +458,8 @@ public class WYSIWYGEditor extends JPanel {
 			} else if (component instanceof Image) {
 				component = new ImageDialog(this, (Image) component).getEditingComponent();
 			} else {
-				JOptionPane.showMessageDialog(mcreator, "This component can only be repositioned or removed!",
-						"Edit component", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.gui.edit_component_message"),
+						L10N.t("elementgui.gui.edit_component_title"), JOptionPane.WARNING_MESSAGE);
 			}
 
 			list.setSelectedValue(component, true);

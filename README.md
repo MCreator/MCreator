@@ -18,13 +18,6 @@ This repository page is for people looking to contribute to MCreator. Visit http
 
 Download MCreator binary distributions on https://mcreator.net/download.
 
-## Contributing
-
-You are welcome to support this project by opening pull requests. Read more about contributing in our [contributing guidelines](CONTRIBUTING.md).
-Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/MCreator/MCreator).
-
-Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contributors) who already contributed to MCreator! 💚
-
 ## Development
 
 To clone this repository, run `git clone --recursive https://github.com/MCreator/MCreator.git`.
@@ -33,6 +26,21 @@ MCreator uses Gradle build system to manage the building and exporting. Use `run
 
 It is recommended to use Intellij IDEA for development and testing. Learn more about the development process, and 
 tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).
+
+## Contributing
+
+You are welcome to support this project by opening pull requests. Read more about contributing in our [contributing guidelines](CONTRIBUTING.md).
+Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/MCreator/MCreator).
+
+Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contributors) who already contributed to MCreator! 💚
+
+<a href="https://github.com/MCreator/MCreator/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=MCreator/MCreator" width="615"/>
+</a>
+
+### Translations
+
+If you would like to help us translate MCreator to your language, join us on [translate.mcreator.net](https://translate.mcreator.net/)! If your language is not on the list yet, feel free to suggest us to add it.
 
 ## License and trademark
 

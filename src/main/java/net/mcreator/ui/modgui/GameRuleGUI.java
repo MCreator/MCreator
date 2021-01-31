@@ -167,6 +167,6 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 	}
 
 	@Override public @Nullable URI getContextURL() throws URISyntaxException {
-		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-gamerule");
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-game-rule");
 	}
 }

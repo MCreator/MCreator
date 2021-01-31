@@ -19,6 +19,7 @@
 package net.mcreator.ui.vcs;
 
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import org.eclipse.jgit.api.Status;
 
 import javax.swing.*;
@@ -31,8 +32,7 @@ public class VCSCommitDialog {
 
 		main.add("North", new LocalChangesPanel(status));
 
-		JLabel label = new JLabel("<html>Enter a short message describing your changes since the last sync:<br>"
-				+ "<small>This message (commit message) is used to keep note of changes on the remote workspace.<br><br>");
+		JLabel label = L10N.label("dialog.vcs.commit_short_message");
 		JTextArea commitMessage = new JTextArea();
 		commitMessage.setLineWrap(true);
 		commitMessage.setWrapStyleWord(true);
@@ -44,9 +44,10 @@ public class VCSCommitDialog {
 
 		main.add("South", PanelUtils.northAndCenterElement(label, spane));
 
-		int option = JOptionPane.showOptionDialog(parent, main, "Enter commit message", JOptionPane.DEFAULT_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, new String[] { "Create commit and sync", "Cancel" },
-				"Create commit and sync");
+		int option = JOptionPane
+				.showOptionDialog(parent, main, L10N.t("dialog.vcs.commit_enter_message"), JOptionPane.DEFAULT_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, new String[] { "Create commit and sync", "Cancel" },
+						"Create commit and sync");
 
 		if (option == 0)
 			return commitMessage.getText();

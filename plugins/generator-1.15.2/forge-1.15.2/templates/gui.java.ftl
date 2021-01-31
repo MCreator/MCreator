@@ -477,6 +477,9 @@ import ${package}.${JavaModName};
                     	this.addButton(new Button(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
 							${component.width}, ${component.height}, "${component.text}", e -> {
 							${JavaModName}.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(${btid}, x, y, z));
+							<#if hasCondition(component.displayCondition)>
+							super.render(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int}, 50);
+							</#if>
 
 							handleButtonAction(entity, ${btid}, x, y, z);
 						}));

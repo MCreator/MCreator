@@ -398,7 +398,7 @@ public class TestWorkspaceDataProvider {
 		case COMMAND:
 			Command command = new Command(modElement);
 			command.commandName = modElement.getName();
-			command.permissionLevel = 3;
+			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
 			command.onCommandExecuted = new Procedure("procedure2");
 			return command;
 		case KEYBIND:
@@ -533,6 +533,11 @@ public class TestWorkspaceDataProvider {
 			mob.immuneToLightning = !_true;
 			mob.immuneToPotions = !_true;
 			mob.immuneToPlayer = !_true;
+			mob.immuneToExplosion = !_true;
+			mob.immuneToTrident = !_true;
+			mob.immuneToAnvil = !_true;
+			mob.immuneToDragonBreath = !_true;
+			mob.immuneToWither = !_true;
 			mob.hasSpawnEgg = !_true;
 			mob.xpAmount = 8;
 			mob.ridable = _true;
@@ -1115,9 +1120,9 @@ public class TestWorkspaceDataProvider {
 			block.tintType = getRandomString(random, Arrays.asList("No tint", "Grass", "Foliage", "Water"));
 			block.isItemTinted = _true;
 			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
-					10 }[valueIndex];
+					14 }[valueIndex];
 			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",
-					"Normal" }[valueIndex];
+					"Grass block" }[valueIndex];
 			return block;
 		case TAG:
 			Tag tag = new Tag(modElement);
@@ -1299,7 +1304,8 @@ public class TestWorkspaceDataProvider {
 			GameRule gamerule = new GameRule(modElement);
 			gamerule.name = modElement.getName();
 			gamerule.description = modElement.getName();
-			gamerule.category = getRandomString(random, Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
+			gamerule.category = getRandomString(random,
+					Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
 			gamerule.type = new String[] { "Number", "Logic", "Number", "Logic" }[valueIndex];
 			gamerule.defaultValueLogic = _true;
 			gamerule.defaultValueNumber = -45;

@@ -1,7 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MCreator" type="Application" factoryName="Application" singleton="true">
+    <option name="ALTERNATIVE_JRE_PATH" value="mcreator_sdk" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="net.mcreator.Launcher" />
-    <module name="MCreator.main" />
+    <module name="net.mcreator.MCreator.main" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

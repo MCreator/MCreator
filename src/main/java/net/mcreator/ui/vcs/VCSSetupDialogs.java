@@ -20,6 +20,7 @@ package net.mcreator.ui.vcs;
 
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.vcs.VCSInfo;
 import org.eclipse.jgit.api.errors.TransportException;
 
@@ -39,8 +40,7 @@ public class VCSSetupDialogs {
 		JTextField remote = new JTextField(34);
 		JTextField username = new JTextField(25);
 		JPasswordField password = new JPasswordField(25);
-		JCheckBox savePassword = new JCheckBox(
-				"Save password to encrypted password vault (if not selected, you will be prompted each time when required)");
+		JCheckBox savePassword = L10N.checkbox("dialog.vcs.setup_save_password");
 
 		savePassword.setSelected(true);
 
@@ -54,23 +54,21 @@ public class VCSSetupDialogs {
 		remote.setPreferredSize(new Dimension(300, 15));
 
 		JPanel form = new JPanel(new GridLayout(4, 1, 0, 5));
-		form.add(PanelUtils.westAndEastElement(new JLabel("Remote Git repository HTTPS URL: "), remote));
-		form.add(PanelUtils.westAndEastElement(new JLabel("Your Git account username: "), username));
-		form.add(PanelUtils.westAndEastElement(new JLabel("Your Git account password:"), password));
+		form.add(PanelUtils.westAndEastElement(L10N.label("dialog.vcs.setup_remove_repository_url"), remote));
+		form.add(PanelUtils.westAndEastElement(L10N.label("dialog.vcs.setup_git_username"), username));
+		form.add(PanelUtils.westAndEastElement(L10N.label("dialog.vcs.setup_git_password"), password));
 		form.add(savePassword);
 
 		main.add("Center", form);
 
-		main.add("South", ComponentUtils.setForeground(new JLabel("<html><small>"
-				+ "If selected, MCreator will store this password for the current workspace securely in an encrypted local password store. It will only be<br>"
-				+ "used for authentication with the remote repository. Your login data will not be shared with any other server than the one entered in<br>"
-				+ "the Remote GIT repository URL field."), (Color) UIManager.get("MCreatorLAF.GRAY_COLOR")));
+		main.add("South", ComponentUtils.setForeground(L10N.label("dialog.vcs.setup_store_password"),
+				(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")));
 
 		main.add("North", new JLabel(text));
 
-		int option = JOptionPane.showOptionDialog(parent, main, "Remote workspace details", JOptionPane.DEFAULT_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, new String[] { "Setup remote workspace", "Cancel" },
-				"Setup remote workspace");
+		int option = JOptionPane.showOptionDialog(parent, main, L10N.t("dialog.vcs.setup_remote_workspace_details"),
+				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+				new String[] { "Setup remote workspace", "Cancel" }, "Setup remote workspace");
 
 		if (option == 0) {
 			VCSInfo info = new VCSInfo(remote.getText(), username.getText(), new String(password.getPassword()),
@@ -81,23 +79,14 @@ public class VCSSetupDialogs {
 				valid = info.isValid();
 			} catch (Exception e) {
 				if (e instanceof TransportException && e.getMessage().contains("not authorized")) {
-					JOptionPane.showMessageDialog(parent, "<html><b>Username or password is incorrect!</b><br><br>"
-									+ "Make sure the username and password you entered are correct<br>"
-									+ "and that your user has proper permissions on the remote repository.",
-							"Invalid repository parameters", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(parent, L10N.t("dialog.vcs.setup_incorrect_username_password"),
+							L10N.t("dialog.vcs.setup_invalid_parameters"), JOptionPane.WARNING_MESSAGE);
 				} else if (e instanceof TransportException && e.getMessage().contains("not found")) {
-					JOptionPane.showMessageDialog(parent,
-							"<html><b>Repository URL is not valid or you can't access it!</b><br><br>"
-									+ "Make sure that remote repository URL is valid and that the repository exists.<br>"
-									+ "If this is true, make sure that your user account has proper permissions on the remote repository.",
-							"Invalid repository parameters", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(parent, L10N.t("dialog.vcs.setup_url_unaccessible"),
+							L10N.t("dialog.vcs.setup_invalid_parameters"), JOptionPane.WARNING_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(parent,
-							"<html><b>One of the parameters of your repository is not valid!</b><br><br>"
-									+ "Make sure that remote repository URL is valid and that the repository exists.<br>"
-									+ "If this is true, make sure the username and password you entered are correct<br>"
-									+ "and that your user has proper permissions on the remote repository.",
-							"Invalid repository parameters", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(parent, L10N.t("dialog.vcs.setup_one_invalid_parameter"),
+							L10N.t("dialog.vcs.setup_invalid_parameters"), JOptionPane.WARNING_MESSAGE);
 				}
 				parent.setCursor(Cursor.getDefaultCursor());
 				return getVCSInfoDialog(parent, text, remote.getText(), username.getText(), !savePassword.isSelected(),

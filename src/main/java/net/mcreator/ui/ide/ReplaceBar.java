@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.ide;
 
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.SearchContext;
@@ -95,8 +96,8 @@ public class ReplaceBar extends JPanel {
 			}
 		});
 
-		JButton replace = new JButton("Replace");
-		JButton replaceAll = new JButton("Replace all");
+		JButton replace = L10N.button("action.replace");
+		JButton replaceAll = L10N.button("action.replace_all");
 
 		replace.addActionListener(actionEvent -> {
 			SearchContext context = new SearchContext();

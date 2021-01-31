@@ -155,14 +155,14 @@ public class GradleConsole extends JPanel {
 		bar.setLayout(new BoxLayout(bar, BoxLayout.LINE_AXIS));
 		bar.setBackground(Color.gray);
 
-		JButton x = new JButton("Clear log");
+		JButton x = L10N.button("dialog.gradle_console.clear_log");
 		x.setMargin(new Insets(1, 1, 1, 1));
 
 		JToolBar options = new JToolBar(null, SwingConstants.VERTICAL);
 		options.setFloatable(false);
 		options.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-		searchen.setToolTipText("Search in gradle console");
+		searchen.setToolTipText(L10N.t("dialog.gradle_console.search"));
 		searchen.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		options.add(searchen);
 
@@ -177,8 +177,7 @@ public class GradleConsole extends JPanel {
 		JButton buildbt = new JButton(UIRES.get("16px.build"));
 		buildbt.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.normalizeButton2(buildbt);
-		buildbt.setToolTipText("<html>Click this to build the whole workspace<br><small>"
-				+ "You can start build by Ctrl + clicking on the Console tab too");
+		buildbt.setToolTipText(L10N.t("dialog.gradle_console.start_build"));
 		buildbt.setOpaque(false);
 		buildbt.addActionListener(e -> ref.actionRegistry.buildWorkspace.doAction());
 		options.add(buildbt);
@@ -186,8 +185,7 @@ public class GradleConsole extends JPanel {
 		JButton rungradletask = new JButton(UIRES.get("16px.runtask"));
 		rungradletask.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.normalizeButton2(rungradletask);
-		rungradletask.setToolTipText("<html>Click this to run a specific Gradle task<br><small>"
-				+ "This tool can only be used when there are no active Gradle tasks running.");
+		rungradletask.setToolTipText(L10N.t("dialog.gradle_console.run_specific_task"));
 		rungradletask.setOpaque(false);
 		rungradletask.addActionListener(e -> ref.actionRegistry.runGradleTask.doAction());
 		options.add(rungradletask);
@@ -197,7 +195,7 @@ public class GradleConsole extends JPanel {
 		JButton cpc = new JButton(UIRES.get("16px.copyclipboard"));
 		cpc.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.normalizeButton2(cpc);
-		cpc.setToolTipText("Copy console contents to clipboard");
+		cpc.setToolTipText(L10N.t("dialog.gradle_console.copy_contents_clipboard"));
 		cpc.setOpaque(false);
 		cpc.addActionListener(e -> {
 			StringSelection stringSelection = new StringSelection(getConsoleText());
@@ -209,7 +207,7 @@ public class GradleConsole extends JPanel {
 		JButton clr = new JButton(UIRES.get("16px.clear"));
 		clr.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.normalizeButton2(clr);
-		clr.setToolTipText("Clear console");
+		clr.setToolTipText(L10N.t("dialog.gradle_console.clear"));
 		clr.addActionListener(e -> {
 			pan.clearConsole();
 			searchBar.reinstall(pan);
@@ -220,17 +218,17 @@ public class GradleConsole extends JPanel {
 
 		options.add(ComponentUtils.deriveFont(new JLabel(" "), 2));
 
-		sinfo.setToolTipText("Show info log in console");
+		sinfo.setToolTipText(L10N.t("dialog.gradle_console.show_info_log"));
 		sinfo.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		sinfo.setSelected(true);
 		options.add(sinfo);
 
-		serr.setToolTipText("Show errors in console");
+		serr.setToolTipText(L10N.t("dialog.gradle_console.show_errors"));
 		serr.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		serr.setSelected(true);
 		options.add(serr);
 
-		slock.setToolTipText("Scroll lock");
+		slock.setToolTipText(L10N.t("dialog.gradle_console.lock_scroll"));
 		slock.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		options.add(slock);
 
@@ -307,9 +305,8 @@ public class GradleConsole extends JPanel {
 		long millis = System.currentTimeMillis();
 
 		if (PreferencesManager.PREFERENCES.gradle.offline && gradleSetupTaskRunning) {
-			JOptionPane.showMessageDialog(ref, "<html><b>You have set MCreator to run in offline mode!</b><br>"
-					+ "<br>MCreator can not setup Minecraft Forge in offline mode."
-					+ "<br>The offline mode will be disabled.", "Offline mode warning", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(ref, L10N.t("dialog.gradle_console.offline_mode_message"),
+					L10N.t("dialog.gradle_console.offline_mode_title"), JOptionPane.WARNING_MESSAGE);
 			PreferencesManager.PREFERENCES.gradle.offline = false;
 		}
 
@@ -389,14 +386,9 @@ public class GradleConsole extends JPanel {
 							Object[] options = { "Clear Gradle caches", "Clear entire Gradle folder",
 									"<html><font color=gray>Do nothing" };
 							int reply = JOptionPane.showOptionDialog(ref,
-									"<html><b>MCreator detected Gradle caches got corrupted.</b><br>"
-											+ "Don't worry, we can fix this for you, we just need to rebuild these caches.<br><br>"
-											+ "This action will not affect your files or workspaces, but after clearing the caches,<br>"
-											+ "build of every generator type and version will take a bit longer the first time.<br>"
-											+ "In some cases, clearing entire Gradle folder is needed to resolve Gradle errors.<br><br>"
-											+ "<small>Any running build tasks or open test clients will be closed during this action.",
-									"Gradle caches corrupted", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-									null, options, options[0]);
+									L10N.t("dialog.gradle_console.gradle_caches_corrupted_message"),
+									L10N.t("dialog.gradle_console.gradle_caches_corrupted_title"),
+									JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 							if (reply == 0 || reply == 1) {
 								taskComplete(GradleErrorCodes.GRADLE_CACHEDATA_ERROR);
 
