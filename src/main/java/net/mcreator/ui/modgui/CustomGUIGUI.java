@@ -23,15 +23,20 @@ import net.mcreator.element.types.GUI;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.CollapsiblePanel;
+import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class CustomGUIGUI extends ModElementGUI<GUI> {
 
@@ -79,6 +84,10 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		onOpen.refreshListKeepSelected();
 		onTick.refreshListKeepSelected();
 		onClosed.refreshListKeepSelected();
+
+		ComboBoxUtil.updateComboBoxContents(editor.customBg, ListUtils.merge(Collections.singleton(""),
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.collect(Collectors.toList())), "");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -94,6 +103,7 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		editor.invOffY.setValue(gui.inventoryOffsetY);
 		editor.setComponentList(gui.components);
 		editor.renderBgLayer.setSelected(gui.renderBgLayer);
+		editor.customBg.setSelectedItem(gui.customBg);
 		editor.doesPauseGame.setSelected(gui.doesPauseGame);
 
 		onOpen.setSelectedProcedure(gui.onOpen);
@@ -118,6 +128,7 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		gui.inventoryOffsetY = (int) editor.invOffY.getValue();
 		gui.components = editor.getComponentList();
 		gui.renderBgLayer = editor.renderBgLayer.isSelected();
+		gui.customBg = editor.customBg.getSelectedItem();
 		gui.doesPauseGame = editor.doesPauseGame.isSelected();
 		gui.onOpen = onOpen.getSelectedProcedure();
 		gui.onTick = onTick.getSelectedProcedure();

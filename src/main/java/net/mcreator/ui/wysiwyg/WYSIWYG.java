@@ -26,6 +26,8 @@ import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.component.zoompane.JZoomport;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.AbstractMCreatorTheme;
+import net.mcreator.workspace.WorkspaceFileManager;
+import net.mcreator.workspace.WorkspaceFolderManager;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
@@ -38,6 +40,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class WYSIWYG extends JComponent implements MouseMotionListener, MouseListener, IZoomable {
 
@@ -226,11 +229,23 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		if (isNotOverlayType) {
 			if (wysiwygEditor.renderBgLayer.isSelected()) {
 				if (wysiwygEditor.getGUITypeSelector().getSelectedIndex() == 0) {
-					g.drawImage(MinecraftImageGenerator.generateBackground(gw, gh), W / 2 - gw / 2, H / 2 - gh / 2, gw,
-							gh, this);
+					if(!wysiwygEditor.customBg.getSelectedItem().isEmpty() && wysiwygEditor.customBg.getSelectedItem() != null) {
+						g.drawImage(new ImageIcon(wysiwygEditor.mcreator.getWorkspace().getFolderManager().getOtherTextureFile(
+								FilenameUtils.removeExtension(wysiwygEditor.customBg.getSelectedItem())).getAbsolutePath()).getImage(), W / 2 - gw / 2,
+								H / 2 - gh / 2, gw, gh, this);
+					} else{
+						g.drawImage(MinecraftImageGenerator.generateBackground(gw, gh), W / 2 - gw / 2, H / 2 - gh / 2,
+								gw, gh, this);
+					}
 				} else if (wysiwygEditor.getGUITypeSelector().getSelectedIndex() == 1) {
-					g.drawImage(MinecraftImageGenerator.generateBackground(gw, gh), W / 2 - gw / 2, H / 2 - gh / 2, gw,
-							gh, this);
+					if(!wysiwygEditor.customBg.getSelectedItem().isEmpty() && wysiwygEditor.customBg.getSelectedItem() != null) {
+						g.drawImage(new ImageIcon(wysiwygEditor.mcreator.getWorkspace().getFolderManager().getOtherTextureFile(
+								FilenameUtils.removeExtension(wysiwygEditor.customBg.getSelectedItem())).getAbsolutePath()).getImage(), W / 2 - gw / 2,
+								H / 2 - gh / 2, gw, gh, this);
+					} else{
+						g.drawImage(MinecraftImageGenerator.generateBackground(gw, gh), W / 2 - gw / 2, H / 2 - gh / 2,
+								gw, gh, this);
+					}
 					g.drawImage(inventorySlots, W / 2 - 176 / 2 + (int) wysiwygEditor.invOffX.getValue(),
 							H / 2 - 166 / 2 + (int) wysiwygEditor.invOffY.getValue(), 176, 166, this);
 				}

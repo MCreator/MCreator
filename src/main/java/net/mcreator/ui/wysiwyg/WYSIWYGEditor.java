@@ -36,6 +36,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.util.ArrayListListModel;
 
@@ -74,8 +75,9 @@ public class WYSIWYGEditor extends JPanel {
 
 	private boolean opening = false;
 
-	public JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
-	public JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
+	public JCheckBox renderBgLayer = L10N.checkbox("elementgui.gui.render_background_layer");
+	public VComboBox<String> customBg = new SearchableComboBox<>();
+	public JCheckBox doesPauseGame = L10N.checkbox("elementgui.gui.pause_game");
 	public JComboBox<String> priority = new JComboBox<>(new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 
 	public VComboBox<String> overlayBaseTexture = new SearchableComboBox<>();
@@ -369,6 +371,22 @@ public class WYSIWYGEditor extends JPanel {
 				.join(FlowLayout.LEFT, L10N.label("elementgui.gui.width_height"), spa1, new JLabel("x"), spa2));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.gui.inventory_offset"), invOffX, invOffY));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, renderBgLayer));
+
+		customBg.addActionListener(e -> editor.repaint());
+		customBg.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		customBg.setPrototypeDisplayValue("XXXXXXXXXXX");
+		ComponentUtils.deriveFont(customBg, 16);
+		JButton importbgtexture = new JButton(UIRES.get("18px.add"));
+		importbgtexture.setToolTipText(L10N.t("elementgui.gui.background_texture_import"));
+		importbgtexture.setOpaque(false);
+		importbgtexture.addActionListener(e -> {
+			TextureImportDialogs.importOtherTextures(mcreator);
+			customBg.removeAllItems();
+			customBg.addItem("");
+			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> customBg.addItem(el.getName()));
+		});
+		adds2.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.gui.custom_background")));
+		adds2.add(PanelUtils.join(FlowLayout.LEFT, customBg, importbgtexture));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, doesPauseGame));
 
 		spa1.addChangeListener(event -> checkAndUpdateGUISize());

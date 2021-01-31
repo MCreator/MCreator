@@ -42,6 +42,7 @@ import java.util.List;
 	public int inventoryOffsetX, inventoryOffsetY;
 
 	public boolean renderBgLayer;
+	public String customBg;
 	public boolean doesPauseGame;
 
 	public List<GUIComponent> components;
@@ -81,30 +82,34 @@ import java.util.List;
 		File guiTextureFile = getModElement().getFolderManager().getOtherTextureFile(getModElement().getRegistryName());
 
 		if (renderBgLayer) {
-			int mx = WYSIWYG.W - width;
-			int my = WYSIWYG.H - height;
+			if(customBg.isEmpty()) {
+				int mx = WYSIWYG.W - width;
+				int my = WYSIWYG.H - height;
 
-			if (type == 0) {
-				FileIO.writeImageToPNGFile(MinecraftImageGenerator.generateBackground(width, height), guiTextureFile);
-			} else if (type == 1) {
-				BufferedImage resizedImage = MinecraftImageGenerator.generateBackground(width, height);
-				Graphics2D g = resizedImage.createGraphics();
-				g.drawImage(MinecraftImageGenerator.generateInventorySlots(), (width - 176) / 2 + inventoryOffsetX,
-						(height - 166) / 2 + inventoryOffsetY, 176, 166, null);
-				for (GUIComponent component : components) {
-					if (component instanceof Slot) {
-						int elPosX = (int) (component.getX() - mx / 2.0);
-						int elPosy = (int) (component.getY() - my / 2.0);
-						if (((Slot) component).color == null)
-							g.drawImage(MinecraftImageGenerator.generateItemSlot(), elPosX, elPosy, null);
-						else
-							g.drawImage(ImageUtils.colorize(new ImageIcon(MinecraftImageGenerator.generateItemSlot()),
-									((Slot) component).color, true).getImage(), elPosX, elPosy, null);
+				if (type == 0) {
+					FileIO.writeImageToPNGFile(MinecraftImageGenerator.generateBackground(width, height),
+							guiTextureFile);
+				} else if (type == 1) {
+					BufferedImage resizedImage = MinecraftImageGenerator.generateBackground(width, height);
+					Graphics2D g = resizedImage.createGraphics();
+					g.drawImage(MinecraftImageGenerator.generateInventorySlots(), (width - 176) / 2 + inventoryOffsetX,
+							(height - 166) / 2 + inventoryOffsetY, 176, 166, null);
+					for (GUIComponent component : components) {
+						if (component instanceof Slot) {
+							int elPosX = (int) (component.getX() - mx / 2.0);
+							int elPosy = (int) (component.getY() - my / 2.0);
+							if (((Slot) component).color == null)
+								g.drawImage(MinecraftImageGenerator.generateItemSlot(), elPosX, elPosy, null);
+							else
+								g.drawImage(ImageUtils
+										.colorize(new ImageIcon(MinecraftImageGenerator.generateItemSlot()),
+												((Slot) component).color, true).getImage(), elPosX, elPosy, null);
+						}
 					}
-				}
-				g.dispose();
+					g.dispose();
 
-				FileIO.writeImageToPNGFile(resizedImage, guiTextureFile);
+					FileIO.writeImageToPNGFile(resizedImage, guiTextureFile);
+				}
 			}
 		} else {
 			guiTextureFile.delete();

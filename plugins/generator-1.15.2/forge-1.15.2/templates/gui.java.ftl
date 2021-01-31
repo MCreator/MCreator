@@ -349,8 +349,8 @@ import ${package}.${JavaModName};
 		</#if>
 
 		<#if data.renderBgLayer>
-		private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/${registryname}.png" );
-		</#if>
+		    private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/<#if data.customBg?has_content>${data.customBg}<#else>${registryname}.png</#if>");
+        </#if>
 
 		@Override public void render(int mouseX, int mouseY, float partialTicks) {
 			this.renderBackground();
