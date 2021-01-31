@@ -89,6 +89,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
 	private final List<JBoundingBoxEntry> boundingBoxList = new ArrayList<>();
 	private final JPanel boundingBoxes = new JPanel(new GridLayout(0, 1, 5, 5));
+	private final JButton addBoundingBox = L10N.button("elementgui.common.add_bounding_box");
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourBlockChanges;
@@ -308,12 +309,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		blockBase.addActionListener(e -> {
 			renderType.setEnabled(true);
-			mx.setEnabled(true);
-			my.setEnabled(true);
-			mz.setEnabled(true);
-			Mx.setEnabled(true);
-			My.setEnabled(true);
-			Mz.setEnabled(true);
+			disableOffset.setEnabled(true);
+			addBoundingBox.setEnabled(true);
+			boundingBoxList.forEach(boxEntry -> boxEntry.setEntryEnabled(true));
 			rotationMode.setEnabled(true);
 			hasGravity.setEnabled(true);
 			hasTransparency.setEnabled(true);
@@ -356,12 +354,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 			} else if (blockBase.getSelectedItem() != null && blockBase.getSelectedIndex() != 0) {
 				renderType.setSelectedItem(singleTexture);
 				renderType.setEnabled(false);
-				mx.setEnabled(false);
-				my.setEnabled(false);
-				mz.setEnabled(false);
-				Mx.setEnabled(false);
-				My.setEnabled(false);
-				Mz.setEnabled(false);
+				disableOffset.setEnabled(false);
+				addBoundingBox.setEnabled(false);
+				boundingBoxList.forEach(boxEntry -> boxEntry.setEntryEnabled(false));
 				hasGravity.setEnabled(false);
 				rotationMode.setEnabled(false);
 				isWaterloggable.setEnabled(false);
@@ -664,7 +659,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JToolBar boundingBoxBar = new JToolBar();
 		boundingBoxBar.setFloatable(false);
 
-		JButton addBoundingBox = L10N.button("elementgui.common.add_bounding_box");
 		addBoundingBox.setIcon(UIRES.get("16px.add.gif"));
 		boundingBoxBar.add(addBoundingBox);
 
@@ -1235,14 +1229,23 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void updateParametersBasedOnBoundingBoxSize() {
-		if ((Double) mx.getValue() != 0 || (Double) my.getValue() != 0 || (Double) mz.getValue() != 0
-				|| (Double) Mx.getValue() != 1 || (Double) My.getValue() != 1 || (Double) Mz.getValue() != 1) {
+		if (!nonEmptyBoundingBoxList().isEmpty() &&
+				nonEmptyBoundingBoxList().stream().allMatch(JBoundingBoxEntry::isFullCube)) {
 			hasTransparency.setSelected(true);
 			hasTransparency.setEnabled(false);
 		} else {
 			hasTransparency.setSelected(false);
 			hasTransparency.setEnabled(true);
 		}
+	}
+
+	private boolean allowCustomBoundingBox() {
+		return blockBase.getSelectedItem() != null && (blockBase.getSelectedItem().equals("Leaves") ||
+				blockBase.getSelectedItem().equals("Pane") || blockBase.getSelectedIndex() == 0);
+	}
+
+	private List<JBoundingBoxEntry> nonEmptyBoundingBoxList() {
+		return boundingBoxList.stream().filter(JBoundingBoxEntry::isNotEmpty).collect(Collectors.toList());
 	}
 
 	@Override public void reloadDataLists() {
@@ -1411,8 +1414,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		slipperiness.setValue(block.slipperiness);
 
 		disableOffset.setSelected(block.disableOffset);
-		if (block.boundingBoxes != null)
-			block.boundingBoxes.forEach(e -> new JBoundingBoxEntry(boundingBoxes, boundingBoxList).setEntry(e));
+		block.boundingBoxes.forEach(e -> new JBoundingBoxEntry(boundingBoxes, boundingBoxList).setEntry(e));
 
 		specialInfo.setText(
 				block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
@@ -1425,6 +1427,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (model != null && model.getType() != null && model.getReadableName() != null)
 			renderType.setSelectedItem(model);
 
+		boundingBoxList.forEach(boxEntry -> boxEntry.setEntryEnabled(allowCustomBoundingBox()));
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 

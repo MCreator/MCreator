@@ -78,6 +78,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
 	private final List<JBoundingBoxEntry> boundingBoxList = new ArrayList<>();
 	private final JPanel boundingBoxes = new JPanel(new GridLayout(0, 1, 5, 5));
+	private final JButton addBoundingBox = L10N.button("elementgui.common.add_bounding_box");
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(0, -1, 64000, 0.1));
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
@@ -383,8 +384,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		customBoundingBox.setOpaque(false);
 		disableOffset.setOpaque(false);
-		if (!this.isEditingMode())
-			disableOffset.setEnabled(false);
 
 		JPanel boundingBoxEditor = new JPanel(new BorderLayout());
 		boundingBoxEditor.setOpaque(false);
@@ -392,10 +391,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JToolBar boundingBoxBar = new JToolBar();
 		boundingBoxBar.setFloatable(false);
 
-		JButton addBoundingBox = L10N.button("elementgui.common.add_bounding_box");
 		addBoundingBox.setIcon(UIRES.get("16px.add.gif"));
-		if (!this.isEditingMode())
-			addBoundingBox.setEnabled(false);
 		boundingBoxBar.add(addBoundingBox);
 
 		boundingBoxEditor.add("North", boundingBoxBar);
@@ -427,12 +423,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			if (!customBoundingBox.isSelected()) {
 				disableOffset.setSelected(false);
 			}
+			boundingBoxList.forEach(boxEntry -> boxEntry.setEntryEnabled(customBoundingBox.isSelected()));
 		});
 
 		addBoundingBox.addActionListener(e -> new JBoundingBoxEntry(boundingBoxes, boundingBoxList));
 
-		if (!isEditingMode()) { // Add first bounding box
+		if (!isEditingMode()) { // Add first bounding box, disable custom bounding box options
 			new JBoundingBoxEntry(boundingBoxes, boundingBoxList);
+			disableOffset.setEnabled(false);
+			addBoundingBox.setEnabled(false);
+			boundingBoxList.forEach(boxEntry -> boxEntry.setEntryEnabled(false));
 		}
 
 		JPanel selp = new JPanel(new GridLayout(10, 2, 25, 4));
@@ -700,8 +700,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		customBoundingBox.setSelected(plant.customBoundingBox);
 		disableOffset.setSelected(plant.disableOffset);
-		if (plant.boundingBoxes != null)
-			plant.boundingBoxes.forEach(e -> new JBoundingBoxEntry(boundingBoxes, boundingBoxList).setEntry(e));
+		plant.boundingBoxes.forEach(e -> new JBoundingBoxEntry(boundingBoxes, boundingBoxList).setEntry(e));
 
 		Model model = plant.getItemModel();
 		if (model != null && model.getType() != null && model.getReadableName() != null)
@@ -733,6 +732,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 		disableOffset.setEnabled(customBoundingBox.isSelected());
+		boundingBoxList.forEach(boxEntry -> boxEntry.setEntryEnabled(customBoundingBox.isSelected()));
+		addBoundingBox.setEnabled(customBoundingBox.isSelected());
 
 		if (normalType.isSelected())
 			stl.setIcon(TiledImageCache.plantStaticYes);

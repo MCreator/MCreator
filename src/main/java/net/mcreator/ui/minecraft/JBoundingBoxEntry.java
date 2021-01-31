@@ -36,6 +36,7 @@ public class JBoundingBoxEntry extends JPanel {
 	private final JSpinner My = new JSpinner(new SpinnerNumberModel(16, -100, 100, 0.1));
 	private final JSpinner Mz = new JSpinner(new SpinnerNumberModel(16, -100, 100, 0.1));
 	private final JCheckBox subtract = new JCheckBox();
+	private final JButton remove = new JButton(UIRES.get("16px.clear"));
 
 	public JBoundingBoxEntry(JPanel parent, List<JBoundingBoxEntry> entryList) {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -72,7 +73,6 @@ public class JBoundingBoxEntry extends JPanel {
 		line.add(subtract);
 		subtract.setOpaque(false);
 
-		JButton remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.loot_table.remove_entry"));
 		remove.addActionListener(e -> {
 			entryList.remove(this);
@@ -85,6 +85,25 @@ public class JBoundingBoxEntry extends JPanel {
 
 		parent.revalidate();
 		parent.repaint();
+	}
+
+	public void setEntryEnabled(boolean enabled) {
+		mx.setEnabled(enabled);
+		my.setEnabled(enabled);
+		mz.setEnabled(enabled);
+		Mx.setEnabled(enabled);
+		My.setEnabled(enabled);
+		Mz.setEnabled(enabled);
+		subtract.setEnabled(enabled);
+		remove.setEnabled(enabled);
+	}
+
+	public boolean isNotEmpty() {
+		return this.getEntry().isNotEmpty();
+	}
+
+	public boolean isFullCube() {
+		return this.getEntry().isFullCube();
 	}
 
 	public IBoundingBox.BoxEntry getEntry() {
