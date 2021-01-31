@@ -65,7 +65,6 @@ import java.util.stream.Collectors;
 	public boolean hasTransparency;
 	public boolean connectedSides;
 	public String transparencyType;
-	public double mx, my, mz, Mx, My, Mz;
 
 	public boolean disableOffset;
 	public List<BoxEntry> boundingBoxes;
