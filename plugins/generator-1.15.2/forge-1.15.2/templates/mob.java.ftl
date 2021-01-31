@@ -955,4 +955,14 @@ import net.minecraft.block.material.Material;
 	</#if>
 
 }
+<#macro entityTexture>
+<#if hasCondition(data.entityTextureSelector)>
+    double x = entity.getPosX();
+    double y = entity.getPosY();
+    double z = entity.getPosZ();
+    World world = entity.world;
+    return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
+    <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}");
+    </#if>
+</#macro>
 <#-- @formatter:on -->
