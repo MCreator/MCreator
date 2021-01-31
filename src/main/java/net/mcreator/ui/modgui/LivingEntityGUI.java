@@ -449,7 +449,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(subpane1, subpanel2)));
 
-		JPanel spo2 = new JPanel(new GridLayout(12, 2, 0, 2));
+		JPanel spo2 = new JPanel(new GridLayout(2, 2, 0, 2));
 
 		spo2.setOpaque(false);
 
@@ -457,7 +457,6 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 				.wrapWithHelpButton(this.withEntry("entity/name"), L10N.label("elementgui.living_entity.name")));
 		spo2.add(mobName);
 
-		spo2.setOpaque(false);
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/model"),
 				L10N.label("elementgui.living_entity.entity_model")));
 		spo2.add(mobModel);
@@ -475,14 +474,12 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> mobModelGlowTexture.addItem(el.getName()));
 		});
 
-		spo2.add(HelpUtils
+		JPanel textures = new JPanel(new GridLayout(1, 2, 0, 2));
+		textures.setOpaque(false);
+		textures.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("entity/texture"), L10N.label("elementgui.living_entity.texture")));
 
-		spo2.add(PanelUtils.join(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture), entityTextureSelector));
-
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"),
-				L10N.label("elementgui.living_entity.glow_texture")));
-		spo2.add(mobModelGlowTexture);
+		textures.add(PanelUtils.join(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture), entityTextureSelector));
 
 		ComponentUtils.deriveFont(mobModelTexture, 16);
 		ComponentUtils.deriveFont(mobModelGlowTexture, 16);
@@ -546,47 +543,54 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 			}
 		});
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
+		JPanel spo3 = new JPanel(new GridLayout(9, 2, 0, 2));
+		spo3.setOpaque(false);
+
+		spo3.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"),
+				L10N.label("elementgui.living_entity.glow_texture")));
+		spo3.add(mobModelGlowTexture);
+
+		spo3.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
 				L10N.label("elementgui.living_entity.bounding_box")));
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, modelWidth, modelHeight, new JEmptyBox(7, 7), modelShadowSize,
+		spo3.add(PanelUtils.join(FlowLayout.LEFT, modelWidth, modelHeight, new JEmptyBox(7, 7), modelShadowSize,
 				new JEmptyBox(7, 7), mountedYOffset, new JEmptyBox(7, 7), disableCollisions));
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_egg_options"),
+		spo3.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_egg_options"),
 				L10N.label("elementgui.living_entity.spawn_egg_options")));
-		spo2.add(PanelUtils.join(hasSpawnEgg, spawnEggBaseColor, spawnEggDotColor, creativeTab));
+		spo3.add(PanelUtils.join(hasSpawnEgg, spawnEggBaseColor, spawnEggDotColor, creativeTab));
 
 		bossBarColor.setEnabled(false);
 		bossBarType.setEnabled(false);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/boss_entity"),
+		spo3.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/boss_entity"),
 				L10N.label("elementgui.living_entity.mob_boss")));
-		spo2.add(PanelUtils.join(isBoss, bossBarColor, bossBarType));
+		spo3.add(PanelUtils.join(isBoss, bossBarColor, bossBarType));
 
-		spo2.add(HelpUtils
+		spo3.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("entity/label"), L10N.label("elementgui.living_entity.label")));
-		spo2.add(mobLabel);
+		spo3.add(mobLabel);
 
-		spo2.add(HelpUtils
+		spo3.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("entity/sound"), L10N.label("elementgui.living_entity.sound")));
-		spo2.add(livingSound);
+		spo3.add(livingSound);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/step_sound"),
+		spo3.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/step_sound"),
 				L10N.label("elementgui.living_entity.step_sound")));
-		spo2.add(stepSound);
+		spo3.add(stepSound);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/hurt_sound"),
+		spo3.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/hurt_sound"),
 				L10N.label("elementgui.living_entity.hurt_sound")));
-		spo2.add(hurtSound);
+		spo3.add(hurtSound);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/death_sound"),
+		spo3.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/death_sound"),
 				L10N.label("elementgui.living_entity.death_sound")));
-		spo2.add(deathSound);
+		spo3.add(deathSound);
 
 		ComponentUtils.deriveFont(mobLabel, 16);
 
 		pane2.setOpaque(false);
 
-		pane2.add("Center", PanelUtils.totalCenterInPanel(spo2));
+		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(spo2, textures), spo3)));
 
 		JPanel aitop = new JPanel(new GridLayout(2, 2, 10, 10));
 		aitop.setOpaque(false);
