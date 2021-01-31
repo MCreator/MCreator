@@ -19,6 +19,7 @@
 package net.mcreator.integration.generator;
 
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
@@ -166,6 +167,20 @@ import static org.junit.Assert.fail;
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_logic\"><value name=\"return\">"
 								+ "<block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block>"
+								+ "</value></block>");
+				assertTrue(workspace.getGenerator().generateElement(procedure));
+				workspace.getModElementManager().storeModElement(procedure);
+			}
+
+			for(int i = 1; i<= 1; i++){
+				ModElement me = new ModElement(workspace, "textureSelector" + i, ModElementType.PROCEDURE)
+						.putMetadata("dependencies", new ArrayList<>()).putMetadata("return_type", "STRING");
+				workspace.addModElement(me);
+
+				Procedure procedure = new Procedure(me);
+				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
+						"<block type=\"return_string\"><value name=\"return\">"
+								+ "<block type=\"select_other_texture\"><field name=\"other_texture\">text.png</field></block>"
 								+ "</value></block>");
 				assertTrue(workspace.getGenerator().generateElement(procedure));
 				workspace.getModElementManager().storeModElement(procedure);
