@@ -484,7 +484,12 @@ public class TestWorkspaceDataProvider {
 			Mob mob = new Mob(modElement);
 			mob.mobName = modElement.getName();
 			mob.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
-			mob.mobModelTexture = "test.png";
+			if(emptyLists)
+				mob.mobModelTexture = "test.png";
+			else {
+				mob.mobModelTexture = "";
+				mob.entityTextureSelector = new Procedure("textureSelector1");
+			}
 			mob.mobModelGlowTexture = emptyLists ? "" : "test.png";
 			mob.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
 			mob.spawnEggBaseColor = Color.red;
@@ -566,7 +571,6 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				mob.particleCondition = new Procedure("condition2");
 				mob.spawningCondition = new Procedure("condition3");
-				mob.entityTextureSelector = new Procedure("textureSelector1");
 				mob.onStruckByLightning = new Procedure("procedure1");
 				mob.whenMobFalls = new Procedure("procedure2");
 				mob.whenMobDies = new Procedure("procedure3");

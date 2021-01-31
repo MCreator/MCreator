@@ -179,8 +179,8 @@ import static org.junit.Assert.fail;
 
 				Procedure procedure = new Procedure(me);
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
-						"<block type=\"return_string\"><value name=\"return\">"
-								+ "<block type=\"select_other_texture\"><field name=\"other_texture\">text.png</field></block>"
+						"<block type=\"return_text\"><value name=\"return\">"
+								+ "<block type=\"select_other_texture\"><field name=\"other_texture\">test.png</field></block>"
 								+ "</value></block>");
 				assertTrue(workspace.getGenerator().generateElement(procedure));
 				workspace.getModElementManager().storeModElement(procedure);
