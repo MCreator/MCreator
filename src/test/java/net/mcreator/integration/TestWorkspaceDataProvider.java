@@ -566,6 +566,7 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				mob.particleCondition = new Procedure("condition2");
 				mob.spawningCondition = new Procedure("condition3");
+				mob.entityTextureSelector = new Procedure("selector1");
 				mob.onStruckByLightning = new Procedure("procedure1");
 				mob.whenMobFalls = new Procedure("procedure2");
 				mob.whenMobDies = new Procedure("procedure3");
