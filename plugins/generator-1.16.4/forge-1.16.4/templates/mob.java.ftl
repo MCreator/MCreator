@@ -168,144 +168,63 @@ import net.minecraft.block.material.Material;
 				RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new ChickenModel(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 						@Override public ResourceLocation getEntityTexture(Entity entity) { 
-						<#if hasCondition(data.entityTextureSelector)>
-							Entity ent = entity;
-							double x = ent.getPosX();
-							double y = ent.getPosY();
-							double z = ent.getPosZ();
-							World world = ent.world;
-							return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
-				
-					 <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
-					</#if>
+						    <@entityTexture/>
 						}
 					});
 			<#elseif data.mobModelName == "Cow">
 				RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new CowModel(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 						@Override public ResourceLocation getEntityTexture(Entity entity) { 
-						<#if hasCondition(data.entityTextureSelector)>
-							Entity ent = entity;
-							double x = ent.getPosX();
-							double y = ent.getPosY();
-							double z = ent.getPosZ();
-							World world = ent.world;
-							return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
-				
-					 <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
-					</#if>
+						    <@entityTexture/>
 						}
 					});
 			<#elseif data.mobModelName == "Creeper">
 				RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new CreeperModel(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 						@Override public ResourceLocation getEntityTexture(Entity entity) { 
-						<#if hasCondition(data.entityTextureSelector)>
-							Entity ent = entity;
-							double x = ent.getPosX();
-							double y = ent.getPosY();
-							double z = ent.getPosZ();
-							World world = ent.world;
-							return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
-				
-					 <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
-					</#if>
+						    <@entityTexture/>
 						}
 					});
 			<#elseif data.mobModelName == "Ghast">
 				RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new GhastModel(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 						@Override public ResourceLocation getEntityTexture(Entity entity) { 
-						<#if hasCondition(data.entityTextureSelector)>
-							Entity ent = entity;
-							double x = ent.getPosX();
-							double y = ent.getPosY();
-							double z = ent.getPosZ();
-							World world = ent.world;
-							return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
-				
-					 <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
-					</#if>
+						    <@entityTexture/>
 						}
 					});
 			<#elseif data.mobModelName == "Pig">
 				RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new PigModel(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 						@Override public ResourceLocation getEntityTexture(Entity entity) { 
-						<#if hasCondition(data.entityTextureSelector)>
-							Entity ent = entity;
-							double x = ent.getPosX();
-							double y = ent.getPosY();
-							double z = ent.getPosZ();
-							World world = ent.world;
-							return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
-				
-					 <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
-					</#if>
+						    <@entityTexture/>
 						}
 					});
 			<#elseif data.mobModelName == "Slime">
 				RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new SlimeModel(0), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 						@Override public ResourceLocation getEntityTexture(Entity entity) { 
-						<#if hasCondition(data.entityTextureSelector)>
-							Entity ent = entity;
-							double x = ent.getPosX();
-							double y = ent.getPosY();
-							double z = ent.getPosZ();
-							World world = ent.world;
-							return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
-				
-					 <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
-					</#if>
+						    <@entityTexture/>
 						}
 					});
 			<#elseif data.mobModelName == "Spider">
 				RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new SpiderModel(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 						@Override public ResourceLocation getEntityTexture(Entity entity) { 
-						<#if hasCondition(data.entityTextureSelector)>
-							Entity ent = entity;
-							double x = ent.getPosX();
-							double y = ent.getPosY();
-							double z = ent.getPosZ();
-							World world = ent.world;
-							return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
-				
-					 <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
-					</#if>
+						    <@entityTexture/>
 						}
 					});
 			<#elseif data.mobModelName == "Villager">
 				RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new VillagerModel(0), ${data.modelShadowSize}f) {
 					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 					@Override public ResourceLocation getEntityTexture(Entity entity) { 
-						<#if hasCondition(data.entityTextureSelector)>
-							Entity ent = entity;
-							double x = ent.getPosX();
-							double y = ent.getPosY();
-							double z = ent.getPosZ();
-							World world = ent.world;
-							return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
-				
-					 <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
-					</#if>
+						    <@entityTexture/>
 						}
 					});
 			<#elseif data.mobModelName == "Silverfish">
 				RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new SilverfishModel(), ${data.modelShadowSize}f) {
 					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 					@Override public ResourceLocation getEntityTexture(Entity entity) { 
-						<#if hasCondition(data.entityTextureSelector)>
-							Entity ent = entity;
-							double x = ent.getPosX();
-							double y = ent.getPosY();
-							double z = ent.getPosZ();
-							World world = ent.world;
-							return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
-				
-					 <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
-					</#if>
+						    <@entityTexture/>
 						}
 					});
 			<#elseif !data.isBuiltInModel()>
@@ -313,16 +232,7 @@ import net.minecraft.block.material.Material;
 					return new MobRenderer(renderManager, new ${data.mobModelName}(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 						@Override public ResourceLocation getEntityTexture(Entity entity) { 
-						<#if hasCondition(data.entityTextureSelector)>
-							Entity ent = entity;
-							double x = ent.getPosX();
-							double y = ent.getPosY();
-							double z = ent.getPosZ();
-							World world = ent.world;
-							return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
-				
-					 <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
-					</#if>
+						    <@entityTexture/>
 						}
 					});
 				});
@@ -330,16 +240,7 @@ import net.minecraft.block.material.Material;
 				RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> {
 					BipedRenderer customRender = new BipedRenderer(renderManager, new BipedModel(0), ${data.modelShadowSize}f) {
 						@Override public ResourceLocation getEntityTexture(Entity entity) { 
-						<#if hasCondition(data.entityTextureSelector)>
-							Entity ent = entity;
-							double x = ent.getPosX();
-							double y = ent.getPosY();
-							double z = ent.getPosZ();
-							World world = ent.world;
-							return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
-				
-					 <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
-					</#if>
+						    <@entityTexture/>
 						}
 					};
 					customRender.addLayer(new BipedArmorLayer(customRender, new BipedModel(0.5f), new BipedModel(1)));
@@ -1066,4 +967,14 @@ import net.minecraft.block.material.Material;
 	</#if>
 
 }
+<#macro entityTexture>
+<#if hasCondition(data.entityTextureSelector)>
+    double x = entity.getPosX();
+    double y = entity.getPosY();
+    double z = entity.getPosZ();
+    World world = entity.world;
+    return new ResourceLocation("${modid}", "textures/" + <@procedureOBJToConditionCode data.entityTextureSelector/>);
+    <#else>return new ResourceLocation("${modid}:textures/${data.mobModelTexture}");
+    </#if>
+</#macro>
 <#-- @formatter:on -->
