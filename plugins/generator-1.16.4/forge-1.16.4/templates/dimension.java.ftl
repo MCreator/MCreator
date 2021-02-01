@@ -71,6 +71,7 @@ import net.minecraft.block.material.Material;
 		});
 	}
 
+	<#if !data.sunTexture?has_content || !data.moonTexture?has_content || !data.skyTexture?has_content>
 	@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
 		<#-- custom dimension effect -->
 		DimensionRenderInfo customEffect = new DimensionRenderInfo(<#if data.imitateOverworldBehaviour>128<#else>Float.NaN</#if>,
@@ -108,6 +109,7 @@ import net.minecraft.block.material.Material;
 		RenderTypeLookup.setRenderLayer(portal, RenderType.getTranslucent());
 		</#if>
 	}
+	</#if>
 
 	<#if data.enablePortal>
 		private static PointOfInterestType poi = null;
