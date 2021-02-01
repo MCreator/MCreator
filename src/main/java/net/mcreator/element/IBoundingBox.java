@@ -18,14 +18,14 @@
 
 package net.mcreator.element;
 
-import org.eclipse.jgit.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public interface IBoundingBox {
 	// A list of non-empty bounding box entries
-	@NonNull List<BoxEntry> getValidBoundingBoxes();
+	@NotNull List<BoxEntry> getValidBoundingBoxes();
 
 	// Empty list or all bounding boxes are in subtract mode
 	default boolean isBoundingBoxEmpty() {
