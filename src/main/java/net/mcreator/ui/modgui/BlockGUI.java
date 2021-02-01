@@ -622,11 +622,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bbPane.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), boundingBoxEditor));
 		bbPane.setOpaque(false);
 
-		addBoundingBox.addActionListener(e -> new JBoundingBoxEntry(boundingBoxes, boundingBoxList));
+		addBoundingBox.addActionListener(e -> {
+			new JBoundingBoxEntry(boundingBoxes, boundingBoxList);
+			updateParametersBasedOnBoundingBoxSize();
+		});
 
 		if (!isEditingMode()) { // Add first bounding box
 			new JBoundingBoxEntry(boundingBoxes, boundingBoxList);
 		}
+
+		boundingBoxes.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
 		JPanel selp = new JPanel(new GridLayout(12, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));

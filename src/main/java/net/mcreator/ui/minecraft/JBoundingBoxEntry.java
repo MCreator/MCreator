@@ -79,7 +79,16 @@ public class JBoundingBoxEntry extends JPanel {
 			parent.remove(container);
 			parent.revalidate();
 			parent.repaint();
+			parent.firePropertyChange("boundingBoxChanged", false, true);
 		});
+
+		mx.addChangeListener(e -> parent.firePropertyChange("boundingBoxChanged", false, true));
+		my.addChangeListener(e -> parent.firePropertyChange("boundingBoxChanged", false, true));
+		mz.addChangeListener(e -> parent.firePropertyChange("boundingBoxChanged", false, true));
+		Mx.addChangeListener(e -> parent.firePropertyChange("boundingBoxChanged", false, true));
+		My.addChangeListener(e -> parent.firePropertyChange("boundingBoxChanged", false, true));
+		Mz.addChangeListener(e -> parent.firePropertyChange("boundingBoxChanged", false, true));
+		subtract.addActionListener(e -> parent.firePropertyChange("boundingBoxChanged", false, true));
 
 		add(PanelUtils.centerAndEastElement(line, PanelUtils.join(remove)));
 

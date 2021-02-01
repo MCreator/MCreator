@@ -808,12 +808,12 @@ public class TestWorkspaceDataProvider {
 				for (int i = 0; i < boxes; i++) {
 					IBoundingBox.BoxEntry box = new IBoundingBox.BoxEntry();
 					box.mx = new double[] { 0, 5 + i, 1.2, 7.1 }[valueIndex];
-					box.my = new double[] { 1, 2, 3.6, 12.2 }[valueIndex];
-					box.mz = new double[] { 7.4, 3.1, 0, 2.2 }[valueIndex];
+					box.my = new double[] { 0, 2, 3.6, 12.2 }[valueIndex];
+					box.mz = new double[] { 0, 3.1, 0, 2.2 }[valueIndex];
 					box.Mx = new double[] { 16, 15.2, 4, 7.1 + i }[valueIndex];
-					box.My = new double[] { 13, 12.2, 16, 13 }[valueIndex];
-					box.Mz = new double[] { 15.3, 12, 2.4, 1.2 }[valueIndex];
-					box.subtract = i % 3 == 1;
+					box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
+					box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
+					box.subtract = new boolean[] {false, _true, _true, random.nextBoolean()}[valueIndex];
 
 					plant.boundingBoxes.add(box);
 				}
@@ -981,7 +981,7 @@ public class TestWorkspaceDataProvider {
 			Block block = new Block(modElement);
 			block.name = modElement.getName();
 			block.hasTransparency = new boolean[] { _true, _true, true,
-					_true }[valueIndex]; // third is true because third index for model is cross which requires transparency
+					!emptyLists }[valueIndex]; // third is true because third index for model is cross which requires transparency
 			block.connectedSides = _true;
 			block.displayFluidOverlay = _true;
 			block.emissiveRendering = _true;
@@ -993,12 +993,12 @@ public class TestWorkspaceDataProvider {
 				for (int i = 0; i < boxes; i++) {
 					IBoundingBox.BoxEntry box = new IBoundingBox.BoxEntry();
 					box.mx = new double[] { 0, 5 + i, 1.2, 7.1 }[valueIndex];
-					box.my = new double[] { 1, 2, 3.6, 12.2 }[valueIndex];
-					box.mz = new double[] { 7.4, 3.1, 0, 2.2 }[valueIndex];
+					box.my = new double[] { 0, 2, 3.6, 12.2 }[valueIndex];
+					box.mz = new double[] { 0, 3.1, 0, 2.2 }[valueIndex];
 					box.Mx = new double[] { 16, 15.2, 4, 7.1 + i }[valueIndex];
-					box.My = new double[] { 13, 12.2, 16, 13 }[valueIndex];
-					box.Mz = new double[] { 15.3, 12, 2.4, 1.2 }[valueIndex];
-					box.subtract = random.nextBoolean();
+					box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
+					box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
+					box.subtract = new boolean[] {false, _true, _true, random.nextBoolean()}[valueIndex];
 
 					block.boundingBoxes.add(box);
 				}
