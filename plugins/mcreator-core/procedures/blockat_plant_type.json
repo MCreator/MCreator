@@ -14,41 +14,10 @@
       "type": "input_value",
       "name": "z",
       "check": "Number"
-    },
-    {
-      "type": "field_dropdown",
-      "name": "type",
-      "options": [
-        [
-          "Plains",
-          "Plains"
-        ],
-        [
-          "Desert",
-          "Desert"
-        ],
-        [
-          "Beach",
-          "Beach"
-        ],
-        [
-          "Cave",
-          "Cave"
-        ],
-        [
-          "Water",
-          "Water"
-        ],
-        [
-          "Nether",
-          "Nether"
-        ],
-        [
-          "Crop",
-          "Crop"
-        ]
-      ]
     }
+  ],
+  "extensions": [
+    "plant_type_list_provider"
   ],
   "inputsInline": true,
   "output": "Boolean",
@@ -66,7 +35,7 @@
       "z"
     ],
     "fields": [
-      "type"
+      "planttype"
     ],
     "dependencies": [
       {
