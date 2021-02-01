@@ -794,8 +794,7 @@ public class TestWorkspaceDataProvider {
 			plant.itemTexture = emptyLists ? "" : "itest";
 			plant.particleTexture = emptyLists ? "" : "test3";
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
-			plant.growapableSpawnType = getRandomItem(random,
-					new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
+			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getAllPlantTypes());
 			plant.staticPlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.growapableMaxHeight = 5;
