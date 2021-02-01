@@ -200,8 +200,9 @@ import ${package}.${JavaModName};
 				<#assign btid +=1>
 			<#elseif component.getClass().getSimpleName() == "Checkbox">
             	${component.name} = new CheckboxButton(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-            	    150, 20, new StringTextComponent("${component.text}"));
-                ${name}Gui.guistate.put("checkbox:${component.name}", ${component.name}, ${component.isChecked);
+            	    150, 20, new StringTextComponent("${component.text}"), ${component.isChecked});
+                ${name}Gui.guistate.put("checkbox:${component.name}", ${component.name});
+                this.addButton(${component.name});
 			</#if>
 		</#list>
 	}
