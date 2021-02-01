@@ -189,12 +189,21 @@ import ${package}.${JavaModName};
 				${component.name}.setMaxStringLength(32767);
                 this.children.add(this.${component.name});
 			<#elseif component.getClass().getSimpleName() == "Button">
-                this.addButton(new Button(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, new StringTextComponent("${component.text}"), e -> {
-					${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}Gui.ButtonPressedMessage(${btid}, x, y, z));
+				this.addButton(new Button(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
+                    ${component.width}, ${component.height}, new StringTextComponent("${component.text}"), e -> {
+                    ${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}Gui.ButtonPressedMessage(${btid}, x, y, z));
 
-					${name}Gui.handleButtonAction(entity, ${btid}, x, y, z);
-				}));
+                    ${name}Gui.handleButtonAction(entity, ${btid}, x, y, z);
+                })
+                <#if hasCondition(component.displayCondition)>
+                {
+                	@Override
+                	public void render(MatrixStack ms, int x, int y, float ticks) {
+                		if (<@procedureOBJToConditionCode component.displayCondition/>)
+                			super.render(ms, x, y, ticks);
+                	}
+                }
+                </#if>);
 				<#assign btid +=1>
 			</#if>
 		</#list>
