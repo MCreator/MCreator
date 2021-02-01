@@ -1,0 +1,26 @@
+SoundSystem CodecJOgg License:
+
+You are free to use this class for any purpose, commercial or otherwise.
+You may modify this class or source code, and distribute it any way you
+like, provided the following conditions are met:
+
+1) You must abide by the conditions of the aforementioned J-Ogg License.
+2) You may not falsely claim to be the author of this class or any
+   unmodified portion of it.
+3) You may not copyright this class or a modified version of it and then
+   sue me for copyright infringement.
+4) If you modify the source code, you must clearly document the changes
+   made before redistributing the modified source code, so other users know
+   it is not the original code.
+5) You are not required to give me credit for this class in any derived
+   work, but if you do, you must also mention my website:
+   http://www.paulscode.com
+6) I the author will not be responsible for any damages (physical,
+   financial, or otherwise) caused by the use if this class or any
+   portion of it.
+7) I the author do not guarantee, warrant, or make any representations,
+   either expressed or implied, regarding the use of this class or any
+   portion of it.
+
+Author: Paul Lamb
+http://www.paulscode.com
