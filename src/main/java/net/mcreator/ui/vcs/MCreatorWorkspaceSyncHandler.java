@@ -31,6 +31,7 @@ import net.mcreator.vcs.ICustomSyncHandler;
 import net.mcreator.vcs.diff.*;
 import net.mcreator.workspace.TooNewWorkspaceVerisonException;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
 import net.mcreator.workspace.elements.VariableElement;
@@ -135,6 +136,7 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 		Set<MergeHandle<VariableElement>> conflictingVariableElements = new HashSet<>();
 		Set<MergeHandle<SoundElement>> conflictingSoundElements = new HashSet<>();
 		Set<MergeHandle<String>> conflictingLangMaps = new HashSet<>();
+		MergeHandle<FolderElement> workspaceFoldersMergeHandle = null; // for cases where we can't do automatic merge
 
 		if (conflictsInWorkspaceFile) {
 			// WORKSPACE SETTINGS
@@ -199,6 +201,15 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 						}
 					}
 				}
+			}
+
+			// WORKSPACE FOLDERS
+			if (!FolderSyncHandler
+					.mergeFoldersRecursively(localWorkspace.getFoldersRoot(), remoteWorkspace.getFoldersRoot(),
+							baseWorkspace.getFoldersRoot(), dryRun)) {
+				// mergeFoldersRecursively returned false -> failed to auto-merge, prepare merge handle
+				workspaceFoldersMergeHandle = new MergeHandle<>(localWorkspace.getFoldersRoot(),
+						remoteWorkspace.getFoldersRoot(), DiffEntry.ChangeType.MODIFY, DiffEntry.ChangeType.MODIFY);
 			}
 
 			// VARIABLE ELEMENTS (same concept as for mod elements)
@@ -361,7 +372,8 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 		// next we can decide if required_user_action will be needed
 		boolean workspace_manual_merge_required =
 				workspaceSettingsMergeHandle != null || !conflictingModElements.isEmpty() || !conflictingSoundElements
-						.isEmpty() || !conflictingVariableElements.isEmpty() || !conflictingLangMaps.isEmpty();
+						.isEmpty() || !conflictingVariableElements.isEmpty() || !conflictingLangMaps.isEmpty()
+						|| workspaceFoldersMergeHandle != null;
 
 		required_user_action = workspace_manual_merge_required;
 
@@ -369,12 +381,16 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 			// Show workspace merge dialog
 			VCSWorkspaceMergeDialog.show(mcreator,
 					new WorkspaceMergeHandles(workspaceSettingsMergeHandle, conflictingModElements,
-							conflictingVariableElements, conflictingSoundElements, conflictingLangMaps));
+							conflictingVariableElements, conflictingSoundElements, conflictingLangMaps,
+							workspaceFoldersMergeHandle));
 
 			// after UI merge is complete, we apply the merge to the workspace
 
 			if (conflictsInWorkspaceFile && workspaceSettingsMergeHandle != null)
 				baseWorkspace.setWorkspaceSettings(workspaceSettingsMergeHandle.getSelectedResult());
+
+			if (conflictsInWorkspaceFile && workspaceFoldersMergeHandle != null)
+				baseWorkspace.setFoldersRoot(workspaceFoldersMergeHandle.getSelectedResult());
 
 			for (MergeHandle<ModElement> modElementMergeHandle : conflictingModElements) {
 				if (conflictsInWorkspaceFile) {

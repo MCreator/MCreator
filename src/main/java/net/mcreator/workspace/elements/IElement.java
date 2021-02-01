@@ -16,37 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.vcs.diff;
+package net.mcreator.workspace.elements;
 
-import org.eclipse.jgit.diff.DiffEntry;
+public interface IElement {
 
-class AffectedObjectWithType<T> {
+	String getName();
 
-	private final T affected;
-	private final DiffEntry.ChangeType changeType;
-
-	AffectedObjectWithType(T affected, DiffEntry.ChangeType changeType) {
-		this.affected = affected;
-		this.changeType = changeType;
-	}
-
-	T getAffected() {
-		return affected;
-	}
-
-	DiffEntry.ChangeType getChangeType() {
-		return changeType;
-	}
-
-	@Override public boolean equals(Object o) {
-		return o instanceof AffectedObjectWithType && ((AffectedObjectWithType<?>) o).affected.equals(affected);
-	}
-
-	@Override public int hashCode() {
-		return affected.hashCode();
-	}
-
-	@Override public String toString() {
-		return affected.toString();
-	}
 }

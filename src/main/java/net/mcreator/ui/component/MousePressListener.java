@@ -16,37 +16,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.vcs.diff;
+package net.mcreator.ui.component;
 
-import org.eclipse.jgit.diff.DiffEntry;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
-class AffectedObjectWithType<T> {
+public abstract class MousePressListener extends MouseAdapter {
 
-	private final T affected;
-	private final DiffEntry.ChangeType changeType;
+	private int eventCnt = 0;
 
-	AffectedObjectWithType(T affected, DiffEntry.ChangeType changeType) {
-		this.affected = affected;
-		this.changeType = changeType;
+	Timer timer = new Timer("dbc", false);
+
+	@Override public final void mousePressed(MouseEvent e) {
+		pressFiltered(e, 0);
+
+		eventCnt = e.getClickCount();
+		if (e.getClickCount() == 1) {
+			timer.schedule(new TimerTask() {
+				@Override public void run() {
+					pressFiltered(e, eventCnt);
+					eventCnt = 0;
+				}
+			}, 250);
+		}
 	}
 
-	T getAffected() {
-		return affected;
-	}
+	public abstract void pressFiltered(MouseEvent e, int clicks);
 
-	DiffEntry.ChangeType getChangeType() {
-		return changeType;
-	}
-
-	@Override public boolean equals(Object o) {
-		return o instanceof AffectedObjectWithType && ((AffectedObjectWithType<?>) o).affected.equals(affected);
-	}
-
-	@Override public int hashCode() {
-		return affected.hashCode();
-	}
-
-	@Override public String toString() {
-		return affected.toString();
-	}
 }

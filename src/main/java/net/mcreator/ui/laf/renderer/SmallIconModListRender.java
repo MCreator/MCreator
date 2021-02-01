@@ -20,15 +20,18 @@ package net.mcreator.ui.laf.renderer;
 
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.init.TiledImageCache;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.AbstractMCreatorTheme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.elements.FolderElement;
+import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class SmallIconModListRender extends JPanel implements ListCellRenderer<ModElement> {
+public class SmallIconModListRender extends JPanel implements ListCellRenderer<IElement> {
 
 	private final boolean showText;
 
@@ -40,7 +43,7 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<M
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList<? extends ModElement> list, ModElement ma, int index,
+	public Component getListCellRendererComponent(JList<? extends IElement> list, IElement element, int index,
 			boolean isSelected, boolean cellHasFocus) {
 		removeAll();
 		setBorder(null);
@@ -48,7 +51,7 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<M
 		JLabel label = new JLabel();
 
 		JLabel icon = new JLabel();
-		if (ma != null) {
+		if (element != null) {
 			if (isSelected) {
 				label.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 				label.setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
@@ -59,44 +62,53 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<M
 				setOpaque(false);
 			}
 
-			label.setText(StringUtils.abbreviateString(ma.getName(), 24));
-
+			label.setText(StringUtils.abbreviateString(element.getName(), 24));
 			label.setFont(AbstractMCreatorTheme.light_font.deriveFont(18.0f));
 
 			ImageIcon dva = null;
 
-			if (!ma.doesCompile()) {
-				dva = TiledImageCache.modTabRed;
-			}
+			if (element instanceof ModElement) {
+				ModElement ma = (ModElement) element;
+				if (!ma.doesCompile()) {
+					dva = TiledImageCache.modTabRed;
+				}
 
-			if (ma.isCodeLocked()) {
-				if (dva != null) {
-					dva = ImageUtils.drawOver(dva, TiledImageCache.modTabPurple);
-				} else {
-					dva = TiledImageCache.modTabPurple;
+				if (ma.isCodeLocked()) {
+					if (dva != null) {
+						dva = ImageUtils.drawOver(dva, TiledImageCache.modTabPurple);
+					} else {
+						dva = TiledImageCache.modTabPurple;
+					}
 				}
 			}
 
-			ImageIcon modIcon = ma.getElementIcon();
-			if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0
-					&& modIcon.getIconHeight() > 0 && modIcon != MCItem.DEFAULT_ICON) {
-				if (dva != null) {
-					ImageIcon iconbig = ImageUtils.drawOver(modIcon, dva);
-					icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 25)));
+			if (element instanceof FolderElement) {
+				icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("folder").getImage(), 25)));
+			} else if (element instanceof ModElement) {
+				ImageIcon modIcon = ((ModElement) element).getElementIcon();
+
+				if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0
+						&& modIcon.getIconHeight() > 0 && modIcon != MCItem.DEFAULT_ICON) {
+					if (dva != null) {
+						ImageIcon iconbig = ImageUtils.drawOver(modIcon, dva);
+						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 25)));
+					} else {
+						icon.setIcon(new ImageIcon(ImageUtils.resize(modIcon.getImage(), 25)));
+					}
 				} else {
-					icon.setIcon(new ImageIcon(ImageUtils.resize(modIcon.getImage(), 25)));
-				}
-			} else {
-				if (dva != null) {
-					ImageIcon iconbig = ImageUtils.drawOver(TiledImageCache.getModTypeIcon(ma.getType()), dva);
-					icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 25)));
-				} else {
-					icon.setIcon(new ImageIcon(
-							ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(ma.getType()).getImage(), 25)));
+					if (dva != null) {
+						ImageIcon iconbig = ImageUtils
+								.drawOver(TiledImageCache.getModTypeIcon(((ModElement) element).getType()), dva);
+						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 25)));
+					} else {
+						icon.setIcon(new ImageIcon(ImageUtils
+								.resizeAA(TiledImageCache.getModTypeIcon(((ModElement) element).getType()).getImage(),
+										25)));
+					}
 				}
 			}
 
-			setToolTipText(ma.getName());
+			setToolTipText(element.getName());
 		}
 
 		if (showText)

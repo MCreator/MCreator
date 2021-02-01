@@ -32,7 +32,7 @@ import javax.swing.*;
 import java.io.Serializable;
 import java.util.*;
 
-public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorProvider {
+public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorProvider, IElement {
 
 	private String name;
 	private ModElementType type;
@@ -43,9 +43,11 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	private boolean locked_code = false;
 
 	private Map<Integer, Integer> ids = new HashMap<>();
-	private String registry_name = null;
+	@Nullable private String registry_name;
 
-	private Map<String, Object> metadata = null;
+	@Nullable private Map<String, Object> metadata = null;
+
+	@Nullable private String path;
 
 	// MCItem representations of this element
 	// it is transient so it does not get serialized
@@ -266,7 +268,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.compiles = compiles;
 	}
 
-	public String getName() {
+	@Override public String getName() {
 		return name;
 	}
 
@@ -305,6 +307,17 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	public void setRegistryName(String registry_name) {
 		this.registry_name = registry_name;
+	}
+
+	public @Nullable String getFolderPath() {
+		return path;
+	}
+
+	public void setParentFolder(@Nullable FolderElement parent) {
+		if (parent == null || parent.isRoot())
+			this.path = null;
+		else
+			this.path = parent.getPath();
 	}
 
 }
