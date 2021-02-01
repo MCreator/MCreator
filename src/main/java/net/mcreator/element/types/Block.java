@@ -34,9 +34,8 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
@@ -248,7 +247,7 @@ import java.util.stream.Collectors;
 		return creativeTab;
 	}
 
-	@Override public List<BoxEntry> getBoundingBox() {
+	@Override public List<BoxEntry> getValidBoundingBoxes() {
 		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
 	}
 

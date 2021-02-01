@@ -156,7 +156,7 @@ import java.util.stream.Collectors;
 		return !"No tint".equals(tintType);
 	}
 
-	@Override public List<BoxEntry> getBoundingBox() {
+	@Override public List<BoxEntry> getValidBoundingBoxes() {
 		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
 	}
 }

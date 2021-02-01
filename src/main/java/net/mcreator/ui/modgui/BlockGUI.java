@@ -1166,8 +1166,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void updateParametersBasedOnBoundingBoxSize() {
-		if (!nonEmptyBoundingBoxList().isEmpty() &&
-				nonEmptyBoundingBoxList().stream().allMatch(JBoundingBoxEntry::isFullCube)) {
+		if (!isFullCube()) {
 			hasTransparency.setSelected(true);
 			hasTransparency.setEnabled(false);
 		} else {
@@ -1181,8 +1180,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				blockBase.getSelectedItem().equals("Pane") || blockBase.getSelectedIndex() == 0);
 	}
 
-	private List<JBoundingBoxEntry> nonEmptyBoundingBoxList() {
-		return boundingBoxList.stream().filter(JBoundingBoxEntry::isNotEmpty).collect(Collectors.toList());
+	private boolean isFullCube() {
+		return boundingBoxList.stream().anyMatch(JBoundingBoxEntry::isNotEmpty) &&
+				boundingBoxList.stream().filter(JBoundingBoxEntry::isNotEmpty).allMatch(JBoundingBoxEntry::isFullCube);
 	}
 
 	@Override public void reloadDataLists() {

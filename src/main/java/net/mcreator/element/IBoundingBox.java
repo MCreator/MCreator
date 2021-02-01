@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public interface IBoundingBox {
 	// A list of non-empty bounding box entries
-	@NonNull List<BoxEntry> getBoundingBox();
+	@NonNull List<BoxEntry> getValidBoundingBoxes();
 
 	// Empty list or all bounding boxes are in subtract mode
 	default boolean isBoundingBoxEmpty() {
@@ -33,15 +33,15 @@ import java.util.stream.Collectors;
 	}
 
 	default boolean isFullCube() {
-		return getBoundingBox().size() > 0 && getBoundingBox().stream().allMatch(BoxEntry::isFullCube);
+		return getValidBoundingBoxes().size() > 0 && getValidBoundingBoxes().stream().allMatch(BoxEntry::isFullCube);
 	}
 
 	default List<BoxEntry> positiveBoundingBoxes() {
-		return getBoundingBox().stream().filter(box -> !box.subtract).collect(Collectors.toList());
+		return getValidBoundingBoxes().stream().filter(box -> !box.subtract).collect(Collectors.toList());
 	}
 
 	default List<BoxEntry> negativeBoundingBoxes() {
-		return getBoundingBox().stream().filter(box -> box.subtract).collect(Collectors.toList());
+		return getValidBoundingBoxes().stream().filter(box -> box.subtract).collect(Collectors.toList());
 	}
 
 	class BoxEntry {
