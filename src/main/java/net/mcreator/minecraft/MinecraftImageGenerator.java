@@ -39,6 +39,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.AttributedCharacterIterator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -149,6 +150,23 @@ public class MinecraftImageGenerator {
 		g.setColor(new Color(255, 255, 255, 210)); //bottom border color
 		g.drawLine(width - 1, 0, width - 1, height - 1); //rob desno
 		g.drawLine(0, height - 1, width - 2, height - 1); //rob spodaj
+
+		return bi;
+	}
+
+	public static BufferedImage generateCheckbox(){
+		int width = 20, height = 20;
+		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = (Graphics2D) bi.getGraphics();
+
+		g.setColor(new Color(57, 57, 57)); //filler color
+		g.fillRect(0, 0, width, height);
+
+		g.setColor(Color.BLACK); //top border color
+		g.drawLine(0, 0, width - 1, 0); //top border
+		g.drawLine(0, 1, 0, height - 1); //left border
+		g.drawLine(width - 1, 0, width - 1, height - 1); //right border
+		g.drawLine(0, height - 1, width - 2, height - 1); //bottom border
 
 		return bi;
 	}

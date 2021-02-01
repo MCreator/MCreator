@@ -46,6 +46,7 @@ import java.util.stream.Collectors;
 		put("outputslot", OutputSlot.class);
 		put("label", Label.class);
 		put("textfield", TextField.class);
+		put("checkbox", Checkbox.class);
 	}};
 
 	private static transient final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings

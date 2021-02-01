@@ -24,6 +24,7 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.Button;
+import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.element.parts.gui.*;
@@ -477,6 +478,8 @@ public class TestWorkspaceDataProvider {
 				components.add(new OutputSlot(6, "sot", 243, 563, Color.black, _true, _true, null, null, null));
 				components.add(new TextField("text1", 0, 10, 100, 20, "Input value ..."));
 				components.add(new TextField("text2", 55, 231, 90, 20, ""));
+				components.add(new Checkbox("checkbox1", 100, 100, "Text", false));
+				components.add(new Checkbox("checkbox2", 125, 125, "Other text", true));
 			}
 			gui.components = components;
 			return gui;

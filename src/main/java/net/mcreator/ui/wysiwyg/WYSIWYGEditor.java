@@ -19,6 +19,7 @@
 package net.mcreator.ui.wysiwyg;
 
 import net.mcreator.element.parts.gui.Button;
+import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
@@ -69,6 +70,7 @@ public class WYSIWYGEditor extends JPanel {
 	public JButton text = new JButton(UIRES.get("32px.addtextinput"));
 	public JButton slot1 = new JButton(UIRES.get("32px.addinslot"));
 	public JButton slot2 = new JButton(UIRES.get("32px.addoutslot"));
+	public JButton checkbox = new JButton(UIRES.get("32px.addcheckbox"));
 
 	public JComboBox<String> lol = new JComboBox<>(new String[] { "GUI without slots", "GUI with slots" });
 
@@ -240,8 +242,12 @@ public class WYSIWYGEditor extends JPanel {
 		slot2.setMargin(new Insets(0, 0, 0, 0));
 		slot2.setToolTipText((L10N.t("elementgui.gui.add_output_slot")));
 
+		checkbox.setMargin(new Insets(0, 0, 0, 0));
+		checkbox.setToolTipText((L10N.t("elementgui.gui.add_checkbox")));
+
 		add.add(label);
 		add.add(button);
+		add.add(checkbox);
 		add.add(image);
 		add.add(text);
 		add.add(slot1);
@@ -250,6 +256,7 @@ public class WYSIWYGEditor extends JPanel {
 		text.addActionListener(event -> new TextFieldDialog(this, null));
 		slot1.addActionListener(e -> new InputSlotDialog(this, null));
 		slot2.addActionListener(e -> new OutputSlotDialog(this, null));
+		checkbox.addActionListener(e -> new CheckboxDialog(this, null));
 
 		JCheckBox snapOnGrid = new JCheckBox((L10N.t("elementgui.gui.snap_components_on_grid")));
 		snapOnGrid.setOpaque(false);
@@ -457,6 +464,8 @@ public class WYSIWYGEditor extends JPanel {
 				component = new OutputSlotDialog(this, (OutputSlot) component).getEditingComponent();
 			} else if (component instanceof Image) {
 				component = new ImageDialog(this, (Image) component).getEditingComponent();
+			} else if (component instanceof Checkbox) {
+				component = new CheckboxDialog(this, (Checkbox) component).getEditingComponent();
 			} else {
 				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.gui.edit_component_message"),
 						L10N.t("elementgui.gui.edit_component_title"), JOptionPane.WARNING_MESSAGE);
