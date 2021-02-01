@@ -328,7 +328,9 @@ import ${package}.${JavaModName};
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
             TextFieldWidget ${component.name};
-			</#if>
+		    <#elseif component.getClass().getSimpleName() == "Checkbox">
+	        CheckboxButton ${component.name};
+		    </#if>
 		</#list>
 
 		public GuiWindow(GuiContainerMod container, PlayerInventory inventory, ITextComponent text) {
@@ -478,6 +480,11 @@ import ${package}.${JavaModName};
 						handleButtonAction(entity, ${btid}, x, y, z);
 					}));
 					<#assign btid +=1>
+			    <#elseif component.getClass().getSimpleName() == "Checkbox">
+            	    ${component.name} = new CheckboxButton(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
+            	        150, 20, new StringTextComponent("${component.text}"));
+            	        this.addButton(${component.name});
+                    ${name}Gui.guistate.put("checkbox:${component.name}", ${component.name}, ${component.isChecked);
 				</#if>
 			</#list>
 		}
