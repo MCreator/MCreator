@@ -261,6 +261,8 @@ public class BlocklyJavascriptBridge {
 					workspace.getModElements().stream().filter(var -> var.getType() == ModElementType.RANGEDITEM)
 							.map(ModElement::getName).collect(Collectors.toList()));
 			break;
+		case "planttype":
+			return ElementUtil.getAllPlantTypes();
 		default:
 			retval = new ArrayList<>();
 		}
