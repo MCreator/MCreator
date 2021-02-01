@@ -28,22 +28,28 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
+import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElementType;
@@ -51,8 +57,11 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
@@ -78,6 +87,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final SoundSelector portalSound = new SoundSelector(mcreator);
 	private final JColor airColor = new JColor(mcreator, true);
+	private final VComboBox<String> sunTexture = new SearchableComboBox<>();
+	private final VComboBox<String> moonTexture = new SearchableComboBox<>();
+	private final VComboBox<String> skyTexture = new SearchableComboBox<>();
 
 	private final DataListComboBox portalParticles = new DataListComboBox(mcreator);
 
@@ -149,16 +161,53 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.dimension.world_gen_type"), worldGenType),
 				PanelUtils.join(new JLabel(UIRES.get("dimension_types")))));
 
-		JPanel proper2 = new JPanel(new GridLayout(8, 2, 3, 3));
+		JPanel proper2 = new JPanel(new GridLayout(11, 2, 3, 3));
 		proper2.setOpaque(false);
 
 		airColor.setOpaque(false);
+		sunTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		moonTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		skyTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+
+		sunTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
+		moonTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
+		skyTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 		canRespawnHere.setOpaque(false);
 		hasFog.setOpaque(false);
 		doesWaterVaporize.setOpaque(false);
 
 		biomesInDimension.setPreferredSize(new java.awt.Dimension(300, 42));
+
+		JButton importSunTexture = new JButton(UIRES.get("18px.add"));
+		importSunTexture.setToolTipText(L10N.t("elementgui.dimension.import_sun_texture"));
+		importSunTexture.setOpaque(false);
+		importSunTexture.addActionListener(e -> {
+			TextureImportDialogs.importOtherTextures(mcreator);
+			sunTexture.removeAllItems();
+			sunTexture.addItem("");
+			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> sunTexture.addItem(el.getName()));
+		});
+
+		JButton importMoonTexture = new JButton(UIRES.get("18px.add"));
+		importMoonTexture.setToolTipText(L10N.t("elementgui.dimension.import_moon_texture"));
+		importMoonTexture.setOpaque(false);
+		importMoonTexture.addActionListener(e -> {
+			TextureImportDialogs.importOtherTextures(mcreator);
+			moonTexture.removeAllItems();
+			moonTexture.addItem("");
+			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> moonTexture.addItem(el.getName()));
+		});
+
+		JButton importSkyTexture = new JButton(UIRES.get("18px.add"));
+		importSkyTexture.setToolTipText(L10N.t("elementgui.dimension.import_sky_texture"));
+		importSkyTexture.setOpaque(false);
+		importSkyTexture.addActionListener(e -> {
+			TextureImportDialogs.importOtherTextures(mcreator);
+			skyTexture.removeAllItems();
+			skyTexture.addItem("");
+			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> skyTexture.addItem(el.getName()));
+		});
 
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/main_filler_block"),
 				L10N.label("elementgui.dimension.main_filler_block"), new Color(0x2980b9)));
@@ -175,6 +224,15 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fog_color"),
 				L10N.label("elementgui.dimension.fog_air_color")));
 		proper2.add(airColor);
+
+		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/custom_sun"), L10N.label("elementgui.dimension.custom_sun")));
+		proper2.add(PanelUtils.centerAndEastElement(sunTexture, importSunTexture));
+
+		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/custom_moon"), L10N.label("elementgui.dimension.custom_moon")));
+		proper2.add(PanelUtils.centerAndEastElement(moonTexture, importMoonTexture));
+
+		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/custom_sky"), L10N.label("elementgui.dimension.custom_sky")));
+		proper2.add(PanelUtils.centerAndEastElement(skyTexture, importSkyTexture));
 
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sleep_result"),
 				L10N.label("elementgui.dimension.sleep_result")));
@@ -284,6 +342,33 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		pane5.add(PanelUtils.totalCenterInPanel(events));
 		pane5.setOpaque(false);
 
+		sunTexture.setValidator(() -> {
+			if ((sunTexture.getSelectedItem() == null || sunTexture.getSelectedItem().equals(""))
+			&& (moonTexture.getSelectedItem() != null || moonTexture.getSelectedItem().equals("")
+			|| (skyTexture.getSelectedItem() != null || skyTexture.getSelectedItem().equals(""))))
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("elementgui.dimension.sun_texture_unselected"));
+			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+		});
+
+		moonTexture.setValidator(() -> {
+			if ((moonTexture.getSelectedItem() == null || moonTexture.getSelectedItem().equals(""))
+					&& (sunTexture.getSelectedItem() != null || sunTexture.getSelectedItem().equals("")
+					|| (skyTexture.getSelectedItem() != null || skyTexture.getSelectedItem().equals(""))))
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("elementgui.dimension.moon_texture_unselected"));
+			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+		});
+
+		skyTexture.setValidator(() -> {
+			if ((skyTexture.getSelectedItem() == null || skyTexture.getSelectedItem().equals(""))
+					&& (sunTexture.getSelectedItem() != null || sunTexture.getSelectedItem().equals("")
+					|| (moonTexture.getSelectedItem() != null || moonTexture.getSelectedItem().equals(""))))
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("elementgui.dimension.sky_texture_unselected"));
+			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+		});
+
 		igniterName.setValidator(new ConditionalTextFieldValidator(igniterName,
 				L10N.t("elementgui.dimension.error_portal_igniter_needs_name"), enablePortal, true));
 		portalTexture.setValidator(new TileHolderValidator(portalTexture, enablePortal));
@@ -291,6 +376,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalFrame.setValidator(new MCItemHolderValidator(portalFrame, enablePortal));
 		igniterName.enableRealtimeValidation();
 
+		page1group.addValidationElement(sunTexture);
+		page1group.addValidationElement(moonTexture);
+		page1group.addValidationElement(skyTexture);
 		page1group.addValidationElement(igniterName);
 		page1group.addValidationElement(portalTexture);
 		page1group.addValidationElement(texture);
@@ -342,6 +430,18 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				new DataListEntry.Dummy("TOOLS"));
 
 		ComboBoxUtil.updateComboBoxContents(portalParticles, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
+
+		ComboBoxUtil.updateComboBoxContents(sunTexture, ListUtils.merge(Collections.singleton(""),
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.collect(Collectors.toList())), "");
+
+		ComboBoxUtil.updateComboBoxContents(moonTexture, ListUtils.merge(Collections.singleton(""),
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.collect(Collectors.toList())), "");
+
+		ComboBoxUtil.updateComboBoxContents(skyTexture, ListUtils.merge(Collections.singleton(""),
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.collect(Collectors.toList())), "");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -366,6 +466,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalParticles.setSelectedItem(dimension.portalParticles);
 		biomesInDimension.setListElements(dimension.biomesInDimension);
 		airColor.setColor(dimension.airColor);
+		sunTexture.setSelectedItem(dimension.sunTexture);
+		moonTexture.setSelectedItem(dimension.moonTexture);
+		skyTexture.setSelectedItem(dimension.skyTexture);
 		canRespawnHere.setSelected(dimension.canRespawnHere);
 		hasFog.setSelected(dimension.hasFog);
 		isDark.setSelected(dimension.isDark);
@@ -393,6 +496,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.portalSound = portalSound.getSound();
 		dimension.biomesInDimension = biomesInDimension.getListElements();
 		dimension.airColor = airColor.getColor();
+		dimension.sunTexture = sunTexture.getSelectedItem();
+		dimension.moonTexture = moonTexture.getSelectedItem();
+		dimension.skyTexture = skyTexture.getSelectedItem();
 		dimension.canRespawnHere = canRespawnHere.isSelected();
 		dimension.hasFog = hasFog.isSelected();
 		dimension.isDark = isDark.isSelected();

@@ -40,6 +40,9 @@ import java.util.List;
 	public MItemBlock fluidBlock;
 
 	public Color airColor;
+	public String sunTexture;
+	public String moonTexture;
+	public String skyTexture;
 	public boolean canRespawnHere;
 	public boolean hasFog;
 	public boolean isDark;
@@ -76,6 +79,10 @@ import java.util.List;
 		// DEFAULT VALUES
 		this.enablePortal = true;
 		this.sleepResult = "ALLOW";
+	}
+
+	public boolean customSky() {
+		return !skyTexture.isEmpty();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
