@@ -23,14 +23,13 @@ import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.IBoundingBox;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.converter.fv14.BlockLuminanceFixer;
 import net.mcreator.element.types.Block;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class BlockBoundingBoxFixer implements IConverter {
-	private static final Logger LOG = LogManager.getLogger(BlockLuminanceFixer.class);
+	private static final Logger LOG = LogManager.getLogger(BlockBoundingBoxFixer.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
