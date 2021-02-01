@@ -998,7 +998,7 @@ public class TestWorkspaceDataProvider {
 					box.Mx = new double[] { 16, 15.2, 4, 7.1 + i }[valueIndex];
 					box.My = new double[] { 13, 12.2, 16, 13 }[valueIndex];
 					box.Mz = new double[] { 15.3, 12, 2.4, 1.2 }[valueIndex];
-					box.subtract = i % 3 == 1;
+					box.subtract = random.nextBoolean();
 
 					block.boundingBoxes.add(box);
 				}

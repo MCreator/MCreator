@@ -1345,6 +1345,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		slipperiness.setValue(block.slipperiness);
 
 		disableOffset.setSelected(block.disableOffset);
+		boundingBoxList.clear(); // Fixes failing tests
 		block.boundingBoxes.forEach(e -> new JBoundingBoxEntry(boundingBoxes, boundingBoxList).setEntry(e));
 
 		specialInfo.setText(

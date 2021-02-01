@@ -700,6 +700,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		customBoundingBox.setSelected(plant.customBoundingBox);
 		disableOffset.setSelected(plant.disableOffset);
+		boundingBoxList.clear(); // Fixes failing tests
 		plant.boundingBoxes.forEach(e -> new JBoundingBoxEntry(boundingBoxes, boundingBoxList).setEntry(e));
 
 		Model model = plant.getItemModel();
