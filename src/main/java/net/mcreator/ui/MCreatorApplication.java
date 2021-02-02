@@ -294,6 +294,8 @@ public final class MCreatorApplication {
 
 		discordClient.close(); // close discord client
 
+		SoundUtils.close();
+
 		// we close all windows and exit fx platform
 		try {
 			LOG.debug("Stopping AWT and FX threads");

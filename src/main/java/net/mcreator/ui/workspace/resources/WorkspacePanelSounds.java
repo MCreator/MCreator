@@ -30,6 +30,7 @@ import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.SoundUtils;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.SoundElement;
 
 import javax.swing.*;
@@ -127,14 +128,18 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 			@Override public void mousePressed(MouseEvent e) {
 				SoundElement soundElement = soundElementList.getSelectedValue();
 				if (soundElement != null) {
-					if (!soundElement.getFiles().isEmpty())
+					if (!soundElement.getFiles().isEmpty()) {
 						SoundUtils.playSound(
 								new File(workspacePanel.getMcreator().getWorkspace().getFolderManager().getSoundsDir(),
 										ListUtils.getRandomItem(soundElement.getFiles()) + ".ogg"));
-				}			}
+						play.setEnabled(false);
+					}
+				}
+			}
 
 			@Override public void mouseReleased(MouseEvent e) {
 				SoundUtils.stopAllSounds();
+				play.setEnabled(true);
 			}
 
 		});

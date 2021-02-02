@@ -23,14 +23,12 @@ import org.apache.logging.log4j.Logger;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
-import paulscode.sound.codecs.CodecJOgg;
+import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.libraries.LibraryJavaSound;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class SoundUtils {
 
@@ -38,14 +36,15 @@ public class SoundUtils {
 
 	private static SoundSystem soundSystem;
 
-	private static final Set<String> activeSources = new HashSet<>();
-	private static final ScheduledExecutorService soundPlayer = Executors.newScheduledThreadPool(1);
+	private static final ExecutorService soundPlayer = Executors.newSingleThreadExecutor();
+
+	private static final String sourceName = "SOURCE";
 
 	public static void initSoundSystem() {
 		try {
 			SoundSystemConfig.setNumberStreamingChannels(1);
 			SoundSystemConfig.addLibrary(LibraryJavaSound.class);
-			SoundSystemConfig.setCodec("ogg", CodecJOgg.class);
+			SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
 			soundSystem = new SoundSystem();
 		} catch (SoundSystemException e) {
 			LOG.warn("Failed to initialize sound system", e);
@@ -60,24 +59,25 @@ public class SoundUtils {
 
 		soundPlayer.execute(() -> {
 			try {
-				activeSources.forEach(soundSystem::stop);
-				activeSources.clear();
-
-
-				activeSources.add(soundSystem.quickStream(false, file.toURI().toURL(), file.getName(), false, 0, 0, 0,
-						SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff()));
+				soundSystem.newSource(false, sourceName, file.toURI().toURL(), file.getName(), false, 0, 0, 0,
+						SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
+				soundSystem.play(sourceName);
 			} catch (Exception e) {
 				LOG.warn("Failed to load sound file", e);
 			}
 		});
-
 	}
 
 	public static void stopAllSounds() {
-		soundPlayer.execute(() -> {
-			activeSources.forEach(soundSystem::stop);
-			activeSources.clear();
-		});
+		soundSystem.stop(sourceName);
+		soundSystem.removeSource(sourceName);
+	}
+
+	public static void close() {
+		if (soundSystem != null) {
+			soundSystem.cleanup();
+			soundSystem = null;
+		}
 	}
 
 }
