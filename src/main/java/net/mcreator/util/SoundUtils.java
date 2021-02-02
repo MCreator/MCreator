@@ -22,7 +22,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
-import paulscode.sound.SoundSystemException;
 import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.libraries.LibraryJavaSound;
 
@@ -46,7 +45,7 @@ public class SoundUtils {
 			SoundSystemConfig.addLibrary(LibraryJavaSound.class);
 			SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
 			soundSystem = new SoundSystem();
-		} catch (SoundSystemException e) {
+		} catch (Exception e) {
 			LOG.warn("Failed to initialize sound system", e);
 		}
 	}
@@ -69,14 +68,22 @@ public class SoundUtils {
 	}
 
 	public static void stopAllSounds() {
-		soundSystem.stop(sourceName);
-		soundSystem.removeSource(sourceName);
+		try {
+			soundSystem.stop(sourceName);
+			soundSystem.removeSource(sourceName);
+		} catch (Exception e) {
+			LOG.warn("Failed to stop sound all sounds", e);
+		}
 	}
 
 	public static void close() {
-		if (soundSystem != null) {
-			soundSystem.cleanup();
-			soundSystem = null;
+		try {
+			if (soundSystem != null) {
+				soundSystem.cleanup();
+				soundSystem = null;
+			}
+		} catch (Exception e) {
+			LOG.warn("Failed to stop sound system", e);
 		}
 	}
 
