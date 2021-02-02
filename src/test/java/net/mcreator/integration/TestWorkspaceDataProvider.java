@@ -443,11 +443,11 @@ public class TestWorkspaceDataProvider {
 			gui.width = new int[] { 600, 400, 352, 500 }[valueIndex];
 			gui.height = new int[] { 500, 400, 353, 450 }[valueIndex];
 			gui.renderBgLayer = !_true;
-			gui.customBg = "test.png";
 			gui.doesPauseGame = _true;
 			gui.inventoryOffsetX = 20;
 			gui.inventoryOffsetY = 123;
 			if (!emptyLists) {
+				gui.customBg = "test.png";
 				gui.onOpen = new Procedure("procedure12");
 				gui.onTick = new Procedure("procedure7");
 				gui.onClosed = new Procedure("procedure10");
