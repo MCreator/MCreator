@@ -82,7 +82,7 @@ import java.util.List;
 	}
 
 	public boolean customSky() {
-		return !skyTexture.isEmpty();
+		return (!skyTexture.isEmpty() && !moonTexture.isEmpty() && !sunTexture.isEmpty());
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
