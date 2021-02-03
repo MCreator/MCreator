@@ -3,7 +3,7 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEDimension.java"
   - template: dimension/sky.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/@NAMEDimensionSky.java"
-    condition: customSky
+    condition: hasCustomSky()
     deleteWhenConditionFalse: true
   - template: json/dimension/dimension_type.json.ftl
     writer: json

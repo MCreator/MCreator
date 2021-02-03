@@ -87,7 +87,7 @@ import java.util.List;
 		this.sleepResult = "ALLOW";
 	}
 
-	public boolean customSky() {
+	public boolean hasCustomSky() {
 		return (!skyTexture.isEmpty() && !moonTexture.isEmpty() && !sunTexture.isEmpty());
 	}
 
