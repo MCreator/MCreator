@@ -51,15 +51,23 @@ public class ${name}DimensionSky {
 	public static void clientSetup(FMLClientSetupEvent event) {
 		try {
 			((Map<ResourceLocation, DimensionRenderInfo>) field_239208_a_.get(null)).put(DIM_RENDER_INFO,
-				new DimensionRenderInfo(128, true, DimensionRenderInfo.FogType.NORMAL, true, false) {
-					@Override
-					public Vector3d func_230494_a_(Vector3d fogColor, float partialTicks) {
-						return fogColor;
+				new DimensionRenderInfo(<#if data.imitateOverworldBehaviour>128<#else>Float.NaN</#if>, true,
+				<#if data.imitateOverworldBehaviour>DimensionRenderInfo.FogType.NORMAL<#else>DimensionRenderInfo.FogType.NONE</#if>, true, false) {
+
+					@Override public Vector3d func_230494_a_(Vector3d color, float sunHeight) {
+						<#if data.airColor?has_content>
+							return new Vector3d(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255});
+						<#else>
+							<#if data.imitateOverworldBehaviour>
+								return color.mul(sunHeight * 0.94 + 0.06, sunHeight * 0.94 + 0.06, sunHeight * 0.91 + 0.09);
+							<#else>
+								return color;
+							</#if>
+						</#if>
 					}
 
-					@Override
-					public boolean func_230493_a_(int posX, int posY) {
-						return false;
+					@Override public boolean func_230493_a_(int posX, int posY) {
+						return ${data.hasFog};
 					}
 
 					@Override
@@ -173,10 +181,17 @@ public class ${name}DimensionSky {
 								float f15 = (float) (l + 1) / 4.0F;
 								float f16 = (float) (i1 + 1) / 2.0F;
 								bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+								<#if data.phaseTexture>
 								bufferbuilder.pos(matrix4f1, -f12, -100.0F, f12).tex(f15, f16).endVertex();
 								bufferbuilder.pos(matrix4f1, f12, -100.0F, f12).tex(f13, f16).endVertex();
 								bufferbuilder.pos(matrix4f1, f12, -100.0F, -f12).tex(f13, f14).endVertex();
 								bufferbuilder.pos(matrix4f1, -f12, -100.0F, -f12).tex(f15, f14).endVertex();
+								<#else>
+								bufferbuilder.pos(matrix4f1, -f12, -100.0F, f12).tex(0.0F, 0.0F).endVertex();
+								bufferbuilder.pos(matrix4f1, f12, -100.0F, f12).tex(1.0F, 0.0F).endVertex();
+								bufferbuilder.pos(matrix4f1, f12, -100.0F, -f12).tex(1.0F, 1.0F).endVertex();
+								bufferbuilder.pos(matrix4f1, -f12, -100.0F, -f12).tex(0.0F, 1.0F).endVertex();
+								</#if>
 								bufferbuilder.finishDrawing();
 								WorldVertexBufferUploader.draw(bufferbuilder);
 								RenderSystem.disableTexture();

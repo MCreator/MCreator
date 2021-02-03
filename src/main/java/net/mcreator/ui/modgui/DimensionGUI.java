@@ -28,6 +28,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -91,6 +92,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final VComboBox<String> moonTexture = new SearchableComboBox<>();
 	private final VComboBox<String> skyTexture = new SearchableComboBox<>();
 
+	private final JRadioButton singleTexture = L10N.radiobutton("elementgui.dimension.single_texture");
+	private final JRadioButton phaseTexture = L10N.radiobutton("elementgui.dimension.phase_texture");
+
 	private final DataListComboBox portalParticles = new DataListComboBox(mcreator);
 
 	private final JComboBox<String> worldGenType = new JComboBox<>(
@@ -151,6 +155,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		mainFillerBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		fluidBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 
+		ButtonGroup bg = new ButtonGroup();
+		bg.add(singleTexture);
+		bg.add(phaseTexture);
+
+		singleTexture.setSelected(true);
+
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
@@ -161,7 +171,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.dimension.world_gen_type"), worldGenType),
 				PanelUtils.join(new JLabel(UIRES.get("dimension_types")))));
 
-		JPanel proper2 = new JPanel(new GridLayout(11, 2, 3, 3));
+		JPanel proper2 = new JPanel(new GridLayout(12, 2, 3, 3));
 		proper2.setOpaque(false);
 
 		airColor.setOpaque(false);
@@ -234,6 +244,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/custom_sky"), L10N.label("elementgui.dimension.custom_sky")));
 		proper2.add(PanelUtils.centerAndEastElement(skyTexture, importSkyTexture));
 
+		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/moon_texture"), L10N.label("elementgui.dimension.moon_texture")));
+		proper2.add(PanelUtils.join(FlowLayout.LEFT, singleTexture, phaseTexture, new JEmptyBox(15, 2)));
+
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sleep_result"),
 				L10N.label("elementgui.dimension.sleep_result")));
 		proper2.add(sleepResult);
@@ -253,6 +266,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		imitateOverworldBehaviour.setOpaque(false);
 
 		insid.setOpaque(false);
+		singleTexture.setOpaque(false);
+		phaseTexture.setOpaque(false);
 
 		insid.add("Center", PanelUtils.totalCenterInPanel(proper2));
 		pane3.add("Center", PanelUtils.totalCenterInPanel(insid));
@@ -469,6 +484,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		sunTexture.setSelectedItem(dimension.sunTexture);
 		moonTexture.setSelectedItem(dimension.moonTexture);
 		skyTexture.setSelectedItem(dimension.skyTexture);
+		singleTexture.setSelected(dimension.singleTexture);
+		phaseTexture.setSelected(dimension.phaseTexture);
 		canRespawnHere.setSelected(dimension.canRespawnHere);
 		hasFog.setSelected(dimension.hasFog);
 		isDark.setSelected(dimension.isDark);
@@ -499,6 +516,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.sunTexture = sunTexture.getSelectedItem();
 		dimension.moonTexture = moonTexture.getSelectedItem();
 		dimension.skyTexture = skyTexture.getSelectedItem();
+		dimension.singleTexture = singleTexture.isSelected();
+		dimension.phaseTexture = phaseTexture.isSelected();
 		dimension.canRespawnHere = canRespawnHere.isSelected();
 		dimension.hasFog = hasFog.isSelected();
 		dimension.isDark = isDark.isSelected();

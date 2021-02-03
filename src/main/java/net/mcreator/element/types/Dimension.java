@@ -43,6 +43,8 @@ import java.util.List;
 	public String sunTexture;
 	public String moonTexture;
 	public String skyTexture;
+	public boolean singleTexture;
+	public boolean phaseTexture;
 	public boolean canRespawnHere;
 	public boolean hasFog;
 	public boolean isDark;
