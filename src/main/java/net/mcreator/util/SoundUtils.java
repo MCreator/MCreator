@@ -28,26 +28,29 @@ import paulscode.sound.libraries.LibraryJavaSound;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class SoundUtils {
 
 	private static final Logger LOG = LogManager.getLogger(SoundUtils.class);
 
-	private static SoundSystem soundSystem;
-
-	private static final ExecutorService soundPlayer = Executors.newSingleThreadExecutor();
-
 	private static final String sourceName = "SOURCE";
 
+	private static SoundSystem soundSystem;
+	private static ExecutorService soundSystemThread;
+
 	public static void initSoundSystem() {
-		try {
-			SoundSystemConfig.setNumberStreamingChannels(1);
-			SoundSystemConfig.addLibrary(LibraryJavaSound.class);
-			SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
-			soundSystem = new SoundSystem();
-		} catch (Exception e) {
-			LOG.warn("Failed to initialize sound system", e);
-		}
+		soundSystemThread = Executors.newSingleThreadExecutor(r -> new Thread(r, "Sound system"));
+		soundSystemThread.execute(() -> {
+			try {
+				SoundSystemConfig.setNumberStreamingChannels(1);
+				SoundSystemConfig.addLibrary(LibraryJavaSound.class);
+				SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
+				soundSystem = new SoundSystem();
+			} catch (Exception e) {
+				LOG.warn("Failed to initialize sound system", e);
+			}
+		});
 	}
 
 	public static void playSound(File file) {
@@ -56,7 +59,7 @@ public class SoundUtils {
 			return;
 		}
 
-		soundPlayer.execute(() -> {
+		soundSystemThread.execute(() -> {
 			try {
 				soundSystem.newSource(false, sourceName, file.toURI().toURL(), file.getName(), false, 0, 0, 0,
 						SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
@@ -68,6 +71,11 @@ public class SoundUtils {
 	}
 
 	public static void stopAllSounds() {
+		if (soundSystem == null) {
+			LOG.warn("Sound system not ready");
+			return;
+		}
+
 		try {
 			soundSystem.stop(sourceName);
 			soundSystem.removeSource(sourceName);
@@ -79,8 +87,13 @@ public class SoundUtils {
 	public static void close() {
 		try {
 			if (soundSystem != null) {
-				soundSystem.cleanup();
-				soundSystem = null;
+				soundSystemThread.execute(() -> {
+					soundSystem.cleanup();
+					soundSystem = null;
+				});
+
+				soundSystemThread.shutdown();
+				soundSystemThread.awaitTermination(3, TimeUnit.SECONDS);
 			}
 		} catch (Exception e) {
 			LOG.warn("Failed to stop sound system", e);
