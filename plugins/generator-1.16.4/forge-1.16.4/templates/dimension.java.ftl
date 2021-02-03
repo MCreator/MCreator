@@ -74,7 +74,7 @@ import net.minecraft.block.material.Material;
 	<#if !data.sunTexture?has_content || !data.moonTexture?has_content || !data.skyTexture?has_content>
 	@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
 		<#-- custom dimension effect -->
-		DimensionRenderInfo customEffect = new DimensionRenderInfo(<#if data.imitateOverworldBehaviour>128<#else>Float.NaN</#if>,
+		DimensionRenderInfo customEffect = new DimensionRenderInfo(<#if data.imitateOverworldBehaviour>128<#else>${data.cloudHeight}</#if>,
 				true, <#if data.imitateOverworldBehaviour>DimensionRenderInfo.FogType.NORMAL<#else>DimensionRenderInfo.FogType.NONE</#if>, false, false) {
 
 			@Override public Vector3d func_230494_a_(Vector3d color, float sunHeight) {

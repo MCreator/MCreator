@@ -51,7 +51,7 @@ public class ${name}DimensionSky {
 	public static void clientSetup(FMLClientSetupEvent event) {
 		try {
 			((Map<ResourceLocation, DimensionRenderInfo>) field_239208_a_.get(null)).put(DIM_RENDER_INFO,
-				new DimensionRenderInfo(<#if data.imitateOverworldBehaviour>128<#else>Float.NaN</#if>, true,
+				new DimensionRenderInfo(<#if data.imitateOverworldBehaviour>128<#else>${data.cloudHeight}</#if>, true,
 				<#if data.imitateOverworldBehaviour>DimensionRenderInfo.FogType.NORMAL<#else>DimensionRenderInfo.FogType.NONE</#if>, true, false) {
 
 					@Override public Vector3d func_230494_a_(Vector3d color, float sunHeight) {

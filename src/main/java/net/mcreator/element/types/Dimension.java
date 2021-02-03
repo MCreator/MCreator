@@ -40,9 +40,13 @@ import java.util.List;
 	public MItemBlock fluidBlock;
 
 	public Color airColor;
+
 	public String sunTexture;
 	public String moonTexture;
 	public String skyTexture;
+
+	public int cloudHeight;
+
 	public boolean singleTexture;
 	public boolean phaseTexture;
 	public boolean canRespawnHere;

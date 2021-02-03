@@ -95,6 +95,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JRadioButton singleTexture = L10N.radiobutton("elementgui.dimension.single_texture");
 	private final JRadioButton phaseTexture = L10N.radiobutton("elementgui.dimension.phase_texture");
 
+	private final JSpinner cloudHeight = new JSpinner(new SpinnerNumberModel(128, 0, 1000, 1));
+
 	private final DataListComboBox portalParticles = new DataListComboBox(mcreator);
 
 	private final JComboBox<String> worldGenType = new JComboBox<>(
@@ -171,7 +173,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.dimension.world_gen_type"), worldGenType),
 				PanelUtils.join(new JLabel(UIRES.get("dimension_types")))));
 
-		JPanel proper2 = new JPanel(new GridLayout(12, 2, 3, 3));
+		JPanel proper2 = new JPanel(new GridLayout(13, 2, 3, 3));
 		proper2.setOpaque(false);
 
 		airColor.setOpaque(false);
@@ -234,6 +236,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fog_color"),
 				L10N.label("elementgui.dimension.fog_air_color")));
 		proper2.add(airColor);
+
+		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/cloud_height"),
+				L10N.label("elementgui.dimension.cloud_height")));
+		proper2.add(cloudHeight);
 
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/custom_sun"), L10N.label("elementgui.dimension.custom_sun")));
 		proper2.add(PanelUtils.centerAndEastElement(sunTexture, importSunTexture));
@@ -481,6 +487,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalParticles.setSelectedItem(dimension.portalParticles);
 		biomesInDimension.setListElements(dimension.biomesInDimension);
 		airColor.setColor(dimension.airColor);
+		cloudHeight.setValue(dimension.cloudHeight);
 		sunTexture.setSelectedItem(dimension.sunTexture);
 		moonTexture.setSelectedItem(dimension.moonTexture);
 		skyTexture.setSelectedItem(dimension.skyTexture);
@@ -513,6 +520,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.portalSound = portalSound.getSound();
 		dimension.biomesInDimension = biomesInDimension.getListElements();
 		dimension.airColor = airColor.getColor();
+		dimension.cloudHeight = (int) cloudHeight.getValue();
 		dimension.sunTexture = sunTexture.getSelectedItem();
 		dimension.moonTexture = moonTexture.getSelectedItem();
 		dimension.skyTexture = skyTexture.getSelectedItem();
