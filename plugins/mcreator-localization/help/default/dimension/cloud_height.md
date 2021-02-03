@@ -1,0 +1,1 @@
+Defines the height of clouds. If the dimension imitates overworld behaviour, the value is overrided by 128. 

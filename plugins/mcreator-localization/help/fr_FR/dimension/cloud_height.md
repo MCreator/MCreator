@@ -1,0 +1,1 @@
+Définit la hauteur des nuages. Si la dimension immite le comportement du monde normal, la valeur est alors remplacée par 128.
