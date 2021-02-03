@@ -479,7 +479,7 @@ import ${package}.${JavaModName};
 					})
 					<#if hasCondition(component.displayCondition)>
 					{
-						public void render(int x, int y, float ticks) {
+						@Override public void render(int x, int y, float ticks) {
 							if (<@procedureOBJToConditionCode component.displayCondition/>)
 								super.render(x, y, ticks);
 						}
