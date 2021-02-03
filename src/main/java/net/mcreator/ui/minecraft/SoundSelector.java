@@ -125,7 +125,7 @@ public class SoundSelector extends JPanel {
 		tfe.setText(sound);
 		tfe.getValidationStatus();
 
-		if (sound != null) {
+		if (sound != null && !sound.equals("")) {
 			play.setVisible(sound.startsWith("CUSTOM:"));
 			rm.setEnabled(true);
 		} else {
