@@ -79,23 +79,23 @@ public class ${name}DimensionSky {
 								RenderSystem.enableFog();
 								RenderSystem.color3f(f, f1, f2);
 								try {
-									((VertexBuffer) skyVBO.get(null)).bindBuffer();
+									((VertexBuffer) skyVBO.get(Minecraft.getInstance().worldRenderer)).bindBuffer();
 								} catch (IllegalAccessException e) {
 									e.printStackTrace();
 								}
 								try {
-									((VertexFormat) skyVertexFormat.get(null)).setupBufferState(0L);
+									((VertexFormat) skyVertexFormat.get(Minecraft.getInstance().worldRenderer)).setupBufferState(0L);
 								} catch (IllegalAccessException e) {
 									e.printStackTrace();
 								}
 								try {
-									((VertexBuffer) skyVBO.get(null)).draw(matrixStack.getLast().getMatrix(), 7);
+									((VertexBuffer) skyVBO.get(Minecraft.getInstance().worldRenderer)).draw(matrixStack.getLast().getMatrix(), 7);
 								} catch (IllegalAccessException e) {
 									e.printStackTrace();
 								}
 								VertexBuffer.unbindBuffer();
 								try {
-									((VertexFormat) skyVertexFormat.get(null)).clearBufferState();
+									((VertexFormat) skyVertexFormat.get(Minecraft.getInstance().worldRenderer)).clearBufferState();
 								} catch (IllegalAccessException e) {
 									e.printStackTrace();
 								}
@@ -184,23 +184,23 @@ public class ${name}DimensionSky {
 								if (f10 > 0.0F) {
 									RenderSystem.color4f(f10, f10, f10, f10);
 									try {
-										((VertexBuffer) starVBO.get(null)).bindBuffer();
+										((VertexBuffer) starVBO.get(Minecraft.getInstance().worldRenderer)).bindBuffer();
 									} catch (IllegalAccessException e) {
 										e.printStackTrace();
 									}
 									try {
-										((VertexFormat) skyVertexFormat.get(null)).setupBufferState(0L);
+										((VertexFormat) skyVertexFormat.get(Minecraft.getInstance().worldRenderer)).setupBufferState(0L);
 									} catch (IllegalAccessException e) {
 										e.printStackTrace();
 									}
 									try {
-										((VertexBuffer) starVBO.get(null)).draw(matrixStack.getLast().getMatrix(), 7);
+										((VertexBuffer) starVBO.get(Minecraft.getInstance().worldRenderer)).draw(matrixStack.getLast().getMatrix(), 7);
 									} catch (IllegalAccessException e) {
 										e.printStackTrace();
 									}
 									VertexBuffer.unbindBuffer();
 									try {
-										((VertexFormat) skyVertexFormat.get(null)).clearBufferState();
+										((VertexFormat) skyVertexFormat.get(Minecraft.getInstance().worldRenderer)).clearBufferState();
 									} catch (IllegalAccessException e) {
 										e.printStackTrace();
 									}
@@ -217,23 +217,23 @@ public class ${name}DimensionSky {
 									matrixStack.push();
 									matrixStack.translate(0.0D, 12.0D, 0.0D);
 									try {
-										((VertexBuffer) sky2VBO.get(null)).bindBuffer();
+										((VertexBuffer) sky2VBO.get(Minecraft.getInstance().worldRenderer)).bindBuffer();
 									} catch (IllegalAccessException e) {
 										e.printStackTrace();
 									}
 									try {
-										((VertexFormat) skyVertexFormat.get(null)).setupBufferState(0L);
+										((VertexFormat) skyVertexFormat.get(Minecraft.getInstance().worldRenderer)).setupBufferState(0L);
 									} catch (IllegalAccessException e) {
 										e.printStackTrace();
 									}
 									try {
-										((VertexBuffer) sky2VBO.get(null)).draw(matrixStack.getLast().getMatrix(), 7);
+										((VertexBuffer) sky2VBO.get(Minecraft.getInstance().worldRenderer)).draw(matrixStack.getLast().getMatrix(), 7);
 									} catch (IllegalAccessException e) {
 										e.printStackTrace();
 									}
 									VertexBuffer.unbindBuffer();
 									try {
-										((VertexFormat) skyVertexFormat.get(null)).clearBufferState();
+										((VertexFormat) skyVertexFormat.get(Minecraft.getInstance().worldRenderer)).clearBufferState();
 									} catch (IllegalAccessException e) {
 										e.printStackTrace();
 									}
