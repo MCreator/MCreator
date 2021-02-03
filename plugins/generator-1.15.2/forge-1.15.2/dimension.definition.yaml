@@ -1,10 +1,6 @@
 templates:
   - template: dimension.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEDimension.java"
-  - template: dimension/sky.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/@NAMEDimensionSky.java"
-    condition: customSky
-    deleteWhenConditionFalse: true
   - template: dimension/portaltrigger.java.ftl
     condition: enablePortal
     deleteWhenConditionFalse: true
