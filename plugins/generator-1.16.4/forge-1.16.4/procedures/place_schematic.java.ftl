@@ -1,4 +1,4 @@
-if(world instanceof World && !world.isRemote()) {
+if(world instanceof ServerWorld) {
 	Template template=((ServerWorld) world).getStructureTemplateManager()
 		.getTemplateDefaulted(new ResourceLocation("${modid}" ,"${field$schematic}"));
 

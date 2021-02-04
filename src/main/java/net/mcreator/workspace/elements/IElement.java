@@ -16,35 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.types;
+package net.mcreator.workspace.elements;
 
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.Procedure;
-import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.workspace.elements.ModElement;
+public interface IElement {
 
-import java.awt.image.BufferedImage;
-
-@SuppressWarnings("unused") public class Command extends GeneratableElement {
-
-	public String commandName;
-
-	public String permissionLevel;
-
-	public Procedure onCommandExecuted;
-
-	private Command() {
-		this(null);
-	}
-
-	public Command(ModElement element) {
-		super(element);
-
-		this.permissionLevel = "4";
-	}
-
-	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateCommandPreviewPicture(commandName);
-	}
+	String getName();
 
 }

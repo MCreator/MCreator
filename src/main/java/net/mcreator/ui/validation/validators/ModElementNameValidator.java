@@ -40,7 +40,7 @@ public class ModElementNameValidator extends JavaMemeberNameValidator {
 		for (ModElement element : workspace.getModElements()) {
 			if (element.getName().equalsIgnoreCase(JavaConventions.convertToValidClassName(textField.getText()))) {
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"This mod element already exists");
+						"Mod element with this name already exists in this workspace");
 			}
 		}
 		return super.validate();

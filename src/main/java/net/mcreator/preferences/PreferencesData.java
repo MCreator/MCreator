@@ -33,7 +33,7 @@ public class PreferencesData {
 	@PreferencesSection public IDESettings ide = new IDESettings();
 	@PreferencesSection public GradleSettings gradle = new GradleSettings();
 	@PreferencesSection public BedrockSettings bedrock = new BedrockSettings();
-	@PreferencesSection public NotificationSettings notification = new NotificationSettings();
+	@PreferencesSection public NotificationSettings notifications = new NotificationSettings();
 
 	public HiddenPreferences hidden = new HiddenPreferences();
 

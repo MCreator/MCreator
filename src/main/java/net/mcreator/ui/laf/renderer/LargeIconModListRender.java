@@ -19,37 +19,36 @@
 package net.mcreator.ui.laf.renderer;
 
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.TiledImageCache;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.AbstractMCreatorTheme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.elements.FolderElement;
+import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class LargeIconModListRender extends JPanel implements ListCellRenderer<ModElement> {
+public class LargeIconModListRender extends JPanel implements ListCellRenderer<IElement> {
 
 	public LargeIconModListRender() {
 		super(new BorderLayout(0, 0));
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList<? extends ModElement> list, ModElement ma, int index,
+	public Component getListCellRendererComponent(JList<? extends IElement> list, IElement element, int index,
 			boolean isSelected, boolean cellHasFocus) {
 		removeAll();
 		setBorder(null);
-
-		JPanel text = new JPanel();
-		text.setLayout(new BoxLayout(text, BoxLayout.PAGE_AXIS));
-		text.setOpaque(false);
-		text.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
 		JLabel label = new JLabel();
 		JLabel label_details = new JLabel();
 
 		JLabel icon = new JLabel();
-		if (ma != null) {
+		if (element != null) {
 			if (isSelected) {
 				label.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 				label_details.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -63,51 +62,76 @@ public class LargeIconModListRender extends JPanel implements ListCellRenderer<M
 				setOpaque(false);
 			}
 
-			label.setText(StringUtils.abbreviateString(ma.getName(), 18));
-
+			label.setText(StringUtils.abbreviateString(element.getName(), 18));
 			label.setFont(AbstractMCreatorTheme.light_font.deriveFont(24.0f));
-			label_details.setText("<html><div width=210 height=42 style=\"overflow: hidden;\"><small" + (isSelected ?
-					(" color=#" + Integer.toHexString(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).getRGB())
-							.substring(2)) :
-					"") + ">" + ma.getType().getDescription());
 
 			ImageIcon dva = null;
 
-			if (!ma.doesCompile()) {
-				dva = TiledImageCache.modTabRed;
-			}
+			if (element instanceof ModElement) {
+				JPanel text = new JPanel();
+				text.setLayout(new BoxLayout(text, BoxLayout.PAGE_AXIS));
+				text.setOpaque(false);
+				text.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
-			if (ma.isCodeLocked()) {
-				if (dva != null) {
-					dva = ImageUtils.drawOver(dva, TiledImageCache.modTabPurple);
-				} else {
-					dva = TiledImageCache.modTabPurple;
-				}
-			}
+				ModElement ma = (ModElement) element;
 
-			ImageIcon modIcon = ma.getElementIcon();
-			if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0
-					&& modIcon.getIconHeight() > 0 && modIcon != MCItem.DEFAULT_ICON) {
-				if (dva != null) {
-					icon.setIcon(ImageUtils.drawOver(
-							ImageUtils.drawOver(TiledImageCache.getModTypeIcon(null), modIcon, 18, 18, 28, 28), dva));
-				} else {
-					icon.setIcon(ImageUtils.drawOver(TiledImageCache.getModTypeIcon(null), modIcon, 18, 18, 28, 28));
+				label_details.setText(
+						"<html><div width=210 height=42 style=\"overflow: hidden;\"><small" + (isSelected ?
+								(" color=#" + Integer
+										.toHexString(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).getRGB())
+										.substring(2)) :
+								"") + ">" + ma.getType().getDescription());
+
+				if (!ma.doesCompile()) {
+					dva = TiledImageCache.modTabRed;
 				}
+
+				if (ma.isCodeLocked()) {
+					if (dva != null) {
+						dva = ImageUtils.drawOver(dva, TiledImageCache.modTabPurple);
+					} else {
+						dva = TiledImageCache.modTabPurple;
+					}
+				}
+
+				text.add(label);
+				text.add(label_details);
+
+				add("Center", text);
+				add("West", icon);
 			} else {
-				if (dva != null) {
-					icon.setIcon(ImageUtils.drawOver(TiledImageCache.getModTypeIcon(ma.getType()), dva));
+				label.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 0));
+
+				add("Center", PanelUtils.join(FlowLayout.LEFT, label));
+				add("West", icon);
+			}
+
+			if (element instanceof FolderElement) {
+				icon.setIcon(UIRES.get("folder"));
+			} else if (element instanceof ModElement) {
+				ImageIcon modIcon = ((ModElement) element).getElementIcon();
+
+				if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0
+						&& modIcon.getIconHeight() > 0 && modIcon != MCItem.DEFAULT_ICON) {
+					if (dva != null) {
+						icon.setIcon(ImageUtils.drawOver(
+								ImageUtils.drawOver(TiledImageCache.getModTypeIcon(null), modIcon, 18, 18, 28, 28),
+								dva));
+					} else {
+						icon.setIcon(
+								ImageUtils.drawOver(TiledImageCache.getModTypeIcon(null), modIcon, 18, 18, 28, 28));
+					}
 				} else {
-					icon.setIcon(TiledImageCache.getModTypeIcon(ma.getType()));
+					if (dva != null) {
+						icon.setIcon(ImageUtils
+								.drawOver(TiledImageCache.getModTypeIcon(((ModElement) element).getType()), dva));
+					} else {
+						icon.setIcon(TiledImageCache.getModTypeIcon(((ModElement) element).getType()));
+					}
 				}
 			}
 		}
 
-		text.add(label);
-		text.add(label_details);
-
-		add("Center", text);
-		add("West", icon);
 		return this;
 	}
 

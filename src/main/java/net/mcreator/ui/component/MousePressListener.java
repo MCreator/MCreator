@@ -16,35 +16,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.types;
+package net.mcreator.ui.component;
 
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.Procedure;
-import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.workspace.elements.ModElement;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import java.awt.image.BufferedImage;
+public abstract class MousePressListener extends MouseAdapter {
 
-@SuppressWarnings("unused") public class Command extends GeneratableElement {
+	private int eventCnt = 0;
 
-	public String commandName;
+	Timer timer = new Timer("dbc", false);
 
-	public String permissionLevel;
+	@Override public final void mousePressed(MouseEvent e) {
+		pressFiltered(e, 0);
 
-	public Procedure onCommandExecuted;
-
-	private Command() {
-		this(null);
+		eventCnt = e.getClickCount();
+		if (e.getClickCount() == 1) {
+			timer.schedule(new TimerTask() {
+				@Override public void run() {
+					pressFiltered(e, eventCnt);
+					eventCnt = 0;
+				}
+			}, 250);
+		}
 	}
 
-	public Command(ModElement element) {
-		super(element);
-
-		this.permissionLevel = "4";
-	}
-
-	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateCommandPreviewPicture(commandName);
-	}
+	public abstract void pressFiltered(MouseEvent e, int clicks);
 
 }
