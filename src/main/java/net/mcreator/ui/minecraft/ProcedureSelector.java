@@ -56,7 +56,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.*;
 
-public class ProcedureSelector extends JPanel{
+public class ProcedureSelector extends JPanel {
 
 	private static final Gson gson = new GsonBuilder().setLenient().create();
 
@@ -115,11 +115,9 @@ public class ProcedureSelector extends JPanel{
 
 		if (returnType == VariableElementType.LOGIC) {
 			defaultName = "(always)";
-			setBorder(BorderFactory
-					.createLineBorder(Dependency.getColor("boolean")));
-		} else if(returnType == VariableElementType.STRING) {
-			setBorder(BorderFactory
-					.createLineBorder(Dependency.getColor("string")));
+			setBorder(BorderFactory.createLineBorder(Dependency.getColor("boolean")));
+		} else if (returnType == VariableElementType.STRING) {
+			setBorder(BorderFactory.createLineBorder(Dependency.getColor("string")));
 		}
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
