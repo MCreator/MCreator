@@ -656,9 +656,9 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
 			dimension.airColor = Color.cyan;
 			dimension.cloudHeight = 128;
-			dimension.sunTexture = "sun.png";
-			dimension.moonTexture = "moon.png";
-			dimension.skyTexture = "sky.png";
+			dimension.sunTexture = "test.png";
+			dimension.moonTexture = "test.png";
+			dimension.skyTexture = "test.png";
 			dimension.singleTexture = _true;
 			dimension.phaseTexture = !_true;
 			dimension.canRespawnHere = _true;
