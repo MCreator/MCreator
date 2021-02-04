@@ -44,6 +44,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -262,7 +263,7 @@ public class BlocklyJavascriptBridge {
 							.map(ModElement::getName).collect(Collectors.toList()));
 			break;
 		case "other_textures":
-			retval = ElementUtil.loadAllOtherTextures(workspace);
+			retval = workspace.getFolderManager().getOtherTexturesList().stream().map(File::getName).collect(Collectors.toList());;
 			break;
 		default:
 			retval = new ArrayList<>();

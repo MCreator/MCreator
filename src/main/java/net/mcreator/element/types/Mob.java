@@ -153,6 +153,7 @@ import java.util.List;
 
 	public Mob(ModElement element) {
 		super(element);
+
 		this.modelShadowSize = 0.5;
 		this.mobCreatureType = "UNDEFINED";
 		this.trackingRange = 64;

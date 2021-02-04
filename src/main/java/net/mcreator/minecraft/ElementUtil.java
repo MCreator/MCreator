@@ -249,10 +249,6 @@ public class ElementUtil {
 				.collect(Collectors.toList());
 	}
 
-	public static List<String> loadAllOtherTextures(Workspace workspace) {
-		return workspace.getFolderManager().getOtherTexturesList().stream().map(File::getName).collect(Collectors.toList());
-	}
-
 	private static List<DataListEntry> getCustomElementsOfType(@NotNull Workspace workspace, ModElementType type) {
 		return workspace.getModElements().stream().filter(mu -> mu.getType() == type).map(DataListEntry.Custom::new)
 				.collect(Collectors.toList());

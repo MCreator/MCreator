@@ -484,10 +484,9 @@ public class TestWorkspaceDataProvider {
 			Mob mob = new Mob(modElement);
 			mob.mobName = modElement.getName();
 			mob.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
-			if(emptyLists) {
+			if (emptyLists) {
 				mob.mobModelTexture = "test.png";
-			}
-			else {
+			} else {
 				mob.mobModelTexture = "";
 				mob.entityTextureSelector = new Procedure("textureSelector1");
 			}
