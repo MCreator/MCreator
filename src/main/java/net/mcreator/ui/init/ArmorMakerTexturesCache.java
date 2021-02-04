@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ArmorMakerTexturesCache {
 	private static final Logger LOG = LogManager.getLogger("Armor Texture Cache");
-	private static final String MCR_FOLDER = System.getProperty("user.home")+ "\\.mcreator\\";
+	private static final String MCR_FOLDER = System.getProperty("user.home") + "\\.mcreator\\";
 
 	public static final Map<String, ImageIcon> CACHE = new ConcurrentHashMap<>();
 	public static final List<String> NAMES = new ArrayList<>();
@@ -44,7 +44,8 @@ public class ArmorMakerTexturesCache {
 		ImageIO.setUseCache(false); // we use custom image cache for this
 		templatesSorted.forEach(resourcePointer -> {
 			try {
-				CACHE.put(resourcePointer.identifier.toString(), new ImageIcon(ImageIO.read(resourcePointer.getStream())));
+				CACHE.put(resourcePointer.identifier.toString(),
+						new ImageIcon(ImageIO.read(resourcePointer.getStream())));
 			} catch (Exception e) {
 				LOG.warn("Failed to load armor texture from template: " + resourcePointer.identifier);
 			}
@@ -55,16 +56,16 @@ public class ArmorMakerTexturesCache {
 			String name = string;
 			name = name.replace("templates/textures/armormaker/", "");
 			name = name.replace("/", "");
-			String[] types = new String[] {"Bs", "1", "2", "By", "H", "L"};
-			for(String str : types){
-				if(name.contains(str))
+			String[] types = new String[] { "Bs", "1", "2", "By", "H", "L" };
+			for (String str : types) {
+				if (name.contains(str))
 					name = name.replace(str + ".png", "");
 				String folder = UserFolderManager.getFileFromUserFolder("/templates/textures/armormaker/").getPath();
-				if(name.contains(folder)){
-					name = name.replace(folder + "\\","");
+				if (name.contains(folder)) {
+					name = name.replace(folder + "\\", "");
 				}
 			}
-			if(!NAMES.contains(name))
+			if (!NAMES.contains(name))
 				NAMES.add(name);
 		});
 	}
@@ -72,7 +73,7 @@ public class ArmorMakerTexturesCache {
 	public static ImageIcon getIcon(@Nullable String itemName) {
 		String fullItemName = itemName + ".png";
 		String folder = "templates/textures/armormaker/";
-		if(itemName != null && CACHE.get(MCR_FOLDER + folder.replace("/", "\\") + fullItemName) != null)
+		if (itemName != null && CACHE.get(MCR_FOLDER + folder.replace("/", "\\") + fullItemName) != null)
 			return CACHE.get(MCR_FOLDER + folder.replace("/", "\\") + fullItemName);
 		else if (itemName != null && CACHE.get(folder + fullItemName) != null)
 			return CACHE.get(folder + fullItemName);
