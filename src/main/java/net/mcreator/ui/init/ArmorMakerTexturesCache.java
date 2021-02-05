@@ -27,17 +27,15 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ArmorMakerTexturesCache {
 	private static final Logger LOG = LogManager.getLogger("Armor Texture Cache");
 	private static final String MCR_FOLDER = System.getProperty("user.home") + "\\.mcreator\\";
 
-	public static final Map<String, ImageIcon> CACHE = new ConcurrentHashMap<>();
-	public static final List<String> NAMES = new ArrayList<>();
+	private static final Map<String, ImageIcon> CACHE = new ConcurrentHashMap<>();
+	private static final Set<String> NAMES = new HashSet<>();
 
 	public static void init() {
 		List<ResourcePointer> templatesSorted = TemplatesLoader.loadTemplates("textures.armormaker", "png");
@@ -65,8 +63,7 @@ public class ArmorMakerTexturesCache {
 					name = name.replace(folder + "\\", "");
 				}
 			}
-			if (!NAMES.contains(name))
-				NAMES.add(name);
+			NAMES.add(name);
 		});
 	}
 
@@ -79,5 +76,9 @@ public class ArmorMakerTexturesCache {
 			return CACHE.get(folder + fullItemName);
 		else
 			return null;
+	}
+
+	public static Set<String> getNAMES() {
+		return NAMES;
 	}
 }

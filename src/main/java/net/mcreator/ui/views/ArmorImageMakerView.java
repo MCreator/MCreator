@@ -44,7 +44,7 @@ public class ArmorImageMakerView extends ViewBase {
 	private final JLabel ar2 = new JLabel();
 	private final JLabel arI = new JLabel();
 
-	private final JComboBox<String> str = new JComboBox<>(ArmorMakerTexturesCache.NAMES.toArray(new String[0]));
+	private final JComboBox<String> str = new JComboBox<>(ArmorMakerTexturesCache.getNAMES().toArray(new String[0]));
 	private final JCheckBox type1 = new JCheckBox();
 
 	public ArmorImageMakerView(final MCreator fra) {
@@ -148,18 +148,12 @@ public class ArmorImageMakerView extends ViewBase {
 	private static Image[] getImages(String type, Color color, boolean colorizeType) {
 		Image[] images = new Image[6];
 		try {
-			Image ari1 = ImageUtils.colorize(getTextureTemplate(type, "1"), color, colorizeType)
-					.getImage();
-			Image ari2 = ImageUtils.colorize(getTextureTemplate(type, "2"), color, colorizeType)
-					.getImage();
-			Image helmet = ImageUtils.colorize(getTextureTemplate(type, "H"), color, colorizeType)
-					.getImage();
-			Image body = ImageUtils.colorize(getTextureTemplate(type, "By"), color, colorizeType)
-					.getImage();
-			Image leggings = ImageUtils.colorize(getTextureTemplate(type, "L"), color, colorizeType)
-					.getImage();
-			Image boots = ImageUtils.colorize(getTextureTemplate(type, "Bs"), color, colorizeType)
-					.getImage();
+			Image ari1 = ImageUtils.colorize(getTextureTemplate(type, "1"), color, colorizeType).getImage();
+			Image ari2 = ImageUtils.colorize(getTextureTemplate(type, "2"), color, colorizeType).getImage();
+			Image helmet = ImageUtils.colorize(getTextureTemplate(type, "H"), color, colorizeType).getImage();
+			Image body = ImageUtils.colorize(getTextureTemplate(type, "By"), color, colorizeType).getImage();
+			Image leggings = ImageUtils.colorize(getTextureTemplate(type, "L"), color, colorizeType).getImage();
+			Image boots = ImageUtils.colorize(getTextureTemplate(type, "Bs"), color, colorizeType).getImage();
 			images[0] = ari1;
 			images[1] = ari2;
 			images[2] = helmet;
@@ -177,9 +171,9 @@ public class ArmorImageMakerView extends ViewBase {
 		return images;
 	}
 
-	private static ImageIcon getTextureTemplate(String type, String itemId){
+	private static ImageIcon getTextureTemplate(String type, String itemId) {
 		ImageIcon icon = ArmorMakerTexturesCache.getIcon(type + itemId);
-		if(icon != null)
+		if (icon != null)
 			return icon;
 		else
 			return ArmorMakerTexturesCache.getIcon("Standard" + itemId);
