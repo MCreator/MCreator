@@ -216,12 +216,13 @@ import net.minecraft.block.material.Material;
 				});
 		<#elseif !data.isBuiltInModel()>
 			RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> {
-				return new MobRenderer(renderManager, new ${data.mobModelName}(), ${data.modelShadowSize}f) {
-					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override public ResourceLocation getEntityTexture(Entity entity) { 
-				        <@entityTexture/>
-					}
-				});
+                return new MobRenderer(renderManager, new ${data.mobModelName}(), ${data.modelShadowSize}f) {
+            	    <#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
+            		@Override public ResourceLocation getEntityTexture(Entity entity) {
+            		    <@entityTexture/>
+            		}
+            	};
+            });
 		<#else>
 			RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> {
 				BipedRenderer customRender = new BipedRenderer(renderManager, new BipedModel(0), ${data.modelShadowSize}f) {
