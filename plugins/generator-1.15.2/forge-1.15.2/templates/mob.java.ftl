@@ -206,6 +206,7 @@ import net.minecraft.block.material.Material;
 				<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
 				@Override public ResourceLocation getEntityTexture(Entity entity) { 
 				        <@entityTexture/>
+				    }
 				});
 		<#elseif data.mobModelName == "Silverfish">
 			RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> new MobRenderer(renderManager, new SilverfishModel(), ${data.modelShadowSize}f) {

@@ -234,7 +234,7 @@ import net.minecraft.block.material.Material;
 						@Override public ResourceLocation getEntityTexture(Entity entity) { 
 						    <@entityTexture/>
 						}
-					});
+					};
 				});
 			<#else>
 				RenderingRegistry.registerEntityRenderingHandler(entity, renderManager -> {
