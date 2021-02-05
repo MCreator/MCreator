@@ -20,12 +20,14 @@ package net.mcreator.ui.init;
 
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.TemplatesLoader;
+import net.mcreator.io.UserFolderManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,7 +36,8 @@ public class ArmorMakerTexturesCache {
 	private static final Logger LOG = LogManager.getLogger("Armor Texture Cache");
 	private static final String MCR_FOLDER = System.getProperty("user.home") + "\\.mcreator\\";
 
-	private static final Map<String, ImageIcon> CACHE = new ConcurrentHashMap<>();
+	public static final Map<String, ImageIcon> CACHE = new ConcurrentHashMap<>();
+	public static final List<String> NAMES = new ArrayList<>();
 
 	public static void init() {
 		List<ResourcePointer> templatesSorted = TemplatesLoader.loadTemplates("textures.armormaker", "png");
@@ -48,6 +51,23 @@ public class ArmorMakerTexturesCache {
 			}
 		});
 		ImageIO.setUseCache(true);
+
+		CACHE.forEach((string, imageIcon) -> {
+			String name = string;
+			name = name.replace("templates/textures/armormaker/", "");
+			name = name.replace("/", "");
+			String[] types = new String[] { "Bs", "1", "2", "By", "H", "L" };
+			for (String str : types) {
+				if (name.contains(str))
+					name = name.replace(str + ".png", "");
+				String folder = UserFolderManager.getFileFromUserFolder("/templates/textures/armormaker/").getPath();
+				if (name.contains(folder)) {
+					name = name.replace(folder + "\\", "");
+				}
+			}
+			if (!NAMES.contains(name))
+				NAMES.add(name);
+		});
 	}
 
 	public static ImageIcon getIcon(@Nullable String itemName) {
@@ -59,9 +79,5 @@ public class ArmorMakerTexturesCache {
 			return CACHE.get(folder + fullItemName);
 		else
 			return null;
-	}
-
-	public static Map<String, ImageIcon> getCACHE() {
-		return CACHE;
 	}
 }
