@@ -446,6 +446,7 @@ public class TestWorkspaceDataProvider {
 			gui.doesPauseGame = _true;
 			gui.inventoryOffsetX = 20;
 			gui.inventoryOffsetY = 123;
+			gui.customBg = "";
 			if (!emptyLists) {
 				gui.customBg = "test.png";
 				gui.onOpen = new Procedure("procedure12");
