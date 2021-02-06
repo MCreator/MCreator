@@ -412,7 +412,7 @@ import net.minecraft.block.material.Material;
  		}
  		<#else>
 		@Override public PlantType getPlantType(IBlockReader world, BlockPos pos) {
-			return PlantType.${data.growapableSpawnType?upper_case};
+			return PlantType.${data.growapableSpawnType};
 		}
 		</#if>
 
