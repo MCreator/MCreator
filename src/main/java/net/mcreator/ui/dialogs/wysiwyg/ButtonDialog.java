@@ -26,9 +26,11 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import net.mcreator.workspace.elements.VariableElementType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class ButtonDialog extends AbstractWYSIWYGDialog {
 
@@ -53,9 +55,16 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		eh.refreshList();
-		options.add(PanelUtils.join(eh));
 
-		add("Center", options);
+		ProcedureSelector displayCondition = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/button_display_condition"),
+				editor.mcreator, L10N.t("dialog.gui.button_display_condition"), ProcedureSelector.Side.BOTH, false,
+				VariableElementType.LOGIC, Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		displayCondition.refreshList();
+
+		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition))));
+
+		add("North", PanelUtils.join(FlowLayout.LEFT, options));
+
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		add("South", PanelUtils.join(ok, cancel));
@@ -66,6 +75,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 			ok.setText(L10N.t("dialog.common.save_changes"));
 			nameField.setText(button.name);
 			eh.setSelectedProcedure(button.onClick);
+			displayCondition.setSelectedProcedure(button.displayCondition);
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));
@@ -79,12 +89,12 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(
 							new Button(text, editor.editor.newlyAddedComponentPosX,
 									editor.editor.newlyAddedComponentPosY, text, editor.editor.ow, editor.editor.oh,
-									eh.getSelectedProcedure())));
+									eh.getSelectedProcedure(), displayCondition.getSelectedProcedure())));
 				} else {
 					int idx = editor.components.indexOf(button);
 					editor.components.remove(button);
 					Button buttonNew = new Button(text, button.getX(), button.getY(), text, button.width, button.height,
-							eh.getSelectedProcedure());
+							eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
 					editor.components.add(idx, buttonNew);
 					setEditingComponent(buttonNew);
 				}

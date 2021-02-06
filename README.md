@@ -49,7 +49,7 @@ MCreator is licensed under the GPL-3.0 license (with exceptions implemented as s
 MCreator is a trademark of Pylo. Custom distributions of this software may not include Pylo or MCreator trademark (trademark name and logo) to not confuse the software with the official distribution of MCreator project.
 MCreator and Pylo brand files in this repository are not covered by the GPL-3.0 license.
 
-MCreator uses several third-party libraries and projects. License files and credits for these projects are located in the `license` subdirectory.
+MCreator uses several third-party libraries and projects. License files, attributions, and credits for these projects are located in the `license` subdirectory.
 
 ## Notice
 
