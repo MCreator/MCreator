@@ -81,6 +81,8 @@ import java.util.Map;
 	public int flammability;
 	public int fireSpreadSpeed;
 
+	public List<MItemBlock> canBePlacedOn;
+
 	public int frequencyOnChunks;
 	public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;
