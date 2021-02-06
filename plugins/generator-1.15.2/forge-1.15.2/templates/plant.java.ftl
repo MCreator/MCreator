@@ -395,7 +395,7 @@ import net.minecraft.block.material.Material;
 			}
 		}
 
-		@Override protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
 			Block block = state.getBlock();
 			return (<#list data.canBePlacedOn as canBePlacedOn>block == ${canBePlacedOn}<#if canBePlacedOn?has_next>||</#if></#list>);
 		}
