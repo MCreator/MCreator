@@ -1,11 +1,11 @@
 {
   "args0": [
-	{
+    {
       "type": "input_value",
       "name": "item",
       "check": "MCItem"
     },
-	{
+    {
       "type": "field_dropdown",
       "name": "rarity",
       "options": [
@@ -21,7 +21,7 @@
           "RARE",
           "RARE"
         ],
-		[
+        [
           "EPIC",
           "EPIC"
         ]
@@ -32,14 +32,14 @@
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
     "toolbox_id": "itemmanagement",
-	"toolbox_init": [
+    "toolbox_init": [
       "<value name=\"item\"><block type=\"itemstack_to_mcitem\"></block></value>"
     ],
     "inputs": [
-	  "item"
+      "item"
     ],
-	"fields": [
-	  "rarity"
-	]
+    "fields": [
+      "rarity"
+    ]
   }
 }
