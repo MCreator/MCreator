@@ -196,9 +196,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
-		canBePlacedOn.setListElements(new ArrayList<>(Arrays.asList(
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.GRASS"),
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.DIRT"))));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
 
