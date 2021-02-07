@@ -47,7 +47,7 @@ public class ${name}Command extends ${JavaModName}Elements.ModElement{
 
 	private LiteralArgumentBuilder<CommandSource> customCommand() {
         return LiteralArgumentBuilder.<CommandSource>literal("${data.commandName}")
-			.requires(s -> s.hasPermissionLevel(${data.permissionLevel}))
+			<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermissionLevel(${data.permissionLevel}))</#if>
 			.then(Commands.argument("arguments", StringArgumentType.greedyString())
 			<#if hasProcedure(data.onCommandExecuted)>
             .executes(this::execute)

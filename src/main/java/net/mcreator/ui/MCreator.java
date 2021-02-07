@@ -284,7 +284,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			// if we need to setup MCreator, we do so
 			if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
 				WorkspaceGeneratorSetupDialog
-						.runSetup(this, PreferencesManager.PREFERENCES.notification.openWhatsNextPage);
+						.runSetup(this, PreferencesManager.PREFERENCES.notifications.openWhatsNextPage);
 			}
 
 			if (workspace.getMCreatorVersion()

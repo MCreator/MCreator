@@ -54,9 +54,12 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.elements.FolderElement;
+import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
@@ -68,21 +71,25 @@ import java.awt.event.*;
 import java.io.File;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class WorkspacePanel extends JPanel {
+@SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanel extends JPanel {
 
 	private FilterModel dml = new FilterModel();
-	public JTextField search;
+	public final JTextField search;
 
-	public JSelectableList<ModElement> list = new JSelectableList<>(dml);
+	public FolderElement currentFolder;
+
+	public final JSelectableList<IElement> list;
 
 	private final CardLayout cardLayout = new CardLayout() {
 		@Override public void show(Container container, String s) {
 			super.show(container, s);
 			currentTab = s;
+			search.repaint();
 		}
 	};
 	private final JPanel panels = new JPanel(cardLayout);
@@ -92,9 +99,11 @@ public class WorkspacePanel extends JPanel {
 	private final WorkspacePanelVariables variablesPan;
 	private final WorkspacePanelVCS vcsPan;
 
-	private String currentTab;
+	private String currentTab = "mods";
 
-	private MCreator mcreator;
+	private final MCreator mcreator;
+
+	private final JButton upFolder;
 
 	private final JLabel but2 = new JLabel(TiledImageCache.workspaceEdit);
 	private final JLabel but2a = new JLabel(TiledImageCache.workspaceDuplicate);
@@ -106,13 +115,15 @@ public class WorkspacePanel extends JPanel {
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
 
-	private final TransparentToolBar bar = new TransparentToolBar();
+	private final TransparentToolBar modElementsBar = new TransparentToolBar();
+
+	private final WorkspaceFolderBreadcrumb elementsBreadcrumb;
 
 	private final JLabel elementsCount = new JLabel();
 
 	private final ModTypeDropdown modTypeDropdown;
 
-	public JRadioButtonMenuItem desc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.descending"));
+	public final JRadioButtonMenuItem desc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.descending"));
 
 	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem(
 			L10N.t("workspace.elements.list.sort_date"));
@@ -125,28 +136,85 @@ public class WorkspacePanel extends JPanel {
 		super(new BorderLayout(5, 5));
 		this.mcreator = mcreator;
 
+		this.currentFolder = mcreator.getWorkspace().getFoldersRoot();
+
 		this.resourcesPan = new WorkspacePanelResources(this);
 		this.localePan = new WorkspacePanelLocalizations(this);
 		this.variablesPan = new WorkspacePanelVariables(this);
 		this.vcsPan = new WorkspacePanelVCS(this);
 
-		modTypeDropdown = new ModTypeDropdown(mcreator);
+		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator);
+
+		this.modTypeDropdown = new ModTypeDropdown(mcreator);
 
 		panels.setOpaque(false);
 
+		list = new JSelectableList<>(dml);
 		list.setOpaque(false);
 		list.setBorder(BorderFactory.createEmptyBorder(2, 7, 0, 0));
 		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		list.setVisibleRowCount(-1);
 
+		list.enableDNDCustom((target, sources) -> {
+			if (target instanceof FolderElement) {
+				for (IElement element : sources) {
+					if (element instanceof ModElement) {
+						((ModElement) element).setParentFolder((FolderElement) target);
+					} else if (element instanceof FolderElement) {
+						if (element.equals(target))
+							continue;
+
+						FolderElement folder = (FolderElement) element;
+						String originalFolderPath = folder.getPath();
+
+						// first remove folder from old parent and assign new parent to the folder
+						folder.getParent().removeChild(folder);
+						((FolderElement) target).addChild(folder);
+
+						// then re-assign mod elements to the new folder ath
+						for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+							if (originalFolderPath.equals(modElement.getFolderPath())) {
+								// set parent folder again to update the path
+								modElement.setParentFolder(folder);
+							}
+						}
+					}
+				}
+				mcreator.getWorkspace().markDirty();
+				reloadElements();
+			} else {
+				Toolkit.getDefaultToolkit().beep();
+			}
+		});
+		list.setAdditionalDNDComponent(elementsBreadcrumb);
+
 		list.addMouseMotionListener(new MouseAdapter() {
 			@Override public void mouseMoved(MouseEvent e) {
 				super.mouseMoved(e);
 				int idx = list.locationToIndex(e.getPoint());
-				ModElement modElement = list.getModel().getElementAt(idx);
-				if (modElement != null) {
+				IElement element = list.getModel().getElementAt(idx);
+				if (element instanceof ModElement) {
+					ModElement modElement = (ModElement) element;
 					mcreator.getStatusBar()
 							.setMessage(modElement.getType().getReadableName() + ": " + modElement.getName());
+				}
+			}
+		});
+
+		list.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2 && !e.isConsumed()) {
+					list.cancelDND();
+
+					IElement selected = list.getSelectedValue();
+					if (selected instanceof FolderElement) {
+						switchFolder((FolderElement) selected);
+					} else {
+						if (((e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK))
+							editCurrentlySelectedModElementAsCode((ModElement) selected, list, e.getX(), e.getY());
+						else
+							editCurrentlySelectedModElement((ModElement) selected, list, e.getX(), e.getY());
+					}
 				}
 			}
 		});
@@ -164,8 +232,6 @@ public class WorkspacePanel extends JPanel {
 		JPanel modElementsPanel = new JPanel(new BorderLayout(0, 0));
 		modElementsPanel.setOpaque(false);
 
-		modElementsPanel.setBorder(
-				BorderFactory.createMatteBorder(4, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 		resourcesPan.setBorder(
 				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 		localePan.setBorder(
@@ -191,7 +257,11 @@ public class WorkspacePanel extends JPanel {
 				if (getText().equals("")) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
-					g.drawString(L10N.t("workspace.elements.list.search"), 8, 18);
+					if (!currentTab.equals("mods")) {
+						g.drawString(L10N.t("workspace.elements.list.search_list"), 8, 18);
+					} else {
+						g.drawString(L10N.t("workspace.elements.list.search_folder"), 8, 18);
+					}
 				}
 			}
 		};
@@ -225,13 +295,82 @@ public class WorkspacePanel extends JPanel {
 			}
 		});
 
-		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
+		modElementsBar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
+
+		JButton addFolder = new JButton(new ImageIcon(ImageUtils
+				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.newFolder.gif").getImage()),
+						new Rectangle(1, 1, 16, 16))));
+		upFolder = new JButton(new ImageIcon(ImageUtils
+				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.upFolder.gif").getImage()),
+						new Rectangle(1, 1, 16, 16))));
+
+		addFolder.setContentAreaFilled(false);
+		addFolder.setBorderPainted(false);
+		addFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		addFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		addFolder.setToolTipText(L10N.t("workspace.elements.folders.add_tooltip"));
+
+		upFolder.setContentAreaFilled(false);
+		upFolder.setBorderPainted(false);
+		upFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		upFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		upFolder.setToolTipText(L10N.t("workspace.elements.folders.up_tooltip"));
+		upFolder.setEnabled(false);
+
+		addFolder.addActionListener(e -> {
+			String name = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.folders.add.message"),
+					L10N.t("workspace.elements.folders.add.title"), null, new OptionPaneValidatior() {
+						@Override public ValidationResult validate(JComponent component) {
+							String text = ((JTextField) component).getText();
+
+							if (!text.matches("[A-Za-z0-9._ -]+")) {
+								return new Validator.ValidationResult(ValidationResultType.ERROR,
+										L10N.t("workspace.elements.folders.add.error_letters"));
+							}
+
+							List<FolderElement> folderElements = mcreator.getWorkspace().getFoldersRoot()
+									.getRecursiveFolderChildren();
+
+							FolderElement tmpFolder = new FolderElement(text, currentFolder);
+
+							for (FolderElement folderElement : folderElements) {
+								if (folderElement.equals(tmpFolder)) {
+									return new Validator.ValidationResult(ValidationResultType.ERROR,
+											L10N.t("workspace.elements.folders.add.error_exists"));
+								}
+							}
+
+							return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+						}
+					});
+
+			if (name != null) {
+				currentFolder.addChild(new FolderElement(name, currentFolder));
+				mcreator.getWorkspace().markDirty();
+				reloadElements();
+			}
+		});
+
+		upFolder.addActionListener(e -> {
+			if (!currentFolder.isRoot()) {
+				switchFolder(currentFolder.getParent());
+			}
+		});
+
+		JComponent folderactions = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.folder_actions"), 12);
+		modElementsBar.add(folderactions);
+
+		modElementsBar.add(addFolder);
+		modElementsBar.add(upFolder);
+
+		modElementsBar.add(new JEmptyBox(7, 1));
 
 		JComponent isize = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.icon_size"), 12);
 		isize.setToolTipText(L10N.t("workspace.elements.list.icon_size.tooltip"));
-		bar.add(isize);
+		modElementsBar.add(isize);
 
 		JToggleButton largeIcons = new JToggleButton(L10N.t("workspace.elements.list.large"));
+		largeIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		largeIcons.setIcon(UIRES.get("16px.large.gif"));
 		largeIcons.setContentAreaFilled(false);
 		largeIcons.setOpaque(false);
@@ -252,9 +391,10 @@ public class WorkspacePanel extends JPanel {
 		Arrays.stream(largeIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(largeIcons)));
 		ComponentUtils.deriveFont(largeIcons, 12);
 		largeIcons.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-		bar.add(largeIcons);
+		modElementsBar.add(largeIcons);
 
 		JToggleButton smallIcons = new JToggleButton(L10N.t("workspace.elements.list.small"));
+		smallIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		smallIcons.setIcon(UIRES.get("16px.small.gif"));
 		smallIcons.setContentAreaFilled(false);
 		smallIcons.setOpaque(false);
@@ -275,9 +415,10 @@ public class WorkspacePanel extends JPanel {
 		Arrays.stream(smallIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(smallIcons)));
 		ComponentUtils.deriveFont(smallIcons, 12);
 		smallIcons.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-		bar.add(smallIcons);
+		modElementsBar.add(smallIcons);
 
 		JToggleButton listIcons = new JToggleButton(L10N.t("workspace.elements.list.list"));
+		listIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		listIcons.setIcon(UIRES.get("16px.list.gif"));
 		listIcons.setContentAreaFilled(false);
 		listIcons.setOpaque(false);
@@ -298,7 +439,7 @@ public class WorkspacePanel extends JPanel {
 		Arrays.stream(listIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(listIcons)));
 		ComponentUtils.deriveFont(listIcons, 12);
 		listIcons.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-		bar.add(listIcons);
+		modElementsBar.add(listIcons);
 
 		sp.addMouseWheelListener(new MouseAdapter() {
 			@Override public void mouseWheelMoved(MouseWheelEvent e) {
@@ -326,11 +467,11 @@ public class WorkspacePanel extends JPanel {
 
 		elementsCount.setHorizontalTextPosition(SwingConstants.LEFT);
 
-		bar.add(ComponentUtils.deriveFont(new JLabel("<html>&nbsp;&nbsp;"), 12));
-		bar.add(ComponentUtils.deriveFont(elementsCount, 12));
-		bar.add(ComponentUtils.deriveFont(new JLabel("<html>&nbsp;&nbsp;"), 12));
+		modElementsBar.add(new JEmptyBox(7, 1));
+		modElementsBar.add(ComponentUtils.deriveFont(elementsCount, 12));
+		modElementsBar.add(new JEmptyBox(5, 1));
 
-		se.add("East", bar);
+		se.add("East", modElementsBar);
 
 		JPanel leftPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		leftPan.setOpaque(false);
@@ -420,7 +561,7 @@ public class WorkspacePanel extends JPanel {
 
 		mainp.setOpaque(false);
 
-		modElementsPanel.add("Center", mainp);
+		modElementsPanel.add("Center", PanelUtils.northAndCenterElement(elementsBreadcrumb, mainp));
 
 		panels.add(modElementsPanel, "mods");
 		panels.add(resourcesPan, "res");
@@ -458,7 +599,7 @@ public class WorkspacePanel extends JPanel {
 			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			cardLayout.show(panels, "mods");
 			updateMods();
-			bar.setVisible(true);
+			modElementsBar.setVisible(true);
 		});
 		rotatablePanel.add(btt1);
 
@@ -477,7 +618,7 @@ public class WorkspacePanel extends JPanel {
 			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			cardLayout.show(panels, "res");
 			updateMods();
-			bar.setVisible(false);
+			modElementsBar.setVisible(false);
 		});
 
 		if (resourcesPan.getTabCount() > 0)
@@ -498,7 +639,7 @@ public class WorkspacePanel extends JPanel {
 			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			cardLayout.show(panels, "variables");
 			updateMods();
-			bar.setVisible(false);
+			modElementsBar.setVisible(false);
 		});
 
 		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("variables") != GeneratorStats.CoverageStatus.NONE)
@@ -519,7 +660,7 @@ public class WorkspacePanel extends JPanel {
 			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			cardLayout.show(panels, "locales");
 			updateMods();
-			bar.setVisible(false);
+			modElementsBar.setVisible(false);
 		});
 
 		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("i18n") != GeneratorStats.CoverageStatus.NONE)
@@ -541,7 +682,7 @@ public class WorkspacePanel extends JPanel {
 				btt7.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 				cardLayout.show(panels, "vcs");
 				updateMods();
-				bar.setVisible(false);
+				modElementsBar.setVisible(false);
 			}
 		});
 		rotatablePanel.add(btt7);
@@ -549,9 +690,6 @@ public class WorkspacePanel extends JPanel {
 		rotatablePanel.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 
 		slo.add("West", rotatablePanel);
-
-		JSplitPane pano = new JSplitPane();
-		pano.setDividerLocation(250);
 
 		add("Center", slo);
 		setOpaque(false);
@@ -570,20 +708,11 @@ public class WorkspacePanel extends JPanel {
 		but1.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but1);
 
-		list.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2 && !e.isConsumed())
-					if (((e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK))
-						editCurrentlySelectedModElementAsCode(list, e.getX(), e.getY());
-					else
-						editCurrentlySelectedModElement(list, e.getX(), e.getY());
-			}
-		});
-
 		but2.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (but2.isEnabled())
-					editCurrentlySelectedModElement(but2, e.getComponent().getWidth() + 8, 0);
+				if (but2.isEnabled() && list.getSelectedValue() instanceof ModElement)
+					editCurrentlySelectedModElement((ModElement) list.getSelectedValue(), but2,
+							e.getComponent().getWidth() + 8, 0);
 			}
 		});
 		but2.setToolTipText(L10N.t("workspace.elements.edit.tooltip"));
@@ -612,19 +741,45 @@ public class WorkspacePanel extends JPanel {
 								JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
 						if (n == 0) {
-							final boolean[] buildNeeded = { false };
+							AtomicBoolean buildNeeded = new AtomicBoolean(false);
 							list.getSelectedValuesList().forEach(re -> {
-								if (!buildNeeded[0]) {
-									GeneratableElement ge = re.getGeneratableElement();
-									if (ge != null && mcreator.getModElementManager().usesGeneratableElementJava(ge))
-										buildNeeded[0] = true;
-								}
+								if (re instanceof ModElement) {
+									if (!buildNeeded.get()) {
+										GeneratableElement ge = ((ModElement) re).getGeneratableElement();
+										if (ge != null && mcreator.getModElementManager()
+												.usesGeneratableElementJava(ge))
+											buildNeeded.set(true);
+									}
 
-								mcreator.getWorkspace().removeModElement(re);
+									mcreator.getWorkspace().removeModElement(((ModElement) re));
+								} else if (re instanceof FolderElement) {
+									FolderElement folder = (FolderElement) re;
+
+									// re-assign mod-elements from deleted folder to parent folder
+									for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+										if (folder.equals(modElement.getFolderPath())) {
+											modElement.setParentFolder(folder.getParent());
+										}
+									}
+
+									// re-assign deleted recursive children folder's elements to parent folder too
+									for (FolderElement childFolder : folder.getRecursiveFolderChildren()) {
+										for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+											if (childFolder.equals(modElement.getFolderPath())) {
+												modElement.setParentFolder(folder.getParent());
+											}
+										}
+									}
+
+									// remove folder from the parent's child list
+									// all folder's child folders will be orphaned at this point too
+									// and thus removed
+									folder.getParent().removeChild(folder);
+								}
 							});
 							updateMods();
 
-							if (buildNeeded[0])
+							if (buildNeeded.get())
 								mcreator.actionRegistry.buildWorkspace.doAction();
 						}
 					}
@@ -637,8 +792,9 @@ public class WorkspacePanel extends JPanel {
 
 		but5.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (but5.isEnabled()) {
-					editCurrentlySelectedModElementAsCode(but5, e.getComponent().getWidth() + 8, 0);
+				if (but5.isEnabled() && list.getSelectedValue() instanceof ModElement) {
+					editCurrentlySelectedModElementAsCode((ModElement) list.getSelectedValue(), but5,
+							e.getComponent().getWidth() + 8, 0);
 				}
 			}
 		});
@@ -660,9 +816,10 @@ public class WorkspacePanel extends JPanel {
 		but6.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but6.isEnabled()) {
-					ModElement mu = list.getSelectedValue();
-					if (mu != null && mu.getType().getBaseType() != ModElementType.BaseType.DATAPACK) {
-						ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, mu);
+					IElement mu = list.getSelectedValue();
+					if (mu instanceof ModElement
+							&& ((ModElement) mu).getType().getBaseType() != ModElementType.BaseType.DATAPACK) {
+						ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
 						if (modified != null)
 							mcreator.getWorkspace().updateModElement(modified);
 					}
@@ -707,6 +864,20 @@ public class WorkspacePanel extends JPanel {
 		mainp.add("sp", sp);
 
 		updateElementListRenderer();
+
+		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
+	}
+
+	public void switchFolder(FolderElement switchTo) {
+		search.setText(null); // clear the search bar
+		currentFolder = switchTo;
+
+		reloadElements();
+
+		// reload breadcrumb
+		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
+
+		upFolder.setEnabled(!currentFolder.isRoot());
 	}
 
 	private void resort() {
@@ -764,14 +935,17 @@ public class WorkspacePanel extends JPanel {
 				dial.addProgress(p0);
 
 				List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
-				list.getSelectedValuesList().forEach(mu -> {
-					if (mu.isCodeLocked()) {
-						mu.setCodeLock(false);
-						mcreator.getWorkspace().updateModElement(mu);
-						elementsThatGotUnlocked.add(mu); // code got unlocked, add to the list
-					} else {
-						mu.setCodeLock(true);
-						mcreator.getWorkspace().updateModElement(mu);
+				list.getSelectedValuesList().forEach(el -> {
+					if (el instanceof ModElement) {
+						ModElement mu = (ModElement) el;
+						if (mu.isCodeLocked()) {
+							mu.setCodeLock(false);
+							mcreator.getWorkspace().updateModElement(mu);
+							elementsThatGotUnlocked.add(mu); // code got unlocked, add to the list
+						} else {
+							mu.setCodeLock(true);
+							mcreator.getWorkspace().updateModElement(mu);
+						}
 					}
 				});
 				updateMods();
@@ -812,8 +986,8 @@ public class WorkspacePanel extends JPanel {
 	}
 
 	private void duplicateCurrentlySelectedModElement() {
-		if (list.getSelectedValue() != null) {
-			ModElement mu = list.getSelectedValue();
+		if (list.getSelectedValue() instanceof ModElement) {
+			ModElement mu = (ModElement) list.getSelectedValue();
 			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
 				String modName = VOptionPane.showInputDialog(mcreator,
 						"<html><font style=\"font-size: 13px;\">Enter the name of the new mod element:</font><br><small>"
@@ -878,59 +1052,52 @@ public class WorkspacePanel extends JPanel {
 		}
 	}
 
-	private void editCurrentlySelectedModElement(JComponent component, int x, int y) {
-		if (list.getSelectedValue() != null) {
-			ModElement mu = list.getSelectedValue();
-			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
-				if (mu.isCodeLocked()) {
-					editCurrentlySelectedModElementAsCode(component, x, y);
-				} else {
-					ModElementGUI<?> modeditor = ModElementTypeRegistry.REGISTRY.get(mu.getType())
-							.getModElement(mcreator, mu, true);
-					if (modeditor != null) {
-						modeditor.showView();
-					}
-				}
+	public void editCurrentlySelectedModElement(ModElement mu, JComponent component, int x, int y) {
+		if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
+			if (mu.isCodeLocked()) {
+				editCurrentlySelectedModElementAsCode(mu, component, x, y);
 			} else {
-				if (mu.isCodeLocked()) {
-					editCurrentlySelectedModElementAsCode(component, x, y);
-				} else {
-					JOptionPane.showMessageDialog(null,
-							"<html>This mod does not have saved instance. If you want to make it editable,<br>you need to remake it.<br>"
-									+ "<small>You probably see this because you have updated MCreator and your mod was made before saving was possible.");
+				ModElementGUI<?> modeditor = ModElementTypeRegistry.REGISTRY.get(mu.getType())
+						.getModElement(mcreator, mu, true);
+				if (modeditor != null) {
+					modeditor.showView();
 				}
+			}
+		} else {
+			if (mu.isCodeLocked()) {
+				editCurrentlySelectedModElementAsCode(mu, component, x, y);
+			} else {
+				JOptionPane.showMessageDialog(null,
+						"<html>This mod does not have saved instance. If you want to make it editable,<br>you need to remake it.<br>"
+								+ "<small>You probably see this because you have updated MCreator and your mod was made before saving was possible.");
 			}
 		}
 	}
 
-	private void editCurrentlySelectedModElementAsCode(JComponent component, int x, int y) {
-		if (list.getSelectedValue() != null) {
-			ModElement mu = list.getSelectedValue();
+	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
+		List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu).stream()
+				.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 
-			List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu).stream()
-					.map(GeneratorTemplate::getFile).collect(Collectors.toList());
+		if (modElementFiles.size() > 1) {
+			JPopupMenu codeDropdown = new JPopupMenu();
+			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
+			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 
-			if (modElementFiles.size() > 1) {
-				JPopupMenu codeDropdown = new JPopupMenu();
-				codeDropdown.setBorder(BorderFactory.createEmptyBorder());
-				codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-
-				for (File modElementFile : modElementFiles) {
-					JMenuItem item = new JMenuItem(
-							"<html>" + modElementFile.getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
-									.getWorkspaceFolder().toPath().relativize(modElementFile.toPath()));
-					item.setIcon(FileIcons.getIconForFile(modElementFile));
-					item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-					item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-					item.setIconTextGap(8);
-					item.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
-					item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, modElementFile));
-					codeDropdown.add(item);
-				}
-				codeDropdown.show(component, x, y);
-			} else if (modElementFiles.size() == 1) {
-				ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0));
+			for (File modElementFile : modElementFiles) {
+				JMenuItem item = new JMenuItem(
+						"<html>" + modElementFile.getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
+								.getWorkspaceFolder().toPath().relativize(modElementFile.toPath()));
+				item.setIcon(FileIcons.getIconForFile(modElementFile));
+				item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+				item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				item.setIconTextGap(8);
+				item.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
+				item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, modElementFile));
+				codeDropdown.add(item);
 			}
+			codeDropdown.show(component, x, y);
+		} else if (modElementFiles.size() == 1) {
+			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0));
 		}
 	}
 
@@ -964,19 +1131,32 @@ public class WorkspacePanel extends JPanel {
 	}
 
 	public void reloadElements() {
-		if (mcreator.getWorkspace() != null && mcreator.getWorkspaceSettings() != null) {
-			if (mcreator.getWorkspace().getModElements().size() > 0) {
-				elementsCount.setText(
-						L10N.t("workspace.stats.current_workspace", mcreator.getWorkspaceSettings().getModName(),
-								mcreator.getGenerator().getGeneratorName(),
-								mcreator.getWorkspace().getModElements().size()));
+		if (mcreator.getWorkspaceSettings() != null) {
+			// first we need to get current folder from the workspace
+			// as current reference to the folder may be out of date (eg. reload from disk)
+			List<FolderElement> folders = mcreator.getWorkspace().getFoldersRoot().getRecursiveFolderChildren();
+			int folderIdx = folders.indexOf(currentFolder);
+			if (folderIdx == -1) {
+				currentFolder = mcreator.getWorkspace().getFoldersRoot();
+			} else {
+				currentFolder = folders.get(folderIdx);
+			}
+
+			if (mcreator.getWorkspace().getModElements().stream()
+					.anyMatch(el -> currentFolder.equals(el.getFolderPath())) || !currentFolder
+					.getDirectFolderChildren().isEmpty()) {
 				mainpcl.show(mainp, "sp");
 
 				// reload list model partially in the background
 				new Thread(() -> {
-					List<ModElement> selected = list.getSelectedValuesList();
+					List<IElement> selected = list.getSelectedValuesList();
 
 					FilterModel newModel = new FilterModel();
+
+					// add folders
+					currentFolder.getRecursiveFolderChildren().forEach(newModel::addElement);
+
+					// add mod elements
 					mcreator.getWorkspace().getModElements().forEach(newModel::addElement);
 
 					SwingUtilities.invokeLater(() -> {
@@ -988,9 +1168,17 @@ public class WorkspacePanel extends JPanel {
 					});
 				}).start();
 			} else {
+				mainpcl.show(mainp, "ep");
+			}
+
+			if (mcreator.getWorkspace().getModElements().isEmpty()) {
 				elementsCount.setText(L10N.t("workspace.stats.empty", mcreator.getWorkspaceSettings().getModName(),
 						mcreator.getGenerator().getGeneratorName()));
-				mainpcl.show(mainp, "ep");
+			} else {
+				elementsCount.setText(
+						L10N.t("workspace.stats.current_workspace", mcreator.getWorkspaceSettings().getModName(),
+								mcreator.getGenerator().getGeneratorName(),
+								mcreator.getWorkspace().getModElements().size()));
 			}
 
 			if (mcreator.getWorkspaceSettings().getMCreatorDependencies().contains("mcreator_link")) {
@@ -1013,9 +1201,9 @@ public class WorkspacePanel extends JPanel {
 		return mcreator;
 	}
 
-	private class FilterModel extends DefaultListModel<ModElement> {
-		ArrayList<ModElement> items;
-		ArrayList<ModElement> filterItems;
+	private class FilterModel extends DefaultListModel<IElement> {
+		ArrayList<IElement> items;
+		ArrayList<IElement> filterItems;
 
 		final Pattern pattern = Pattern.compile("([^\"]\\S*|\".+?\")\\s*");
 
@@ -1025,7 +1213,7 @@ public class WorkspacePanel extends JPanel {
 			filterItems = new ArrayList<>();
 		}
 
-		@Override public ModElement getElementAt(int index) {
+		@Override public IElement getElementAt(int index) {
 			if (filterItems.size() > 0 && index < filterItems.size())
 				return filterItems.get(index);
 			else
@@ -1033,7 +1221,7 @@ public class WorkspacePanel extends JPanel {
 		}
 
 		@Override public int indexOf(Object elem) {
-			if (elem instanceof ModElement)
+			if (elem instanceof IElement)
 				return filterItems.indexOf(elem);
 			else
 				return -1;
@@ -1043,7 +1231,7 @@ public class WorkspacePanel extends JPanel {
 			return filterItems.size();
 		}
 
-		@Override public void addElement(ModElement o) {
+		@Override public void addElement(IElement o) {
 			items.add(o);
 			refilter();
 		}
@@ -1055,7 +1243,7 @@ public class WorkspacePanel extends JPanel {
 		}
 
 		@Override public boolean removeElement(Object a) {
-			if (a instanceof ModElement) {
+			if (a instanceof IElement) {
 				items.remove(a);
 				filterItems.remove(a);
 			}
@@ -1086,47 +1274,65 @@ public class WorkspacePanel extends JPanel {
 					keyWords.add(pat.replace("\"", ""));
 			}
 
-			filterItems.addAll(items.stream().filter(item -> {
-				if (keyWords.size() == 0)
-					return true;
+			filterItems.addAll(items.stream().filter(e -> e instanceof FolderElement)
+					.filter(item -> currentFolder.getDirectFolderChildren().contains(item) || (!keyWords.isEmpty()
+							&& currentFolder.getRecursiveFolderChildren().contains(item))).filter(item -> {
+						if (!filters.isEmpty() || !metfilters.isEmpty())
+							return false;
 
-				for (String key : keyWords) {
-					boolean match =
-							(item.getName().toLowerCase(Locale.ENGLISH).contains(key.toLowerCase(Locale.ENGLISH)))
-									|| (item.getType().getReadableName().toLowerCase(Locale.ENGLISH)
-									.contains(key.toLowerCase(Locale.ENGLISH)));
-					if (match)
-						return true;
-				}
+						if (keyWords.size() == 0)
+							return true;
 
-				return false;
-			}).filter(item -> {
-				if (filters.size() == 0)
-					return true;
+						for (String key : keyWords)
+							if (item.getName().toLowerCase(Locale.ENGLISH).contains(key.toLowerCase(Locale.ENGLISH)))
+								return true;
 
-				for (String f : filters) {
-					switch (f) {
-					case "locked":
-						return item.isCodeLocked();
-					case "ok":
-						return item.doesCompile();
-					case "err":
-						return !item.doesCompile();
-					}
-				}
-				return false;
-			}).filter(item -> {
-				if (metfilters.size() == 0)
-					return true;
+						return false;
+					}).collect(Collectors.toList()));
 
-				for (ModElementType type : metfilters)
-					if (item.getType() == type)
-						return true;
-				return false;
-			}).collect(Collectors.toList()));
+			List<ModElement> modElements = items.stream().filter(e -> e instanceof ModElement).map(e -> (ModElement) e)
+					.filter(item -> currentFolder.equals(item.getFolderPath()) || (!keyWords.isEmpty() && currentFolder
+							.getRecursiveFolderChildren().stream()
+							.anyMatch(folder -> folder.equals(item.getFolderPath())))).filter(item -> {
+						if (keyWords.size() == 0)
+							return true;
+
+						for (String key : keyWords) {
+							boolean match = (item.getName().toLowerCase(Locale.ENGLISH)
+									.contains(key.toLowerCase(Locale.ENGLISH))) || (item.getType().getReadableName()
+									.toLowerCase(Locale.ENGLISH).contains(key.toLowerCase(Locale.ENGLISH)));
+							if (match)
+								return true;
+						}
+
+						return false;
+					}).filter(item -> {
+						if (filters.size() == 0)
+							return true;
+
+						for (String f : filters) {
+							switch (f) {
+							case "locked":
+								return item.isCodeLocked();
+							case "ok":
+								return item.doesCompile();
+							case "err":
+								return !item.doesCompile();
+							}
+						}
+						return false;
+					}).filter(item -> {
+						if (metfilters.size() == 0)
+							return true;
+
+						for (ModElementType type : metfilters)
+							if (item.getType() == type)
+								return true;
+						return false;
+					}).collect(Collectors.toList());
 
 			if (!sortDateCreated.isSelected()) {
-				filterItems.sort((a, b) -> {
+				modElements.sort((a, b) -> {
 					if (sortType.isSelected()) {
 						return a.getType().getReadableName().compareTo(b.getType().getReadableName());
 					} else if (sortLoadingOrder.isSelected()) {
@@ -1137,8 +1343,16 @@ public class WorkspacePanel extends JPanel {
 				});
 			}
 
-			if (desc.isSelected())
+			if (!sortDateCreated.isSelected()) {
+				filterItems.sort(Comparator.comparing(IElement::getName));
+			}
+
+			if (desc.isSelected()) {
+				Collections.reverse(modElements);
 				Collections.reverse(filterItems);
+			}
+
+			filterItems.addAll(modElements);
 
 			fireContentsChanged(this, 0, getSize());
 		}
