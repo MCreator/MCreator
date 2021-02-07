@@ -375,9 +375,20 @@ import net.minecraft.block.material.Material;
         </#if>
 
 		<#if (data.canBePlacedOn?size > 0)>
-		@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		<#if data.plantType != "growapable">@Override</#if>
+		public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
 			Block block = state.getBlock();
-			return (<#list data.canBePlacedOn as canBePlacedOn>block == ${canBePlacedOn}<#if canBePlacedOn?has_next>||</#if></#list>);
+			return (
+			<#if data.plantType == "growapable">
+				block == this ||
+			</#if>
+			<#list data.canBePlacedOn as canBePlacedOn>
+				block == ${canBePlacedOn}
+				<#if canBePlacedOn?has_next>
+					||
+				</#if>
+			</#list>
+			);
 		}
 
 		@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
@@ -401,6 +412,10 @@ import net.minecraft.block.material.Material;
 			&& (<@procedureOBJToConditionCode data.placingCondition/>)
 			</#if>) {
 				return this.isValidGround(worldIn.getBlockState(blockpos), worldIn, blockpos);
+			<#if data.plantType == "growapable">
+			} else if (blockstate.getBlock() == this) {
+				return true;
+			</#if>
 			} else {
 				return false;
 			}
