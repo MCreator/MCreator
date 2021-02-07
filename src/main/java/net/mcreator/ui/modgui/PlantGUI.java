@@ -132,6 +132,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private ProcedureSelector onBlockPlacedBy;
 	private ProcedureSelector onRightClicked;
 
+	private ProcedureSelector placingCondition;
 	private ProcedureSelector generateCondition;
 
 	private DimensionListField spawnWorldTypes;
@@ -182,6 +183,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onRightClicked = new ProcedureSelector(this.withEntry("block/when_right_clicked"), mcreator,
 				L10N.t("elementgui.plant.event_on_right_clicked"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/direction:direction"));
+
+		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
+				L10N.t("elementgui.plant.event_additional_placing_condition"), VariableElementType.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world"))
+				.setDefaultName(L10N.t("elementgui.plant.no_additional_condition"));
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				L10N.t("elementgui.plant.event_additional_generation_condition"), VariableElementType.LOGIC,
@@ -457,10 +463,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		pane3.setOpaque(false);
 
 		JPanel advancedProperties = new JPanel(new GridLayout(9, 2, 10, 2));
-		advancedProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.plant.properties_advanced_plant"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		advancedProperties.setOpaque(false);
 
 		forceTicking.setOpaque(false);
@@ -502,7 +504,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.can_be_placed_on")));
 		advancedProperties.add(canBePlacedOn);
 
-		JComponent plocb = PanelUtils.centerInPanel(advancedProperties);
+		JComponent plocb = PanelUtils
+				.northAndCenterElement(advancedProperties, PanelUtils.join(FlowLayout.LEFT, placingCondition));
+		plocb.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.plant.properties_advanced_plant"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		plocb.setOpaque(false);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(plocb));
@@ -590,6 +597,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onBlockPlacedBy.refreshListKeepSelected();
 		onRightClicked.refreshListKeepSelected();
 
+		placingCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
@@ -658,6 +666,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		fireSpreadSpeed.setValue(plant.fireSpreadSpeed);
 		specialInfo.setText(
 				plant.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		placingCondition.setSelectedProcedure(plant.placingCondition);
 		generateCondition.setSelectedProcedure(plant.generateCondition);
 
 		Model model = plant.getItemModel();
@@ -760,6 +769,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.flammability = (int) flammability.getValue();
 		plant.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 		plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
+		plant.placingCondition = placingCondition.getSelectedProcedure();
 		plant.generateCondition = generateCondition.getSelectedProcedure();
 		plant.emissiveRendering = emissiveRendering.isSelected();
 

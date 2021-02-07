@@ -82,6 +82,7 @@ import java.util.Map;
 	public int fireSpreadSpeed;
 
 	public List<MItemBlock> canBePlacedOn;
+	public Procedure placingCondition;
 
 	public int frequencyOnChunks;
 	public List<String> spawnWorldTypes;

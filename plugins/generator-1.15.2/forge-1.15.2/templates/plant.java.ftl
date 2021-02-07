@@ -375,40 +375,35 @@ import net.minecraft.block.material.Material;
         </#if>
 
 		<#if (data.canBePlacedOn?size > 0)>
-		protected boolean canSustainBush(BlockState state) {
-			return (<#list data.canBePlacedOn as blockPlacedOn>state.getBlock() == ${blockPlacedOn}<#if blockPlacedOn?has_next>||</#if></#list>);
-		}
-
-		public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-			BlockState soil = worldIn.getBlockState(pos.down());
-			Block block = soil.getBlock();
-			return (<#list data.canBePlacedOn as blockPlacedOn>block == ${blockPlacedOn}<#if blockPlacedOn?has_next>||</#if></#list>);
-		}
-
-		public boolean canBlockStay(World worldIn, BlockPos pos, BlockState state) {
-			if (pos.getY() >= 0 && pos.getY() < 256) {
-				BlockState blockstate = worldIn.getBlockState(pos.down());
-				Block block = blockstate.getBlock();
-				return (<#list data.canBePlacedOn as canBePlacedOn>block == ${canBePlacedOn}<#if canBePlacedOn?has_next>||</#if></#list>);
-			} else {
-				return false;
-			}
-		}
-
-		public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
 			Block block = state.getBlock();
 			return (<#list data.canBePlacedOn as canBePlacedOn>block == ${canBePlacedOn}<#if canBePlacedOn?has_next>||</#if></#list>);
 		}
 
-		@Override public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-			return !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-		}
-
 		@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
 			BlockPos blockpos = pos.down();
-			if (state.getBlock() == this)
-				return worldIn.getBlockState(blockpos).canSustainPlant(worldIn, blockpos, Direction.UP, this);
+			BlockState blockstate = worldIn.getBlockState(blockpos);
+			Block block = blockstate.getBlock();
+			<#if hasCondition(data.placingCondition)>
+			World world = worldIn.getDimension().getWorld();
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			</#if>
+			if (
+			<#list data.canBePlacedOn as canBePlacedOn>
+				block == ${canBePlacedOn}
+				<#if canBePlacedOn?has_next>
+					||
+				</#if>
+			</#list>
+			<#if hasCondition(data.placingCondition)>
+			&& (<@procedureOBJToConditionCode data.placingCondition/>)
+			</#if>) {
 				return this.isValidGround(worldIn.getBlockState(blockpos), worldIn, blockpos);
+			} else {
+				return false;
+			}
  		}
  		<#else>
 		@Override public PlantType getPlantType(IBlockReader world, BlockPos pos) {
