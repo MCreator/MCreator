@@ -21,6 +21,7 @@ package net.mcreator.ui.init;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.util.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +33,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ArmorMakerTexturesCache {
 	private static final Logger LOG = LogManager.getLogger("Armor Texture Cache");
-	private static final String MCR_FOLDER = System.getProperty("user.home") + "\\.mcreator\\";
 
 	private static final Map<String, ImageIcon> CACHE = new ConcurrentHashMap<>();
 	private static String[] NAMES;
@@ -42,8 +42,15 @@ public class ArmorMakerTexturesCache {
 		ImageIO.setUseCache(false); // we use custom image cache for this
 		templatesSorted.forEach(resourcePointer -> {
 			try {
-				CACHE.put(resourcePointer.identifier.toString(),
-						new ImageIcon(ImageIO.read(resourcePointer.getStream())));
+				String id = resourcePointer.identifier.toString();
+				String folder = UserFolderManager.getFileFromUserFolder("/templates/textures/armormaker/").getPath();
+				if (id.contains(folder))
+					id = id.replace(folder, "");
+				else
+					id = id.replace("templates/textures/armormaker/", "");
+				id = id.replace("/", "");
+				id = id.replace(".png", "");
+				CACHE.put(id, new ImageIcon(ImageIO.read(resourcePointer.getStream())));
 			} catch (Exception e) {
 				LOG.warn("Failed to load armor texture from template: " + resourcePointer.identifier);
 			}
@@ -52,32 +59,23 @@ public class ArmorMakerTexturesCache {
 
 		Set<String> localNames = new HashSet<>();
 		CACHE.forEach((string, imageIcon) -> {
-			String name = string;
-			name = name.replace("templates/textures/armormaker/", "");
-			name = name.replace("/", "");
 			String[] types = new String[] { "Bs", "1", "2", "By", "H", "L" };
 			for (String str : types) {
-				if (name.contains(str))
-					name = name.replace(str + ".png", "");
-				String folder = UserFolderManager.getFileFromUserFolder("/templates/textures/armormaker/").getPath();
-				if (name.contains(folder)) {
-					name = name.replace(folder + "\\", "");
+				if (string.endsWith(str)) {
+					string = StringUtils.abbreviateString(string, string.length() - str.length(), false);
 				}
 			}
-			localNames.add(name);
+			localNames.add(string);
 		});
 		NAMES = localNames.toArray(new String[0]);
 	}
 
-	public static ImageIcon getIcon(@Nullable String itemName) {
-		String fullItemName = itemName + ".png";
-		String folder = "templates/textures/armormaker/";
-		if (itemName != null && CACHE.get(MCR_FOLDER + folder.replace("/", "\\") + fullItemName) != null)
-			return CACHE.get(MCR_FOLDER + folder.replace("/", "\\") + fullItemName);
-		else if (itemName != null && CACHE.get(folder + fullItemName) != null)
-			return CACHE.get(folder + fullItemName);
+	public static ImageIcon getIcon(@Nullable String type, String tpl) {
+		String itemName = type + tpl;
+		if (type != null && CACHE.get(itemName) != null)
+			return CACHE.get(itemName);
 		else
-			return CACHE.get(folder);
+			return CACHE.get("Standard" + tpl);
 	}
 
 	public static String[] getNAMES() {

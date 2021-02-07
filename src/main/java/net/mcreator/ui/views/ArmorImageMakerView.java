@@ -148,12 +148,12 @@ public class ArmorImageMakerView extends ViewBase {
 	private static Image[] getImages(String type, Color color, boolean colorizeType) {
 		Image[] images = new Image[6];
 		try {
-			Image ari1 = ImageUtils.colorize(getTextureTemplate(type, "1"), color, colorizeType).getImage();
-			Image ari2 = ImageUtils.colorize(getTextureTemplate(type, "2"), color, colorizeType).getImage();
-			Image helmet = ImageUtils.colorize(getTextureTemplate(type, "H"), color, colorizeType).getImage();
-			Image body = ImageUtils.colorize(getTextureTemplate(type, "By"), color, colorizeType).getImage();
-			Image leggings = ImageUtils.colorize(getTextureTemplate(type, "L"), color, colorizeType).getImage();
-			Image boots = ImageUtils.colorize(getTextureTemplate(type, "Bs"), color, colorizeType).getImage();
+			Image ari1 = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "1"), color, colorizeType).getImage();
+			Image ari2 = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "2"), color, colorizeType).getImage();
+			Image helmet = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "H"), color, colorizeType).getImage();
+			Image body = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "By"), color, colorizeType).getImage();
+			Image leggings = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "L"), color, colorizeType).getImage();
+			Image boots = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "Bs"), color, colorizeType).getImage();
 			images[0] = ari1;
 			images[1] = ari2;
 			images[2] = helmet;
@@ -169,14 +169,6 @@ public class ArmorImageMakerView extends ViewBase {
 			images[5] = new EmptyIcon.ImageIcon(16, 16).getImage();
 		}
 		return images;
-	}
-
-	private static ImageIcon getTextureTemplate(String type, String itemId) {
-		ImageIcon icon = ArmorMakerTexturesCache.getIcon(type + itemId);
-		if (icon != null)
-			return icon;
-		else
-			return ArmorMakerTexturesCache.getIcon("Standard" + itemId);
 	}
 
 	private void updateARM() {
