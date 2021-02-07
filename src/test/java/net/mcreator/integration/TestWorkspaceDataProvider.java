@@ -155,6 +155,10 @@ public class TestWorkspaceDataProvider {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);
 		}
+
+		if (workspace.getFolderManager().getStructuresDir() != null) {
+			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test.nbt"));
+		}
 	}
 
 	private static GeneratableElement getExampleFor(ModElement modElement, Random random, boolean _true,
@@ -683,6 +687,7 @@ public class TestWorkspaceDataProvider {
 			return dimension;
 		case STRUCTURE:
 			Structure structure = new Structure(modElement);
+			structure.structure = "test";
 			structure.spawnProbability = 310000;
 			structure.minCountPerChunk = 1;
 			structure.maxCountPerChunk = 3;
@@ -719,7 +724,6 @@ public class TestWorkspaceDataProvider {
 				structure.generateCondition = new Procedure("condition1");
 				structure.onStructureGenerated = new Procedure("procedure3");
 			}
-			structure.structure = null;
 			return structure;
 		case ARMOR:
 			Armor armor = new Armor(modElement);
