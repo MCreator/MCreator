@@ -35,7 +35,7 @@ public class ArmorMakerTexturesCache {
 	private static final String MCR_FOLDER = System.getProperty("user.home") + "\\.mcreator\\";
 
 	private static final Map<String, ImageIcon> CACHE = new ConcurrentHashMap<>();
-	private static final Set<String> NAMES = new HashSet<>();
+	private static String[] NAMES;
 
 	public static void init() {
 		List<ResourcePointer> templatesSorted = TemplatesLoader.loadTemplates("textures.armormaker", "png");
@@ -50,6 +50,7 @@ public class ArmorMakerTexturesCache {
 		});
 		ImageIO.setUseCache(true);
 
+		Set<String> localNames = new HashSet<>();
 		CACHE.forEach((string, imageIcon) -> {
 			String name = string;
 			name = name.replace("templates/textures/armormaker/", "");
@@ -63,8 +64,9 @@ public class ArmorMakerTexturesCache {
 					name = name.replace(folder + "\\", "");
 				}
 			}
-			NAMES.add(name);
+			localNames.add(name);
 		});
+		NAMES = localNames.toArray(new String[0]);
 	}
 
 	public static ImageIcon getIcon(@Nullable String itemName) {
@@ -75,10 +77,10 @@ public class ArmorMakerTexturesCache {
 		else if (itemName != null && CACHE.get(folder + fullItemName) != null)
 			return CACHE.get(folder + fullItemName);
 		else
-			return null;
+			return CACHE.get(folder);
 	}
 
-	public static Set<String> getNAMES() {
+	public static String[] getNAMES() {
 		return NAMES;
 	}
 }

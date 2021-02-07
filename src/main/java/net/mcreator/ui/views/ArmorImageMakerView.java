@@ -44,7 +44,7 @@ public class ArmorImageMakerView extends ViewBase {
 	private final JLabel ar2 = new JLabel();
 	private final JLabel arI = new JLabel();
 
-	private final JComboBox<String> str = new JComboBox<>(ArmorMakerTexturesCache.getNAMES().toArray(new String[0]));
+	private final JComboBox<String> str = new JComboBox<>(ArmorMakerTexturesCache.getNAMES());
 	private final JCheckBox type1 = new JCheckBox();
 
 	public ArmorImageMakerView(final MCreator fra) {
