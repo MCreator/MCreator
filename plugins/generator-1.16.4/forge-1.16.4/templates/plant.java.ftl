@@ -402,6 +402,9 @@ import net.minecraft.block.material.Material;
 		@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
 			Block block = state.getBlock();
 			return (
+			<#if data.plantType == "double">
+				block == this ||
+			</#if>
 			<#list data.canBePlacedOn as canBePlacedOn>
 				block == ${canBePlacedOn}
 				<#if canBePlacedOn?has_next>
@@ -419,14 +422,19 @@ import net.minecraft.block.material.Material;
 			<#if hasCondition(data.placingCondition)>
 			boolean additionalCondition = true;
 			if (worldIn instanceof World) {
-			    World world = (World) worldIn;
-			    int x = pos.getX();
-			    int y = pos.getY();
-			    int z = pos.getZ();
-			    additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+				World world = (World) worldIn;
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
 			}
-			</#if>
+			if ((
+			<#else>
 			if (
+			</#if>
+			<#if data.plantType != "normal">
+				block == this ||
+			</#if>
 			<#list data.canBePlacedOn as canBePlacedOn>
 				block == ${canBePlacedOn}
 				<#if canBePlacedOn?has_next>
@@ -434,18 +442,12 @@ import net.minecraft.block.material.Material;
 				</#if>
 			</#list>
 			<#if hasCondition(data.placingCondition)>
-			&& (<@procedureOBJToConditionCode data.placingCondition/>)
+			) && (additionalCondition)
 			</#if>) {
 				<#if data.plantType = "normal">
-					return this.isValidGround(blockstate, worldIn, blockpos)
+					return this.isValidGround(blockstate, worldIn, blockpos);
 				<#elseif data.plantType == "growapable">
-					return block == this || (
-					<#list data.canBePlacedOn as canBePlacedOn>
-						block == ${canBePlacedOn}
-						<#if canBePlacedOn?has_next>
-							||
-						</#if>
-					</#list>);
+					return true;
 				<#else>
 					if (state.get(HALF) == DoubleBlockHalf.UPPER) {
 						return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
@@ -457,7 +459,7 @@ import net.minecraft.block.material.Material;
 				return false;
 			}
  		}
- 		<#else>
+		<#else>
 		@Override public PlantType getPlantType(IBlockReader world, BlockPos pos) {
 			return PlantType.${data.growapableSpawnType?upper_case};
 		}
