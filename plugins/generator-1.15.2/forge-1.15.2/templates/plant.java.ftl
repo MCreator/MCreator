@@ -378,9 +378,11 @@ import net.minecraft.block.material.Material;
 			<#if (data.canBePlacedOn?size > 0) && data.plantType != "growapable">
 			@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
 				Block block = state.getBlock();
-				return <#list data.canBePlacedOn as canBePlacedOn>
+				return
+				<#list data.canBePlacedOn as canBePlacedOn>
 					block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
-					<#if canBePlacedOn?has_next>||</#if></#list>;
+					<#if canBePlacedOn?has_next>||</#if>
+				</#list>;
 			}
 			</#if>
 
@@ -389,10 +391,12 @@ import net.minecraft.block.material.Material;
 				BlockState blockstate = worldIn.getBlockState(blockpos);
 				Block block = blockstate.getBlock();
 				<#if hasCondition(data.placingCondition)>
-					World world = worldIn.getDimension().getWorld();
-					int x = pos.getX();
-					int y = pos.getY();
-					int z = pos.getZ();
+				boolean additionalCondition = true;
+				World world = worldIn.getDimension().getWorld();
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
 				</#if>
 				<#if (data.canBePlacedOn?size > 0)>
 					<#if data.plantType = "normal">
@@ -407,19 +411,19 @@ import net.minecraft.block.material.Material;
 							return this.isValidGround(blockstate, worldIn, blockpos)
 					</#if>
 					<#if hasCondition(data.placingCondition)>
-						&& (<@procedureOBJToConditionCode data.placingCondition/>)
+						&& additionalCondition
 					</#if>;
 				<#else>
-				    <#if data.plantType == "normal">
-				        return <@procedureOBJToConditionCode data.placingCondition/>;
-				    <#elseif data.plantType == "growapable">
-				        return block == this || <@procedureOBJToConditionCode data.placingCondition/>;
-				    <#else>
-				        if (state.get(HALF) == DoubleBlockHalf.UPPER)
-				            return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
-				        else
-				            return <@procedureOBJToConditionCode data.placingCondition/>;
-				    </#if>
+					<#if data.plantType == "normal">
+						return additionalCondition;
+					<#elseif data.plantType == "growapable">
+						return block == this || additionalCondition;
+					<#else>
+						if (state.get(HALF) == DoubleBlockHalf.UPPER)
+							return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
+						else
+							return additionalCondition;
+					</#if>
 				</#if>
 			}
 		</#if>

@@ -401,9 +401,11 @@ import net.minecraft.block.material.Material;
 			<#if (data.canBePlacedOn?size > 0) && data.plantType != "growapable">
 			@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
 				Block block = state.getBlock();
-				return <#list data.canBePlacedOn as canBePlacedOn>
+				return
+				<#list data.canBePlacedOn as canBePlacedOn>
 					block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
-					<#if canBePlacedOn?has_next>||</#if></#list>;
+					<#if canBePlacedOn?has_next>||</#if>
+				</#list>;
 			}
 			</#if>
 
@@ -437,16 +439,16 @@ import net.minecraft.block.material.Material;
 						&& additionalCondition
 					</#if>;
 				<#else>
-				    <#if data.plantType == "normal">
-				        return additionalCondition;
-				    <#elseif data.plantType == "growapable">
-				        return block == this || additionalCondition;
-				    <#else>
-				        if (state.get(HALF) == DoubleBlockHalf.UPPER)
-				            return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
-				        else
-				            return additionalCondition;
-				    </#if>
+					<#if data.plantType == "normal">
+						return additionalCondition;
+					<#elseif data.plantType == "growapable">
+						return block == this || additionalCondition;
+					<#else>
+						if (state.get(HALF) == DoubleBlockHalf.UPPER)
+							return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
+						else
+							return additionalCondition;
+					</#if>
 				</#if>
 			}
 		</#if>
