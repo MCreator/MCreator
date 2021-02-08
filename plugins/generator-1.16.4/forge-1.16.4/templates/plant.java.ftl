@@ -397,73 +397,63 @@ import net.minecraft.block.material.Material;
             </#if>
         </#if>
 
-		<#if (data.canBePlacedOn?size > 0)>
-		<#if data.plantType != "growapable">
-		@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-			Block block = state.getBlock();
-			return (
-			<#if data.plantType == "double">
-				block == this ||
+		<#if (data.canBePlacedOn?size > 0) || hasCondition(data.placingCondition)>
+			<#if (data.canBePlacedOn?size > 0) && data.plantType != "growapable">
+			@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+				Block block = state.getBlock();
+				return <#list data.canBePlacedOn as canBePlacedOn>
+					block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+					<#if canBePlacedOn?has_next>||</#if></#list>;
+			}
 			</#if>
-			<#list data.canBePlacedOn as canBePlacedOn>
-				block == ${canBePlacedOn}
-				<#if canBePlacedOn?has_next>
-					||
+
+			@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+				BlockPos blockpos = pos.down();
+				BlockState blockstate = worldIn.getBlockState(blockpos);
+				Block block = blockstate.getBlock();
+				<#if hasCondition(data.placingCondition)>
+				boolean additionalCondition = true;
+				if (worldIn instanceof IWorld) {
+					IWorld world = (IWorld) worldIn;
+					int x = pos.getX();
+					int y = pos.getY();
+					int z = pos.getZ();
+					additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+				}
 				</#if>
-			</#list>
-			);
-		}
+				<#if (data.canBePlacedOn?size > 0)>
+					<#if data.plantType = "normal">
+						return this.isValidGround(blockstate, worldIn, blockpos)
+					<#elseif data.plantType == "growapable">
+						return block == this || (<#list data.canBePlacedOn as canBePlacedOn>block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						<#if canBePlacedOn?has_next>||</#if></#list>)
+					<#else>
+						if (state.get(HALF) == DoubleBlockHalf.UPPER)
+							return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
+						else
+							return this.isValidGround(blockstate, worldIn, blockpos)
+					</#if>
+					<#if hasCondition(data.placingCondition)>
+						&& additionalCondition
+					</#if>;
+				<#else>
+				    <#if data.plantType == "normal">
+				        return additionalCondition;
+				    <#elseif data.plantType == "growapable">
+				        return block == this || additionalCondition;
+				    <#else>
+				        if (state.get(HALF) == DoubleBlockHalf.UPPER)
+				            return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
+				        else
+				            return additionalCondition;
+				    </#if>
+				</#if>
+			}
 		</#if>
 
-		@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-			BlockPos blockpos = pos.down();
-			BlockState blockstate = worldIn.getBlockState(blockpos);
-			Block block = blockstate.getBlock();
-			<#if hasCondition(data.placingCondition)>
-			boolean additionalCondition = true;
-			if (worldIn instanceof World) {
-				World world = (World) worldIn;
-				int x = pos.getX();
-				int y = pos.getY();
-				int z = pos.getZ();
-				additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
-			}
-			if ((
-			<#else>
-			if (
-			</#if>
-			<#if data.plantType != "normal">
-				block == this ||
-			</#if>
-			<#list data.canBePlacedOn as canBePlacedOn>
-				block == ${canBePlacedOn}
-				<#if canBePlacedOn?has_next>
-					||
-				</#if>
-			</#list>
-			<#if hasCondition(data.placingCondition)>
-			) && (additionalCondition)
-			</#if>) {
-				<#if data.plantType == "normal">
-					return this.isValidGround(blockstate, worldIn, blockpos);
-				<#elseif data.plantType == "growapable">
-					return true;
-				<#else>
-					if (state.get(HALF) == DoubleBlockHalf.UPPER) {
-						return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
-					} else {
-						return this.isValidGround(blockstate, worldIn, blockpos);
-					}
-				</#if>
-			} else {
-				return false;
-			}
- 		}
-		<#else>
 		@Override public PlantType getPlantType(IBlockReader world, BlockPos pos) {
 			return PlantType.${data.growapableSpawnType?upper_case};
 		}
-		</#if>
 
         <#if hasProcedure(data.onBlockAdded)>
 		@Override public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
