@@ -20,7 +20,6 @@ package net.mcreator.ui.init;
 
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.TemplatesLoader;
-import net.mcreator.util.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -53,27 +52,44 @@ public class ArmorMakerTexturesCache {
 		ImageIO.setUseCache(true);
 
 		Set<String> templateNamesSet = new HashSet<>();
-		String[] validSuffixes = new String[] { "Bs", "1", "2", "By", "H", "L" };
 
 		CACHE.keySet().forEach(imageName -> {
-			for (String suffix : validSuffixes) {
-				if (imageName.endsWith(suffix)) {
-					imageName = StringUtils.abbreviateString(imageName, imageName.length() - suffix.length(), false);
-					templateNamesSet.add(imageName);
+			for (ArmorTexturePart part : ArmorTexturePart.values()) {
+				if (imageName.endsWith(part.getSuffix())) {
+					templateNamesSet.add(imageName.substring(0, imageName.length() - part.getSuffix().length()));
 				}
 			}
 		});
+
 		TEMPLATE_NAMES = templateNamesSet.toArray(new String[0]);
 	}
 
-	public static ImageIcon getIcon(@Nullable String type, String tpl) {
-		if (type != null && CACHE.get(type + tpl) != null)
-			return CACHE.get(type + tpl);
+	public static ImageIcon getIcon(@Nullable String templateName, ArmorTexturePart part) {
+		if (templateName != null && CACHE.get(templateName + part.getSuffix()) != null)
+			return CACHE.get(templateName + part.getSuffix());
 		else // Fallback if part is not defined
-			return CACHE.get("Standard" + tpl);
+			return CACHE.get("Standard" + part.getSuffix());
 	}
 
 	public static String[] getTemplateNames() {
 		return TEMPLATE_NAMES;
 	}
+
+	public enum ArmorTexturePart {
+
+		LAYER1("_layer_1"), LAYER2("_layer_2"), HELMET("_helmet"), BODY("_body"), LEGGINGS("_leggings"), BOOTS(
+				"_boots");
+
+		private final String suffix;
+
+		ArmorTexturePart(String suffix) {
+			this.suffix = suffix;
+		}
+
+		public String getSuffix() {
+			return suffix;
+		}
+
+	}
+
 }

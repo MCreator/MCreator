@@ -36,6 +36,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Locale;
 
+import static net.mcreator.ui.init.ArmorMakerTexturesCache.ArmorTexturePart.*;
+
 public class ArmorImageMakerView extends ViewBase {
 
 	private final JColor col;
@@ -148,12 +150,12 @@ public class ArmorImageMakerView extends ViewBase {
 	private static Image[] getImages(String type, Color color, boolean colType) {
 		Image[] images = new Image[6];
 		try {
-			images[0] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "1"), color, colType).getImage();
-			images[1] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "2"), color, colType).getImage();
-			images[2] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "H"), color, colType).getImage();
-			images[3] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "By"), color, colType).getImage();
-			images[4] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "L"), color, colType).getImage();
-			images[5] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "Bs"), color, colType).getImage();
+			images[0] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, LAYER1), color, colType).getImage();
+			images[1] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, LAYER2), color, colType).getImage();
+			images[2] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, HELMET), color, colType).getImage();
+			images[3] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, BODY), color, colType).getImage();
+			images[4] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, LEGGINGS), color, colType).getImage();
+			images[5] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, BOOTS), color, colType).getImage();
 		} catch (Exception ignored) {
 			images[0] = new EmptyIcon.ImageIcon(380, 190).getImage();
 			images[1] = new EmptyIcon.ImageIcon(380, 190).getImage();
