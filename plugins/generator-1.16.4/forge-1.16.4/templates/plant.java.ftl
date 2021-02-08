@@ -444,7 +444,7 @@ import net.minecraft.block.material.Material;
 			<#if hasCondition(data.placingCondition)>
 			) && (additionalCondition)
 			</#if>) {
-				<#if data.plantType = "normal">
+				<#if data.plantType == "normal">
 					return this.isValidGround(blockstate, worldIn, blockpos);
 				<#elseif data.plantType == "growapable">
 					return true;

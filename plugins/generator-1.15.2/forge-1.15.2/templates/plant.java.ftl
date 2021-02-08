@@ -375,11 +375,11 @@ import net.minecraft.block.material.Material;
         </#if>
 
 		<#if (data.canBePlacedOn?size > 0)>
-		<#if data.plantType != "growapable">@Override</#if>
-		public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		<#if data.plantType != "growapable">
+		@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
 			Block block = state.getBlock();
 			return (
-			<#if data.plantType == "growapable">
+			<#if data.plantType == "double">
 				block == this ||
 			</#if>
 			<#list data.canBePlacedOn as canBePlacedOn>
@@ -390,18 +390,28 @@ import net.minecraft.block.material.Material;
 			</#list>
 			);
 		}
+		</#if>
 
 		@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
 			BlockPos blockpos = pos.down();
 			BlockState blockstate = worldIn.getBlockState(blockpos);
 			Block block = blockstate.getBlock();
 			<#if hasCondition(data.placingCondition)>
-			World world = worldIn.getDimension().getWorld();
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			</#if>
+			boolean additionalCondition = true;
+			if (worldIn instanceof World) {
+				World world = worldIn.getDimension().getWorld();
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+			}
+			if ((
+			<#else>
 			if (
+			</#if>
+			<#if data.plantType != "normal">
+				block == this ||
+			</#if>
 			<#list data.canBePlacedOn as canBePlacedOn>
 				block == ${canBePlacedOn}
 				<#if canBePlacedOn?has_next>
@@ -409,13 +419,19 @@ import net.minecraft.block.material.Material;
 				</#if>
 			</#list>
 			<#if hasCondition(data.placingCondition)>
-			&& (<@procedureOBJToConditionCode data.placingCondition/>)
+			) && (additionalCondition)
 			</#if>) {
-				return this.isValidGround(worldIn.getBlockState(blockpos), worldIn, blockpos);
-			<#if data.plantType == "growapable">
-			} else if (blockstate.getBlock() == this) {
-				return true;
-			</#if>
+				<#if data.plantType == "normal">
+					return this.isValidGround(blockstate, worldIn, blockpos);
+				<#elseif data.plantType == "growapable">
+					return true;
+				<#else>
+					if (state.get(HALF) == DoubleBlockHalf.UPPER) {
+						return blockstate.getBlock() == this && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
+					} else {
+						return this.isValidGround(blockstate, worldIn, blockpos);
+					}
+				</#if>
 			} else {
 				return false;
 			}
