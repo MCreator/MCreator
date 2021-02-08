@@ -44,7 +44,7 @@ public class ArmorImageMakerView extends ViewBase {
 	private final JLabel ar2 = new JLabel();
 	private final JLabel arI = new JLabel();
 
-	private final JComboBox<String> str = new JComboBox<>(ArmorMakerTexturesCache.getNAMES());
+	private final JComboBox<String> str = new JComboBox<>(ArmorMakerTexturesCache.getTemplateNames());
 	private final JCheckBox type1 = new JCheckBox();
 
 	public ArmorImageMakerView(final MCreator fra) {
@@ -145,21 +145,15 @@ public class ArmorImageMakerView extends ViewBase {
 		use(workspace, images[5], namec + "_boots");
 	}
 
-	private static Image[] getImages(String type, Color color, boolean colorizeType) {
+	private static Image[] getImages(String type, Color color, boolean colType) {
 		Image[] images = new Image[6];
 		try {
-			Image ari1 = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "1"), color, colorizeType).getImage();
-			Image ari2 = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "2"), color, colorizeType).getImage();
-			Image helmet = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "H"), color, colorizeType).getImage();
-			Image body = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "By"), color, colorizeType).getImage();
-			Image leggings = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "L"), color, colorizeType).getImage();
-			Image boots = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "Bs"), color, colorizeType).getImage();
-			images[0] = ari1;
-			images[1] = ari2;
-			images[2] = helmet;
-			images[3] = body;
-			images[4] = leggings;
-			images[5] = boots;
+			images[0] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "1"), color, colType).getImage();
+			images[1] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "2"), color, colType).getImage();
+			images[2] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "H"), color, colType).getImage();
+			images[3] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "By"), color, colType).getImage();
+			images[4] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "L"), color, colType).getImage();
+			images[5] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, "Bs"), color, colType).getImage();
 		} catch (Exception ignored) {
 			images[0] = new EmptyIcon.ImageIcon(380, 190).getImage();
 			images[1] = new EmptyIcon.ImageIcon(380, 190).getImage();
