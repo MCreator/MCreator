@@ -113,8 +113,9 @@ public final class MCreatorApplication {
 		BlockItemIcons.init();
 		DataListLoader.preloadCache();
 
-		// load templates for image maker
+		// load templates for image makers
 		ImageMakerTexturesCache.init();
+		ArmorMakerTexturesCache.init();
 
 		// load apis defined by plugins after plugins are loaded
 		ModAPIManager.initAPIs();
