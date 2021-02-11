@@ -478,8 +478,8 @@ public class TestWorkspaceDataProvider {
 				components.add(new OutputSlot(6, "sot", 243, 563, Color.black, _true, _true, null, null, null));
 				components.add(new TextField("text1", 0, 10, 100, 20, "Input value ..."));
 				components.add(new TextField("text2", 55, 231, 90, 20, ""));
-				components.add(new Checkbox("checkbox1", 100, 100, "Text", false));
-				components.add(new Checkbox("checkbox2", 125, 125, "Other text", true));
+				components.add(new Checkbox("checkbox1", 100, 100, "Text", new Procedure("condition1")));
+				components.add(new Checkbox("checkbox2", 125, 125, "Other text", new Procedure("condition2")));
 			}
 			gui.components = components;
 			return gui;

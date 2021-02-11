@@ -18,30 +18,36 @@
 
 package net.mcreator.ui.dialogs.wysiwyg;
 
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import net.mcreator.workspace.elements.VariableElementType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.awt.*;
 
-public class CheckboxDialog extends AbstractWYSIWYGDialog{
+public class CheckboxDialog extends AbstractWYSIWYGDialog {
 
 	public CheckboxDialog(WYSIWYGEditor editor, @Nullable Checkbox checkbox) {
 		super(editor.mcreator, checkbox);
-		setModal(true);
-		setSize(480, 150);
+		setSize(480, 220);
 		setLocationRelativeTo(editor.mcreator);
+		setModal(true);
+		setTitle(L10N.t("dialog.gui.checkbox_add"));
+
+		JPanel options = new JPanel();
+		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
 		VTextField nameField = new VTextField(20);
-		nameField.setPreferredSize(new Dimension(200, 28));
 		nameField.enableRealtimeValidation();
 		Validator validator = new JavaMemeberNameValidator(nameField, false);
 		nameField.setValidator(() -> {
@@ -56,16 +62,21 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog{
 			}
 			return validator.validate();
 		});
-		JTextField deft = new JTextField(20);
-		JCheckBox isChecked = new JCheckBox();
-		JPanel options = new JPanel();
-
-		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_input_name"), nameField));
-		add("Center", options);
-		setTitle(L10N.t("dialog.gui.checkbox_add"));
+
+		JTextField deft = new JTextField(20);
 		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_text"), deft));
-		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_is_checked"), isChecked));
+
+		ProcedureSelector isCheckedProcedure = new ProcedureSelector(
+				IHelpContext.NONE.withEntry("gui/checkbox_procedure_value"), editor.mcreator,
+				L10N.t("dialog.gui.checkbox_procedure_value"), ProcedureSelector.Side.CLIENT, false,
+				VariableElementType.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"))
+				.setDefaultName("Not selected");
+		isCheckedProcedure.refreshList();
+		options.add(PanelUtils.join(isCheckedProcedure));
+
+		add("Center", options);
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -77,7 +88,7 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog{
 			ok.setText(L10N.t("dialog.common.save_changes"));
 			nameField.setText(checkbox.name);
 			deft.setText(checkbox.text);
-			isChecked.setSelected(checkbox.isChecked);
+			isCheckedProcedure.setSelectedProcedure(checkbox.isCheckedProcedure);
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));
@@ -89,12 +100,14 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog{
 					if (checkbox == null) {
 						editor.editor.setPositioningMode(20, 20);
 						editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
-								new Checkbox(text, editor.editor.newlyAddedComponentPosX, editor.editor.newlyAddedComponentPosY,
-										deft.getText(), isChecked.isSelected()))));
+								new Checkbox(text, editor.editor.newlyAddedComponentPosX,
+										editor.editor.newlyAddedComponentPosY, deft.getText(),
+										isCheckedProcedure.getSelectedProcedure()))));
 					} else {
 						int idx = editor.components.indexOf(checkbox);
 						editor.components.remove(checkbox);
-						Checkbox checkboxNew = new Checkbox(text, checkbox.getX(), checkbox.getY(), deft.getText(), isChecked.isSelected());
+						Checkbox checkboxNew = new Checkbox(text, checkbox.getX(), checkbox.getY(), deft.getText(),
+								isCheckedProcedure.getSelectedProcedure());
 						editor.components.add(idx, checkboxNew);
 						setEditingComponent(checkboxNew);
 					}
