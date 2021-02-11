@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.IBoundingBox;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Plant;
@@ -26,7 +27,6 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.minecraft.JBoundingBoxEntry;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -35,7 +35,6 @@ import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -55,10 +54,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -76,9 +73,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JCheckBox customBoundingBox = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
-	private final List<JBoundingBoxEntry> boundingBoxList = new ArrayList<>();
-	private final JPanel boundingBoxes = new JPanel(new GridLayout(0, 1, 5, 5));
-	private final JButton addBoundingBox = L10N.button("elementgui.common.add_bounding_box");
+	private final JBoundingBoxList boundingBoxList = new JBoundingBoxList(mcreator);
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(0, -1, 64000, 0.1));
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
@@ -385,54 +380,21 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		customBoundingBox.setOpaque(false);
 		disableOffset.setOpaque(false);
 
-		JPanel boundingBoxEditor = new JPanel(new BorderLayout());
-		boundingBoxEditor.setOpaque(false);
-
-		JToolBar boundingBoxBar = new JToolBar();
-		boundingBoxBar.setFloatable(false);
-
-		addBoundingBox.setIcon(UIRES.get("16px.add.gif"));
-		boundingBoxBar.add(addBoundingBox);
-
-		boundingBoxEditor.add("North", boundingBoxBar);
-
-		boundingBoxes.setOpaque(false);
-
-		JScrollPane bbScrollPane = new JScrollPane(PanelUtils.pullElementUp(boundingBoxes)) {
-			@Override protected void paintComponent(Graphics g) {
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-				g2d.fillRect(0, 0, getWidth(), getHeight());
-				g2d.dispose();
-				super.paintComponent(g);
-			}
-		};
-		bbScrollPane.setOpaque(false);
-		bbScrollPane.getViewport().setOpaque(false);
-		bbScrollPane.getVerticalScrollBar().setUnitIncrement(11);
-		bbScrollPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		boundingBoxEditor.add("Center", bbScrollPane);
-
-		bbPane.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), boundingBoxEditor));
+		bbPane.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), boundingBoxList));
 		bbPane.setOpaque(false);
 
 		customBoundingBox.addActionListener(e -> {
-			addBoundingBox.setEnabled(customBoundingBox.isSelected());
 			disableOffset.setEnabled(customBoundingBox.isSelected());
 			if (!customBoundingBox.isSelected()) {
 				disableOffset.setSelected(false);
 			}
-			boundingBoxList.forEach(boxEntry -> boxEntry.setEntryEnabled(customBoundingBox.isSelected()));
+			boundingBoxList.setEnabled(customBoundingBox.isSelected());
 		});
 
-		addBoundingBox.addActionListener(e -> new JBoundingBoxEntry(boundingBoxes, boundingBoxList));
-
 		if (!isEditingMode()) { // Add first bounding box, disable custom bounding box options
-			new JBoundingBoxEntry(boundingBoxes, boundingBoxList);
+			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBoundingBox.BoxEntry()));
 			disableOffset.setEnabled(false);
-			addBoundingBox.setEnabled(false);
-			boundingBoxList.forEach(boxEntry -> boxEntry.setEntryEnabled(false));
+			boundingBoxList.setEnabled(false);
 		}
 
 		JPanel selp = new JPanel(new GridLayout(10, 2, 25, 4));
@@ -700,8 +662,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		customBoundingBox.setSelected(plant.customBoundingBox);
 		disableOffset.setSelected(plant.disableOffset);
-		boundingBoxList.clear(); // Fixes failing tests
-		plant.boundingBoxes.forEach(e -> new JBoundingBoxEntry(boundingBoxes, boundingBoxList).setEntry(e));
+		boundingBoxList.setBoundingBoxes(plant.boundingBoxes);
 
 		Model model = plant.getItemModel();
 		if (model != null && model.getType() != null && model.getReadableName() != null)
@@ -733,8 +694,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 		disableOffset.setEnabled(customBoundingBox.isSelected());
-		boundingBoxList.forEach(boxEntry -> boxEntry.setEntryEnabled(customBoundingBox.isSelected()));
-		addBoundingBox.setEnabled(customBoundingBox.isSelected());
+		boundingBoxList.setEnabled(customBoundingBox.isSelected());
 
 		if (normalType.isSelected())
 			stl.setIcon(TiledImageCache.plantStaticYes);
@@ -810,8 +770,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		plant.customBoundingBox = customBoundingBox.isSelected();
 		plant.disableOffset = disableOffset.isSelected();
-		plant.boundingBoxes = boundingBoxList.stream().map(JBoundingBoxEntry::getEntry).filter(Objects::nonNull)
-				.collect(Collectors.toList());
+		plant.boundingBoxes = boundingBoxList.getBoundingBoxes();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		plant.renderType = 12;

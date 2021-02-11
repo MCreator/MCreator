@@ -20,6 +20,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.IBoundingBox;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.GUIComponent;
@@ -67,7 +68,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -87,9 +87,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private TextureHolder particleTexture;
 
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
-	private final List<JBoundingBoxEntry> boundingBoxList = new ArrayList<>();
-	private final JPanel boundingBoxes = new JPanel(new GridLayout(0, 1, 5, 5));
-	private final JButton addBoundingBox = L10N.button("elementgui.common.add_bounding_box");
+	private final JBoundingBoxList boundingBoxList = new JBoundingBoxList(mcreator);
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourBlockChanges;
@@ -304,10 +302,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		blockBase.addActionListener(e -> {
 			renderType.setEnabled(true);
 			disableOffset.setEnabled(true);
-			addBoundingBox.setEnabled(true);
-			boundingBoxList.forEach(boxEntry -> boxEntry.setEntryEnabled(true));
+			boundingBoxList.setEnabled(true);
 			rotationMode.setEnabled(true);
 			hasGravity.setEnabled(true);
+			transparencyType.setEnabled(true);
 			hasTransparency.setEnabled(true);
 			material.setEnabled(true);
 			connectedSides.setEnabled(true);
@@ -318,6 +316,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				renderType.setEnabled(false);
 				isWaterloggable.setEnabled(false);
 				rotationMode.setEnabled(false);
+				disableOffset.setEnabled(false);
+				boundingBoxList.setEnabled(false);
 
 				connectedSides.setSelected(false);
 				renderType.setSelectedItem(singleTexture);
@@ -334,6 +334,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				hasTransparency.setEnabled(false);
 				transparencyType.setEnabled(false);
 				isWaterloggable.setSelected(false);
+				disableOffset.setEnabled(false);
+				boundingBoxList.setEnabled(false);
 
 				material.setSelectedItem("LEAVES");
 				renderType.setSelectedItem(singleTexture);
@@ -349,8 +351,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				renderType.setSelectedItem(singleTexture);
 				renderType.setEnabled(false);
 				disableOffset.setEnabled(false);
-				addBoundingBox.setEnabled(false);
-				boundingBoxList.forEach(boxEntry -> boxEntry.setEntryEnabled(false));
+				boundingBoxList.setEnabled(false);
 				hasGravity.setEnabled(false);
 				rotationMode.setEnabled(false);
 				isWaterloggable.setEnabled(false);
@@ -590,48 +591,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		northPanel.add(disableOffset);
 		disableOffset.setOpaque(false);
 
-		JPanel boundingBoxEditor = new JPanel(new BorderLayout());
-		boundingBoxEditor.setOpaque(false);
-
-		JToolBar boundingBoxBar = new JToolBar();
-		boundingBoxBar.setFloatable(false);
-
-		addBoundingBox.setIcon(UIRES.get("16px.add.gif"));
-		boundingBoxBar.add(addBoundingBox);
-
-		boundingBoxEditor.add("North", boundingBoxBar);
-
-		boundingBoxes.setOpaque(false);
-
-		JScrollPane bbScrollPane = new JScrollPane(PanelUtils.pullElementUp(boundingBoxes)) {
-			@Override protected void paintComponent(Graphics g) {
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-				g2d.fillRect(0, 0, getWidth(), getHeight());
-				g2d.dispose();
-				super.paintComponent(g);
-			}
-		};
-		bbScrollPane.setOpaque(false);
-		bbScrollPane.getViewport().setOpaque(false);
-		bbScrollPane.getVerticalScrollBar().setUnitIncrement(11);
-		bbScrollPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		boundingBoxEditor.add("Center", bbScrollPane);
-
-		bbPane.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), boundingBoxEditor));
+		bbPane.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), boundingBoxList));
 		bbPane.setOpaque(false);
 
-		addBoundingBox.addActionListener(e -> {
-			new JBoundingBoxEntry(boundingBoxes, boundingBoxList);
-			updateParametersBasedOnBoundingBoxSize();
-		});
-
 		if (!isEditingMode()) { // Add first bounding box
-			new JBoundingBoxEntry(boundingBoxes, boundingBoxList);
+			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBoundingBox.BoxEntry()));
 		}
 
-		boundingBoxes.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
+		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
 		JPanel selp = new JPanel(new GridLayout(12, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
@@ -1170,7 +1137,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}
 	}
 
-	private void updateParametersBasedOnBoundingBoxSize() {
+	public void updateParametersBasedOnBoundingBoxSize() {
 		if (!isFullCube()) {
 			hasTransparency.setSelected(true);
 			hasTransparency.setEnabled(false);
@@ -1181,13 +1148,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private boolean allowCustomBoundingBox() {
-		return blockBase.getSelectedItem() != null && (blockBase.getSelectedItem().equals("Leaves") ||
-				blockBase.getSelectedItem().equals("Pane") || blockBase.getSelectedIndex() == 0);
+		return blockBase.getSelectedItem() != null && blockBase.getSelectedIndex() == 0;
 	}
 
 	private boolean isFullCube() {
-		return boundingBoxList.stream().anyMatch(JBoundingBoxEntry::isNotEmpty) &&
-				boundingBoxList.stream().filter(JBoundingBoxEntry::isNotEmpty).allMatch(JBoundingBoxEntry::isFullCube);
+		return boundingBoxList.isFullCube();
 	}
 
 	@Override public void reloadDataLists() {
@@ -1350,8 +1315,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		slipperiness.setValue(block.slipperiness);
 
 		disableOffset.setSelected(block.disableOffset);
-		boundingBoxList.clear(); // Fixes failing tests
-		block.boundingBoxes.forEach(e -> new JBoundingBoxEntry(boundingBoxes, boundingBoxList).setEntry(e));
+		boundingBoxList.setBoundingBoxes(block.boundingBoxes);
 
 		specialInfo.setText(
 				block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
@@ -1364,7 +1328,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (model != null && model.getType() != null && model.getReadableName() != null)
 			renderType.setSelectedItem(model);
 
-		boundingBoxList.forEach(boxEntry -> boxEntry.setEntryEnabled(allowCustomBoundingBox()));
+		disableOffset.setEnabled(allowCustomBoundingBox());
+		boundingBoxList.setEnabled(allowCustomBoundingBox());
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 
@@ -1461,8 +1426,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.textureBack = textureBack.getID();
 
 		block.disableOffset = disableOffset.isSelected();
-		block.boundingBoxes = boundingBoxList.stream().map(JBoundingBoxEntry::getEntry).filter(Objects::nonNull)
-				.collect(Collectors.toList());
+		block.boundingBoxes = boundingBoxList.getBoundingBoxes();
 
 		block.beaconColorModifier = beaconColorModifier.getColor();
 
