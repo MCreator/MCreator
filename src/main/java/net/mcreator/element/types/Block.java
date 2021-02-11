@@ -251,8 +251,4 @@ import java.util.stream.Collectors;
 	@Override public @NotNull List<BoxEntry> getValidBoundingBoxes() {
 		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
 	}
-
-	public boolean allowsCustomBoundingBox() {
-		return blockBase == null || blockBase.equals("Leaves") || blockBase.equals("Pane");
-	}
 }

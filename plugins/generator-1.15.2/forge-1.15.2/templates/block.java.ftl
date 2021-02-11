@@ -259,7 +259,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-		<#if data.boundingBoxes?? && data.allowsCustomBoundingBox() && !data.isFullCube()>
+		<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
 		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
 			<#if data.isBoundingBoxEmpty()>
 				return VoxelShapes.empty();
