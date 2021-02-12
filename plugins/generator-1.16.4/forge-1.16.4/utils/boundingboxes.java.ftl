@@ -15,22 +15,22 @@
     <#if rotationMode == 0>
         <@makeBoundingBox positiveBoxes negativeBoxes noOffset "north"/>
     <#elseif rotationMode != 5>
-    switch ((Direction) state.get(FACING)) {
-        case SOUTH:
-        default:
-            <@makeBoundingBox positiveBoxes negativeBoxes noOffset "south"/>
-        case NORTH:
-            <@makeBoundingBox positiveBoxes negativeBoxes noOffset "north"/>
-        case EAST:
-            <@makeBoundingBox positiveBoxes negativeBoxes noOffset "east"/>
-        case WEST:
-            <@makeBoundingBox positiveBoxes negativeBoxes noOffset "west"/>
-        <#if rotationMode == 2 || rotationMode == 4>
-            case UP:
-                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "up"/>
-            case DOWN:
-                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "down"/>
-        </#if>
+        switch ((Direction) state.get(FACING)) {
+            case SOUTH:
+            default:
+                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "south"/>
+            case NORTH:
+                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "north"/>
+            case EAST:
+                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "east"/>
+            case WEST:
+                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "west"/>
+            <#if rotationMode == 2 || rotationMode == 4>
+                case UP:
+                    <@makeBoundingBox positiveBoxes negativeBoxes noOffset "up"/>
+                case DOWN:
+                    <@makeBoundingBox positiveBoxes negativeBoxes noOffset "down"/>
+            </#if>
         }
     <#else>
         switch ((Direction) state.get(FACING)) {
