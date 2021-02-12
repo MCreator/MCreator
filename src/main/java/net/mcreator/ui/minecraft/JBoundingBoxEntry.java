@@ -96,7 +96,7 @@ public class JBoundingBoxEntry extends JPanel {
 		parent.repaint();
 	}
 
-	public void setEntryEnabled(boolean enabled) {
+	public JBoundingBoxEntry setEntryEnabled(boolean enabled) {
 		mx.setEnabled(enabled);
 		my.setEnabled(enabled);
 		mz.setEnabled(enabled);
@@ -105,6 +105,8 @@ public class JBoundingBoxEntry extends JPanel {
 		Mz.setEnabled(enabled);
 		subtract.setEnabled(enabled);
 		remove.setEnabled(enabled);
+
+		return this;
 	}
 
 	public boolean isNotEmpty() {

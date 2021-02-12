@@ -51,7 +51,7 @@ public class JBoundingBoxList extends JPanel {
 		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 
 		add.addActionListener(e -> {
-			new JBoundingBoxEntry(entries, boundingBoxList);
+			new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(this.isEnabled());
 			firePropertyChange("boundingBoxChanged", false, true);
 		});
 
@@ -76,7 +76,7 @@ public class JBoundingBoxList extends JPanel {
 
 	public void setBoundingBoxes(List<IBoundingBox.BoxEntry> box) {
 		boundingBoxList.clear(); // Fixes failing tests
-		box.forEach(e -> new JBoundingBoxEntry(entries, boundingBoxList).setEntry(e));
+		box.forEach(e -> new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(this.isEnabled()).setEntry(e));
 	}
 
 	public boolean isFullCube() {

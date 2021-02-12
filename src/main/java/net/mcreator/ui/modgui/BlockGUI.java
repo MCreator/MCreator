@@ -1149,10 +1149,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}
 	}
 
-	private boolean allowCustomBoundingBox() {
-		return blockBase.getSelectedItem() != null && blockBase.getSelectedIndex() == 0;
-	}
-
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onBlockAdded.refreshListKeepSelected();
@@ -1326,8 +1322,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (model != null && model.getType() != null && model.getReadableName() != null)
 			renderType.setSelectedItem(model);
 
-		disableOffset.setEnabled(allowCustomBoundingBox());
-		boundingBoxList.setEnabled(allowCustomBoundingBox());
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 
