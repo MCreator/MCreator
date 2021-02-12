@@ -594,6 +594,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bbPane.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), boundingBoxList));
 		bbPane.setOpaque(false);
 
+		bbPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
 		if (!isEditingMode()) { // Add first bounding box
 			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBoundingBox.BoxEntry()));
 		}
@@ -1138,7 +1140,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	public void updateParametersBasedOnBoundingBoxSize() {
-		if (!isFullCube()) {
+		if (!boundingBoxList.isFullCube()) {
 			hasTransparency.setSelected(true);
 			hasTransparency.setEnabled(false);
 		} else {
@@ -1149,10 +1151,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private boolean allowCustomBoundingBox() {
 		return blockBase.getSelectedItem() != null && blockBase.getSelectedIndex() == 0;
-	}
-
-	private boolean isFullCube() {
-		return boundingBoxList.isFullCube();
 	}
 
 	@Override public void reloadDataLists() {

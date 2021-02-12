@@ -383,6 +383,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		bbPane.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), boundingBoxList));
 		bbPane.setOpaque(false);
 
+		bbPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
 		customBoundingBox.addActionListener(e -> {
 			disableOffset.setEnabled(customBoundingBox.isSelected());
 			if (!customBoundingBox.isSelected()) {
