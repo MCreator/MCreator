@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.IBoundingBox;
 import net.mcreator.element.IItemWithModel;
 import net.mcreator.element.ITabContainedElement;
 import net.mcreator.element.parts.Fluid;
@@ -30,15 +31,16 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
-		implements IItemWithModel, ITabContainedElement {
+		implements IItemWithModel, ITabContainedElement, IBoundingBox {
 
 	public String texture;
 	public String textureTop;
@@ -63,7 +65,9 @@ import java.util.Map;
 	public boolean hasTransparency;
 	public boolean connectedSides;
 	public String transparencyType;
-	public double mx, my, mz, Mx, My, Mz;
+
+	public boolean disableOffset;
+	public List<BoxEntry> boundingBoxes;
 
 	public String name;
 	public List<String> specialInfo;
@@ -165,6 +169,7 @@ import java.util.Map;
 		super(element);
 
 		this.tintType = "No tint";
+		this.boundingBoxes = new ArrayList<>();
 		this.spawnWorldTypes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
 		this.reactionToPushing = "NORMAL";
@@ -243,4 +248,7 @@ import java.util.Map;
 		return creativeTab;
 	}
 
+	@Override public @NotNull List<BoxEntry> getValidBoundingBoxes() {
+		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
+	}
 }

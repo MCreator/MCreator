@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.IBoundingBox;
 import net.mcreator.element.IItemWithModel;
 import net.mcreator.element.ITabContainedElement;
 import net.mcreator.element.parts.Procedure;
@@ -27,14 +28,16 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Plant extends GeneratableElement
-		implements IItemWithModel, ITabContainedElement {
+		implements IItemWithModel, ITabContainedElement, IBoundingBox {
 
 	public int renderType;
 	public String texture;
@@ -55,6 +58,10 @@ import java.util.Map;
 	public int growapableMaxHeight;
 
 	public String doublePlantGenerationType;
+
+	public boolean customBoundingBox;
+	public boolean disableOffset;
+	public List<BoxEntry> boundingBoxes;
 
 	public String name;
 	public List<String> specialInfo;
@@ -119,6 +126,7 @@ import java.util.Map;
 		this.doublePlantGenerationType = "Flower";
 
 		this.specialInfo = new ArrayList<>();
+		this.boundingBoxes = new ArrayList<>();
 	}
 
 	@Override public Model getItemModel() {
@@ -147,5 +155,9 @@ import java.util.Map;
 
 	public boolean isBlockTinted() {
 		return !"No tint".equals(tintType);
+	}
+
+	@Override public @NotNull List<BoxEntry> getValidBoundingBoxes() {
+		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
 	}
 }
