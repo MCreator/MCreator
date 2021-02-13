@@ -28,6 +28,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "boundingboxes.java.ftl">
 <#include "procedures.java.ftl">
 <#include "mcitems.ftl">
 
@@ -311,6 +312,17 @@ import net.minecraft.block.material.Material;
 			);
 			setRegistryName("${registryname}");
 		}
+
+		<#if data.customBoundingBox && data.boundingBoxes??>
+		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+			<#if data.isBoundingBoxEmpty()>
+				return VoxelShapes.empty();
+			<#else>
+				<#if !data.disableOffset> Vector3d offset = state.getOffset(world, pos); </#if>
+				<@makeBoundingBox data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset "north"/>
+			</#if>
+		}
+		</#if>
 
         <#if data.isReplaceable>
         @Override public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
