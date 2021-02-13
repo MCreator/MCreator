@@ -156,6 +156,10 @@ public class TestWorkspaceDataProvider {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);
 		}
+
+		if (workspace.getFolderManager().getStructuresDir() != null) {
+			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test.nbt"));
+		}
 	}
 
 	private static GeneratableElement getExampleFor(ModElement modElement, Random random, boolean _true,
@@ -463,8 +467,10 @@ public class TestWorkspaceDataProvider {
 								Color.black, new Procedure("condition4")));
 				components.add(new Image("picture1", 20, 30, "picture1", true, new Procedure("condition1")));
 				components.add(new Image("picture2", 22, 31, "picture2", false, new Procedure("condition2")));
-				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure1")));
-				components.add(new Button("button2", 10, 10, "button2", 100, 200, null));
+				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure1"), null));
+				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null));
+				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
+				components.add(new Button("button4", 10, 10, "button4", 100, 200, new Procedure("procedure2"), new Procedure("condition4")));
 				components.add(new InputSlot(0, "slot1", 20, 30, Color.red, _true, _true, new Procedure("procedure3"),
 						new Procedure("procedure1"), new Procedure("procedure2"),
 						new MItemBlock(modElement.getWorkspace(), "")));
@@ -684,6 +690,7 @@ public class TestWorkspaceDataProvider {
 			return dimension;
 		case STRUCTURE:
 			Structure structure = new Structure(modElement);
+			structure.structure = "test";
 			structure.spawnProbability = 310000;
 			structure.minCountPerChunk = 1;
 			structure.maxCountPerChunk = 3;
@@ -720,7 +727,6 @@ public class TestWorkspaceDataProvider {
 				structure.generateCondition = new Procedure("condition1");
 				structure.onStructureGenerated = new Procedure("procedure3");
 			}
-			structure.structure = null;
 			return structure;
 		case ARMOR:
 			Armor armor = new Armor(modElement);

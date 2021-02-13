@@ -44,6 +44,7 @@ import net.mcreator.ui.laf.MCreatorLookAndFeel;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
+import net.mcreator.util.SoundUtils;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
@@ -87,6 +88,8 @@ public final class MCreatorApplication {
 			LOG.error("Failed to set look and feel: " + e.getMessage());
 		}
 
+		SoundUtils.initSoundSystem();
+
 		splashScreen.setProgress(20, "Preloading resources");
 
 		UIRES.preloadImages();
@@ -110,8 +113,9 @@ public final class MCreatorApplication {
 		BlockItemIcons.init();
 		DataListLoader.preloadCache();
 
-		// load templates for image maker
+		// load templates for image makers
 		ImageMakerTexturesCache.init();
+		ArmorMakerTexturesCache.init();
 
 		// load apis defined by plugins after plugins are loaded
 		ModAPIManager.initAPIs();
@@ -290,6 +294,8 @@ public final class MCreatorApplication {
 		analytics.trackMCreatorClose(); // track app close in sync mode
 
 		discordClient.close(); // close discord client
+
+		SoundUtils.close();
 
 		// we close all windows and exit fx platform
 		try {
