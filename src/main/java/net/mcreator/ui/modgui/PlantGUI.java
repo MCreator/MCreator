@@ -118,7 +118,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
 	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
 
-	private final JComboBox<String> tintType = new JComboBox<>(new String[] { "No tint", "Grass", "Foliage", "Water" });
+	private final JComboBox<String> tintType = new JComboBox<>(
+			new String[] { "No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
 	private ProcedureSelector onBlockAdded;
