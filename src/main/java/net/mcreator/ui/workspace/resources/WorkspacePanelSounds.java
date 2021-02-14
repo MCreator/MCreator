@@ -30,7 +30,6 @@ import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.SoundUtils;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.SoundElement;
 
 import javax.swing.*;

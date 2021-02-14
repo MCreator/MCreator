@@ -46,7 +46,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 	private final VTextField commandName = new VTextField(25);
 
-	private final JComboBox<String> permissionLevel = new JComboBox<>(new String[] { "No requirement", "1", "2", "3", "4" });
+	private final JComboBox<String> permissionLevel = new JComboBox<>(
+			new String[] { "No requirement", "1", "2", "3", "4" });
 
 	private final ValidationGroup page1group = new ValidationGroup();
 

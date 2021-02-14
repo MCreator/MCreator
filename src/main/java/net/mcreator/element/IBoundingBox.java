@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
 		public double Mz;
 		public boolean subtract;
 
-		public BoxEntry(){
+		public BoxEntry() {
 			this.Mx = 16;
 			this.My = 16;
 			this.Mz = 16;
