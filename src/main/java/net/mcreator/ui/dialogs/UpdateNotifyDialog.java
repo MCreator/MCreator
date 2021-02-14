@@ -82,8 +82,8 @@ public class UpdateNotifyDialog {
 					Release thisRelease = updateInfo.getReleases().get(Launcher.version.major);
 					if (thisRelease != null) {
 						if (Launcher.version.buildlong < Long.parseLong(thisRelease.getLatestBuild()) && (
-								PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPatches || Launcher.version
-										.isSnapshot())) {
+								PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPatches
+										|| Launcher.version.isSnapshot())) {
 							JPanel pan = new JPanel(new BorderLayout());
 							JLabel upde = L10N.label("dialog.update_notify.more_recent_build", Launcher.version.major,
 									Launcher.version.build,

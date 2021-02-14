@@ -470,7 +470,8 @@ public class TestWorkspaceDataProvider {
 				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure1"), null));
 				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null));
 				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
-				components.add(new Button("button4", 10, 10, "button4", 100, 200, new Procedure("procedure2"), new Procedure("condition4")));
+				components.add(new Button("button4", 10, 10, "button4", 100, 200, new Procedure("procedure2"),
+						new Procedure("condition4")));
 				components.add(new InputSlot(0, "slot1", 20, 30, Color.red, _true, _true, new Procedure("procedure3"),
 						new Procedure("procedure1"), new Procedure("procedure2"),
 						new MItemBlock(modElement.getWorkspace(), "")));
@@ -819,7 +820,7 @@ public class TestWorkspaceDataProvider {
 					box.Mx = new double[] { 16, 15.2, 4, 7.1 + i }[valueIndex];
 					box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
 					box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
-					box.subtract = new boolean[] {false, _true, _true, random.nextBoolean()}[valueIndex];
+					box.subtract = new boolean[] { false, _true, _true, random.nextBoolean() }[valueIndex];
 
 					plant.boundingBoxes.add(box);
 				}
@@ -1005,7 +1006,7 @@ public class TestWorkspaceDataProvider {
 					box.Mx = new double[] { 16, 15.2, 4, 7.1 + i }[valueIndex];
 					box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
 					box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
-					box.subtract = new boolean[] {false, _true, _true, random.nextBoolean()}[valueIndex];
+					box.subtract = new boolean[] { false, _true, _true, random.nextBoolean() }[valueIndex];
 
 					block.boundingBoxes.add(box);
 				}

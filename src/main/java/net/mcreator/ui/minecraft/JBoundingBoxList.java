@@ -55,7 +55,8 @@ public class JBoundingBoxList extends JPanel {
 			firePropertyChange("boundingBoxChanged", false, true);
 		});
 
-		entries.addPropertyChangeListener("boundingBoxChanged", e -> firePropertyChange("boundingBoxChanged", false, true));
+		entries.addPropertyChangeListener("boundingBoxChanged",
+				e -> firePropertyChange("boundingBoxChanged", false, true));
 
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
@@ -71,7 +72,8 @@ public class JBoundingBoxList extends JPanel {
 	}
 
 	public List<IBoundingBox.BoxEntry> getBoundingBoxes() {
-		return boundingBoxList.stream().map(JBoundingBoxEntry::getEntry).filter(Objects::nonNull).collect(Collectors.toList());
+		return boundingBoxList.stream().map(JBoundingBoxEntry::getEntry).filter(Objects::nonNull)
+				.collect(Collectors.toList());
 	}
 
 	public void setBoundingBoxes(List<IBoundingBox.BoxEntry> box) {
@@ -80,7 +82,7 @@ public class JBoundingBoxList extends JPanel {
 	}
 
 	public boolean isFullCube() {
-		return boundingBoxList.stream().anyMatch(JBoundingBoxEntry::isNotEmpty) &&
-				boundingBoxList.stream().filter(JBoundingBoxEntry::isNotEmpty).allMatch(JBoundingBoxEntry::isFullCube);
+		return boundingBoxList.stream().anyMatch(JBoundingBoxEntry::isNotEmpty) && boundingBoxList.stream()
+				.filter(JBoundingBoxEntry::isNotEmpty).allMatch(JBoundingBoxEntry::isFullCube);
 	}
 }

@@ -54,8 +54,7 @@ class VCSWorkspaceMergeDialog {
 		}
 
 		if (input.getWorkspaceFoldersMergeHandle() != null) {
-			merges.add(
-					PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Folder structure"), 19)));
+			merges.add(PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Folder structure"), 19)));
 			merges.add(new MergeHandleComponent(mergeHandleComponents, input.getWorkspaceFoldersMergeHandle()));
 		}
 
