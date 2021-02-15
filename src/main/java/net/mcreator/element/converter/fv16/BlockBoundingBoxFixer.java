@@ -57,8 +57,8 @@ public class BlockBoundingBoxFixer implements IConverter {
 	}
 
 	private boolean checkOldBoundingBox(JsonObject blockDef) {
-		return blockDef.get("mx") != null && blockDef.get("my") != null && blockDef.get("mz") != null &&
-				blockDef.get("Mx") != null && blockDef.get("My") != null && blockDef.get("Mz") != null;
+		return blockDef.get("mx") != null && blockDef.get("my") != null && blockDef.get("mz") != null
+				&& blockDef.get("Mx") != null && blockDef.get("My") != null && blockDef.get("Mz") != null;
 	}
 
 }

@@ -309,7 +309,8 @@ public class ToolPackMakerTool {
 		mcreator.getModElementManager().storeModElement(hoeRecipe);
 	}
 
-	private static void setParametersBasedOnFactorAndAddElement(MCreator mcreator, double factor, Tool tool, FolderElement folder) {
+	private static void setParametersBasedOnFactorAndAddElement(MCreator mcreator, double factor, Tool tool,
+			FolderElement folder) {
 		tool.harvestLevel = (int) Math.round(2 * factor);
 		tool.efficiency = (double) Math.round(6.0f * Math.pow(factor, 0.6));
 		tool.enchantability = (int) Math.round(14 * factor);

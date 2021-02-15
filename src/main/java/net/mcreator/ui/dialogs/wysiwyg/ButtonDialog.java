@@ -56,12 +56,15 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		eh.refreshList();
 
-		ProcedureSelector displayCondition = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/button_display_condition"),
-				editor.mcreator, L10N.t("dialog.gui.button_display_condition"), ProcedureSelector.Side.BOTH, false,
-				VariableElementType.LOGIC, Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		ProcedureSelector displayCondition = new ProcedureSelector(
+				IHelpContext.NONE.withEntry("gui/button_display_condition"), editor.mcreator,
+				L10N.t("dialog.gui.button_display_condition"), ProcedureSelector.Side.BOTH, false,
+				VariableElementType.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
 
-		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition))));
+		add("Center",
+				new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition))));
 
 		add("North", PanelUtils.join(FlowLayout.LEFT, options));
 
