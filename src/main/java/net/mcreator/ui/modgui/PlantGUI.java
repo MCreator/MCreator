@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.IBoundingBox;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
@@ -56,7 +55,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
@@ -384,10 +382,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		northPanel.setOpaque(false);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_bounding_box"),
-        L10N.label("elementgui.common.custom_bounding_box")));
+				L10N.label("elementgui.common.custom_bounding_box")));
 		northPanel.add(customBoundingBox);
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/disable_offset"),
-        L10N.label("elementgui.common.disable_offset")));
+				L10N.label("elementgui.common.disable_offset")));
 		northPanel.add(disableOffset);
 
 		customBoundingBox.setOpaque(false);
@@ -411,8 +409,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			disableOffset.setEnabled(false);
 			boundingBoxList.setEnabled(false);
 		}
-    
-    JPanel selp = new JPanel(new GridLayout(7, 2, 25, 4));
+
+		JPanel selp = new JPanel(new GridLayout(7, 2, 25, 4));
 		selp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
@@ -434,40 +432,40 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		ComponentUtils.deriveFont(name, 16);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
-				L10N.label("elementgui.common.name_in_gui")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.common.creative_tab")));
 		selp.add(creativeTab);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"),
-				L10N.label("elementgui.common.block_sound")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.common.block_sound")));
 		selp.add(soundOnStep);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hardness"),
-				L10N.label("elementgui.common.hardness")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/hardness"), L10N.label("elementgui.common.hardness")));
 		selp.add(hardness);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/resistance"),
-				L10N.label("elementgui.common.resistance")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/resistance"), L10N.label("elementgui.common.resistance")));
 		selp.add(resistance);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
-				L10N.label("elementgui.common.luminance")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/luminance"), L10N.label("elementgui.common.luminance")));
 		selp.add(luminance);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
 				L10N.label("elementgui.common.emissive_rendering")));
 		selp.add(emissiveRendering);
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
-				L10N.label("elementgui.common.custom_drop")));
+		selp2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/custom_drop"), L10N.label("elementgui.common.custom_drop")));
 		selp2.add(PanelUtils.join(FlowLayout.LEFT, customDrop));
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_amount"),
-				L10N.label("elementgui.common.drop_amount")));
+		selp2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/drop_amount"), L10N.label("elementgui.common.drop_amount")));
 		selp2.add(dropAmount);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
@@ -511,12 +509,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.force_ticking")));
 		advancedProperties.add(forceTicking);
 
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/color_on_map"),
-				L10N.label("elementgui.plant.color_on_map")));
+		advancedProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/color_on_map"), L10N.label("elementgui.plant.color_on_map")));
 		advancedProperties.add(colorOnMap);
 
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
-				L10N.label("elementgui.plant.flammability")));
+		advancedProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/flammability"), L10N.label("elementgui.plant.flammability")));
 		advancedProperties.add(flammability);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
@@ -527,12 +525,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.common.ai_path_node_type")));
 		advancedProperties.add(aiPathNodeType);
 
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
-				L10N.label("elementgui.common.offset_type")));
+		advancedProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/offset_type"), L10N.label("elementgui.common.offset_type")));
 		advancedProperties.add(offsetType);
 
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/type"),
-				L10N.label("elementgui.plant.type")));
+		advancedProperties
+				.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/type"), L10N.label("elementgui.plant.type")));
 		advancedProperties.add(growapableSpawnType);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/can_be_placed_on"),
@@ -543,8 +541,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				.northAndCenterElement(advancedProperties, PanelUtils.join(FlowLayout.LEFT, placingCondition));
 		plocb.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.plant.properties_advanced_plant"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				L10N.t("elementgui.plant.properties_advanced_plant"), TitledBorder.LEADING,
+				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		plocb.setOpaque(false);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(plocb));
