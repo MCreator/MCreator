@@ -1033,6 +1033,8 @@ public class TestWorkspaceDataProvider {
 			block.reactionToPushing = getRandomItem(random,
 					new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" });
 			block.slipperiness = 12.342;
+			block.speedFactor = 34.632;
+			block.jumpFactor = 17.732;
 			block.lightOpacity = new int[] { 123, 25, 0,
 					35 }[valueIndex]; // third is 0 because third index for model is cross which requires transparency;
 			block.material = new Material(modElement.getWorkspace(),

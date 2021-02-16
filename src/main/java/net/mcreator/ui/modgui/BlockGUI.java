@@ -180,6 +180,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner particleSpawningRadious = new JSpinner(new SpinnerNumberModel(0.5, 0, 2, 0.1f));
 	private final JSpinner particleAmount = new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1));
 	private final JSpinner slipperiness = new JSpinner(new SpinnerNumberModel(0.6, 0.01, 5, 0.1));
+	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1, 0.01, 1000, 0.1));
+	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1, 0.01, 1000, 0.1));
 
 	private final JComboBox<String> rotationMode = new JComboBox<>(
 			new String[] { "<html>No rotation<br><small>Fixed block orientation",
@@ -602,7 +604,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
-		JPanel selp = new JPanel(new GridLayout(12, 2, 0, 2));
+		JPanel selp = new JPanel(new GridLayout(14, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 
 		JPanel advancedProperties = new JPanel(new GridLayout(13, 2, 0, 2));
@@ -649,6 +651,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/slipperiness"), L10N.label("elementgui.block.slipperiness")));
 		selp.add(slipperiness);
+
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/speed_factor"), L10N.label("elementgui.block.speed_factor")));
+		selp.add(speedFactor);
+
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/jump_factor"), L10N.label("elementgui.block.jump_factor")));
+		selp.add(jumpFactor);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/luminance"), L10N.label("elementgui.common.luminance")));
@@ -1307,6 +1317,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isLadder.setSelected(block.isLadder);
 		reactionToPushing.setSelectedItem(block.reactionToPushing);
 		slipperiness.setValue(block.slipperiness);
+		speedFactor.setValue(block.speedFactor);
+		jumpFactor.setValue(block.jumpFactor);
 
 		disableOffset.setSelected(block.disableOffset);
 		boundingBoxList.setBoundingBoxes(block.boundingBoxes);
@@ -1439,6 +1451,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.isLadder = isLadder.isSelected();
 		block.reactionToPushing = (String) reactionToPushing.getSelectedItem();
 		block.slipperiness = (double) slipperiness.getValue();
+		block.speedFactor = (double) speedFactor.getValue();
+		block.jumpFactor = (double) jumpFactor.getValue();
 
 		block.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 

@@ -104,6 +104,8 @@ import java.util.stream.Collectors;
 
 	public boolean isLadder;
 	public double slipperiness;
+	public double speedFactor;
+	public double jumpFactor;
 	public String reactionToPushing;
 
 	public boolean isNotColidable;
@@ -175,6 +177,8 @@ import java.util.stream.Collectors;
 		this.restrictionBiomes = new ArrayList<>();
 		this.reactionToPushing = "NORMAL";
 		this.slipperiness = 0.6;
+		this.speedFactor = 1.0;
+		this.jumpFactor = 1.0;
 		this.colorOnMap = "DEFAULT";
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
