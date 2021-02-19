@@ -308,6 +308,12 @@ import net.minecraft.block.material.Material;
 					<#if data.emissiveRendering>
 					.setNeedsPostProcessing((bs, br, bp) -> true).setEmmisiveRendering((bs, br, bp) -> true)
 					</#if>
+					<#if data.speedFactor != 1.0>
+					.speedFactor(${data.speedFactor}f)
+					</#if>
+					<#if data.jumpFactor != 1.0>
+					.jumpFactor(${data.jumpFactor}f)
+					</#if>
 					.setLightLevel(s -> ${data.luminance})
 			);
 			setRegistryName("${registryname}");

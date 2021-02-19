@@ -653,12 +653,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(slipperiness);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/speed_factor"), L10N.label("elementgui.block.speed_factor")));
-		selp.add(speedFactor);
-
-		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/jump_factor"), L10N.label("elementgui.block.jump_factor")));
 		selp.add(jumpFactor);
+
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/speed_factor"), L10N.label("elementgui.block.speed_factor")));
+		selp.add(speedFactor);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/luminance"), L10N.label("elementgui.common.luminance")));
@@ -1317,8 +1317,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isLadder.setSelected(block.isLadder);
 		reactionToPushing.setSelectedItem(block.reactionToPushing);
 		slipperiness.setValue(block.slipperiness);
-		speedFactor.setValue(block.speedFactor);
 		jumpFactor.setValue(block.jumpFactor);
+		speedFactor.setValue(block.speedFactor);
 
 		disableOffset.setSelected(block.disableOffset);
 		boundingBoxList.setBoundingBoxes(block.boundingBoxes);
