@@ -1,1 +1,1 @@
-(new TranslationTextComponent(${input$key}).toString())
+(new TranslationTextComponent(${input$key}).getString())
