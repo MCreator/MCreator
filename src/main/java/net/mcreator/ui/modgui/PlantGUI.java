@@ -141,7 +141,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(100, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(60, 0, 1024, 1));
-	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1, 0, 1000, 0.1));
+	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1, -1000, 1000, 0.1));
 	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1, -1000, 1000, 0.1));
 
 	public PlantGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
