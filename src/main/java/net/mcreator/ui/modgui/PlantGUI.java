@@ -191,6 +191,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
+		ComponentUtils.deriveFont(tintType, 16);
+		ComponentUtils.deriveFont(growapableSpawnType, 16);
+		ComponentUtils.deriveFont(doublePlantGenerationType, 16);
+		ComponentUtils.deriveFont(staticPlantGenerationType, 16);
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
@@ -399,8 +403,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			boundingBoxList.setEnabled(false);
 		}
 
-		JPanel selp = new JPanel(new GridLayout(10, 2, 25, 4));
-		JPanel selp2 = new JPanel(new GridLayout(11, 2, 25, 4));
+		JPanel selp = new JPanel(new GridLayout(10, 2, 25, 2));
+		JPanel selp2 = new JPanel(new GridLayout(11, 2, 25, 2));
 
 		useLootTableForDrops.setOpaque(false);
 		unbreakable.setOpaque(false);
@@ -511,7 +515,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		pane3.setOpaque(false);
 
-		JPanel events2 = new JPanel(new GridLayout(3, 4, 5, 8));
+		JPanel events2 = new JPanel(new GridLayout(3, 4, 5, 5));
 		events2.setOpaque(false);
 		events2.add(onRightClicked);
 		events2.add(onBlockAdded);
