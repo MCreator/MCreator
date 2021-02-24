@@ -44,6 +44,10 @@ public static class CustomPortalBlock extends NetherPortalBlock {
 		</#if>
 	}
 
+	<#-- Prevent ZOMBIFIED_PIGLINs from spawning -->
+	@Override public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	}
+
 	public void portalSpawn(World world, BlockPos pos) {
 		Optional<CustomPortalSize> optional = CustomPortalSize.func_242964_a(world, pos, Direction.Axis.X);
 		if (optional.isPresent()) {
