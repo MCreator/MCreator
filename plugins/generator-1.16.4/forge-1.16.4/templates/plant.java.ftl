@@ -95,11 +95,11 @@ import net.minecraft.block.material.Material;
 				<#elseif data.tintType == "Water">
 					BiomeColors.getWaterColor(world, pos) : -1;
 				<#elseif data.tintType == "Sky">
-					Minecraft.getInstance().world.getBiomeManager().getBiome(pos).getSkyColor() : 8562943;
+					Minecraft.getInstance().world.getBiome(pos).getSkyColor() : 8562943;
 				<#elseif data.tintType == "Fog">
-					Minecraft.getInstance().world.getBiomeManager().getBiome(pos).getFogColor() : 12638463;
+					Minecraft.getInstance().world.getBiome(pos).getFogColor() : 12638463;
 				<#else>
-					Minecraft.getInstance().world.getBiomeManager().getBiome(pos).getWaterFogColor() : 329011;
+					Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
 				</#if>
 			}, block);
 		}
