@@ -28,6 +28,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "boundingboxes.java.ftl">
 <#include "procedures.java.ftl">
 <#include "mcitems.ftl">
 
@@ -91,8 +92,14 @@ import net.minecraft.block.material.Material;
 					BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
 				<#elseif data.tintType == "Foliage">
 					BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
-				<#else>
+				<#elseif data.tintType == "Water">
 					BiomeColors.getWaterColor(world, pos) : -1;
+				<#elseif data.tintType == "Sky">
+					Minecraft.getInstance().world.getBiome(pos).getSkyColor() : 8562943;
+				<#elseif data.tintType == "Fog">
+					Minecraft.getInstance().world.getBiome(pos).getFogColor() : 12638463;
+				<#else>
+					Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
 				</#if>
 			}, block);
 		}
@@ -106,8 +113,14 @@ import net.minecraft.block.material.Material;
 						return GrassColors.get(0.5D, 1.0D);
 					<#elseif data.tintType == "Foliage">
 						return FoliageColors.getDefault();
-					<#else>
+					<#elseif data.tintType == "Water">
 						return 3694022;
+					<#elseif data.tintType == "Sky">
+						return 8562943;
+					<#elseif data.tintType == "Fog">
+						return 12638463;
+					<#else>
+						return 329011;
 					</#if>
 				}, block);
 			}
@@ -311,6 +324,17 @@ import net.minecraft.block.material.Material;
 			);
 			setRegistryName("${registryname}");
 		}
+
+		<#if data.customBoundingBox && data.boundingBoxes??>
+		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+			<#if data.isBoundingBoxEmpty()>
+				return VoxelShapes.empty();
+			<#else>
+				<#if !data.disableOffset> Vector3d offset = state.getOffset(world, pos); </#if>
+				<@makeBoundingBox data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset "north"/>
+			</#if>
+		}
+		</#if>
 
         <#if data.isReplaceable>
         @Override public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {

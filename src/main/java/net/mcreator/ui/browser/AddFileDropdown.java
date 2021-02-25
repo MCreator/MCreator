@@ -32,8 +32,7 @@ class AddFileDropdown extends JPopupMenu {
 		setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 
 		try {
-			FilterTreeNode selected = (FilterTreeNode) workspaceFileBrowser.tree
-					.getLastSelectedPathComponent();
+			FilterTreeNode selected = (FilterTreeNode) workspaceFileBrowser.tree.getLastSelectedPathComponent();
 			if (selected != null) {
 				if (selected.getUserObject() instanceof File) {
 					File file = (File) selected.getUserObject();

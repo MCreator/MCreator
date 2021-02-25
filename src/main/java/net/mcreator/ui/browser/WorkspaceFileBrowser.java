@@ -27,8 +27,8 @@ import net.mcreator.io.zip.ZipIO;
 import net.mcreator.minecraft.MinecraftFolderUtils;
 import net.mcreator.ui.FileOpener;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.tree.FilteredTreeModel;
 import net.mcreator.ui.component.tree.FilterTreeNode;
+import net.mcreator.ui.component.tree.FilteredTreeModel;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
@@ -254,8 +254,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			List<DefaultMutableTreeNode> state = TreeUtils.getExpansionState(tree);
 
 			FilterTreeNode root = new FilterTreeNode("");
-			FilterTreeNode node = new FilterTreeNode(
-					mcreator.getWorkspaceSettings().getModName());
+			FilterTreeNode node = new FilterTreeNode(mcreator.getWorkspaceSettings().getModName());
 
 			sourceCode = new FilterTreeNode("Source (Gradle)");
 			addNodes(sourceCode, mcreator.getGenerator().getSourceRoot(), true);

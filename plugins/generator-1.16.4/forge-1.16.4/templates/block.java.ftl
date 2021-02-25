@@ -28,6 +28,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "boundingboxes.java.ftl">
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
 <#include "particles.java.ftl">
@@ -107,8 +108,14 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
 				<#elseif data.tintType == "Foliage">
 					BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
-				<#else>
+				<#elseif data.tintType == "Water">
 					BiomeColors.getWaterColor(world, pos) : -1;
+				<#elseif data.tintType == "Sky">
+					Minecraft.getInstance().world.getBiome(pos).getSkyColor() : 8562943;
+				<#elseif data.tintType == "Fog">
+					Minecraft.getInstance().world.getBiome(pos).getFogColor() : 12638463;
+				<#else>
+					Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
 				</#if>
 			}, block);
 		}
@@ -122,8 +129,14 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 						return GrassColors.get(0.5D, 1.0D);
 					<#elseif data.tintType == "Foliage">
 						return FoliageColors.getDefault();
-					<#else>
+					<#elseif data.tintType == "Water">
 						return 3694022;
+					<#elseif data.tintType == "Sky">
+						return 8562943;
+					<#elseif data.tintType == "Fog">
+						return 12638463;
+					<#else>
+						return 329011;
 					</#if>
 				}, block);
 			}
@@ -288,71 +301,16 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-		<#if data.mx != 0 || data.my != 0 || data.mz != 0 || data.Mx != 1 || data.My != 1 || data.Mz != 1>
+		<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
 		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-			Vector3d offset = state.getOffset(world, pos);
-			<#if data.rotationMode == 1 || data.rotationMode == 3>
-			switch ((Direction) state.get(FACING)) {
-			case UP:
-			case DOWN:
-			case SOUTH:
-			default:
-				return VoxelShapes.create(${1-data.mx}D, ${data.my}D, ${1-data.mz}D, ${1-data.Mx}D, ${data.My}D,
-                            ${1-data.Mz}D).withOffset(offset.x, offset.y, offset.z);
-			case NORTH:
-				return VoxelShapes.create(${data.mx}D, ${data.my}D, ${data.mz}D, ${data.Mx}D, ${data.My}D, ${data.Mz}D)
-						.withOffset(offset.x, offset.y, offset.z);
-			case WEST:
-				return VoxelShapes.create(${data.mz}D, ${data.my}D, ${1-data.mx}D, ${data.Mz}D, ${data.My}D,
-                            ${1-data.Mx}D).withOffset(offset.x, offset.y, offset.z);
-			case EAST:
-				return VoxelShapes.create(${1-data.mz}D, ${data.my}D, ${data.mx}D, ${1-data.Mz}D, ${data.My}D,
-                            ${data.Mx}D).withOffset(offset.x, offset.y, offset.z);
-			}
-			<#elseif data.rotationMode == 2 || data.rotationMode == 4>
-			switch ((Direction) state.get(FACING)) {
-			case SOUTH:
-			default:
-				return VoxelShapes.create(${1-data.mx}D, ${data.my}D, ${1-data.mz}D, ${1-data.Mx}D, ${data.My}D,
-                            ${1-data.Mz}D).withOffset(offset.x, offset.y, offset.z);
-			case NORTH:
-				return VoxelShapes.create(${data.mx}D, ${data.my}D, ${data.mz}D, ${data.Mx}D, ${data.My}D, ${data.Mz}D)
-						.withOffset(offset.x, offset.y, offset.z);
-			case WEST:
-				return VoxelShapes.create(${data.mz}D, ${data.my}D, ${1-data.mx}D, ${data.Mz}D, ${data.My}D,
-                            ${1-data.Mx}D).withOffset(offset.x, offset.y, offset.z);
-			case EAST:
-				return VoxelShapes.create(${1-data.mz}D, ${data.my}D, ${data.mx}D, ${1-data.Mz}D, ${data.My}D,
-                            ${data.Mx}D).withOffset(offset.x, offset.y, offset.z);
-			case UP:
-				return VoxelShapes.create(${data.mx}D, ${1-data.mz}D, ${data.my}D, ${data.Mx}D, ${1-data.Mz}D,
-                            ${data.My}D).withOffset(offset.x, offset.y, offset.z);
-			case DOWN:
-				return VoxelShapes.create(${data.mx}D, ${data.mz}D, ${1-data.my}D, ${data.Mx}D, ${data.Mz}D,
-                            ${1-data.My}D).withOffset(offset.x, offset.y, offset.z);
-			}
-			<#elseif data.rotationMode == 5>
-			switch ((Direction) state.get(FACING)) {
-			case SOUTH:
-			case NORTH:
-			default:
-				return VoxelShapes.create(${data.mx}D, ${data.my}D, ${data.mz}D, ${data.Mx}D, ${data.My}D, ${data.Mz}D)
-						.withOffset(offset.x, offset.y, offset.z);
-			case EAST:
-			case WEST:
-				return VoxelShapes.create(${data.mx}D, ${1-data.mz}D, ${data.my}D, ${data.Mx}D, ${1-data.Mz}D,
-							${data.My}D).withOffset(offset.x, offset.y, offset.z);
-			case UP:
-			case DOWN:
-				return VoxelShapes.create(${data.my}D, ${1-data.mx}D, ${1-data.mz}D, ${data.My}D, ${1-data.Mx}D,
-							${1-data.Mz}D).withOffset(offset.x, offset.y, offset.z);
-			}
-            <#else>
-			return VoxelShapes.create(${data.mx}D, ${data.my}D, ${data.mz}D, ${data.Mx}D, ${data.My}D, ${data.Mz}D)
-					.withOffset(offset.x, offset.y, offset.z);
-            </#if>
+			<#if data.isBoundingBoxEmpty()>
+				return VoxelShapes.empty();
+			<#else>
+				<#if !data.disableOffset>Vector3d offset = state.getOffset(world, pos);</#if>
+				<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset data.rotationMode/>
+			</#if>
 		}
-        </#if>
+		</#if>
 
 		<#if data.rotationMode != 0>
 		@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {

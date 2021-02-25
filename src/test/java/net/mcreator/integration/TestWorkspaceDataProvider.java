@@ -19,6 +19,7 @@
 package net.mcreator.integration;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.IBoundingBox;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
@@ -154,6 +155,10 @@ public class TestWorkspaceDataProvider {
 			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("test");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);
+		}
+
+		if (workspace.getFolderManager().getStructuresDir() != null) {
+			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test.nbt"));
 		}
 	}
 
@@ -462,8 +467,11 @@ public class TestWorkspaceDataProvider {
 								Color.black, new Procedure("condition4")));
 				components.add(new Image("picture1", 20, 30, "picture1", true, new Procedure("condition1")));
 				components.add(new Image("picture2", 22, 31, "picture2", false, new Procedure("condition2")));
-				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure1")));
-				components.add(new Button("button2", 10, 10, "button2", 100, 200, null));
+				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure1"), null));
+				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null));
+				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
+				components.add(new Button("button4", 10, 10, "button4", 100, 200, new Procedure("procedure2"),
+						new Procedure("condition4")));
 				components.add(new InputSlot(0, "slot1", 20, 30, Color.red, _true, _true, new Procedure("procedure3"),
 						new Procedure("procedure1"), new Procedure("procedure2"),
 						new MItemBlock(modElement.getWorkspace(), "")));
@@ -681,6 +689,7 @@ public class TestWorkspaceDataProvider {
 			return dimension;
 		case STRUCTURE:
 			Structure structure = new Structure(modElement);
+			structure.structure = "test";
 			structure.spawnProbability = 310000;
 			structure.minCountPerChunk = 1;
 			structure.maxCountPerChunk = 3;
@@ -717,7 +726,6 @@ public class TestWorkspaceDataProvider {
 				structure.generateCondition = new Procedure("condition1");
 				structure.onStructureGenerated = new Procedure("procedure3");
 			}
-			structure.structure = null;
 			return structure;
 		case ARMOR:
 			Armor armor = new Armor(modElement);
@@ -798,6 +806,24 @@ public class TestWorkspaceDataProvider {
 			plant.staticPlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.growapableMaxHeight = 5;
+			plant.customBoundingBox = !_true;
+			plant.disableOffset = !_true;
+			plant.boundingBoxes = new ArrayList<>();
+			if (!emptyLists) {
+				int boxes = random.nextInt(4) + 1;
+				for (int i = 0; i < boxes; i++) {
+					IBoundingBox.BoxEntry box = new IBoundingBox.BoxEntry();
+					box.mx = new double[] { 0, 5 + i, 1.2, 7.1 }[valueIndex];
+					box.my = new double[] { 0, 2, 3.6, 12.2 }[valueIndex];
+					box.mz = new double[] { 0, 3.1, 0, 2.2 }[valueIndex];
+					box.Mx = new double[] { 16, 15.2, 4, 7.1 + i }[valueIndex];
+					box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
+					box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
+					box.subtract = new boolean[] { false, _true, _true, random.nextBoolean() }[valueIndex];
+
+					plant.boundingBoxes.add(box);
+				}
+			}
 			plant.hardness = 0.03;
 			plant.emissiveRendering = !_true;
 			plant.resistance = 3;
@@ -849,7 +875,8 @@ public class TestWorkspaceDataProvider {
 			plant.onBlockPlacedBy = new Procedure("procedure9");
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
 			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
-			plant.tintType = getRandomString(random, Arrays.asList("No tint", "Grass", "Foliage", "Water"));
+			plant.tintType = getRandomString(random,
+					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
 			plant.renderType = new int[] { 13, !"No tint".equals(plant.tintType) ? 120 : 12, 13,
 					!"No tint".equals(plant.tintType) ? 120 : 12 }[valueIndex];
 			plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
@@ -961,17 +988,28 @@ public class TestWorkspaceDataProvider {
 			Block block = new Block(modElement);
 			block.name = modElement.getName();
 			block.hasTransparency = new boolean[] { _true, _true, true,
-					_true }[valueIndex]; // third is true because third index for model is cross which requires transparency
+					!emptyLists }[valueIndex]; // third is true because third index for model is cross which requires transparency
 			block.connectedSides = _true;
 			block.displayFluidOverlay = _true;
 			block.emissiveRendering = _true;
 			block.transparencyType = new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" }[valueIndex];
-			block.mx = 0.1;
-			block.my = 0.1;
-			block.mz = 0.1;
-			block.Mx = 0.9;
-			block.My = 0.9;
-			block.Mz = 0.9;
+			block.disableOffset = !_true;
+			block.boundingBoxes = new ArrayList<>();
+			if (!emptyLists) {
+				int boxes = random.nextInt(4) + 1;
+				for (int i = 0; i < boxes; i++) {
+					IBoundingBox.BoxEntry box = new IBoundingBox.BoxEntry();
+					box.mx = new double[] { 0, 5 + i, 1.2, 7.1 }[valueIndex];
+					box.my = new double[] { 0, 2, 3.6, 12.2 }[valueIndex];
+					box.mz = new double[] { 0, 3.1, 0, 2.2 }[valueIndex];
+					box.Mx = new double[] { 16, 15.2, 4, 7.1 + i }[valueIndex];
+					box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
+					box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
+					box.subtract = new boolean[] { false, _true, _true, random.nextBoolean() }[valueIndex];
+
+					block.boundingBoxes.add(box);
+				}
+			}
 			block.rotationMode = new int[] { 0, 1, 4, 5 }[valueIndex];
 			block.hardness = 2.3;
 			block.resistance = 3.1;
@@ -1114,7 +1152,8 @@ public class TestWorkspaceDataProvider {
 			} else {
 				block.specialInfo = new ArrayList<>();
 			}
-			block.tintType = getRandomString(random, Arrays.asList("No tint", "Grass", "Foliage", "Water"));
+			block.tintType = getRandomString(random,
+					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
 			block.isItemTinted = _true;
 			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
 					14 }[valueIndex];

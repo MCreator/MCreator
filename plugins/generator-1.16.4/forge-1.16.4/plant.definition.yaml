@@ -29,7 +29,7 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/plant_double_bottom.json.ftl
-    condition: [ "plantType %= double", "tintType %= noTint" ]
+    condition: [ "plantType %= double", "tintType %= No tint" ]
     writer: json
     variables: "model=cross"
     name: "@MODASSETSROOT/models/block/@registryname_bottom.json"

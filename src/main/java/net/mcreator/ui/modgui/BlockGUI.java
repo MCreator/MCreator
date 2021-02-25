@@ -20,6 +20,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.IBoundingBox;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.GUIComponent;
@@ -85,6 +86,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private TextureHolder itemTexture;
 	private TextureHolder particleTexture;
 
+	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
+	private final JBoundingBoxList boundingBoxList = new JBoundingBoxList(mcreator);
+
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourBlockChanges;
 	private ProcedureSelector onTickUpdate;
@@ -110,12 +114,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 64, 1));
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(255, 0, 255, 1));
 
-	private final JSpinner mx = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
-	private final JSpinner my = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
-	private final JSpinner mz = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
-	private final JSpinner Mx = new JSpinner(new SpinnerNumberModel(1, -100, 100, 0.1));
-	private final JSpinner My = new JSpinner(new SpinnerNumberModel(1, -100, 100, 0.1));
-	private final JSpinner Mz = new JSpinner(new SpinnerNumberModel(1, -100, 100, 0.1));
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 1, 9999999, 1));
 
 	private final JSpinner enchantPowerBonus = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 0.1));
@@ -129,7 +127,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox isNotColidable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> tintType = new JComboBox<>(new String[] { "No tint", "Grass", "Foliage", "Water" });
+	private final JComboBox<String> tintType = new JComboBox<>(
+			new String[] { "No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox hasTransparency = L10N.checkbox("elementgui.common.enable");
@@ -303,14 +302,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		blockBase.addActionListener(e -> {
 			renderType.setEnabled(true);
-			mx.setEnabled(true);
-			my.setEnabled(true);
-			mz.setEnabled(true);
-			Mx.setEnabled(true);
-			My.setEnabled(true);
-			Mz.setEnabled(true);
+			disableOffset.setEnabled(true);
+			boundingBoxList.setEnabled(true);
 			rotationMode.setEnabled(true);
 			hasGravity.setEnabled(true);
+			transparencyType.setEnabled(true);
 			hasTransparency.setEnabled(true);
 			material.setEnabled(true);
 			connectedSides.setEnabled(true);
@@ -321,6 +317,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				renderType.setEnabled(false);
 				isWaterloggable.setEnabled(false);
 				rotationMode.setEnabled(false);
+				disableOffset.setEnabled(false);
+				boundingBoxList.setEnabled(false);
 
 				connectedSides.setSelected(false);
 				renderType.setSelectedItem(singleTexture);
@@ -337,6 +335,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				hasTransparency.setEnabled(false);
 				transparencyType.setEnabled(false);
 				isWaterloggable.setSelected(false);
+				disableOffset.setEnabled(false);
+				boundingBoxList.setEnabled(false);
 
 				material.setSelectedItem("LEAVES");
 				renderType.setSelectedItem(singleTexture);
@@ -351,22 +351,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 			} else if (blockBase.getSelectedItem() != null && blockBase.getSelectedIndex() != 0) {
 				renderType.setSelectedItem(singleTexture);
 				renderType.setEnabled(false);
-				mx.setEnabled(false);
-				my.setEnabled(false);
-				mz.setEnabled(false);
-				Mx.setEnabled(false);
-				My.setEnabled(false);
-				Mz.setEnabled(false);
+				disableOffset.setEnabled(false);
+				boundingBoxList.setEnabled(false);
 				hasGravity.setEnabled(false);
 				rotationMode.setEnabled(false);
 				isWaterloggable.setEnabled(false);
 
-				mx.setValue(0d);
-				my.setValue(0d);
-				mz.setValue(0d);
-				Mx.setValue(1d);
-				My.setValue(1d);
-				Mz.setValue(1d);
 				hasGravity.setSelected(false);
 				rotationMode.setSelectedIndex(0);
 				isWaterloggable.setSelected(false);
@@ -392,6 +382,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel pane7 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane8 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane9 = new JPanel(new BorderLayout(10, 10));
+		JPanel bbPane = new JPanel(new BorderLayout(10, 10));
 
 		pane8.setOpaque(false);
 
@@ -432,8 +423,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destal.add(new JLabel());
 		destal.add(new JLabel());
 
-		destal.add(ComponentUtils
-				.squareAndBorder(textureLeft, new Color(126, 196, 255), L10N.t("elementgui.block.texture_place_left_overlay")));
+		destal.add(ComponentUtils.squareAndBorder(textureLeft, new Color(126, 196, 255),
+				L10N.t("elementgui.block.texture_place_left_overlay")));
 		destal.add(ComponentUtils.squareAndBorder(textureFront, L10N.t("elementgui.block.texture_place_front_side")));
 		destal.add(ComponentUtils.squareAndBorder(textureRight, L10N.t("elementgui.block.texture_place_right")));
 		destal.add(ComponentUtils.squareAndBorder(textureBack, L10N.t("elementgui.block.texture_place_back")));
@@ -551,35 +542,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		hasTransparency.setFont(hasTransparency.getFont().deriveFont(12.0f));
 
-		mx.setOpaque(false);
-		my.setOpaque(false);
-		mz.setOpaque(false);
-		Mx.setOpaque(false);
-		My.setOpaque(false);
-		Mz.setOpaque(false);
-
-		JPanel bound = new JPanel(new GridLayout(6, 2, 0, 2));
-		bound.setOpaque(false);
-
-		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"),
-				L10N.label("elementgui.block.bounding_block_min_x")));
-		bound.add(mx);
-		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"),
-				L10N.label("elementgui.block.bounding_block_min_y")));
-		bound.add(my);
-		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"),
-				L10N.label("elementgui.block.bounding_block_min_z")));
-		bound.add(mz);
-		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"),
-				L10N.label("elementgui.block.bounding_block_max_x")));
-		bound.add(Mx);
-		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"),
-				L10N.label("elementgui.block.bounding_block_max_y")));
-		bound.add(My);
-		bound.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bounding_box"),
-				L10N.label("elementgui.block.bounding_block_max_z")));
-		bound.add(Mz);
-
 		JPanel tintPanel = new JPanel(new GridLayout(2, 2, 0, 2));
 		tintPanel.setOpaque(false);
 		isItemTinted.setOpaque(false);
@@ -593,10 +555,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		topnbot.add("South", PanelUtils.northAndCenterElement(tintPanel, txblock4));
 
-		bound.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.block.bounding_block_title"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.render_type"), 0, 0, getFont().deriveFont(12.0f),
@@ -612,25 +570,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		render.add(rent);
 		render.add(transparencySettings);
-		render.add(bound);
 		render.add(txblock3);
-
-		mx.addChangeListener(event -> updateParametersBasedOnBoundingBoxSize());
-		my.addChangeListener(event -> updateParametersBasedOnBoundingBoxSize());
-		mz.addChangeListener(event -> updateParametersBasedOnBoundingBoxSize());
-		Mx.addChangeListener(event -> updateParametersBasedOnBoundingBoxSize());
-		My.addChangeListener(event -> updateParametersBasedOnBoundingBoxSize());
-		Mz.addChangeListener(event -> updateParametersBasedOnBoundingBoxSize());
-
-		int as = 40;
-		int bs = 20;
-
-		mx.setPreferredSize(new Dimension(as, bs));
-		my.setPreferredSize(new Dimension(as, bs));
-		mz.setPreferredSize(new Dimension(as, bs));
-		Mx.setPreferredSize(new Dimension(as, bs));
-		My.setPreferredSize(new Dimension(as, bs));
-		Mz.setPreferredSize(new Dimension(as, bs));
 
 		render.setOpaque(false);
 
@@ -643,6 +583,25 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
+
+		JPanel northPanel = new JPanel(new GridLayout(1, 2, 10, 2));
+		northPanel.setOpaque(false);
+
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/disable_offset"),
+				L10N.label("elementgui.common.disable_offset")));
+		northPanel.add(disableOffset);
+		disableOffset.setOpaque(false);
+
+		bbPane.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), boundingBoxList));
+		bbPane.setOpaque(false);
+
+		bbPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		if (!isEditingMode()) { // Add first bounding box
+			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBoundingBox.BoxEntry()));
+		}
+
+		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
 		JPanel selp = new JPanel(new GridLayout(12, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
@@ -1118,6 +1077,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page2group.addValidationElement(name);
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
+		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.block.page_advanced_properties"), pane7);
 		addPage(L10N.t("elementgui.block.page_tile_entity"), pane8);
@@ -1180,9 +1140,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}
 	}
 
-	private void updateParametersBasedOnBoundingBoxSize() {
-		if ((Double) mx.getValue() != 0 || (Double) my.getValue() != 0 || (Double) mz.getValue() != 0
-				|| (Double) Mx.getValue() != 1 || (Double) My.getValue() != 1 || (Double) Mz.getValue() != 1) {
+	public void updateParametersBasedOnBoundingBoxSize() {
+		if (!boundingBoxList.isFullCube()) {
 			hasTransparency.setSelected(true);
 			hasTransparency.setEnabled(false);
 		} else {
@@ -1252,12 +1211,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureFront.setTextureFromTextureName(block.textureFront);
 		textureRight.setTextureFromTextureName(block.textureRight);
 		textureBack.setTextureFromTextureName(block.textureBack);
-		mx.setValue(block.mx);
-		my.setValue(block.my);
-		mz.setValue(block.mz);
-		Mx.setValue(block.Mx);
-		My.setValue(block.My);
-		Mz.setValue(block.Mz);
 		guiBoundTo.setSelectedItem(block.guiBoundTo);
 		rotationMode.setSelectedIndex(block.rotationMode);
 		enchantPowerBonus.setValue(block.enchantPowerBonus);
@@ -1356,6 +1309,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		reactionToPushing.setSelectedItem(block.reactionToPushing);
 		slipperiness.setValue(block.slipperiness);
 
+		disableOffset.setSelected(block.disableOffset);
+		boundingBoxList.setBoundingBoxes(block.boundingBoxes);
+
 		specialInfo.setText(
 				block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 
@@ -1382,12 +1338,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.transparencyType = (String) transparencyType.getSelectedItem();
 		block.tintType = (String) tintType.getSelectedItem();
 		block.isItemTinted = isItemTinted.isSelected();
-		block.mx = (double) mx.getValue();
-		block.my = (double) my.getValue();
-		block.mz = (double) mz.getValue();
-		block.Mx = (double) Mx.getValue();
-		block.My = (double) My.getValue();
-		block.Mz = (double) Mz.getValue();
 		block.guiBoundTo = (String) guiBoundTo.getSelectedItem();
 		block.rotationMode = rotationMode.getSelectedIndex();
 		block.enchantPowerBonus = (double) enchantPowerBonus.getValue();
@@ -1467,6 +1417,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.textureFront = textureFront.getID();
 		block.textureRight = textureRight.getID();
 		block.textureBack = textureBack.getID();
+
+		block.disableOffset = disableOffset.isSelected();
+		block.boundingBoxes = boundingBoxList.getBoundingBoxes();
 
 		block.beaconColorModifier = beaconColorModifier.getColor();
 
