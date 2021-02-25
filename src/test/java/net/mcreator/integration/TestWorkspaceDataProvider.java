@@ -876,7 +876,8 @@ public class TestWorkspaceDataProvider {
 			plant.onBlockPlacedBy = new Procedure("procedure9");
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
 			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
-			plant.tintType = getRandomString(random, Arrays.asList("No tint", "Grass", "Foliage", "Water"));
+			plant.tintType = getRandomString(random,
+					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
 			plant.renderType = new int[] { 13, !"No tint".equals(plant.tintType) ? 120 : 12, 13,
 					!"No tint".equals(plant.tintType) ? 120 : 12 }[valueIndex];
 			plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
@@ -1152,7 +1153,8 @@ public class TestWorkspaceDataProvider {
 			} else {
 				block.specialInfo = new ArrayList<>();
 			}
-			block.tintType = getRandomString(random, Arrays.asList("No tint", "Grass", "Foliage", "Water"));
+			block.tintType = getRandomString(random,
+					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
 			block.isItemTinted = _true;
 			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
 					14 }[valueIndex];
