@@ -60,6 +60,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	private final JSpinner maxAge = new JSpinner(new SpinnerNumberModel(7, 0, 100000, 1));
 	private final JSpinner maxAgeDiff = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
 	private final JSpinner frameDuration = new JSpinner(new SpinnerNumberModel(1, 1, 100000, 1));
+	private final JSpinner angularVelocity = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
+	private final JSpinner angularAcceleration = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.01));
 
 	private final JCheckBox canCollide = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox alwaysShow = L10N.checkbox("elementgui.common.enable");
@@ -95,7 +97,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		texture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 		ComponentUtils.deriveFont(texture, 16);
 
-		JPanel spo2 = new JPanel(new GridLayout(13, 2, 2, 2));
+		JPanel spo2 = new JPanel(new GridLayout(15, 2, 2, 2));
 		spo2.setOpaque(false);
 
 		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
@@ -160,6 +162,14 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				L10N.label("elementgui.particle.does_collide")));
 		spo2.add(canCollide);
 
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/angular_velocity"),
+				L10N.label("elementgui.particle.angular_velocity")));
+		spo2.add(angularVelocity);
+
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/angular_acceleration"),
+				L10N.label("elementgui.particle.angular_acceleration")));
+		spo2.add(angularAcceleration);
+
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils
 				.centerAndSouthElement(spo2, PanelUtils.join(FlowLayout.LEFT, additionalExpiryCondition), 0, 10)));
 
@@ -199,6 +209,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		frameDuration.setValue(particle.frameDuration);
 		maxAge.setValue(particle.maxAge);
 		maxAgeDiff.setValue(particle.maxAgeDiff);
+		angularVelocity.setValue(particle.angularVelocity);
+		angularAcceleration.setValue(particle.angularAcceleration);
 		canCollide.setSelected(particle.canCollide);
 		alwaysShow.setSelected(particle.alwaysShow);
 		animate.setSelected(particle.animate);
@@ -217,6 +229,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		particle.maxAge = (int) maxAge.getValue();
 		particle.frameDuration = (int) frameDuration.getValue();
 		particle.maxAgeDiff = (int) maxAgeDiff.getValue();
+		particle.angularVelocity = (double) angularVelocity.getValue();
+		particle.angularAcceleration = (double) angularAcceleration.getValue();
 		particle.canCollide = canCollide.isSelected();
 		particle.animate = animate.isSelected();
 		particle.alwaysShow = alwaysShow.isSelected();
