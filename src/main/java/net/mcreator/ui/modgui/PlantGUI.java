@@ -118,7 +118,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
 	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
 
-	private final JComboBox<String> tintType = new JComboBox<>(new String[] { "No tint", "Grass", "Foliage", "Water" });
+	private final JComboBox<String> tintType = new JComboBox<>(
+			new String[] { "No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
 	private ProcedureSelector onBlockAdded;
@@ -193,6 +194,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
+		ComponentUtils.deriveFont(tintType, 16);
+		ComponentUtils.deriveFont(growapableSpawnType, 16);
+		ComponentUtils.deriveFont(doublePlantGenerationType, 16);
+		ComponentUtils.deriveFont(staticPlantGenerationType, 16);
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
@@ -401,8 +406,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			boundingBoxList.setEnabled(false);
 		}
 
-		JPanel selp = new JPanel(new GridLayout(12, 2, 25, 4));
-		JPanel selp2 = new JPanel(new GridLayout(11, 2, 25, 4));
+		JPanel selp = new JPanel(new GridLayout(10, 2, 25, 2));
+		JPanel selp2 = new JPanel(new GridLayout(11, 2, 25, 2));
 
 		useLootTableForDrops.setOpaque(false);
 		unbreakable.setOpaque(false);
@@ -521,7 +526,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		pane3.setOpaque(false);
 
-		JPanel events2 = new JPanel(new GridLayout(3, 4, 5, 8));
+		JPanel events2 = new JPanel(new GridLayout(3, 4, 5, 5));
 		events2.setOpaque(false);
 		events2.add(onRightClicked);
 		events2.add(onBlockAdded);
