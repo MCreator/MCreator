@@ -438,13 +438,12 @@ import net.minecraft.block.material.Material;
 				BlockState blockstate = worldIn.getBlockState(blockpos);
 				Block block = blockstate.getBlock();
 				<#if hasCondition(data.placingCondition)>
-				boolean additionalCondition = true;
 				if (worldIn instanceof IWorld) {
 					IWorld world = (IWorld) worldIn;
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();
-					additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+					boolean additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
 				}
 				</#if>
 				<#if (data.canBePlacedOn?size > 0)>
