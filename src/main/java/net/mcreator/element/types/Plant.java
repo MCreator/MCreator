@@ -114,6 +114,7 @@ import java.util.stream.Collectors;
 	public Plant(ModElement element) {
 		super(element);
 
+		this.canBePlacedOn = new ArrayList<>();
 		this.spawnWorldTypes = new ArrayList<>();
 		this.spawnWorldTypes.add("Surface");
 		this.restrictionBiomes = new ArrayList<>();
