@@ -112,6 +112,17 @@ Blockly.Blocks['aitasks_container'] = {
     }
 };
 
+Blockly.Blocks['args_start'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.cmdargs_start"));
+        this.appendDummyInput().appendField(new Blockly.FieldLabel(javabridge.t("blockly.block.cmdargs_start.tip"), 'small-text'));
+        this.setStyle('hat_blocks');
+        this.setNextStatement(true);
+        this.setColour(120);
+        this.setTooltip(javabridge.t("blockly.block.cmdargs_start.tooltip"));
+    }
+};
+
 Blockly.Blocks['advancement_trigger'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.advancement_trigger"));

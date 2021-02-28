@@ -18,10 +18,22 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.blockly.BlocklyToCmdArgs;
+import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.blockly.data.ExternalBlockLoader;
+import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.types.Command;
+import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
+import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.blockly.AITasksEditorToolbar;
+import net.mcreator.ui.blockly.BlocklyPanel;
+import net.mcreator.ui.blockly.CmdArgsEditorToolbar;
+import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -38,23 +50,52 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class CommandGUI extends ModElementGUI<Command> {
 
-	private ProcedureSelector onCommandExecuted;
-
 	private final VTextField commandName = new VTextField(25);
-
 	private final JComboBox<String> permissionLevel = new JComboBox<>(
 			new String[] { "No requirement", "1", "2", "3", "4" });
-
+	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private final ValidationGroup page1group = new ValidationGroup();
+	private ProcedureSelector onCommandExecuted;
+	private BlocklyPanel blocklyPanel;
+	private boolean hasErrors = false;
+	private Map<String, ToolboxBlock> externalBlocks;
 
 	public CommandGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
+	}
+
+	private void regenerateArgs() {
+		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
+				mcreator.getGeneratorStats().getGeneratorAITasks());
+
+		BlocklyToCmdArgs blocklyToJava;
+		try {
+			blocklyToJava = new BlocklyToCmdArgs(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
+					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+		} catch (TemplateGeneratorException e) {
+			return;
+		}
+
+		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
+
+		SwingUtilities.invokeLater(() -> {
+			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
+			hasErrors = false;
+			for (BlocklyCompileNote note : compileNotesArrayList) {
+				if (note.getType() == BlocklyCompileNote.Type.ERROR) {
+					hasErrors = true;
+					break;
+				}
+			}
+		});
 	}
 
 	@Override protected void initGUI() {
@@ -79,18 +120,35 @@ public class CommandGUI extends ModElementGUI<Command> {
 		enderpanel.setOpaque(false);
 		pane5.setOpaque(false);
 
-		JPanel evente = new JPanel();
-		evente.setOpaque(false);
-		evente.setBorder(BorderFactory.createTitledBorder(
+		externalBlocks = BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks();
+
+		blocklyPanel = new BlocklyPanel(mcreator);
+		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			BlocklyLoader.INSTANCE.getCmdArgsBlockLoader()
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.EMPTY);
+			blocklyPanel.getJSBridge()
+					.setJavaScriptEventListener(() -> new Thread(CommandGUI.this::regenerateArgs).start());
+			if (!isEditingMode()) {
+				blocklyPanel
+						.setXML("<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>");
+			}
+		});
+
+		blocklyPanel.setPreferredSize(new Dimension(450, 440));
+
+		JPanel args = (JPanel) PanelUtils.northAndCenterElement(PanelUtils.centerInPanel(onCommandExecuted), PanelUtils.centerAndSouthElement(
+				PanelUtils.northAndCenterElement(new CmdArgsEditorToolbar(mcreator, blocklyPanel), blocklyPanel),
+				compileNotesPanel));
+		args.setOpaque(false);
+		args.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.command.on_command_executed"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.command.args_and_actions"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		evente.add(onCommandExecuted);
 
 		JPanel merge = new JPanel(new BorderLayout(25, 25));
 		merge.setOpaque(false);
 		merge.add("North", PanelUtils.centerInPanel(enderpanel));
-		merge.add("South", evente);
+		merge.add("South", args);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(merge)));
 

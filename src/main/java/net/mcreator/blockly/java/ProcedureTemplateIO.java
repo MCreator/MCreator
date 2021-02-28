@@ -88,6 +88,28 @@ public class ProcedureTemplateIO {
 		exportBlocklyXML(block, file);
 	}
 
+	public static void exportCmdArgsSetup(String procedure, File file)
+			throws ParseException, ParserConfigurationException, IOException, SAXException {
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(new InputSource(new StringReader(procedure)));
+		doc.getDocumentElement().normalize();
+
+		Element start_block = BlocklyBlockUtil.getStartBlock(doc, "args_start");
+
+		// if there is no start block, we return empty string
+		if (start_block == null)
+			throw new ParseException("Could not find start block!", -1);
+
+		Element next = XMLUtil.getFirstChildrenWithName(start_block, "next");
+		Element block = XMLUtil.getFirstChildrenWithName(next, "block");
+
+		if (block == null)
+			throw new ParseException("Could not export block!", -1);
+
+		exportBlocklyXML(block, file);
+	}
+
 	private static void exportBlocklyXML(Element element, File file) {
 		DOMImplementationLS lsImpl = (DOMImplementationLS) element.getOwnerDocument().getImplementation()
 				.getFeature("LS", "3.0");

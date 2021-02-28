@@ -31,6 +31,8 @@ import java.awt.image.BufferedImage;
 
 	public String permissionLevel;
 
+	public String argsxml;
+
 	public Procedure onCommandExecuted;
 
 	private Command() {

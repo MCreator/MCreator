@@ -35,17 +35,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
-public class AITasksEditorToolbar extends TransparentToolBar {
+public class CmdArgsEditorToolbar extends TransparentToolBar {
 
-	private static final Logger LOG = LogManager.getLogger(AITasksEditorToolbar.class);
+	private static final Logger LOG = LogManager.getLogger(CmdArgsEditorToolbar.class);
 
-	public AITasksEditorToolbar(MCreator mcreator, BlocklyPanel blocklyPanel) {
+	public CmdArgsEditorToolbar(MCreator mcreator, BlocklyPanel blocklyPanel) {
 		setBorder(null);
 
 		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel,
-				TemplatesLoader.loadTemplates("aitpl", "aitpl"));
+				TemplatesLoader.loadTemplates("cmdtpl", "cmdtpl"));
 
-		JButton bs1 = L10N.button("blockly.templates.ai_setup");
+		JButton bs1 = L10N.button("blockly.templates.cmd_setup");
 		bs1.setPreferredSize(new Dimension(155, 16));
 		bs1.setIcon(UIRES.get("18px.templatelib"));
 		bs1.setOpaque(false);
@@ -59,38 +59,38 @@ public class AITasksEditorToolbar extends TransparentToolBar {
 
 		add(Box.createHorizontalGlue());
 
-		JButton bs2 = L10N.button("blockly.templates.ai_setup.export");
+		JButton bs2 = L10N.button("blockly.templates.cmd_setup.export");
 		bs2.setIcon(UIRES.get("18px.export"));
 		bs2.setOpaque(false);
 		add(bs2);
 		bs2.addActionListener(event -> {
-			File exp = FileDialogs.getSaveDialog(mcreator, new String[] { ".aitpl" });
+			File exp = FileDialogs.getSaveDialog(mcreator, new String[] { ".cmdtpl" });
 			if (exp != null) {
 				try {
-					ProcedureTemplateIO.exportAITaskSetup(blocklyPanel.getXML(), exp);
+					ProcedureTemplateIO.exportCmdArgsSetup(blocklyPanel.getXML(), exp);
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
-					JOptionPane.showMessageDialog(mcreator, L10N.t("blockly.templates.ai_setup.export_failed.message"),
-							L10N.t("blockly.templates.ai_setup.export_failed.title"), JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(mcreator, L10N.t("blockly.templates.cmd_setup.export_failed.message"),
+							L10N.t("blockly.templates.cmd_setup.export_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
 		ComponentUtils.normalizeButton4(bs2);
 		bs2.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 
-		JButton bs3 = L10N.button("blockly.templates.ai_setup.import");
+		JButton bs3 = L10N.button("blockly.templates.cmd_setup.import");
 		bs3.setIcon(UIRES.get("18px.import"));
 		bs3.setOpaque(false);
 		add(bs3);
 		bs3.addActionListener(event -> {
-			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { ".aitpl" });
+			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { ".cmdtpl" });
 			if (imp != null) {
 				try {
 					blocklyPanel.addBlocksFromXML(ProcedureTemplateIO.importBlocklyXML(imp));
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
-					JOptionPane.showMessageDialog(mcreator, L10N.t("blockly.templates.ai_setup.import_failed.message"),
-							L10N.t("blockly.templates.ai_setup.import_failed.title"), JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(mcreator, L10N.t("blockly.templates.cmd_setup.import_failed.message"),
+							L10N.t("blockly.templates.cmd_setup.import_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

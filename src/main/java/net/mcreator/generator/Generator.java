@@ -20,6 +20,7 @@ package net.mcreator.generator;
 
 import com.google.gson.GsonBuilder;
 import net.mcreator.blockly.BlocklyToAITasks;
+import net.mcreator.blockly.BlocklyToCmdArgs;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
@@ -28,6 +29,7 @@ import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Achievement;
+import net.mcreator.element.types.Command;
 import net.mcreator.element.types.Mob;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -80,6 +82,7 @@ public class Generator implements IGenerator, Closeable {
 	private final TemplateGenerator procedureGenerator;
 	private final TemplateGenerator triggerGenerator;
 	private final TemplateGenerator aitaskGenerator;
+	private final TemplateGenerator cmdargsGenerator;
 	private final TemplateGenerator jsonTriggerGenerator;
 
 	private final MinecraftCodeProvider minecraftCodeProvider;
@@ -105,6 +108,7 @@ public class Generator implements IGenerator, Closeable {
 		this.jsonTriggerGenerator = new TemplateGenerator(generatorConfiguration.getJSONTriggerGeneratorConfiguration(),
 				this);
 		this.aitaskGenerator = new TemplateGenerator(generatorConfiguration.getAITaskGeneratorConfiguration(), this);
+		this.cmdargsGenerator = new TemplateGenerator(generatorConfiguration.getCmdArgsGeneratorConfiguration(), this);
 
 		this.minecraftCodeProvider = new MinecraftCodeProvider(workspace);
 	}
@@ -136,6 +140,10 @@ public class Generator implements IGenerator, Closeable {
 
 	public TemplateGenerator getAITaskGenerator() {
 		return aitaskGenerator;
+	}
+
+	public TemplateGenerator getCmdArgsGenerator() {
+		return cmdargsGenerator;
 	}
 
 	public TemplateGenerator getJSONTriggerGenerator() {
@@ -334,6 +342,20 @@ public class Generator implements IGenerator, Closeable {
 										new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 								additionalData.put("aicode", blocklyToJava.getGeneratedCode());
+							});
+				} else if (element instanceof Command) {
+					code = templateGenerator
+							.generateElementFromTemplate(element, templateFileName, dataModel, additionalData -> {
+								BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
+										BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks(),
+										this.getAITaskGenerator(), additionalData).setTemplateExtension(
+										generatorConfiguration.getGeneratorFlavor().getBaseLanguage().name()
+												.toLowerCase(Locale.ENGLISH));
+								BlocklyToCmdArgs blocklyToJava = new BlocklyToCmdArgs(this.getWorkspace(),
+										((Command) element).argsxml, this.getCmdArgsGenerator(),
+										new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+
+								additionalData.put("argscode", blocklyToJava.getGeneratedCode());
 							});
 				} else {
 					code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel, null);

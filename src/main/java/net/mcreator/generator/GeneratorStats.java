@@ -44,6 +44,7 @@ public class GeneratorStats {
 	private Set<String> generatorTriggers;
 	private Set<String> jsonTriggers;
 	private Set<String> generatorAITasks;
+	private Set<String> generatorCmdArgs;
 
 	GeneratorStats(GeneratorConfiguration generatorConfiguration) {
 		this.status = Status
@@ -86,6 +87,7 @@ public class GeneratorStats {
 		coverageInfo.put("triggers", 100d);
 		coverageInfo.put("jsontriggers", 100d);
 		coverageInfo.put("aitasks", 100d);
+		coverageInfo.put("cmdargs", 100d);
 
 		// lazy load actual values
 		new Thread(() -> {
@@ -113,6 +115,13 @@ public class GeneratorStats {
 					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
 			coverageInfo.put("aitasks", Math.min(
 					(((double) generatorAITasks.size()) / BlocklyLoader.INSTANCE.getAITaskBlockLoader()
+							.getDefinedBlocks().size()) * 100, 100));
+
+			generatorCmdArgs = PluginLoader.INSTANCE
+					.getResources(generatorConfiguration.getGeneratorName() + ".cmdargs", ftlFile).stream()
+					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
+			coverageInfo.put("cmdargs", Math.min(
+					(((double) generatorCmdArgs.size()) / BlocklyLoader.INSTANCE.getCmdArgsBlockLoader()
 							.getDefinedBlocks().size()) * 100, 100));
 		}).start();
 
@@ -182,6 +191,10 @@ public class GeneratorStats {
 
 	public Set<String> getGeneratorAITasks() {
 		return generatorAITasks;
+	}
+
+	public Set<String> getGeneratorCmdArgs() {
+		return generatorCmdArgs;
 	}
 
 	public enum CoverageStatus {
