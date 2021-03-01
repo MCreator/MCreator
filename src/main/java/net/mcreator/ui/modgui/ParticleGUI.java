@@ -97,7 +97,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		texture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 		ComponentUtils.deriveFont(texture, 16);
 
-		JPanel spo2 = new JPanel(new GridLayout(15, 2, 2, 2));
+		JPanel spo2 = new JPanel(new GridLayout(13, 2, 2, 2));
 		spo2.setOpaque(false);
 
 		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
@@ -130,37 +130,13 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				.wrapWithHelpButton(this.withEntry("particle/scale"), L10N.label("elementgui.particle.visual_scale")));
 		spo2.add(scale);
 
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("particle/width"), L10N.label("elementgui.particle.bbox_width")));
-		spo2.add(width);
-
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("particle/height"), L10N.label("elementgui.particle.bbox_height")));
-		spo2.add(height);
+		spo2.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("particle/width"), L10N.label("elementgui.particle.bbox")));
+		spo2.add(PanelUtils.gridElements(1, 2, 2, 2, width, height));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/speed_factor"),
 				L10N.label("elementgui.particle.speed_factor")));
 		spo2.add(speedFactor);
-
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("particle/gravity"), L10N.label("elementgui.particle.gravity")));
-		spo2.add(gravity);
-
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("particle/max_age"), L10N.label("elementgui.particle.max_age")));
-		spo2.add(maxAge);
-
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/max_age_diff"),
-				L10N.label("elementgui.particle.max_age_diff")));
-		spo2.add(maxAgeDiff);
-
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/always_show"),
-				L10N.label("elementgui.particle.always_show")));
-		spo2.add(alwaysShow);
-
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/can_collide"),
-				L10N.label("elementgui.particle.does_collide")));
-		spo2.add(canCollide);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/angular_velocity"),
 				L10N.label("elementgui.particle.angular_velocity")));
@@ -169,6 +145,22 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/angular_acceleration"),
 				L10N.label("elementgui.particle.angular_acceleration")));
 		spo2.add(angularAcceleration);
+
+		spo2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("particle/gravity"), L10N.label("elementgui.particle.gravity")));
+		spo2.add(gravity);
+
+		spo2.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("particle/max_age"), L10N.label("elementgui.particle.max_age")));
+		spo2.add(PanelUtils.gridElements(1,2,2,2,maxAge,maxAgeDiff));
+
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/always_show"),
+				L10N.label("elementgui.particle.always_show")));
+		spo2.add(alwaysShow);
+
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/can_collide"),
+				L10N.label("elementgui.particle.does_collide")));
+		spo2.add(canCollide);
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils
 				.centerAndSouthElement(spo2, PanelUtils.join(FlowLayout.LEFT, additionalExpiryCondition), 0, 10)));
