@@ -55,8 +55,10 @@ public class ${name}Particle extends ${JavaModName}Elements.ModElement{
 	@OnlyIn(Dist.CLIENT) private static class CustomParticle extends SpriteTexturedParticle {
 
 		private final IAnimatedSprite spriteSet;
+		<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
 		private float angularVelocity;
 		private float angularAcceleration;
+		</#if>
 
 		protected CustomParticle(World world, double x, double y, double z, double vx, double vy, double vz, IAnimatedSprite spriteSet) {
 			super(world, x, y, z);
@@ -78,8 +80,10 @@ public class ${name}Particle extends ${JavaModName}Elements.ModElement{
 			this.motionY = vy * ${data.speedFactor};
 			this.motionZ = vz * ${data.speedFactor};
 
+			<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
 			this.angularVelocity = (float) ${data.angularVelocity};
 			this.angularAcceleration = (float) ${data.angularAcceleration};
+			</#if>
 
 			<#if data.animate>
 			this.selectSpriteWithAge(spriteSet);
