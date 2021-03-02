@@ -60,6 +60,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	private final JSpinner maxAge = new JSpinner(new SpinnerNumberModel(7, 0, 100000, 1));
 	private final JSpinner maxAgeDiff = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
 	private final JSpinner frameDuration = new JSpinner(new SpinnerNumberModel(1, 1, 100000, 1));
+	private final JSpinner angularVelocity = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
+	private final JSpinner angularAcceleration = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.01));
 
 	private final JCheckBox canCollide = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox alwaysShow = L10N.checkbox("elementgui.common.enable");
@@ -128,17 +130,21 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				.wrapWithHelpButton(this.withEntry("particle/scale"), L10N.label("elementgui.particle.visual_scale")));
 		spo2.add(scale);
 
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("particle/width"), L10N.label("elementgui.particle.bbox_width")));
-		spo2.add(width);
-
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("particle/height"), L10N.label("elementgui.particle.bbox_height")));
-		spo2.add(height);
+		spo2.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("particle/width"), L10N.label("elementgui.particle.bbox")));
+		spo2.add(PanelUtils.gridElements(1, 2, 2, 2, width, height));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/speed_factor"),
 				L10N.label("elementgui.particle.speed_factor")));
 		spo2.add(speedFactor);
+
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/angular_velocity"),
+				L10N.label("elementgui.particle.angular_velocity")));
+		spo2.add(angularVelocity);
+
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/angular_acceleration"),
+				L10N.label("elementgui.particle.angular_acceleration")));
+		spo2.add(angularAcceleration);
 
 		spo2.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("particle/gravity"), L10N.label("elementgui.particle.gravity")));
@@ -146,11 +152,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 		spo2.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("particle/max_age"), L10N.label("elementgui.particle.max_age")));
-		spo2.add(maxAge);
-
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/max_age_diff"),
-				L10N.label("elementgui.particle.max_age_diff")));
-		spo2.add(maxAgeDiff);
+		spo2.add(PanelUtils.gridElements(1,2,2,2,maxAge,maxAgeDiff));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/always_show"),
 				L10N.label("elementgui.particle.always_show")));
@@ -199,6 +201,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		frameDuration.setValue(particle.frameDuration);
 		maxAge.setValue(particle.maxAge);
 		maxAgeDiff.setValue(particle.maxAgeDiff);
+		angularVelocity.setValue(particle.angularVelocity);
+		angularAcceleration.setValue(particle.angularAcceleration);
 		canCollide.setSelected(particle.canCollide);
 		alwaysShow.setSelected(particle.alwaysShow);
 		animate.setSelected(particle.animate);
@@ -217,6 +221,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		particle.maxAge = (int) maxAge.getValue();
 		particle.frameDuration = (int) frameDuration.getValue();
 		particle.maxAgeDiff = (int) maxAgeDiff.getValue();
+		particle.angularVelocity = (double) angularVelocity.getValue();
+		particle.angularAcceleration = (double) angularAcceleration.getValue();
 		particle.canCollide = canCollide.isSelected();
 		particle.animate = animate.isSelected();
 		particle.alwaysShow = alwaysShow.isSelected();

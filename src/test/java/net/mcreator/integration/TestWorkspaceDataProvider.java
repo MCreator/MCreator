@@ -1330,6 +1330,8 @@ public class TestWorkspaceDataProvider {
 			particle.gravity = 12.3;
 			particle.speedFactor = 1.3;
 			particle.canCollide = _true;
+			particle.angularVelocity = 0.23;
+			particle.angularAcceleration = -0.09;
 			particle.alwaysShow = !_true;
 			particle.animate = _true;
 			particle.maxAge = 12;
