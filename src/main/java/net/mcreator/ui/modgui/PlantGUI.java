@@ -406,7 +406,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			boundingBoxList.setEnabled(false);
 		}
 
-		JPanel selp = new JPanel(new GridLayout(10, 2, 25, 2));
+		JPanel selp = new JPanel(new GridLayout(12, 2, 25, 2));
 		JPanel selp2 = new JPanel(new GridLayout(11, 2, 25, 2));
 
 		useLootTableForDrops.setOpaque(false);
@@ -432,6 +432,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		resistance.setOpaque(false);
 
 		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.common.block_sound")));
+		selp.add(soundOnStep);
+
+		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/hardness"), L10N.label("elementgui.common.hardness")));
 		selp.add(hardness);
 
@@ -440,8 +444,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(resistance);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.common.block_sound")));
-		selp.add(soundOnStep);
+				.wrapWithHelpButton(this.withEntry("block/jump_factor"), L10N.label("elementgui.block.jump_factor")));
+		selp.add(jumpFactor);
+
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/speed_factor"), L10N.label("elementgui.block.speed_factor")));
+		selp.add(speedFactor);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/luminance"), L10N.label("elementgui.common.luminance")));
@@ -457,14 +465,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
 				L10N.label("elementgui.common.fire_spread_speed")));
 		selp.add(fireSpreadSpeed);
-
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/jump_factor"), L10N.label("elementgui.block.jump_factor")));
-		selp.add(jumpFactor);
-
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/speed_factor"), L10N.label("elementgui.block.speed_factor")));
-		selp.add(speedFactor);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
 				L10N.label("elementgui.common.emissive_rendering")));
