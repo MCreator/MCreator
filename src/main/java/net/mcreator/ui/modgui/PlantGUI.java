@@ -19,7 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.IBoundingBox;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Plant;
@@ -399,7 +399,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		});
 
 		if (!isEditingMode()) { // Add first bounding box, disable custom bounding box options
-			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBoundingBox.BoxEntry()));
+			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
 			disableOffset.setEnabled(false);
 			boundingBoxList.setEnabled(false);
 		}

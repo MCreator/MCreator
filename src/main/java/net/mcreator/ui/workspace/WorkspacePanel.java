@@ -18,10 +18,7 @@
 
 package net.mcreator.ui.workspace;
 
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
-import net.mcreator.element.NamespacedGeneratableElement;
+import net.mcreator.element.*;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;
@@ -818,7 +815,7 @@ import java.util.stream.Collectors;
 				if (but6.isEnabled()) {
 					IElement mu = list.getSelectedValue();
 					if (mu instanceof ModElement
-							&& ((ModElement) mu).getType().getBaseType() != ModElementType.BaseType.DATAPACK) {
+							&& ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
 						ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
 						if (modified != null)
 							mcreator.getWorkspace().updateModElement(modified);

@@ -19,7 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ITabContainedElement;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.TabEntry;

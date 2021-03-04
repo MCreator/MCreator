@@ -20,7 +20,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.IBoundingBox;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.GUIComponent;
@@ -598,7 +598,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bbPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		if (!isEditingMode()) { // Add first bounding box
-			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBoundingBox.BoxEntry()));
+			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
 		}
 
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());

@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2021, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +19,8 @@
 
 package net.mcreator.element;
 
-import net.mcreator.element.parts.TabEntry;
-import org.jetbrains.annotations.Nullable;
+public enum RecipeType {
 
-public interface ITabContainedElement {
-
-	@Nullable TabEntry getCreativeTab();
+	BLOCK, ITEM, ARMOR, NONE
 
 }

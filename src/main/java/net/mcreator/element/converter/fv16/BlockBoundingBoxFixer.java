@@ -21,7 +21,7 @@ package net.mcreator.element.converter.fv16;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.IBoundingBox;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Block;
 import net.mcreator.workspace.Workspace;
@@ -37,7 +37,7 @@ public class BlockBoundingBoxFixer implements IConverter {
 		try {
 			JsonObject blockDefinition = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject();
 			if (checkOldBoundingBox(blockDefinition)) {
-				IBoundingBox.BoxEntry newBB = new IBoundingBox.BoxEntry();
+				IBlockWithBoundingBox.BoxEntry newBB = new IBlockWithBoundingBox.BoxEntry();
 				newBB.mx = blockDefinition.get("mx").getAsDouble() * 16;
 				newBB.my = blockDefinition.get("my").getAsDouble() * 16;
 				newBB.mz = blockDefinition.get("mz").getAsDouble() * 16;

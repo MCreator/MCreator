@@ -19,7 +19,7 @@
 package net.mcreator.integration;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.IBoundingBox;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
@@ -813,7 +813,7 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				int boxes = random.nextInt(4) + 1;
 				for (int i = 0; i < boxes; i++) {
-					IBoundingBox.BoxEntry box = new IBoundingBox.BoxEntry();
+					IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
 					box.mx = new double[] { 0, 5 + i, 1.2, 7.1 }[valueIndex];
 					box.my = new double[] { 0, 2, 3.6, 12.2 }[valueIndex];
 					box.mz = new double[] { 0, 3.1, 0, 2.2 }[valueIndex];
@@ -999,7 +999,7 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				int boxes = random.nextInt(4) + 1;
 				for (int i = 0; i < boxes; i++) {
-					IBoundingBox.BoxEntry box = new IBoundingBox.BoxEntry();
+					IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
 					box.mx = new double[] { 0, 5 + i, 1.2, 7.1 }[valueIndex];
 					box.my = new double[] { 0, 2, 3.6, 12.2 }[valueIndex];
 					box.mz = new double[] { 0, 3.1, 0, 2.2 }[valueIndex];
