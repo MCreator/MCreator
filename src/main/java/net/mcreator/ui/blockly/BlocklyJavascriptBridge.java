@@ -250,8 +250,7 @@ public class BlocklyJavascriptBridge {
 		case "dimension":
 			return ElementUtil.loadAllDimensions(workspace);
 		case "dimension_custom":
-			retval = workspace.getModElements().stream()
-					.filter(mu -> mu.getType().getBaseType() == BaseType.DIMENSION)
+			retval = workspace.getModElements().stream().filter(mu -> mu.getType().getBaseType() == BaseType.DIMENSION)
 					.map(mu -> "CUSTOM:" + mu.getName()).collect(Collectors.toList());
 			break;
 		case "material":

@@ -20,7 +20,6 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.GUIComponent;
@@ -29,6 +28,7 @@ import net.mcreator.element.parts.gui.OutputSlot;
 import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GUI;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;

@@ -20,8 +20,8 @@ package net.mcreator.workspace.misc;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;

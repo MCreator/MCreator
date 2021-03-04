@@ -18,7 +18,10 @@
 
 package net.mcreator.generator;
 
-import net.mcreator.element.*;
+import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementTypeRegistry;
+import net.mcreator.element.NamespacedGeneratableElement;
+import net.mcreator.element.RecipeType;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;

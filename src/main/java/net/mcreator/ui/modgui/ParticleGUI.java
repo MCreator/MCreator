@@ -152,7 +152,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 		spo2.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("particle/max_age"), L10N.label("elementgui.particle.max_age")));
-		spo2.add(PanelUtils.gridElements(1,2,2,2,maxAge,maxAgeDiff));
+		spo2.add(PanelUtils.gridElements(1, 2, 2, 2, maxAge, maxAgeDiff));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/always_show"),
 				L10N.label("elementgui.particle.always_show")));

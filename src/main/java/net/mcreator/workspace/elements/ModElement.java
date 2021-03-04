@@ -120,8 +120,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		if (type == ModElementType.DIMENSION) {
 			if (getMetadata("ep") != null && (Boolean) getMetadata("ep"))
 				mcItems.add(new MCItem.Custom(this, null));
-		} else if (type.getRecipeType() == RecipeType.ITEM
-				|| type.getRecipeType() == RecipeType.BLOCK) {
+		} else if (type.getRecipeType() == RecipeType.ITEM || type.getRecipeType() == RecipeType.BLOCK) {
 			mcItems.add(new MCItem.Custom(this, null));
 		} else if (type.getBaseType() == BaseType.ARMOR) {
 			if (getMetadata("eh") != null && (Boolean) getMetadata("eh"))
@@ -254,8 +253,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	 */
 	@SuppressWarnings("unused") public int getID(int index, String baseType) {
 		if (ids.get(index) == null) { // id at this index is not set yet, create id
-			int free_id = workspace
-					.getNextFreeIDAndIncrease(BaseType.valueOf(baseType.toUpperCase(Locale.ENGLISH)));
+			int free_id = workspace.getNextFreeIDAndIncrease(BaseType.valueOf(baseType.toUpperCase(Locale.ENGLISH)));
 			ids.put(index, free_id);
 			return free_id;
 		}

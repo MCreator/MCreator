@@ -72,8 +72,7 @@ public class ElementUtil {
 	 */
 	public static List<MCItem> loadBlocks(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
-		workspace.getModElements().stream()
-				.filter(element -> element.getType().getBaseType() == BaseType.BLOCK)
+		workspace.getModElements().stream().filter(element -> element.getType().getBaseType() == BaseType.BLOCK)
 				.forEach(modElement -> elements.addAll(modElement.getMCItems()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
@@ -254,8 +253,7 @@ public class ElementUtil {
 				.collect(Collectors.toList());
 	}
 
-	private static List<DataListEntry> getCustomElementsOfType(@NotNull Workspace workspace,
-			BaseType type) {
+	private static List<DataListEntry> getCustomElementsOfType(@NotNull Workspace workspace, BaseType type) {
 		return workspace.getModElements().stream().filter(mu -> mu.getType().getBaseType() == type)
 				.map(DataListEntry.Custom::new).collect(Collectors.toList());
 	}
