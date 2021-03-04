@@ -87,6 +87,8 @@ import java.util.stream.Collectors;
 
 	public int flammability;
 	public int fireSpreadSpeed;
+	public double jumpFactor;
+	public double speedFactor;
 
 	public int frequencyOnChunks;
 	public List<String> spawnWorldTypes;
@@ -121,6 +123,9 @@ import java.util.stream.Collectors;
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "XZ";
 		this.tintType = "No tint";
+
+		this.jumpFactor = 1.0;
+		this.speedFactor = 1.0;
 
 		this.staticPlantGenerationType = "Flower";
 		this.doublePlantGenerationType = "Flower";

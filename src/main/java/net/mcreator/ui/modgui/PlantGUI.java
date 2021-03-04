@@ -142,6 +142,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(100, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(60, 0, 1024, 1));
+	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
+	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
 
 	public PlantGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -404,7 +406,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			boundingBoxList.setEnabled(false);
 		}
 
-		JPanel selp = new JPanel(new GridLayout(10, 2, 25, 2));
+		JPanel selp = new JPanel(new GridLayout(12, 2, 25, 2));
 		JPanel selp2 = new JPanel(new GridLayout(11, 2, 25, 2));
 
 		useLootTableForDrops.setOpaque(false);
@@ -430,6 +432,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		resistance.setOpaque(false);
 
 		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.common.block_sound")));
+		selp.add(soundOnStep);
+
+		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/hardness"), L10N.label("elementgui.common.hardness")));
 		selp.add(hardness);
 
@@ -438,8 +444,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(resistance);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.common.block_sound")));
-		selp.add(soundOnStep);
+				.wrapWithHelpButton(this.withEntry("block/jump_factor"), L10N.label("elementgui.block.jump_factor")));
+		selp.add(jumpFactor);
+
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/speed_factor"), L10N.label("elementgui.block.speed_factor")));
+		selp.add(speedFactor);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/luminance"), L10N.label("elementgui.common.luminance")));
@@ -663,6 +673,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		creativePickItem.setBlock(plant.creativePickItem);
 		flammability.setValue(plant.flammability);
 		fireSpreadSpeed.setValue(plant.fireSpreadSpeed);
+		jumpFactor.setValue(plant.jumpFactor);
+		speedFactor.setValue(plant.speedFactor);
+
 		specialInfo.setText(
 				plant.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		generateCondition.setSelectedProcedure(plant.generateCondition);
@@ -771,6 +784,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.creativePickItem = creativePickItem.getBlock();
 		plant.flammability = (int) flammability.getValue();
 		plant.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
+		plant.speedFactor = (double) speedFactor.getValue();
+		plant.jumpFactor = (double) jumpFactor.getValue();
 		plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 		plant.generateCondition = generateCondition.getSelectedProcedure();
 		plant.emissiveRendering = emissiveRendering.isSelected();

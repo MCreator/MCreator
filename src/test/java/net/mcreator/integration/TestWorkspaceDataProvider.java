@@ -854,6 +854,8 @@ public class TestWorkspaceDataProvider {
 			plant.frequencyOnChunks = 13;
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
+			plant.speedFactor = 34.632;
+			plant.jumpFactor = 17.732;
 			plant.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
@@ -1034,6 +1036,8 @@ public class TestWorkspaceDataProvider {
 			block.reactionToPushing = getRandomItem(random,
 					new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" });
 			block.slipperiness = 12.342;
+			block.speedFactor = 34.632;
+			block.jumpFactor = 17.732;
 			block.lightOpacity = new int[] { 123, 25, 0,
 					35 }[valueIndex]; // third is 0 because third index for model is cross which requires transparency;
 			block.material = new Material(modElement.getWorkspace(),
