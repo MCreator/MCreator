@@ -1,0 +1,1 @@
+((PlayerEntity) ${input$entitycheck}).abilities.setWalkSpeed(${input$walkspeed}F);
