@@ -70,8 +70,8 @@ import net.minecraft.block.material.Material;
 					.density(${data.density})
 					.viscosity(${data.viscosity})
 					<#if data.isGas>.gaseous()</#if>)
-Pro					.explosionResistance(${data.resistance}f)
-                    <#if data.generateBucket>.bucket(() -> bucket)</#if>
+					.explosionResistance(${data.resistance}f)
+					<#if data.generateBucket>.bucket(() -> bucket)</#if>
 					.block(() -> block);
 
 		still = (FlowingFluid) new ForgeFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
@@ -98,7 +98,7 @@ Pro					.explosionResistance(${data.resistance}f)
 			</#if>
 
 			<#if data.emissiveRendering>
-        	@OnlyIn(Dist.CLIENT) @Override public boolean isEmissiveRendering(BlockState blockState) {
+			@OnlyIn(Dist.CLIENT) @Override public boolean isEmissiveRendering(BlockState blockState) {
 				return true;
 			}
 			</#if>
