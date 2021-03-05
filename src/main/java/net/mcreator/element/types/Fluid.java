@@ -55,6 +55,8 @@ import java.util.List;
 	public Procedure onNeighbourChanges;
 	public Procedure onTickUpdate;
 	public Procedure onEntityCollides;
+	public Procedure onRandomUpdateEvent;
+	public Procedure onDestroyedByExplosion;
 
 	private Fluid() {
 		this(null);

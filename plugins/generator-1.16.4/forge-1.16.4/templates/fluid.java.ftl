@@ -125,6 +125,28 @@ import net.minecraft.block.material.Material;
     			<@procedureOBJToCode data.onEntityCollides/>
 			}
 			</#if>
+
+			<#if hasProcedure(data.onRandomUpdateEvent)>
+			@OnlyIn(Dist.CLIENT) @Override
+			public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
+				super.animateTick(state, world, pos, random);
+				PlayerEntity entity = Minecraft.getInstance().player;
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				<@procedureOBJToCode data.onRandomUpdateEvent/>
+			}
+			</#if>
+
+			<#if hasProcedure(data.onDestroyedByExplosion)>
+			@Override public void onExplosionDestroy(World world, BlockPos pos, Explosion e) {
+				super.onExplosionDestroy(world, pos, e);
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				<@procedureOBJToCode data.onDestroyedByExplosion/>
+			}
+			</#if>
 		}.setRegistryName("${registryname}"));
 
 		<#if data.generateBucket>

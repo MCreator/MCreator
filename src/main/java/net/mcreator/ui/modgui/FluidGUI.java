@@ -67,6 +67,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private ProcedureSelector onNeighbourChanges;
 	private ProcedureSelector onTickUpdate;
 	private ProcedureSelector onEntityCollides;
+	private ProcedureSelector onRandomUpdateEvent;
+	private ProcedureSelector onDestroyedByExplosion;
 
 	private ProcedureSelector generateCondition;
 
@@ -95,6 +97,12 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onEntityCollides = new ProcedureSelector(this.withEntry("block/when_entity_collides"), mcreator,
 				L10N.t("elementgui.fluid.when_entity_collides"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		onRandomUpdateEvent = new ProcedureSelector(this.withEntry("block/display_tick_update"), mcreator,
+				L10N.t("elementgui.common.event_on_random_update"), ProcedureSelector.Side.CLIENT,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		onDestroyedByExplosion = new ProcedureSelector(this.withEntry("block/when_destroyed_explosion"), mcreator,
+				L10N.t("elementgui.block.event_on_block_destroyed_by_explosion"),
+				Dependency.fromString("x:number/y:number/z:number/world:world"));
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				"Additional generation condition", VariableElementType.LOGIC,
@@ -180,12 +188,14 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		JPanel events = new JPanel();
 		events.setLayout(new BoxLayout(events, BoxLayout.PAGE_AXIS));
-		JPanel events2 = new JPanel(new GridLayout(1, 4, 8, 8));
+		JPanel events2 = new JPanel(new GridLayout(2, 3, 6, 8));
 		events2.setOpaque(false);
 		events2.add(onBlockAdded);
 		events2.add(onNeighbourChanges);
 		events2.add(onTickUpdate);
 		events2.add(onEntityCollides);
+		events2.add(onRandomUpdateEvent);
+		events2.add(onDestroyedByExplosion);
 		events.add(PanelUtils.join(events2));
 		events.setOpaque(false);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
@@ -235,6 +245,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onNeighbourChanges.refreshListKeepSelected();
 		onTickUpdate.refreshListKeepSelected();
 		onEntityCollides.refreshListKeepSelected();
+		onRandomUpdateEvent.refreshListKeepSelected();
+		onDestroyedByExplosion.refreshListKeepSelected();
 
 		generateCondition.refreshListKeepSelected();
 
@@ -261,6 +273,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onNeighbourChanges.setSelectedProcedure(fluid.onNeighbourChanges);
 		onTickUpdate.setSelectedProcedure(fluid.onTickUpdate);
 		onEntityCollides.setSelectedProcedure(fluid.onEntityCollides);
+		onRandomUpdateEvent.setSelectedProcedure(fluid.onRandomUpdateEvent);
+		onDestroyedByExplosion.setSelectedProcedure(fluid.onDestroyedByExplosion);
 		fluidtype.setSelectedItem(fluid.type);
 		frequencyOnChunks.setValue(fluid.frequencyOnChunks);
 		generateCondition.setSelectedProcedure(fluid.generateCondition);
@@ -283,6 +297,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.onNeighbourChanges = onNeighbourChanges.getSelectedProcedure();
 		fluid.onTickUpdate = onTickUpdate.getSelectedProcedure();
 		fluid.onEntityCollides = onEntityCollides.getSelectedProcedure();
+		fluid.onRandomUpdateEvent = onRandomUpdateEvent.getSelectedProcedure();
+		fluid.onDestroyedByExplosion = onDestroyedByExplosion.getSelectedProcedure();
 		fluid.type = (String) fluidtype.getSelectedItem();
 		fluid.spawnWorldTypes = spawnWorldTypes.getListElements();
 		fluid.restrictionBiomes = restrictionBiomes.getListElements();
