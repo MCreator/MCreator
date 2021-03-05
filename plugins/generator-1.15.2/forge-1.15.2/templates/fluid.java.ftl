@@ -70,13 +70,39 @@ import net.minecraft.block.material.Material;
 					.density(${data.density})
 					.viscosity(${data.viscosity})
 					<#if data.isGas>.gaseous()</#if>)
+Pro					.explosionResistance(${data.resistance}f)
                     <#if data.generateBucket>.bucket(() -> bucket)</#if>
 					.block(() -> block);
 
 		still = (FlowingFluid) new ForgeFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
 		flowing = (FlowingFluid) new ForgeFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
 
-		elements.blocks.add(() -> new FlowingFluidBlock(still, Block.Properties.create(Material.${data.type})){
+		elements.blocks.add(() -> new FlowingFluidBlock(still,
+			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
+			Block.Properties.create(Material.${data.type}, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
+			<#else>
+			Block.Properties.create(Material.${data.type})
+			</#if>
+			.lightValue(${data.luminance})
+			){
+			<#if data.flammability != 0>
+			@Override public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+				return ${data.flammability};
+			}
+			</#if>
+
+			<#if data.fireSpreadSpeed != 0>
+			@Override public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+				return ${data.fireSpreadSpeed};
+			}
+			</#if>
+
+			<#if data.emissiveRendering>
+        	@OnlyIn(Dist.CLIENT) @Override public boolean isEmissiveRendering(BlockState blockState) {
+				return true;
+			}
+			</#if>
+
 			<#if hasProcedure(data.onBlockAdded)>
 			@Override public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
 				super.onBlockAdded(state, world, pos, oldState, moving);
