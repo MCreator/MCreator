@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2021, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +19,31 @@
 
 package net.mcreator.element;
 
-import net.mcreator.workspace.resources.Model;
+// @formatter:off
+public enum BaseType {
 
-import java.util.Map;
+	BLOCK,
+	ITEM,
+	ARMOR,
+	BIOME,
+	COMMAND,
+	FUEL,
+	ENTITY,
+	TAB,
+	DIMENSION,
+	STRUCTURE,
+	GUI,
+	KEYBIND,
+	PROCEDURE,
+	OVERLAY,
+	POTION,
+	DATAPACK,
+	ENCHANTMENT,
+	PARTICLE,
+	OTHER,
 
-@SuppressWarnings("unused") public interface IItemWithModel {
-
-	Model getItemModel();
-
-	Map<String, String> getTextureMap();
+	/* legacy base types */
+	ACHIEVEMENT
 
 }
+// @formatter:on

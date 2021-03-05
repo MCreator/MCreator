@@ -95,8 +95,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
 			<#elseif data.tintType == "Foliage">
 				BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
-			<#else>
+			<#elseif data.tintType == "Water">
 				BiomeColors.getWaterColor(world, pos) : -1;
+			<#elseif data.tintType == "Sky">
+				Minecraft.getInstance().world.getBiome(pos).getSkyColor() : 8562943;
+			<#else>
+				Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
 			</#if>
 		}, block);
 	}
@@ -108,8 +112,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					return GrassColors.get(0.5D, 1.0D);
 				<#elseif data.tintType == "Foliage">
 					return FoliageColors.getDefault();
-				<#else>
+				<#elseif data.tintType == "Water">
 					return 3694022;
+				<#elseif data.tintType == "Sky">
+					return 8562943;
+				<#else>
+					return 329011;
 				</#if>
 			}, block);
 		}
@@ -172,6 +180,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					</#if>
 					<#if data.slipperiness != 0.6>
 					.slipperiness(${data.slipperiness}f)
+					</#if>
+					<#if data.speedFactor != 1.0>
+					.speedFactor(${data.speedFactor}f)
+					</#if>
+					<#if data.jumpFactor != 1.0>
+					.jumpFactor(${data.jumpFactor}f)
 					</#if>
 					<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
 					.notSolid()

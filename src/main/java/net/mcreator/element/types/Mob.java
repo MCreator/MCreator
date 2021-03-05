@@ -18,21 +18,28 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.blockly.BlocklyToAITasks;
+import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.IEntityWithModel;
-import net.mcreator.element.ITabContainedElement;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.types.interfaces.IEntityWithModel;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
+import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 @SuppressWarnings("unused") public class Mob extends GeneratableElement
 		implements IEntityWithModel, ITabContainedElement {
@@ -183,4 +190,20 @@ import java.util.List;
 	public boolean hasDrop() {
 		return !mobDrop.isEmpty();
 	}
+
+	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
+		return additionalData -> {
+			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
+					BlocklyLoader.INSTANCE.getAITaskBlockLoader().getDefinedBlocks(),
+					this.getModElement().getGenerator().getAITaskGenerator(), additionalData).setTemplateExtension(
+					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
+							.toLowerCase(Locale.ENGLISH));
+			BlocklyToAITasks blocklyToJava = new BlocklyToAITasks(this.getModElement().getWorkspace(), this.aixml,
+					this.getModElement().getGenerator().getAITaskGenerator(),
+					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+
+			additionalData.put("aicode", blocklyToJava.getGeneratedCode());
+		};
+	}
+
 }

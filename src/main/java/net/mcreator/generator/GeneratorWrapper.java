@@ -19,9 +19,9 @@
 package net.mcreator.generator;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.NamespacedGeneratableElement;
+import net.mcreator.element.RecipeType;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
@@ -69,13 +69,13 @@ import java.util.stream.Collectors;
 		}).collect(Collectors.toList());
 	}
 
-	public ModElementType.RecipeElementType getRecipeElementType(String elementName) {
+	public RecipeType getRecipeElementType(String elementName) {
 		try {
 			return generator.getWorkspace().getModElementByName(getElementPlainName(elementName)).getType()
-					.getRecipeElementType();
+					.getRecipeType();
 		} catch (Exception e) {
 			generator.getLogger().warn("Failed to determine recipe type for: " + elementName, e);
-			return ModElementType.RecipeElementType.NONE;
+			return RecipeType.NONE;
 		}
 	}
 

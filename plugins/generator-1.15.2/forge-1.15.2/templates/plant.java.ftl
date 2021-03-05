@@ -77,8 +77,12 @@ import net.minecraft.block.material.Material;
 				BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
 			<#elseif data.tintType == "Foliage">
 				BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
-			<#else>
+			<#elseif data.tintType == "Water">
 				BiomeColors.getWaterColor(world, pos) : -1;
+			<#elseif data.tintType == "Sky">
+				Minecraft.getInstance().world.getBiome(pos).getSkyColor() : 8562943;
+			<#else>
+				Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
 			</#if>
 		}, block);
 	}
@@ -90,8 +94,12 @@ import net.minecraft.block.material.Material;
 					return GrassColors.get(0.5D, 1.0D);
 				<#elseif data.tintType == "Foliage">
 					return FoliageColors.getDefault();
-				<#else>
+				<#elseif data.tintType == "Water">
 					return 3694022;
+				<#elseif data.tintType == "Sky">
+					return 8562943;
+				<#else>
+					return 329011;
 				</#if>
 			}, block);
 		}
@@ -278,6 +286,12 @@ import net.minecraft.block.material.Material;
 					.hardnessAndResistance(-1, 3600000)
 					<#else>
 					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
+					</#if>
+					<#if data.speedFactor != 1.0>
+					.speedFactor(${data.speedFactor}f)
+					</#if>
+					<#if data.jumpFactor != 1.0>
+					.jumpFactor(${data.jumpFactor}f)
 					</#if>
 					.lightValue(${data.luminance})
 			);

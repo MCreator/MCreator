@@ -19,13 +19,13 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.IBoundingBox;
-import net.mcreator.element.IItemWithModel;
-import net.mcreator.element.ITabContainedElement;
 import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
+import net.mcreator.element.types.interfaces.IItemWithModel;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
-		implements IItemWithModel, ITabContainedElement, IBoundingBox {
+		implements IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	public String texture;
 	public String textureTop;
@@ -104,6 +104,8 @@ import java.util.stream.Collectors;
 
 	public boolean isLadder;
 	public double slipperiness;
+	public double speedFactor;
+	public double jumpFactor;
 	public String reactionToPushing;
 
 	public boolean isNotColidable;
@@ -175,6 +177,8 @@ import java.util.stream.Collectors;
 		this.restrictionBiomes = new ArrayList<>();
 		this.reactionToPushing = "NORMAL";
 		this.slipperiness = 0.6;
+		this.speedFactor = 1.0;
+		this.jumpFactor = 1.0;
 		this.colorOnMap = "DEFAULT";
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
