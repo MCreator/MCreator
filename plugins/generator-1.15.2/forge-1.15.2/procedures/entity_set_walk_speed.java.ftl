@@ -1,1 +1,1 @@
-((PlayerEntity) ${input$entitycheck}).abilities.setWalkSpeed(${input$walkspeed}F);
+((PlayerEntity) ${input$entitycheck}).abilities.setWalkSpeed((float) ${input$walkspeed}F);
