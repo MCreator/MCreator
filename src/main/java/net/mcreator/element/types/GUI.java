@@ -64,6 +64,7 @@ import java.util.List;
 		this.W = WYSIWYG.W;
 		this.H = WYSIWYG.H;
 		this.renderBgLayer = true;
+		this.customBg = "";
 	}
 
 	public int getMaxSlotID() {
