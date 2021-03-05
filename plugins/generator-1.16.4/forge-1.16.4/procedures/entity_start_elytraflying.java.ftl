@@ -1,1 +1,1 @@
-((PlayerEntity) entity).startFallFlying();
+((PlayerEntity) ${input$entitycheck}).startFallFlying();

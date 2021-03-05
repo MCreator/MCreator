@@ -1,1 +1,1 @@
-${input$entitycheck}.setGlowing(true);
+${input$entitycheck}.setGlowing(${input$booleancheck});

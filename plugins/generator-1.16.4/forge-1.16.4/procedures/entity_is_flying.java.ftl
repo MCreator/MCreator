@@ -1,1 +1,1 @@
-(((PlayerEntity) entity).abilities.isFlying)
+(((PlayerEntity) ${input$entitycheck}).abilities.isFlying)

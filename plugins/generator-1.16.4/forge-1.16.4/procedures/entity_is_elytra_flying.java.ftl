@@ -1,1 +1,1 @@
-(((PlayerEntity) entity).isElytraFlying())
+(((PlayerEntity) ${input$entitycheck}).isElytraFlying())
