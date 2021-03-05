@@ -46,6 +46,13 @@ import java.util.List;
 	public boolean generateBucket;
 	public TabEntry creativeTab;
 
+	public double resistance;
+	public int luminance;
+	public boolean emissiveRendering;
+	public int flammability;
+	public int fireSpreadSpeed;
+	public String colorOnMap;
+
 	public int frequencyOnChunks;
 	public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;
@@ -64,6 +71,9 @@ import java.util.List;
 
 	public Fluid(ModElement element) {
 		super(element);
+
+		this.resistance = 100;
+		this.colorOnMap = "DEFAULT";
 
 		this.spawnWorldTypes = new ArrayList<>();
 		this.frequencyOnChunks = 5;
