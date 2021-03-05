@@ -1,0 +1,40 @@
+{
+"message0": "Set %1 glowing %2",
+"args0": [
+   {
+       "type":"input_value",
+       "name":"entitycheck",
+       "check":"Entity"
+   },
+   {
+       "type":"input_value",
+       "name":"booleancheck",
+       "check":"Boolean"
+   }
+],
+"inputsInline": true,
+"previousStatement": null,
+"nextStatement": true,
+"colour": 175,
+"extensions": [
+],
+"mcreator": {
+   "toolbox_id": "entitymanagement",
+   "toolbox_init": [
+       "<value name=\"entitycheck\"><block type=\"entity_from_deps\"></block></value>",
+       "<value name=\"booleancheck\"><block type=\"logic_boolean\"><field name=\"BOOL\">TRUE</field></block></value>"   ],
+   "fields": [
+
+   ],
+   "inputs": [
+       "entitycheck",
+       "booleancheck"
+   ],
+   "dependencies": [
+       {
+           "type": "entity",
+           "name": "entity"
+       }
+   ]
+}
+}

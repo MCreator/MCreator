@@ -1,0 +1,27 @@
+{
+"message0": "Is %1 flying",
+  "args0": [
+    {
+      "type":"input_value",
+      "name":"entitycheck",
+      "check":"Entity"
+    }
+  ],
+"inputsInline": true,
+"output": "Boolean",
+  "colour": 195,
+"mcreator": {
+   "toolbox_id": "entitydata",
+  "toolbox_init": [
+    "<value name=\"entitycheck\"><block type=\"entity_from_deps\"></block></value>"],
+  "inputs": [
+    "entitycheck"
+  ],
+   "dependencies": [
+       {
+           "type": "entity",
+           "name": "entity"
+       }
+   ]
+}
+}

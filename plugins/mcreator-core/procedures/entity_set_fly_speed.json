@@ -1,0 +1,35 @@
+{
+"message0": "Set %1 fly speed to %2",
+"args0": [
+  {
+    "type":"input_value",
+    "name":"entitycheck",
+    "check":"Entity"
+  },
+   {
+       "type":"input_value",
+       "name":"speed",
+       "check":"Number"
+   }
+],
+"inputsInline": true,
+"previousStatement": null,
+"nextStatement": true,
+"colour": 175,
+"mcreator": {
+   "toolbox_id": "entitymanagement",
+   "toolbox_init": [
+     "<value name=\"entitycheck\"><block type=\"entity_from_deps\"></block></value>",
+     "<value name=\"speed\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"   ],
+   "inputs": [
+     "speed",
+     "entitycheck"
+   ],
+   "dependencies": [
+       {
+           "type": "entity",
+           "name": "entity"
+       }
+   ]
+}
+}

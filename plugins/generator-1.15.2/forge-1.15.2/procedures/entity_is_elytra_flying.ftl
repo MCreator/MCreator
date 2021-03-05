@@ -1,0 +1,1 @@
+(((PlayerEntity) entity).isElytraFlying())

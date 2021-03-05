@@ -1,0 +1,1 @@
+${input$entitycheck}.setGlowing(true);

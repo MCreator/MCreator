@@ -1,0 +1,1 @@
+((PlayerEntity) entity).abilities.setFlySpeed(${input$speed}F);
