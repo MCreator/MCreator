@@ -19,7 +19,7 @@
 package net.mcreator.workspace;
 
 import net.mcreator.Launcher;
-import net.mcreator.element.ModElementType;
+import net.mcreator.element.BaseType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -52,7 +52,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace");
 
-	private ConcurrentHashMap<ModElementType.BaseType, Integer> id_map = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<BaseType, Integer> id_map = new ConcurrentHashMap<>();
 	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
@@ -114,7 +114,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return language_map;
 	}
 
-	public ConcurrentHashMap<ModElementType.BaseType, Integer> getIDMap() {
+	public ConcurrentHashMap<BaseType, Integer> getIDMap() {
 		return id_map;
 	}
 
@@ -269,7 +269,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		markDirty();
 	}
 
-	public int getNextFreeIDAndIncrease(ModElementType.BaseType baseType) {
+	public int getNextFreeIDAndIncrease(BaseType baseType) {
 		if (id_map.get(baseType) == null) {
 			id_map.put(baseType, 1);
 			markDirty();

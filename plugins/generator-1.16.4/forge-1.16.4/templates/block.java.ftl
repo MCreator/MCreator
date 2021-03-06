@@ -201,6 +201,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					<#if data.slipperiness != 0.6>
 					.slipperiness(${data.slipperiness}f)
 					</#if>
+					<#if data.speedFactor != 1.0>
+					.speedFactor(${data.speedFactor}f)
+					</#if>
+					<#if data.jumpFactor != 1.0>
+					.jumpFactor(${data.jumpFactor}f)
+					</#if>
 					<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
 					.notSolid()
 					</#if>

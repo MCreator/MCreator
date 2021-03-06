@@ -25,74 +25,74 @@ import java.util.Locale;
 
 public enum ModElementType {
 
-	@SerializedName("block") BLOCK(BaseType.BLOCK, RecipeElementType.BLOCK),
+	@SerializedName("block") BLOCK(BaseType.BLOCK, RecipeType.BLOCK),
 
-	@SerializedName("item") ITEM(BaseType.ITEM, RecipeElementType.ITEM),
+	@SerializedName("item") ITEM(BaseType.ITEM, RecipeType.ITEM),
 
-	@SerializedName("armor") ARMOR(BaseType.ARMOR, RecipeElementType.ARMOR),
+	@SerializedName("armor") ARMOR(BaseType.ARMOR, RecipeType.ARMOR),
 
-	@SerializedName("biome") BIOME(BaseType.BIOME, RecipeElementType.NONE),
+	@SerializedName("biome") BIOME(BaseType.BIOME, RecipeType.NONE),
 
-	@SerializedName("fluid") FLUID(BaseType.BLOCK, RecipeElementType.BLOCK),
+	@SerializedName("fluid") FLUID(BaseType.BLOCK, RecipeType.BLOCK),
 
-	@SerializedName("command") COMMAND(BaseType.COMMAND, RecipeElementType.NONE),
+	@SerializedName("command") COMMAND(BaseType.COMMAND, RecipeType.NONE),
 
-	@SerializedName("fuel") FUEL(BaseType.FUEL, RecipeElementType.NONE),
+	@SerializedName("fuel") FUEL(BaseType.FUEL, RecipeType.NONE),
 
-	@SerializedName("mob") MOB(BaseType.ENTITY, RecipeElementType.NONE),
+	@SerializedName("mob") MOB(BaseType.ENTITY, RecipeType.NONE),
 
-	@SerializedName("food") FOOD(BaseType.ITEM, RecipeElementType.ITEM),
+	@SerializedName("food") FOOD(BaseType.ITEM, RecipeType.ITEM),
 
-	@SerializedName("tool") TOOL(BaseType.ITEM, RecipeElementType.ITEM),
+	@SerializedName("tool") TOOL(BaseType.ITEM, RecipeType.ITEM),
 
-	@SerializedName("achievement") ACHIEVEMENT(BaseType.DATAPACK, RecipeElementType.NONE),
+	@SerializedName("achievement") ACHIEVEMENT(BaseType.DATAPACK, RecipeType.NONE),
 
-	@SerializedName("tab") TAB(BaseType.TAB, RecipeElementType.NONE),
+	@SerializedName("tab") TAB(BaseType.TAB, RecipeType.NONE),
 
-	@SerializedName("recipe") RECIPE(BaseType.DATAPACK, RecipeElementType.NONE),
+	@SerializedName("recipe") RECIPE(BaseType.DATAPACK, RecipeType.NONE),
 
-	@SerializedName("plant") PLANT(BaseType.BLOCK, RecipeElementType.BLOCK),
+	@SerializedName("plant") PLANT(BaseType.BLOCK, RecipeType.BLOCK),
 
-	@SerializedName("dimension") DIMENSION(BaseType.DIMENSION, RecipeElementType.ITEM),
+	@SerializedName("dimension") DIMENSION(BaseType.DIMENSION, RecipeType.ITEM),
 
-	@SerializedName("gun") RANGEDITEM(BaseType.ITEM, RecipeElementType.ITEM),
+	@SerializedName("gun") RANGEDITEM(BaseType.ITEM, RecipeType.ITEM),
 
-	@SerializedName("structure") STRUCTURE(BaseType.STRUCTURE, RecipeElementType.NONE),
+	@SerializedName("structure") STRUCTURE(BaseType.STRUCTURE, RecipeType.NONE),
 
-	@SerializedName("gui") GUI(BaseType.GUI, RecipeElementType.NONE),
+	@SerializedName("gui") GUI(BaseType.GUI, RecipeType.NONE),
 
-	@SerializedName("keybind") KEYBIND(BaseType.KEYBIND, RecipeElementType.NONE),
+	@SerializedName("keybind") KEYBIND(BaseType.KEYBIND, RecipeType.NONE),
 
-	@SerializedName("overlay") OVERLAY(BaseType.OVERLAY, RecipeElementType.NONE),
+	@SerializedName("overlay") OVERLAY(BaseType.OVERLAY, RecipeType.NONE),
 
-	@SerializedName("procedure") PROCEDURE(BaseType.PROCEDURE, RecipeElementType.NONE),
+	@SerializedName("procedure") PROCEDURE(BaseType.PROCEDURE, RecipeType.NONE),
 
-	@SerializedName("potion") POTION(BaseType.POTION, RecipeElementType.NONE),
+	@SerializedName("potion") POTION(BaseType.POTION, RecipeType.NONE),
 
-	@SerializedName("particle") PARTICLE(BaseType.PARTICLE, RecipeElementType.NONE),
+	@SerializedName("particle") PARTICLE(BaseType.PARTICLE, RecipeType.NONE),
 
-	@SerializedName("enchantment") ENCHANTMENT(BaseType.ENCHANTMENT, RecipeElementType.NONE),
+	@SerializedName("enchantment") ENCHANTMENT(BaseType.ENCHANTMENT, RecipeType.NONE),
 
-	@SerializedName("code") CODE(BaseType.OTHER, RecipeElementType.NONE),
+	@SerializedName("code") CODE(BaseType.OTHER, RecipeType.NONE),
 
-	@SerializedName("tag") TAG(BaseType.DATAPACK, RecipeElementType.NONE),
+	@SerializedName("tag") TAG(BaseType.DATAPACK, RecipeType.NONE),
 
-	@SerializedName("musicdisc") MUSICDISC(BaseType.OTHER, RecipeElementType.ITEM),
+	@SerializedName("musicdisc") MUSICDISC(BaseType.OTHER, RecipeType.ITEM),
 
-	@SerializedName("loottable") LOOTTABLE(BaseType.DATAPACK, RecipeElementType.NONE),
+	@SerializedName("loottable") LOOTTABLE(BaseType.DATAPACK, RecipeType.NONE),
 
-	@SerializedName("function") FUNCTION(BaseType.DATAPACK, RecipeElementType.NONE),
+	@SerializedName("function") FUNCTION(BaseType.DATAPACK, RecipeType.NONE),
 
-	@SerializedName("painting") PAINTING(BaseType.OTHER, RecipeElementType.NONE),
+	@SerializedName("painting") PAINTING(BaseType.OTHER, RecipeType.NONE),
 
-	@SerializedName("gamerule") GAMERULE(BaseType.OTHER, RecipeElementType.NONE);
+	@SerializedName("gamerule") GAMERULE(BaseType.OTHER, RecipeType.NONE);
 
 	private final BaseType baseType;
 	private final String description;
 	private final String readableName;
-	private final RecipeElementType recipeElementType;
+	private final RecipeType recipeElementType;
 
-	ModElementType(BaseType baseType, RecipeElementType recipeElementType) {
+	ModElementType(BaseType baseType, RecipeType recipeElementType) {
 		this.baseType = baseType;
 		this.recipeElementType = recipeElementType;
 
@@ -108,20 +108,12 @@ public enum ModElementType {
 		return description;
 	}
 
-	public RecipeElementType getRecipeElementType() {
+	public RecipeType getRecipeType() {
 		return recipeElementType;
 	}
 
 	public BaseType getBaseType() {
 		return baseType;
-	}
-
-	public enum RecipeElementType {
-		BLOCK, ITEM, NONE, ARMOR
-	}
-
-	public enum BaseType {
-		BLOCK, ITEM, ARMOR, BIOME, COMMAND, FUEL, ENTITY, TAB, DIMENSION, STRUCTURE, GUI, KEYBIND, PROCEDURE, OVERLAY, POTION, OTHER, DATAPACK, ENCHANTMENT, PARTICLE, /* legacy: */ ACHIEVEMENT
 	}
 
 }

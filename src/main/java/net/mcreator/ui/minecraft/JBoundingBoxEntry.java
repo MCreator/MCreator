@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.minecraft;
 
-import net.mcreator.element.IBoundingBox;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
@@ -117,8 +117,8 @@ public class JBoundingBoxEntry extends JPanel {
 		return this.getEntry().isFullCube();
 	}
 
-	public IBoundingBox.BoxEntry getEntry() {
-		IBoundingBox.BoxEntry entry = new IBoundingBox.BoxEntry();
+	public IBlockWithBoundingBox.BoxEntry getEntry() {
+		IBlockWithBoundingBox.BoxEntry entry = new IBlockWithBoundingBox.BoxEntry();
 		entry.mx = (double) mx.getValue();
 		entry.my = (double) my.getValue();
 		entry.mz = (double) mz.getValue();
@@ -130,7 +130,7 @@ public class JBoundingBoxEntry extends JPanel {
 		return entry;
 	}
 
-	public void setEntry(IBoundingBox.BoxEntry box) {
+	public void setEntry(IBlockWithBoundingBox.BoxEntry box) {
 		mx.setValue(box.mx);
 		my.setValue(box.my);
 		mz.setValue(box.mz);
