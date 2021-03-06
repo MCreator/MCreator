@@ -93,12 +93,15 @@ public class PluginLoader extends URLClassLoader {
 
 				if(MCreatorApplication.isInternet) {
 					if (plugin.getInfo().getUpdateJsonUrl() != null) {
-						JsonObject version = new GsonBuilder().create()
-								.fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateJsonUrl()), JsonObject.class);
-						if (!version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString()
-								.equals(plugin.getPluginVersion())) {
-							pluginsToUpdate.add(plugin);
-							versions.add(version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString());
+						if(!plugin.getInfo().getVersion().equals("not specified")) {
+							JsonObject version = new GsonBuilder().create()
+									.fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateJsonUrl()),
+											JsonObject.class);
+							if (!version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString()
+									.equals(plugin.getPluginVersion())) {
+								pluginsToUpdate.add(plugin);
+								versions.add(version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString());
+							}
 						}
 					}
 				}
