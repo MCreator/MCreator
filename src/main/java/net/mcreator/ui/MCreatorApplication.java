@@ -151,6 +151,7 @@ public final class MCreatorApplication {
 
 		// we do async login attempt
 		UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
+		UpdateNotifyDialog.showPluginUpdateDialog(splashScreen);
 
 		splashScreen.setProgress(100, "Loading MCreator windows");
 

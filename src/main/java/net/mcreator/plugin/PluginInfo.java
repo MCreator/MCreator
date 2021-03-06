@@ -28,6 +28,7 @@ public class PluginInfo {
 	private String version;
 	private List<String> dependencies;
 	private String credits;
+	private String updateJsonUrl;
 
 	public String getName() {
 		return name;
@@ -56,6 +57,9 @@ public class PluginInfo {
 			return "None";
 		}
 		return credits;
+	}
 
+	public String getUpdateJsonUrl() {
+		return updateJsonUrl;
 	}
 }

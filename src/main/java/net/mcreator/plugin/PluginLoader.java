@@ -19,15 +19,20 @@
 package net.mcreator.plugin;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.io.net.WebIO;
 import net.mcreator.io.zip.ZipIO;
+import net.mcreator.ui.MCreatorApplication;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
+import java.awt.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -44,14 +49,11 @@ public class PluginLoader extends URLClassLoader {
 	private static final Logger LOG = LogManager.getLogger("Plugin Loader");
 
 	public static PluginLoader INSTANCE;
-
-	public static void initInstance() {
-		INSTANCE = new PluginLoader();
-	}
-
 	private final List<Plugin> plugins;
-
 	private final Reflections reflections;
+
+	private List<Plugin> pluginsToUpdate = new ArrayList<>();
+	private List<String> versions = new ArrayList<>();
 
 	public PluginLoader() {
 		super(new URL[] {}, null);
@@ -88,12 +90,28 @@ public class PluginLoader extends URLClassLoader {
 				}
 
 				plugin.loaded = true;
+
+				if(MCreatorApplication.isInternet) {
+					if (plugin.getInfo().getUpdateJsonUrl() != null) {
+						JsonObject version = new GsonBuilder().create()
+								.fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateJsonUrl()), JsonObject.class);
+						if (!version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString()
+								.equals(plugin.getPluginVersion())) {
+							pluginsToUpdate.add(plugin);
+							versions.add(version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString());
+						}
+					}
+				}
 			} catch (MalformedURLException e) {
 				LOG.error("Failed to add plugin to the loader", e);
 			}
 		}
 
 		this.reflections = new Reflections(new ResourcesScanner(), this);
+	}
+
+	public static void initInstance() {
+		INSTANCE = new PluginLoader();
 	}
 
 	public Set<String> getResources(Pattern pattern) {
@@ -184,4 +202,11 @@ public class PluginLoader extends URLClassLoader {
 		return plugin;
 	}
 
+	public List<Plugin> getPluginsToUpdate() {
+		return pluginsToUpdate;
+	}
+
+	public List<String> getNewPluginVersions() {
+		return versions;
+	}
 }

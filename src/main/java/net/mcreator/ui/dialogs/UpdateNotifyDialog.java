@@ -21,6 +21,8 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.Launcher;
 import net.mcreator.io.net.api.update.Release;
 import net.mcreator.io.net.api.update.UpdateInfo;
+import net.mcreator.plugin.Plugin;
+import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -130,6 +132,46 @@ public class UpdateNotifyDialog {
 		} else if (showNoUpdates) {
 			JOptionPane.showMessageDialog(parent, L10N.t("dialog.update_notify.error_failed_check_internet_message"),
 					L10N.t("dialog.update_notify.error_failed_check_internet_title"), JOptionPane.WARNING_MESSAGE);
+		}
+	}
+
+	public static void showPluginUpdateDialog(Window parent) {
+		if (!PluginLoader.INSTANCE.getPluginsToUpdate().isEmpty()) {
+			JPanel pan = new JPanel(new BorderLayout());
+			JTextPane ar = new JTextPane();
+			ar.setFont(AbstractMCreatorTheme.console_font);
+			ar.setEnabled(false);
+			ar.setMargin(new Insets(5, 10, 5, 5));
+			DefaultCaret caret = (DefaultCaret) ar.getCaret();
+			caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+			ar.setContentType("text/html");
+			JScrollPane pane = new JScrollPane(ar);
+			pan.add(new JLabel("   "));
+			pan.add("Center", PanelUtils.maxMargin(pane, 15, true, false, false, false));
+			pan.setPreferredSize(new Dimension(585, 290));
+			ar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+
+			Object[] options = { "Open plugin explorer", "Remind me later" };
+			StringBuilder text = new StringBuilder();
+			for (int i = 0; i < PluginLoader.INSTANCE.getPluginsToUpdate().size(); i++) {
+				Plugin plugin = PluginLoader.INSTANCE.getPluginsToUpdate().get(i);
+				text.append("<b>" + plugin.getInfo().getName() + "</b>")
+						.append(L10N.t("dialog.plugin_update_notify.version.current"))
+						.append("<b>" + plugin.getInfo().getVersion() + "</b>")
+						.append(L10N.t("dialog.plugin_update_notify.version.new"))
+						.append("<b>" + PluginLoader.INSTANCE.getNewPluginVersions().get(i) + "</b><br>");
+			}
+			ar.setText(text.toString());
+
+			pan.add("North", PanelUtils
+					.northAndCenterElement(L10N.label("dialog.plugin_update_notify.message"), new JLabel("      ")));
+			pan.add("Center", ar);
+
+			int option = JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.plugin_update_notify.update_title"),
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+			if (option == 0) {
+				DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins");
+			}
 		}
 	}
 
