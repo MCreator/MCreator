@@ -1,0 +1,8 @@
+{
+  "dependencies_provided": [
+    {
+      "name": "keyCode",
+      "type": "number"
+    }
+  ]
+}
