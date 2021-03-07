@@ -428,14 +428,27 @@ import net.minecraft.block.material.Material;
         </#if>
 
 		<#if (data.canBePlacedOn?size > 0) || hasCondition(data.placingCondition)>
-			<#if (data.canBePlacedOn?size > 0) && data.plantType != "growapable">
+			<#if data.plantType != "growapable">
 			@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
 				Block block = state.getBlock();
+				<#if hasCondition(data.placingCondition)>
+				boolean additionalCondition = true;
+				if (worldIn instanceof IWorld) {
+					IWorld world = (IWorld) worldIn;
+					int x = pos.getX();
+					int y = pos.getY() + 1;
+					int z = pos.getZ();
+					additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+				}
+				</#if>
 				return
+				<#if (data.canBePlacedOn?size > 0)>(
 				<#list data.canBePlacedOn as canBePlacedOn>
 					block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
 					<#if canBePlacedOn?has_next>||</#if>
-				</#list>;
+				</#list>)</#if>
+				<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
+				<#if hasCondition(data.placingCondition)> additionalCondition </#if>;
 			}
 			</#if>
 
@@ -443,7 +456,7 @@ import net.minecraft.block.material.Material;
 				BlockPos blockpos = pos.down();
 				BlockState blockstate = worldIn.getBlockState(blockpos);
 				Block block = blockstate.getBlock();
-				<#if hasCondition(data.placingCondition)>
+				<#if hasCondition(data.placingCondition) && data.plantType == "growapable">
 				boolean additionalCondition = true;
 				if (worldIn instanceof IWorld) {
 					IWorld world = (IWorld) worldIn;
@@ -453,33 +466,23 @@ import net.minecraft.block.material.Material;
 					additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
 				}
 				</#if>
-				<#if (data.canBePlacedOn?size > 0)>
-					<#if data.plantType = "normal">
-						return this.isValidGround(blockstate, worldIn, blockpos)
-					<#elseif data.plantType == "growapable">
-						return block == this || (<#list data.canBePlacedOn as canBePlacedOn>block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
-						<#if canBePlacedOn?has_next>||</#if></#list>)
-					<#else>
-						if (state.get(HALF) == DoubleBlockHalf.UPPER)
-							return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
-						else
-							return this.isValidGround(blockstate, worldIn, blockpos)
-					</#if>
-					<#if hasCondition(data.placingCondition)>
-						&& additionalCondition
-					</#if>;
+				<#if data.plantType = "normal">
+					return this.isValidGround(blockstate, worldIn, blockpos)
+				<#elseif data.plantType == "growapable">
+					return block == this ||
+					<#if (data.canBePlacedOn?size > 0)>(
+						<#list data.canBePlacedOn as canBePlacedOn>
+						block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						<#if canBePlacedOn?has_next>||</#if>
+					</#list>)</#if>
+					<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
+					<#if hasCondition(data.placingCondition)> additionalCondition </#if>
 				<#else>
-					<#if data.plantType == "normal">
-						return additionalCondition;
-					<#elseif data.plantType == "growapable">
-						return block == this || additionalCondition;
-					<#else>
-						if (state.get(HALF) == DoubleBlockHalf.UPPER)
-							return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
-						else
-							return additionalCondition;
-					</#if>
-				</#if>
+					if (state.get(HALF) == DoubleBlockHalf.UPPER)
+						return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
+					else
+						return this.isValidGround(blockstate, worldIn, blockpos)
+				</#if>;
 			}
 		</#if>
 
