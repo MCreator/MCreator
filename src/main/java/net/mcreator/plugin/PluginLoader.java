@@ -98,7 +98,7 @@ public class PluginLoader extends URLClassLoader {
 									.equals(plugin.getPluginVersion())) {
 								pluginUpdates.add(new PluginUpdateInfo(plugin,
 										version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString(),
-										plugin.getInfo().getPluginUrl()));
+										plugin.getInfo().getPluginPage()));
 							}
 						}
 					}

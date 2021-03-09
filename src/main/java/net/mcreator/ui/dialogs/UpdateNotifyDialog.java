@@ -152,16 +152,13 @@ public class UpdateNotifyDialog {
 			ar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
 			Object[] options = { "Open plugin explorer", "Remind me later" };
-			StringBuilder text = new StringBuilder();
+			String text = "";
 			for (int i = 0; i < PluginLoader.INSTANCE.getPluginUpdates().size(); i++) {
 				PluginUpdateInfo plugin = PluginLoader.INSTANCE.getPluginUpdates().get(i);
-				text.append("<b>" + plugin.getPlugin().getInfo().getName() + "</b>")
-						.append(L10N.t("dialog.plugin_update_notify.version.current"))
-						.append("<b>" + plugin.getPlugin().getInfo().getVersion() + "</b>")
-						.append(L10N.t("dialog.plugin_update_notify.version.new"))
-						.append("<b>" + plugin.getVersion() + "</b><br>");
+				text = L10N.t("dialog.plugin_update_notify.version_message", plugin.getPlugin().getInfo().getName(),
+								plugin.getPlugin().getInfo().getVersion(), plugin.getNewVersion());
 			}
-			ar.setText(text.toString());
+			ar.setText(text);
 
 			pan.add("North", PanelUtils
 					.northAndCenterElement(L10N.label("dialog.plugin_update_notify.message"), new JLabel("      ")));
