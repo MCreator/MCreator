@@ -41,6 +41,7 @@ import java.net.URISyntaxException;
 public class GameRuleGUI extends ModElementGUI<GameRule> {
 
 	private final VTextField name = new VTextField(30);
+	private final VTextField enhancedName = new VTextField(30);
 	private final VTextField description = new VTextField(30);
 
 	private final JComboBox<String> gameruleCategory = new JComboBox<>(
@@ -66,9 +67,10 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 
 		ComponentUtils.deriveFont(name, 16);
+		ComponentUtils.deriveFont(enhancedName, 16);
 		ComponentUtils.deriveFont(description, 16);
 
-		JPanel subpane2 = new JPanel(new GridLayout(5, 2, 0, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(6, 2, 0, 2));
 		subpane2.setOpaque(false);
 
 		name.setEnabled(false);
@@ -78,6 +80,10 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		subpane2.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/name"), L10N.label("elementgui.gamerule.name")));
 		subpane2.add(name);
+
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/enhanced_name"),
+				L10N.label("elementgui.gamerule.enhanced_name")));
+		subpane2.add(enhancedName);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/description"),
 				L10N.label("elementgui.gamerule.description")));
@@ -99,10 +105,14 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		subpane2.add(defalutValue);
 
 		page1group.addValidationElement(name);
+		page1group.addValidationElement(enhancedName);
 		page1group.addValidationElement(description);
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.gamerule.gamerule_needs_name")));
 		name.enableRealtimeValidation();
+
+		enhancedName.setValidator(new TextFieldValidator(enhancedName, L10N.t("elementgui.gamerule.gamerule_needs_enhanced_name")));
+		enhancedName.enableRealtimeValidation();
 
 		description.setValidator(
 				new TextFieldValidator(description, L10N.t("elementgui.gamerule.gamerule_needs_description")));
@@ -133,6 +143,7 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 	}
 
 	@Override public void openInEditingMode(GameRule gamerule) {
+		enhancedName.setText(gamerule.enhancedName);
 		description.setText(gamerule.description);
 		gameruleCategory.setSelectedItem(gamerule.category);
 		gameruleType.setSelectedItem(gamerule.type);
@@ -146,6 +157,7 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 
 	@Override public GameRule getElementFromGUI() {
 		GameRule gamerule = new GameRule(modElement);
+		gamerule.enhancedName = enhancedName.getText();
 		gamerule.description = description.getText();
 		gamerule.category = (String) gameruleCategory.getSelectedItem();
 		gamerule.type = (String) gameruleType.getSelectedItem();
