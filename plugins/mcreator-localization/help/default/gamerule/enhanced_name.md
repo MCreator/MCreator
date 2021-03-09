@@ -1,1 +1,0 @@
-This is the GameRule enhanced name. It is used for the GameRules setting screen.

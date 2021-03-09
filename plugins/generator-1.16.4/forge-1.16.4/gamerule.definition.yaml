@@ -4,6 +4,6 @@ templates:
 
 localizationkeys:
   - key: gamerule.@registryname
-    mapto: enhancedName
+    mapto: displayName
   - key: gamerule.@registryname.description
     mapto: description
