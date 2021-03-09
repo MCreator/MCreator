@@ -1,1 +1,1 @@
-C'est le nom amélioré de la GameRule. Il est utilisé pour l'écran de configuration des GameRules.
+C'est le nom affiché de la GameRule. Il est utilisé pour l'écran de configuration des GameRules.
