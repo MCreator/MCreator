@@ -21,8 +21,8 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.Launcher;
 import net.mcreator.io.net.api.update.Release;
 import net.mcreator.io.net.api.update.UpdateInfo;
-import net.mcreator.plugin.Plugin;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.plugin.PluginUpdateInfo;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -153,13 +153,13 @@ public class UpdateNotifyDialog {
 
 			Object[] options = { "Open plugin explorer", "Remind me later" };
 			StringBuilder text = new StringBuilder();
-			for (int i = 0; i < PluginLoader.INSTANCE.getPluginsToUpdate().size(); i++) {
-				Plugin plugin = PluginLoader.INSTANCE.getPluginsToUpdate().get(i);
-				text.append("<b>" + plugin.getInfo().getName() + "</b>")
+			for (int i = 0; i < PluginLoader.INSTANCE.getPluginUpdates().size(); i++) {
+				PluginUpdateInfo plugin = PluginLoader.INSTANCE.getPluginUpdates().get(i);
+				text.append("<b>" + plugin.getPlugin().getInfo().getName() + "</b>")
 						.append(L10N.t("dialog.plugin_update_notify.version.current"))
-						.append("<b>" + plugin.getInfo().getVersion() + "</b>")
+						.append("<b>" + plugin.getPlugin().getInfo().getVersion() + "</b>")
 						.append(L10N.t("dialog.plugin_update_notify.version.new"))
-						.append("<b>" + PluginLoader.INSTANCE.getNewPluginVersions().get(i) + "</b><br>");
+						.append("<b>" + plugin.getVersion() + "</b><br>");
 			}
 			ar.setText(text.toString());
 

@@ -51,8 +51,7 @@ public class PluginLoader extends URLClassLoader {
 	private final List<Plugin> plugins;
 	private final Reflections reflections;
 
-	private List<Plugin> pluginsToUpdate = new ArrayList<>();
-	private List<String> versions = new ArrayList<>();
+	private List<PluginUpdateInfo> pluginUpdates = new ArrayList<>();
 
 	public PluginLoader() {
 		super(new URL[] {}, null);
@@ -90,16 +89,16 @@ public class PluginLoader extends URLClassLoader {
 
 				plugin.loaded = true;
 
-				if(MCreatorApplication.isInternet) {
+				if (MCreatorApplication.isInternet) {
 					if (plugin.getInfo().getUpdateUrl() != null) {
-						if(!plugin.getInfo().getVersion().equals("not specified")) {
+						if (!plugin.getInfo().getVersion().equals("not specified")) {
 							JsonObject version = new GsonBuilder().create()
-									.fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateUrl()),
-											JsonObject.class);
+									.fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateUrl()), JsonObject.class);
 							if (!version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString()
 									.equals(plugin.getPluginVersion())) {
-								pluginsToUpdate.add(plugin);
-								versions.add(version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString());
+								pluginUpdates.add(new PluginUpdateInfo(plugin,
+										version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString(),
+										plugin.getInfo().getPluginUrl()));
 							}
 						}
 					}
@@ -204,11 +203,7 @@ public class PluginLoader extends URLClassLoader {
 		return plugin;
 	}
 
-	public List<Plugin> getPluginsToUpdate() {
-		return pluginsToUpdate;
-	}
-
-	public List<String> getNewPluginVersions() {
-		return versions;
+	public List<PluginUpdateInfo> getPluginUpdates() {
+		return pluginUpdates;
 	}
 }

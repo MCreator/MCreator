@@ -29,6 +29,7 @@ public class PluginInfo {
 	private List<String> dependencies;
 	private String credits;
 	private String updateUrl;
+	private String pluginUrl;
 
 	public String getName() {
 		return name;
@@ -61,5 +62,9 @@ public class PluginInfo {
 
 	public String getUpdateUrl() {
 		return updateUrl;
+	}
+
+	public String getPluginUrl() {
+		return pluginUrl;
 	}
 }
