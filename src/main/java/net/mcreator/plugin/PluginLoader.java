@@ -50,13 +50,13 @@ public class PluginLoader extends URLClassLoader {
 	public static PluginLoader INSTANCE;
 	private final List<Plugin> plugins;
 	private final Reflections reflections;
-
-	private List<PluginUpdateInfo> pluginUpdates = new ArrayList<>();
+	private final List<PluginUpdateInfo> pluginUpdates;
 
 	public PluginLoader() {
 		super(new URL[] {}, null);
 
 		this.plugins = new ArrayList<>();
+		this.pluginUpdates = new ArrayList<>();
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
 

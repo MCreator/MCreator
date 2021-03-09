@@ -136,7 +136,7 @@ public class UpdateNotifyDialog {
 	}
 
 	public static void showPluginUpdateDialog(Window parent) {
-		if (!PluginLoader.INSTANCE.getPluginsToUpdate().isEmpty()) {
+		if (!PluginLoader.INSTANCE.getPluginUpdates().isEmpty()) {
 			JPanel pan = new JPanel(new BorderLayout());
 			JTextPane ar = new JTextPane();
 			ar.setFont(AbstractMCreatorTheme.console_font);
