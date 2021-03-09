@@ -1,3 +1,3 @@
 Liste des blocs sur lesquels la plante peut être posée.
 
-NOTE: Remplace le type de la plante.
+NOTE: Remplace la condition de placement du type de la plante.
