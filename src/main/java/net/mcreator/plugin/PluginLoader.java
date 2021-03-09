@@ -32,7 +32,6 @@ import org.jetbrains.annotations.Nullable;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
-import java.awt.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -92,10 +91,10 @@ public class PluginLoader extends URLClassLoader {
 				plugin.loaded = true;
 
 				if(MCreatorApplication.isInternet) {
-					if (plugin.getInfo().getUpdateJsonUrl() != null) {
+					if (plugin.getInfo().getUpdateUrl() != null) {
 						if(!plugin.getInfo().getVersion().equals("not specified")) {
 							JsonObject version = new GsonBuilder().create()
-									.fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateJsonUrl()),
+									.fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateUrl()),
 											JsonObject.class);
 							if (!version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString()
 									.equals(plugin.getPluginVersion())) {
