@@ -132,6 +132,10 @@ package ${package}.world.structure;
 		}
 	};
 
+	private static final ConfiguredFeature<?, ?> configuredFeature = feature
+			.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG)
+			.withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG));
+
 	public ${name}Structure (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
@@ -143,6 +147,7 @@ package ${package}.world.structure;
 
 		@SubscribeEvent public void registerFeature(RegistryEvent.Register<Feature<?>> event) {
 			event.getRegistry().register(feature.setRegistryName("${registryname}"));
+			Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, new ResourceLocation("${modid}:${registryname}"), configuredFeature);
 		}
 
 	}
@@ -164,8 +169,7 @@ package ${package}.world.structure;
 				<#if data.spawnLocation=="Ground">SURFACE_STRUCTURES
 				<#elseif data.spawnLocation=="Air">RAW_GENERATION
 				<#elseif data.spawnLocation=="Underground">UNDERGROUND_STRUCTURES</#if>)
-			 .add(() -> feature.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG)
-					 			.withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
+			 .add(() -> configuredFeature);
 	}
 
 }
