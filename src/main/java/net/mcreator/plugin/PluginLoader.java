@@ -19,7 +19,6 @@
 package net.mcreator.plugin;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
@@ -194,7 +193,7 @@ public class PluginLoader extends URLClassLoader {
 			if (MCreatorApplication.isInternet) {
 				if (plugin.getInfo().getUpdateUrl() != null) {
 					if (!plugin.getInfo().getVersion().equals("not specified")) {
-						JsonObject version = new GsonBuilder().create()
+						JsonObject version = new Gson()
 								.fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateUrl()), JsonObject.class);
 						if (!version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString()
 								.equals(plugin.getPluginVersion())) {
