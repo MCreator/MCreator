@@ -417,14 +417,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			boundingBoxList.setEnabled(false);
 		}
 
-		JPanel selp = new JPanel(new GridLayout(9, 2, 25, 2));
+		JPanel selp = new JPanel(new GridLayout(9, 2, 5, 2));
 		selp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		selp.setOpaque(false);
 
-		JPanel selp2 = new JPanel(new GridLayout(6, 2, 25, 2));
+		JPanel selp2 = new JPanel(new GridLayout(6, 2, 5, 2));
 		selp2.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
