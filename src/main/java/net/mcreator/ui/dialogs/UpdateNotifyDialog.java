@@ -21,8 +21,6 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.Launcher;
 import net.mcreator.io.net.api.update.Release;
 import net.mcreator.io.net.api.update.UpdateInfo;
-import net.mcreator.plugin.PluginLoader;
-import net.mcreator.plugin.PluginUpdateInfo;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -38,8 +36,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Map;
 
@@ -134,51 +130,6 @@ public class UpdateNotifyDialog {
 		} else if (showNoUpdates) {
 			JOptionPane.showMessageDialog(parent, L10N.t("dialog.update_notify.error_failed_check_internet_message"),
 					L10N.t("dialog.update_notify.error_failed_check_internet_title"), JOptionPane.WARNING_MESSAGE);
-		}
-	}
-
-	public static void showPluginUpdateDialog(Window parent) {
-		if (!PluginLoader.INSTANCE.getPluginUpdates().isEmpty()) {
-			JPanel pan = new JPanel(new BorderLayout());
-			JPanel plugins = new JPanel();
-			plugins.setFont(AbstractMCreatorTheme.console_font);
-			plugins.setEnabled(false);
-			JScrollPane pane = new JScrollPane(plugins);
-			pan.add("Center", PanelUtils.maxMargin(pane, 15, true, false, false, false));
-			pan.setPreferredSize(new Dimension(585, 290));
-			plugins.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-
-			Object[] options = { "Open all plugin pages", "Remind me later" };
-			for (int i = 0; i < PluginLoader.INSTANCE.getPluginUpdates().size(); i++) {
-				PluginUpdateInfo plugin = PluginLoader.INSTANCE.getPluginUpdates().get(i);
-				JLabel label = L10N
-						.label("dialog.plugin_update_notify.version_message", plugin.getPlugin().getInfo().getName(),
-								plugin.getPlugin().getInfo().getVersion(), plugin.getNewVersion());
-				label.addMouseListener(new MouseAdapter() {
-					@Override public void mouseClicked(MouseEvent e) {
-						String url = (plugin.getPluginPage().startsWith("/")) ?
-								plugin.getPluginPage() :
-								"/" + plugin.getPluginPage();
-						DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugin" + url);
-					}
-				});
-				plugins.add(label);
-			}
-
-			pan.add("North", PanelUtils
-					.northAndCenterElement(L10N.label("dialog.plugin_update_notify.message"), new JLabel("      ")));
-			pan.add("Center", plugins);
-
-			int option = JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.plugin_update_notify.update_title"),
-					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-			if (option == 0) {
-				for (PluginUpdateInfo plug : PluginLoader.INSTANCE.getPluginUpdates()) {
-					String url = (plug.getPluginPage().startsWith("/")) ?
-							plug.getPluginPage() :
-							"/" + plug.getPluginPage();
-					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugin" + url);
-				}
-			}
 		}
 	}
 

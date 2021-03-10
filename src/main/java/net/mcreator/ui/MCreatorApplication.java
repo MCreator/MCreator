@@ -37,6 +37,7 @@ import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.util.DiscordClient;
 import net.mcreator.ui.component.util.MacOSUIUtil;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
+import net.mcreator.ui.dialogs.UpdatePluginDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
@@ -151,7 +152,7 @@ public final class MCreatorApplication {
 
 		// we do async login attempt
 		UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
-		UpdateNotifyDialog.showPluginUpdateDialog(splashScreen);
+		UpdatePluginDialog.showPluginUpdateDialog(splashScreen);
 
 		splashScreen.setProgress(100, "Loading MCreator windows");
 
