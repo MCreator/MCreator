@@ -38,6 +38,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Map;
 
@@ -138,36 +140,44 @@ public class UpdateNotifyDialog {
 	public static void showPluginUpdateDialog(Window parent) {
 		if (!PluginLoader.INSTANCE.getPluginUpdates().isEmpty()) {
 			JPanel pan = new JPanel(new BorderLayout());
-			JTextPane ar = new JTextPane();
-			ar.setFont(AbstractMCreatorTheme.console_font);
-			ar.setEnabled(false);
-			ar.setMargin(new Insets(5, 10, 5, 5));
-			DefaultCaret caret = (DefaultCaret) ar.getCaret();
-			caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-			ar.setContentType("text/html");
-			JScrollPane pane = new JScrollPane(ar);
-			pan.add(new JLabel("   "));
+			JPanel plugins = new JPanel();
+			plugins.setFont(AbstractMCreatorTheme.console_font);
+			plugins.setEnabled(false);
+			JScrollPane pane = new JScrollPane(plugins);
 			pan.add("Center", PanelUtils.maxMargin(pane, 15, true, false, false, false));
 			pan.setPreferredSize(new Dimension(585, 290));
-			ar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			plugins.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-			Object[] options = { "Open plugin explorer", "Remind me later" };
-			String text = "";
+			Object[] options = { "Open all plugin pages", "Remind me later" };
 			for (int i = 0; i < PluginLoader.INSTANCE.getPluginUpdates().size(); i++) {
 				PluginUpdateInfo plugin = PluginLoader.INSTANCE.getPluginUpdates().get(i);
-				text = L10N.t("dialog.plugin_update_notify.version_message", plugin.getPlugin().getInfo().getName(),
+				JLabel label = L10N
+						.label("dialog.plugin_update_notify.version_message", plugin.getPlugin().getInfo().getName(),
 								plugin.getPlugin().getInfo().getVersion(), plugin.getNewVersion());
+				label.addMouseListener(new MouseAdapter() {
+					@Override public void mouseClicked(MouseEvent e) {
+						String url = (plugin.getPluginPage().startsWith("/")) ?
+								plugin.getPluginPage() :
+								"/" + plugin.getPluginPage();
+						DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugin" + url);
+					}
+				});
+				plugins.add(label);
 			}
-			ar.setText(text);
 
 			pan.add("North", PanelUtils
 					.northAndCenterElement(L10N.label("dialog.plugin_update_notify.message"), new JLabel("      ")));
-			pan.add("Center", ar);
+			pan.add("Center", plugins);
 
 			int option = JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.plugin_update_notify.update_title"),
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 			if (option == 0) {
-				DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins");
+				for (PluginUpdateInfo plug : PluginLoader.INSTANCE.getPluginUpdates()) {
+					String url = (plug.getPluginPage().startsWith("/")) ?
+							plug.getPluginPage() :
+							"/" + plug.getPluginPage();
+					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugin" + url);
+				}
 			}
 		}
 	}
