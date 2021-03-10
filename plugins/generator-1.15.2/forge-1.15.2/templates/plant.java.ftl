@@ -429,21 +429,22 @@ import net.minecraft.block.material.Material;
 			</#if>
 
 			@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-				<#if hasCondition(data.placingCondition) && data.plantType == "growapable">
-				World world = worldIn.getDimension().getWorld();
-				int x = pos.getX();
-				int y = pos.getY();
-				int z = pos.getZ();
-				boolean additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
-				</#if>
-
 				BlockPos blockpos = pos.down();
 				BlockState blockstate = worldIn.getBlockState(blockpos);
-				Block block = blockstate.getBlock();
 
 				<#if data.plantType = "normal">
 					return this.isValidGround(blockstate, worldIn, blockpos)
 				<#elseif data.plantType == "growapable">
+					<#if hasCondition(data.placingCondition)>
+					World world = worldIn.getDimension().getWorld();
+					int x = pos.getX();
+					int y = pos.getY();
+					int z = pos.getZ();
+					boolean additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+					</#if>
+
+					Block block = blockstate.getBlock();
+
 					return block == this ||
 					<#if (data.canBePlacedOn?size > 0)>(
 						<#list data.canBePlacedOn as canBePlacedOn>
