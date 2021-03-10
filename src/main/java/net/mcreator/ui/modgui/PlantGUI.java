@@ -191,7 +191,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/direction:direction"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
-				L10N.t("elementgui.plant.event_additional_placing_condition"), VariableElementType.LOGIC,
+				L10N.t("elementgui.plant.condition_additional_placing"), VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.setDefaultName(L10N.t("elementgui.plant.no_additional_condition"));
 
@@ -211,7 +211,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
-		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
+		JPanel pane4 = new JPanel(new BorderLayout(2, 2));
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 		JPanel bbPane = new JPanel(new BorderLayout(10, 10));
 
@@ -577,7 +577,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		events2.add(onRandomUpdateEvent);
 		events2.add(new JLabel(""));
 
-		JPanel spawning = new JPanel(new GridLayout(3, 2, 5, 5));
+		JPanel spawning = new JPanel(new GridLayout(3, 2, 5, 2));
 		spawning.setOpaque(false);
 
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/gen_chunk_count"),
