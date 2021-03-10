@@ -88,27 +88,13 @@ public class PluginLoader extends URLClassLoader {
 				}
 
 				plugin.loaded = true;
-
-				if (MCreatorApplication.isInternet) {
-					if (plugin.getInfo().getUpdateUrl() != null) {
-						if (!plugin.getInfo().getVersion().equals("not specified")) {
-							JsonObject version = new GsonBuilder().create()
-									.fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateUrl()), JsonObject.class);
-							if (!version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString()
-									.equals(plugin.getPluginVersion())) {
-								pluginUpdates.add(new PluginUpdateInfo(plugin,
-										version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString(),
-										plugin.getInfo().getPluginPage()));
-							}
-						}
-					}
-				}
 			} catch (MalformedURLException e) {
 				LOG.error("Failed to add plugin to the loader", e);
 			}
 		}
 
 		this.reflections = new Reflections(new ResourcesScanner(), this);
+		checkPluginUpdates();
 	}
 
 	public static void initInstance() {
@@ -201,6 +187,25 @@ public class PluginLoader extends URLClassLoader {
 		}
 
 		return plugin;
+	}
+
+	public void checkPluginUpdates() {
+		for (Plugin plugin : plugins) {
+			if (MCreatorApplication.isInternet) {
+				if (plugin.getInfo().getUpdateUrl() != null) {
+					if (!plugin.getInfo().getVersion().equals("not specified")) {
+						JsonObject version = new GsonBuilder().create()
+								.fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateUrl()), JsonObject.class);
+						if (!version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString()
+								.equals(plugin.getPluginVersion())) {
+							pluginUpdates.add(new PluginUpdateInfo(plugin,
+									version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString(),
+									plugin.getInfo().getPluginPage()));
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public List<PluginUpdateInfo> getPluginUpdates() {
