@@ -856,6 +856,15 @@ public class TestWorkspaceDataProvider {
 			plant.fireSpreadSpeed = 12;
 			plant.speedFactor = 34.632;
 			plant.jumpFactor = 17.732;
+			plant.canBePlacedOn = new ArrayList<>();
+			if (!emptyLists) {
+				plant.canBePlacedOn.add(new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+				plant.canBePlacedOn.add(new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+				plant.canBePlacedOn.add(new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			}
 			plant.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
@@ -877,6 +886,7 @@ public class TestWorkspaceDataProvider {
 			plant.onBlockAdded = new Procedure("procedure8");
 			plant.onBlockPlacedBy = new Procedure("procedure9");
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
+			plant.placingCondition = _true ? null : new Procedure("condition2");
 			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
 			plant.tintType = getRandomString(random,
 					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));

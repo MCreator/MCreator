@@ -427,6 +427,71 @@ import net.minecraft.block.material.Material;
             </#if>
         </#if>
 
+		<#if (data.canBePlacedOn?size > 0) || hasCondition(data.placingCondition)>
+			<#if data.plantType != "growapable">
+			@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+				<#if hasCondition(data.placingCondition)>
+					boolean additionalCondition = true;
+					if (worldIn instanceof IWorld) {
+						IWorld world = (IWorld) worldIn;
+						int x = pos.getX();
+						int y = pos.getY() + 1;
+						int z = pos.getZ();
+						additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+					}
+				</#if>
+
+				Block block = state.getBlock();
+
+				return
+				<#if (data.canBePlacedOn?size > 0)>(
+					<#list data.canBePlacedOn as canBePlacedOn>
+						block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						<#if canBePlacedOn?has_next>||</#if>
+					</#list>)
+				</#if>
+				<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
+				<#if hasCondition(data.placingCondition)> additionalCondition </#if>;
+			}
+			</#if>
+
+			@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+				BlockPos blockpos = pos.down();
+				BlockState blockstate = worldIn.getBlockState(blockpos);
+
+				<#if data.plantType = "normal">
+					return this.isValidGround(blockstate, worldIn, blockpos)
+				<#elseif data.plantType == "growapable">
+					<#if hasCondition(data.placingCondition)>
+					boolean additionalCondition = true;
+					if (worldIn instanceof IWorld) {
+						IWorld world = (IWorld) worldIn;
+						int x = pos.getX();
+						int y = pos.getY();
+						int z = pos.getZ();
+						additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+					}
+					</#if>
+
+					Block block = blockstate.getBlock();
+
+					return block == this ||
+					<#if (data.canBePlacedOn?size > 0)>(
+						<#list data.canBePlacedOn as canBePlacedOn>
+						block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						<#if canBePlacedOn?has_next>||</#if>
+					</#list>)</#if>
+					<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
+					<#if hasCondition(data.placingCondition)> additionalCondition </#if>
+				<#else>
+					if (state.get(HALF) == DoubleBlockHalf.UPPER)
+						return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
+					else
+						return this.isValidGround(blockstate, worldIn, blockpos)
+				</#if>;
+			}
+		</#if>
+
 		@Override public PlantType getPlantType(IBlockReader world, BlockPos pos) {
 			return PlantType.${data.growapableSpawnType?upper_case};
 		}
