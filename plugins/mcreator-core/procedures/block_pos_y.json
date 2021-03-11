@@ -1,4 +1,12 @@
 {
+  "args0": [
+    {
+      "type": "field_image",
+      "src": "./res/blockpos.png",
+      "width": 20,
+      "height": 16
+    }
+  ],
   "output": "Number",
   "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
