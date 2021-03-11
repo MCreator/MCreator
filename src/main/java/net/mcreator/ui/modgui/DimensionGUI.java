@@ -292,6 +292,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		igniterName.enableRealtimeValidation();
 
 		page1group.addValidationElement(igniterName);
+		page1group.addValidationElement(portalTexture);
+		page1group.addValidationElement(texture);
+		page1group.addValidationElement(portalFrame);
 
 		biomesInDimension.setValidator(
 				new ItemListFieldValidator(biomesInDimension, L10N.t("elementgui.dimension.error_select_biome")));
@@ -323,13 +326,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalTexture.setEnabled(enablePortal.isSelected());
 		portalMakeCondition.setEnabled(enablePortal.isSelected());
 		portalUseCondition.setEnabled(enablePortal.isSelected());
-
-		if (portalTexture.isEnabled())
-			page1group.addValidationElement(portalTexture);
-		if (texture.isEnabled())
-			page1group.addValidationElement(texture);
-		if (portalFrame.isEnabled())
-			page1group.addValidationElement(portalFrame);
 	}
 
 	@Override public void reloadDataLists() {
