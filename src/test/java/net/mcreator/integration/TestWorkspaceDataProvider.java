@@ -794,7 +794,7 @@ public class TestWorkspaceDataProvider {
 		case PLANT:
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
-			plant.spawnWorldTypes = new ArrayList<>();
+			plant.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			plant.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			plant.texture = "test";
