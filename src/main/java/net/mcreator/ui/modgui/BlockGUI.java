@@ -104,6 +104,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onRedstoneOff;
 
 	private ProcedureSelector particleCondition;
+	private ProcedureSelector placingCondition;
 	private ProcedureSelector generateCondition;
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
@@ -296,6 +297,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
 				VariableElementType.LOGIC, Dependency.fromString("x:number/y:number/z:number/world:world"));
+
+		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
+				L10N.t("elementgui.block.event_placing_condition"), VariableElementType.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world"))
+				.setDefaultName("(no additional condition)");
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				L10N.t("elementgui.block.event_generate_condition"), VariableElementType.LOGIC,
@@ -770,6 +776,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				.wrapWithHelpButton(this.withEntry("block/offset_type"), L10N.label("elementgui.common.offset_type")));
 		advancedProperties.add(offsetType);
 
+		JComponent advancedWithCondition = PanelUtils
+				.northAndCenterElement(advancedProperties, PanelUtils.join(FlowLayout.LEFT, placingCondition));
+
 		isWaterloggable.setOpaque(false);
 		canProvidePower.setOpaque(false);
 		isLadder.setOpaque(false);
@@ -795,7 +804,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		advancedProperties.setBorder(BorderFactory.createTitledBorder(
+		advancedWithCondition.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.properties_advanced_block"), TitledBorder.LEADING,
 				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
@@ -1070,7 +1079,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		});
 
 		pane7.add(PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(advancedProperties, PanelUtils.pullElementUp(parpar))));
+				PanelUtils.westAndEastElement(advancedWithCondition, PanelUtils.pullElementUp(parpar))));
 
 		pane7.setOpaque(false);
 		pane9.setOpaque(false);
@@ -1177,6 +1186,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRedstoneOff.refreshListKeepSelected();
 
 		particleCondition.refreshListKeepSelected();
+		placingCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils
@@ -1309,6 +1319,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		offsetType.setSelectedItem(block.offsetType);
 		aiPathNodeType.setSelectedItem(block.aiPathNodeType);
 		creativePickItem.setBlock(block.creativePickItem);
+		placingCondition.setSelectedProcedure(block.placingCondition);
 
 		beaconColorModifier.setColor(block.beaconColorModifier);
 
@@ -1445,6 +1456,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.offsetType = (String) offsetType.getSelectedItem();
 		block.aiPathNodeType = (String) aiPathNodeType.getSelectedItem();
 		block.creativePickItem = creativePickItem.getBlock();
+		block.placingCondition = placingCondition.getSelectedProcedure();
 
 		block.flammability = (int) flammability.getValue();
 		block.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
