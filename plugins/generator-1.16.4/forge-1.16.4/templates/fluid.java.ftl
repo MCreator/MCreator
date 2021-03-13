@@ -54,6 +54,7 @@ import net.minecraft.block.material.Material;
 
 		<#if (data.spawnWorldTypes?size > 0)>
 		MinecraftForge.EVENT_BUS.register(this);
+		FMLJavaModLoadingContext.get().getModEventBus().register(new FeatureRegisterHandler());
 		</#if>
 	}
 
@@ -134,23 +135,16 @@ import net.minecraft.block.material.Material;
 	}
 
 	<#if (data.spawnWorldTypes?size > 0)>
-	@SubscribeEvent public void addFeatureToBiomes(BiomeLoadingEvent event) {
-		<#if data.restrictionBiomes?has_content>
-				boolean biomeCriteria = false;
-			<#list data.restrictionBiomes as restrictionBiome>
-				<#if restrictionBiome.canProperlyMap()>
-					if (new ResourceLocation("${restrictionBiome}").equals(event.getName()))
-						biomeCriteria = true;
-				</#if>
-			</#list>
-				if (!biomeCriteria)
-					return;
-		</#if>
+	private static Feature<BlockStateFeatureConfig> feature = null;
+	private static ConfiguredFeature<?, ?> configuredFeature = null;
 
-		event.getGeneration().getFeatures(GenerationStage.Decoration.LOCAL_MODIFICATIONS).add(() -> new LakesFeature(BlockStateFeatureConfig.field_236455_a_) {
-			@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
-				RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
-				boolean dimensionCriteria = false;
+	private static class FeatureRegisterHandler {
+
+		@SubscribeEvent public void registerFeature(RegistryEvent.Register<Feature<?>> event) {
+			feature = new LakesFeature(BlockStateFeatureConfig.field_236455_a_) {
+				@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+					RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
+					boolean dimensionCriteria = false;
 
     				<#list data.spawnWorldTypes as worldType>
 						<#if worldType=="Surface">
@@ -169,8 +163,8 @@ import net.minecraft.block.material.Material;
 						</#if>
 					</#list>
 
-				if(!dimensionCriteria)
-					return false;
+					if(!dimensionCriteria)
+						return false;
 
 					<#if hasCondition(data.generateCondition)>
 					int x = pos.getX();
@@ -180,9 +174,35 @@ import net.minecraft.block.material.Material;
 						return false;
 					</#if>
 
-				return super.generate(world, generator, rand, pos, config);
-			}}.withConfiguration(new BlockStateFeatureConfig(block.getDefaultState()))
-				.withPlacement(Placement.WATER_LAKE.configure(new ChanceConfig(${data.frequencyOnChunks}))));
+					return super.generate(world, generator, rand, pos, config);
+				}
+			};
+
+			configuredFeature = feature
+					.withConfiguration(new BlockStateFeatureConfig(block.getDefaultState()))
+					.withPlacement(Placement.WATER_LAKE.configure(new ChanceConfig(${data.frequencyOnChunks})));
+
+			event.getRegistry().register(feature.setRegistryName("${registryname}_lakes"));
+			Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, new ResourceLocation("${modid}:${registryname}_lakes"), configuredFeature);
+		}
+
+	}
+
+	@SubscribeEvent public void addFeatureToBiomes(BiomeLoadingEvent event) {
+		<#if data.restrictionBiomes?has_content>
+				boolean biomeCriteria = false;
+			<#list data.restrictionBiomes as restrictionBiome>
+				<#if restrictionBiome.canProperlyMap()>
+					if (new ResourceLocation("${restrictionBiome}").equals(event.getName()))
+						biomeCriteria = true;
+				</#if>
+			</#list>
+				if (!biomeCriteria)
+					return;
+		</#if>
+
+		event.getGeneration().getFeatures(GenerationStage.Decoration.LOCAL_MODIFICATIONS)
+				.add(() -> configuredFeature);
 	}
 	</#if>
 
