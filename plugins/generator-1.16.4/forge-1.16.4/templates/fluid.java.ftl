@@ -135,11 +135,16 @@ import net.minecraft.block.material.Material;
 	}
 
 	<#if (data.spawnWorldTypes?size > 0)>
+	private static Feature<BlockStateFeatureConfig> feature = null;
+	private static ConfiguredFeature<?, ?> configuredFeature = null;
 
-	private static final Feature<BlockStateFeatureConfig> feature = new LakesFeature(BlockStateFeatureConfig.field_236455_a_) {
-		@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
-			RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
-			boolean dimensionCriteria = false;
+	private static class FeatureRegisterHandler {
+
+		@SubscribeEvent public void registerFeature(RegistryEvent.Register<Feature<?>> event) {
+			feature = new LakesFeature(BlockStateFeatureConfig.field_236455_a_) {
+				@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+					RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
+					boolean dimensionCriteria = false;
 
     				<#list data.spawnWorldTypes as worldType>
 						<#if worldType=="Surface">
@@ -158,8 +163,8 @@ import net.minecraft.block.material.Material;
 						</#if>
 					</#list>
 
-			if(!dimensionCriteria)
-				return false;
+					if(!dimensionCriteria)
+						return false;
 
 					<#if hasCondition(data.generateCondition)>
 					int x = pos.getX();
@@ -169,15 +174,10 @@ import net.minecraft.block.material.Material;
 						return false;
 					</#if>
 
-			return super.generate(world, generator, rand, pos, config);
-		}
-	};
+					return super.generate(world, generator, rand, pos, config);
+				}
+			};
 
-	private static ConfiguredFeature<?, ?> configuredFeature = null;
-
-	private static class FeatureRegisterHandler {
-
-		@SubscribeEvent public void registerFeature(RegistryEvent.Register<Feature<?>> event) {
 			configuredFeature = feature
 					.withConfiguration(new BlockStateFeatureConfig(block.getDefaultState()))
 					.withPlacement(Placement.WATER_LAKE.configure(new ChanceConfig(${data.frequencyOnChunks})));
