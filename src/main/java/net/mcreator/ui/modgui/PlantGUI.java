@@ -103,8 +103,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
 	private final JRadioButton normalType = L10N.radiobutton("elementgui.plant.use_static_plant_type");
-	private final JComboBox<String> growapableSpawnType = new JComboBox<>(
-			new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
+	private final JComboBox<String> growapableSpawnType = new JComboBox<>();
 	private final JSpinner growapableMaxHeight = new JSpinner(new SpinnerNumberModel(3, 1, 14, 1));
 
 	private final JComboBox<String> staticPlantGenerationType = new JComboBox<>(new String[] { "Flower", "Grass" });
@@ -656,6 +655,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				.updateComboBoxContents(soundOnStep, ElementUtil.loadStepSounds(), new DataListEntry.Dummy("PLANT"));
 
 		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.loadMapColors()), "DEFAULT");
+		ComboBoxUtil.updateComboBoxContents(growapableSpawnType, Arrays.asList(ElementUtil.getAllPlantTypes()), "Plains");
 
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(cross, crop),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
