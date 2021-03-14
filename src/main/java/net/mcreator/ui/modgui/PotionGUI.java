@@ -183,7 +183,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 			if (icon.getSelectedItem() == null || icon.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.potion.error_potion_needs_icon"));
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+			return Validator.ValidationResult.PASSED;
 		});
 
 		name.setValidator(
