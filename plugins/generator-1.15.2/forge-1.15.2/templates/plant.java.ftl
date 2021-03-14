@@ -463,7 +463,7 @@ import net.minecraft.block.material.Material;
 		</#if>
 
 		@Override public PlantType getPlantType(IBlockReader world, BlockPos pos) {
-			return PlantType.${data.growapableSpawnType};
+			return PlantType.${generator.map(data.growapableSpawnType, "planttypes")};
 		}
 
         <#if hasProcedure(data.onBlockAdded)>
