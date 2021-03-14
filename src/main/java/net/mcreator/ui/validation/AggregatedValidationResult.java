@@ -71,9 +71,9 @@ public class AggregatedValidationResult extends ValidationGroup {
 	@Override public List<String> getValidationProblemMessages() {
 		List<String> retval = new ArrayList<>();
 
-		validationElements.stream().filter((e) -> e.getValidationStatus().getValidationResultType()
-				!= Validator.ValidationResultType.PASSED)
-				.forEach((e) -> retval.add(e.getValidator().validate().getMessage()));
+		validationElements.stream().map(IValidable::getValidationStatus)
+				.filter(e -> e.getValidationResultType() != Validator.ValidationResultType.PASSED)
+				.forEach(e -> retval.add(e.getMessage()));
 
 		validationGroups.stream().filter((e) -> !e.validateIsErrorFree())
 				.forEach((e) -> retval.addAll(e.getValidationProblemMessages()));

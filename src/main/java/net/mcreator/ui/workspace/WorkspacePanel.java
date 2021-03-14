@@ -333,7 +333,7 @@ import java.util.stream.Collectors;
 								}
 							}
 
-							return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+							return Validator.ValidationResult.PASSED;
 						}
 					});
 

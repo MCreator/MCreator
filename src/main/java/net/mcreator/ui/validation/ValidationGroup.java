@@ -49,7 +49,6 @@ public class ValidationGroup {
 	}
 
 	public boolean validateIsErrorFree() {
-
 		boolean isErrorFree = true;
 
 		for (IValidable validable : validationElements)
@@ -62,9 +61,9 @@ public class ValidationGroup {
 	public List<String> getValidationProblemMessages() {
 		List<String> retval = new ArrayList<>();
 
-		validationElements.stream().filter((e) -> e.getValidationStatus().getValidationResultType()
-				!= Validator.ValidationResultType.PASSED)
-				.forEach((e) -> retval.add(e.getValidator().validate().getMessage()));
+		validationElements.stream().map(IValidable::getValidationStatus)
+				.filter(e -> e.getValidationResultType() != Validator.ValidationResultType.PASSED)
+				.forEach(e -> retval.add(e.getMessage()));
 
 		return retval;
 	}

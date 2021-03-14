@@ -98,7 +98,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 			if (texture.getSelectedItem() == null || texture.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.painting.error_painting_needs_texture"));
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+			return Validator.ValidationResult.PASSED;
 		});
 		page1group.addValidationElement(texture);
 
