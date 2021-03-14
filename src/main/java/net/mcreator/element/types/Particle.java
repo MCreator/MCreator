@@ -48,6 +48,8 @@ public class Particle extends GeneratableElement {
 	public double gravity;
 	public int maxAge;
 	public int maxAgeDiff;
+	public double angularVelocity;
+	public double angularAcceleration;
 
 	public boolean canCollide;
 	public boolean alwaysShow;

@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.minecraft;
 
-import net.mcreator.element.IBoundingBox;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
@@ -71,12 +71,12 @@ public class JBoundingBoxList extends JPanel {
 		boundingBoxList.forEach(e -> e.setEntryEnabled(enabled));
 	}
 
-	public List<IBoundingBox.BoxEntry> getBoundingBoxes() {
+	public List<IBlockWithBoundingBox.BoxEntry> getBoundingBoxes() {
 		return boundingBoxList.stream().map(JBoundingBoxEntry::getEntry).filter(Objects::nonNull)
 				.collect(Collectors.toList());
 	}
 
-	public void setBoundingBoxes(List<IBoundingBox.BoxEntry> box) {
+	public void setBoundingBoxes(List<IBlockWithBoundingBox.BoxEntry> box) {
 		boundingBoxList.clear(); // Fixes failing tests
 		box.forEach(e -> new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(this.isEnabled()).setEntry(e));
 	}

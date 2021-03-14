@@ -26,6 +26,7 @@ import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Element;
@@ -188,6 +189,14 @@ public class BlocklyBlockCodeGenerator {
 							"Block " + type + " requires " + required_api
 									+ " enabled in workspace settings, or the current generator does not support it"));
 				}
+			}
+		}
+
+		// add custom warnings if present
+		if (toolboxBlock.warnings != null) {
+			for (String warning : toolboxBlock.warnings) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+						L10N.t("blockly.warning." + warning, type)));
 			}
 		}
 

@@ -18,10 +18,7 @@
 
 package net.mcreator.ui.workspace;
 
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
-import net.mcreator.element.NamespacedGeneratableElement;
+import net.mcreator.element.*;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;
@@ -121,8 +118,6 @@ import java.util.stream.Collectors;
 
 	private final JLabel elementsCount = new JLabel();
 
-	private final ModTypeDropdown modTypeDropdown;
-
 	public final JRadioButtonMenuItem desc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.descending"));
 
 	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem(
@@ -144,8 +139,6 @@ import java.util.stream.Collectors;
 		this.vcsPan = new WorkspacePanelVCS(this);
 
 		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator);
-
-		this.modTypeDropdown = new ModTypeDropdown(mcreator);
 
 		panels.setOpaque(false);
 
@@ -340,7 +333,7 @@ import java.util.stream.Collectors;
 								}
 							}
 
-							return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+							return Validator.ValidationResult.PASSED;
 						}
 					});
 
@@ -701,7 +694,7 @@ import java.util.stream.Collectors;
 		but1.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but1.isEnabled())
-					modTypeDropdown.show(e.getComponent(), e.getComponent().getWidth() + 5, -3);
+					new ModTypeDropdown(mcreator).show(e.getComponent(), e.getComponent().getWidth() + 5, -3);
 			}
 		});
 		but1.setToolTipText(L10N.t("workspace.elements.add.tooltip"));
@@ -817,8 +810,7 @@ import java.util.stream.Collectors;
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but6.isEnabled()) {
 					IElement mu = list.getSelectedValue();
-					if (mu instanceof ModElement
-							&& ((ModElement) mu).getType().getBaseType() != ModElementType.BaseType.DATAPACK) {
+					if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
 						ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
 						if (modified != null)
 							mcreator.getWorkspace().updateModElement(modified);

@@ -38,6 +38,7 @@ public class ToolboxBlock {
 	@Nullable public List<String> inputs;
 	@Nullable public List<StatementInput> statements;
 	@Nullable public List<Dependency> dependencies;
+	@Nullable public List<String> warnings;
 
 	@Nullable public List<String> required_apis;
 
