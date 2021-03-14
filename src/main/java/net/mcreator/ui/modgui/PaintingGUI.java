@@ -67,7 +67,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
 
-		JPanel selp = new JPanel(new GridLayout(3, 2, 50, 20));
+		JPanel selp = new JPanel(new GridLayout(3, 2, 50, 2));
 		selp.setOpaque(false);
 
 		JButton importicontexture = new JButton(UIRES.get("18px.add"));
