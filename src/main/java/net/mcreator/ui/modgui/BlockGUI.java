@@ -788,11 +788,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		selp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.block.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		selp3.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.block.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		advancedProperties.setBorder(BorderFactory.createTitledBorder(
@@ -1089,7 +1089,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
-		addPage(L10N.t("elementgui.block.page_advanced_properties"), pane7);
+		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane7);
 		addPage(L10N.t("elementgui.block.page_tile_entity"), pane8);
 		addPage(L10N.t("elementgui.block.page_energy_fluid_storage"), pane10);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);

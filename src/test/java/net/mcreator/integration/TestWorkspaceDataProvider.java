@@ -794,7 +794,7 @@ public class TestWorkspaceDataProvider {
 		case PLANT:
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
-			plant.spawnWorldTypes = new ArrayList<>();
+			plant.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			plant.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			plant.texture = "test";
@@ -802,8 +802,7 @@ public class TestWorkspaceDataProvider {
 			plant.itemTexture = emptyLists ? "" : "itest";
 			plant.particleTexture = emptyLists ? "" : "test3";
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
-			plant.growapableSpawnType = getRandomItem(random,
-					new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
+			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getAllPlantTypes());
 			plant.staticPlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.growapableMaxHeight = 5;
@@ -856,6 +855,15 @@ public class TestWorkspaceDataProvider {
 			plant.fireSpreadSpeed = 12;
 			plant.speedFactor = 34.632;
 			plant.jumpFactor = 17.732;
+			plant.canBePlacedOn = new ArrayList<>();
+			if (!emptyLists) {
+				plant.canBePlacedOn.add(new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+				plant.canBePlacedOn.add(new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+				plant.canBePlacedOn.add(new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			}
 			plant.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
@@ -877,6 +885,7 @@ public class TestWorkspaceDataProvider {
 			plant.onBlockAdded = new Procedure("procedure8");
 			plant.onBlockPlacedBy = new Procedure("procedure9");
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
+			plant.placingCondition = _true ? null : new Procedure("condition2");
 			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
 			plant.tintType = getRandomString(random,
 					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));

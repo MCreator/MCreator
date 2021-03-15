@@ -336,7 +336,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		name.enableRealtimeValidation();
 		bulletItemTexture.setValidator(() -> {
 			if (bulletItemTexture.containsItem() || !adefault.equals(bulletModel.getSelectedItem()))
-				return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+				return Validator.ValidationResult.PASSED;
 			else
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.ranged_item.error_select_element"));
@@ -348,7 +348,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 						.equals(""))
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 							L10N.t("elementgui.ranged_item.error_custom_model_needs_texture"));
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+			return Validator.ValidationResult.PASSED;
 		});
 
 		page2group.addValidationElement(bulletItemTexture);

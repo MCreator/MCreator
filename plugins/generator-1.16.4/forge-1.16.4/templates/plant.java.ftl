@@ -61,6 +61,7 @@ import net.minecraft.block.material.Material;
 
 		<#if (data.spawnWorldTypes?size > 0)>
 		MinecraftForge.EVENT_BUS.register(this);
+		FMLJavaModLoadingContext.get().getModEventBus().register(new FeatureRegisterHandler());
 		</#if>
 	}
 
@@ -129,6 +130,169 @@ import net.minecraft.block.material.Material;
 	</#if>
 
 	<#if (data.spawnWorldTypes?size > 0)>
+	private static Feature<BlockClusterFeatureConfig> feature = null;
+	private static ConfiguredFeature<?, ?> configuredFeature = null;
+
+	private static class FeatureRegisterHandler {
+
+		@SubscribeEvent public void registerFeature(RegistryEvent.Register<Feature<?>> event) {
+			<#if data.plantType == "normal">
+				<#if data.staticPlantGenerationType == "Flower">
+				feature = new DefaultFlowersFeature(BlockClusterFeatureConfig.field_236587_a_) {
+					@Override public BlockState getFlowerToPlace(Random random, BlockPos bp, BlockClusterFeatureConfig fc) {
+						return block.getDefaultState();
+					}
+				<#else>
+				feature = new RandomPatchFeature(BlockClusterFeatureConfig.field_236587_a_) {
+				</#if>
+
+					@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, BlockClusterFeatureConfig config) {
+						RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
+						boolean dimensionCriteria = false;
+
+						<#list data.spawnWorldTypes as worldType>
+							<#if worldType=="Surface">
+								if(dimensionType == World.OVERWORLD)
+									dimensionCriteria = true;
+							<#elseif worldType=="Nether">
+								if(dimensionType == World.THE_NETHER)
+									dimensionCriteria = true;
+							<#elseif worldType=="End">
+								if(dimensionType == World.THE_END)
+									dimensionCriteria = true;
+							<#else>
+								if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
+										new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
+									dimensionCriteria = true;
+							</#if>
+						</#list>
+
+						if(!dimensionCriteria)
+							return false;
+
+						<#if hasCondition(data.generateCondition)>
+						int x = pos.getX();
+						int y = pos.getY();
+						int z = pos.getZ();
+						if (!<@procedureOBJToConditionCode data.generateCondition/>)
+							return false;
+						</#if>
+
+						return super.generate(world, generator, random, pos, config);
+					}
+				};
+			<#elseif data.plantType == "growapable">
+				feature = new Feature<BlockClusterFeatureConfig>(BlockClusterFeatureConfig.field_236587_a_) {
+					@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, BlockClusterFeatureConfig config) {
+						RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
+						boolean dimensionCriteria = false;
+
+						<#list data.spawnWorldTypes as worldType>
+							<#if worldType=="Surface">
+								if(dimensionType == World.OVERWORLD)
+									dimensionCriteria = true;
+							<#elseif worldType=="Nether">
+								if(dimensionType == World.THE_NETHER)
+									dimensionCriteria = true;
+							<#elseif worldType=="End">
+								if(dimensionType == World.THE_END)
+									dimensionCriteria = true;
+							<#else>
+								if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
+										new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
+									dimensionCriteria = true;
+							</#if>
+						</#list>
+
+						if(!dimensionCriteria)
+							return false;
+
+						<#if hasCondition(data.generateCondition)>
+						int x = pos.getX();
+						int y = pos.getY();
+						int z = pos.getZ();
+						if (!<@procedureOBJToConditionCode data.generateCondition/>)
+							return false;
+						</#if>
+
+						int generated = 0;
+						for(int j = 0; j < ${data.frequencyOnChunks}; ++j) {
+							BlockPos blockpos = pos.add(random.nextInt(4) - random.nextInt(4), 0, random.nextInt(4) - random.nextInt(4));
+							if (world.isAirBlock(blockpos)) {
+								BlockPos blockpos1 = blockpos.down();
+								int k = 1 + random.nextInt(random.nextInt(${data.growapableMaxHeight}) + 1);
+								k = Math.min(${data.growapableMaxHeight}, k);
+								for(int l = 0; l < k; ++l) {
+									if (block.getDefaultState().isValidPosition(world, blockpos)) {
+										world.setBlockState(blockpos.up(l), block.getDefaultState(), 2);
+										generated++;
+									}
+								}
+							}
+						}
+						return generated > 0;
+					}
+				};
+			<#elseif data.plantType == "double">
+				feature = new RandomPatchFeature(BlockClusterFeatureConfig.field_236587_a_) {
+					@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, BlockClusterFeatureConfig config) {
+						RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
+						boolean dimensionCriteria = false;
+
+			        	<#list data.spawnWorldTypes as worldType>
+							<#if worldType=="Surface">
+			    		        if(dimensionType == World.OVERWORLD)
+									dimensionCriteria = true;
+							<#elseif worldType=="Nether">
+			    				if(dimensionType == World.THE_NETHER)
+									dimensionCriteria = true;
+							<#elseif worldType=="End">
+			    				if(dimensionType == World.THE_END)
+									dimensionCriteria = true;
+							<#else>
+			    				if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
+										new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
+									dimensionCriteria = true;
+							</#if>
+						</#list>
+
+						if(!dimensionCriteria)
+							return false;
+
+			    		<#if hasCondition(data.generateCondition)>
+			    		    int x = pos.getX();
+			    			int y = pos.getY();
+			    			int z = pos.getZ();
+			    			if (!<@procedureOBJToConditionCode data.generateCondition/>)
+								return false;
+						</#if>
+
+						return super.generate(world, generator, random, pos, config);
+					}
+				};
+			</#if>
+
+			configuredFeature = feature
+					.withConfiguration((new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(block.getDefaultState()),
+											new <#if data.plantType == "double">DoublePlant<#else>Simple</#if>BlockPlacer())).tries(64)
+											<#if data.plantType == "double" && data.doublePlantGenerationType == "Flower">.func_227317_b_()</#if>.build()
+			                          )
+					<#if (data.plantType == "normal" && data.staticPlantGenerationType == "Grass") || (data.plantType == "double" && data.doublePlantGenerationType == "Grass")>
+					.withPlacement(Placement.COUNT_NOISE.configure(new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks})))
+					<#else>
+						<#if data.plantType == "normal" || data.plantType == "double">
+						.withPlacement(Features.Placements.VEGETATION_PLACEMENT).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).func_242731_b(${data.frequencyOnChunks})
+						<#else>
+						.withPlacement(Features.Placements.PATCH_PLACEMENT).func_242731_b(${data.frequencyOnChunks})
+						</#if>
+					</#if>;
+
+			event.getRegistry().register(feature.setRegistryName("${registryname}"));
+			Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, new ResourceLocation("${modid}:${registryname}"), configuredFeature);
+		}
+
+	}
+
 	@SubscribeEvent public void addFeatureToBiomes(BiomeLoadingEvent event) {
 		<#if data.restrictionBiomes?has_content>
 				boolean biomeCriteria = false;
@@ -142,159 +306,8 @@ import net.minecraft.block.material.Material;
 					return;
 		</#if>
 
-		<#if data.plantType == "normal">
-			<#if data.staticPlantGenerationType == "Flower">
-			FlowersFeature feature = new DefaultFlowersFeature(BlockClusterFeatureConfig.field_236587_a_) {
-				@Override public BlockState getFlowerToPlace(Random random, BlockPos bp, BlockClusterFeatureConfig fc) {
-      				return block.getDefaultState();
-   				}
-   			<#else>
-			RandomPatchFeature feature = new RandomPatchFeature(BlockClusterFeatureConfig.field_236587_a_) {
-			</#if>
-
-				@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, BlockClusterFeatureConfig config) {
-					RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
-					boolean dimensionCriteria = false;
-
-    				<#list data.spawnWorldTypes as worldType>
-						<#if worldType=="Surface">
-							if(dimensionType == World.OVERWORLD)
-								dimensionCriteria = true;
-						<#elseif worldType=="Nether">
-							if(dimensionType == World.THE_NETHER)
-								dimensionCriteria = true;
-						<#elseif worldType=="End">
-							if(dimensionType == World.THE_END)
-								dimensionCriteria = true;
-						<#else>
-							if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
-									new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
-								dimensionCriteria = true;
-						</#if>
-					</#list>
-
-					if(!dimensionCriteria)
-						return false;
-
-					<#if hasCondition(data.generateCondition)>
-					int x = pos.getX();
-					int y = pos.getY();
-					int z = pos.getZ();
-					if (!<@procedureOBJToConditionCode data.generateCondition/>)
-						return false;
-					</#if>
-
-					return super.generate(world, generator, random, pos, config);
-				}
-			};
-		<#elseif data.plantType == "growapable">
-			Feature<BlockClusterFeatureConfig> feature = new Feature<BlockClusterFeatureConfig>(BlockClusterFeatureConfig.field_236587_a_) {
-				@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, BlockClusterFeatureConfig config) {
-					RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
-					boolean dimensionCriteria = false;
-
-    				<#list data.spawnWorldTypes as worldType>
-						<#if worldType=="Surface">
-							if(dimensionType == World.OVERWORLD)
-								dimensionCriteria = true;
-						<#elseif worldType=="Nether">
-							if(dimensionType == World.THE_NETHER)
-								dimensionCriteria = true;
-						<#elseif worldType=="End">
-							if(dimensionType == World.THE_END)
-								dimensionCriteria = true;
-						<#else>
-							if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
-									new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
-								dimensionCriteria = true;
-						</#if>
-					</#list>
-
-					if(!dimensionCriteria)
-						return false;
-
-					<#if hasCondition(data.generateCondition)>
-					int x = pos.getX();
-					int y = pos.getY();
-					int z = pos.getZ();
-					if (!<@procedureOBJToConditionCode data.generateCondition/>)
-						return false;
-					</#if>
-
-					int generated = 0;
-      				for(int j = 0; j < ${data.frequencyOnChunks}; ++j) {
-						BlockPos blockpos = pos.add(random.nextInt(4) - random.nextInt(4), 0, random.nextInt(4) - random.nextInt(4));
-						if (world.isAirBlock(blockpos)) {
-							BlockPos blockpos1 = blockpos.down();
-							int k = 1 + random.nextInt(random.nextInt(${data.growapableMaxHeight}) + 1);
-							k = Math.min(${data.growapableMaxHeight}, k);
-							for(int l = 0; l < k; ++l) {
-								if (block.getDefaultState().isValidPosition(world, blockpos)) {
-									world.setBlockState(blockpos.up(l), block.getDefaultState(), 2);
-									generated++;
-								}
-							}
-						}
-      				}
-      				return generated > 0;
-				}
-			};
-		<#elseif data.plantType == "double">
-        	RandomPatchFeature feature = new RandomPatchFeature(BlockClusterFeatureConfig.field_236587_a_) {
-            	@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, BlockClusterFeatureConfig config) {
-            		RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
-            		boolean dimensionCriteria = false;
-
-                	<#list data.spawnWorldTypes as worldType>
-            	    	<#if worldType=="Surface">
-            		        if(dimensionType == World.OVERWORLD)
-            					dimensionCriteria = true;
-            			<#elseif worldType=="Nether">
-            				if(dimensionType == World.THE_NETHER)
-            					dimensionCriteria = true;
-            			<#elseif worldType=="End">
-            				if(dimensionType == World.THE_END)
-            					dimensionCriteria = true;
-            			<#else>
-            				if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
-									new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
-            					dimensionCriteria = true;
-            			</#if>
-            		</#list>
-
-            		if(!dimensionCriteria)
-            			return false;
-
-            		<#if hasCondition(data.generateCondition)>
-            		    int x = pos.getX();
-            			int y = pos.getY();
-            			int z = pos.getZ();
-            			if (!<@procedureOBJToConditionCode data.generateCondition/>)
-            				return false;
-            		</#if>
-
-            		return super.generate(world, generator, random, pos, config);
-            		}
-            	};
-		</#if>
-
 		event.getGeneration().getFeatures(GenerationStage.Decoration.VEGETAL_DECORATION)
-				.add(() -> (ConfiguredFeature<?, ?>) feature
-						.withConfiguration((new BlockClusterFeatureConfig.Builder(
-								new SimpleBlockStateProvider(block.getDefaultState()), new <#if data.plantType == "double">DoublePlant<#else>Simple</#if>BlockPlacer()))
-						.tries(64)
-							<#if data.plantType == "double" && data.doublePlantGenerationType == "Flower">.func_227317_b_()</#if>
-						.build())
-						<#if (data.plantType == "normal" && data.staticPlantGenerationType == "Grass") || (data.plantType == "double" && data.doublePlantGenerationType == "Grass")>
-							.withPlacement(Placement.COUNT_NOISE.configure(new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks})))
-						<#else>
-							<#if data.plantType == "normal" || data.plantType == "double">
-							.withPlacement(Features.Placements.VEGETATION_PLACEMENT).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).func_242731_b(${data.frequencyOnChunks})
-							<#else>
-							.withPlacement(Features.Placements.PATCH_PLACEMENT).func_242731_b(${data.frequencyOnChunks})
-							</#if>
-						</#if>
-						);
+				.add(() -> configuredFeature);
 	}
 	</#if>
 
@@ -427,8 +440,73 @@ import net.minecraft.block.material.Material;
             </#if>
         </#if>
 
+		<#if (data.canBePlacedOn?size > 0) || hasCondition(data.placingCondition)>
+			<#if data.plantType != "growapable">
+			@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+				<#if hasCondition(data.placingCondition)>
+					boolean additionalCondition = true;
+					if (worldIn instanceof IWorld) {
+						IWorld world = (IWorld) worldIn;
+						int x = pos.getX();
+						int y = pos.getY() + 1;
+						int z = pos.getZ();
+						additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+					}
+				</#if>
+
+				Block block = state.getBlock();
+
+				return
+				<#if (data.canBePlacedOn?size > 0)>(
+					<#list data.canBePlacedOn as canBePlacedOn>
+						block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						<#if canBePlacedOn?has_next>||</#if>
+					</#list>)
+				</#if>
+				<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
+				<#if hasCondition(data.placingCondition)> additionalCondition </#if>;
+			}
+			</#if>
+
+			@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+				BlockPos blockpos = pos.down();
+				BlockState blockstate = worldIn.getBlockState(blockpos);
+
+				<#if data.plantType = "normal">
+					return this.isValidGround(blockstate, worldIn, blockpos)
+				<#elseif data.plantType == "growapable">
+					<#if hasCondition(data.placingCondition)>
+					boolean additionalCondition = true;
+					if (worldIn instanceof IWorld) {
+						IWorld world = (IWorld) worldIn;
+						int x = pos.getX();
+						int y = pos.getY();
+						int z = pos.getZ();
+						additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+					}
+					</#if>
+
+					Block block = blockstate.getBlock();
+
+					return block == this ||
+					<#if (data.canBePlacedOn?size > 0)>(
+						<#list data.canBePlacedOn as canBePlacedOn>
+						block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						<#if canBePlacedOn?has_next>||</#if>
+					</#list>)</#if>
+					<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
+					<#if hasCondition(data.placingCondition)> additionalCondition </#if>
+				<#else>
+					if (state.get(HALF) == DoubleBlockHalf.UPPER)
+						return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
+					else
+						return this.isValidGround(blockstate, worldIn, blockpos)
+				</#if>;
+			}
+		</#if>
+
 		@Override public PlantType getPlantType(IBlockReader world, BlockPos pos) {
-			return PlantType.${data.growapableSpawnType?upper_case};
+			return PlantType.${generator.map(data.growapableSpawnType, "planttypes")};
 		}
 
         <#if hasProcedure(data.onBlockAdded)>
