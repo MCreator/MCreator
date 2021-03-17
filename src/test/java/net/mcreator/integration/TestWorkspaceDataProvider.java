@@ -1356,7 +1356,7 @@ public class TestWorkspaceDataProvider {
 			GameRule gamerule = new GameRule(modElement);
 			gamerule.name = modElement.getName();
 			gamerule.displayName = modElement.getName();
-			gamerule.description = modElement.getName();
+			gamerule.description = modElement.getName() + " description";
 			gamerule.category = getRandomString(random,
 					Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
 			gamerule.type = new String[] { "Number", "Logic", "Number", "Logic" }[valueIndex];
