@@ -29,6 +29,7 @@ public class GameRule extends GeneratableElement {
 	public String name;
 	public String type;
 
+	public String displayName;
 	public String description;
 	public String category;
 
