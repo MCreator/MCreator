@@ -1,1 +1,1 @@
-This is the GameRule display name. It is used for the GameRules setting screen.
+This is the GameRule display name. It is used on the GameRules setting screen.
