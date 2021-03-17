@@ -43,7 +43,7 @@ dependencies {
     // from maven
     implementation group: 'commons-io', name: 'commons-io', version: '2.6' // 2.7+ problem with : in filenames: NTFS ADS separator
     implementation group: 'foxtrot', name: 'foxtrot-core', version: '4.0'
-    implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.30'
+    implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.31'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
     implementation group: 'com.github.sps.junidecode', name: 'junidecode', version: '0.3'
     implementation group: 'org.jboss.forge.roaster', name: 'roaster-api', version: '2.22.2.Final'
