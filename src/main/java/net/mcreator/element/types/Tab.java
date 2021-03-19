@@ -20,14 +20,19 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class Tab extends GeneratableElement {
 
 	public String name;
+	public String bgTexture;
 	public MItemBlock icon;
 	public boolean showSearch;
 
@@ -39,4 +44,16 @@ public class Tab extends GeneratableElement {
 		return MinecraftImageGenerator.Preview.generateCreativeTabPreviewPicture(getModElement().getWorkspace(), icon);
 	}
 
+	@Override public void finalizeModElementGeneration() {
+		if (Float.parseFloat(StringUtils
+				.removeStart(getModElement().getWorkspace().getGeneratorConfiguration().getGeneratorMinecraftVersion(),
+						"1.")) < 16.5) {
+			File originalTextureFileLocation = getModElement().getFolderManager()
+					.getOtherTextureFile(FilenameUtils.removeExtension(bgTexture));
+			File newLocation = new File(getModElement().getFolderManager().getWorkspaceFolder(),
+					"src/main/resources/assets/minecraft/textures/gui/container/creative_inventory/tab_" + FilenameUtils
+							.removeExtension(bgTexture) + ".png");
+			FileIO.copyFile(originalTextureFileLocation, newLocation);
+		}
+	}
 }

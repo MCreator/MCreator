@@ -22,30 +22,43 @@ import net.mcreator.element.types.Tab;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class TabGUI extends ModElementGUI<Tab> {
 
 	private final VTextField name = new VTextField(20);
 	private MCItemHolder icon;
+	private final VComboBox<String> bgTexture = new SearchableComboBox<>();
 	private final JCheckBox showSearch = L10N.checkbox("elementgui.common.enable");
 
 	private final ValidationGroup page1group = new ValidationGroup();
@@ -60,7 +73,7 @@ public class TabGUI extends ModElementGUI<Tab> {
 		icon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 		JPanel pane3 = new JPanel(new BorderLayout());
-		JPanel selp = new JPanel(new GridLayout(3, 2, 100, 1));
+		JPanel selp = new JPanel(new GridLayout(4, 2, 100, 1));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -69,6 +82,21 @@ public class TabGUI extends ModElementGUI<Tab> {
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tab/icon"), L10N.label("elementgui.tab.icon")));
 		selp.add(PanelUtils.join(FlowLayout.LEFT, icon));
+
+		bgTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		bgTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");JButton importicontexture = new JButton(UIRES.get("18px.add"));
+		importicontexture.setToolTipText(L10N.t("elementgui.tab.import_painting"));
+		importicontexture.setOpaque(false);
+		importicontexture.addActionListener(e -> {
+			TextureImportDialogs.importOtherTextures(mcreator);
+			bgTexture.removeAllItems();
+			bgTexture.addItem("");
+			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> bgTexture.addItem(el.getName()));
+		});
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tab/background_texture"),
+				L10N.label("elementgui.tab.background_texture")));
+		selp.add(PanelUtils.centerAndEastElement(bgTexture, importicontexture));
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("tab/search_bar"), L10N.label("elementgui.tab.search_bar")));
@@ -109,13 +137,36 @@ public class TabGUI extends ModElementGUI<Tab> {
 		}
 	}
 
+	@Override public void reloadDataLists() {
+		super.reloadDataLists();
+
+		ComboBoxUtil.updateComboBoxContents(bgTexture, ListUtils.merge(Collections.singleton(""),
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.collect(Collectors.toList())), "");
+	}
+
+
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		return new AggregatedValidationResult(page1group);
 	}
 
 	@Override public void openInEditingMode(Tab tab) {
+		//Executed for Minecraft 1.16.4 and before
+		//Delete the old texture file if a new one is selected
+		if (Float.parseFloat(org.apache.commons.lang3.StringUtils
+				.removeStart(getModElement().getWorkspace().getGeneratorConfiguration().getGeneratorMinecraftVersion(),
+						"1.")) < 16.5) {
+			if (!Objects.equals(FilenameUtils.removeExtension(bgTexture.getSelectedItem()), tab.bgTexture)) {
+				File texture = new File(getModElement().getFolderManager().getWorkspaceFolder(),
+						"src/main/resources/assets/minecraft/textures/gui/container/creative_inventory/tab_"
+								+ FilenameUtils.removeExtension(tab.bgTexture) + ".png");
+				texture.delete();
+			}
+		}
+
 		name.setText(tab.name);
 		icon.setBlock(tab.icon);
+		bgTexture.setSelectedItem(tab.bgTexture);
 		showSearch.setSelected(tab.showSearch);
 	}
 
@@ -123,6 +174,7 @@ public class TabGUI extends ModElementGUI<Tab> {
 		Tab tab = new Tab(modElement);
 		tab.name = name.getText();
 		tab.icon = icon.getBlock();
+		tab.bgTexture = bgTexture.getSelectedItem();
 		tab.showSearch = showSearch.isSelected();
 		return tab;
 	}
