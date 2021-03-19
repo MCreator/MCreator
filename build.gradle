@@ -61,7 +61,7 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.8'
     implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.10.0.202012080955-r'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.30'
-    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '6.7.1'
+    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '6.8.3'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
 
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.16.1'
