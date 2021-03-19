@@ -421,7 +421,10 @@ public class TestWorkspaceDataProvider {
 			tab.name = modElement.getName();
 			tab.icon = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-			tab.showSearch = _true;
+			if(!emptyLists)
+				tab.showSearch = _true;
+			else
+				tab.bgTexture = "test.png";
 			return tab;
 		case OVERLAY:
 			Overlay overlay = new Overlay(modElement);
