@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[35,)"
+loaderVersion="[36,)"
 license="${settings.getLicense()}"
 
 [[mods]]
@@ -26,7 +26,7 @@ ${settings.getDescription()}
 [[dependencies.${settings.getModID()}]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.4]"
+    versionRange="[1.16.5]"
     ordering="NONE"
     side="BOTH"
 
