@@ -101,6 +101,7 @@ public class TabGUI extends ModElementGUI<Tab> {
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("tab/search_bar"), L10N.label("elementgui.tab.search_bar")));
 		selp.add(showSearch);
+		showSearch.addActionListener(e -> enableBackgroundTexture());
 
 		showSearch.setOpaque(false);
 
@@ -135,6 +136,14 @@ public class TabGUI extends ModElementGUI<Tab> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
+		enableBackgroundTexture();
+	}
+
+	private void enableBackgroundTexture() {
+		if(showSearch.isSelected())
+			bgTexture.setEnabled(false);
+		else
+			bgTexture.setEnabled(true);
 	}
 
 	@Override public void reloadDataLists() {

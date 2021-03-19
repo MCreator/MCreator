@@ -47,7 +47,8 @@ public class ${name}ItemGroup extends ${JavaModName}Elements.ModElement{
 			@OnlyIn(Dist.CLIENT) public boolean hasSearchBar() {
 				return ${data.showSearch};
 			}
-		}<#if data.showSearch>.setBackgroundImageName("item_search.png")</#if>;
+		}<#if data.showSearch>.setBackgroundImageName("item_search.png")
+		<#elseif data.bgTexture?has_content>.setBackgroundImage(new ResourceLocation("${modid}:textures/${data.bgTexture}"))</#if>;
 	}
 
 	public static ItemGroup tab;
