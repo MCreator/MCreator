@@ -53,11 +53,13 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if (data.spawnWorldTypes?size > 0)>
 		MinecraftForge.EVENT_BUS.register(this);
+		FMLJavaModLoadingContext.get().getModEventBus().register(new FeatureRegisterHandler());
 		</#if>
 
 		<#if data.hasInventory>
 		FMLJavaModLoadingContext.get().getModEventBus().register(new TileEntityRegisterHandler());
 		</#if>
+
 		<#if data.tintType != "No tint">
 			FMLJavaModLoadingContext.get().getModEventBus().register(new BlockColorRegisterHandler());
 			<#if data.isItemTinted>
@@ -742,7 +744,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 	}
 
-<#if data.hasInventory>
+	<#if data.hasInventory>
     public static class CustomTileEntity extends LockableLootTileEntity implements ISidedInventory {
 
 		private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(${data.inventorySize}, ItemStack.EMPTY);
@@ -948,9 +950,90 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 
 	}
-</#if>
+	</#if>
 
-<#if (data.spawnWorldTypes?size > 0)>
+	<#if (data.spawnWorldTypes?size > 0)>
+	private static Feature<OreFeatureConfig> feature = null;
+	private static ConfiguredFeature<?, ?> configuredFeature = null;
+
+	private static IRuleTestType<CustomRuleTest> CUSTOM_MATCH = null;
+
+	private static class CustomRuleTest extends RuleTest {
+
+		static final CustomRuleTest INSTANCE = new CustomRuleTest();
+		static final com.mojang.serialization.Codec<CustomRuleTest> codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
+
+		public boolean test(BlockState blockAt, Random random) {
+			boolean blockCriteria = false;
+
+			<#list data.blocksToReplace as replacementBlock>
+			if(blockAt.getBlock() == ${mappedBlockToBlockStateCode(replacementBlock)}.getBlock())
+				blockCriteria = true;
+			</#list>
+
+			return blockCriteria;
+		}
+
+		protected IRuleTestType<?> getType() {
+			return CUSTOM_MATCH;
+		}
+
+	}
+
+	private static class FeatureRegisterHandler {
+
+		@SubscribeEvent public void registerFeature(RegistryEvent.Register<Feature<?>> event) {
+			CUSTOM_MATCH = Registry.register(Registry.RULE_TEST, new ResourceLocation("${modid}:${registryname}_match"), () -> CustomRuleTest.codec);
+
+			feature = new OreFeature(OreFeatureConfig.CODEC) {
+				@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, OreFeatureConfig config) {
+					RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
+					boolean dimensionCriteria = false;
+
+    				<#list data.spawnWorldTypes as worldType>
+						<#if worldType=="Surface">
+							if(dimensionType == World.OVERWORLD)
+								dimensionCriteria = true;
+						<#elseif worldType=="Nether">
+							if(dimensionType == World.THE_NETHER)
+								dimensionCriteria = true;
+						<#elseif worldType=="End">
+							if(dimensionType == World.THE_END)
+								dimensionCriteria = true;
+						<#else>
+							if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
+									new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
+								dimensionCriteria = true;
+						</#if>
+					</#list>
+
+					if(!dimensionCriteria)
+						return false;
+
+					<#if hasCondition(data.generateCondition)>
+					int x = pos.getX();
+					int y = pos.getY();
+					int z = pos.getZ();
+					if (!<@procedureOBJToConditionCode data.generateCondition/>)
+						return false;
+					</#if>
+
+					return super.generate(world, generator, rand, pos, config);
+				}
+			};
+
+			configuredFeature = feature
+					.withConfiguration(new OreFeatureConfig(CustomRuleTest.INSTANCE, block.getDefaultState(), ${data.frequencyOnChunk}))
+					.range(${data.maxGenerateHeight})
+					.square()
+					.func_242731_b(${data.frequencyPerChunks});
+
+			event.getRegistry().register(feature.setRegistryName("${registryname}"));
+			Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, new ResourceLocation("${modid}:${registryname}"), configuredFeature);
+		}
+
+	}
+
 	@SubscribeEvent public void addFeatureToBiomes(BiomeLoadingEvent event) {
 		<#if data.restrictionBiomes?has_content>
 				boolean biomeCriteria = false;
@@ -963,60 +1046,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				if (!biomeCriteria)
 					return;
 		</#if>
-		event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> new OreFeature(OreFeatureConfig.CODEC) {
-			@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, OreFeatureConfig config) {
-				RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
-				boolean dimensionCriteria = false;
-
-    			<#list data.spawnWorldTypes as worldType>
-					<#if worldType=="Surface">
-						if(dimensionType == World.OVERWORLD)
-							dimensionCriteria = true;
-					<#elseif worldType=="Nether">
-						if(dimensionType == World.THE_NETHER)
-							dimensionCriteria = true;
-					<#elseif worldType=="End">
-						if(dimensionType == World.THE_END)
-							dimensionCriteria = true;
-					<#else>
-						if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
-								new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
-							dimensionCriteria = true;
-					</#if>
-				</#list>
-
-				if(!dimensionCriteria)
-					return false;
-
-				<#if hasCondition(data.generateCondition)>
-				int x = pos.getX();
-				int y = pos.getY();
-				int z = pos.getZ();
-				if (!<@procedureOBJToConditionCode data.generateCondition/>)
-					return false;
-				</#if>
-
-				return super.generate(world, generator, rand, pos, config);
-			}}
-			.withConfiguration(new OreFeatureConfig(new BlockMatchRuleTest(
-				${data.blocksToReplace?has_content?then(mappedBlockToBlockStateCode(data.blocksToReplace[0]) + ".getBlock()", "Blocks.BARRIER")}
-			) {
-				public boolean test(BlockState blockAt, Random random) {
-					boolean blockCriteria = false;
-					<#list data.blocksToReplace as replacementBlock>
-					if(blockAt.getBlock() == ${mappedBlockToBlockStateCode(replacementBlock)}.getBlock())
-						blockCriteria = true;
-					</#list>
-					return blockCriteria;
-				}
-
-				protected IRuleTestType<?> getType() {
-					return IRuleTestType.BLOCK_MATCH;
-				}
-			}, block.getDefaultState(), ${data.frequencyOnChunk}))
-			.range(${data.maxGenerateHeight}).square().func_242731_b(${data.frequencyPerChunks}));
+		event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> configuredFeature);
 	}
-</#if>
+	</#if>
 
 }
 <#-- @formatter:on -->
