@@ -33,6 +33,7 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -209,27 +210,30 @@ import java.util.stream.Collectors;
 		return !"No tint".equals(tintType);
 	}
 
+	private ImageIcon getDefaultIcon() {
+		return getModElement().getFolderManager().getBlockImageIcon(texture);
+	}
+
+	private ImageIcon getSideOrDefaultIcon(String textureName) {
+		if (textureName.equals(""))
+			return getDefaultIcon();
+		return getModElement().getFolderManager().getBlockImageIcon(textureName);
+	}
+
 	@Override public BufferedImage generateModElementPicture() {
-		if (renderType() == 10 && !textureTop.equals("") && !textureFront.equals("") && !textureLeft.equals("")) {
-			return (BufferedImage) MinecraftImageGenerator.Preview
-					.generateBlockIcon(getModElement().getFolderManager().getBlockImageIcon(textureTop).getImage(),
-							getModElement().getFolderManager().getBlockImageIcon(textureLeft).getImage(),
-							getModElement().getFolderManager().getBlockImageIcon(textureFront).getImage());
+		if (renderType() == 10) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(
+					getSideOrDefaultIcon(textureTop).getImage(), getSideOrDefaultIcon(textureLeft).getImage(),
+							getSideOrDefaultIcon(textureFront).getImage());
 		} else if (renderType() == 11 || renderType() == 110 || (blockBase != null && blockBase.equals("Leaves"))) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getDefaultIcon().getImage(),
+					getDefaultIcon().getImage(), getDefaultIcon().getImage());
+		} else if (renderType() == 14) {
+			Image side = ImageUtils.drawOver(getSideOrDefaultIcon(textureFront), getSideOrDefaultIcon(textureLeft)).getImage();
 			return (BufferedImage) MinecraftImageGenerator.Preview
-					.generateBlockIcon(getModElement().getFolderManager().getBlockImageIcon(texture).getImage(),
-							getModElement().getFolderManager().getBlockImageIcon(texture).getImage(),
-							getModElement().getFolderManager().getBlockImageIcon(texture).getImage());
-		} else if (renderType() == 14 && !textureTop.equals("") && !textureFront.equals("") && !textureLeft
-				.equals("")) {
-			Image side = ImageUtils.drawOver(getModElement().getFolderManager().getBlockImageIcon(textureFront),
-					getModElement().getFolderManager().getBlockImageIcon(textureLeft)).getImage();
-			return (BufferedImage) MinecraftImageGenerator.Preview
-					.generateBlockIcon(getModElement().getFolderManager().getBlockImageIcon(textureTop).getImage(),
-							side, side);
+					.generateBlockIcon(getSideOrDefaultIcon(textureTop).getImage(),	side, side);
 		} else {
-			return ImageUtils
-					.resizeAndCrop(getModElement().getFolderManager().getBlockImageIcon(texture).getImage(), 32);
+			return ImageUtils.resizeAndCrop(getDefaultIcon().getImage(), 32);
 		}
 	}
 
