@@ -18,6 +18,7 @@
 
 package net.mcreator.minecraft;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -71,8 +72,7 @@ public class ElementUtil {
 	 */
 	public static List<MCItem> loadBlocks(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
-		workspace.getModElements().stream()
-				.filter(element -> element.getType().getBaseType() == ModElementType.BaseType.BLOCK)
+		workspace.getModElements().stream().filter(element -> element.getType().getBaseType() == BaseType.BLOCK)
 				.forEach(modElement -> elements.addAll(modElement.getMCItems()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
@@ -88,19 +88,19 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllTabs(Workspace workspace) {
-		List<DataListEntry> tabs = getCustomElementsOfType(workspace, ModElementType.BaseType.TAB);
+		List<DataListEntry> tabs = getCustomElementsOfType(workspace, BaseType.TAB);
 		tabs.addAll(DataListLoader.loadDataList("tabs"));
 		return tabs;
 	}
 
 	public static List<DataListEntry> loadAllBiomes(Workspace workspace) {
-		List<DataListEntry> biomes = getCustomElementsOfType(workspace, ModElementType.BaseType.BIOME);
+		List<DataListEntry> biomes = getCustomElementsOfType(workspace, BaseType.BIOME);
 		biomes.addAll(DataListLoader.loadDataList("biomes"));
 		return biomes;
 	}
 
 	public static List<DataListEntry> loadAllEnchantments(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.BaseType.ENCHANTMENT);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENCHANTMENT);
 		retval.addAll(DataListLoader.loadDataList("enchantments"));
 		return retval;
 	}
@@ -114,19 +114,19 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllEntities(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.BaseType.ENTITY);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENTITY);
 		retval.addAll(DataListLoader.loadDataList("entities"));
 		return retval;
 	}
 
 	public static List<DataListEntry> loadAllParticles(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.BaseType.PARTICLE);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.PARTICLE);
 		retval.addAll(DataListLoader.loadDataList("particles"));
 		return retval;
 	}
 
 	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.BaseType.POTION);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTION);
 		retval.addAll(DataListLoader.loadDataList("potions"));
 		return retval;
 	}
@@ -196,6 +196,10 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("gamemodes").stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
+	public static String[] getAllPlantTypes() {
+		return DataListLoader.loadDataList("planttypes").stream().map(DataListEntry::getName).toArray(String[]::new);
+	}
+
 	public static List<DataListEntry> loadStepSounds() {
 		return DataListLoader.loadDataList("stepsounds");
 	}
@@ -225,7 +229,7 @@ public class ElementUtil {
 		dimensions.add("End");
 
 		for (ModElement mu : workspace.getModElements())
-			if (mu.getType().getBaseType() == ModElementType.BaseType.DIMENSION)
+			if (mu.getType().getBaseType() == BaseType.DIMENSION)
 				dimensions.add("CUSTOM:" + mu.getName());
 
 		return dimensions.toArray(new String[0]);
@@ -239,7 +243,7 @@ public class ElementUtil {
 		ArrayList<String> blocks = new ArrayList<>();
 
 		for (ModElement mu : workspace.getModElements()) {
-			if (mu.getType().getBaseType() == ModElementType.BaseType.GUI)
+			if (mu.getType().getBaseType() == BaseType.GUI)
 				blocks.add(mu.getName());
 		}
 
@@ -257,8 +261,7 @@ public class ElementUtil {
 				.collect(Collectors.toList());
 	}
 
-	private static List<DataListEntry> getCustomElementsOfType(@NotNull Workspace workspace,
-			ModElementType.BaseType type) {
+	private static List<DataListEntry> getCustomElementsOfType(@NotNull Workspace workspace, BaseType type) {
 		return workspace.getModElements().stream().filter(mu -> mu.getType().getBaseType() == type)
 				.map(DataListEntry.Custom::new).collect(Collectors.toList());
 	}

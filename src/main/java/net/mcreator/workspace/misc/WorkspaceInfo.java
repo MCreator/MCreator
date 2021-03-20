@@ -18,9 +18,10 @@
 
 package net.mcreator.workspace.misc;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.IItemWithTexture;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -61,7 +62,7 @@ import java.util.stream.Collectors;
 	public Map<String, String> getItemTextureMap() {
 		Map<String, String> textureMap = new HashMap<>();
 		for (ModElement element : workspace.getModElements()) {
-			if (element.getType().getBaseType() == ModElementType.BaseType.ITEM) {
+			if (element.getType().getBaseType() == BaseType.ITEM) {
 				GeneratableElement generatableElement = element.getGeneratableElement();
 				if (generatableElement instanceof IItemWithTexture) {
 					textureMap.put(element.getRegistryName(), ((IItemWithTexture) generatableElement).getTexture());

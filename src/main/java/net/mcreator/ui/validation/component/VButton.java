@@ -49,7 +49,7 @@ public class VButton extends JButton implements IValidable {
 	private Validator.ValidationResult currentValidationResult = null;
 
 	@Override public Validator.ValidationResult getValidationStatus() {
-		Validator.ValidationResult validationResult = validator == null ? null : validator.validate();
+		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
 
 		this.currentValidationResult = validationResult;
 
