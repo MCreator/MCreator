@@ -85,7 +85,7 @@ public class TabGUI extends ModElementGUI<Tab> {
 
 		bgTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
 		bgTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");JButton importicontexture = new JButton(UIRES.get("18px.add"));
-		importicontexture.setToolTipText(L10N.t("elementgui.tab.import_painting"));
+		importicontexture.setToolTipText(L10N.t("elementgui.tab.import_background"));
 		importicontexture.setOpaque(false);
 		importicontexture.addActionListener(e -> {
 			TextureImportDialogs.importOtherTextures(mcreator);
