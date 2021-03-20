@@ -69,6 +69,7 @@ public class Generator implements IGenerator, Closeable {
 	private final TemplateGenerator triggerGenerator;
 	private final TemplateGenerator aitaskGenerator;
 	private final TemplateGenerator jsonTriggerGenerator;
+	private final TemplateGenerator cmdargsGenerator;
 
 	private final MinecraftCodeProvider minecraftCodeProvider;
 
@@ -93,6 +94,7 @@ public class Generator implements IGenerator, Closeable {
 		this.jsonTriggerGenerator = new TemplateGenerator(generatorConfiguration.getJSONTriggerGeneratorConfiguration(),
 				this);
 		this.aitaskGenerator = new TemplateGenerator(generatorConfiguration.getAITaskGeneratorConfiguration(), this);
+		this.cmdargsGenerator = new TemplateGenerator(generatorConfiguration.getCmdArgsGeneratorConfiguration(), this);
 
 		this.minecraftCodeProvider = new MinecraftCodeProvider(workspace);
 	}
