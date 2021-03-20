@@ -48,18 +48,19 @@ public class ${name}Command extends ${JavaModName}Elements.ModElement{
 	private LiteralArgumentBuilder<CommandSource> customCommand() {
         return LiteralArgumentBuilder.<CommandSource>literal("${data.commandName}")
 			<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermissionLevel(${data.permissionLevel}))</#if>
+			<#if !argscode??>
 			.then(Commands.argument("arguments", StringArgumentType.greedyString())
-			<#if hasProcedure(data.onCommandExecuted)>
             .executes(this::execute)
-            </#if>
         	)
-			<#if hasProcedure(data.onCommandExecuted)>
             .executes(this::execute)
+            <#else>
+            ${argscode}
             </#if>
 			;
     }
 
     private int execute(CommandContext<CommandSource> ctx) {
+		<#if hasProcedure(data.onCommandExecuted)>
 		ServerWorld world = ctx.getSource().getWorld();
 
 		double x = ctx.getSource().getPos().getX();
@@ -79,6 +80,7 @@ public class ${name}Command extends ${JavaModName}Elements.ModElement{
 		});
 
 		<@procedureOBJToCode data.onCommandExecuted/>
+		</#if>
 
 		return 0;
 	}

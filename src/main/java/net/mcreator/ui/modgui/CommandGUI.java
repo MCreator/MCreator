@@ -74,7 +74,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 	private void regenerateArgs() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
-				mcreator.getGeneratorStats().getGeneratorAITasks());
+				mcreator.getGeneratorStats().getGeneratorCmdArgs());
 
 		BlocklyToCmdArgs blocklyToJava;
 		try {
@@ -178,6 +178,13 @@ public class CommandGUI extends ModElementGUI<Command> {
 		onCommandExecuted.setSelectedProcedure(command.onCommandExecuted);
 		commandName.setText(command.commandName);
 		permissionLevel.setSelectedItem(command.permissionLevel);
+
+		blocklyPanel.setXMLDataOnly(command.argsxml);
+		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			blocklyPanel.clearWorkspace();
+			blocklyPanel.setXML(command.argsxml);
+			regenerateArgs();
+		});
 	}
 
 	@Override public Command getElementFromGUI() {
@@ -185,6 +192,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 		command.commandName = commandName.getText();
 		command.onCommandExecuted = onCommandExecuted.getSelectedProcedure();
 		command.permissionLevel = (String) permissionLevel.getSelectedItem();
+		command.argsxml = blocklyPanel.getXML();
 		return command;
 	}
 

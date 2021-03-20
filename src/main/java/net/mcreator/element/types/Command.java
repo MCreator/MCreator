@@ -18,12 +18,21 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.blockly.BlocklyToAITasks;
+import net.mcreator.blockly.BlocklyToCmdArgs;
+import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Procedure;
+import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
+import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.image.BufferedImage;
+import java.util.Locale;
 
 @SuppressWarnings("unused") public class Command extends GeneratableElement {
 
@@ -47,6 +56,21 @@ import java.awt.image.BufferedImage;
 
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateCommandPreviewPicture(commandName);
+	}
+
+	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
+		return additionalData -> {
+			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
+					BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks(),
+					this.getModElement().getGenerator().getCmdArgsGenerator(), additionalData).setTemplateExtension(
+					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
+							.toLowerCase(Locale.ENGLISH));
+			BlocklyToCmdArgs blocklyToJava = new BlocklyToCmdArgs(this.getModElement().getWorkspace(), this.argsxml,
+					this.getModElement().getGenerator().getCmdArgsGenerator(),
+					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+
+			additionalData.put("argscode", blocklyToJava.getGeneratedCode());
+		};
 	}
 
 }
