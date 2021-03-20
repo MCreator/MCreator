@@ -228,6 +228,14 @@ import java.util.stream.Collectors;
 		} else if (renderType() == 11 || renderType() == 110 || (blockBase != null && blockBase.equals("Leaves"))) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getDefaultIcon().getImage(),
 					getDefaultIcon().getImage(), getDefaultIcon().getImage());
+		} else if (blockBase != null && blockBase.equals("Slab")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateSlabIcon(
+					getSideOrDefaultIcon(textureTop).getImage(), getSideOrDefaultIcon(textureFront).getImage());
+		} else if (blockBase != null && blockBase.equals("TrapDoor")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateTrapdoorIcon(getDefaultIcon().getImage());
+		} else if (blockBase != null && blockBase.equals("Stairs")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateStairsIcon(
+					getSideOrDefaultIcon(textureTop).getImage(), getSideOrDefaultIcon(textureFront).getImage());
 		} else if (renderType() == 14) {
 			Image side = ImageUtils.drawOver(getSideOrDefaultIcon(textureFront), getSideOrDefaultIcon(textureLeft)).getImage();
 			return (BufferedImage) MinecraftImageGenerator.Preview
