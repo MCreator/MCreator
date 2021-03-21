@@ -32,6 +32,7 @@ import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.element.types.*;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
@@ -470,7 +471,8 @@ public class TestWorkspaceDataProvider {
 				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure1"), null));
 				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null));
 				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
-				components.add(new Button("button4", 10, 10, "button4", 100, 200, new Procedure("procedure2"), new Procedure("condition4")));
+				components.add(new Button("button4", 10, 10, "button4", 100, 200, new Procedure("procedure2"),
+						new Procedure("condition4")));
 				components.add(new InputSlot(0, "slot1", 20, 30, Color.red, _true, _true, new Procedure("procedure3"),
 						new Procedure("procedure1"), new Procedure("procedure2"),
 						new MItemBlock(modElement.getWorkspace(), "")));
@@ -795,7 +797,7 @@ public class TestWorkspaceDataProvider {
 		case PLANT:
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
-			plant.spawnWorldTypes = new ArrayList<>();
+			plant.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			plant.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			plant.texture = "test";
@@ -803,11 +805,28 @@ public class TestWorkspaceDataProvider {
 			plant.itemTexture = emptyLists ? "" : "itest";
 			plant.particleTexture = emptyLists ? "" : "test3";
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
-			plant.growapableSpawnType = getRandomItem(random,
-					new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
+			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getAllPlantTypes());
 			plant.staticPlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.growapableMaxHeight = 5;
+			plant.customBoundingBox = !_true;
+			plant.disableOffset = !_true;
+			plant.boundingBoxes = new ArrayList<>();
+			if (!emptyLists) {
+				int boxes = random.nextInt(4) + 1;
+				for (int i = 0; i < boxes; i++) {
+					IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
+					box.mx = new double[] { 0, 5 + i, 1.2, 7.1 }[valueIndex];
+					box.my = new double[] { 0, 2, 3.6, 12.2 }[valueIndex];
+					box.mz = new double[] { 0, 3.1, 0, 2.2 }[valueIndex];
+					box.Mx = new double[] { 16, 15.2, 4, 7.1 + i }[valueIndex];
+					box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
+					box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
+					box.subtract = new boolean[] { false, _true, _true, random.nextBoolean() }[valueIndex];
+
+					plant.boundingBoxes.add(box);
+				}
+			}
 			plant.hardness = 0.03;
 			plant.emissiveRendering = !_true;
 			plant.resistance = 3;
@@ -837,6 +856,17 @@ public class TestWorkspaceDataProvider {
 			plant.frequencyOnChunks = 13;
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
+			plant.speedFactor = 34.632;
+			plant.jumpFactor = 17.732;
+			plant.canBePlacedOn = new ArrayList<>();
+			if (!emptyLists) {
+				plant.canBePlacedOn.add(new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+				plant.canBePlacedOn.add(new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+				plant.canBePlacedOn.add(new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			}
 			plant.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
@@ -858,8 +888,10 @@ public class TestWorkspaceDataProvider {
 			plant.onBlockAdded = new Procedure("procedure8");
 			plant.onBlockPlacedBy = new Procedure("procedure9");
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
+			plant.placingCondition = _true ? null : new Procedure("condition2");
 			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
-			plant.tintType = getRandomString(random, Arrays.asList("No tint", "Grass", "Foliage", "Water"));
+			plant.tintType = getRandomString(random,
+					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
 			plant.renderType = new int[] { 13, !"No tint".equals(plant.tintType) ? 120 : 12, 13,
 					!"No tint".equals(plant.tintType) ? 120 : 12 }[valueIndex];
 			plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
@@ -971,17 +1003,28 @@ public class TestWorkspaceDataProvider {
 			Block block = new Block(modElement);
 			block.name = modElement.getName();
 			block.hasTransparency = new boolean[] { _true, _true, true,
-					_true }[valueIndex]; // third is true because third index for model is cross which requires transparency
+					!emptyLists }[valueIndex]; // third is true because third index for model is cross which requires transparency
 			block.connectedSides = _true;
 			block.displayFluidOverlay = _true;
 			block.emissiveRendering = _true;
 			block.transparencyType = new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" }[valueIndex];
-			block.mx = 0.1;
-			block.my = 0.1;
-			block.mz = 0.1;
-			block.Mx = 0.9;
-			block.My = 0.9;
-			block.Mz = 0.9;
+			block.disableOffset = !_true;
+			block.boundingBoxes = new ArrayList<>();
+			if (!emptyLists) {
+				int boxes = random.nextInt(4) + 1;
+				for (int i = 0; i < boxes; i++) {
+					IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
+					box.mx = new double[] { 0, 5 + i, 1.2, 7.1 }[valueIndex];
+					box.my = new double[] { 0, 2, 3.6, 12.2 }[valueIndex];
+					box.mz = new double[] { 0, 3.1, 0, 2.2 }[valueIndex];
+					box.Mx = new double[] { 16, 15.2, 4, 7.1 + i }[valueIndex];
+					box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
+					box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
+					box.subtract = new boolean[] { false, _true, _true, random.nextBoolean() }[valueIndex];
+
+					block.boundingBoxes.add(box);
+				}
+			}
 			block.rotationMode = new int[] { 0, 1, 4, 5 }[valueIndex];
 			block.hardness = 2.3;
 			block.resistance = 3.1;
@@ -1005,6 +1048,8 @@ public class TestWorkspaceDataProvider {
 			block.reactionToPushing = getRandomItem(random,
 					new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" });
 			block.slipperiness = 12.342;
+			block.speedFactor = 34.632;
+			block.jumpFactor = 17.732;
 			block.lightOpacity = new int[] { 123, 25, 0,
 					35 }[valueIndex]; // third is 0 because third index for model is cross which requires transparency;
 			block.material = new Material(modElement.getWorkspace(),
@@ -1124,7 +1169,8 @@ public class TestWorkspaceDataProvider {
 			} else {
 				block.specialInfo = new ArrayList<>();
 			}
-			block.tintType = getRandomString(random, Arrays.asList("No tint", "Grass", "Foliage", "Water"));
+			block.tintType = getRandomString(random,
+					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
 			block.isItemTinted = _true;
 			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
 					14 }[valueIndex];
@@ -1300,6 +1346,8 @@ public class TestWorkspaceDataProvider {
 			particle.gravity = 12.3;
 			particle.speedFactor = 1.3;
 			particle.canCollide = _true;
+			particle.angularVelocity = 0.23;
+			particle.angularAcceleration = -0.09;
 			particle.alwaysShow = !_true;
 			particle.animate = _true;
 			particle.maxAge = 12;
@@ -1310,7 +1358,8 @@ public class TestWorkspaceDataProvider {
 		case GAMERULE:
 			GameRule gamerule = new GameRule(modElement);
 			gamerule.name = modElement.getName();
-			gamerule.description = modElement.getName();
+			gamerule.displayName = modElement.getName();
+			gamerule.description = modElement.getName() + " description";
 			gamerule.category = getRandomString(random,
 					Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
 			gamerule.type = new String[] { "Number", "Logic", "Number", "Logic" }[valueIndex];

@@ -94,7 +94,7 @@ public class L10N {
 	}
 
 	public static String getLangString() {
-		return getLocaleString().split("_")[0];
+		return getLocaleString().split("_")[0].replace("iw", "he");
 	}
 
 	/**

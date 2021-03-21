@@ -28,6 +28,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "boundingboxes.java.ftl">
 <#include "procedures.java.ftl">
 <#include "mcitems.ftl">
 
@@ -76,8 +77,12 @@ import net.minecraft.block.material.Material;
 				BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
 			<#elseif data.tintType == "Foliage">
 				BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
-			<#else>
+			<#elseif data.tintType == "Water">
 				BiomeColors.getWaterColor(world, pos) : -1;
+			<#elseif data.tintType == "Sky">
+				Minecraft.getInstance().world.getBiome(pos).getSkyColor() : 8562943;
+			<#else>
+				Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
 			</#if>
 		}, block);
 	}
@@ -89,8 +94,12 @@ import net.minecraft.block.material.Material;
 					return GrassColors.get(0.5D, 1.0D);
 				<#elseif data.tintType == "Foliage">
 					return FoliageColors.getDefault();
-				<#else>
+				<#elseif data.tintType == "Water">
 					return 3694022;
+				<#elseif data.tintType == "Sky">
+					return 8562943;
+				<#else>
+					return 329011;
 				</#if>
 			}, block);
 		}
@@ -278,10 +287,27 @@ import net.minecraft.block.material.Material;
 					<#else>
 					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
 					</#if>
+					<#if data.speedFactor != 1.0>
+					.speedFactor(${data.speedFactor}f)
+					</#if>
+					<#if data.jumpFactor != 1.0>
+					.jumpFactor(${data.jumpFactor}f)
+					</#if>
 					.lightValue(${data.luminance})
 			);
 			setRegistryName("${registryname}");
 		}
+
+		<#if data.customBoundingBox && data.boundingBoxes??>
+		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+			<#if data.isBoundingBoxEmpty()>
+				return VoxelShapes.empty();
+			<#else>
+				<#if !data.disableOffset> Vec3d offset = state.getOffset(world, pos); </#if>
+				<@makeBoundingBox data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset "north"/>
+			</#if>
+		}
+		</#if>
 
         <#if data.isReplaceable>
         @Override public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
@@ -374,8 +400,70 @@ import net.minecraft.block.material.Material;
             </#if>
         </#if>
 
+		<#if (data.canBePlacedOn?size > 0) || hasCondition(data.placingCondition)>
+			<#if data.plantType != "growapable">
+			@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+				<#if hasCondition(data.placingCondition)>
+				boolean additionalCondition = true;
+				if (worldIn instanceof IWorldReader) {
+					World world = ((IWorldReader)worldIn).getDimension().getWorld();
+					int x = pos.getX();
+					int y = pos.getY() + 1;
+					int z = pos.getZ();
+					additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+				}
+
+				Block block = state.getBlock();
+
+				</#if>
+				return
+				<#if (data.canBePlacedOn?size > 0)>(
+					<#list data.canBePlacedOn as canBePlacedOn>
+						block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						<#if canBePlacedOn?has_next>||</#if>
+					</#list>)
+				</#if>
+				<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
+				<#if hasCondition(data.placingCondition)> additionalCondition </#if>;
+			}
+			</#if>
+
+			@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+				BlockPos blockpos = pos.down();
+				BlockState blockstate = worldIn.getBlockState(blockpos);
+
+				<#if data.plantType = "normal">
+					return this.isValidGround(blockstate, worldIn, blockpos)
+				<#elseif data.plantType == "growapable">
+					<#if hasCondition(data.placingCondition)>
+					World world = worldIn.getDimension().getWorld();
+					int x = pos.getX();
+					int y = pos.getY();
+					int z = pos.getZ();
+					boolean additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+					</#if>
+
+					Block block = blockstate.getBlock();
+
+					return block == this ||
+					<#if (data.canBePlacedOn?size > 0)>(
+						<#list data.canBePlacedOn as canBePlacedOn>
+						block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						<#if canBePlacedOn?has_next>||</#if>
+					</#list>)</#if>
+					<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
+					<#if hasCondition(data.placingCondition)> additionalCondition </#if>
+				<#else>
+					if (state.get(HALF) == DoubleBlockHalf.UPPER)
+						return block == this && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
+					else
+						return this.isValidGround(blockstate, worldIn, blockpos)
+				</#if>;
+			}
+		</#if>
+
 		@Override public PlantType getPlantType(IBlockReader world, BlockPos pos) {
-			return PlantType.${data.growapableSpawnType};
+			return PlantType.${generator.map(data.growapableSpawnType, "planttypes")};
 		}
 
         <#if hasProcedure(data.onBlockAdded)>

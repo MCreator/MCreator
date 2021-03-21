@@ -352,12 +352,16 @@ public class GradleConsole extends JPanel {
 		task.setStandardError(new OutputStreamEventHandler(line -> SwingUtilities.invokeLater(() -> {
 			taskErr.append(line).append("\n");
 			if (serr.isSelected()) {
-				if (!line.startsWith("Note: Some input files use or ov"))
-					if (!line.startsWith("Note: Recompile with -Xlint"))
-						if (!line.startsWith("Note: Some input files use unch"))
-							if (!line.contains("uses or overrides a deprecated API"))
-								if (!line.contains("unchecked or unsafe operations"))
-									append(line, new Color(0, 255, 182));
+				if (line.startsWith("[")) {
+					appendAutoColor(line);
+				} else {
+					if (!line.startsWith("Note: Some input files use or ov"))
+						if (!line.startsWith("Note: Recompile with -Xlint"))
+							if (!line.startsWith("Note: Some input files use unch"))
+								if (!line.contains("uses or overrides a deprecated API"))
+									if (!line.contains("unchecked or unsafe operations"))
+										append(line, new Color(0, 255, 182));
+				}
 			}
 		})));
 

@@ -20,6 +20,7 @@ package net.mcreator.ui.blockly;
 
 import com.google.gson.Gson;
 import net.mcreator.blockly.data.ExternalTrigger;
+import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.io.OS;
 import net.mcreator.minecraft.DataListEntry;
@@ -249,8 +250,7 @@ public class BlocklyJavascriptBridge {
 		case "dimension":
 			return ElementUtil.loadAllDimensions(workspace);
 		case "dimension_custom":
-			retval = workspace.getModElements().stream()
-					.filter(mu -> mu.getType().getBaseType() == ModElementType.BaseType.DIMENSION)
+			retval = workspace.getModElements().stream().filter(mu -> mu.getType().getBaseType() == BaseType.DIMENSION)
 					.map(mu -> "CUSTOM:" + mu.getName()).collect(Collectors.toList());
 			break;
 		case "material":
@@ -261,6 +261,8 @@ public class BlocklyJavascriptBridge {
 					workspace.getModElements().stream().filter(var -> var.getType() == ModElementType.RANGEDITEM)
 							.map(ModElement::getName).collect(Collectors.toList()));
 			break;
+		case "planttype":
+			return ElementUtil.getAllPlantTypes();
 		default:
 			retval = new ArrayList<>();
 		}
