@@ -1,0 +1,1 @@
+.then(Commands.argument("${field$name}", StringArgumentType.word()).executes(this::execute))

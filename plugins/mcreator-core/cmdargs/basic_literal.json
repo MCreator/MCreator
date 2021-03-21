@@ -11,7 +11,7 @@
   "nextStatement": null,
   "colour": 180,
   "mcreator": {
-    "toolbox_id": "args",
+    "toolbox_id": "basic_args",
     "fields": [
       "name"
     ]

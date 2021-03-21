@@ -1,0 +1,62 @@
+{
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "name",
+      "text": "name"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "type",
+      "options": [
+        [
+          "default",
+          "default"
+        ],
+        [
+          "min",
+          "min"
+        ],
+        [
+          "both",
+          "both"
+        ]
+      ]
+    },
+    {
+      "type": "field_number",
+      "name": "min",
+      "value": -10000
+    },
+    {
+      "type": "field_number",
+      "name": "max",
+      "value": 10000
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_statement",
+      "name": "args"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "toolbox_id": "complex_args",
+    "fields": [
+      "name",
+      "type",
+      "min",
+      "max"
+    ],
+    "statements": [
+      {
+        "name": "args"
+      }
+    ]
+  }
+}

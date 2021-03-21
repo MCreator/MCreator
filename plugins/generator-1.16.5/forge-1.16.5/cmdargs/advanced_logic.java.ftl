@@ -1,0 +1,1 @@
+.then(Commands.argument("${field$name}", BoolArgumentType.bool())<#if statement$args??>${statement$args}</#if>.executes(this::execute))

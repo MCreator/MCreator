@@ -1,0 +1,1 @@
+.then(Commands.argument("${field$name}", StringArgumentType.word())<#if statement$args??>${statement$args}</#if>.executes(this::execute))

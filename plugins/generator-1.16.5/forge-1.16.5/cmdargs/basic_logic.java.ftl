@@ -1,0 +1,1 @@
+.then(Commands.argument("${field$name}", BoolArgumentType.bool()).executes(this::execute))
