@@ -1,7 +1,0 @@
-templates:
-  - template: gamerule.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/@NAMEGameRule.java"
-
-localizationkeys:
-  - key: gamerule.@registryname
-    mapto: description

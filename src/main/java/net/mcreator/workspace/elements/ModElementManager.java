@@ -27,11 +27,13 @@ import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;
+import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
@@ -145,6 +147,13 @@ public class ModElementManager {
 		} catch (Exception e1) {
 			LOG.warn("Failed to generate mod element picture for " + element.getModElement().getName());
 		}
+	}
+
+	public static ImageIcon getModElementIcon(ModElement element) {
+		ImageIcon icon = element.getElementIcon();
+		if (icon == null || icon.getImage() == null || icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0)
+			icon = TiledImageCache.getModTypeIcon(element.getType());
+		return icon;
 	}
 
 }

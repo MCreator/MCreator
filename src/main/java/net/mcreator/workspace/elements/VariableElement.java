@@ -18,7 +18,7 @@
 
 package net.mcreator.workspace.elements;
 
-public class VariableElement {
+public class VariableElement implements IElement {
 
 	private String name;
 	private VariableElementType type;
@@ -45,7 +45,7 @@ public class VariableElement {
 		this.type = type;
 	}
 
-	public String getName() {
+	@Override public String getName() {
 		return name;
 	}
 

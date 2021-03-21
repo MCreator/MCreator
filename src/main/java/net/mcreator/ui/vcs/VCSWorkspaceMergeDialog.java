@@ -53,6 +53,11 @@ class VCSWorkspaceMergeDialog {
 			merges.add(new MergeHandleComponent(mergeHandleComponents, input.getWorkspaceSettingsMergeHandle()));
 		}
 
+		if (input.getWorkspaceFoldersMergeHandle() != null) {
+			merges.add(PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Folder structure"), 19)));
+			merges.add(new MergeHandleComponent(mergeHandleComponents, input.getWorkspaceFoldersMergeHandle()));
+		}
+
 		if (input.getConflictingModElements().size() > 0) {
 			merges.add(PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Mod elements"), 19)));
 			for (MergeHandle<ModElement> modElementMergeHandle : input.getConflictingModElements())

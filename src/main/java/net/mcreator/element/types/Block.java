@@ -19,26 +19,29 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.IItemWithModel;
-import net.mcreator.element.ITabContainedElement;
 import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
+import net.mcreator.element.types.interfaces.IItemWithModel;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
-		implements IItemWithModel, ITabContainedElement {
+		implements IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	public String texture;
 	public String textureTop;
@@ -63,7 +66,9 @@ import java.util.Map;
 	public boolean hasTransparency;
 	public boolean connectedSides;
 	public String transparencyType;
-	public double mx, my, mz, Mx, My, Mz;
+
+	public boolean disableOffset;
+	public List<BoxEntry> boundingBoxes;
 
 	public String name;
 	public List<String> specialInfo;
@@ -99,6 +104,8 @@ import java.util.Map;
 
 	public boolean isLadder;
 	public double slipperiness;
+	public double speedFactor;
+	public double jumpFactor;
 	public String reactionToPushing;
 
 	public boolean isNotColidable;
@@ -165,10 +172,13 @@ import java.util.Map;
 		super(element);
 
 		this.tintType = "No tint";
+		this.boundingBoxes = new ArrayList<>();
 		this.spawnWorldTypes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
 		this.reactionToPushing = "NORMAL";
 		this.slipperiness = 0.6;
+		this.speedFactor = 1.0;
+		this.jumpFactor = 1.0;
 		this.colorOnMap = "DEFAULT";
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
@@ -243,4 +253,7 @@ import java.util.Map;
 		return creativeTab;
 	}
 
+	@Override public @NotNull List<BoxEntry> getValidBoundingBoxes() {
+		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
+	}
 }

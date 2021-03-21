@@ -476,7 +476,15 @@ import ${package}.${JavaModName};
 						${JavaModName}.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(${btid}, x, y, z));
 
 						handleButtonAction(entity, ${btid}, x, y, z);
-					}));
+					})
+					<#if hasCondition(component.displayCondition)>
+					{
+						@Override public void render(int x, int y, float ticks) {
+							if (<@procedureOBJToConditionCode component.displayCondition/>)
+								super.render(x, y, ticks);
+						}
+					}
+					</#if>);
 					<#assign btid +=1>
 				</#if>
 			</#list>

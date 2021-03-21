@@ -18,8 +18,10 @@
 
 package net.mcreator.workspace.elements;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.RecipeType;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -32,7 +34,7 @@ import javax.swing.*;
 import java.io.Serializable;
 import java.util.*;
 
-public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorProvider {
+public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorProvider, IElement {
 
 	private String name;
 	private ModElementType type;
@@ -43,9 +45,11 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	private boolean locked_code = false;
 
 	private Map<Integer, Integer> ids = new HashMap<>();
-	private String registry_name = null;
+	@Nullable private String registry_name;
 
-	private Map<String, Object> metadata = null;
+	@Nullable private Map<String, Object> metadata = null;
+
+	@Nullable private String path;
 
 	// MCItem representations of this element
 	// it is transient so it does not get serialized
@@ -116,10 +120,9 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		if (type == ModElementType.DIMENSION) {
 			if (getMetadata("ep") != null && (Boolean) getMetadata("ep"))
 				mcItems.add(new MCItem.Custom(this, null));
-		} else if (type.getRecipeElementType() == ModElementType.RecipeElementType.ITEM
-				|| type.getRecipeElementType() == ModElementType.RecipeElementType.BLOCK) {
+		} else if (type.getRecipeType() == RecipeType.ITEM || type.getRecipeType() == RecipeType.BLOCK) {
 			mcItems.add(new MCItem.Custom(this, null));
-		} else if (type.getBaseType() == ModElementType.BaseType.ARMOR) {
+		} else if (type.getBaseType() == BaseType.ARMOR) {
 			if (getMetadata("eh") != null && (Boolean) getMetadata("eh"))
 				mcItems.add(new MCItem.Custom(this, "helmet"));
 			if (getMetadata("ec") != null && (Boolean) getMetadata("ec"))
@@ -232,7 +235,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	 * @param baseType The base type under which to look for the free IDs
 	 * @return The ID of the element for the given index, could be newly created
 	 */
-	public int getID(int index, ModElementType.BaseType baseType) {
+	public int getID(int index, BaseType baseType) {
 		if (ids.get(index) == null) { // id at this index is not set yet, create id
 			int free_id = workspace.getNextFreeIDAndIncrease(baseType);
 			ids.put(index, free_id);
@@ -250,8 +253,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	 */
 	@SuppressWarnings("unused") public int getID(int index, String baseType) {
 		if (ids.get(index) == null) { // id at this index is not set yet, create id
-			int free_id = workspace
-					.getNextFreeIDAndIncrease(ModElementType.BaseType.valueOf(baseType.toUpperCase(Locale.ENGLISH)));
+			int free_id = workspace.getNextFreeIDAndIncrease(BaseType.valueOf(baseType.toUpperCase(Locale.ENGLISH)));
 			ids.put(index, free_id);
 			return free_id;
 		}
@@ -266,7 +268,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.compiles = compiles;
 	}
 
-	public String getName() {
+	@Override public String getName() {
 		return name;
 	}
 
@@ -305,6 +307,17 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	public void setRegistryName(String registry_name) {
 		this.registry_name = registry_name;
+	}
+
+	public @Nullable String getFolderPath() {
+		return path;
+	}
+
+	public void setParentFolder(@Nullable FolderElement parent) {
+		if (parent == null || parent.isRoot())
+			this.path = null;
+		else
+			this.path = parent.getPath();
 	}
 
 }

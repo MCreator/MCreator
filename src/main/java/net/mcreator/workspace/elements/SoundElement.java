@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SoundElement {
+public class SoundElement implements IElement {
 
 	private String name;
 	private List<String> files;
@@ -54,7 +54,7 @@ public class SoundElement {
 		return name.hashCode();
 	}
 
-	public String getName() {
+	@Override public String getName() {
 		return name;
 	}
 

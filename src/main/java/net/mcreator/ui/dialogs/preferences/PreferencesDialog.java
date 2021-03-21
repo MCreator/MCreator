@@ -175,6 +175,8 @@ public class PreferencesDialog extends MCreatorDialog {
 				"aitpl");
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_texture_templates"),
 				"templates/textures/texturemaker", "png");
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_armor_templates"), "templates/textures/armormaker",
+				"png");
 		new PluginsPanel(this);
 	}
 

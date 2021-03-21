@@ -1,0 +1,35 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "item",
+      "check": "MCItem"
+    },
+    {
+      "type": "input_value",
+      "name": "levels",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "treasure",
+      "check": "Boolean"
+    }
+  ],
+  "inputsInline": true,
+  "output": "MCItem",
+  "colour": 350,
+  "mcreator": {
+    "toolbox_id": "itemmanagement",
+    "toolbox_init": [
+      "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
+      "<value name=\"levels\"><block type=\"math_number\"><field name=\"NUM\">30</field></block></value>",
+      "<value name=\"treasure\"><block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block></value>"
+    ],
+    "inputs": [
+      "item",
+      "levels",
+      "treasure"
+    ]
+  }
+}
