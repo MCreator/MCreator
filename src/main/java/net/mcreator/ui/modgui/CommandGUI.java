@@ -136,21 +136,13 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		blocklyPanel.setPreferredSize(new Dimension(450, 440));
 
-		JPanel args = (JPanel) PanelUtils.northAndCenterElement(PanelUtils.centerInPanel(onCommandExecuted), PanelUtils.centerAndSouthElement(
+		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(
 				PanelUtils.northAndCenterElement(new CmdArgsEditorToolbar(mcreator, blocklyPanel), blocklyPanel),
-				compileNotesPanel));
+				compileNotesPanel);
 		args.setOpaque(false);
-		args.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.command.args_and_actions"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JPanel merge = new JPanel(new BorderLayout(25, 25));
-		merge.setOpaque(false);
-		merge.add("North", PanelUtils.centerInPanel(enderpanel));
-		merge.add("South", args);
-
-		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(merge)));
+		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(PanelUtils.centerInPanel(enderpanel),
+				PanelUtils.centerInPanel(onCommandExecuted))));
 
 		commandName
 				.setValidator(new TextFieldValidator(commandName, L10N.t("elementgui.command.warning.empty_string")));
@@ -158,7 +150,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		page1group.addValidationElement(commandName);
 
-		addPage(pane5);
+		addPage(L10N.t("elementgui.common.page_properties"), pane5);
+		addPage(L10N.t("elementgui.command.page_arguments"), args);
 
 		if (!isEditingMode()) {
 			commandName.setText(modElement.getName().toLowerCase(Locale.ENGLISH));

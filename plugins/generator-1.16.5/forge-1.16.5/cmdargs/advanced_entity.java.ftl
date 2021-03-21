@@ -1,0 +1,1 @@
+.then(Commands.argument("${field$name}", EntityArgument.${field$type}())<#if statement$args??>${statement$args}</#if>.executes(this::execute))

@@ -1,0 +1,34 @@
+{
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "name",
+      "text": "name"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "type",
+      "options": [
+        [
+          "one player",
+          "player"
+        ],
+        [
+          "entities",
+          "entities"
+        ]
+      ]
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 175,
+  "mcreator": {
+    "toolbox_id": "basic_args",
+    "fields": [
+      "name",
+      "type"
+    ]
+  }
+}

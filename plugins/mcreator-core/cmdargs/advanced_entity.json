@@ -6,6 +6,20 @@
       "text": "name"
     },
     {
+      "type": "field_dropdown",
+      "name": "type",
+      "options": [
+        [
+          "one player",
+          "player"
+        ],
+        [
+          "entities",
+          "entities"
+        ]
+      ]
+    },
+    {
       "type": "input_dummy"
     },
     {
@@ -16,11 +30,12 @@
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,
-  "colour": 280,
+  "colour": 175,
   "mcreator": {
     "toolbox_id": "complex_args",
     "fields": [
-      "name"
+      "name",
+      "type"
     ],
     "statements": [
       {
