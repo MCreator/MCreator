@@ -101,7 +101,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 	@Override protected void initGUI() {
 		onCommandExecuted = new ProcedureSelector(this.withEntry("command/when_executed"), mcreator,
 				L10N.t("elementgui.command.when_command_executed"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/cmdparams:map"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/cmdargs:ctx/cmdparams:map"));
 
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 

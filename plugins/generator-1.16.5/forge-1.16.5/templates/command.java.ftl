@@ -59,25 +59,27 @@ public class ${name}Command extends ${JavaModName}Elements.ModElement{
 			;
     }
 
-    private int execute(CommandContext<CommandSource> ctx) {
+    private int execute(CommandContext<CommandSource> cmdargs) {
 		<#if hasProcedure(data.onCommandExecuted)>
-		ServerWorld world = ctx.getSource().getWorld();
+		ServerWorld world = cmdargs.getSource().getWorld();
 
-		double x = ctx.getSource().getPos().getX();
-		double y = ctx.getSource().getPos().getY();
-		double z = ctx.getSource().getPos().getZ();
+		double x = cmdargs.getSource().getPos().getX();
+		double y = cmdargs.getSource().getPos().getY();
+		double z = cmdargs.getSource().getPos().getZ();
 
-		Entity entity = ctx.getSource().getEntity();
+		Entity entity = cmdargs.getSource().getEntity();
 		if (entity == null)
 			entity = FakePlayerFactory.getMinecraft(world);
 
+		<#if !argscode??>
 		HashMap<String, String> cmdparams = new HashMap<>();
 		int[] index = { -1 };
-		Arrays.stream(ctx.getInput().split("\\s+")).forEach(param -> {
+		Arrays.stream(cmdargs.getInput().split("\\s+")).forEach(param -> {
 			if(index[0] >= 0)
 				cmdparams.put(Integer.toString(index[0]), param);
 			index[0]++;
 		});
+		</#if>
 
 		<@procedureOBJToCode data.onCommandExecuted/>
 		</#if>

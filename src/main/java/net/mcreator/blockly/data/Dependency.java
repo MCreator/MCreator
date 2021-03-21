@@ -97,6 +97,8 @@ public class Dependency implements Comparable<Dependency> {
 			return new Color(0x996069);
 		case "map":
 			return new Color(0x8FD980);
+		case "ctx":
+			return  new Color(0x8C5BA5);
 		case "string":
 			return new Color(0x609986);
 		case "direction":
