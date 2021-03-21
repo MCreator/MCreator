@@ -34,9 +34,6 @@
       "value": 10000
     }
   ],
-  "extensions": [
-    "arg_procedure"
-  ],
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,
@@ -50,5 +47,8 @@
       "max",
       "procedure"
     ]
-  }
+  },
+  "extensions": [
+    "arg_procedure"
+  ]
 }

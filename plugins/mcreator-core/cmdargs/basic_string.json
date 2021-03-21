@@ -28,7 +28,11 @@
     "toolbox_id": "basic_args",
     "fields": [
       "name",
-      "type"
+      "type",
+      "procedure"
     ]
-  }
+  },
+  "extensions": [
+    "arg_procedure"
+  ]
 }

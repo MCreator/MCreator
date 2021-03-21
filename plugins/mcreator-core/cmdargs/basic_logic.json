@@ -13,7 +13,11 @@
   "mcreator": {
     "toolbox_id": "basic_args",
     "fields": [
-      "name"
+      "name",
+      "procedure"
     ]
-  }
+  },
+  "extensions": [
+    "arg_procedure"
+  ]
 }

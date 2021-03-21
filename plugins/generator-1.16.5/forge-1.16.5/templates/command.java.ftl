@@ -50,17 +50,21 @@ public class ${name}Command extends ${JavaModName}Elements.ModElement{
 			<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermissionLevel(${data.permissionLevel}))</#if>
 			<#if !argscode??>
 			.then(Commands.argument("arguments", StringArgumentType.greedyString())
+			<#if hasProcedure(data.onCommandExecuted)>
             .executes(this::execute)
+            </#if>
         	)
+        	<#if hasProcedure(data.onCommandExecuted)>
             .executes(this::execute)
+            </#if>
             <#else>
             ${argscode}
             </#if>
 			;
     }
 
+	<#if hasProcedure(data.onCommandExecuted)>
     private int execute(CommandContext<CommandSource> cmdargs) {
-		<#if hasProcedure(data.onCommandExecuted)>
 		ServerWorld world = cmdargs.getSource().getWorld();
 
 		double x = cmdargs.getSource().getPos().getX();
@@ -70,8 +74,6 @@ public class ${name}Command extends ${JavaModName}Elements.ModElement{
 		Entity entity = cmdargs.getSource().getEntity();
 		if (entity == null)
 			entity = FakePlayerFactory.getMinecraft(world);
-
-		<#if !argscode??>
 		HashMap<String, String> cmdparams = new HashMap<>();
 		int[] index = { -1 };
 		Arrays.stream(cmdargs.getInput().split("\\s+")).forEach(param -> {
@@ -79,13 +81,12 @@ public class ${name}Command extends ${JavaModName}Elements.ModElement{
 				cmdparams.put(Integer.toString(index[0]), param);
 			index[0]++;
 		});
-		</#if>
 
 		<@procedureOBJToCode data.onCommandExecuted/>
-		</#if>
 
 		return 0;
 	}
+	</#if>
 
 }
 <#-- @formatter:on -->

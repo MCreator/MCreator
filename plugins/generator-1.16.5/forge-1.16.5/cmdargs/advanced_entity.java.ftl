@@ -1,1 +1,1 @@
-.then(Commands.argument("${field$name}", EntityArgument.${field$type}())${statement$args}.executes(this::execute))
+.then(Commands.argument("${field$name}", EntityArgument.${field$type}())${statement$args})

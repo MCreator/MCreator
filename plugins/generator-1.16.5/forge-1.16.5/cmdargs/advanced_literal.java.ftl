@@ -1,1 +1,1 @@
-.then(Commands.literal("${field$name}")<#if statement$args??>${statement$args}</#if>.executes(this::execute))
+.then(Commands.literal("${field$name}")<#if statement$args??>${statement$args}</#if>)

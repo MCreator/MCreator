@@ -1,1 +1,2 @@
-.then(Commands.literal("${field$name}").executes(this::execute))
+<#include "argprocedures.java.ftl">
+.then(Commands.literal("${field$name}")<@procedureCode field$procedure/>)
