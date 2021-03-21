@@ -29,6 +29,7 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.AIConditionEditor;
+import net.mcreator.ui.dialogs.CommandProcedureEditor;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.ListUtils;
@@ -127,6 +128,24 @@ public class BlocklyJavascriptBridge {
 			retval = AIConditionEditor.open(mcreator, data.split(","));
 		} else {
 			FutureTask<List<String>> query = new FutureTask<>(() -> AIConditionEditor.open(mcreator, data.split(",")));
+			try {
+				SwingUtilities.invokeLater(query);
+				retval = query.get();
+			} catch (InterruptedException | ExecutionException ignored) {
+			}
+		}
+
+		callback.call("callback", StringUtils.join(retval, ','));
+	}
+
+	@SuppressWarnings("unused") public void openArgExecuteProcedureEditor(String data, JSObject callback) {
+		List<String> retval = null;
+
+		if (SwingUtilities.isEventDispatchThread()
+				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING
+			retval = CommandProcedureEditor.open(mcreator, data.split(","));
+		} else {
+			FutureTask<List<String>> query = new FutureTask<>(() -> CommandProcedureEditor.open(mcreator, data.split(",")));
 			try {
 				SwingUtilities.invokeLater(query);
 				retval = query.get();

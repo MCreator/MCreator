@@ -126,6 +126,8 @@ public class BlocklyPanel extends JFXPanel {
 							.replace("@RESOURCES_PATH", resDir));
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/field_ai_condition.js")
 							.replace("@RESOURCES_PATH", resDir));
+					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/field_arg_procedure.js")
+							.replace("@RESOURCES_PATH", resDir));
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blocks.js")
 							.replace("@RESOURCES_PATH", resDir));
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js")
