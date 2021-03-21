@@ -6,6 +6,20 @@
       "text": "name"
     },
     {
+      "type": "field_dropdown",
+      "name": "type",
+      "options": [
+        [
+          "single_word",
+          "word"
+        ],
+        [
+          "\"quotable text\"",
+          "string"
+        ]
+      ]
+    },
+    {
       "type": "input_dummy"
     },
     {
@@ -20,7 +34,8 @@
   "mcreator": {
     "toolbox_id": "complex_args",
     "fields": [
-      "name"
+      "name",
+      "type"
     ],
     "statements": [
       {

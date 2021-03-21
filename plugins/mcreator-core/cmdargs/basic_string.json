@@ -4,6 +4,20 @@
       "type": "field_input",
       "name": "name",
       "text": "name"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "type",
+      "options": [
+        [
+          "single_word",
+          "word"
+        ],
+        [
+          "\"quotable text\"",
+          "string"
+        ]
+      ]
     }
   ],
   "inputsInline": true,
@@ -13,7 +27,8 @@
   "mcreator": {
     "toolbox_id": "basic_args",
     "fields": [
-      "name"
+      "name",
+      "type"
     ]
   }
 }

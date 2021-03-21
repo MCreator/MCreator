@@ -1,1 +1,1 @@
-.then(Commands.argument("${field$name}", StringArgumentType.word()).executes(this::execute))
+.then(Commands.argument("${field$name}", StringArgumentType.${field$type}()).executes(this::execute))
