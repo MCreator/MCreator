@@ -210,38 +210,39 @@ import java.util.stream.Collectors;
 		return !"No tint".equals(tintType);
 	}
 
-	private ImageIcon getDefaultIcon() {
-		return getModElement().getFolderManager().getBlockImageIcon(texture);
+	private Image getMainTexture() {
+		return getModElement().getFolderManager().getBlockImageIcon(texture).getImage();
 	}
 
-	private ImageIcon getSideOrDefaultIcon(String textureName) {
+	private Image getTextureWithFallback(String textureName) {
 		if (textureName.equals(""))
-			return getDefaultIcon();
-		return getModElement().getFolderManager().getBlockImageIcon(textureName);
+			return getMainTexture();
+		return getModElement().getFolderManager().getBlockImageIcon(textureName).getImage();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
 		if (renderType() == 10) {
-			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(
-					getSideOrDefaultIcon(textureTop).getImage(), getSideOrDefaultIcon(textureLeft).getImage(),
-							getSideOrDefaultIcon(textureFront).getImage());
-		} else if (renderType() == 11 || renderType() == 110 || (blockBase != null && blockBase.equals("Leaves"))) {
-			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getDefaultIcon().getImage(),
-					getDefaultIcon().getImage(), getDefaultIcon().getImage());
-		} else if (blockBase != null && blockBase.equals("Slab")) {
-			return (BufferedImage) MinecraftImageGenerator.Preview.generateSlabIcon(
-					getSideOrDefaultIcon(textureTop).getImage(), getSideOrDefaultIcon(textureFront).getImage());
-		} else if (blockBase != null && blockBase.equals("TrapDoor")) {
-			return (BufferedImage) MinecraftImageGenerator.Preview.generateTrapdoorIcon(getDefaultIcon().getImage());
-		} else if (blockBase != null && blockBase.equals("Stairs")) {
-			return (BufferedImage) MinecraftImageGenerator.Preview.generateStairsIcon(
-					getSideOrDefaultIcon(textureTop).getImage(), getSideOrDefaultIcon(textureFront).getImage());
-		} else if (renderType() == 14) {
-			Image side = ImageUtils.drawOver(getSideOrDefaultIcon(textureFront), getSideOrDefaultIcon(textureLeft)).getImage();
 			return (BufferedImage) MinecraftImageGenerator.Preview
-					.generateBlockIcon(getSideOrDefaultIcon(textureTop).getImage(),	side, side);
+					.generateBlockIcon(getTextureWithFallback(textureTop), getTextureWithFallback(textureLeft),
+							getTextureWithFallback(textureFront));
+		} else if (renderType() == 11 || renderType() == 110 || (blockBase != null && blockBase.equals("Leaves"))) {
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateBlockIcon(getMainTexture(), getMainTexture(), getMainTexture());
+		} else if (blockBase != null && blockBase.equals("Slab")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateSlabIcon(getTextureWithFallback(textureTop), getTextureWithFallback(textureFront));
+		} else if (blockBase != null && blockBase.equals("TrapDoor")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateTrapdoorIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("Stairs")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateStairsIcon(getTextureWithFallback(textureTop), getTextureWithFallback(textureFront));
+		} else if (renderType() == 14) {
+			Image side = ImageUtils.drawOver(new ImageIcon(getTextureWithFallback(textureFront)),
+					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateBlockIcon(getTextureWithFallback(textureTop), side, side);
 		} else {
-			return ImageUtils.resizeAndCrop(getDefaultIcon().getImage(), 32);
+			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
 		}
 	}
 
