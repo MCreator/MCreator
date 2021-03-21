@@ -802,8 +802,7 @@ public class TestWorkspaceDataProvider {
 			plant.itemTexture = emptyLists ? "" : "itest";
 			plant.particleTexture = emptyLists ? "" : "test3";
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
-			plant.growapableSpawnType = getRandomItem(random,
-					new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
+			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getAllPlantTypes());
 			plant.staticPlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.growapableMaxHeight = 5;
@@ -1357,7 +1356,8 @@ public class TestWorkspaceDataProvider {
 		case GAMERULE:
 			GameRule gamerule = new GameRule(modElement);
 			gamerule.name = modElement.getName();
-			gamerule.description = modElement.getName();
+			gamerule.displayName = modElement.getName();
+			gamerule.description = modElement.getName() + " description";
 			gamerule.category = getRandomString(random,
 					Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
 			gamerule.type = new String[] { "Number", "Logic", "Number", "Logic" }[valueIndex];

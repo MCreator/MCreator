@@ -50,8 +50,7 @@ import ${package}.${JavaModName};
 	}
 
 	@Override @OnlyIn(Dist.CLIENT) public void initElements() {
-		keys = new KeyBinding("key.mcreator.${registryname}", GLFW.GLFW_KEY_${generator.map(data.triggerKey, "keybuttons")},
-				"key.categories.${data.keyBindingCategoryKey}");
+		keys = new KeyBinding("key.${modid}.${registryname}", GLFW.GLFW_KEY_${generator.map(data.triggerKey, "keybuttons")}, "key.categories.${data.keyBindingCategoryKey}");
 		ClientRegistry.registerKeyBinding(keys);
 		MinecraftForge.EVENT_BUS.register(this);
 	}
