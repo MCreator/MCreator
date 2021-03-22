@@ -1,0 +1,1 @@
+.then(Commands.argument("${field$name}", BlockSPosArgument.blockPos())${statement$args})
