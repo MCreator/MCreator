@@ -543,6 +543,55 @@ public class MinecraftImageGenerator {
 		}
 
 		/**
+		 * This method generates procedure images.
+		 *
+		 * @param procedurexml XML code used to get blocks.
+		 * @return Returns generated image.
+		 */
+		public static BufferedImage generateCommandWithArgsPreviewPicture(String procedurexml) {
+			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2D = icon.createGraphics();
+
+			// hacky xml scanning for performance reasons
+			// also this is only used for preview only, so it is fine
+			Color startColor = BlocklyBlockUtil.getBlockColorFromHUE(120);
+
+			Color blockColor = null;
+
+			if (procedurexml.contains("<block type=\"basic_literal") || procedurexml.contains("<block type=\"advanced_literal")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(280);
+			} else if (procedurexml.contains("<block type=\"basic_item") || procedurexml.contains("<block type=\"advanced_item")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(350);
+			} else if (procedurexml.contains("<block type=\"blockstate") || procedurexml.contains("<block type=\"advanced_blockstate")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(60);
+			} else if (procedurexml.contains("<block type=\"basic_blockpos") || procedurexml.contains("<block type=\"advanced_blockpos")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(60);
+			} else if (procedurexml.contains("<block type=\"basic_entity") || procedurexml.contains("<block type=\"advanced_entity")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(195);
+			} else if (procedurexml.contains("<block type=\"basic_string") || procedurexml.contains("<block type=\"advanced_string")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(170);
+			} else if (procedurexml.contains("<block type=\"basic_logic") || procedurexml.contains("<block type=\"advanced_logic")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(210);
+			} else if (procedurexml.contains("<block type=\"basic_double") || procedurexml.contains("<block type=\"advanced_double")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(230);
+			}
+
+			graphics2D.drawImage(
+					ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_base"), startColor, false)
+							.getImage(), 0, 0, null);
+
+			if (blockColor != null) {
+				graphics2D.drawImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_block_base"), blockColor, false)
+								.getImage(), 0, 0, null);
+			} else
+				graphics2D.drawImage(UIRES.get("mod_preview_bases.procedure_block_base").getImage(), 0, 0, null);
+
+			graphics2D.dispose();
+			return icon;
+		}
+
+		/**
 		 * <p>This method generates key binding images.</p>
 		 *
 		 * @param keybind <p>The key binding.</p>

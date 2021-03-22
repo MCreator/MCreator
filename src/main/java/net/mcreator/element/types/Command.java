@@ -18,10 +18,8 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.blockly.BlocklyToAITasks;
 import net.mcreator.blockly.BlocklyToCmdArgs;
 import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -55,7 +53,11 @@ import java.util.Locale;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateCommandPreviewPicture(commandName);
+		//It does not work every time properly in every case, but in most cases, it will work.
+		if (!onCommandExecuted.exists)
+			return MinecraftImageGenerator.Preview.generateCommandWithArgsPreviewPicture(argsxml);
+		else
+			return MinecraftImageGenerator.Preview.generateCommandPreviewPicture(commandName);
 	}
 
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
