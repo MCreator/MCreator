@@ -37,7 +37,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.util.HtmlUtils;
-import net.mcreator.util.TimeUtils;
+import net.mcreator.util.math.TimeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.internal.impldep.org.apache.commons.lang.exception.ExceptionUtils;
