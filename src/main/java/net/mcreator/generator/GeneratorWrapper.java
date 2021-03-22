@@ -81,7 +81,7 @@ import java.util.stream.Collectors;
 
 	public String getElementPlainName(String elementName) {
 		return elementName.replace("CUSTOM:", "").replace(".block", "").replace(".helmet", "").replace(".body", "")
-				.replace(".legs", "").replace(".boots", "");
+				.replace(".legs", "").replace(".boots", "").replace(".bucket", "");
 	}
 
 	public String getElementExtension(String elementName) {

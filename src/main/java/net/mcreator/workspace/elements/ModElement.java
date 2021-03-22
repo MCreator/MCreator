@@ -122,6 +122,8 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 				mcItems.add(new MCItem.Custom(this, null));
 		} else if (type.getRecipeType() == RecipeType.ITEM || type.getRecipeType() == RecipeType.BLOCK) {
 			mcItems.add(new MCItem.Custom(this, null));
+			if (getMetadata("gb") != null && (Boolean) getMetadata("gb"))
+				mcItems.add(new MCItem.Custom(this, "bucket"));
 		} else if (type.getBaseType() == BaseType.ARMOR) {
 			if (getMetadata("eh") != null && (Boolean) getMetadata("eh"))
 				mcItems.add(new MCItem.Custom(this, "helmet"));
