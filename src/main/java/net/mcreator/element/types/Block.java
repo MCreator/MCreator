@@ -33,6 +33,7 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -209,30 +210,6 @@ import java.util.stream.Collectors;
 		return !"No tint".equals(tintType);
 	}
 
-	@Override public BufferedImage generateModElementPicture() {
-		if (renderType() == 10 && !textureTop.equals("") && !textureFront.equals("") && !textureLeft.equals("")) {
-			return (BufferedImage) MinecraftImageGenerator.Preview
-					.generateBlockIcon(getModElement().getFolderManager().getBlockImageIcon(textureTop).getImage(),
-							getModElement().getFolderManager().getBlockImageIcon(textureLeft).getImage(),
-							getModElement().getFolderManager().getBlockImageIcon(textureFront).getImage());
-		} else if (renderType() == 11 || renderType() == 110 || (blockBase != null && blockBase.equals("Leaves"))) {
-			return (BufferedImage) MinecraftImageGenerator.Preview
-					.generateBlockIcon(getModElement().getFolderManager().getBlockImageIcon(texture).getImage(),
-							getModElement().getFolderManager().getBlockImageIcon(texture).getImage(),
-							getModElement().getFolderManager().getBlockImageIcon(texture).getImage());
-		} else if (renderType() == 14 && !textureTop.equals("") && !textureFront.equals("") && !textureLeft
-				.equals("")) {
-			Image side = ImageUtils.drawOver(getModElement().getFolderManager().getBlockImageIcon(textureFront),
-					getModElement().getFolderManager().getBlockImageIcon(textureLeft)).getImage();
-			return (BufferedImage) MinecraftImageGenerator.Preview
-					.generateBlockIcon(getModElement().getFolderManager().getBlockImageIcon(textureTop).getImage(),
-							side, side);
-		} else {
-			return ImageUtils
-					.resizeAndCrop(getModElement().getFolderManager().getBlockImageIcon(texture).getImage(), 32);
-		}
-	}
-
 	@Override public Model getItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (renderType == 2)
@@ -256,4 +233,41 @@ import java.util.stream.Collectors;
 	@Override public @NotNull List<BoxEntry> getValidBoundingBoxes() {
 		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
 	}
+
+	@Override public BufferedImage generateModElementPicture() {
+		if (renderType() == 10) {
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateBlockIcon(getTextureWithFallback(textureTop), getTextureWithFallback(textureLeft),
+							getTextureWithFallback(textureFront));
+		} else if (renderType() == 11 || renderType() == 110 || (blockBase != null && blockBase.equals("Leaves"))) {
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateBlockIcon(getMainTexture(), getMainTexture(), getMainTexture());
+		} else if (blockBase != null && blockBase.equals("Slab")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateSlabIcon(getTextureWithFallback(textureTop), getTextureWithFallback(textureFront));
+		} else if (blockBase != null && blockBase.equals("TrapDoor")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateTrapdoorIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("Stairs")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateStairsIcon(getTextureWithFallback(textureTop), getTextureWithFallback(textureFront));
+		} else if (renderType() == 14) {
+			Image side = ImageUtils.drawOver(new ImageIcon(getTextureWithFallback(textureFront)),
+					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateBlockIcon(getTextureWithFallback(textureTop), side, side);
+		} else {
+			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
+		}
+	}
+
+	private Image getMainTexture() {
+		return getModElement().getFolderManager().getBlockImageIcon(texture).getImage();
+	}
+
+	private Image getTextureWithFallback(String textureName) {
+		if (textureName.equals(""))
+			return getMainTexture();
+		return getModElement().getFolderManager().getBlockImageIcon(textureName).getImage();
+	}
+
 }
