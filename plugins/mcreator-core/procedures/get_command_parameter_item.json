@@ -1,0 +1,23 @@
+{
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "param",
+      "text": "Argument name"
+    }
+  ],
+  "output": "MCItem",
+  "colour": 350,
+  "mcreator": {
+    "toolbox_id": "advanced",
+    "fields": [
+      "param"
+    ],
+    "dependencies": [
+      {
+        "name": "cmdargs",
+        "type": "ctx"
+      }
+    ]
+  }
+}
