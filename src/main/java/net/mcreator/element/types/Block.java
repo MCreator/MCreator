@@ -210,14 +210,28 @@ import java.util.stream.Collectors;
 		return !"No tint".equals(tintType);
 	}
 
-	private Image getMainTexture() {
-		return getModElement().getFolderManager().getBlockImageIcon(texture).getImage();
+	@Override public Model getItemModel() {
+		Model.Type modelType = Model.Type.BUILTIN;
+		if (renderType == 2)
+			modelType = Model.Type.JSON;
+		else if (renderType == 3)
+			modelType = Model.Type.OBJ;
+		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
-	private Image getTextureWithFallback(String textureName) {
-		if (textureName.equals(""))
-			return getMainTexture();
-		return getModElement().getFolderManager().getBlockImageIcon(textureName).getImage();
+	@Override public Map<String, String> getTextureMap() {
+		Model model = getItemModel();
+		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
+			return ((TexturedModel) model).getTextureMapping().getTextureMap();
+		return null;
+	}
+
+	@Override public TabEntry getCreativeTab() {
+		return creativeTab;
+	}
+
+	@Override public @NotNull List<BoxEntry> getValidBoundingBoxes() {
+		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -246,27 +260,14 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	@Override public Model getItemModel() {
-		Model.Type modelType = Model.Type.BUILTIN;
-		if (renderType == 2)
-			modelType = Model.Type.JSON;
-		else if (renderType == 3)
-			modelType = Model.Type.OBJ;
-		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
+	private Image getMainTexture() {
+		return getModElement().getFolderManager().getBlockImageIcon(texture).getImage();
 	}
 
-	@Override public Map<String, String> getTextureMap() {
-		Model model = getItemModel();
-		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
-			return ((TexturedModel) model).getTextureMapping().getTextureMap();
-		return null;
+	private Image getTextureWithFallback(String textureName) {
+		if (textureName.equals(""))
+			return getMainTexture();
+		return getModElement().getFolderManager().getBlockImageIcon(textureName).getImage();
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
-	}
-
-	@Override public @NotNull List<BoxEntry> getValidBoundingBoxes() {
-		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
-	}
 }

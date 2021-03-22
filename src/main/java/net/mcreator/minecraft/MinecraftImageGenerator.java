@@ -776,25 +776,27 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates the block icon for slabs.</p>
 		 *
-		 * @param top   <p>Top side texture</p>
-		 * @param side  <p>Side texture</p>
+		 * @param top  <p>Top side texture</p>
+		 * @param side <p>Side texture</p>
 		 * @return <p>Returns generated image.</p>
 		 */
 		public static Image generateSlabIcon(Image top, Image side) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
 
-			Point2D t1 = new Point2D.Double(16, 8), t2 = new Point2D.Double(2, 16), t3 = new Point2D.Double(16, 24),
-					t4 = new Point2D.Double(30, 16), f1 = new Point2D.Double(2, 7.6), f2 = new Point2D.Double(2, 24.5),
-					f3r2 = new Point2D.Double(16, 31), f4r1 = new Point2D.Double(16, 14.6),
-					r3 = new Point2D.Double(30, 24.5),r4 = new Point2D.Double(30, 7.6);
+			Point2D t1 = new Point2D.Double(16, 8), t2 = new Point2D.Double(2, 16), t3 = new Point2D.Double(16,
+					24), t4 = new Point2D.Double(30, 16), f1 = new Point2D.Double(2, 7.6), f2 = new Point2D.Double(2,
+					24.5), f3r2 = new Point2D.Double(16, 31), f4r1 = new Point2D.Double(16,
+					14.6), r3 = new Point2D.Double(30, 24.5), r4 = new Point2D.Double(30, 7.6);
 
-			g2d.drawImage(ImageTransformUtil.computeImage(ImageUtils.brighten(ImageUtils.resizeAndCrop(top, 32)),
-					t4, t1, t2, t3), null, null);
-			g2d.drawImage(ImageTransformUtil.computeImage(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32),
-					0, 0, 32, 16), f1, f2, f3r2, f4r1), null, null);
-			g2d.drawImage(ImageTransformUtil.computeImage(ImageUtils.darken(ImageUtils.eraseRect(
-					ImageUtils.resizeAndCrop(side, 32), 0, 0, 32, 16)), f4r1, f3r2, r3, r4), null, null);
+			g2d.drawImage(ImageTransformUtil
+					.computeImage(ImageUtils.brighten(ImageUtils.resizeAndCrop(top, 32)), t4, t1, t2, t3), null, null);
+			g2d.drawImage(ImageTransformUtil
+					.computeImage(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 0, 0, 32, 16), f1, f2, f3r2,
+							f4r1), null, null);
+			g2d.drawImage(ImageTransformUtil.computeImage(
+					ImageUtils.darken(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 0, 0, 32, 16)), f4r1,
+					f3r2, r3, r4), null, null);
 			g2d.dispose();
 			return out;
 		}
@@ -802,24 +804,27 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates the block icon for trapdoors.</p>
 		 *
-		 * @param texture  <p>Block texture</p>
+		 * @param texture <p>Block texture</p>
 		 * @return <p>Returns generated image.</p>
 		 */
 		public static Image generateTrapdoorIcon(Image texture) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
 
-			Point2D t1 = new Point2D.Double(16, 13), t2 = new Point2D.Double(2, 21), t3 = new Point2D.Double(16, 28),
-					t4 = new Point2D.Double(30, 21), f1 = new Point2D.Double(2, 20.6), f2 = new Point2D.Double(2, 37),
-					f3r2 = new Point2D.Double(16, 44), f4r1 = new Point2D.Double(16,28),
-					r3 = new Point2D.Double(30, 37),r4 = new Point2D.Double(30, 20.6);
+			Point2D t1 = new Point2D.Double(16, 13), t2 = new Point2D.Double(2, 21), t3 = new Point2D.Double(16,
+					28), t4 = new Point2D.Double(30, 21), f1 = new Point2D.Double(2, 20.6), f2 = new Point2D.Double(2,
+					37), f3r2 = new Point2D.Double(16, 44), f4r1 = new Point2D.Double(16, 28), r3 = new Point2D.Double(
+					30, 37), r4 = new Point2D.Double(30, 20.6);
 
-			g2d.drawImage(ImageTransformUtil.computeImage(ImageUtils.brighten(ImageUtils.resizeAndCrop(texture, 32)),
-					t1, t4, t3, t2), null, null);
-			g2d.drawImage(ImageTransformUtil.computeImage(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(texture, 32),
-					0, 6, 32, 26), f1, f2, f3r2, f4r1), null, null);
-			g2d.drawImage(ImageTransformUtil.computeImage(ImageUtils.darken(ImageUtils.eraseRect(
-					ImageUtils.resizeAndCrop(texture, 32), 0, 6, 32, 26)), f4r1, f3r2, r3, r4), null, null);
+			g2d.drawImage(ImageTransformUtil
+							.computeImage(ImageUtils.brighten(ImageUtils.resizeAndCrop(texture, 32)), t1, t4, t3, t2), null,
+					null);
+			g2d.drawImage(ImageTransformUtil
+					.computeImage(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(texture, 32), 0, 6, 32, 26), f1, f2,
+							f3r2, f4r1), null, null);
+			g2d.drawImage(ImageTransformUtil.computeImage(
+					ImageUtils.darken(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(texture, 32), 0, 6, 32, 26)), f4r1,
+					f3r2, r3, r4), null, null);
 			g2d.dispose();
 			return out;
 		}
@@ -827,8 +832,8 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates the block icon for stairs.</p>
 		 *
-		 * @param top   <p>Top side texture</p>
-		 * @param side  <p>Side texture</p>
+		 * @param top  <p>Top side texture</p>
+		 * @param side <p>Side texture</p>
 		 * @return <p>Returns generated image.</p>
 		 */
 		public static Image generateStairsIcon(Image top, Image side) {
@@ -840,28 +845,30 @@ public class MinecraftImageGenerator {
 					7.5), f3r2 = new Point2D.Double(15.5, 31), t3f4r1 = new Point2D.Double(15.5, 14.7);
 
 			// Top face of lower step
-			g2d.drawImage(ImageTransformUtil.computeImage(ImageUtils.brighten(ImageUtils.eraseRect(
-					ImageUtils.resizeAndCrop(top, 32), 16, 0, 16, 32)),
+			g2d.drawImage(ImageTransformUtil.computeImage(
+					ImageUtils.brighten(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(top, 32), 16, 0, 16, 32)),
 					new Point2D.Double(t3f4r1.getX(), t3f4r1.getY() + 8),
-					new Point2D.Double(t4r4.getX(), t4r4.getY() + 8),
-					new Point2D.Double(t1.getX(), t1.getY() + 8),
+					new Point2D.Double(t4r4.getX(), t4r4.getY() + 8), new Point2D.Double(t1.getX(), t1.getY() + 8),
 					new Point2D.Double(t2f1.getX(), t2f1.getY() + 8)), null, null);
 			// Top face of upper step
-			g2d.drawImage(ImageTransformUtil.computeImage(ImageUtils.brighten(ImageUtils.eraseRect(
-					ImageUtils.resizeAndCrop(top, 32), 0, 0, 16, 32)),	t3f4r1, t4r4, t1, t2f1), null, null);
+			g2d.drawImage(ImageTransformUtil.computeImage(
+					ImageUtils.brighten(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(top, 32), 0, 0, 16, 32)), t3f4r1,
+					t4r4, t1, t2f1), null, null);
 			// Left side
-			g2d.drawImage(ImageTransformUtil.computeImage(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32),
-					16, 0, 16, 16), t2f1, f2, f3r2, t3f4r1), null, null);
+			g2d.drawImage(ImageTransformUtil
+					.computeImage(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 16, 0, 16, 16), t2f1, f2,
+							f3r2, t3f4r1), null, null);
 			// Front face of upper step
-			g2d.drawImage(ImageTransformUtil.computeImage(ImageUtils.darken(ImageUtils.eraseRect(
-					ImageUtils.resizeAndCrop(side, 32), 0, 16, 32, 16)),
+			g2d.drawImage(ImageTransformUtil.computeImage(
+					ImageUtils.darken(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 0, 16, 32, 16)),
 					new Point2D.Double(t3f4r1.getX() - 7.5, t3f4r1.getY() - 3),
 					new Point2D.Double(f3r2.getX() - 7.5, f3r2.getY() - 3),
 					new Point2D.Double(r3.getX() - 7.5, r3.getY() - 3),
 					new Point2D.Double(t4r4.getX() - 7.5, t4r4.getY() - 3)), null, null);
 			// Front face of lower step
-			g2d.drawImage(ImageTransformUtil.computeImage(ImageUtils.darken(ImageUtils.eraseRect(
-					ImageUtils.resizeAndCrop(side, 32), 0, 0, 32, 16)), t3f4r1, f3r2, r3, t4r4), null, null);
+			g2d.drawImage(ImageTransformUtil.computeImage(
+					ImageUtils.darken(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 0, 0, 32, 16)), t3f4r1,
+					f3r2, r3, t4r4), null, null);
 			g2d.dispose();
 			return out;
 		}
