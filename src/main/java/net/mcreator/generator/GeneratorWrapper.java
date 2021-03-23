@@ -79,6 +79,11 @@ import java.util.stream.Collectors;
 		}
 	}
 
+	public boolean isRecipeTypeBlockOrBucket(String elementName) {
+		RecipeType recipeType = this.getRecipeElementType(elementName);
+		return recipeType == RecipeType.BLOCK || recipeType == RecipeType.BUCKET;
+	}
+
 	public String getElementPlainName(String elementName) {
 		return elementName.replace("CUSTOM:", "").replace(".block", "").replace(".helmet", "").replace(".body", "")
 				.replace(".legs", "").replace(".boots", "").replace(".bucket", "");

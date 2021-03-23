@@ -4,10 +4,10 @@
     <#elseif mappedBlock.toString().startsWith("CUSTOM:")>
         <#if !mappedBlock.toString().contains(".")>
             <#return (generator.getElementPlainName(mappedBlock))
-            + (generator.getRecipeElementType(mappedBlock.toString()) == "BLOCK")?then("Block", "Item") + ".block.getDefaultState()">
+            + (generator.isRecipeTypeBlockOrBucket(mappedBlock.toString()))?then("Block", "Item") + ".block.getDefaultState()">
         <#else>
             <#return (generator.getElementPlainName(mappedBlock))
-            + (generator.getRecipeElementType(mappedBlock.toString()) == "BLOCK")?then("Block", "Item") + "." + generator.getElementExtension(mappedBlock) + ".getDefaultState()">
+            + (generator.isRecipeTypeBlockOrBucket(mappedBlock.toString()))?then("Block", "Item") + "." + generator.getElementExtension(mappedBlock) + ".getDefaultState()">
         </#if>
     <#else>
         <#return mappedBlock + ".getDefaultState()">
@@ -20,10 +20,10 @@
     <#elseif mappedBlock.toString().startsWith("CUSTOM:")>
         <#if !mappedBlock.toString().contains(".")>
             <#return "new ItemStack("+ (generator.getElementPlainName(mappedBlock))
-            + (generator.getRecipeElementType(mappedBlock.toString()) == "BLOCK")?then("Block", "Item") + ".block, (int)(" + amount + "))">
+            + (generator.isRecipeTypeBlockOrBucket(mappedBlock.toString()))?then("Block", "Item") + ".block, (int)(" + amount + "))">
         <#else>
             <#return "new ItemStack("+ (generator.getElementPlainName(mappedBlock))
-            + (generator.getRecipeElementType(mappedBlock.toString()) == "BLOCK")?then("Block", "Item") + "."
+            + (generator.isRecipeTypeBlockOrBucket(mappedBlock.toString()))?then("Block", "Item") + "."
             + generator.getElementExtension(mappedBlock) + ", (int)(" + amount + "))">
         </#if>
     <#else>
