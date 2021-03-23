@@ -33,7 +33,7 @@ public enum ModElementType {
 
 	@SerializedName("biome") BIOME(BaseType.BIOME, RecipeType.NONE),
 
-	@SerializedName("fluid") FLUID(BaseType.BLOCK, RecipeType.BLOCK),
+	@SerializedName("fluid") FLUID(BaseType.BLOCK, RecipeType.BUCKET),
 
 	@SerializedName("command") COMMAND(BaseType.COMMAND, RecipeType.NONE),
 
