@@ -88,6 +88,17 @@ public class MCItem extends DataListEntry {
 					retval = TiledImageCache.armorLegs;
 				else if (name.endsWith(".boots"))
 					retval = TiledImageCache.armorBoots;
+				else if (name.endsWith(".bucket")) {
+					if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
+							name.replaceAll("CUSTOM:", "").replaceAll(".bucket", "") + ".png").isFile()) {
+						ImageIcon fluid = new ImageIcon(
+								workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/" +
+										name.replaceAll("CUSTOM:", "").replaceAll(".bucket", "") + ".png");
+						retval = MinecraftImageGenerator.generateFluidBucketIcon(fluid);
+					}
+					else
+						retval = TiledImageCache.bucket;
+				}
 			} else if (name.startsWith("TAG:")) {
 				return TAG_ICON;
 			} else {

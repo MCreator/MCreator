@@ -61,12 +61,16 @@ public class TiledImageCache {
 	public static ImageIcon armorLegs;
 	public static ImageIcon armorBoots;
 
+	public static ImageIcon bucket;
+	public static ImageIcon bucketMask;
+
 	public static void loadAndTileImages() {
 		try {
 			TiledImageUtils plantGrowthTile = new TiledImageUtils(UIRES.get("growthtile"), 128, 215);
 			TiledImageUtils modTabTile = new TiledImageUtils(UIRES.get("taboverlaytile"), 64, 64);
 			TiledImageUtils workspaceIcons = new TiledImageUtils(UIRES.get("wrktile"), 45, 45);
 			TiledImageUtils armorIcons = new TiledImageUtils(UIRES.get("armortile"), 32, 32);
+			TiledImageUtils bucketIcons = new TiledImageUtils(UIRES.get("fluidbucket"), 32, 32);
 			modTypes = new TiledImageUtils(UIRES.get("modtypes"), 64, 64);
 
 			plantGrowingYes = plantGrowthTile.getIcon(1, 1);
@@ -95,6 +99,9 @@ public class TiledImageCache {
 			armorBody = armorIcons.getIcon(2, 1);
 			armorLegs = armorIcons.getIcon(3, 1);
 			armorBoots = armorIcons.getIcon(4, 1);
+
+			bucket = bucketIcons.getIcon(1, 1);
+			bucketMask = bucketIcons.getIcon(2, 1);
 
 		} catch (InvalidTileSizeException e) {
 			LOG.error(e.getMessage(), e);
