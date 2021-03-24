@@ -4,6 +4,7 @@
 - [Opening `build.gradle`](#opening-buildgradle)
 - [Pasting the Line](#pasting-the-line)
 - [Compiling](#compiling)
+- [Info](#info)
 
 If you're struggling with your Forge on MacOS/Windows when directly running a copy from MCreator, you may have to disable the early loading screen.
 
@@ -37,4 +38,13 @@ It should look like this:
 
 Now, close `build.gradle` and press CMD + B or CTRL + B or press the Hammer button to Build the mod/Save the files and compile.
 
-Hit run and have fun :)
+Hit run and it should be working.
+
+## Info
+**YOUR FORGE WILL TAKE TIME TO LOAD AFTER DOING THIS HOWEVER IT'LL TAKE ~20 SECONDS!**
+
+If you want to add your own Tutorial, make a pull request :)
+
+## It's Not Working :(
+Again, if it's not working, wait around ~20-60 seconds.
+Else, please DM me on Discord: MCreatorTutorialHelp#3043
