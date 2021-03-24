@@ -5,6 +5,7 @@
 - [Pasting the Line](#pasting-the-line)
 - [Compiling](#compiling)
 - [Info](#info)
+- [It's Not Working :(](#its-not-working-)
 
 If you're struggling with your Forge on MacOS/Windows when directly running a copy from MCreator, you may have to disable the early loading screen.
 
