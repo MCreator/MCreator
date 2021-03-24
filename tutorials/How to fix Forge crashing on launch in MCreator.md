@@ -76,4 +76,4 @@ Again, if it's not working, wait around ~20-60 seconds.
 
 Else, please DM me on Discord: MCreatorTutorialHelp#3043
 
-**[Top](#table-of-contents)**
+**[END TUTORIAL](#)**
