@@ -1,6 +1,7 @@
-Hello everyone!
+### Table of Contents
 
-# Intro
+- [Starting](#starting)
+- [Opening `build.gradle`](#)
 
 If you're struggling with your Forge on MacOS/Windows when directly running a copy from MCreator, you may have to disable the early loading screen.
 
