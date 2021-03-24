@@ -1,7 +1,9 @@
 ### Table of Contents
 
 - [Starting](#starting)
-- [Opening `build.gradle`](#)
+- [Opening `build.gradle`](#opening-buildgradle)
+- [Pasting the Line](#pasting-the-line)
+- [Compiling](#compiling)
 
 If you're struggling with your Forge on MacOS/Windows when directly running a copy from MCreator, you may have to disable the early loading screen.
 
@@ -36,8 +38,3 @@ It should look like this:
 Now, close `build.gradle` and press CMD + B or CTRL + B or press the Hammer button to Build the mod/Save the files and compile.
 
 Hit run and have fun :)
-
----
-Please don't remove this as it could be very helpful to other users and even you (@KlemenDEV), since didn't know how to get this to work for me in `build.gradle`
-
-Thank you for reading - StupidRepo
