@@ -1,5 +1,6 @@
 ### Table of Contents
 
+- Table of Contents - Your Here Now!
 - [Starting](#starting)
 - [Opening `build.gradle`](#opening-buildgradle)
 - [Pasting the Line](#pasting-the-line)
