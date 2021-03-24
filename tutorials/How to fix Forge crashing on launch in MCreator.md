@@ -40,7 +40,7 @@ Now, close `build.gradle` and press CMD + B or CTRL + B or press the Hammer butt
 
 Hit run and it should be working.
 
-## Info
+# Info
 
 **YOUR FORGE WILL TAKE TIME TO LOAD AFTER DOING THIS HOWEVER IT'LL TAKE ~20 SECONDS!**
 If you want to add your own Tutorial, make a pull request :)
