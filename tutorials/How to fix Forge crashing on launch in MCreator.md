@@ -43,8 +43,10 @@ Hit run and it should be working.
 # Info
 
 **YOUR FORGE WILL TAKE TIME TO LOAD AFTER DOING THIS HOWEVER IT'LL TAKE ~20 SECONDS!**
+
 If you want to add your own Tutorial, make a pull request :)
 
 ## It's Not Working :(
 Again, if it's not working, wait around ~20-60 seconds.
+
 Else, please DM me on Discord: MCreatorTutorialHelp#3043
