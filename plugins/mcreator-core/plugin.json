@@ -3,9 +3,6 @@
   "weight": 10,
   "minversion": 202000400000,
   "info": {
-    "name": "MCreator core plugin",
-    "version": "1.0",
-    "updateUrl": "https://raw.githubusercontent.com/Team-MCToolkit/MCToolkit-Web-API/main/test.json",
-    "pageId": 64516
+    "name": "MCreator core plugin"
   }
 }
