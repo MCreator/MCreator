@@ -13,7 +13,6 @@
     "toolbox_id": "basic_args",
     "fields": [
       "name",
-      "type",
       "procedure"
     ]
   },
