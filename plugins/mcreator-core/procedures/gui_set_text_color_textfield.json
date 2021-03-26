@@ -23,6 +23,9 @@
   "colour": 110,
   "mcreator": {
     "toolbox_id": "guimanagement",
+    "toolbox_init": [
+      "<value name=\"dyeColor\"><block type=\"dye_color\"><field name=\"dyecolor\">LIGHT_BLUE</field></block></value>"
+    ],
     "fields": [
       "textfield"
     ],
