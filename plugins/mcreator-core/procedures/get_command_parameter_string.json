@@ -4,6 +4,20 @@
       "type": "field_input",
       "name": "param",
       "text": "Argument name"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "type",
+      "options": [
+        [
+          "String",
+          "string"
+        ],
+        [
+          "Message",
+          "message"
+        ]
+      ]
     }
   ],
   "output": "String",
@@ -11,7 +25,8 @@
   "mcreator": {
     "toolbox_id": "advanced",
     "fields": [
-      "param"
+      "param",
+      "type"
     ],
     "dependencies": [
       {
