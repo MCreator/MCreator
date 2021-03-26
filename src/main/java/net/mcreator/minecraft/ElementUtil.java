@@ -200,6 +200,10 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("stepsounds");
 	}
 
+	public static String[] loadDyeColors() {
+		return DataListLoader.loadDataList("dyecolors").stream().map(DataListEntry::getName).toArray(String[]::new);
+	}
+
 	public static String[] loadBiomeDictionaryTypes() {
 		return DataListLoader.loadDataList("biomedictionarytypes").stream().map(DataListEntry::getName)
 				.toArray(String[]::new);

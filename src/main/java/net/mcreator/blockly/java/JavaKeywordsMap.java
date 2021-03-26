@@ -18,6 +18,9 @@
 
 package net.mcreator.blockly.java;
 
+import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.plugin.PluginLoader;
+
 import java.util.HashMap;
 
 public final class JavaKeywordsMap {
@@ -85,6 +88,7 @@ public final class JavaKeywordsMap {
 		put("Boolean", new String[] { "boolean", "false" });
 		put("String", new String[] { "String", "\"\"" });
 		put("MCItem", new String[] { "ItemStack", "ItemStack.EMPTY" });
+		put("DyeColor", new String[] { "DyeColor", "DyeColor.WHITE"});
 	}};
 
 }

@@ -784,3 +784,9 @@ Blockly.Extensions.register('plant_type_list_provider',
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("planttype"))), 'planttype');
     });
+
+Blockly.Extensions.register('dye_color_list_provider',
+    function () {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+                    arrayToBlocklyDropDownArray(javabridge.getListOf("dyecolor"))), 'dyecolor');
+    });

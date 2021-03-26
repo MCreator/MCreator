@@ -263,6 +263,8 @@ public class BlocklyJavascriptBridge {
 			break;
 		case "planttype":
 			return ElementUtil.getAllPlantTypes();
+		case "dyecolor":
+			return ElementUtil.loadDyeColors();
 		default:
 			retval = new ArrayList<>();
 		}
