@@ -9,3 +9,4 @@ boolean: boolean
 direction: Direction
 advancement: Advancement
 dimensiontype: int
+ctx: CommandContext<CommandSource>

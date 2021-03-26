@@ -46,17 +46,22 @@ public class ${name}Command extends ${JavaModName}Elements.ModElement{
 	private LiteralArgumentBuilder<CommandSource> customCommand() {
         return LiteralArgumentBuilder.<CommandSource>literal("${data.commandName}")
 			<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermissionLevel(${data.permissionLevel}))</#if>
+			<#if !argscode??>
 			.then(Commands.argument("arguments", StringArgumentType.greedyString())
 			<#if hasProcedure(data.onCommandExecuted)>
             .executes(this::execute)
             </#if>
         	)
-			<#if hasProcedure(data.onCommandExecuted)>
+        	<#if hasProcedure(data.onCommandExecuted)>
             .executes(this::execute)
+            </#if>
+            <#else>
+            ${argscode}
             </#if>
 			;
     }
 
+	<#if hasProcedure(data.onCommandExecuted)>
     private int execute(CommandContext<CommandSource> ctx) {
 		ServerWorld world = ctx.getSource().getWorld();
 
@@ -80,6 +85,7 @@ public class ${name}Command extends ${JavaModName}Elements.ModElement{
 
 		return 0;
 	}
+	</#if>
 
 }
 <#-- @formatter:on -->
