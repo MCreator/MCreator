@@ -47,11 +47,13 @@ public class PluginLoader extends URLClassLoader {
 	private static final Logger LOG = LogManager.getLogger("Plugin Loader");
 
 	public static PluginLoader INSTANCE;
-	
+
 	public static void initInstance() {
 		INSTANCE = new PluginLoader();
 	}
+
 	private final List<Plugin> plugins;
+
 	private final Reflections reflections;
 	private final List<PluginUpdateInfo> pluginUpdates;
 
