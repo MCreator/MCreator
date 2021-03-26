@@ -1,0 +1,1 @@
+${generator.map(field$dyecolor, "dyecolors")}
