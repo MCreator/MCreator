@@ -84,6 +84,7 @@ import java.util.List;
 
 		if (renderBgLayer) {
 			if(customBg.isEmpty()) {
+				guiTextureFile.delete();
 				int mx = WYSIWYG.W - width;
 				int my = WYSIWYG.H - height;
 

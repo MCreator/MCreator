@@ -405,7 +405,7 @@ public class WYSIWYGEditor extends JPanel {
 					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 			overlayBaseTexture.addActionListener(e -> editor.repaint());
-			overlayBaseTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXX");
+			overlayBaseTexture.setPrototypeDisplayValue("XXXXXXXXXXX");
 			ComponentUtils.deriveFont(overlayBaseTexture, 16);
 
 			ovst.add(PanelUtils.join(FlowLayout.LEFT, HelpUtils
