@@ -28,10 +28,6 @@
         <block type="controls_if">
             <mutation elseif="1"/>
         </block>
-        <block type="return_logic"/>
-        <block type="return_number"/>
-        <block type="return_text"/>
-        <block type="return_itemstack"/>
         <block type="controls_repeat_ext"/>
         <block type="controls_while"/>
         <block type="controls_flow_statements"/>

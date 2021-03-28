@@ -174,42 +174,6 @@ Blockly.Blocks['text_format_number'] = {
     }
 };
 
-Blockly.Blocks['return_number'] = {
-    init: function () {
-        this.appendValueInput('return').setCheck('Number').appendField(javabridge.t("blockly.block.return"));
-        this.setPreviousStatement(true);
-        this.setNextStatement(false);
-        this.setColour(Blockly.Constants.Math.HUE);
-    }
-};
-
-Blockly.Blocks['return_logic'] = {
-    init: function () {
-        this.appendValueInput('return').setCheck('Boolean').appendField(javabridge.t("blockly.block.return"));
-        this.setPreviousStatement(true);
-        this.setNextStatement(false);
-        this.setColour(Blockly.Constants.Logic.HUE);
-    }
-};
-
-Blockly.Blocks['return_text'] = {
-    init: function () {
-        this.appendValueInput('return').setCheck('String').appendField(javabridge.t("blockly.block.return"));
-        this.setPreviousStatement(true);
-        this.setNextStatement(false);
-        this.setColour(Blockly.Constants.Text.HUE);
-    }
-};
-
-Blockly.Blocks['return_itemstack'] = {
-    init: function () {
-        this.appendValueInput('return').setCheck('MCItem').appendField(javabridge.t("blockly.block.return"));
-        this.setPreviousStatement(true);
-        this.setNextStatement(false);
-        this.setColour(350);
-    }
-};
-
 Blockly.defineBlocksWithJsonArray([
     {
         "type": "logic_binary_ops",

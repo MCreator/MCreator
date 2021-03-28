@@ -239,6 +239,15 @@ public class ExternalBlockLoader {
 						if (!newLine.toString().equals(line)) {
 							toolbox_xml = toolbox_xml.replace(line, newLine.toString());
 						}
+					} else if (line.contains("<block type=\"controls_repeat_ext\"/>")) {
+						newLine = new StringBuilder();
+						for (VariableElementType var : VariableElement.getVariables()) {
+							newLine.append("\n<block type=\"return_").append(var.getBlockName()).append("\"/>");
+						}
+						newLine.append(line);
+						if (!newLine.toString().equals(line)) {
+							toolbox_xml = toolbox_xml.replace(line, newLine.toString());
+						}
 					}
 				}
 			} catch (IOException e) {
