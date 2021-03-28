@@ -68,16 +68,4 @@ public class VariableElement implements IElement {
 	public void setScope(VariableElementType.Scope scope) {
 		this.scope = scope;
 	}
-
-	public static Object getDefaultValueForType(VariableElementType type) {
-		switch (type) {
-		case STRING:
-			return "";
-		case LOGIC:
-			return "false";
-		case NUMBER:
-			return "0";
-		}
-		return "";
-	}
 }

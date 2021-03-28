@@ -61,7 +61,7 @@ public class ProcedureTemplateDropdown extends JScrollablePopupMenu {
 							continue; // skip if variable with this name already exists
 
 						blocklyPanel.addLocalVariable(localVariable.getName(),
-								BlocklyVariables.getBlocklyVariableTypeFromMCreatorVariable(localVariable));
+								localVariable.getType().getBlocklyVariableType());
 						procedureGUI.localVars.addElement(localVariable);
 					}
 

@@ -168,7 +168,7 @@ public class BlocklyJavascriptBridge {
 			retval = workspace.getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
+							VariableElementType.getVariableFromType((String) mod.getMetadata("return_type")) :
 							null;
 					return returnTypeCurrent == VariableElementType.LOGIC;
 				}
@@ -179,7 +179,7 @@ public class BlocklyJavascriptBridge {
 			retval = workspace.getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
+							VariableElementType.getVariableFromType((String) mod.getMetadata("return_type")) :
 							null;
 					return returnTypeCurrent == VariableElementType.NUMBER;
 				}
@@ -190,7 +190,7 @@ public class BlocklyJavascriptBridge {
 			retval = workspace.getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
+							VariableElementType.getVariableFromType((String) mod.getMetadata("return_type")) :
 							null;
 					return returnTypeCurrent == VariableElementType.STRING;
 				}
@@ -201,7 +201,7 @@ public class BlocklyJavascriptBridge {
 			retval = workspace.getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
+							VariableElementType.getVariableFromType((String) mod.getMetadata("return_type")) :
 							null;
 					return returnTypeCurrent == VariableElementType.ITEMSTACK;
 				}
