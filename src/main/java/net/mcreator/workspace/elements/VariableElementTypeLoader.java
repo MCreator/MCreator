@@ -40,7 +40,24 @@ public class VariableElementTypeLoader {
 		for (String file : fileNames) {
 			VariableElementType variable = gson
 					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), VariableElementType.class);
+			LOG.debug("Added " + variable.getType() + " to variable types");
 			VariableElement.addVariable(variable);
+
+			//We check the type of the variable, if it is a global var, we instantiate it with this variable.
+			switch (variable.getType().toLowerCase()) {
+			case "logic":
+				VariableElementType.LOGIC = variable;
+				break;
+			case "number":
+				VariableElementType.NUMBER = variable;
+				break;
+			case "string":
+				VariableElementType.STRING = variable;
+				break;
+			case "itemstack":
+				VariableElementType.ITEMSTACK = variable;
+				break;
+			}
 		}
 	}
 }

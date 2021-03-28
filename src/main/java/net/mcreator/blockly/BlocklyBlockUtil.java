@@ -19,6 +19,7 @@
 package net.mcreator.blockly;
 
 import net.mcreator.util.XMLUtil;
+import net.mcreator.workspace.elements.VariableElementType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -116,6 +117,27 @@ public class BlocklyBlockUtil {
 	 */
 	public static Color getBlockColorFromHUE(int hue) {
 		return Color.getHSBColor(hue / 360f, 0.37f, 0.6f);
+	}
+
+	/**
+	 * Calculate the HUE of a block from RGB
+	 * @param var The variable element to use
+	 * @return Built-in color or HUE for other blocks
+	 */
+	public static String getHUEFromRGB(VariableElementType var) {
+		//Built-in colors
+		if(var.getType().equalsIgnoreCase("string"))
+			return "\"%{BKY_TEXTS_HUE}\"";
+		else if(var.getType().equalsIgnoreCase("number"))
+			return "\"%{BKY_MATH_HUE}\"";
+		else if(var.getType().equalsIgnoreCase("logic"))
+			return "\"%{BKY_LOGIC_HUE}\"";
+
+		//Custom colors
+		float[] hsbValues = new float[3];
+		hsbValues = Color.RGBtoHSB(var.getColor().getRed(), var.getColor().getGreen(), var.getColor().getBlue(), hsbValues);
+		int hue = (int) hsbValues[0];
+		return String.valueOf(hue);
 	}
 
 }

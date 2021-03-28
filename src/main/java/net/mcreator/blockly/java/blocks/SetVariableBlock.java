@@ -27,35 +27,17 @@ import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.VariableElementType;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SetVariableBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String type;
-
-		String blocktype = block.getAttribute("type");
-		switch (blocktype) {
-		case "variables_set_number":
-			type = "NUMBER";
-			break;
-		case "variables_set_text":
-			type = "STRING";
-			break;
-		case "variables_set_logic":
-			type = "LOGIC";
-			break;
-		case "variables_set_itemstack":
-			type = "ITEMSTACK";
-			break;
-		default:
-			return;
-		}
+		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_set_").toUpperCase();
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
@@ -121,8 +103,11 @@ public class SetVariableBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "variables_set_number", "variables_set_text", "variables_set_logic",
-				"variables_set_itemstack" };
+		Set<String> names = new HashSet<>();
+		for (VariableElementType var : VariableElement.getVariables()) {
+			names.add("variables_set_" + var.getBlockName());
+		}
+		return names.toArray(new String[0]);
 	}
 
 	@Override public BlockType getBlockType() {
