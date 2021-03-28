@@ -61,46 +61,6 @@ Blockly.Blocks['call_procedure_at'] = {
     }
 };
 
-Blockly.Blocks['procedure_retval_logic'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.procedure_retval"))
-            .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure_retval_logic"))), 'procedure');
-        this.setOutput(true, 'Boolean');
-        this.setColour(Blockly.Constants.Logic.HUE);
-    }
-};
-
-Blockly.Blocks['procedure_retval_number'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.procedure_retval"))
-            .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure_retval_number"))), 'procedure');
-        this.setOutput(true, 'Number');
-        this.setColour(Blockly.Constants.Math.HUE);
-    }
-};
-
-Blockly.Blocks['procedure_retval_string'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.procedure_retval"))
-            .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure_retval_string"))), 'procedure');
-        this.setOutput(true, 'String');
-        this.setColour(Blockly.Constants.Text.HUE);
-    }
-};
-
-Blockly.Blocks['procedure_retval_itemstack'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.procedure_retval"))
-            .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure_retval_itemstack"))), 'procedure');
-        this.setOutput(true, 'MCItem');
-        this.setColour(350);
-    }
-};
-
 Blockly.Blocks['aitasks_container'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.aitasks_container"));

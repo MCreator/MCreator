@@ -215,7 +215,7 @@ public class ExternalBlockLoader {
 				BufferedReader r = new BufferedReader(new FileReader(Objects.requireNonNull(
 						ClassLoader.getSystemClassLoader().getResource("blockly/toolbox_procedure.xml")).getFile()));
 				String line;
-				StringBuilder newLine = null;
+				StringBuilder newLine;
 				while ((line = r.readLine()) != null) {
 					if (line.contains("category.custom_variables")) {
 						newLine = new StringBuilder(line);
@@ -232,6 +232,7 @@ public class ExternalBlockLoader {
 						newLine = new StringBuilder();
 						for (VariableElementType var : VariableElement.getVariables()) {
 							newLine.append("\n<block type=\"custom_dependency_").append(var.getBlockName())
+									.append("\"/>\n<block type=\"procedure_retval_").append(var.getBlockName())
 									.append("\"/>");
 						}
 						newLine.append(line);

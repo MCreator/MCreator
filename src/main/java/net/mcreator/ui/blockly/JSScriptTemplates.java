@@ -31,6 +31,12 @@ public class JSScriptTemplates {
 				.getBlocklyVariableType() + "\")), 'VAR');" + "});";
 	}
 
+	public static String procedureListExtensions(VariableElementType var) {
+		return "Blockly.Extensions.register('procedure_retval_" + var.getType() + "',function () {"
+				+ "this.appendDummyInput().appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf(\"procedure_retval_"
+				+ var.getType() + "\"))), 'procedure');" + "});";
+	}
+
 	public static String getVariableBlock(VariableElementType var) {
 		return "Blockly.defineBlocksWithJsonArray([" + "{\n" + "  \"type\": \"variables_get_" + var.getBlockName()
 				+ "\",\n" + "  \"message0\": \"" + L10N.t("blockly.block.get_var") + " %1\"" + ",\n"
@@ -59,5 +65,12 @@ public class JSScriptTemplates {
 				+ " %1\",\"args0\":[{\"type\":\"field_input\",\"name\":\"NAME\",\"text\":\"dependencyName\"}],\"output\":\""
 				+ var.getBlocklyVariableType() + "\",\"colour\":" + BlocklyBlockUtil.getHUEFromRGB(var)
 				+ ",\"mcreator\":{\"toolbox_id\":\"advanced\",\"fields\":[\"NAME\"]}}" + "]);";
+	}
+
+	public static String procedureReturnValueBlock(VariableElementType var) {
+		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"procedure_retval_" + var.getBlockName()
+				+ "\",\"message0\": \"" + L10N.t("blockly.block.procedure_retval")
+				+ "\",\"extensions\": [\"procedure_retval_" + var.getType() + "\"],\"output\": \"" + var
+				.getBlocklyVariableType() + "\",\"inputsInline\": true,\"colour\": " + BlocklyBlockUtil.getHUEFromRGB(var) + "}" + "]);";
 	}
 }

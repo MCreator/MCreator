@@ -130,14 +130,17 @@ public class BlocklyPanel extends JFXPanel {
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js")
 							.replace("@RESOURCES_PATH", resDir));
 
+					System.out.println(JSScriptTemplates.procedureListExtensions(VariableElementType.LOGIC));
 					//JS code generation for custom variables
 					for(VariableElementType variable : VariableElement.getVariables()) {
-						//We begin by creating the extension for the variable list
+						//We begin by creating the extensions needed for other blocks
 						webEngine.executeScript(JSScriptTemplates.variableListExtension(variable));
+						webEngine.executeScript(JSScriptTemplates.procedureListExtensions(variable));
 						//Then, we create the blocks related to variables
 						webEngine.executeScript(JSScriptTemplates.getVariableBlock(variable));
 						webEngine.executeScript(JSScriptTemplates.setVariableBlock(variable));
 						webEngine.executeScript(JSScriptTemplates.customDependencyBlock(variable));
+						webEngine.executeScript(JSScriptTemplates.procedureReturnValueBlock(variable));
 					}
 
 					// colorize panel
