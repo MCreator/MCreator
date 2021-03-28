@@ -82,8 +82,8 @@ public class VariableElementType {
 	}
 
 	@Override public String toString() {
-		return type + " - color: " + color + ", dependency type: " + dependencyType + ", blockly: "
-				+ blocklyVariableType + ", Jave class:" + javaClass;
+		return getType() + " - color: " + getColor().getRGB() + ", dependency type: " + getDependencyType() + ", blockly: "
+				+ getBlocklyVariableType() + ", Java class:" + getJavaClass() + ", block name: " + getBlockName();
 	}
 
 	public enum Scope {

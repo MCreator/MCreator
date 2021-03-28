@@ -133,46 +133,6 @@ Blockly.Blocks['condition_input'] = {
     }
 };
 
-Blockly.Blocks['custom_dependency_logic'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.custom_dependency_logic"))
-            .appendField(new Blockly.FieldTextInput("dependencyName"), 'NAME');
-        this.setColour(Blockly.Constants.Logic.HUE);
-        this.setOutput(true, 'Boolean');
-    }
-};
-
-Blockly.Blocks['custom_dependency_number'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.custom_dependency_number"))
-            .appendField(new Blockly.FieldTextInput("dependencyName"), 'NAME');
-        this.setColour(Blockly.Constants.Math.HUE);
-        this.setOutput(true, 'Number');
-    }
-};
-
-Blockly.Blocks['custom_dependency_text'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.custom_dependency_text"))
-            .appendField(new Blockly.FieldTextInput("dependencyName"), 'NAME');
-        this.setColour(Blockly.Constants.Text.HUE);
-        this.setOutput(true, 'String');
-    }
-};
-
-Blockly.Blocks['custom_dependency_itemstack'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.custom_dependency_itemstack"))
-            .appendField(new Blockly.FieldTextInput("dependencyName"), 'NAME');
-        this.setColour(350);
-        this.setOutput(true, 'MCItem');
-    }
-};
-
 Blockly.Blocks['java_code'] = {
     init: function () {
         this.appendDummyInput()

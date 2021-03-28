@@ -129,8 +129,6 @@ public class BlocklyPanel extends JFXPanel {
 							.replace("@RESOURCES_PATH", resDir));
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js")
 							.replace("@RESOURCES_PATH", resDir));
-					// execute external JS files
-					LOG.debug("Loading JS files for Blockly");
 
 					//JS code generation for custom variables
 					for(VariableElementType variable : VariableElement.getVariables()) {
@@ -139,6 +137,7 @@ public class BlocklyPanel extends JFXPanel {
 						//Then, we create the blocks related to variables
 						webEngine.executeScript(JSScriptTemplates.getVariableBlock(variable));
 						webEngine.executeScript(JSScriptTemplates.setVariableBlock(variable));
+						webEngine.executeScript(JSScriptTemplates.customDependencyBlock(variable));
 					}
 
 					// colorize panel
