@@ -22,55 +22,75 @@ import com.google.gson.annotations.SerializedName;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 
-public enum VariableElementType {
+import java.awt.*;
+import java.util.*;
 
-	@SerializedName("string") STRING(0x609986), @SerializedName("logic") LOGIC(
-			0x607c99), @SerializedName("number") NUMBER(0x606999), @SerializedName("itemstack") ITEMSTACK(0x996069);
+public class VariableElementType {
+	private static final Map<VariableElementType, String> variables = new HashMap<>();
 
+	public static final VariableElementType STRING = new VariableElementType("string", 0x609986, "\"\"", "String");
+	public static final VariableElementType LOGIC = new VariableElementType("logic", "boolean", 0x607c99, "false", "Boolean");
+	public static final VariableElementType NUMBER = new VariableElementType("number", 0x606999, "0", "Number");
+	public static final VariableElementType ITEMSTACK = new VariableElementType("itemstack", 0x996069, "ItemStack.EMPTY", "MCItem");
+
+	private final String type;
 	private final int color;
+	private final String dependencyType;
+	private final String defaultValue;
+	private final String blocklyVariableType;
 
-	VariableElementType(int color) {
+	private VariableElementType(String type, int color, String defaultValue, String blocklyVariableType) {
+		this(type, type, color, defaultValue, blocklyVariableType);
+	}
+
+	private VariableElementType(String type, String dependencyType, int color, String defaultValue, String blocklyVariableType) {
+		this.type = type;
+		this.dependencyType = dependencyType;
 		this.color = color;
+		this.defaultValue = defaultValue;
+		this.blocklyVariableType = blocklyVariableType;
+		variables.put(this, type.toUpperCase());
 	}
 
-	public int getColor() {
-		return color;
-	}
-
-	public String toDependencyType() {
-		switch (this) {
-		case NUMBER:
-			return "number";
-		case LOGIC:
-			return "boolean";
-		case STRING:
-			return "string";
-		case ITEMSTACK:
-			return "itemstack";
+	public static VariableElementType getVariableFromType(String type) {
+		for (VariableElementType var : variables.keySet()) {
+			if(var.getBlocklyVariableType().equals(type) || var.getType().equals(type.toLowerCase())) {
+				return var;
+			}
 		}
-
 		return null;
+	}
+
+	public static Set<VariableElementType> getVariables() {
+		return variables.keySet();
+	}
+
+	public static Collection<String> getAllTypes() {
+		return variables.values();
+	}
+
+	public Color getColor() {
+		return new Color(color);
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public String getDependencyType() {
+		return dependencyType;
+	}
+
+	public String getBlocklyVariableType() {
+		return blocklyVariableType;
 	}
 
 	@SuppressWarnings("unused") public String getJavaType(Workspace workspace) {
-		if (toDependencyType() != null)
-			return new NameMapper(workspace, "types").getMapping(toDependencyType());
-		return null;
+		return new NameMapper(workspace, "types").getMapping(getDependencyType());
 	}
 
-	@SuppressWarnings("unused") public String getDefaultValue(Workspace workspace) {
-		switch (this) {
-		case NUMBER:
-			return "0";
-		case LOGIC:
-			return "false";
-		case STRING:
-			return "\"\"";
-		case ITEMSTACK:
-			return "ItemStack.EMPTY";
-		}
-
-		return "";
+	@SuppressWarnings("unused") public String getDefaultValue() {
+		return defaultValue;
 	}
 
 	public enum Scope {

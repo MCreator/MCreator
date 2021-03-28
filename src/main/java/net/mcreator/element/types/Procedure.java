@@ -93,7 +93,7 @@ public class Procedure extends GeneratableElement {
 
 			this.getModElement().clearMetadata().putMetadata("dependencies", dependenciesArrayList)
 					.putMetadata("return_type",
-							blocklyToJava.getReturnType() == null ? null : blocklyToJava.getReturnType().name());
+							blocklyToJava.getReturnType() == null ? null : blocklyToJava.getReturnType().getType().toLowerCase());
 
 			reloadDependencies();
 

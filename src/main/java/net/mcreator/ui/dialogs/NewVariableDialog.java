@@ -28,11 +28,12 @@ import net.mcreator.workspace.elements.VariableElementType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class NewVariableDialog {
 
 	public static VariableElement showNewVariableDialog(JFrame frame, boolean showScope,
-			OptionPaneValidatior variableNameValidator, VariableElementType... supportedTypes) {
+			OptionPaneValidatior variableNameValidator, String... supportedTypes) {
 		JPanel inp = new JPanel(new BorderLayout(10, 10));
 
 		VTextField textField = new VTextField(25);
@@ -41,7 +42,7 @@ public class NewVariableDialog {
 		variableNameValidator.setValidatedComponent(textField);
 		textField.setValidator(variableNameValidator);
 
-		JComboBox<VariableElementType> type = new JComboBox<>(supportedTypes);
+		JComboBox<String> type = new JComboBox<>(supportedTypes);
 
 		JComboBox<VariableElementType.Scope> scope = new JComboBox<>(VariableElementType.Scope.values());
 
@@ -66,9 +67,10 @@ public class NewVariableDialog {
 				&& textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
 				&& type.getSelectedItem() != null) {
 			VariableElement element = new VariableElement();
+			VariableElementType variable = VariableElementType.getVariableFromType((String) type.getSelectedItem());
 			element.setName(Transliteration.transliterateString(textField.getText()));
-			element.setType((VariableElementType) type.getSelectedItem());
-			element.setValue(VariableElement.getDefaultValueForType((VariableElementType) type.getSelectedItem()));
+			element.setType(variable);
+			element.setValue(Objects.requireNonNull(variable).getDefaultValue());
 			element.setScope((VariableElementType.Scope) scope.getSelectedItem());
 			return element;
 		}

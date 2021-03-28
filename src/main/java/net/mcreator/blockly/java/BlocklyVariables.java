@@ -59,20 +59,6 @@ public class BlocklyVariables {
 		return varlist;
 	}
 
-	public static String getBlocklyVariableTypeFromMCreatorVariable(VariableElement variable) {
-		switch (variable.getType()) {
-		case NUMBER:
-			return "Number";
-		case ITEMSTACK:
-			return "MCItem";
-		case LOGIC:
-			return "Boolean";
-		case STRING:
-			return "String";
-		}
-		return null;
-	}
-
 	public static VariableElementType getMCreatorVariableTypeFromBlocklyVariableType(String blocklyType) {
 		switch (blocklyType) {
 		case "Number":

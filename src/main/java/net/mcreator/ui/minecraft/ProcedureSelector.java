@@ -116,7 +116,7 @@ public class ProcedureSelector extends JPanel {
 		if (returnType == VariableElementType.LOGIC) {
 			defaultName = "(always)";
 			setBorder(BorderFactory
-					.createLineBorder(new Dependency("", VariableElementType.LOGIC.toDependencyType()).getColor()));
+					.createLineBorder(new Dependency("", VariableElementType.LOGIC.getType()).getColor()));
 		}
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
@@ -291,7 +291,7 @@ public class ProcedureSelector extends JPanel {
 			if (mod.getType() == ModElementType.PROCEDURE) {
 				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
 				VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-						VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
+						VariableElementType.getVariableFromType((String) mod.getMetadata("return_type")) :
 						null;
 				List<Dependency> realdepsList = new ArrayList<>();
 				if (dependenciesList == null)
