@@ -30,12 +30,12 @@ import javafx.scene.web.WebView;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
-import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.VariableElementType;
 import netscape.javascript.JSObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,7 +46,6 @@ import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
-import java.util.regex.Pattern;
 
 public class BlocklyPanel extends JFXPanel {
 
@@ -130,18 +129,17 @@ public class BlocklyPanel extends JFXPanel {
 							.replace("@RESOURCES_PATH", resDir));
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js")
 							.replace("@RESOURCES_PATH", resDir));
-					System.out.println("test");
-					// execute custom extensions
-					Set<String> files = PluginLoader.INSTANCE.getResources("blockly.extensions", Pattern.compile("^[^$].*\\.js"));
-					for (String file : files) {
-						System.out.println("test");
-						LOG.debug(file);
-						webEngine.executeScript(Objects.requireNonNull(
-								FileIO.readResourceToString(PluginLoader.INSTANCE.getResource(file)))
-								.replace("@RESOURCES_PATH", resDir));
-						LOG.debug(FileIO.readResourceToString(PluginLoader.INSTANCE.getResource(file)));
-					}
+					// execute external JS files
+					LOG.debug("Loading JS files for Blockly");
 
+					//JS code generation for custom variables
+					for(VariableElementType variable : VariableElement.getVariables()) {
+						//We begin by creating the extension for the variable list
+						webEngine.executeScript(JSScriptTemplates.variableListExtension(variable));
+						//Then, we create the blocks related to variables
+						webEngine.executeScript(JSScriptTemplates.getVariableBlock(variable));
+						webEngine.executeScript(JSScriptTemplates.setVariableBlock(variable));
+					}
 
 					// colorize panel
 					Accessor.getPageFor(webEngine).setBackgroundColor(0);

@@ -22,35 +22,25 @@ import com.google.gson.annotations.SerializedName;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 
 public class VariableElementType {
 
-	public static final VariableElementType STRING = new VariableElementType("string", "0x609986", "\"\"", "String", "String");
-	public static final VariableElementType LOGIC = new VariableElementType("logic", "boolean", "0x607c99", "false", "Boolean", "boolean");
-	public static final VariableElementType NUMBER = new VariableElementType("number", "0x606999", "0", "Number", "double");
-	public static final VariableElementType ITEMSTACK = new VariableElementType("itemstack", "0x996069", "ItemStack.EMPTY", "MCItem", "ItemStack");
+	//Define each global variables. The instantiation is made in VariableElementTypeLoader.
+	public static VariableElementType STRING;
+	public static VariableElementType LOGIC;
+	public static VariableElementType NUMBER;
+	public static VariableElementType ITEMSTACK;
 
-	private final String type;
-	private final String color;
-	private final String dependencyType;
-	private final String defaultValue;
-	private final String blocklyVariableType;
-	private final String javaClass;
-
-	private VariableElementType(String type, String color, String defaultValue, String blocklyVariableType, String javaClass) {
-		this(type, type, color, defaultValue, blocklyVariableType, javaClass);
-	}
-
-	private VariableElementType(String type, String dependencyType, String color, String defaultValue, String blocklyVariableType, String javaClass) {
-		this.type = type;
-		this.dependencyType = dependencyType;
-		this.color = color;
-		this.defaultValue = defaultValue;
-		this.blocklyVariableType = blocklyVariableType;
-		this.javaClass = javaClass;
-		VariableElement.addVariable(this);
-	}
+	private String type;
+	private String color;
+	@Nullable private String dependencyType;
+	private String defaultValue;
+	private String blocklyVariableType;
+	private String javaClass;
+	//The name used for procedure blocks
+	@Nullable private String blockName;
 
 	public Color getColor() {
 		return Color.decode(color);
@@ -61,7 +51,10 @@ public class VariableElementType {
 	}
 
 	public String getDependencyType() {
-		return dependencyType;
+		if(dependencyType != null)
+			return dependencyType;
+		else
+			return type;
 	}
 
 	public String getBlocklyVariableType() {
@@ -72,12 +65,25 @@ public class VariableElementType {
 		return javaClass;
 	}
 
+	public String getBlockName() {
+		if(blockName != null)
+			return blockName;
+		else
+			return type;
+
+	}
+
 	@SuppressWarnings("unused") public String getJavaType(Workspace workspace) {
 		return new NameMapper(workspace, "types").getMapping(getDependencyType());
 	}
 
 	@SuppressWarnings("unused") public String getDefaultValue() {
 		return defaultValue;
+	}
+
+	@Override public String toString() {
+		return type + " - color: " + color + ", dependency type: " + dependencyType + ", blockly: "
+				+ blocklyVariableType + ", Jave class:" + javaClass;
 	}
 
 	public enum Scope {
