@@ -45,11 +45,19 @@ public class JSScriptTemplates {
 	public static String setVariableBlock(VariableElementType var) {
 		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"variables_set_" + var.getBlockName()
 				+ "\",\"message0\":\"" + L10N.t("blockly.block.set_var") + " %1 " + L10N.t("blockly.block.set_to")
-				+ " %2\",\"args0\":[{\"type\":\"input_dummy\",\"name\":\"var\"},{\"type\":\"input_value\",\"name\":\"value\","
+				+ " %2\",\"args0\":[{\"type\":\"input_dummy\",\"name\":\"var\"},{\"type\":\"input_value\",\"name\":\"VAL\","
 				+ "\"check\":\"" + var.getBlocklyVariableType() + "\"}],\"extensions\":[\"" + var.getDependencyType()
 				+ "_variables\"],\"inputsInline\":true,\n\"previousStatement\": null,\"nextStatement\": null,\"colour\":"
 				+ BlocklyBlockUtil.getHUEFromRGB(var)
 				+ ",\"mcreator\":{\"toolbox_id\":\"customvariables\",\"fields\":[\"VAR\"],\"inputs\":[\"VAL\"]}}"
 				+ "]);";
+	}
+
+	public static String customDependencyBlock(VariableElementType var) {
+		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"custom_dependency_" + var.getBlockName()
+				+ "\",\"message0\":\"" + L10N.t("blockly.block.custom_dependency_" + var.getBlockName())
+				+ " %1\",\"args0\":[{\"type\":\"field_input\",\"name\":\"NAME\",\"text\":\"dependencyName\"}],\"output\":\""
+				+ var.getBlocklyVariableType() + "\",\"colour\":" + BlocklyBlockUtil.getHUEFromRGB(var)
+				+ ",\"mcreator\":{\"toolbox_id\":\"advanced\",\"fields\":[\"NAME\"]}}" + "]);";
 	}
 }

@@ -121,11 +121,11 @@ public final class MCreatorApplication {
 		// load apis defined by plugins after plugins are loaded
 		ModAPIManager.initAPIs();
 
-		// load blockly blocks after plugins are loaded
-		BlocklyLoader.init();
-
 		// load variable elements
 		VariableElementTypeLoader.loadVariableTypes();
+
+		// load blockly blocks after plugins are loaded
+		BlocklyLoader.init();
 
 		splashScreen.setProgress(60, "Loading generators");
 
