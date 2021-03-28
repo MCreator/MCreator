@@ -3,6 +3,6 @@
 	"dependencyType": "date",
 	"color": "0x838532",
 	"defaultValue": "new Date()",
-	"blocklyVariableType": "Test",
+	"blocklyVariableType": "Date",
 	"javaClass": "Date"
 }
