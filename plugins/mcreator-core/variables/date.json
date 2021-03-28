@@ -1,0 +1,8 @@
+{
+	"type": "date",
+	"dependencyType": "date",
+	"color": "0x838532",
+	"defaultValue": "new Date()",
+	"blocklyVariableType": "Test",
+	"javaClass": "Date"
+}

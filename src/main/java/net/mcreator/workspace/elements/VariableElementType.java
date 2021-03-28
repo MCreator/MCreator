@@ -23,54 +23,37 @@ import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 
 import java.awt.*;
-import java.util.*;
 
 public class VariableElementType {
-	private static final Map<VariableElementType, String> variables = new HashMap<>();
 
-	public static final VariableElementType STRING = new VariableElementType("string", 0x609986, "\"\"", "String");
-	public static final VariableElementType LOGIC = new VariableElementType("logic", "boolean", 0x607c99, "false", "Boolean");
-	public static final VariableElementType NUMBER = new VariableElementType("number", 0x606999, "0", "Number");
-	public static final VariableElementType ITEMSTACK = new VariableElementType("itemstack", 0x996069, "ItemStack.EMPTY", "MCItem");
+	public static final VariableElementType STRING = new VariableElementType("string", "0x609986", "\"\"", "String", "String");
+	public static final VariableElementType LOGIC = new VariableElementType("logic", "boolean", "0x607c99", "false", "Boolean", "boolean");
+	public static final VariableElementType NUMBER = new VariableElementType("number", "0x606999", "0", "Number", "double");
+	public static final VariableElementType ITEMSTACK = new VariableElementType("itemstack", "0x996069", "ItemStack.EMPTY", "MCItem", "ItemStack");
 
 	private final String type;
-	private final int color;
+	private final String color;
 	private final String dependencyType;
 	private final String defaultValue;
 	private final String blocklyVariableType;
+	private final String javaClass;
 
-	private VariableElementType(String type, int color, String defaultValue, String blocklyVariableType) {
-		this(type, type, color, defaultValue, blocklyVariableType);
+	private VariableElementType(String type, String color, String defaultValue, String blocklyVariableType, String javaClass) {
+		this(type, type, color, defaultValue, blocklyVariableType, javaClass);
 	}
 
-	private VariableElementType(String type, String dependencyType, int color, String defaultValue, String blocklyVariableType) {
+	private VariableElementType(String type, String dependencyType, String color, String defaultValue, String blocklyVariableType, String javaClass) {
 		this.type = type;
 		this.dependencyType = dependencyType;
 		this.color = color;
 		this.defaultValue = defaultValue;
 		this.blocklyVariableType = blocklyVariableType;
-		variables.put(this, type.toUpperCase());
-	}
-
-	public static VariableElementType getVariableFromType(String type) {
-		for (VariableElementType var : variables.keySet()) {
-			if(var.getBlocklyVariableType().equals(type) || var.getType().equals(type.toLowerCase())) {
-				return var;
-			}
-		}
-		return null;
-	}
-
-	public static Set<VariableElementType> getVariables() {
-		return variables.keySet();
-	}
-
-	public static Collection<String> getAllTypes() {
-		return variables.values();
+		this.javaClass = javaClass;
+		VariableElement.addVariable(this);
 	}
 
 	public Color getColor() {
-		return new Color(color);
+		return Color.decode(color);
 	}
 
 	public String getType() {
@@ -83,6 +66,10 @@ public class VariableElementType {
 
 	public String getBlocklyVariableType() {
 		return blocklyVariableType;
+	}
+
+	public String getJavaClass() {
+		return javaClass;
 	}
 
 	@SuppressWarnings("unused") public String getJavaType(Workspace workspace) {

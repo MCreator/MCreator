@@ -18,7 +18,13 @@
 
 package net.mcreator.workspace.elements;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 public class VariableElement implements IElement {
+	private static final Map<VariableElementType, String> variables = new HashMap<>();
 
 	private String name;
 	private VariableElementType type;
@@ -39,6 +45,26 @@ public class VariableElement implements IElement {
 
 	public VariableElementType getType() {
 		return type;
+	}
+
+	public static VariableElementType getVariableFromType(String type) {
+		for (VariableElementType var : variables.keySet()) {
+			if(var.getBlocklyVariableType().equals(type) || var.getType().equals(type.toLowerCase())) {
+				return var;
+			}
+		}
+		return null;
+	}
+
+	public static Set<VariableElementType> getVariables() {
+		return variables.keySet();
+	}
+	public static void addVariable(VariableElementType var) {
+		variables.put(var, var.getType().toUpperCase());
+	}
+
+	public static Collection<String> getAllTypes() {
+		return variables.values();
 	}
 
 	public void setType(VariableElementType type) {
