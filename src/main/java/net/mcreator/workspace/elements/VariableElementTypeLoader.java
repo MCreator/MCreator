@@ -20,7 +20,6 @@
 package net.mcreator.workspace.elements;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import org.apache.logging.log4j.LogManager;
@@ -35,10 +34,9 @@ public class VariableElementTypeLoader {
 	public static void loadVariableTypes() {
 		LOG.debug("Loading variables");
 
-		PluginLoader loader = PluginLoader.INSTANCE;
-		final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		final Gson gson = new Gson();
 
-		Set<String> fileNames = loader.getResources("variables", Pattern.compile("^[^$].*\\.json"));
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources("variables", Pattern.compile("^[^$].*\\.json"));
 		for (String file : fileNames) {
 			VariableElementType variable = gson
 					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), VariableElementType.class);
