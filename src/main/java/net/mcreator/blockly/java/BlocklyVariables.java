@@ -22,6 +22,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
@@ -43,9 +44,10 @@ public class BlocklyVariables {
 			for (Element variable : variables) {
 				String type = variable.getAttribute("type");
 				String name = variable.getAttribute("id");
-				if (JavaKeywordsMap.VARIABLE_TYPES.get(type) != null && name != null) {
-					generator.append(JavaKeywordsMap.VARIABLE_TYPES.get(type)[0]).append(" ").append(name).append(" = ")
-							.append(JavaKeywordsMap.VARIABLE_TYPES.get(type)[1]).append(";\n");
+				VariableElementType var = VariableElement.getVariableFromType(type);
+				if (var != null && var.getBlocklyVariableType() != null && name != null) {
+					generator.append(var.getJavaClass()).append(" ").append(name).append(" = ")
+							.append(var.getDefaultValue()).append(";\n");
 
 					// add variable to the array of variables
 					varlist.add(name);

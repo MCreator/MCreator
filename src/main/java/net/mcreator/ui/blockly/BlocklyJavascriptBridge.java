@@ -35,6 +35,7 @@ import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import netscape.javascript.JSObject;
 import org.apache.commons.lang3.StringUtils;
@@ -168,7 +169,7 @@ public class BlocklyJavascriptBridge {
 			retval = workspace.getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.getVariableFromType((String) mod.getMetadata("return_type")) :
+							VariableElement.getVariableFromType((String) mod.getMetadata("return_type")) :
 							null;
 					return returnTypeCurrent == VariableElementType.LOGIC;
 				}
@@ -179,7 +180,7 @@ public class BlocklyJavascriptBridge {
 			retval = workspace.getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.getVariableFromType((String) mod.getMetadata("return_type")) :
+							VariableElement.getVariableFromType((String) mod.getMetadata("return_type")) :
 							null;
 					return returnTypeCurrent == VariableElementType.NUMBER;
 				}
@@ -190,7 +191,7 @@ public class BlocklyJavascriptBridge {
 			retval = workspace.getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.getVariableFromType((String) mod.getMetadata("return_type")) :
+							VariableElement.getVariableFromType((String) mod.getMetadata("return_type")) :
 							null;
 					return returnTypeCurrent == VariableElementType.STRING;
 				}
@@ -201,7 +202,7 @@ public class BlocklyJavascriptBridge {
 			retval = workspace.getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.getVariableFromType((String) mod.getMetadata("return_type")) :
+							VariableElement.getVariableFromType((String) mod.getMetadata("return_type")) :
 							null;
 					return returnTypeCurrent == VariableElementType.ITEMSTACK;
 				}
