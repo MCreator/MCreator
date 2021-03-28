@@ -141,6 +141,7 @@ public class BlocklyPanel extends JFXPanel {
 						webEngine.executeScript(JSScriptTemplates.setVariableBlock(variable));
 						webEngine.executeScript(JSScriptTemplates.customDependencyBlock(variable));
 						webEngine.executeScript(JSScriptTemplates.procedureReturnValueBlock(variable));
+						webEngine.executeScript(JSScriptTemplates.returnBlock(variable));
 					}
 
 					// colorize panel

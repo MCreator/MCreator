@@ -24,32 +24,21 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
+import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class ReturnBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String type = block.getAttribute("type");
-		VariableElementType returnType = null;
-
-		switch (type) {
-		case "return_logic":
-			returnType = VariableElementType.LOGIC;
-			break;
-		case "return_number":
-			returnType = VariableElementType.NUMBER;
-			break;
-		case "return_text":
-			returnType = VariableElementType.STRING;
-			break;
-		case "return_itemstack":
-			returnType = VariableElementType.ITEMSTACK;
-			break;
-		}
+		String type = StringUtils.removeStart(block.getAttribute("type"), "return_").toUpperCase();
+		VariableElementType returnType = VariableElement.getVariableFromType(type);
 
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (master instanceof BlocklyToProcedure && value != null) {
@@ -78,7 +67,11 @@ public class ReturnBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "return_logic", "return_number", "return_text", "return_itemstack" };
+		Set<String> names = new HashSet<>();
+		for (VariableElementType var : VariableElement.getVariables()) {
+			names.add("return_" + var.getBlockName());
+		}
+		return names.toArray(new String[0]);
 	}
 
 	@Override public BlockType getBlockType() {
