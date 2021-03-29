@@ -23,7 +23,13 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.util.XMLUtil;
+import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.VariableElementType;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class CustomDependencyBlock implements IBlockGenerator {
 
@@ -31,25 +37,11 @@ public class CustomDependencyBlock implements IBlockGenerator {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null && element.getTextContent() != null && !element.getTextContent().equals("")) {
 			String depname = element.getTextContent();
-			String deptype = null;
-			String blocktype = block.getAttribute("type");
-			switch (blocktype) {
-			case "custom_dependency_logic":
-				deptype = "boolean";
-				break;
-			case "custom_dependency_number":
-				deptype = "number";
-				break;
-			case "custom_dependency_text":
-				deptype = "string";
-				break;
-			case "custom_dependency_itemstack":
-				deptype = "itemstack";
-				break;
-			}
+
+			String deptype = StringUtils.removeStart(block.getAttribute("type"), "custom_dependency_").toUpperCase();
 			master.addDependency(new Dependency(depname, deptype));
 
-			if (deptype != null && deptype.equals("itemstack"))
+			if (deptype.equalsIgnoreCase("itemstack"))
 				master.append("/*@ItemStack*/");
 
 			master.append("(").append(element.getTextContent()).append(")");
@@ -60,8 +52,11 @@ public class CustomDependencyBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "custom_dependency_logic", "custom_dependency_number", "custom_dependency_text",
-				"custom_dependency_itemstack" };
+		Set<String> names = new HashSet<>();
+		for (VariableElementType var : VariableElement.getVariables()) {
+			names.add("custom_dependency_" + var.getBlockName());
+		}
+		return names.toArray(new String[0]);
 	}
 
 	@Override public BlockType getBlockType() {
