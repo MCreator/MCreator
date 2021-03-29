@@ -265,7 +265,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				workspace.getVariableElements().clear();
 				for (int i = 0; i < elements.getModel().getRowCount(); i++) {
 					VariableElement element = new VariableElement();
-					element.setType(VariableElement.getVariableFromType((String) elements.getValueAt(i, 1)));
+					element.setType((String) elements.getValueAt(i, 1));
 					element.setName(Transliteration.transliterateString((String) elements.getValueAt(i, 0)));
 					element.setValue(elements.getValueAt(i, 3));
 					element.setScope((VariableElementType.Scope) elements.getValueAt(i, 2));

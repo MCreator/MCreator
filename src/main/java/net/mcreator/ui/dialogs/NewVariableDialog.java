@@ -69,7 +69,7 @@ public class NewVariableDialog {
 			VariableElement element = new VariableElement();
 			VariableElementType variable = VariableElement.getVariableFromType((String) type.getSelectedItem());
 			element.setName(Transliteration.transliterateString(textField.getText()));
-			element.setType(variable);
+			element.setType((String) type.getSelectedItem());
 			element.setValue(Objects.requireNonNull(variable).getDefaultValue());
 			element.setScope((VariableElementType.Scope) scope.getSelectedItem());
 			return element;
