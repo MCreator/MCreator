@@ -37,10 +37,8 @@ public class CustomDependencyBlock implements IBlockGenerator {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null && element.getTextContent() != null && !element.getTextContent().equals("")) {
 			String depname = element.getTextContent();
-			System.out.println(depname);
 
 			String deptype = StringUtils.removeStart(block.getAttribute("type"), "custom_dependency_");
-			System.out.println(deptype);
 			master.addDependency(new Dependency(depname, deptype));
 
 			if (deptype.equalsIgnoreCase("itemstack"))
