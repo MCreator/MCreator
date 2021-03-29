@@ -64,7 +64,7 @@ public class L10N {
 					ResourceBundle rb = ResourceBundle
 							.getBundle("lang/texts", value, PluginLoader.INSTANCE, new UTF8Control());
 					return new LocaleRegistration(rb,
-							(int) Math.round(Collections.list(rb.getKeys()).size() / countAll * 100d));
+							(int) Math.ceil(Collections.list(rb.getKeys()).size() / countAll * 100d));
 				}));
 
 		supportedLocales.put(new Locale("en", "US"), new LocaleRegistration(rb_en, 100));
