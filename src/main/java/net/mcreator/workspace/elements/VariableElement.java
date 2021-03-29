@@ -27,7 +27,7 @@ public class VariableElement implements IElement {
 	private static final Map<VariableElementType, String> variables = new HashMap<>();
 
 	private String name;
-	private VariableElementType type;
+	private String type;
 	private VariableElementType.Scope scope = VariableElementType.Scope.GLOBAL_SESSION;
 	private Object value;
 
@@ -44,7 +44,7 @@ public class VariableElement implements IElement {
 	}
 
 	public VariableElementType getType() {
-		return type;
+		return getVariableFromType(type);
 	}
 
 	public static VariableElementType getVariableFromType(String type) {
@@ -68,7 +68,7 @@ public class VariableElement implements IElement {
 		return variables.values();
 	}
 
-	public void setType(VariableElementType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 

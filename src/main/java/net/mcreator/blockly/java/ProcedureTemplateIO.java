@@ -116,7 +116,7 @@ public class ProcedureTemplateIO {
 				while (m.find()) {
 					VariableElement element = new VariableElement();
 					element.setName(m.group(1));
-					element.setType(var);
+					element.setType(var.getType());
 					retval.add(element);
 				}
 			} catch (Exception ignored){
