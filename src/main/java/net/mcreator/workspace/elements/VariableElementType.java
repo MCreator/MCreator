@@ -35,10 +35,12 @@ public class VariableElementType {
 
 	private String type;
 	private String color;
+	//Use for compatibility with old workspaces
 	@Nullable private String dependencyType;
 	private String defaultValue;
 	private String blocklyVariableType;
 	private String javaClass;
+	//Use for compatibility with old workspaces
 	//The name used for procedure blocks
 	@Nullable private String blockName;
 
