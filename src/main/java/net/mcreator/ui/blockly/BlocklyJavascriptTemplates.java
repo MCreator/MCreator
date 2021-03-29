@@ -23,7 +23,7 @@ import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.VariableElementType;
 
-public class JSScriptTemplates {
+public class BlocklyJavascriptTemplates {
 
 	public static String variableListExtension(VariableElementType var) {
 		return "Blockly.Extensions.register('" + var.getDependencyType() + "_variables',function () {"
@@ -73,7 +73,7 @@ public class JSScriptTemplates {
 		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"return_" + var.getBlockName() + "\",\"message0\":\""
 				+ L10N.t("blockly.block.return")
 				+ " %1\",\"args0\":[{\"type\":\"input_value\",\"name\":\"return\",\"check\":\"" + var
-				.getBlocklyVariableType() + "\"}],\"previousStatement\":null,\"nextStatement\":false,\"colour\":"
+				.getBlocklyVariableType() + "\"}],\"previousStatement\":null,\"colour\":"
 				+ BlocklyBlockUtil.getHUEFromRGB(var) + "}]);";
 	}
 }
