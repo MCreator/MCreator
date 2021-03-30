@@ -37,7 +37,7 @@ import java.util.Set;
 public class ReturnBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String type = StringUtils.removeStart(block.getAttribute("type"), "return_").toUpperCase();
+		String type = StringUtils.removeStart(block.getAttribute("type"), "return_");
 		VariableElementType returnType = VariableElement.getVariableFromType(type);
 
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");

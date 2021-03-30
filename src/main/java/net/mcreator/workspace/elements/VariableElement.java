@@ -49,7 +49,8 @@ public class VariableElement implements IElement {
 
 	public static VariableElementType getVariableFromType(String type) {
 		for (VariableElementType var : variables.keySet()) {
-			if(var.getBlocklyVariableType().equalsIgnoreCase(type) || var.getType().equalsIgnoreCase(type)) {
+			if(var.getBlocklyVariableType().equalsIgnoreCase(type) || var.getType().equalsIgnoreCase(type)
+					|| var.getBlockName().equalsIgnoreCase(type)) {
 				return var;
 			}
 		}

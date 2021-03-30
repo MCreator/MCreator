@@ -37,7 +37,7 @@ import java.util.Set;
 public class ProcedureRetvalBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String type = StringUtils.removeStart(block.getAttribute("type"), "procedure_retval_").toUpperCase();
+		String type = StringUtils.removeStart(block.getAttribute("type"), "procedure_retval_");
 
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 
