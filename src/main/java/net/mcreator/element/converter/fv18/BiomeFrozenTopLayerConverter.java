@@ -34,12 +34,7 @@ public class BiomeFrozenTopLayerConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Biome biome = (Biome) input;
-		try {
-			biome.defaultFeatures.add("FrozenTopLayer");
-		} catch (Exception e) {
-			LOG.warn("Could not convert: " + biome.getModElement().getName());
-		}
-
+		biome.defaultFeatures.add("FrozenTopLayer");
 		return biome;
 	}
 
