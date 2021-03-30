@@ -28,6 +28,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.init.BuiltInEntityAnimations;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.StringUtils;
 import org.jboss.forge.roaster.Roaster;
@@ -42,54 +43,6 @@ import java.util.*;
 
 public class JavaModelAnimationEditorDialog {
 
-	private static final LinkedHashMap<String, List<String>> java_model_animations = new LinkedHashMap<String, List<String>>() {{
-		put("No animation", Collections.emptyList());
-		put("Head movement animation", Arrays.asList(".rotateAngleY = f3 / (180F / (float)Math.PI);",
-				".rotateAngleX = f4 / (180F / (float)Math.PI);"));
-		put("Left arm swing animation", Collections.singletonList(".rotateAngleX = MathHelper.cos(f * 0.6662F) * f1;"));
-		put("Right arm swing animation",
-				Collections.singletonList(".rotateAngleX = MathHelper.cos(f * 0.6662F + (float)Math.PI) * f1;"));
-		put("Left leg swing animation",
-				Collections.singletonList(".rotateAngleX = MathHelper.cos(f * 1.0F) * -1.0F * f1;"));
-		put("Right leg swing animation",
-				Collections.singletonList(".rotateAngleX = MathHelper.cos(f * 1.0F) * 1.0F * f1;"));
-
-		put("Left arm swing animation (Y axis)",
-				Collections.singletonList(".rotateAngleY = MathHelper.cos(f * 0.6662F) * f1;"));
-		put("Right arm swing animation (Y axis)",
-				Collections.singletonList(".rotateAngleY = MathHelper.cos(f * 0.6662F + (float)Math.PI) * f1;"));
-		put("Left leg swing animation (Y axis)",
-				Collections.singletonList(".rotateAngleY = MathHelper.cos(f * 1.0F) * -1.0F * f1;"));
-		put("Right leg swing animation (Y axis)",
-				Collections.singletonList(".rotateAngleY = MathHelper.cos(f * 1.0F) * 1.0F * f1;"));
-
-		put("Left arm swing animation (Z axis)",
-				Collections.singletonList(".rotateAngleZ = MathHelper.cos(f * 0.6662F) * f1;"));
-		put("Right arm swing animation (Z axis)",
-				Collections.singletonList(".rotateAngleZ = MathHelper.cos(f * 0.6662F + (float)Math.PI) * f1;"));
-		put("Left leg swing animation (Z axis)",
-				Collections.singletonList(".rotateAngleZ = MathHelper.cos(f * 1.0F) * -1.0F * f1;"));
-		put("Right leg swing animation (Z axis)",
-				Collections.singletonList(".rotateAngleZ = MathHelper.cos(f * 1.0F) * 1.0F * f1;"));
-
-		put("Constant X axis rotation", Collections.singletonList(".rotateAngleX = f2;"));
-		put("Constant Y axis rotation", Collections.singletonList(".rotateAngleY = f2;"));
-		put("Constant Z axis rotation", Collections.singletonList(".rotateAngleZ = f2;"));
-		put("Constant slow X axis rotation", Collections.singletonList(".rotateAngleX = f2 / 20.f;"));
-		put("Constant slow Y axis rotation", Collections.singletonList(".rotateAngleY = f2 / 20.f;"));
-		put("Constant slow Z axis rotation", Collections.singletonList(".rotateAngleZ = f2 / 20.f;"));
-
-		put("Rotate X axis from head yaw", Collections.singletonList(".rotateAngleX = f4 / (180F / (float)Math.PI);"));
-		put("Rotate Y axis from head yaw", Collections.singletonList(".rotateAngleY = f4 / (180F / (float)Math.PI);"));
-		put("Rotate Z axis from head yaw", Collections.singletonList(".rotateAngleZ = f4 / (180F / (float)Math.PI);"));
-		put("Rotate X axis from head pitch",
-				Collections.singletonList(".rotateAngleX = f3 / (180F / (float)Math.PI);"));
-		put("Rotate Y axis from head pitch",
-				Collections.singletonList(".rotateAngleY = f3 / (180F / (float)Math.PI);"));
-		put("Rotate Z axis from head pitch",
-				Collections.singletonList(".rotateAngleZ = f3 / (180F / (float)Math.PI);"));
-	}};
-
 	public static String openAnimationEditorDialog(MCreator mcreator, String modelSource) {
 		JavaClassSource classJavaSource = (JavaClassSource) Roaster.parse(modelSource);
 
@@ -100,7 +53,10 @@ public class JavaModelAnimationEditorDialog {
 		Map<String, JComboBox<String>> animations = new HashMap<>();
 
 		for (String part : vc) {
-			JComboBox<String> box = new JComboBox<>(java_model_animations.keySet().toArray(new String[0]));
+			List<String> types = new ArrayList<>(BuiltInEntityAnimations.getAllTexts());
+			types.sort(String::compareTo);
+			JComboBox<String> box = new JComboBox<>(types.toArray(new String[0]));
+			box.setSelectedItem(L10N.t("animations.entities.no_anim"));
 			animations.put(part, box);
 			options.add(new JLabel(StringUtils.abbreviateString(part, 20) + " animation: "));
 			options.add(box);
@@ -130,7 +86,7 @@ public class JavaModelAnimationEditorDialog {
 			for (Map.Entry<String, JComboBox<String>> animation : animations.entrySet()) {
 				String selected = (String) animation.getValue().getSelectedItem();
 				if (selected != null) {
-					List<String> animationCodes = java_model_animations.get(selected);
+					List<String> animationCodes = BuiltInEntityAnimations.getAnimations(selected);
 					for (String animationCode : animationCodes) {
 						anim.append("this.").append(animation.getKey()).append(animationCode).append("\n");
 					}

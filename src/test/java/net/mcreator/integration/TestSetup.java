@@ -25,6 +25,7 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.ui.init.BuiltInEntityAnimations;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
@@ -76,6 +77,9 @@ public class TestSetup {
 
 		// blockly mod elements need blockly blocks loaded
 		BlocklyLoader.init();
+
+		// load entity animations for the Java Model animation editor
+		BuiltInEntityAnimations.loadEntityAnimations();
 
 		// load generator configurations
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));

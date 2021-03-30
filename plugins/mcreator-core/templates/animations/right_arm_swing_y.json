@@ -1,0 +1,5 @@
+{
+  "animations": [
+    ".rotateAngleY = MathHelper.cos(f * 0.6662F + (float)Math.PI) * f1;"
+  ]
+}

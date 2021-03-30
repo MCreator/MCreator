@@ -1,0 +1,5 @@
+{
+  "animations": [
+    ".rotateAngleZ = f2 / 20.f;"
+  ]
+}

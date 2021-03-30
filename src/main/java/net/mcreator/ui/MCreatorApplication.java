@@ -123,6 +123,9 @@ public final class MCreatorApplication {
 		// load blockly blocks after plugins are loaded
 		BlocklyLoader.init();
 
+		// load entity animations for the Java Model animation editor
+		BuiltInEntityAnimations.loadEntityAnimations();
+
 		splashScreen.setProgress(55, "Loading generators");
 
 		Set<String> fileNamesUnordered = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
