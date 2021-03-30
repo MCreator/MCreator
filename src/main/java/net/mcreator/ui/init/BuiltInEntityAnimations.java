@@ -46,6 +46,7 @@ public class BuiltInEntityAnimations {
 		// We add No animation directly as it does not contain animations
 		entityAnimations.put(L10N.t("animations.entities.no_anim"), Collections.emptyList());
 		for (String file : fileNames) {
+			// We use a temporary class to save values and get them for the Map
 			EntityAnimation anim = gson
 					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), EntityAnimation.class)
 					.setId(FileUtils.removeExtension(file).replace("templates/animations/", ""));
@@ -61,7 +62,7 @@ public class BuiltInEntityAnimations {
 		return entityAnimations.get(key);
 	}
 
-	public static class EntityAnimation implements Comparator<EntityAnimation> {
+	private static class EntityAnimation implements Comparator<EntityAnimation> {
 		private final List<String> animations = new ArrayList<>();
 		private String id;
 
