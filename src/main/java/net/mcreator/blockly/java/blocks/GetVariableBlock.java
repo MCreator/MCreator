@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 public class GetVariableBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_get_").toUpperCase();
+		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_get_");
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (variable != null) {
