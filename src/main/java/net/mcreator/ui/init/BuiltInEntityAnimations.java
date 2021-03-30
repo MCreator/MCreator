@@ -62,7 +62,7 @@ public class BuiltInEntityAnimations {
 		return entityAnimations.get(key);
 	}
 
-	private static class EntityAnimation implements Comparator<EntityAnimation> {
+	private static class EntityAnimation {
 		private final List<String> animations = new ArrayList<>();
 		private String id;
 
@@ -81,10 +81,6 @@ public class BuiltInEntityAnimations {
 
 		@Override public String toString() {
 			return getText() + ": " + getAnimations();
-		}
-
-		@Override public int compare(EntityAnimation o1, EntityAnimation o2) {
-			return 0;
 		}
 	}
 }
