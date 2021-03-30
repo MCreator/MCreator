@@ -1,0 +1,8 @@
+{
+  "id": "resources",
+  "weight": 10,
+  "minversion": 202100199999,
+  "info": {
+    "name": "MCreator resources plugin"
+  }
+}

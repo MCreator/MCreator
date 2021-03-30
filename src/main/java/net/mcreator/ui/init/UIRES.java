@@ -18,6 +18,11 @@
 
 package net.mcreator.ui.init;
 
+import net.mcreator.plugin.Plugin;
+import net.mcreator.plugin.PluginLoader;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
@@ -27,16 +32,20 @@ import java.awt.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class UIRES {
+
+	private static final Logger LOG = LogManager.getLogger("Resource Pack Loader");
 
 	private static final Map<String, ImageIcon> CACHE = new ConcurrentHashMap<>();
 
 	private static final Pattern pngPattern = Pattern.compile(".*\\.(png|gif)");
 
 	public static void preloadImages() {
-		ImageIO.setUseCache(false);
-		new Reflections("net.mcreator.ui.res", new ResourcesScanner(), ClassLoader.getSystemClassLoader())
+		LOG.debug("Loading resource packs");
+		ImageIO.setUseCache(false); // we use custom image cache for this
+		new Reflections("resourcepacks", new ResourcesScanner(), PluginLoader.INSTANCE)
 				.getResources(pngPattern).parallelStream()
 				.forEach(element -> fromResourceID(element.replace("/", ".")));
 		ImageIO.setUseCache(true);
@@ -45,10 +54,10 @@ public class UIRES {
 	public static ImageIcon get(String identifier) {
 		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
 			identifier += ".png";
-		return fromResourceID("net.mcreator.ui.res." + identifier);
+		return UIRES.fromResourceID("resourcepacks.net.mcreator.ui.res." + identifier);
 	}
 
-	private static ImageIcon fromResourceID(String identifier) {
+	public static ImageIcon fromResourceID(String identifier) {
 		// parse identifier
 		int lastDot = identifier.lastIndexOf('.');
 		identifier = identifier.substring(0, lastDot).replace(".", "/") + identifier.substring(lastDot);
@@ -57,7 +66,7 @@ public class UIRES {
 			return CACHE.get(identifier);
 		else {
 			ImageIcon newItem = new ImageIcon(Toolkit.getDefaultToolkit()
-					.createImage(ClassLoader.getSystemClassLoader().getResource(identifier)));
+					.createImage(PluginLoader.INSTANCE.getResource(identifier)));
 			CACHE.put(identifier, newItem);
 			return newItem;
 		}

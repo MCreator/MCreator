@@ -77,10 +77,12 @@ public final class MCreatorApplication {
 	private final DiscordClient discordClient;
 
 	private MCreatorApplication(List<String> launchArguments) {
+		PluginLoader.initInstance();
+
 		final SplashScreen splashScreen = new SplashScreen();
 		splashScreen.setVisible(true);
 
-		splashScreen.setProgress(5, "Loading UI core");
+		splashScreen.setProgress(10, "Loading UI core");
 
 		try {
 			UIManager.setLookAndFeel(new MCreatorLookAndFeel());
@@ -90,16 +92,7 @@ public final class MCreatorApplication {
 
 		SoundUtils.initSoundSystem();
 
-		splashScreen.setProgress(20, "Preloading resources");
-
-		UIRES.preloadImages();
-		TiledImageCache.loadAndTileImages();
-
-		splashScreen.setProgress(30, "Loading plugins");
-
-		PluginLoader.initInstance();
-
-		splashScreen.setProgress(40, "Loading interface components");
+		splashScreen.setProgress(20, "Loading interface components");
 
 		// load translations after plugins are loaded
 		L10N.initTranslations();
@@ -107,7 +100,7 @@ public final class MCreatorApplication {
 		// preload help entries cache
 		HelpLoader.preloadCache();
 
-		splashScreen.setProgress(45, "Loading plugin data");
+		splashScreen.setProgress(30, "Loading plugin data");
 
 		// load datalists and icons for them after plugins are loaded
 		BlockItemIcons.init();
@@ -123,14 +116,18 @@ public final class MCreatorApplication {
 		// load blockly blocks after plugins are loaded
 		BlocklyLoader.init();
 
-		splashScreen.setProgress(55, "Loading generators");
+		splashScreen.setProgress(50, "Preloading resources");
+		UIRES.preloadImages();
+		TiledImageCache.loadAndTileImages();
+
+		splashScreen.setProgress(60, "Loading generators");
 
 		Set<String> fileNamesUnordered = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
 		List<String> fileNames = new ArrayList<>(fileNamesUnordered);
 		Collections.sort(fileNames);
 		int i = 0;
 		for (String generator : fileNames) {
-			splashScreen.setProgress(55 + i * ((85 - 55) / fileNames.size()),
+			splashScreen.setProgress(60 + i * ((90 - 60) / fileNames.size()),
 					"Loading generators: " + generator.split("/")[0]);
 			LOG.info("Loading generator: " + generator);
 			generator = generator.replace("/generator.yaml", "");
@@ -142,7 +139,7 @@ public final class MCreatorApplication {
 			i++;
 		}
 
-		splashScreen.setProgress(88, "Initiating user session");
+		splashScreen.setProgress(93, "Initiating user session");
 
 		deviceInfo = new DeviceInfo();
 		analytics = new Analytics(deviceInfo);
