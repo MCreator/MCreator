@@ -1,0 +1,8 @@
+{
+  "id": "resource-packs",
+  "weight": 10,
+  "minversion": 202100199999,
+  "info": {
+    "name": "MCreator resource packs plugin"
+  }
+}

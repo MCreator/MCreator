@@ -18,11 +18,10 @@
 
 package net.mcreator.ui.init;
 
-import net.mcreator.plugin.Plugin;
 import net.mcreator.plugin.PluginLoader;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.resourcepacks.ResourcePack;
+import net.mcreator.resourcepacks.ResourcePackLoader;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
@@ -32,29 +31,26 @@ import java.awt.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class UIRES {
-
-	private static final Logger LOG = LogManager.getLogger("Resource Pack Loader");
-
 	private static final Map<String, ImageIcon> CACHE = new ConcurrentHashMap<>();
 
 	private static final Pattern pngPattern = Pattern.compile(".*\\.(png|gif)");
 
+	private static String pack = PreferencesManager.PREFERENCES.hidden.resourcePack;
+
 	public static void preloadImages() {
-		LOG.debug("Loading resource packs");
+
 		ImageIO.setUseCache(false); // we use custom image cache for this
-		new Reflections("resourcepacks", new ResourcesScanner(), PluginLoader.INSTANCE)
-				.getResources(pngPattern).parallelStream()
-				.forEach(element -> fromResourceID(element.replace("/", ".")));
+		new Reflections("resourcepacks." + pack, new ResourcesScanner(), PluginLoader.INSTANCE).getResources(pngPattern)
+				.parallelStream().forEach(element -> fromResourceID(element.replace("/", ".")));
 		ImageIO.setUseCache(true);
 	}
 
 	public static ImageIcon get(String identifier) {
 		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
 			identifier += ".png";
-		return UIRES.fromResourceID("resourcepacks.net.mcreator.ui.res." + identifier);
+		return UIRES.fromResourceID("resourcepacks." + pack + ".res." + identifier);
 	}
 
 	public static ImageIcon fromResourceID(String identifier) {
@@ -65,8 +61,8 @@ public class UIRES {
 		if (CACHE.get(identifier) != null)
 			return CACHE.get(identifier);
 		else {
-			ImageIcon newItem = new ImageIcon(Toolkit.getDefaultToolkit()
-					.createImage(PluginLoader.INSTANCE.getResource(identifier)));
+			ImageIcon newItem = new ImageIcon(
+					Toolkit.getDefaultToolkit().createImage(PluginLoader.INSTANCE.getResource(identifier)));
 			CACHE.put(identifier, newItem);
 			return newItem;
 		}

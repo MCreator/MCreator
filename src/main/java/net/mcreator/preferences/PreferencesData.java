@@ -19,6 +19,8 @@
 package net.mcreator.preferences;
 
 import net.mcreator.io.OS;
+import net.mcreator.resourcepacks.ResourcePack;
+import net.mcreator.resourcepacks.ResourcePackLoader;
 import net.mcreator.ui.laf.AbstractMCreatorTheme;
 
 import java.awt.*;
@@ -129,6 +131,7 @@ public class PreferencesData {
 		public boolean workspaceSortAscending = true;
 		public WorkspaceSortType workspaceSortType = WorkspaceSortType.CREATED;
 		public File java_home = null;
+		public String resourcePack = "default";
 	}
 
 	public enum WorkspaceSortType {
