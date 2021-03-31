@@ -20,8 +20,6 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.resourcepacks.ResourcePack;
-import net.mcreator.resourcepacks.ResourcePackLoader;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 

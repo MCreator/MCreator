@@ -22,6 +22,7 @@ package net.mcreator.resourcepacks;
 import net.mcreator.ui.init.L10N;
 
 import javax.annotation.Nullable;
+import javax.swing.*;
 
 public class ResourcePack {
 	private String id;
@@ -29,6 +30,7 @@ public class ResourcePack {
 	@Nullable private String description;
 	@Nullable private String version;
 	@Nullable private String credits;
+	private ImageIcon icon;
 
 	public String getID() {
 		return id;
@@ -43,10 +45,11 @@ public class ResourcePack {
 	}
 
 	public String getDescription() {
+		String translated = L10N.t("resourcepack." + id + ".description");
 		if (description != null)
 			return description;
-		else if (L10N.t("resourcepack." + id + ".description") != null)
-			return L10N.t("resourcepack." + id + ".description");
+		else if (!translated.equals("resourcepack." + id + ".description"))
+			return translated;
 		else
 			return null;
 	}
@@ -57,6 +60,14 @@ public class ResourcePack {
 
 	@Nullable public String getVersion() {
 		return version;
+	}
+
+	public ImageIcon getIcon() {
+		return icon;
+	}
+
+	public void setIcon(ImageIcon icon) {
+		this.icon = icon;
 	}
 
 	@Override public String toString() {

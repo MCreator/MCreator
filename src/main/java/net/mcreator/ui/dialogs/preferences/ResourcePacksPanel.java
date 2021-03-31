@@ -36,24 +36,34 @@ public class ResourcePacksPanel {
 	private final JComboBox<String> packIDs;
 
 	public ResourcePacksPanel(PreferencesDialog dialog) {
-		dialog.model.addElement(L10N.t("dialog.preferences.page_resource_packs"));
+		dialog.model.addElement("Resource packs");
 		JList<ResourcePack> packs = new JList<>(tmodel);
 		packs.setCellRenderer(new ResourcePacksPanel.ResourcePacksListCellRenderer());
 
-		JPanel top = new JPanel(new GridLayout(1, 2));
-		top.add(new JLabel("bonjour"));
+		JPanel sectionPanel = new JPanel(new BorderLayout(15, 15));
+
+		sectionPanel.add("North", L10N.label("dialog.preferences.resource_packs"));
+		sectionPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
+
+		JPanel top = new JPanel(new BorderLayout());
+
+		String name = L10N.t("preferences.resource_packs.select_resource_pack");
+		String description = L10N.t("preferences.resource_packs.select_resource_pack.description");
+		top.add("West", L10N.label("dialog.preferences.entry_description", name, description));
+
 		packIDs = new JComboBox<>(ResourcePackLoader.getIDs().toArray(new String[0]));
+		packIDs.setPreferredSize(new Dimension(250, 0));
 		packIDs.setSelectedItem(PreferencesManager.PREFERENCES.hidden.resourcePack);
 		packIDs.addActionListener(e -> dialog.apply.setEnabled(true));
-		top.add(packIDs);
-
-		JPanel sectionPanel = new JPanel(new BorderLayout(15, 15));
+		top.add("East", packIDs);
 
 		reloadResourcePacksList();
 
-		sectionPanel.add("Center", PanelUtils.northAndCenterElement(top, new JScrollPane(packs), 5, 5));
+		sectionPanel.add("Center", PanelUtils.northAndCenterElement(top, PanelUtils
+						.northAndCenterElement(L10N.label("dialog.preferences.resource_packs.list"), new JScrollPane(packs)), 5,
+				5));
 
-		dialog.preferences.add(sectionPanel, L10N.t("dialog.preferences.page_resource_packs"));
+		dialog.preferences.add(sectionPanel, "Resource packs");
 	}
 
 	private void reloadResourcePacksList() {
@@ -76,15 +86,16 @@ public class ResourcePacksPanel {
 
 			ComponentUtils.deriveFont(this, 12);
 
-			String text = "<html><b>" + value.getName() + "</b>";
+			String text = "<html>" + value.getName();
 			if (value.getDescription() != null)
-				text += "<br>" + value.getDescription();
+				text += "<br><i>" + value.getDescription() + "</i>";
 			text += "<br><small>ID: " + value.getID();
 			if (value.getVersion() != null)
 				text += ", version: " + value.getVersion();
 			if (value.getCredits() != null)
 				text += ", credits: " + value.getCredits();
 			setText(text);
+			setIcon(value.getIcon());
 
 			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 			return this;

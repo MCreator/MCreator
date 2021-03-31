@@ -42,9 +42,12 @@ import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -68,12 +71,22 @@ public class ResourcePackLoader {
 					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), ResourcePack.class);
 			// The ID will be used to get images from this resource pack if the user selected it.
 			pack.setId(new File(file).getParentFile().getName());
+
+			// Load the custom icon if provided otherwise, load the default one
+			String identifier = "resourcepacks/" + pack.getID() + "/icon.png";
+			if (PluginLoader.INSTANCE.getResource(identifier) != null) {
+				ImageIcon icon = UIRES.fromResourceID(identifier);
+				icon = new ImageIcon(ImageUtils.resize(icon.getImage(), 64));
+				pack.setIcon(icon);
+			} else {
+				pack.setIcon(UIRES.get("icon.png"));
+			}
 			resourcePacks.add(pack);
-			LOG.debug("Loaded " + pack.getID() + " resource packs");
+			LOG.debug("Loaded " + pack.getID());
 		}
 		// We check if the last resource pack selected by the user still exists
 		// If the resource pack has been deleted since the last time, we load the default resource pack
-		if(ResourcePackLoader.getResourcePack(PreferencesManager.PREFERENCES.hidden.resourcePack) == null) {
+		if (ResourcePackLoader.getResourcePack(PreferencesManager.PREFERENCES.hidden.resourcePack) == null) {
 			PreferencesManager.PREFERENCES.hidden.resourcePack = "default";
 		}
 	}
