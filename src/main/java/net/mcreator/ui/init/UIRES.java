@@ -54,15 +54,12 @@ public class UIRES {
 	public static ImageIcon get(String identifier) {
 		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
 			identifier += ".png";
-		System.out.println("resourcepacks." + pack + ".res." + identifier);
 		if (PluginLoader.INSTANCE.getResource("resourcepacks/" + pack + "/res/" + identifier) != null) {
-			System.out.println("1");
 			//We start by checking if the loaded pack contains the image
 			return UIRES.fromResourceID("resourcepacks." + pack + ".res." + identifier);
 		}
 		else {
 			// If the loaded pack does not have the image, we load the default one
-			System.out.println("2");
 			return UIRES.fromResourceID("resourcepacks.default.res." + identifier);
 		}
 	}

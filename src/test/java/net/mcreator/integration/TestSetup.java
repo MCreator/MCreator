@@ -52,15 +52,16 @@ public class TestSetup {
 		conf.load(Launcher.class.getResourceAsStream("/mcreator.conf"));
 		Launcher.version = new MCreatorVersionNumber(conf);
 
+		// load plugins
+		// We begin by loading plugins, so every image can be changed
+		PluginLoader.initInstance();
+
 		// init theme
 		try {
 			UIManager.setLookAndFeel(new MCreatorLookAndFeel());
 		} catch (UnsupportedLookAndFeelException e) {
 			LOG.error("Failed to set look and feel: " + e.getMessage());
 		}
-
-		// load plugins
-		PluginLoader.initInstance();
 
 		DataListLoader.preloadCache();
 
