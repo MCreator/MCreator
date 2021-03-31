@@ -42,13 +42,29 @@ public class UIRES {
 		ImageIO.setUseCache(false); // we use custom image cache for this
 		new Reflections("resourcepacks." + pack, new ResourcesScanner(), PluginLoader.INSTANCE).getResources(pngPattern)
 				.parallelStream().forEach(element -> fromResourceID(element.replace("/", ".")));
+		// We also load default textures in case a resource pack modify only one texture.
+		if (!pack.equals("default")) {
+			new Reflections("resourcepacks.default", new ResourcesScanner(), PluginLoader.INSTANCE)
+					.getResources(pngPattern).parallelStream()
+					.forEach(element -> fromResourceID(element.replace("/", ".")));
+		}
 		ImageIO.setUseCache(true);
 	}
 
 	public static ImageIcon get(String identifier) {
 		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
 			identifier += ".png";
-		return UIRES.fromResourceID("resourcepacks." + pack + ".res." + identifier);
+		System.out.println("resourcepacks." + pack + ".res." + identifier);
+		if (PluginLoader.INSTANCE.getResource("resourcepacks/" + pack + "/res/" + identifier) != null) {
+			System.out.println("1");
+			//We start by checking if the loaded pack contains the image
+			return UIRES.fromResourceID("resourcepacks." + pack + ".res." + identifier);
+		}
+		else {
+			// If the loaded pack does not have the image, we load the default one
+			System.out.println("2");
+			return UIRES.fromResourceID("resourcepacks.default.res." + identifier);
+		}
 	}
 
 	public static ImageIcon fromResourceID(String identifier) {
