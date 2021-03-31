@@ -49,13 +49,12 @@ import net.minecraft.block.material.Material;
 		super(instance, ${data.getModElement().getSortID()});
 
 		FMLJavaModLoadingContext.get().getModEventBus().register(new ModelRegisterHandler());
+		FMLJavaModLoadingContext.get().getModEventBus().register(new EntityAttributesRegisterHandler());
 
 		<#if data.spawnThisMob>
 		MinecraftForge.EVENT_BUS.register(this);
 		</#if>
 	}
-
-
 
 	@Override public void initElements() {
 		entity = (EntityType.Builder.<CustomEntity>create(CustomEntity::new, ${generator.map(data.mobSpawningType, "mobspawntypes")})
@@ -98,8 +97,6 @@ import net.minecraft.block.material.Material;
 	</#if>
 
 	@Override public void init(FMLCommonSetupEvent event) {
-		DeferredWorkQueue.runLater(this::setupAttributes);
-
 		<#if data.spawnThisMob>
 			<#if data.mobSpawningType == "creature">
 			EntitySpawnPlacementRegistry.register(entity, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
@@ -234,34 +231,38 @@ import net.minecraft.block.material.Material;
 		}
 	}
 
-	private void setupAttributes() {
-		AttributeModifierMap.MutableAttribute ammma = MobEntity.func_233666_p_();
-		ammma = ammma.createMutableAttribute(Attributes.MOVEMENT_SPEED, ${data.movementSpeed});
-		ammma = ammma.createMutableAttribute(Attributes.MAX_HEALTH, ${data.health});
-		ammma = ammma.createMutableAttribute(Attributes.ARMOR, ${data.armorBaseValue});
-		ammma = ammma.createMutableAttribute(Attributes.ATTACK_DAMAGE, ${data.attackStrength});
+	private static class EntityAttributesRegisterHandler {
 
-		<#if (data.knockbackResistance > 0)>
-		ammma = ammma.createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, ${data.knockbackResistance});
-		</#if>
+		@SubscribeEvent public void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
+			AttributeModifierMap.MutableAttribute ammma = MobEntity.func_233666_p_();
+			ammma = ammma.createMutableAttribute(Attributes.MOVEMENT_SPEED, ${data.movementSpeed});
+			ammma = ammma.createMutableAttribute(Attributes.MAX_HEALTH, ${data.health});
+			ammma = ammma.createMutableAttribute(Attributes.ARMOR, ${data.armorBaseValue});
+			ammma = ammma.createMutableAttribute(Attributes.ATTACK_DAMAGE, ${data.attackStrength});
 
-		<#if (data.attackKnockback > 0)>
-		ammma = ammma.createMutableAttribute(Attributes.ATTACK_KNOCKBACK, ${data.attackKnockback});
-		</#if>
+			<#if (data.knockbackResistance > 0)>
+			ammma = ammma.createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, ${data.knockbackResistance});
+			</#if>
 
-		<#if data.flyingMob>
-		ammma = ammma.createMutableAttribute(Attributes.FLYING_SPEED, ${data.movementSpeed});
-		</#if>
+			<#if (data.attackKnockback > 0)>
+			ammma = ammma.createMutableAttribute(Attributes.ATTACK_KNOCKBACK, ${data.attackKnockback});
+			</#if>
 
-		<#if data.waterMob>
-		ammma = ammma.createMutableAttribute(ForgeMod.SWIM_SPEED.get(), ${data.movementSpeed});
-		</#if>
+			<#if data.flyingMob>
+			ammma = ammma.createMutableAttribute(Attributes.FLYING_SPEED, ${data.movementSpeed});
+			</#if>
 
-		<#if data.aiBase == "Zombie">
-		ammma = ammma.createMutableAttribute(Attributes.ZOMBIE_SPAWN_REINFORCEMENTS);
-		</#if>
+			<#if data.waterMob>
+			ammma = ammma.createMutableAttribute(ForgeMod.SWIM_SPEED.get(), ${data.movementSpeed});
+			</#if>
 
-		GlobalEntityTypeAttributes.put(entity, ammma.create());
+			<#if data.aiBase == "Zombie">
+			ammma = ammma.createMutableAttribute(Attributes.ZOMBIE_SPAWN_REINFORCEMENTS);
+			</#if>
+
+			event.put(entity, ammma.create());
+		}
+
 	}
 
 	<#assign extendsClass = "Creature">
