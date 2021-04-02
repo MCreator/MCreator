@@ -22,7 +22,6 @@ package net.mcreator.element.converter.fv18;
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.converter.fv12.BiomeDefaultFeaturesConverter;
 import net.mcreator.element.types.Biome;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
