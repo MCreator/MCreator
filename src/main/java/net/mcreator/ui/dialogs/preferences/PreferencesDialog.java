@@ -50,7 +50,7 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	DefaultListModel<String> model = new DefaultListModel<>();
 	JPanel preferences = new JPanel();
-	ResourcePacksPanel rpPan; // We create the variable here, so we can access it when we store tha preferences
+	ThemesPanel rpPan; // We create the variable here, so we can access it when we store tha preferences
 
 	private final JList<String> sections = new JList<>(model);
 	private final CardLayout preferencesLayout = new CardLayout();
@@ -178,7 +178,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_armor_templates"), "templates/textures/armormaker",
 				"png");
 		new PluginsPanel(this);
-		rpPan = new ResourcePacksPanel(this);
+		rpPan = new ThemesPanel(this);
 	}
 
 	private void createPreferencesPanel(Field sectionField) {
@@ -229,7 +229,7 @@ public class PreferencesDialog extends MCreatorDialog {
 				LOG.info("Reflection error: " + e.getMessage());
 			}
 		}
-		data.hidden.resourcePack = rpPan.getResourcePack();
+		data.hidden.imageTheme = rpPan.getResourcePack();
 		PreferencesManager.storePreferences(data);
 	}
 

@@ -19,8 +19,6 @@
 package net.mcreator.preferences;
 
 import net.mcreator.io.OS;
-import net.mcreator.resourcepacks.ResourcePack;
-import net.mcreator.resourcepacks.ResourcePackLoader;
 import net.mcreator.ui.laf.AbstractMCreatorTheme;
 
 import java.awt.*;
@@ -50,7 +48,7 @@ public class PreferencesData {
 		@PreferencesEntry(arrayData = { "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb", "lcd_vbgr" })
 		public String textAntialiasingType = "on";
 
-		@PreferencesEntry(arrayData = { "Dark theme", "Light theme" }) public String interfaceTheme = "Dark theme";
+		@PreferencesEntry(arrayData = { "Dark imageTheme", "Light imageTheme" }) public String interfaceTheme = "Dark imageTheme";
 
 		@PreferencesEntry public boolean expandSectionsByDefault = false;
 		@PreferencesEntry public boolean use2DAcceleration = false;
@@ -131,7 +129,7 @@ public class PreferencesData {
 		public boolean workspaceSortAscending = true;
 		public WorkspaceSortType workspaceSortType = WorkspaceSortType.CREATED;
 		public File java_home = null;
-		public String resourcePack = "default";
+		public String imageTheme = "default";
 	}
 
 	public enum WorkspaceSortType {

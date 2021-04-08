@@ -33,7 +33,7 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.resourcepacks.ResourcePackLoader;
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.util.DiscordClient;
 import net.mcreator.ui.component.util.MacOSUIUtil;
@@ -80,8 +80,8 @@ public final class MCreatorApplication {
 	private MCreatorApplication(List<String> launchArguments) {
 		// We begin by loading plugins, so every image can be changed
 		PluginLoader.initInstance();
-		// We load resource packs now so we can check if we can still use it
-		ResourcePackLoader.initResourcePacks();
+		// We load UI themes now so we can check if we can still use it
+		ThemeLoader.initUIThemes();
 
 		final SplashScreen splashScreen = new SplashScreen();
 		splashScreen.setVisible(true);

@@ -36,7 +36,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.resourcepacks;
+package net.mcreator.themes;
 
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
@@ -55,25 +55,25 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class ResourcePackLoader {
-	private static final Logger LOG = LogManager.getLogger("Resource Pack Loader");
+public class ThemeLoader {
+	private static final Logger LOG = LogManager.getLogger("Theme Loader");
 
-	private static final LinkedHashSet<ResourcePack> resourcePacks = new LinkedHashSet<>();
+	private static final LinkedHashSet<Theme> THEMES = new LinkedHashSet<>();
 
-	public static void initResourcePacks() {
-		LOG.debug("Loading resource packs");
+	public static void initUIThemes() {
+		LOG.debug("Loading UI themes");
 
 		final Gson gson = new Gson();
 
-		Set<String> files = PluginLoader.INSTANCE.getResources("resourcepacks", Pattern.compile("pack.json"));
+		Set<String> files = PluginLoader.INSTANCE.getResources("themes", Pattern.compile("theme.json"));
 		for (String file : files) {
-			ResourcePack pack = gson
-					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), ResourcePack.class);
+			Theme pack = gson
+					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), Theme.class);
 			// The ID will be used to get images from this resource pack if the user selected it.
 			pack.setId(new File(file).getParentFile().getName());
 
 			// Load the custom icon if provided otherwise, load the default one
-			String identifier = "resourcepacks/" + pack.getID() + "/icon.png";
+			String identifier = "themes/" + pack.getID() + "/icon.png";
 			if (PluginLoader.INSTANCE.getResource(identifier) != null) {
 				ImageIcon icon = UIRES.fromResourceID(identifier);
 				icon = new ImageIcon(ImageUtils.resize(icon.getImage(), 64));
@@ -81,30 +81,30 @@ public class ResourcePackLoader {
 			} else {
 				pack.setIcon(UIRES.get("icon.png"));
 			}
-			resourcePacks.add(pack);
+			THEMES.add(pack);
 			LOG.debug("Loaded " + pack.getID());
 		}
-		// We check if the last resource pack selected by the user still exists
-		// If the resource pack has been deleted since the last time, we load the default resource pack
-		if (ResourcePackLoader.getResourcePack(PreferencesManager.PREFERENCES.hidden.resourcePack) == null) {
-			PreferencesManager.PREFERENCES.hidden.resourcePack = "default";
+		// We check if the last imageTheme selected by the user still exists
+		// If the imageTheme has been deleted since the last time, we load the default imageTheme
+		if (ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.imageTheme) == null) {
+			PreferencesManager.PREFERENCES.hidden.imageTheme = "default";
 		}
 	}
 
-	public static LinkedHashSet<ResourcePack> getResourcePacks() {
-		return resourcePacks;
+	public static LinkedHashSet<Theme> getThemes() {
+		return THEMES;
 	}
 
 	public static List<String> getIDs() {
 		List<String> ids = new ArrayList<>();
-		for (ResourcePack rp : resourcePacks) {
+		for (Theme rp : THEMES) {
 			ids.add(rp.getID());
 		}
 		return ids;
 	}
 
-	public static ResourcePack getResourcePack(String id) {
-		for (ResourcePack pack : resourcePacks) {
+	public static Theme getTheme(String id) {
+		for (Theme pack : THEMES) {
 			if (pack.getID().equals(id))
 				return pack;
 		}

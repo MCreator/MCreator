@@ -17,14 +17,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.resourcepacks;
+package net.mcreator.themes;
 
 import net.mcreator.ui.init.L10N;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 
-public class ResourcePack {
+public class Theme {
 	private String id;
 	private String name;
 	@Nullable private String description;
@@ -45,10 +45,10 @@ public class ResourcePack {
 	}
 
 	public String getDescription() {
-		String translated = L10N.t("resourcepack." + id + ".description");
+		String translated = L10N.t("imageTheme." + id + ".description");
 		if (description != null)
 			return description;
-		else if (!translated.equals("resourcepack." + id + ".description"))
+		else if (!translated.equals("imageTheme." + id + ".description"))
 			return translated;
 		else
 			return null;

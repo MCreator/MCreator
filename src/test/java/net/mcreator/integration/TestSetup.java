@@ -56,7 +56,7 @@ public class TestSetup {
 		// We begin by loading plugins, so every image can be changed
 		PluginLoader.initInstance();
 
-		// init theme
+		// init imageTheme
 		try {
 			UIManager.setLookAndFeel(new MCreatorLookAndFeel());
 		} catch (UnsupportedLookAndFeelException e) {

@@ -20,8 +20,8 @@
 package net.mcreator.ui.dialogs.preferences;
 
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.resourcepacks.ResourcePack;
-import net.mcreator.resourcepacks.ResourcePackLoader;
+import net.mcreator.themes.Theme;
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
@@ -30,45 +30,45 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Comparator;
 
-public class ResourcePacksPanel {
+public class ThemesPanel {
 
-	private final DefaultListModel<ResourcePack> tmodel = new DefaultListModel<>();
+	private final DefaultListModel<Theme> tmodel = new DefaultListModel<>();
 	private final JComboBox<String> packIDs;
 
-	public ResourcePacksPanel(PreferencesDialog dialog) {
-		dialog.model.addElement("Resource packs");
-		JList<ResourcePack> packs = new JList<>(tmodel);
-		packs.setCellRenderer(new ResourcePacksPanel.ResourcePacksListCellRenderer());
+	public ThemesPanel(PreferencesDialog dialog) {
+		dialog.model.addElement("Themes");
+		JList<Theme> packs = new JList<>(tmodel);
+		packs.setCellRenderer(new ThemesPanel.ResourcePacksListCellRenderer());
 
 		JPanel sectionPanel = new JPanel(new BorderLayout(15, 15));
 
-		sectionPanel.add("North", L10N.label("dialog.preferences.resource_packs"));
+		sectionPanel.add("North", L10N.label("dialog.preferences.themes"));
 		sectionPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
 
 		JPanel top = new JPanel(new BorderLayout());
 
-		String name = L10N.t("preferences.resource_packs.select_resource_pack");
-		String description = L10N.t("preferences.resource_packs.select_resource_pack.description");
+		String name = L10N.t("preferences.resource_packs.select_theme");
+		String description = L10N.t("preferences.resource_packs.select_theme.description");
 		top.add("West", L10N.label("dialog.preferences.entry_description", name, description));
 
-		packIDs = new JComboBox<>(ResourcePackLoader.getIDs().toArray(new String[0]));
+		packIDs = new JComboBox<>(ThemeLoader.getIDs().toArray(new String[0]));
 		packIDs.setPreferredSize(new Dimension(250, 0));
-		packIDs.setSelectedItem(PreferencesManager.PREFERENCES.hidden.resourcePack);
+		packIDs.setSelectedItem(PreferencesManager.PREFERENCES.hidden.imageTheme);
 		packIDs.addActionListener(e -> dialog.apply.setEnabled(true));
 		top.add("East", packIDs);
 
 		reloadResourcePacksList();
 
 		sectionPanel.add("Center", PanelUtils.northAndCenterElement(top, PanelUtils
-						.northAndCenterElement(L10N.label("dialog.preferences.resource_packs.list"), new JScrollPane(packs)), 5,
+						.northAndCenterElement(L10N.label("dialog.preferences.themes.list"), new JScrollPane(packs)), 5,
 				5));
 
-		dialog.preferences.add(sectionPanel, "Resource packs");
+		dialog.preferences.add(sectionPanel, "Themes");
 	}
 
 	private void reloadResourcePacksList() {
 		tmodel.removeAllElements();
-		ResourcePackLoader.getResourcePacks().stream().sorted(Comparator.comparing(ResourcePack::getID))
+		ThemeLoader.getThemes().stream().sorted(Comparator.comparing(Theme::getID))
 				.forEach(tmodel::addElement);
 	}
 
@@ -76,9 +76,9 @@ public class ResourcePacksPanel {
 		return (String) packIDs.getSelectedItem();
 	}
 
-	static class ResourcePacksListCellRenderer extends JLabel implements ListCellRenderer<ResourcePack> {
+	static class ResourcePacksListCellRenderer extends JLabel implements ListCellRenderer<Theme> {
 		@Override
-		public Component getListCellRendererComponent(JList<? extends ResourcePack> list, ResourcePack value, int index,
+		public Component getListCellRendererComponent(JList<? extends Theme> list, Theme value, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 

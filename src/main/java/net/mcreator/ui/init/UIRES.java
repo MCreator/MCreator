@@ -35,16 +35,16 @@ public class UIRES {
 
 	private static final Pattern pngPattern = Pattern.compile(".*\\.(png|gif)");
 
-	private static String pack = PreferencesManager.PREFERENCES.hidden.resourcePack;
+	private static String pack = PreferencesManager.PREFERENCES.hidden.imageTheme;
 
 	public static void preloadImages() {
 
 		ImageIO.setUseCache(false); // we use custom image cache for this
-		new Reflections("resourcepacks." + pack, new ResourcesScanner(), PluginLoader.INSTANCE).getResources(pngPattern)
+		new Reflections("themes." + pack, new ResourcesScanner(), PluginLoader.INSTANCE).getResources(pngPattern)
 				.parallelStream().forEach(element -> fromResourceID(element.replace("/", ".")));
 		// We also load default textures in case a resource pack modify only one texture.
 		if (!pack.equals("default")) {
-			new Reflections("resourcepacks.default", new ResourcesScanner(), PluginLoader.INSTANCE)
+			new Reflections("themes.default", new ResourcesScanner(), PluginLoader.INSTANCE)
 					.getResources(pngPattern).parallelStream()
 					.forEach(element -> fromResourceID(element.replace("/", ".")));
 		}
@@ -54,13 +54,13 @@ public class UIRES {
 	public static ImageIcon get(String identifier) {
 		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
 			identifier += ".png";
-		if (PluginLoader.INSTANCE.getResource("resourcepacks/" + pack + "/res/" + identifier) != null) {
+		if (PluginLoader.INSTANCE.getResource("themes/" + pack + "/res/" + identifier) != null) {
 			//We start by checking if the loaded pack contains the image
-			return UIRES.fromResourceID("resourcepacks." + pack + ".res." + identifier);
+			return UIRES.fromResourceID("themes." + pack + ".res." + identifier);
 		}
 		else {
 			// If the loaded pack does not have the image, we load the default one
-			return UIRES.fromResourceID("resourcepacks.default.res." + identifier);
+			return UIRES.fromResourceID("themes.default.res." + identifier);
 		}
 	}
 

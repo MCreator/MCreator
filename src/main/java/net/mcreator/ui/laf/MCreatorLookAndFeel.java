@@ -35,7 +35,7 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 	private final AbstractMCreatorTheme theme;
 
 	public MCreatorLookAndFeel() {
-		if (PreferencesManager.PREFERENCES.ui.interfaceTheme.equals("Light theme")) {
+		if (PreferencesManager.PREFERENCES.ui.interfaceTheme.equals("Light imageTheme")) {
 			setCurrentTheme(theme = new LightMCreatorTheme());
 		} else {
 			setCurrentTheme(theme = new DarkMCreatorTheme());
