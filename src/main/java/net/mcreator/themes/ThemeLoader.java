@@ -65,27 +65,28 @@ public class ThemeLoader {
 
 		final Gson gson = new Gson();
 
+		// Load themes
 		Set<String> files = PluginLoader.INSTANCE.getResources("themes", Pattern.compile("theme.json"));
 		for (String file : files) {
-			Theme pack = gson
-					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), Theme.class);
-			// The ID will be used to get images from this resource pack if the user selected it.
-			pack.setId(new File(file).getParentFile().getName());
+			Theme theme = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), Theme.class);
+			// The ID will be used to get images from this theme if the user selected it.
+			theme.setId(new File(file).getParentFile().getName());
 
 			// Load the custom icon if provided otherwise, load the default one
-			String identifier = "themes/" + pack.getID() + "/icon.png";
+			String identifier = "themes/" + theme.getID() + "/icon.png";
 			if (PluginLoader.INSTANCE.getResource(identifier) != null) {
 				ImageIcon icon = UIRES.fromResourceID(identifier);
 				icon = new ImageIcon(ImageUtils.resize(icon.getImage(), 64));
-				pack.setIcon(icon);
+				theme.setIcon(icon);
 			} else {
-				pack.setIcon(UIRES.get("icon.png"));
+				theme.setIcon(UIRES.get("icon.png"));
 			}
-			THEMES.add(pack);
-			LOG.debug("Loaded " + pack.getID());
+			THEMES.add(theme);
+
+			LOG.debug("Loaded " + theme.getID());
 		}
-		// We check if the last imageTheme selected by the user still exists
-		// If the imageTheme has been deleted since the last time, we load the default imageTheme
+		// We check if the last theme selected by the user still exists
+		// If the theme has been deleted since the last time, we load the default theme
 		if (ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.imageTheme) == null) {
 			PreferencesManager.PREFERENCES.hidden.imageTheme = "default";
 		}
