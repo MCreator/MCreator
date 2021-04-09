@@ -473,10 +473,12 @@ import ${package}.${JavaModName};
 				<#elseif component.getClass().getSimpleName() == "Button">
                     this.addButton(new Button(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
 						${component.width}, ${component.height}, "${component.text}", e -> {
-						${JavaModName}.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(${btid}, x, y, z));
-
-						handleButtonAction(entity, ${btid}, x, y, z);
-					})
+							if (<@procedureOBJToConditionCode component.displayCondition/>) {
+								${JavaModName}.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(${btid}, x, y, z));
+								handleButtonAction(entity, ${btid}, x, y, z);
+							}
+						}
+					)
 					<#if hasCondition(component.displayCondition)>
 					{
 						@Override public void render(int gx, int gy, float ticks) {
