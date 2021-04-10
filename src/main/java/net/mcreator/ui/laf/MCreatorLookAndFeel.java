@@ -33,10 +33,10 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 
 	private static final Logger LOG = LogManager.getLogger("Look and Feel");
 
-	private MCreatorTheme theme;
+	private final MCreatorTheme theme;
 
 	public MCreatorLookAndFeel() {
-		setCurrentTheme(theme = new MCreatorTheme(ThemeLoader.getColorTheme(PreferencesManager.PREFERENCES.hidden.colorTheme)));
+		setCurrentTheme(theme = new MCreatorTheme(ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.imageTheme).getColorTheme()));
 	}
 
 	@Override protected void initClassDefaults(UIDefaults table) {

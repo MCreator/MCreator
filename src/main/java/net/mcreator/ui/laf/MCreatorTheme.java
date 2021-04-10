@@ -113,7 +113,7 @@ public class MCreatorTheme extends OceanTheme {
 		table.put("MCreatorLAF.BRIGHT_COLOR", getBrightColor());
 		table.put("MCreatorLAF.MAIN_TINT", MAIN_TINT);
 
-		String path = "themes/" + theme.getTheme().getID() + "/colors/";
+		String path = "themes/" + theme.getID() + "/colors/";
 		table.put("MCreatorLAF.BLOCKLY_CSS", PluginLoader.INSTANCE.getResource(path + getBlocklyCSSName()));
 		table.put("MCreatorLAF.CODE_EDITOR_XML", PluginLoader.INSTANCE.getResource(path + getCodeEditorXML()));
 	}

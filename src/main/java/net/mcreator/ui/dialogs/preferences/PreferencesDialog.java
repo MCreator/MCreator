@@ -230,7 +230,6 @@ public class PreferencesDialog extends MCreatorDialog {
 			}
 		}
 		data.hidden.imageTheme = rpPan.getResourcePack();
-		data.hidden.colorTheme = rpPan.getColorTheme();
 		PreferencesManager.storePreferences(data);
 	}
 

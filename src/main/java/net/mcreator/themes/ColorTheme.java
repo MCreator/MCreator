@@ -23,7 +23,6 @@ import java.awt.*;
 
 public class ColorTheme {
 	private String id;
-	private Theme theme;
 	private RGB blackAccent;
 	private RGB darkAccent;
 	private RGB lightAccent;
@@ -34,14 +33,6 @@ public class ColorTheme {
 
 	public String getID() {
 		return id;
-	}
-
-	public Theme getTheme() {
-		return theme;
-	}
-
-	public void setTheme(Theme theme) {
-		this.theme = theme;
 	}
 
 	public RGB getBlackAccent() {
@@ -65,7 +56,7 @@ public class ColorTheme {
 	}
 
 	public String getBlocklyCSSFile() {
-		if(blocklyCSSFile != null)
+		if (blocklyCSSFile != null)
 			return blocklyCSSFile;
 		else
 			return id;
@@ -76,7 +67,7 @@ public class ColorTheme {
 	}
 
 	public String getCodeEditorFile() {
-		if(codeEditorFile != null)
+		if (codeEditorFile != null)
 			return codeEditorFile;
 		else
 			return id;

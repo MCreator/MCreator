@@ -61,6 +61,7 @@ public class ThemeLoader {
 	private static final Logger LOG = LogManager.getLogger("Theme Loader");
 
 	private static final LinkedHashSet<Theme> THEMES = new LinkedHashSet<>();
+	public static Theme DARK_THEME;
 
 	public static void initUIThemes() {
 		LOG.debug("Loading UI themes");
@@ -74,22 +75,21 @@ public class ThemeLoader {
 			// The ID will be used to get images from this theme if the user selected it.
 			theme.setId(new File(file).getParentFile().getName());
 
+			// We set a default theme, so we can use it for its values instead to return an error
+			if(theme.getID().equals("default-dark"))
+				DARK_THEME = theme;
+
 			// Check if all color themes are ok
-			if (theme.getColorThemes() != null) {
-				for (ColorTheme color : theme.getColorThemes()) {
-					// We set the theme containing this color theme, so we can a color theme from another theme
-					color.setTheme(theme);
+			if (theme.getColorTheme() != null) {
+				// Check if the CSS file for the BlocklyPanel exists
+				if(PluginLoader.INSTANCE.getResource("themes/" + theme.getColorTheme().getBlocklyCSSFile() + ".css") == null)
+					theme.getColorTheme().setBlocklyCSSFile("dark");
 
-					// Check if the CSS file for the BlocklyPanel exists
-					if(PluginLoader.INSTANCE.getResource("themes/" + color.getBlocklyCSSFile() + ".css") == null)
-						color.setBlocklyCSSFile("dark");
+				// Check if the XML file for the code editor exists
+				if(PluginLoader.INSTANCE.getResource("themes/" + theme.getColorTheme().getCodeEditorFile() + ".xml") == null)
+					theme.getColorTheme().setCodeEditorFile("dark");
 
-					// Check if the XML file for the code editor exists
-					if(PluginLoader.INSTANCE.getResource("themes/" + color.getCodeEditorFile() + ".xml") == null)
-						color.setCodeEditorFile("dark");
-
-					LOG.debug("Color theme: " + color.getID());
-				}
+				LOG.debug("Color theme: " + theme.getColorTheme().getID());
 			}
 
 			// Load the custom icon if provided otherwise, load the default one
@@ -109,9 +109,7 @@ public class ThemeLoader {
 		// We check if the last image or color theme selected by the user still exists
 		// If the theme has been deleted since the last time, we load the default theme
 		if (ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.imageTheme) == null)
-			PreferencesManager.PREFERENCES.hidden.imageTheme = "default";
-		if (ThemeLoader.getColorTheme(PreferencesManager.PREFERENCES.hidden.colorTheme) == null)
-			PreferencesManager.PREFERENCES.hidden.colorTheme = "dark";
+			PreferencesManager.PREFERENCES.hidden.imageTheme = "default-dark";
 	}
 
 	public static LinkedHashSet<Theme> getThemes() {
@@ -126,35 +124,10 @@ public class ThemeLoader {
 		return ids;
 	}
 
-	private static Theme getTheme(String id) {
+	public static Theme getTheme(String id) {
 		for (Theme pack : THEMES) {
 			if (pack.getID().equals(id))
 				return pack;
-		}
-		return null;
-	}
-
-	public static List<String> getColorThemeIDs() {
-		List<String> ids = new ArrayList<>();
-		// We add each Color id for each UI theme
-		for(Theme theme : THEMES) {
-			if (theme.getColorThemes() != null) {
-				for(ColorTheme color : theme.getColorThemes()) {
-					ids.add(color.getID());
-				}
-			}
-		}
-		return ids;
-	}
-
-	public static ColorTheme getColorTheme(String id) {
-		for (Theme pack : THEMES) {
-			if(pack.getColorThemes() != null) {
-				for (ColorTheme color : pack.getColorThemes()) {
-					if (color.getID().equals(id))
-						return color;
-				}
-			}
 		}
 		return null;
 	}

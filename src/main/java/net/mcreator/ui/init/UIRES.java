@@ -43,8 +43,8 @@ public class UIRES {
 		new Reflections("themes." + pack, new ResourcesScanner(), PluginLoader.INSTANCE).getResources(pngPattern)
 				.parallelStream().forEach(element -> fromResourceID(element.replace("/", ".")));
 		// We also load default textures in case a resource pack modify only one texture.
-		if (!pack.equals("default")) {
-			new Reflections("themes.default", new ResourcesScanner(), PluginLoader.INSTANCE)
+		if (!pack.equals("default-dark")) {
+			new Reflections("themes.default-dark", new ResourcesScanner(), PluginLoader.INSTANCE)
 					.getResources(pngPattern).parallelStream()
 					.forEach(element -> fromResourceID(element.replace("/", ".")));
 		}
@@ -60,7 +60,7 @@ public class UIRES {
 		}
 		else {
 			// If the loaded pack does not have the image, we load the default one
-			return UIRES.fromResourceID("themes.default.images." + identifier);
+			return UIRES.fromResourceID("themes.default-dark.images." + identifier);
 		}
 	}
 

@@ -24,6 +24,7 @@ import net.mcreator.ui.init.L10N;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.util.List;
+import java.util.Objects;
 
 public class Theme {
 	private String id;
@@ -31,7 +32,7 @@ public class Theme {
 	@Nullable private String description;
 	@Nullable private String version;
 	@Nullable private String credits;
-	@Nullable private List<ColorTheme> colorThemes;
+	@Nullable private ColorTheme colorTheme;
 	private ImageIcon icon;
 
 	public String getID() {
@@ -47,10 +48,10 @@ public class Theme {
 	}
 
 	public String getDescription() {
-		String translated = L10N.t("imageTheme." + id + ".description");
+		String translated = L10N.t("theme." + id + ".description");
 		if (description != null)
 			return description;
-		else if (!translated.equals("imageTheme." + id + ".description"))
+		else if (!translated.equals("theme." + id + ".description"))
 			return translated;
 		else
 			return null;
@@ -64,8 +65,11 @@ public class Theme {
 		return version;
 	}
 
-	@Nullable public List<ColorTheme> getColorThemes() {
-		return colorThemes;
+	public ColorTheme getColorTheme() {
+		if(colorTheme != null)
+			return colorTheme;
+		else
+			return ThemeLoader.DARK_THEME.colorTheme;
 	}
 
 	public ImageIcon getIcon() {

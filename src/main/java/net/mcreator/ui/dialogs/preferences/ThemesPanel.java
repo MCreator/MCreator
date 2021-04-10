@@ -34,7 +34,6 @@ public class ThemesPanel {
 
 	private final DefaultListModel<Theme> tmodel = new DefaultListModel<>();
 	private final JComboBox<String> packIDs;
-	private final JComboBox<String> colorThemes;
 
 	public ThemesPanel(PreferencesDialog dialog) {
 		dialog.model.addElement("Themes");
@@ -46,26 +45,17 @@ public class ThemesPanel {
 		sectionPanel.add("North", L10N.label("dialog.preferences.themes"));
 		sectionPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
 
-		JPanel top = new JPanel(new GridLayout(2, 2));
+		JPanel top = new JPanel(new BorderLayout());
 
 		String themeName = L10N.t("preferences.resource_packs.select_theme");
 		String themeDescription = L10N.t("preferences.resource_packs.select_theme.description");
-		top.add(L10N.label("dialog.preferences.entry_description", themeName, themeDescription));
+		top.add("West", L10N.label("dialog.preferences.entry_description", themeName, themeDescription));
 
 		packIDs = new JComboBox<>(ThemeLoader.getIDs().toArray(new String[0]));
 		packIDs.setPreferredSize(new Dimension(250, 0));
 		packIDs.setSelectedItem(PreferencesManager.PREFERENCES.hidden.imageTheme);
 		packIDs.addActionListener(e -> dialog.apply.setEnabled(true));
-		top.add(packIDs);
-
-		String colorName = L10N.t("preferences.resource_packs.select_color_theme");
-		String colorDescription = L10N.t("preferences.resource_packs.select_color_theme.description");
-		top.add(L10N.label("dialog.preferences.entry_description", colorName, colorDescription));
-		colorThemes = new JComboBox<>(ThemeLoader.getColorThemeIDs().toArray(new String[0]));
-		colorThemes.setPreferredSize(new Dimension(250, 0));
-		colorThemes.setSelectedItem(PreferencesManager.PREFERENCES.hidden.colorTheme);
-		colorThemes.addActionListener(e -> dialog.apply.setEnabled(true));
-		top.add(colorThemes);
+		top.add("East", packIDs);
 
 		reloadResourcePacksList();
 
@@ -83,10 +73,6 @@ public class ThemesPanel {
 
 	public String getResourcePack() {
 		return (String) packIDs.getSelectedItem();
-	}
-
-	public String getColorTheme() {
-		return (String) colorThemes.getSelectedItem();
 	}
 
 	static class ResourcePacksListCellRenderer extends JLabel implements ListCellRenderer<Theme> {
