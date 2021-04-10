@@ -25,6 +25,7 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
@@ -55,6 +56,8 @@ public class TestSetup {
 		// load plugins
 		// We begin by loading plugins, so every image can be changed
 		PluginLoader.initInstance();
+		// We load UI themes now so we can check if we can still use it
+		ThemeLoader.initUIThemes();
 
 		// init imageTheme
 		try {
