@@ -191,10 +191,12 @@ import ${package}.${JavaModName};
 			<#elseif component.getClass().getSimpleName() == "Button">
 				this.addButton(new Button(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
 					${component.width}, ${component.height}, new StringTextComponent("${component.text}"), e -> {
-					${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}Gui.ButtonPressedMessage(${btid}, x, y, z));
-
-					${name}Gui.handleButtonAction(entity, ${btid}, x, y, z);
-				})
+						if (<@procedureOBJToConditionCode component.displayCondition/>) {
+							${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}Gui.ButtonPressedMessage(${btid}, x, y, z));
+							${name}Gui.handleButtonAction(entity, ${btid}, x, y, z);
+						}
+					}
+				)
                 <#if hasCondition(component.displayCondition)>
                 {
 					@Override public void render(MatrixStack ms, int gx, int gy, float ticks) {
