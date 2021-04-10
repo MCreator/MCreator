@@ -20,6 +20,7 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import org.apache.commons.io.FilenameUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
@@ -52,13 +53,20 @@ public class UIRES {
 	}
 
 	public static ImageIcon get(String identifier) {
-		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
+		String str;
+		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif"))) {
+			str = identifier.replace(".", "/");
 			identifier += ".png";
-		if (PluginLoader.INSTANCE.getResource("themes/" + pack + "/images/" + identifier) != null) {
+		} else {
+			str = FilenameUtils.removeExtension(identifier).replace(".", "/");
+		}
+		System.out.println(str);
+		if (PluginLoader.INSTANCE.getResource("themes/" + pack + "/images/" + str + ".png") != null) {
+			System.out.println("là - " + identifier);
 			//We start by checking if the loaded pack contains the image
 			return UIRES.fromResourceID("themes." + pack + ".images." + identifier);
-		}
-		else {
+		} else {
+			System.out.println("ici - " + identifier);
 			// If the loaded pack does not have the image, we load the default one
 			return UIRES.fromResourceID("themes.default-dark.images." + identifier);
 		}

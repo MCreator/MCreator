@@ -48,8 +48,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.image.ColorConvertOp;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -76,20 +74,18 @@ public class ThemeLoader {
 			theme.setId(new File(file).getParentFile().getName());
 
 			// We set a default theme, so we can use it for its values instead to return an error
-			if(theme.getID().equals("default-dark"))
+			if (theme.getID().equals("default-dark"))
 				DARK_THEME = theme;
 
 			// Check if all color themes are ok
 			if (theme.getColorTheme() != null) {
-				// Check if the CSS file for the BlocklyPanel exists
-				if(PluginLoader.INSTANCE.getResource("themes/" + theme.getColorTheme().getBlocklyCSSFile() + ".css") == null)
+				// Set blocklyCSSFile to the default-dark if non-existing
+				if (PluginLoader.INSTANCE.getResource("themes/" + theme.getColorTheme().getBlocklyCSSFile() + ".css") == null)
 					theme.getColorTheme().setBlocklyCSSFile("dark");
 
-				// Check if the XML file for the code editor exists
-				if(PluginLoader.INSTANCE.getResource("themes/" + theme.getColorTheme().getCodeEditorFile() + ".xml") == null)
+				// Set codeEditorFile to the default-dark if non-existing
+				if (PluginLoader.INSTANCE.getResource("themes/" + theme.getColorTheme().getCodeEditorFile() + ".xml") == null)
 					theme.getColorTheme().setCodeEditorFile("dark");
-
-				LOG.debug("Color theme: " + theme.getColorTheme().getID());
 			}
 
 			// Load the custom icon if provided otherwise, load the default one
