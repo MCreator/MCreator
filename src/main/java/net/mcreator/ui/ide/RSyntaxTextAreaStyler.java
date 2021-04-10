@@ -19,7 +19,7 @@
 package net.mcreator.ui.ide;
 
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.laf.AbstractMCreatorTheme;
+import net.mcreator.ui.laf.MCreatorTheme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -70,8 +70,8 @@ public class RSyntaxTextAreaStyler {
 		SyntaxScheme ss = te.getSyntaxScheme();
 		for (int i = 0; i < ss.getStyleCount(); i++)
 			if (ss.getStyle(i) != null)
-				ss.getStyle(i).font = AbstractMCreatorTheme.console_font.deriveFont((float) initialFontSize);
-		te.setFont(AbstractMCreatorTheme.console_font.deriveFont((float) initialFontSize));
+				ss.getStyle(i).font = MCreatorTheme.console_font.deriveFont((float) initialFontSize);
+		te.setFont(MCreatorTheme.console_font.deriveFont((float) initialFontSize));
 		te.revalidate();
 
 		sp.addMouseWheelListener(mouseWheelEvent -> {

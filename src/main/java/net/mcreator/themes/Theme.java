@@ -23,6 +23,7 @@ import net.mcreator.ui.init.L10N;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.util.List;
 
 public class Theme {
 	private String id;
@@ -30,6 +31,7 @@ public class Theme {
 	@Nullable private String description;
 	@Nullable private String version;
 	@Nullable private String credits;
+	@Nullable private List<ColorTheme> colorThemes;
 	private ImageIcon icon;
 
 	public String getID() {
@@ -60,6 +62,10 @@ public class Theme {
 
 	@Nullable public String getVersion() {
 		return version;
+	}
+
+	@Nullable public List<ColorTheme> getColorThemes() {
+		return colorThemes;
 	}
 
 	public ImageIcon getIcon() {

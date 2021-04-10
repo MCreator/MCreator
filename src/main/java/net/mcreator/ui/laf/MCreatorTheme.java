@@ -18,7 +18,10 @@
 
 package net.mcreator.ui.laf;
 
+import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.themes.ColorTheme;
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import org.apache.logging.log4j.LogManager;
@@ -36,7 +39,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public abstract class AbstractMCreatorTheme extends OceanTheme {
+public class MCreatorTheme extends OceanTheme {
 
 	private static final Logger LOG = LogManager.getLogger("Theme");
 
@@ -44,13 +47,15 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 
 	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
 	private Color MAIN_TINT = MAIN_TINT_DEFAULT;
+	private final ColorTheme theme;
 
 	public static Font light_font;
 	public static Font console_font;
 
 	private static Font default_font;
 
-	public AbstractMCreatorTheme() {
+	public MCreatorTheme(ColorTheme theme) {
+		this.theme = theme;
 		try {
 			default_font = new Font("Sans-Serif", Font.PLAIN, 13);
 
@@ -72,19 +77,33 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 		return MAIN_TINT;
 	}
 
-	@NotNull protected abstract Color getBlackAccent();
+	private @NotNull Color getBlackAccent() {
+		return theme.getBlackAccent().getRGB();
+	}
 
-	@NotNull protected abstract Color getDarkAccent();
+	private @NotNull Color getDarkAccent() {
+		return theme.getDarkAccent().getRGB();
+	}
 
-	@NotNull protected abstract Color getLightAccent();
+	private @NotNull Color getLightAccent() {
+		return theme.getLightAccent().getRGB();
+	}
 
-	@NotNull protected abstract Color getGrayColor();
+	private @NotNull Color getGrayColor() {
+		return theme.getGrayColor().getRGB();
+	}
 
-	@NotNull protected abstract Color getBrightColor();
+	protected @NotNull Color getBrightColor() {
+		return theme.getBrightColor().getRGB();
+	}
 
-	@NotNull protected abstract String getBlocklyCSSName();
+	private @NotNull String getBlocklyCSSName() {
+		return "blockly_" + theme.getBlocklyCSSFile() + ".css";
+	}
 
-	@NotNull protected abstract String getCodeEditorXML();
+	private @NotNull String getCodeEditorXML() {
+		return "codeeditor_" + theme.getCodeEditorFile() + ".xml";
+	}
 
 	protected void initMCreatorThemeColors(UIDefaults table) {
 		table.put("MCreatorLAF.BLACK_ACCENT", getBlackAccent());
@@ -93,8 +112,10 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 		table.put("MCreatorLAF.GRAY_COLOR", getGrayColor());
 		table.put("MCreatorLAF.BRIGHT_COLOR", getBrightColor());
 		table.put("MCreatorLAF.MAIN_TINT", MAIN_TINT);
-		table.put("MCreatorLAF.BLOCKLY_CSS", getBlocklyCSSName());
-		table.put("MCreatorLAF.CODE_EDITOR_XML", getCodeEditorXML());
+
+		String path = "themes/" + theme.getTheme().getID() + "/colors/";
+		table.put("MCreatorLAF.BLOCKLY_CSS", PluginLoader.INSTANCE.getResource(path + getBlocklyCSSName()));
+		table.put("MCreatorLAF.CODE_EDITOR_XML", PluginLoader.INSTANCE.getResource(path + getCodeEditorXML()));
 	}
 
 	@Override public void addCustomEntriesToTable(UIDefaults table) {

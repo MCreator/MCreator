@@ -54,13 +54,13 @@ public class UIRES {
 	public static ImageIcon get(String identifier) {
 		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
 			identifier += ".png";
-		if (PluginLoader.INSTANCE.getResource("themes/" + pack + "/res/" + identifier) != null) {
+		if (PluginLoader.INSTANCE.getResource("themes/" + pack + "/images/" + identifier) != null) {
 			//We start by checking if the loaded pack contains the image
-			return UIRES.fromResourceID("themes." + pack + ".res." + identifier);
+			return UIRES.fromResourceID("themes." + pack + ".images." + identifier);
 		}
 		else {
 			// If the loaded pack does not have the image, we load the default one
-			return UIRES.fromResourceID("themes.default.res." + identifier);
+			return UIRES.fromResourceID("themes.default.images." + identifier);
 		}
 	}
 
