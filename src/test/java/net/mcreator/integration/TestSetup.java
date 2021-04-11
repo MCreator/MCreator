@@ -59,7 +59,7 @@ public class TestSetup {
 		// We load UI themes now so we can check if we can still use it
 		ThemeLoader.initUIThemes();
 
-		// init imageTheme
+		// init UI theme
 		try {
 			UIManager.setLookAndFeel(new MCreatorLookAndFeel());
 		} catch (UnsupportedLookAndFeelException e) {

@@ -18,10 +18,8 @@
 
 package net.mcreator.ui.laf;
 
-import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ColorTheme;
-import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import org.apache.logging.log4j.LogManager;
@@ -112,10 +110,8 @@ public class MCreatorTheme extends OceanTheme {
 		table.put("MCreatorLAF.GRAY_COLOR", getGrayColor());
 		table.put("MCreatorLAF.BRIGHT_COLOR", getBrightColor());
 		table.put("MCreatorLAF.MAIN_TINT", MAIN_TINT);
-
-		String path = "themes/" + theme.getID() + "/colors/";
-		table.put("MCreatorLAF.BLOCKLY_CSS", PluginLoader.INSTANCE.getResource(path + getBlocklyCSSName()));
-		table.put("MCreatorLAF.CODE_EDITOR_XML", PluginLoader.INSTANCE.getResource(path + getCodeEditorXML()));
+		table.put("MCreatorLAF.BLOCKLY_CSS", getBlocklyCSSName());
+		table.put("MCreatorLAF.CODE_EDITOR_XML", getCodeEditorXML());
 	}
 
 	@Override public void addCustomEntriesToTable(UIDefaults table) {

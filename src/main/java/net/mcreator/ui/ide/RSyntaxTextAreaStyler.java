@@ -18,7 +18,9 @@
 
 package net.mcreator.ui.ide;
 
+import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.laf.MCreatorTheme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,12 +29,19 @@ import org.fife.ui.rsyntaxtextarea.Style;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
 
 public class RSyntaxTextAreaStyler {
 
@@ -40,8 +49,24 @@ public class RSyntaxTextAreaStyler {
 
 	public static void style(RSyntaxTextArea te, RTextScrollPane sp, int initialFontSize) {
 		try {
-			Theme theme = Theme
-					.load(te.getClass().getResourceAsStream((String) UIManager.get("MCreatorLAF.CODE_EDITOR_XML")));
+			AtomicReference<InputStream> input = new AtomicReference<>();
+			// We use by default the dark color theme
+			String id = "default-dark";
+			// If the current color theme contains its own file, we use this one, otherwise we keep the default one
+			if (!ThemeLoader.CURRENT_THEME.getColorTheme().getCodeEditorFile().equals("dark"))
+				id = ThemeLoader.CURRENT_THEME.getID();
+
+			new Reflections("themes." + id + ".colors", new ResourcesScanner(), PluginLoader.INSTANCE)
+					.getResources(Pattern.compile((String) UIManager.get("MCreatorLAF.CODE_EDITOR_XML"))).parallelStream().forEach(
+					e -> {
+						try {
+							input.set(Objects.requireNonNull(PluginLoader.INSTANCE.getResource(e)).openConnection().getInputStream());
+						} catch (IOException ioe) {
+							LOG.error(ioe.getMessage(), ioe);
+						}
+					});
+			Theme theme = Theme.load(input.get());
+
 			if (!PreferencesManager.PREFERENCES.ide.editorTheme.equals("MCreator")) {
 				theme = Theme.load(te.getClass().getResourceAsStream(
 						"/org/fife/ui/rsyntaxtextarea/themes/" + PreferencesManager.PREFERENCES.ide.editorTheme

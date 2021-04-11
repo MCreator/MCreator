@@ -127,7 +127,7 @@ public class PreferencesData {
 		public boolean workspaceSortAscending = true;
 		public WorkspaceSortType workspaceSortType = WorkspaceSortType.CREATED;
 		public File java_home = null;
-		public String imageTheme = "default-dark";
+		public String uiTheme = "default-dark";
 	}
 
 	public enum WorkspaceSortType {

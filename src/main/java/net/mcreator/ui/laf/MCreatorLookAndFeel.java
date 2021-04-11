@@ -28,15 +28,22 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 import java.lang.reflect.Field;
+import java.util.Objects;
 
 public class MCreatorLookAndFeel extends MetalLookAndFeel {
 
 	private static final Logger LOG = LogManager.getLogger("Look and Feel");
 
-	private final MCreatorTheme theme;
+	private MCreatorTheme theme;
 
 	public MCreatorLookAndFeel() {
-		setCurrentTheme(theme = new MCreatorTheme(ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.imageTheme).getColorTheme()));
+		try {
+			setCurrentTheme(theme = new MCreatorTheme(
+					Objects.requireNonNull(ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme))
+							.getColorTheme()));
+		} catch (NullPointerException e) {
+			setCurrentTheme(theme = new MCreatorTheme(ThemeLoader.DARK_THEME.getColorTheme()));
+		}
 	}
 
 	@Override protected void initClassDefaults(UIDefaults table) {

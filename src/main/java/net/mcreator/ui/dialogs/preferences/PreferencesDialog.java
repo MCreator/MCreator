@@ -229,7 +229,7 @@ public class PreferencesDialog extends MCreatorDialog {
 				LOG.info("Reflection error: " + e.getMessage());
 			}
 		}
-		data.hidden.imageTheme = rpPan.getResourcePack();
+		data.hidden.uiTheme = rpPan.getResourcePack();
 		PreferencesManager.storePreferences(data);
 	}
 

@@ -56,10 +56,7 @@ public class ColorTheme {
 	}
 
 	public String getBlocklyCSSFile() {
-		if (blocklyCSSFile != null)
-			return blocklyCSSFile;
-		else
-			return id;
+		return blocklyCSSFile;
 	}
 
 	public void setBlocklyCSSFile(String blocklyCSSFile) {
@@ -67,10 +64,7 @@ public class ColorTheme {
 	}
 
 	public String getCodeEditorFile() {
-		if (codeEditorFile != null)
-			return codeEditorFile;
-		else
-			return id;
+		return codeEditorFile;
 	}
 
 	public void setCodeEditorFile(String codeEditorFile) {
