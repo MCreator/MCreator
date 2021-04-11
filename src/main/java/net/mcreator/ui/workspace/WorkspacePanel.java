@@ -46,6 +46,7 @@ import net.mcreator.ui.laf.renderer.MediumIconModListRender;
 import net.mcreator.ui.laf.renderer.SmallIconModListRender;
 import net.mcreator.ui.laf.renderer.TilesIconModListRender;
 import net.mcreator.ui.laf.renderer.DetailsIconModListRender;
+import net.mcreator.ui.laf.renderer.ListIconModListRender;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.modgui.ModTypeDropdown;
 import net.mcreator.ui.validation.Validator;
@@ -445,7 +446,23 @@ import java.util.stream.Collectors;
 		ComponentUtils.deriveFont(detailsIcons, 12);
 		detailsIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 		modElementsBar.add(detailsIcons);
-		
+		//----------------------------------------------------------------------------------------------
+		JRadioButtonMenuItem listIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.list"));
+		listIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		listIcons.setContentAreaFilled(false);
+		listIcons.setOpaque(false);
+		listIcons.addActionListener(e -> {
+			if (listIcons.isSelected()) {
+				PreferencesManager.PREFERENCES.hidden.workspaceIconSize = PreferencesData.WorkspaceIconSize.LIST;
+				updateElementListRenderer();
+			}
+		});
+		listIcons.setSelected(
+				PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.LIST);
+		Arrays.stream(listIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(listIcons)));
+		ComponentUtils.deriveFont(listIcons, 12);
+		listIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
+		modElementsBar.add(listIcons);
 
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(largeIcons);
@@ -453,6 +470,7 @@ import java.util.stream.Collectors;
 		buttonGroup.add(smallIcons);
 		buttonGroup.add(tilesIcons);
 		buttonGroup.add(detailsIcons);
+		buttonGroup.add(listIcons);
 
 		elementsCount.setHorizontalTextPosition(SwingConstants.LEFT);
 
@@ -546,6 +564,7 @@ import java.util.stream.Collectors;
 		viewPopup.add(smallIcons);
 		viewPopup.add(tilesIcons);
 		viewPopup.add(detailsIcons);
+		viewPopup.add(listIcons);
 
 		view.addActionListener(e -> viewPopup.show(view, 0, 25));
 		
@@ -923,6 +942,11 @@ import java.util.stream.Collectors;
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.DETAILS) {
 			list.setCellRenderer(new DetailsIconModListRender());
 			list.setFixedCellHeight(24);
+			list.setFixedCellWidth(-1);
+			list.setLayoutOrientation(JList.VERTICAL);
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.LIST) {
+			list.setCellRenderer(new ListIconModListRender());
+			list.setFixedCellHeight(28);
 			list.setFixedCellWidth(-1);
 			list.setLayoutOrientation(JList.VERTICAL);
 		}
