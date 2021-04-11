@@ -446,25 +446,6 @@ import java.util.stream.Collectors;
 		detailsIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 		modElementsBar.add(detailsIcons);
 		
-		
-		sp.addMouseWheelListener(new MouseAdapter() {
-			@Override public void mouseWheelMoved(MouseWheelEvent e) {
-				super.mouseWheelMoved(e);
-				if (e.isControlDown()) {
-					if (e.getWheelRotation() < 0) {
-						if (listIcons.isSelected())
-							smallIcons.doClick();
-						else
-							largeIcons.doClick();
-					} else {
-						if (largeIcons.isSelected())
-							smallIcons.doClick();
-						else
-							listIcons.doClick();
-					}
-				}
-			}
-		});
 
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(largeIcons);
