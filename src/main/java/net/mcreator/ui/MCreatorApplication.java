@@ -78,9 +78,9 @@ public final class MCreatorApplication {
 	private final DiscordClient discordClient;
 
 	private MCreatorApplication(List<String> launchArguments) {
-		// We begin by loading plugins, so every image can be changed
+		// Plugins are loaded before the Splash screen is visible, so every image can be changed
 		PluginLoader.initInstance();
-		// We load UI themes now so we can check if we can still use it
+		// We load UI themes now so we can set a default theme if the theme is not found
 		ThemeLoader.initUIThemes();
 
 		final SplashScreen splashScreen = new SplashScreen();

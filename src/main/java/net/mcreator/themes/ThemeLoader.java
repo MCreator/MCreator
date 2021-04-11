@@ -71,19 +71,19 @@ public class ThemeLoader {
 		Set<String> files = PluginLoader.INSTANCE.getResources("themes", Pattern.compile("theme.json"));
 		for (String file : files) {
 			Theme theme = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), Theme.class);
-			// The ID will be used to get images from this theme if the user selected it.
+			// The ID will be used to get images from this theme if the user select it.
 			theme.setId(new File(file).getParentFile().getName());
 
-			// We set a default theme, so we can use it for its values instead to return an error
+			// We set a default theme, so we can use it for its values instead of throwing an error
 			if (theme.getID().equals("default-dark"))
 				DARK_THEME = theme;
 
-			// Check if all color themes are ok
+
 			if (theme.getColorTheme() != null) {
-				// Set blocklyCSSFile to the default-dark if non-existing
+				// Set the value for the Blockly Panel file
+				// If the file does not exist, we use the default file (from the default-dark them)
 				if (PluginLoader.INSTANCE.getResource(
-						"themes/" + theme.getID() + "/colors/blockly_" + theme.getColorTheme().getID() + ".css")
-						== null) {
+						"themes/" + theme.getID() + "/colors/blockly_" + theme.getColorTheme().getID() + ".css") == null) {
 					theme.getColorTheme().setBlocklyCSSFile("dark");
 					LOG.warn(theme.getColorTheme().getID()
 							+ " color theme does not define the Blockly Panel colors! Default-dark's file will be used!");
@@ -91,10 +91,10 @@ public class ThemeLoader {
 					theme.getColorTheme().setBlocklyCSSFile(theme.getColorTheme().getID());
 				}
 
-				// Set codeEditorFile to the default-dark if non-existing
+				// Set the value for the Code Editor file
+				// If the file does not exist, we use the default file (from the default-dark them)
 				if (PluginLoader.INSTANCE.getResource(
-						"themes/" + theme.getID() + "/colors/codeeditor_" + theme.getColorTheme().getID() + ".xml")
-						== null) {
+						"themes/" + theme.getID() + "/colors/codeeditor_" + theme.getColorTheme().getID() + ".xml") == null) {
 					theme.getColorTheme().setCodeEditorFile("dark");
 					LOG.warn(theme.getColorTheme().getID()
 							+ " color theme does not define the code editor colors! Default-dark's file will be used!");
@@ -117,8 +117,8 @@ public class ThemeLoader {
 			LOG.debug("Loaded " + theme.getID());
 		}
 
-		// We check if the last image or color theme selected by the user still exists
-		// If the theme has been deleted since the last time, we load the default theme
+		// We check if the last theme selected by the user still exists
+		// If the theme has been deleted since the last time, we load the default-dark theme
 		if (ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme) == null)
 			PreferencesManager.PREFERENCES.hidden.uiTheme = "default-dark";
 
