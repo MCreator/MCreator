@@ -119,3 +119,4 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<I
 	}
 
 }
+
