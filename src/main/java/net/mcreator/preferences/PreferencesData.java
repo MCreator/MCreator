@@ -136,7 +136,7 @@ public class PreferencesData {
 	}
 
 	public enum WorkspaceIconSize {
-		LARGE, SMALL, LIST
+		LARGE, SMALL, LIST, TILES, DETAILS, MEDIUM
 	}
 
 }
