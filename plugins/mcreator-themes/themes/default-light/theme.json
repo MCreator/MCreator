@@ -1,0 +1,31 @@
+{
+  "name": "Default Light",
+  "colorTheme": {
+    "id": "light",
+    "blackAccent": {
+      "red": 245,
+      "green": 245,
+      "blue": 245
+    },
+    "darkAccent": {
+      "red": 225,
+      "green": 225,
+      "blue": 225
+    },
+    "lightAccent": {
+      "red": 200,
+      "green": 200,
+      "blue": 200
+    },
+    "grayColor": {
+      "red": 57,
+      "green": 57,
+      "blue": 57
+    },
+    "brightColor": {
+      "red": 35,
+      "green": 35,
+      "blue": 35
+    }
+  }
+}
