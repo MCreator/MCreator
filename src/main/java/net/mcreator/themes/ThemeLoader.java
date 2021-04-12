@@ -75,29 +75,29 @@ public class ThemeLoader {
 			theme.setId(new File(file).getParentFile().getName());
 
 			// We set a default theme, so we can use it for its values instead of throwing an error
-			if (theme.getID().equals("default-dark"))
+			if (theme.getID().equals("default_dark"))
 				DARK_THEME = theme;
 
 
 			if (theme.getColorTheme() != null) {
 				// Set the value for the Blockly Panel file
-				// If the file does not exist, we use the default file (from the default-dark them)
+				// If the file does not exist, we use the default file (from the default_dark them)
 				if (PluginLoader.INSTANCE.getResource(
 						"themes/" + theme.getID() + "/colors/blockly_" + theme.getColorTheme().getID() + ".css") == null) {
 					theme.getColorTheme().setBlocklyCSSFile("dark");
 					LOG.warn(theme.getColorTheme().getID()
-							+ " color theme does not define the Blockly Panel colors! Default-dark's file will be used!");
+							+ " color theme does not define the Blockly Panel colors! Default_dark's file will be used!");
 				} else {
 					theme.getColorTheme().setBlocklyCSSFile(theme.getColorTheme().getID());
 				}
 
 				// Set the value for the Code Editor file
-				// If the file does not exist, we use the default file (from the default-dark them)
+				// If the file does not exist, we use the default file (from the default_dark them)
 				if (PluginLoader.INSTANCE.getResource(
 						"themes/" + theme.getID() + "/colors/codeeditor_" + theme.getColorTheme().getID() + ".xml") == null) {
 					theme.getColorTheme().setCodeEditorFile("dark");
 					LOG.warn(theme.getColorTheme().getID()
-							+ " color theme does not define the code editor colors! Default-dark's file will be used!");
+							+ " color theme does not define the code editor colors! Default_dark's file will be used!");
 				} else {
 					theme.getColorTheme().setCodeEditorFile(theme.getColorTheme().getID());
 				}
@@ -118,9 +118,9 @@ public class ThemeLoader {
 		}
 
 		// We check if the last theme selected by the user still exists
-		// If the theme has been deleted since the last time, we load the default-dark theme
+		// If the theme has been deleted since the last time, we load the default_dark theme
 		if (ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme) == null)
-			PreferencesManager.PREFERENCES.hidden.uiTheme = "default-dark";
+			PreferencesManager.PREFERENCES.hidden.uiTheme = "default_dark";
 
 		CURRENT_THEME = getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme);
 		LOG.info("Current UI theme: " + CURRENT_THEME.getID());

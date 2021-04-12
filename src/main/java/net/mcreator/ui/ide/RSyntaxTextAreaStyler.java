@@ -51,7 +51,7 @@ public class RSyntaxTextAreaStyler {
 		try {
 			AtomicReference<InputStream> input = new AtomicReference<>();
 			// We use by default the dark color theme
-			String id = "default-dark";
+			String id = "default_dark";
 			// If the current color theme contains its own file, we use this one, otherwise we keep the default one
 			if (!ThemeLoader.CURRENT_THEME.getColorTheme().getCodeEditorFile().equals("dark"))
 				id = ThemeLoader.CURRENT_THEME.getID();

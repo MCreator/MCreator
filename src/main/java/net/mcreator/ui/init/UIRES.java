@@ -36,16 +36,15 @@ public class UIRES {
 
 	private static final Pattern pngPattern = Pattern.compile(".*\\.(png|gif)");
 
-	private static String pack = PreferencesManager.PREFERENCES.hidden.uiTheme;
-
 	public static void preloadImages() {
 
 		ImageIO.setUseCache(false); // we use custom image cache for this
-		new Reflections("themes." + pack, new ResourcesScanner(), PluginLoader.INSTANCE).getResources(pngPattern)
-				.parallelStream().forEach(element -> fromResourceID(element.replace("/", ".")));
+		new Reflections("themes." + PreferencesManager.PREFERENCES.hidden.uiTheme, new ResourcesScanner(),
+				PluginLoader.INSTANCE).getResources(pngPattern).parallelStream()
+				.forEach(element -> fromResourceID(element.replace("/", ".")));
 		// We also load default textures in case a resource pack modify only one texture.
-		if (!pack.equals("default-dark")) {
-			new Reflections("themes.default-dark", new ResourcesScanner(), PluginLoader.INSTANCE)
+		if (!PreferencesManager.PREFERENCES.hidden.uiTheme.equals("default_dark")) {
+			new Reflections("themes.default_dark", new ResourcesScanner(), PluginLoader.INSTANCE)
 					.getResources(pngPattern).parallelStream()
 					.forEach(element -> fromResourceID(element.replace("/", ".")));
 		}
@@ -60,12 +59,15 @@ public class UIRES {
 		} else {
 			str = FilenameUtils.removeExtension(identifier).replace(".", "/");
 		}
-		if (PluginLoader.INSTANCE.getResource("themes/" + pack + "/images/" + str + ".png") != null) {
+		if (PluginLoader.INSTANCE
+				.getResource("themes/" + PreferencesManager.PREFERENCES.hidden.uiTheme + "/images/" + str + ".png")
+				!= null) {
 			//We start by checking if the loaded pack contains the image
-			return UIRES.fromResourceID("themes." + pack + ".images." + identifier);
+			return UIRES.fromResourceID(
+					"themes." + PreferencesManager.PREFERENCES.hidden.uiTheme + ".images." + identifier);
 		} else {
 			// If the loaded pack does not have the image, we load the default one
-			return UIRES.fromResourceID("themes.default-dark.images." + identifier);
+			return UIRES.fromResourceID("themes.default_dark.images." + identifier);
 		}
 	}
 
