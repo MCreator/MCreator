@@ -18,6 +18,8 @@
 
 package net.mcreator.minecraft;
 
+import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.types.Armor;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
@@ -29,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 public class MCItem extends DataListEntry {
 
@@ -81,13 +84,21 @@ public class MCItem extends DataListEntry {
 							workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/" + name
 									.replaceAll("CUSTOM:", "") + ".png");
 				else if (name.endsWith(".helmet"))
-					retval = TiledImageCache.armorHelmet;
+					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
+							workspace.getModElementByName(name.replaceAll("CUSTOM:", "").replaceAll(".helmet", ""))
+									.getGeneratableElement())).textureHelmet);
 				else if (name.endsWith(".body"))
-					retval = TiledImageCache.armorBody;
+					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
+							workspace.getModElementByName(name.replaceAll("CUSTOM:", "").replaceAll(".body", ""))
+									.getGeneratableElement())).textureBody);
 				else if (name.endsWith(".legs"))
-					retval = TiledImageCache.armorLegs;
+					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
+							workspace.getModElementByName(name.replaceAll("CUSTOM:", "").replaceAll(".legs", ""))
+									.getGeneratableElement())).textureLeggings);
 				else if (name.endsWith(".boots"))
-					retval = TiledImageCache.armorBoots;
+					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
+							workspace.getModElementByName(name.replaceAll("CUSTOM:", "").replaceAll(".boots", ""))
+									.getGeneratableElement())).textureBoots);
 			} else if (name.startsWith("TAG:")) {
 				return TAG_ICON;
 			} else {
