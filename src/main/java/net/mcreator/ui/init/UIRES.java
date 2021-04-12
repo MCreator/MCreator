@@ -40,12 +40,12 @@ public class UIRES {
 	public static void preloadImages() {
 
 		ImageIO.setUseCache(false); // we use custom image cache for this
-		new Reflections("themes." + PreferencesManager.PREFERENCES.hidden.uiTheme, new ResourcesScanner(),
+		new Reflections("themes." + PreferencesManager.PREFERENCES.hidden.uiTheme + ".images", new ResourcesScanner(),
 				PluginLoader.INSTANCE).getResources(pngPattern).parallelStream()
 				.forEach(element -> fromResourceID(element.replace("/", ".")));
 		// We also load default textures in case a resource pack modify only one texture.
 		if (!PreferencesManager.PREFERENCES.hidden.uiTheme.equals("default_dark")) {
-			new Reflections("themes.default_dark", new ResourcesScanner(), PluginLoader.INSTANCE)
+			new Reflections("themes.default_dark.images", new ResourcesScanner(), PluginLoader.INSTANCE)
 					.getResources(pngPattern).parallelStream()
 					.forEach(element -> fromResourceID(element.replace("/", ".")));
 		}

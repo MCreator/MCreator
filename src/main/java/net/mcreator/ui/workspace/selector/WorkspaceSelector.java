@@ -156,7 +156,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		}, actions);
 
 		JPanel logoPanel = new JPanel(new BorderLayout());
-		JLabel logo = new JLabel(new ImageIcon(ImageUtils.resizeAA(UIRES.get("logo").getImage(), 250, 45)));
+		JLabel logo = new JLabel(new ImageIcon(ImageUtils.resizeAA(UIRES.getInternal("logo").getImage(), 250, 45)));
 		logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		logo.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
@@ -458,7 +458,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		JPanel soim;
 		if (!Launcher.version.isSnapshot()) {
-			soim = new ImagePanel(UIRES.get("splash").getImage());
+			soim = new ImagePanel(UIRES.getInternal("pylo").getImage());
 			((ImagePanel) soim).setFitToWidth(true);
 			((ImagePanel) soim).setOffsetY(-320);
 		} else {

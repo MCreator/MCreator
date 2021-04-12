@@ -70,11 +70,15 @@ public class Theme {
 		return version;
 	}
 
-	public ColorScheme getColorTheme() {
+	public ColorScheme getColorScheme() {
 		if(colorScheme != null)
 			return colorScheme;
 		else
 			return MCreatorTheme.DARK_SCHEME;
+	}
+
+	public void setColorScheme(@Nullable ColorScheme colorScheme) {
+		this.colorScheme = colorScheme;
 	}
 
 	public ImageIcon getIcon() {

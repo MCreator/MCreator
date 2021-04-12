@@ -86,8 +86,8 @@ public class ThemesPanel {
 			ComponentUtils.deriveFont(this, 12);
 
 			String text = "<html>" + value.getName();
-			if (value.getColorTheme() != null)
-				text += "<br><small>Color theme: " + value.getColorTheme().getID();
+			if (value.getColorScheme() != null)
+				text += "<br><small>Color theme: " + value.getColorScheme().getID();
 			if (value.getDescription() != null)
 				text += "<br><i>" + value.getDescription() + "</i>";
 			text += "<br><small>ID: " + value.getID();

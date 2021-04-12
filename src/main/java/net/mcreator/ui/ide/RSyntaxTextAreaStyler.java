@@ -37,7 +37,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -53,7 +52,7 @@ public class RSyntaxTextAreaStyler {
 			// We use by default the dark color theme
 			String id = ThemeLoader.DARK_THEME.getID();
 			// If the current color theme contains its own file, we use this one, otherwise we keep the default one
-			if (!ThemeLoader.CURRENT_THEME.getColorTheme().getCodeEditorFile().equals("dark"))
+			if (!ThemeLoader.CURRENT_THEME.getColorScheme().getCodeEditorFile().equals("dark"))
 				id = ThemeLoader.CURRENT_THEME.getID();
 
 			new Reflections("themes." + id + ".colors", new ResourcesScanner(), PluginLoader.INSTANCE)

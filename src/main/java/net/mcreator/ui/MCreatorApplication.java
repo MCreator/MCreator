@@ -78,15 +78,20 @@ public final class MCreatorApplication {
 	private final DiscordClient discordClient;
 
 	private MCreatorApplication(List<String> launchArguments) {
-		// Plugins are loaded before the Splash screen is visible, so every image can be changed
-		PluginLoader.initInstance();
-		// We load UI themes now so we can set a default theme if the theme is not found
-		ThemeLoader.initUIThemes();
 
 		final SplashScreen splashScreen = new SplashScreen();
 		splashScreen.setVisible(true);
 
-		splashScreen.setProgress(10, "Loading UI core");
+		splashScreen.setProgress(15, "Loading plugins");
+		// Plugins are loaded before the Splash screen is visible, so every image can be changed
+		PluginLoader.initInstance();
+
+		splashScreen.setProgress(20, "Loading UI Themes");
+		// We load UI themes now so we can set a default theme if the theme is not found
+		ThemeLoader.initUIThemes();
+
+		splashScreen.setProgress(30, "Loading UI core");
+		UIRES.preloadImages();
 
 		try {
 			UIManager.setLookAndFeel(new MCreatorLookAndFeel());
@@ -96,7 +101,7 @@ public final class MCreatorApplication {
 
 		SoundUtils.initSoundSystem();
 
-		splashScreen.setProgress(20, "Loading interface components");
+		splashScreen.setProgress(35, "Loading interface components");
 
 		// load translations after plugins are loaded
 		L10N.initTranslations();
@@ -104,7 +109,7 @@ public final class MCreatorApplication {
 		// preload help entries cache
 		HelpLoader.preloadCache();
 
-		splashScreen.setProgress(30, "Loading plugin data");
+		splashScreen.setProgress(45, "Loading plugin data");
 
 		// load datalists and icons for them after plugins are loaded
 		BlockItemIcons.init();
@@ -120,18 +125,17 @@ public final class MCreatorApplication {
 		// load blockly blocks after plugins are loaded
 		BlocklyLoader.init();
 
-		splashScreen.setProgress(50, "Preloading resources");
-		UIRES.preloadImages();
+		splashScreen.setProgress(60, "Preloading resources");
 		TiledImageCache.loadAndTileImages();
 
-		splashScreen.setProgress(60, "Loading generators");
+		splashScreen.setProgress(70, "Loading generators");
 
 		Set<String> fileNamesUnordered = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
 		List<String> fileNames = new ArrayList<>(fileNamesUnordered);
 		Collections.sort(fileNames);
 		int i = 0;
 		for (String generator : fileNames) {
-			splashScreen.setProgress(60 + i * ((90 - 60) / fileNames.size()),
+			splashScreen.setProgress(70 + i * ((90 - 70) / fileNames.size()),
 					"Loading generators: " + generator.split("/")[0]);
 			LOG.info("Loading generator: " + generator);
 			generator = generator.replace("/generator.yaml", "");

@@ -95,7 +95,7 @@ public class BlocklyPanel extends JFXPanel {
 					// We use by default the dark color theme
 					String id = ThemeLoader.DARK_THEME.getID();
 					// If the current color theme contains its own file, we use this one, otherwise we keep the default one
-					if (!ThemeLoader.CURRENT_THEME.getColorTheme().getBlocklyCSSFile().equals("dark"))
+					if (!ThemeLoader.CURRENT_THEME.getColorScheme().getBlocklyCSSFile().equals("dark"))
 						id = ThemeLoader.CURRENT_THEME.getID();
 					css += FileIO.readResourceToString(PluginLoader.INSTANCE, "/themes/" + id + "/colors/" +
 							UIManager.get("MCreatorLAF.BLOCKLY_CSS"));

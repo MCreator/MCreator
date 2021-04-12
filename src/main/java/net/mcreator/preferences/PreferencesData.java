@@ -128,7 +128,7 @@ public class PreferencesData {
 		public boolean workspaceSortAscending = true;
 		public WorkspaceSortType workspaceSortType = WorkspaceSortType.CREATED;
 		public File java_home = null;
-		public String uiTheme = ThemeLoader.DARK_THEME.getID();
+		public String uiTheme = "default_dark";
 	}
 
 	public enum WorkspaceSortType {

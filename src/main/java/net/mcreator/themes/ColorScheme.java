@@ -22,17 +22,14 @@ package net.mcreator.themes;
 import java.awt.*;
 
 public class ColorScheme {
-	private String id;
-	private String altBackgroundColor;
-	private String backgroundColor;
-	private String actionColor;
-	private String foregroundColor;
-	private String borderColor;
+	private final String id;
+	private final String altBackgroundColor;
+	private final String backgroundColor;
+	private final String actionColor;
+	private final String foregroundColor;
+	private final String borderColor;
 	private String blocklyCSSFile;
 	private String codeEditorFile;
-	public String getID() {
-		return id;
-	}
 
 	public ColorScheme(String id, String altBackgroundColor, String backgroundColor, String actionColor,
 			String foregroundColor, String borderColor) {
@@ -44,6 +41,10 @@ public class ColorScheme {
 		this.borderColor = borderColor;
 		this.blocklyCSSFile = id;
 		this.codeEditorFile = id;
+	}
+
+	public String getID() {
+		return id;
 	}
 
 	public Color getAltBackgroundColor() {

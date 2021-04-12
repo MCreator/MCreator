@@ -40,9 +40,9 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 		try {
 			setCurrentTheme(theme = new MCreatorTheme(
 					Objects.requireNonNull(ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme))
-							.getColorTheme()));
+							.getColorScheme()));
 		} catch (NullPointerException e) {
-			setCurrentTheme(theme = new MCreatorTheme(ThemeLoader.DARK_THEME.getColorTheme()));
+			setCurrentTheme(theme = new MCreatorTheme(ThemeLoader.DARK_THEME.getColorScheme()));
 		}
 	}
 

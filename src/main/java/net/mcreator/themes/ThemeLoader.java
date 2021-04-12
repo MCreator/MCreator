@@ -60,13 +60,11 @@ public class ThemeLoader {
 	private static final Logger LOG = LogManager.getLogger("Theme Loader");
 
 	private static final LinkedHashSet<Theme> THEMES = new LinkedHashSet<>();
-	public static Theme DARK_THEME = new Theme("default_dark", "Default Dark", MCreatorTheme.DARK_SCHEME);
+	public static Theme DARK_THEME;
 	public static Theme CURRENT_THEME;
 
 	public static void initUIThemes() {
 		LOG.debug("Loading UI themes");
-
-		THEMES.add(DARK_THEME);
 
 		final Gson gson = new Gson();
 
@@ -77,33 +75,32 @@ public class ThemeLoader {
 			// The ID will be used to get images from this theme if the user select it.
 			theme.setId(new File(file).getParentFile().getName());
 
-			// We set a default theme, so we can use it for its values instead of throwing an error
-			if (theme.getID().equals(DARK_THEME.getID()))
-				DARK_THEME = theme;
-
-
-			if (theme.getColorTheme() != null) {
+			if (theme.getColorScheme() != null) {
 				// Set the value for the Blockly Panel file
 				// If the file does not exist, we use the default file (from the default_dark them)
 				if (PluginLoader.INSTANCE.getResource(
-						"themes/" + theme.getID() + "/colors/blockly_" + theme.getColorTheme().getID() + ".css") == null) {
-					theme.getColorTheme().setBlocklyCSSFile("dark");
-					LOG.warn(theme.getColorTheme().getID()
-							+ " color theme does not define the Blockly Panel colors! Default_dark's file will be used!");
+						"themes/" + theme.getID() + "/colors/blockly_" + theme.getColorScheme().getID() + ".css") == null) {
+					theme.getColorScheme().setBlocklyCSSFile("dark");
+					LOG.warn(theme.getColorScheme().getID()
+							+ " color scheme does not define the Blockly Panel colors! Default_dark's file will be used!");
 				} else {
-					theme.getColorTheme().setBlocklyCSSFile(theme.getColorTheme().getID());
+					theme.getColorScheme().setBlocklyCSSFile(theme.getColorScheme().getID());
 				}
 
 				// Set the value for the Code Editor file
 				// If the file does not exist, we use the default file (from the default_dark them)
 				if (PluginLoader.INSTANCE.getResource(
-						"themes/" + theme.getID() + "/colors/codeeditor_" + theme.getColorTheme().getID() + ".xml") == null) {
-					theme.getColorTheme().setCodeEditorFile("dark");
-					LOG.warn(theme.getColorTheme().getID()
+						"themes/" + theme.getID() + "/colors/codeeditor_" + theme.getColorScheme().getID() + ".xml") == null) {
+					theme.getColorScheme().setCodeEditorFile("dark");
+					LOG.warn(theme.getColorScheme().getID()
 							+ " color theme does not define the code editor colors! Default_dark's file will be used!");
 				} else {
-					theme.getColorTheme().setCodeEditorFile(theme.getColorTheme().getID());
+					theme.getColorScheme().setCodeEditorFile(theme.getColorScheme().getID());
 				}
+			} else if (theme.getID().equals("default_dark")) {
+				// We set a default theme, so we can use it for its values instead of throwing an error
+				DARK_THEME = theme;
+				DARK_THEME.setColorScheme(MCreatorTheme.DARK_SCHEME);
 			}
 
 			// Load the custom icon if provided otherwise, load the default one
@@ -123,7 +120,7 @@ public class ThemeLoader {
 		// We check if the last theme selected by the user still exists
 		// If the theme has been deleted since the last time, we load the default_dark theme
 		if (ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme) == null)
-			PreferencesManager.PREFERENCES.hidden.uiTheme = DARK_THEME.getID();
+			PreferencesManager.PREFERENCES.hidden.uiTheme = "default_dark";
 
 		CURRENT_THEME = getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme);
 		LOG.info("Current UI theme: " + CURRENT_THEME.getID());
