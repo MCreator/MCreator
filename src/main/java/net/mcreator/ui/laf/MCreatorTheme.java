@@ -19,7 +19,7 @@
 package net.mcreator.ui.laf;
 
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.ColorTheme;
+import net.mcreator.themes.ColorScheme;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import org.apache.logging.log4j.LogManager;
@@ -45,14 +45,15 @@ public class MCreatorTheme extends OceanTheme {
 
 	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
 	private Color MAIN_TINT = MAIN_TINT_DEFAULT;
-	private final ColorTheme theme;
+	private final ColorScheme theme;
+	public static final ColorScheme DARK_SCHEME = new ColorScheme("dark", "0x1e1e1e", "0x323232", "0x505050", "0xc2c2c2", "0xf5f5f5");
 
 	public static Font light_font;
 	public static Font console_font;
 
 	private static Font default_font;
 
-	public MCreatorTheme(ColorTheme theme) {
+	public MCreatorTheme(ColorScheme theme) {
 		this.theme = theme;
 		try {
 			default_font = new Font("Sans-Serif", Font.PLAIN, 13);
@@ -76,23 +77,23 @@ public class MCreatorTheme extends OceanTheme {
 	}
 
 	private @NotNull Color getBlackAccent() {
-		return theme.getBlackAccent().getRGB();
+		return theme.getAltBackgroundColor();
 	}
 
 	private @NotNull Color getDarkAccent() {
-		return theme.getDarkAccent().getRGB();
+		return theme.getBackgroundColor();
 	}
 
 	private @NotNull Color getLightAccent() {
-		return theme.getLightAccent().getRGB();
+		return theme.getActionColor();
 	}
 
 	private @NotNull Color getGrayColor() {
-		return theme.getGrayColor().getRGB();
+		return theme.getForegroundColor();
 	}
 
 	protected @NotNull Color getBrightColor() {
-		return theme.getBrightColor().getRGB();
+		return theme.getBorderColor();
 	}
 
 	private @NotNull String getBlocklyCSSName() {

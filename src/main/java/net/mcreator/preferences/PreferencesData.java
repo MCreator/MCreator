@@ -19,6 +19,7 @@
 package net.mcreator.preferences;
 
 import net.mcreator.io.OS;
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.laf.MCreatorTheme;
 
 import java.awt.*;
@@ -127,7 +128,7 @@ public class PreferencesData {
 		public boolean workspaceSortAscending = true;
 		public WorkspaceSortType workspaceSortType = WorkspaceSortType.CREATED;
 		public File java_home = null;
-		public String uiTheme = "default_dark";
+		public String uiTheme = ThemeLoader.DARK_THEME.getID();
 	}
 
 	public enum WorkspaceSortType {

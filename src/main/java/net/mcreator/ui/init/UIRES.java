@@ -20,6 +20,7 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.themes.ThemeLoader;
 import org.apache.commons.io.FilenameUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
@@ -59,6 +60,7 @@ public class UIRES {
 		} else {
 			str = FilenameUtils.removeExtension(identifier).replace(".", "/");
 		}
+
 		if (PluginLoader.INSTANCE
 				.getResource("themes/" + PreferencesManager.PREFERENCES.hidden.uiTheme + "/images/" + str + ".png")
 				!= null) {
@@ -84,6 +86,20 @@ public class UIRES {
 			CACHE.put(identifier, newItem);
 			return newItem;
 		}
+	}
+
+	public static ImageIcon getInternal(String identifier) {
+		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
+			identifier += ".png";
+
+		identifier = "net.mcreator.ui.res." + identifier;
+		int lastDot = identifier.lastIndexOf('.');
+		identifier = identifier.substring(0, lastDot).replace(".", "/") + identifier.substring(lastDot);
+
+		ImageIcon newItem = new ImageIcon(Toolkit.getDefaultToolkit()
+				.createImage(ClassLoader.getSystemClassLoader().getResource(identifier)));
+		CACHE.put(identifier, newItem);
+		return newItem;
 	}
 
 }

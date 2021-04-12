@@ -21,38 +21,49 @@ package net.mcreator.themes;
 
 import java.awt.*;
 
-public class ColorTheme {
+public class ColorScheme {
 	private String id;
-	private RGB blackAccent;
-	private RGB darkAccent;
-	private RGB lightAccent;
-	private RGB grayColor;
-	private RGB brightColor;
+	private String altBackgroundColor;
+	private String backgroundColor;
+	private String actionColor;
+	private String foregroundColor;
+	private String borderColor;
 	private String blocklyCSSFile;
 	private String codeEditorFile;
-
 	public String getID() {
 		return id;
 	}
 
-	public RGB getBlackAccent() {
-		return blackAccent;
+	public ColorScheme(String id, String altBackgroundColor, String backgroundColor, String actionColor,
+			String foregroundColor, String borderColor) {
+		this.id = id;
+		this.altBackgroundColor = altBackgroundColor;
+		this.backgroundColor = backgroundColor;
+		this.actionColor = actionColor;
+		this.foregroundColor = foregroundColor;
+		this.borderColor = borderColor;
+		this.blocklyCSSFile = id;
+		this.codeEditorFile = id;
 	}
 
-	public RGB getDarkAccent() {
-		return darkAccent;
+	public Color getAltBackgroundColor() {
+		return Color.decode(altBackgroundColor);
 	}
 
-	public RGB getLightAccent() {
-		return lightAccent;
+	public Color getBackgroundColor() {
+		return Color.decode(backgroundColor);
 	}
 
-	public RGB getGrayColor() {
-		return grayColor;
+	public Color getActionColor() {
+		return Color.decode(actionColor);
 	}
 
-	public RGB getBrightColor() {
-		return brightColor;
+	public Color getForegroundColor() {
+		return Color.decode(foregroundColor);
+	}
+
+	public Color getBorderColor() {
+		return Color.decode(borderColor);
 	}
 
 	public String getBlocklyCSSFile() {
@@ -69,15 +80,5 @@ public class ColorTheme {
 
 	public void setCodeEditorFile(String codeEditorFile) {
 		this.codeEditorFile = codeEditorFile;
-	}
-
-	public static class RGB {
-		private int red;
-		private int green;
-		private int blue;
-
-		public Color getRGB() {
-			return new Color(red, green, blue);
-		}
 	}
 }

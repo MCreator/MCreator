@@ -38,11 +38,12 @@ public class SplashScreen extends JWindow {
 
 		JPanel imagePanel = (Launcher.version != null && Launcher.version.isSnapshot()) ?
 				new JPanel() :
-				new ImagePanel(UIRES.get("splash").getImage());
+				new ImagePanel(UIRES.getInternal("splash").getImage());
+
 		imagePanel.setLayout(null);
 		imagePanel.setBackground(new Color(50, 50, 50));
 
-		JLabel pylo = new JLabel(new ImageIcon(ImageUtils.resize(UIRES.get("pylo").getImage(), 90, 24)));
+		JLabel pylo = new JLabel(new ImageIcon(ImageUtils.resize(UIRES.getInternal("pylo").getImage(), 90, 24)));
 		pylo.setBounds(540 - 15 - 10, 348 - 15 - 10, 90, 24);
 		imagePanel.add(pylo);
 
@@ -54,7 +55,7 @@ public class SplashScreen extends JWindow {
 		label.setBounds(30 + 10 - 4, 330 - 10 - 10, 500, 45);
 		imagePanel.add(label);
 
-		JLabel logo = new JLabel(UIRES.get("logo"));
+		JLabel logo = new JLabel(UIRES.getInternal("logo"));
 		logo.setBounds(24 + 8 - 4, 70, 350, 63);
 		imagePanel.add(logo);
 

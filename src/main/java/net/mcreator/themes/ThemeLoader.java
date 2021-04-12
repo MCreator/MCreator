@@ -43,6 +43,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,11 +60,13 @@ public class ThemeLoader {
 	private static final Logger LOG = LogManager.getLogger("Theme Loader");
 
 	private static final LinkedHashSet<Theme> THEMES = new LinkedHashSet<>();
-	public static Theme DARK_THEME;
+	public static Theme DARK_THEME = new Theme("default_dark", "Default Dark", MCreatorTheme.DARK_SCHEME);
 	public static Theme CURRENT_THEME;
 
 	public static void initUIThemes() {
 		LOG.debug("Loading UI themes");
+
+		THEMES.add(DARK_THEME);
 
 		final Gson gson = new Gson();
 
@@ -75,7 +78,7 @@ public class ThemeLoader {
 			theme.setId(new File(file).getParentFile().getName());
 
 			// We set a default theme, so we can use it for its values instead of throwing an error
-			if (theme.getID().equals("default_dark"))
+			if (theme.getID().equals(DARK_THEME.getID()))
 				DARK_THEME = theme;
 
 
@@ -120,7 +123,7 @@ public class ThemeLoader {
 		// We check if the last theme selected by the user still exists
 		// If the theme has been deleted since the last time, we load the default_dark theme
 		if (ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme) == null)
-			PreferencesManager.PREFERENCES.hidden.uiTheme = "default_dark";
+			PreferencesManager.PREFERENCES.hidden.uiTheme = DARK_THEME.getID();
 
 		CURRENT_THEME = getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme);
 		LOG.info("Current UI theme: " + CURRENT_THEME.getID());

@@ -20,11 +20,10 @@
 package net.mcreator.themes;
 
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.MCreatorTheme;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.util.List;
-import java.util.Objects;
 
 public class Theme {
 	private String id;
@@ -32,8 +31,14 @@ public class Theme {
 	@Nullable private String description;
 	@Nullable private String version;
 	@Nullable private String credits;
-	@Nullable private ColorTheme colorTheme;
+	@Nullable private ColorScheme colorScheme;
 	private ImageIcon icon;
+
+	public Theme(String id, String name, @Nullable ColorScheme colorScheme) {
+		this.id = id;
+		this.name = name;
+		this.colorScheme = colorScheme;
+	}
 
 	public String getID() {
 		return id;
@@ -65,11 +70,11 @@ public class Theme {
 		return version;
 	}
 
-	public ColorTheme getColorTheme() {
-		if(colorTheme != null)
-			return colorTheme;
+	public ColorScheme getColorTheme() {
+		if(colorScheme != null)
+			return colorScheme;
 		else
-			return ThemeLoader.DARK_THEME.colorTheme;
+			return MCreatorTheme.DARK_SCHEME;
 	}
 
 	public ImageIcon getIcon() {
