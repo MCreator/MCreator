@@ -31,6 +31,7 @@ import org.intellij.lang.annotations.JdkConstants;
 
 import javax.swing.*;
 import java.awt.*;
+
 public class LargeIconModListRender extends JPanel implements ListCellRenderer<IElement> {
 
 	private final boolean showText;
