@@ -115,17 +115,13 @@ public class TilesIconModListRender extends JPanel implements ListCellRenderer<I
 				if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0
 						&& modIcon.getIconHeight() > 0 && modIcon != MCItem.DEFAULT_ICON) {
 					if (dva != null) {
-						icon.setIcon(ImageUtils.drawOver(
-								ImageUtils.drawOver(TiledImageCache.getModTypeIcon(null), modIcon, 18, 18, 28, 28),
-								dva));
+						icon.setIcon(ImageUtils.drawOver(ImageUtils.drawOver(TiledImageCache.getModTypeIcon(null), modIcon, 18, 18, 28, 28),dva));
 					} else {
-						icon.setIcon(
-								ImageUtils.drawOver(TiledImageCache.getModTypeIcon(null), modIcon, 18, 18, 28, 28));
+						icon.setIcon(ImageUtils.drawOver(TiledImageCache.getModTypeIcon(null), modIcon, 18, 18, 28, 28));
 					}
 				} else {
 					if (dva != null) {
-						icon.setIcon(ImageUtils
-								.drawOver(TiledImageCache.getModTypeIcon(((ModElement) element).getType()), dva));
+						icon.setIcon(ImageUtils.drawOver(TiledImageCache.getModTypeIcon(((ModElement) element).getType()), dva));
 					} else {
 						icon.setIcon(TiledImageCache.getModTypeIcon(((ModElement) element).getType()));
 					}
