@@ -918,7 +918,7 @@ import java.util.stream.Collectors;
 		refilterElements();
 	}
 
-		private void updateElementListRenderer() {
+	private void updateElementListRenderer() {
 		if (PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.LARGE) {
 			list.setCellRenderer(new LargeIconModListRender(true));
 			list.setFixedCellHeight(120);
