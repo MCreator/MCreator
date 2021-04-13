@@ -361,7 +361,7 @@ import java.util.stream.Collectors;
 
 		modElementsBar.add(new JEmptyBox(7, 1));
 
-		//----------------------------------------------------------------------------------------------
+		
 		JRadioButtonMenuItem largeIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.large"));
 		largeIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		largeIcons.setContentAreaFilled(false);
@@ -378,7 +378,7 @@ import java.util.stream.Collectors;
 		ComponentUtils.deriveFont(largeIcons, 12);
 		largeIcons.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		modElementsBar.add(largeIcons);
-		//----------------------------------------------------------------------------------------------
+		
 		JRadioButtonMenuItem mediumIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.medium"));
 		mediumIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		mediumIcons.setContentAreaFilled(false);
@@ -395,7 +395,7 @@ import java.util.stream.Collectors;
 		ComponentUtils.deriveFont(mediumIcons, 12);
 		mediumIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 		modElementsBar.add(mediumIcons);
-		//----------------------------------------------------------------------------------------------
+		
 		JRadioButtonMenuItem smallIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.small"));
 		smallIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		smallIcons.setContentAreaFilled(false);
@@ -412,7 +412,7 @@ import java.util.stream.Collectors;
 		ComponentUtils.deriveFont(smallIcons, 12);
 		smallIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 		modElementsBar.add(smallIcons);
-		//----------------------------------------------------------------------------------------------
+		
 		JRadioButtonMenuItem tilesIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.tiles"));
 		tilesIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		tilesIcons.setContentAreaFilled(false);
@@ -429,7 +429,7 @@ import java.util.stream.Collectors;
 		ComponentUtils.deriveFont(tilesIcons, 12);
 		tilesIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 		modElementsBar.add(tilesIcons);
-		//----------------------------------------------------------------------------------------------
+		
 		JRadioButtonMenuItem detailsIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.details"));
 		detailsIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		detailsIcons.setContentAreaFilled(false);
@@ -446,7 +446,7 @@ import java.util.stream.Collectors;
 		ComponentUtils.deriveFont(detailsIcons, 12);
 		detailsIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 		modElementsBar.add(detailsIcons);
-		//----------------------------------------------------------------------------------------------
+		
 		JRadioButtonMenuItem listIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.list"));
 		listIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		listIcons.setContentAreaFilled(false);
