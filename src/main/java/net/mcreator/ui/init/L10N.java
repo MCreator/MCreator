@@ -51,6 +51,7 @@ public class L10N {
 
 		LOG.info("Setting default locale to: " + getLocale());
 		Locale.setDefault(getLocale());
+		JComponent.setDefaultLocale(getLocale());
 	}
 
 	private static void initLocalesImpl() {
