@@ -196,7 +196,7 @@ import java.util.stream.Collectors;
 
 		list.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2 && !e.isConsumed()) {
+				if (e.getClickCount() == 2 && !e.isConsumed() && SwingUtilities.isLeftMouseButton(e)) {
 					list.cancelDND();
 
 					IElement selected = list.getSelectedValue();
@@ -724,59 +724,7 @@ import java.util.stream.Collectors;
 
 		but3.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (but3.isEnabled()) {
-					if (list.getSelectedValue() != null) {
-						Object[] options = { "Yes", "No" };
-						int n = JOptionPane.showOptionDialog(mcreator,
-								L10N.t("workspace.elements.confirm_delete_message",
-										list.getSelectedValuesList().size()),
-								L10N.t("workspace.elements.confirm_delete_title"), JOptionPane.YES_NO_CANCEL_OPTION,
-								JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
-
-						if (n == 0) {
-							AtomicBoolean buildNeeded = new AtomicBoolean(false);
-							list.getSelectedValuesList().forEach(re -> {
-								if (re instanceof ModElement) {
-									if (!buildNeeded.get()) {
-										GeneratableElement ge = ((ModElement) re).getGeneratableElement();
-										if (ge != null && mcreator.getModElementManager()
-												.usesGeneratableElementJava(ge))
-											buildNeeded.set(true);
-									}
-
-									mcreator.getWorkspace().removeModElement(((ModElement) re));
-								} else if (re instanceof FolderElement) {
-									FolderElement folder = (FolderElement) re;
-
-									// re-assign mod-elements from deleted folder to parent folder
-									for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-										if (folder.equals(modElement.getFolderPath())) {
-											modElement.setParentFolder(folder.getParent());
-										}
-									}
-
-									// re-assign deleted recursive children folder's elements to parent folder too
-									for (FolderElement childFolder : folder.getRecursiveFolderChildren()) {
-										for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-											if (childFolder.equals(modElement.getFolderPath())) {
-												modElement.setParentFolder(folder.getParent());
-											}
-										}
-									}
-
-									// remove folder from the parent's child list
-									// all folder's child folders will be orphaned at this point too
-									// and thus removed
-									folder.getParent().removeChild(folder);
-								}
-							});
-							updateMods();
-
-							if (buildNeeded.get())
-								mcreator.actionRegistry.buildWorkspace.doAction();
-						}
-					}
-				}
+				deleteCurrentlySelectedModElement();
 			}
 		});
 		but3.setToolTipText(L10N.t("workspace.elements.delete.tooltip"));
@@ -858,8 +806,96 @@ import java.util.stream.Collectors;
 		updateElementListRenderer();
 
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
-	}
+	
+		JMenuItem openElement = new JMenuItem(L10N.t("workspace.elements.list.edit.open"));
+		JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
+		JMenuItem duplicateElement = new JMenuItem(L10N.t("workspace.elements.list.edit.duplicate"));
+		JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
+		JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
+		JMenuItem idElement = new JMenuItem(L10N.t("workspace.elements.list.edit.id"));
 
+		openElement.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) {
+				IElement selected = list.getSelectedValue();
+				if (selected instanceof FolderElement) {
+					switchFolder((FolderElement) selected);
+				} else
+						editCurrentlySelectedModElement((ModElement) selected, list, 0, 0);
+			}
+		});
+		deleteElement.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) {
+				deleteCurrentlySelectedModElement();
+			}
+		});
+		duplicateElement.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) {
+				duplicateCurrentlySelectedModElement();
+			}
+		});
+		codeElement.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) {
+				IElement selected = list.getSelectedValue();
+				double dmouseX = MouseInfo.getPointerInfo().getLocation().getX();
+				double dmouseY = MouseInfo.getPointerInfo().getLocation().getY();
+				int mouseX = (int) dmouseX - 275;
+				int mouseY = (int) dmouseY - 165;
+
+				if (selected instanceof FolderElement) {
+					switchFolder((FolderElement) selected);
+				} else
+					editCurrentlySelectedModElementAsCode((ModElement) selected, list, mouseX, mouseY);
+			}
+		});
+		lockElement.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) {
+				lockCode();
+			}
+		});
+		idElement.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) {
+				IElement mu = list.getSelectedValue();
+				if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
+					ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
+					if (modified != null)
+						mcreator.getWorkspace().updateModElement(modified);
+				}
+			}
+		});
+		
+		JPopupMenu editElement = new JPopupMenu();
+		editElement.add(openElement);
+		editElement.add(duplicateElement);
+		editElement.add(codeElement);
+		editElement.add(deleteElement);
+		editElement.add(lockElement);
+		editElement.add(idElement);
+		
+		list.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (SwingUtilities.isRightMouseButton(e)) {
+					JList list = (JList)e.getSource();
+					int row = list.locationToIndex(e.getPoint());
+					list.setSelectedIndex(row);
+					double dmouseX = MouseInfo.getPointerInfo().getLocation().getX();
+					double dmouseY = MouseInfo.getPointerInfo().getLocation().getY();
+					int mouseX = (int) dmouseX;
+					int mouseY = (int) dmouseY;
+					editElement.show(list, mouseX,mouseY);
+					editElement.setLocation(mouseX,mouseY);
+
+				}
+			}
+		});
+
+	}
+	
 	public void switchFolder(FolderElement switchTo) {
 		search.setText(null); // clear the search bar
 		currentFolder = switchTo;
@@ -1096,7 +1132,63 @@ import java.util.stream.Collectors;
 			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0));
 		}
 	}
+	
+        private void deleteCurrentlySelectedModElement() {
+		if (but3.isEnabled()) {
+			if (list.getSelectedValue() != null) {
+				Object[] options = { "Yes", "No" };
+				int n = JOptionPane.showOptionDialog(mcreator,
+						L10N.t("workspace.elements.confirm_delete_message",
+								list.getSelectedValuesList().size()),
+						L10N.t("workspace.elements.confirm_delete_title"), JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
+				if (n == 0) {
+					AtomicBoolean buildNeeded = new AtomicBoolean(false);
+					list.getSelectedValuesList().forEach(re -> {
+						if (re instanceof ModElement) {
+							if (!buildNeeded.get()) {
+								GeneratableElement ge = ((ModElement) re).getGeneratableElement();
+								if (ge != null && mcreator.getModElementManager()
+										.usesGeneratableElementJava(ge))
+									buildNeeded.set(true);
+							}
+
+							mcreator.getWorkspace().removeModElement(((ModElement) re));
+						} else if (re instanceof FolderElement) {
+							FolderElement folder = (FolderElement) re;
+
+							// re-assign mod-elements from deleted folder to parent folder
+							for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+								if (folder.equals(modElement.getFolderPath())) {
+									modElement.setParentFolder(folder.getParent());
+								}
+							}
+
+							// re-assign deleted recursive children folder's elements to parent folder too
+							for (FolderElement childFolder : folder.getRecursiveFolderChildren()) {
+								for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+									if (childFolder.equals(modElement.getFolderPath())) {
+										modElement.setParentFolder(folder.getParent());
+									}
+								}
+							}
+
+							// remove folder from the parent's child list
+							// all folder's child folders will be orphaned at this point too
+							// and thus removed
+							folder.getParent().removeChild(folder);
+						}
+					});
+					updateMods();
+
+					if (buildNeeded.get())
+						mcreator.actionRegistry.buildWorkspace.doAction();
+				}
+			}
+		}
+	}
+	
 	private boolean updateRunning = false;
 
 	public synchronized void updateMods() {
