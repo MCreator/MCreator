@@ -3,6 +3,13 @@ dist: trusty
 env:
   - GRADLE_OPTS="-Xmx4096m"
 
+git:
+  depth: 3
+
+branches:
+  only: 
+    - master
+
 before_cache:
   - rm -f  $HOME/.mcreator/gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.mcreator/gradle/caches/*/plugin-resolution/
@@ -14,7 +21,6 @@ cache:
     - $HOME/.mcreator/gradle/wrapper/
 
 language: java
-
 jdk:
   - oraclejdk8
 
