@@ -808,6 +808,7 @@ import java.util.stream.Collectors;
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 	
 		JMenuItem openElement = new JMenuItem(L10N.t("workspace.elements.list.edit.open"));
+		openElement.setFont(openElement.getFont().deriveFont(Font.BOLD));
 		JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
 		JMenuItem duplicateElement = new JMenuItem(L10N.t("workspace.elements.list.edit.duplicate"));
 		JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
