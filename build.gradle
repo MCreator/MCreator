@@ -74,7 +74,7 @@ dependencies {
     implementation group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.2'
 
     // for annotations
-    compileOnly group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
+    compileOnly group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
 
     // test dependencies
     testImplementation group: 'junit', name: 'junit', version: '4.13.2'
