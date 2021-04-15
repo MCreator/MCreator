@@ -77,7 +77,7 @@ dependencies {
     compileOnly group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
 
     // test dependencies
-    testImplementation group: 'junit', name: 'junit', version: '4.13'
+    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 }
 
 test {
