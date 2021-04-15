@@ -873,30 +873,7 @@ import java.util.stream.Collectors;
 		renameFolder.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) {
-				IElement selected = list.getSelectedValue();
-
-				String newName = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.folders.rename.message"),
-						L10N.t("workspace.elements.folders.add.title"), null, new OptionPaneValidatior() {
-							@Override public ValidationResult validate(JComponent component) {
-								String newName = ((JTextField) component).getText();
-
-								if (!newName.matches("[A-Za-z0-9._ -]+")) {
-									return new Validator.ValidationResult(ValidationResultType.ERROR,
-											L10N.t("workspace.elements.folders.add.error_letters"));
-								}
-								return Validator.ValidationResult.PASSED;
-							}
-						});
-				switchFolder((FolderElement) selected);
-				for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-					if (currentFolder.equals(modElement.getFolderPath())) { ;
-						currentFolder.setName(newName);
-						modElement.setParentFolder((FolderElement) selected);
-					}
-				}
-				switchFolder(currentFolder.getParent());
-				mcreator.getWorkspace().markDirty();
-				reloadElements();
+				//WIP Will be added soon
 			}
 		});
 		
@@ -922,7 +899,7 @@ import java.util.stream.Collectors;
 						codeElement.setEnabled(false);
 						lockElement.setEnabled(false);
 						idElement.setEnabled(false);
-						renameFolder.setEnabled(true);
+						renameFolder.setEnabled(false); //false until i manage to finish it
 					} else {
 						duplicateElement.setEnabled(true);
 						codeElement.setEnabled(true);
