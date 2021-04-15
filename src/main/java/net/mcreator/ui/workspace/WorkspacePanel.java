@@ -108,7 +108,15 @@ import java.util.stream.Collectors;
 	private final JLabel but5 = new JLabel(TiledImageCache.workspaceCode);
 	private final JLabel but5a = new JLabel(TiledImageCache.workspaceToggle);
 	private final JLabel but6 = new JLabel(TiledImageCache.workspaceModElementIDs);
-
+	
+	private final JMenuItem openElement = new JMenuItem(L10N.t("workspace.elements.list.edit.open"));
+	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
+	private final JMenuItem duplicateElement = new JMenuItem(L10N.t("workspace.elements.list.edit.duplicate"));
+	private final JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
+	private final JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
+	private final JMenuItem idElement = new JMenuItem(L10N.t("workspace.elements.list.edit.id"));
+	private final JMenuItem renameFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.rename.folder"));
+	
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
 
@@ -807,14 +815,7 @@ import java.util.stream.Collectors;
 
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 	
-		JMenuItem openElement = new JMenuItem(L10N.t("workspace.elements.list.edit.open"));
 		openElement.setFont(openElement.getFont().deriveFont(Font.BOLD));
-		JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
-		JMenuItem duplicateElement = new JMenuItem(L10N.t("workspace.elements.list.edit.duplicate"));
-		JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
-		JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
-		JMenuItem idElement = new JMenuItem(L10N.t("workspace.elements.list.edit.id"));
-
 		openElement.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) {
@@ -869,6 +870,35 @@ import java.util.stream.Collectors;
 				}
 			}
 		});
+		renameFolder.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) {
+				IElement selected = list.getSelectedValue();
+
+				String newName = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.folders.rename.message"),
+						L10N.t("workspace.elements.folders.add.title"), null, new OptionPaneValidatior() {
+							@Override public ValidationResult validate(JComponent component) {
+								String newName = ((JTextField) component).getText();
+
+								if (!newName.matches("[A-Za-z0-9._ -]+")) {
+									return new Validator.ValidationResult(ValidationResultType.ERROR,
+											L10N.t("workspace.elements.folders.add.error_letters"));
+								}
+								return Validator.ValidationResult.PASSED;
+							}
+						});
+				switchFolder((FolderElement) selected);
+				for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+					if (currentFolder.equals(modElement.getFolderPath())) { ;
+						currentFolder.setName(newName);
+						modElement.setParentFolder((FolderElement) selected);
+					}
+				}
+				switchFolder(currentFolder.getParent());
+				mcreator.getWorkspace().markDirty();
+				reloadElements();
+			}
+		});
 		
 		JPopupMenu editElement = new JPopupMenu();
 		editElement.add(openElement);
@@ -877,13 +907,29 @@ import java.util.stream.Collectors;
 		editElement.add(deleteElement);
 		editElement.add(lockElement);
 		editElement.add(idElement);
+		editElement.addSeparator();
+		editElement.add(renameFolder);
 		
 		list.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (SwingUtilities.isRightMouseButton(e)) {
-					JList list = (JList)e.getSource();
-					int row = list.locationToIndex(e.getPoint());
-					list.setSelectedIndex(row);
+					JList l = (JList)e.getSource();
+					int row = l.locationToIndex(e.getPoint());
+					l.setSelectedIndex(row);
+					IElement selected = list.getSelectedValue();
+					if (selected instanceof FolderElement) {
+						duplicateElement.setEnabled(false);
+						codeElement.setEnabled(false);
+						lockElement.setEnabled(false);
+						idElement.setEnabled(false);
+						renameFolder.setEnabled(true);
+					} else {
+						duplicateElement.setEnabled(true);
+						codeElement.setEnabled(true);
+						lockElement.setEnabled(true);
+						idElement.setEnabled(true);
+						renameFolder.setEnabled(false);
+					}
 					double dmouseX = MouseInfo.getPointerInfo().getLocation().getX();
 					double dmouseY = MouseInfo.getPointerInfo().getLocation().getY();
 					int mouseX = (int) dmouseX;
@@ -944,11 +990,13 @@ import java.util.stream.Collectors;
 
 	public void disableRemoving() {
 		but3.setEnabled(false);
+			deleteElement.setEnabled(false);
 		but3.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 	}
 
 	public void enableRemoving() {
 		but3.setEnabled(true);
+		deleteElement.setEnabled(true);
 		but3.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
