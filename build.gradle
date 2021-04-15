@@ -33,9 +33,8 @@ targetCompatibility = JavaVersion.VERSION_1_8
 idea {
     module {
         inheritOutputDirs = true
-        [".gradle", "build", "gradle", "jdk"].each {
-            excludeDirs << file("$buildDir/$it")
-        }
+        excludeDirs = [file(".gradle"), file(".idea"), file(".github"), file("build"),
+                       file("gradle"), file("jdk"), file("license"), file("logs")] as Set<File>
     }
 }
 
@@ -54,7 +53,7 @@ dependencies {
     implementation group: 'com.esotericsoftware.yamlbeans', name: 'yamlbeans', version: '1.15'
     implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.1.2'
     implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.1.1'
-    implementation (group: 'com.fifesoft', name: 'languagesupport', version: '3.1.1') { dep ->
+    implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.1.1') { dep ->
         dep.exclude group: 'org.mozilla', module: 'rhino'
     }
     implementation group: 'org.reflections', name: 'reflections', version: '0.9.9' // https://github.com/ronmamo/reflections/issues/81
