@@ -3,7 +3,7 @@ plugins {
     id "idea"
     id "de.undercouch.download" version "4.1.1"
     id 'edu.sc.seis.launch4j' version '2.4.9'
-    id 'org.jetbrains.gradle.plugin.idea-ext' version '0.10'
+    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.0'
 }
 
 repositories {
