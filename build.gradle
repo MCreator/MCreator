@@ -24,6 +24,9 @@ compileJava.options.encoding = 'UTF-8'
 compileJava.options.debug
 tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 
+// workaround for IDEA-265203
+System.setProperty("user.dir", projectDir.toString())
+
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
