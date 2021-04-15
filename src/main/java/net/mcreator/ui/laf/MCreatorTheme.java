@@ -44,6 +44,7 @@ public class MCreatorTheme extends OceanTheme {
 	private static final List<String> NON_ROBOTO_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
 
 	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
+	private final Color MAIN_TINT;
 	private Color MAIN_TINT = MAIN_TINT_DEFAULT;
 	private final ColorScheme theme;
 	public static final ColorScheme DARK_SCHEME = new ColorScheme("dark", "0x1e1e1e", "0x323232", "0x505050", "0xc2c2c2", "0xf5f5f5");
@@ -55,18 +56,18 @@ public class MCreatorTheme extends OceanTheme {
 
 	public MCreatorTheme(ColorScheme theme) {
 		this.theme = theme;
+		MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
+
 		try {
 			default_font = new Font("Sans-Serif", Font.PLAIN, 13);
+			light_font = default_font;
 
 			String lang = L10N.getLocale().getLanguage();
-			if (NON_ROBOTO_LANGUAGES.contains(lang))
-				light_font = default_font;
-			else
+			if (!NON_ROBOTO_LANGUAGES.contains(lang))
 				light_font = Font
 						.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/roboto_light.ttf"));
 
 			console_font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/notomono.ttf"));
-			MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
 		} catch (FontFormatException | IOException e2) {
 			LOG.info("Failed to init MCreator Theme! Error " + e2.getMessage());
 		}
