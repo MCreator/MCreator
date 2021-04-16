@@ -58,7 +58,7 @@ public class FolderElement implements IElement {
 			}
 
 			// we will not add the same child again
-			return child;
+			return;
 		}
 
 		this.children.add(child);
