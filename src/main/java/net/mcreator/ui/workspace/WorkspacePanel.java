@@ -856,7 +856,7 @@ import java.util.stream.Collectors;
 				switchFolder(currentFolder.getParent());
 
 					String newName = VOptionPane
-							.showInputDialog(mcreator, L10N.t("workspace.elements.folders.rename.message"), L10N.t("workspace.elements.folders.add.title"), null, new OptionPaneValidatior() {
+							.showInputDialog(mcreator, L10N.t("workspace.elements.folders.rename.message"), L10N.t("workspace.elements.list.edit.rename.folder"), null, new OptionPaneValidatior() {
 								@Override public ValidationResult validate(JComponent component) {
 									String newName = ((JTextField) component).getText();
 
