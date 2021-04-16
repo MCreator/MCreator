@@ -47,7 +47,7 @@ public class FolderElement implements IElement {
 		});
 	}
 
-	public void addChild(FolderElement child) {
+	public @Nullable FolderElement addChild(FolderElement child) {
 		child.parent = this;
 
 		// merge child children, if child already exists
@@ -58,11 +58,11 @@ public class FolderElement implements IElement {
 			}
 
 			// we will not add the same child again
-			return;
+			return child;
 		}
 
 		this.children.add(child);
-		return;
+		return child;
 	}
 
 	public void removeChild(FolderElement child) {
