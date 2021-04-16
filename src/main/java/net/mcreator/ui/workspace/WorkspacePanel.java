@@ -101,6 +101,7 @@ import java.util.stream.Collectors;
 	private final MCreator mcreator;
 
 	private final JButton upFolder;
+	private String folderName;
 
 	private final JLabel but2 = new JLabel(TiledImageCache.workspaceEdit);
 	private final JLabel but2a = new JLabel(TiledImageCache.workspaceDuplicate);
