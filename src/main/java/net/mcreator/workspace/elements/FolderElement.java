@@ -62,7 +62,7 @@ public class FolderElement implements IElement {
 		}
 
 		this.children.add(child);
-		return child;
+		return;
 	}
 
 	public void removeChild(FolderElement child) {
