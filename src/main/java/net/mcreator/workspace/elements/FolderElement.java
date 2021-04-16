@@ -58,10 +58,11 @@ public class FolderElement implements IElement {
 			}
 
 			// we will not add the same child again
-			return;
+			return child;
 		}
 
 		this.children.add(child);
+		return child;
 	}
 
 	public void removeChild(FolderElement child) {
