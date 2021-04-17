@@ -102,6 +102,7 @@ import java.util.stream.Collectors;
 
 	private final JButton upFolder;
 	private String folderName;
+	public boolean canRename;
 
 	private final JLabel but2 = new JLabel(TiledImageCache.workspaceEdit);
 	private final JLabel but2a = new JLabel(TiledImageCache.workspaceDuplicate);
@@ -862,8 +863,10 @@ import java.util.stream.Collectors;
 									String newName = ((JTextField) component).getText();
 
 									if (!newName.matches("[A-Za-z0-9._ -]+")) {
+										canRename = false;
 										return new Validator.ValidationResult(ValidationResultType.ERROR, L10N.t("workspace.elements.folders.add.error_letters"));
 									} else {
+										canRename = true;
 										return Validator.ValidationResult.PASSED;
 									}
 								}
@@ -871,6 +874,7 @@ import java.util.stream.Collectors;
 					if (newName == null) {
 						newName = oldName;
 					}
+				if (canRename == true) {
 				String finalNewName = newName;
 				switchFolder((FolderElement) selected);
 					list.getSelectedValuesList().forEach(re -> {
@@ -896,6 +900,7 @@ import java.util.stream.Collectors;
 					reloadElements();
 				    updateMods();
 				}
+			}
 		});
 		
 		JPopupMenu editElement = new JPopupMenu();
