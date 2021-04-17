@@ -868,9 +868,6 @@ import java.util.stream.Collectors;
 									}
 								}
 							});
-					if (newName == null) {
-						newName = oldName;
-					}
 				if (canRename == true) {
 				String finalNewName = newName;
 				switchFolder((FolderElement) selected);
