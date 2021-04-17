@@ -853,9 +853,6 @@ import java.util.stream.Collectors;
 		{
 			public void actionPerformed(ActionEvent e) {
 				IElement selected = list.getSelectedValue();
-				switchFolder((FolderElement) selected);
-				String oldName = currentFolder.getName();
-				switchFolder(currentFolder.getParent());
 
 					String newName = VOptionPane
 							.showInputDialog(mcreator, L10N.t("workspace.elements.folders.rename.message"), L10N.t("workspace.elements.list.edit.rename.folder"), null, new OptionPaneValidatior() {
