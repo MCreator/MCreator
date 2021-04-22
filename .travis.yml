@@ -1,4 +1,4 @@
-dist: trusty
+dist: xenial
 
 env:
   - GRADLE_OPTS="-Xmx4096m"
@@ -23,9 +23,6 @@ cache:
 language: java
 jdk:
   - openjdk8
-
-before_install:
-  - chmod +x gradlew
 
 script:
   - chmod +x gradlew
