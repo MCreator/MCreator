@@ -32,8 +32,8 @@ language: java
 
 install:
   - sudo update-java-alternatives -s bellsoft-java8-full-amd64
-  - java -v
-  - javac -v
+  - java -version
+  - javac -version
 
 script:
   - chmod +x gradlew
