@@ -33,8 +33,7 @@ language: java
 install:
   - echo 1 | sudo update-alternatives --config java
   - echo 1 | sudo update-alternatives --config javac
-  - java -Xmx32m -version
-  - javac -Xmx32m -version
+  - update-java-alternatives -l
 
 script:
   - chmod +x gradlew
