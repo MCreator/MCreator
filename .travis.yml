@@ -31,8 +31,8 @@ cache:
 language: java
 
 install:
-  - echo 1 | sudo update-alternatives --config javac
-  - echo 1 | sudo update-alternatives --config java
+  - sudo alternatives --set javac /usr/lib/jvm/bellsoft-java8-full-amd64/bin/javac
+  - sudo alternatives --set java /usr/lib/jvm/bellsoft-java8-full-amd64/bin/java
   - java -version
   - javac -version
 
