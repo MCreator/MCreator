@@ -1,7 +1,12 @@
-dist: trusty
+dist: focal
 
-env:
-  - GRADLE_OPTS="-Xmx4096m"
+addons:
+  apt:
+    sources:
+    - sourceline: 'deb [arch=amd64] https://apt.bell-sw.com/ stable main'
+      key_url: 'https://download.bell-sw.com/pki/GPG-KEY-bellsoft'
+    packages:
+      - bellsoft-java8-full
 
 git:
   depth: 3
@@ -9,6 +14,9 @@ git:
 branches:
   only: 
     - master
+
+env:
+  - GRADLE_OPTS="-Xmx4096m"
 
 before_cache:
   - rm -f  $HOME/.mcreator/gradle/caches/modules-2/modules-2.lock
@@ -21,12 +29,13 @@ cache:
     - $HOME/.mcreator/gradle/wrapper/
 
 language: java
-jdk:
-  - oraclejdk8
 
-before_install:
-  - chmod +x gradlew
+install:
+  - sudo update-alternatives --set javac /usr/lib/jvm/bellsoft-java8-full-amd64/bin/javac
+  - sudo update-alternatives --set java /usr/lib/jvm/bellsoft-java8-full-amd64/bin/java
 
 script:
+  - java -version
+  - sudo update-alternatives --display javac
   - chmod +x gradlew
   - xvfb-run ./gradlew test
