@@ -31,9 +31,9 @@ cache:
 language: java
 
 install:
-  - echo 1 | sudo update-alternatives --config java
-  - echo 1 | sudo update-alternatives --config javac
-  - update-java-alternatives -l
+  - update-java-alternatives -s bellsoft-java8-full-amd64
+  - java -v
+  - javac -v
 
 script:
   - chmod +x gradlew
