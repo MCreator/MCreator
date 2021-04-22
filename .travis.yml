@@ -30,11 +30,11 @@ cache:
 
 language: java
 
-before_install:
+install:
   - echo 1 | sudo update-alternatives --config java
   - echo 1 | sudo update-alternatives --config javac
-  - java -J-Xmx32m -version
-  - javac -J-Xmx32m -version
+  - java -Xmx32m -version
+  - javac -Xmx32m -version
 
 script:
   - chmod +x gradlew
