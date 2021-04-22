@@ -22,10 +22,7 @@ cache:
 
 language: java
 jdk:
-  - oraclejdk8
-
-before_install:
-  - chmod +x gradlew
+  - openjdk8
 
 script:
   - chmod +x gradlew
