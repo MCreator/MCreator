@@ -31,8 +31,8 @@ cache:
 language: java
 
 install:
-  - sudo update-alternatives --config javac
-  - sudo update-alternatives --config java
+  - echo 1 | sudo update-alternatives --config javac
+  - echo 1 | sudo update-alternatives --config java
   - java -version
   - javac -version
 
