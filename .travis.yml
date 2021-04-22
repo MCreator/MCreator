@@ -30,12 +30,6 @@ cache:
 
 language: java
 
-install:
-  - sudo update-alternatives --set javac /usr/lib/jvm/bellsoft-java8-full-amd64/bin/javac
-  - sudo update-alternatives --set java /usr/lib/jvm/bellsoft-java8-full-amd64/bin/java
-
 script:
-  - java -version
-  - sudo update-alternatives --display javac
   - chmod +x gradlew
   - xvfb-run ./gradlew test
