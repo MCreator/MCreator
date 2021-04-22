@@ -47,6 +47,12 @@ public class TestSetup {
 	public static void setupIntegrationTestEnvironment() throws IOException {
 		if (already)
 			return;
+		
+		// print version of Java
+		String java_spec_version = System.getProperty("java.specification.version");
+		LOG.info("Java version: " + System.getProperty("java.version") + ", specification: " + java_spec_version
+				+ ", VM name: " + System.getProperty("java.vm.name"));
+		LOG.info("Current JAVA_HOME for running instance: " + System.getProperty("java.home"));
 
 		Properties conf = new Properties();
 		conf.load(Launcher.class.getResourceAsStream("/mcreator.conf"));
