@@ -31,7 +31,7 @@ cache:
 language: java
 
 install:
-  - sudo update-java-alternatives -s bellsoft-java8-full-amd64
+  - sudo update-java-alternatives -s bellsoft-java8-full-amd64 --verbose
   - java -version
   - javac -version
 
