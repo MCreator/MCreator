@@ -1,4 +1,4 @@
-dist: xenial
+dist: trusty
 
 env:
   - GRADLE_OPTS="-Xmx4096m"
