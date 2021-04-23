@@ -1,4 +1,5 @@
 dist: xenial
+arch: arm64
 
 addons:
   apt:
@@ -32,4 +33,4 @@ language: java
 
 script:
   - chmod +x gradlew
-  - travis_wait xvfb-run ./gradlew test
+  - xvfb-run ./gradlew test
