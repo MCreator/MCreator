@@ -4,7 +4,7 @@ arch: arm64
 addons:
   apt:
     sources:
-      - sourceline: 'deb [arch=amd64] https://apt.bell-sw.com/ stable main'
+      - sourceline: 'deb [arch=arm64] https://apt.bell-sw.com/ stable main'
         key_url: 'https://download.bell-sw.com/pki/GPG-KEY-bellsoft'
     packages:
       - bellsoft-java8-full
