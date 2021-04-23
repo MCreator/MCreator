@@ -418,8 +418,7 @@ public class GradleConsole extends JPanel {
 							errorhandled = true;
 						} else if (taskErr.toString().contains("compileJava FAILED") || taskOut.toString()
 								.contains("compileJava FAILED")) {
-							errorhandled = CodeErrorDialog
-									.showCodeErrorDialog(ref, taskErr.toString() + taskOut);
+							errorhandled = CodeErrorDialog.showCodeErrorDialog(ref, taskErr.toString() + taskOut);
 						}
 						append("BUILD FAILED", new Color(0xF98771));
 					} else if (failure instanceof BuildCancelledException) {

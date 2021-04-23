@@ -47,7 +47,7 @@ public class TestSetup {
 	public static void setupIntegrationTestEnvironment() throws IOException {
 		if (already)
 			return;
-		
+
 		// print version of Java
 		String java_spec_version = System.getProperty("java.specification.version");
 		LOG.info("Java version: " + System.getProperty("java.version") + ", specification: " + java_spec_version
