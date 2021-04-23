@@ -1,14 +1,22 @@
-dist: trusty
+dist: xenial
 
-env:
-  - GRADLE_OPTS="-Xmx4096m"
+addons:
+  apt:
+    sources:
+      - sourceline: 'deb [arch=amd64] https://apt.bell-sw.com/ stable main'
+        key_url: 'https://download.bell-sw.com/pki/GPG-KEY-bellsoft'
+    packages:
+      - bellsoft-java8-full
 
 git:
   depth: 3
 
 branches:
-  only: 
+  only:
     - master
+
+env:
+  - GRADLE_OPTS="-Xmx4096m"
 
 before_cache:
   - rm -f  $HOME/.mcreator/gradle/caches/modules-2/modules-2.lock
@@ -21,8 +29,6 @@ cache:
     - $HOME/.mcreator/gradle/wrapper/
 
 language: java
-jdk:
-  - openjdk8
 
 script:
   - chmod +x gradlew
