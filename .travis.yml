@@ -32,4 +32,4 @@ language: java
 
 script:
   - chmod +x gradlew
-  - xvfb-run ./gradlew test
+  - travis_wait xvfb-run ./gradlew test
