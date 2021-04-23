@@ -1,10 +1,9 @@
 dist: xenial
-arch: arm64
 
 addons:
   apt:
     sources:
-      - sourceline: 'deb [arch=arm64] https://apt.bell-sw.com/ stable main'
+      - sourceline: 'deb [arch=amd64] https://apt.bell-sw.com/ stable main'
         key_url: 'https://download.bell-sw.com/pki/GPG-KEY-bellsoft'
     packages:
       - bellsoft-java8-full
@@ -32,5 +31,14 @@ cache:
 language: java
 
 script:
+  # Make gradle executable
   - chmod +x gradlew
+
+  # Output time every 10 minutes or Travis kills the job (if decompile takes too long)
+  - while sleep 9m; do echo "=====[ $SECONDS seconds still running ]====="; done &
+
+  # Run unit tests
   - xvfb-run ./gradlew test
+  
+  # Kill background sleep loop
+  - kill %1
