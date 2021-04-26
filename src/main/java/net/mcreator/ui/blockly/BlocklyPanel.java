@@ -36,6 +36,7 @@ import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import netscape.javascript.JSObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -131,17 +132,7 @@ public class BlocklyPanel extends JFXPanel {
 							.replace("@RESOURCES_PATH", resDir));
 
 					//JS code generation for custom variables
-					for(VariableElementType variable : VariableElement.getVariables()) {
-						//We begin by creating the extensions needed for other blocks
-						webEngine.executeScript(BlocklyJavascriptTemplates.variableListExtension(variable));
-						webEngine.executeScript(BlocklyJavascriptTemplates.procedureListExtensions(variable));
-						//Then, we create the blocks related to variables
-						webEngine.executeScript(BlocklyJavascriptTemplates.getVariableBlock(variable));
-						webEngine.executeScript(BlocklyJavascriptTemplates.setVariableBlock(variable));
-						webEngine.executeScript(BlocklyJavascriptTemplates.customDependencyBlock(variable));
-						webEngine.executeScript(BlocklyJavascriptTemplates.procedureReturnValueBlock(variable));
-						webEngine.executeScript(BlocklyJavascriptTemplates.returnBlock(variable));
-					}
+					webEngine.executeScript(VariableElementTypeLoader.INSTANCE.JS_CACHE.toString());
 
 					// colorize panel
 					Accessor.getPageFor(webEngine).setBackgroundColor(0);

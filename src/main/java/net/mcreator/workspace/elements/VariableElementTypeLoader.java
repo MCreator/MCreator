@@ -22,6 +22,7 @@ package net.mcreator.workspace.elements;
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.ui.blockly.BlocklyJavascriptTemplates;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,8 +31,15 @@ import java.util.regex.Pattern;
 
 public class VariableElementTypeLoader {
 	private static final Logger LOG = LogManager.getLogger("Variable loader");
+	public static VariableElementTypeLoader INSTANCE;
+
+	public final StringBuilder JS_CACHE = new StringBuilder();
 
 	public static void loadVariableTypes() {
+		INSTANCE = new VariableElementTypeLoader();
+	}
+
+	public VariableElementTypeLoader() {
 		LOG.debug("Loading variables");
 
 		final Gson gson = new Gson();
@@ -42,6 +50,16 @@ public class VariableElementTypeLoader {
 					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), VariableElementType.class);
 			LOG.debug("Added " + variable.getName() + " to variable types");
 			VariableElement.addVariable(variable);
+
+			//We begin by creating the extensions needed for other blocks
+			JS_CACHE.append(BlocklyJavascriptTemplates.variableListExtension(variable));
+			JS_CACHE.append(BlocklyJavascriptTemplates.procedureListExtensions(variable));
+			//Then, we create the blocks related to variables
+			JS_CACHE.append(BlocklyJavascriptTemplates.getVariableBlock(variable));
+			JS_CACHE.append(BlocklyJavascriptTemplates.setVariableBlock(variable));
+			JS_CACHE.append(BlocklyJavascriptTemplates.customDependencyBlock(variable));
+			JS_CACHE.append(BlocklyJavascriptTemplates.procedureReturnValueBlock(variable));
+			JS_CACHE.append(BlocklyJavascriptTemplates.returnBlock(variable));
 
 			//We check the type of the variable, if it is a global var, we instantiate it with this variable.
 			switch (variable.getName().toLowerCase()) {
