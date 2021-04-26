@@ -83,32 +83,22 @@ package ${package}.item;
 			}
 
 			<#if data.recipeRemainder?? && !data.recipeRemainder.isEmpty()>
-				@Override public ItemStack getContainerItem(ItemStack itemstack) {
-				    return ${mappedMCItemToItemStackCode(data.recipeRemainder, 1)};
-            	}
+			@Override public ItemStack getContainerItem(ItemStack itemstack) {
+			    return ${mappedMCItemToItemStackCode(data.recipeRemainder, 1)};
+            }
 			<#elseif data.damageOnCrafting && data.damageCount != 0>
-				@Override public ItemStack getContainerItem(ItemStack itemstack) {
-					ItemStack retval = new ItemStack(this);
-					retval.setDamage(itemstack.getDamage() + 1);
-					if(retval.getDamage() >= retval.getMaxDamage()) {
-						return ItemStack.EMPTY;
-					}
-					return retval;
+			@Override public ItemStack getContainerItem(ItemStack itemstack) {
+				ItemStack retval = new ItemStack(this);
+				retval.setDamage(itemstack.getDamage() + 1);
+				if(retval.getDamage() >= retval.getMaxDamage()) {
+					return ItemStack.EMPTY;
 				}
-
-				@Override public boolean isRepairable(ItemStack itemstack) {
-					return false;
-				}
+				return retval;
+			}
 			<#else>
-				@Override public ItemStack getContainerItem(ItemStack itemstack) {
-					return new ItemStack(this);
-				}
-
-				<#if data.damageCount != 0>
-				@Override public boolean isRepairable(ItemStack itemstack) {
-					return false;
-				}
-				</#if>
+			@Override public ItemStack getContainerItem(ItemStack itemstack) {
+				return new ItemStack(this);
+			}
 			</#if>
 		</#if>
 

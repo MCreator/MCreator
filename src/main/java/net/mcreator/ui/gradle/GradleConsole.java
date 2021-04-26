@@ -37,7 +37,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.util.HtmlUtils;
-import net.mcreator.util.math.TimeUtils;
+import net.mcreator.util.TimeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.internal.impldep.org.apache.commons.lang.exception.ExceptionUtils;
@@ -86,9 +86,6 @@ public class GradleConsole extends JPanel {
 	private final ConsoleSearchBar searchBar = new ConsoleSearchBar();
 
 	private CancellationTokenSource cancellationSource = GradleConnector.newCancellationTokenSource();
-
-	// a flag to prevent infinite re-runs in case when re-run does not solve the build problem
-	public boolean rerunFlag = false;
 
 	public GradleConsole(MCreator ref) {
 		this.ref = ref;
@@ -355,16 +352,12 @@ public class GradleConsole extends JPanel {
 		task.setStandardError(new OutputStreamEventHandler(line -> SwingUtilities.invokeLater(() -> {
 			taskErr.append(line).append("\n");
 			if (serr.isSelected()) {
-				if (line.startsWith("[")) {
-					appendAutoColor(line);
-				} else {
-					if (!line.startsWith("Note: Some input files use or ov"))
-						if (!line.startsWith("Note: Recompile with -Xlint"))
-							if (!line.startsWith("Note: Some input files use unch"))
-								if (!line.contains("uses or overrides a deprecated API"))
-									if (!line.contains("unchecked or unsafe operations"))
-										append(line, new Color(0, 255, 182));
-				}
+				if (!line.startsWith("Note: Some input files use or ov"))
+					if (!line.startsWith("Note: Recompile with -Xlint"))
+						if (!line.startsWith("Note: Some input files use unch"))
+							if (!line.contains("uses or overrides a deprecated API"))
+								if (!line.contains("unchecked or unsafe operations"))
+									append(line, new Color(0, 255, 182));
 			}
 		})));
 
@@ -388,19 +381,8 @@ public class GradleConsole extends JPanel {
 							.checkFailingGradleDependenciesAndClear();
 
 					if (failure instanceof BuildException) {
-						if (GradleErrorDecoder.doesErrorSuggestRerun(taskErr.toString() + taskOut)) {
-							if (!rerunFlag) {
-								rerunFlag = true;
-
-								LOG.warn("Gradle task suggested re-run. Attempting re-running task: " + command);
-
-								// Re-run the same command with the same listener
-								GradleConsole.this.exec(command, taskSpecificListener);
-
-								return;
-							}
-						} else if (workspaceReportedFailingGradleDependencies || GradleErrorDecoder
-								.isErrorCausedByCorruptedCaches(taskErr.toString() + taskOut)) {
+						if (workspaceReportedFailingGradleDependencies || GradleErrorDecoder
+								.isErrorCausedByCorruptedCaches(taskErr.toString() + taskOut.toString())) {
 							Object[] options = { "Clear Gradle caches", "Clear entire Gradle folder",
 									"<html><font color=gray>Do nothing" };
 							int reply = JOptionPane.showOptionDialog(ref,
@@ -418,7 +400,8 @@ public class GradleConsole extends JPanel {
 							errorhandled = true;
 						} else if (taskErr.toString().contains("compileJava FAILED") || taskOut.toString()
 								.contains("compileJava FAILED")) {
-							errorhandled = CodeErrorDialog.showCodeErrorDialog(ref, taskErr.toString() + taskOut);
+							errorhandled = CodeErrorDialog
+									.showCodeErrorDialog(ref, taskErr.toString() + taskOut.toString());
 						}
 						append("BUILD FAILED", new Color(0xF98771));
 					} else if (failure instanceof BuildCancelledException) {
@@ -473,12 +456,6 @@ public class GradleConsole extends JPanel {
 				ref.consoleTab.repaint();
 				ref.statusBar.reloadGradleIndicator();
 				ref.statusBar.setGradleMessage(L10N.t("gradle.idle"));
-
-				// on success, we clear the re-run flag
-				if (rerunFlag) {
-					rerunFlag = false;
-					LOG.info("Clearing the re-run flag after a successful re-run");
-				}
 			}
 
 			private void taskComplete(int mcreatorGradleStatus) {

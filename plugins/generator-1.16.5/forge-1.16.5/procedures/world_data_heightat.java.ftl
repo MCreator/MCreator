@@ -1,1 +1,0 @@
-(world.getHeight(Heightmap.Type.${field$heightType}, (int) ${input$x}, (int) ${input$z}))

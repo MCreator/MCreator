@@ -41,8 +41,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class PreferencesDialog extends MCreatorDialog {
 
@@ -279,16 +280,7 @@ public class PreferencesDialog extends MCreatorDialog {
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
 		} else if (actualField.getType().equals(Locale.class)) {
-			List<Locale> locales = new ArrayList<>(L10N.getSupportedLocales());
-			locales.sort((a, b) -> {
-				int sa = L10N.getLocaleSupport(a);
-				int sb = L10N.getLocaleSupport(b);
-				if (sa == sb)
-					return a.getDisplayName().compareTo(b.getDisplayName());
-
-				return sb - sa;
-			});
-			JComboBox<Locale> box = new JComboBox<>(locales.toArray(new Locale[0]));
+			JComboBox<Locale> box = new JComboBox<>(L10N.getSupportedLocales().toArray(new Locale[0]));
 			box.setRenderer(new LocaleListRenderer());
 			box.setSelectedItem(value);
 			box.addActionListener(e -> apply.setEnabled(true));

@@ -41,7 +41,7 @@ public class BlocklyCompileNote {
 	}
 
 	public enum Type {
-		INFO, WARNING, ERROR
+		WARNING, ERROR
 	}
 
 }

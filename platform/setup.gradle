@@ -13,7 +13,7 @@ def mkisofs_url = 'https://netix.dl.sourceforge.net/project/mkisofs-md5/mkisofs-
 
 task downloadJDKWin32(type: DefaultTask, group: 'setup') {
     doLast {
-        if (!file('jdk/jdk8_win_32/').exists()) {
+        if (!new File('jdk/jdk8_win_32/').exists()) {
             mkdir 'jdk/jdk8_win_32'
 
             download {
@@ -32,7 +32,7 @@ task downloadJDKWin32(type: DefaultTask, group: 'setup') {
 
 task downloadJDKWin64(type: DefaultTask, group: 'setup') {
     doLast {
-        if (!file('jdk/jdk8_win_64/').exists()) {
+        if (!new File('jdk/jdk8_win_64/').exists()) {
             mkdir 'jdk/jdk8_win_64'
 
             download {
@@ -51,7 +51,7 @@ task downloadJDKWin64(type: DefaultTask, group: 'setup') {
 
 task downloadJDKLinux32(type: DefaultTask, group: 'setup') {
     doLast {
-        if (!file('jdk/jdk8_linux_32/').exists()) {
+        if (!new File('jdk/jdk8_linux_32/').exists()) {
             mkdir 'jdk/jdk8_linux_32'
 
             download {
@@ -70,7 +70,7 @@ task downloadJDKLinux32(type: DefaultTask, group: 'setup') {
 
 task downloadJDKLinux64(type: DefaultTask, group: 'setup') {
     doLast {
-        if (!file('jdk/jdk8_linux_64/').exists()) {
+        if (!new File('jdk/jdk8_linux_64/').exists()) {
             mkdir 'jdk/jdk8_linux_64'
 
             download {
@@ -89,7 +89,7 @@ task downloadJDKLinux64(type: DefaultTask, group: 'setup') {
 
 task downloadJDKMac64(type: DefaultTask, group: 'setup') {
     doLast {
-        if (!file('jdk/jdk8_mac_64/').exists()) {
+        if (!new File('jdk/jdk8_mac_64/').exists()) {
             mkdir 'jdk/jdk8_mac_64'
 
             download {
@@ -110,7 +110,7 @@ task downloadJDKMac64(type: DefaultTask, group: 'setup') {
 task downloadNSIS(type: DefaultTask, group: 'setup') {
     doLast {
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            if (!file('build/tools/nsis/').exists()) {
+            if (!new File('build/tools/nsis/').exists()) {
                 download {
                     src nsis_url
                     dest 'build/tmp/nsis'
@@ -135,7 +135,7 @@ task downloadNSIS(type: DefaultTask, group: 'setup') {
 task downloadMKISOFS(type: DefaultTask, group: 'setup') {
     doLast {
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            if (!file('build/tools/mkisofs/').exists()) {
+            if (!new File('build/tools/mkisofs/').exists()) {
                 download {
                     src mkisofs_url
                     dest 'build/tmp/mkisofs'

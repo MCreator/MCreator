@@ -39,7 +39,7 @@ public class TileHolderValidator implements Validator {
 
 	@Override public ValidationResult validate() {
 		if (holder.has() || (requirement != null && !requirement.isSelected()))
-			return Validator.ValidationResult.PASSED;
+			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		else
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, "You need to select a texture");
 	}

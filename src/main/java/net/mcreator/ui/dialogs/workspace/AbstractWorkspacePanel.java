@@ -137,7 +137,7 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 						"MCreator does not have permissions to write or read in selected directory!");
 			}
 
-			return Validator.ValidationResult.PASSED;
+			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 	}
 

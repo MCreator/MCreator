@@ -31,8 +31,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DeclarationFinder {
-	public static final Pattern SEPARATORS_BEHIND = Pattern.compile("[^a-zA-Z0-9_$.]");
-	public static final Pattern SEPARATORS_AHEAD = Pattern.compile("[^a-zA-Z0-9_$]");
 
 	public static DeclarationFinder.InClassPosition getDeclarationOnPos(Workspace workspace, JavaParser parser,
 			RSyntaxTextArea textArea, JarManager jarManager) {
@@ -45,7 +43,7 @@ public class DeclarationFinder {
 		for (int i = 1; true; i++) {
 			try {
 				String curr = textArea.getText(caret - i, i);
-				if (isValidSeparatorContained(curr, true)) {
+				if (isValidSeparatorContained(curr)) {
 					startexp = caret - i + 1;
 					break;
 				}
@@ -58,7 +56,7 @@ public class DeclarationFinder {
 		for (int i = 1; true; i++) {
 			try {
 				String curr = textArea.getText(caret, i);
-				if (isValidSeparatorContained(curr, false)) {
+				if (isValidSeparatorContained(curr)) {
 					endexp = caret + i - 1;
 					break;
 				}
@@ -125,8 +123,8 @@ public class DeclarationFinder {
 		}
 	}
 
-	private static boolean isValidSeparatorContained(String code, boolean behind) {
-		Pattern r = behind ? SEPARATORS_BEHIND : SEPARATORS_AHEAD;
+	private static boolean isValidSeparatorContained(String code) {
+		Pattern r = Pattern.compile("[^a-zA-Z_$]");
 		Matcher m = r.matcher(code);
 		return m.find();
 	}

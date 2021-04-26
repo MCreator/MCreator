@@ -802,7 +802,8 @@ public class TestWorkspaceDataProvider {
 			plant.itemTexture = emptyLists ? "" : "itest";
 			plant.particleTexture = emptyLists ? "" : "test3";
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
-			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getAllPlantTypes());
+			plant.growapableSpawnType = getRandomItem(random,
+					new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
 			plant.staticPlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.growapableMaxHeight = 5;
@@ -910,8 +911,7 @@ public class TestWorkspaceDataProvider {
 			item.inventorySize = 10;
 			item.inventoryStackSize = 42;
 			item.guiBoundTo = "<NONE>";
-			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(), emptyLists ?
-					"" :
+			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			item.stayInGridWhenCrafting = _true;
 			item.damageOnCrafting = _true;
@@ -1356,8 +1356,7 @@ public class TestWorkspaceDataProvider {
 		case GAMERULE:
 			GameRule gamerule = new GameRule(modElement);
 			gamerule.name = modElement.getName();
-			gamerule.displayName = modElement.getName();
-			gamerule.description = modElement.getName() + " description";
+			gamerule.description = modElement.getName();
 			gamerule.category = getRandomString(random,
 					Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
 			gamerule.type = new String[] { "Number", "Logic", "Number", "Logic" }[valueIndex];
@@ -1382,7 +1381,7 @@ public class TestWorkspaceDataProvider {
 		tool.damageVsEntity = 2;
 		tool.usageCount = 24;
 		tool.stayInGridWhenCrafting = _true;
-		tool.damageOnCrafting = emptyLists;
+		tool.damageOnCrafting = _true;
 		tool.immuneToFire = _true;
 		tool.blocksAffected = new ArrayList<>();
 		tool.hasGlow = _true;

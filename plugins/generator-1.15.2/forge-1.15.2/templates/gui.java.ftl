@@ -364,10 +364,8 @@ import ${package}.${JavaModName};
 			</#list>
 		}
 
-		@Override protected void drawGuiContainerBackgroundLayer(float partialTicks, int gx, int gy) {
-			RenderSystem.color4f(1, 1, 1, 1);
-			RenderSystem.enableBlend();
-			RenderSystem.defaultBlendFunc();
+		@Override protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+			GL11.glColor4f(1, 1, 1, 1);
 
 			<#if data.renderBgLayer>
 			Minecraft.getInstance().getTextureManager().bindTexture(texture);
@@ -378,16 +376,18 @@ import ${package}.${JavaModName};
 
 			<#list data.components as component>
 				<#if component.getClass().getSimpleName() == "Image">
-					<#if hasCondition(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+					<#if hasCondition(component.displayCondition)>
+					if (<@procedureOBJToConditionCode component.displayCondition/>) {
+					</#if>
 						Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/${component.image}"));
 						this.blit(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int}, 0, 0,
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-					<#if hasCondition(component.displayCondition)>}</#if>
+					<#if hasCondition(component.displayCondition)>
+					}
+					</#if>
 				</#if>
 			</#list>
-
-			RenderSystem.disableBlend();
 		}
 
 		@Override public boolean keyPressed(int key, int b, int c) {
@@ -473,17 +473,15 @@ import ${package}.${JavaModName};
 				<#elseif component.getClass().getSimpleName() == "Button">
                     this.addButton(new Button(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
 						${component.width}, ${component.height}, "${component.text}", e -> {
-							if (<@procedureOBJToConditionCode component.displayCondition/>) {
-								${JavaModName}.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(${btid}, x, y, z));
-								handleButtonAction(entity, ${btid}, x, y, z);
-							}
-						}
-					)
+						${JavaModName}.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(${btid}, x, y, z));
+
+						handleButtonAction(entity, ${btid}, x, y, z);
+					})
 					<#if hasCondition(component.displayCondition)>
 					{
-						@Override public void render(int gx, int gy, float ticks) {
+						@Override public void render(int x, int y, float ticks) {
 							if (<@procedureOBJToConditionCode component.displayCondition/>)
-								super.render(gx, gy, ticks);
+								super.render(x, y, ticks);
 						}
 					}
 					</#if>);

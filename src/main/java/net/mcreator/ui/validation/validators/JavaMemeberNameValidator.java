@@ -68,7 +68,7 @@ public class JavaMemeberNameValidator implements Validator {
 			return new Validator.ValidationResult(Validator.ValidationResultType.WARNING,
 					"Java standards recommend uppercase letter for the first character");
 		} else {
-			return Validator.ValidationResult.PASSED;
+			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		}
 	}
 

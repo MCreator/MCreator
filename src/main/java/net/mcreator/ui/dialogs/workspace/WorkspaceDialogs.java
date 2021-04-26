@@ -438,7 +438,7 @@ public class WorkspaceDialogs {
 					return new Validator.ValidationResult(Validator.ValidationResultType.WARNING,
 							"Avoid using numbers in package names");
 
-				return Validator.ValidationResult.PASSED;
+				return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 			});
 
 			packageName.enableRealtimeValidation();

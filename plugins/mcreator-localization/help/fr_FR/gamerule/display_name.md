@@ -1,1 +1,0 @@
-C'est le nom affiché de la GameRule. Il est utilisé pour l'écran de configuration des GameRules.

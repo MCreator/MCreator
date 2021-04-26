@@ -42,9 +42,7 @@ public class UTF8Control extends ResourceBundle.Control {
 	@Override
 	public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
 			throws IOException {
-		String bundleName = toBundleName(baseName, locale)
-				// workaround for old Hebrew locale name
-				.replace("_iw", "_he");
+		String bundleName = toBundleName(baseName, locale);
 		String resourceName = toResourceName(bundleName, "properties");
 
 		List<ResourceBundle> resourceBundles = new ArrayList<>();
