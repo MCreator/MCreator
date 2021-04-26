@@ -140,6 +140,12 @@
                     <#if ge.isWaterloggable>
                         <#assign properties += [{"name": "waterlogged", "value": "false"}] />
                     </#if>
+
+                    <#if ge.rotationMode != 0 && ge.rotationMode != 5>
+                        <#assign properties += [{"name": "facing", "value": "north"}] />
+                    <#elseif ge.rotationMode == 5>
+                        <#assign properties += [{"name": "facing", "value": "south"}] />
+                    </#if>
                 </#if>
             </#if>
 

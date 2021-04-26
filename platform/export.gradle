@@ -1,9 +1,3 @@
-import groovy.io.FileType
-
-buildscript {
-    repositories { jcenter() }
-}
-
 task cleanupPlugins(type: DefaultTask) {
     doFirst {
         delete 'build/plugins/'
@@ -11,7 +5,7 @@ task cleanupPlugins(type: DefaultTask) {
 }
 
 // export  all plugins
-file('plugins').traverse([maxDepth: 0, type: FileType.DIRECTORIES]) {
+file('plugins').traverse([maxDepth: 0, type: groovy.io.FileType.DIRECTORIES]) {
     tasks.create(name: 'export_plugin_' + it.getName().replace('.', ''), type: Zip) { task ->
         task.archiveName = it.getName() + '.zip'
         task.destinationDir = file('build/plugins/')
@@ -35,19 +29,18 @@ task exportReleasePreTask(type: DefaultTask, dependsOn: testClasses) {
 
 jar.dependsOn exportReleasePreTask
 
-// definition of main export task
+// definition of main export task for releases
 task exportRelease(type: DefaultTask, group: 'export') {
     doLast {
         copy {
             from file('LICENSE.txt') into 'build/export' rename("LICENSE.txt", "LICENSE")
         }
 
-        project.logger.lifecycle('\nFinished export for MCREATOR ' +
-                (String) project.mcreatorconf.getProperty('mcreator') + "." + new Date().format("wwuHH"))
+        project.logger.lifecycle('\nFINISHED export for MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
     }
 }
 
-// definition of main export task
+// definition of main export task for snapshots
 task exportSnapshot(type: DefaultTask, group: 'export') {
     if (gradle.startParameter.taskNames.contains(name)) { // only run this if the task started was this one
         project.mcreatorconf.setProperty('mcreator', "EAP " + (String) project.mcreatorconf.getProperty('mcreator') + new Date().format(" 'b'wwuHH"))
@@ -61,8 +54,7 @@ task exportSnapshot(type: DefaultTask, group: 'export') {
 
         delete 'src/main/resources/snapshot.conf'
 
-        project.logger.lifecycle('\nFinished export for MCREATOR EAP ' +
-                (String) project.mcreatorconf.getProperty('mcreator') + "." + new Date().format("wwuHH"))
+        project.logger.lifecycle('\nFINISHED export for MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
     }
 }
 

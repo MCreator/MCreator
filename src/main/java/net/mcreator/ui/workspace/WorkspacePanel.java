@@ -333,7 +333,7 @@ import java.util.stream.Collectors;
 								}
 							}
 
-							return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+							return Validator.ValidationResult.PASSED;
 						}
 					});
 
@@ -1034,6 +1034,10 @@ import java.util.stream.Collectors;
 
 							duplicateModElement.setCodeLock(true);
 						}
+
+						// if we are not in the root folder, specify the folder of the mod element
+						if (!currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
+							duplicateModElement.setParentFolder(currentFolder);
 
 						mcreator.getWorkspace().addModElement(duplicateModElement);
 

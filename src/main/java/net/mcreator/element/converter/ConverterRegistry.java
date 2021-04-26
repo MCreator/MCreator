@@ -29,6 +29,8 @@ import net.mcreator.element.converter.fv14.DimensionLuminanceFixer;
 import net.mcreator.element.converter.fv14.PlantLuminanceFixer;
 import net.mcreator.element.converter.fv15.DimensionPortalSelectedFixer;
 import net.mcreator.element.converter.fv16.BlockBoundingBoxFixer;
+import net.mcreator.element.converter.fv17.GameruleDisplayNameFixer;
+import net.mcreator.element.converter.fv18.BiomeFrozenTopLayerConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -46,10 +48,12 @@ public class ConverterRegistry {
 		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
 		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer()));
-		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter()));
+		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
+				new BiomeFrozenTopLayerConverter()));
 		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
 		put(ModElementType.BLOCK, Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer()));
 		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
+		put(ModElementType.GAMERULE, Collections.singletonList(new GameruleDisplayNameFixer()));
 		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
 	}};
 
