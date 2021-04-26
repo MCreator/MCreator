@@ -17,14 +17,6 @@
     </category>
     <sep/>
     <category name="${t:blockly.category.custom_variables}" colour="150">
-        <block type="variables_get_logic"/>
-        <block type="variables_set_logic"/>
-        <block type="variables_get_number"/>
-        <block type="variables_set_number"/>
-        <block type="variables_get_text"/>
-        <block type="variables_set_text"/>
-        <block type="variables_get_itemstack"/>
-        <block type="variables_set_itemstack"/>
         <custom-customvariables/>
     </category>
     <sep/>
@@ -36,10 +28,6 @@
         <block type="controls_if">
             <mutation elseif="1"/>
         </block>
-        <block type="return_logic"/>
-        <block type="return_number"/>
-        <block type="return_text"/>
-        <block type="return_itemstack"/>
         <block type="controls_repeat_ext"/>
         <block type="controls_while"/>
         <block type="controls_flow_statements"/>
@@ -95,14 +83,6 @@
                 <block type="coord_z"/>
             </value>
         </block>
-        <block type="procedure_retval_logic"/>
-        <block type="procedure_retval_number"/>
-        <block type="procedure_retval_string"/>
-        <block type="procedure_retval_itemstack"/>
-        <block type="custom_dependency_logic"/>
-        <block type="custom_dependency_number"/>
-        <block type="custom_dependency_text"/>
-        <block type="custom_dependency_itemstack"/>
         <block type="java_code"/>
         <block type="java_code_get"/>
         <custom-advanced/>

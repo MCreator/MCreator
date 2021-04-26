@@ -35,6 +35,7 @@ import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import netscape.javascript.JSObject;
 import org.apache.commons.lang3.StringUtils;
@@ -159,54 +160,11 @@ public class BlocklyJavascriptBridge {
 
 	@SuppressWarnings("unused") public static String[] getListOfForWorkspace(Workspace workspace, String type) {
 		List<String> retval;
+		//We check for general cases
 		switch (type) {
 		case "procedure":
 			retval = workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
 					.map(ModElement::getName).collect(Collectors.toList());
-			break;
-		case "procedure_retval_logic":
-			retval = workspace.getModElements().stream().filter(mod -> {
-				if (mod.getType() == ModElementType.PROCEDURE) {
-					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
-							null;
-					return returnTypeCurrent == VariableElementType.LOGIC;
-				}
-				return false;
-			}).map(ModElement::getName).collect(Collectors.toList());
-			break;
-		case "procedure_retval_number":
-			retval = workspace.getModElements().stream().filter(mod -> {
-				if (mod.getType() == ModElementType.PROCEDURE) {
-					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
-							null;
-					return returnTypeCurrent == VariableElementType.NUMBER;
-				}
-				return false;
-			}).map(ModElement::getName).collect(Collectors.toList());
-			break;
-		case "procedure_retval_string":
-			retval = workspace.getModElements().stream().filter(mod -> {
-				if (mod.getType() == ModElementType.PROCEDURE) {
-					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
-							null;
-					return returnTypeCurrent == VariableElementType.STRING;
-				}
-				return false;
-			}).map(ModElement::getName).collect(Collectors.toList());
-			break;
-		case "procedure_retval_itemstack":
-			retval = workspace.getModElements().stream().filter(mod -> {
-				if (mod.getType() == ModElementType.PROCEDURE) {
-					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
-							null;
-					return returnTypeCurrent == VariableElementType.ITEMSTACK;
-				}
-				return false;
-			}).map(ModElement::getName).collect(Collectors.toList());
 			break;
 		case "entity":
 			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
@@ -265,6 +223,19 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.getAllPlantTypes();
 		default:
 			retval = new ArrayList<>();
+		}
+
+		//We finish by checking if type is a call procedure with return value
+		if(type.contains("procedure_retval_")) {
+			retval = workspace.getModElements().stream().filter(mod -> {
+				if (mod.getType() == ModElementType.PROCEDURE) {
+					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
+							VariableElement.getVariableFromType((String) mod.getMetadata("return_type")) :
+							null;
+					return returnTypeCurrent == VariableElement.getVariableFromType(StringUtils.removeStart(type, "procedure_retval_"));
+				}
+				return false;
+			}).map(ModElement::getName).collect(Collectors.toList());
 		}
 
 		if (retval.size() <= 0)

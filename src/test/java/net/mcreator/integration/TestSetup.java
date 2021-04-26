@@ -29,6 +29,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
 import net.mcreator.util.MCreatorVersionNumber;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -79,6 +80,9 @@ public class TestSetup {
 
 		// load apis defined by plugins after plugins are loaded
 		ModAPIManager.initAPIs();
+
+		// load variable elements
+		VariableElementTypeLoader.loadVariableTypes();
 
 		// blockly mod elements need blockly blocks loaded
 		BlocklyLoader.init();

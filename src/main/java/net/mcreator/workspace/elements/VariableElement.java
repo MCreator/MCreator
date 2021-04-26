@@ -18,10 +18,16 @@
 
 package net.mcreator.workspace.elements;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 public class VariableElement implements IElement {
+	private static final Map<VariableElementType, String> variables = new HashMap<>();
 
 	private String name;
-	private VariableElementType type;
+	private String type;
 	private VariableElementType.Scope scope = VariableElementType.Scope.GLOBAL_SESSION;
 	private Object value;
 
@@ -38,10 +44,32 @@ public class VariableElement implements IElement {
 	}
 
 	public VariableElementType getType() {
-		return type;
+		return getVariableFromType(type);
 	}
 
-	public void setType(VariableElementType type) {
+	public static VariableElementType getVariableFromType(String type) {
+		for (VariableElementType var : variables.keySet()) {
+			if(var.getBlocklyVariableType().equalsIgnoreCase(type) || var.getType().equalsIgnoreCase(type)
+					|| var.getBlockName().equalsIgnoreCase(type)) {
+				return var;
+			}
+		}
+		return null;
+	}
+
+	public static Set<VariableElementType> getVariables() {
+		return variables.keySet();
+	}
+
+	public static void addVariable(VariableElementType var) {
+		variables.put(var, var.getType().toUpperCase());
+	}
+
+	public static Collection<String> getAllTypes() {
+		return variables.values();
+	}
+
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -67,17 +95,5 @@ public class VariableElement implements IElement {
 
 	public void setScope(VariableElementType.Scope scope) {
 		this.scope = scope;
-	}
-
-	public static Object getDefaultValueForType(VariableElementType type) {
-		switch (type) {
-		case STRING:
-			return "";
-		case LOGIC:
-			return "false";
-		case NUMBER:
-			return "0";
-		}
-		return "";
 	}
 }

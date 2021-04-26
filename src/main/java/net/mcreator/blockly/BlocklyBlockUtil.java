@@ -19,6 +19,7 @@
 package net.mcreator.blockly;
 
 import net.mcreator.util.XMLUtil;
+import net.mcreator.workspace.elements.VariableElementType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -116,6 +117,51 @@ public class BlocklyBlockUtil {
 	 */
 	public static Color getBlockColorFromHUE(int hue) {
 		return Color.getHSBColor(hue / 360f, 0.37f, 0.6f);
+	}
+
+	/**
+	 * Calculate the HUE of a block from RGB
+	 *
+	 * @param var The variable element to use
+	 * @return Built-in color or HUE for other blocks
+	 */
+	public static String getHUEFromRGB(VariableElementType var) {
+		//Built-in colors
+		if (var.getType().equalsIgnoreCase("string"))
+			return "\"%{BKY_TEXTS_HUE}\"";
+		else if (var.getType().equalsIgnoreCase("number"))
+			return "\"%{BKY_MATH_HUE}\"";
+		else if (var.getType().equalsIgnoreCase("logic"))
+			return "\"%{BKY_LOGIC_HUE}\"";
+
+		//Custom colors
+		float[] hsbValues = new float[] { (float) var.getColor().getRed() / 255,
+				(float) var.getColor().getGreen() / 255, (float) var.getColor().getBlue() / 255 };
+		//We find the minimum and the maximal values
+		float min = Math.min(hsbValues[0], hsbValues[1]);
+		min = Math.min(min, hsbValues[2]);
+		float max = Math.max(hsbValues[0], hsbValues[1]);
+		max = Math.max(max, hsbValues[2]);
+
+		float ret;
+		//If Red is the maximal value
+		if (max == hsbValues[0]) {
+			ret = (hsbValues[1] - hsbValues[2]) / (max - min);
+			//If Green is the maximal value
+		} else if (max == hsbValues[1]) {
+			ret = 2 + (hsbValues[2] - hsbValues[0]) / (max - min);
+			//If Blue is the maximal value
+		} else {
+			ret = 4 + (hsbValues[0] - hsbValues[1]) / (max - min);
+		}
+
+		//We multiply Hue by 60 for a degree value
+		ret = ret * 60;
+
+		//If Hue is negative, we add 360 deg
+		if (ret < 0)
+			ret += 360;
+		return String.valueOf(Math.round(ret));
 	}
 
 }

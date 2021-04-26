@@ -45,6 +45,7 @@ import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import org.jetbrains.annotations.Nullable;
 
@@ -116,7 +117,7 @@ public class ProcedureSelector extends JPanel {
 		if (returnType == VariableElementType.LOGIC) {
 			defaultName = "(always)";
 			setBorder(BorderFactory
-					.createLineBorder(new Dependency("", VariableElementType.LOGIC.toDependencyType()).getColor()));
+					.createLineBorder(new Dependency("", VariableElementType.LOGIC.getDependencyType()).getColor()));
 		}
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
@@ -291,7 +292,7 @@ public class ProcedureSelector extends JPanel {
 			if (mod.getType() == ModElementType.PROCEDURE) {
 				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
 				VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-						VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
+						VariableElement.getVariableFromType((String) mod.getMetadata("return_type")) :
 						null;
 				List<Dependency> realdepsList = new ArrayList<>();
 				if (dependenciesList == null)

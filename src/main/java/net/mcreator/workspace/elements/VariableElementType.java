@@ -22,55 +22,70 @@ import com.google.gson.annotations.SerializedName;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 
-public enum VariableElementType {
+import javax.annotation.Nullable;
+import java.awt.*;
 
-	@SerializedName("string") STRING(0x609986), @SerializedName("logic") LOGIC(
-			0x607c99), @SerializedName("number") NUMBER(0x606999), @SerializedName("itemstack") ITEMSTACK(0x996069);
+public class VariableElementType {
 
-	private final int color;
+	//Define each global variables. The instantiation is made in VariableElementTypeLoader.
+	public static VariableElementType STRING;
+	public static VariableElementType LOGIC;
+	public static VariableElementType NUMBER;
+	public static VariableElementType ITEMSTACK;
 
-	VariableElementType(int color) {
-		this.color = color;
+	private String type;
+	private String color;
+	//Use for compatibility with old workspaces
+	@Nullable private String dependencyType;
+	private String defaultValue;
+	private String blocklyVariableType;
+	private String javaClass;
+	//Use for compatibility with old workspaces
+	//The name used for procedure blocks
+	@Nullable private String blockName;
+
+	public Color getColor() {
+		return Color.decode(color);
 	}
 
-	public int getColor() {
-		return color;
+	public String getType() {
+		return type;
 	}
 
-	public String toDependencyType() {
-		switch (this) {
-		case NUMBER:
-			return "number";
-		case LOGIC:
-			return "boolean";
-		case STRING:
-			return "string";
-		case ITEMSTACK:
-			return "itemstack";
-		}
+	public String getDependencyType() {
+		if(dependencyType != null)
+			return dependencyType;
+		else
+			return type;
+	}
 
-		return null;
+	public String getBlocklyVariableType() {
+		return blocklyVariableType;
+	}
+
+	public String getJavaClass() {
+		return javaClass;
+	}
+
+	public String getBlockName() {
+		if(blockName != null)
+			return blockName;
+		else
+			return type;
+
 	}
 
 	@SuppressWarnings("unused") public String getJavaType(Workspace workspace) {
-		if (toDependencyType() != null)
-			return new NameMapper(workspace, "types").getMapping(toDependencyType());
-		return null;
+		return new NameMapper(workspace, "types").getMapping(getDependencyType());
 	}
 
-	@SuppressWarnings("unused") public String getDefaultValue(Workspace workspace) {
-		switch (this) {
-		case NUMBER:
-			return "0";
-		case LOGIC:
-			return "false";
-		case STRING:
-			return "\"\"";
-		case ITEMSTACK:
-			return "ItemStack.EMPTY";
-		}
+	@SuppressWarnings("unused") public String getDefaultValue() {
+		return defaultValue;
+	}
 
-		return "";
+	@Override public String toString() {
+		return getType() + " - color: " + getColor().getRGB() + ", dependency type: " + getDependencyType() + ", blockly: "
+				+ getBlocklyVariableType() + ", Java class:" + getJavaClass() + ", block name: " + getBlockName();
 	}
 
 	public enum Scope {

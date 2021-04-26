@@ -1,0 +1,7 @@
+{
+	"type": "number",
+	"color": "0x606999",
+	"defaultValue": "0",
+	"blocklyVariableType": "Number",
+	"javaClass": "double"
+}

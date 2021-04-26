@@ -25,10 +25,13 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.VariableElementType;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -205,6 +208,52 @@ public class ExternalBlockLoader {
 
 		String toolbox_xml = FileIO
 				.readResourceToString("/blockly/toolbox_" + toolboxType.name().toLowerCase(Locale.ENGLISH) + ".xml");
+
+		//We add variable related blocks inside their category
+		if (toolboxType == ToolboxType.PROCEDURE) {
+			try {
+				BufferedReader r = new BufferedReader(new FileReader(Objects.requireNonNull(
+						ClassLoader.getSystemClassLoader().getResource("blockly/toolbox_procedure.xml")).getFile()));
+				String line;
+				StringBuilder newLine;
+				while ((line = r.readLine()) != null) {
+					if (line.contains("category.custom_variables")) {
+						newLine = new StringBuilder(line);
+						for (VariableElementType var : VariableElement.getVariables()) {
+							newLine.append("\n<block type=\"variables_get_").append(var.getBlockName())
+									.append("\"/>\n<block type=\"variables_set_").append(var.getBlockName())
+									.append("\"/>");
+						}
+						if (!newLine.toString().equals(line)) {
+							toolbox_xml = toolbox_xml.replace(line, newLine.toString());
+						}
+						//We check for the last line so we can add blocks after the other blocks
+					} else if (line.contains("<custom-advanced/>")) {
+						newLine = new StringBuilder();
+						for (VariableElementType var : VariableElement.getVariables()) {
+							newLine.append("\n<block type=\"custom_dependency_").append(var.getBlockName())
+									.append("\"/>\n<block type=\"procedure_retval_").append(var.getBlockName())
+									.append("\"/>");
+						}
+						newLine.append(line);
+						if (!newLine.toString().equals(line)) {
+							toolbox_xml = toolbox_xml.replace(line, newLine.toString());
+						}
+					} else if (line.contains("<block type=\"controls_repeat_ext\"/>")) {
+						newLine = new StringBuilder();
+						for (VariableElementType var : VariableElement.getVariables()) {
+							newLine.append("\n<block type=\"return_").append(var.getBlockName()).append("\"/>");
+						}
+						newLine.append(line);
+						if (!newLine.toString().equals(line)) {
+							toolbox_xml = toolbox_xml.replace(line, newLine.toString());
+						}
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 		Matcher m = Pattern.compile("\\$\\{t:([\\w.]+)}").matcher(toolbox_xml);
 		while (m.find()) {

@@ -35,6 +35,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.VariableElementType;
 import netscape.javascript.JSObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,9 +43,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -131,6 +130,19 @@ public class BlocklyPanel extends JFXPanel {
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js")
 							.replace("@RESOURCES_PATH", resDir));
 
+					//JS code generation for custom variables
+					for(VariableElementType variable : VariableElement.getVariables()) {
+						//We begin by creating the extensions needed for other blocks
+						webEngine.executeScript(BlocklyJavascriptTemplates.variableListExtension(variable));
+						webEngine.executeScript(BlocklyJavascriptTemplates.procedureListExtensions(variable));
+						//Then, we create the blocks related to variables
+						webEngine.executeScript(BlocklyJavascriptTemplates.getVariableBlock(variable));
+						webEngine.executeScript(BlocklyJavascriptTemplates.setVariableBlock(variable));
+						webEngine.executeScript(BlocklyJavascriptTemplates.customDependencyBlock(variable));
+						webEngine.executeScript(BlocklyJavascriptTemplates.procedureReturnValueBlock(variable));
+						webEngine.executeScript(BlocklyJavascriptTemplates.returnBlock(variable));
+					}
+
 					// colorize panel
 					Accessor.getPageFor(webEngine).setBackgroundColor(0);
 
@@ -206,7 +218,7 @@ public class BlocklyPanel extends JFXPanel {
 			if (vardata.length == 2) {
 				VariableElement element = new VariableElement();
 				element.setName(vardata[0]);
-				element.setType(BlocklyVariables.getMCreatorVariableTypeFromBlocklyVariableType(vardata[1]));
+				element.setType(BlocklyVariables.getMCreatorVariableTypeFromBlocklyVariableType(vardata[1]).getType());
 				retval.add(element);
 			}
 		}
