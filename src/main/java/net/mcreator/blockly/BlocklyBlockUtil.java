@@ -122,21 +122,21 @@ public class BlocklyBlockUtil {
 	/**
 	 * Calculate the HUE of a block from RGB
 	 *
-	 * @param var The variable element to use
+	 * @param varElementType The variable element to use
 	 * @return Built-in color or HUE for other blocks
 	 */
-	public static String getHUEFromRGB(VariableElementType var) {
+	public static String getBlocklyColorFromVarType(VariableElementType varElementType) {
 		//Built-in colors
-		if (var.getType().equalsIgnoreCase("string"))
+		if (varElementType.getType().equalsIgnoreCase("string"))
 			return "\"%{BKY_TEXTS_HUE}\"";
-		else if (var.getType().equalsIgnoreCase("number"))
+		else if (varElementType.getType().equalsIgnoreCase("number"))
 			return "\"%{BKY_MATH_HUE}\"";
-		else if (var.getType().equalsIgnoreCase("logic"))
+		else if (varElementType.getType().equalsIgnoreCase("logic"))
 			return "\"%{BKY_LOGIC_HUE}\"";
 
 		//Custom colors
-		float[] hsbValues = new float[] { (float) var.getColor().getRed() / 255,
-				(float) var.getColor().getGreen() / 255, (float) var.getColor().getBlue() / 255 };
+		float[] hsbValues = new float[] { (float) varElementType.getColor().getRed() / 255,
+				(float) varElementType.getColor().getGreen() / 255, (float) varElementType.getColor().getBlue() / 255 };
 		//We find the minimum and the maximal values
 		float min = Math.min(hsbValues[0], hsbValues[1]);
 		min = Math.min(min, hsbValues[2]);

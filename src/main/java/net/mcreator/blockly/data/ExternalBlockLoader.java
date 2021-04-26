@@ -219,9 +219,9 @@ public class ExternalBlockLoader {
 				while ((line = r.readLine()) != null) {
 					if (line.contains("category.custom_variables")) {
 						newLine = new StringBuilder(line);
-						for (VariableElementType var : VariableElement.getVariables()) {
-							newLine.append("\n<block type=\"variables_get_").append(var.getBlockName())
-									.append("\"/>\n<block type=\"variables_set_").append(var.getBlockName())
+						for (VariableElementType varType : VariableElement.getVariables()) {
+							newLine.append("\n<block type=\"variables_get_").append(varType.getBlockName())
+									.append("\"/>\n<block type=\"variables_set_").append(varType.getBlockName())
 									.append("\"/>");
 						}
 						if (!newLine.toString().equals(line)) {
@@ -230,9 +230,9 @@ public class ExternalBlockLoader {
 						//We check for the last line so we can add blocks after the other blocks
 					} else if (line.contains("<custom-advanced/>")) {
 						newLine = new StringBuilder();
-						for (VariableElementType var : VariableElement.getVariables()) {
-							newLine.append("\n<block type=\"custom_dependency_").append(var.getBlockName())
-									.append("\"/>\n<block type=\"procedure_retval_").append(var.getBlockName())
+						for (VariableElementType varType : VariableElement.getVariables()) {
+							newLine.append("\n<block type=\"custom_dependency_").append(varType.getBlockName())
+									.append("\"/>\n<block type=\"procedure_retval_").append(varType.getBlockName())
 									.append("\"/>");
 						}
 						newLine.append(line);
@@ -241,8 +241,8 @@ public class ExternalBlockLoader {
 						}
 					} else if (line.contains("<block type=\"controls_repeat_ext\"/>")) {
 						newLine = new StringBuilder();
-						for (VariableElementType var : VariableElement.getVariables()) {
-							newLine.append("\n<block type=\"return_").append(var.getBlockName()).append("\"/>");
+						for (VariableElementType varType : VariableElement.getVariables()) {
+							newLine.append("\n<block type=\"return_").append(varType.getBlockName()).append("\"/>");
 						}
 						newLine.append(line);
 						if (!newLine.toString().equals(line)) {
