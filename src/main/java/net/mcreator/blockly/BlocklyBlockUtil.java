@@ -18,7 +18,9 @@
 
 package net.mcreator.blockly;
 
+import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.util.XMLUtil;
+import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -29,8 +31,12 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BlocklyBlockUtil {
 
@@ -162,6 +168,53 @@ public class BlocklyBlockUtil {
 		if (ret < 0)
 			ret += 360;
 		return String.valueOf(Math.round(ret));
+	}
+
+	public static String addProcedureBlocksToCategories(String toolbox_xml) {
+		try {
+			BufferedReader r = new BufferedReader(new FileReader(Objects.requireNonNull(
+					ClassLoader.getSystemClassLoader().getResource("blockly/toolbox_procedure.xml")).getFile()));
+			String line;
+			StringBuilder newLine;
+			while ((line = r.readLine()) != null) {
+				if (line.contains("category.custom_variables")) {
+					newLine = new StringBuilder(line);
+					for (VariableElementType varType : VariableElement.getVariables()) {
+						newLine.append("\n<block type=\"variables_get_").append(varType.getBlockName())
+								.append("\"/>\n<block type=\"variables_set_").append(varType.getBlockName())
+								.append("\"/>");
+					}
+					if (!newLine.toString().equals(line)) {
+						toolbox_xml = toolbox_xml.replace(line, newLine.toString());
+					}
+					//We check for the last line so we can add blocks after the other blocks
+				} else if (line.contains("<custom-advanced/>")) {
+					newLine = new StringBuilder();
+					for (VariableElementType varType : VariableElement.getVariables()) {
+						newLine.append("\n<block type=\"custom_dependency_").append(varType.getBlockName())
+								.append("\"/>\n<block type=\"procedure_retval_").append(varType.getBlockName())
+								.append("\"/>");
+					}
+					newLine.append(line);
+					if (!newLine.toString().equals(line)) {
+						toolbox_xml = toolbox_xml.replace(line, newLine.toString());
+					}
+				} else if (line.contains("<block type=\"controls_repeat_ext\"/>")) {
+					newLine = new StringBuilder();
+					for (VariableElementType varType : VariableElement.getVariables()) {
+						newLine.append("\n<block type=\"return_").append(varType.getBlockName()).append("\"/>");
+					}
+					newLine.append(line);
+					if (!newLine.toString().equals(line)) {
+						toolbox_xml = toolbox_xml.replace(line, newLine.toString());
+					}
+				}
+			}
+			return toolbox_xml;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return toolbox_xml;
 	}
 
 }

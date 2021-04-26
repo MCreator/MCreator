@@ -35,6 +35,13 @@ import java.util.Map;
 import java.util.Set;
 
 public class ReturnBlock implements IBlockGenerator {
+	private final Set<String> names = new HashSet<>();
+
+	public ReturnBlock() {
+		for (VariableElementType var : VariableElement.getVariables()) {
+			names.add("return_" + var.getBlockName());
+		}
+	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String type = StringUtils.removeStart(block.getAttribute("type"), "return_");
@@ -67,10 +74,6 @@ public class ReturnBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		Set<String> names = new HashSet<>();
-		for (VariableElementType var : VariableElement.getVariables()) {
-			names.add("return_" + var.getBlockName());
-		}
 		return names.toArray(new String[0]);
 	}
 

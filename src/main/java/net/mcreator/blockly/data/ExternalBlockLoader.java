@@ -19,6 +19,7 @@
 package net.mcreator.blockly.data;
 
 import com.google.gson.*;
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
@@ -210,49 +211,8 @@ public class ExternalBlockLoader {
 				.readResourceToString("/blockly/toolbox_" + toolboxType.name().toLowerCase(Locale.ENGLISH) + ".xml");
 
 		//We add variable related blocks inside their category
-		if (toolboxType == ToolboxType.PROCEDURE) {
-			try {
-				BufferedReader r = new BufferedReader(new FileReader(Objects.requireNonNull(
-						ClassLoader.getSystemClassLoader().getResource("blockly/toolbox_procedure.xml")).getFile()));
-				String line;
-				StringBuilder newLine;
-				while ((line = r.readLine()) != null) {
-					if (line.contains("category.custom_variables")) {
-						newLine = new StringBuilder(line);
-						for (VariableElementType varType : VariableElement.getVariables()) {
-							newLine.append("\n<block type=\"variables_get_").append(varType.getBlockName())
-									.append("\"/>\n<block type=\"variables_set_").append(varType.getBlockName())
-									.append("\"/>");
-						}
-						if (!newLine.toString().equals(line)) {
-							toolbox_xml = toolbox_xml.replace(line, newLine.toString());
-						}
-						//We check for the last line so we can add blocks after the other blocks
-					} else if (line.contains("<custom-advanced/>")) {
-						newLine = new StringBuilder();
-						for (VariableElementType varType : VariableElement.getVariables()) {
-							newLine.append("\n<block type=\"custom_dependency_").append(varType.getBlockName())
-									.append("\"/>\n<block type=\"procedure_retval_").append(varType.getBlockName())
-									.append("\"/>");
-						}
-						newLine.append(line);
-						if (!newLine.toString().equals(line)) {
-							toolbox_xml = toolbox_xml.replace(line, newLine.toString());
-						}
-					} else if (line.contains("<block type=\"controls_repeat_ext\"/>")) {
-						newLine = new StringBuilder();
-						for (VariableElementType varType : VariableElement.getVariables()) {
-							newLine.append("\n<block type=\"return_").append(varType.getBlockName()).append("\"/>");
-						}
-						newLine.append(line);
-						if (!newLine.toString().equals(line)) {
-							toolbox_xml = toolbox_xml.replace(line, newLine.toString());
-						}
-					}
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		if (toolboxType == ExternalBlockLoader.ToolboxType.PROCEDURE) {
+			toolbox_xml = BlocklyBlockUtil.addProcedureBlocksToCategories(toolbox_xml);
 		}
 
 		Matcher m = Pattern.compile("\\$\\{t:([\\w.]+)}").matcher(toolbox_xml);

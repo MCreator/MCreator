@@ -32,6 +32,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CustomDependencyBlock implements IBlockGenerator {
+	private final Set<String> names = new HashSet<>();
+
+	public CustomDependencyBlock() {
+		for (VariableElementType var : VariableElement.getVariables()) {
+			names.add("custom_dependency_" + var.getBlockName());
+		}
+	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
@@ -52,10 +59,6 @@ public class CustomDependencyBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		Set<String> names = new HashSet<>();
-		for (VariableElementType var : VariableElement.getVariables()) {
-			names.add("custom_dependency_" + var.getBlockName());
-		}
 		return names.toArray(new String[0]);
 	}
 
