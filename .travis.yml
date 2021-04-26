@@ -1,14 +1,22 @@
-dist: trusty
+dist: xenial
 
-env:
-  - GRADLE_OPTS="-Xmx4096m"
+addons:
+  apt:
+    sources:
+      - sourceline: 'deb [arch=amd64] https://apt.bell-sw.com/ stable main'
+        key_url: 'https://download.bell-sw.com/pki/GPG-KEY-bellsoft'
+    packages:
+      - bellsoft-java8-full
 
 git:
   depth: 3
 
 branches:
-  only: 
+  only:
     - master
+
+env:
+  - GRADLE_OPTS="-Xmx6000m"
 
 before_cache:
   - rm -f  $HOME/.mcreator/gradle/caches/modules-2/modules-2.lock
@@ -21,12 +29,16 @@ cache:
     - $HOME/.mcreator/gradle/wrapper/
 
 language: java
-jdk:
-  - oraclejdk8
-
-before_install:
-  - chmod +x gradlew
 
 script:
+  # Make gradle executable
   - chmod +x gradlew
+
+  # Output time every 5 minutes or Travis kills the job (if decompile takes too long)
+  - while sleep 5m; do echo "=====[ $SECONDS seconds still running ]====="; done &
+
+  # Run unit tests
   - xvfb-run ./gradlew test
+  
+  # Kill background sleep loop
+  - kill %1
