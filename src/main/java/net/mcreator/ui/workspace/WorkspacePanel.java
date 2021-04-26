@@ -1270,8 +1270,10 @@ import java.util.stream.Collectors;
 					keyWords.add(pat.replace("\"", ""));
 			}
 
+			boolean flattenFolders = !searchInput.isEmpty();
+
 			filterItems.addAll(items.stream().filter(e -> e instanceof FolderElement)
-					.filter(item -> currentFolder.getDirectFolderChildren().contains(item) || (!keyWords.isEmpty()
+					.filter(item -> currentFolder.getDirectFolderChildren().contains(item) || (flattenFolders
 							&& currentFolder.getRecursiveFolderChildren().contains(item))).filter(item -> {
 						if (!filters.isEmpty() || !metfilters.isEmpty())
 							return false;
@@ -1287,7 +1289,7 @@ import java.util.stream.Collectors;
 					}).collect(Collectors.toList()));
 
 			List<ModElement> modElements = items.stream().filter(e -> e instanceof ModElement).map(e -> (ModElement) e)
-					.filter(item -> currentFolder.equals(item.getFolderPath()) || (!keyWords.isEmpty() && currentFolder
+					.filter(item -> currentFolder.equals(item.getFolderPath()) || (flattenFolders && currentFolder
 							.getRecursiveFolderChildren().stream()
 							.anyMatch(folder -> folder.equals(item.getFolderPath())))).filter(item -> {
 						if (keyWords.size() == 0)
