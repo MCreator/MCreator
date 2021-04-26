@@ -557,7 +557,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 
-			defaultFeatures.setListElements(Arrays.asList("Caves", "Ores"));
+			defaultFeatures.setListElements(Arrays.asList("Caves", "Ores", "FrozenTopLayer"));
 		}
 	}
 

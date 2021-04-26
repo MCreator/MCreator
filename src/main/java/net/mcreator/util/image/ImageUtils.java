@@ -245,6 +245,15 @@ public class ImageUtils {
 		return resizedImage;
 	}
 
+	public static BufferedImage eraseRect(Image image, int x, int y, int w, int h) {
+		BufferedImage out = toBufferedImage(image);
+		Graphics2D g = out.createGraphics();
+		g.setBackground(new Color(0, 0, 0, 0));
+		g.clearRect(x, y, w, h);
+		g.dispose();
+		return out;
+	}
+
 	/**
 	 * Converts a given Image into a BufferedImage
 	 *
