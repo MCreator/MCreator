@@ -49,7 +49,7 @@ public class VariableElement implements IElement {
 
 	public static VariableElementType getVariableFromType(String type) {
 		for (VariableElementType var : variables.keySet()) {
-			if(var.getBlocklyVariableType().equalsIgnoreCase(type) || var.getType().equalsIgnoreCase(type)
+			if(var.getBlocklyVariableType().equalsIgnoreCase(type) || var.getName().equalsIgnoreCase(type)
 					|| var.getBlockName().equalsIgnoreCase(type)) {
 				return var;
 			}
@@ -62,7 +62,7 @@ public class VariableElement implements IElement {
 	}
 
 	public static void addVariable(VariableElementType var) {
-		variables.put(var, var.getType().toUpperCase());
+		variables.put(var, var.getName().toUpperCase());
 	}
 
 	public static Collection<String> getAllTypes() {

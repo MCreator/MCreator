@@ -111,7 +111,7 @@ public class TestWorkspaceDataProvider {
 		VariableElement sampleVariable1 = new VariableElement();
 		sampleVariable1.setName("test");
 		sampleVariable1.setValue("true");
-		sampleVariable1.setType(VariableElementType.LOGIC.getType());
+		sampleVariable1.setType(VariableElementType.LOGIC.getName());
 		sampleVariable1.setScope(VariableElementType.Scope.GLOBAL_WORLD);
 		workspace.addVariableElement(sampleVariable1);
 

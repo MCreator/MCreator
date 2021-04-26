@@ -96,7 +96,7 @@ public class GTModElements {
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
 					if (!modElement.equals(modElement1))
-						fail("Filed to properly determine file ownership for mod element type: " + modElement.getType()
+						fail("Filed to properly determine file ownership for mod element type: " + modElement.getName()
 								.getReadableName() + ", file: " + modElementFile);
 				}
 
@@ -110,7 +110,7 @@ public class GTModElements {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
 					if (modElement
 							.equals(modElement1)) // if now ownership can still be found, this means some files were not properly removed
-						fail("Filed to properly delete file of mod element type: " + modElement.getType()
+						fail("Filed to properly delete file of mod element type: " + modElement.getName()
 								.getReadableName() + ", file: " + modElementFile);
 				}
 

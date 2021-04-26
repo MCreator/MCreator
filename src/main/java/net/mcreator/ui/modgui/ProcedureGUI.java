@@ -48,7 +48,6 @@ import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -143,7 +142,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			if (blocklyToJava.getReturnType() != null) {
 				returnType.setVisible(true);
-				returnTypeLabel.setText(blocklyToJava.getReturnType().getType().toUpperCase());
+				returnTypeLabel.setText(blocklyToJava.getReturnType().getName().toUpperCase());
 				returnTypeLabel.setForeground(blocklyToJava.getReturnType().getColor().brighter());
 			} else {
 				returnType.setVisible(false);

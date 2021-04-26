@@ -1,5 +1,5 @@
 {
-	"type": "string",
+	"name": "string",
 	"color": "0x609986",
 	"defaultValue": "\"\"",
 	"blocklyVariableType": "String",

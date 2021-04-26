@@ -102,8 +102,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					return new DefaultCellEditor(new JComboBox<>(VariableElementType.Scope.values()));
 				} else if (modelColumn == 1) {
 					return new DefaultCellEditor(new JComboBox<>(
-							new String[] { VariableElementType.ITEMSTACK.getType(), VariableElementType.LOGIC.getType(),
-									VariableElementType.NUMBER.getType(), VariableElementType.STRING.getType() }));
+							new String[] { VariableElementType.ITEMSTACK.getName(), VariableElementType.LOGIC.getName(),
+									VariableElementType.NUMBER.getName(), VariableElementType.STRING.getName() }));
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
 					name.enableRealtimeValidation();
@@ -231,8 +231,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 									}
 									return validator.validate();
 								}
-							}, VariableElementType.LOGIC.getType().toUpperCase(), VariableElementType.NUMBER.getType().toUpperCase(),
-							VariableElementType.STRING.getType().toUpperCase(), VariableElementType.ITEMSTACK.getType().toUpperCase());
+							}, VariableElementType.LOGIC.getName().toUpperCase(), VariableElementType.NUMBER.getName().toUpperCase(),
+							VariableElementType.STRING.getName().toUpperCase(), VariableElementType.ITEMSTACK.getName().toUpperCase());
 			if (element != null) {
 				workspacePanel.getMcreator().getWorkspace().addVariableElement(element);
 				reloadElements();
@@ -284,7 +284,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 
 		for (VariableElement variable : workspacePanel.getMcreator().getWorkspace().getVariableElements()) {
 			model.addRow(
-					new Object[] { variable.getName(), variable.getType().getType().toUpperCase(), variable.getScope(), variable.getValue() });
+					new Object[] { variable.getName(), variable.getType().getName().toUpperCase(), variable.getScope(), variable.getValue() });
 		}
 		refilterElements();
 

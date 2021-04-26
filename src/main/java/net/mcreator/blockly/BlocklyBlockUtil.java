@@ -18,7 +18,6 @@
 
 package net.mcreator.blockly;
 
-import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
@@ -133,11 +132,11 @@ public class BlocklyBlockUtil {
 	 */
 	public static String getBlocklyColorFromVarType(VariableElementType varElementType) {
 		//Built-in colors
-		if (varElementType.getType().equalsIgnoreCase("string"))
+		if (varElementType.getName().equalsIgnoreCase("string"))
 			return "\"%{BKY_TEXTS_HUE}\"";
-		else if (varElementType.getType().equalsIgnoreCase("number"))
+		else if (varElementType.getName().equalsIgnoreCase("number"))
 			return "\"%{BKY_MATH_HUE}\"";
-		else if (varElementType.getType().equalsIgnoreCase("logic"))
+		else if (varElementType.getName().equalsIgnoreCase("logic"))
 			return "\"%{BKY_LOGIC_HUE}\"";
 
 		//Custom colors

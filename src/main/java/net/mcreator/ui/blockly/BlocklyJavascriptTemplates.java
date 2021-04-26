@@ -32,9 +32,9 @@ public class BlocklyJavascriptTemplates {
 	}
 
 	public static String procedureListExtensions(VariableElementType var) {
-		return "Blockly.Extensions.register('procedure_retval_" + var.getType() + "',function () {"
+		return "Blockly.Extensions.register('procedure_retval_" + var.getName() + "',function () {"
 				+ "this.appendDummyInput().appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf(\"procedure_retval_"
-				+ var.getType() + "\"))), 'procedure');" + "});";
+				+ var.getName() + "\"))), 'procedure');" + "});";
 	}
 
 	public static String getVariableBlock(VariableElementType var) {
@@ -64,7 +64,7 @@ public class BlocklyJavascriptTemplates {
 	public static String procedureReturnValueBlock(VariableElementType var) {
 		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"procedure_retval_" + var.getBlockName()
 				+ "\",\"message0\": \"" + L10N.t("blockly.block.procedure_retval")
-				+ "\",\"extensions\": [\"procedure_retval_" + var.getType() + "\"],\"output\": \"" + var
+				+ "\",\"extensions\": [\"procedure_retval_" + var.getName() + "\"],\"output\": \"" + var
 				.getBlocklyVariableType() + "\",\"inputsInline\": true,\"colour\": " + BlocklyBlockUtil
 				.getBlocklyColorFromVarType(var) + "}]);";
 	}

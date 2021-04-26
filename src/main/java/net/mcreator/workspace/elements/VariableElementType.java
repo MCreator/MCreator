@@ -33,7 +33,7 @@ public class VariableElementType {
 	public static VariableElementType NUMBER;
 	public static VariableElementType ITEMSTACK;
 
-	private String type;
+	private String name;
 	private String color;
 	//Use for compatibility with old workspaces
 	@Nullable private String dependencyType;
@@ -48,15 +48,15 @@ public class VariableElementType {
 		return Color.decode(color);
 	}
 
-	public String getType() {
-		return type;
+	public String getName() {
+		return name;
 	}
 
 	public String getDependencyType() {
 		if(dependencyType != null)
 			return dependencyType;
 		else
-			return type;
+			return name;
 	}
 
 	public String getBlocklyVariableType() {
@@ -71,7 +71,7 @@ public class VariableElementType {
 		if(blockName != null)
 			return blockName;
 		else
-			return type;
+			return name;
 
 	}
 
@@ -81,11 +81,6 @@ public class VariableElementType {
 
 	@SuppressWarnings("unused") public String getDefaultValue() {
 		return defaultValue;
-	}
-
-	@Override public String toString() {
-		return getType() + " - color: " + getColor().getRGB() + ", dependency type: " + getDependencyType() + ", blockly: "
-				+ getBlocklyVariableType() + ", Java class:" + getJavaClass() + ", block name: " + getBlockName();
 	}
 
 	public enum Scope {
