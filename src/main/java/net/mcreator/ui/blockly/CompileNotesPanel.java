@@ -100,10 +100,8 @@ public class CompileNotesPanel extends JPanel {
 			ComponentUtils.deriveFont(this, 12);
 			if (value.getType() == BlocklyCompileNote.Type.ERROR) {
 				setIcon(UIRES.get("18px.remove"));
-			} else if (value.getType() == BlocklyCompileNote.Type.WARNING) {
-				setIcon(UIRES.get("18px.warning"));
 			} else {
-				setIcon(UIRES.get("18px.info"));
+				setIcon(UIRES.get("18px.warning"));
 			}
 			setText(value.getMessage());
 			return this;

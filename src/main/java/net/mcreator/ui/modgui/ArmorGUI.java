@@ -488,28 +488,28 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			if (enableHelmet.isSelected() && !textureHelmet.has())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
-			return Validator.ValidationResult.PASSED;
+			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
 		textureBody.setValidator(() -> {
 			if (enableBody.isSelected() && !textureBody.has())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
-			return Validator.ValidationResult.PASSED;
+			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
 		textureLeggings.setValidator(() -> {
 			if (enableLeggings.isSelected() && !textureLeggings.has())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
-			return Validator.ValidationResult.PASSED;
+			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
 		textureBoots.setValidator(() -> {
 			if (enableBoots.isSelected() && !textureBoots.has())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
-			return Validator.ValidationResult.PASSED;
+			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
 		helmetModelListener = actionEvent -> {
@@ -640,7 +640,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			if (armorTextureFile.getSelectedItem() == null || armorTextureFile.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.armor_needs_texture"));
-			return Validator.ValidationResult.PASSED;
+			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
 		group2page.addValidationElement(armorTextureFile);

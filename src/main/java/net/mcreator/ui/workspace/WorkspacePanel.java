@@ -118,6 +118,8 @@ import java.util.stream.Collectors;
 
 	private final JLabel elementsCount = new JLabel();
 
+	private final ModTypeDropdown modTypeDropdown;
+
 	public final JRadioButtonMenuItem desc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.descending"));
 
 	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem(
@@ -139,6 +141,8 @@ import java.util.stream.Collectors;
 		this.vcsPan = new WorkspacePanelVCS(this);
 
 		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator);
+
+		this.modTypeDropdown = new ModTypeDropdown(mcreator);
 
 		panels.setOpaque(false);
 
@@ -333,7 +337,7 @@ import java.util.stream.Collectors;
 								}
 							}
 
-							return Validator.ValidationResult.PASSED;
+							return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 						}
 					});
 
@@ -694,7 +698,7 @@ import java.util.stream.Collectors;
 		but1.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but1.isEnabled())
-					new ModTypeDropdown(mcreator).show(e.getComponent(), e.getComponent().getWidth() + 5, -3);
+					modTypeDropdown.show(e.getComponent(), e.getComponent().getWidth() + 5, -3);
 			}
 		});
 		but1.setToolTipText(L10N.t("workspace.elements.add.tooltip"));
@@ -1034,10 +1038,6 @@ import java.util.stream.Collectors;
 
 							duplicateModElement.setCodeLock(true);
 						}
-
-						// if we are not in the root folder, specify the folder of the mod element
-						if (!currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
-							duplicateModElement.setParentFolder(currentFolder);
 
 						mcreator.getWorkspace().addModElement(duplicateModElement);
 

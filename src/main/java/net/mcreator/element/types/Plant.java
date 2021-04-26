@@ -90,9 +90,6 @@ import java.util.stream.Collectors;
 	public double jumpFactor;
 	public double speedFactor;
 
-	public List<MItemBlock> canBePlacedOn;
-	public Procedure placingCondition;
-
 	public int frequencyOnChunks;
 	public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;
@@ -116,7 +113,6 @@ import java.util.stream.Collectors;
 	public Plant(ModElement element) {
 		super(element);
 
-		this.canBePlacedOn = new ArrayList<>();
 		this.spawnWorldTypes = new ArrayList<>();
 		this.spawnWorldTypes.add("Surface");
 		this.restrictionBiomes = new ArrayList<>();

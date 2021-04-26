@@ -169,7 +169,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 			if (texture.getSelectedItem() == null || texture.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.particle.error.needs_texture"));
-			return Validator.ValidationResult.PASSED;
+			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);

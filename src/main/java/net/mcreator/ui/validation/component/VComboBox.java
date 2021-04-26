@@ -53,7 +53,7 @@ public class VComboBox<T> extends JComboBox<T> implements IValidable {
 	}
 
 	@Override public Validator.ValidationResult getValidationStatus() {
-		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
+		Validator.ValidationResult validationResult = validator == null ? null : validator.validate();
 
 		if (validator != null && validationResult != null) {
 			if (validationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {

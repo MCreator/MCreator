@@ -137,10 +137,4 @@ public class GradleErrorDecoder {
 		return false;
 	}
 
-	public static boolean doesErrorSuggestRerun(String errortext) {
-		// normalize spaces
-		errortext = errortext.replaceAll("\u00a0", " ");
-		return errortext.contains("try running the task again.");
-	}
-
 }

@@ -14,14 +14,14 @@ forge-1.15.2:
 
     dependencies { compile files("lib/mcreator_link.jar") }
 
-forge-1.16.5:
+forge-1.16.4:
   required_when_enabled: true
   update_files:
     - lib/mcreator_link.jar
   gradle: |
     task mcreatorLink(type: DefaultTask) {
       ant.mkdir(dir: 'lib/');
-      ant.get(src: 'https://mcreator.net/link/download/dev_1.16.5', dest: 'lib/mcreator_link.jar', skipexisting: 'true');
+      ant.get(src: 'https://mcreator.net/link/download/dev_1.16.4', dest: 'lib/mcreator_link.jar', skipexisting: 'true');
     }
 
     compileJava.dependsOn mcreatorLink

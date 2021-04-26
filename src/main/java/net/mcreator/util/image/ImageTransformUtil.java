@@ -18,9 +18,6 @@
 
 package net.mcreator.util.image;
 
-import net.mcreator.util.math.Matrix3D;
-import net.mcreator.util.math.Point3D;
-
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
@@ -82,4 +79,131 @@ public class ImageTransformUtil {
 		return m;
 	}
 
+	private static class Point3D {
+		double x;
+		double y;
+		double z;
+
+		Point3D(double x, double y, double z) {
+			this.x = x;
+			this.y = y;
+			this.z = z;
+		}
+	}
+
+	private static class Matrix3D {
+		double m00;
+		double m01;
+		double m02;
+		double m10;
+		double m11;
+		double m12;
+		double m20;
+		double m21;
+		double m22;
+
+		Matrix3D(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21,
+				double m22) {
+			this.m00 = m00;
+			this.m01 = m01;
+			this.m02 = m02;
+			this.m10 = m10;
+			this.m11 = m11;
+			this.m12 = m12;
+			this.m20 = m20;
+			this.m21 = m21;
+			this.m22 = m22;
+		}
+
+		Matrix3D(Matrix3D m) {
+			this.m00 = m.m00;
+			this.m01 = m.m01;
+			this.m02 = m.m02;
+			this.m10 = m.m10;
+			this.m11 = m.m11;
+			this.m12 = m.m12;
+			this.m20 = m.m20;
+			this.m21 = m.m21;
+			this.m22 = m.m22;
+		}
+
+		void invert() {
+			double invDet = 1.0 / determinant();
+			double nm00 = m22 * m11 - m21 * m12;
+			double nm01 = -(m22 * m01 - m21 * m02);
+			double nm02 = m12 * m01 - m11 * m02;
+			double nm10 = -(m22 * m10 - m20 * m12);
+			double nm11 = m22 * m00 - m20 * m02;
+			double nm12 = -(m12 * m00 - m10 * m02);
+			double nm20 = m21 * m10 - m20 * m11;
+			double nm21 = -(m21 * m00 - m20 * m01);
+			double nm22 = m11 * m00 - m10 * m01;
+			m00 = nm00 * invDet;
+			m01 = nm01 * invDet;
+			m02 = nm02 * invDet;
+			m10 = nm10 * invDet;
+			m11 = nm11 * invDet;
+			m12 = nm12 * invDet;
+			m20 = nm20 * invDet;
+			m21 = nm21 * invDet;
+			m22 = nm22 * invDet;
+		}
+
+		double determinant() {
+			return m00 * (m11 * m22 - m12 * m21) + m01 * (m12 * m20 - m10 * m22) + m02 * (m10 * m21 - m11 * m20);
+		}
+
+		final void mul(double factor) {
+			m00 *= factor;
+			m01 *= factor;
+			m02 *= factor;
+
+			m10 *= factor;
+			m11 *= factor;
+			m12 *= factor;
+
+			m20 *= factor;
+			m21 *= factor;
+			m22 *= factor;
+		}
+
+		void transform(Point3D p) {
+			double x = m00 * p.x + m01 * p.y + m02 * p.z;
+			double y = m10 * p.x + m11 * p.y + m12 * p.z;
+			double z = m20 * p.x + m21 * p.y + m22 * p.z;
+			p.x = x;
+			p.y = y;
+			p.z = z;
+		}
+
+		void transform(Point2D pp) {
+			Point3D p = new Point3D(pp.getX(), pp.getY(), 1.0);
+			transform(p);
+			pp.setLocation(p.x / p.z, p.y / p.z);
+		}
+
+		void mul(Matrix3D m) {
+			double nm00 = m00 * m.m00 + m01 * m.m10 + m02 * m.m20;
+			double nm01 = m00 * m.m01 + m01 * m.m11 + m02 * m.m21;
+			double nm02 = m00 * m.m02 + m01 * m.m12 + m02 * m.m22;
+
+			double nm10 = m10 * m.m00 + m11 * m.m10 + m12 * m.m20;
+			double nm11 = m10 * m.m01 + m11 * m.m11 + m12 * m.m21;
+			double nm12 = m10 * m.m02 + m11 * m.m12 + m12 * m.m22;
+
+			double nm20 = m20 * m.m00 + m21 * m.m10 + m22 * m.m20;
+			double nm21 = m20 * m.m01 + m21 * m.m11 + m22 * m.m21;
+			double nm22 = m20 * m.m02 + m21 * m.m12 + m22 * m.m22;
+
+			m00 = nm00;
+			m01 = nm01;
+			m02 = nm02;
+			m10 = nm10;
+			m11 = nm11;
+			m12 = nm12;
+			m20 = nm20;
+			m21 = nm21;
+			m22 = nm22;
+		}
+	}
 }

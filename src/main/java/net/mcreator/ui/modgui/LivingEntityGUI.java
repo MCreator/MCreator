@@ -799,7 +799,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 			if (mobModelTexture.getSelectedItem() == null || mobModelTexture.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.living_entity.error_entity_model_needs_texture"));
-			return Validator.ValidationResult.PASSED;
+			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		});
 
 		mobName.setValidator(

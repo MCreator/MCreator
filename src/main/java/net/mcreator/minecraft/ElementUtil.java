@@ -192,10 +192,6 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("gamemodes").stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
-	public static String[] getAllPlantTypes() {
-		return DataListLoader.loadDataList("planttypes").stream().map(DataListEntry::getName).toArray(String[]::new);
-	}
-
 	public static List<DataListEntry> loadStepSounds() {
 		return DataListLoader.loadDataList("stepsounds");
 	}

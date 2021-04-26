@@ -210,12 +210,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 							}
 						}
 					}
-
-					// Check if trigger is tick based
-					if (trigger.getID().endsWith("_ticks")) {
-						compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.INFO,
-								L10N.t("elementgui.procedure.global_trigger_tick_based", trigger.getName())));
-					}
 				} else {
 					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("elementgui.procedure.global_trigger_does_not_exist")));
@@ -374,12 +368,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 										if (textname.equals(nameinrow))
 											return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 													L10N.t("elementgui.procedure.name_already_exists"));
-									}
-									for (Dependency dependency : dependenciesArrayList) {
-										String nameinrow = dependency.getName();
-										if (textname.equals(nameinrow))
-											return new ValidationResult(ValidationResultType.ERROR,
-													L10N.t("elementgui.procedure.name_already_exists_dep"));
 									}
 									return validator.validate();
 								}

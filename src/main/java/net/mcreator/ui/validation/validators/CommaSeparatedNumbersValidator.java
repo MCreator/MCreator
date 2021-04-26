@@ -34,13 +34,13 @@ public class CommaSeparatedNumbersValidator implements Validator {
 
 	@Override public ValidationResult validate() {
 		if (holder.getText().trim().equals(""))
-			return Validator.ValidationResult.PASSED;
+			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 		try {
 			Stream.of(holder.getText().split(",")).map(Integer::parseInt).collect(Collectors.toList());
 		} catch (Exception e) {
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, "Only number list allowed");
 		}
-		return Validator.ValidationResult.PASSED;
+		return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
 	}
 
 }

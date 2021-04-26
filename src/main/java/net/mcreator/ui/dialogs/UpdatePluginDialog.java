@@ -53,7 +53,10 @@ public class UpdatePluginDialog {
 								plugin.getPlugin().getInfo().getVersion(), plugin.getNewVersion());
 				label.addMouseListener(new MouseAdapter() {
 					@Override public void mouseClicked(MouseEvent e) {
-						DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/node/" + plugin.getPageId());
+						String url = (plugin.getPluginPage().startsWith("/")) ?
+								plugin.getPluginPage() :
+								"/" + plugin.getPluginPage();
+						DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugin" + url);
 					}
 				});
 				plugins.add(label);
@@ -67,7 +70,10 @@ public class UpdatePluginDialog {
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 			if (option == 0) {
 				for (PluginUpdateInfo plug : PluginLoader.INSTANCE.getPluginUpdates()) {
-					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/node/" + plug.getPageId());
+					String url = (plug.getPluginPage().startsWith("/")) ?
+							plug.getPluginPage() :
+							"/" + plug.getPluginPage();
+					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugin" + url);
 				}
 			}
 		}

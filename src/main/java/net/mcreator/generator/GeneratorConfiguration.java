@@ -119,10 +119,6 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return generatorConfig.get("buildfileversion") != null ? (String) generatorConfig.get("buildfileversion") : "";
 	}
 
-	@Nullable public String getGeneratorSubVersion() {
-		return (String) generatorConfig.get("subversion");
-	}
-
 	public Map<?, ?> getStardIDMap() {
 		return generatorConfig.get("start_id_map") != null ?
 				(Map<?, ?>) generatorConfig.get("start_id_map") :

@@ -26,9 +26,6 @@ public interface Validator {
 
 	class ValidationResult {
 
-		public static final ValidationResult PASSED = new Validator.ValidationResult(
-				Validator.ValidationResultType.PASSED, "");
-
 		private ValidationResultType validationResultType;
 		private String message = "";
 
@@ -52,13 +49,6 @@ public interface Validator {
 		public void setMessage(String message) {
 			this.message = message;
 		}
-	}
-
-	default ValidationResult validateIfEnabled(IValidable validable) {
-		if (!validable.isEnabled())
-			return ValidationResult.PASSED;
-
-		return this.validate();
 	}
 
 	ValidationResult validate();
