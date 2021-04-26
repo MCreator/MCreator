@@ -458,7 +458,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		JPanel soim;
 		if (!Launcher.version.isSnapshot()) {
-			soim = new ImagePanel(UIRES.getInternal("pylo").getImage());
+			soim = new ImagePanel(UIRES.getInternal("splash").getImage());
 			((ImagePanel) soim).setFitToWidth(true);
 			((ImagePanel) soim).setOffsetY(-320);
 		} else {

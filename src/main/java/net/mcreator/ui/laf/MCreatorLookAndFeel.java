@@ -34,15 +34,16 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 
 	private static final Logger LOG = LogManager.getLogger("Look and Feel");
 
-	private MCreatorTheme theme;
+	private final MCreatorTheme theme;
 
 	public MCreatorLookAndFeel() {
-		try {
+		if (ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme) != null) {
 			setCurrentTheme(theme = new MCreatorTheme(
 					Objects.requireNonNull(ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme))
 							.getColorScheme()));
-		} catch (NullPointerException e) {
+		} else {
 			setCurrentTheme(theme = new MCreatorTheme(ThemeLoader.DARK_THEME.getColorScheme()));
+			LOG.warn("Default theme is used due to missing theme " + theme.getName());
 		}
 	}
 
