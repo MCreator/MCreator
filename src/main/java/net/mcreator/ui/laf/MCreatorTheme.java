@@ -45,7 +45,6 @@ public class MCreatorTheme extends OceanTheme {
 
 	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
 	private final Color MAIN_TINT;
-	private Color MAIN_TINT = MAIN_TINT_DEFAULT;
 	private final ColorScheme theme;
 	public static final ColorScheme DARK_SCHEME = new ColorScheme("dark", "0x1e1e1e", "0x323232", "0x505050", "0xc2c2c2", "0xf5f5f5");
 
