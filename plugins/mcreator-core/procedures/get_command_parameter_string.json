@@ -1,0 +1,38 @@
+{
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "param",
+      "text": "Argument name"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "type",
+      "options": [
+        [
+          "String",
+          "string"
+        ],
+        [
+          "Message",
+          "message"
+        ]
+      ]
+    }
+  ],
+  "output": "String",
+  "colour": "%{BKY_TEXTS_HUE}",
+  "mcreator": {
+    "toolbox_id": "advanced",
+    "fields": [
+      "param",
+      "type"
+    ],
+    "dependencies": [
+      {
+        "name": "cmdargs",
+        "type": "ctx"
+      }
+    ]
+  }
+}
