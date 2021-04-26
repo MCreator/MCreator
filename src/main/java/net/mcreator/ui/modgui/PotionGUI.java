@@ -102,7 +102,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		JPanel pane4 = new JPanel(new BorderLayout());
 
-		JPanel selp = new JPanel(new GridLayout(10, 2, 50, 11));
+		JPanel selp = new JPanel(new GridLayout(10, 2, 50, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(effectName, 16);
@@ -183,7 +183,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 			if (icon.getSelectedItem() == null || icon.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.potion.error_potion_needs_icon"));
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+			return Validator.ValidationResult.PASSED;
 		});
 
 		name.setValidator(

@@ -1,1 +1,1 @@
-This is the GameRule description. It is used for the GameRules setting screen.
+This is the Game rule description. It is used on the GameRules setting screen when hovered over.

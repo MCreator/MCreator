@@ -1,7 +1,0 @@
-templates:
-  - template: tab.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/itemgroup/@NAMEItemGroup.java"
-
-localizationkeys:
-  - key: itemGroup.tab@registryname
-    mapto: name

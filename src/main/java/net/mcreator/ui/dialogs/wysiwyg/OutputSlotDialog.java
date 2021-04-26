@@ -65,7 +65,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog {
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("dialog.gui.slot_id_must_be_number"));
 			}
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+			return Validator.ValidationResult.PASSED;
 		});
 		slotID.setText("0");
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_id"), slotID));

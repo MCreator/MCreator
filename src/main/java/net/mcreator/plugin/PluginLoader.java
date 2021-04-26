@@ -47,7 +47,13 @@ public class PluginLoader extends URLClassLoader {
 	private static final Logger LOG = LogManager.getLogger("Plugin Loader");
 
 	public static PluginLoader INSTANCE;
+
+	public static void initInstance() {
+		INSTANCE = new PluginLoader();
+	}
+
 	private final List<Plugin> plugins;
+
 	private final Reflections reflections;
 	private final List<PluginUpdateInfo> pluginUpdates;
 
@@ -94,10 +100,6 @@ public class PluginLoader extends URLClassLoader {
 
 		this.reflections = new Reflections(new ResourcesScanner(), this);
 		checkPluginUpdates();
-	}
-
-	public static void initInstance() {
-		INSTANCE = new PluginLoader();
 	}
 
 	public Set<String> getResources(Pattern pattern) {
@@ -188,18 +190,16 @@ public class PluginLoader extends URLClassLoader {
 		return plugin;
 	}
 
-	public void checkPluginUpdates() {
+	private void checkPluginUpdates() {
 		for (Plugin plugin : plugins) {
 			if (MCreatorApplication.isInternet) {
 				if (plugin.getInfo().getUpdateUrl() != null) {
 					if (!plugin.getInfo().getVersion().equals("not specified")) {
-						JsonObject version = new Gson()
-								.fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateUrl()), JsonObject.class);
-						if (!version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString()
-								.equals(plugin.getPluginVersion())) {
+						String version = new Gson().fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateUrl()),
+								JsonObject.class).get(plugin.getID()).getAsJsonObject().get("latest").getAsString();
+						if (!version.equals(plugin.getPluginVersion())) {
 							pluginUpdates.add(new PluginUpdateInfo(plugin,
-									version.get(plugin.getID()).getAsJsonObject().get("latest").getAsString(),
-									plugin.getInfo().getPluginPage()));
+									version, plugin.getInfo().getPageId()));
 						}
 					}
 				}

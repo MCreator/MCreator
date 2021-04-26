@@ -1,4 +1,0 @@
-templates:
-  - template: function.mcfunction.ftl
-    writer: file
-    name: "@RESROOT/data/@[getNamespace()]/functions/@[getName()].mcfunction"

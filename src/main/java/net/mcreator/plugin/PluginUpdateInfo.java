@@ -22,12 +22,12 @@ package net.mcreator.plugin;
 public class PluginUpdateInfo {
 	private final Plugin plugin;
 	private final String newVersion;
-	private final String pluginPage;
+	private final int pageId;
 
-	public PluginUpdateInfo(Plugin plugin, String newVersion, String pluginURL) {
+	public PluginUpdateInfo(Plugin plugin, String newVersion, int pageId) {
 		this.plugin = plugin;
 		this.newVersion = newVersion;
-		this.pluginPage = pluginURL;
+		this.pageId = pageId;
 	}
 
 	public Plugin getPlugin() {
@@ -38,7 +38,7 @@ public class PluginUpdateInfo {
 		return newVersion;
 	}
 
-	public String getPluginPage() {
-		return pluginPage;
+	public int getPageId() {
+		return pageId;
 	}
 }

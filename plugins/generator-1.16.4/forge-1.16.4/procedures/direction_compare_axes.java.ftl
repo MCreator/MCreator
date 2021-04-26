@@ -1,1 +1,0 @@
-(${input$a}.getAxis() == ${input$b}.getAxis())

@@ -1,1 +1,0 @@
-(world instanceof World ? (((World) world).getDimensionKey()) : World.OVERWORLD)
