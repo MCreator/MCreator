@@ -19,9 +19,12 @@
 package net.mcreator.plugin;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.io.net.WebIO;
 import net.mcreator.io.zip.ZipIO;
+import net.mcreator.ui.MCreatorApplication;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -44,6 +47,7 @@ public class PluginLoader extends URLClassLoader {
 	private static final Logger LOG = LogManager.getLogger("Plugin Loader");
 
 	public static PluginLoader INSTANCE;
+	private final List<PluginUpdateInfo> pluginUpdates;
 
 	public static void initInstance() {
 		INSTANCE = new PluginLoader();
@@ -57,6 +61,7 @@ public class PluginLoader extends URLClassLoader {
 		super(new URL[] {}, null);
 
 		this.plugins = new ArrayList<>();
+		this.pluginUpdates = new ArrayList<>();
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
 
@@ -94,6 +99,7 @@ public class PluginLoader extends URLClassLoader {
 		}
 
 		this.reflections = new Reflections(new ResourcesScanner(), this);
+		checkPluginUpdates();
 	}
 
 	public Set<String> getResources(Pattern pattern) {
@@ -182,6 +188,27 @@ public class PluginLoader extends URLClassLoader {
 		}
 
 		return plugin;
+	}
+
+	private void checkPluginUpdates() {
+		for (Plugin plugin : plugins) {
+			if (MCreatorApplication.isInternet) {
+				if (plugin.getInfo().getUpdateUrl() != null) {
+					if (!plugin.getInfo().getVersion().equals("not specified")) {
+						String version = new Gson().fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateUrl()),
+								JsonObject.class).get(plugin.getID()).getAsJsonObject().get("latest").getAsString();
+						if (!version.equals(plugin.getPluginVersion())) {
+							pluginUpdates.add(new PluginUpdateInfo(plugin,
+									version, plugin.getInfo().getPageId()));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public List<PluginUpdateInfo> getPluginUpdates() {
+		return pluginUpdates;
 	}
 
 }
