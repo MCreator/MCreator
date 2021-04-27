@@ -70,6 +70,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 
 			JComponent co = getAdditionalTargetFor(e);
 			if (co instanceof FolderElementCrumb) { // highlight crumbs
+				co.setOpaque(true);
 				co.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			}
 
