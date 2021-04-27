@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2021, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,25 +17,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv17;
+package net.mcreator.element.converter.fv18;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.GameRule;
+import net.mcreator.element.types.Biome;
 import net.mcreator.workspace.Workspace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class GameruleDisplayNameFixer implements IConverter {
+public class BiomeFrozenTopLayerConverter implements IConverter {
+	private static final Logger LOG = LogManager.getLogger(BiomeFrozenTopLayerConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		GameRule gameRule = (GameRule) input;
-		gameRule.displayName = gameRule.description;
-		return gameRule;
+		Biome biome = (Biome) input;
+		biome.defaultFeatures.add("FrozenTopLayer");
+		return biome;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 17;
+		return 18;
 	}
-
 }
