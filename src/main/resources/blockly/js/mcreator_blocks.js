@@ -778,3 +778,9 @@ Blockly.Extensions.register('dimension_custom_list_provider',
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("dimension_custom"))), 'dimension');
     });
+
+Blockly.Extensions.register('plant_type_list_provider',
+    function () {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArray(javabridge.getListOf("planttype"))), 'planttype');
+    });

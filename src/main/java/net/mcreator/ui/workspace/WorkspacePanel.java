@@ -118,8 +118,6 @@ import java.util.stream.Collectors;
 
 	private final JLabel elementsCount = new JLabel();
 
-	private final ModTypeDropdown modTypeDropdown;
-
 	public final JRadioButtonMenuItem desc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.descending"));
 
 	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem(
@@ -141,8 +139,6 @@ import java.util.stream.Collectors;
 		this.vcsPan = new WorkspacePanelVCS(this);
 
 		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator);
-
-		this.modTypeDropdown = new ModTypeDropdown(mcreator);
 
 		panels.setOpaque(false);
 
@@ -337,7 +333,7 @@ import java.util.stream.Collectors;
 								}
 							}
 
-							return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+							return Validator.ValidationResult.PASSED;
 						}
 					});
 
@@ -698,7 +694,7 @@ import java.util.stream.Collectors;
 		but1.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but1.isEnabled())
-					modTypeDropdown.show(e.getComponent(), e.getComponent().getWidth() + 5, -3);
+					new ModTypeDropdown(mcreator).show(e.getComponent(), e.getComponent().getWidth() + 5, -3);
 			}
 		});
 		but1.setToolTipText(L10N.t("workspace.elements.add.tooltip"));
@@ -1039,6 +1035,10 @@ import java.util.stream.Collectors;
 							duplicateModElement.setCodeLock(true);
 						}
 
+						// if we are not in the root folder, specify the folder of the mod element
+						if (!currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
+							duplicateModElement.setParentFolder(currentFolder);
+
 						mcreator.getWorkspace().addModElement(duplicateModElement);
 
 						updateMods();
@@ -1270,8 +1270,10 @@ import java.util.stream.Collectors;
 					keyWords.add(pat.replace("\"", ""));
 			}
 
+			boolean flattenFolders = !searchInput.isEmpty();
+
 			filterItems.addAll(items.stream().filter(e -> e instanceof FolderElement)
-					.filter(item -> currentFolder.getDirectFolderChildren().contains(item) || (!keyWords.isEmpty()
+					.filter(item -> currentFolder.getDirectFolderChildren().contains(item) || (flattenFolders
 							&& currentFolder.getRecursiveFolderChildren().contains(item))).filter(item -> {
 						if (!filters.isEmpty() || !metfilters.isEmpty())
 							return false;
@@ -1287,7 +1289,7 @@ import java.util.stream.Collectors;
 					}).collect(Collectors.toList()));
 
 			List<ModElement> modElements = items.stream().filter(e -> e instanceof ModElement).map(e -> (ModElement) e)
-					.filter(item -> currentFolder.equals(item.getFolderPath()) || (!keyWords.isEmpty() && currentFolder
+					.filter(item -> currentFolder.equals(item.getFolderPath()) || (flattenFolders && currentFolder
 							.getRecursiveFolderChildren().stream()
 							.anyMatch(folder -> folder.equals(item.getFolderPath())))).filter(item -> {
 						if (keyWords.size() == 0)

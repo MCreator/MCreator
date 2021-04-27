@@ -31,6 +31,14 @@
 <#include "tokens.ftl">
 <#include "procedures.java.ftl">
 
+<#assign hasTextures = data.baseTexture?has_content>
+<#list data.components as component>
+	<#if component.getClass().getSimpleName() == "Image">
+		<#assign hasTextures = true>
+		<#break>
+	</#if>
+</#list>
+
 package ${package}.gui.overlay;
 
 @${JavaModName}Elements.ModElement.Tag
@@ -49,7 +57,6 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 	@SubscribeEvent(priority = EventPriority.${data.priority})
 	public void eventHandler(RenderGameOverlayEvent event) {
 		if (!event.isCancelable() && event.getType() == RenderGameOverlayEvent.ElementType.HELMET) {
-
 			int posX = (event.getWindow().getScaledWidth()) / 2;
 			int posY = (event.getWindow().getScaledHeight()) / 2;
 
@@ -59,23 +66,20 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 			double y = entity.getPosY();
 			double z = entity.getPosZ();
 
+			<#if hasTextures>
+				RenderSystem.disableDepthTest();
+      			RenderSystem.depthMask(false);
+      			RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+      			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+      			RenderSystem.disableAlphaTest();
+			</#if>
+
 			if (<@procedureOBJToConditionCode data.displayCondition/>) {
 				<#if data.baseTexture?has_content>
-					RenderSystem.disableDepthTest();
-      				RenderSystem.depthMask(false);
-      				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-      				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-      				RenderSystem.disableAlphaTest();
-
 					Minecraft.getInstance().getTextureManager()
 								.bindTexture(new ResourceLocation("${modid}:textures/${data.baseTexture}"));
 					Minecraft.getInstance().ingameGUI.blit(0, 0, 0, 0, event.getWindow().getScaledWidth(), event.getWindow().getScaledHeight(),
 							event.getWindow().getScaledWidth(), event.getWindow().getScaledHeight());
-
-					RenderSystem.depthMask(true);
-      				RenderSystem.enableDepthTest();
-      				RenderSystem.enableAlphaTest();
-      				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				</#if>
 
 				<#list data.components as component>
@@ -88,30 +92,23 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 						Minecraft.getInstance().fontRenderer.drawString("${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
 									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
 	                <#elseif component.getClass().getSimpleName() == "Image">
-						<#if hasCondition(component.displayCondition)>
-						if (<@procedureOBJToConditionCode component.displayCondition/>) {
-						</#if>
-						RenderSystem.disableDepthTest();
-						RenderSystem.depthMask(false);
-						RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-						RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-						RenderSystem.disableAlphaTest();
-
+						<#if hasCondition(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
 						Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/${component.image}"));
 						Minecraft.getInstance().ingameGUI.blit(posX + ${x}, posY + ${y}, 0, 0,
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-
-						RenderSystem.depthMask(true);
-      					RenderSystem.enableDepthTest();
-      					RenderSystem.enableAlphaTest();
-      					RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-						<#if hasCondition(component.displayCondition)>
-						}
-						</#if>
+						<#if hasCondition(component.displayCondition)>}</#if>
 	                </#if>
 	            </#list>
 			}
+
+			<#if hasTextures>
+				RenderSystem.depthMask(true);
+      			RenderSystem.enableDepthTest();
+      			RenderSystem.enableAlphaTest();
+      			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			</#if>
+
 		}
 	}
 

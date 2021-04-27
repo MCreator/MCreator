@@ -52,4 +52,11 @@ public interface IGenerator extends IGeneratorProvider {
 		return getGeneratorConfiguration().getGeneratorBuildFileVersion();
 	}
 
+	default String getFullGeneratorVersion() {
+		if (getGeneratorConfiguration().getGeneratorSubVersion() == null)
+			return getGeneratorBuildFileVersion();
+
+		return getGeneratorBuildFileVersion() + "/" + getGeneratorConfiguration().getGeneratorSubVersion();
+	}
+
 }
