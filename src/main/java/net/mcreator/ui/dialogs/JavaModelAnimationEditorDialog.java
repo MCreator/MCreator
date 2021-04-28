@@ -58,7 +58,7 @@ public class JavaModelAnimationEditorDialog {
 			List<String> types = new ArrayList<>(BuiltInEntityAnimations.getAllIDs());
 			types.sort(String::compareTo);
 			JComboBox<String> box = new JComboBox<>(types.toArray(new String[0]));
-			box.setSelectedItem(L10N.t("animations.entities.no_anim"));
+			box.setSelectedItem("No animation");
 			animations.put(part, box);
 			options.add(new JLabel(StringUtils.abbreviateString(part, 20) + " animation: "));
 			options.add(box);
