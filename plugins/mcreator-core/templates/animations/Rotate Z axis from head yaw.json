@@ -1,5 +1,3 @@
-{
-  "animations": [
+[
     ".rotateAngleZ = f4 / (180F / (float)Math.PI);"
-  ]
-}
+]

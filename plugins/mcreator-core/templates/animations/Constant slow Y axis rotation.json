@@ -1,5 +1,3 @@
-{
-  "animations": [
+[
     ".rotateAngleY = f2 / 20.f;"
-  ]
-}
+]

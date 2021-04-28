@@ -27,6 +27,8 @@
 
 package net.mcreator.ui.dialogs;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.BuiltInEntityAnimations;
 import net.mcreator.ui.init.L10N;
@@ -53,7 +55,7 @@ public class JavaModelAnimationEditorDialog {
 		Map<String, JComboBox<String>> animations = new HashMap<>();
 
 		for (String part : vc) {
-			List<String> types = new ArrayList<>(BuiltInEntityAnimations.getAllTexts());
+			List<String> types = new ArrayList<>(BuiltInEntityAnimations.getAllIDs());
 			types.sort(String::compareTo);
 			JComboBox<String> box = new JComboBox<>(types.toArray(new String[0]));
 			box.setSelectedItem(L10N.t("animations.entities.no_anim"));
@@ -86,9 +88,9 @@ public class JavaModelAnimationEditorDialog {
 			for (Map.Entry<String, JComboBox<String>> animation : animations.entrySet()) {
 				String selected = (String) animation.getValue().getSelectedItem();
 				if (selected != null) {
-					List<String> animationCodes = BuiltInEntityAnimations.getAnimations(selected);
-					for (String animationCode : animationCodes) {
-						anim.append("this.").append(animation.getKey()).append(animationCode).append("\n");
+					JsonArray animationCodes = BuiltInEntityAnimations.getAnimations(selected);
+					for (JsonElement animationCode : animationCodes) {
+						anim.append("this.").append(animation.getKey()).append(animationCode.getAsString()).append("\n");
 					}
 				}
 			}

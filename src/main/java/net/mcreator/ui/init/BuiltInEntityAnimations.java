@@ -20,6 +20,7 @@
 package net.mcreator.ui.init;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +34,7 @@ public class BuiltInEntityAnimations {
 
 	private static final Logger LOG = LogManager.getLogger("Entity Animations loader");
 
-	private static final LinkedHashMap<String, List<String>> entityAnimations = new LinkedHashMap<>();
+	private static final LinkedHashMap<String, JsonArray> entityAnimations = new LinkedHashMap<>();
 
 	public static void loadEntityAnimations() {
 		LOG.debug("Loading entity animations");
@@ -44,43 +45,40 @@ public class BuiltInEntityAnimations {
 				.getResources("templates.animations", Pattern.compile("^[^$].*\\.json"));
 
 		// We add No animation directly as it does not contain animations
-		entityAnimations.put(L10N.t("animations.entities.no_anim"), Collections.emptyList());
+		entityAnimations.put("No animation", new JsonArray());
 		for (String file : fileNames) {
 			// We use a temporary class to save values and get them for the Map
-			EntityAnimation anim = gson
-					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), EntityAnimation.class)
-					.setId(FileUtils.removeExtension(file).replace("templates/animations/", ""));
-			entityAnimations.put(anim.getText(), anim.getAnimations());
+			JsonArray anims = gson
+					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), JsonArray.class);
+			EntityAnimation anim = new EntityAnimation(FileUtils.removeExtension(file).replace("templates/animations/", ""),
+					anims);
+			entityAnimations.put(anim.getID(), anim.getAnimations());
 		}
 	}
 
-	public static Set<String> getAllTexts() {
+	public static Set<String> getAllIDs() {
 		return entityAnimations.keySet();
 	}
 
-	public static List<String> getAnimations(String key) {
+	public static JsonArray getAnimations(String key) {
 		return entityAnimations.get(key);
 	}
 
 	private static class EntityAnimation {
-		private final List<String> animations = new ArrayList<>();
-		private String id;
+		private final JsonArray animations;
+		private final String id;
 
-		public EntityAnimation setId(String id) {
+		public EntityAnimation(String id, JsonArray animations) {
 			this.id = id;
-			return this;
+			this.animations = animations;
 		}
 
-		public String getText() {
-			return L10N.t("animations.entities." + id);
+		public String getID() {
+			return id;
 		}
 
-		public List<String> getAnimations() {
+		public JsonArray getAnimations() {
 			return animations;
-		}
-
-		@Override public String toString() {
-			return getText() + ": " + getAnimations();
 		}
 	}
 }
