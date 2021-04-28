@@ -28,7 +28,6 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 import java.lang.reflect.Field;
-import java.util.Objects;
 
 public class MCreatorLookAndFeel extends MetalLookAndFeel {
 
@@ -39,8 +38,7 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 	public MCreatorLookAndFeel() {
 		if (ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme) != null) {
 			setCurrentTheme(theme = new MCreatorTheme(
-					Objects.requireNonNull(ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme))
-							.getColorScheme()));
+					ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme).getColorScheme()));
 		} else {
 			setCurrentTheme(theme = new MCreatorTheme(ThemeLoader.DARK_THEME.getColorScheme()));
 			LOG.warn("Default theme is used due to missing theme " + theme.getName());

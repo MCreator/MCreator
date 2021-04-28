@@ -45,7 +45,7 @@ public class MCreatorTheme extends OceanTheme {
 
 	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
 	private final Color MAIN_TINT;
-	private final ColorScheme theme;
+	private final ColorScheme colorScheme;
 	public static final ColorScheme DARK_SCHEME = new ColorScheme("dark", "0x1e1e1e", "0x323232", "0x505050", "0xc2c2c2", "0xf5f5f5");
 
 	public static Font light_font;
@@ -53,8 +53,8 @@ public class MCreatorTheme extends OceanTheme {
 
 	private static Font default_font;
 
-	public MCreatorTheme(ColorScheme theme) {
-		this.theme = theme;
+	public MCreatorTheme(ColorScheme colorScheme) {
+		this.colorScheme = colorScheme;
 		MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
 
 		try {
@@ -77,31 +77,31 @@ public class MCreatorTheme extends OceanTheme {
 	}
 
 	private @NotNull Color getBlackAccent() {
-		return theme.getAltBackgroundColor();
+		return colorScheme.getAltBackgroundColor();
 	}
 
 	private @NotNull Color getDarkAccent() {
-		return theme.getBackgroundColor();
+		return colorScheme.getBackgroundColor();
 	}
 
 	private @NotNull Color getLightAccent() {
-		return theme.getActionColor();
+		return colorScheme.getActionColor();
 	}
 
 	private @NotNull Color getGrayColor() {
-		return theme.getForegroundColor();
+		return colorScheme.getForegroundColor();
 	}
 
 	protected @NotNull Color getBrightColor() {
-		return theme.getBorderColor();
+		return colorScheme.getBorderColor();
 	}
 
 	private @NotNull String getBlocklyCSSName() {
-		return "blockly_" + theme.getBlocklyCSSFile() + ".css";
+		return "blockly_" + colorScheme.getBlocklyCSSFile() + ".css";
 	}
 
 	private @NotNull String getCodeEditorXML() {
-		return "codeeditor_" + theme.getCodeEditorFile() + ".xml";
+		return "codeeditor_" + colorScheme.getCodeEditorFile() + ".xml";
 	}
 
 	protected void initMCreatorThemeColors(UIDefaults table) {

@@ -57,7 +57,7 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	private final Map<PreferencesUnit, JComponent> entries = new HashMap<>();
 
-	final JButton apply = L10N.button("action.common.apply");
+	private final JButton apply = L10N.button("action.common.apply");
 
 	private final Window parent;
 
@@ -315,6 +315,10 @@ public class PreferencesDialog extends MCreatorDialog {
 			return ((JComboBox<?>) value).getSelectedItem();
 		}
 		return null;
+	}
+
+	public void markChanged() {
+		apply.setEnabled(true);
 	}
 
 	private static class PreferencesUnit {

@@ -54,7 +54,7 @@ public class ThemesPanel {
 		packIDs = new JComboBox<>(ThemeLoader.getIDs().toArray(new String[0]));
 		packIDs.setPreferredSize(new Dimension(250, 0));
 		packIDs.setSelectedItem(PreferencesManager.PREFERENCES.hidden.uiTheme);
-		packIDs.addActionListener(e -> dialog.apply.setEnabled(true));
+		packIDs.addActionListener(e -> dialog.markChanged());
 		top.add("East", packIDs);
 
 		reloadResourcePacksList();
