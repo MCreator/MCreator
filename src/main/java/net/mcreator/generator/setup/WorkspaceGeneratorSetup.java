@@ -149,7 +149,7 @@ public class WorkspaceGeneratorSetup {
 			Properties properties = new Properties();
 			try {
 				properties.load(new FileInputStream(setupFile));
-				if (generator.getGeneratorBuildFileVersion().equals(properties.getProperty("buildFileVersion")))
+				if (generator.getFullGeneratorVersion().equals(properties.getProperty("buildFileVersion")))
 					return false;
 			} catch (IOException e) {
 				LOG.error(e.getMessage(), e);
@@ -159,7 +159,7 @@ public class WorkspaceGeneratorSetup {
 	}
 
 	public static void completeSetup(Generator generator) {
-		FileIO.writeStringToFile("buildFileVersion=" + generator.getGeneratorBuildFileVersion(),
+		FileIO.writeStringToFile("buildFileVersion=" + generator.getFullGeneratorVersion(),
 				new File(generator.getFolderManager().getWorkspaceCacheDir(), "setupInfo"));
 	}
 
