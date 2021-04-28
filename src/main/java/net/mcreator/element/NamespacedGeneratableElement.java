@@ -35,6 +35,10 @@ import java.util.Locale;
 		return name.toLowerCase(Locale.ENGLISH);
 	}
 
+	public String getNameRaw() {
+		return name;
+	}
+
 	public String getNamespace() {
 		if (namespace == null || namespace.equals("mod"))
 			return getModElement().getWorkspaceSettings().getModID();
