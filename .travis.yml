@@ -1,12 +1,6 @@
-dist: xenial
-
-addons:
-  apt:
-    sources:
-      - sourceline: 'deb [arch=amd64] https://apt.bell-sw.com/ stable main'
-        key_url: 'https://download.bell-sw.com/pki/GPG-KEY-bellsoft'
-    packages:
-      - bellsoft-java8-full
+sudo: false 
+dist: trusty
+install: true
 
 git:
   depth: 3
@@ -28,6 +22,7 @@ cache:
     - $HOME/.mcreator/gradle/caches/
     - $HOME/.mcreator/gradle/wrapper/
 
+jdk: oraclejdk8
 language: java
 
 script:
