@@ -1,5 +1,4 @@
-dist: trusty
-intall: true
+dist: focal
 
 git:
   depth: 3
