@@ -1,6 +1,4 @@
-sudo: false 
-dist: trusty
-install: true
+sudo: false
 
 git:
   depth: 3
