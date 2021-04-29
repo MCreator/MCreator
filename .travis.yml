@@ -20,7 +20,7 @@ cache:
     - $HOME/.mcreator/gradle/caches/
     - $HOME/.mcreator/gradle/wrapper/
 
-jdk: oraclejdk8
+jdk: openjdk8
 language: java
 
 script:
