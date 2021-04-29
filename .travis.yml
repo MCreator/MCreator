@@ -1,4 +1,4 @@
-dist: xienial
+dist: trusty
 
 git:
   depth: 3
@@ -20,8 +20,12 @@ cache:
     - $HOME/.mcreator/gradle/caches/
     - $HOME/.mcreator/gradle/wrapper/
 
-jdk: openjdk8
 language: java
+jdk: oraclejdk8
+ addons:
+  apt:
+    packages:
+      - oracle-java8-installer
 
 script:
   # Make gradle executable
