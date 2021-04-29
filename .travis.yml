@@ -21,11 +21,11 @@ cache:
     - $HOME/.mcreator/gradle/wrapper/
 
 language: java
-jdk: oraclejdk8
+jdk: openjdk8
 addons:
   apt:
     packages:
-      - oracle-java8-installer
+      - openjfx
 
 script:
   # Make gradle executable
