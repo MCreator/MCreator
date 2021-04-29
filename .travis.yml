@@ -1,4 +1,5 @@
 dist: trusty
+intall: true
 
 git:
   depth: 3
