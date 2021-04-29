@@ -1,4 +1,4 @@
-dist: bionic
+dist: xienial
 
 git:
   depth: 3
