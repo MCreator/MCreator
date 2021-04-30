@@ -43,10 +43,10 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 	int[] finalDNDselection = null;
 
 	private final Cursor DRAG_FOLDER = Toolkit.getDefaultToolkit()
-			.createCustomCursor(UIRES.get("folder").getImage(), new Point(0, 0), "Drag cursor");
+			.createCustomCursor(UIRES.get("folder" ).getImage(), new Point(0, 0), "Drag cursor" );
 
 	private final Cursor DRAG_ELEMENTS = Toolkit.getDefaultToolkit()
-			.createCustomCursor(UIRES.get("mods").getImage(), new Point(0, 0), "Drag elements cursor");
+			.createCustomCursor(UIRES.get("mods" ).getImage(), new Point(0, 0), "Drag elements cursor" );
 
 	private final JSelectableList<T> list;
 
@@ -71,7 +71,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 			JComponent co = getAdditionalTargetFor(e);
 			if (co instanceof FolderElementCrumb) { // highlight crumbs
 				co.setOpaque(true);
-				co.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				co.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT" ));
 			}
 
 			if (finalDNDselection == null) {
@@ -133,12 +133,10 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 		if (list.dndCustom) {
 			if (finalDNDselection != null && list.listener != null) {
 				JComponent co = getAdditionalTargetFor(e);
-				if (co != null) { // check if point was released over additional target
-					if (co instanceof FolderElementCrumb) {
-						list.listener.dndComplete(((FolderElementCrumb) co).getFolder(),
-								Arrays.stream(finalDNDselection).mapToObj(i -> list.getModel().getElementAt(i))
-										.collect(Collectors.toList()));
-					}
+				if (co instanceof FolderElementCrumb) { // check if point was released over additional target
+					list.listener.dndComplete(((FolderElementCrumb) co).getFolder(),
+							Arrays.stream(finalDNDselection).mapToObj(i -> list.getModel().getElementAt(i))
+									.collect(Collectors.toList()));
 				} else if (list.findComponentAt(e.getPoint()) == list) { // check if point was released over the list
 					list.listener.dndComplete(list.getModel().getElementAt(list.locationToIndex(e.getPoint())),
 							Arrays.stream(finalDNDselection).mapToObj(i -> list.getModel().getElementAt(i))
@@ -178,7 +176,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 		}
 	}
 
-	private JComponent getAdditionalTargetFor(MouseEvent e) {
+	@Nullable private JComponent getAdditionalTargetFor(MouseEvent e) {
 		if (list.additionalDNDComponent != null) {
 			Point pointOnADND = subtract(e.getLocationOnScreen(), list.additionalDNDComponent.getLocationOnScreen());
 			Component co = list.additionalDNDComponent.getComponentAt(pointOnADND);
