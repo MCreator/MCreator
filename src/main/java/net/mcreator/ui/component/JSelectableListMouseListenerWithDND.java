@@ -43,10 +43,10 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 	int[] finalDNDselection = null;
 
 	private final Cursor DRAG_FOLDER = Toolkit.getDefaultToolkit()
-			.createCustomCursor(UIRES.get("folder" ).getImage(), new Point(0, 0), "Drag cursor" );
+			.createCustomCursor(UIRES.get("folder").getImage(), new Point(0, 0), "Drag cursor");
 
 	private final Cursor DRAG_ELEMENTS = Toolkit.getDefaultToolkit()
-			.createCustomCursor(UIRES.get("mods" ).getImage(), new Point(0, 0), "Drag elements cursor" );
+			.createCustomCursor(UIRES.get("mods").getImage(), new Point(0, 0), "Drag elements cursor");
 
 	private final JSelectableList<T> list;
 
@@ -71,7 +71,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 			JComponent co = getAdditionalTargetFor(e);
 			if (co instanceof FolderElementCrumb) { // highlight crumbs
 				co.setOpaque(true);
-				co.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT" ));
+				co.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			}
 
 			if (finalDNDselection == null) {

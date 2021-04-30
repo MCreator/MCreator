@@ -73,7 +73,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("EqualsBetweenInconvertibleTypes" ) public class WorkspacePanel extends JPanel {
+@SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanel extends JPanel {
 
 	private FilterModel dml = new FilterModel();
 	public final JTextField search;
@@ -118,15 +118,14 @@ import java.util.stream.Collectors;
 
 	private final JLabel elementsCount = new JLabel();
 
-	public final JRadioButtonMenuItem desc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.descending" ));
+	public final JRadioButtonMenuItem desc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.descending"));
 
 	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem(
-			L10N.t("workspace.elements.list.sort_date" ));
-	public JRadioButtonMenuItem sortName = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_name" ));
-	private final JRadioButtonMenuItem sortType = new JRadioButtonMenuItem(
-			L10N.t("workspace.elements.list.sort_type" ));
+			L10N.t("workspace.elements.list.sort_date"));
+	public JRadioButtonMenuItem sortName = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_name"));
+	private final JRadioButtonMenuItem sortType = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_type"));
 	private final JRadioButtonMenuItem sortLoadingOrder = new JRadioButtonMenuItem(
-			L10N.t("workspace.elements.list.sort_loading_order" ));
+			L10N.t("workspace.elements.list.sort_loading_order"));
 
 	public WorkspacePanel(final MCreator mcreator) {
 		super(new BorderLayout(5, 5));
@@ -205,8 +204,8 @@ import java.util.stream.Collectors;
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
 
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT" ), sp.getVerticalScrollBar()));
+		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		sp.setBorder(null);
 
@@ -214,13 +213,12 @@ import java.util.stream.Collectors;
 		modElementsPanel.setOpaque(false);
 
 		resourcesPan.setBorder(
-				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT" )));
+				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 		localePan.setBorder(
-				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT" )));
+				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 		variablesPan.setBorder(
-				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT" )));
-		vcsPan.setBorder(
-				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT" )));
+				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		vcsPan.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 
 		JPanel slo = new JPanel(new BorderLayout(0, 3));
 
@@ -236,13 +234,13 @@ import java.util.stream.Collectors;
 				g.setColor(new Color(0.4f, 0.4f, 0.4f, 0.3f));
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 				g.setColor(Color.white);
-				if (getText().equals("" )) {
+				if (getText().equals("")) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
-					if (!currentTab.equals("mods" )) {
-						g.drawString(L10N.t("workspace.elements.list.search_list" ), 8, 18);
+					if (!currentTab.equals("mods")) {
+						g.drawString(L10N.t("workspace.elements.list.search_list"), 8, 18);
 					} else {
-						g.drawString(L10N.t("workspace.elements.list.search_folder" ), 8, 18);
+						g.drawString(L10N.t("workspace.elements.list.search_folder"), 8, 18);
 					}
 				}
 			}
@@ -250,17 +248,17 @@ import java.util.stream.Collectors;
 		search.addFocusListener(new FocusAdapter() {
 			@Override public void focusGained(FocusEvent e) {
 				super.focusGained(e);
-				search.setText("" );
+				search.setText("");
 			}
 		});
 
-		search.setToolTipText(L10N.t("workspace.elements.list.search.tooltip" ));
+		search.setToolTipText(L10N.t("workspace.elements.list.search.tooltip"));
 
 		search.setForeground(new Color(230, 230, 230));
 		ComponentUtils.deriveFont(search, 14);
 		search.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 2));
 		search.setOpaque(false);
-		search.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT" ));
+		search.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
 		search.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -280,34 +278,34 @@ import java.util.stream.Collectors;
 		modElementsBar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
 		JButton addFolder = new JButton(new ImageIcon(ImageUtils
-				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.newFolder.gif" ).getImage()),
+				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.newFolder.gif").getImage()),
 						new Rectangle(1, 1, 16, 16))));
 		upFolder = new JButton(new ImageIcon(ImageUtils
-				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.upFolder.gif" ).getImage()),
+				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.upFolder.gif").getImage()),
 						new Rectangle(1, 1, 16, 16))));
 
 		addFolder.setContentAreaFilled(false);
 		addFolder.setBorderPainted(false);
 		addFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		addFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		addFolder.setToolTipText(L10N.t("workspace.elements.folders.add_tooltip" ));
+		addFolder.setToolTipText(L10N.t("workspace.elements.folders.add_tooltip"));
 
 		upFolder.setContentAreaFilled(false);
 		upFolder.setBorderPainted(false);
 		upFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		upFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		upFolder.setToolTipText(L10N.t("workspace.elements.folders.up_tooltip" ));
+		upFolder.setToolTipText(L10N.t("workspace.elements.folders.up_tooltip"));
 		upFolder.setEnabled(false);
 
 		addFolder.addActionListener(e -> {
-			String name = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.folders.add.message" ),
-					L10N.t("workspace.elements.folders.add.title" ), null, new OptionPaneValidatior() {
+			String name = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.folders.add.message"),
+					L10N.t("workspace.elements.folders.add.title"), null, new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
 							String text = ((JTextField) component).getText();
 
-							if (!text.matches("[A-Za-z0-9._ -]+" )) {
+							if (!text.matches("[A-Za-z0-9._ -]+")) {
 								return new Validator.ValidationResult(ValidationResultType.ERROR,
-										L10N.t("workspace.elements.folders.add.error_letters" ));
+										L10N.t("workspace.elements.folders.add.error_letters"));
 							}
 
 							List<FolderElement> folderElements = mcreator.getWorkspace().getFoldersRoot()
@@ -318,7 +316,7 @@ import java.util.stream.Collectors;
 							for (FolderElement folderElement : folderElements) {
 								if (folderElement.equals(tmpFolder)) {
 									return new Validator.ValidationResult(ValidationResultType.ERROR,
-											L10N.t("workspace.elements.folders.add.error_exists" ));
+											L10N.t("workspace.elements.folders.add.error_exists"));
 								}
 							}
 
@@ -339,7 +337,7 @@ import java.util.stream.Collectors;
 			}
 		});
 
-		JComponent folderactions = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.folder_actions" ), 12);
+		JComponent folderactions = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.folder_actions"), 12);
 		modElementsBar.add(folderactions);
 
 		modElementsBar.add(addFolder);
@@ -347,13 +345,13 @@ import java.util.stream.Collectors;
 
 		modElementsBar.add(new JEmptyBox(7, 1));
 
-		JComponent isize = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.icon_size" ), 12);
-		isize.setToolTipText(L10N.t("workspace.elements.list.icon_size.tooltip" ));
+		JComponent isize = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.icon_size"), 12);
+		isize.setToolTipText(L10N.t("workspace.elements.list.icon_size.tooltip"));
 		modElementsBar.add(isize);
 
-		JToggleButton largeIcons = new JToggleButton(L10N.t("workspace.elements.list.large" ));
+		JToggleButton largeIcons = new JToggleButton(L10N.t("workspace.elements.list.large"));
 		largeIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		largeIcons.setIcon(UIRES.get("16px.large.gif" ));
+		largeIcons.setIcon(UIRES.get("16px.large.gif"));
 		largeIcons.setContentAreaFilled(false);
 		largeIcons.setOpaque(false);
 		largeIcons.addChangeListener(e -> {
@@ -375,9 +373,9 @@ import java.util.stream.Collectors;
 		largeIcons.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		modElementsBar.add(largeIcons);
 
-		JToggleButton smallIcons = new JToggleButton(L10N.t("workspace.elements.list.small" ));
+		JToggleButton smallIcons = new JToggleButton(L10N.t("workspace.elements.list.small"));
 		smallIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		smallIcons.setIcon(UIRES.get("16px.small.gif" ));
+		smallIcons.setIcon(UIRES.get("16px.small.gif"));
 		smallIcons.setContentAreaFilled(false);
 		smallIcons.setOpaque(false);
 		smallIcons.addChangeListener(e -> {
@@ -399,9 +397,9 @@ import java.util.stream.Collectors;
 		smallIcons.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
 		modElementsBar.add(smallIcons);
 
-		JToggleButton listIcons = new JToggleButton(L10N.t("workspace.elements.list.list" ));
+		JToggleButton listIcons = new JToggleButton(L10N.t("workspace.elements.list.list"));
 		listIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		listIcons.setIcon(UIRES.get("16px.list.gif" ));
+		listIcons.setIcon(UIRES.get("16px.list.gif"));
 		listIcons.setContentAreaFilled(false);
 		listIcons.setOpaque(false);
 		listIcons.addChangeListener(e -> {
@@ -459,17 +457,17 @@ import java.util.stream.Collectors;
 		leftPan.setOpaque(false);
 		leftPan.add(search);
 
-		JButton filter = L10N.button("workspace.elements.list.filter" );
-		JButton sort = L10N.button("workspace.elements.list.sort" );
+		JButton filter = L10N.button("workspace.elements.list.filter");
+		JButton sort = L10N.button("workspace.elements.list.sort");
 
 		ComponentUtils.deriveFont(filter, 11);
 		filter.setMargin(new Insets(1, 3, 1, 3));
-		filter.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
+		filter.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		filter.setBorderPainted(false);
 
 		ComponentUtils.deriveFont(sort, 11);
 		sort.setMargin(new Insets(1, 3, 1, 3));
-		sort.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
+		sort.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		sort.setBorderPainted(false);
 
 		leftPan.add(new JEmptyBox(2, 2));
@@ -480,18 +478,17 @@ import java.util.stream.Collectors;
 		se.add("West", leftPan);
 
 		JScrollablePopupMenu filterPopup = new JScrollablePopupMenu();
-		filterPopup
-				.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all" ), e -> search.setText("" )));
+		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
 		filterPopup.addSeparator();
-		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked" ),
-				e -> search.setText("f:locked" )));
-		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors" ),
-				e -> search.setText("f:err" )));
+		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"),
+				e -> search.setText("f:locked")));
+		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
+				e -> search.setText("f:err")));
 		filterPopup.addSeparator();
 		for (ModElementType type : Arrays.stream(ModElementType.values())
 				.sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
-					e -> search.setText("f:" + type.getReadableName().replace(" ", "" ).toLowerCase(Locale.ENGLISH)))
+					e -> search.setText("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
 
 		}
@@ -500,7 +497,7 @@ import java.util.stream.Collectors;
 		JPopupMenu sortPopup = new JPopupMenu();
 		EventButtonGroup sortOne = new EventButtonGroup();
 		sortOne.addActionListener(e -> resort());
-		JRadioButtonMenuItem asc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.ascending" ));
+		JRadioButtonMenuItem asc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.ascending"));
 		asc.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceSortAscending);
 		desc.setSelected(!PreferencesManager.PREFERENCES.hidden.workspaceSortAscending);
 		sortOne.add(asc);
@@ -546,13 +543,13 @@ import java.util.stream.Collectors;
 
 		modElementsPanel.add("Center", PanelUtils.northAndCenterElement(elementsBreadcrumb, mainp));
 
-		panels.add(modElementsPanel, "mods" );
-		panels.add(resourcesPan, "res" );
-		panels.add(localePan, "locales" );
-		panels.add(variablesPan, "variables" );
-		panels.add(vcsPan, "vcs" );
+		panels.add(modElementsPanel, "mods");
+		panels.add(resourcesPan, "res");
+		panels.add(localePan, "locales");
+		panels.add(variablesPan, "variables");
+		panels.add(vcsPan, "vcs");
 
-		cardLayout.show(panels, "mods" );
+		cardLayout.show(panels, "mods");
 
 		slo.add("Center", panels);
 
@@ -561,26 +558,26 @@ import java.util.stream.Collectors;
 		JPanel rotatablePanel = new JPanel();
 		rotatablePanel.setLayout(new BoxLayout(rotatablePanel, BoxLayout.PAGE_AXIS));
 
-		VerticalTabButton btt1 = new VerticalTabButton(L10N.t("workspace.category.mod_elements" ));
-		VerticalTabButton btt2 = new VerticalTabButton(L10N.t("workspace.category.resources" ));
-		VerticalTabButton btt3 = new VerticalTabButton(L10N.t("workspace.category.variables" ));
-		VerticalTabButton btt6 = new VerticalTabButton(L10N.t("workspace.category.localization" ));
-		VerticalTabButton btt7 = new VerticalTabButton(L10N.t("workspace.category.remote_workspace" ));
+		VerticalTabButton btt1 = new VerticalTabButton(L10N.t("workspace.category.mod_elements"));
+		VerticalTabButton btt2 = new VerticalTabButton(L10N.t("workspace.category.resources"));
+		VerticalTabButton btt3 = new VerticalTabButton(L10N.t("workspace.category.variables"));
+		VerticalTabButton btt6 = new VerticalTabButton(L10N.t("workspace.category.localization"));
+		VerticalTabButton btt7 = new VerticalTabButton(L10N.t("workspace.category.remote_workspace"));
 
 		btt1.setContentAreaFilled(false);
 		btt1.setMargin(new Insets(7, 1, 7, 2));
 		btt1.setBorderPainted(false);
 		btt1.setFocusPainted(false);
 		btt1.setOpaque(true);
-		btt1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT" ));
+		btt1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		btt1.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btt1.addActionListener(actionEvent -> {
-			btt1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT" ));
-			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			cardLayout.show(panels, "mods" );
+			btt1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			cardLayout.show(panels, "mods");
 			updateMods();
 			modElementsBar.setVisible(true);
 		});
@@ -591,15 +588,15 @@ import java.util.stream.Collectors;
 		btt2.setBorderPainted(false);
 		btt2.setFocusPainted(false);
 		btt2.setOpaque(true);
-		btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
+		btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		btt2.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btt2.addActionListener(actionEvent -> {
-			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			btt2.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT" ));
-			btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			cardLayout.show(panels, "res" );
+			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			btt2.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			cardLayout.show(panels, "res");
 			updateMods();
 			modElementsBar.setVisible(false);
 		});
@@ -612,20 +609,20 @@ import java.util.stream.Collectors;
 		btt3.setBorderPainted(false);
 		btt3.setFocusPainted(false);
 		btt3.setOpaque(true);
-		btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
+		btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		btt3.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btt3.addActionListener(actionEvent -> {
-			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			btt3.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT" ));
-			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			cardLayout.show(panels, "variables" );
+			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			btt3.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			cardLayout.show(panels, "variables");
 			updateMods();
 			modElementsBar.setVisible(false);
 		});
 
-		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("variables" ) != GeneratorStats.CoverageStatus.NONE)
+		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("variables") != GeneratorStats.CoverageStatus.NONE)
 			rotatablePanel.add(btt3);
 
 		btt6.setContentAreaFilled(false);
@@ -633,20 +630,20 @@ import java.util.stream.Collectors;
 		btt6.setBorderPainted(false);
 		btt6.setFocusPainted(false);
 		btt6.setOpaque(true);
-		btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
+		btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		btt6.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btt6.addActionListener(actionEvent -> {
-			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			btt6.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT" ));
-			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-			cardLayout.show(panels, "locales" );
+			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			btt6.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			cardLayout.show(panels, "locales");
 			updateMods();
 			modElementsBar.setVisible(false);
 		});
 
-		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("i18n" ) != GeneratorStats.CoverageStatus.NONE)
+		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("i18n") != GeneratorStats.CoverageStatus.NONE)
 			rotatablePanel.add(btt6);
 
 		btt7.setContentAreaFilled(false);
@@ -654,23 +651,23 @@ import java.util.stream.Collectors;
 		btt7.setBorderPainted(false);
 		btt7.setFocusPainted(false);
 		btt7.setOpaque(true);
-		btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
+		btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		btt7.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btt7.addActionListener(actionEvent -> {
 			if (vcsPan.panelShown()) {
-				btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-				btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-				btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-				btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
-				btt7.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT" ));
-				cardLayout.show(panels, "vcs" );
+				btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				btt7.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				cardLayout.show(panels, "vcs");
 				updateMods();
 				modElementsBar.setVisible(false);
 			}
 		});
 		rotatablePanel.add(btt7);
 
-		rotatablePanel.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT" ));
+		rotatablePanel.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 
 		slo.add("West", rotatablePanel);
 
@@ -687,7 +684,7 @@ import java.util.stream.Collectors;
 					new ModTypeDropdown(mcreator).show(e.getComponent(), e.getComponent().getWidth() + 5, -3);
 			}
 		});
-		but1.setToolTipText(L10N.t("workspace.elements.add.tooltip" ));
+		but1.setToolTipText(L10N.t("workspace.elements.add.tooltip"));
 		but1.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but1);
 
@@ -698,7 +695,7 @@ import java.util.stream.Collectors;
 							e.getComponent().getWidth() + 8, 0);
 			}
 		});
-		but2.setToolTipText(L10N.t("workspace.elements.edit.tooltip" ));
+		but2.setToolTipText(L10N.t("workspace.elements.edit.tooltip"));
 		but2.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but2);
 
@@ -708,7 +705,7 @@ import java.util.stream.Collectors;
 					duplicateCurrentlySelectedModElement();
 			}
 		});
-		but2a.setToolTipText(L10N.t("workspace.elements.duplicate.tooltip" ));
+		but2a.setToolTipText(L10N.t("workspace.elements.duplicate.tooltip"));
 		but2a.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but2a);
 
@@ -720,7 +717,7 @@ import java.util.stream.Collectors;
 						int n = JOptionPane.showOptionDialog(mcreator,
 								L10N.t("workspace.elements.confirm_delete_message",
 										list.getSelectedValuesList().size()),
-								L10N.t("workspace.elements.confirm_delete_title" ), JOptionPane.YES_NO_CANCEL_OPTION,
+								L10N.t("workspace.elements.confirm_delete_title"), JOptionPane.YES_NO_CANCEL_OPTION,
 								JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
 						if (n == 0) {
@@ -769,7 +766,7 @@ import java.util.stream.Collectors;
 				}
 			}
 		});
-		but3.setToolTipText(L10N.t("workspace.elements.delete.tooltip" ));
+		but3.setToolTipText(L10N.t("workspace.elements.delete.tooltip"));
 		but3.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but3);
 
@@ -781,7 +778,7 @@ import java.util.stream.Collectors;
 				}
 			}
 		});
-		but5.setToolTipText(L10N.t("workspace.elements.edit_code.tooltip" ));
+		but5.setToolTipText(L10N.t("workspace.elements.edit_code.tooltip"));
 		but5.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but5);
 
@@ -792,7 +789,7 @@ import java.util.stream.Collectors;
 				}
 			}
 		});
-		but5a.setToolTipText(L10N.t("workspace.elements.lock_code_tooltip" ));
+		but5a.setToolTipText(L10N.t("workspace.elements.lock_code_tooltip"));
 		but5a.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but5a);
 
@@ -808,7 +805,7 @@ import java.util.stream.Collectors;
 				}
 			}
 		});
-		but6.setToolTipText(L10N.t("workspace.elements.edit_registry_names.tooltip" ));
+		but6.setToolTipText(L10N.t("workspace.elements.edit_registry_names.tooltip"));
 		but6.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but6);
 
@@ -830,12 +827,12 @@ import java.util.stream.Collectors;
 		emptct.setLayout(new BoxLayout(emptct, BoxLayout.LINE_AXIS));
 		emptct.setOpaque(false);
 
-		emptct.add(ComponentUtils.deriveFont(L10N.label("workspace.elements.empty.tip_part1" ), 24));
+		emptct.add(ComponentUtils.deriveFont(L10N.label("workspace.elements.empty.tip_part1"), 24));
 
 		JLabel but1_empty = new JLabel(new ImageIcon(ImageUtils.resize(TiledImageCache.workspaceAdd.getImage(), 32)));
 		emptct.add(but1_empty);
 
-		emptct.add(ComponentUtils.deriveFont(L10N.label("workspace.elements.empty.tip_part2" ), 24));
+		emptct.add(ComponentUtils.deriveFont(L10N.label("workspace.elements.empty.tip_part2"), 24));
 
 		JPanel emptbtpd = new JPanel(new BorderLayout());
 		emptbtpd.setOpaque(false);
@@ -907,13 +904,13 @@ import java.util.stream.Collectors;
 
 	private void lockCode() {
 		Object[] options = { "Lock/unlock the code", "Cancel" };
-		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("workspace.elements.lock_modelement_message" ),
-				L10N.t("workspace.elements.lock_modelement_confirm" ), JOptionPane.YES_NO_CANCEL_OPTION,
+		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("workspace.elements.lock_modelement_message"),
+				L10N.t("workspace.elements.lock_modelement_confirm"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.WARNING_MESSAGE, null, options, options[1]);
 		if (n == 0) {
-			ProgressDialog dial = new ProgressDialog(mcreator, L10N.t("workspace.elements.lock_modelement_title" ));
+			ProgressDialog dial = new ProgressDialog(mcreator, L10N.t("workspace.elements.lock_modelement_title"));
 			Thread t = new Thread(() -> {
-				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit("Locking/unlocking mod elements" );
+				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit("Locking/unlocking mod elements");
 				dial.addProgress(p0);
 
 				List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
@@ -938,7 +935,7 @@ import java.util.stream.Collectors;
 				// if we have new unlocked elements, we recreate their code
 				if (elementsThatGotUnlocked.size() > 0) {
 					ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
-							"Regenerating code of unlocked elements" );
+							"Regenerating code of unlocked elements");
 					dial.addProgress(p1);
 					int i = 0;
 					for (ModElement mod : elementsThatGotUnlocked) {
@@ -954,7 +951,7 @@ import java.util.stream.Collectors;
 					p1.ok();
 					dial.refreshDisplay();
 
-					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit("Rebuilding workspace" );
+					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit("Rebuilding workspace");
 					dial.addProgress(p2);
 					mcreator.actionRegistry.buildWorkspace.doAction();
 					p2.ok();
@@ -980,8 +977,8 @@ import java.util.stream.Collectors;
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component)
 										.validate();
 							}
-						}, "Duplicate", "Cancel" );
-				if (modName != null && !modName.equals("" )) {
+						}, "Duplicate", "Cancel");
+				if (modName != null && !modName.equals("")) {
 					modName = JavaConventions.convertToValidClassName(modName);
 
 					GeneratableElement generatableElementOriginal = mu.getGeneratableElement();
@@ -1055,7 +1052,7 @@ import java.util.stream.Collectors;
 			} else {
 				JOptionPane.showMessageDialog(null,
 						"<html>This mod does not have saved instance. If you want to make it editable,<br>you need to remake it.<br>"
-								+ "<small>You probably see this because you have updated MCreator and your mod was made before saving was possible." );
+								+ "<small>You probably see this because you have updated MCreator and your mod was made before saving was possible.");
 			}
 		}
 	}
@@ -1067,15 +1064,15 @@ import java.util.stream.Collectors;
 		if (modElementFiles.size() > 1) {
 			JPopupMenu codeDropdown = new JPopupMenu();
 			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
-			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT" )).darker());
+			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 
 			for (File modElementFile : modElementFiles) {
 				JMenuItem item = new JMenuItem(
 						"<html>" + modElementFile.getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
 								.getWorkspaceFolder().toPath().relativize(modElementFile.toPath()));
 				item.setIcon(FileIcons.getIconForFile(modElementFile));
-				item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT" )).darker());
-				item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR" ));
+				item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+				item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 				item.setIconTextGap(8);
 				item.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
 				item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, modElementFile));
@@ -1131,7 +1128,7 @@ import java.util.stream.Collectors;
 			if (mcreator.getWorkspace().getModElements().stream()
 					.anyMatch(el -> currentFolder.equals(el.getFolderPath())) || !currentFolder
 					.getDirectFolderChildren().isEmpty()) {
-				mainpcl.show(mainp, "sp" );
+				mainpcl.show(mainp, "sp");
 
 				// reload list model partially in the background
 				new Thread(() -> {
@@ -1154,7 +1151,7 @@ import java.util.stream.Collectors;
 					});
 				}).start();
 			} else {
-				mainpcl.show(mainp, "ep" );
+				mainpcl.show(mainp, "ep");
 			}
 
 			if (mcreator.getWorkspace().getModElements().isEmpty()) {
@@ -1167,8 +1164,8 @@ import java.util.stream.Collectors;
 								mcreator.getWorkspace().getModElements().size()));
 			}
 
-			if (mcreator.getWorkspaceSettings().getMCreatorDependencies().contains("mcreator_link" )) {
-				elementsCount.setIcon(UIRES.get("16px.link" ));
+			if (mcreator.getWorkspaceSettings().getMCreatorDependencies().contains("mcreator_link")) {
+				elementsCount.setIcon(UIRES.get("16px.link"));
 			} else {
 				elementsCount.setIcon(new EmptyIcon(0, 0));
 			}
@@ -1191,7 +1188,7 @@ import java.util.stream.Collectors;
 		ArrayList<IElement> items;
 		ArrayList<IElement> filterItems;
 
-		final Pattern pattern = Pattern.compile("([^\"]\\S*|\".+?\")\\s*" );
+		final Pattern pattern = Pattern.compile("([^\"]\\S*|\".+?\")\\s*");
 
 		FilterModel() {
 			super();
@@ -1247,17 +1244,17 @@ import java.util.stream.Collectors;
 			Matcher m = pattern.matcher(searchInput);
 			while (m.find()) {
 				String pat = m.group(1);
-				if (pat.contains("f:" )) {
-					pat = pat.replaceFirst("f:", "" );
-					if (pat.equals("locked" ) || pat.equals("ok" ) || pat.equals("err" ))
+				if (pat.contains("f:")) {
+					pat = pat.replaceFirst("f:", "");
+					if (pat.equals("locked") || pat.equals("ok") || pat.equals("err"))
 						filters.add(pat);
 					for (ModElementType type : ModElementType.values()) {
-						if (pat.equals(type.getReadableName().replace(" ", "" ).toLowerCase(Locale.ENGLISH))) {
+						if (pat.equals(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))) {
 							metfilters.add(type);
 						}
 					}
 				} else
-					keyWords.add(pat.replace("\"", "" ));
+					keyWords.add(pat.replace("\"", ""));
 			}
 
 			boolean flattenFolders = !searchInput.isEmpty();
