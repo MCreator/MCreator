@@ -25,7 +25,7 @@ task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) 
             from configurations.runtimeClasspath
         }
     }
-    into('MacOS/jdk/Contents/Home') { with copySpec { from 'jdk/jdk8_mac_64/' } exclude "jre/lib/tools.jar" }
+    into('MacOS/jdk/Contents/Home') { with copySpec { from 'jdk/jdk11_mac_64/' } exclude "jre/lib/tools.jar" }
     doLast {
         convertCRLF(file(exportPath + '/Info.plistdos'), file(exportPath + '/Info.plist'))
         convertCRLF(file(exportPath + '/MacOS/mcreatordos'), file(exportPath + '/MacOS/mcreator'))

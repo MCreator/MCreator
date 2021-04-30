@@ -192,7 +192,8 @@ FunctionEnd
 
 Function un.LockedListShow
   !insertmacro MUI_HEADER_TEXT 'Scanning for locked files' 'Clicking next will auto-close the programs listed below'
-  LockedList::AddFile "$INSTDIR\jdk\jre\lib\rt.jar"
+  LockedList::AddFile "$INSTDIR\jdk\bin\java.exe"
+  LockedList::AddFile "$INSTDIR\jdk\bin\javaw.exe"
   LockedList::AddFolder "$INSTDIR\plugins"
   LockedList::AddFolder "$INSTDIR\lib"
   LockedList::Dialog /autonext /autoclosesilent

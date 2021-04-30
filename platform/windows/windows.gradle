@@ -41,7 +41,7 @@ task exportWin64(type: Copy, dependsOn: [downloadJDKWin64, createExe, jar, expor
     }
     into('plugins') { from 'build/plugins/' }
     into('license') { with copySpec { from 'license' } }
-    into('jdk') { with copySpec { from 'jdk/jdk8_win_64' } exclude "jre/lib/tools.jar" }
+    into('jdk') { with copySpec { from 'jdk/jdk11_win_64' } exclude "jre/lib/tools.jar" }
 }
 
 task zipWin64(type: Zip, dependsOn: exportWin64) {
@@ -66,7 +66,7 @@ task exportWin32(type: Copy, dependsOn: [downloadJDKWin32, createExe, jar, expor
     }
     into('plugins') { from 'build/plugins/' }
     into('license') { with copySpec { from 'license' } }
-    into('jdk') { with copySpec { from 'jdk/jdk8_win_32' } exclude "jre/lib/tools.jar" }
+    into('jdk') { with copySpec { from 'jdk/jdk11_win_32' } exclude "jre/lib/tools.jar" }
 }
 
 task zipWin32(type: Zip, dependsOn: exportWin32) {

@@ -19,7 +19,7 @@ task exportLinux32(type: Copy, dependsOn: [downloadJDKLinux32, jar, exportPlugin
     }
     into('plugins') {from 'build/plugins/'}
     into('license') { with copySpec { from 'license' } }
-    into('jdk') { with copySpec { from 'jdk/jdk8_linux_32' } exclude "jre/lib/tools.jar" }
+    into('jdk') { with copySpec { from 'jdk/jdk11_linux_32' } exclude "jre/lib/tools.jar" }
     doLast {
         convertCRLF(file('build/export/linux32/mcreator.shdos'), file('build/export/linux32/mcreator.sh'))
         delete 'build/export/linux32/mcreator.shdos'
@@ -60,7 +60,7 @@ task exportLinux64(type: Copy, dependsOn: [downloadJDKLinux64, jar, exportPlugin
     }
     into('plugins') {from 'build/plugins/'}
     into('license') { with copySpec { from 'license' } }
-    into('jdk') { with copySpec { from 'jdk/jdk8_linux_64' } exclude "jre/lib/tools.jar" }
+    into('jdk') { with copySpec { from 'jdk/jdk11_linux_64' } exclude "jre/lib/tools.jar" }
     doLast {
         convertCRLF(file('build/export/linux64/mcreator.shdos'), file('build/export/linux64/mcreator.sh'))
         delete 'build/export/linux64/mcreator.shdos'

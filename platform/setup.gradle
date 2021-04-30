@@ -1,10 +1,10 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-def jdk8_win_32 = 'https://download.bell-sw.com/java/8u275+1/bellsoft-jdk8u275+1-windows-i586-full.zip'
-def jdk8_win_64 = 'https://download.bell-sw.com/java/8u275+1/bellsoft-jdk8u275+1-windows-amd64-full.zip'
-def jdk8_linux_32 = 'https://download.bell-sw.com/java/8u275+1/bellsoft-jdk8u275+1-linux-i586-full.tar.gz'
-def jdk8_linux_64 = 'https://download.bell-sw.com/java/8u275+1/bellsoft-jdk8u275+1-linux-amd64-full.tar.gz'
-def jdk8_mac_64 = 'https://download.bell-sw.com/java/8u275+1/bellsoft-jdk8u275+1-macos-amd64-full.zip'
+def jdk11_win_32 = 'https://download.bell-sw.com/java/11.0.11+9/bellsoft-jdk11.0.11+9-windows-i586-full.zip'
+def jdk11_win_64 = 'https://download.bell-sw.com/java/11.0.11+9/bellsoft-jdk11.0.11+9-windows-amd64-full.zip'
+def jdk11_linux_64 = 'https://download.bell-sw.com/java/11.0.11+9/bellsoft-jdk11.0.11+9-linux-amd64-full.tar.gz'
+def jdk11_linux_32 = 'https://download.bell-sw.com/java/11.0.11+9/bellsoft-jdk11.0.11+9-linux-amd64-full.tar.gz'
+def jdk11_mac_64 = 'https://download.bell-sw.com/java/11.0.11+9/bellsoft-jdk11.0.11+9-macos-amd64-full.zip'
 
 def nsis_url = 'https://netcologne.dl.sourceforge.net/project/nsis/NSIS%203/3.05/nsis-3.05.zip'
 def nsis_lockedlist_plugin_url = 'https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip'
@@ -13,95 +13,95 @@ def mkisofs_url = 'https://netix.dl.sourceforge.net/project/mkisofs-md5/mkisofs-
 
 task downloadJDKWin32(type: DefaultTask, group: 'setup') {
     doLast {
-        if (!file('jdk/jdk8_win_32/').exists()) {
-            mkdir 'jdk/jdk8_win_32'
+        if (!file('jdk/jdk11_win_32/').exists()) {
+            mkdir 'jdk/jdk11_win_32'
 
             download {
-                src jdk8_win_32
-                dest 'build/tmp/jdk8_win_32'
+                src jdk11_win_32
+                dest 'build/tmp/jdk11_win_32'
                 overwrite false
             }
-            copy { from zipTree('build/tmp/jdk8_win_32') into file('jdk/jdk8_win_32/') }
-            delete 'build/tmp/jdk8_win_32'
+            copy { from zipTree('build/tmp/jdk11_win_32') into file('jdk/jdk11_win_32/') }
+            delete 'build/tmp/jdk11_win_32'
 
-            copy { from file('jdk/jdk8_win_32/jdk8u275-full/') into file('jdk/jdk8_win_32/') }
-            delete 'jdk/jdk8_win_32/jdk8u275-full/'
+            copy { from file('jdk/jdk11_win_32/jdk-11.0.11-full/') into file('jdk/jdk11_win_32/') }
+            delete 'jdk/jdk11_win_32/jdk-11.0.11-full/'
         }
     }
 }
 
 task downloadJDKWin64(type: DefaultTask, group: 'setup') {
     doLast {
-        if (!file('jdk/jdk8_win_64/').exists()) {
-            mkdir 'jdk/jdk8_win_64'
+        if (!file('jdk/jdk11_win_64/').exists()) {
+            mkdir 'jdk/jdk11_win_64'
 
             download {
-                src jdk8_win_64
-                dest 'build/tmp/jdk8_win_64'
+                src jdk11_win_64
+                dest 'build/tmp/jdk11_win_64'
                 overwrite false
             }
-            copy { from zipTree('build/tmp/jdk8_win_64') into file('jdk/jdk8_win_64/') }
-            delete 'build/tmp/jdk8_win_64'
+            copy { from zipTree('build/tmp/jdk11_win_64') into file('jdk/jdk11_win_64/') }
+            delete 'build/tmp/jdk11_win_64'
 
-            copy { from file('jdk/jdk8_win_64/jdk8u275-full/') into file('jdk/jdk8_win_64/') }
-            delete 'jdk/jdk8_win_64/jdk8u275-full/'
-        }
-    }
-}
-
-task downloadJDKLinux32(type: DefaultTask, group: 'setup') {
-    doLast {
-        if (!file('jdk/jdk8_linux_32/').exists()) {
-            mkdir 'jdk/jdk8_linux_32'
-
-            download {
-                src jdk8_linux_32
-                dest 'build/tmp/jdk8_linux_32'
-                overwrite false
-            }
-            copy { from tarTree(resources.gzip('build/tmp/jdk8_linux_32')) into file('jdk/jdk8_linux_32/') }
-            delete 'build/tmp/jdk8_linux_32'
-
-            copy { from file('jdk/jdk8_linux_32/jdk8u275-full/') into file('jdk/jdk8_linux_32/') }
-            delete 'jdk/jdk8_linux_32/jdk8u275-full/'
+            copy { from file('jdk/jdk11_win_64/jdk-11.0.11-full/') into file('jdk/jdk11_win_64/') }
+            delete 'jdk/jdk11_win_64/jdk-11.0.11-full/'
         }
     }
 }
 
 task downloadJDKLinux64(type: DefaultTask, group: 'setup') {
     doLast {
-        if (!file('jdk/jdk8_linux_64/').exists()) {
-            mkdir 'jdk/jdk8_linux_64'
+        if (!file('jdk/jdk11_linux_64/').exists()) {
+            mkdir 'jdk/jdk11_linux_64'
 
             download {
-                src jdk8_linux_64
-                dest 'build/tmp/jdk8_linux_64'
+                src jdk11_linux_64
+                dest 'build/tmp/jdk11_linux_64'
                 overwrite false
             }
-            copy { from tarTree(resources.gzip('build/tmp/jdk8_linux_64')) into file('jdk/jdk8_linux_64/') }
-            delete 'build/tmp/jdk8_linux_64'
+            copy { from tarTree(resources.gzip('build/tmp/jdk11_linux_64')) into file('jdk/jdk11_linux_64/') }
+            delete 'build/tmp/jdk11_linux_64'
 
-            copy { from file('jdk/jdk8_linux_64/jdk8u275-full/') into file('jdk/jdk8_linux_64/') }
-            delete 'jdk/jdk8_linux_64/jdk8u275-full/'
+            copy { from file('jdk/jdk11_linux_64/jdk-11.0.11-full/') into file('jdk/jdk11_linux_64/') }
+            delete 'jdk/jdk11_linux_64/jdk-11.0.11-full/'
+        }
+    }
+}
+
+task downloadJDKLinux32(type: DefaultTask, group: 'setup') {
+    doLast {
+        if (!file('jdk/jdk11_linux_32/').exists()) {
+            mkdir 'jdk/jdk11_linux_32'
+
+            download {
+                src jdk11_linux_32
+                dest 'build/tmp/jdk11_linux_32'
+                overwrite false
+            }
+            copy { from tarTree(resources.gzip('build/tmp/jdk11_linux_32')) into file('jdk/jdk11_linux_32/') }
+            delete 'build/tmp/jdk11_linux_32'
+
+            copy { from file('jdk/jdk11_linux_32/jdk-11.0.11-full/') into file('jdk/jdk11_linux_32/') }
+            delete 'jdk/jdk11_linux_32/jdk-11.0.11-full/'
         }
     }
 }
 
 task downloadJDKMac64(type: DefaultTask, group: 'setup') {
     doLast {
-        if (!file('jdk/jdk8_mac_64/').exists()) {
-            mkdir 'jdk/jdk8_mac_64'
+        if (!file('jdk/jdk11_mac_64/').exists()) {
+            mkdir 'jdk/jdk11_mac_64'
 
             download {
-                src jdk8_mac_64
-                dest 'build/tmp/jdk8_mac_64'
+                src jdk11_mac_64
+                dest 'build/tmp/jdk11_mac_64'
                 overwrite false
             }
-            copy { from zipTree('build/tmp/jdk8_mac_64') into file('jdk/jdk8_mac_64/') }
-            delete 'build/tmp/jdk8_mac_64'
+            copy { from zipTree('build/tmp/jdk11_mac_64') into file('jdk/jdk11_mac_64/') }
+            delete 'build/tmp/jdk11_mac_64'
 
-            copy { from file('jdk/jdk8_mac_64/jdk8u275-full.jdk/') into file('jdk/jdk8_mac_64/') }
-            delete 'jdk/jdk8_mac_64/jdk8u275-full.jdk/'
+            copy { from file('jdk/jdk11_mac_64/jdk-11.0.11-full.jdk/') into file('jdk/jdk11_mac_64/') }
+            delete 'jdk/jdk11_mac_64/jdk-11.0.11-full.jdk/'
         }
     }
 }
