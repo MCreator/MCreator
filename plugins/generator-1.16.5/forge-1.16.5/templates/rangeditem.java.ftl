@@ -39,17 +39,18 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 	@ObjectHolder("${modid}:${registryname}")
 	public static final Item block = null;
 
-	public static final EntityType arrow = (EntityType.Builder.<ArrowCustomEntity>create(ArrowCustomEntity::new, EntityClassification.MISC)
-			.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).setCustomClientFactory(ArrowCustomEntity::new)
-			.size(0.5f, 0.5f)).build("entitybullet${registryname}").setRegistryName("entitybullet${registryname}");
+	@ObjectHolder("${modid}:entitybullet${registryname}")
+	public static final EntityType arrow = null;
 
-	public ${name}Item(${JavaModName}Elements instance) {
+	public ${name}Item (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 	}
 
 	@Override public void initElements() {
 		elements.items.add(() -> new ItemRanged());
-		elements.entities.add(() -> arrow);
+		elements.entities.add(() -> (EntityType.Builder.<ArrowCustomEntity>create(ArrowCustomEntity::new, EntityClassification.MISC)
+					.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).setCustomClientFactory(ArrowCustomEntity::new)
+					.size(0.5f, 0.5f)).build("entitybullet${registryname}").setRegistryName("entitybullet${registryname}"));
 	}
 
 	@Override @OnlyIn(Dist.CLIENT) public void init(FMLCommonSetupEvent event) {

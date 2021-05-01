@@ -38,34 +38,37 @@ import net.minecraft.block.material.Material;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Entity extends ${JavaModName}Elements.ModElement {
 
-	public static EntityType entity = (EntityType.Builder.<CustomEntity>create(CustomEntity::new, ${generator.map(data.mobSpawningType, "mobspawntypes")})
-			.setShouldReceiveVelocityUpdates(true).setTrackingRange(${data.trackingRange}).setUpdateInterval(3).setCustomClientFactory(CustomEntity::new)
-					<#if data.immuneToFire>.immuneToFire()</#if>.size(${data.modelWidth}f, ${data.modelHeight}f))
-			.build("${registryname}").setRegistryName("${registryname}");
+	public static EntityType entity = null;
 
 	<#if data.ranged && data.rangedItemType == "Default item">
-	public static final EntityType arrow = (EntityType.Builder.<ArrowCustomEntity>create(ArrowCustomEntity::new, EntityClassification.MISC)
-			.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1)
-			.setCustomClientFactory(ArrowCustomEntity::new).size(0.5f, 0.5f)).build("entitybullet${registryname}").setRegistryName("entitybullet${registryname}");
+	@ObjectHolder("${modid}:entitybullet${registryname}")
+	public static final EntityType arrow = null;
 	</#if>
 
-	public ${name}Entity(${JavaModName}Elements instance) {
+	public ${name}Entity (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 	}
 
 	@Override public void initElements() {
-		elements.entities.add(() -> entity);
+		entity = (EntityType.Builder.<CustomEntity>create(CustomEntity::new, ${generator.map(data.mobSpawningType, "mobspawntypes")})
+					.setShouldReceiveVelocityUpdates(true).setTrackingRange(${data.trackingRange}).setUpdateInterval(3).setCustomClientFactory(CustomEntity::new)
+					<#if data.immuneToFire>.immuneToFire()</#if>.size(${data.modelWidth}f, ${data.modelHeight}f))
+					.build("${registryname}").setRegistryName("${registryname}");
 
-		<#if data.ranged && data.rangedItemType == "Default item">
-		elements.entities.add(() -> arrow);
-		</#if>
+		elements.entities.add(() -> entity);
 
 		<#if data.hasSpawnEgg>
 		elements.items.add(() -> new SpawnEggItem(entity, ${data.spawnEggBaseColor.getRGB()}, ${data.spawnEggDotColor.getRGB()},
 				new Item.Properties()<#if data.creativeTab??>.group(${data.creativeTab})<#else>.group(ItemGroup.MISC)</#if>)
 				.setRegistryName("${registryname}_spawn_egg"));
+		</#if>
+
+		<#if data.ranged && data.rangedItemType == "Default item">
+		elements.entities.add(() -> (EntityType.Builder.<ArrowCustomEntity>create(ArrowCustomEntity::new, EntityClassification.MISC)
+					.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1)
+					.setCustomClientFactory(ArrowCustomEntity::new).size(0.5f, 0.5f)).build("entitybullet${registryname}").setRegistryName("entitybullet${registryname}"));
 		</#if>
 	}
 
