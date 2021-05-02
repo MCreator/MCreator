@@ -96,7 +96,7 @@ public class GTModElements {
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
 					if (!modElement.equals(modElement1))
-						fail("Filed to properly determine file ownership for mod element type: " + modElement.getName()
+						fail("Filed to properly determine file ownership for mod element type: " + modElement.getType()
 								.getReadableName() + ", file: " + modElementFile);
 				}
 

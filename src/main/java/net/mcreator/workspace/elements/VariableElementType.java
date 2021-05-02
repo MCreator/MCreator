@@ -83,6 +83,10 @@ public class VariableElementType {
 		return defaultValue;
 	}
 
+	@Override public String toString() {
+		return getName();
+	}
+
 	public enum Scope {
 		@SerializedName("map") GLOBAL_MAP, @SerializedName("world") GLOBAL_WORLD, @SerializedName("global") GLOBAL_SESSION, @SerializedName("player_lifetime") PLAYER_LIFETIME, @SerializedName("player_persistent") PLAYER_PERSISTENT
 	}

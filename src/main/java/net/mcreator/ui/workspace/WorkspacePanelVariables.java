@@ -231,8 +231,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 									}
 									return validator.validate();
 								}
-							}, VariableElementType.LOGIC.getName().toUpperCase(), VariableElementType.NUMBER.getName().toUpperCase(),
-							VariableElementType.STRING.getName().toUpperCase(), VariableElementType.ITEMSTACK.getName().toUpperCase());
+							}, VariableElementType.LOGIC, VariableElementType.NUMBER, VariableElementType.STRING,
+							VariableElementType.ITEMSTACK);
 			if (element != null) {
 				workspacePanel.getMcreator().getWorkspace().addVariableElement(element);
 				reloadElements();

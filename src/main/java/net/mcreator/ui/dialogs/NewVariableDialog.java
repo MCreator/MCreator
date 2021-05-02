@@ -33,7 +33,7 @@ import java.util.Objects;
 public class NewVariableDialog {
 
 	public static VariableElement showNewVariableDialog(JFrame frame, boolean showScope,
-			OptionPaneValidatior variableNameValidator, String... supportedTypes) {
+			OptionPaneValidatior variableNameValidator, VariableElementType... supportedTypes) {
 		JPanel inp = new JPanel(new BorderLayout(10, 10));
 
 		VTextField textField = new VTextField(25);
@@ -42,7 +42,7 @@ public class NewVariableDialog {
 		variableNameValidator.setValidatedComponent(textField);
 		textField.setValidator(variableNameValidator);
 
-		JComboBox<String> type = new JComboBox<>(supportedTypes);
+		JComboBox<VariableElementType> type = new JComboBox<>(supportedTypes);
 
 		JComboBox<VariableElementType.Scope> scope = new JComboBox<>(VariableElementType.Scope.values());
 
