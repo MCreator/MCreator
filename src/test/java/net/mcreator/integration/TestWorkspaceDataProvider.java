@@ -405,25 +405,7 @@ public class TestWorkspaceDataProvider {
 			command.commandName = modElement.getName();
 			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
 			command.onCommandExecuted = new Procedure("procedure2");
-			if (!emptyLists) {
-				Set<String> args = modElement.getGeneratorStats().getGeneratorCmdArgs();
-				if (args.contains("advanced_literal") && args.contains("advanced_entity") && args
-						.contains("advanced_item") && args.contains("basic_message") && args.contains("basic_blockpos")) {
-					command.argsxml = "<xml><block type=\"args_start\" deletable=\"!_true\">"
-							+ "<next><block type=\"advanced_literal\"><field name=\"name\">option</field><statement name=\"args\">"
-							+ "<block type=\"advanced_entity\"><field name=\"name\">targets</field><field name=\"type\">players</field><statement name=\"args\">"
-							+ "<block type=\"advanced_item\"><field name=\"name\">item</field><statement name=\"args\"><block type=\"basic_message\"><field name=\"name\">message</field>"
-							+ "<field name=\"procedure\">null</field></block></statement></block></statement></block></statement>"
-							+ "<next><block type=\"advanced_literal\"><field name=\"name\">test</field><statement name=\"args\">"
-							+ "<block type=\"advanced_entity\"><field name=\"name\">targets</field><field name=\"type\">players</field><statement name=\"args\">"
-							+ "<block type=\"advanced_item\"><field name=\"name\">item</field><statement name=\"args\"><block type=\"basic_blockpos\"><field name=\"name\">position</field><field name=\"procedure\">null</field>"
-							+ "</block></statement></block></statement></block></statement></block></next></block></next></block></xml>";
-				}
-			}
-			// fallback
-			if (command.argsxml == null) {
-				command.argsxml = "<xml><block type=\"args_start\" deletable=\"!_true\"></block></xml>";
-			}
+			command.argsxml = "<xml><block type=\"args_start\" deletable=\"!_true\"></block></xml>";
 			return command;
 		case KEYBIND:
 			KeyBinding keyBinding = new KeyBinding(modElement);

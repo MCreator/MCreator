@@ -140,6 +140,9 @@ import static org.junit.Assert.fail;
 			LOG.info("[" + generator + "] ----- Testing procedure blocks");
 			GTProcedureBlocks.runTest(LOG, generator, random, workspace);
 
+			LOG.info("[" + generator + "] ----- Testing command argument blocks");
+			GTCommandArgBlocks.runTest(LOG, generator, random, workspace);
+
 			LOG.info("[" + generator + "] ----- Testing building after procedure tests");
 			GTBuild.runTest(LOG, generator, workspace);
 
