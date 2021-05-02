@@ -24,7 +24,6 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.OS;
 import net.mcreator.io.net.analytics.Analytics;
 import net.mcreator.io.net.analytics.DeviceInfo;
 import net.mcreator.io.net.api.D8WebAPI;
@@ -35,7 +34,6 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.util.DiscordClient;
-import net.mcreator.ui.component.util.MacOSUIUtil;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.help.HelpLoader;
@@ -154,10 +152,12 @@ public final class MCreatorApplication {
 
 		splashScreen.setProgress(100, "Loading MCreator windows");
 
-		if (OS.getOS() == OS.MAC) {
-			MacOSUIUtil.registerAboutHandler(() -> AboutAction.showDialog(null));
-			MacOSUIUtil.registerPreferencesHandler(() -> new PreferencesDialog(null, null));
-			MacOSUIUtil.registerQuitHandler(this::closeApplication);
+		try {
+			Desktop.getDesktop().setAboutHandler(aboutEvent -> AboutAction.showDialog(null));
+			Desktop.getDesktop().setPreferencesHandler(preferencesEvent -> new PreferencesDialog(null, null));
+			Desktop.getDesktop().setQuitHandler((e, response) -> MCreatorApplication.this.closeApplication());
+		} catch (Exception e) {
+			LOG.warn("Failed to register desktop handlers", e);
 		}
 
 		discordClient = new DiscordClient();
