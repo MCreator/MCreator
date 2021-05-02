@@ -18,10 +18,13 @@
 
 package net.mcreator.workspace.elements;
 
+import net.mcreator.workspace.Workspace;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FolderElement implements IElement {
 
@@ -85,6 +88,35 @@ public class FolderElement implements IElement {
 		List<FolderElement> childrenList = new ArrayList<>(children);
 		children.forEach(child -> childrenList.addAll(child.getRecursiveFolderChildren()));
 		return childrenList;
+	}
+
+	public void moveTo(Workspace workspace, FolderElement newParent) {
+		String originalFolderPath = this.getPath();
+		List<String> originalRecursiveFolderChildrenPaths = this.getRecursiveFolderChildren().stream()
+				.map(FolderElement::getPath).collect(Collectors.toList());
+
+		// first remove folder from old parent and assign new parent to the folder
+		this.getParent().removeChild(this);
+		newParent.addChild(this);
+
+		// then re-assign mod elements from this folder to the new folder ath
+		for (ModElement modElement : workspace.getModElements()) {
+			if (originalFolderPath.equals(modElement.getFolderPath())) {
+				// set parent folder again to update the path
+				modElement.setParentFolder(this);
+			}
+		}
+
+		// re-assign folders to all child-folder's mod elements recursively
+		int i = 0;
+		for (FolderElement childFolder : this.getRecursiveFolderChildren()) {
+			for (ModElement modElement : workspace.getModElements()) {
+				if (originalRecursiveFolderChildrenPaths.get(i).equals(modElement.getFolderPath())) {
+					modElement.setParentFolder(childFolder);
+				}
+			}
+			i++;
+		}
 	}
 
 	public boolean isRoot() {
