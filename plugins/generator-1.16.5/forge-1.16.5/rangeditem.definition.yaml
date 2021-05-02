@@ -1,6 +1,8 @@
 templates:
   - template: rangeditem.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: bullet_renderer.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/entity/renderer/@NAMERenderer.java"
   - template: json/rangeditem.json.ftl
     writer: json
     condition: "renderType #= 0"
