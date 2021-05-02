@@ -51,6 +51,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.desktop.QuitStrategy;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -153,9 +154,14 @@ public final class MCreatorApplication {
 		splashScreen.setProgress(100, "Loading MCreator windows");
 
 		try {
-			Desktop.getDesktop().setAboutHandler(aboutEvent -> AboutAction.showDialog(null));
-			Desktop.getDesktop().setPreferencesHandler(preferencesEvent -> new PreferencesDialog(null, null));
-			Desktop.getDesktop().setQuitHandler((e, response) -> MCreatorApplication.this.closeApplication());
+			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_ABOUT))
+				Desktop.getDesktop().setAboutHandler(aboutEvent -> AboutAction.showDialog(null));
+
+			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_PREFERENCES))
+				Desktop.getDesktop().setPreferencesHandler(preferencesEvent -> new PreferencesDialog(null, null));
+
+			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_QUIT_HANDLER))
+				Desktop.getDesktop().setQuitHandler((e, response) -> MCreatorApplication.this.closeApplication());
 		} catch (Exception e) {
 			LOG.warn("Failed to register desktop handlers", e);
 		}
