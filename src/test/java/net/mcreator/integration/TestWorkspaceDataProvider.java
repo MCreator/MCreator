@@ -910,8 +910,7 @@ public class TestWorkspaceDataProvider {
 			item.inventorySize = 10;
 			item.inventoryStackSize = 42;
 			item.guiBoundTo = "<NONE>";
-			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(), emptyLists ?
-					"" :
+			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			item.stayInGridWhenCrafting = _true;
 			item.damageOnCrafting = _true;
@@ -1382,7 +1381,7 @@ public class TestWorkspaceDataProvider {
 		tool.damageVsEntity = 2;
 		tool.usageCount = 24;
 		tool.stayInGridWhenCrafting = _true;
-		tool.damageOnCrafting = emptyLists;
+		tool.damageOnCrafting = _true;
 		tool.immuneToFire = _true;
 		tool.blocksAffected = new ArrayList<>();
 		tool.hasGlow = _true;

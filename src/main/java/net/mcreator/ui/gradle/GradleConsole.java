@@ -87,9 +87,6 @@ public class GradleConsole extends JPanel {
 
 	private CancellationTokenSource cancellationSource = GradleConnector.newCancellationTokenSource();
 
-	// a flag to prevent infinite re-runs in case when re-run does not solve the build problem
-	public boolean rerunFlag = false;
-
 	public GradleConsole(MCreator ref) {
 		this.ref = ref;
 
@@ -388,19 +385,8 @@ public class GradleConsole extends JPanel {
 							.checkFailingGradleDependenciesAndClear();
 
 					if (failure instanceof BuildException) {
-						if (GradleErrorDecoder.doesErrorSuggestRerun(taskErr.toString() + taskOut)) {
-							if (!rerunFlag) {
-								rerunFlag = true;
-
-								LOG.warn("Gradle task suggested re-run. Attempting re-running task: " + command);
-
-								// Re-run the same command with the same listener
-								GradleConsole.this.exec(command, taskSpecificListener);
-
-								return;
-							}
-						} else if (workspaceReportedFailingGradleDependencies || GradleErrorDecoder
-								.isErrorCausedByCorruptedCaches(taskErr.toString() + taskOut)) {
+						if (workspaceReportedFailingGradleDependencies || GradleErrorDecoder
+								.isErrorCausedByCorruptedCaches(taskErr.toString() + taskOut.toString())) {
 							Object[] options = { "Clear Gradle caches", "Clear entire Gradle folder",
 									"<html><font color=gray>Do nothing" };
 							int reply = JOptionPane.showOptionDialog(ref,
@@ -418,7 +404,8 @@ public class GradleConsole extends JPanel {
 							errorhandled = true;
 						} else if (taskErr.toString().contains("compileJava FAILED") || taskOut.toString()
 								.contains("compileJava FAILED")) {
-							errorhandled = CodeErrorDialog.showCodeErrorDialog(ref, taskErr.toString() + taskOut);
+							errorhandled = CodeErrorDialog
+									.showCodeErrorDialog(ref, taskErr.toString() + taskOut.toString());
 						}
 						append("BUILD FAILED", new Color(0xF98771));
 					} else if (failure instanceof BuildCancelledException) {
@@ -473,12 +460,6 @@ public class GradleConsole extends JPanel {
 				ref.consoleTab.repaint();
 				ref.statusBar.reloadGradleIndicator();
 				ref.statusBar.setGradleMessage(L10N.t("gradle.idle"));
-
-				// on success, we clear the re-run flag
-				if (rerunFlag) {
-					rerunFlag = false;
-					LOG.info("Clearing the re-run flag after a successful re-run");
-				}
 			}
 
 			private void taskComplete(int mcreatorGradleStatus) {

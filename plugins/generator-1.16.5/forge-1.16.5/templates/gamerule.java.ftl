@@ -48,7 +48,7 @@ public class ${name}GameRule extends ${JavaModName}Elements.ModElement {
 	<#if data.type == "Number">
 		public static GameRules.RuleType<GameRules.IntegerValue> create(int defaultValue) {
 			try {
-				Method createGameruleMethod = ObfuscationReflectionHelper.findMethod(GameRules.IntegerValue.class, "func_223559_b", int.class);
+				Method createGameruleMethod = ObfuscationReflectionHelper.findMethod(GameRules.IntegerValue.class, "func_223564_a", int.class);
 				createGameruleMethod.setAccessible(true);
 				return (GameRules.RuleType<GameRules.IntegerValue>) createGameruleMethod.invoke(null, defaultValue);
 			} catch (Exception e) {

@@ -3,11 +3,8 @@
     BlockPos _bp = new BlockPos((int)${input$x},(int)${input$y},(int)${input$z});
     BlockState _bs = ${mappedBlockToBlockStateCode(input$block)};
 
-    <#if field$state?lower_case == "true" || field$nbt?lower_case == "true">
-    BlockState _bso = world.getBlockState(_bp);
-    </#if>
-
     <#if field$state?lower_case == "true">
+    BlockState _bso = world.getBlockState(_bp);
     for(Map.Entry<Property<?>, Comparable<?>> entry : _bso.getValues().entrySet()) {
         Property _property = _bs.getBlock().getStateContainer().getProperty(entry.getKey().getName());
         if (_property != null && _bs.get(_property) != null)
