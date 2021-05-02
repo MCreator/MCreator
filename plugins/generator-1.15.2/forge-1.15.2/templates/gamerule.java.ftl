@@ -59,7 +59,7 @@ public class ${name}GameRule extends ${JavaModName}Elements.ModElement {
 	<#else>
 		public static GameRules.RuleType<GameRules.BooleanValue> create(boolean defaultValue) {
 			try {
-				Method createGameruleMethod = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "func_223567_b", boolean.class);
+				Method createGameruleMethod = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "func_223568_b", boolean.class);
 				createGameruleMethod.setAccessible(true);
 				return (GameRules.RuleType<GameRules.BooleanValue>) createGameruleMethod.invoke(null, defaultValue);
 			} catch (Exception e) {
