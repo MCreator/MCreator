@@ -124,7 +124,7 @@ public final class MCreatorApplication {
 		BlocklyLoader.init();
 
 		// load entity animations for the Java Model animation editor
-		BuiltInEntityAnimations.loadEntityAnimations();
+		EntityAnimationsLoader.loadEntityAnimations();
 
 		splashScreen.setProgress(55, "Loading generators");
 

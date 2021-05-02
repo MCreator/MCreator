@@ -30,7 +30,7 @@ import org.gradle.internal.FileUtils;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class BuiltInEntityAnimations {
+public class EntityAnimationsLoader {
 
 	private static final Logger LOG = LogManager.getLogger("Entity Animations loader");
 
@@ -56,7 +56,7 @@ public class BuiltInEntityAnimations {
 		}
 	}
 
-	public static Set<String> getAllIDs() {
+	public static Set<String> getAllAnimationIDs() {
 		return entityAnimations.keySet();
 	}
 

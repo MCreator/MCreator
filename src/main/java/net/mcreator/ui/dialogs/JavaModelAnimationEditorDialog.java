@@ -30,7 +30,7 @@ package net.mcreator.ui.dialogs;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.init.BuiltInEntityAnimations;
+import net.mcreator.ui.init.EntityAnimationsLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.StringUtils;
 import org.jboss.forge.roaster.Roaster;
@@ -55,7 +55,7 @@ public class JavaModelAnimationEditorDialog {
 		Map<String, JComboBox<String>> animations = new HashMap<>();
 
 		for (String part : vc) {
-			List<String> types = new ArrayList<>(BuiltInEntityAnimations.getAllIDs());
+			List<String> types = new ArrayList<>(EntityAnimationsLoader.getAllAnimationIDs());
 			types.sort(String::compareTo);
 			JComboBox<String> box = new JComboBox<>(types.toArray(new String[0]));
 			box.setSelectedItem("No animation");
@@ -88,7 +88,7 @@ public class JavaModelAnimationEditorDialog {
 			for (Map.Entry<String, JComboBox<String>> animation : animations.entrySet()) {
 				String selected = (String) animation.getValue().getSelectedItem();
 				if (selected != null) {
-					JsonArray animationCodes = BuiltInEntityAnimations.getAnimations(selected);
+					JsonArray animationCodes = EntityAnimationsLoader.getAnimations(selected);
 					for (JsonElement animationCode : animationCodes) {
 						anim.append("this.").append(animation.getKey()).append(animationCode.getAsString()).append("\n");
 					}
