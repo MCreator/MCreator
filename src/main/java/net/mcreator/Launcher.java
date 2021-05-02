@@ -101,28 +101,23 @@ public class Launcher {
 		WebConsoleListener.registerLogger(LOG);
 
 		// check if proper version of MCreator per architecture is used
-		if (OS.getBundledJVMBits() > OS.getSystemBits())
+		if (OS.getSystemBits() == OS.BIT32) {
 			JOptionPane.showMessageDialog(null,
-					"<html><b>You are trying to run 64 bit MCreator on the 32 bit computer.<br>"
-							+ "This will not work!</b><br>" + "<br>Use 32 bit edition of MCreator instead.",
-					"MCreator error", JOptionPane.WARNING_MESSAGE);
-
-		if (OS.getSystemBits() > OS.getBundledJVMBits())
-			JOptionPane.showMessageDialog(null, "<html><b>You are using 32 bit MCreator on the 64 bit computer.</b>"
-							+ "<br>This is not recommended and can cause problems!"
-							+ "<br><br>If you get any errors and use this combination of versions, we can't offer you support."
-							+ "</b><br><br>Use 64 bit edition of MCreator instead.", "MCreator error",
-					JOptionPane.WARNING_MESSAGE);
+					"<html>You are trying to run 64-bit MCreator on 32-bit computer.<br>"
+							+ "MCreator no longer supports 32-bit platforms.", "MCreator error", JOptionPane.WARNING_MESSAGE);
+			System.exit(-1);
+		}
 
 		LOG.info("Installation path: " + System.getProperty("user.dir"));
 		LOG.info("User home of MCreator: " + UserFolderManager.getFileFromUserFolder("/"));
+
 		if (!UserFolderManager.createUserFolderIfNotExists()) {
 			JOptionPane.showMessageDialog(null, "<html><b>MCreator failed to write to user directory!</b><br><br>"
 							+ "Please make sure that the user running MCreator has permissions to read and write to the directory<br>"
 							+ "in which MCreator tried to create user specific data storage. The path MCreator could not write to is:<br><br>"
 							+ UserFolderManager.getFileFromUserFolder("/") + "<br>", "MCreator file system error",
 					JOptionPane.WARNING_MESSAGE);
-			System.exit(-1);
+			System.exit(-2);
 		}
 
 		MCreatorApplication.createApplication(arguments);

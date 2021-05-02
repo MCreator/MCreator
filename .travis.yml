@@ -1,12 +1,6 @@
-dist: xenial
-
-addons:
-  apt:
-    sources:
-      - sourceline: 'deb [arch=amd64] https://apt.bell-sw.com/ stable main'
-        key_url: 'https://download.bell-sw.com/pki/GPG-KEY-bellsoft'
-    packages:
-      - bellsoft-java8-full
+dist: focal
+language: java
+jdk: openjdk11
 
 git:
   depth: 3
@@ -27,8 +21,6 @@ cache:
   directories:
     - $HOME/.mcreator/gradle/caches/
     - $HOME/.mcreator/gradle/wrapper/
-
-language: java
 
 script:
   # Make gradle executable

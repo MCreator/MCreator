@@ -10,7 +10,8 @@ SetCompressor "lzma" ; to improve installer open performance and its size
 
 !define MCREATOR_VERSION "%mcreator%"
 !define BUILD "%build%"
-!define BITS "%bits%"
+
+!define BITS "64"
 
 !searchreplace MCREATOR_VERSION_SHORT ${MCREATOR_VERSION} "." ""
 
