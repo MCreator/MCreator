@@ -458,12 +458,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				.wrapWithHelpButton(this.withEntry("block/resistance"), L10N.label("elementgui.common.resistance")));
 		selp.add(resistance);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/jump_factor"),
-				L10N.label("elementgui.block.jump_factor")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/jump_factor"), L10N.label("elementgui.block.jump_factor")));
 		selp.add(jumpFactor);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/speed_factor"),
-						L10N.label("elementgui.block.speed_factor")));
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/speed_factor"), L10N.label("elementgui.block.speed_factor")));
 		selp.add(speedFactor);
 
 		selp.add(HelpUtils
@@ -655,7 +655,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				.updateComboBoxContents(soundOnStep, ElementUtil.loadStepSounds(), new DataListEntry.Dummy("PLANT"));
 
 		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.loadMapColors()), "DEFAULT");
-		ComboBoxUtil.updateComboBoxContents(growapableSpawnType, Arrays.asList(ElementUtil.getAllPlantTypes()), "Plains");
+		ComboBoxUtil
+				.updateComboBoxContents(growapableSpawnType, Arrays.asList(ElementUtil.getAllPlantTypes()), "Plains");
 
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(cross, crop),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
