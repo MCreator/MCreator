@@ -34,7 +34,7 @@ public class EntityAnimationsLoader {
 
 	private static final Logger LOG = LogManager.getLogger("Entity Animations loader");
 
-	private static final LinkedHashMap<String, JsonArray> entityAnimations = new LinkedHashMap<>();
+	private static final LinkedHashMap<String, String[]> entityAnimations = new LinkedHashMap<>();
 
 	public static void loadEntityAnimations() {
 		LOG.debug("Loading entity animations");
@@ -45,11 +45,11 @@ public class EntityAnimationsLoader {
 				.getResources("templates.animations", Pattern.compile("^[^$].*\\.json"));
 
 		// We add No animation directly as it does not contain animations
-		entityAnimations.put("No animation", new JsonArray());
+		entityAnimations.put("No animation", new String[]{});
 		for (String file : fileNames) {
 			// We use a temporary class to save values and get them for the Map
-			JsonArray anims = gson
-					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), JsonArray.class);
+			String[] anims = gson
+					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), String[].class);
 			EntityAnimation anim = new EntityAnimation(FileUtils.removeExtension(file).replace("templates/animations/", ""),
 					anims);
 			entityAnimations.put(anim.getID(), anim.getAnimations());
@@ -60,15 +60,15 @@ public class EntityAnimationsLoader {
 		return entityAnimations.keySet();
 	}
 
-	public static JsonArray getAnimations(String key) {
+	public static String[] getAnimations(String key) {
 		return entityAnimations.get(key);
 	}
 
 	private static class EntityAnimation {
-		private final JsonArray animations;
+		private final String[] animations;
 		private final String id;
 
-		public EntityAnimation(String id, JsonArray animations) {
+		public EntityAnimation(String id, String[] animations) {
 			this.id = id;
 			this.animations = animations;
 		}
@@ -77,7 +77,7 @@ public class EntityAnimationsLoader {
 			return id;
 		}
 
-		public JsonArray getAnimations() {
+		public String[] getAnimations() {
 			return animations;
 		}
 	}

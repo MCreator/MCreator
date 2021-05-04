@@ -88,9 +88,9 @@ public class JavaModelAnimationEditorDialog {
 			for (Map.Entry<String, JComboBox<String>> animation : animations.entrySet()) {
 				String selected = (String) animation.getValue().getSelectedItem();
 				if (selected != null) {
-					JsonArray animationCodes = EntityAnimationsLoader.getAnimations(selected);
-					for (JsonElement animationCode : animationCodes) {
-						anim.append("this.").append(animation.getKey()).append(animationCode.getAsString()).append("\n");
+					String[] animationCodes = EntityAnimationsLoader.getAnimations(selected);
+					for (String animationCode : animationCodes) {
+						anim.append("this.").append(animation.getKey()).append(animationCode).append("\n");
 					}
 				}
 			}
