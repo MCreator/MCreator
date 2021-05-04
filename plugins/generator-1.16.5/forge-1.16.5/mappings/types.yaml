@@ -5,7 +5,7 @@ entity: Entity
 itemstack: ItemStack
 map: HashMap
 string: String
-boolean: boolean
+logic: boolean
 direction: Direction
 advancement: Advancement
 dimensiontype: RegistryKey<World>

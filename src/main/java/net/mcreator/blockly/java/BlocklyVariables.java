@@ -61,10 +61,10 @@ public class BlocklyVariables {
 		return varlist;
 	}
 
-	public static VariableElementType getMCreatorVariableTypeFromBlocklyVariableType(String blocklyType) {
-		for(VariableElementType var : VariableElement.getVariables()) {
-			if(var.getBlocklyVariableType().equals(blocklyType))
-				return var;
+	public static VariableElementType getVarElementTypeFromBlocklyType(String blocklyType) {
+		for(VariableElementType elementType : VariableElement.getVariables()) {
+			if(elementType.getBlocklyVariableType().equals(blocklyType))
+				return elementType;
 		}
 		return null;
 	}

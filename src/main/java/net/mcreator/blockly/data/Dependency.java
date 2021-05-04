@@ -87,7 +87,7 @@ public class Dependency implements Comparable<Dependency> {
 		switch (type) {
 		case "number":
 			return new Color(0x606999);
-		case "boolean":
+		case "logic":
 			return new Color(0x607c99);
 		case "world":
 			return new Color(0x998160);

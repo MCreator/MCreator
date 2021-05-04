@@ -36,7 +36,7 @@ public class CustomDependencyBlock implements IBlockGenerator {
 
 	public CustomDependencyBlock() {
 		for (VariableElementType var : VariableElement.getVariables()) {
-			names.add("custom_dependency_" + var.getBlockName());
+			names.add("custom_dependency_" + var.getName());
 		}
 	}
 

@@ -179,8 +179,8 @@ public class BlocklyBlockUtil {
 				if (line.contains("category.custom_variables")) {
 					newLine = new StringBuilder(line);
 					for (VariableElementType varType : VariableElement.getVariables()) {
-						newLine.append("\n<block type=\"variables_get_").append(varType.getBlockName())
-								.append("\"/>\n<block type=\"variables_set_").append(varType.getBlockName())
+						newLine.append("\n<block type=\"variables_get_").append(varType.getName())
+								.append("\"/>\n<block type=\"variables_set_").append(varType.getName())
 								.append("\"/>");
 					}
 					if (!newLine.toString().equals(line)) {
@@ -190,8 +190,8 @@ public class BlocklyBlockUtil {
 				} else if (line.contains("<custom-advanced/>")) {
 					newLine = new StringBuilder();
 					for (VariableElementType varType : VariableElement.getVariables()) {
-						newLine.append("\n<block type=\"custom_dependency_").append(varType.getBlockName())
-								.append("\"/>\n<block type=\"procedure_retval_").append(varType.getBlockName())
+						newLine.append("\n<block type=\"custom_dependency_").append(varType.getName())
+								.append("\"/>\n<block type=\"procedure_retval_").append(varType.getName())
 								.append("\"/>");
 					}
 					newLine.append(line);
@@ -201,7 +201,7 @@ public class BlocklyBlockUtil {
 				} else if (line.contains("<block type=\"controls_repeat_ext\"/>")) {
 					newLine = new StringBuilder();
 					for (VariableElementType varType : VariableElement.getVariables()) {
-						newLine.append("\n<block type=\"return_").append(varType.getBlockName()).append("\"/>");
+						newLine.append("\n<block type=\"return_").append(varType.getName()).append("\"/>");
 					}
 					newLine.append(line);
 					if (!newLine.toString().equals(line)) {

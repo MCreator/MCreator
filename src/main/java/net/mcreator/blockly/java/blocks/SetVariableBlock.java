@@ -39,7 +39,7 @@ public class SetVariableBlock implements IBlockGenerator {
 
 	public SetVariableBlock() {
 		for (VariableElementType var : VariableElement.getVariables()) {
-			names.add("variables_set_" + var.getBlockName());
+			names.add("variables_set_" + var.getName());
 		}
 	}
 

@@ -35,7 +35,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import netscape.javascript.JSObject;
 import org.apache.logging.log4j.LogManager;
@@ -204,12 +203,12 @@ public class BlocklyPanel extends JFXPanel {
 			return retval;
 
 		String[] vars = query.split(":");
-		for (String var : vars) {
-			String[] vardata = var.split(";");
+		for (String varName : vars) {
+			String[] vardata = varName.split(";");
 			if (vardata.length == 2) {
 				VariableElement element = new VariableElement();
 				element.setName(vardata[0]);
-				element.setType(BlocklyVariables.getMCreatorVariableTypeFromBlocklyVariableType(vardata[1]).getName());
+				element.setType(Objects.requireNonNull(BlocklyVariables.getVarElementTypeFromBlocklyType(vardata[1])));
 				retval.add(element);
 			}
 		}

@@ -117,7 +117,7 @@ public class ProcedureSelector extends JPanel {
 		if (returnType == VariableElementType.LOGIC) {
 			defaultName = "(always)";
 			setBorder(BorderFactory
-					.createLineBorder(new Dependency("", VariableElementType.LOGIC.getDependencyType()).getColor()));
+					.createLineBorder(new Dependency("", VariableElementType.LOGIC.getName()).getColor()));
 		}
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());

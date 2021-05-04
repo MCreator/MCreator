@@ -39,7 +39,7 @@ public class ReturnBlock implements IBlockGenerator {
 
 	public ReturnBlock() {
 		for (VariableElementType var : VariableElement.getVariables()) {
-			names.add("return_" + var.getBlockName());
+			names.add("return_" + var.getName());
 		}
 	}
 

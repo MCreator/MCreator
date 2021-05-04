@@ -22,7 +22,6 @@ import com.google.gson.annotations.SerializedName;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 
 public class VariableElementType {
@@ -35,14 +34,9 @@ public class VariableElementType {
 
 	private String name;
 	private String color;
-	//Use for compatibility with old workspaces
-	@Nullable private String dependencyType;
 	private String defaultValue;
 	private String blocklyVariableType;
 	private String javaClass;
-	//Use for compatibility with old workspaces
-	//The name used for procedure blocks
-	@Nullable private String blockName;
 
 	public Color getColor() {
 		return Color.decode(color);
@@ -50,13 +44,6 @@ public class VariableElementType {
 
 	public String getName() {
 		return name;
-	}
-
-	public String getDependencyType() {
-		if(dependencyType != null)
-			return dependencyType;
-		else
-			return name;
 	}
 
 	public String getBlocklyVariableType() {
@@ -67,16 +54,8 @@ public class VariableElementType {
 		return javaClass;
 	}
 
-	public String getBlockName() {
-		if(blockName != null)
-			return blockName;
-		else
-			return name;
-
-	}
-
 	@SuppressWarnings("unused") public String getJavaType(Workspace workspace) {
-		return new NameMapper(workspace, "types").getMapping(getDependencyType());
+		return new NameMapper(workspace, "types").getMapping(getName());
 	}
 
 	@SuppressWarnings("unused") public String getDefaultValue() {

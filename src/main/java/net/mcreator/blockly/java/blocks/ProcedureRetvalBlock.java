@@ -38,8 +38,8 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 	private final Set<String> names = new HashSet<>();
 
 	public ProcedureRetvalBlock() {
-		for (VariableElementType var : VariableElement.getVariables()) {
-			names.add("procedure_retval_" + var.getBlockName());
+		for (VariableElementType elementType : VariableElement.getVariables()) {
+			names.add("procedure_retval_" + elementType.getName());
 		}
 	}
 

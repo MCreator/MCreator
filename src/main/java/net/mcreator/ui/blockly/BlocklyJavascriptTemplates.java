@@ -26,7 +26,7 @@ import net.mcreator.workspace.elements.VariableElementType;
 public class BlocklyJavascriptTemplates {
 
 	public static String variableListExtension(VariableElementType var) {
-		return "Blockly.Extensions.register('" + var.getDependencyType() + "_variables',function () {"
+		return "Blockly.Extensions.register('" + var.getName() + "_variables',function () {"
 				+ "this.getInput(\"var\").appendField(new Blockly.FieldDropdown(getVariablesOfType(\"" + var
 				.getBlocklyVariableType() + "\")), 'VAR');" + "});";
 	}
@@ -38,31 +38,31 @@ public class BlocklyJavascriptTemplates {
 	}
 
 	public static String getVariableBlock(VariableElementType var) {
-		return "Blockly.defineBlocksWithJsonArray([{\"type\":\"variables_get_" + var.getBlockName()
+		return "Blockly.defineBlocksWithJsonArray([{\"type\":\"variables_get_" + var.getName()
 				+ "\",\"message0\":\"" + L10N.t("blockly.block.get_var")
 				+ " %1\",\"args0\":[{\"type\": \"input_dummy\",\"name\": \"var\"" + "}]," + "\"extensions\": [\"" + var
-				.getDependencyType() + "_variables\"],\"inputsInline\": true,\"output\": \"" + var
+				.getName() + "_variables\"],\"inputsInline\": true,\"output\": \"" + var
 				.getBlocklyVariableType() + "\",\"colour\":" + BlocklyBlockUtil.getBlocklyColorFromVarType(var) + "}]);";
 	}
 
 	public static String setVariableBlock(VariableElementType var) {
-		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"variables_set_" + var.getBlockName()
+		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"variables_set_" + var.getName()
 				+ "\",\"message0\":\"" + L10N.t("blockly.block.set_var") + " %1 " + L10N.t("blockly.block.set_to")
 				+ " %2\",\"args0\":[{\"type\":\"input_dummy\",\"name\":\"var\"},{\"type\":\"input_value\",\"name\":\"VAL\","
-				+ "\"check\":\"" + var.getBlocklyVariableType() + "\"}],\"extensions\":[\"" + var.getDependencyType()
+				+ "\"check\":\"" + var.getBlocklyVariableType() + "\"}],\"extensions\":[\"" + var.getName()
 				+ "_variables\"],\"inputsInline\":true,\"previousStatement\": null,\"nextStatement\": null,\"colour\":"
 				+ BlocklyBlockUtil.getBlocklyColorFromVarType(var) + "}]);";
 	}
 
 	public static String customDependencyBlock(VariableElementType var) {
-		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"custom_dependency_" + var.getBlockName()
-				+ "\",\"message0\":\"" + L10N.t("blockly.block.custom_dependency_" + var.getBlockName())
+		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"custom_dependency_" + var.getName()
+				+ "\",\"message0\":\"" + L10N.t("blockly.block.custom_dependency_" + var.getName())
 				+ " %1\",\"args0\":[{\"type\":\"field_input\",\"name\":\"NAME\",\"text\":\"dependencyName\"}],\"output\":\""
 				+ var.getBlocklyVariableType() + "\",\"colour\":" + BlocklyBlockUtil.getBlocklyColorFromVarType(var) + "}]);";
 	}
 
 	public static String procedureReturnValueBlock(VariableElementType var) {
-		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"procedure_retval_" + var.getBlockName()
+		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"procedure_retval_" + var.getName()
 				+ "\",\"message0\": \"" + L10N.t("blockly.block.procedure_retval")
 				+ "\",\"extensions\": [\"procedure_retval_" + var.getName() + "\"],\"output\": \"" + var
 				.getBlocklyVariableType() + "\",\"inputsInline\": true,\"colour\": " + BlocklyBlockUtil
@@ -70,7 +70,7 @@ public class BlocklyJavascriptTemplates {
 	}
 
 	public static String returnBlock(VariableElementType var) {
-		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"return_" + var.getBlockName() + "\",\"message0\":\""
+		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"return_" + var.getName() + "\",\"message0\":\""
 				+ L10N.t("blockly.block.return")
 				+ " %1\",\"args0\":[{\"type\":\"input_value\",\"name\":\"return\",\"check\":\"" + var
 				.getBlocklyVariableType() + "\"}],\"previousStatement\":null,\"colour\":"
