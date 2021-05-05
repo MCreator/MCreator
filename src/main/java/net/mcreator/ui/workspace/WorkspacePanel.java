@@ -849,53 +849,7 @@ import java.util.stream.Collectors;
 				addNewFolder();
 			}
 		});
-		renameFolder.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e) {
-				IElement selected = list.getSelectedValue();
-
-					String newName = VOptionPane
-							.showInputDialog(mcreator, L10N.t("workspace.elements.folders.rename.message"), L10N.t("workspace.elements.list.edit.rename.folder"), null, new OptionPaneValidatior() {
-								@Override public ValidationResult validate(JComponent component) {
-									String newName = ((JTextField) component).getText();
-
-									if (!newName.matches("[A-Za-z0-9._ -]+")) {
-										canRename = false;
-										return new Validator.ValidationResult(ValidationResultType.ERROR, L10N.t("workspace.elements.folders.add.error_letters"));
-									} else {
-										canRename = true;
-										return Validator.ValidationResult.PASSED;
-									}
-								}
-							});
-				if (canRename == true) {
-				String finalNewName = newName;
-				switchFolder((FolderElement) selected);
-					list.getSelectedValuesList().forEach(re -> {
-						FolderElement folder = (FolderElement) re;
-						for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-							if (folder.equals(modElement.getFolderPath())) {
-								modElement.setParentFolder(currentFolder.getParent()
-											.addChild(new FolderElement(finalNewName, currentFolder)));
-							}
-						}
-						for (FolderElement childFolder : folder.getRecursiveFolderChildren()) {
-							for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-								if (childFolder.equals(modElement.getFolderPath())) {
-									modElement.setParentFolder(currentFolder.getParent()
-											.addChild(new FolderElement(finalNewName, currentFolder)));
-								}
-							}
-						}
-					});
-					switchFolder(currentFolder.getParent());
-					currentFolder.removeChild((FolderElement) selected);
-					mcreator.getWorkspace().markDirty();
-					reloadElements();
-				    updateMods();
-				}
-			}
-		});
+		
 		
 		JPopupMenu editElement = new JPopupMenu();
 		editElement.add(openElement);
@@ -906,7 +860,6 @@ import java.util.stream.Collectors;
 		editElement.add(idElement);
 		editElement.addSeparator();
 		editElement.add(addElementFolder);
-		editElement.add(renameFolder);
 		
 		list.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -920,13 +873,11 @@ import java.util.stream.Collectors;
 						codeElement.setEnabled(false);
 						lockElement.setEnabled(false);
 						idElement.setEnabled(false);
-						renameFolder.setEnabled(true);
 					} else {
 						duplicateElement.setEnabled(true);
 						codeElement.setEnabled(true);
 						lockElement.setEnabled(true);
 						idElement.setEnabled(true);
-						renameFolder.setEnabled(false);
 					}
 					double dmouseX = MouseInfo.getPointerInfo().getLocation().getX();
 					double dmouseY = MouseInfo.getPointerInfo().getLocation().getY();
