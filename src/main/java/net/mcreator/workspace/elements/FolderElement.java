@@ -18,8 +18,6 @@
 
 package net.mcreator.workspace.elements;
 
-import net.mcreator.workspace.Workspace;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
