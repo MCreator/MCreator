@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.PluginUpdateInfo;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
@@ -32,7 +33,8 @@ import java.awt.*;
 public class UpdatePluginDialog {
 
 	public static void showPluginUpdateDialogIfUpdatesExist(Window parent) {
-		if (!PluginLoader.INSTANCE.getPluginUpdates().isEmpty()) {
+		if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPluginUpdates && !PluginLoader.INSTANCE
+				.getPluginUpdates().isEmpty()) {
 			JPanel pan = new JPanel(new BorderLayout(10, 15));
 
 			JPanel plugins = new JPanel(new GridLayout(0, 1, 10, 10));
@@ -54,8 +56,9 @@ public class UpdatePluginDialog {
 				plugins.add(PanelUtils.westAndEastElement(label, update));
 			}
 
-			JOptionPane.showMessageDialog(parent, pan, L10N.t("dialog.plugin_update_notify.update_title"),
-					JOptionPane.PLAIN_MESSAGE, null);
+			JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.plugin_update_notify.update_title"),
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+					new Object[] { L10N.t("dialog.plugin_update_notify.close") }, "");
 		}
 	}
 }
