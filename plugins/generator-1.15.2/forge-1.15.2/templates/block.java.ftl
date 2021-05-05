@@ -146,53 +146,46 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
         </#if>
 
+		<#macro blockProterties>
+			Block.Properties.create(Material.${data.material})
+				.sound(SoundType.${data.soundOnStep})
+				<#if data.unbreakable>
+					.hardnessAndResistance(-1, 3600000)
+				<#else>
+					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
+				</#if>
+					.lightValue(${data.luminance})
+				<#if data.destroyTool != "Not specified" && data.destroyTool != "hoe">
+					.harvestLevel(${data.breakHarvestLevel})
+					.harvestTool(ToolType.${data.destroyTool?upper_case})
+				</#if>
+				<#if data.isNotColidable>
+					.doesNotBlockMovement()
+				</#if>
+				<#if data.slipperiness != 0.6>
+					.slipperiness(${data.slipperiness}f)
+				</#if>
+				<#if data.speedFactor != 1.0>
+					.speedFactor(${data.speedFactor}f)
+				</#if>
+				<#if data.jumpFactor != 1.0>
+					.jumpFactor(${data.jumpFactor}f)
+				</#if>
+				<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
+					.notSolid()
+				</#if>
+				<#if data.tickRandomly>
+					.tickRandomly()
+				</#if>
+		</#macro>
+
 		public CustomBlock() {
 			<#if data.blockBase?has_content && data.blockBase == "Stairs">
-			super(new Block(Block.Properties.create(Material.ROCK)
-					<#if data.unbreakable>
-					.hardnessAndResistance(-1, 3600000)
-					<#else>
-					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
-					</#if>
-					).getDefaultState(),
-			<#elseif data.blockBase?has_content && data.blockBase == "Wall">
-			super(
-			<#elseif data.blockBase?has_content && data.blockBase == "Fence">
-			super(
+			super(() -> new Block(<@blockProterties/>).getDefaultState(),
 			<#else>
 			super(
 			</#if>
-
-			Block.Properties.create(Material.${data.material})
-					.sound(SoundType.${data.soundOnStep})
-					<#if data.unbreakable>
-					.hardnessAndResistance(-1, 3600000)
-					<#else>
-					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
-					</#if>
-					.lightValue(${data.luminance})
-					<#if data.destroyTool != "Not specified" && data.destroyTool != "hoe">
-					.harvestLevel(${data.breakHarvestLevel})
-					.harvestTool(ToolType.${data.destroyTool?upper_case})
-					</#if>
-					<#if data.isNotColidable>
-					.doesNotBlockMovement()
-					</#if>
-					<#if data.slipperiness != 0.6>
-					.slipperiness(${data.slipperiness}f)
-					</#if>
-					<#if data.speedFactor != 1.0>
-					.speedFactor(${data.speedFactor}f)
-					</#if>
-					<#if data.jumpFactor != 1.0>
-					.jumpFactor(${data.jumpFactor}f)
-					</#if>
-					<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
-					.notSolid()
-					</#if>
-					<#if data.tickRandomly>
-					.tickRandomly()
-					</#if>
+			<@blockProterties/>
 			);
 
             <#if data.rotationMode != 0 || data.isWaterloggable>
@@ -561,7 +554,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
+
 			<@procedureOBJToCode data.onTickUpdate/>
+
 			<#if !data.tickRandomly>
 			world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, this.tickRate(world));
 			</#if>

@@ -111,7 +111,8 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.gamerule.gamerule_needs_name")));
 		name.enableRealtimeValidation();
 
-		displayName.setValidator(new TextFieldValidator(displayName, L10N.t("elementgui.gamerule.gamerule_needs_display_name")));
+		displayName.setValidator(
+				new TextFieldValidator(displayName, L10N.t("elementgui.gamerule.gamerule_needs_display_name")));
 		displayName.enableRealtimeValidation();
 
 		description.setValidator(

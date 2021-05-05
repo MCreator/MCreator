@@ -87,7 +87,7 @@ task buildInstallerWin64(type: Exec, dependsOn: [downloadNSIS, exportWin64]) {
             }
         }
     }
-    commandLine './build/tools/nsis/makensis', 'build/export/install64.nsi'
+    commandLine projectDir.toString() + '/build/tools/nsis/makensis', 'build/export/install64.nsi'
     doLast { delete 'build/export/install64.nsi' }
 }
 
@@ -102,7 +102,7 @@ task buildInstallerWin32(type: Exec, dependsOn: [downloadNSIS, exportWin32]) {
             }
         }
     }
-    commandLine './build/tools/nsis/makensis', 'build/export/install32.nsi'
+    commandLine projectDir.toString() + '/build/tools/nsis/makensis', 'build/export/install32.nsi'
     doLast { delete 'build/export/install32.nsi' }
 }
 
