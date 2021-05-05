@@ -101,7 +101,7 @@ import java.util.stream.Collectors;
 	private final MCreator mcreator;
 
 	private final JButton upFolder;
-	private String folderName;
+
 	public boolean canRename;
 
 	private final JLabel but2 = new JLabel(TiledImageCache.workspaceEdit);
@@ -117,7 +117,6 @@ import java.util.stream.Collectors;
 	private final JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
 	private final JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
 	private final JMenuItem idElement = new JMenuItem(L10N.t("workspace.elements.list.edit.id"));
-	private final JMenuItem renameFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.rename.folder"));
 	private final JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
 	
 	private final CardLayout mainpcl = new CardLayout();
