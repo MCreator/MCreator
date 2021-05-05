@@ -312,6 +312,10 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	public @Nullable String getFolderPath() {
 		return path;
 	}
+	
+	public void setFolderPath(String path) {
+	    	this.path = path;
+	}
 
 	public void setParentFolder(@Nullable FolderElement parent) {
 		if (parent == null || parent.isRoot())
