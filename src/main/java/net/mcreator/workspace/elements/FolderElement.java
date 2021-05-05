@@ -18,7 +18,7 @@
 
 package net.mcreator.workspace.elements;
 
-import org.jetbrains.annotations.Nullable;
+import net.mcreator.workspace.Workspace;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,7 +49,7 @@ public class FolderElement implements IElement {
 		});
 	}
 
-	public @Nullable FolderElement addChild(FolderElement child) {
+	public void addChild(FolderElement child) {
 		child.parent = this;
 
 		// merge child children, if child already exists
@@ -60,11 +60,10 @@ public class FolderElement implements IElement {
 			}
 
 			// we will not add the same child again
-			return child;
+			return;
 		}
 
 		this.children.add(child);
-		return child;
 	}
 
 	public void removeChild(FolderElement child) {
