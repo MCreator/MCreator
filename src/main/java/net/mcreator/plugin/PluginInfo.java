@@ -28,7 +28,7 @@ public class PluginInfo {
 	private String credits;
 
 	private String version;
-	
+
 	private List<String> dependencies;
 
 	private String updateJSONURL;
