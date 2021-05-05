@@ -49,7 +49,7 @@ public class VariableElementTypeLoader {
 			VariableElementType variable = gson
 					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), VariableElementType.class);
 			LOG.debug("Added " + variable.getName() + " to variable types");
-			VariableElement.addVariable(variable);
+			VariableElement.addVariableTypeToCache(variable);
 
 			//We begin by creating the extensions needed for other blocks
 			JS_CACHE.append(BlocklyJavascriptTemplates.variableListExtension(variable));

@@ -30,7 +30,7 @@
     },
     {
       "name": "isvanillacritical",
-      "type": "logic"
+      "type": "boolean"
     }
   ],
   "has_result": "true"
