@@ -16,6 +16,9 @@ createExe {
     jdkPreference = "jdkOnly"
     bundledJrePath = 'jdk'
 
+    bundledJre64Bit = true
+    jreRuntimeBits = 64
+
     errTitle = 'MCreator'
     supportUrl = 'https://mcreator.net/support'
 
