@@ -35,10 +35,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -197,7 +194,7 @@ public class PluginLoader extends URLClassLoader {
 
 	private void checkForPluginUpdates() {
 		if (MCreatorApplication.isInternet) {
-			for (Plugin plugin : plugins) {
+			pluginUpdates.addAll(plugins.stream().parallel().map(plugin -> {
 				if (plugin.getInfo().getUpdateJSONURL() != null) {
 					if (!plugin.getInfo().getVersion().equals(PluginInfo.VERSION_NOT_SPECIFIED)) {
 						try {
@@ -205,14 +202,15 @@ public class PluginLoader extends URLClassLoader {
 							String version = JsonParser.parseString(updateJSON).getAsJsonObject().get(plugin.getID())
 									.getAsJsonObject().get("latest").getAsString();
 							if (!version.equals(plugin.getPluginVersion())) {
-								pluginUpdates.add(new PluginUpdateInfo(plugin, version));
+								return new PluginUpdateInfo(plugin, version);
 							}
 						} catch (Exception e) {
 							LOG.warn("Failed to parse update info for plugin: " + plugin.getID(), e);
 						}
 					}
 				}
-			}
+				return null;
+			}).filter(Objects::nonNull).collect(Collectors.toList()));
 		}
 	}
 
