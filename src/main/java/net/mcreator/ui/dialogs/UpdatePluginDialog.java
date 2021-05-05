@@ -46,21 +46,23 @@ public class UpdatePluginDialog {
 			plugins.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
 			Object[] options = { "Open all plugin pages", "Remind me later" };
-			for (int i = 0; i < PluginLoader.INSTANCE.getPluginUpdates().size(); i++) {
-				PluginUpdateInfo plugin = PluginLoader.INSTANCE.getPluginUpdates().get(i);
-				JLabel label = L10N
-						.label("dialog.plugin_update_notify.version_message", plugin.getPlugin().getInfo().getName(),
-								plugin.getPlugin().getInfo().getVersion(), plugin.getNewVersion());
+			for (PluginUpdateInfo pluginUpdateInfo : PluginLoader.INSTANCE.getPluginUpdates()) {
+				JLabel label = L10N.label("dialog.plugin_update_notify.version_message",
+						pluginUpdateInfo.getPlugin().getInfo().getName(),
+						pluginUpdateInfo.getPlugin().getInfo().getVersion(), pluginUpdateInfo.getNewVersion());
 				label.addMouseListener(new MouseAdapter() {
 					@Override public void mouseClicked(MouseEvent e) {
 						Object[] opts = { "Open", "Close" };
 						int option = JOptionPane.showOptionDialog(parent,
 								L10N.t("dialog.plugin_update_notify.open_link",
-										MCreatorApplication.SERVER_DOMAIN + "/node/" + plugin.getPageId()),
+										MCreatorApplication.SERVER_DOMAIN + "/node/" + pluginUpdateInfo.getPlugin()
+												.getInfo().getPluginPageID()),
 								L10N.t("dialog.plugin_update_notify.open_link.title"), JOptionPane.YES_NO_CANCEL_OPTION,
 								JOptionPane.PLAIN_MESSAGE, null, opts, opts[0]);
 						if (option == 0)
-							DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/node/" + plugin.getPageId());
+							DesktopUtils.browseSafe(
+									MCreatorApplication.SERVER_DOMAIN + "/node/" + pluginUpdateInfo.getPlugin()
+											.getInfo().getPluginPageID());
 					}
 				});
 				plugins.add(label);
@@ -74,7 +76,8 @@ public class UpdatePluginDialog {
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 			if (option == 0) {
 				for (PluginUpdateInfo plug : PluginLoader.INSTANCE.getPluginUpdates()) {
-					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/node/" + plug.getPageId());
+					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/node/" + plug.getPlugin().getInfo()
+							.getPluginPageID());
 				}
 			}
 		}

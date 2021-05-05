@@ -47,13 +47,13 @@ public class PluginLoader extends URLClassLoader {
 	private static final Logger LOG = LogManager.getLogger("Plugin Loader");
 
 	public static PluginLoader INSTANCE;
-	private final List<PluginUpdateInfo> pluginUpdates;
 
 	public static void initInstance() {
 		INSTANCE = new PluginLoader();
 	}
 
 	private final List<Plugin> plugins;
+	private final List<PluginUpdateInfo> pluginUpdates;
 
 	private final Reflections reflections;
 
@@ -99,7 +99,8 @@ public class PluginLoader extends URLClassLoader {
 		}
 
 		this.reflections = new Reflections(new ResourcesScanner(), this);
-		checkPluginUpdates();
+
+		checkForPluginUpdates();
 	}
 
 	public Set<String> getResources(Pattern pattern) {
@@ -120,6 +121,10 @@ public class PluginLoader extends URLClassLoader {
 
 	public List<Plugin> getPlugins() {
 		return plugins;
+	}
+
+	public List<PluginUpdateInfo> getPluginUpdates() {
+		return pluginUpdates;
 	}
 
 	synchronized private List<Plugin> listPluginsFromFolder(File folder, boolean builtin) {
@@ -190,25 +195,21 @@ public class PluginLoader extends URLClassLoader {
 		return plugin;
 	}
 
-	private void checkPluginUpdates() {
-		for (Plugin plugin : plugins) {
-			if (MCreatorApplication.isInternet) {
+	private void checkForPluginUpdates() {
+		if (MCreatorApplication.isInternet) {
+			for (Plugin plugin : plugins) {
 				if (plugin.getInfo().getUpdateJSONURL() != null) {
 					if (!plugin.getInfo().getVersion().equals("not specified")) {
-						String version = new Gson().fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateJSONURL()),
-								JsonObject.class).get(plugin.getID()).getAsJsonObject().get("latest").getAsString();
+						String version = new Gson()
+								.fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateJSONURL()), JsonObject.class)
+								.get(plugin.getID()).getAsJsonObject().get("latest").getAsString();
 						if (!version.equals(plugin.getPluginVersion())) {
-							pluginUpdates.add(new PluginUpdateInfo(plugin,
-									version, plugin.getInfo().getPluginPageID()));
+							pluginUpdates.add(new PluginUpdateInfo(plugin, version));
 						}
 					}
 				}
 			}
 		}
-	}
-
-	public List<PluginUpdateInfo> getPluginUpdates() {
-		return pluginUpdates;
 	}
 
 }
