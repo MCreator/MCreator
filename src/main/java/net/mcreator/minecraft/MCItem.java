@@ -34,8 +34,8 @@ import java.util.Objects;
 
 public class MCItem extends DataListEntry {
 
-	public static final ImageIcon DEFAULT_ICON = UIRES.get("mod" );
-	public static final ImageIcon TAG_ICON = UIRES.get("tag" );
+	public static final ImageIcon DEFAULT_ICON = UIRES.get("mod");
+	public static final ImageIcon TAG_ICON = UIRES.get("tag");
 
 	public ImageIcon icon;
 	boolean hasSubtypes;
@@ -71,48 +71,48 @@ public class MCItem extends DataListEntry {
 	}
 
 	public static ImageIcon getBlockIconBasedOnName(Workspace workspace, String name) {
-		if (name == null || name.trim().equals("" ))
+		if (name == null || name.trim().equals(""))
 			return new EmptyIcon.ImageIcon(32, 32);
 
 		ImageIcon retval = null;
 		try {
-			if (name.startsWith("CUSTOM:" )) {
+			if (name.startsWith("CUSTOM:")) {
 				if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
-						name.replace("CUSTOM:" , "" ) + ".png" ).isFile()) {
+						name.replace("CUSTOM:", "") + ".png").isFile()) {
 					retval = new ImageIcon(
 							workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/" + name
-									.replace("CUSTOM:" , "" ) + ".png" );
-				} else if (name.endsWith(".helmet" )) {
+									.replace("CUSTOM:", "") + ".png");
+				} else if (name.endsWith(".helmet")) {
 					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
-							workspace.getModElementByName(name.replace("CUSTOM:" , "" ).replace(".helmet" , "" ))
+							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".helmet", ""))
 									.getGeneratableElement())).textureHelmet);
-				} else if (name.endsWith(".body" )) {
+				} else if (name.endsWith(".body")) {
 					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
-							workspace.getModElementByName(name.replace("CUSTOM:" , "" ).replace(".body" , "" ))
+							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".body", ""))
 									.getGeneratableElement())).textureBody);
-				} else if (name.endsWith(".legs" )) {
+				} else if (name.endsWith(".legs")) {
 					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
-							workspace.getModElementByName(name.replace("CUSTOM:" , "" ).replace(".legs" , "" ))
+							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".legs", ""))
 									.getGeneratableElement())).textureLeggings);
-				} else if (name.endsWith(".boots" )) {
+				} else if (name.endsWith(".boots")) {
 					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
-							workspace.getModElementByName(name.replace("CUSTOM:" , "" ).replace(".boots" , "" ))
+							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".boots", ""))
 									.getGeneratableElement())).textureBoots);
-				} else if (name.endsWith(".bucket" )) {
+				} else if (name.endsWith(".bucket")) {
 					if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
-							name.replaceAll("CUSTOM:" , "" ).replaceAll(".bucket" , "" ) + ".png" ).isFile()) {
+							name.replaceAll("CUSTOM:", "").replaceAll(".bucket", "") + ".png").isFile()) {
 						retval = MinecraftImageGenerator.generateFluidBucketIcon(new ImageIcon(
 								workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
-										+ name.replaceAll("CUSTOM:" , "" ).replaceAll(".bucket" , "" ) + ".png" ));
+										+ name.replaceAll("CUSTOM:", "").replaceAll(".bucket", "") + ".png"));
 					} else {
 						retval = TiledImageCache.bucket;
 					}
 				}
-			} else if (name.startsWith("TAG:" )) {
+			} else if (name.startsWith("TAG:")) {
 				return TAG_ICON;
 			} else {
 				retval = BlockItemIcons
-						.getIconForItem(DataListLoader.loadDataMap("blocksitems" ).get(name).getTexture());
+						.getIconForItem(DataListLoader.loadDataMap("blocksitems").get(name).getTexture());
 			}
 
 			if (retval != null && retval.getImage() != null) {
@@ -133,7 +133,7 @@ public class MCItem extends DataListEntry {
 			super("CUSTOM:" + element.getName() + (fieldName == null ? "" : ("." + fieldName)));
 			setReadableName(element.getName() + " - " + element.getType().getReadableName());
 			setIcon(getBlockIconBasedOnName(element.getWorkspace(), getName()));
-			setType("mcreator" );
+			setType("mcreator");
 			setDescription(element.getType().getDescription());
 		}
 
@@ -146,7 +146,7 @@ public class MCItem extends DataListEntry {
 
 		public Tag(@NotNull Workspace workspace, String name) {
 			super("TAG:" + name);
-			setType("tag" );
+			setType("tag");
 			icon = MCItem.getBlockIconBasedOnName(workspace, "TAG:" + name);
 		}
 
