@@ -25,11 +25,14 @@ public class PluginInfo {
 	private String name;
 	private String description;
 	private String author;
-	private String version;
-	private List<String> dependencies;
 	private String credits;
-	private String updateUrl;
-	private int pageId;
+
+	private String version;
+	
+	private List<String> dependencies;
+
+	private String updateJSONURL;
+	private int pluginPageID;
 
 	public String getName() {
 		return name;
@@ -60,11 +63,11 @@ public class PluginInfo {
 		return credits;
 	}
 
-	public String getUpdateUrl() {
-		return updateUrl;
+	public String getUpdateJSONURL() {
+		return updateJSONURL;
 	}
 
-	public int getPageId() {
-		return pageId;
+	public int getPluginPageID() {
+		return pluginPageID;
 	}
 }

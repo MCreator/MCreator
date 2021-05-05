@@ -34,7 +34,7 @@ import java.awt.event.MouseEvent;
 
 public class UpdatePluginDialog {
 
-	public static void showPluginUpdateDialog(Window parent) {
+	public static void showPluginUpdateDialogIfUpdatesExist(Window parent) {
 		if (!PluginLoader.INSTANCE.getPluginUpdates().isEmpty()) {
 			JPanel pan = new JPanel(new BorderLayout());
 			JPanel plugins = new JPanel();

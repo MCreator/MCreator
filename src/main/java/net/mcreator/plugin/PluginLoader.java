@@ -193,13 +193,13 @@ public class PluginLoader extends URLClassLoader {
 	private void checkPluginUpdates() {
 		for (Plugin plugin : plugins) {
 			if (MCreatorApplication.isInternet) {
-				if (plugin.getInfo().getUpdateUrl() != null) {
+				if (plugin.getInfo().getUpdateJSONURL() != null) {
 					if (!plugin.getInfo().getVersion().equals("not specified")) {
-						String version = new Gson().fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateUrl()),
+						String version = new Gson().fromJson(WebIO.readURLToString(plugin.getInfo().getUpdateJSONURL()),
 								JsonObject.class).get(plugin.getID()).getAsJsonObject().get("latest").getAsString();
 						if (!version.equals(plugin.getPluginVersion())) {
 							pluginUpdates.add(new PluginUpdateInfo(plugin,
-									version, plugin.getInfo().getPageId()));
+									version, plugin.getInfo().getPluginPageID()));
 						}
 					}
 				}
