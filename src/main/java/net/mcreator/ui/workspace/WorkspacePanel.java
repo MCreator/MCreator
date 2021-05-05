@@ -1189,7 +1189,7 @@ import java.util.stream.Collectors;
 		String name = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.folders.add.message"),
 				L10N.t("workspace.elements.folders.add.title"), null, new OptionPaneValidatior() {
 					@Override public ValidationResult validate(JComponent component) {
-						folderName = ((JTextField) component).getText();
+						String folderName = ((JTextField) component).getText();
 
 						if (!folderName.matches("[A-Za-z0-9._ -]+")) {
 							return new Validator.ValidationResult(ValidationResultType.ERROR,
