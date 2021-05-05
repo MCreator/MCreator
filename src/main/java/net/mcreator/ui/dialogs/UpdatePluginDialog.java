@@ -39,7 +39,7 @@ public class UpdatePluginDialog {
 
 			pan.add("North", L10N.label("dialog.plugin_update_notify.message"));
 			pan.add("Center", new JScrollPane(PanelUtils.pullElementUp(plugins)));
-			pan.setPreferredSize(new Dimension(585, 290));
+			pan.setPreferredSize(new Dimension(560, 250));
 
 			for (PluginUpdateInfo pluginUpdateInfo : PluginLoader.INSTANCE.getPluginUpdates()) {
 				JLabel label = L10N.label("dialog.plugin_update_notify.version_message",
@@ -47,17 +47,9 @@ public class UpdatePluginDialog {
 						pluginUpdateInfo.getPlugin().getInfo().getVersion(), pluginUpdateInfo.getNewVersion());
 
 				JButton update = L10N.button("dialog.plugin_update_notify.update");
-				update.addActionListener(e -> {
-					Object[] opts = { "Open", "Close" };
-					int option = JOptionPane.showOptionDialog(parent, L10N.t("dialog.plugin_update_notify.open_link",
-							MCreatorApplication.SERVER_DOMAIN + "/node/" + pluginUpdateInfo.getPlugin().getInfo()
-									.getPluginPageID()), L10N.t("dialog.plugin_update_notify.open_link.title"),
-							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, opts, opts[0]);
-					if (option == 0)
-						DesktopUtils.browseSafe(
-								MCreatorApplication.SERVER_DOMAIN + "/node/" + pluginUpdateInfo.getPlugin().getInfo()
-										.getPluginPageID());
-				});
+				update.addActionListener(e -> DesktopUtils.browseSafe(
+						MCreatorApplication.SERVER_DOMAIN + "/node/" + pluginUpdateInfo.getPlugin().getInfo()
+								.getPluginPageID()));
 
 				plugins.add(PanelUtils.westAndEastElement(label, update));
 			}
