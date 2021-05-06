@@ -140,7 +140,7 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "sounds"), "sounds", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "step_sounds"), "stepsounds", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "plant_types"), "planttypes", supportedElements, stats);
-			addStatsBar(L10N.t(covpfx + "dye_colors"),"dyecolors", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "dye_colors"), "dyecolors", supportedElements, stats);
 
 			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
 				addStatsBar(L10N.t(covpfx + "biome_dictionary"), "biomedictionarytypes", supportedElements, stats);
