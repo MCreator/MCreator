@@ -17,10 +17,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element;
+package net.mcreator.element.converter.fv19;
 
-public enum RecipeType {
+import com.google.gson.JsonElement;
+import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.types.Fluid;
+import net.mcreator.workspace.Workspace;
 
-	BLOCK, ITEM, ARMOR, BUCKET, NONE
+public class FluidBucketSelectedFixer implements IConverter {
 
+	@Override
+	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
+		Fluid fluid = (Fluid) input;
+		input.getModElement().clearMetadata();
+		input.getModElement().putMetadata("gb", fluid.generateBucket);
+		input.getModElement().reinit();
+		return fluid;
+	}
+
+	@Override public int getVersionConvertingTo() {
+		return 19;
+	}
 }
