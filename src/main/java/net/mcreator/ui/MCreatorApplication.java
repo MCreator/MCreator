@@ -51,7 +51,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.desktop.QuitStrategy;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -75,6 +74,8 @@ public final class MCreatorApplication {
 
 	private final DiscordClient discordClient;
 
+	private final TaskbarIntegration taskbarIntegration;
+
 	private MCreatorApplication(List<String> launchArguments) {
 		final SplashScreen splashScreen = new SplashScreen();
 		splashScreen.setVisible(true);
@@ -88,6 +89,8 @@ public final class MCreatorApplication {
 		}
 
 		SoundUtils.initSoundSystem();
+
+		taskbarIntegration = new TaskbarIntegration();
 
 		splashScreen.setProgress(20, "Preloading resources");
 
@@ -341,4 +344,9 @@ public final class MCreatorApplication {
 	public DiscordClient getDiscordClient() {
 		return discordClient;
 	}
+
+	public TaskbarIntegration getTaskbarIntegration() {
+		return taskbarIntegration;
+	}
+
 }
