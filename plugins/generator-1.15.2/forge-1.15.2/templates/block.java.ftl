@@ -182,6 +182,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		public CustomBlock() {
 			<#if data.blockBase?has_content && data.blockBase == "Stairs">
 			super(() -> new Block(<@blockProterties/>).getDefaultState(),
+			<#elseif data.blockBase?has_content && data.blockBase == "EndRod">
+			super(
 			<#else>
 			super(
 			</#if>

@@ -228,7 +228,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JComboBox<String> blockBase = new JComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
-					"Door", "FenceGate" });
+					"Door", "FenceGate", "EndRod" });
 
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -356,16 +356,20 @@ public class BlockGUI extends ModElementGUI<Block> {
 				disableOffset.setEnabled(false);
 				boundingBoxList.setEnabled(false);
 				hasGravity.setEnabled(false);
-				rotationMode.setEnabled(false);
+				rotationMode.setEnabled(blockBase.getSelectedItem().equals("EndRod"));
 				isWaterloggable.setEnabled(false);
 
 				hasGravity.setSelected(false);
-				rotationMode.setSelectedIndex(0);
+				if (blockBase.getSelectedItem().equals("EndRod")) {
+					rotationMode.setSelectedIndex(4);
+				} else {
+					rotationMode.setSelectedIndex(0);
+				}
 				isWaterloggable.setSelected(false);
 
 				if (blockBase.getSelectedItem().equals("Wall") || blockBase.getSelectedItem().equals("Fence")
 						|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem().equals("Door")
-						|| blockBase.getSelectedItem().equals("FenceGate")) {
+						|| blockBase.getSelectedItem().equals("FenceGate") || blockBase.getSelectedItem().equals("EndRod")) {
 					if (!isEditingMode()) {
 						hasTransparency.setSelected(true);
 						lightOpacity.setValue(0);
