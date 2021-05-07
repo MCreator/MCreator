@@ -119,8 +119,10 @@ public class BlocklyPanel extends JFXPanel {
 							+ " };");
 					// @formatter:on
 
+					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blockly_compressed.js"));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/messages.js"));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/" + L10N.getLangString() + ".js"));
+					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blocks_compressed.js"));
 
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/block_mcitem.js")
 							.replace("@RESOURCES_PATH", resDir));
