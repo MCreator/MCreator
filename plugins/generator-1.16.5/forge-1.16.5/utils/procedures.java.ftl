@@ -54,6 +54,14 @@
     </#if>
 </#macro>
 
+<#macro procedureOBJToIntegerCode object="">
+    <#if object?? && object?has_content && object.getName() != "null">
+        <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) type="integer" />
+    <#else>
+        0
+    </#if>
+</#macro>
+
 <#function hasProcedure object="">
     <#return object?? && object?has_content && object.getName() != "null">
 </#function>

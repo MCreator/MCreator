@@ -1,0 +1,1 @@
+When this conditional procedure returns a number, the redstone power emitted by this block will be overriden by the returned power of the procedure.
