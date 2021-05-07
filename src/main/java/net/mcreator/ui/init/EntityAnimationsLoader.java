@@ -20,65 +20,48 @@
 package net.mcreator.ui.init;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.internal.FileUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class EntityAnimationsLoader {
 
-	private static final Logger LOG = LogManager.getLogger("Entity Animations loader");
+	private static final Logger LOG = LogManager.getLogger("Entity Animations Loader");
 
 	private static final LinkedHashMap<String, String[]> entityAnimations = new LinkedHashMap<>();
 
-	public static void loadEntityAnimations() {
+	public static void init() {
 		LOG.debug("Loading entity animations");
-
-		final Gson gson = new Gson();
 
 		Set<String> fileNames = PluginLoader.INSTANCE
 				.getResources("templates.animations", Pattern.compile("^[^$].*\\.json"));
 
-		// We add No animation directly as it does not contain animations
-		entityAnimations.put("No animation", new String[]{});
+		// We add "No animation" directly as it does not contain animations
+		entityAnimations.put("No animation", new String[] {});
+
+		final Gson gson = new Gson();
+
 		for (String file : fileNames) {
-			// We use a temporary class to save values and get them for the Map
-			String[] anims = gson
+			String[] animationCodes = gson
 					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), String[].class);
-			EntityAnimation anim = new EntityAnimation(FileUtils.removeExtension(file).replace("templates/animations/", ""),
-					anims);
-			entityAnimations.put(anim.getID(), anim.getAnimations());
+			entityAnimations.put(FileUtils.removeExtension(file.replace("templates/animations/", "")), animationCodes);
 		}
 	}
 
-	public static Set<String> getAllAnimationIDs() {
-		return entityAnimations.keySet();
+	public static List<String> getAnimationIDs() {
+		return new ArrayList<>(entityAnimations.keySet());
 	}
 
-	public static String[] getAnimations(String key) {
-		return entityAnimations.get(key);
+	public static String[] getAnimationCodesFromID(String animationID) {
+		return entityAnimations.get(animationID);
 	}
 
-	private static class EntityAnimation {
-		private final String[] animations;
-		private final String id;
-
-		public EntityAnimation(String id, String[] animations) {
-			this.id = id;
-			this.animations = animations;
-		}
-
-		public String getID() {
-			return id;
-		}
-
-		public String[] getAnimations() {
-			return animations;
-		}
-	}
 }

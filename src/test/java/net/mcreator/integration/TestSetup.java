@@ -85,7 +85,7 @@ public class TestSetup {
 		BlocklyLoader.init();
 
 		// load entity animations for the Java Model animation editor
-		EntityAnimationsLoader.loadEntityAnimations();
+		EntityAnimationsLoader.init();
 
 		// load generator configurations
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));

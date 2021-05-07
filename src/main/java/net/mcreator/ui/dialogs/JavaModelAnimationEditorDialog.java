@@ -27,8 +27,6 @@
 
 package net.mcreator.ui.dialogs;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.EntityAnimationsLoader;
 import net.mcreator.ui.init.L10N;
@@ -40,8 +38,10 @@ import org.jboss.forge.roaster.model.source.MethodSource;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Vector;
 
 public class JavaModelAnimationEditorDialog {
 
@@ -55,7 +55,7 @@ public class JavaModelAnimationEditorDialog {
 		Map<String, JComboBox<String>> animations = new HashMap<>();
 
 		for (String part : vc) {
-			List<String> types = new ArrayList<>(EntityAnimationsLoader.getAllAnimationIDs());
+			List<String> types = EntityAnimationsLoader.getAnimationIDs();
 			types.sort(String::compareTo);
 			JComboBox<String> box = new JComboBox<>(types.toArray(new String[0]));
 			box.setSelectedItem("No animation");
@@ -88,7 +88,7 @@ public class JavaModelAnimationEditorDialog {
 			for (Map.Entry<String, JComboBox<String>> animation : animations.entrySet()) {
 				String selected = (String) animation.getValue().getSelectedItem();
 				if (selected != null) {
-					String[] animationCodes = EntityAnimationsLoader.getAnimations(selected);
+					String[] animationCodes = EntityAnimationsLoader.getAnimationCodesFromID(selected);
 					for (String animationCode : animationCodes) {
 						anim.append("this.").append(animation.getKey()).append(animationCode).append("\n");
 					}
@@ -97,7 +97,7 @@ public class JavaModelAnimationEditorDialog {
 
 			classJavaSource.addMethod(
 					"public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {super.setRotationAngles(f, f1, f2, f3, f4, f5, e);"
-							+ anim.toString() + "}");
+							+ anim + "}");
 		} else if (classJavaSource.toString()
 				.contains("setRotationAngles(f, f1, f2, f3, f4, f5);")) { // outdated model format
 			List<MethodSource<JavaClassSource>> methods = classJavaSource.getMethods();
