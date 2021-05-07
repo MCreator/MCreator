@@ -149,6 +149,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox emitsRedstone = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner emittedRedstonePower = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 	private final JComboBox<String> colorOnMap = new JComboBox<>();
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -419,6 +421,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureBack.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
+		emitsRedstone.setOpaque(false);
+		emittedRedstonePower.setOpaque(false);
 
 		destal.add(new JLabel());
 		destal.add(ComponentUtils.squareAndBorder(textureTop, L10N.t("elementgui.block.texture_place_top")));
@@ -1053,6 +1057,26 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		particleParameters.setOpaque(false);
 
+		JPanel redstoneParameters = new JPanel(new GridLayout(2, 2, 0, 2));
+		redstoneParameters.setOpaque(false);
+		redstoneParameters.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.block.properties_redstone"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		redstoneParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emits_redstone"),
+				L10N.label("elementgui.block.emits_redstone")));
+		redstoneParameters.add(emitsRedstone);
+
+		redstoneParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/redstone_power"),
+				L10N.label("elementgui.block.redstone_power")));
+		redstoneParameters.add(emittedRedstonePower);
+
+		JComponent parred = PanelUtils.centerAndSouthElement(parpar, PanelUtils.pullElementUp(redstoneParameters));
+
+		emitsRedstone.addActionListener(e -> refreshRedstoneEmitted());
+		refreshRedstoneEmitted();
+
 		particleSpawningRadious.setOpaque(false);
 		spawnParticles.setOpaque(false);
 
@@ -1070,7 +1094,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		});
 
 		pane7.add(PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(advancedProperties, PanelUtils.pullElementUp(parpar))));
+				PanelUtils.westAndEastElement(advancedProperties, PanelUtils.pullElementUp(parred))));
 
 		pane7.setOpaque(false);
 		pane9.setOpaque(false);
@@ -1116,6 +1140,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isFluidTank.setEnabled(hasInventory.isSelected());
 		fluidCapacity.setEnabled(hasInventory.isSelected());
 		fluidRestrictions.setEnabled(hasInventory.isSelected());
+	}
+
+	private void refreshRedstoneEmitted() {
+		emittedRedstonePower.setEnabled(emitsRedstone.isSelected());
 	}
 
 	private void updateTextureOptions() {
@@ -1296,6 +1324,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		inventoryDropWhenDestroyed.setSelected(block.inventoryDropWhenDestroyed);
 		inventoryComparatorPower.setSelected(block.inventoryComparatorPower);
 		inventorySize.setValue(block.inventorySize);
+		emittedRedstonePower.setValue(block.emittedRedstonePower);
 		inventoryStackSize.setValue(block.inventoryStackSize);
 		tickRate.setValue(block.tickRate);
 
@@ -1305,6 +1334,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		fluidRestrictions.setListElements(block.fluidRestrictions);
 
 		isReplaceable.setSelected(block.isReplaceable);
+		emitsRedstone.setSelected(block.emitsRedstone);
 		colorOnMap.setSelectedItem(block.colorOnMap);
 		offsetType.setSelectedItem(block.offsetType);
 		aiPathNodeType.setSelectedItem(block.aiPathNodeType);
@@ -1328,6 +1358,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 
 		refreshFiledsTileEntity();
+		refreshRedstoneEmitted();
 
 		tickRate.setEnabled(!tickRandomly.isSelected());
 
@@ -1391,6 +1422,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.useLootTableForDrops = useLootTableForDrops.isSelected();
 		block.openGUIOnRightClick = openGUIOnRightClick.isSelected();
 		block.inventorySize = (int) inventorySize.getValue();
+		block.emittedRedstonePower = (int) emittedRedstonePower.getValue();
 		block.inventoryStackSize = (int) inventoryStackSize.getValue();
 		block.inventoryDropWhenDestroyed = inventoryDropWhenDestroyed.isSelected();
 		block.inventoryComparatorPower = inventoryComparatorPower.isSelected();
@@ -1441,6 +1473,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.blocksToReplace = blocksToReplace.getListElements();
 
 		block.isReplaceable = isReplaceable.isSelected();
+		block.emitsRedstone = emitsRedstone.isSelected();
 		block.colorOnMap = (String) colorOnMap.getSelectedItem();
 		block.offsetType = (String) offsetType.getSelectedItem();
 		block.aiPathNodeType = (String) aiPathNodeType.getSelectedItem();

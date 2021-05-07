@@ -1057,6 +1057,8 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
 			block.luminance = 3;
 			block.isReplaceable = !_true;
+			block.emitsRedstone = !_true;
+			block.emittedRedstonePower = 4;
 			block.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			block.colorOnMap = getRandomItem(random, ElementUtil.loadMapColors());

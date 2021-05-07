@@ -94,6 +94,8 @@ import java.util.stream.Collectors;
 	public boolean tickRandomly;
 
 	public boolean isReplaceable;
+	public boolean emitsRedstone;
+	public int emittedRedstonePower;
 	public String colorOnMap;
 	public MItemBlock creativePickItem;
 	public String offsetType;
