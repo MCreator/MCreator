@@ -1,4 +1,6 @@
-dist: xenial
+dist: focal
+language: java
+jdk: openjdk11
 
 git:
   depth: 3
@@ -19,13 +21,6 @@ cache:
   directories:
     - $HOME/.mcreator/gradle/caches/
     - $HOME/.mcreator/gradle/wrapper/
-
-language: java
-jdk: openjdk8
-addons:
-  apt:
-    packages:
-      - openjfx
 
 script:
   # Make gradle executable
