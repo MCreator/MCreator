@@ -29,6 +29,7 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
+<#include "textures.ftl">
 
 package ${package}.block;
 
@@ -64,14 +65,15 @@ import net.minecraft.block.material.Material;
 	}
 
 	@Override public void initElements() {
-		fluidproperties = new ForgeFlowingFluid.Properties(() -> still, () -> flowing, FluidAttributes
-				.builder(new ResourceLocation("${modid}:blocks/${data.textureStill}"), new ResourceLocation("${modid}:blocks/${data.textureFlowing}"))
-					.luminosity(${data.luminosity})
-					.density(${data.density})
-					.viscosity(${data.viscosity})
-					<#if data.isGas>.gaseous()</#if>)
-                    <#if data.generateBucket>.bucket(() -> bucket)</#if>
-					.block(() -> block);
+		fluidproperties = new ForgeFlowingFluid.Properties(() -> still, () -> flowing, FluidAttributes.builder(
+		new ResourceLocation("${mappedSingleTexture(data.textureStill, "blocks", modid)}"),
+		new ResourceLocation("${mappedSingleTexture(data.textureFlowing, "blocks", modid)}"))
+				.luminosity(${data.luminosity})
+				.density(${data.density})
+				.viscosity(${data.viscosity})
+				<#if data.isGas>.gaseous()</#if>)
+				<#if data.generateBucket>.bucket(() -> bucket)</#if>
+				.block(() -> block);
 
 		still = (FlowingFluid) new ForgeFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
 		flowing = (FlowingFluid) new ForgeFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
