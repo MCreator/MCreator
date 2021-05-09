@@ -24,6 +24,52 @@
       "type": "input_value",
       "name": "pitch",
       "check": "Number"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "category",
+      "options": [
+        [
+          "NEUTRAL",
+          "NEUTRAL"
+        ],
+        [
+          "MASTER",
+          "MASTER"
+        ],
+        [
+          "MUSIC",
+          "MUSIC"
+        ],
+        [
+          "RECORDS",
+          "RECORDS"
+        ],
+        [
+          "WEATHER",
+          "WEATHER"
+        ],
+        [
+          "BLOCKS",
+          "BLOCKS"
+        ],
+        [
+          "HOSTILE",
+          "HOSTILE"
+        ],
+        [
+          "PLAYERS",
+          "PLAYERS"
+        ],
+        [
+          "AMBIENT",
+          "AMBIENT"
+        ],
+        [
+          "VOICE",
+          "VOICE"
+        ]
+      ]
     }
   ],
   "extensions": [
@@ -43,6 +89,7 @@
       "<value name=\"pitch\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
     ],
     "fields": [
+      "category",
       "sound"
     ],
     "inputs": [
