@@ -1,3 +1,4 @@
+<#include "../textures.ftl">
 {
   "forge_marker": 1,
   "parent": "forge:item/default",
@@ -6,10 +7,10 @@
   "textures": {
     <#if data.getTextureMap()?has_content>
         <#list data.getTextureMap().entrySet() as texture>
-            "${texture.getKey()}": "${modid}:blocks/${texture.getValue()}",
+            "${texture.getKey()}": "${mappedSingleTexture(texture.getValue(), "blocks", modid)}",
         </#list>
     </#if>
-    "particle": "${modid}:items/${data.texture}"
+    "particle": "${mappedSingleTexture(data.texture, "items", modid)}"
   }<#--,
   <#if var_type?? && var_type=="tool">
   "transform": "forge:default-tool"

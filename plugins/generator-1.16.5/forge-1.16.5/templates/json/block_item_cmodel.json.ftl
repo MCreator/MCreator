@@ -1,11 +1,12 @@
 <#-- @formatter:off -->
+<#include "../textures.ftl">
 {
     "parent": "item/handheld",
     "textures": {
         <#if data.itemTexture?has_content>
-        "layer0": "${modid}:items/${data.itemTexture}"
+            "layer0": "${mappedSingleTexture(data.itemTexture, "items", modid)}"
         <#else>
-        "layer0": "${modid}:blocks/${data.texture}"
+            "layer0": "${mappedSingleTexture(data.texture, "blocks", modid)}"
         </#if>
     }
 }

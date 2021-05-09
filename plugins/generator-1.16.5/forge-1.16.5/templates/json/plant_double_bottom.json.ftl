@@ -1,7 +1,20 @@
+<#include "../textures.ftl">
 {
     "parent": "block/${var_model}",
     "textures": {
-        "cross": "${modid}:blocks/${data.textureBottom?has_content?then(data.textureBottom, data.texture)}",
-        "particle": "${modid}:blocks/<#if data.particleTexture?has_content>${data.particleTexture}<#else>${data.textureBottom?has_content?then(data.textureBottom, data.texture)}</#if>"
+        <#if data.textureBottom?has_content>
+        "cross": "${mappedSingleTexture(data.textureBottom, "blocks", modid)}",
+        <#else>
+        "cross": "${mappedSingleTexture(data.texture, "blocks", modid)}",
+        </#if>
+        <#if data.particleTexture?has_content>
+        "particle": "${mappedSingleTexture(data.particleTexture, "blocks", modid)}"
+        <#else>
+        <#if data.textureBottom?has_content>
+        "particle": "${mappedSingleTexture(data.textureBottom, "blocks", modid)}"
+        <#else>
+        "particle": "${mappedSingleTexture(data.texture, "blocks", modid)}"
+        </#if>
+        </#if>
     }
 }

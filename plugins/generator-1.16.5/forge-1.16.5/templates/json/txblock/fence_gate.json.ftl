@@ -1,7 +1,10 @@
+<#include "../textures.ftl">
 {
     "parent": "block/template_fence_gate",
     "textures": {
-      <#if data.particleTexture?has_content>"particle": "${modid}:blocks/${data.particleTexture}",</#if>
-      "texture": "${modid}:blocks/${data.texture}"
+      <#if data.particleTexture?has_content>
+      "particle": "${mappedSingleTexture(data.particleTexture, "blocks", modid)}",
+      </#if>
+      "texture": "${mappedSingleTexture(data.texture, "blocks", modid)}"
     }
 }
