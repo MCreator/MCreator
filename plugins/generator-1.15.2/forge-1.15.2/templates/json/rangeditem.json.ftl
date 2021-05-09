@@ -1,7 +1,8 @@
+<#include "../textures.ftl">
 {
     "parent": "item/generated",
     "textures": {
-      "layer0": "${modid}:items/${data.texture}"
+      "layer0": "${mappedSingleTexture(data.texture, "items", modid)}"
     },
     "display": {
       "thirdperson_righthand": {

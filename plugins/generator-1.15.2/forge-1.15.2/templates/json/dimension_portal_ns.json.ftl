@@ -1,7 +1,8 @@
+<#include "../textures.ftl">
 {
     "textures": {
-"particle": "${modid}:blocks/${data.portalTexture}",
-"portal": "${modid}:blocks/${data.portalTexture}"
+        "particle": "${mappedSingleTexture(data.portalTexture, "blocks", modid)}",
+        "portal": "${mappedSingleTexture(data.portalTexture, "blocks", modid)}"
     },
     "elements": [
       {

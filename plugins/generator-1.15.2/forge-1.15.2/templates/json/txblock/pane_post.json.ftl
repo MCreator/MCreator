@@ -1,8 +1,15 @@
+<#include "../textures.ftl">
 {
   "parent": "block/template_glass_pane_post",
   "textures": {
-    <#if data.particleTexture?has_content>"particle": "${modid}:blocks/${data.particleTexture}",</#if>
-    "edge": "${modid}:blocks/${data.textureTop?has_content?then(data.textureTop, data.texture)}",
-    "pane": "${modid}:blocks/${data.texture}"
+    <#if data.particleTexture?has_content>
+    "particle": "${mappedSingleTexture(data.particleTexture, "blocks", modid)}",
+    </#if>
+    <#if data.textureTop?has_content>
+    "edge": "${mappedSingleTexture(data.textureTop, "blocks", modid)}",
+    <#else>
+    "edge": "${mappedSingleTexture(data.texture, "blocks", modid)}",
+    </#if>
+    "pane": "${mappedSingleTexture(data.texture, "blocks", modid)}"
   }
 }

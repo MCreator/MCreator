@@ -1,3 +1,4 @@
+<#include "../textures.ftl">
 {
   "parent": "forge:item/default",
   "loader": "forge:composite",
@@ -10,13 +11,18 @@
           ,
           "textures": {
           <#list data.getTextureMap().entrySet() as texture>
-                "#${texture.getKey()}": "${modid}:blocks/${texture.getValue()}"<#if texture?has_next>,</#if>
+                "#${texture.getKey()}": "${mappedSingleTexture(texture.getValue(), "blocks", modid)}"
+                <#if texture?has_next>,</#if>
           </#list>
           }
       </#if>
     }
   },
   "textures": {
-    "particle": "${modid}:blocks/${data.particleTexture?has_content?then(data.particleTexture, data.texture)}"
+    <#if data.particleTexture?has_content>
+    "particle": "${mappedSingleTexture(data.particleTexture, "blocks", modid)}"
+    <#else>
+    "particle": "${mappedSingleTexture(data.texture, "blocks", modid)}"
+    </#if>
   }
 }
