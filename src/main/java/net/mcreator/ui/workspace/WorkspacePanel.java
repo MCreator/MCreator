@@ -102,8 +102,6 @@ import java.util.stream.Collectors;
 
 	private final JButton upFolder;
 
-	public boolean canRename;
-
 	private final JLabel but2 = new JLabel(TiledImageCache.workspaceEdit);
 	private final JLabel but2a = new JLabel(TiledImageCache.workspaceDuplicate);
 	private final JLabel but3 = new JLabel(TiledImageCache.workspaceDelete);
