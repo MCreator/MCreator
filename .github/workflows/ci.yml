@@ -8,13 +8,14 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: Build and test
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
         uses: actions/setup-java@v2
         with:
-          java-version: '11'
+          java-version: '11.0.11'
           distribution: 'adopt'
       - name: Cache Gradle packages
         uses: actions/cache@v2
@@ -27,11 +28,12 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+      - name: Install OpenJFX dependencies
+        run: sudo apt-get -y install unifont ttf-bitstream-vera
       - name: Build and test with Gradle
-        run: |
-          chmod +x gradlew
-          sudo apt-get install xvfb
-          xvfb-run ./gradlew test
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: ./gradlew test
       - name: Cleanup Gradle Cache
         run: |
           rm -f  ~/.mcreator/gradle/caches/modules-2/modules-2.lock
