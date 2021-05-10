@@ -19,6 +19,7 @@
 package net.mcreator.ui.component;
 
 import javax.swing.*;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -40,12 +41,12 @@ public class ListGroup<T> {
 		list.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
 				super.keyReleased(e);
-				multiSelect = (e.getModifiers() & MouseEvent.CTRL_MASK) == MouseEvent.CTRL_MASK;
+				multiSelect = (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK;
 			}
 
 			@Override public void keyPressed(KeyEvent e) {
 				super.keyPressed(e);
-				multiSelect = (e.getModifiers() & MouseEvent.CTRL_MASK) == MouseEvent.CTRL_MASK;
+				multiSelect = (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK;
 			}
 		});
 	}
