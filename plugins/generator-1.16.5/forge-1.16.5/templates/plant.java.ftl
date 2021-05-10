@@ -454,7 +454,7 @@ import net.minecraft.block.material.Material;
 					}
 				</#if>
 
-                Block ground = state.getBlock();
+				Block ground = state.getBlock();
 				return
 				<#if (data.canBePlacedOn?size > 0)>(
 					<#list data.canBePlacedOn as canBePlacedOn>
