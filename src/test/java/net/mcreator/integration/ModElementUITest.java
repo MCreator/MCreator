@@ -24,7 +24,6 @@ import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.integration.javafx.JavaFXThreadingRule;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
@@ -34,9 +33,8 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,20 +45,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ModElementUITest {
 
 	private static Logger LOG;
 
-	// blockly editors use javafx, we need this fix for javafx to work in unittests
-	@Rule public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
-
 	private static Workspace workspace;
 	private static MCreator mcreator;
 
-	@BeforeClass public static void initTest() throws IOException {
+	@BeforeAll public static void initTest() throws IOException {
 		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
 		LOG = LogManager.getLogger("Mod Element Test");
 

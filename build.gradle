@@ -74,10 +74,13 @@ dependencies {
     compileOnly group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
 
     // test dependencies
-    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+    testImplementation(platform('org.junit:junit-bom:5.7.1'))
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.7.1')
 }
 
 test {
+    useJUnitPlatform()
+
     testLogging.showStandardStreams = true
     testLogging.exceptionFormat = 'full'
     maxHeapSize = "1024m"
