@@ -454,12 +454,11 @@ import net.minecraft.block.material.Material;
 					}
 				</#if>
 
-				Block block = state.getBlock();
-
+                Block ground = state.getBlock();
 				return
 				<#if (data.canBePlacedOn?size > 0)>(
 					<#list data.canBePlacedOn as canBePlacedOn>
-						block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						ground == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
 						<#if canBePlacedOn?has_next>||</#if>
 					</#list>)
 				</#if>
