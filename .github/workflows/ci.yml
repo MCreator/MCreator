@@ -31,9 +31,7 @@ jobs:
       - name: Build and test with Gradle
         uses: GabrielBB/xvfb-action@v1
         with:
-          run: |
-            chmod +x gradlew
-            ./gradlew test
+          run: ./gradlew test
       - name: Cleanup Gradle Cache
         run: |
           rm -f  ~/.mcreator/gradle/caches/modules-2/modules-2.lock
