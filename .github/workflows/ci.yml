@@ -28,8 +28,8 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Install fonts for JavaFX WebKit
-        run: sudo apt install ttf-ubuntu-font-family fonts-freefont-ttf ttf-mscorefonts-installer
+      - name: Install OpenJFX dependencies
+        run: sudo apt install fonts-freefont-ttf ttf-mscorefonts-installer openjfx
       - name: Build and test with Gradle
         uses: GabrielBB/xvfb-action@v1
         with:
