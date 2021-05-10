@@ -23,6 +23,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
+import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageTransformUtil;
@@ -39,10 +40,8 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.Random;
 
 public class MinecraftImageGenerator {
 
@@ -170,6 +169,13 @@ public class MinecraftImageGenerator {
 		}
 
 		return bi;
+	}
+
+	public static ImageIcon generateFluidBucketIcon(ImageIcon fluid) {
+		ImageIcon bucket = TiledImageCache.bucket;
+		BufferedImage bucketMask = ImageUtils.toBufferedImage(TiledImageCache.bucketMask.getImage());
+		BufferedImage fluidOverlay = ImageUtils.toBufferedImage(fluid.getImage());
+		return ImageUtils.drawOver(bucket, new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
 	}
 
 	public static class Preview {

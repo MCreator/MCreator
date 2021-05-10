@@ -62,6 +62,7 @@ public class PreferencesData {
 		@PreferencesEntry public boolean openWhatsNextPage = true;
 		@PreferencesEntry public boolean checkAndNotifyForUpdates = true;
 		@PreferencesEntry public boolean checkAndNotifyForPatches = true;
+		@PreferencesEntry public boolean checkAndNotifyForPluginUpdates = false;
 
 	}
 
