@@ -29,7 +29,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Install OpenJFX dependencies
-        run: sudo apt-get -y install fonts-freefont-ttf ttf-mscorefonts-installer ttf-bitstream-vera openjfx
+        run: sudo apt-get -y install unifont ttf-bitstream-vera
       - name: Build and test with Gradle
         uses: GabrielBB/xvfb-action@v1
         with:
