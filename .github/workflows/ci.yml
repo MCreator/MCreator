@@ -29,9 +29,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Build and test with Gradle
-        run: |
-          chmod +x gradlew
-          ./gradlew test
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: |
+            chmod +x gradlew
+            ./gradlew test
       - name: Cleanup Gradle Cache
         run: |
           rm -f  ~/.mcreator/gradle/caches/modules-2/modules-2.lock
