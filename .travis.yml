@@ -1,12 +1,10 @@
-dist: xenial
+dist: focal
 
-addons:
-  apt:
-    sources:
-      - sourceline: 'deb [arch=amd64] https://apt.bell-sw.com/ stable main'
-        key_url: 'https://download.bell-sw.com/pki/GPG-KEY-bellsoft'
-    packages:
-      - bellsoft-java8-full
+# Workaround to get the latest J11 (travis uses 11.0.2 with bugs)
+before_install:
+  - sudo rm -rf /usr/local/lib/jvm/
+  - sudo apt-get install -y openjdk-11-jdk-headless
+  - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
 
 git:
   depth: 3
@@ -14,9 +12,6 @@ git:
 branches:
   only:
     - master
-
-env:
-  - GRADLE_OPTS="-Xmx6000m"
 
 before_cache:
   - rm -f  $HOME/.mcreator/gradle/caches/modules-2/modules-2.lock
@@ -28,7 +23,8 @@ cache:
     - $HOME/.mcreator/gradle/caches/
     - $HOME/.mcreator/gradle/wrapper/
 
-language: java
+env:
+  - GRADLE_OPTS="-Xmx6000m"
 
 script:
   # Make gradle executable

@@ -170,7 +170,7 @@ public class GradleConsole extends JPanel {
 		options.add(searchen);
 
 		KeyStrokes.registerKeyStroke(
-				KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), pan,
+				KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), pan,
 				new AbstractAction() {
 					@Override public void actionPerformed(ActionEvent actionEvent) {
 						searchen.setSelected(true);

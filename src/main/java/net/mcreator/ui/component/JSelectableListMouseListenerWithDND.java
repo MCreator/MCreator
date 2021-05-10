@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
 import java.util.Arrays;
@@ -70,6 +70,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 
 			JComponent co = getAdditionalTargetFor(e);
 			if (co instanceof FolderElementCrumb) { // highlight crumbs
+				co.setOpaque(true);
 				co.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			}
 
@@ -132,12 +133,10 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 		if (list.dndCustom) {
 			if (finalDNDselection != null && list.listener != null) {
 				JComponent co = getAdditionalTargetFor(e);
-				if (co != null) { // check if point was released over additional target
-					if (co instanceof FolderElementCrumb) {
-						list.listener.dndComplete(((FolderElementCrumb) co).getFolder(),
-								Arrays.stream(finalDNDselection).mapToObj(i -> list.getModel().getElementAt(i))
-										.collect(Collectors.toList()));
-					}
+				if (co instanceof FolderElementCrumb) { // check if point was released over additional target
+					list.listener.dndComplete(((FolderElementCrumb) co).getFolder(),
+							Arrays.stream(finalDNDselection).mapToObj(i -> list.getModel().getElementAt(i))
+									.collect(Collectors.toList()));
 				} else if (list.findComponentAt(e.getPoint()) == list) { // check if point was released over the list
 					list.listener.dndComplete(list.getModel().getElementAt(list.locationToIndex(e.getPoint())),
 							Arrays.stream(finalDNDselection).mapToObj(i -> list.getModel().getElementAt(i))
@@ -153,7 +152,8 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 		if (clicks == 2 && list.dndCustom) {
 			srcPoint = null; // Initiate DND action
 		} else if (clicks == 1 && list.dndCustom) {
-			if ((e.getModifiers() & ActionEvent.SHIFT_MASK) != 0 || (e.getModifiers() & ActionEvent.CTRL_MASK) != 0) {
+			if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0
+					|| (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0) {
 				selection = list.getSelectedIndices();
 			} else {
 				selection = null; // If only one click, reset the DND selection candidates
@@ -163,7 +163,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 			Rectangle rect = list.getCellBounds(index, index);
 			if (rect != null && rect.contains(e.getPoint())) {
 				list.setFocusable(true);
-			} else if ((e.getModifiers() & MouseEvent.CTRL_MASK) == MouseEvent.CTRL_MASK) {
+			} else if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK) {
 				list.clearSelection();
 				list.getSelectionModel().setAnchorSelectionIndex(-1);
 				list.getSelectionModel().setLeadSelectionIndex(-1);
@@ -177,7 +177,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 		}
 	}
 
-	private JComponent getAdditionalTargetFor(MouseEvent e) {
+	@Nullable private JComponent getAdditionalTargetFor(MouseEvent e) {
 		if (list.additionalDNDComponent != null) {
 			Point pointOnADND = subtract(e.getLocationOnScreen(), list.additionalDNDComponent.getLocationOnScreen());
 			Component co = list.additionalDNDComponent.getComponentAt(pointOnADND);
