@@ -1,0 +1,42 @@
+name: Continuous integration
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.mcreator/gradle/caches/
+            ~/.mcreator/gradle/wrapper/
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Build and test with Gradle
+        run: |
+          chmod +x gradlew
+          sudo apt-get install xvfb
+          xvfb-run ./gradlew test
+      - name: Cleanup Gradle Cache
+        run: |
+          rm -f  ~/.mcreator/gradle/caches/modules-2/modules-2.lock
+          rm -fr ~/.mcreator/gradle/caches/*/plugin-resolution/
+          rm -f  ~/.mcreator/gradle/caches/minecraft/deobfedDeps/providedDummy.jar
+          rm -f  ~/.mcreator/gradle/caches/minecraft/deobfedDeps/compileDummy.jar
+          rm -f  ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f  ~/.gradle/caches/modules-2/gc.properties
