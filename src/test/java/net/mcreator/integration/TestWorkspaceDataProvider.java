@@ -1355,7 +1355,6 @@ public class TestWorkspaceDataProvider {
 			return particle;
 		case GAMERULE:
 			GameRule gamerule = new GameRule(modElement);
-			gamerule.name = StringUtils.lowercaseFirstLetter(modElement.getName());
 			gamerule.displayName = modElement.getName();
 			gamerule.description = modElement.getName() + " description";
 			gamerule.category = getRandomString(random,
