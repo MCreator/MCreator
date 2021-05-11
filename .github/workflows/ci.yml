@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Build and test
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -28,8 +28,8 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Build and test with Gradle
-        uses: GabrielBB/xvfb-action@v1
+      - name: Build and test using Gradle
+        uses: Pylo/xvfb-action@v1
         with:
           run: ./gradlew test
       - name: Cleanup Gradle Cache
