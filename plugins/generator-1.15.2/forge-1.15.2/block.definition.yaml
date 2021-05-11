@@ -300,17 +300,17 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_wall_open.json"
 
-  # TX: Rod template
+  # TX: EndRod template
   - template: json/block_item.json.ftl
-    condition: "blockBase %= Rod"
+    condition: "blockBase %= EndRod"
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/txblock/end_rod_states.json.ftl
-    condition: "blockBase %= Rod"
+    condition: "blockBase %= EndRod"
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname.json"
   - template: json/txblock/end_rod.json.ftl
-    condition: "blockBase %= Rod"
+    condition: "blockBase %= EndRod"
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
 
