@@ -1363,6 +1363,7 @@ public class TestWorkspaceDataProvider {
 			gamerule.type = new String[] { "Number", "Logic", "Number", "Logic" }[valueIndex];
 			gamerule.defaultValueLogic = _true;
 			gamerule.defaultValueNumber = -45;
+			return gamerule;
 		default:
 			return null;
 		}
