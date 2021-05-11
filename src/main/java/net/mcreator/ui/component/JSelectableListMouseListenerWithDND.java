@@ -23,11 +23,11 @@ import net.mcreator.ui.workspace.breadcrumb.FolderElementCrumb;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.ModElementManager;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
 import java.util.Arrays;
@@ -152,7 +152,8 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 		if (clicks == 2 && list.dndCustom) {
 			srcPoint = null; // Initiate DND action
 		} else if (clicks == 1 && list.dndCustom) {
-			if ((e.getModifiers() & ActionEvent.SHIFT_MASK) != 0 || (e.getModifiers() & ActionEvent.CTRL_MASK) != 0) {
+			if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0
+					|| (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0) {
 				selection = list.getSelectedIndices();
 			} else {
 				selection = null; // If only one click, reset the DND selection candidates
@@ -162,7 +163,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 			Rectangle rect = list.getCellBounds(index, index);
 			if (rect != null && rect.contains(e.getPoint())) {
 				list.setFocusable(true);
-			} else if ((e.getModifiers() & MouseEvent.CTRL_MASK) == MouseEvent.CTRL_MASK) {
+			} else if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK) {
 				list.clearSelection();
 				list.getSelectionModel().setAnchorSelectionIndex(-1);
 				list.getSelectionModel().setLeadSelectionIndex(-1);

@@ -23,8 +23,8 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -250,18 +250,18 @@ public class ElementUtil {
 		return blocks;
 	}
 
-	private static List<DataListEntry> getCustomElements(@NotNull Workspace workspace,
+	private static List<DataListEntry> getCustomElements(@Nonnull Workspace workspace,
 			Predicate<ModElement> predicate) {
 		return workspace.getModElements().stream().filter(predicate).map(DataListEntry.Custom::new)
 				.collect(Collectors.toList());
 	}
 
-	private static List<DataListEntry> getCustomElementsOfType(@NotNull Workspace workspace, ModElementType type) {
+	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, ModElementType type) {
 		return workspace.getModElements().stream().filter(mu -> mu.getType() == type).map(DataListEntry.Custom::new)
 				.collect(Collectors.toList());
 	}
 
-	private static List<DataListEntry> getCustomElementsOfType(@NotNull Workspace workspace, BaseType type) {
+	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, BaseType type) {
 		return workspace.getModElements().stream().filter(mu -> mu.getType().getBaseType() == type)
 				.map(DataListEntry.Custom::new).collect(Collectors.toList());
 	}

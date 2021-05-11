@@ -732,12 +732,12 @@
   texture: SANDSTONE#0
 
 - Blocks.SANDSTONE#1:
-  readable_name: "Chiseled sandstone"
+  readable_name: "Chiseled Sandstone"
   type: block
   texture: SANDSTONE#1
 
 - Blocks.SANDSTONE#2:
-  readable_name: "Smooth sandstone"
+  readable_name: "Cut Sandstone"
   type: block
   texture: SANDSTONE#2
 
