@@ -1,13 +1,14 @@
 <#function mappedMCItemToIngameItemName mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", ""))!""/>
+        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
         <#if customelement?has_content>
             <#return "\"item\": \"" + "${modid}:" + customelement
             + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
             + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
             + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
             + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
+            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")
             + "\"">
         <#else>
             <#return "\"item\": \"minecraft:air\"">
@@ -29,13 +30,14 @@
 <#function mappedMCItemToIngameNameNoTags mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", ""))!""/>
+        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
         <#if customelement?has_content>
             <#return "${modid}:" + customelement
             + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
             + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
             + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")>
+            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
+            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")>
         <#else>
             <#return "minecraft:air">
         </#if>
@@ -57,7 +59,7 @@
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign mcitemresourcepath = mappedMCItemToIngameNameNoTags(mappedBlock)/>
         <#assign ge = w.getWorkspace().getModElementByName(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", ""))/>
+        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))/>
         <#if ge??>
             <#assign ge = ge.getGeneratableElement() />
 
@@ -139,6 +141,12 @@
                 <#else>
                     <#if ge.isWaterloggable>
                         <#assign properties += [{"name": "waterlogged", "value": "false"}] />
+                    </#if>
+
+                    <#if ge.rotationMode != 0 && ge.rotationMode != 5>
+                        <#assign properties += [{"name": "facing", "value": "north"}] />
+                    <#elseif ge.rotationMode == 5>
+                        <#assign properties += [{"name": "facing", "value": "south"}] />
                     </#if>
                 </#if>
             </#if>

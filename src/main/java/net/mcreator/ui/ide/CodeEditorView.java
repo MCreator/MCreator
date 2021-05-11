@@ -71,6 +71,7 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -317,7 +318,7 @@ public class CodeEditorView extends ViewBase {
 
 		if (!readOnly)
 			KeyStrokes.registerKeyStroke(
-					KeyStroke.getKeyStroke(KeyEvent.VK_B, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), te,
+					KeyStroke.getKeyStroke(KeyEvent.VK_B, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), te,
 					new AbstractAction() {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
@@ -331,7 +332,7 @@ public class CodeEditorView extends ViewBase {
 
 		if (!readOnly)
 			KeyStrokes.registerKeyStroke(
-					KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), te,
+					KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), te,
 					new AbstractAction() {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
@@ -344,7 +345,7 @@ public class CodeEditorView extends ViewBase {
 
 		if (!readOnly)
 			KeyStrokes.registerKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_M,
-					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() | InputEvent.SHIFT_DOWN_MASK, false), te,
+					Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK, false), te,
 					new AbstractAction() {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
@@ -461,7 +462,7 @@ public class CodeEditorView extends ViewBase {
 
 				@Override public void mouseEntered(MouseEvent e) {
 					super.mouseEntered(e);
-					if ((e.getModifiers() & MouseEvent.CTRL_MASK) == MouseEvent.CTRL_MASK) {
+					if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK) {
 						te.setCursor(new Cursor(Cursor.HAND_CURSOR));
 						jumpToMode = true;
 					}
@@ -625,14 +626,14 @@ public class CodeEditorView extends ViewBase {
 			return;
 
 		try {
-			Rectangle r = te.modelToView(te.getCaretPosition());
+			Rectangle2D r = te.modelToView2D(te.getCaretPosition());
 			if (r == null)
 				return;
 			JViewport viewport = (JViewport) container;
 			int extentHeight = viewport.getExtentSize().height;
 			int viewHeight = viewport.getViewSize().height;
 
-			int y = Math.max(0, r.y - ((extentHeight - r.height) / 2));
+			int y = (int) Math.max(0, r.getY() - ((extentHeight - r.getHeight()) / 2));
 			y = Math.min(y, viewHeight - extentHeight);
 
 			viewport.setViewPosition(new Point(0, y));

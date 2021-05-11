@@ -19,9 +19,9 @@
 package net.mcreator.io;
 
 import net.mcreator.util.EncryptUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EncryptUtilsTest {
 	@Test public void encrypt() throws Exception {

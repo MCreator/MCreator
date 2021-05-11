@@ -375,6 +375,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 											return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 													L10N.t("elementgui.procedure.name_already_exists"));
 									}
+									for (Dependency dependency : dependenciesArrayList) {
+										String nameinrow = dependency.getName();
+										if (textname.equals(nameinrow))
+											return new ValidationResult(ValidationResultType.ERROR,
+													L10N.t("elementgui.procedure.name_already_exists_dep"));
+									}
 									return validator.validate();
 								}
 							}, VariableElementType.LOGIC, VariableElementType.NUMBER, VariableElementType.STRING,

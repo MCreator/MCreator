@@ -19,15 +19,10 @@
 package net.mcreator.element.converter.fv17;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GameRule;
-import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class GameruleDisplayNameFixer implements IConverter {
 

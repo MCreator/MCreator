@@ -14,7 +14,10 @@ createExe {
     libraryDir = "null"
     stayAlive = true
     jdkPreference = "jdkOnly"
-    bundledJrePath = 'jdk/jre'
+    bundledJrePath = 'jdk'
+
+    bundledJre64Bit = true
+    jreRuntimeBits = 64
 
     errTitle = 'MCreator'
     supportUrl = 'https://mcreator.net/support'
@@ -36,12 +39,13 @@ task exportWin64(type: Copy, dependsOn: [downloadJDKWin64, createExe, jar, expor
     into('lib') {
         with copySpec {
             from 'build/libs'
-            from configurations.runtimeClasspath
+            from configurations.export
+            from configurations.win64
         }
     }
     into('plugins') { from 'build/plugins/' }
     into('license') { with copySpec { from 'license' } }
-    into('jdk') { with copySpec { from 'jdk/jdk8_win_64' } exclude "jre/lib/tools.jar" }
+    into('jdk') { with copySpec { from 'jdk/jdk11_win_64' } exclude "jre/lib/tools.jar" }
 }
 
 task zipWin64(type: Zip, dependsOn: exportWin64) {
@@ -51,81 +55,35 @@ task zipWin64(type: Zip, dependsOn: exportWin64) {
     archiveFileName = 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Windows 64bit.zip'
 }
 
-task exportWin32(type: Copy, dependsOn: [downloadJDKWin32, createExe, jar, exportPlugins]) {
-    into 'build/export/win32'
-    into('') {
-        from file('LICENSE.txt')
-        from file('platform/windows/mcreator.bat')
-        from file('build/launch4j/mcreator.exe')
-    }
-    into('lib') {
-        with copySpec {
-            from 'build/libs'
-            from configurations.runtimeClasspath
-        }
-    }
-    into('plugins') { from 'build/plugins/' }
-    into('license') { with copySpec { from 'license' } }
-    into('jdk') { with copySpec { from 'jdk/jdk8_win_32' } exclude "jre/lib/tools.jar" }
-}
-
-task zipWin32(type: Zip, dependsOn: exportWin32) {
-    from 'build/export/win32/'
-    into 'MCreator' + (String) project.mcreatorconf.getProperty('mcreator').replace(".", "")
-    destinationDirectory = file('build/export/')
-    archiveFileName = 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Windows 32bit.zip'
-}
-
 task buildInstallerWin64(type: Exec, dependsOn: [downloadNSIS, exportWin64]) {
     doFirst {
         copy {
             from file('platform/windows/installer/install.nsi') into 'build/export' rename('install.nsi', 'install64.nsi') filter { line ->
-                line.replace('%bits%', '64')
-                        .replace('%year%', new Date().format('yyyy'))
+                line.replace('%year%', new Date().format('yyyy'))
                         .replace('%build%', new Date().format('wwuHH'))
                         .replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
             }
         }
     }
-    commandLine './build/tools/nsis/makensis', 'build/export/install64.nsi'
+    commandLine projectDir.toString() + '/build/tools/nsis/makensis', 'build/export/install64.nsi'
     doLast { delete 'build/export/install64.nsi' }
 }
 
-task buildInstallerWin32(type: Exec, dependsOn: [downloadNSIS, exportWin32]) {
-    doFirst {
-        copy {
-            from file('platform/windows/installer/install.nsi') into 'build/export' rename('install.nsi', 'install32.nsi') filter { line ->
-                line.replace('%bits%', '32')
-                        .replace('%year%', new Date().format('yyyy'))
-                        .replace('%build%', new Date().format('wwuHH'))
-                        .replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
-            }
-        }
-    }
-    commandLine './build/tools/nsis/makensis', 'build/export/install32.nsi'
-    doLast { delete 'build/export/install32.nsi' }
-}
-
 task exportWindowsAll(type: DefaultTask, group: 'export') {
-    dependsOn zipWin32
     dependsOn zipWin64
 
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        dependsOn buildInstallerWin32
         dependsOn buildInstallerWin64
     }
 
     doLast {
-        delete 'build/export/win32'
         delete 'build/export/win64'
     }
 }
 
 task exportWindowsZIP(type: DefaultTask, group: 'export') {
-    dependsOn zipWin32
     dependsOn zipWin64
     doLast {
-        delete 'build/export/win32'
         delete 'build/export/win64'
     }
 }
