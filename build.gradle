@@ -88,8 +88,8 @@ dependencies {
     compileOnly group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
 
     // test dependencies
-    testImplementation(platform('org.junit:junit-bom:5.7.1'))
-    testImplementation('org.junit.jupiter:junit-jupiter-api:5.7.1')
+    testImplementation group: 'org.junit', name: 'junit-bom', version: '5.7.1'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.1'
 
     // JFX natives
     win64 group: 'org.openjfx', name: 'javafx-base', version: '15', classifier: 'win'
