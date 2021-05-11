@@ -403,7 +403,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
-			World world = (World) worldIn;
+			World world = (World) blockAccess;
 			<#if hasProcedure(data.redstoneCondition)>
 				return (int) <@procedureOBJToIntegerCode data.redstoneCondition/>;
 			<#else>
