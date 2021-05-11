@@ -18,12 +18,13 @@
 
 package net.mcreator.vcs.diff;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ListDiffTest {
 
@@ -32,9 +33,9 @@ public class ListDiffTest {
 		List<TestObject> second = new ArrayList<>(
 				Arrays.asList(new TestObject("bbb", 0), new TestObject("ddd", 2), new TestObject("ccc", 3)));
 		DiffResult<TestObject> result = ListDiff.getListDiff(first, second);
-		Assert.assertEquals(result.getAdded().size(), 2);
-		Assert.assertEquals(result.getRemoved().size(), 1);
-		Assert.assertEquals(result.getChanged().size(), 1);
+		assertEquals(result.getAdded().size(), 2);
+		assertEquals(result.getRemoved().size(), 1);
+		assertEquals(result.getChanged().size(), 1);
 	}
 
 	private static class TestObject {

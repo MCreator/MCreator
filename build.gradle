@@ -88,7 +88,8 @@ dependencies {
     compileOnly group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
 
     // test dependencies
-    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.1'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.1'
 
     // JFX natives
     win64 group: 'org.openjfx', name: 'javafx-base', version: '15', classifier: 'win'
@@ -120,6 +121,8 @@ javafx {
 }
 
 test {
+    useJUnitPlatform()
+
     testLogging.showStandardStreams = true
     testLogging.exceptionFormat = 'full'
     maxHeapSize = "1024m"
