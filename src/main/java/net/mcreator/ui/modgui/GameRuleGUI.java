@@ -144,6 +144,7 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 	}
 
 	@Override public void openInEditingMode(GameRule gamerule) {
+		name.setText(gamerule.name);
 		displayName.setText(gamerule.displayName);
 		description.setText(gamerule.description);
 		gameruleCategory.setSelectedItem(gamerule.category);
@@ -158,6 +159,7 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 
 	@Override public GameRule getElementFromGUI() {
 		GameRule gamerule = new GameRule(modElement);
+		name.displayName = name.getText();
 		gamerule.displayName = displayName.getText();
 		gamerule.description = description.getText();
 		gamerule.category = (String) gameruleCategory.getSelectedItem();
