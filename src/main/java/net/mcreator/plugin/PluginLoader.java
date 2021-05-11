@@ -19,9 +19,12 @@
 package net.mcreator.plugin;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.io.net.WebIO;
 import net.mcreator.io.zip.ZipIO;
+import net.mcreator.ui.MCreatorApplication;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -32,10 +35,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -50,6 +50,7 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	private final List<Plugin> plugins;
+	private final List<PluginUpdateInfo> pluginUpdates;
 
 	private final Reflections reflections;
 
@@ -57,6 +58,7 @@ public class PluginLoader extends URLClassLoader {
 		super(new URL[] {}, null);
 
 		this.plugins = new ArrayList<>();
+		this.pluginUpdates = new ArrayList<>();
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
 
@@ -94,6 +96,8 @@ public class PluginLoader extends URLClassLoader {
 		}
 
 		this.reflections = new Reflections(new ResourcesScanner(), this);
+
+		checkForPluginUpdates();
 	}
 
 	public Set<String> getResources(Pattern pattern) {
@@ -114,6 +118,10 @@ public class PluginLoader extends URLClassLoader {
 
 	public List<Plugin> getPlugins() {
 		return plugins;
+	}
+
+	public List<PluginUpdateInfo> getPluginUpdates() {
+		return pluginUpdates;
 	}
 
 	synchronized private List<Plugin> listPluginsFromFolder(File folder, boolean builtin) {
@@ -182,6 +190,28 @@ public class PluginLoader extends URLClassLoader {
 		}
 
 		return plugin;
+	}
+
+	private void checkForPluginUpdates() {
+		if (MCreatorApplication.isInternet) {
+			pluginUpdates.addAll(plugins.stream().parallel().map(plugin -> {
+				if (plugin.getInfo().getUpdateJSONURL() != null) {
+					if (!plugin.getInfo().getVersion().equals(PluginInfo.VERSION_NOT_SPECIFIED)) {
+						try {
+							String updateJSON = WebIO.readURLToString(plugin.getInfo().getUpdateJSONURL());
+							String version = JsonParser.parseString(updateJSON).getAsJsonObject().get(plugin.getID())
+									.getAsJsonObject().get("latest").getAsString();
+							if (!version.equals(plugin.getPluginVersion())) {
+								return new PluginUpdateInfo(plugin, version);
+							}
+						} catch (Exception e) {
+							LOG.warn("Failed to parse update info for plugin: " + plugin.getID(), e);
+						}
+					}
+				}
+				return null;
+			}).filter(Objects::nonNull).collect(Collectors.toList()));
+		}
 	}
 
 }

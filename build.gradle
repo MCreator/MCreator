@@ -4,6 +4,7 @@ plugins {
     id "de.undercouch.download" version "4.1.1"
     id 'edu.sc.seis.launch4j' version '2.5.0'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.0'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 
 repositories {
@@ -26,14 +27,27 @@ tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 // workaround for IDEA-265203
 System.setProperty("user.dir", projectDir.toString())
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
-
 idea {
     module {
         inheritOutputDirs = true
         excludeDirs = [file(".gradle"), file(".idea"), file(".github"), file("build"),
                        file("gradle"), file("jdk"), file("license"), file("logs")] as Set<File>
     }
+}
+
+configurations {
+    testImplementation.extendsFrom compileOnly
+
+    provided
+    compileOnly.extendsFrom provided
+    runtimeOnly.extendsFrom provided
+
+    export.extendsFrom implementation
+    export.canBeResolved = true
+
+    win64
+    mac64
+    linux64
 }
 
 dependencies {
@@ -76,6 +90,34 @@ dependencies {
     // test dependencies
     testImplementation(platform('org.junit:junit-bom:5.7.1'))
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.7.1')
+
+    // JFX natives
+    win64 group: 'org.openjfx', name: 'javafx-base', version: '15', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-controls', version: '15', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-graphics', version: '15', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-media', version: '15', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-web', version: '15', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-swing', version: '15', classifier: 'win'
+
+    mac64 group: 'org.openjfx', name: 'javafx-base', version: '15', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-controls', version: '15', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-graphics', version: '15', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-media', version: '15', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-web', version: '15', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-swing', version: '15', classifier: 'mac'
+
+    linux64 group: 'org.openjfx', name: 'javafx-base', version: '15', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-controls', version: '15', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-graphics', version: '15', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-media', version: '15', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-web', version: '15', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-swing', version: '15', classifier: 'linux'
+}
+
+javafx {
+    version = "15"
+    modules = [ 'javafx.web', 'javafx.swing' ]
+    configuration = 'provided' // we provide natives during deployment or with SDK
 }
 
 test {
@@ -100,6 +142,7 @@ jar {
 task runMCreator(type: JavaExec, dependsOn: jar) {
     classpath += sourceSets.main.runtimeClasspath
     main = "net.mcreator.Launcher"
+
 }
 
 apply from: 'platform/setup.gradle'

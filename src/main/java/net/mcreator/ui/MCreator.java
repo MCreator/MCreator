@@ -230,7 +230,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		consoleTab.setHasRightBorder(false);
 		consoleTab.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK))
+				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK)
 					actionRegistry.buildWorkspace.doAction();
 			}
 		});
