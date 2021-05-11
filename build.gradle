@@ -89,6 +89,7 @@ dependencies {
 
     // test dependencies
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.1'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.1'
 
     // JFX natives
     win64 group: 'org.openjfx', name: 'javafx-base', version: '15', classifier: 'win'
