@@ -16,8 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.vcs.diff;
+package net.mcreator.unit.vcs.diff;
 
+import net.mcreator.vcs.diff.DiffResult;
+import net.mcreator.vcs.diff.ListDiff;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

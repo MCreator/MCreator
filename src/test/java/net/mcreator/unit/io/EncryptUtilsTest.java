@@ -16,19 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.java;
+package net.mcreator.unit.io;
 
+import net.mcreator.util.EncryptUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JavaConventionsTest {
+public class EncryptUtilsTest {
+	@Test public void encrypt() throws Exception {
 
-	@Test public void convertToValidClassName() {
-		assertEquals(JavaConventions.convertToValidClassName("className"), "ClassName");
-		assertEquals(JavaConventions.convertToValidClassName("3className3"), "ClassName3");
-		assertEquals(JavaConventions.convertToValidClassName("_className"), "ClassName");
-		assertEquals(JavaConventions.convertToValidClassName("ČlassName"), "ClassName");
+		String source = "This is sample data.";
+		String enctrypted = EncryptUtils.encrypt(source);
+		String decrypted = EncryptUtils.decrypt(enctrypted);
+		assertEquals(source, decrypted);
+
 	}
 
 }

@@ -16,21 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.io;
+package net.mcreator.unit.io;
 
-import net.mcreator.util.EncryptUtils;
+import net.mcreator.io.Transliteration;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EncryptUtilsTest {
-	@Test public void encrypt() throws Exception {
-
-		String source = "This is sample data.";
-		String enctrypted = EncryptUtils.encrypt(source);
-		String decrypted = EncryptUtils.decrypt(enctrypted);
-		assertEquals(source, decrypted);
-
+public class TransliterationTest {
+	@Test public void transliterateString() {
+		String transliterated = Transliteration.transliterateString("test this: č#ć");
+		assertEquals(transliterated, "test this: c#c");
 	}
 
 }
