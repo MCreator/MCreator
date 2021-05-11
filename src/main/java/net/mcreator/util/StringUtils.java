@@ -19,8 +19,8 @@
 package net.mcreator.util;
 
 import org.apache.commons.text.WordUtils;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;

@@ -19,7 +19,6 @@
 package net.mcreator.io;
 
 import javax.annotation.Nonnull;
-
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 

@@ -20,8 +20,8 @@ package net.mcreator.workspace.elements;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;

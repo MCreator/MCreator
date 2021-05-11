@@ -20,8 +20,8 @@ package net.mcreator.ui.minecraft;
 
 import net.mcreator.io.FileIO;
 import net.mcreator.workspace.Workspace;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.Locale;
 

@@ -19,7 +19,6 @@
 package net.mcreator.io.net.api.update;
 
 import javax.annotation.Nullable;
-
 import java.util.List;
 
 public class Release {

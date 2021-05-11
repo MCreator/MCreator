@@ -20,8 +20,8 @@ package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.ui.dialogs.MCreatorDialog;
-import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 
 public class AbstractWYSIWYGDialog extends MCreatorDialog {

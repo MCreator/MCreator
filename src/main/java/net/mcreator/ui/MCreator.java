@@ -47,9 +47,9 @@ import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

@@ -19,7 +19,6 @@
 package net.mcreator.ui.component.zoompane;
 
 import javax.annotation.Nonnull;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

@@ -21,8 +21,8 @@ package net.mcreator.minecraft;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

@@ -23,6 +23,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+
 import javax.annotation.Nonnull;
 
 public class ModElementNameValidator extends JavaMemeberNameValidator {

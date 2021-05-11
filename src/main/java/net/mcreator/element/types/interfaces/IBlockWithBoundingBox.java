@@ -38,7 +38,6 @@
 package net.mcreator.element.types.interfaces;
 
 import javax.annotation.Nonnull;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

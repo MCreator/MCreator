@@ -20,8 +20,8 @@ package net.mcreator.workspace;
 
 import net.mcreator.workspace.elements.ModElementManager;
 import net.mcreator.workspace.settings.WorkspaceSettings;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 
 public interface IWorkspaceProvider {

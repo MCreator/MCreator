@@ -21,6 +21,7 @@ package net.mcreator.element.converter;
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.workspace.Workspace;
+
 import javax.annotation.Nonnull;
 
 public interface IConverter extends Comparable<IConverter> {

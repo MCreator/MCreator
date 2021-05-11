@@ -19,6 +19,7 @@
 package net.mcreator.io;
 
 import gcardone.junidecode.Junidecode;
+
 import javax.annotation.Nonnull;
 
 public class Transliteration {

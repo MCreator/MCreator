@@ -42,9 +42,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.GradleConnector;
 import org.gradle.tooling.ProjectConnection;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.Closeable;

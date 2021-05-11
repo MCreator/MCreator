@@ -31,8 +31,8 @@ import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.WorkspaceFileManager;
 import net.mcreator.workspace.elements.ModElement;
-import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;

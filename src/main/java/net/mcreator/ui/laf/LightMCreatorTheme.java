@@ -19,7 +19,6 @@
 package net.mcreator.ui.laf;
 
 import javax.annotation.Nonnull;
-
 import java.awt.*;
 
 public class LightMCreatorTheme extends AbstractMCreatorTheme {

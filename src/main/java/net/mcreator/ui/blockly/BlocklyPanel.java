@@ -37,10 +37,10 @@ import net.mcreator.workspace.elements.VariableElement;
 import netscape.javascript.JSObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import javax.annotation.Nullable;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;

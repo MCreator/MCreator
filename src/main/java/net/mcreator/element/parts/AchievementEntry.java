@@ -22,6 +22,7 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.workspace.Workspace;
+
 import javax.annotation.Nonnull;
 
 public class AchievementEntry extends MappableElement {

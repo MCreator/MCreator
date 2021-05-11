@@ -102,9 +102,8 @@ public class Launcher {
 
 		// check if proper version of MCreator per architecture is used
 		if (OS.getSystemBits() == OS.BIT32) {
-			JOptionPane.showMessageDialog(null,
-					"<html>You are trying to run 64-bit MCreator on 32-bit computer.<br>"
-							+ "MCreator no longer supports 32-bit platforms.", "MCreator error", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "<html>You are trying to run 64-bit MCreator on 32-bit computer.<br>"
+					+ "MCreator no longer supports 32-bit platforms.", "MCreator error", JOptionPane.WARNING_MESSAGE);
 			System.exit(-1);
 		}
 

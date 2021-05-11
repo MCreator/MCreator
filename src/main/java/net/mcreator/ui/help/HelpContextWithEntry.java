@@ -19,7 +19,6 @@
 package net.mcreator.ui.help;
 
 import javax.annotation.Nullable;
-
 import java.net.URI;
 
 public class HelpContextWithEntry implements IHelpContext {

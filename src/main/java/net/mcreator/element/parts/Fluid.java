@@ -21,6 +21,7 @@ package net.mcreator.element.parts;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
+
 import javax.annotation.Nonnull;
 
 public class Fluid extends MappableElement {

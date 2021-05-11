@@ -27,9 +27,9 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import javax.swing.*;
 import java.io.Serializable;
 import java.util.*;

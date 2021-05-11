@@ -20,8 +20,8 @@ package net.mcreator.blockly.data;
 
 import net.mcreator.ui.init.L10N;
 import org.apache.commons.lang3.StringUtils;
-import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ExternalTrigger {

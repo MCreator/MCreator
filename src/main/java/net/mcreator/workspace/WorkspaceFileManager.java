@@ -26,8 +26,8 @@ import net.mcreator.workspace.elements.ModElementManager;
 import net.mcreator.workspace.elements.SoundElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;

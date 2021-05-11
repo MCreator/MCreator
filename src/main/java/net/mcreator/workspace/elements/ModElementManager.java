@@ -31,8 +31,8 @@ import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;

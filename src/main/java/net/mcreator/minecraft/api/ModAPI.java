@@ -19,7 +19,6 @@
 package net.mcreator.minecraft.api;
 
 import javax.annotation.Nullable;
-
 import java.util.List;
 import java.util.Map;
 

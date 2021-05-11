@@ -19,7 +19,6 @@
 package net.mcreator.util.locale;
 
 import javax.annotation.Nonnull;
-
 import java.util.*;
 import java.util.stream.Collectors;
 

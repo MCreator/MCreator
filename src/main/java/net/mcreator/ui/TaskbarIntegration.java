@@ -20,8 +20,8 @@
 package net.mcreator.ui;
 
 import net.mcreator.ui.init.UIRES;
-import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 
 public class TaskbarIntegration {

@@ -22,8 +22,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
 import java.io.*;

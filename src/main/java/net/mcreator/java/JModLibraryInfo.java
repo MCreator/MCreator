@@ -23,8 +23,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.fife.rsta.ac.java.PackageMapNode;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 import org.fife.rsta.ac.java.classreader.ClassFile;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.File;

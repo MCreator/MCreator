@@ -22,9 +22,9 @@ import net.mcreator.io.FileIO;
 import net.mcreator.java.CodeCleanup;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.io.File;
 import java.util.Collection;
 import java.util.Locale;

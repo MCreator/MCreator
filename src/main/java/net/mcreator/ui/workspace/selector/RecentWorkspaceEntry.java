@@ -20,8 +20,8 @@ package net.mcreator.ui.workspace.selector;
 
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.workspace.Workspace;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 
 public final class RecentWorkspaceEntry {

@@ -19,7 +19,6 @@
 package net.mcreator.ui.component;
 
 import javax.annotation.Nonnull;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;

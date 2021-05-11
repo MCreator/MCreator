@@ -28,8 +28,8 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
-import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.List;
 

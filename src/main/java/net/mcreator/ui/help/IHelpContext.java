@@ -19,7 +19,6 @@
 package net.mcreator.ui.help;
 
 import javax.annotation.Nullable;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 

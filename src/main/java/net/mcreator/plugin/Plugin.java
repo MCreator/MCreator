@@ -19,8 +19,8 @@
 package net.mcreator.plugin;
 
 import net.mcreator.Launcher;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 
 public class Plugin implements Comparable<Plugin> {

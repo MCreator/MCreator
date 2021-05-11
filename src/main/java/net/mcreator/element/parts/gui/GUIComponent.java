@@ -22,8 +22,8 @@ import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.lang.reflect.Type;
 import java.util.HashMap;

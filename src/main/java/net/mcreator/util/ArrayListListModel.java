@@ -19,7 +19,6 @@
 package net.mcreator.util;
 
 import javax.annotation.Nonnull;
-
 import javax.swing.*;
 import java.util.*;
 

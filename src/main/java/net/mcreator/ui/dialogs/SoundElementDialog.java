@@ -28,8 +28,8 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ResourceNameValidator;
 import net.mcreator.workspace.elements.SoundElement;
 import org.apache.commons.io.FilenameUtils;
-import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
