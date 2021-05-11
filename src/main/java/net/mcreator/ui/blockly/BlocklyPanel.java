@@ -37,7 +37,7 @@ import net.mcreator.workspace.elements.VariableElement;
 import netscape.javascript.JSObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 

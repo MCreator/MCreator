@@ -22,7 +22,7 @@ import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.java.ImportTreeBuilder;
 import net.mcreator.java.ProjectJarManager;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import java.util.List;
 import java.util.Map;

@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.component;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,7 +56,7 @@ public class ReordarableListTransferHandler extends TransferHandler {
 				return Objects.equals(localObjectFlavor, flavor);
 			}
 
-			@NotNull @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
+			@Nonnull @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
 				if (isDataFlavorSupported(flavor)) {
 					return transferedObjects;
 				} else {

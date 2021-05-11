@@ -24,7 +24,7 @@ import net.mcreator.io.net.api.update.UpdateInfo;
 import net.mcreator.ui.MCreatorApplication;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

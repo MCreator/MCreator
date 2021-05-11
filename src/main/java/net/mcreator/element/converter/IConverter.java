@@ -21,7 +21,7 @@ package net.mcreator.element.converter;
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.workspace.Workspace;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public interface IConverter extends Comparable<IConverter> {
 
@@ -29,7 +29,7 @@ public interface IConverter extends Comparable<IConverter> {
 
 	int getVersionConvertingTo();
 
-	@Override default int compareTo(@NotNull IConverter o) {
+	@Override default int compareTo(@Nonnull IConverter o) {
 		return this.getVersionConvertingTo() - o.getVersionConvertingTo();
 	}
 }

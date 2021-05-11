@@ -27,8 +27,8 @@ import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -91,11 +91,11 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		this.generatorStats = new GeneratorStats(this);
 	}
 
-	@NotNull public String getSourceRoot() {
+	@Nonnull public String getSourceRoot() {
 		return (String) generatorConfig.get("source_root");
 	}
 
-	@NotNull public String getResourceRoot() {
+	@Nonnull public String getResourceRoot() {
 		return (String) generatorConfig.get("res_root");
 	}
 
@@ -111,11 +111,11 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return (String) generatorConfig.get(root);
 	}
 
-	@NotNull public String getGeneratorMinecraftVersion() {
+	@Nonnull public String getGeneratorMinecraftVersion() {
 		return this.generatorName.split("-")[1];
 	}
 
-	@NotNull public String getGeneratorBuildFileVersion() {
+	@Nonnull public String getGeneratorBuildFileVersion() {
 		return generatorConfig.get("buildfileversion") != null ? (String) generatorConfig.get("buildfileversion") : "";
 	}
 
@@ -226,7 +226,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return null;
 	}
 
-	@Override public int compareTo(@NotNull GeneratorConfiguration o) {
+	@Override public int compareTo(@Nonnull GeneratorConfiguration o) {
 		if (o.getGeneratorStats().getStatus() == generatorStats.getStatus()) { // same status, sort by version
 			return o.getGeneratorMinecraftVersion().compareTo(getGeneratorMinecraftVersion());
 		} else { // different status, sort by status

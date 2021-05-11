@@ -40,7 +40,7 @@ import netscape.javascript.JSObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -58,7 +58,7 @@ public class BlocklyJavascriptBridge {
 	private final Runnable blocklyEvent;
 	private final MCreator mcreator;
 
-	BlocklyJavascriptBridge(@NotNull MCreator mcreator, @NotNull Runnable blocklyEvent) {
+	BlocklyJavascriptBridge(@Nonnull MCreator mcreator, @Nonnull Runnable blocklyEvent) {
 		this.blocklyEvent = blocklyEvent;
 		this.mcreator = mcreator;
 	}

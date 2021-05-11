@@ -37,8 +37,8 @@ import net.mcreator.ui.views.ViewBase;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,13 +53,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private final boolean editingMode;
 	private MCreatorTabs.Tab tabIn;
 
-	@NotNull protected ModElement modElement;
+	@Nonnull protected ModElement modElement;
 
 	private ModElementCreatedListener<GE> modElementCreatedListener;
 
 	private final Map<String, JComponent> pages = new LinkedHashMap<>();
 
-	public ModElementGUI(MCreator mcreator, @NotNull ModElement modElement, boolean editingMode) {
+	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator);
 		this.editingMode = editingMode;
 		this.modElement = modElement;
@@ -404,7 +404,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			modElementCreatedListener.modElementCreated(element);
 	}
 
-	public @NotNull ModElement getModElement() {
+	public @Nonnull ModElement getModElement() {
 		return modElement;
 	}
 

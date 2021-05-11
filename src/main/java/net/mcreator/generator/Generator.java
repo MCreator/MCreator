@@ -42,8 +42,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.GradleConnector;
 import org.gradle.tooling.ProjectConnection;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -77,7 +77,7 @@ public class Generator implements IGenerator, Closeable {
 	@Nullable private ProjectConnection gradleProjectConnection;
 	@Nullable private GeneratorGradleCache generatorGradleCache;
 
-	public Generator(@NotNull Workspace workspace) {
+	public Generator(@Nonnull Workspace workspace) {
 		this.workspace = workspace;
 		this.generatorName = workspace.getWorkspaceSettings().getCurrentGenerator();
 
@@ -106,7 +106,7 @@ public class Generator implements IGenerator, Closeable {
 		}
 	}
 
-	@Override public @NotNull Workspace getWorkspace() {
+	@Override public @Nonnull Workspace getWorkspace() {
 		return workspace;
 	}
 

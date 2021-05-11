@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.LsRemoteCommand;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -111,7 +111,7 @@ public class VCSInfo {
 		return true;
 	}
 
-	public static void saveToFile(@NotNull VCSInfo vcsInfo, File file) {
+	public static void saveToFile(@Nonnull VCSInfo vcsInfo, File file) {
 		try {
 			if (vcsInfo.promptForPassword)
 				vcsInfo.password = null; // we don't save password in such case

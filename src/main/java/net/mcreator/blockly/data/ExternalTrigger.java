@@ -20,7 +20,7 @@ package net.mcreator.blockly.data;
 
 import net.mcreator.ui.init.L10N;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import java.util.List;
 

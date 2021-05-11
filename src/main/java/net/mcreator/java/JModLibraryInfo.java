@@ -23,7 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.fife.rsta.ac.java.PackageMapNode;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 import org.fife.rsta.ac.java.classreader.ClassFile;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -64,7 +64,7 @@ public class JModLibraryInfo extends LibraryInfo {
 		}
 	}
 
-	@Override public int compareTo(@NotNull LibraryInfo info) {
+	@Override public int compareTo(@Nonnull LibraryInfo info) {
 		if (info == this) {
 			return 0;
 		}

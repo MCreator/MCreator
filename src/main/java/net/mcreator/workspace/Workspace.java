@@ -34,8 +34,8 @@ import net.mcreator.workspace.misc.WorkspaceInfo;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,7 +73,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private transient boolean regenerateRequired = false;
 	private transient boolean failingGradleDependencies = false;
 
-	@NotNull private final transient WorkspaceInfo workspaceInfo;
+	@Nonnull private final transient WorkspaceInfo workspaceInfo;
 
 	private Workspace(WorkspaceSettings workspaceSettings) {
 		this();
@@ -122,7 +122,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return foldersRoot;
 	}
 
-	@NotNull public WorkspaceInfo getWorkspaceInfo() {
+	@Nonnull public WorkspaceInfo getWorkspaceInfo() {
 		return workspaceInfo;
 	}
 
@@ -391,7 +391,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return retval;
 	}
 
-	@Override public @NotNull Workspace getWorkspace() {
+	@Override public @Nonnull Workspace getWorkspace() {
 		return this;
 	}
 

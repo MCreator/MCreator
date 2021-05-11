@@ -28,7 +28,7 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -166,7 +166,7 @@ import java.util.stream.Collectors;
 		return !"No tint".equals(tintType);
 	}
 
-	@Override public @NotNull List<BoxEntry> getValidBoundingBoxes() {
+	@Override public @Nonnull List<BoxEntry> getValidBoundingBoxes() {
 		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
 	}
 }

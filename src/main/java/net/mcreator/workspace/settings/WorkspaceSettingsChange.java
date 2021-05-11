@@ -19,12 +19,12 @@
 package net.mcreator.workspace.settings;
 
 import net.mcreator.util.GSONCompare;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class WorkspaceSettingsChange {
 
-	@NotNull public WorkspaceSettings workspaceSettings;
+	@Nonnull public WorkspaceSettings workspaceSettings;
 	@Nullable public WorkspaceSettings oldSettings;
 
 	public boolean modidchanged;
@@ -33,7 +33,7 @@ public class WorkspaceSettingsChange {
 
 	public boolean mcreatorDepsChanged;
 
-	public WorkspaceSettingsChange(@NotNull WorkspaceSettings workspaceSettings,
+	public WorkspaceSettingsChange(@Nonnull WorkspaceSettings workspaceSettings,
 			@Nullable WorkspaceSettings oldSettings) {
 		this.workspaceSettings = workspaceSettings;
 		this.oldSettings = oldSettings;

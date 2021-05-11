@@ -20,7 +20,7 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import org.apache.commons.io.FilenameUtils;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 

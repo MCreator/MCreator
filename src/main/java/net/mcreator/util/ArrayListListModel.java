@@ -18,7 +18,7 @@
 
 package net.mcreator.util;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.swing.*;
 import java.util.*;
@@ -38,15 +38,15 @@ public class ArrayListListModel<T> extends AbstractListModel<T> implements List<
 		return list.contains(o);
 	}
 
-	@NotNull @Override public Iterator<T> iterator() {
+	@Nonnull @Override public Iterator<T> iterator() {
 		return list.iterator();
 	}
 
-	@NotNull @Override public Object[] toArray() {
+	@Nonnull @Override public Object[] toArray() {
 		return list.toArray();
 	}
 
-	@NotNull @Override @SuppressWarnings("unchecked") public <Type> Type[] toArray(@NotNull Type[] a) {
+	@Nonnull @Override @SuppressWarnings("unchecked") public <Type> Type[] toArray(@Nonnull Type[] a) {
 		return (Type[]) list.toArray();
 	}
 
@@ -64,31 +64,31 @@ public class ArrayListListModel<T> extends AbstractListModel<T> implements List<
 		return remove;
 	}
 
-	@Override public boolean containsAll(@NotNull Collection<?> c) {
+	@Override public boolean containsAll(@Nonnull Collection<?> c) {
 		return list.containsAll(c);
 	}
 
-	@Override public boolean addAll(@NotNull Collection<? extends T> c) {
+	@Override public boolean addAll(@Nonnull Collection<? extends T> c) {
 		int start = list.size();
 		boolean addAll = list.addAll(c);
 		fireIntervalAdded(this, start, start + c.size());
 		return addAll;
 	}
 
-	@Override public boolean addAll(int index, @NotNull Collection<? extends T> c) {
+	@Override public boolean addAll(int index, @Nonnull Collection<? extends T> c) {
 		boolean addAll = list.addAll(index, c);
 		fireIntervalAdded(this, index, index + c.size());
 		return addAll;
 	}
 
-	@Override public boolean removeAll(@NotNull Collection<?> c) {
+	@Override public boolean removeAll(@Nonnull Collection<?> c) {
 		int lastIndex = list.size() - 1;
 		boolean removeAll = list.removeAll(c);
 		fireIntervalRemoved(this, 0, Math.max(0, lastIndex));
 		return removeAll;
 	}
 
-	@Override public boolean retainAll(@NotNull Collection<?> c) {
+	@Override public boolean retainAll(@Nonnull Collection<?> c) {
 		boolean retainAll = list.retainAll(c);
 		fireIntervalRemoved(this, 0, Math.max(0, list.size() - 1));
 		return retainAll;
@@ -129,15 +129,15 @@ public class ArrayListListModel<T> extends AbstractListModel<T> implements List<
 		return list.lastIndexOf(o);
 	}
 
-	@NotNull @Override public ListIterator<T> listIterator() {
+	@Nonnull @Override public ListIterator<T> listIterator() {
 		return list.listIterator();
 	}
 
-	@NotNull @Override public ListIterator<T> listIterator(int index) {
+	@Nonnull @Override public ListIterator<T> listIterator(int index) {
 		return list.listIterator(index);
 	}
 
-	@NotNull @Override public List<T> subList(int fromIndex, int toIndex) {
+	@Nonnull @Override public List<T> subList(int fromIndex, int toIndex) {
 		return list.subList(fromIndex, toIndex);
 	}
 

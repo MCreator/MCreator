@@ -19,7 +19,7 @@
 package net.mcreator.io;
 
 import gcardone.junidecode.Junidecode;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public class Transliteration {
 
@@ -29,7 +29,7 @@ public class Transliteration {
 	 * @param source Soruce string
 	 * @return Transliterated string or original if transliteration is not required
 	 */
-	@NotNull public static String transliterateString(@NotNull String source) {
+	@Nonnull public static String transliterateString(@Nonnull String source) {
 		boolean pureASCII = true;
 		char[] chars = source.toCharArray();
 

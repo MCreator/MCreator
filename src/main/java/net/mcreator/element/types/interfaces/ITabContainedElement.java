@@ -38,7 +38,7 @@
 package net.mcreator.element.types.interfaces;
 
 import net.mcreator.element.parts.TabEntry;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 public interface ITabContainedElement {
 

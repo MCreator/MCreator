@@ -39,7 +39,7 @@ import org.fife.rsta.ac.java.rjc.lexer.Scanner;
 import org.fife.rsta.ac.java.rjc.parser.ASTFactory;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.File;
 import java.io.StringReader;
@@ -55,11 +55,11 @@ import java.util.Map;
 
 	private final Map<String, String> CACHE = new HashMap<>();
 
-	public MinecraftCodeProvider(@NotNull Workspace workspace) {
+	public MinecraftCodeProvider(@Nonnull Workspace workspace) {
 		this.workspace = workspace;
 	}
 
-	private String readCode(@NotNull String template) {
+	private String readCode(@Nonnull String template) {
 		try {
 			if (!CACHE.containsKey(template)) { // cache miss, add to cache
 				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
@@ -83,7 +83,7 @@ import java.util.Map;
 		}
 	}
 
-	public String getCodeFor(@NotNull String template, int lineFrom, int lineTo) {
+	public String getCodeFor(@Nonnull String template, int lineFrom, int lineTo) {
 		String code = readCode(template);
 		if (code != null) {
 			String[] lines = code.split("\\r?\\n");
@@ -94,7 +94,7 @@ import java.util.Map;
 		}
 	}
 
-	public String getMethod(@NotNull String template, String method, String... params) {
+	public String getMethod(@Nonnull String template, String method, String... params) {
 		String code = readCode(template);
 		if (code != null) {
 			JavaClassSource classJavaSource = (JavaClassSource) Roaster.parse(code);
@@ -104,7 +104,7 @@ import java.util.Map;
 		}
 	}
 
-	public String getInnerClassBody(@NotNull String template, String innerClass) {
+	public String getInnerClassBody(@Nonnull String template, String innerClass) {
 		String code = readCode(template);
 		if (code != null) {
 			CompilationUnit cu = new ASTFactory().getCompilationUnit(template, new Scanner(new StringReader(code)));
@@ -126,7 +126,7 @@ import java.util.Map;
 		return "/* failed to load code for " + template + " */";
 	}
 
-	public String getClassBody(@NotNull String template) {
+	public String getClassBody(@Nonnull String template) {
 		String code = readCode(template);
 		if (code != null) {
 			CompilationUnit cu = new ASTFactory().getCompilationUnit(template, new Scanner(new StringReader(code)));

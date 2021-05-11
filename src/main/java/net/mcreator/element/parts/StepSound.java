@@ -22,7 +22,7 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.workspace.Workspace;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public class StepSound extends MappableElement {
 
@@ -30,13 +30,13 @@ public class StepSound extends MappableElement {
 		super(new NameMapper(null, "stepsounds"));
 	}
 
-	public StepSound(@NotNull Workspace owner, String name) {
+	public StepSound(@Nonnull Workspace owner, String name) {
 		this();
 		mapper.setWorkspace(owner);
 		setValue(name);
 	}
 
-	public StepSound(@NotNull Workspace owner, DataListEntry name) {
+	public StepSound(@Nonnull Workspace owner, DataListEntry name) {
 		this(owner, name.getName());
 	}
 

@@ -31,7 +31,7 @@ import net.mcreator.workspace.Workspace;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.Import;
 import org.jboss.forge.roaster.model.source.JavaSource;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;

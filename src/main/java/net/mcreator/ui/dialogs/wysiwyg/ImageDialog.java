@@ -30,7 +30,7 @@ import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.VariableElementType;
 import org.apache.commons.io.FilenameUtils;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import javax.swing.*;
 import java.awt.*;

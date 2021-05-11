@@ -25,7 +25,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.swing.*;
 import java.io.File;
@@ -144,7 +144,7 @@ public class MCItem extends DataListEntry {
 
 	public static final class Tag extends MCItem {
 
-		public Tag(@NotNull Workspace workspace, String name) {
+		public Tag(@Nonnull Workspace workspace, String name) {
 			super("TAG:" + name);
 			setType("tag");
 			icon = MCItem.getBlockIconBasedOnName(workspace, "TAG:" + name);

@@ -20,7 +20,7 @@ package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.ui.dialogs.MCreatorDialog;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import java.awt.*;
 

@@ -41,7 +41,7 @@ import net.mcreator.plugin.PluginLoader;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -56,11 +56,11 @@ import java.util.Map;
 
 	private final Generator generator;
 
-	public FileProvider(@NotNull Generator generator) {
+	public FileProvider(@Nonnull Generator generator) {
 		this.generator = generator;
 	}
 
-	public String file(@NotNull String file) {
+	public String file(@Nonnull String file) {
 		try {
 			if (!CACHE.containsKey(file)) { // cache miss, add to cache
 				InputStream stream = PluginLoader.INSTANCE

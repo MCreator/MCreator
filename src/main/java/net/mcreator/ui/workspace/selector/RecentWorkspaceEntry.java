@@ -20,16 +20,16 @@ package net.mcreator.ui.workspace.selector;
 
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.workspace.Workspace;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.File;
 
 public final class RecentWorkspaceEntry {
 
-	@NotNull private String name;
+	@Nonnull private String name;
 	private GeneratorFlavor type;
 
-	@NotNull private final String path;
+	@Nonnull private final String path;
 
 	public RecentWorkspaceEntry(Workspace workspace, File path) {
 		this.name = workspace.getWorkspaceSettings().getModName();
@@ -42,15 +42,15 @@ public final class RecentWorkspaceEntry {
 		this.type = source.getType();
 	}
 
-	@NotNull public File getPath() {
+	@Nonnull public File getPath() {
 		return new File(path);
 	}
 
-	@NotNull public String getName() {
+	@Nonnull public String getName() {
 		return name;
 	}
 
-	@NotNull public GeneratorFlavor getType() {
+	@Nonnull public GeneratorFlavor getType() {
 		if (type == null)
 			return GeneratorFlavor.UNKNOWN;
 

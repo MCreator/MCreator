@@ -37,14 +37,14 @@
 
 package net.mcreator.element.types.interfaces;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public interface IBlockWithBoundingBox {
 	// A list of non-empty bounding box entries
-	@NotNull List<BoxEntry> getValidBoundingBoxes();
+	@Nonnull List<BoxEntry> getValidBoundingBoxes();
 
 	// Empty list or all bounding boxes are in subtract mode
 	default boolean isBoundingBoxEmpty() {

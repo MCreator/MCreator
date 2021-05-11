@@ -22,8 +22,8 @@ import net.mcreator.io.FileIO;
 import net.mcreator.java.CodeCleanup;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.io.File;
 import java.util.Collection;
@@ -46,7 +46,7 @@ public class ClassWriter {
 		}
 	}
 
-	public static void formatAndOrganiseImportsForFiles(@Nullable Workspace workspace, @NotNull Collection<File> files,
+	public static void formatAndOrganiseImportsForFiles(@Nullable Workspace workspace, @Nonnull Collection<File> files,
 			@Nullable IntConsumer intConsumer) {
 		boolean skipModClassReloading = false;
 

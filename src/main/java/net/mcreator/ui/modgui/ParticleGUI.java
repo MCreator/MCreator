@@ -38,7 +38,7 @@ import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElementType;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import javax.swing.*;
 import java.awt.*;

@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.component.zoompane;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +45,7 @@ public class JZoomport extends JComponent {
 	private Cursor lastCursor = Cursor.getDefaultCursor();
 	boolean first = true;
 
-	public JZoomport(JComponent toZoom, @NotNull JZoomPane zoomPane) {
+	public JZoomport(JComponent toZoom, @Nonnull JZoomPane zoomPane) {
 		this.zoomPane = zoomPane;
 		this.toZoom = toZoom;
 

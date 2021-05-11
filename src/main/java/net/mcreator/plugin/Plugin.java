@@ -19,7 +19,7 @@
 package net.mcreator.plugin;
 
 import net.mcreator.Launcher;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.File;
 
@@ -98,7 +98,7 @@ public class Plugin implements Comparable<Plugin> {
 		return id.hashCode();
 	}
 
-	@Override public int compareTo(@NotNull Plugin p) {
+	@Override public int compareTo(@Nonnull Plugin p) {
 		return p.weight - weight;
 	}
 }

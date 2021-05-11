@@ -66,7 +66,7 @@ import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.WorkspaceUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -474,7 +474,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		add("South", soim);
 	}
 
-	@NotNull public RecentWorkspaces getRecentWorkspaces() {
+	@Nonnull public RecentWorkspaces getRecentWorkspaces() {
 		if (recentWorkspaces == null)
 			this.recentWorkspaces = new RecentWorkspaces();
 

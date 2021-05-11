@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.component;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import javax.swing.*;
 import java.awt.*;

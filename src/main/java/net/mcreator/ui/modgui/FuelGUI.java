@@ -29,7 +29,7 @@ import net.mcreator.ui.minecraft.FuelRecipeMaker;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.workspace.elements.ModElement;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
