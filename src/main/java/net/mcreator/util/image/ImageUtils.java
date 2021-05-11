@@ -254,6 +254,17 @@ public class ImageUtils {
 		return out;
 	}
 
+	public static BufferedImage maskTransparency(BufferedImage base, BufferedImage mask) {
+		Color[][] baseCol = bufferedImageToColorArray(base);
+		Color[][] maskCol = bufferedImageToColorArray(mask);
+		for (int i = 0; i < baseCol.length; i++)
+			for (int j = 0; j < baseCol[0].length; j++) {
+				if (maskCol[i][j].getAlpha() == 0)
+					baseCol[i][j] = new Color(0, 0, 0, 0);
+			}
+		return colorArrayToBufferedImage(baseCol);
+	}
+
 	/**
 	 * Converts a given Image into a BufferedImage
 	 *

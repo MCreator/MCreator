@@ -16,12 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.util;
+package net.mcreator.unit.util;
 
-import org.junit.Test;
+import net.mcreator.util.GSONClone;
+import net.mcreator.util.GSONCompare;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GSONUtilsTest {
 
@@ -30,7 +33,7 @@ public class GSONUtilsTest {
 		TestObject objB = new TestObject("test", 1);
 		TestObject objC = new TestObject("ees", 1);
 
-		assertTrue(GSONCompare.deepEquals(objA, objA));
+		Assertions.assertTrue(GSONCompare.deepEquals(objA, objA));
 		assertTrue(GSONCompare.deepEquals(objA, objB));
 		assertFalse(GSONCompare.deepEquals(objA, objC));
 		assertFalse(GSONCompare.deepEquals(objB, objC));
