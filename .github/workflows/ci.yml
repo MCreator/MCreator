@@ -17,7 +17,7 @@ jobs:
         with:
           java-version: '11.0.11'
           distribution: 'adopt'
-      - name: Cache Gradle packages
+      - name: Cache Gradle Packages
         uses: actions/cache@v2
         with:
           path: |
@@ -28,11 +28,11 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Build and test using Gradle
+      - name: Build and Test Using Gradle
         uses: Pylo/xvfb-action@v1
         with:
           run: ./gradlew test
-      - name: Cleanup Gradle Cache
+      - name: Prepare Gradle Cache
         run: |
           rm -f  ~/.mcreator/gradle/caches/modules-2/modules-2.lock
           rm -fr ~/.mcreator/gradle/caches/*/plugin-resolution/
@@ -40,3 +40,7 @@ jobs:
           rm -f  ~/.mcreator/gradle/caches/minecraft/deobfedDeps/compileDummy.jar
           rm -f  ~/.gradle/caches/modules-2/modules-2.lock
           rm -f  ~/.gradle/caches/modules-2/gc.properties
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v2
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
