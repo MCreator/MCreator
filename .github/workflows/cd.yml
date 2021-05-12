@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       release-type:
-        description: 'Release type'
+        description: 'Release type (snapshot/release)'
         required: true
         default: 'snapshot'
 
