@@ -18,8 +18,7 @@
 
 package net.mcreator.ui.laf;
 
-import org.jetbrains.annotations.NotNull;
-
+import javax.annotation.Nonnull;
 import java.awt.*;
 
 public class LightMCreatorTheme extends AbstractMCreatorTheme {
@@ -30,31 +29,31 @@ public class LightMCreatorTheme extends AbstractMCreatorTheme {
 	private final Color GRAY_COLOR = new Color(57, 57, 57);
 	private final Color BRIGHT_COLOR = new Color(35, 35, 35);
 
-	@Override protected @NotNull Color getBlackAccent() {
+	@Override protected @Nonnull Color getBlackAccent() {
 		return BLACK_ACCENT;
 	}
 
-	@Override protected @NotNull Color getDarkAccent() {
+	@Override protected @Nonnull Color getDarkAccent() {
 		return DARK_ACCENT;
 	}
 
-	@Override protected @NotNull Color getLightAccent() {
+	@Override protected @Nonnull Color getLightAccent() {
 		return LIGHT_ACCENT;
 	}
 
-	@Override protected @NotNull Color getGrayColor() {
+	@Override protected @Nonnull Color getGrayColor() {
 		return GRAY_COLOR;
 	}
 
-	@Override protected @NotNull Color getBrightColor() {
+	@Override protected @Nonnull Color getBrightColor() {
 		return BRIGHT_COLOR;
 	}
 
-	@Override protected @NotNull String getBlocklyCSSName() {
+	@Override protected @Nonnull String getBlocklyCSSName() {
 		return "mcreator_blockly_light.css";
 	}
 
-	@Override protected @NotNull String getCodeEditorXML() {
+	@Override protected @Nonnull String getCodeEditorXML() {
 		return "/codeeditor_light.xml";
 	}
 }

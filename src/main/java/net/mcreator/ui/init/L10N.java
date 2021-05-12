@@ -35,6 +35,8 @@ public class L10N {
 
 	private static final Logger LOG = LogManager.getLogger("L10N");
 
+	public static final Locale DEFAULT_LOCALE = new Locale("en", "US");
+
 	private static ResourceBundle rb;
 	private static ResourceBundle rb_en;
 
@@ -47,12 +49,15 @@ public class L10N {
 	public static void initTranslations() {
 		initLocalesImpl();
 
+		// Clear selectedLocale cache
+		selectedLocale = null;
+
 		if (supportedLocales.containsKey(getLocale())) {
 			rb = supportedLocales.get(getLocale()).getResourceBundle();
 		} else {
 			LOG.warn("Locale " + getLocale() + " is not supported. Falling back to default locale.");
 
-			rb = supportedLocales.get(new Locale("en", "US")).getResourceBundle();
+			rb = supportedLocales.get(DEFAULT_LOCALE).getResourceBundle();
 		}
 
 		LOG.info("Setting default locale to: " + getLocale());
@@ -61,6 +66,9 @@ public class L10N {
 	}
 
 	private static void initLocalesImpl() {
+		if (rb_en != null) // check if locales are already loaded
+			return;
+
 		rb_en = ResourceBundle.getBundle("lang/texts", Locale.ROOT, PluginLoader.INSTANCE, new UTF8Control());
 
 		double countAll = Collections.list(rb_en.getKeys()).size();
@@ -74,7 +82,7 @@ public class L10N {
 							(int) Math.ceil(Collections.list(rb.getKeys()).size() / countAll * 100d));
 				}));
 
-		supportedLocales.put(new Locale("en", "US"), new LocaleRegistration(rb_en, 100));
+		supportedLocales.put(DEFAULT_LOCALE, new LocaleRegistration(rb_en, 100));
 	}
 
 	public static Set<Locale> getSupportedLocales() {

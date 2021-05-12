@@ -121,11 +121,11 @@ import java.util.stream.Collectors;
 				}
 			}
 
-			// otherwise use normal registry name
+			// otherwise we use a normal registry name
 			return generator.getWorkspaceSettings().getModID() + ":" + element.getRegistryName();
 		}
 
-		generator.LOG.warn("Failed to determine resource location for: " + modElement);
+		generator.LOG.warn("Failed to determine resource location for mod element: " + modElement);
 		return generator.getWorkspaceSettings().getModID() + ":" + NameMapper.UNKNOWN_ELEMENT;
 	}
 
