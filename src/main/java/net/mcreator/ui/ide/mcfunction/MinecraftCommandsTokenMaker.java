@@ -987,7 +987,7 @@ public class MinecraftCommandsTokenMaker extends AbstractJFlexTokenMaker {
 	 * <p>
 	 * All internal variables are reset, the old input stream
 	 * <b>cannot</b> be reused (internal buffer is discarded and lost).
-	 * Lexical state is set to <tt>YY_INITIAL</tt>.
+	 * Lexical state is set to YY_INITIAL.
 	 *
 	 * @param reader the new input stream
 	 */
@@ -1077,7 +1077,7 @@ public class MinecraftCommandsTokenMaker extends AbstractJFlexTokenMaker {
 	}
 
 	/**
-	 * Returns the character at position <tt>pos</tt> from the
+	 * Returns the character at position pos from the
 	 * matched text.
 	 * <p>
 	 * It is equivalent to yytext().charAt(pos), but faster
