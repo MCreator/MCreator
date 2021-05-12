@@ -2,12 +2,12 @@ plugins {
     id "java"
     id "idea"
     id "de.undercouch.download" version "4.1.1"
-    id 'edu.sc.seis.launch4j' version '2.4.9'
-    id 'org.jetbrains.gradle.plugin.idea-ext' version '0.10'
+    id 'edu.sc.seis.launch4j' version '2.5.0'
+    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.0'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 
 repositories {
-    jcenter()
     maven {
         url "https://repo.gradle.org/gradle/libs-releases-local/"
     }
@@ -27,16 +27,27 @@ tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 // workaround for IDEA-265203
 System.setProperty("user.dir", projectDir.toString())
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
 idea {
     module {
         inheritOutputDirs = true
-        [".gradle", "build", "gradle", "jdk"].each {
-            excludeDirs << file("$buildDir/$it")
-        }
+        excludeDirs = [file(".gradle"), file(".idea"), file(".github"), file("build"),
+                       file("gradle"), file("jdk"), file("license"), file("logs")] as Set<File>
     }
+}
+
+configurations {
+    testImplementation.extendsFrom compileOnly
+
+    provided
+    compileOnly.extendsFrom provided
+    runtimeOnly.extendsFrom provided
+
+    export.extendsFrom implementation
+    export.canBeResolved = true
+
+    win64
+    mac64
+    linux64
 }
 
 dependencies {
@@ -54,33 +65,57 @@ dependencies {
     implementation group: 'com.esotericsoftware.yamlbeans', name: 'yamlbeans', version: '1.15'
     implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.1.2'
     implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.1.1'
-    implementation (group: 'com.fifesoft', name: 'languagesupport', version: '3.1.1') { dep ->
-        dep.exclude group: 'org.mozilla', module: 'rhino'
-    }
+    implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.1.1') { dep -> dep.exclude group: 'org.mozilla', module: 'rhino' }
     implementation group: 'org.reflections', name: 'reflections', version: '0.9.9' // https://github.com/ronmamo/reflections/issues/81
     implementation group: 'de.javagl', name: 'obj', version: '0.3.0'
-    implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.0'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.0'
-    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.8'
-    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.10.0.202012080955-r'
+    implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
+    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.11.0.202103091610-r'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.30'
-    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '6.8.3'
+    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '7.0'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
-
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.16.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.16.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.16.1'
-
     implementation group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.2'
 
-    // for annotations
-    compileOnly group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
-
     // test dependencies
-    testImplementation group: 'junit', name: 'junit', version: '4.13'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.1'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.1'
+
+    // JFX natives
+    win64 group: 'org.openjfx', name: 'javafx-base', version: '15', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-controls', version: '15', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-graphics', version: '15', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-media', version: '15', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-web', version: '15', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-swing', version: '15', classifier: 'win'
+
+    mac64 group: 'org.openjfx', name: 'javafx-base', version: '15', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-controls', version: '15', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-graphics', version: '15', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-media', version: '15', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-web', version: '15', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-swing', version: '15', classifier: 'mac'
+
+    linux64 group: 'org.openjfx', name: 'javafx-base', version: '15', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-controls', version: '15', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-graphics', version: '15', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-media', version: '15', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-web', version: '15', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-swing', version: '15', classifier: 'linux'
+}
+
+javafx {
+    version = "15"
+    modules = [ 'javafx.web', 'javafx.swing' ]
+    configuration = 'provided' // we provide natives during deployment or with SDK
 }
 
 test {
+    useJUnitPlatform()
+
     testLogging.showStandardStreams = true
     testLogging.exceptionFormat = 'full'
     maxHeapSize = "1024m"
@@ -100,6 +135,7 @@ jar {
 task runMCreator(type: JavaExec, dependsOn: jar) {
     classpath += sourceSets.main.runtimeClasspath
     main = "net.mcreator.Launcher"
+
 }
 
 apply from: 'platform/setup.gradle'

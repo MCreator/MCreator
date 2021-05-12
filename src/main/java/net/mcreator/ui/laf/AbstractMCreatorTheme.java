@@ -23,8 +23,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
@@ -43,7 +43,7 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 	private static final List<String> NON_ROBOTO_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
 
 	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
-	private Color MAIN_TINT = MAIN_TINT_DEFAULT;
+	private final Color MAIN_TINT;
 
 	public static Font light_font;
 	public static Font console_font;
@@ -51,18 +51,18 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 	private static Font default_font;
 
 	public AbstractMCreatorTheme() {
+		MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
+
 		try {
 			default_font = new Font("Sans-Serif", Font.PLAIN, 13);
+			light_font = default_font;
 
 			String lang = L10N.getLocale().getLanguage();
-			if (NON_ROBOTO_LANGUAGES.contains(lang))
-				light_font = default_font;
-			else
+			if (!NON_ROBOTO_LANGUAGES.contains(lang))
 				light_font = Font
 						.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/roboto_light.ttf"));
 
 			console_font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/notomono.ttf"));
-			MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
 		} catch (FontFormatException | IOException e2) {
 			LOG.info("Failed to init MCreator Theme! Error " + e2.getMessage());
 		}
@@ -72,19 +72,19 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 		return MAIN_TINT;
 	}
 
-	@NotNull protected abstract Color getBlackAccent();
+	@Nonnull protected abstract Color getBlackAccent();
 
-	@NotNull protected abstract Color getDarkAccent();
+	@Nonnull protected abstract Color getDarkAccent();
 
-	@NotNull protected abstract Color getLightAccent();
+	@Nonnull protected abstract Color getLightAccent();
 
-	@NotNull protected abstract Color getGrayColor();
+	@Nonnull protected abstract Color getGrayColor();
 
-	@NotNull protected abstract Color getBrightColor();
+	@Nonnull protected abstract Color getBrightColor();
 
-	@NotNull protected abstract String getBlocklyCSSName();
+	@Nonnull protected abstract String getBlocklyCSSName();
 
-	@NotNull protected abstract String getCodeEditorXML();
+	@Nonnull protected abstract String getCodeEditorXML();
 
 	protected void initMCreatorThemeColors(UIDefaults table) {
 		table.put("MCreatorLAF.BLACK_ACCENT", getBlackAccent());

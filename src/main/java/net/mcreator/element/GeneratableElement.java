@@ -27,9 +27,9 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -42,7 +42,7 @@ public abstract class GeneratableElement {
 
 	private transient ModElement element;
 
-	public static final transient int formatVersion = 18;
+	public static final transient int formatVersion = 19;
 
 	public GeneratableElement(ModElement element) {
 		if (element != null)
@@ -86,11 +86,11 @@ public abstract class GeneratableElement {
 		protected static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
 				.create();
 
-		@NotNull private final Workspace workspace;
+		@Nonnull private final Workspace workspace;
 
 		private ModElement lastModElement;
 
-		public GSONAdapter(@NotNull Workspace workspace) {
+		public GSONAdapter(@Nonnull Workspace workspace) {
 			this.workspace = workspace;
 		}
 
