@@ -40,6 +40,7 @@ import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -52,9 +53,11 @@ public class BlocklyPanel extends JFXPanel {
 
 	private static final Logger LOG = LogManager.getLogger("Blockly");
 
-	private WebEngine webEngine;
+	public static boolean DISABLE_WEBVIEW = false;
 
-	private BlocklyJavascriptBridge bridge;
+	@Nullable private WebEngine webEngine;
+
+	private final BlocklyJavascriptBridge bridge;
 
 	private final List<Runnable> runAfterLoaded = new ArrayList<>();
 
@@ -64,6 +67,13 @@ public class BlocklyPanel extends JFXPanel {
 
 	public BlocklyPanel(MCreator mcreator) {
 		setOpaque(false);
+
+		bridge = new BlocklyJavascriptBridge(mcreator, () -> this.currentXML = (String) executeJavaScriptSynchronously(
+				"Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace, true))"));
+
+		if (DISABLE_WEBVIEW)
+			return;
+
 		ThreadUtil.runOnFxThread(() -> {
 			WebView browser = new WebView();
 			Scene scene = new Scene(browser);
@@ -135,12 +145,13 @@ public class BlocklyPanel extends JFXPanel {
 
 					// Make the webpage transparent
 					try {
-						Method method = Class.forName("com.sun.javafx.webkit.Accessor").getMethod("getPageFor", WebEngine.class);
+						Method method = Class.forName("com.sun.javafx.webkit.Accessor")
+								.getMethod("getPageFor", WebEngine.class);
 						Object accessor = method.invoke(null, webEngine);
 
-						method =  Class.forName("com.sun.webkit.WebPage").getMethod("setBackgroundColor", int.class);
+						method = Class.forName("com.sun.webkit.WebPage").getMethod("setBackgroundColor", int.class);
 						method.invoke(accessor, 0);
-					}catch (Exception e) {
+					} catch (Exception e) {
 						LOG.warn("Failed to set Blockly panel transparency", e);
 					}
 
@@ -156,8 +167,6 @@ public class BlocklyPanel extends JFXPanel {
 				}
 			});
 		});
-		bridge = new BlocklyJavascriptBridge(mcreator, () -> this.currentXML = (String) executeJavaScriptSynchronously(
-				"Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace, true))"));
 	}
 
 	public void addTaskToRunAfterLoaded(Runnable runnable) {
@@ -225,7 +234,11 @@ public class BlocklyPanel extends JFXPanel {
 
 	public Object executeJavaScriptSynchronously(String javaScript) {
 		try {
-			FutureTask<Object> query = new FutureTask<>(() -> webEngine.executeScript(javaScript));
+			FutureTask<Object> query = new FutureTask<>(() -> {
+				if (webEngine != null)
+					return webEngine.executeScript(javaScript);
+				return null;
+			});
 			ThreadUtil.runOnFxThread(query);
 			return query.get();
 		} catch (InterruptedException | ExecutionException e) {

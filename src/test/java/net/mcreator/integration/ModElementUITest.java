@@ -24,9 +24,9 @@ import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.integration.javafx.JavaFXThreadingRule;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.workspace.Workspace;
@@ -34,9 +34,8 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,22 +46,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ModElementUITest {
 
 	private static Logger LOG;
 
-	// blockly editors use javafx, we need this fix for javafx to work in unittests
-	@Rule public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
-
 	private static Workspace workspace;
 	private static MCreator mcreator;
 
-	@BeforeClass public static void initTest() throws IOException {
+	@BeforeAll public static void initTest() throws IOException {
 		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
 		LOG = LogManager.getLogger("Mod Element Test");
+
+		// disable webview to avoid issues in headless test environments
+		BlocklyPanel.DISABLE_WEBVIEW = true;
 
 		TestSetup.setupIntegrationTestEnvironment();
 
@@ -99,25 +98,34 @@ public class ModElementUITest {
 
 		// reduce autosave interval for tests
 		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 2000;
+
+		LOG.info("Test workspace folder: " + workspace.getWorkspaceFolder());
 	}
 
-	@Test public void testModElements() throws Exception {
-		LOG.info("Test workspace folder: " + workspace.getWorkspaceFolder());
-
+	@Test public void testModElementsDefaultLocale() throws Exception {
 		long rgenseed = System.currentTimeMillis();
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: " + rgenseed);
 
-		// test mod elements using default (en) translations
-		LOG.info("Testing mod element GUI for locale " + PreferencesManager.PREFERENCES.ui.language);
-		testModElementLoading(random);
-
-		// use non-default translation to test translations at the same time
-		// this should be set to the most complete translation at the time
-		PreferencesManager.PREFERENCES.ui.language = new Locale("fr", "FR");
-
-		LOG.info("Testing mod element GUI for locale " + PreferencesManager.PREFERENCES.ui.language);
+		PreferencesManager.PREFERENCES.ui.language = L10N.DEFAULT_LOCALE;
 		L10N.initTranslations();
+
+		// test mod elements using default (en) translations
+		testModElementLoading(random);
+	}
+
+	// use non-default translation to test translations at the same time
+	@Test public void testModElementsNonDefaultLocale() throws Exception {
+		long rgenseed = System.currentTimeMillis();
+		Random random = new Random(rgenseed);
+		LOG.info("Random number generator seed: " + rgenseed);
+
+		PreferencesManager.PREFERENCES.ui.language = L10N.getSupportedLocales().stream()
+				.filter(locale -> locale != L10N.DEFAULT_LOCALE).max(Comparator.comparingInt(L10N::getLocaleSupport))
+				.orElse(null);
+		L10N.initTranslations();
+
+		LOG.info("Testing mod element GUI for locale " + PreferencesManager.PREFERENCES.ui.language);
 
 		testModElementLoading(random);
 	}

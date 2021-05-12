@@ -16,19 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.java;
+package net.mcreator.unit.io;
 
-import org.junit.Test;
+import net.mcreator.io.Transliteration;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JavaConventionsTest {
-
-	@Test public void convertToValidClassName() {
-		assertEquals(JavaConventions.convertToValidClassName("className"), "ClassName");
-		assertEquals(JavaConventions.convertToValidClassName("3className3"), "ClassName3");
-		assertEquals(JavaConventions.convertToValidClassName("_className"), "ClassName");
-		assertEquals(JavaConventions.convertToValidClassName("ČlassName"), "ClassName");
+public class TransliterationTest {
+	@Test public void transliterateString() {
+		String transliterated = Transliteration.transliterateString("test this: č#ć");
+		assertEquals(transliterated, "test this: c#c");
 	}
 
 }

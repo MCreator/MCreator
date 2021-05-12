@@ -27,9 +27,9 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.Serializable;
 import java.util.*;
@@ -63,7 +63,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	// it is transient so it does not get serialized
 	private transient Workspace workspace;
 
-	public ModElement(@NotNull Workspace workspace, @NotNull String name, ModElementType type) {
+	public ModElement(@Nonnull Workspace workspace, @Nonnull String name, ModElementType type) {
 		this.name = name;
 		this.type = type;
 		this.registry_name = RegistryNameFixer.fromCamelCase(name);
@@ -79,7 +79,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	 * @param mu            Mod element to be duplicated
 	 * @param duplicateName Name of the duplicate
 	 */
-	public ModElement(@NotNull Workspace workspace, @NotNull ModElement mu, String duplicateName) {
+	public ModElement(@Nonnull Workspace workspace, @Nonnull ModElement mu, String duplicateName) {
 		this.name = duplicateName;
 		this.type = mu.type;
 		this.registry_name = RegistryNameFixer.fromCamelCase(name);
@@ -146,7 +146,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 				workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/" + name + ".png");
 	}
 
-	@Override public @NotNull Workspace getWorkspace() {
+	@Override public @Nonnull Workspace getWorkspace() {
 		return workspace;
 	}
 

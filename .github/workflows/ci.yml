@@ -8,8 +8,8 @@ on:
 
 jobs:
   build:
-    name: Build and test
-    runs-on: ubuntu-18.04
+    name: Build and Test
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -17,7 +17,7 @@ jobs:
         with:
           java-version: '11.0.11'
           distribution: 'adopt'
-      - name: Cache Gradle packages
+      - name: Cache Gradle Packages
         uses: actions/cache@v2
         with:
           path: |
@@ -28,13 +28,11 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Install OpenJFX dependencies
-        run: sudo apt-get -y install unifont ttf-bitstream-vera
-      - name: Build and test with Gradle
-        uses: GabrielBB/xvfb-action@v1
+      - name: Build and Test Using Gradle
+        uses: Pylo/xvfb-action@v1
         with:
           run: ./gradlew test
-      - name: Cleanup Gradle Cache
+      - name: Prepare Gradle Cache
         run: |
           rm -f  ~/.mcreator/gradle/caches/modules-2/modules-2.lock
           rm -fr ~/.mcreator/gradle/caches/*/plugin-resolution/
@@ -42,3 +40,9 @@ jobs:
           rm -f  ~/.mcreator/gradle/caches/minecraft/deobfedDeps/compileDummy.jar
           rm -f  ~/.gradle/caches/modules-2/modules-2.lock
           rm -f  ~/.gradle/caches/modules-2/gc.properties
+      - name: Test Failure Report
+        if: failure()
+        uses: Pylo/action-junit-report@v2
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          fail_on_failure: true
