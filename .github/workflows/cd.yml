@@ -6,7 +6,6 @@ on:
       release-type:
         description: 'Release type'
         required: true
-        options: ['snapshot', 'release']
         default: 'snapshot'
 
 jobs:
@@ -23,7 +22,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt-get install -y mkisofs nsis nsis-pluginapi
-          curl –O https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip
+          wget https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip
           unzip LockedList.zip -d /usr/share/nsis/
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
