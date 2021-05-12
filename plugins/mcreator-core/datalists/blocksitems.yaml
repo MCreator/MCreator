@@ -30,7 +30,7 @@
   texture: NORMAL_STONE_STAIRS
 
 - Blocks.NORMAL_STONE_SLAB:
-  readable_name: "Normal Stone Slab"
+  readable_name: "Stone Slab"
   type: block
   texture: NORMAL_STONE_SLAB
 
@@ -2204,7 +2204,7 @@
   subtypes: true
 
 - Blocks.STONE_SLAB#0:
-  readable_name: "Stone Slab"
+  readable_name: "Smooth Stone Slab"
   type: block
   texture: STONE_SLAB#0
 
