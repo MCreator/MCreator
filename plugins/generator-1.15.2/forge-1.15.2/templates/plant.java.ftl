@@ -430,6 +430,7 @@ import net.minecraft.block.material.Material;
 			@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
 				BlockPos blockpos = pos.down();
 				BlockState blockstate = worldIn.getBlockState(blockpos);
+				Block ground = blockstate.getBlock();
 
 				<#if data.plantType = "normal">
 					return this.isValidGround(blockstate, worldIn, blockpos)
@@ -444,8 +445,6 @@ import net.minecraft.block.material.Material;
 						additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
 					}
 					</#if>
-
-					Block ground = blockstate.getBlock();
 
 					return ground == this ||
 					<#if (data.canBePlacedOn?size > 0)>(
