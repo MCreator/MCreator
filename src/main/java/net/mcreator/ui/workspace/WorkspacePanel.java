@@ -160,20 +160,7 @@ import java.util.stream.Collectors;
 						if (element.equals(target))
 							continue;
 
-						FolderElement folder = (FolderElement) element;
-						String originalFolderPath = folder.getPath();
-
-						// first remove folder from old parent and assign new parent to the folder
-						folder.getParent().removeChild(folder);
-						((FolderElement) target).addChild(folder);
-
-						// then re-assign mod elements to the new folder ath
-						for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-							if (originalFolderPath.equals(modElement.getFolderPath())) {
-								// set parent folder again to update the path
-								modElement.setParentFolder(folder);
-							}
-						}
+						((FolderElement) element).moveTo(mcreator.getWorkspace(), (FolderElement) target);
 					}
 				}
 				mcreator.getWorkspace().markDirty();
@@ -206,7 +193,7 @@ import java.util.stream.Collectors;
 					if (selected instanceof FolderElement) {
 						switchFolder((FolderElement) selected);
 					} else {
-						if (((e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK))
+						if (((e.getModifiersEx() & InputEvent.ALT_DOWN_MASK) == InputEvent.ALT_DOWN_MASK))
 							editCurrentlySelectedModElementAsCode((ModElement) selected, list, e.getX(), e.getY());
 						else
 							editCurrentlySelectedModElement((ModElement) selected, list, e.getX(), e.getY());

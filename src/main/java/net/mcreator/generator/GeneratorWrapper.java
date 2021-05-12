@@ -79,9 +79,14 @@ import java.util.stream.Collectors;
 		}
 	}
 
+	public boolean isRecipeTypeBlockOrBucket(String elementName) {
+		RecipeType recipeType = this.getRecipeElementType(elementName);
+		return recipeType == RecipeType.BLOCK || recipeType == RecipeType.BUCKET;
+	}
+
 	public String getElementPlainName(String elementName) {
 		return elementName.replace("CUSTOM:", "").replace(".block", "").replace(".helmet", "").replace(".body", "")
-				.replace(".legs", "").replace(".boots", "");
+				.replace(".legs", "").replace(".boots", "").replace(".bucket", "");
 	}
 
 	public String getElementExtension(String elementName) {
@@ -116,11 +121,11 @@ import java.util.stream.Collectors;
 				}
 			}
 
-			// otherwise use normal registry name
+			// otherwise we use a normal registry name
 			return generator.getWorkspaceSettings().getModID() + ":" + element.getRegistryName();
 		}
 
-		generator.LOG.warn("Failed to determine resource location for: " + modElement);
+		generator.LOG.warn("Failed to determine resource location for mod element: " + modElement);
 		return generator.getWorkspaceSettings().getModID() + ":" + NameMapper.UNKNOWN_ELEMENT;
 	}
 
