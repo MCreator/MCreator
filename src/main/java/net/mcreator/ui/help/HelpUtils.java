@@ -24,8 +24,8 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.DesktopUtils;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
