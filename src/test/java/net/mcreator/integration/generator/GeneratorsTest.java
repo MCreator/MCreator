@@ -18,7 +18,6 @@
 
 package net.mcreator.integration.generator;
 
-import net.mcreator.element.ModElementType;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
@@ -29,7 +28,6 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.ConsolePane;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,7 +39,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -142,34 +139,10 @@ public class GeneratorsTest {
 				LOG.info("[" + generator + "] ----- Testing building after procedure tests");
 				GTBuild.runTest(LOG, generator, workspace);
 
+				LOG.info("[" + generator + "] ----- Preparing and generating sample mod elements");
+				GTSampleElements.provideAndGenerateSampleElements(random, workspace);
+
 				LOG.info("[" + generator + "] ----- Testing mod elements generation");
-
-				// add procedures for testing
-				for (int i = 1; i <= 13; i++) {
-					ModElement me = new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE)
-							.putMetadata("dependencies", new ArrayList<String>());
-					workspace.addModElement(me);
-
-					net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
-					procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML("");
-					assertTrue(workspace.getGenerator().generateElement(procedure));
-					workspace.getModElementManager().storeModElement(procedure);
-				}
-
-				for (int i = 1; i <= 4; i++) {
-					ModElement me = new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE)
-							.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC");
-					workspace.addModElement(me);
-
-					net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
-					procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
-							"<block type=\"return_logic\"><value name=\"return\">"
-									+ "<block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block>"
-									+ "</value></block>");
-					assertTrue(workspace.getGenerator().generateElement(procedure));
-					workspace.getModElementManager().storeModElement(procedure);
-				}
-
 				GTModElements.runTest(LOG, generator, random, workspace);
 
 				LOG.info("[" + generator + "] ----- Testing workspace build with mod elements");
