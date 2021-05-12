@@ -455,7 +455,7 @@
   subtypes: true
 
 - Blocks.QUARTZ_BLOCK#0:
-  readable_name: "Block of Quartz"
+  readable_name: "Smooth Quartz"
   type: block
   texture: QUARTZ_BLOCK#0
 
@@ -788,7 +788,7 @@
   texture: RED_SANDSTONE#1
 
 - Blocks.RED_SANDSTONE#2:
-  readable_name: "Smooth Red Sandstone"
+  readable_name: "Cut Red Sandstone"
   type: block
   texture: RED_SANDSTONE#2
 
