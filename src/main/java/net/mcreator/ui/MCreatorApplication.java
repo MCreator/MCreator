@@ -24,7 +24,6 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.OS;
 import net.mcreator.io.net.analytics.Analytics;
 import net.mcreator.io.net.analytics.DeviceInfo;
 import net.mcreator.io.net.api.D8WebAPI;
@@ -35,8 +34,8 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.util.DiscordClient;
-import net.mcreator.ui.component.util.MacOSUIUtil;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
+import net.mcreator.ui.dialogs.UpdatePluginDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
@@ -76,6 +75,8 @@ public final class MCreatorApplication {
 
 	private final DiscordClient discordClient;
 
+	private final TaskbarIntegration taskbarIntegration;
+
 	private MCreatorApplication(List<String> launchArguments) {
 		final SplashScreen splashScreen = new SplashScreen();
 		splashScreen.setVisible(true);
@@ -89,6 +90,8 @@ public final class MCreatorApplication {
 		}
 
 		SoundUtils.initSoundSystem();
+
+		taskbarIntegration = new TaskbarIntegration();
 
 		splashScreen.setProgress(20, "Preloading resources");
 
@@ -154,13 +157,21 @@ public final class MCreatorApplication {
 
 		// we do async login attempt
 		UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
+		UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(splashScreen);
 
 		splashScreen.setProgress(100, "Loading MCreator windows");
 
-		if (OS.getOS() == OS.MAC) {
-			MacOSUIUtil.registerAboutHandler(() -> AboutAction.showDialog(null));
-			MacOSUIUtil.registerPreferencesHandler(() -> new PreferencesDialog(null, null));
-			MacOSUIUtil.registerQuitHandler(this::closeApplication);
+		try {
+			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_ABOUT))
+				Desktop.getDesktop().setAboutHandler(aboutEvent -> AboutAction.showDialog(null));
+
+			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_PREFERENCES))
+				Desktop.getDesktop().setPreferencesHandler(preferencesEvent -> new PreferencesDialog(null, null));
+
+			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_QUIT_HANDLER))
+				Desktop.getDesktop().setQuitHandler((e, response) -> MCreatorApplication.this.closeApplication());
+		} catch (Exception e) {
+			LOG.warn("Failed to register desktop handlers", e);
 		}
 
 		discordClient = new DiscordClient();
@@ -338,4 +349,9 @@ public final class MCreatorApplication {
 	public DiscordClient getDiscordClient() {
 		return discordClient;
 	}
+
+	public TaskbarIntegration getTaskbarIntegration() {
+		return taskbarIntegration;
+	}
+
 }

@@ -23,6 +23,7 @@ import net.mcreator.ui.init.L10N;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -51,7 +52,7 @@ class AcceleratorDialog {
 			if (keyStroke != null) {
 				int modifiers = keyStroke.getModifiers();
 				if (modifiers > 0) {
-					acceleratorText = KeyEvent.getKeyModifiersText(modifiers);
+					acceleratorText = InputEvent.getModifiersExText(modifiers);
 					acceleratorText += " + ";
 				}
 				acceleratorText += KeyEvent.getKeyText(keyStroke.getKeyCode());

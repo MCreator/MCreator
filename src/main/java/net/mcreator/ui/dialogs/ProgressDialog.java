@@ -18,12 +18,14 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Locale;
@@ -36,8 +38,14 @@ public class ProgressDialog extends MCreatorDialog {
 	private final JList<ProgressUnit> progress = new JList<>(lModel);
 	private final JLabel topInfo = new JLabel();
 
+	@Nullable private MCreator mcreator = null;
+
 	public ProgressDialog(Window w, String title) {
 		super(w, title, true);
+
+		if (w instanceof MCreator) {
+			mcreator = (MCreator) w;
+		}
 
 		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 
@@ -76,11 +84,15 @@ public class ProgressDialog extends MCreatorDialog {
 
 	public void hideAll() {
 		Thread lo = new Thread(() -> {
+			if (mcreator != null)
+				mcreator.getApplication().getTaskbarIntegration().clearState(mcreator);
+
 			try {
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
 				LOG.error(e.getMessage(), e);
 			}
+
 			SwingUtilities.invokeLater(() -> setVisible(false));
 		});
 		lo.start();
@@ -92,6 +104,13 @@ public class ProgressDialog extends MCreatorDialog {
 
 	public void addProgress(final ProgressUnit unit1a) {
 		SwingUtilities.invokeLater(() -> {
+			if (mcreator != null) {
+				mcreator.getApplication().getTaskbarIntegration().clearState(mcreator);
+				mcreator.getApplication().getTaskbarIntegration().setIntermediateProgress(mcreator);
+			}
+
+			unit1a.mcreator = this.mcreator;
+
 			lModel.addElement(unit1a);
 			progress.updateUI();
 		});
@@ -175,6 +194,8 @@ public class ProgressDialog extends MCreatorDialog {
 		private int percent;
 		boolean inf = false;
 
+		@Nullable private MCreator mcreator;
+
 		public ProgressUnit(String name) {
 			this.name = name;
 			status = Status.LOADING;
@@ -189,15 +210,24 @@ public class ProgressDialog extends MCreatorDialog {
 		public void err() {
 			status = Status.ERROR;
 			time = System.currentTimeMillis() - pv;
+
+			if (mcreator != null)
+				mcreator.getApplication().getTaskbarIntegration().setErrorIndicator(mcreator);
 		}
 
 		public void warn() {
 			status = Status.WARNING;
 			time = System.currentTimeMillis() - pv;
+
+			if (mcreator != null)
+				mcreator.getApplication().getTaskbarIntegration().setWarningIndicator(mcreator);
 		}
 
 		public void setPercent(int percent) {
 			this.percent = percent;
+
+			if (mcreator != null)
+				mcreator.getApplication().getTaskbarIntegration().setProgressState(mcreator, percent);
 		}
 
 		enum Status {

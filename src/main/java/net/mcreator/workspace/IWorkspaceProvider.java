@@ -20,13 +20,13 @@ package net.mcreator.workspace;
 
 import net.mcreator.workspace.elements.ModElementManager;
 import net.mcreator.workspace.settings.WorkspaceSettings;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 
 public interface IWorkspaceProvider {
 
-	@NotNull Workspace getWorkspace();
+	@Nonnull Workspace getWorkspace();
 
 	default WorkspaceSettings getWorkspaceSettings() {
 		return getWorkspace().getWorkspaceSettings();
