@@ -445,19 +445,19 @@ import net.minecraft.block.material.Material;
 					}
 					</#if>
 
-					Block block = blockstate.getBlock();
+					Block ground = blockstate.getBlock();
 
-					return block == this ||
+					return ground == this ||
 					<#if (data.canBePlacedOn?size > 0)>(
 						<#list data.canBePlacedOn as canBePlacedOn>
-						block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						ground == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
 						<#if canBePlacedOn?has_next>||</#if>
 					</#list>)</#if>
 					<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
 					<#if hasCondition(data.placingCondition)> additionalCondition </#if>
 				<#else>
 					if (state.get(HALF) == DoubleBlockHalf.UPPER)
-						return block == this && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
+						return ground == this && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
 					else
 						return this.isValidGround(blockstate, worldIn, blockpos)
 				</#if>;
