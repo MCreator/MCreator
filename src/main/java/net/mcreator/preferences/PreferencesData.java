@@ -19,6 +19,7 @@
 package net.mcreator.preferences;
 
 import net.mcreator.io.OS;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.AbstractMCreatorTheme;
 
 import java.awt.*;
@@ -41,7 +42,7 @@ public class PreferencesData {
 
 		@PreferencesEntry public Color interfaceAccentColor = AbstractMCreatorTheme.MAIN_TINT_DEFAULT;
 
-		@PreferencesEntry public Locale language = new Locale("en", "US");
+		@PreferencesEntry public Locale language = L10N.DEFAULT_LOCALE;
 
 		@PreferencesEntry public boolean aatext = true;
 
