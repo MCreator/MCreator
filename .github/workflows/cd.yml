@@ -23,7 +23,7 @@ jobs:
         run: |
           sudo apt-get install -y mkisofs nsis nsis-pluginapi
           wget https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip
-          unzip LockedList.zip -d /usr/share/nsis/
+          sudo unzip LockedList.zip -d /usr/share/nsis/
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
         uses: Pylo/xvfb-action@v1
