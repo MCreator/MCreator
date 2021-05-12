@@ -26,8 +26,8 @@ import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -62,7 +62,7 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 		super.setSelectedItem(dataListEntry);
 	}
 
-	@Override @NotNull public DataListEntry getSelectedItem() {
+	@Override @Nonnull public DataListEntry getSelectedItem() {
 		Object superretval = super.getSelectedItem();
 		if (superretval == null)
 			return new DataListEntry.Null();

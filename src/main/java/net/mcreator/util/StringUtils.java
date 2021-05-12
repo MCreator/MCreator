@@ -19,8 +19,8 @@
 package net.mcreator.util;
 
 import org.apache.commons.text.WordUtils;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -71,7 +71,7 @@ public class StringUtils {
 		return String.join("_", original.split(NAME_PARTS_SPLITTER_REGEX)).replaceAll("(?<=\\d)_(?=\\d)", "");
 	}
 
-	public static String machineToReadableName(@NotNull String input) {
+	public static String machineToReadableName(@Nonnull String input) {
 		String merged = String.join(" ", input.split(NAME_PARTS_SPLITTER_REGEX));
 		return WordUtils.capitalize(org.apache.commons.lang3.StringUtils.normalizeSpace(merged));
 	}

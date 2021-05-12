@@ -26,7 +26,8 @@ public class ZoomedMouseWheelEvent extends MouseWheelEvent {
 	private final Point mousePosition, canvasPosition;
 	private final Point2D viewPosition;
 
-	@SuppressWarnings("deprecation") public ZoomedMouseWheelEvent(MouseWheelEvent event, JZoomport zoomport) throws NullPointerException {
+	@SuppressWarnings("deprecation") public ZoomedMouseWheelEvent(MouseWheelEvent event, JZoomport zoomport)
+			throws NullPointerException {
 		super(zoomport.getToZoom(), event.getID(), event.getWhen(), event.getModifiers(), (int) Math
 						.floor((event.getX() - zoomport.getCanvasX() + zoomport.getViewPositionX()) / zoomport.getZoom()),
 				(int) Math.floor((event.getY() - zoomport.getCanvasY() + zoomport.getViewPositionY()) / zoomport
