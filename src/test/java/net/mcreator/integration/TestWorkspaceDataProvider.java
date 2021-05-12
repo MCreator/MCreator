@@ -179,7 +179,7 @@ public class TestWorkspaceDataProvider {
 			achievement.disableDisplay = !_true;
 			achievement.rewardXP = 14;
 			achievement.hideIfNotCompleted = !_true;
-			achievement.rewardFunction = emptyLists ? "No function" : "ExampleFunction1";
+			achievement.rewardFunction = "No function";
 			achievement.background = emptyLists ? "Default" : "test.png";
 			achievement.rewardLoot = new ArrayList<>();
 			if (!emptyLists) {
