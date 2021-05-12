@@ -38,8 +38,8 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElementType;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
@@ -290,6 +290,13 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.frequencyOnChunks = (int) frequencyOnChunks.getValue();
 		fluid.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		return fluid;
+	}
+
+	@Override protected void afterGeneratableElementStored() {
+		super.afterGeneratableElementStored();
+		modElement.clearMetadata();
+		modElement.putMetadata("gb", generateBucket.isSelected());
+		modElement.reinit();
 	}
 
 	@Override public @Nullable URI getContextURL() throws URISyntaxException {

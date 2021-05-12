@@ -25,10 +25,10 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -106,7 +106,7 @@ public abstract class BlocklyToCode implements IWorkspaceProvider {
 		return templateGenerator;
 	}
 
-	@Override public final @NotNull Workspace getWorkspace() {
+	@Override public final @Nonnull Workspace getWorkspace() {
 		return workspace;
 	}
 

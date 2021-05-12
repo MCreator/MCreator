@@ -23,8 +23,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
@@ -72,19 +72,19 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 		return MAIN_TINT;
 	}
 
-	@NotNull protected abstract Color getBlackAccent();
+	@Nonnull protected abstract Color getBlackAccent();
 
-	@NotNull protected abstract Color getDarkAccent();
+	@Nonnull protected abstract Color getDarkAccent();
 
-	@NotNull protected abstract Color getLightAccent();
+	@Nonnull protected abstract Color getLightAccent();
 
-	@NotNull protected abstract Color getGrayColor();
+	@Nonnull protected abstract Color getGrayColor();
 
-	@NotNull protected abstract Color getBrightColor();
+	@Nonnull protected abstract Color getBrightColor();
 
-	@NotNull protected abstract String getBlocklyCSSName();
+	@Nonnull protected abstract String getBlocklyCSSName();
 
-	@NotNull protected abstract String getCodeEditorXML();
+	@Nonnull protected abstract String getCodeEditorXML();
 
 	protected void initMCreatorThemeColors(UIDefaults table) {
 		table.put("MCreatorLAF.BLACK_ACCENT", getBlackAccent());
