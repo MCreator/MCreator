@@ -26,8 +26,8 @@ import net.mcreator.workspace.elements.ModElementManager;
 import net.mcreator.workspace.elements.SoundElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +57,7 @@ public class WorkspaceFileManager implements Closeable {
 	private final WorkspaceFolderManager folderManager;
 	private final ModElementManager modElementManager;
 
-	WorkspaceFileManager(@NotNull File workspaceFile, @NotNull Workspace workspace) {
+	WorkspaceFileManager(@Nonnull File workspaceFile, @Nonnull Workspace workspace) {
 		this.workspaceFile = workspaceFile;
 		this.workspace = workspace;
 

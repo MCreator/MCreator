@@ -65,9 +65,7 @@ dependencies {
     implementation group: 'com.esotericsoftware.yamlbeans', name: 'yamlbeans', version: '1.15'
     implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.1.2'
     implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.1.1'
-    implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.1.1') { dep ->
-        dep.exclude group: 'org.mozilla', module: 'rhino'
-    }
+    implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.1.1') { dep -> dep.exclude group: 'org.mozilla', module: 'rhino' }
     implementation group: 'org.reflections', name: 'reflections', version: '0.9.9' // https://github.com/ronmamo/reflections/issues/81
     implementation group: 'de.javagl', name: 'obj', version: '0.3.0'
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
@@ -77,15 +75,10 @@ dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.30'
     implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '7.0'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
-
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.16.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.16.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.16.1'
-
     implementation group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.2'
-
-    // for annotations
-    compileOnly group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
 
     // test dependencies
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.1'
@@ -137,6 +130,11 @@ jar {
                 'Build-Date': new Date().format('wwuHH')
         )
     }
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.runtimeClasspath
 }
 
 task runMCreator(type: JavaExec, dependsOn: jar) {
