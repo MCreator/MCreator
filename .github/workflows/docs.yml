@@ -1,4 +1,4 @@
-name: Generate Javadoc
+name: Generate documentation
 
 on:
   schedule:
