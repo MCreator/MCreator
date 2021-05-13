@@ -33,8 +33,8 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;

@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2021, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,19 +17,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.java;
+package net.mcreator.plugin;
 
-import org.junit.Test;
+public class PluginUpdateInfo {
+	private final Plugin plugin;
+	private final String newVersion;
 
-import static org.junit.Assert.assertEquals;
+	public PluginUpdateInfo(Plugin plugin, String newVersion) {
+		this.plugin = plugin;
+		this.newVersion = newVersion;
+	}
 
-public class JavaConventionsTest {
+	public Plugin getPlugin() {
+		return plugin;
+	}
 
-	@Test public void convertToValidClassName() {
-		assertEquals(JavaConventions.convertToValidClassName("className"), "ClassName");
-		assertEquals(JavaConventions.convertToValidClassName("3className3"), "ClassName3");
-		assertEquals(JavaConventions.convertToValidClassName("_className"), "ClassName");
-		assertEquals(JavaConventions.convertToValidClassName("ČlassName"), "ClassName");
+	public String getNewVersion() {
+		return newVersion;
 	}
 
 }

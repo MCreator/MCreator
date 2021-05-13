@@ -22,7 +22,8 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.workspace.Workspace;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public class Particle extends MappableElement {
 
@@ -30,13 +31,13 @@ public class Particle extends MappableElement {
 		super(new NameMapper(null, "particles"));
 	}
 
-	public Particle(@NotNull Workspace owner, String name) {
+	public Particle(@Nonnull Workspace owner, String name) {
 		this();
 		mapper.setWorkspace(owner);
 		setValue(name);
 	}
 
-	public Particle(@NotNull Workspace owner, DataListEntry name) {
+	public Particle(@Nonnull Workspace owner, DataListEntry name) {
 		this(owner, name.getName());
 	}
 

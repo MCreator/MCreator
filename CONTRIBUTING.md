@@ -30,7 +30,7 @@ The contributed code must pass all tests and be mergeable into the master branch
 need to change some code parts based on the maintainer's suggestions.
 
 Some features might not be accepted into the core if they do not follow our guidelines, are low quality, or steer MCreator away from its roadmap 
-or do not fit the current UX flow of the application. Too specific features that would make UI more complex, but would not be benefitical to the
+or do not fit the current UX flow of the application. Too specific features that would make UI more complex, but would not be beneficial to the
 most of the users might be rejected too, or suggested to be distributed in a plugin format.
 
 If maintainers are busy, it can take a few days (or more) to properly review your PR so please be patient ;)

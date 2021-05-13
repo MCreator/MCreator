@@ -58,8 +58,8 @@ import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;

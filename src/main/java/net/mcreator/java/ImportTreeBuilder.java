@@ -23,6 +23,7 @@ import javassist.bytecode.ConstPool;
 import net.mcreator.generator.Generator;
 import net.mcreator.io.zip.ZipIO;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
@@ -44,12 +45,19 @@ public class ImportTreeBuilder {
 		List<LibraryInfo> libraryInfos = projectJarManager.getClassFileSources();
 		libraryInfos.parallelStream().forEach(libraryInfo -> {
 			File libraryFile = new File(libraryInfo.getLocationAsString());
-			if (libraryFile.isFile() && ZipIO.checkIfZip(libraryFile)) {
+			if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || libraryFile.getName().endsWith(".jmod"))) {
 				try (ZipFile zipFile = new ZipFile(libraryFile)) {
 					Enumeration<? extends ZipEntry> entries = zipFile.entries();
 					while (entries.hasMoreElements()) {
 						ZipEntry entry = entries.nextElement();
 						String entryName = entry.getName();
+
+						if (libraryFile.getName().endsWith(".jmod")) {
+							if (!entryName.startsWith("classes/"))
+								continue;
+
+							entryName = StringUtils.stripStart(entryName, "classes/");
+						}
 
 						// quickly skip all meta-info paths
 						if (entryName.startsWith("META-INF/"))
@@ -61,6 +69,10 @@ public class ImportTreeBuilder {
 
 						// skip Sun APIs
 						if (entryName.startsWith("sun/") || entryName.startsWith("com/sun/"))
+							continue;
+
+						// skip internal JDK APIs
+						if (entryName.startsWith("jdk/internal/"))
 							continue;
 
 						// skip package and modules info entries
