@@ -14,12 +14,12 @@ jobs:
               java-version: '11.0.11'
               distribution: 'adopt'
           - name: java
-            run: ls /opt/hostedtoolcache/Java_Adopt_jdk/11.0.11-9/x64
+            run: ls /opt/hostedtoolcache/Java_Adopt_jdk/11.0.11-9/x64/bin
           - uses: avinal/github-pages-deploy-action@v0.9
             with:  
               GITHUB_TOKEN: ${{ github.token }}
               LANGUAGE: "java11"
-              MAKE_COMMAND: "./gradlew javadoc"
+              MAKE_COMMAND: "sudo ./gradlew javadoc"
               PAGES_BRANCH: "gh-pages"
               BUILD_FROM: "master"
               DOCS_FOLDER: "build/docs/javadoc"
