@@ -34,3 +34,9 @@ jobs:
         uses: Pylo/xvfb-action@v1
         with:
           run: ./gradlew exportSnapshot
+      - name: Set variables
+        run: |
+          VERSION=$(cat unzip -q -c build/libs/mcreator.jar META-INF/MANIFEST.MF | grep 'MCreator-Version' | cut -d ':' -f 2)
+          DATE=$(cat unzip -q -c build/libs/mcreator.jar META-INF/MANIFEST.MF | grep 'Build-Date' | cut -d ':' -f 2)
+          echo "VERSION=$VERSION.$DATE"
+          echo "VERSION=$VERSION.$DATE" >> $GITHUB_EN
