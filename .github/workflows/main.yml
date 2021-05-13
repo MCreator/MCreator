@@ -1,0 +1,17 @@
+name: GitHub Pages Deploy Action
+on:
+  schedule:
+    - cron: "0 0 * * 1"
+jobs:
+    deploy-pages:
+        name: Deploy to GitHub Pages
+        runs-on: ubuntu-latest
+        steps:
+            - uses: avinal/github-pages-deploy-action@v0.9
+              with:
+                GITHUB_TOKEN: ${{ github.token }}
+                LANGUAGE: "java"
+                MAKE_COMMAND: "./gradlew javadoc"
+                PAGES_BRANCH: "gh-pages"
+                BUILD_FROM: "master"
+                DOCS_FOLDER: "build/docs/javadoc"
