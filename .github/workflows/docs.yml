@@ -20,7 +20,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
+          BRANCH: documentation
           CLEAN: true
           FOLDER: build/docs/javadoc
           TARGET_FOLDER: .
