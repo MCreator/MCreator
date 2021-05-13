@@ -1,10 +1,10 @@
-name: GitHub Pages Deploy Action
+name: Generate Javadoc
 on:
   schedule:
     - cron: "0 0 * * 1"
 jobs:
     deploy-pages:
-        name: Deploy to GitHub Pages
+        name: Generate Javadoc
         runs-on: ubuntu-latest
         steps:
             - uses: avinal/github-pages-deploy-action@v0.9
