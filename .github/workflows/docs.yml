@@ -1,25 +1,26 @@
 name: Generate Javadoc
+
 on:
   schedule:
     - cron: "0 0 * * 1"
   workflow_dispatch: {}
+  
 jobs:
-    deploy-pages:
-        name: Generate Javadoc
-        runs-on: ubuntu-latest
-        steps:
-          - name: Set up JDK 11
-            uses: actions/setup-java@v2
-            with:
-              java-version: '11.0.11'
-              distribution: 'adopt'
-          - name: java
-            run: export JAVA_HOME="/opt/hostedtoolcache/Java_Adopt_jdk/11.0.11-9/x64"
-          - uses: avinal/github-pages-deploy-action@v0.9
-            with:  
-              GITHUB_TOKEN: ${{ github.token }}
-              LANGUAGE: "custom"
-              MAKE_COMMAND: "./gradlew javadoc"
-              PAGES_BRANCH: "gh-pages"
-              BUILD_FROM: "master"
-              DOCS_FOLDER: "build/docs/javadoc"
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11.0.11'
+          distribution: 'adopt'
+      - name: Generate Javadoc
+        run: ./gradlew javadoc
+      - name: Deploy Javadoc
+        uses: JamesIves/github-pages-deploy-action@4.1.3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          CLEAN: true
+          FOLDER: build/docs/javadoc
+          TARGET_FOLDER: .
