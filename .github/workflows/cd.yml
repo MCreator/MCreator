@@ -34,8 +34,22 @@ jobs:
         uses: Pylo/xvfb-action@v1
         with:
           run: ./gradlew exportSnapshot
-      - name: Set variables
+      - name: Determine release version
         run: |
           VERSION=$(unzip -q -c build/libs/mcreator.jar META-INF/MANIFEST.MF | grep 'MCreator-Version' | cut -d ':' -f 2 | tr -d '[:space:]')
           DATE=$(unzip -q -c build/libs/mcreator.jar META-INF/MANIFEST.MF | grep 'Build-Date' | cut -d ':' -f 2 | tr -d '[:space:]')
           echo "MCR_VERSION=$VERSION.$DATE" >> $GITHUB_ENV
+      - name: Upload binaries and tag release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.MCR_VERSION }}
+          prerelease: github.event.inputs.release-type == 'snapshot'
+          file_glob: true
+          file: build/export/*
+          body: > 
+           Changelog: https://mcreator.net/changelog
+           
+           Binary downloads: https://mcreator.net/download"
+           
+          overwrite: true
