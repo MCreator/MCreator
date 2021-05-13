@@ -30,6 +30,7 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
+
 public class LargeIconModListRender extends JPanel implements ListCellRenderer<IElement> {
 
 	private final boolean showText;
