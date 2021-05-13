@@ -36,7 +36,7 @@ jobs:
           run: ./gradlew exportSnapshot
       - name: Set variables
         run: |
-          VERSION=$(unzip -q -c build/libs/mcreator.jar META-INF/MANIFEST.MF | grep 'MCreator-Version' | cut -d ':' -f 2 | awk '{$1=$1};1')
-          DATE=$(unzip -q -c build/libs/mcreator.jar META-INF/MANIFEST.MF | grep 'Build-Date' | cut -d ':' -f 2 | awk '{$1=$1};1')
+          VERSION=$(unzip -q -c build/libs/mcreator.jar META-INF/MANIFEST.MF | grep 'MCreator-Version' | cut -d ':' -f 2 | tr -d '\r'')
+          DATE=$(unzip -q -c build/libs/mcreator.jar META-INF/MANIFEST.MF | grep 'Build-Date' | cut -d ':' -f 2 | tr -d '\r'')
           echo "VERSION=$VERSION.$DATE"
           echo ::set-env name=VERSION::$VERSION.$DATE
