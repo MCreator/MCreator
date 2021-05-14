@@ -388,6 +388,19 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
+		<#if hasCondition(data.placingCondition)>
+		@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+			if (worldIn instanceof IWorld) {
+				IWorld world = (IWorld) worldIn;
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				return <@procedureOBJToConditionCode data.placingCondition/>;
+			}
+			return super.isValidPosition(state, worldIn, pos);
+		}
+		</#if>
+
         <#if data.isWaterloggable>
             <#if data.rotationMode == 0>
             @Override
@@ -403,14 +416,20 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         @Override public FluidState getFluidState(BlockState state) {
             return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
         }
-	
+		</#if>
+
+		<#if data.isWaterloggable || hasCondition(data.placingCondition)>
 		@Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-	        if (state.get(WATERLOGGED)) {
-		        world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
-	        }
-	        return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
-        }
-        </#if>
+	        <#if data.isWaterloggable>
+			if (state.get(WATERLOGGED)) {
+				world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+			}
+			</#if>
+			return <#if hasCondition(data.placingCondition)>
+			!state.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() :
+			</#if> super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+		}
+		</#if>
 
 		<#if data.enchantPowerBonus != 0>
 		@Override public float getEnchantPowerBonus(BlockState state, IWorldReader world, BlockPos pos) {
