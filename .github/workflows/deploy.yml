@@ -48,8 +48,8 @@ jobs:
           file_glob: true
           file: build/export/*
           body: > 
-           Changelog: https://mcreator.net/changelog
+           **Download on https://mcreator.net/download**
            
-           Binary downloads: https://mcreator.net/download
+           Changelog: https://mcreator.net/changelog
            
           overwrite: true
