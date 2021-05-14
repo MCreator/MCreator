@@ -23,6 +23,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
+import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageTransformUtil;
@@ -170,6 +171,13 @@ public class MinecraftImageGenerator {
 		}
 
 		return bi;
+	}
+
+	public static ImageIcon generateFluidBucketIcon(ImageIcon fluid) {
+		ImageIcon bucket = TiledImageCache.bucket;
+		BufferedImage bucketMask = ImageUtils.toBufferedImage(TiledImageCache.bucketMask.getImage());
+		BufferedImage fluidOverlay = ImageUtils.toBufferedImage(fluid.getImage());
+		return ImageUtils.drawOver(bucket, new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
 	}
 
 	public static class Preview {
@@ -442,7 +450,14 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates recipe images.</p>
 		 *
-		 * @param recipe <p>The recipe field is an ArrayList of Images. If containing 1 element, it generates furnace recipe picture. If it contains 9 elements it creates a crafting recipe and are inserted as shown in the table:</p> <table summary="Recipe slot IDs"><tr><td>0</td><td>1</td><td>2</td></tr><tr><td>3</td><td>4</td><td>5</td></tr><tr><td>6</td><td>7</td><td>8</td></tr></table> <p>Null elements are ignored/not drawn.</p>
+		 * @param recipe <p>The recipe field is an ArrayList of Images.
+		 *               If containing 1 element, it generates furnace recipe picture.
+		 *               If it contains 9 elements it creates a crafting recipe and are inserted as shown in the table:</p>
+		 *               <table>
+		 *               	 <caption>Recipe slot IDs</caption>
+		 *                   <tr><td>0</td><td>1</td><td>2</td></tr><tr><td>3</td><td>4</td><td>5</td></tr><tr><td>6</td><td>7</td><td>8</td></tr>
+		 *               </table>
+		 *               <p>Null elements are ignored/not drawn.</p>
 		 * @param result Result of a recipe is only drawn on furnace recipes.
 		 * @return Returns generated image.
 		 */

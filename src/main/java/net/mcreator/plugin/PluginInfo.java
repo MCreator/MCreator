@@ -22,12 +22,19 @@ import java.util.List;
 
 public class PluginInfo {
 
+	public static final String VERSION_NOT_SPECIFIED = "not specified";
+
 	private String name;
 	private String description;
 	private String author;
-	private String version;
-	private List<String> dependencies;
 	private String credits;
+
+	private String version;
+
+	private List<String> dependencies;
+
+	private String updateJSONURL;
+	private int pluginPageID;
 
 	public String getName() {
 		return name;
@@ -43,7 +50,7 @@ public class PluginInfo {
 
 	public String getVersion() {
 		if (version == null)
-			return "not specified";
+			return VERSION_NOT_SPECIFIED;
 		return version;
 	}
 
@@ -56,6 +63,13 @@ public class PluginInfo {
 			return "None";
 		}
 		return credits;
+	}
 
+	public String getUpdateJSONURL() {
+		return updateJSONURL;
+	}
+
+	public int getPluginPageID() {
+		return pluginPageID;
 	}
 }

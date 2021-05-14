@@ -48,8 +48,8 @@ import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.resources.Model;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
@@ -171,8 +171,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
 
 		rent.setOpaque(false);
-		rent.add(PanelUtils.join(HelpUtils.
-						wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
+		rent.add(PanelUtils.join(HelpUtils
+						.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
 				PanelUtils.join(renderType)));
 
 		ComponentUtils.deriveFont(specialInfo, 16);

@@ -25,6 +25,8 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.ui.init.EntityAnimationsLoader;
+import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
@@ -47,6 +49,16 @@ public class TestSetup {
 	public static void setupIntegrationTestEnvironment() throws IOException {
 		if (already)
 			return;
+
+		Launcher.openModuleExports();
+
+		WebConsoleListener.registerLogger(LOG);
+
+		// print version of Java
+		String java_spec_version = System.getProperty("java.specification.version");
+		LOG.info("Java version: " + System.getProperty("java.version") + ", specification: " + java_spec_version
+				+ ", VM name: " + System.getProperty("java.vm.name"));
+		LOG.info("Current JAVA_HOME for running instance: " + System.getProperty("java.home"));
 
 		Properties conf = new Properties();
 		conf.load(Launcher.class.getResourceAsStream("/mcreator.conf"));
@@ -76,6 +88,9 @@ public class TestSetup {
 
 		// blockly mod elements need blockly blocks loaded
 		BlocklyLoader.init();
+
+		// load entity animations for the Java Model animation editor
+		EntityAnimationsLoader.init();
 
 		// load generator configurations
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
