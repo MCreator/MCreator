@@ -34,12 +34,17 @@ jobs:
         uses: Pylo/xvfb-action@v1
         with:
           run: ./gradlew exportSnapshot
-      - name: Determine release version
+      - name: Determine Release Version
         run: |
           VERSION=$(unzip -q -c build/libs/mcreator.jar META-INF/MANIFEST.MF | grep 'MCreator-Version' | cut -d ':' -f 2 | tr -d '[:space:]')
           DATE=$(unzip -q -c build/libs/mcreator.jar META-INF/MANIFEST.MF | grep 'Build-Date' | cut -d ':' -f 2 | tr -d '[:space:]')
           echo "MCR_VERSION=$VERSION.$DATE" >> $GITHUB_ENV
-      - name: Upload binaries and tag release
+      - name: Virus Scan Binaries
+        uses: Pylo/ghaction-virustotal@v2
+        with:
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          files: build/export/*
+      - name: Upload Binaries and Tag Release
         uses: Pylo/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
