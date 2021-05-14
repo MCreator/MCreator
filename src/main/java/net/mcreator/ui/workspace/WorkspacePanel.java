@@ -108,15 +108,13 @@ import java.util.stream.Collectors;
 	private final JLabel but5 = new JLabel(TiledImageCache.workspaceCode);
 	private final JLabel but5a = new JLabel(TiledImageCache.workspaceToggle);
 	private final JLabel but6 = new JLabel(TiledImageCache.workspaceModElementIDs);
-	
-	private final JMenuItem openElement = new JMenuItem(L10N.t("workspace.elements.list.edit.open"));
+
 	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
 	private final JMenuItem duplicateElement = new JMenuItem(L10N.t("workspace.elements.list.edit.duplicate"));
 	private final JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
 	private final JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
 	private final JMenuItem idElement = new JMenuItem(L10N.t("workspace.elements.list.edit.id"));
-	private final JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
-	
+
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
 
@@ -147,6 +145,8 @@ import java.util.stream.Collectors;
 		this.vcsPan = new WorkspacePanelVCS(this);
 
 		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator);
+
+		JPopupMenu contextMenu = new JPopupMenu();
 
 		panels.setOpaque(false);
 
@@ -203,6 +203,23 @@ import java.util.stream.Collectors;
 						else
 							editCurrentlySelectedModElement((ModElement) selected, list, e.getX(), e.getY());
 					}
+				} else if (SwingUtilities.isRightMouseButton(e)) {
+					list.setSelectedIndex(list.locationToIndex(e.getPoint()));
+					IElement selected = list.getSelectedValue();
+
+					if (selected instanceof FolderElement) {
+						duplicateElement.setEnabled(false);
+						codeElement.setEnabled(false);
+						lockElement.setEnabled(false);
+						idElement.setEnabled(false);
+					} else {
+						duplicateElement.setEnabled(true);
+						codeElement.setEnabled(true);
+						lockElement.setEnabled(true);
+						idElement.setEnabled(true);
+					}
+
+					contextMenu.show(list, e.getX(), e.getY());
 				}
 			}
 		});
@@ -305,9 +322,7 @@ import java.util.stream.Collectors;
 		upFolder.setToolTipText(L10N.t("workspace.elements.folders.up_tooltip"));
 		upFolder.setEnabled(false);
 
-		addFolder.addActionListener(e -> {
-			addNewFolder();
-		});
+		addFolder.addActionListener(e -> addNewFolder());
 
 		upFolder.addActionListener(e -> {
 			if (!currentFolder.isRoot()) {
@@ -771,111 +786,63 @@ import java.util.stream.Collectors;
 		updateElementListRenderer();
 
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
-	
+
+		JMenuItem openElement = new JMenuItem(L10N.t("workspace.elements.list.edit.open"));
 		openElement.setFont(openElement.getFont().deriveFont(Font.BOLD));
-		openElement.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e) {
-				IElement selected = list.getSelectedValue();
-				if (selected instanceof FolderElement) {
-					switchFolder((FolderElement) selected);
-				} else
-						editCurrentlySelectedModElement((ModElement) selected, list, 0, 0);
-			}
+		openElement.addActionListener(e -> {
+			IElement selected = list.getSelectedValue();
+			if (selected instanceof FolderElement) {
+				switchFolder((FolderElement) selected);
+			} else
+				editCurrentlySelectedModElement((ModElement) selected, list, 0, 0);
 		});
-		deleteElement.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e) {
-				deleteCurrentlySelectedModElement();
-			}
-		});
-		duplicateElement.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e) {
-				duplicateCurrentlySelectedModElement();
-			}
-		});
-		codeElement.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e) {
-				IElement selected = list.getSelectedValue();
-				double dmouseX = MouseInfo.getPointerInfo().getLocation().getX();
-				double dmouseY = MouseInfo.getPointerInfo().getLocation().getY();
-				int mouseX = (int) dmouseX - 275;
-				int mouseY = (int) dmouseY - 165;
 
-				if (selected instanceof FolderElement) {
-					switchFolder((FolderElement) selected);
-				} else
-					editCurrentlySelectedModElementAsCode((ModElement) selected, list, mouseX, mouseY);
-			}
-		});
-		lockElement.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e) {
-				lockCode();
-			}
-		});
-		idElement.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e) {
-				IElement mu = list.getSelectedValue();
-				if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
-					ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
-					if (modified != null)
-						mcreator.getWorkspace().updateModElement(modified);
-				}
-			}
-		});
-		addElementFolder.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e) {
-				addNewFolder();
-			}
-		});
-		
-		
-		JPopupMenu editElement = new JPopupMenu();
-		editElement.add(openElement);
-		editElement.add(duplicateElement);
-		editElement.add(codeElement);
-		editElement.add(deleteElement);
-		editElement.add(lockElement);
-		editElement.add(idElement);
-		editElement.addSeparator();
-		editElement.add(addElementFolder);
-		
-		list.addMouseListener(new MouseAdapter() {
+		deleteElement.setIcon(UIRES.get("16px.clear"));
+		deleteElement.addActionListener(e -> deleteCurrentlySelectedModElement());
+
+		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());
+
+		codeElement.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (SwingUtilities.isRightMouseButton(e)) {
-					JList l = (JList)e.getSource();
-					int row = l.locationToIndex(e.getPoint());
-					l.setSelectedIndex(row);
-					IElement selected = list.getSelectedValue();
-					if (selected instanceof FolderElement) {
-						duplicateElement.setEnabled(false);
-						codeElement.setEnabled(false);
-						lockElement.setEnabled(false);
-						idElement.setEnabled(false);
-					} else {
-						duplicateElement.setEnabled(true);
-						codeElement.setEnabled(true);
-						lockElement.setEnabled(true);
-						idElement.setEnabled(true);
-					}
-					double dmouseX = MouseInfo.getPointerInfo().getLocation().getX();
-					double dmouseY = MouseInfo.getPointerInfo().getLocation().getY();
-					int mouseX = (int) dmouseX;
-					int mouseY = (int) dmouseY;
-					editElement.show(list, mouseX,mouseY);
-					editElement.setLocation(mouseX,mouseY);
-
-				}
+				super.mouseClicked(e);
+			}
+		});
+		codeElement.addActionListener(e -> {
+			IElement selected = list.getSelectedValue();
+			if (selected instanceof ModElement) {
+				Point clickPos = list.getMousePosition();
+				editCurrentlySelectedModElementAsCode((ModElement) selected, list,
+						clickPos == null ? 0 : clickPos.x - 10, clickPos == null ? 0 : clickPos.y - 10);
 			}
 		});
 
+		lockElement.addActionListener(e -> lockCode());
+
+		idElement.addActionListener(e -> {
+			IElement mu = list.getSelectedValue();
+			if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
+				ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
+				if (modified != null)
+					mcreator.getWorkspace().updateModElement(modified);
+			}
+		});
+
+		JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
+		addElementFolder.setIcon(UIRES.get("laf.newFolder.gif"));
+		addElementFolder.addActionListener(e -> addNewFolder());
+
+		contextMenu.add(openElement);
+		contextMenu.addSeparator();
+		contextMenu.add(addElementFolder);
+		contextMenu.addSeparator();
+		contextMenu.add(deleteElement);
+		contextMenu.addSeparator();
+		contextMenu.add(duplicateElement);
+		contextMenu.add(codeElement);
+		contextMenu.add(lockElement);
+		contextMenu.add(idElement);
 	}
-	
+
 	public void switchFolder(FolderElement switchTo) {
 		search.setText(null); // clear the search bar
 		currentFolder = switchTo;
@@ -923,7 +890,7 @@ import java.util.stream.Collectors;
 
 	public void disableRemoving() {
 		but3.setEnabled(false);
-			deleteElement.setEnabled(false);
+		deleteElement.setEnabled(false);
 		but3.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 	}
 
@@ -1114,14 +1081,13 @@ import java.util.stream.Collectors;
 			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0));
 		}
 	}
-	
-        private void deleteCurrentlySelectedModElement() {
+
+	private void deleteCurrentlySelectedModElement() {
 		if (but3.isEnabled()) {
 			if (list.getSelectedValue() != null) {
 				Object[] options = { "Yes", "No" };
 				int n = JOptionPane.showOptionDialog(mcreator,
-						L10N.t("workspace.elements.confirm_delete_message",
-								list.getSelectedValuesList().size()),
+						L10N.t("workspace.elements.confirm_delete_message", list.getSelectedValuesList().size()),
 						L10N.t("workspace.elements.confirm_delete_title"), JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
@@ -1131,8 +1097,7 @@ import java.util.stream.Collectors;
 						if (re instanceof ModElement) {
 							if (!buildNeeded.get()) {
 								GeneratableElement ge = ((ModElement) re).getGeneratableElement();
-								if (ge != null && mcreator.getModElementManager()
-										.usesGeneratableElementJava(ge))
+								if (ge != null && mcreator.getModElementManager().usesGeneratableElementJava(ge))
 									buildNeeded.set(true);
 							}
 
@@ -1170,6 +1135,7 @@ import java.util.stream.Collectors;
 			}
 		}
 	}
+
 	private void addNewFolder() {
 		String name = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.folders.add.message"),
 				L10N.t("workspace.elements.folders.add.title"), null, new OptionPaneValidatior() {
@@ -1203,7 +1169,7 @@ import java.util.stream.Collectors;
 			reloadElements();
 		}
 	}
-	
+
 	private boolean updateRunning = false;
 
 	public synchronized void updateMods() {
