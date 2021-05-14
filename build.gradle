@@ -132,6 +132,11 @@ jar {
     }
 }
 
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.runtimeClasspath
+}
+
 task runMCreator(type: JavaExec, dependsOn: jar) {
     classpath += sourceSets.main.runtimeClasspath
     main = "net.mcreator.Launcher"
