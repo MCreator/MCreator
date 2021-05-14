@@ -347,6 +347,7 @@ public class TestWorkspaceDataProvider {
 			fluid.luminance = 6;
 			fluid.flammability = 5;
 			fluid.fireSpreadSpeed = 12;
+			fluid.colorOnMap = getRandomItem(random, ElementUtil.loadMapColors());
 			fluid.onBlockAdded = new Procedure("procedure1");
 			fluid.onNeighbourChanges = new Procedure("procedure2");
 			fluid.onTickUpdate = new Procedure("procedure3");
