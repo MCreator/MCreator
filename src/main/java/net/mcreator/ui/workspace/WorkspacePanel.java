@@ -1085,11 +1085,10 @@ import java.util.stream.Collectors;
 	private void deleteCurrentlySelectedModElement() {
 		if (but3.isEnabled()) {
 			if (list.getSelectedValue() != null) {
-				Object[] options = { "Yes", "No" };
-				int n = JOptionPane.showOptionDialog(mcreator,
+				int n = JOptionPane.showConfirmDialog(mcreator,
 						L10N.t("workspace.elements.confirm_delete_message", list.getSelectedValuesList().size()),
-						L10N.t("workspace.elements.confirm_delete_title"), JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+						L10N.t("workspace.elements.confirm_delete_title"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null);
 
 				if (n == 0) {
 					AtomicBoolean buildNeeded = new AtomicBoolean(false);
