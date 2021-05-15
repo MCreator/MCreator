@@ -369,11 +369,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				rotationMode.setSelectedIndex(0);
 				isWaterloggable.setSelected(false);
 
-				if (blockBase.getSelectedItem().equals("EndRod")) {
-					rotationMode.setEnabled(true);
-					rotationMode.setSelectedIndex(4);
-				}
-
 				if (blockBase.getSelectedItem().equals("Wall") || blockBase.getSelectedItem().equals("Fence")
 						|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem().equals("Door")
 						|| blockBase.getSelectedItem().equals("FenceGate") || blockBase.getSelectedItem().equals("EndRod")) {
