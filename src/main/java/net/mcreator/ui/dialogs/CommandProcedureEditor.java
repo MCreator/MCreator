@@ -35,7 +35,7 @@ public class CommandProcedureEditor {
 	public static List<String> open(MCreator parent, @Nullable String[] data) {
 		ProcedureSelector executeProcedure = new ProcedureSelector(IHelpContext.NONE.withEntry("command/arg_procedure"),
 				parent, L10N.t("dialog.arg_procedure.execute_action"), ProcedureSelector.Side.BOTH, false,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/cmdargs:ctx"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/direction:direction/cmdargs:cmdcontext"));
 
 		executeProcedure.refreshList();
 

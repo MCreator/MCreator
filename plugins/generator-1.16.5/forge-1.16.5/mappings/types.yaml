@@ -9,4 +9,4 @@ boolean: boolean
 direction: Direction
 advancement: Advancement
 dimensiontype: RegistryKey<World>
-ctx: CommandContext<CommandSource>
+cmdcontext: CommandContext<CommandSource>

@@ -13,6 +13,7 @@
 		        	double z = cmdargs.getSource().getPos().getZ();
 
 		        	Entity entity = cmdargs.getSource().getEntity();
+		        	Direction direction = Objects.requireNonNull(entity).getHorizontalFacing();
 		        	if (entity == null)
 		        		entity = FakePlayerFactory.getMinecraft(world);
                 	<@procedureOBJToCode procedures[0]/>
