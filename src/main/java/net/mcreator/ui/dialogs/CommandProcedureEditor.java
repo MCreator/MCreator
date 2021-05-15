@@ -21,13 +21,11 @@ package net.mcreator.ui.dialogs;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.ProcedureSelector;
-import net.mcreator.workspace.elements.VariableElementType;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.util.Collections;
 import java.util.List;
@@ -35,9 +33,8 @@ import java.util.List;
 public class CommandProcedureEditor {
 
 	public static List<String> open(MCreator parent, @Nullable String[] data) {
-		ProcedureSelector executeProcedure = new ProcedureSelector(
-				IHelpContext.NONE.withEntry("command/arg_procedure"), parent,
-				L10N.t("dialog.arg_procedure.execute_action"), ProcedureSelector.Side.BOTH, false,
+		ProcedureSelector executeProcedure = new ProcedureSelector(IHelpContext.NONE.withEntry("command/arg_procedure"),
+				parent, L10N.t("dialog.arg_procedure.execute_action"), ProcedureSelector.Side.BOTH, false,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/cmdargs:ctx"));
 
 		executeProcedure.refreshList();
