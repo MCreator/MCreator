@@ -62,7 +62,7 @@ public class ConsolePane extends JTextPane {
 	}
 
 	public void insertString(String s, SimpleAttributeSet set) {
-		if (DEBUG_CONTENTS_TO_LOG)
+		if (DEBUG_CONTENTS_TO_LOG && !s.trim().isEmpty())
 			LOG.info(s.trim());
 
 		insertHTML("<span " + parseSimpleAttributeSetToCSS(set) + ">" + s.replace("<", "&lt;").replace(">", "&gt;")

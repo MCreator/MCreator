@@ -24,8 +24,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
@@ -76,31 +76,31 @@ public class MCreatorTheme extends OceanTheme {
 		return MAIN_TINT;
 	}
 
-	private @NotNull Color getBlackAccent() {
+	private @Nonnull Color getBlackAccent() {
 		return colorScheme.getAltBackgroundColor();
 	}
 
-	private @NotNull Color getDarkAccent() {
+	private @Nonnull Color getDarkAccent() {
 		return colorScheme.getBackgroundColor();
 	}
 
-	private @NotNull Color getLightAccent() {
+	private @Nonnull Color getLightAccent() {
 		return colorScheme.getActionColor();
 	}
 
-	private @NotNull Color getGrayColor() {
+	private @Nonnull Color getGrayColor() {
 		return colorScheme.getForegroundColor();
 	}
 
-	protected @NotNull Color getBrightColor() {
+	protected @Nonnull Color getBrightColor() {
 		return colorScheme.getBorderColor();
 	}
 
-	private @NotNull String getBlocklyCSSName() {
+	private @Nonnull String getBlocklyCSSName() {
 		return "blockly_" + colorScheme.getBlocklyCSSFile() + ".css";
 	}
 
-	private @NotNull String getCodeEditorXML() {
+	private @Nonnull String getCodeEditorXML() {
 		return "codeeditor_" + colorScheme.getCodeEditorFile() + ".xml";
 	}
 

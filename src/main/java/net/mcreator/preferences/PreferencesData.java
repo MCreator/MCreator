@@ -19,6 +19,8 @@
 package net.mcreator.preferences;
 
 import net.mcreator.io.OS;
+import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.AbstractMCreatorTheme;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.laf.MCreatorTheme;
 
@@ -42,7 +44,7 @@ public class PreferencesData {
 
 		@PreferencesEntry public Color interfaceAccentColor = MCreatorTheme.MAIN_TINT_DEFAULT;
 
-		@PreferencesEntry public Locale language = new Locale("en", "US");
+		@PreferencesEntry public Locale language = L10N.DEFAULT_LOCALE;
 
 		@PreferencesEntry public boolean aatext = true;
 
@@ -61,6 +63,7 @@ public class PreferencesData {
 		@PreferencesEntry public boolean openWhatsNextPage = true;
 		@PreferencesEntry public boolean checkAndNotifyForUpdates = true;
 		@PreferencesEntry public boolean checkAndNotifyForPatches = true;
+		@PreferencesEntry public boolean checkAndNotifyForPluginUpdates = false;
 
 	}
 

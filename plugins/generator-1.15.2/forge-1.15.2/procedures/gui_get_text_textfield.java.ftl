@@ -1,9 +1,9 @@
 (new Object(){
 	public String getText(){
-		TextFieldWidget textField=(TextFieldWidget)guistate.get("text:${field$textfield}");
-		if(textField!=null){
-		return textField.getText();
+		TextFieldWidget _tf=(TextFieldWidget)guistate.get("text:${field$textfield}");
+		if(_tf!=null){
+			return _tf.getText();
 		}
 		return"";
-		}
-		}.getText())
+	}
+}.getText())

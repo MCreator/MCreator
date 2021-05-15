@@ -18,8 +18,7 @@
 
 package net.mcreator.util.locale;
 
-import org.jetbrains.annotations.NotNull;
-
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,12 +30,12 @@ public class MultiResourceBundle extends ResourceBundle {
 		this.delegates = resourceBundles == null ? new ArrayList<>() : resourceBundles;
 	}
 
-	@Override protected Object handleGetObject(@NotNull String key) {
+	@Override protected Object handleGetObject(@Nonnull String key) {
 		return this.delegates.stream().filter(delegate -> delegate != null && delegate.containsKey(key))
 				.map(delegate -> delegate.getObject(key)).findFirst().orElse(null);
 	}
 
-	@Override @NotNull public Enumeration<String> getKeys() {
+	@Override @Nonnull public Enumeration<String> getKeys() {
 		return Collections.enumeration(this.delegates.stream().filter(Objects::nonNull)
 				.flatMap(delegate -> Collections.list(delegate.getKeys()).stream()).collect(Collectors.toList()));
 	}

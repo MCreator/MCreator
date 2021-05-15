@@ -34,7 +34,7 @@ import org.reflections.scanners.ResourcesScanner;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
@@ -99,7 +99,8 @@ public class RSyntaxTextAreaStyler {
 		te.revalidate();
 
 		sp.addMouseWheelListener(mouseWheelEvent -> {
-			if ((mouseWheelEvent.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK && te.hasFocus()) {
+			if ((mouseWheelEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK && te
+					.hasFocus()) {
 				float current = te.getFont().getSize();
 
 				current -= mouseWheelEvent.getWheelRotation();
