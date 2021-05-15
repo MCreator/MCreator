@@ -40,8 +40,10 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.text.AttributedCharacterIterator;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 public class MinecraftImageGenerator {
 
@@ -152,7 +154,7 @@ public class MinecraftImageGenerator {
 		return bi;
 	}
 
-	public static BufferedImage generateCheckbox(){
+	public static BufferedImage generateCheckbox() {
 		int width = 20, height = 20;
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) bi.getGraphics();
