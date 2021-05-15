@@ -191,19 +191,10 @@ import java.util.stream.Collectors;
 
 		list.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2 && !e.isConsumed() && SwingUtilities.isLeftMouseButton(e)) {
-					list.cancelDND();
+				if (e.isConsumed())
+					return;
 
-					IElement selected = list.getSelectedValue();
-					if (selected instanceof FolderElement) {
-						switchFolder((FolderElement) selected);
-					} else {
-						if (((e.getModifiersEx() & InputEvent.ALT_DOWN_MASK) == InputEvent.ALT_DOWN_MASK))
-							editCurrentlySelectedModElementAsCode((ModElement) selected, list, e.getX(), e.getY());
-						else
-							editCurrentlySelectedModElement((ModElement) selected, list, e.getX(), e.getY());
-					}
-				} else if (SwingUtilities.isRightMouseButton(e)) {
+				if (e.getButton() == MouseEvent.BUTTON3) {
 					list.setSelectedIndex(list.locationToIndex(e.getPoint()));
 					IElement selected = list.getSelectedValue();
 
@@ -220,6 +211,18 @@ import java.util.stream.Collectors;
 					}
 
 					contextMenu.show(list, e.getX(), e.getY());
+				} else if (e.getClickCount() == 2) {
+					list.cancelDND();
+
+					IElement selected = list.getSelectedValue();
+					if (selected instanceof FolderElement) {
+						switchFolder((FolderElement) selected);
+					} else {
+						if (((e.getModifiersEx() & InputEvent.ALT_DOWN_MASK) == InputEvent.ALT_DOWN_MASK))
+							editCurrentlySelectedModElementAsCode((ModElement) selected, list, e.getX(), e.getY());
+						else
+							editCurrentlySelectedModElement((ModElement) selected, list, e.getX(), e.getY());
+					}
 				}
 			}
 		});
