@@ -832,13 +832,13 @@ import java.util.stream.Collectors;
 		addElementFolder.addActionListener(e -> addNewFolder());
 
 		contextMenu.add(openElement);
+		contextMenu.add(codeElement);
 		contextMenu.addSeparator();
 		contextMenu.add(addElementFolder);
 		contextMenu.addSeparator();
 		contextMenu.add(deleteElement);
 		contextMenu.addSeparator();
 		contextMenu.add(duplicateElement);
-		contextMenu.add(codeElement);
 		contextMenu.add(lockElement);
 		contextMenu.add(idElement);
 	}
