@@ -183,13 +183,13 @@ public class TestWorkspaceDataProvider {
 			achievement.background = emptyLists ? "Default" : "test.png";
 			achievement.rewardLoot = new ArrayList<>();
 			if (!emptyLists) {
-				achievement.rewardLoot.add("test1");
-				achievement.rewardLoot.add("test2");
+				achievement.rewardLoot.add("ExampleLootTable1");
+				achievement.rewardLoot.add("ExampleLootTable2");
 			}
 			achievement.rewardRecipes = new ArrayList<>();
 			if (!emptyLists) {
-				achievement.rewardRecipes.add("test1");
-				achievement.rewardRecipes.add("test2");
+				achievement.rewardRecipes.add("ExampleRecipe1");
+				achievement.rewardRecipes.add("ExampleRecipe2");
 			}
 			achievement.triggerxml = "<xml><block type=\"tick\" x=\"40\" y=\"80\"><next>"
 					+ "<block type=\"advancement_trigger\" deletable=\"false\"/></next></block></xml>";
@@ -1151,6 +1151,7 @@ public class TestWorkspaceDataProvider {
 				block.onRedstoneOff = new Procedure("procedure12");
 				block.onEntityWalksOn = new Procedure("procedure13");
 				block.generateCondition = new Procedure("condition1");
+				block.placingCondition = new Procedure("condition2");
 				block.particleCondition = new Procedure("condition4");
 			}
 			block.itemTexture = emptyLists ? "" : "itest";
@@ -1197,8 +1198,8 @@ public class TestWorkspaceDataProvider {
 						getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
 				tag.blocks.add(new MItemBlock(modElement.getWorkspace(),
 						getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
-				tag.functions.add("test1");
-				tag.functions.add("test2");
+				tag.functions.add("ExampleFunction1");
+				tag.functions.add("ExampleFunction2");
 				tag.entities.add(new EntityEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace()))));
 				tag.entities.add(new EntityEntry(modElement.getWorkspace(),

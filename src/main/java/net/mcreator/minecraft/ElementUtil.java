@@ -34,7 +34,7 @@ public class ElementUtil {
 
 	/**
 	 * Loads all mod elements and all Minecraft elements (blocks and items), including elements
-	 * that are wildcard elements to subtypes (wood -> oak wood, birch wood, ...)
+	 * that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
 	 *
 	 * @return All Blocks and Items from both Minecraft and custom elements with or without metadata
 	 */
@@ -49,7 +49,7 @@ public class ElementUtil {
 
 	/**
 	 * Loads all mod elements and all Minecraft elements (blocks and items) without elements
-	 * that are wildcard elements to subtypes (wood -> oak wood, birch wood, ...)
+	 * that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
 	 * so only oak wood, birch wood, ... are loaded, without wildcard wood element
 	 *
 	 * @return All Blocks and Items from both Minecraft and custom elements with or without metadata
@@ -65,7 +65,7 @@ public class ElementUtil {
 
 	/**
 	 * Loads all mod elements and all Minecraft blocks without elements
-	 * that are wildcard elements to subtypes (wood -> oak wood, birch wood, ...)
+	 * that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
 	 * so only oak wood, birch wood, ... are loaded, without wildcard wood element
 	 *
 	 * @return All Blocks from both Minecraft and custom elements with or without metadata

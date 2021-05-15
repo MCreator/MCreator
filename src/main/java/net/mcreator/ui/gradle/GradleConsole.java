@@ -370,7 +370,7 @@ public class GradleConsole extends JPanel {
 
 		task.addProgressListener((ProgressListener) event -> ref.statusBar.setGradleMessage(event.getDescription()));
 
-		task.run(new ResultHandler<Void>() {
+		task.run(new ResultHandler<>() {
 			@Override public void onComplete(Void result) {
 				SwingUtilities.invokeLater(() -> {
 					ref.getWorkspace().checkFailingGradleDependenciesAndClear(); // clear flag without checking
