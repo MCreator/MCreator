@@ -23,9 +23,9 @@ import net.mcreator.io.OS;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class WorkspaceFolderManager {
 	private final File workspaceFolder;
 	private final Workspace workspace;
 
-	public WorkspaceFolderManager(@NotNull File workspaceFile, @NotNull Workspace workspace) {
+	public WorkspaceFolderManager(@Nonnull File workspaceFile, @Nonnull Workspace workspace) {
 		this.workspaceFolder = workspaceFile.getParentFile();
 		this.workspace = workspace;
 	}

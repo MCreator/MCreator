@@ -18,8 +18,7 @@
 
 package net.mcreator.blockly.data;
 
-import org.jetbrains.annotations.Nullable;
-
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class StatementInput {
