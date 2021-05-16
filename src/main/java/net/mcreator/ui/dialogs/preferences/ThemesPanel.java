@@ -33,12 +33,12 @@ import java.util.Comparator;
 public class ThemesPanel {
 
 	private final DefaultListModel<Theme> tmodel = new DefaultListModel<>();
-	private final JComboBox<String> packIDs;
+	private final JComboBox<String> themeIDs;
 
 	public ThemesPanel(PreferencesDialog dialog) {
 		dialog.model.addElement("Themes");
-		JList<Theme> packs = new JList<>(tmodel);
-		packs.setCellRenderer(new ThemesPanel.ResourcePacksListCellRenderer());
+		JList<Theme> themes = new JList<>(tmodel);
+		themes.setCellRenderer(new ThemesListCellRenderer());
 
 		JPanel sectionPanel = new JPanel(new BorderLayout(15, 15));
 
@@ -47,35 +47,35 @@ public class ThemesPanel {
 
 		JPanel top = new JPanel(new BorderLayout());
 
-		String themeName = L10N.t("preferences.resource_packs.select_theme");
-		String themeDescription = L10N.t("preferences.resource_packs.select_theme.description");
+		String themeName = L10N.t("preferences.themes.select_theme");
+		String themeDescription = L10N.t("preferences.themes.select_theme.description");
 		top.add("West", L10N.label("dialog.preferences.entry_description", themeName, themeDescription));
 
-		packIDs = new JComboBox<>(ThemeLoader.getIDs().toArray(new String[0]));
-		packIDs.setPreferredSize(new Dimension(250, 0));
-		packIDs.setSelectedItem(PreferencesManager.PREFERENCES.hidden.uiTheme);
-		packIDs.addActionListener(e -> dialog.markChanged());
-		top.add("East", packIDs);
+		themeIDs = new JComboBox<>(ThemeLoader.getIDs().toArray(new String[0]));
+		themeIDs.setPreferredSize(new Dimension(250, 0));
+		themeIDs.setSelectedItem(PreferencesManager.PREFERENCES.hidden.uiTheme);
+		themeIDs.addActionListener(e -> dialog.markChanged());
+		top.add("East", themeIDs);
 
-		reloadResourcePacksList();
+		reloadThemesList();
 
 		sectionPanel.add("Center", PanelUtils.northAndCenterElement(top,
-				PanelUtils.northAndCenterElement(L10N.label("dialog.preferences.themes.list"), new JScrollPane(packs)),
+				PanelUtils.northAndCenterElement(L10N.label("dialog.preferences.themes.list"), new JScrollPane(themes)),
 				5, 5));
 
 		dialog.preferences.add(sectionPanel, "Themes");
 	}
 
-	private void reloadResourcePacksList() {
+	private void reloadThemesList() {
 		tmodel.removeAllElements();
 		ThemeLoader.getThemes().stream().sorted(Comparator.comparing(Theme::getID)).forEach(tmodel::addElement);
 	}
 
-	public String getResourcePack() {
-		return (String) packIDs.getSelectedItem();
+	public String getThemes() {
+		return (String) themeIDs.getSelectedItem();
 	}
 
-	static class ResourcePacksListCellRenderer extends JLabel implements ListCellRenderer<Theme> {
+	static class ThemesListCellRenderer extends JLabel implements ListCellRenderer<Theme> {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Theme> list, Theme value, int index,
 				boolean isSelected, boolean cellHasFocus) {

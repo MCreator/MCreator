@@ -84,11 +84,13 @@ public final class MCreatorApplication {
 		splashScreen.setVisible(true);
 
 		splashScreen.setProgress(15, "Loading plugins");
+
 		// Plugins are loaded before the Splash screen is visible, so every image can be changed
 		PluginLoader.initInstance();
 
 		splashScreen.setProgress(20, "Loading UI Themes");
-		// We load UI themes now so we can set a default theme if the theme is not found
+
+		// We load UI themes now as theme plugins are loaded at this point
 		ThemeLoader.initUIThemes();
 
 		splashScreen.setProgress(30, "Loading UI core");

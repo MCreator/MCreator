@@ -68,7 +68,8 @@ public class TestSetup {
 		// load plugins
 		// We begin by loading plugins, so every image can be changed
 		PluginLoader.initInstance();
-		// We load UI themes now so we can check if we can still use it
+
+		// We load UI themes now as theme plugins are loaded at this point
 		ThemeLoader.initUIThemes();
 
 		// init UI theme

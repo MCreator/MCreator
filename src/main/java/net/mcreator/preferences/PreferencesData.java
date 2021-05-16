@@ -20,7 +20,6 @@ package net.mcreator.preferences;
 
 import net.mcreator.io.OS;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.AbstractMCreatorTheme;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.laf.MCreatorTheme;
 
