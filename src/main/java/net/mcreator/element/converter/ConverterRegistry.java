@@ -32,7 +32,7 @@ import net.mcreator.element.converter.fv16.BlockBoundingBoxFixer;
 import net.mcreator.element.converter.fv17.GameruleDisplayNameFixer;
 import net.mcreator.element.converter.fv18.BiomeFrozenTopLayerConverter;
 import net.mcreator.element.converter.fv19.FluidBucketSelectedFixer;
-import net.mcreator.element.converter.fv19.ProcedureVariablesConverter;
+import net.mcreator.element.converter.fv20.ProcedureVariablesConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
