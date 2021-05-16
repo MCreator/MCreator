@@ -1,0 +1,4 @@
+[
+	".rotateAngleY = f3 / (180F / (float)Math.PI);",
+	".rotateAngleX = f4 / (180F / (float)Math.PI);"
+]
