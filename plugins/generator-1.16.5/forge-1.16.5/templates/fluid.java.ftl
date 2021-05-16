@@ -92,6 +92,7 @@ import net.minecraft.block.material.Material;
 			<#else>
 			Block.Properties.create(Material.${data.type})
 			</#if>
+			.hardnessAndResistance(${data.resistance}f)
 			<#if data.emissiveRendering>
 			.setNeedsPostProcessing((bs, br, bp) -> true).setEmmisiveRendering((bs, br, bp) -> true)
 			</#if>

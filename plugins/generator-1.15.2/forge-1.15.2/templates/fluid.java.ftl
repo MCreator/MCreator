@@ -83,6 +83,7 @@ import net.minecraft.block.material.Material;
 			<#else>
 			Block.Properties.create(Material.${data.type})
 			</#if>
+			.hardnessAndResistance(${data.resistance}f)
 			.lightValue(${data.luminance})
 			){
 			<#if data.flammability != 0>
