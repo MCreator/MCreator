@@ -42,12 +42,12 @@ public class TaskbarIntegration {
 	}
 
 	public void setIntermediateProgress(Window w) {
-		if (taskbar != null)
+		if (taskbar != null && taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW))
 			taskbar.setWindowProgressState(w, Taskbar.State.INDETERMINATE);
 	}
 
 	public void clearState(Window w) {
-		if (taskbar != null) {
+		if (taskbar != null && taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW)) {
 			setProgressState(w, -1);
 			taskbar.setWindowProgressState(w, Taskbar.State.NORMAL);
 			taskbar.setWindowProgressState(w, Taskbar.State.OFF);
@@ -55,12 +55,12 @@ public class TaskbarIntegration {
 	}
 
 	public void setWarningIndicator(Window w) {
-		if (taskbar != null)
+		if (taskbar != null && taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW))
 			taskbar.setWindowProgressState(w, Taskbar.State.PAUSED);
 	}
 
 	public void setErrorIndicator(Window w) {
-		if (taskbar != null)
+		if (taskbar != null && taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW))
 			taskbar.setWindowProgressState(w, Taskbar.State.ERROR);
 	}
 
