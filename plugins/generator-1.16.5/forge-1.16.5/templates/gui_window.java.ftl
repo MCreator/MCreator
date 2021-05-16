@@ -44,6 +44,8 @@ import ${package}.${JavaModName};
 	private int x, y, z;
 	private PlayerEntity entity;
 
+	private final static HashMap guistate = ${name}Gui.guistate;
+
 	<#list data.components as component>
 		<#if component.getClass().getSimpleName() == "TextField">
 	    TextFieldWidget ${component.name};
@@ -185,7 +187,7 @@ import ${package}.${JavaModName};
 					}
 				}
 				</#if>;
-                ${name}Gui.guistate.put("text:${component.name}", ${component.name});
+                guistate.put("text:${component.name}", ${component.name});
 				${component.name}.setMaxStringLength(32767);
                 this.children.add(this.${component.name});
 			<#elseif component.getClass().getSimpleName() == "Button">

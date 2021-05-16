@@ -21,6 +21,6 @@ package net.mcreator.element;
 
 public enum RecipeType {
 
-	BLOCK, ITEM, ARMOR, NONE
+	BLOCK, ITEM, ARMOR, BUCKET, NONE
 
 }
