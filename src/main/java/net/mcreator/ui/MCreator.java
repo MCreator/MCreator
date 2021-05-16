@@ -135,7 +135,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			setSize(1002, 640);
 
 		if (OS.getOS() == OS.MAC)
-			MacOSUIUtil.enableTrueFullscreen(this);
+			getRootPane().putClientProperty("apple.awt.fullscreenable", true);
 
 		if (PreferencesManager.PREFERENCES.hidden.fullScreen)
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
