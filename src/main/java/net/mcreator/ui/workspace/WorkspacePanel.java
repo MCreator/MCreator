@@ -121,6 +121,8 @@ import java.util.stream.Collectors;
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
 
+	private final JButton view = L10N.button("workspace.elements.list.icon_size");
+	
 	private final TransparentToolBar modElementsBar = new TransparentToolBar();
 
 	private final WorkspaceFolderBreadcrumb elementsBreadcrumb;
@@ -344,6 +346,12 @@ import java.util.stream.Collectors;
 		JComponent isize = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.icon_size"), 12);
 		isize.setToolTipText(L10N.t("workspace.elements.list.icon_size.tooltip"));
 		modElementsBar.add(isize);
+		view.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		view.setContentAreaFilled(false);
+		view.setOpaque(false);
+		view.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		ComponentUtils.deriveFont(view, 12);
+		modElementsBar.add(view);
 
 		JRadioButtonMenuItem largeIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.large"));
 		largeIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -353,6 +361,8 @@ import java.util.stream.Collectors;
 			if (largeIcons.isSelected()) {
 				PreferencesManager.PREFERENCES.hidden.workspaceIconSize = PreferencesData.WorkspaceIconSize.LARGE;
 				updateElementListRenderer();
+				view.setIcon(UIRES.get("16px.large.gif"));
+				view.setText(L10N.t("workspace.elements.list.large"));
 			}
 		});
 		largeIcons.setSelected(
@@ -370,6 +380,8 @@ import java.util.stream.Collectors;
 			if (mediumIcons.isSelected()) {
 				PreferencesManager.PREFERENCES.hidden.workspaceIconSize = PreferencesData.WorkspaceIconSize.MEDIUM;
 				updateElementListRenderer();
+				view.setIcon(UIRES.get("16px.medium.gif"));
+				view.setText(L10N.t("workspace.elements.list.medium"));
 			}
 		});
 		mediumIcons.setSelected(
@@ -387,6 +399,8 @@ import java.util.stream.Collectors;
 			if (smallIcons.isSelected()) {
 				PreferencesManager.PREFERENCES.hidden.workspaceIconSize = PreferencesData.WorkspaceIconSize.SMALL;
 				updateElementListRenderer();
+				view.setIcon(UIRES.get("16px.small.gif"));
+				view.setText(L10N.t("workspace.elements.list.small"));
 			}
 		});
 		smallIcons.setSelected(
@@ -404,6 +418,8 @@ import java.util.stream.Collectors;
 			if (tilesIcons.isSelected()) {
 				PreferencesManager.PREFERENCES.hidden.workspaceIconSize = PreferencesData.WorkspaceIconSize.TILES;
 				updateElementListRenderer();
+				view.setIcon(UIRES.get("16px.tiles.gif"));
+				view.setText(L10N.t("workspace.elements.list.tiles"));
 			}
 		});
 		tilesIcons.setSelected(
@@ -421,6 +437,8 @@ import java.util.stream.Collectors;
 			if (detailsIcons.isSelected()) {
 				PreferencesManager.PREFERENCES.hidden.workspaceIconSize = PreferencesData.WorkspaceIconSize.DETAILS;
 				updateElementListRenderer();
+				view.setIcon(UIRES.get("16px.details.gif"));
+				view.setText(L10N.t("workspace.elements.list.details"));
 			}
 		});
 		detailsIcons.setSelected(
@@ -438,6 +456,8 @@ import java.util.stream.Collectors;
 			if (listIcons.isSelected()) {
 				PreferencesManager.PREFERENCES.hidden.workspaceIconSize = PreferencesData.WorkspaceIconSize.LIST;
 				updateElementListRenderer();
+				view.setIcon(UIRES.get("16px.list.gif"));
+				view.setText(L10N.t("workspace.elements.list.list"));
 			}
 		});
 		listIcons.setSelected(
@@ -446,7 +466,31 @@ import java.util.stream.Collectors;
 		ComponentUtils.deriveFont(listIcons, 12);
 		listIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 		modElementsBar.add(listIcons);
-
+                {
+			if (largeIcons.isSelected()){
+				view.setIcon(UIRES.get("16px.large.gif"));
+				view.setText(L10N.t("workspace.elements.list.large"));
+			}
+			else if (mediumIcons.isSelected()) {
+				view.setIcon(UIRES.get("16px.medium.gif"));
+				view.setText(L10N.t("workspace.elements.list.medium"));
+			}
+			else if (smallIcons.isSelected()) {
+				view.setIcon(UIRES.get("16px.small.gif"));
+				view.setText(L10N.t("workspace.elements.list.small"));
+			}
+			else if (tilesIcons.isSelected()) {
+				view.setIcon(UIRES.get("16px.tiles.gif"));
+				view.setText(L10N.t("workspace.elements.list.tiles"));
+			}
+			else if (detailsIcons.isSelected()) {
+				view.setIcon(UIRES.get("16px.details.gif"));
+				view.setText(L10N.t("workspace.elements.list.details"));
+			}
+			else if (listIcons.isSelected())
+				view.setIcon(UIRES.get("16px.list.gif"));
+			        view.setText(L10N.t("workspace.elements.list.list"));
+		}
 		sp.addMouseWheelListener(new MouseAdapter() {
 			@Override public void mouseWheelMoved(MouseWheelEvent e) {
 				super.mouseWheelMoved(e);
@@ -517,7 +561,6 @@ import java.util.stream.Collectors;
 
 		JButton filter = L10N.button("workspace.elements.list.filter");
 		JButton sort = L10N.button("workspace.elements.list.sort");
-		JButton view = L10N.button("workspace.elements.list.icon_size");
 
 		ComponentUtils.deriveFont(filter, 11);
 		filter.setMargin(new Insets(1, 3, 1, 3));
@@ -528,18 +571,11 @@ import java.util.stream.Collectors;
 		sort.setMargin(new Insets(1, 3, 1, 3));
 		sort.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		sort.setBorderPainted(false);
-
-		ComponentUtils.deriveFont(view, 11);
-		view.setMargin(new Insets(1, 3, 1, 3));
-		view.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		view.setBorderPainted(false);
 		
 		leftPan.add(new JEmptyBox(2, 2));
 		leftPan.add(filter);
 		leftPan.add(new JEmptyBox(2, 2));
 		leftPan.add(sort);
-		leftPan.add(new JEmptyBox(2, 2));
-		leftPan.add(view);
 
 		se.add("West", leftPan);
 
