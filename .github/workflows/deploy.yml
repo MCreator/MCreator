@@ -14,13 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Dump github context
-        run:   echo "$GITHUB_CONTEXT"
-        shell: bash
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
       - name: Check Repository
-        if: github.repository != 'KlemenDEV/MCreator'
+        if: github.repository != 'MCreator/MCreator'
         run: |
           cat << EOF
           ⚠️ Deploy action is only intended to be run from the official MCreator's repository. ⚠️
