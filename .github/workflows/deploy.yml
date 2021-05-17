@@ -20,9 +20,8 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
       - name: Check Repository
-        if: ${{ env.GITHUB_REPOSITORY != 'KlemenDEV/MCreator' }}
+        if: github.repository != 'KlemenDEV/MCreator'
         run: |
-          echo ${{ env.GITHUB_REPOSITORY }}
           cat << EOF
           ⚠️ Deploy action is only intended to be run from the official MCreator's repository. ⚠️
           We do not allow custom distributions of the software under MCreator brand to be distributed publicly.
