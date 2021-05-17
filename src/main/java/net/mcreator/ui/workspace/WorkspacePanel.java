@@ -359,14 +359,14 @@ import java.util.stream.Collectors;
 		largeIcons.setOpaque(false);
 		largeIcons.addActionListener(e -> {
 			if (largeIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.hidden.workspaceIconSize = PreferencesData.WorkspaceIconSize.LARGE;
+				PreferencesManager.PREFERENCES.hidden.workspaceIconSize = PreferencesData.WorkspaceIconSize.TILES;
 				updateElementListRenderer();
 				view.setIcon(UIRES.get("16px.large.gif"));
 				view.setText(L10N.t("workspace.elements.list.large"));
 			}
 		});
 		largeIcons.setSelected(
-				PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.LARGE);
+				PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.TILES);
 		Arrays.stream(largeIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(largeIcons)));
 		ComponentUtils.deriveFont(largeIcons, 12);
 		largeIcons.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -416,14 +416,14 @@ import java.util.stream.Collectors;
 		tilesIcons.setOpaque(false);
 		tilesIcons.addActionListener(e -> {
 			if (tilesIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.hidden.workspaceIconSize = PreferencesData.WorkspaceIconSize.TILES;
+				PreferencesManager.PREFERENCES.hidden.workspaceIconSize = PreferencesData.WorkspaceIconSize.LARGE;
 				updateElementListRenderer();
 				view.setIcon(UIRES.get("16px.tiles.gif"));
 				view.setText(L10N.t("workspace.elements.list.tiles"));
 			}
 		});
 		tilesIcons.setSelected(
-				PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.TILES);
+				PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.LARGE);
 		Arrays.stream(tilesIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(tilesIcons)));
 		ComponentUtils.deriveFont(tilesIcons, 12);
 		tilesIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
@@ -989,7 +989,7 @@ import java.util.stream.Collectors;
 	}
 
 	private void updateElementListRenderer() {
-		if (PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.LARGE) {
+		if (PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.TILES) {
 			list.setCellRenderer(new LargeIconModListRender(true));
 			list.setFixedCellHeight(120);
 			list.setFixedCellWidth(120);
@@ -1004,7 +1004,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(32);
 			list.setFixedCellWidth(200);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.TILES) {
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.LARGE) {
 			list.setCellRenderer(new TilesIconModListRender());
 			list.setFixedCellHeight(72);
 			list.setFixedCellWidth(287);
