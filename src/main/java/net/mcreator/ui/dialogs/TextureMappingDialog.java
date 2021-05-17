@@ -180,10 +180,9 @@ public class TextureMappingDialog {
 		button.setBorder(BorderFactory.createEmptyBorder());
 		button.setMargin(new Insets(0, 0, 0, 0));
 		button.addActionListener(e -> {
-			Object[] options = { "Yes", "No" };
-			int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.textures_mapping.confirm_deletion_message"),
-					L10N.t("dialog.textures_mapping.confirm_deletion_title"), JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+			int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.textures_mapping.confirm_deletion_message"),
+					L10N.t("dialog.textures_mapping.confirm_deletion_title"), JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null);
 			if (n == 0) {
 				for (int i = 0; i < addTo.getTabCount(); i++) {
 					String title = addTo.getTitleAt(i);

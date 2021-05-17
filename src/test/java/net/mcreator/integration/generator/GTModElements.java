@@ -45,20 +45,19 @@ import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTModElements {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		for (Map.Entry<ModElementType, ModElementTypeRegistry.ModTypeRegistration<?>> modElementRegistration : ModElementTypeRegistry.REGISTRY
 				.entrySet()) {
+
+			// silently skip mod elements not supported by this generator
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(modElementRegistration.getKey())
-					== GeneratorStats.CoverageStatus.NONE) {
-				LOG.warn("Skipping unsupported mod element type " + modElementRegistration.getKey() + " for generator "
-						+ generatorName);
+					== GeneratorStats.CoverageStatus.NONE)
 				continue;
-			}
 
 			List<GeneratableElement> modElementExamples = TestWorkspaceDataProvider
 					.getModElementExamplesFor(workspace, modElementRegistration.getKey(), random);
@@ -91,7 +90,7 @@ public class GTModElements {
 					}
 				}
 
-				// Disabled part of the test due to Travis timeouts
+				// Disabled part of the test to speed up automated tests
 				/*// test mod element file detection system
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);

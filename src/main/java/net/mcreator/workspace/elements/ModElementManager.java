@@ -31,8 +31,8 @@ import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -52,9 +52,9 @@ public class ModElementManager {
 
 	private final Map<ModElement, GeneratableElement> cache = new ConcurrentHashMap<>();
 
-	@NotNull private final Workspace workspace;
+	@Nonnull private final Workspace workspace;
 
-	public ModElementManager(@NotNull Workspace workspace) {
+	public ModElementManager(@Nonnull Workspace workspace) {
 		this.workspace = workspace;
 
 		this.gsonAdapter = new GeneratableElement.GSONAdapter(this.workspace);

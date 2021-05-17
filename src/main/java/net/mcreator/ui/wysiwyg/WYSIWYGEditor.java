@@ -333,10 +333,9 @@ public class WYSIWYGEditor extends JPanel {
 				invOffX.setEnabled(lol.getSelectedIndex() == 1);
 				invOffY.setEnabled(lol.getSelectedIndex() == 1);
 				if (lol.getSelectedIndex() == 0 && !isOpening()) {
-					Object[] options = { "Yes", "No" };
-					int n = JOptionPane.showOptionDialog(mcreator, (L10N.t("elementgui.gui.warning_switch_gui")),
-							(L10N.t("elementgui.gui.warning")), JOptionPane.YES_NO_CANCEL_OPTION,
-							JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+					int n = JOptionPane.showConfirmDialog(mcreator, (L10N.t("elementgui.gui.warning_switch_gui")),
+							(L10N.t("elementgui.gui.warning")), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+							null);
 					if (n == 0) {
 						slot1.setEnabled(false);
 						slot2.setEnabled(false);
