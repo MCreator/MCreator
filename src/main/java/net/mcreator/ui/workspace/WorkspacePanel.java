@@ -965,7 +965,7 @@ import java.util.stream.Collectors;
 	}
 
 	private void updateElementListRenderer() {
-		if (PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.LARGE) {
+		if (PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.TILES) {
 			list.setCellRenderer(new LargeIconModListRender(true));
 			list.setFixedCellHeight(120);
 			list.setFixedCellWidth(120);
@@ -986,7 +986,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.small.gif"));
 			view.setText(L10N.t("workspace.elements.list.small"));
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.TILES) {
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.LARGE) {
 			list.setCellRenderer(new TilesIconModListRender());
 			list.setFixedCellHeight(72);
 			list.setFixedCellWidth(287);
