@@ -48,11 +48,6 @@ jobs:
           VERSION=$(unzip -q -c build/libs/mcreator.jar META-INF/MANIFEST.MF | grep 'MCreator-Version' | cut -d ':' -f 2 | tr -d '[:space:]')
           DATE=$(unzip -q -c build/libs/mcreator.jar META-INF/MANIFEST.MF | grep 'Build-Date' | cut -d ':' -f 2 | tr -d '[:space:]')
           echo "MCR_VERSION=$VERSION.$DATE" >> $GITHUB_ENV
-      - name: Virus Scan Binaries
-        uses: Pylo/ghaction-virustotal@v2
-        with:
-          vt_api_key: ${{ secrets.VT_API_KEY }}
-          files: build/export/*
       - name: Upload Binaries and Tag Release
         uses: Pylo/upload-release-action@v2
         with:
