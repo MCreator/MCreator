@@ -125,6 +125,8 @@ import java.util.stream.Collectors;
 	public int particleAmount;
 	public Procedure particleCondition;
 
+	public Procedure placingCondition;
+
 	public boolean hasInventory;
 	public String guiBoundTo;
 	public boolean openGUIOnRightClick;

@@ -454,12 +454,11 @@ import net.minecraft.block.material.Material;
 					}
 				</#if>
 
-				Block block = state.getBlock();
-
+				Block ground = state.getBlock();
 				return
 				<#if (data.canBePlacedOn?size > 0)>(
 					<#list data.canBePlacedOn as canBePlacedOn>
-						block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						ground == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
 						<#if canBePlacedOn?has_next>||</#if>
 					</#list>)
 				</#if>
@@ -471,6 +470,7 @@ import net.minecraft.block.material.Material;
 			@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
 				BlockPos blockpos = pos.down();
 				BlockState blockstate = worldIn.getBlockState(blockpos);
+				Block ground = blockstate.getBlock();
 
 				<#if data.plantType = "normal">
 					return this.isValidGround(blockstate, worldIn, blockpos)
@@ -486,12 +486,10 @@ import net.minecraft.block.material.Material;
 					}
 					</#if>
 
-					Block block = blockstate.getBlock();
-
-					return block == this ||
+					return ground == this ||
 					<#if (data.canBePlacedOn?size > 0)>(
 						<#list data.canBePlacedOn as canBePlacedOn>
-						block == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						ground == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
 						<#if canBePlacedOn?has_next>||</#if>
 					</#list>)</#if>
 					<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>

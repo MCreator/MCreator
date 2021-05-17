@@ -8,6 +8,7 @@
     	</#if>
 		entityToSpawn.setLocationAndAngles(${input$x}, ${input$y}, ${input$z}, (float) ${input$yaw}, (float) ${input$pitch});
 		entityToSpawn.setRenderYawOffset((float) ${input$yaw});
+		entityToSpawn.setRotationYawHead((float) ${input$yaw});
 
 		if (entityToSpawn instanceof MobEntity)
 			((MobEntity)entityToSpawn).onInitialSpawn((ServerWorld) world, world.getDifficultyForLocation(entityToSpawn.getPosition()), SpawnReason.MOB_SUMMONED, (ILivingEntityData) null, (CompoundNBT) null);

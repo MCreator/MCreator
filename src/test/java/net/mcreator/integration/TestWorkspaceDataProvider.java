@@ -1152,6 +1152,7 @@ public class TestWorkspaceDataProvider {
 				block.onRedstoneOff = new Procedure("procedure12");
 				block.onEntityWalksOn = new Procedure("procedure13");
 				block.generateCondition = new Procedure("condition1");
+				block.placingCondition = new Procedure("condition2");
 				block.particleCondition = new Procedure("condition4");
 				block.redstoneCondition = new Procedure("condition14");
 			}

@@ -185,11 +185,10 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		del.addActionListener(actionEvent -> {
 			List<File> files = listGroup.getSelectedItemsList();
 			if (files.size() > 0) {
-				Object[] options = { "Yes", "No" };
-				int n = JOptionPane.showOptionDialog(workspacePanel.getMcreator(),
+				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
 						L10N.t("workspace.textures.confirm_deletion_message"),
-						L10N.t("workspace.textures.confirm_deletion_title"), JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+						L10N.t("workspace.textures.confirm_deletion_title"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null);
 
 				if (n == 0) {
 					files.forEach(file -> {
