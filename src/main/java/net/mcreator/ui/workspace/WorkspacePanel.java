@@ -477,14 +477,14 @@ import java.util.stream.Collectors;
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
 		filterPopup.addSeparator();
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"),
-				e -> search.setText("f:locked")));
+				e -> search.setText(search.getText() + "f:locked ")));
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
-				e -> search.setText("f:err")));
+				e -> search.setText(search.getText() + "f:err ")));
 		filterPopup.addSeparator();
 		for (ModElementType type : Arrays.stream(ModElementType.values())
 				.sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
-					e -> search.setText("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
+					e -> search.setText(search.getText() + "f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH) + " "))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
 
 		}
