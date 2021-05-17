@@ -15,9 +15,9 @@
     },
     "ambientocclusion": false,
     "textures": {
-        "end_rod": "${modid}:blocks${data.textureFront?has_content?then(data.textureFront, data.texture)}",
+        "end_rod": "${modid}:blocks${data.texture}",
         <#if data.particleTexture?has_content>"particle": "${modid}:blocks${data.particleTexture}"
-        <#else> "particle": "${modid}:blocks${data.textureFront?has_content?then(data.textureFront, data.texture)}"</#if>
+        <#else> "particle": "${modid}:blocks${data.texture}"</#if>
     },
     "elements": [
         {
