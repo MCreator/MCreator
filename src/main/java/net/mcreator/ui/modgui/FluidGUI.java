@@ -59,10 +59,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 	private final JSpinner frequencyOnChunks = new JSpinner(new SpinnerNumberModel(5, 0, 40, 1));
 
-	private final JCheckBox generateBucket = L10N.checkbox("elementgui.fluid.generate_bucket");
+	private final JCheckBox generateBucket = L10N.checkbox("elementgui.common.enable");
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
-	private final JCheckBox isGas = L10N.checkbox("elementgui.fluid.is_gas_checkbox");
+	private final JCheckBox isGas = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });
 
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(100, 0, Integer.MAX_VALUE, 0.5));
@@ -191,7 +191,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.fluid_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JPanel blockProperties = new JPanel(new GridLayout(6, 2, 0, 2));
+		JPanel blockProperties = new JPanel(new GridLayout(6, 2, 20, 2));
 		blockProperties.setOpaque(false);
 
 		resistance.setOpaque(false);
