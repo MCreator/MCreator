@@ -859,10 +859,10 @@ import java.util.stream.Collectors;
 	}
 	
 	private void togglefilter(String filter) {
-		if (!Pattern.matches(".*" + filter + " .*", search.getText())) {
-			search.setText(search.getText() + filter);
+		if (!Pattern.matches(".*" + filter + ".*", search.getText())) {
+			search.setText(search.getText() + " " + filter);
 		} else {
-			search.setText(search.getText().replaceAll(filter, ""));
+			search.setText(search.getText().replaceAll(" " + filter, ""));
 			search.setText(search.getText().replaceAll("  ", " "));
 		}
 	}
