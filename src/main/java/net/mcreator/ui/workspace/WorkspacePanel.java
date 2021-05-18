@@ -859,8 +859,7 @@ import java.util.stream.Collectors;
 	}
 	
 	private void togglefilter(String filter) {
-		boolean isMatch = Pattern.matches(".*" + filter + ".*", search.getText());
-		if (isMatch == false) {
+		if (!Pattern.matches(".*" + filter + ".*", search.getText())) {
 			search.setText(search.getText() + filter);
 		}
 		else {
