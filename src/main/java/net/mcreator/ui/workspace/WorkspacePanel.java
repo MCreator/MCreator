@@ -477,14 +477,14 @@ import java.util.stream.Collectors;
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
 		filterPopup.addSeparator();
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"),
-				e -> togglefilter("f:locked ")));
+				e -> togglefilter("f:locked")));
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
-				e -> togglefilter("f:err ")));
+				e -> togglefilter("f:err")));
 		filterPopup.addSeparator();
 		for (ModElementType type : Arrays.stream(ModElementType.values())
 				.sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
-					e ->  togglefilter("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH) + " "))
+					e ->  togglefilter("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
 
 		}
@@ -859,11 +859,11 @@ import java.util.stream.Collectors;
 	}
 	
 	private void togglefilter(String filter) {
-		if (!Pattern.matches(".*" + filter + ".*", search.getText())) {
+		if (!Pattern.matches(".*" + filter + " .*", search.getText())) {
 			search.setText(search.getText() + filter);
-		}
-		else {
+		} else {
 			search.setText(search.getText().replaceAll(filter, ""));
+			search.setText(search.getText().replaceAll("  ", " "));
 		}
 	}
 
