@@ -26,12 +26,22 @@ import net.mcreator.ui.blockly.BlocklyJavascriptTemplates;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 public class VariableElementTypeLoader {
 	private static final Logger LOG = LogManager.getLogger("Variable loader");
 	public static VariableElementTypeLoader INSTANCE;
+
+	private static final Map<VariableElementType, String> VARIABLE_LIST = new HashMap<>();
+
+	//Define each global variables. The instantiation is made in VariableElementTypeLoader.
+	public static VariableElementType STRING;
+	public static VariableElementType LOGIC;
+	public static VariableElementType NUMBER;
+	public static VariableElementType ITEMSTACK;
 
 	public final StringBuilder JS_CACHE = new StringBuilder();
 
@@ -49,7 +59,7 @@ public class VariableElementTypeLoader {
 			VariableElementType variable = gson
 					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), VariableElementType.class);
 			LOG.debug("Added " + variable.getName() + " to variable types");
-			VariableElement.addVariableTypeToCache(variable);
+			VariableElementTypeLoader.addVariableTypeToCache(variable);
 
 			//We begin by creating the extensions needed for other blocks
 			JS_CACHE.append(BlocklyJavascriptTemplates.variableListExtension(variable));
@@ -64,18 +74,35 @@ public class VariableElementTypeLoader {
 			//We check the type of the variable, if it is a global var, we instantiate it with this variable.
 			switch (variable.getName().toLowerCase()) {
 			case "logic":
-				VariableElementType.LOGIC = variable;
+				LOGIC = variable;
 				break;
 			case "number":
-				VariableElementType.NUMBER = variable;
+				NUMBER = variable;
 				break;
 			case "string":
-				VariableElementType.STRING = variable;
+				STRING = variable;
 				break;
 			case "itemstack":
-				VariableElementType.ITEMSTACK = variable;
+				ITEMSTACK = variable;
 				break;
 			}
 		}
+	}
+
+	public static VariableElementType getVariableFromType(String type) {
+		for (VariableElementType varType : VARIABLE_LIST.keySet()) {
+			if(varType.getBlocklyVariableType().equalsIgnoreCase(type) || varType.getName().equalsIgnoreCase(type)) {
+				return varType;
+			}
+		}
+		return null;
+	}
+
+	public static Set<VariableElementType> getVariables() {
+		return VARIABLE_LIST.keySet();
+	}
+
+	public static void addVariableTypeToCache(VariableElementType var) {
+		VARIABLE_LIST.put(var, var.getName());
 	}
 }

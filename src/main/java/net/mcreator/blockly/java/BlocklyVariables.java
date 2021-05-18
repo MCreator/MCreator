@@ -20,7 +20,6 @@ package net.mcreator.blockly.java;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.w3c.dom.Element;
@@ -44,7 +43,7 @@ public class BlocklyVariables {
 			for (Element variable : variables) {
 				String type = variable.getAttribute("type");
 				String name = variable.getAttribute("id");
-				VariableElementType var = VariableElement.getVariableFromType(type);
+				VariableElementType var = VariableElementTypeLoader.getVariableFromType(type);
 				if (var != null && var.getBlocklyVariableType() != null && name != null) {
 					generator.append(var.getJavaClass()).append(" ").append(name).append(" = ")
 							.append(var.getDefaultValue()).append(";\n");
@@ -62,7 +61,7 @@ public class BlocklyVariables {
 	}
 
 	public static VariableElementType getVarElementTypeFromBlocklyType(String blocklyType) {
-		for(VariableElementType elementType : VariableElement.getVariables()) {
+		for(VariableElementType elementType : VariableElementTypeLoader.getVariables()) {
 			if(elementType.getBlocklyVariableType().equals(blocklyType))
 				return elementType;
 		}

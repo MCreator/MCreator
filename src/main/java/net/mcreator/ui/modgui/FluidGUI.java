@@ -37,7 +37,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -97,7 +97,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				"Additional generation condition", VariableElementType.LOGIC,
+				"Additional generation condition", VariableElementTypeLoader.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.setDefaultName("(no additional condition)");
 

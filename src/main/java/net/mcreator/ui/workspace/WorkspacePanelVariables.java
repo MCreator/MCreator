@@ -35,6 +35,7 @@ import net.mcreator.util.DesktopUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -78,13 +79,13 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					if (n == JOptionPane.YES_OPTION) {
 						super.setValueAt(value, row, column);
 						if (column == 1) { // variable type has been changed
-							VariableElementType type = VariableElement
+							VariableElementType type = VariableElementTypeLoader
 									.getVariableFromType((String) getValueAt(row, column));
-							if (type == VariableElementType.NUMBER) {
+							if (type == VariableElementTypeLoader.NUMBER) {
 								elements.setValueAt("0", row, 3);
-							} else if (type == VariableElementType.LOGIC) {
+							} else if (type == VariableElementTypeLoader.LOGIC) {
 								elements.setValueAt("false", row, 3);
-							} else if (type == VariableElementType.STRING) {
+							} else if (type == VariableElementTypeLoader.STRING) {
 								elements.setValueAt("", row, 3);
 							} else {
 								elements.setValueAt("", row, 3);
@@ -102,8 +103,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					return new DefaultCellEditor(new JComboBox<>(VariableElementType.Scope.values()));
 				} else if (modelColumn == 1) {
 					return new DefaultCellEditor(new JComboBox<>(
-							new String[] { VariableElementType.ITEMSTACK.getName(), VariableElementType.LOGIC.getName(),
-									VariableElementType.NUMBER.getName(), VariableElementType.STRING.getName() }));
+							new String[] { VariableElementTypeLoader.ITEMSTACK.getName(), VariableElementTypeLoader.LOGIC.getName(),
+									VariableElementTypeLoader.NUMBER.getName(), VariableElementTypeLoader.STRING.getName() }));
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
 					name.enableRealtimeValidation();
@@ -126,11 +127,11 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					};
 				} else if (modelColumn == 3) {
 					VariableElementType data = (VariableElementType) elements.getValueAt(row, 1);
-					if (data == VariableElementType.NUMBER) {
+					if (data == VariableElementTypeLoader.NUMBER) {
 						JSpinner spinner = new JSpinner(
 								new SpinnerNumberModel(0, -Double.MAX_VALUE, Double.MAX_VALUE, 0.1));
 						return new SpinnerCellEditor(spinner);
-					} else if (data == VariableElementType.LOGIC) {
+					} else if (data == VariableElementTypeLoader.LOGIC) {
 						return new DefaultCellEditor(new JComboBox<>(new String[] { "true", "false" }));
 					}
 				}
@@ -141,7 +142,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			@Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component component = super.prepareRenderer(renderer, row, column);
 				if (column == 1) {
-					VariableElementType value = VariableElement.getVariableFromType(
+					VariableElementType value = VariableElementTypeLoader.getVariableFromType(
 							(String) getModel().getValueAt(row, column));
 					if (value != null) {
 						component.setForeground(value.getColor().brighter());
@@ -231,8 +232,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 									}
 									return validator.validate();
 								}
-							}, VariableElementType.LOGIC, VariableElementType.NUMBER, VariableElementType.STRING,
-							VariableElementType.ITEMSTACK);
+							}, VariableElementTypeLoader.LOGIC, VariableElementTypeLoader.NUMBER, VariableElementTypeLoader.STRING,
+							VariableElementTypeLoader.ITEMSTACK);
 			if (element != null) {
 				workspacePanel.getMcreator().getWorkspace().addVariableElement(element);
 				reloadElements();

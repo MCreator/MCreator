@@ -56,7 +56,7 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
@@ -296,15 +296,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
-				VariableElementType.LOGIC, Dependency.fromString("x:number/y:number/z:number/world:world"));
+				VariableElementTypeLoader.LOGIC, Dependency.fromString("x:number/y:number/z:number/world:world"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
-				L10N.t("elementgui.block.event_placing_condition"), VariableElementType.LOGIC,
+				L10N.t("elementgui.block.event_placing_condition"), VariableElementTypeLoader.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.setDefaultName("(no additional condition)");
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				L10N.t("elementgui.block.event_generate_condition"), VariableElementType.LOGIC,
+				L10N.t("elementgui.block.event_generate_condition"), VariableElementTypeLoader.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.setDefaultName("(no additional condition)");
 

@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class VariableElement implements IElement {
-	private static final Map<VariableElementType, String> VARIABLE_CACHE = new HashMap<>();
 
 	private String name;
 	private String type;
@@ -43,24 +42,7 @@ public class VariableElement implements IElement {
 	}
 
 	public VariableElementType getType() {
-		return getVariableFromType(type);
-	}
-
-	public static VariableElementType getVariableFromType(String type) {
-		for (VariableElementType varType : VARIABLE_CACHE.keySet()) {
-			if(varType.getBlocklyVariableType().equalsIgnoreCase(type) || varType.getName().equalsIgnoreCase(type)) {
-				return varType;
-			}
-		}
-		return null;
-	}
-
-	public static Set<VariableElementType> getVariables() {
-		return VARIABLE_CACHE.keySet();
-	}
-
-	public static void addVariableTypeToCache(VariableElementType var) {
-		VARIABLE_CACHE.put(var, var.getName());
+		return VariableElementTypeLoader.getVariableFromType(type);
 	}
 
 	public void setType(VariableElementType type) {

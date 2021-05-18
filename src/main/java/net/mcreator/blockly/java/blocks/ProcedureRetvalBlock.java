@@ -24,8 +24,8 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
@@ -38,7 +38,7 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 	private final Set<String> names = new HashSet<>();
 
 	public ProcedureRetvalBlock() {
-		for (VariableElementType elementType : VariableElement.getVariables()) {
+		for (VariableElementType elementType : VariableElementTypeLoader.getVariables()) {
 			names.add("procedure_retval_" + elementType.getName());
 		}
 	}

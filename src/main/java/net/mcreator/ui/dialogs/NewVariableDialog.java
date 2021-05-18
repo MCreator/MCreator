@@ -25,6 +25,7 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,7 +68,7 @@ public class NewVariableDialog {
 				&& textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
 				&& type.getSelectedItem() != null) {
 			VariableElement element = new VariableElement();
-			VariableElementType variable = VariableElement.getVariableFromType(((VariableElementType) type.getSelectedItem()).getName());
+			VariableElementType variable = VariableElementTypeLoader.getVariableFromType(((VariableElementType) type.getSelectedItem()).getName());
 			element.setName(Transliteration.transliterateString(textField.getText()));
 			element.setType((VariableElementType) type.getSelectedItem());
 			element.setValue(Objects.requireNonNull(variable).getDefaultValue());

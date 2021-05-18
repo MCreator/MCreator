@@ -49,6 +49,7 @@ import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -380,7 +381,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 									}
 									return validator.validate();
 								}
-							}, VariableElement.getVariables().toArray(new VariableElementType[0]));
+							}, VariableElementTypeLoader.getVariables().toArray(new VariableElementType[0]));
 			if (element != null) {
 				blocklyPanel.addLocalVariable(element.getName(),
 						element.getType().getBlocklyVariableType());

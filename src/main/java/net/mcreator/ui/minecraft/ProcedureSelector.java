@@ -45,8 +45,8 @@ import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -114,10 +114,13 @@ public class ProcedureSelector extends JPanel {
 		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
 
-		if (returnType == VariableElementType.LOGIC) {
-			defaultName = "(always)";
+		if (returnType != null) {
 			setBorder(BorderFactory
-					.createLineBorder(new Dependency("", VariableElementType.LOGIC.getName()).getColor()));
+					.createLineBorder(new Dependency("", returnType.getName()).getColor()));
+		}
+
+		if (returnType == VariableElementTypeLoader.LOGIC) {
+			defaultName = "(always)";
 		}
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
@@ -172,7 +175,7 @@ public class ProcedureSelector extends JPanel {
 		top.add("South", depslab);
 
 		JComponent procwrap;
-		if (returnType == VariableElementType.LOGIC) {
+		if (returnType == VariableElementTypeLoader.LOGIC) {
 			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" if:  "), 15), procedures);
 		} else if (returnType == null) {
 			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" do:  "), 15), procedures);
@@ -292,7 +295,7 @@ public class ProcedureSelector extends JPanel {
 			if (mod.getType() == ModElementType.PROCEDURE) {
 				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
 				VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-						VariableElement.getVariableFromType((String) mod.getMetadata("return_type")) :
+						VariableElementTypeLoader.getVariableFromType((String) mod.getMetadata("return_type")) :
 						null;
 				List<Dependency> realdepsList = new ArrayList<>();
 				if (dependenciesList == null)

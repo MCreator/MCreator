@@ -28,6 +28,7 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
@@ -38,8 +39,8 @@ public class GetVariableBlock implements IBlockGenerator {
 	private final Set<String> names = new HashSet<>();
 
 	public GetVariableBlock() {
-		for (VariableElementType var : VariableElement.getVariables()) {
-			names.add("variables_get_" + var.getName());
+		for (VariableElementType variableElementType : VariableElementTypeLoader.getVariables()) {
+			names.add("variables_get_" + variableElementType.getName());
 		}
 	}
 

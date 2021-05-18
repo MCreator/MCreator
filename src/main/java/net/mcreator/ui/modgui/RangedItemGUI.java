@@ -48,7 +48,7 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
@@ -147,11 +147,11 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		useCondition = new ProcedureSelector(this.withEntry("rangeditem/use_condition"), mcreator,
-				L10N.t("elementgui.ranged_item.can_use"), VariableElementType.LOGIC,
+				L10N.t("elementgui.ranged_item.can_use"), VariableElementTypeLoader.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.ranged_item.make_glow"), ProcedureSelector.Side.CLIENT, true,
-				VariableElementType.LOGIC,
+				VariableElementTypeLoader.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		customBulletModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");

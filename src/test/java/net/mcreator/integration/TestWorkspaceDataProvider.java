@@ -44,6 +44,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import java.awt.*;
 import java.awt.image.RenderedImage;
@@ -111,7 +112,7 @@ public class TestWorkspaceDataProvider {
 		VariableElement sampleVariable1 = new VariableElement();
 		sampleVariable1.setName("test");
 		sampleVariable1.setValue("true");
-		sampleVariable1.setType(VariableElementType.LOGIC);
+		sampleVariable1.setType(VariableElementTypeLoader.LOGIC);
 		sampleVariable1.setScope(VariableElementType.Scope.GLOBAL_WORLD);
 		workspace.addVariableElement(sampleVariable1);
 

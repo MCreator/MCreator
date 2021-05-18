@@ -19,8 +19,8 @@
 package net.mcreator.blockly;
 
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -178,7 +178,7 @@ public class BlocklyBlockUtil {
 			while ((line = r.readLine()) != null) {
 				if (line.contains("category.custom_variables")) {
 					newLine = new StringBuilder(line);
-					for (VariableElementType varType : VariableElement.getVariables()) {
+					for (VariableElementType varType : VariableElementTypeLoader.getVariables()) {
 						newLine.append("\n<block type=\"variables_get_").append(varType.getName())
 								.append("\"/>\n<block type=\"variables_set_").append(varType.getName())
 								.append("\"/>");
@@ -189,7 +189,7 @@ public class BlocklyBlockUtil {
 					//We check for the last line so we can add blocks after the other blocks
 				} else if (line.contains("<custom-advanced/>")) {
 					newLine = new StringBuilder();
-					for (VariableElementType varType : VariableElement.getVariables()) {
+					for (VariableElementType varType : VariableElementTypeLoader.getVariables()) {
 						newLine.append("\n<block type=\"custom_dependency_").append(varType.getName())
 								.append("\"/>\n<block type=\"procedure_retval_").append(varType.getName())
 								.append("\"/>");
@@ -200,7 +200,7 @@ public class BlocklyBlockUtil {
 					}
 				} else if (line.contains("<block type=\"controls_repeat_ext\"/>")) {
 					newLine = new StringBuilder();
-					for (VariableElementType varType : VariableElement.getVariables()) {
+					for (VariableElementType varType : VariableElementTypeLoader.getVariables()) {
 						newLine.append("\n<block type=\"return_").append(varType.getName()).append("\"/>");
 					}
 					newLine.append(line);

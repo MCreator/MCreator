@@ -61,7 +61,7 @@ import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
@@ -303,10 +303,10 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 		particleCondition = new ProcedureSelector(this.withEntry("entity/particle_condition"), mcreator,
 				L10N.t("elementgui.living_entity.condition_particle_spawn"), ProcedureSelector.Side.CLIENT, true,
-				VariableElementType.LOGIC,
+				VariableElementTypeLoader.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		spawningCondition = new ProcedureSelector(this.withEntry("entity/condition_natural_spawning"), mcreator,
-				L10N.t("elementgui.living_entity.condition_natural_spawn"), VariableElementType.LOGIC,
+				L10N.t("elementgui.living_entity.condition_natural_spawn"), VariableElementTypeLoader.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.setDefaultName(L10N.t("elementgui.living_entity.condition_use_vanilla"));
 

@@ -26,12 +26,6 @@ import java.awt.*;
 
 public class VariableElementType {
 
-	//Define each global variables. The instantiation is made in VariableElementTypeLoader.
-	public static VariableElementType STRING;
-	public static VariableElementType LOGIC;
-	public static VariableElementType NUMBER;
-	public static VariableElementType ITEMSTACK;
-
 	private String name;
 	private String color;
 	private String defaultValue;

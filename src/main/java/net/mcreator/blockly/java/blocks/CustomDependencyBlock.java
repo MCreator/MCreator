@@ -23,8 +23,8 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
@@ -35,7 +35,7 @@ public class CustomDependencyBlock implements IBlockGenerator {
 	private final Set<String> names = new HashSet<>();
 
 	public CustomDependencyBlock() {
-		for (VariableElementType var : VariableElement.getVariables()) {
+		for (VariableElementType var : VariableElementTypeLoader.getVariables()) {
 			names.add("custom_dependency_" + var.getName());
 		}
 	}

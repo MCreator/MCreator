@@ -40,7 +40,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
@@ -98,7 +98,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 		generateCondition = new ProcedureSelector(this.withEntry("structure/condition"), mcreator,
 				L10N.t("elementgui.structuregen.event_additional_structure_condition_is"),
-				ProcedureSelector.Side.SERVER, true, VariableElementType.LOGIC,
+				ProcedureSelector.Side.SERVER, true, VariableElementTypeLoader.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.setDefaultName(L10N.t("elementgui.structuregen.event_additional_structure_condition_none"));
 
