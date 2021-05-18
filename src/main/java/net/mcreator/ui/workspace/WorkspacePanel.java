@@ -473,18 +473,18 @@ import java.util.stream.Collectors;
 
 		se.add("West", leftPan);
 
-		JScrollablePopupMenu filterPopup = new JScrollablePopupMenu();
+                JScrollablePopupMenu filterPopup = new JScrollablePopupMenu();
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
 		filterPopup.addSeparator();
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"),
-				e -> search.setText(search.getText() + "f:locked ")));
+				e -> filter("locked")));
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
-				e -> search.setText(search.getText() + "f:err ")));
+				e -> filter("err")));
 		filterPopup.addSeparator();
 		for (ModElementType type : Arrays.stream(ModElementType.values())
 				.sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
-					e -> search.setText(search.getText() + "f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH) + " "))
+					e ->  filterElement(type))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
 
 		}
@@ -856,6 +856,30 @@ import java.util.stream.Collectors;
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
 		upFolder.setEnabled(!currentFolder.isRoot());
+	}
+	
+	private void filterElement(ModElementType type) {
+		String filter = "f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH) + " ";
+		boolean isMatch = Pattern.matches(".*f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH) + " .*", search.getText());
+		System.out.println(isMatch);
+		if (isMatch == false) {
+			search.setText(search.getText() + filter);
+		}
+		else if (isMatch == true)  {
+			search.setText(search.getText().replaceAll(filter, ""));
+
+		}
+	}
+	
+	private void filter(String text) {
+		String filter = "f:" + text + " ";
+		boolean isMatch = Pattern.matches(".*f:" + text + " .*", search.getText());
+		if (isMatch == false) {
+			search.setText(search.getText() + filter);
+		}
+		else if (isMatch == true)  {
+			search.setText(search.getText().replaceAll(filter, ""));
+		}
 	}
 
 	private void resort() {
