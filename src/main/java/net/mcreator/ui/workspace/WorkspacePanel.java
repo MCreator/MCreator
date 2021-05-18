@@ -472,19 +472,19 @@ import java.util.stream.Collectors;
 		leftPan.add(sort);
 
 		se.add("West", leftPan);
-
+		
                 JScrollablePopupMenu filterPopup = new JScrollablePopupMenu();
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
 		filterPopup.addSeparator();
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"),
-				e -> filter("locked")));
+				e -> togglefilter("locked")));
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
-				e -> filter("err")));
+				e -> togglefilter("err")));
 		filterPopup.addSeparator();
 		for (ModElementType type : Arrays.stream(ModElementType.values())
 				.sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
-					e ->  filter(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
+					e ->  togglefilter(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
 
 		}
@@ -858,14 +858,14 @@ import java.util.stream.Collectors;
 		upFolder.setEnabled(!currentFolder.isRoot());
 	}
 	
-	private void filter(String text) {
-		String filter = "f:" + text + " ";
-		boolean isMatch = Pattern.matches(".*f:" + text + " .*", search.getText());
+	private void togglefilter(String filter) {
+		String filter2 = "f:" + filter + " ";
+		boolean isMatch = Pattern.matches(".*f:" + filter + " .*", search.getText());
 		if (isMatch == false) {
-			search.setText(search.getText() + filter);
+			search.setText(search.getText() + filter2);
 		}
-		else if (isMatch == true)  {
-			search.setText(search.getText().replaceAll(filter, ""));
+		else {
+			search.setText(search.getText().replaceAll(filter2, ""));
 		}
 	}
 
