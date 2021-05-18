@@ -484,7 +484,7 @@ import java.util.stream.Collectors;
 		for (ModElementType type : Arrays.stream(ModElementType.values())
 				.sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
-					e ->  filterElement(type))
+					e ->  filter(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
 
 		}
@@ -856,19 +856,6 @@ import java.util.stream.Collectors;
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
 		upFolder.setEnabled(!currentFolder.isRoot());
-	}
-	
-	private void filterElement(ModElementType type) {
-		String filter = "f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH) + " ";
-		boolean isMatch = Pattern.matches(".*f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH) + " .*", search.getText());
-		System.out.println(isMatch);
-		if (isMatch == false) {
-			search.setText(search.getText() + filter);
-		}
-		else if (isMatch == true)  {
-			search.setText(search.getText().replaceAll(filter, ""));
-
-		}
 	}
 	
 	private void filter(String text) {
