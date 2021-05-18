@@ -49,13 +49,8 @@ public class RSyntaxTextAreaStyler {
 	public static void style(RSyntaxTextArea te, RTextScrollPane sp, int initialFontSize) {
 		try {
 			AtomicReference<InputStream> input = new AtomicReference<>();
-			// We use by default the dark color theme
-			String id = ThemeLoader.DARK_THEME.getID();
-			// If the current color theme contains its own file, we use this one, otherwise we keep the default one
-			if (!ThemeLoader.CURRENT_THEME.getColorScheme().getCodeEditorFile().equals("dark"))
-				id = ThemeLoader.CURRENT_THEME.getID();
 
-			new Reflections("themes." + id + ".colors", new ResourcesScanner(), PluginLoader.INSTANCE)
+			new Reflections("themes." + ThemeLoader.CURRENT_THEME.getID() + ".colors", new ResourcesScanner(), PluginLoader.INSTANCE)
 					.getResources(Pattern.compile((String) UIManager.get("MCreatorLAF.CODE_EDITOR_XML"))).parallelStream().forEach(
 					e -> {
 						try {

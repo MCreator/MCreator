@@ -40,7 +40,7 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 			setCurrentTheme(theme = new MCreatorTheme(
 					ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme).getColorScheme()));
 		} else {
-			setCurrentTheme(theme = new MCreatorTheme(ThemeLoader.DARK_THEME.getColorScheme()));
+			setCurrentTheme(theme = new MCreatorTheme(ThemeLoader.getTheme("default_dark").getColorScheme()));
 			LOG.warn("Default theme is used due to missing theme " + theme.getName());
 		}
 	}

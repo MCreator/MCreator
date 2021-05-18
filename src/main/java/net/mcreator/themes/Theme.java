@@ -53,11 +53,13 @@ public class Theme {
 	}
 
 	public String getDescription() {
-		String translated = L10N.t("theme." + id + ".description");
+		// Description inside the JSON file
 		if (description != null)
 			return description;
-		else if (!translated.equals("theme." + id + ".description"))
-			return translated;
+		// Localized description
+		else if (!L10N.t("theme." + id + ".description").equals("theme." + id + ".description"))
+			return L10N.t("theme." + id + ".description");
+		// No description
 		else
 			return null;
 	}
@@ -73,12 +75,9 @@ public class Theme {
 	public ColorScheme getColorScheme() {
 		if(colorScheme != null)
 			return colorScheme;
+		// We are sure the Dark theme's color scheme exists as it's in the main one, so we can get it
 		else
-			return MCreatorTheme.DARK_SCHEME;
-	}
-
-	public void setColorScheme(@Nullable ColorScheme colorScheme) {
-		this.colorScheme = colorScheme;
+			return ThemeLoader.getTheme("default_dark").getColorScheme();
 	}
 
 	public ImageIcon getIcon() {

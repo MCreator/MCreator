@@ -60,7 +60,6 @@ public class ThemeLoader {
 	private static final Logger LOG = LogManager.getLogger("Theme Loader");
 
 	private static final LinkedHashSet<Theme> THEMES = new LinkedHashSet<>();
-	public static Theme DARK_THEME;
 	public static Theme CURRENT_THEME;
 
 	public static void initUIThemes() {
@@ -97,10 +96,6 @@ public class ThemeLoader {
 				} else {
 					theme.getColorScheme().setCodeEditorFile(theme.getColorScheme().getID());
 				}
-			} else if (theme.getID().equals("default_dark")) {
-				// We set a default theme, so we can use it for its values instead of throwing an error
-				DARK_THEME = theme;
-				DARK_THEME.setColorScheme(MCreatorTheme.DARK_SCHEME);
 			}
 
 			// Load the custom icon if provided otherwise, load the default one

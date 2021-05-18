@@ -50,7 +50,7 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	DefaultListModel<String> model = new DefaultListModel<>();
 	JPanel preferences = new JPanel();
-	private final ThemesPanel themes = new ThemesPanel(this); // We create the variable here, so we can access it when we store tha preferences
+	private final ThemesPanel themes; // We create the variable here, so we can access it when we store tha preferences
 
 	private final JList<String> sections = new JList<>(model);
 	private final CardLayout preferencesLayout = new CardLayout();
@@ -133,6 +133,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		sections.addListSelectionListener(e -> preferencesLayout.show(preferences, sections.getSelectedValue()));
 
 		loadSections();
+		themes = new ThemesPanel(this);
 
 		if (selectedTab != null) {
 			for (int i = 0; i < sections.getModel().getSize(); i++) {
@@ -178,6 +179,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_armor_templates"), "templates/textures/armormaker",
 				"png");
 		new PluginsPanel(this);
+
 	}
 
 	private void createPreferencesPanel(Field sectionField) {

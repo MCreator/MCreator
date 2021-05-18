@@ -1,3 +1,11 @@
 {
-  "name": "Default Dark"
+  "name": "Default Dark",
+  "colorScheme": {
+    "id": "light",
+    "altBackgroundColor": "0x1e1e1e",
+    "backgroundColor": "0x323232",
+    "actionColor": "0x505050",
+    "foregroundColor": "0xc2c2c2",
+    "borderColor": "0xf5f5f5"
+  }
 }
