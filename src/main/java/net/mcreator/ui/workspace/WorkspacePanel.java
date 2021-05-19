@@ -472,8 +472,8 @@ import java.util.stream.Collectors;
 		leftPan.add(sort);
 
 		se.add("West", leftPan);
-		
-                JScrollablePopupMenu filterPopup = new JScrollablePopupMenu();
+
+		JScrollablePopupMenu filterPopup = new JScrollablePopupMenu();
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
 		filterPopup.addSeparator();
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"),
