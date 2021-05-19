@@ -862,7 +862,7 @@ import java.util.stream.Collectors;
 		if (!Pattern.matches(".*" + filter + ".*", search.getText())) {
 			search.setText(search.getText() + " " + filter);
 		} else {
-			search.setText(search.getText().replaceAll(" " + filter, "").replaceAll(" ", " "));
+			search.setText(search.getText().replaceAll(" " + filter, "").replaceAll("  ", " "));
 		}
 	}
 
