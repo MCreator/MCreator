@@ -96,7 +96,7 @@ import java.util.stream.Collectors;
 	public boolean isReplaceable;
 	public boolean emitsRedstone;
 	public int emittedRedstonePower;
-	public Procedure redstoneCondition;
+	public Procedure redstonePowerProvider;
 	public String colorOnMap;
 	public MItemBlock creativePickItem;
 	public String offsetType;

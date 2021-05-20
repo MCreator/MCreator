@@ -104,7 +104,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onRedstoneOff;
 
 	private ProcedureSelector particleCondition;
-	private ProcedureSelector redstoneCondition;
+	private ProcedureSelector redstonePowerProvider;
 	private ProcedureSelector placingCondition;
 	private ProcedureSelector generateCondition;
 
@@ -301,8 +301,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
 				VariableElementType.LOGIC, Dependency.fromString("x:number/y:number/z:number/world:world"));
 
-		redstoneCondition = new ProcedureSelector(this.withEntry("block/redstone_condition"), mcreator,
-				L10N.t("elementgui.block.event_redstone_condition"), ProcedureSelector.Side.CLIENT, true,
+		redstonePowerProvider = new ProcedureSelector(this.withEntry("block/redstone_provider"), mcreator,
+				L10N.t("elementgui.block.event_redstone_provider"), ProcedureSelector.Side.CLIENT, true,
 				VariableElementType.NUMBER, Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.setDefaultName(L10N.t("elementgui.common.no_additional_condition"));
 
@@ -1084,7 +1084,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		redstoneParameters.add(emittedRedstonePower);
 
 		JComponent redCond = PanelUtils.northAndCenterElement(redstoneParameters,
-				PanelUtils.join(FlowLayout.LEFT, redstoneCondition));
+				PanelUtils.join(FlowLayout.LEFT, redstonePowerProvider));
 		redCond.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.properties_redstone"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
@@ -1222,7 +1222,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRedstoneOff.refreshListKeepSelected();
 
 		particleCondition.refreshListKeepSelected();
-		redstoneCondition.refreshListKeepSelected();
+		redstonePowerProvider.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
 
@@ -1305,7 +1305,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		particleToSpawn.setSelectedItem(block.particleToSpawn);
 		particleSpawningShape.setSelectedItem(block.particleSpawningShape);
 		particleCondition.setSelectedProcedure(block.particleCondition);
-		redstoneCondition.setSelectedProcedure(block.redstoneCondition);
+		redstonePowerProvider.setSelectedProcedure(block.redstonePowerProvider);
 		generateCondition.setSelectedProcedure(block.generateCondition);
 		particleSpawningRadious.setValue(block.particleSpawningRadious);
 		particleAmount.setValue(block.particleAmount);
@@ -1438,7 +1438,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.particleSpawningRadious = (double) particleSpawningRadious.getValue();
 		block.particleAmount = (int) particleAmount.getValue();
 		block.particleCondition = particleCondition.getSelectedProcedure();
-		block.redstoneCondition = redstoneCondition.getSelectedProcedure();
+		block.redstonePowerProvider = redstonePowerProvider.getSelectedProcedure();
 		block.generateCondition = generateCondition.getSelectedProcedure();
 		block.hasInventory = hasInventory.isSelected();
 		block.useLootTableForDrops = useLootTableForDrops.isSelected();
