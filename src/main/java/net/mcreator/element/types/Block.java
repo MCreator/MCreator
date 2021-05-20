@@ -110,7 +110,15 @@ import java.util.stream.Collectors;
 	public String reactionToPushing;
 
 	public boolean isNotColidable;
+
+	public boolean isCustomSoundType;
 	public StepSound soundOnStep;
+	public Sound breakSound;
+	public Sound stepSound;
+	public Sound placeSound;
+	public Sound hitSound;
+	public Sound fallSound;
+
 	public int luminance;
 	public boolean unbreakable;
 	public int breakHarvestLevel;
