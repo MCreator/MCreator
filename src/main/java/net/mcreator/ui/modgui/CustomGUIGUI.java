@@ -106,6 +106,16 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 			editor.slot2.setEnabled(true);
 		}
 
+		editor.sx.setValue(gui.sx);
+		editor.sy.setValue(gui.sy);
+		editor.ox.setValue(gui.ox);
+		editor.oy.setValue(gui.oy);
+		editor.snapOnGrid.setSelected(gui.snapOnGrid);
+		if (gui.snapOnGrid) {
+			editor.editor.showGrid = true;
+			editor.editor.repaint();
+		}
+
 		editor.setOpening(false);
 	}
 
@@ -122,6 +132,12 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		gui.onOpen = onOpen.getSelectedProcedure();
 		gui.onTick = onTick.getSelectedProcedure();
 		gui.onClosed = onClosed.getSelectedProcedure();
+
+		gui.sx = (int) editor.sx.getValue();
+		gui.sy = (int) editor.sy.getValue();
+		gui.ox = (int) editor.ox.getValue();
+		gui.oy = (int) editor.oy.getValue();
+		gui.snapOnGrid = editor.snapOnGrid.isSelected();
 		return gui;
 	}
 
