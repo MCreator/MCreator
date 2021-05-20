@@ -857,12 +857,13 @@ import java.util.stream.Collectors;
 
 		upFolder.setEnabled(!currentFolder.isRoot());
 	}
-	
+
 	private void togglefilter(String filter) {
-		if (!Pattern.matches(".*" + filter + ".*", search.getText())) {
-			search.setText(search.getText() + " " + filter);
+		String currentSearchText = search.getText().trim();
+		if (currentSearchText.contains(filter)) {
+			search.setText(currentSearchText.replace(filter, "").replaceAll("\\s{2,}", " ").trim());
 		} else {
-			search.setText(search.getText().replaceAll(" " + filter, "").replaceAll("  ", " "));
+			search.setText(filter + " " + currentSearchText);
 		}
 	}
 
