@@ -484,7 +484,7 @@ import java.util.stream.Collectors;
 		for (ModElementType type : Arrays.stream(ModElementType.values())
 				.sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
-					e ->  togglefilter("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
+					e -> togglefilter("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
 
 		}

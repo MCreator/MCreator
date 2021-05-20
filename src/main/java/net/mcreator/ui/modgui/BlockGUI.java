@@ -371,7 +371,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 				if (blockBase.getSelectedItem().equals("Wall") || blockBase.getSelectedItem().equals("Fence")
 						|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem().equals("Door")
-						|| blockBase.getSelectedItem().equals("FenceGate") || blockBase.getSelectedItem().equals("EndRod")) {
+						|| blockBase.getSelectedItem().equals("FenceGate") || blockBase.getSelectedItem()
+						.equals("EndRod")) {
 					if (!isEditingMode()) {
 						hasTransparency.setSelected(true);
 						lightOpacity.setValue(0);
