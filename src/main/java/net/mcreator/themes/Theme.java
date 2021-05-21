@@ -20,7 +20,6 @@
 package net.mcreator.themes;
 
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.MCreatorTheme;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
