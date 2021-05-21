@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.parts.GridSettings;
 import net.mcreator.element.types.Overlay;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComboBoxUtil;
@@ -42,7 +41,6 @@ import java.util.stream.Collectors;
 public class OverlayGUI extends ModElementGUI<Overlay> {
 
 	private WYSIWYGEditor editor;
-	private GridSettings gridSettings;
 
 	private ProcedureSelector displayCondition;
 
@@ -98,12 +96,12 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		editor.overlayBaseTexture.setSelectedItem(overlay.baseTexture);
 		displayCondition.setSelectedProcedure(overlay.displayCondition);
 
-		editor.sx.setValue(gridSettings.sx);
-		editor.sy.setValue(gridSettings.sy);
-		editor.ox.setValue(gridSettings.ox);
-		editor.oy.setValue(gridSettings.oy);
-		editor.snapOnGrid.setSelected(gridSettings.snapOnGrid);
-		if (gridSettings.snapOnGrid) {
+		editor.sx.setValue(overlay.gridSettings.sx);
+		editor.sy.setValue(overlay.gridSettings.sy);
+		editor.ox.setValue(overlay.gridSettings.ox);
+		editor.oy.setValue(overlay.gridSettings.oy);
+		editor.snapOnGrid.setSelected(overlay.gridSettings.snapOnGrid);
+		if (overlay.gridSettings.snapOnGrid) {
 			editor.editor.showGrid = true;
 			editor.editor.repaint();
 		}
@@ -116,11 +114,11 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		overlay.baseTexture = editor.overlayBaseTexture.getSelectedItem();
 		overlay.displayCondition = displayCondition.getSelectedProcedure();
 
-		gridSettings.sx = (int) editor.sx.getValue();
-		gridSettings.sy = (int) editor.sy.getValue();
-		gridSettings.ox = (int) editor.ox.getValue();
-		gridSettings.oy = (int) editor.oy.getValue();
-		gridSettings.snapOnGrid = editor.snapOnGrid.isSelected();
+		overlay.gridSettings.sx = (int) editor.sx.getValue();
+		overlay.gridSettings.sy = (int) editor.sy.getValue();
+		overlay.gridSettings.ox = (int) editor.ox.getValue();
+		overlay.gridSettings.oy = (int) editor.oy.getValue();
+		overlay.gridSettings.snapOnGrid = editor.snapOnGrid.isSelected();
 		return overlay;
 	}
 
