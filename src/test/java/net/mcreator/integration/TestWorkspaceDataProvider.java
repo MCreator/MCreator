@@ -936,6 +936,9 @@ public class TestWorkspaceDataProvider {
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
+			item.hasDispenseBehavior = _true;
+			item.dispenseSuccessCondition = !_true ? null : new Procedure("condition1");
+			item.dispenseResultItemstack = !_true ? null : new Procedure("itemstack1");
 			if (!emptyLists) {
 				item.specialInfo = StringUtils
 						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
