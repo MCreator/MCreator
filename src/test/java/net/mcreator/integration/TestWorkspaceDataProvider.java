@@ -1162,7 +1162,7 @@ public class TestWorkspaceDataProvider {
 				block.generateCondition = new Procedure("condition1");
 				block.placingCondition = new Procedure("condition2");
 				block.particleCondition = new Procedure("condition4");
-				block.redstoneCondition = new Procedure("condition14");
+				block.redstonePowerProvider = new Procedure("number1");
 			}
 			block.itemTexture = emptyLists ? "" : "itest";
 			block.particleTexture = emptyLists ? "" : "test7";

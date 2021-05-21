@@ -117,6 +117,10 @@ public class ProcedureSelector extends JPanel {
 			defaultName = "(always)";
 			setBorder(BorderFactory
 					.createLineBorder(new Dependency("", VariableElementType.LOGIC.toDependencyType()).getColor()));
+		} else if (returnType == VariableElementType.NUMBER) {
+			defaultName = "(0)";
+			setBorder(BorderFactory
+					.createLineBorder(new Dependency("", VariableElementType.NUMBER.toDependencyType()).getColor()));
 		}
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
@@ -173,6 +177,8 @@ public class ProcedureSelector extends JPanel {
 		JComponent procwrap;
 		if (returnType == VariableElementType.LOGIC) {
 			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" if:  "), 15), procedures);
+		} else if (returnType == VariableElementType.NUMBER) {
+			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" num:  "), 15), procedures);
 		} else if (returnType == null) {
 			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" do:  "), 15), procedures);
 		} else {

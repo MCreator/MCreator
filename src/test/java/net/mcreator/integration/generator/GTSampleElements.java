@@ -63,6 +63,20 @@ public class GTSampleElements {
 				assertTrue(workspace.getGenerator().generateElement(procedure));
 				workspace.getModElementManager().storeModElement(procedure);
 			}
+
+			for (int i = 1; i <= 1; i++) {
+				ModElement me = new ModElement(workspace, "number" + i, ModElementType.PROCEDURE)
+						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "NUMBER");
+				workspace.addModElement(me);
+
+				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
+						"<block type=\"return_number\"><value name=\"return\">"
+								+ "<block type=\"math_number\"><field name=\"NUM\">100</field></block>"
+								+ "</value></block>");
+				assertTrue(workspace.getGenerator().generateElement(procedure));
+				workspace.getModElementManager().storeModElement(procedure);
+			}
 		}
 
 		// add sample recipes (used by test mod elements) if supported

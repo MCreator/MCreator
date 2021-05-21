@@ -96,6 +96,11 @@ public class ModElementUITest {
 					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
 		}
 
+		for (int i = 1; i <= 1; i++) {
+			workspace.addModElement(new ModElement(workspace, "number" + i, ModElementType.PROCEDURE)
+					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "NUMBER"));
+		}
+
 		// reduce autosave interval for tests
 		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 2000;
 
