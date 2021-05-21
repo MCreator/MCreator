@@ -140,33 +140,11 @@ public class BlocklyBlockUtil {
 			return "\"%{BKY_LOGIC_HUE}\"";
 
 		//Custom colors
-		float[] hsbValues = new float[] { (float) varElementType.getColor().getRed() / 255,
-				(float) varElementType.getColor().getGreen() / 255, (float) varElementType.getColor().getBlue() / 255 };
-		//We find the minimum and the maximal values
-		float min = Math.min(hsbValues[0], hsbValues[1]);
-		min = Math.min(min, hsbValues[2]);
-		float max = Math.max(hsbValues[0], hsbValues[1]);
-		max = Math.max(max, hsbValues[2]);
+		float[] hsbValues = new float[3];
+		hsbValues = Color.RGBtoHSB(varElementType.getColor().getRed(), varElementType.getColor().getGreen(),
+				varElementType.getColor().getBlue(), hsbValues);
 
-		float ret;
-		//If Red is the maximal value
-		if (max == hsbValues[0]) {
-			ret = (hsbValues[1] - hsbValues[2]) / (max - min);
-			//If Green is the maximal value
-		} else if (max == hsbValues[1]) {
-			ret = 2 + (hsbValues[2] - hsbValues[0]) / (max - min);
-			//If Blue is the maximal value
-		} else {
-			ret = 4 + (hsbValues[0] - hsbValues[1]) / (max - min);
-		}
-
-		//We multiply Hue by 60 for a degree value
-		ret = ret * 60;
-
-		//If Hue is negative, we add 360 deg
-		if (ret < 0)
-			ret += 360;
-		return String.valueOf(Math.round(ret));
+		return String.valueOf(Math.round(hsbValues[0] * 360));
 	}
 
 	public static String addProcedureBlocksToCategories(String toolbox_xml) {
@@ -180,8 +158,7 @@ public class BlocklyBlockUtil {
 					newLine = new StringBuilder(line);
 					for (VariableElementType varType : VariableElementTypeLoader.getVariables()) {
 						newLine.append("\n<block type=\"variables_get_").append(varType.getName())
-								.append("\"/>\n<block type=\"variables_set_").append(varType.getName())
-								.append("\"/>");
+								.append("\"/>\n<block type=\"variables_set_").append(varType.getName()).append("\"/>");
 					}
 					if (!newLine.toString().equals(line)) {
 						toolbox_xml = toolbox_xml.replace(line, newLine.toString());

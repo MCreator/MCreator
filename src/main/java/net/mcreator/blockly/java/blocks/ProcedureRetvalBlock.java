@@ -35,12 +35,14 @@ import java.util.Map;
 import java.util.Set;
 
 public class ProcedureRetvalBlock implements IBlockGenerator {
-	private final Set<String> names = new HashSet<>();
+	private final String[] names;
 
 	public ProcedureRetvalBlock() {
+		Set<String> temp = new HashSet<>();
 		for (VariableElementType elementType : VariableElementTypeLoader.getVariables()) {
-			names.add("procedure_retval_" + elementType.getName());
+			temp.add("procedure_retval_" + elementType.getName());
 		}
+		names = temp.toArray(new String[0]);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -75,7 +77,7 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return names.toArray(new String[0]);
+		return names;
 	}
 
 	@Override public BlockType getBlockType() {

@@ -36,12 +36,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class SetVariableBlock implements IBlockGenerator {
-	private final Set<String> names = new HashSet<>();;
+	private final String[] names;
 
 	public SetVariableBlock() {
+		Set<String> temp = new HashSet<>();
 		for (VariableElementType var : VariableElementTypeLoader.getVariables()) {
-			names.add("variables_set_" + var.getName());
+			temp.add("variables_set_" + var.getName());
 		}
+		names = temp.toArray(new String[0]);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -111,7 +113,7 @@ public class SetVariableBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return names.toArray(new String[0]);
+		return names;
 	}
 
 	@Override public BlockType getBlockType() {

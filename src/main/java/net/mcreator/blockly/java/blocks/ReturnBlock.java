@@ -29,18 +29,17 @@ import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ReturnBlock implements IBlockGenerator {
-	private final Set<String> names = new HashSet<>();
+	private final String[] names;
 
 	public ReturnBlock() {
+		Set<String> temp = new HashSet<>();
 		for (VariableElementType var : VariableElementTypeLoader.getVariables()) {
-			names.add("return_" + var.getName());
+			temp.add("return_" + var.getName());
 		}
+		names = temp.toArray(new String[0]);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -74,7 +73,7 @@ public class ReturnBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return names.toArray(new String[0]);
+		return names;
 	}
 
 	@Override public BlockType getBlockType() {
