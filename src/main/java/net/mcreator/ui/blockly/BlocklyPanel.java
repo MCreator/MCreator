@@ -103,8 +103,7 @@ public class BlocklyPanel extends JFXPanel {
 					}
 
 					css += FileIO.readResourceToString(PluginLoader.INSTANCE,
-							"/themes/" + ThemeLoader.CURRENT_THEME.getID() + "/colors/" + UIManager
-									.get("MCreatorLAF.BLOCKLY_CSS"));
+							"/themes/" + ThemeLoader.CURRENT_THEME.getID() + "/colors/blockly.css");
 
 					//remove font declaration if property set so
 					if (PreferencesManager.PREFERENCES.blockly.legacyFont) {

@@ -46,7 +46,6 @@ public class MCreatorTheme extends OceanTheme {
 	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
 	private final Color MAIN_TINT;
 	private final ColorScheme colorScheme;
-	public static final ColorScheme DARK_SCHEME = new ColorScheme("dark", "0x1e1e1e", "0x323232", "0x505050", "0xc2c2c2", "0xf5f5f5");
 
 	public static Font light_font;
 	public static Font console_font;
@@ -96,14 +95,6 @@ public class MCreatorTheme extends OceanTheme {
 		return colorScheme.getBorderColor();
 	}
 
-	private @Nonnull String getBlocklyCSSName() {
-		return "blockly_" + colorScheme.getBlocklyCSSFile() + ".css";
-	}
-
-	private @Nonnull String getCodeEditorXML() {
-		return "codeeditor_" + colorScheme.getCodeEditorFile() + ".xml";
-	}
-
 	protected void initMCreatorThemeColors(UIDefaults table) {
 		table.put("MCreatorLAF.BLACK_ACCENT", getBlackAccent());
 		table.put("MCreatorLAF.DARK_ACCENT", getDarkAccent());
@@ -111,8 +102,6 @@ public class MCreatorTheme extends OceanTheme {
 		table.put("MCreatorLAF.GRAY_COLOR", getGrayColor());
 		table.put("MCreatorLAF.BRIGHT_COLOR", getBrightColor());
 		table.put("MCreatorLAF.MAIN_TINT", MAIN_TINT);
-		table.put("MCreatorLAF.BLOCKLY_CSS", getBlocklyCSSName());
-		table.put("MCreatorLAF.CODE_EDITOR_XML", getCodeEditorXML());
 	}
 
 	@Override public void addCustomEntriesToTable(UIDefaults table) {

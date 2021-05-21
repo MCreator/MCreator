@@ -51,7 +51,7 @@ public class RSyntaxTextAreaStyler {
 			AtomicReference<InputStream> input = new AtomicReference<>();
 
 			new Reflections("themes." + ThemeLoader.CURRENT_THEME.getID() + ".colors", new ResourcesScanner(), PluginLoader.INSTANCE)
-					.getResources(Pattern.compile((String) UIManager.get("MCreatorLAF.CODE_EDITOR_XML"))).parallelStream().forEach(
+					.getResources(Pattern.compile("code_editor.xml")).parallelStream().forEach(
 					e -> {
 						try {
 							input.set(Objects.requireNonNull(PluginLoader.INSTANCE.getResource(e)).openConnection().getInputStream());
