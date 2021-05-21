@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.GridSettings;
 import net.mcreator.element.types.GUI;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
@@ -106,12 +107,12 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 			editor.slot2.setEnabled(true);
 		}
 
-		editor.sx.setValue(gui.sx);
-		editor.sy.setValue(gui.sy);
-		editor.ox.setValue(gui.ox);
-		editor.oy.setValue(gui.oy);
-		editor.snapOnGrid.setSelected(gui.snapOnGrid);
-		if (gui.snapOnGrid) {
+		editor.sx.setValue(GridSettings.sx);
+		editor.sy.setValue(GridSettings.sy);
+		editor.ox.setValue(GridSettings.ox);
+		editor.oy.setValue(GridSettings.oy);
+		editor.snapOnGrid.setSelected(GridSettings.snapOnGrid);
+		if (GridSettings.snapOnGrid) {
 			editor.editor.showGrid = true;
 			editor.editor.repaint();
 		}
@@ -133,11 +134,11 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		gui.onTick = onTick.getSelectedProcedure();
 		gui.onClosed = onClosed.getSelectedProcedure();
 
-		gui.sx = (int) editor.sx.getValue();
-		gui.sy = (int) editor.sy.getValue();
-		gui.ox = (int) editor.ox.getValue();
-		gui.oy = (int) editor.oy.getValue();
-		gui.snapOnGrid = editor.snapOnGrid.isSelected();
+		GridSettings.sx = (int) editor.sx.getValue();
+		GridSettings.sy = (int) editor.sy.getValue();
+		GridSettings.ox = (int) editor.ox.getValue();
+		GridSettings.oy = (int) editor.oy.getValue();
+		GridSettings.snapOnGrid = editor.snapOnGrid.isSelected();
 		return gui;
 	}
 

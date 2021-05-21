@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.GridSettings;
 import net.mcreator.element.types.Overlay;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComboBoxUtil;
@@ -95,6 +96,16 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		editor.setComponentList(overlay.components);
 		editor.overlayBaseTexture.setSelectedItem(overlay.baseTexture);
 		displayCondition.setSelectedProcedure(overlay.displayCondition);
+
+		editor.sx.setValue(GridSettings.sx);
+		editor.sy.setValue(GridSettings.sy);
+		editor.ox.setValue(GridSettings.ox);
+		editor.oy.setValue(GridSettings.oy);
+		editor.snapOnGrid.setSelected(GridSettings.snapOnGrid);
+		if (GridSettings.snapOnGrid) {
+			editor.editor.showGrid = true;
+			editor.editor.repaint();
+		}
 	}
 
 	@Override public Overlay getElementFromGUI() {
@@ -103,6 +114,12 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		overlay.components = editor.getComponentList();
 		overlay.baseTexture = editor.overlayBaseTexture.getSelectedItem();
 		overlay.displayCondition = displayCondition.getSelectedProcedure();
+
+		GridSettings.sx = (int) editor.sx.getValue();
+		GridSettings.sy = (int) editor.sy.getValue();
+		GridSettings.ox = (int) editor.ox.getValue();
+		GridSettings.oy = (int) editor.oy.getValue();
+		GridSettings.snapOnGrid = editor.snapOnGrid.isSelected();
 		return overlay;
 	}
 

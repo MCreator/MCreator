@@ -50,12 +50,6 @@ import java.util.List;
 	public Procedure onTick;
 	public Procedure onClosed;
 
-	public int sx = 18;
-	public int sy = 18;
-	public int ox = 11;
-	public int oy = 15;
-	public boolean snapOnGrid;
-
 	public final transient int W;
 	public final transient int H;
 
