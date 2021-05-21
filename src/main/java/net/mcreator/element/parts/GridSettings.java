@@ -21,9 +21,9 @@ package net.mcreator.element.parts;
 
 public class GridSettings {
 
-	public static int sx = 18;
-	public static int sy = 18;
-	public static int ox = 11;
-	public static int oy = 15;
-	public static boolean snapOnGrid;
+	public int sx = 18;
+	public int sy = 18;
+	public int ox = 11;
+	public int oy = 15;
+	public boolean snapOnGrid;
 }

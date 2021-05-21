@@ -37,6 +37,7 @@ import java.awt.*;
 public class CustomGUIGUI extends ModElementGUI<GUI> {
 
 	private WYSIWYGEditor editor;
+	private GridSettings gridSettings;
 
 	private ProcedureSelector onOpen;
 	private ProcedureSelector onTick;
@@ -107,12 +108,12 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 			editor.slot2.setEnabled(true);
 		}
 
-		editor.sx.setValue(GridSettings.sx);
-		editor.sy.setValue(GridSettings.sy);
-		editor.ox.setValue(GridSettings.ox);
-		editor.oy.setValue(GridSettings.oy);
-		editor.snapOnGrid.setSelected(GridSettings.snapOnGrid);
-		if (GridSettings.snapOnGrid) {
+		editor.sx.setValue(gridSettings.sx);
+		editor.sy.setValue(gridSettings.sy);
+		editor.ox.setValue(gridSettings.ox);
+		editor.oy.setValue(gridSettings.oy);
+		editor.snapOnGrid.setSelected(gridSettings.snapOnGrid);
+		if (gridSettings.snapOnGrid) {
 			editor.editor.showGrid = true;
 			editor.editor.repaint();
 		}
@@ -134,11 +135,11 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		gui.onTick = onTick.getSelectedProcedure();
 		gui.onClosed = onClosed.getSelectedProcedure();
 
-		GridSettings.sx = (int) editor.sx.getValue();
-		GridSettings.sy = (int) editor.sy.getValue();
-		GridSettings.ox = (int) editor.ox.getValue();
-		GridSettings.oy = (int) editor.oy.getValue();
-		GridSettings.snapOnGrid = editor.snapOnGrid.isSelected();
+		gridSettings.sx = (int) editor.sx.getValue();
+		gridSettings.sy = (int) editor.sy.getValue();
+		gridSettings.ox = (int) editor.ox.getValue();
+		gridSettings.oy = (int) editor.oy.getValue();
+		gridSettings.snapOnGrid = editor.snapOnGrid.isSelected();
 		return gui;
 	}
 
