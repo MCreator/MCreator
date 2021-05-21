@@ -476,14 +476,14 @@ import java.util.stream.Collectors;
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
 		filterPopup.addSeparator();
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"),
-				e -> search.setText("f:locked")));
+				e -> togglefilter("f:locked")));
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
-				e -> search.setText("f:err")));
+				e -> togglefilter("f:err")));
 		filterPopup.addSeparator();
 		for (ModElementType type : Arrays.stream(ModElementType.values())
 				.sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
-					e -> search.setText("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
+					e -> togglefilter("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
 
 		}
@@ -855,6 +855,15 @@ import java.util.stream.Collectors;
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
 		upFolder.setEnabled(!currentFolder.isRoot());
+	}
+
+	private void togglefilter(String filter) {
+		String currentSearchText = search.getText().trim();
+		if (currentSearchText.contains(filter)) {
+			search.setText(currentSearchText.replace(filter, "").replaceAll("\\s{2,}", " ").trim());
+		} else {
+			search.setText(filter + " " + currentSearchText);
+		}
 	}
 
 	private void resort() {
