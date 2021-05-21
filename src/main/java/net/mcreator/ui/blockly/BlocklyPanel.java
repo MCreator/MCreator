@@ -43,6 +43,7 @@ import org.w3c.dom.Text;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -126,7 +127,7 @@ public class BlocklyPanel extends JFXPanel {
 
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blockly_compressed.js"));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/messages.js"));
-					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/" + L10N.getLangString() + ".js"));
+					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/" + L10N.getLangString() + ".js", StandardCharsets.UTF_8));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blocks_compressed.js"));
 
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/block_mcitem.js"));
