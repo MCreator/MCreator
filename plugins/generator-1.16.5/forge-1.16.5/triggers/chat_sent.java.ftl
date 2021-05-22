@@ -1,4 +1,4 @@
-@SubscribeEvent public void onChat(ServerChatEvent event){
+@SubscribeEvent public static void onChat(ServerChatEvent event){
 	ServerPlayerEntity entity=event.getPlayer();
 	double i=entity.getPosX();
 	double j=entity.getPosY();
@@ -11,5 +11,5 @@
 	dependencies.put("entity",entity);
 	dependencies.put("text",event.getMessage());
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

@@ -1,4 +1,4 @@
-@SubscribeEvent public void onPickupXP(PlayerXpEvent.PickupXp event) {
+@SubscribeEvent public static void onPickupXP(PlayerXpEvent.PickupXp event) {
 	if (event != null && event.getEntity() != null) {
 		Entity entity = event.getEntity();
 		double i = entity.getPosX();
@@ -12,6 +12,6 @@
 		dependencies.put("world", world);
 		dependencies.put("entity", entity);
 		dependencies.put("event", event);
-		this.executeProcedure(dependencies);
+		executeProcedure(dependencies);
 	}
 }

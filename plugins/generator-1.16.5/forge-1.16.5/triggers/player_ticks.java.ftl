@@ -1,4 +1,4 @@
-@SubscribeEvent public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+@SubscribeEvent public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
 	if(event.phase == TickEvent.Phase.END){
 		Entity entity = event.player;
 		World world = entity.world;
@@ -12,6 +12,6 @@
 		dependencies.put("world",world);
 		dependencies.put("entity",entity);
 		dependencies.put("event",event);
-		this.executeProcedure(dependencies);
+		executeProcedure(dependencies);
 	}
 }

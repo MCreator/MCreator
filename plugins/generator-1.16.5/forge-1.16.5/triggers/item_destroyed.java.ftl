@@ -1,4 +1,4 @@
-@SubscribeEvent public void onItemDestroyed(PlayerDestroyItemEvent event) {
+@SubscribeEvent public static void onItemDestroyed(PlayerDestroyItemEvent event) {
 	Entity entity=event.getPlayer();
 	double i=entity.getPosX();
 	double j=entity.getPosY();
@@ -12,5 +12,5 @@
 	dependencies.put("entity",entity);
 	dependencies.put("event",event);
 	dependencies.put("itemstack",itemstack);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

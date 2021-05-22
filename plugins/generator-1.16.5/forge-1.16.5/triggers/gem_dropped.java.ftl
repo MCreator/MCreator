@@ -1,4 +1,4 @@
-@SubscribeEvent public void onGemDropped(ItemTossEvent event) {
+@SubscribeEvent public static void onGemDropped(ItemTossEvent event) {
 	PlayerEntity entity=event.getPlayer();
 	double i=entity.getPosX();
 	double j=entity.getPosY();
@@ -13,5 +13,5 @@
 	dependencies.put("entity",entity);
 	dependencies.put("itemstack",itemstack);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

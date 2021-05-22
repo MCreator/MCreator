@@ -1,4 +1,4 @@
-@SubscribeEvent public void onEntitySetsAttackTarget(LivingSetAttackTargetEvent event) {
+@SubscribeEvent public static void onEntitySetsAttackTarget(LivingSetAttackTargetEvent event) {
 	LivingEntity entity=event.getTarget();
 	LivingEntity sourceentity=event.getEntityLiving();
 	Map<String, Object> dependencies = new HashMap<>();
@@ -9,5 +9,5 @@
 	dependencies.put("entity", entity);
 	dependencies.put("sourceentity", sourceentity);
 	dependencies.put("event", event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

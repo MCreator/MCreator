@@ -1,4 +1,4 @@
-@SubscribeEvent public void onPickup(EntityItemPickupEvent event) {
+@SubscribeEvent public static void onPickup(EntityItemPickupEvent event) {
 	PlayerEntity entity=event.getPlayer();
 	ItemStack itemstack=event.getItem().getItem();
 	double i=entity.getPosX();
@@ -13,5 +13,5 @@
 	dependencies.put("entity",entity);
 	dependencies.put("itemstack",itemstack);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

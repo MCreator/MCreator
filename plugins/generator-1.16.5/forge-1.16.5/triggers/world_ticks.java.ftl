@@ -1,9 +1,9 @@
-@SubscribeEvent public void onWorldTick(TickEvent.WorldTickEvent event) {
+@SubscribeEvent public static void onWorldTick(TickEvent.WorldTickEvent event) {
 	if (event.phase==TickEvent.Phase.END) {
 		IWorld world=event.world;
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("world",world);
 		dependencies.put("event",event);
-		this.executeProcedure(dependencies);
+		executeProcedure(dependencies);
 	}
 }

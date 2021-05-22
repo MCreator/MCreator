@@ -1,4 +1,4 @@
-@SubscribeEvent public void onBonemeal(BonemealEvent event){
+@SubscribeEvent public static void onBonemeal(BonemealEvent event){
 	PlayerEntity entity=event.getPlayer();
 	double i=event.getPos().getX();
 	double j=event.getPos().getY();
@@ -13,5 +13,5 @@
 	dependencies.put("itemstack",itemstack);
 	dependencies.put("entity",entity);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

@@ -1,4 +1,4 @@
-@SubscribeEvent public void onPlayerFishItem(ItemFishedEvent event) {
+@SubscribeEvent public static void onPlayerFishItem(ItemFishedEvent event) {
 	PlayerEntity entity=event.getPlayer();
 	double i=entity.getPosX();
 	double j=entity.getPosY();
@@ -11,5 +11,5 @@
 	dependencies.put("world",world);
 	dependencies.put("entity",entity);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

@@ -1,4 +1,4 @@
-@SubscribeEvent public void onLivingDropXp(LivingExperienceDropEvent event) {
+@SubscribeEvent public static void onLivingDropXp(LivingExperienceDropEvent event) {
 	if (event != null && event.getEntity() != null) {
 		Entity entity = event.getEntity();
 		double i = entity.getPosX();
@@ -18,6 +18,6 @@
 		dependencies.put("world", world);
 		dependencies.put("entity", entity);
 		dependencies.put("event", event);
-		this.executeProcedure(dependencies);
+		executeProcedure(dependencies);
 	}
 }

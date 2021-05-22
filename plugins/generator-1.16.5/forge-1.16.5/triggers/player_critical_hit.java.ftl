@@ -1,4 +1,4 @@
-@SubscribeEvent public void onPlayerCriticalHit(CriticalHitEvent event) {
+@SubscribeEvent public static void onPlayerCriticalHit(CriticalHitEvent event) {
 	Entity entity=event.getTarget();
 	PlayerEntity sourceentity=event.getPlayer();
 	double i=sourceentity.getPosX();
@@ -15,5 +15,5 @@
 	dependencies.put("damagemodifier", event.getDamageModifier());
 	dependencies.put("isvanillacritical", event.isVanillaCritical());
 	dependencies.put("event", event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

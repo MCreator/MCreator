@@ -1,4 +1,4 @@
-@SubscribeEvent public void onItemSmelted(PlayerEvent.ItemSmeltedEvent event) {
+@SubscribeEvent public static void onItemSmelted(PlayerEvent.ItemSmeltedEvent event) {
 	Entity entity = event.getPlayer();
 	World world = entity.world;
 	double i=entity.getPosX();
@@ -13,5 +13,5 @@
 	dependencies.put("entity",entity);
 	dependencies.put("itemstack",itemStack);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

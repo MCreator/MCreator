@@ -1,4 +1,4 @@
-@SubscribeEvent public void onEntityTamed(AnimalTameEvent event) {
+@SubscribeEvent public static void onEntityTamed(AnimalTameEvent event) {
     Entity entity = event.getAnimal();
     Entity sourceentity = event.getTamer();
     double i = entity.getPosX();
@@ -13,5 +13,5 @@
     dependencies.put("entity", entity);
     dependencies.put("sourceentity", sourceentity);
     dependencies.put("event", event);
-    this.executeProcedure(dependencies);
+    executeProcedure(dependencies);
 }

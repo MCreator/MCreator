@@ -1,4 +1,4 @@
-@SubscribeEvent public void onUseHoe(UseHoeEvent event) {
+@SubscribeEvent public static void onUseHoe(UseHoeEvent event) {
 	PlayerEntity entity=event.getPlayer();
 	double i=event.getContext().getPos().getX();
 	double j=event.getContext().getPos().getY();
@@ -11,5 +11,5 @@
 	dependencies.put("world",world);
 	dependencies.put("entity",entity);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

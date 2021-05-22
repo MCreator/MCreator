@@ -1,4 +1,4 @@
-@SubscribeEvent public void onEntityAttacked(LivingAttackEvent event) {
+@SubscribeEvent public static void onEntityAttacked(LivingAttackEvent event) {
 	if (event!=null && event.getEntity()!=null) {
 		Entity entity=event.getEntity();
 		Entity sourceentity=event.getSource().getTrueSource();
@@ -18,6 +18,6 @@
 		dependencies.put("sourceentity",sourceentity);
 		dependencies.put("imediatesourceentity",imediatesourceentity);
 		dependencies.put("event",event);
-		this.executeProcedure(dependencies);
+		executeProcedure(dependencies);
 	}
 }

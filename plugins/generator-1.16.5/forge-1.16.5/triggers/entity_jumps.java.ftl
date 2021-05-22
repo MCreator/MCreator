@@ -1,4 +1,4 @@
-@SubscribeEvent public void onEntityJump(LivingEvent.LivingJumpEvent event) {
+@SubscribeEvent public static void onEntityJump(LivingEvent.LivingJumpEvent event) {
 	LivingEntity entity=event.getEntityLiving();
 	double i=entity.getPosX();
 	double j=entity.getPosY();
@@ -11,5 +11,5 @@
 	dependencies.put("world",world);
 	dependencies.put("entity",entity);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

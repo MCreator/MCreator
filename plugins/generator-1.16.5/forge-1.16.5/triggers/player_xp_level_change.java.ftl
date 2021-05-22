@@ -1,4 +1,4 @@
-@SubscribeEvent public void onPlayerXPLevelChange(PlayerXpEvent.LevelChange event) {
+@SubscribeEvent public static void onPlayerXPLevelChange(PlayerXpEvent.LevelChange event) {
 	if (event != null && event.getEntity() != null) {
 		Entity entity = event.getEntity();
 		double i = entity.getPosX();
@@ -14,6 +14,6 @@
 		dependencies.put("entity", entity);
 		dependencies.put("amount", amount);
 		dependencies.put("event", event);
-		this.executeProcedure(dependencies);
+		executeProcedure(dependencies);
 	}
 }

@@ -1,4 +1,4 @@
-@SubscribeEvent public void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
+@SubscribeEvent public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
 	Entity entity = event.getEntity();
 	IWorld world = event.getWorld();
 	Map<String, Object> dependencies = new HashMap<>();
@@ -11,5 +11,5 @@
 	dependencies.put("world",world);
 	dependencies.put("entity",entity);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

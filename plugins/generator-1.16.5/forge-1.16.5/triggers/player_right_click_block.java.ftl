@@ -1,4 +1,4 @@
-@SubscribeEvent public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+@SubscribeEvent public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
 	PlayerEntity entity=event.getPlayer();
 	if (event.getHand() != entity.getActiveHand()) {
 		return;
@@ -15,5 +15,5 @@
 	dependencies.put("entity", entity);
 	dependencies.put("direction", event.getFace());
 	dependencies.put("event", event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

@@ -1,4 +1,4 @@
-@SubscribeEvent public void onVillageSiege(VillageSiegeEvent event) {
+@SubscribeEvent public static void onVillageSiege(VillageSiegeEvent event) {
 	PlayerEntity entity=event.getPlayer();
 	double i=event.getAttemptedSpawnPos().x;
 	double j=event.getAttemptedSpawnPos().y;
@@ -11,5 +11,5 @@
 	dependencies.put("world", world);
 	dependencies.put("entity", entity);
 	dependencies.put("event", event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

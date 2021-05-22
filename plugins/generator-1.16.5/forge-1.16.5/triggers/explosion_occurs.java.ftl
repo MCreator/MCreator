@@ -1,4 +1,4 @@
-@SubscribeEvent public void onExplode(ExplosionEvent.Detonate event) {
+@SubscribeEvent public static void onExplode(ExplosionEvent.Detonate event) {
 	World world = event.getWorld();
 	Explosion explosion = event.getExplosion();
 	double i=explosion.getPosition().x;
@@ -10,5 +10,5 @@
 	dependencies.put("z",k);
 	dependencies.put("world",world);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

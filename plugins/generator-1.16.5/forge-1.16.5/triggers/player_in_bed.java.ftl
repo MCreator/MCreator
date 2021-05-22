@@ -1,4 +1,4 @@
-@SubscribeEvent public void onPlayerInBed(PlayerSleepInBedEvent event) {
+@SubscribeEvent public static void onPlayerInBed(PlayerSleepInBedEvent event) {
 	PlayerEntity entity=event.getPlayer();
 	double i=event.getPos().getX();
 	double j=event.getPos().getY();
@@ -11,5 +11,5 @@
 	dependencies.put("world",world);
 	dependencies.put("entity",entity);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

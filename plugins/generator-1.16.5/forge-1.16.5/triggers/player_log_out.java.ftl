@@ -1,4 +1,4 @@
-@SubscribeEvent public void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+@SubscribeEvent public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
 	Entity entity = event.getPlayer();
 	Map<String, Object> dependencies = new HashMap<>();
 	dependencies.put("x",entity.getPosX());
@@ -7,5 +7,5 @@
 	dependencies.put("world",entity.world);
 	dependencies.put("entity",entity);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

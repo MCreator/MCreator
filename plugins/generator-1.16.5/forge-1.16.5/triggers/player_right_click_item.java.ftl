@@ -1,4 +1,4 @@
-@SubscribeEvent public void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
+@SubscribeEvent public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
 	PlayerEntity entity=event.getPlayer();
 	if (event.getHand() != entity.getActiveHand()) {
 		return;
@@ -14,5 +14,5 @@
 	dependencies.put("world" ,world);
 	dependencies.put("entity" ,entity);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

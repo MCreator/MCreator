@@ -1,4 +1,4 @@
-@SubscribeEvent public void onItemExpire(ItemExpireEvent event) {
+@SubscribeEvent public static void onItemExpire(ItemExpireEvent event) {
 	Entity entity=event.getEntity();
 	double i=entity.getPosX();
 	double j=entity.getPosY();
@@ -12,5 +12,5 @@
 	dependencies.put("entity",entity);
 	dependencies.put("event",event);
 	dependencies.put("itemstack",itemstack);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

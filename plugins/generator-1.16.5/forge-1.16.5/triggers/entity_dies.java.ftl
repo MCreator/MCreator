@@ -1,4 +1,4 @@
-@SubscribeEvent public void onEntityDeath(LivingDeathEvent event) {
+@SubscribeEvent public static void onEntityDeath(LivingDeathEvent event) {
 	if (event!=null && event.getEntity()!=null) {
 		Entity entity=event.getEntity();
 		Entity sourceentity=event.getSource().getTrueSource();
@@ -14,6 +14,6 @@
 		dependencies.put("entity",entity);
 		dependencies.put("sourceentity",sourceentity);
 		dependencies.put("event",event);
-		this.executeProcedure(dependencies);
+		executeProcedure(dependencies);
 	}
 }

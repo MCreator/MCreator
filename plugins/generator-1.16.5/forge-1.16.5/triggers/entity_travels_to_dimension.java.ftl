@@ -1,4 +1,4 @@
-@SubscribeEvent public void onEntityTravelToDimension(EntityTravelToDimensionEvent event){
+@SubscribeEvent public static void onEntityTravelToDimension(EntityTravelToDimensionEvent event){
 	Entity entity=event.getEntity();
 	World world = entity.world;
 	double i=entity.getPosX();
@@ -12,5 +12,5 @@
 	dependencies.put("world",world);
 	dependencies.put("entity",entity);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

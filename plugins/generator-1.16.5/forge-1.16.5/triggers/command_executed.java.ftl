@@ -1,4 +1,4 @@
-@SubscribeEvent public void onCommand(CommandEvent event) {
+@SubscribeEvent public static void onCommand(CommandEvent event) {
 	Entity entity = event.getParseResults().getContext().getSource().getEntity();
 	if (entity != null) {
 		double i = entity.getPosX();
@@ -13,6 +13,6 @@
 		dependencies.put("entity",entity);
 		dependencies.put("command",command);
 		dependencies.put("event",event);
-		this.executeProcedure(dependencies);
+		executeProcedure(dependencies);
 	}
 }

@@ -1,4 +1,4 @@
-@SubscribeEvent public void onFarmlandTrampled(BlockEvent.FarmlandTrampleEvent event) {
+@SubscribeEvent public static void onFarmlandTrampled(BlockEvent.FarmlandTrampleEvent event) {
 	Entity entity = event.getEntity();
 	IWorld world = event.getWorld();
 	float falldistance = event.getFallDistance();
@@ -10,5 +10,5 @@
 	dependencies.put("entity",entity);
 	dependencies.put("falldistance",falldistance);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }

@@ -1,4 +1,4 @@
-@SubscribeEvent public void onBucketFill(FillBucketEvent event) {
+@SubscribeEvent public static void onBucketFill(FillBucketEvent event) {
 	PlayerEntity entity=event.getPlayer();
 	double i=entity.getPosX();
 	double j=entity.getPosY();
@@ -15,5 +15,5 @@
 	dependencies.put("originalitemstack",originalitemstack);
 	dependencies.put("entity",entity);
 	dependencies.put("event",event);
-	this.executeProcedure(dependencies);
+	executeProcedure(dependencies);
 }
