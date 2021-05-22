@@ -11,5 +11,4 @@ localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
   - key: item.@modid.@registryname_bucket
-    mapto: name
-    suffix: " Bucket"
+    mapto: bucketName
