@@ -49,6 +49,7 @@ jobs:
           DATE=$(unzip -q -c build/libs/mcreator.jar META-INF/MANIFEST.MF | grep 'Build-Date' | cut -d ':' -f 2 | tr -d '[:space:]')
           MC_VERSION=$(unzip -q -c build/libs/mcreator.jar META-INF/MANIFEST.MF | grep 'Minecraft' | cut -d ':' -f 2 | tr -d '[:space:]')
           echo "MCR_VERSION=$VERSION.$DATE" >> $GITHUB_ENV
+          echo "MC_VERSION=$MC_VERSION" >> $GITHUB_ENV
       - name: Upload Binaries and Tag Release
         uses: Pylo/upload-release-action@v2
         with:
