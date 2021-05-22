@@ -71,7 +71,7 @@ public class L10N {
 
 		rb_en = ResourceBundle.getBundle("lang/texts", Locale.ROOT, PluginLoader.INSTANCE, new UTF8Control());
 
-		double countAll = Collections.list(rb_en.getKeys()).size();
+		double countAll = rb_en.keySet().size();
 
 		Set<String> localeFiles = PluginLoader.INSTANCE.getResourcesInPackage("lang");
 		supportedLocales = localeFiles.stream().map(FilenameUtils::getBaseName).filter(e -> e.contains("_"))
