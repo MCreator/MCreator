@@ -44,6 +44,12 @@ import java.util.List;
 
 	public GridSettings gridSettings;
 
+	private Overlay() {
+		this(null);
+
+		this.gridSettings = new GridSettings();
+	}
+
 	public Overlay(ModElement element) {
 		super(element);
 	}
