@@ -57,8 +57,13 @@ jobs:
           file_glob: true
           file: build/export/*
           body: > 
-           **Download on https://mcreator.net/download**
-           
-           Changelog: https://mcreator.net/changelog
-           
+            **📁 Download: https://mcreator.net/download**
+            
+            📝 Changelog: https://mcreator.net/changelog
+            
+            <!--[[
+            {
+            "minecraft": "${{ env.MC_VERSION }}"
+            }
+            ]]-->
           overwrite: true
