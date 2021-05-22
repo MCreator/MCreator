@@ -53,7 +53,6 @@ public class ${name}Procedure {
 		</#list>
 
 		${procedurecode}
-
 	}
 
 }
