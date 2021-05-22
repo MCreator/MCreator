@@ -70,7 +70,7 @@ public class WYSIWYGEditor extends JPanel {
 	public JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
 	public JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
 
-	public JCheckBox snapOnGrid = new JCheckBox((L10N.t("elementgui.gui.snap_components_on_grid")));
+	public JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
 
 	public JButton button = new JButton(UIRES.get("32px.addbutton"));
 	public JButton text = new JButton(UIRES.get("32px.addtextinput"));
