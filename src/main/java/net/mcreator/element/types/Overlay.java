@@ -46,12 +46,12 @@ import java.util.List;
 
 	private Overlay() {
 		this(null);
-
-		this.gridSettings = new GridSettings();
 	}
 
 	public Overlay(ModElement element) {
 		super(element);
+
+		this.gridSettings = new GridSettings();
 	}
 
 	public int getBaseTextureWidth() {
