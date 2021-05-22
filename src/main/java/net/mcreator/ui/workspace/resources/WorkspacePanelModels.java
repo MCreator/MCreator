@@ -154,11 +154,10 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		del.addActionListener(e -> {
 			Model model = modelList.getSelectedValue();
 			if (model != null) {
-				Object[] options = { "Yes", "No" };
-				int n = JOptionPane.showOptionDialog(workspacePanel.getMcreator(),
+				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
 						L10N.t("workspace.3dmodels.delete_confirm_message"),
-						L10N.t("workspace.3dmodels.delete_confirm_title"), JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+						L10N.t("workspace.3dmodels.delete_confirm_title"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null);
 
 				if (n == 0) {
 					Arrays.stream(model.getFiles()).forEach(File::delete);
