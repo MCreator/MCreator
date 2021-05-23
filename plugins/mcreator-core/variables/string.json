@@ -1,6 +1,6 @@
 {
 	"name": "string",
-	"color": "0x609986",
+	"color": 160,
 	"defaultValue": "\"\"",
 	"blocklyVariableType": "String",
 	"javaClass": "String",

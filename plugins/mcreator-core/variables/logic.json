@@ -1,7 +1,7 @@
 {
 	"name": "logic",
 	"dependencyType": "boolean",
-	"color": "0x607c99",
+	"color": 210,
 	"defaultValue": "false",
 	"blocklyVariableType": "Boolean",
 	"javaClass": "boolean"

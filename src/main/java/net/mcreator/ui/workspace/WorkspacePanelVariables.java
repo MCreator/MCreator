@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.workspace;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TransparentToolBar;
@@ -145,7 +146,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					VariableElementType value = VariableElementTypeLoader.getVariableFromType(
 							(String) getModel().getValueAt(row, column));
 					if (value != null) {
-						component.setForeground(value.getColor().brighter());
+						component.setForeground(BlocklyBlockUtil.getBlockColorFromHUE(value.getColor()).brighter());
 					}
 				} else {
 					component.setForeground(elements.getForeground());

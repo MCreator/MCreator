@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
@@ -145,7 +146,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			if (blocklyToJava.getReturnType() != null) {
 				returnType.setVisible(true);
 				returnTypeLabel.setText(blocklyToJava.getReturnType().getName().toUpperCase());
-				returnTypeLabel.setForeground(blocklyToJava.getReturnType().getColor().brighter());
+				returnTypeLabel.setForeground(BlocklyBlockUtil.getBlockColorFromHUE(blocklyToJava.getReturnType().getColor()).brighter());
 			} else {
 				returnType.setVisible(false);
 			}
@@ -261,8 +262,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBorder(null);
-			setBackground(isSelected ? value.getType().getColor() : (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : value.getType().getColor());
+			setBackground(isSelected ? BlocklyBlockUtil.getBlockColorFromHUE(value.getType().getColor()) : (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : BlocklyBlockUtil.getBlockColorFromHUE(value.getType().getColor()));
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
 			return this;

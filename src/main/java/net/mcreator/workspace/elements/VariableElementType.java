@@ -27,13 +27,13 @@ import java.awt.*;
 public class VariableElementType {
 
 	private String name;
-	private String color;
+	private int color;
 	private String defaultValue;
 	private String blocklyVariableType;
 	private String javaClass;
 
-	public Color getColor() {
-		return Color.decode(color);
+	public int getColor() {
+		return color;
 	}
 
 	public String getName() {

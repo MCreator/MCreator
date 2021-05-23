@@ -124,29 +124,6 @@ public class BlocklyBlockUtil {
 		return Color.getHSBColor(hue / 360f, 0.37f, 0.6f);
 	}
 
-	/**
-	 * Calculate the HUE of a block from RGB
-	 *
-	 * @param varElementType The variable element to use
-	 * @return Built-in color or HUE for other blocks
-	 */
-	public static String getBlocklyColorFromVarType(VariableElementType varElementType) {
-		//Built-in colors
-		if (varElementType.getName().equalsIgnoreCase("string"))
-			return "\"%{BKY_TEXTS_HUE}\"";
-		else if (varElementType.getName().equalsIgnoreCase("number"))
-			return "\"%{BKY_MATH_HUE}\"";
-		else if (varElementType.getName().equalsIgnoreCase("logic"))
-			return "\"%{BKY_LOGIC_HUE}\"";
-
-		//Custom colors
-		float[] hsbValues = new float[3];
-		hsbValues = Color.RGBtoHSB(varElementType.getColor().getRed(), varElementType.getColor().getGreen(),
-				varElementType.getColor().getBlue(), hsbValues);
-
-		return String.valueOf(Math.round(hsbValues[0] * 360));
-	}
-
 	public static String addProcedureBlocksToCategories(String toolbox_xml) {
 		try {
 			BufferedReader r = new BufferedReader(new FileReader(Objects.requireNonNull(
