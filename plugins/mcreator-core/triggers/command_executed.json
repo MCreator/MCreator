@@ -23,6 +23,10 @@
     {
       "name": "command",
       "type": "string"
+    },
+    {
+      "name": "arguments",
+      "type": "cmdcontext"
     }
   ],
   "cancelable": "true"
