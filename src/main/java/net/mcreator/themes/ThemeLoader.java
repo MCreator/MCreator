@@ -55,12 +55,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+/**
+ * ThemeLoader defines to load and use available Themes.
+ */
 public class ThemeLoader {
 	private static final Logger LOG = LogManager.getLogger("Theme Loader");
 
 	private static final LinkedHashSet<Theme> THEMES = new LinkedHashSet<>();
 	public static Theme CURRENT_THEME;
 
+	/**
+	 * <p>This method loads the {@link net.mcreator.themes.Theme} of all plugins loaded into the current {@link net.mcreator.plugin.PluginLoader} instance.</p>
+	 */
 	public static void initUIThemes() {
 		LOG.debug("Loading UI themes");
 
@@ -116,6 +122,11 @@ public class ThemeLoader {
 		return THEMES;
 	}
 
+	/**
+	 * <p>This method gets the ID of each loaded {@link net.mcreator.themes.Theme}.</p>
+	 *
+	 * @return Returns a {@link java.util.List} of all loaded theme IDs
+	 */
 	public static List<String> getIDs() {
 		List<String> ids = new ArrayList<>();
 		for (Theme rp : THEMES) {
@@ -124,6 +135,12 @@ public class ThemeLoader {
 		return ids;
 	}
 
+	/**
+	 * <p>This method checks in all loaded themes to get the theme matching the ID.</p>
+	 *
+	 * @param id The theme's id we want to get
+	 * @return Returns the {@link net.mcreator.themes.Theme}, if found in the cache, otherwise null
+	 */
 	public static Theme getTheme(String id) {
 		for (Theme pack : THEMES) {
 			if (pack.getID().equals(id))

@@ -21,22 +21,38 @@ package net.mcreator.themes;
 
 import java.awt.*;
 
+/**
+ * <p>A ColorScheme is an object defining the look of MCreator in general.
+ * This object contains only the 5 main colors used by the software. However, A ColorScheme
+ * can also defines the style and colors of {@link net.mcreator.ui.blockly.BlocklyPanel} and {@link net.mcreator.ui.ide.RSyntaxTextAreaStyler}
+ * if it is defined inside a plugin.</p>
+ */
 public class ColorScheme {
 	private final String id;
 	private final String altBackgroundColor;
 	private final String backgroundColor;
 	private final String actionColor;
+	private final String altForegroundColor;
 	private final String foregroundColor;
-	private final String borderColor;
 
+	/**
+	 * <p>Creates a new ColorScheme with parameters</p>
+	 *
+	 * @param id A unique ID representing the ColorScheme in the code
+	 * @param altBackgroundColor Second background color used (e.g. workspace background)
+	 * @param backgroundColor Main color of the user (e.g. main menu and top bar)
+	 * @param actionColor Background of components (e.g. text fields, checkboxes and sound selectors)
+	 * @param altForegroundColor Secondary text color
+	 * @param foregroundColor Color used for most of texts
+	 */
 	public ColorScheme(String id, String altBackgroundColor, String backgroundColor, String actionColor,
-			String foregroundColor, String borderColor) {
+			String altForegroundColor, String foregroundColor) {
 		this.id = id;
 		this.altBackgroundColor = altBackgroundColor;
 		this.backgroundColor = backgroundColor;
 		this.actionColor = actionColor;
+		this.altForegroundColor = altForegroundColor;
 		this.foregroundColor = foregroundColor;
-		this.borderColor = borderColor;
 	}
 
 	public String getID() {
@@ -56,10 +72,10 @@ public class ColorScheme {
 	}
 
 	public Color getForegroundColor() {
-		return Color.decode(foregroundColor);
+		return Color.decode(altForegroundColor);
 	}
 
 	public Color getBorderColor() {
-		return Color.decode(borderColor);
+		return Color.decode(foregroundColor);
 	}
 }

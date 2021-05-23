@@ -24,6 +24,10 @@ import net.mcreator.ui.init.L10N;
 import javax.annotation.Nullable;
 import javax.swing.*;
 
+/**
+ * <p>A Theme can change images MCreator will use and redefine the colors and the style
+ * of {@link net.mcreator.ui.blockly.BlocklyPanel} and {@link net.mcreator.ui.ide.RSyntaxTextAreaStyler} by creating a new {@link net.mcreator.themes.ColorScheme}</p>.
+ */
 public class Theme {
 	private String id;
 	private String name;
@@ -71,10 +75,13 @@ public class Theme {
 		return version;
 	}
 
+	/**
+	 * <p>This methods gets the {@link net.mcreator.themes.ColorScheme} to use with the theme</p>
+	 * @return Returns the {@link net.mcreator.themes.ColorScheme} of the Theme if one is defined. If the Theme does not create a new {@link net.mcreator.themes.ColorScheme}, the Dark's theme {@link net.mcreator.themes.ColorScheme} will be used.
+	 */
 	public ColorScheme getColorScheme() {
 		if(colorScheme != null)
 			return colorScheme;
-		// We are sure the Dark theme's color scheme exists as it's in the main one, so we can get it
 		else
 			return ThemeLoader.getTheme("default_dark").getColorScheme();
 	}
