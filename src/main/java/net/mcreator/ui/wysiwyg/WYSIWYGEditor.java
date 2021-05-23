@@ -65,6 +65,13 @@ public class WYSIWYGEditor extends JPanel {
 	public JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -256, 256, 1));
 	public JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -256, 256, 1));
 
+	public JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
+	public JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
+	public JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
+	public JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
+
+	public JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
+
 	public JButton button = new JButton(UIRES.get("32px.addbutton"));
 	public JButton text = new JButton(UIRES.get("32px.addtextinput"));
 	public JButton slot1 = new JButton(UIRES.get("32px.addinslot"));
@@ -251,17 +258,11 @@ public class WYSIWYGEditor extends JPanel {
 		slot1.addActionListener(e -> new InputSlotDialog(this, null));
 		slot2.addActionListener(e -> new OutputSlotDialog(this, null));
 
-		JCheckBox snapOnGrid = new JCheckBox((L10N.t("elementgui.gui.snap_components_on_grid")));
 		snapOnGrid.setOpaque(false);
 		snapOnGrid.addActionListener(event -> {
 			editor.showGrid = snapOnGrid.isSelected();
 			editor.repaint();
 		});
-
-		JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-		JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-		JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
-		JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
 
 		sx.addChangeListener(e -> {
 			editor.grid_x_spacing = (int) sx.getValue();
