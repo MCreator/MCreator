@@ -31,7 +31,7 @@
     "dependencies": [
       {
         "name": "cmdargs",
-        "type": "ctx"
+        "type": "cmdcontext"
       }
     ]
   }
