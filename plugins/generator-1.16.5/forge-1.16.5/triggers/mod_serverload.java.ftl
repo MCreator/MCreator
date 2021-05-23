@@ -1,3 +1,5 @@
-@OnlyIn(Dist.DEDICATED_SERVER) @Override public void init(FMLCommonSetupEvent event) {
-	this.executeProcedure(Collections.emptyMap());
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.DEDICATED_SERVER}) private static class GlobalTrigger {
+	@SubscribeEvent public static void init(FMLDedicatedServerSetupEvent event) {
+		executeProcedure(Collections.emptyMap());
+	}
 }
