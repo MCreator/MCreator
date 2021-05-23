@@ -1061,6 +1061,7 @@ public class TestWorkspaceDataProvider {
 			block.material = new Material(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadMaterials()));
 			block.tickRate = 24;
+			block.isCustomSoundType = !_true;
 			block.soundOnStep = new StepSound(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
 			block.breakSound = new Sound(modElement.getWorkspace(),
