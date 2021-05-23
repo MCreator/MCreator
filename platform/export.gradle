@@ -39,18 +39,12 @@ jar {
     dependsOn exportReleasePreTask
 }
 
-// definition of main export task for releases
 task exportRelease(group: 'export') {
     doLast {
-        copy {
-            from file('LICENSE.txt') into 'build/export' rename("LICENSE.txt", "LICENSE")
-        }
-
         project.logger.lifecycle('\nFINISHED export for MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
     }
 }
 
-// definition of main export task for snapshots
 task exportSnapshot(group: 'export') {
     if (gradle.startParameter.taskNames.contains(name)) { // only run this if the task started was this one
         project.mcreatorconf.setProperty('mcreator', "EAP " + (String) project.mcreatorconf.getProperty('mcreator') + new Date().format(" 'b'wwuHH"))
@@ -58,12 +52,7 @@ task exportSnapshot(group: 'export') {
     }
 
     doLast {
-        copy {
-            from file('LICENSE.txt') into 'build/export' rename("LICENSE.txt", "LICENSE")
-        }
-
         delete 'src/main/resources/snapshot.conf'
-
         project.logger.lifecycle('\nFINISHED export for MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
     }
 }
