@@ -30,16 +30,9 @@
 <#-- @formatter:off -->
 package ${package}.procedures;
 
-@${JavaModName}Elements.ModElement.Tag
-public class ${name}Procedure extends ${JavaModName}Elements.ModElement{
+public class ${name}Procedure {
 
-	public ${name}Procedure (${JavaModName}Elements instance) {
-		super(instance, ${data.getModElement().getSortID()});
-
-		<#if has_trigger>
-		MinecraftForge.EVENT_BUS.register(this);
-		</#if>
-	}
+	${trigger_code}
 
 	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> executeProcedure(Map<String, Object> dependencies){
 		<#list dependencies as dependency>
@@ -60,10 +53,7 @@ public class ${name}Procedure extends ${JavaModName}Elements.ModElement{
 		</#list>
 
 		${procedurecode}
-
 	}
-
-	${trigger_code}
 
 }
 <#-- @formatter:on -->

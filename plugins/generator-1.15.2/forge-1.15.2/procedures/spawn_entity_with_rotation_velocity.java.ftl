@@ -2,12 +2,13 @@
 <#if entity != "null">
 	if(world instanceof World && !world.getWorld().isRemote) {
     <#if !entity.toString().contains(".CustomEntity")>
-			Entity entityToSpawn = new ${generator.map(field$entity, "entities", 0)}(EntityType.${entity}, world.getWorld());
+			Entity entityToSpawn = new ${generator.map(field$entity, "entities", 0)}(${entity}, world.getWorld());
     <#else>
 			Entity entityToSpawn = new ${entity}(${entity.toString().replace(".CustomEntity", "")}.entity, world.getWorld());
     </#if>
 		entityToSpawn.setLocationAndAngles(${input$x}, ${input$y}, ${input$z}, (float) ${input$yaw}, (float) ${input$pitch});
 		entityToSpawn.setRenderYawOffset((float) ${input$yaw});
+		entityToSpawn.setRotationYawHead((float) ${input$yaw});
 		entityToSpawn.setMotion(${input$vx},${input$vy},${input$vz});
 
 		if (entityToSpawn instanceof MobEntity)

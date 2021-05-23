@@ -804,6 +804,11 @@ import net.minecraft.block.material.Material;
         	return NetworkHooks.getEntitySpawningPacket(this);
     	}
 
+		@Override protected void arrowHit(LivingEntity livingEntity) {
+			super.arrowHit(livingEntity);
+			livingEntity.setArrowCountInEntity(livingEntity.getArrowCountInEntity() - 1);
+		}
+
 		@Override @OnlyIn(Dist.CLIENT) public ItemStack getItem() {
 			return ${mappedMCItemToItemStackCode(data.rangedAttackItem, 1)};
 		}
