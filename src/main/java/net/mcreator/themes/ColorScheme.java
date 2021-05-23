@@ -28,8 +28,6 @@ public class ColorScheme {
 	private final String actionColor;
 	private final String foregroundColor;
 	private final String borderColor;
-	private String blocklyCSSFile;
-	private String codeEditorFile;
 
 	public ColorScheme(String id, String altBackgroundColor, String backgroundColor, String actionColor,
 			String foregroundColor, String borderColor) {
@@ -39,8 +37,6 @@ public class ColorScheme {
 		this.actionColor = actionColor;
 		this.foregroundColor = foregroundColor;
 		this.borderColor = borderColor;
-		this.blocklyCSSFile = id;
-		this.codeEditorFile = id;
 	}
 
 	public String getID() {
@@ -65,21 +61,5 @@ public class ColorScheme {
 
 	public Color getBorderColor() {
 		return Color.decode(borderColor);
-	}
-
-	public String getBlocklyCSSFile() {
-		return blocklyCSSFile;
-	}
-
-	public void setBlocklyCSSFile(String blocklyCSSFile) {
-		this.blocklyCSSFile = blocklyCSSFile;
-	}
-
-	public String getCodeEditorFile() {
-		return codeEditorFile;
-	}
-
-	public void setCodeEditorFile(String codeEditorFile) {
-		this.codeEditorFile = codeEditorFile;
 	}
 }

@@ -60,7 +60,7 @@ public class Theme {
 			return L10N.t("theme." + id + ".description");
 		// No description
 		else
-			return null;
+			return "";
 	}
 
 	@Nullable public String getCredits() {

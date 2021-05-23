@@ -88,7 +88,7 @@ public class ThemesPanel {
 			String text = "<html>" + value.getName();
 			if (value.getColorScheme() != null)
 				text += "<br><small>Color theme: " + value.getColorScheme().getID();
-			if (value.getDescription() != null)
+			if (!value.getDescription().isEmpty())
 				text += "<br><i>" + value.getDescription() + "</i>";
 			text += "<br><small>ID: " + value.getID();
 			if (value.getVersion() != null)

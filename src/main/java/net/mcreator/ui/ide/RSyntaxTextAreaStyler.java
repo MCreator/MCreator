@@ -36,11 +36,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Locale;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Pattern;
 
 public class RSyntaxTextAreaStyler {
 
@@ -48,18 +44,8 @@ public class RSyntaxTextAreaStyler {
 
 	public static void style(RSyntaxTextArea te, RTextScrollPane sp, int initialFontSize) {
 		try {
-			AtomicReference<InputStream> input = new AtomicReference<>();
-
-			new Reflections("themes." + ThemeLoader.CURRENT_THEME.getID() + ".colors", new ResourcesScanner(), PluginLoader.INSTANCE)
-					.getResources(Pattern.compile("code_editor.xml")).parallelStream().forEach(
-					e -> {
-						try {
-							input.set(Objects.requireNonNull(PluginLoader.INSTANCE.getResource(e)).openConnection().getInputStream());
-						} catch (IOException ioe) {
-							LOG.error(ioe.getMessage(), ioe);
-						}
-					});
-			Theme theme = Theme.load(input.get());
+			Theme theme = Theme.load(PluginLoader.INSTANCE
+					.getResourceAsStream("themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml"));
 
 			if (!PreferencesManager.PREFERENCES.ide.editorTheme.equals("MCreator")) {
 				theme = Theme.load(te.getClass().getResourceAsStream(

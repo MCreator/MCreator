@@ -53,6 +53,7 @@ public class MCreatorTheme extends OceanTheme {
 	private static Font default_font;
 
 	public MCreatorTheme(ColorScheme colorScheme) {
+		
 		this.colorScheme = colorScheme;
 		MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
 

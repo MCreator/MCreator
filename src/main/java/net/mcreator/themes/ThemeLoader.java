@@ -42,7 +42,7 @@ import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.init.UIRES;\
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,26 +74,18 @@ public class ThemeLoader {
 			theme.setId(new File(file).getParentFile().getName());
 
 			if (theme.getColorScheme() != null) {
-				// Set the value for the Blockly Panel file
-				// If the file does not exist, we use the default file (from the default_dark them)
+				// Check if the color scheme contains the Blockly CSS file
 				if (PluginLoader.INSTANCE.getResource(
-						"themes/" + theme.getID() + "/colors/blockly_" + theme.getColorScheme().getID() + ".css") == null) {
-					theme.getColorScheme().setBlocklyCSSFile("dark");
+						"themes/" + theme.getID() + "/styles/blockly.css") == null) {
 					LOG.warn(theme.getColorScheme().getID()
 							+ " color scheme does not define the Blockly Panel colors! Default_dark's file will be used!");
-				} else {
-					theme.getColorScheme().setBlocklyCSSFile(theme.getColorScheme().getID());
 				}
 
-				// Set the value for the Code Editor file
-				// If the file does not exist, we use the default file (from the default_dark them)
+				// Check if the color scheme contains the code editor XML file
 				if (PluginLoader.INSTANCE.getResource(
-						"themes/" + theme.getID() + "/colors/codeeditor_" + theme.getColorScheme().getID() + ".xml") == null) {
-					theme.getColorScheme().setCodeEditorFile("dark");
+						"themes/" + theme.getID() + "/styles/code_editor.xml") == null) {
 					LOG.warn(theme.getColorScheme().getID()
 							+ " color theme does not define the code editor colors! Default_dark's file will be used!");
-				} else {
-					theme.getColorScheme().setCodeEditorFile(theme.getColorScheme().getID());
 				}
 			}
 
