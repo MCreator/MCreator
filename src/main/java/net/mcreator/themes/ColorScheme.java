@@ -31,7 +31,7 @@ public class ColorScheme {
 	private final String id;
 	private final String altBackgroundColor;
 	private final String backgroundColor;
-	private final String actionColor;
+	private final String secondAltBackgroundColor;
 	private final String altForegroundColor;
 	private final String foregroundColor;
 
@@ -50,7 +50,7 @@ public class ColorScheme {
 		this.id = id;
 		this.altBackgroundColor = altBackgroundColor;
 		this.backgroundColor = backgroundColor;
-		this.actionColor = actionColor;
+		this.secondAltBackgroundColor = actionColor;
 		this.altForegroundColor = altForegroundColor;
 		this.foregroundColor = foregroundColor;
 	}
@@ -67,15 +67,15 @@ public class ColorScheme {
 		return Color.decode(backgroundColor);
 	}
 
-	public Color getActionColor() {
-		return Color.decode(actionColor);
+	public Color getSecondAltBackgroundColor() {
+		return Color.decode(secondAltBackgroundColor);
 	}
 
-	public Color getForegroundColor() {
+	public Color getAlForegroundColor() {
 		return Color.decode(altForegroundColor);
 	}
 
-	public Color getBorderColor() {
+	public Color getForegroundColor() {
 		return Color.decode(foregroundColor);
 	}
 }

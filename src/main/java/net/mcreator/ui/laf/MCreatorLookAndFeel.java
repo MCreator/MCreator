@@ -62,9 +62,9 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 
 			if (defaultStyles != null) {
 				defaultStyles.addRule("* {color: white;} font, b, i, strong, p, div, li, ul, ol {color: #" + Integer
-						.toHexString(theme.getBrightColor().getRGB()).substring(2)
+						.toHexString(theme.getColorScheme().getForegroundColor().getRGB()).substring(2)
 						+ ";} body {color: white;} html {color: #" + Integer
-						.toHexString(theme.getBrightColor().getRGB()).substring(2) + ";} a {color: #" + Integer
+						.toHexString(theme.getColorScheme().getForegroundColor().getRGB()).substring(2) + ";} a {color: #" + Integer
 						.toHexString(theme.getMainTint().getRGB()).substring(2) + ";}");
 
 				appContext.getClass().getMethod("put", Object.class, Object.class)

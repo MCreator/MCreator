@@ -50,7 +50,7 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	DefaultListModel<String> model = new DefaultListModel<>();
 	JPanel preferences = new JPanel();
-	private final ThemesPanel themes; // We create the variable here, so we can access it when we store tha preferences
+	private final ThemesPanel themes;
 
 	private final JList<String> sections = new JList<>(model);
 	private final CardLayout preferencesLayout = new CardLayout();

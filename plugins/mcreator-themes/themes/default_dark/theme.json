@@ -4,7 +4,7 @@
     "id": "dark",
     "altBackgroundColor": "0x1e1e1e",
     "backgroundColor": "0x323232",
-    "actionColor": "0x505050",
+    "secondAltBackgroundColor": "0x505050",
     "altForegroundColor": "0xc2c2c2",
     "foregroundColor": "0xf5f5f5"
   }
