@@ -148,8 +148,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private FluidListField fluidRestrictions;
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
-	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.block.default_sound_type");
-	private final JRadioButton customSoundType = L10N.radiobutton("elementgui.block.custom_sound_type");
+	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
+	private final JRadioButton customSoundType = L10N.radiobutton("elementgui.common.custom_sound_type");
 	private final SoundSelector breakSound = new SoundSelector(mcreator);
 	private final SoundSelector stepSound = new SoundSelector(mcreator);
 	private final SoundSelector placeSound = new SoundSelector(mcreator);
@@ -743,23 +743,23 @@ public class BlockGUI extends ModElementGUI<Block> {
 		soundProperties.setOpaque(false);
 
 		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/break_sound"),
-				L10N.label("elementgui.block.soundtypes.break_sound")));
+				L10N.label("elementgui.common.soundtypes.break_sound")));
 		soundProperties.add(breakSound);
 
 		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/step_sound"),
-				L10N.label("elementgui.block.soundtypes.step_sound")));
+				L10N.label("elementgui.common.soundtypes.step_sound")));
 		soundProperties.add(stepSound);
 
 		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/place_sound"),
-				L10N.label("elementgui.block.soundtypes.place_sound")));
+				L10N.label("elementgui.common.soundtypes.place_sound")));
 		soundProperties.add(placeSound);
 
 		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hit_sound"),
-				L10N.label("elementgui.block.soundtypes.hit_sound")));
+				L10N.label("elementgui.common.soundtypes.hit_sound")));
 		soundProperties.add(hitSound);
 
 		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fall_sound"),
-				L10N.label("elementgui.block.soundtypes.fall_sound")));
+				L10N.label("elementgui.common.soundtypes.fall_sound")));
 		soundProperties.add(fallSound);
 
 		soundProperties.setOpaque(false);
@@ -848,7 +848,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		soundProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.block.properties_sound"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				L10N.t("elementgui.common.properties_sound"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		advancedWithCondition.setBorder(BorderFactory.createTitledBorder(
