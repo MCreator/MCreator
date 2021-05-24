@@ -738,7 +738,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		customSoundType.addActionListener(event -> updateSoundType());
 
 		soundProperties.add(PanelUtils.join(FlowLayout.LEFT, defaultSoundType, customSoundType,
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.common.block_sound"))));
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.block.block_sound"))));
 		soundProperties.add(soundOnStep);
 		soundProperties.setOpaque(false);
 
