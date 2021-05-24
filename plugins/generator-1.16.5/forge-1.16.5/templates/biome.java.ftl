@@ -328,7 +328,7 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 					<#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
 					<#if entity != "null">
 						<#if !entity.toString().contains(".CustomEntity")>
-						mobSpawnInfo.withSpawner(${generator.map(spawnEntry.spawnType, "mobspawntypes")}, new MobSpawnInfo.Spawners(EntityType.${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
+						mobSpawnInfo.withSpawner(${generator.map(spawnEntry.spawnType, "mobspawntypes")}, new MobSpawnInfo.Spawners(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
 						<#else>
 						mobSpawnInfo.withSpawner(${generator.map(spawnEntry.spawnType, "mobspawntypes")}, new MobSpawnInfo.Spawners(${entity.toString().replace(".CustomEntity", "")}.entity, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
 						</#if>

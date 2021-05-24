@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.GridSettings;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.Slot;
@@ -50,6 +51,8 @@ import java.util.List;
 	public Procedure onTick;
 	public Procedure onClosed;
 
+	public GridSettings gridSettings;
+
 	public final transient int W;
 	public final transient int H;
 
@@ -63,6 +66,7 @@ import java.util.List;
 		this.W = WYSIWYG.W;
 		this.H = WYSIWYG.H;
 		this.renderBgLayer = true;
+		this.gridSettings = new GridSettings();
 	}
 
 	public int getMaxSlotID() {
