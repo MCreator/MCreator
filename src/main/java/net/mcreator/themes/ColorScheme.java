@@ -29,46 +29,44 @@ import java.awt.*;
  */
 public class ColorScheme {
 
-	private final String altBackgroundColor;
-	private final String backgroundColor;
-	private final String secondAltBackgroundColor;
-	private final String altForegroundColor;
-	private final String foregroundColor;
+	private String altBackgroundColor;
+	private String backgroundColor;
+	private String secondAltBackgroundColor;
+	private String altForegroundColor;
+	private String foregroundColor;
 
 	/**
-	 * <p>Creates a new ColorScheme with parameters</p>
 	 *
-	 * @param altBackgroundColor Second background color used (e.g. workspace background)
-	 * @param backgroundColor    Main color of the user (e.g. main menu and top bar)
-	 * @param actionColor        Background of components (e.g. text fields, checkboxes and sound selectors)
-	 * @param altForegroundColor Secondary text color
-	 * @param foregroundColor    Color used for most of texts
+	 * @return Background of components (e.g. text fields, checkboxes and sound selectors)
 	 */
-	public ColorScheme(String altBackgroundColor, String backgroundColor, String actionColor,
-			String altForegroundColor, String foregroundColor) {
-		this.altBackgroundColor = altBackgroundColor;
-		this.backgroundColor = backgroundColor;
-		this.secondAltBackgroundColor = actionColor;
-		this.altForegroundColor = altForegroundColor;
-		this.foregroundColor = foregroundColor;
-	}
-
 	public Color getSecondAltBackgroundColor() {
 		return Color.decode(secondAltBackgroundColor);
 	}
 
+	/**
+	 * @return Main color of the user (e.g. main menu and top bar)
+	 */
 	public Color getBackgroundColor() {
 		return Color.decode(backgroundColor);
 	}
 
+	/**
+	 * @return Second background color used (e.g. workspace background)
+	 */
 	public Color getAltBackgroundColor() {
 		return Color.decode(altBackgroundColor);
 	}
 
+	/**
+	 * @return Secondary text color
+	 */
 	public Color getAltForegroundColor() {
 		return Color.decode(altForegroundColor);
 	}
 
+	/**
+	 * @return Color used for most of texts
+	 */
 	public Color getForegroundColor() {
 		return Color.decode(foregroundColor);
 	}

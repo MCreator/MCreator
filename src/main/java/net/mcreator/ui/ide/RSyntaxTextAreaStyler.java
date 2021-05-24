@@ -44,8 +44,16 @@ public class RSyntaxTextAreaStyler {
 
 	public static void style(RSyntaxTextArea te, RTextScrollPane sp, int initialFontSize) {
 		try {
-			Theme theme = Theme.load(PluginLoader.INSTANCE
-					.getResourceAsStream("themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml"));
+			Theme theme;
+
+			if (PluginLoader.INSTANCE
+					.getResourceAsStream("themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml") != null) {
+				theme = Theme.load(PluginLoader.INSTANCE
+						.getResourceAsStream("themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml"));
+			} else {
+				theme = Theme.load(PluginLoader.INSTANCE
+						.getResourceAsStream("themes/default_dark/styles/code_editor.xml"));
+			}
 
 			if (!PreferencesManager.PREFERENCES.ide.editorTheme.equals("MCreator")) {
 				theme = Theme.load(te.getClass().getResourceAsStream(

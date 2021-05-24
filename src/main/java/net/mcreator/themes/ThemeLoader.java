@@ -58,7 +58,8 @@ import java.util.regex.Pattern;
 /**
  * ThemeLoader defines to load and use available Themes.
  */
-public class ThemeLoader {
+public class
+ThemeLoader {
 	private static final Logger LOG = LogManager.getLogger("Theme Loader");
 
 	private static final LinkedHashSet<Theme> THEMES = new LinkedHashSet<>();
