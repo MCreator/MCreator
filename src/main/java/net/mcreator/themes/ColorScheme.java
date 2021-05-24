@@ -59,7 +59,7 @@ public class ColorScheme {
 		return id;
 	}
 
-	public Color getAltBackgroundColor() {
+	public Color getSecondAltBackgroundColor() {
 		return Color.decode(altBackgroundColor);
 	}
 
@@ -67,7 +67,7 @@ public class ColorScheme {
 		return Color.decode(backgroundColor);
 	}
 
-	public Color getSecondAltBackgroundColor() {
+	public Color getAltBackgroundColor() {
 		return Color.decode(secondAltBackgroundColor);
 	}
 

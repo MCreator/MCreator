@@ -2,9 +2,9 @@
   "name": "Default Light",
   "colorScheme": {
     "id": "light",
-    "altBackgroundColor": "0xf5f5f5",
+    "secondAltBackgroundColor": "0xf5f5f5",
     "backgroundColor": "0xe0e0e0",
-    "secondAltBackgroundColor": "0xc8c8c8",
+    "altBackgroundColor": "0xc8c8c8",
     "altForegroundColor": "0x393939",
     "foregroundColor": "0x232323"
   }

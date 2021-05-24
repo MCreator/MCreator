@@ -80,9 +80,9 @@ public class MCreatorTheme extends OceanTheme {
 	}
 
 	protected void initMCreatorThemeColors(UIDefaults table) {
-		table.put("MCreatorLAF.BLACK_ACCENT", colorScheme.getAltBackgroundColor());
+		table.put("MCreatorLAF.BLACK_ACCENT", colorScheme.getSecondAltBackgroundColor());
 		table.put("MCreatorLAF.DARK_ACCENT", colorScheme.getBackgroundColor());
-		table.put("MCreatorLAF.LIGHT_ACCENT", colorScheme.getSecondAltBackgroundColor());
+		table.put("MCreatorLAF.LIGHT_ACCENT", colorScheme.getAltBackgroundColor());
 		table.put("MCreatorLAF.GRAY_COLOR", colorScheme.getAltForegroundColor());
 		table.put("MCreatorLAF.BRIGHT_COLOR", colorScheme.getForegroundColor());
 		table.put("MCreatorLAF.MAIN_TINT", MAIN_TINT);
@@ -122,9 +122,9 @@ public class MCreatorTheme extends OceanTheme {
 
 		table.put("TitledBorder.titleColor", colorScheme.getForegroundColor());
 
-		table.put("SplitPane.dividerFocusColor", colorScheme.getSecondAltBackgroundColor());
-		table.put("SplitPane.darkShadow", colorScheme.getSecondAltBackgroundColor());
-		table.put("SplitPane.shadow", colorScheme.getSecondAltBackgroundColor());
+		table.put("SplitPane.dividerFocusColor", colorScheme.getAltBackgroundColor());
+		table.put("SplitPane.darkShadow", colorScheme.getAltBackgroundColor());
+		table.put("SplitPane.shadow", colorScheme.getAltBackgroundColor());
 		table.put("SplitPaneDivider.draggingColor", MAIN_TINT);
 
 		table.put("OptionPane.messageForeground", colorScheme.getForegroundColor());
@@ -135,10 +135,10 @@ public class MCreatorTheme extends OceanTheme {
 		table.put("Label.textForeground", colorScheme.getForegroundColor());
 
 		table.put("Button.toolBarBorderBackground", colorScheme.getForegroundColor());
-		table.put("Button.disabledToolBarBorderBackground", colorScheme.getSecondAltBackgroundColor());
+		table.put("Button.disabledToolBarBorderBackground", colorScheme.getAltBackgroundColor());
 		table.put("ToolBar.rolloverBorder", BorderFactory
 				.createCompoundBorder(BorderFactory.createLineBorder(colorScheme.getBackgroundColor(), 1), BorderFactory
-						.createCompoundBorder(BorderFactory.createLineBorder(colorScheme.getSecondAltBackgroundColor(), 1),
+						.createCompoundBorder(BorderFactory.createLineBorder(colorScheme.getAltBackgroundColor(), 1),
 								BorderFactory.createLineBorder(colorScheme.getBackgroundColor(), 3))));
 
 		table.put("ScrollBarUI", SlickDarkScrollBarUI.class.getName());
@@ -150,34 +150,34 @@ public class MCreatorTheme extends OceanTheme {
 		table.put("Menu.border", BorderFactory.createEmptyBorder(3, 4, 3, 4));
 		table.put("MenuItem.border", BorderFactory.createEmptyBorder(3, 4, 3, 4));
 
-		table.put("PopupMenu.border", BorderFactory.createLineBorder(colorScheme.getSecondAltBackgroundColor()));
+		table.put("PopupMenu.border", BorderFactory.createLineBorder(colorScheme.getAltBackgroundColor()));
 
-		table.put("Separator.foreground", colorScheme.getSecondAltBackgroundColor());
+		table.put("Separator.foreground", colorScheme.getAltBackgroundColor());
 		table.put("Separator.background", colorScheme.getBackgroundColor());
 
 		table.put("Menu.foreground", colorScheme.getForegroundColor());
 		table.put("MenuItem.foreground", colorScheme.getForegroundColor());
 
 		table.put("ComboBox.foreground", colorScheme.getForegroundColor());
-		table.put("ComboBox.background", colorScheme.getSecondAltBackgroundColor());
+		table.put("ComboBox.background", colorScheme.getAltBackgroundColor());
 		table.put("ComboBox.disabledForeground", colorScheme.getAltForegroundColor());
 
 		table.put("Spinner.foreground", colorScheme.getForegroundColor());
-		table.put("Spinner.background", colorScheme.getSecondAltBackgroundColor());
+		table.put("Spinner.background", colorScheme.getAltBackgroundColor());
 
 		table.put("FormattedTextField.foreground", colorScheme.getForegroundColor());
 		table.put("FormattedTextField.inactiveForeground", colorScheme.getAltForegroundColor());
-		table.put("FormattedTextField.background", colorScheme.getSecondAltBackgroundColor());
+		table.put("FormattedTextField.background", colorScheme.getAltBackgroundColor());
 		table.put("FormattedTextField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
 		table.put("TextField.foreground", colorScheme.getForegroundColor());
 		table.put("TextField.inactiveForeground", colorScheme.getAltForegroundColor());
-		table.put("TextField.background", colorScheme.getSecondAltBackgroundColor());
+		table.put("TextField.background", colorScheme.getAltBackgroundColor());
 		table.put("TextField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
 		table.put("PasswordField.foreground", colorScheme.getForegroundColor());
 		table.put("PasswordField.inactiveForeground", colorScheme.getAltForegroundColor());
-		table.put("PasswordField.background", colorScheme.getSecondAltBackgroundColor());
+		table.put("PasswordField.background", colorScheme.getAltBackgroundColor());
 		table.put("PasswordField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
 		table.put("ComboBox.border", null);
@@ -232,8 +232,8 @@ public class MCreatorTheme extends OceanTheme {
 
 		table.put("TabbedPane.contentAreaColor", colorScheme.getBackgroundColor());
 		table.put("TabbedPane.contentBorderInsets", new Insets(4, 2, 3, 3));
-		table.put("TabbedPane.selected", colorScheme.getSecondAltBackgroundColor());
-		table.put("TabbedPane.tabAreaBackground", colorScheme.getSecondAltBackgroundColor());
+		table.put("TabbedPane.selected", colorScheme.getAltBackgroundColor());
+		table.put("TabbedPane.tabAreaBackground", colorScheme.getAltBackgroundColor());
 		table.put("TabbedPane.tabAreaInsets", new Insets(2, 2, 0, 6));
 		table.put("TabbedPane.unselectedBackground", colorScheme.getBackgroundColor());
 
@@ -285,11 +285,11 @@ public class MCreatorTheme extends OceanTheme {
 	}
 
 	@Override protected ColorUIResource getSecondary1() {
-		return new ColorUIResource(colorScheme.getSecondAltBackgroundColor());
+		return new ColorUIResource(colorScheme.getAltBackgroundColor());
 	}
 
 	@Override protected ColorUIResource getSecondary2() {
-		return new ColorUIResource(colorScheme.getSecondAltBackgroundColor());
+		return new ColorUIResource(colorScheme.getAltBackgroundColor());
 	}
 
 	@Override protected ColorUIResource getSecondary3() {
@@ -297,11 +297,11 @@ public class MCreatorTheme extends OceanTheme {
 	}
 
 	@Override public ColorUIResource getControl() {
-		return new ColorUIResource(colorScheme.getSecondAltBackgroundColor());
+		return new ColorUIResource(colorScheme.getAltBackgroundColor());
 	}
 
 	@Override public ColorUIResource getControlHighlight() {
-		return new ColorUIResource(colorScheme.getSecondAltBackgroundColor());
+		return new ColorUIResource(colorScheme.getAltBackgroundColor());
 	}
 
 	@Override public ColorUIResource getPrimaryControlHighlight() {
