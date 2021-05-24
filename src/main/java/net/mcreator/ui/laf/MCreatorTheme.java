@@ -83,7 +83,7 @@ public class MCreatorTheme extends OceanTheme {
 		table.put("MCreatorLAF.BLACK_ACCENT", colorScheme.getAltBackgroundColor());
 		table.put("MCreatorLAF.DARK_ACCENT", colorScheme.getBackgroundColor());
 		table.put("MCreatorLAF.LIGHT_ACCENT", colorScheme.getSecondAltBackgroundColor());
-		table.put("MCreatorLAF.GRAY_COLOR", colorScheme.getAlForegroundColor());
+		table.put("MCreatorLAF.GRAY_COLOR", colorScheme.getAltForegroundColor());
 		table.put("MCreatorLAF.BRIGHT_COLOR", colorScheme.getForegroundColor());
 		table.put("MCreatorLAF.MAIN_TINT", MAIN_TINT);
 	}
@@ -106,11 +106,11 @@ public class MCreatorTheme extends OceanTheme {
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".foreground")) {
 				table.put(key, colorScheme.getForegroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".inactiveforeground")) {
-				table.put(key, colorScheme.getAlForegroundColor());
+				table.put(key, colorScheme.getAltForegroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".disabledbackground")) {
 				table.put(key, colorScheme.getBackgroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".disabledforeground")) {
-				table.put(key, colorScheme.getAlForegroundColor());
+				table.put(key, colorScheme.getAltForegroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".caretforeground")) {
 				table.put(key, colorScheme.getForegroundColor());
 			}
@@ -160,23 +160,23 @@ public class MCreatorTheme extends OceanTheme {
 
 		table.put("ComboBox.foreground", colorScheme.getForegroundColor());
 		table.put("ComboBox.background", colorScheme.getSecondAltBackgroundColor());
-		table.put("ComboBox.disabledForeground", colorScheme.getAlForegroundColor());
+		table.put("ComboBox.disabledForeground", colorScheme.getAltForegroundColor());
 
 		table.put("Spinner.foreground", colorScheme.getForegroundColor());
 		table.put("Spinner.background", colorScheme.getSecondAltBackgroundColor());
 
 		table.put("FormattedTextField.foreground", colorScheme.getForegroundColor());
-		table.put("FormattedTextField.inactiveForeground", colorScheme.getAlForegroundColor());
+		table.put("FormattedTextField.inactiveForeground", colorScheme.getAltForegroundColor());
 		table.put("FormattedTextField.background", colorScheme.getSecondAltBackgroundColor());
 		table.put("FormattedTextField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
 		table.put("TextField.foreground", colorScheme.getForegroundColor());
-		table.put("TextField.inactiveForeground", colorScheme.getAlForegroundColor());
+		table.put("TextField.inactiveForeground", colorScheme.getAltForegroundColor());
 		table.put("TextField.background", colorScheme.getSecondAltBackgroundColor());
 		table.put("TextField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
 		table.put("PasswordField.foreground", colorScheme.getForegroundColor());
-		table.put("PasswordField.inactiveForeground", colorScheme.getAlForegroundColor());
+		table.put("PasswordField.inactiveForeground", colorScheme.getAltForegroundColor());
 		table.put("PasswordField.background", colorScheme.getSecondAltBackgroundColor());
 		table.put("PasswordField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
@@ -265,7 +265,7 @@ public class MCreatorTheme extends OceanTheme {
 		table.put("OptionPane.questionIcon", UIRES.get("laf.question"));
 		table.put("OptionPane.informationIcon", UIRES.get("laf.info"));
 
-		table.put("MenuItem.acceleratorForeground", colorScheme.getAlForegroundColor());
+		table.put("MenuItem.acceleratorForeground", colorScheme.getAltForegroundColor());
 	}
 
 	@Override public String getName() {
@@ -305,7 +305,7 @@ public class MCreatorTheme extends OceanTheme {
 	}
 
 	@Override public ColorUIResource getPrimaryControlHighlight() {
-		return new ColorUIResource(colorScheme.getAlForegroundColor());
+		return new ColorUIResource(colorScheme.getAltForegroundColor());
 	}
 
 	@Override public FontUIResource getControlTextFont() {

@@ -71,7 +71,7 @@ public class ColorScheme {
 		return Color.decode(secondAltBackgroundColor);
 	}
 
-	public Color getAlForegroundColor() {
+	public Color getAltForegroundColor() {
 		return Color.decode(altForegroundColor);
 	}
 
