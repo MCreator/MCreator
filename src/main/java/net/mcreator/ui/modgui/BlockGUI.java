@@ -740,7 +740,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		soundProperties.add(PanelUtils.join(FlowLayout.LEFT, defaultSoundType, customSoundType,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.block.block_sound"))));
 		soundProperties.add(soundOnStep);
-		soundProperties.setOpaque(false);
 
 		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/break_sound"),
 				L10N.label("elementgui.common.soundtypes.break_sound")));
@@ -761,8 +760,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fall_sound"),
 				L10N.label("elementgui.common.soundtypes.fall_sound")));
 		soundProperties.add(fallSound);
-
-		soundProperties.setOpaque(false);
 
 		advancedProperties.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/tick_rate"), L10N.label("elementgui.block.tick_rate")));
@@ -861,6 +858,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ploca.setOpaque(false);
 		selp.setOpaque(false);
+		soundProperties.setOpaque(false);
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(ploca));
 		pane3.setOpaque(false);
