@@ -180,13 +180,33 @@ implements <a href="interfaces/ITabContainedElement.html" title="interface in ne
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#colorOnMap">colorOnMap</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code><a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#creativeTab">creativeTab</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#density">density</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#emissiveRendering">emissiveRendering</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>int</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#fireSpreadSpeed">fireSpreadSpeed</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>int</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#flammability">flammability</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
@@ -211,17 +231,27 @@ implements <a href="interfaces/ITabContainedElement.html" title="interface in ne
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>int</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#luminosity">luminosity</a></span></code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#luminance">luminance</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
+<td class="colFirst"><code>int</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#luminosity">luminosity</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#name">name</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code><a href="../parts/Procedure.html" title="class in net.mcreator.element.parts">Procedure</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onBlockAdded">onBlockAdded</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code><a href="../parts/Procedure.html" title="class in net.mcreator.element.parts">Procedure</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onDestroyedByExplosion">onDestroyedByExplosion</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
@@ -236,7 +266,17 @@ implements <a href="interfaces/ITabContainedElement.html" title="interface in ne
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../parts/Procedure.html" title="class in net.mcreator.element.parts">Procedure</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onRandomUpdateEvent">onRandomUpdateEvent</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code><a href="../parts/Procedure.html" title="class in net.mcreator.element.parts">Procedure</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onTickUpdate">onTickUpdate</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>double</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#resistance">resistance</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
@@ -446,6 +486,60 @@ implements <a href="interfaces/ITabContainedElement.html" title="interface in ne
 <pre>public&nbsp;<a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a> creativeTab</pre>
 </li>
 </ul>
+<a id="resistance">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>resistance</h4>
+<pre>public&nbsp;double resistance</pre>
+</li>
+</ul>
+<a id="luminance">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>luminance</h4>
+<pre>public&nbsp;int luminance</pre>
+</li>
+</ul>
+<a id="emissiveRendering">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>emissiveRendering</h4>
+<pre>public&nbsp;boolean emissiveRendering</pre>
+</li>
+</ul>
+<a id="flammability">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>flammability</h4>
+<pre>public&nbsp;int flammability</pre>
+</li>
+</ul>
+<a id="fireSpreadSpeed">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>fireSpreadSpeed</h4>
+<pre>public&nbsp;int fireSpreadSpeed</pre>
+</li>
+</ul>
+<a id="colorOnMap">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>colorOnMap</h4>
+<pre>public&nbsp;java.lang.String colorOnMap</pre>
+</li>
+</ul>
 <a id="frequencyOnChunks">
 <!--   -->
 </a>
@@ -512,10 +606,28 @@ implements <a href="interfaces/ITabContainedElement.html" title="interface in ne
 <a id="onEntityCollides">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>onEntityCollides</h4>
 <pre>public&nbsp;<a href="../parts/Procedure.html" title="class in net.mcreator.element.parts">Procedure</a> onEntityCollides</pre>
+</li>
+</ul>
+<a id="onRandomUpdateEvent">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>onRandomUpdateEvent</h4>
+<pre>public&nbsp;<a href="../parts/Procedure.html" title="class in net.mcreator.element.parts">Procedure</a> onRandomUpdateEvent</pre>
+</li>
+</ul>
+<a id="onDestroyedByExplosion">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>onDestroyedByExplosion</h4>
+<pre>public&nbsp;<a href="../parts/Procedure.html" title="class in net.mcreator.element.parts">Procedure</a> onDestroyedByExplosion</pre>
 </li>
 </ul>
 </li>
