@@ -28,7 +28,7 @@ import java.awt.*;
  * if it is defined inside a plugin.</p>
  */
 public class ColorScheme {
-	private final String id;
+
 	private final String altBackgroundColor;
 	private final String backgroundColor;
 	private final String secondAltBackgroundColor;
@@ -38,25 +38,19 @@ public class ColorScheme {
 	/**
 	 * <p>Creates a new ColorScheme with parameters</p>
 	 *
-	 * @param id A unique ID representing the ColorScheme in the code
 	 * @param altBackgroundColor Second background color used (e.g. workspace background)
-	 * @param backgroundColor Main color of the user (e.g. main menu and top bar)
-	 * @param actionColor Background of components (e.g. text fields, checkboxes and sound selectors)
+	 * @param backgroundColor    Main color of the user (e.g. main menu and top bar)
+	 * @param actionColor        Background of components (e.g. text fields, checkboxes and sound selectors)
 	 * @param altForegroundColor Secondary text color
-	 * @param foregroundColor Color used for most of texts
+	 * @param foregroundColor    Color used for most of texts
 	 */
-	public ColorScheme(String id, String altBackgroundColor, String backgroundColor, String actionColor,
+	public ColorScheme(String altBackgroundColor, String backgroundColor, String actionColor,
 			String altForegroundColor, String foregroundColor) {
-		this.id = id;
 		this.altBackgroundColor = altBackgroundColor;
 		this.backgroundColor = backgroundColor;
 		this.secondAltBackgroundColor = actionColor;
 		this.altForegroundColor = altForegroundColor;
 		this.foregroundColor = foregroundColor;
-	}
-
-	public String getID() {
-		return id;
 	}
 
 	public Color getSecondAltBackgroundColor() {

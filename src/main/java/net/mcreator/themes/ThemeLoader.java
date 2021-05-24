@@ -83,15 +83,15 @@ public class ThemeLoader {
 				// Check if the color scheme contains the Blockly CSS file
 				if (PluginLoader.INSTANCE.getResource(
 						"themes/" + theme.getID() + "/styles/blockly.css") == null) {
-					LOG.warn(theme.getColorScheme().getID()
-							+ " color scheme does not define the Blockly Panel colors! Default_dark's file will be used!");
+					LOG.warn("Color scheme of " + theme.getID()
+							+ " does not define the Blockly Panel colors! Default_dark's file will be used!");
 				}
 
 				// Check if the color scheme contains the code editor XML file
 				if (PluginLoader.INSTANCE.getResource(
 						"themes/" + theme.getID() + "/styles/code_editor.xml") == null) {
-					LOG.warn(theme.getColorScheme().getID()
-							+ " color theme does not define the code editor colors! Default_dark's file will be used!");
+					LOG.warn("Color scheme of " + theme.getID()
+							+ " does not define the code editor colors! Default_dark's file will be used!");
 				}
 			}
 

@@ -71,7 +71,7 @@ public class ThemesPanel {
 		ThemeLoader.getThemes().stream().sorted(Comparator.comparing(Theme::getID)).forEach(tmodel::addElement);
 	}
 
-	public String getThemes() {
+	public String getSelectedTheme() {
 		return (String) themeIDs.getSelectedItem();
 	}
 
@@ -86,8 +86,6 @@ public class ThemesPanel {
 			ComponentUtils.deriveFont(this, 12);
 
 			String text = "<html>" + value.getName();
-			if (value.getColorScheme() != null)
-				text += "<br><small>Color theme: " + value.getColorScheme().getID();
 			if (!value.getDescription().isEmpty())
 				text += "<br><i>" + value.getDescription() + "</i>";
 			text += "<br><small>ID: " + value.getID();
