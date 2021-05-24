@@ -344,7 +344,7 @@ public class TestWorkspaceDataProvider {
 			fluid.textureBucket = emptyLists ? "" : "itest";
 			fluid.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			fluid.emptySound = new Sound(modElement.getWorkspace(),
+			fluid.emptySound = !emptyLists ? new Sound(modElement.getWorkspace(), "") : new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			fluid.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			fluid.resistance = 52.2;
