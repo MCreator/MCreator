@@ -1,0 +1,1 @@
+This is the sound played when the player places the plant in the world.

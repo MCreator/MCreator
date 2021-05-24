@@ -93,6 +93,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JTextField specialInfo = new JTextField(20);
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator);
+	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
+	private final JRadioButton customSoundType = L10N.radiobutton("elementgui.common.custom_sound_type");
+	private final SoundSelector breakSound = new SoundSelector(mcreator);
+	private final SoundSelector stepSound = new SoundSelector(mcreator);
+	private final SoundSelector placeSound = new SoundSelector(mcreator);
+	private final SoundSelector hitSound = new SoundSelector(mcreator);
+	private final SoundSelector fallSound = new SoundSelector(mcreator);
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.plant.is_replaceable");
 	private final JComboBox<String> colorOnMap = new JComboBox<>();
@@ -430,6 +437,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		selp2.setOpaque(false);
 
+		JPanel soundProperties = new JPanel(new GridLayout(6, 2, 0, 2));
+		soundProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.common.properties_sound"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		soundProperties.setOpaque(false);
+
 		useLootTableForDrops.setOpaque(false);
 		unbreakable.setOpaque(false);
 		hardness.setOpaque(false);
@@ -445,10 +459,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.common.creative_tab")));
 		selp.add(creativeTab);
-
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.common.block_sound")));
-		selp.add(soundOnStep);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/hardness"), L10N.label("elementgui.common.hardness")));
@@ -498,12 +508,48 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.plant_is_replaceable")));
 		selp2.add(isReplaceable);
 
+
+		ButtonGroup bg2 = new ButtonGroup();
+		bg2.add(defaultSoundType);
+		bg2.add(customSoundType);
+		defaultSoundType.setSelected(true);
+		defaultSoundType.setOpaque(false);
+		customSoundType.setOpaque(false);
+
+		defaultSoundType.addActionListener(event -> updateSoundType());
+		customSoundType.addActionListener(event -> updateSoundType());
+
+		soundProperties.add(PanelUtils.join(FlowLayout.LEFT, defaultSoundType, customSoundType,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.plant.plant_sound"))));
+		soundProperties.add(soundOnStep);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/break_sound"),
+				L10N.label("elementgui.common.soundtypes.break_sound")));
+		soundProperties.add(breakSound);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/step_sound"),
+				L10N.label("elementgui.common.soundtypes.step_sound")));
+		soundProperties.add(stepSound);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/place_sound"),
+				L10N.label("elementgui.common.soundtypes.place_sound")));
+		soundProperties.add(placeSound);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/hit_sound"),
+				L10N.label("elementgui.common.soundtypes.hit_sound")));
+		soundProperties.add(hitSound);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/fall_sound"),
+				L10N.label("elementgui.common.soundtypes.fall_sound")));
+		soundProperties.add(fallSound);
+
 		useLootTableForDrops.addActionListener(e -> {
 			customDrop.setEnabled(!useLootTableForDrops.isSelected());
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 		});
 
-		JComponent ploca = PanelUtils.westAndEastElement(selp, PanelUtils.pullElementUp(selp2));
+		JComponent ploca = PanelUtils.westAndEastElement(selp, PanelUtils.centerAndSouthElement(
+				selp2, soundProperties));
 		ploca.setOpaque(false);
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(ploca));
@@ -618,6 +664,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
+
+		updateSoundType();
 	}
 
 	private void updateTextureOptions() {
@@ -629,6 +677,24 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			textureBottom.setVisible(true);
 		} else {
 			texture.setVisible(true);
+		}
+	}
+
+	private void updateSoundType() {
+		if (customSoundType.isSelected()) {
+			breakSound.setEnabled(true);
+			stepSound.setEnabled(true);
+			placeSound.setEnabled(true);
+			hitSound.setEnabled(true);
+			fallSound.setEnabled(true);
+			soundOnStep.setEnabled(false);
+		} else {
+			breakSound.setEnabled(false);
+			stepSound.setEnabled(false);
+			placeSound.setEnabled(false);
+			hitSound.setEnabled(false);
+			fallSound.setEnabled(false);
+			soundOnStep.setEnabled(true);
 		}
 	}
 
@@ -683,6 +749,18 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		hardness.setValue(plant.hardness);
 		resistance.setValue(plant.resistance);
 		soundOnStep.setSelectedItem(plant.soundOnStep.getUnmappedValue());
+		breakSound.setSound(plant.breakSound);
+		stepSound.setSound(plant.stepSound);
+		placeSound.setSound(plant.placeSound);
+		fallSound.setSound(plant.fallSound);
+		if (plant.isCustomSoundType) {
+			defaultSoundType.setSelected(false);
+			customSoundType.setSelected(true);
+		} else {
+			defaultSoundType.setSelected(true);
+			customSoundType.setSelected(false);
+		}
+		hitSound.setSound(plant.hitSound);
 		luminance.setValue(plant.luminance);
 		unbreakable.setSelected(plant.unbreakable);
 		forceTicking.setSelected(plant.forceTicking);
@@ -802,6 +880,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.unbreakable = unbreakable.isSelected();
 		plant.forceTicking = forceTicking.isSelected();
 		plant.hasTileEntity = hasTileEntity.isSelected();
+		plant.isCustomSoundType = customSoundType.isSelected();
+		plant.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
+		plant.breakSound = breakSound.getSound();
+		plant.stepSound = stepSound.getSound();
+		plant.placeSound = placeSound.getSound();
+		plant.hitSound = hitSound.getSound();
+		plant.fallSound = fallSound.getSound();
 		plant.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
 		plant.useLootTableForDrops = useLootTableForDrops.isSelected();
 		plant.customDrop = customDrop.getBlock();

@@ -70,7 +70,15 @@ import java.util.stream.Collectors;
 	public double resistance;
 	public int luminance;
 	public boolean unbreakable;
+
+	public boolean isCustomSoundType;
 	public StepSound soundOnStep;
+	public Sound breakSound;
+	public Sound stepSound;
+	public Sound placeSound;
+	public Sound hitSound;
+	public Sound fallSound;
+
 	public boolean useLootTableForDrops;
 	public MItemBlock customDrop;
 	public int dropAmount;
