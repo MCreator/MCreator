@@ -29,7 +29,6 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
-<#include "textures.ftl">
 
 package ${package}.block;
 
@@ -77,13 +76,13 @@ import net.minecraft.block.material.Material;
 		fluidproperties = new ForgeFlowingFluid.Properties(() -> still, () -> flowing, FluidAttributes.builder(
 		new ResourceLocation("${mappedSingleTexture(data.textureStill, "blocks", modid)}"),
 		new ResourceLocation("${mappedSingleTexture(data.textureFlowing, "blocks", modid)}"))
-				.luminosity(${data.luminosity})
-				.density(${data.density})
-				.viscosity(${data.viscosity})
-				<#if data.isGas>.gaseous()</#if>)
-        .explosionResistance(${data.resistance}f)
-				<#if data.generateBucket>.bucket(() -> bucket)</#if>
-				.block(() -> block);
+			.luminosity(${data.luminosity})
+			.density(${data.density})
+			.viscosity(${data.viscosity})
+			<#if data.isGas>.gaseous()</#if>)
+			.explosionResistance(${data.resistance}f)
+			<#if data.generateBucket>.bucket(() -> bucket)</#if>
+			.block(() -> block);
 
 		still = (FlowingFluid) new ForgeFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
 		flowing = (FlowingFluid) new ForgeFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
