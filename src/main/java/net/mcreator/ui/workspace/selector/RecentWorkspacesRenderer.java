@@ -19,7 +19,7 @@
 package net.mcreator.ui.workspace.selector;
 
 import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.ui.laf.AbstractMCreatorTheme;
+import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 
@@ -38,7 +38,7 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 				(Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 		setBorder(BorderFactory.createEmptyBorder(2, 5, 3, 0));
 
-		setFont(AbstractMCreatorTheme.light_font.deriveFont(16.0f));
+		setFont(MCreatorTheme.light_font.deriveFont(16.0f));
 
 		String path = value.getPath().getParentFile().getAbsolutePath().replace("\\", "/");
 
