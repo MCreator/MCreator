@@ -190,7 +190,7 @@ public class ArmorImageMakerView extends ViewBase {
 
 	public static void use(Workspace workspace, Image image, String nam) {
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image),
-				workspace.getFolderManager().getItemTextureFile(nam.toLowerCase(Locale.ENGLISH)));
+				workspace.getFolderManager().getTextureFileFromType(nam.toLowerCase(Locale.ENGLISH), "item"));
 	}
 
 	@Override public String getViewName() {

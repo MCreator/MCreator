@@ -39,14 +39,14 @@ public class Painting extends GeneratableElement {
 
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generatePaintingPreviewPicture(
-				getModElement().getFolderManager().getOtherTextureFile(FilenameUtils.removeExtension(texture)), width,
+				getModElement().getFolderManager().getTextureFileFromType(FilenameUtils.removeExtension(texture), "other"), width,
 				height);
 	}
 
 	@Override public void finalizeModElementGeneration() {
 		File originalTextureFileLocation = getModElement().getFolderManager()
-				.getOtherTextureFile(FilenameUtils.removeExtension(texture));
-		File newLocation = new File(getModElement().getFolderManager().getOtherTexturesDir(),
+				.getTextureFileFromType(FilenameUtils.removeExtension(texture), "other");
+		File newLocation = new File(getModElement().getFolderManager().getTexturesDirFromType("other"),
 				"painting/" + getModElement().getRegistryName() + ".png");
 		FileIO.copyFile(originalTextureFileLocation, newLocation);
 	}

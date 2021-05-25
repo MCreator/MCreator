@@ -125,7 +125,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			icon.removeAllItems();
 			icon.addItem("");
-			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> icon.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesListFromType("effect").forEach(el -> icon.addItem(el.getName()));
 		});
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/color"), L10N.label("elementgui.potion.color")));
@@ -217,7 +217,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		onExpired.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(icon, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesListFromType("effect").stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 	}
 

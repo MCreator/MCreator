@@ -125,7 +125,11 @@ public class ActionRegistry {
 	public final BasicAction createAnimatedTexture;
 	public final BasicAction importBlockTexture;
 	public final BasicAction importItemTexture;
+	public final BasicAction importEntityTexture;
 	public final BasicAction importArmorTexture;
+	public final BasicAction importGUITexture;
+	public final BasicAction importEffectTexture;
+	public final BasicAction importParticleTexture;
 	public final BasicAction importOtherTexture;
 	public final BasicAction importSound;
 	public final BasicAction importStructure;
@@ -237,14 +241,30 @@ public class ActionRegistry {
 				actionEvent -> new AnimationMakerView(mcreator).showView()).setIcon(UIRES.get("16px.newanimation"));
 		this.importBlockTexture = new TextureAction(this, L10N.t("action.import_block_texture"),
 				actionEvent -> TextureImportDialogs
-						.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.BLOCK))
+						.importTextures(mcreator, "block"))
 				.setIcon(UIRES.get("16px.importblock"));
 		this.importItemTexture = new TextureAction(this, L10N.t("action.import_item_texture"),
 				actionEvent -> TextureImportDialogs
-						.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.ITEM))
+						.importTextures(mcreator, "item"))
 				.setIcon(UIRES.get("16px.importitem"));
+		this.importEntityTexture = new TextureAction(this, L10N.t("action.import_entity_texture"), actionEvent -> {
+			TextureImportDialogs.importTextures(mcreator, "entity");
+			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
+		});
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
+			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
+		});
+		this.importGUITexture = new TextureAction(this, L10N.t("action.import_gui_texture"), actionEvent -> {
+			TextureImportDialogs.importTextures(mcreator, "gui");
+			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
+		});
+		this.importEffectTexture = new TextureAction(this, L10N.t("action.import_effect_texture"), actionEvent -> {
+			TextureImportDialogs.importTextures(mcreator, "effect");
+			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
+		});
+		this.importParticleTexture = new TextureAction(this, L10N.t("action.import_particle_texture"), actionEvent -> {
+			TextureImportDialogs.importTextures(mcreator, "particle");
 			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
 		});
 		this.importOtherTexture = new TextureAction(this, L10N.t("action.import_other_texture"),

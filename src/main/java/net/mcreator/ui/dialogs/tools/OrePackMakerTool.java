@@ -128,7 +128,7 @@ public class OrePackMakerTool {
 						.get(new ResourcePointer("templates/textures/texturemaker/ore10.png")), color, true));
 		String oreTextureName = (name + "_ore").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(ore.getImage()),
-				mcreator.getFolderManager().getBlockTextureFile(RegistryNameFixer.fix(oreTextureName)));
+				mcreator.getFolderManager().getTextureFileFromType(RegistryNameFixer.fix(oreTextureName), "block"));
 
 		// next, ore block texture
 		ImageIcon oreBlockIc = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
@@ -137,7 +137,7 @@ public class OrePackMakerTool {
 								"oreblock7", "oreblock8")) + ".png")), color, true);
 		String oreBlockTextureName = (oreTextureName + "_block").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(oreBlockIc.getImage()),
-				mcreator.getFolderManager().getBlockTextureFile(RegistryNameFixer.fix(oreBlockTextureName)));
+				mcreator.getFolderManager().getTextureFileFromType(RegistryNameFixer.fix(oreBlockTextureName), "block"));
 
 		// next, gem texture
 		ImageIcon gem;
@@ -162,7 +162,7 @@ public class OrePackMakerTool {
 			gemTextureName = (name + "_ingot").toLowerCase(Locale.ENGLISH);
 		}
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(gem.getImage()),
-				mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(gemTextureName)));
+				mcreator.getFolderManager().getTextureFileFromType(RegistryNameFixer.fix(gemTextureName), "item"));
 
 		String oreItemName;
 		if (type.equals("Dust based")) {

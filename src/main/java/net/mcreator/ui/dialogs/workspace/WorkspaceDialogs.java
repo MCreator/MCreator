@@ -301,7 +301,7 @@ public class WorkspaceDialogs {
 
 			modPicture.addItem("No picture / default picture");
 			if (workspace != null) {
-				List<File> other = workspace.getFolderManager().getOtherTexturesList();
+				List<File> other = workspace.getFolderManager().getTexturesListFromType("other");
 				for (File element : other) {
 					if (element.getName().endsWith(".png"))
 						modPicture.addItem(FilenameUtils.removeExtension(element.getName()));

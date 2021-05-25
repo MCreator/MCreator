@@ -80,8 +80,8 @@ import java.util.List;
 
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
-				getModElement().getFolderManager().getBlockTextureFile(portalTexture),
-				getModElement().getFolderManager().getItemTextureFile(texture), portalFrame);
+				getModElement().getFolderManager().getTextureFileFromType(portalTexture, "block"),
+				getModElement().getFolderManager().getTextureFileFromType(texture, "item"), portalFrame);
 	}
 
 	@Override public TabEntry getCreativeTab() {

@@ -120,7 +120,7 @@ public class WoodPackMakerTool {
 				color, true);
 		String woodTextureName = (name + "_log_side").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(wood.getImage()),
-				mcreator.getFolderManager().getBlockTextureFile(RegistryNameFixer.fix(woodTextureName)));
+				mcreator.getFolderManager().getTextureFileFromType(RegistryNameFixer.fix(woodTextureName), "block"));
 
 		//then we generate the missing log texture
 		ImageIcon log = ImageUtils.colorize(
@@ -128,7 +128,7 @@ public class WoodPackMakerTool {
 				color, true);
 		String logTextureName = (name + "_log_top").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(log.getImage()),
-				mcreator.getFolderManager().getBlockTextureFile(RegistryNameFixer.fix(logTextureName)));
+				mcreator.getFolderManager().getTextureFileFromType(RegistryNameFixer.fix(logTextureName), "block"));
 
 		//then we generate the planks texture
 		ImageIcon planks = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
@@ -136,7 +136,7 @@ public class WoodPackMakerTool {
 						+ ".png")), color, true);
 		String planksTextureName = (name + "_planks").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(planks.getImage()),
-				mcreator.getFolderManager().getBlockTextureFile(RegistryNameFixer.fix(planksTextureName)));
+				mcreator.getFolderManager().getTextureFileFromType(RegistryNameFixer.fix(planksTextureName), "block"));
 
 		//then we generate the leaves texture
 		ImageIcon leaves = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
@@ -145,7 +145,7 @@ public class WoodPackMakerTool {
 								"leaves_new1", "leaves_new2", "leaves2")) + ".png")), color, true);
 		String leavesTextureName = (name + "_leaves").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(leaves.getImage()),
-				mcreator.getFolderManager().getBlockTextureFile(RegistryNameFixer.fix(leavesTextureName)));
+				mcreator.getFolderManager().getTextureFileFromType(RegistryNameFixer.fix(leavesTextureName), "block"));
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block woodBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)

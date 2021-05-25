@@ -45,7 +45,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-public class MinecraftImageGenerator {
+public class
+MinecraftImageGenerator {
 
 	private static final Logger LOG = LogManager.getLogger("MC Img Gen");
 
@@ -1001,7 +1002,7 @@ public class MinecraftImageGenerator {
 			Graphics2D graphics2D = icon.createGraphics();
 
 			Color textureColor = ImageUtils.getAverageColor(ImageUtils.toBufferedImage(new ImageIcon(
-					workspace.getFolderManager().getOtherTextureFile(FilenameUtils.removeExtension(mobModelTexture))
+					workspace.getFolderManager().getTextureFileFromType(FilenameUtils.removeExtension(mobModelTexture), "entity")
 							.getAbsolutePath()).getImage()));
 
 			graphics2D.drawImage(

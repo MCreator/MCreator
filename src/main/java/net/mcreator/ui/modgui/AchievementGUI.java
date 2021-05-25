@@ -284,7 +284,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 						.map(ModElement::getName).collect(Collectors.toList())), "No function");
 
 		ComboBoxUtil.updateComboBoxContents(background, ListUtils.merge(Collections.singleton("Default"),
-				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesListFromType("gui").stream().map(File::getName)
 						.collect(Collectors.toList())), "Default");
 	}
 

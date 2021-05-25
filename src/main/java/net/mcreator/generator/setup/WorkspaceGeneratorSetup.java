@@ -26,6 +26,7 @@ import net.mcreator.generator.template.base.BaseDataModelProvider;
 import net.mcreator.generator.template.base.DefaultFreemarkerConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -81,17 +82,10 @@ public class WorkspaceGeneratorSetup {
 		moveFilesToAnotherDir(workspace.getFolderManager().getSoundsDir(),
 				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "sounds_dir"));
 
-		moveFilesToAnotherDir(workspace.getFolderManager().getBlocksTexturesDir(),
-				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "block_textures_dir"));
-
-		moveFilesToAnotherDir(workspace.getFolderManager().getItemsTexturesDir(),
-				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "item_textures_dir"));
-
-		moveFilesToAnotherDir(workspace.getFolderManager().getArmorTexturesDir(),
-				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "armor_textures_dir"));
-
-		moveFilesToAnotherDir(workspace.getFolderManager().getOtherTexturesDir(),
-				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "other_textures_dir"));
+		for (BlockItemTextureSelector.TextureType type : BlockItemTextureSelector.TextureType.values()) {
+			moveFilesToAnotherDir(workspace.getFolderManager().getTexturesDirFromType(type.toString().toLowerCase()),
+					GeneratorUtils.getSpecificRoot(workspace, newGenerator, type.toString().toLowerCase() + "_textures_dir"));
+		}
 
 		moveFilesToAnotherDir(workspace.getGenerator().getSourceRoot(),
 				GeneratorUtils.getSourceRoot(workspace, newGenerator));

@@ -162,7 +162,11 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importBlockTexture);
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importItemTexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importEntityTexture);
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importArmorTexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importGUITexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importEffectTexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importParticleTexture);
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importOtherTexture);
 
 		importt.addActionListener(e -> importMenu.show(importt, 5, importt.getHeight() + 5));
@@ -291,14 +295,14 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			FilterModel newdmlp = new FilterModel();
 			FilterModel newdmlo = new FilterModel();
 
-			workspacePanel.getMcreator().getFolderManager().getBlockTexturesList().forEach(newdmlb::addElement);
-			workspacePanel.getMcreator().getFolderManager().getItemTexturesList().forEach(newdmli::addElement);
-			workspacePanel.getMcreator().getFolderManager().getEntityTexturesList().forEach(newdmlen::addElement);
-			workspacePanel.getMcreator().getFolderManager().getArmorTexturesList().forEach(newdmla::addElement);
-			workspacePanel.getMcreator().getFolderManager().getGUITexturesList().forEach(newdmlg::addElement);
-			workspacePanel.getMcreator().getFolderManager().getEffectTexturesList().forEach(newdmlef::addElement);
-			workspacePanel.getMcreator().getFolderManager().getParticleTexturesList().forEach(newdmlp::addElement);
-			workspacePanel.getMcreator().getFolderManager().getOtherTexturesList().forEach(newdmlo::addElement);
+			workspacePanel.getMcreator().getFolderManager().getTexturesListFromType("block").forEach(newdmlb::addElement);
+			workspacePanel.getMcreator().getFolderManager().getTexturesListFromType("item").forEach(newdmli::addElement);
+			workspacePanel.getMcreator().getFolderManager().getTexturesListFromType("entity").forEach(newdmlen::addElement);
+			workspacePanel.getMcreator().getFolderManager().getTexturesListFromType("armor").forEach(newdmla::addElement);
+			workspacePanel.getMcreator().getFolderManager().getTexturesListFromType("gui").forEach(newdmlg::addElement);
+			workspacePanel.getMcreator().getFolderManager().getTexturesListFromType("effect").forEach(newdmlef::addElement);
+			workspacePanel.getMcreator().getFolderManager().getTexturesListFromType("particle").forEach(newdmlp::addElement);
+			workspacePanel.getMcreator().getFolderManager().getTexturesListFromType("other").forEach(newdmlo::addElement);
 
 			SwingUtilities.invokeLater(() -> {
 				listb.getList().setModel(fmb = newdmlb);

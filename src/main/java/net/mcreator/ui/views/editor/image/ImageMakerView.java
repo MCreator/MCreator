@@ -221,11 +221,11 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		if (namec != null) {
 			File exportFile;
 			if (n == 0)
-				exportFile = mcreator.getFolderManager().getBlockTextureFile(RegistryNameFixer.fix(namec));
+				exportFile = mcreator.getFolderManager().getTextureFileFromType(RegistryNameFixer.fix(namec), "block");
 			else if (n == 1)
-				exportFile = mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(namec));
+				exportFile = mcreator.getFolderManager().getTextureFileFromType(RegistryNameFixer.fix(namec), "item");
 			else if (n == 2)
-				exportFile = mcreator.getFolderManager().getOtherTextureFile(RegistryNameFixer.fix(namec));
+				exportFile = mcreator.getFolderManager().getTextureFileFromType(RegistryNameFixer.fix(namec), "other");
 			else
 				return;
 

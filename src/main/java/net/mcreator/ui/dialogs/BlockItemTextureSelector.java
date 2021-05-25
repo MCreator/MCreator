@@ -130,18 +130,13 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		});
 		pno.add(createTx2);
 
-		JButton importTx = L10N.button("dialog.textures_selector.import", type.name().toLowerCase(Locale.ENGLISH));
+		JButton importTx = L10N.button("dialog.textures_selector.import", type.toString().toLowerCase(Locale.ENGLISH));
 		importTx.setFont(naprej.getFont());
 		importTx.setIcon(UIRES.get("18px.add"));
 		importTx.addActionListener(event -> {
 
-			TextureImportDialogs.importTexturesBlockOrItem(mcreator, type);
-			List<File> block1;
-			if (type == TextureType.BLOCK) {
-				block1 = mcreator.getFolderManager().getBlockTexturesList();
-			} else {
-				block1 = mcreator.getFolderManager().getItemTexturesList();
-			}
+			TextureImportDialogs.importTextures(mcreator, type.toString().toLowerCase());
+			List<File> block1 = mcreator.getFolderManager().getTexturesListFromType(type.toString().toLowerCase());
 			model.removeAllElements();
 			for (File element : block1) {
 				if (element.getName().endsWith(".png"))
@@ -164,12 +159,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	}
 
 	@Override public void setVisible(boolean b) {
-		List<File> block;
-		if (type == TextureType.BLOCK) {
-			block = mcreator.getFolderManager().getBlockTexturesList();
-		} else {
-			block = mcreator.getFolderManager().getItemTexturesList();
-		}
+		List<File> block = mcreator.getFolderManager().getTexturesListFromType(type.toString().toLowerCase());
 		model.removeAllElements();
 		for (File element : block) {
 			if (element.getName().endsWith(".png"))
@@ -264,7 +254,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	}
 
 	public enum TextureType {
-		BLOCK, ITEM
+		BLOCK, ITEM, ENTITY, GUI, EFFECT, PARTICLE, OTHER
 	}
 
 }

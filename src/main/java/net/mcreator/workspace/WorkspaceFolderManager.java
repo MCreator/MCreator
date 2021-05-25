@@ -50,23 +50,15 @@ public class WorkspaceFolderManager {
 	}
 
 	public ImageIcon getBlockImageIcon(String textureIdentifier) {
-		return new ImageIcon(getBlockTextureFile(textureIdentifier).getAbsolutePath());
+		return new ImageIcon(getTextureFileFromType(textureIdentifier, "block").getAbsolutePath());
 	}
 
 	public ImageIcon getItemImageIcon(String textureIdentifier) {
-		return new ImageIcon(getItemTextureFile(textureIdentifier).getAbsolutePath());
+		return new ImageIcon(getTextureFileFromType(textureIdentifier, "item").getAbsolutePath());
 	}
 
-	public File getBlockTextureFile(String textureIdentifier) {
-		return new File(getBlocksTexturesDir(), textureIdentifier + ".png");
-	}
-
-	public File getItemTextureFile(String textureIdentifier) {
-		return new File(getItemsTexturesDir(), textureIdentifier + ".png");
-	}
-
-	public File getOtherTextureFile(String textureIdentifier) {
-		return new File(getOtherTexturesDir(), textureIdentifier + ".png");
+	public File getTextureFileFromType(String textureIdentifier, String type) {
+		return new File(getTexturesDirFromType(type), textureIdentifier + ".png");
 	}
 
 	public List<String> getStructureList() {
@@ -82,40 +74,12 @@ public class WorkspaceFolderManager {
 	}
 
 	public File[] getArmorTextureFilesForName(String armorTextureName) {
-		return new File[] { new File(getArmorTexturesDir(), armorTextureName + "_layer_1.png"),
-				new File(getArmorTexturesDir(), armorTextureName + "_layer_2.png") };
+		return new File[] { new File(getTexturesDirFromType("armor"), armorTextureName + "_layer_1.png"),
+				new File(getTexturesDirFromType("armor"), armorTextureName + "_layer_2.png") };
 	}
 
-	public List<File> getBlockTexturesList() {
-		return listPNGsInDir(getBlocksTexturesDir());
-	}
-
-	public List<File> getItemTexturesList() {
-		return listPNGsInDir(getItemsTexturesDir());
-	}
-
-	public List<File> getEntityTexturesList() {
-		return listPNGsInDir(getEntitiesTexturesDir());
-	}
-
-	public List<File> getArmorTexturesList() {
-		return listPNGsInDir(getArmorTexturesDir());
-	}
-
-	public List<File> getGUITexturesList() {
-		return listPNGsInDir(getGUITexturesDir());
-	}
-
-	public List<File> getEffectTexturesList() {
-		return listPNGsInDir(getEffectsTexturesDir());
-	}
-
-	public List<File> getParticleTexturesList() {
-		return listPNGsInDir(getParticlesTexturesDir());
-	}
-
-	public List<File> getOtherTexturesList() {
-		return listPNGsInDir(getOtherTexturesDir());
+	public List<File> getTexturesListFromType(String type) {
+		return listPNGsInDir(getTexturesDirFromType(type));
 	}
 
 	public void removeStructure(String name) {
@@ -134,36 +98,8 @@ public class WorkspaceFolderManager {
 		return retval;
 	}
 
-	@Nullable public File getBlocksTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "block_textures_dir");
-	}
-
-	@Nullable public File getItemsTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "item_textures_dir");
-	}
-
-	@Nullable public File getEntitiesTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "entity_textures_dir");
-	}
-
-	@Nullable public File getArmorTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "armor_textures_dir");
-	}
-
-	@Nullable public File getGUITexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "gui_textures_dir");
-	}
-
-	@Nullable public File getEffectsTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "effect_textures_dir");
-	}
-
-	@Nullable public File getParticlesTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "particle_textures_dir");
-	}
-
-	@Nullable public File getOtherTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "other_textures_dir");
+	@Nullable public File getTexturesDirFromType(String type) {
+		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), type + "_textures_dir");
 	}
 
 	@Nullable public File getStructuresDir() {

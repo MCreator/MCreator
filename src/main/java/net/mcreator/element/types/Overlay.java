@@ -66,11 +66,11 @@ import java.util.List;
 		if (this.baseTexture != null && !this.baseTexture.equals("")) {
 			try {
 				ImageIcon texture = new ImageIcon(getModElement().getFolderManager()
-						.getOtherTextureFile(FilenameUtils.removeExtension(this.baseTexture)).getAbsolutePath());
+						.getTextureFileFromType(FilenameUtils.removeExtension(this.baseTexture), "gui").getAbsolutePath());
 				texture.getImage().flush();
 
 				texture = new ImageIcon(getModElement().getFolderManager()
-						.getOtherTextureFile(FilenameUtils.removeExtension(this.baseTexture)).getAbsolutePath());
+						.getTextureFileFromType(FilenameUtils.removeExtension(this.baseTexture), "gui").getAbsolutePath());
 
 				return new Dimension(texture.getIconWidth(), texture.getIconHeight());
 			} catch (Exception e) {

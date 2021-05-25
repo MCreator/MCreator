@@ -298,7 +298,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			customBulletModelTexture.removeAllItems();
 			customBulletModelTexture.addItem("");
-			List<File> textures = mcreator.getFolderManager().getOtherTexturesList();
+			List<File> textures = mcreator.getFolderManager().getTexturesListFromType("entity");
 			for (File element : textures)
 				if (element.getName().endsWith(".png"))
 					customBulletModelTexture.addItem(element.getName());
@@ -380,7 +380,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(customBulletModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesListFromType("entity").stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bulletModel, ListUtils.merge(Collections.singletonList(adefault),
