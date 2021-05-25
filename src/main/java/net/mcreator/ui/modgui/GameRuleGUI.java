@@ -31,6 +31,7 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -175,7 +176,9 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 	@Override protected void afterGeneratableElementStored() {
 		super.afterGeneratableElementStored();
 		modElement.clearMetadata();
-		modElement.putMetadata("type", "Number".equals(gameruleType.getSelectedItem()) ? "number" : "logic");
+		modElement.putMetadata("type", "Number".equals(gameruleType.getSelectedItem()) ?
+				VariableElementTypeLoader.BuiltInTypes.NUMBER.getName() :
+				VariableElementTypeLoader.BuiltInTypes.LOGIC.getName());
 		modElement.reinit();
 	}
 
