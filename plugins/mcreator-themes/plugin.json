@@ -1,0 +1,8 @@
+{
+  "id": "themes",
+  "weight": 10,
+  "minversion": 202100199999,
+  "info": {
+    "name": "MCreator UI theme plugin"
+  }
+}

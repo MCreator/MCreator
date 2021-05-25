@@ -140,7 +140,7 @@ public class Generator implements IGenerator, Closeable {
 
 	public File getGeneratorPackageRoot() {
 		return new File(GeneratorTokens.replaceTokens(workspace, generatorConfiguration.getSourceRoot()),
-				workspace.getWorkspaceSettings().getModElementsPackage().replace("." , "/"));
+				workspace.getWorkspaceSettings().getModElementsPackage().replace(".", "/"));
 	}
 
 	public File getLangFilesRoot() {
@@ -261,9 +261,9 @@ public class Generator implements IGenerator, Closeable {
 			for (Object template : localizationkeys) {
 				String key = (String) ((Map<?, ?>) template).get("key");
 				String mapto = (String) ((Map<?, ?>) template).get("mapto");
-				key = GeneratorTokens.replaceTokens(workspace, key.replace("@NAME" , element.getModElement().getName())
-						.replace("@modid" , workspace.getWorkspaceSettings().getModID())
-						.replace("@registryname" , element.getModElement().getRegistryName()));
+				key = GeneratorTokens.replaceTokens(workspace, key.replace("@NAME", element.getModElement().getName())
+						.replace("@modid", workspace.getWorkspaceSettings().getModID())
+						.replace("@registryname", element.getModElement().getRegistryName()));
 				try {
 					String value = (String) element.getClass().getField(mapto.trim()).get(element);
 
@@ -302,7 +302,7 @@ public class Generator implements IGenerator, Closeable {
 				String[] vars = variables.split(";");
 				for (String var : vars) {
 					String[] data = var.split("(?<!/)=");
-					dataModel.put("var_" + data[0].trim().replace("/=" , "="), data[1].trim().replace("/=" , "="));
+					dataModel.put("var_" + data[0].trim().replace("/=", "="), data[1].trim().replace("/=", "="));
 				}
 			} catch (Exception ignored) {
 			}
@@ -326,7 +326,7 @@ public class Generator implements IGenerator, Closeable {
 			for (Object template : localizationkeys) {
 				String key = (String) ((Map<?, ?>) template).get("key");
 				key = GeneratorTokens.replaceTokens(workspace,
-						key.replace("@NAME" , element.getName()).replace("@registryname" , element.getRegistryName()));
+						key.replace("@NAME", element.getName()).replace("@registryname", element.getRegistryName()));
 				workspace.removeLocalizationEntryByKey(key);
 			}
 		}
@@ -389,8 +389,8 @@ public class Generator implements IGenerator, Closeable {
 				}
 
 				String name = GeneratorTokens.replaceVariableTokens(generatableElement, GeneratorTokens
-						.replaceTokens(workspace, rawname.replace("@NAME" , element.getName())
-								.replace("@registryname" , element.getRegistryName())));
+						.replaceTokens(workspace, rawname.replace("@NAME", element.getName())
+								.replace("@registryname", element.getRegistryName())));
 
 				if (TemplateConditionParser.shoudSkipTemplateBasedOnCondition(conditionRaw, generatableElement)) {
 					if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
@@ -404,8 +404,8 @@ public class Generator implements IGenerator, Closeable {
 				String exclude = (String) ((Map<?, ?>) template).get("exclude");
 				if (exclude != null && performFSTasks) {
 					String excludename = GeneratorTokens.replaceTokens(workspace,
-							exclude.replace("@NAME" , element.getName())
-									.replace("@registryname" , element.getRegistryName()));
+							exclude.replace("@NAME", element.getName())
+									.replace("@registryname", element.getRegistryName()));
 					File excludefile = new File(excludename);
 					if (workspace.getFolderManager().isFileInWorkspace(excludefile))
 						excludefile.delete();
@@ -459,7 +459,7 @@ public class Generator implements IGenerator, Closeable {
 				if (workspace.getFolderManager().isFileInWorkspace(generatorFile.getFile())) {
 					if (generatorFile.getWriter() == null || generatorFile.getWriter().equals("java"))
 						if (!generatorFile.getFile().isFile())
-							FileIO.writeStringToFile("" , generatorFile.getFile());
+							FileIO.writeStringToFile("", generatorFile.getFile());
 				}
 			});
 		}
@@ -525,16 +525,16 @@ public class Generator implements IGenerator, Closeable {
 						try {
 							BufferedImage image = ImageIO.read(new File(from));
 							BufferedImage resized = ImageUtils.resize(image, w, h);
-							ImageIO.write(resized, "png" , new File(to));
+							ImageIO.write(resized, "png", new File(to));
 						} catch (IOException e) {
-							LOG.warn("Failed to read image file for resizing" , e);
+							LOG.warn("Failed to read image file for resizing", e);
 						}
 					} else if (workspace.getFolderManager().isFileInWorkspace(new File(to))) {
 						try {
-							BufferedImage resized = ImageUtils.resize(UIRES.get("fallback").getImage(), w, h);
-							ImageIO.write(resized, "png" , new File(to));
+							BufferedImage resized = ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h);
+							ImageIO.write(resized, "png", new File(to));
 						} catch (IOException e) {
-							LOG.warn("Failed to read image file for resizing" , e);
+							LOG.warn("Failed to read image file for resizing", e);
 						}
 					}
 					break;
@@ -593,7 +593,7 @@ public class Generator implements IGenerator, Closeable {
 						.forProjectDirectory(workspace.getWorkspaceFolder())
 						.useGradleUserHomeDir(UserFolderManager.getGradleHome()).connect();
 			} catch (Exception e) {
-				LOG.warn("Failed to load Gradle project" , e);
+				LOG.warn("Failed to load Gradle project", e);
 			}
 		}
 
