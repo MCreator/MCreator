@@ -126,7 +126,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTION);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTIONEFFECT);
 		retval.addAll(DataListLoader.loadDataList("potions"));
 		return retval;
 	}

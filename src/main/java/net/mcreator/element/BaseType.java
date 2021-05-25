@@ -36,10 +36,11 @@ public enum BaseType {
 	KEYBIND,
 	PROCEDURE,
 	OVERLAY,
-	POTION,
+	POTIONEFFECT,
 	DATAPACK,
 	ENCHANTMENT,
 	PARTICLE,
+	POTIONITEM,
 	OTHER,
 
 	/* legacy base types */

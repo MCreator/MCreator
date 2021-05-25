@@ -67,7 +67,7 @@ public enum ModElementType {
 
 	@SerializedName("procedure") PROCEDURE(BaseType.PROCEDURE, RecipeType.NONE),
 
-	@SerializedName("potion") POTION(BaseType.POTION, RecipeType.NONE),
+	@SerializedName("potion") POTIONEFFECT(BaseType.POTIONEFFECT, RecipeType.NONE),
 
 	@SerializedName("particle") PARTICLE(BaseType.PARTICLE, RecipeType.NONE),
 
@@ -85,7 +85,9 @@ public enum ModElementType {
 
 	@SerializedName("painting") PAINTING(BaseType.OTHER, RecipeType.NONE),
 
-	@SerializedName("gamerule") GAMERULE(BaseType.OTHER, RecipeType.NONE);
+	@SerializedName("gamerule") GAMERULE(BaseType.OTHER, RecipeType.NONE),
+
+	@SerializedName("potionitem") POTIONITEM(BaseType.POTIONITEM, RecipeType.NONE);
 
 	private final BaseType baseType;
 	private final String description;
