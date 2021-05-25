@@ -19,12 +19,12 @@
 package net.mcreator.ui.laf;
 
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.themes.ColorScheme;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public abstract class AbstractMCreatorTheme extends OceanTheme {
+public class MCreatorTheme extends OceanTheme {
 
 	private static final Logger LOG = LogManager.getLogger("Theme");
 
@@ -44,13 +44,16 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 
 	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
 	private final Color MAIN_TINT;
+	private final ColorScheme colorScheme;
 
 	public static Font light_font;
 	public static Font console_font;
 
 	private static Font default_font;
 
-	public AbstractMCreatorTheme() {
+	public MCreatorTheme(ColorScheme colorScheme) {
+		
+		this.colorScheme = colorScheme;
 		MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
 
 		try {
@@ -72,29 +75,17 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 		return MAIN_TINT;
 	}
 
-	@Nonnull protected abstract Color getBlackAccent();
-
-	@Nonnull protected abstract Color getDarkAccent();
-
-	@Nonnull protected abstract Color getLightAccent();
-
-	@Nonnull protected abstract Color getGrayColor();
-
-	@Nonnull protected abstract Color getBrightColor();
-
-	@Nonnull protected abstract String getBlocklyCSSName();
-
-	@Nonnull protected abstract String getCodeEditorXML();
+	public ColorScheme getColorScheme() {
+		return colorScheme;
+	}
 
 	protected void initMCreatorThemeColors(UIDefaults table) {
-		table.put("MCreatorLAF.BLACK_ACCENT", getBlackAccent());
-		table.put("MCreatorLAF.DARK_ACCENT", getDarkAccent());
-		table.put("MCreatorLAF.LIGHT_ACCENT", getLightAccent());
-		table.put("MCreatorLAF.GRAY_COLOR", getGrayColor());
-		table.put("MCreatorLAF.BRIGHT_COLOR", getBrightColor());
+		table.put("MCreatorLAF.BLACK_ACCENT", colorScheme.getSecondAltBackgroundColor());
+		table.put("MCreatorLAF.DARK_ACCENT", colorScheme.getBackgroundColor());
+		table.put("MCreatorLAF.LIGHT_ACCENT", colorScheme.getAltBackgroundColor());
+		table.put("MCreatorLAF.GRAY_COLOR", colorScheme.getAltForegroundColor());
+		table.put("MCreatorLAF.BRIGHT_COLOR", colorScheme.getForegroundColor());
 		table.put("MCreatorLAF.MAIN_TINT", MAIN_TINT);
-		table.put("MCreatorLAF.BLOCKLY_CSS", getBlocklyCSSName());
-		table.put("MCreatorLAF.CODE_EDITOR_XML", getCodeEditorXML());
 	}
 
 	@Override public void addCustomEntriesToTable(UIDefaults table) {
@@ -111,17 +102,17 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).contains("bordercolor")) {
 				table.put(key, MAIN_TINT);
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".background")) {
-				table.put(key, getDarkAccent());
+				table.put(key, colorScheme.getBackgroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".foreground")) {
-				table.put(key, getBrightColor());
+				table.put(key, colorScheme.getForegroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".inactiveforeground")) {
-				table.put(key, getGrayColor());
+				table.put(key, colorScheme.getAltForegroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".disabledbackground")) {
-				table.put(key, getDarkAccent());
+				table.put(key, colorScheme.getBackgroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".disabledforeground")) {
-				table.put(key, getGrayColor());
+				table.put(key, colorScheme.getAltForegroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".caretforeground")) {
-				table.put(key, getBrightColor());
+				table.put(key, colorScheme.getForegroundColor());
 			}
 		}
 
@@ -129,26 +120,26 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 
 		table.put("Tree.rendererFillBackground", false);
 
-		table.put("TitledBorder.titleColor", getBrightColor());
+		table.put("TitledBorder.titleColor", colorScheme.getForegroundColor());
 
-		table.put("SplitPane.dividerFocusColor", getLightAccent());
-		table.put("SplitPane.darkShadow", getLightAccent());
-		table.put("SplitPane.shadow", getLightAccent());
+		table.put("SplitPane.dividerFocusColor", colorScheme.getAltBackgroundColor());
+		table.put("SplitPane.darkShadow", colorScheme.getAltBackgroundColor());
+		table.put("SplitPane.shadow", colorScheme.getAltBackgroundColor());
 		table.put("SplitPaneDivider.draggingColor", MAIN_TINT);
 
-		table.put("OptionPane.messageForeground", getBrightColor());
+		table.put("OptionPane.messageForeground", colorScheme.getForegroundColor());
 
-		table.put("Label.foreground", getBrightColor());
-		table.put("Label.disabledForeground", getBrightColor());
-		table.put("Label.inactiveforeground", getBrightColor());
-		table.put("Label.textForeground", getBrightColor());
+		table.put("Label.foreground", colorScheme.getForegroundColor());
+		table.put("Label.disabledForeground", colorScheme.getForegroundColor());
+		table.put("Label.inactiveforeground", colorScheme.getForegroundColor());
+		table.put("Label.textForeground", colorScheme.getForegroundColor());
 
-		table.put("Button.toolBarBorderBackground", getBrightColor());
-		table.put("Button.disabledToolBarBorderBackground", getLightAccent());
+		table.put("Button.toolBarBorderBackground", colorScheme.getForegroundColor());
+		table.put("Button.disabledToolBarBorderBackground", colorScheme.getAltBackgroundColor());
 		table.put("ToolBar.rolloverBorder", BorderFactory
-				.createCompoundBorder(BorderFactory.createLineBorder(getDarkAccent(), 1), BorderFactory
-						.createCompoundBorder(BorderFactory.createLineBorder(getLightAccent(), 1),
-								BorderFactory.createLineBorder(getDarkAccent(), 3))));
+				.createCompoundBorder(BorderFactory.createLineBorder(colorScheme.getBackgroundColor(), 1), BorderFactory
+						.createCompoundBorder(BorderFactory.createLineBorder(colorScheme.getAltBackgroundColor(), 1),
+								BorderFactory.createLineBorder(colorScheme.getBackgroundColor(), 3))));
 
 		table.put("ScrollBarUI", SlickDarkScrollBarUI.class.getName());
 		table.put("SpinnerUI", DarkSpinnerUI.class.getName());
@@ -159,41 +150,41 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 		table.put("Menu.border", BorderFactory.createEmptyBorder(3, 4, 3, 4));
 		table.put("MenuItem.border", BorderFactory.createEmptyBorder(3, 4, 3, 4));
 
-		table.put("PopupMenu.border", BorderFactory.createLineBorder(getLightAccent()));
+		table.put("PopupMenu.border", BorderFactory.createLineBorder(colorScheme.getAltBackgroundColor()));
 
-		table.put("Separator.foreground", getLightAccent());
-		table.put("Separator.background", getDarkAccent());
+		table.put("Separator.foreground", colorScheme.getAltBackgroundColor());
+		table.put("Separator.background", colorScheme.getBackgroundColor());
 
-		table.put("Menu.foreground", getBrightColor());
-		table.put("MenuItem.foreground", getBrightColor());
+		table.put("Menu.foreground", colorScheme.getForegroundColor());
+		table.put("MenuItem.foreground", colorScheme.getForegroundColor());
 
-		table.put("ComboBox.foreground", getBrightColor());
-		table.put("ComboBox.background", getLightAccent());
-		table.put("ComboBox.disabledForeground", getGrayColor());
+		table.put("ComboBox.foreground", colorScheme.getForegroundColor());
+		table.put("ComboBox.background", colorScheme.getAltBackgroundColor());
+		table.put("ComboBox.disabledForeground", colorScheme.getAltForegroundColor());
 
-		table.put("Spinner.foreground", getBrightColor());
-		table.put("Spinner.background", getLightAccent());
+		table.put("Spinner.foreground", colorScheme.getForegroundColor());
+		table.put("Spinner.background", colorScheme.getAltBackgroundColor());
 
-		table.put("FormattedTextField.foreground", getBrightColor());
-		table.put("FormattedTextField.inactiveForeground", getGrayColor());
-		table.put("FormattedTextField.background", getLightAccent());
+		table.put("FormattedTextField.foreground", colorScheme.getForegroundColor());
+		table.put("FormattedTextField.inactiveForeground", colorScheme.getAltForegroundColor());
+		table.put("FormattedTextField.background", colorScheme.getAltBackgroundColor());
 		table.put("FormattedTextField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
-		table.put("TextField.foreground", getBrightColor());
-		table.put("TextField.inactiveForeground", getGrayColor());
-		table.put("TextField.background", getLightAccent());
+		table.put("TextField.foreground", colorScheme.getForegroundColor());
+		table.put("TextField.inactiveForeground", colorScheme.getAltForegroundColor());
+		table.put("TextField.background", colorScheme.getAltBackgroundColor());
 		table.put("TextField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
-		table.put("PasswordField.foreground", getBrightColor());
-		table.put("PasswordField.inactiveForeground", getGrayColor());
-		table.put("PasswordField.background", getLightAccent());
+		table.put("PasswordField.foreground", colorScheme.getForegroundColor());
+		table.put("PasswordField.inactiveForeground", colorScheme.getAltForegroundColor());
+		table.put("PasswordField.background", colorScheme.getAltBackgroundColor());
 		table.put("PasswordField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
 		table.put("ComboBox.border", null);
 
 		List<?> buttonGradient = Arrays
-				.asList(0f, 0f, new ColorUIResource(getBrightColor()), new ColorUIResource(getBrightColor()),
-						new ColorUIResource(getBrightColor()));
+				.asList(0f, 0f, new ColorUIResource(colorScheme.getForegroundColor()), new ColorUIResource(colorScheme.getForegroundColor()),
+						new ColorUIResource(colorScheme.getForegroundColor()));
 
 		table.put("Button.gradient", buttonGradient);
 		table.put("Button.rollover", true);
@@ -211,10 +202,10 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 		table.put("ToggleButton.rollover", true);
 
 		List<?> sliderGradient = Arrays
-				.asList(0f, 0f, new ColorUIResource(getDarkAccent()), new ColorUIResource(getDarkAccent()),
-						new ColorUIResource(getDarkAccent()));
+				.asList(0f, 0f, new ColorUIResource(colorScheme.getBackgroundColor()), new ColorUIResource(colorScheme.getBackgroundColor()),
+						new ColorUIResource(colorScheme.getBackgroundColor()));
 
-		table.put("Slider.altTrackColor", new ColorUIResource(getDarkAccent()));
+		table.put("Slider.altTrackColor", new ColorUIResource(colorScheme.getBackgroundColor()));
 		table.put("Slider.gradient", sliderGradient);
 		table.put("Slider.focusGradient", sliderGradient);
 
@@ -239,16 +230,16 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 		table.put("RadioButton.icon", new RadioButtonIcon());
 		table.put("RadioButtonMenuItem.icon", new RadioButtonIcon());
 
-		table.put("TabbedPane.contentAreaColor", getDarkAccent());
+		table.put("TabbedPane.contentAreaColor", colorScheme.getBackgroundColor());
 		table.put("TabbedPane.contentBorderInsets", new Insets(4, 2, 3, 3));
-		table.put("TabbedPane.selected", getLightAccent());
-		table.put("TabbedPane.tabAreaBackground", getLightAccent());
+		table.put("TabbedPane.selected", colorScheme.getAltBackgroundColor());
+		table.put("TabbedPane.tabAreaBackground", colorScheme.getAltBackgroundColor());
 		table.put("TabbedPane.tabAreaInsets", new Insets(2, 2, 0, 6));
-		table.put("TabbedPane.unselectedBackground", getDarkAccent());
+		table.put("TabbedPane.unselectedBackground", colorScheme.getBackgroundColor());
 
-		table.put("ToolTip.border", BorderFactory.createLineBorder(getBrightColor()));
-		table.put("ToolTip.foreground", getBrightColor());
-		table.put("ToolTip.background", getDarkAccent());
+		table.put("ToolTip.border", BorderFactory.createLineBorder(colorScheme.getForegroundColor()));
+		table.put("ToolTip.foreground", colorScheme.getForegroundColor());
+		table.put("ToolTip.background", colorScheme.getBackgroundColor());
 
 		table.put("ScrollBar.width", 7);
 
@@ -274,7 +265,7 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 		table.put("OptionPane.questionIcon", UIRES.get("laf.question"));
 		table.put("OptionPane.informationIcon", UIRES.get("laf.info"));
 
-		table.put("MenuItem.acceleratorForeground", getGrayColor());
+		table.put("MenuItem.acceleratorForeground", colorScheme.getAltForegroundColor());
 	}
 
 	@Override public String getName() {
@@ -282,7 +273,7 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 	}
 
 	@Override protected ColorUIResource getPrimary1() {
-		return new ColorUIResource(getDarkAccent());
+		return new ColorUIResource(colorScheme.getBackgroundColor());
 	}
 
 	@Override protected ColorUIResource getPrimary2() {
@@ -294,11 +285,11 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 	}
 
 	@Override protected ColorUIResource getSecondary1() {
-		return new ColorUIResource(getLightAccent());
+		return new ColorUIResource(colorScheme.getAltBackgroundColor());
 	}
 
 	@Override protected ColorUIResource getSecondary2() {
-		return new ColorUIResource(getLightAccent());
+		return new ColorUIResource(colorScheme.getAltBackgroundColor());
 	}
 
 	@Override protected ColorUIResource getSecondary3() {
@@ -306,15 +297,15 @@ public abstract class AbstractMCreatorTheme extends OceanTheme {
 	}
 
 	@Override public ColorUIResource getControl() {
-		return new ColorUIResource(getLightAccent());
+		return new ColorUIResource(colorScheme.getAltBackgroundColor());
 	}
 
 	@Override public ColorUIResource getControlHighlight() {
-		return new ColorUIResource(getLightAccent());
+		return new ColorUIResource(colorScheme.getAltBackgroundColor());
 	}
 
 	@Override public ColorUIResource getPrimaryControlHighlight() {
-		return new ColorUIResource(getGrayColor());
+		return new ColorUIResource(colorScheme.getAltForegroundColor());
 	}
 
 	@Override public FontUIResource getControlTextFont() {
