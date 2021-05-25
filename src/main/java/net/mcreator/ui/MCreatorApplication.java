@@ -32,6 +32,7 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.util.DiscordClient;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
@@ -47,7 +48,6 @@ import net.mcreator.util.SoundUtils;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -79,10 +79,23 @@ public final class MCreatorApplication {
 	private final TaskbarIntegration taskbarIntegration;
 
 	private MCreatorApplication(List<String> launchArguments) {
+
 		final SplashScreen splashScreen = new SplashScreen();
 		splashScreen.setVisible(true);
 
-		splashScreen.setProgress(5, "Loading UI core");
+		splashScreen.setProgress(5, "Loading plugins");
+
+		// Plugins are loaded before the Splash screen is visible, so every image can be changed
+		PluginLoader.initInstance();
+
+		splashScreen.setProgress(10, "Loading UI Themes");
+
+		// We load UI themes now as theme plugins are loaded at this point
+		ThemeLoader.initUIThemes();
+
+		splashScreen.setProgress(15, "Loading UI core");
+
+		UIRES.preloadImages();
 
 		try {
 			UIManager.setLookAndFeel(new MCreatorLookAndFeel());
@@ -94,16 +107,7 @@ public final class MCreatorApplication {
 
 		taskbarIntegration = new TaskbarIntegration();
 
-		splashScreen.setProgress(20, "Preloading resources");
-
-		UIRES.preloadImages();
-		TiledImageCache.loadAndTileImages();
-
-		splashScreen.setProgress(30, "Loading plugins");
-
-		PluginLoader.initInstance();
-
-		splashScreen.setProgress(40, "Loading interface components");
+		splashScreen.setProgress(25, "Loading interface components");
 
 		// load translations after plugins are loaded
 		L10N.initTranslations();
@@ -111,21 +115,22 @@ public final class MCreatorApplication {
 		// preload help entries cache
 		HelpLoader.preloadCache();
 
-		splashScreen.setProgress(45, "Loading plugin data");
+		splashScreen.setProgress(35, "Loading plugin data");
 
 		// load datalists and icons for them after plugins are loaded
 		BlockItemIcons.init();
 		DataListLoader.preloadCache();
 
+		splashScreen.setProgress(45, "Building plugin cache");
+
 		// load templates for image makers
 		ImageMakerTexturesCache.init();
 		ArmorMakerTexturesCache.init();
 
+		splashScreen.setProgress(55, "Loading plugin templates");
+
 		// load apis defined by plugins after plugins are loaded
 		ModAPIManager.initAPIs();
-
-		// load variable elements
-		VariableElementTypeLoader.loadVariableTypes();
 
 		// load blockly blocks after plugins are loaded
 		BlocklyLoader.init();
@@ -133,14 +138,17 @@ public final class MCreatorApplication {
 		// load entity animations for the Java Model animation editor
 		EntityAnimationsLoader.init();
 
-		splashScreen.setProgress(60, "Loading generators");
+		splashScreen.setProgress(60, "Preloading resources");
+		TiledImageCache.loadAndTileImages();
+
+		splashScreen.setProgress(70, "Loading generators");
 
 		Set<String> fileNamesUnordered = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
 		List<String> fileNames = new ArrayList<>(fileNamesUnordered);
 		Collections.sort(fileNames);
 		int i = 0;
 		for (String generator : fileNames) {
-			splashScreen.setProgress(55 + i * ((85 - 55) / fileNames.size()),
+			splashScreen.setProgress(70 + i * ((90 - 70) / fileNames.size()),
 					"Loading generators: " + generator.split("/")[0]);
 			LOG.info("Loading generator: " + generator);
 			generator = generator.replace("/generator.yaml", "");
@@ -152,7 +160,7 @@ public final class MCreatorApplication {
 			i++;
 		}
 
-		splashScreen.setProgress(88, "Initiating user session");
+		splashScreen.setProgress(93, "Initiating user session");
 
 		deviceInfo = new DeviceInfo();
 		analytics = new Analytics(deviceInfo);

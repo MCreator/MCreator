@@ -343,10 +343,18 @@ public class TestWorkspaceDataProvider {
 			fluid.generateBucket = !_true;
 			fluid.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
+			fluid.resistance = 52.2;
+			fluid.emissiveRendering = _true;
+			fluid.luminance = 6;
+			fluid.flammability = 5;
+			fluid.fireSpreadSpeed = 12;
+			fluid.colorOnMap = getRandomItem(random, ElementUtil.loadMapColors());
 			fluid.onBlockAdded = new Procedure("procedure1");
 			fluid.onNeighbourChanges = new Procedure("procedure2");
 			fluid.onTickUpdate = new Procedure("procedure3");
 			fluid.onEntityCollides = new Procedure("procedure4");
+			fluid.onRandomUpdateEvent = new Procedure("procedure5");
+			fluid.onDestroyedByExplosion = new Procedure("procedure6");
 			fluid.type = _true ? "WATER" : "LAVA";
 			fluid.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "End"));
 			fluid.restrictionBiomes = new ArrayList<>();
