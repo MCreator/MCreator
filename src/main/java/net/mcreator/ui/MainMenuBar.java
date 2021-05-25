@@ -49,7 +49,7 @@ public class MainMenuBar extends JMenuBar {
 
 		JMenu logo = new JMenu("  MCreator");
 		logo.setMnemonic('M');
-		logo.setIcon(new ImageIcon(ImageUtils.resizeAA(UIRES.get("icon").getImage(), 14, 14)));
+		logo.setIcon(new ImageIcon(ImageUtils.resizeAA(UIRES.getBuiltIn("icon").getImage(), 14, 14)));
 
 		logo.add(mcreator.actionRegistry.mcreatorWebsite);
 		logo.add(mcreator.actionRegistry.mcreatorCommunity);

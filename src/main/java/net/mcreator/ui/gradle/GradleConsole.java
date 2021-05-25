@@ -330,25 +330,31 @@ public class GradleConsole extends JPanel {
 		task.setStandardOutput(new OutputStreamEventHandler(line -> SwingUtilities.invokeLater(() -> {
 			taskOut.append(line).append("\n");
 			if (sinfo.isSelected()) {
-				if (!line.startsWith("Note: Some input files use or ov"))
-					if (!line.startsWith("Note: Recompile with -Xlint"))
-						if (!line.startsWith("Note: Some input files use unch"))
-							if (!line.contains("Advanced terminal features are not available in this environment"))
-								if (!line.contains("Disabling terminal, you're running in an unsupported environment"))
-									if (!line.contains("uses or overrides a deprecated API"))
-										if (!line.contains("unchecked or unsafe operations")) {
-											if (line.startsWith(":") || line.startsWith(">")) {
-												if (line.contains(" UP-TO-DATE") || line.contains(" NO-SOURCE") || line
-														.contains(" SKIPPED"))
-													append(line, new Color(0x7B7B7B), true);
-												else
-													append(line, new Color(0xDADADA), true);
-											} else if (line.startsWith("BUILD SUCCESSFUL")) {
-												append(line, new Color(187, 232, 108), false);
-											} else {
-												appendAutoColor(line);
-											}
-										}
+				if (line.startsWith("Note: Some input files use or ov"))
+					return;
+				if (line.startsWith("Note: Recompile with -Xlint"))
+					return;
+				if (line.startsWith("Note: Some input files use unch"))
+					return;
+				if (line.contains("Advanced terminal features are not available in this environment"))
+					return;
+				if (line.contains("Disabling terminal, you're running in an unsupported environment"))
+					return;
+				if (line.contains("uses or overrides a deprecated API"))
+					return;
+				if (line.contains("unchecked or unsafe operations"))
+					return;
+
+				if (line.startsWith(":") || line.startsWith(">")) {
+					if (line.contains(" UP-TO-DATE") || line.contains(" NO-SOURCE") || line.contains(" SKIPPED"))
+						append(line, new Color(0x7B7B7B), true);
+					else
+						append(line, new Color(0xDADADA), true);
+				} else if (line.startsWith("BUILD SUCCESSFUL")) {
+					append(line, new Color(187, 232, 108), false);
+				} else {
+					appendAutoColor(line);
+				}
 			}
 		})));
 
@@ -358,12 +364,28 @@ public class GradleConsole extends JPanel {
 				if (line.startsWith("[")) {
 					appendAutoColor(line);
 				} else {
-					if (!line.startsWith("Note: Some input files use or ov"))
-						if (!line.startsWith("Note: Recompile with -Xlint"))
-							if (!line.startsWith("Note: Some input files use unch"))
-								if (!line.contains("uses or overrides a deprecated API"))
-									if (!line.contains("unchecked or unsafe operations"))
-										append(line, new Color(0, 255, 182));
+					if (line.startsWith("Note: Some input files use or ov"))
+						return;
+					if (line.startsWith("Note: Recompile with -Xlint"))
+						return;
+					if (line.startsWith("Note: Some input files use unch"))
+						return;
+					if (line.contains("uses or overrides a deprecated API"))
+						return;
+					if (line.contains("unchecked or unsafe operations"))
+						return;
+					if (line.startsWith("WARNING: An illegal reflective access"))
+						return;
+					if (line.startsWith("WARNING: Illegal reflective access"))
+						return;
+					if (line.startsWith("WARNING: Please consider reporting this"))
+						return;
+					if (line.startsWith("WARNING: Use --illegal-access=warn to enable"))
+						return;
+					if (line.startsWith("WARNING: All illegal access operations will"))
+						return;
+
+					append(line, new Color(0, 255, 182));
 				}
 			}
 		})));
