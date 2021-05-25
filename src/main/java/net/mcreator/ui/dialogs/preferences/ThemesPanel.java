@@ -51,7 +51,7 @@ public class ThemesPanel {
 		String themeDescription = L10N.t("preferences.themes.select_theme.description");
 		top.add("West", L10N.label("dialog.preferences.entry_description", themeName, themeDescription));
 
-		themeIDs = new JComboBox<>(ThemeLoader.getIDs().toArray(new String[0]));
+		themeIDs = new JComboBox<>(ThemeLoader.getThemeIDList().toArray(new String[0]));
 		themeIDs.setPreferredSize(new Dimension(250, 0));
 		themeIDs.setSelectedItem(PreferencesManager.PREFERENCES.hidden.uiTheme);
 		themeIDs.addActionListener(e -> dialog.markChanged());

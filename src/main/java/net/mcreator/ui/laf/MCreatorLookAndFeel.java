@@ -36,13 +36,8 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 	private final MCreatorTheme theme;
 
 	public MCreatorLookAndFeel() {
-		if (ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme) != null) {
-			setCurrentTheme(theme = new MCreatorTheme(
-					ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme).getColorScheme()));
-		} else {
-			setCurrentTheme(theme = new MCreatorTheme(ThemeLoader.getTheme("default_dark").getColorScheme()));
-			LOG.warn("Default theme is used due to missing theme " + theme.getName());
-		}
+		setCurrentTheme(theme = new MCreatorTheme(
+				ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme).getColorScheme()));
 	}
 
 	@Override protected void initClassDefaults(UIDefaults table) {
@@ -64,8 +59,8 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 				defaultStyles.addRule("* {color: white;} font, b, i, strong, p, div, li, ul, ol {color: #" + Integer
 						.toHexString(theme.getColorScheme().getForegroundColor().getRGB()).substring(2)
 						+ ";} body {color: white;} html {color: #" + Integer
-						.toHexString(theme.getColorScheme().getForegroundColor().getRGB()).substring(2) + ";} a {color: #" + Integer
-						.toHexString(theme.getMainTint().getRGB()).substring(2) + ";}");
+						.toHexString(theme.getColorScheme().getForegroundColor().getRGB()).substring(2)
+						+ ";} a {color: #" + Integer.toHexString(theme.getMainTint().getRGB()).substring(2) + ";}");
 
 				appContext.getClass().getMethod("put", Object.class, Object.class)
 						.invoke(appContext, key, defaultStyles);

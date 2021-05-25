@@ -17,25 +17,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * MCreator (https://mcreator.net/)
- * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2021, Pylo, opensource contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package net.mcreator.themes;
 
 import com.google.gson.Gson;
@@ -49,20 +30,23 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * ThemeLoader defines to load and use available Themes.
  */
-public class
-ThemeLoader {
+public class ThemeLoader {
+
 	private static final Logger LOG = LogManager.getLogger("Theme Loader");
 
+	private static final Gson gson = new Gson();
+
 	private static final LinkedHashSet<Theme> THEMES = new LinkedHashSet<>();
+
 	public static Theme CURRENT_THEME;
 
 	/**
@@ -71,52 +55,28 @@ ThemeLoader {
 	public static void initUIThemes() {
 		LOG.debug("Loading UI themes");
 
-		final Gson gson = new Gson();
-
-		// Load themes
+		// Load all themes
 		Set<String> files = PluginLoader.INSTANCE.getResources("themes", Pattern.compile("theme.json"));
 		for (String file : files) {
 			Theme theme = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), Theme.class);
+
 			// The ID will be used to get images from this theme if the user select it.
-			theme.setId(new File(file).getParentFile().getName());
+			theme.setID(new File(file).getParentFile().getName());
 
-			if (theme.getColorScheme() != null) {
-				// Check if the color scheme contains the Blockly CSS file
-				if (PluginLoader.INSTANCE.getResource(
-						"themes/" + theme.getID() + "/styles/blockly.css") == null) {
-					LOG.warn("Color scheme of " + theme.getID()
-							+ " does not define the Blockly Panel colors! Default_dark's file will be used!");
-				}
-
-				// Check if the color scheme contains the code editor XML file
-				if (PluginLoader.INSTANCE.getResource(
-						"themes/" + theme.getID() + "/styles/code_editor.xml") == null) {
-					LOG.warn("Color scheme of " + theme.getID()
-							+ " does not define the code editor colors! Default_dark's file will be used!");
-				}
-			}
-
-			// Load the custom icon if provided otherwise, load the default one
+			// Load the custom icon if provided, otherwise load the default one
 			String identifier = "themes/" + theme.getID() + "/icon.png";
 			if (PluginLoader.INSTANCE.getResource(identifier) != null) {
-				ImageIcon icon = UIRES.getImageFromResourceID(identifier);
-				icon = new ImageIcon(ImageUtils.resize(icon.getImage(), 64));
-				theme.setIcon(icon);
+				theme.setIcon(
+						new ImageIcon(ImageUtils.resize(UIRES.getImageFromResourceID(identifier).getImage(), 64)));
 			} else {
-				theme.setIcon(UIRES.get("icon.png"));
+				theme.setIcon(UIRES.getBuiltIn("icon"));
 			}
-			THEMES.add(theme);
 
-			LOG.debug("Loaded " + theme.getID());
+			THEMES.add(theme);
 		}
 
-		// We check if the last theme selected by the user still exists
-		// If the theme has been deleted since the last time, we load the default_dark theme
-		if (ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme) == null)
-			PreferencesManager.PREFERENCES.hidden.uiTheme = "default_dark";
-
 		CURRENT_THEME = getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme);
-		LOG.info("Current UI theme: " + CURRENT_THEME.getID());
+		LOG.info("Using MCreator UI theme: " + CURRENT_THEME.getID());
 	}
 
 	public static LinkedHashSet<Theme> getThemes() {
@@ -128,12 +88,8 @@ ThemeLoader {
 	 *
 	 * @return Returns a {@link java.util.List} of all loaded theme IDs
 	 */
-	public static List<String> getIDs() {
-		List<String> ids = new ArrayList<>();
-		for (Theme rp : THEMES) {
-			ids.add(rp.getID());
-		}
-		return ids;
+	public static List<String> getThemeIDList() {
+		return THEMES.stream().map(Theme::getID).collect(Collectors.toList());
 	}
 
 	/**
@@ -147,6 +103,12 @@ ThemeLoader {
 			if (pack.getID().equals(id))
 				return pack;
 		}
-		return null;
+
+		if (id.equals("default_dark"))
+			throw new RuntimeException("No themes present in MCreator");
+
+		LOG.warn("Default theme will be used due to missing theme: " + id);
+
+		return getTheme("default_dark");
 	}
 }

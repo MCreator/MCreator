@@ -28,26 +28,24 @@ import javax.swing.*;
  * <p>A Theme can change images MCreator will use and redefine the colors and the style
  * of {@link net.mcreator.ui.blockly.BlocklyPanel} and {@link net.mcreator.ui.ide.RSyntaxTextAreaStyler} by creating a new {@link net.mcreator.themes.ColorScheme}</p>.
  */
-public class Theme {
+@SuppressWarnings("unused") public class Theme {
+
 	private String id;
 	private String name;
+
 	@Nullable private String description;
 	@Nullable private String version;
 	@Nullable private String credits;
-	@Nullable private ColorScheme colorScheme;
-	private ImageIcon icon;
 
-	public Theme(String id, String name, @Nullable ColorScheme colorScheme) {
-		this.id = id;
-		this.name = name;
-		this.colorScheme = colorScheme;
-	}
+	@Nullable private ColorScheme colorScheme;
+
+	private ImageIcon icon;
 
 	public String getID() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setID(String id) {
 		this.id = id;
 	}
 
@@ -59,10 +57,10 @@ public class Theme {
 		// Description inside the JSON file
 		if (description != null)
 			return description;
-		// Localized description
+			// Localized description
 		else if (!L10N.t("theme." + id + ".description").equals("theme." + id + ".description"))
 			return L10N.t("theme." + id + ".description");
-		// No description
+			// No description
 		else
 			return "";
 	}
@@ -77,10 +75,11 @@ public class Theme {
 
 	/**
 	 * <p>This methods gets the {@link net.mcreator.themes.ColorScheme} to use with the theme</p>
+	 *
 	 * @return Returns the {@link net.mcreator.themes.ColorScheme} of the Theme if one is defined. If the Theme does not create a new {@link net.mcreator.themes.ColorScheme}, the Dark's theme {@link net.mcreator.themes.ColorScheme} will be used.
 	 */
 	public ColorScheme getColorScheme() {
-		if(colorScheme != null)
+		if (colorScheme != null)
 			return colorScheme;
 		else
 			return ThemeLoader.getTheme("default_dark").getColorScheme();

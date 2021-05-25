@@ -90,7 +90,7 @@ public class UIRES {
 		return identifier;
 	}
 
-	public static ImageIcon getInternal(String identifier) {
+	public static ImageIcon getBuiltIn(String identifier) {
 		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
 			identifier += ".png";
 		return new ImageIcon(Toolkit.getDefaultToolkit()
