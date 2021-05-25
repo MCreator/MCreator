@@ -83,17 +83,18 @@ public final class MCreatorApplication {
 		final SplashScreen splashScreen = new SplashScreen();
 		splashScreen.setVisible(true);
 
-		splashScreen.setProgress(15, "Loading plugins");
+		splashScreen.setProgress(5, "Loading plugins");
 
 		// Plugins are loaded before the Splash screen is visible, so every image can be changed
 		PluginLoader.initInstance();
 
-		splashScreen.setProgress(20, "Loading UI Themes");
+		splashScreen.setProgress(10, "Loading UI Themes");
 
 		// We load UI themes now as theme plugins are loaded at this point
 		ThemeLoader.initUIThemes();
 
-		splashScreen.setProgress(30, "Loading UI core");
+		splashScreen.setProgress(15, "Loading UI core");
+
 		UIRES.preloadImages();
 
 		try {
@@ -106,7 +107,7 @@ public final class MCreatorApplication {
 
 		taskbarIntegration = new TaskbarIntegration();
 
-		splashScreen.setProgress(35, "Loading interface components");
+		splashScreen.setProgress(25, "Loading interface components");
 
 		// load translations after plugins are loaded
 		L10N.initTranslations();
@@ -114,15 +115,19 @@ public final class MCreatorApplication {
 		// preload help entries cache
 		HelpLoader.preloadCache();
 
-		splashScreen.setProgress(45, "Loading plugin data");
+		splashScreen.setProgress(35, "Loading plugin data");
 
 		// load datalists and icons for them after plugins are loaded
 		BlockItemIcons.init();
 		DataListLoader.preloadCache();
 
+		splashScreen.setProgress(45, "Building plugin cache");
+
 		// load templates for image makers
 		ImageMakerTexturesCache.init();
 		ArmorMakerTexturesCache.init();
+
+		splashScreen.setProgress(55, "Loading plugin templates");
 
 		// load apis defined by plugins after plugins are loaded
 		ModAPIManager.initAPIs();
