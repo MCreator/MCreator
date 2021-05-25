@@ -71,6 +71,10 @@ public class ImportTreeBuilder {
 						if (entryName.startsWith("sun/") || entryName.startsWith("com/sun/"))
 							continue;
 
+						// skip internal JDK APIs
+						if (entryName.startsWith("jdk/internal/"))
+							continue;
+
 						// skip package and modules info entries
 						if (entryName.endsWith("package-info.class") || entryName.endsWith("module-info.class"))
 							continue;

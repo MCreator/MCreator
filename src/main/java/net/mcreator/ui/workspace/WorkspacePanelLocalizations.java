@@ -211,11 +211,10 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			button.setBorder(BorderFactory.createEmptyBorder());
 			button.setMargin(new Insets(0, 0, 0, 0));
 			button.addActionListener(e -> {
-				Object[] options = { "Yes", "No" };
-				int n = JOptionPane.showOptionDialog(workspacePanel.getMcreator(),
+				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
 						L10N.t("workspace.localization.confirm_delete_map"),
-						L10N.t("workspace.localization.confirmation"), JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+						L10N.t("workspace.localization.confirmation"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null);
 				if (n == 0) {
 					workspacePanel.getMcreator().getWorkspace().removeLocalizationLanguage(entry.getKey());
 					reloadElements();

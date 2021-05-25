@@ -1,4 +1,4 @@
-name: Continuous integration
+name: Build and test
 
 on:
   push:
@@ -40,7 +40,8 @@ jobs:
           rm -f  ~/.mcreator/gradle/caches/minecraft/deobfedDeps/compileDummy.jar
           rm -f  ~/.gradle/caches/modules-2/modules-2.lock
           rm -f  ~/.gradle/caches/modules-2/gc.properties
-      - name: Test Report
+      - name: Test Failure Report
+        if: failure()
         uses: Pylo/action-junit-report@v2
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'

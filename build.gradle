@@ -4,7 +4,7 @@ plugins {
     id "de.undercouch.download" version "4.1.1"
     id 'edu.sc.seis.launch4j' version '2.5.0'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.0'
-    id 'org.openjfx.javafxplugin' version '0.0.9'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
 }
 
 repositories {
@@ -19,9 +19,10 @@ file('src/main/resources/mcreator.conf').withInputStream { project.mcreatorconf.
 
 group = 'net.mcreator'
 version = project.mcreatorconf.getProperty('mcreator')
+project.ext.builddate = new Date().format('wwuHH')
+
 javadoc.source = sourceSets.main.allJava
 compileJava.options.encoding = 'UTF-8'
-compileJava.options.debug
 tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 
 // workaround for IDEA-265203
@@ -73,7 +74,7 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
     implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.11.0.202103091610-r'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.30'
-    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '7.0'
+    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '7.0.2'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.16.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.16.1'
@@ -121,15 +122,9 @@ test {
     maxHeapSize = "1024m"
 }
 
-jar {
-    archiveFileName = 'mcreator.jar'
-    manifest {
-        attributes(
-                'Main-Class': 'net.mcreator.Launcher',
-                'MCreator-Version': project.mcreatorconf.getProperty('mcreator'),
-                'Build-Date': new Date().format('wwuHH')
-        )
-    }
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.runtimeClasspath
 }
 
 task runMCreator(type: JavaExec, dependsOn: jar) {

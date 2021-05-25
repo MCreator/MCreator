@@ -51,13 +51,13 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		editor = new WYSIWYGEditor(mcreator, true);
 
 		onOpen = new ProcedureSelector(this.withEntry("gui/gui_opened"), mcreator, L10N.t("elementgui.gui.gui_opened"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		onTick = new ProcedureSelector(this.withEntry("gui/gui_open_tick"), mcreator,
 				L10N.t("elementgui.gui.gui_open_ticks"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		onClosed = new ProcedureSelector(this.withEntry("gui/gui_closed"), mcreator,
 				L10N.t("elementgui.gui.gui_closed"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 
 		CollapsiblePanel events = new CollapsiblePanel(L10N.t("elementgui.gui.gui_triggers"),
 				PanelUtils.join(FlowLayout.LEFT, 1, 1, PanelUtils.gridElements(1, 3, 5, 0, onOpen, onTick, onClosed)));
@@ -106,6 +106,16 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 			editor.slot2.setEnabled(true);
 		}
 
+		editor.sx.setValue(gui.gridSettings.sx);
+		editor.sy.setValue(gui.gridSettings.sy);
+		editor.ox.setValue(gui.gridSettings.ox);
+		editor.oy.setValue(gui.gridSettings.oy);
+		editor.snapOnGrid.setSelected(gui.gridSettings.snapOnGrid);
+		if (gui.gridSettings.snapOnGrid) {
+			editor.editor.showGrid = true;
+			editor.editor.repaint();
+		}
+
 		editor.setOpening(false);
 	}
 
@@ -122,6 +132,12 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		gui.onOpen = onOpen.getSelectedProcedure();
 		gui.onTick = onTick.getSelectedProcedure();
 		gui.onClosed = onClosed.getSelectedProcedure();
+
+		gui.gridSettings.sx = (int) editor.sx.getValue();
+		gui.gridSettings.sy = (int) editor.sy.getValue();
+		gui.gridSettings.ox = (int) editor.ox.getValue();
+		gui.gridSettings.oy = (int) editor.oy.getValue();
+		gui.gridSettings.snapOnGrid = editor.snapOnGrid.isSelected();
 		return gui;
 	}
 

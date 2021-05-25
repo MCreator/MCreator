@@ -18,7 +18,6 @@
 
 package net.mcreator.integration.generator;
 
-import net.mcreator.element.ModElementType;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
@@ -29,23 +28,22 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.ConsolePane;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.TestFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -67,7 +65,7 @@ public class GeneratorsTest {
 		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 2000;
 	}
 
-	@Test public void testGenerators() throws InterruptedException, IOException, TimeoutException {
+	public @TestFactory Stream<DynamicTest> testGenerators() {
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
 		LOG.info("Generators found: " + fileNames);
 
@@ -75,106 +73,82 @@ public class GeneratorsTest {
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: " + rgenseed);
 
-		for (String generator : fileNames) {
-			generator = generator.replace("/generator.yaml", "");
+		return fileNames.stream().map(generatorFile -> {
+			final String generator = generatorFile.replace("/generator.yaml", "");
+			return DynamicTest.dynamicTest("Test generator: " + generator, () -> {
+				LOG.info("================");
+				LOG.info("TESTING GENERATOR " + generator);
 
-			LOG.info("================");
-			LOG.info("TESTING GENERATOR " + generator);
+				// create temporary directory
+				Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
-			// create temporary directory
-			Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
+				// we create a new workspace
+				WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
+				workspaceSettings.setVersion("1.0.0");
+				workspaceSettings.setDescription("Test mod");
+				workspaceSettings.setAuthor("Unit tests");
+				workspaceSettings.setLicense("GPL 3.0");
+				workspaceSettings.setWebsiteURL("https://mcreator.net/");
+				workspaceSettings.setUpdateURL("https://mcreator.net/");
+				workspaceSettings.setModPicture("example");
+				workspaceSettings.setModName("Test mod");
+				workspaceSettings.setCurrentGenerator(generator);
+				Workspace workspace = Workspace
+						.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"), workspaceSettings);
 
-			// we create a new workspace
-			WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
-			workspaceSettings.setVersion("1.0.0");
-			workspaceSettings.setDescription("Test mod");
-			workspaceSettings.setAuthor("Unit tests");
-			workspaceSettings.setLicense("GPL 3.0");
-			workspaceSettings.setWebsiteURL("https://mcreator.net/");
-			workspaceSettings.setUpdateURL("https://mcreator.net/");
-			workspaceSettings.setModPicture("example");
-			workspaceSettings.setModName("Test mod");
-			workspaceSettings.setCurrentGenerator(generator);
-			Workspace workspace = Workspace
-					.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"), workspaceSettings);
+				LOG.info("[" + generator + "] ----- Test workspace folder: " + workspace.getFolderManager()
+						.getWorkspaceFolder());
 
-			LOG.info("[" + generator + "] ----- Test workspace folder: " + workspace.getFolderManager()
-					.getWorkspaceFolder());
+				TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
 
-			TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
+				LOG.info("[" + generator + "] ----- Setting up workspace base for selected generator");
+				WorkspaceGeneratorSetup.setupWorkspaceBase(workspace);
 
-			LOG.info("[" + generator + "] ----- Setting up workspace base for selected generator");
-			WorkspaceGeneratorSetup.setupWorkspaceBase(workspace);
+				if (workspace.getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
+					CountDownLatch latch = new CountDownLatch(1);
 
-			if (workspace.getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
-				CountDownLatch latch = new CountDownLatch(1);
+					GradleDaemonUtils.stopAllDaemons(workspace);
 
-				GradleDaemonUtils.stopAllDaemons(workspace);
+					new MCreator(null, workspace).getGradleConsole()
+							.exec(workspace.getGeneratorConfiguration().getGradleTaskFor("setup_task"), taskResult -> {
+								if (taskResult.getStatusByMCreator() == GradleErrorCodes.STATUS_OK) {
+									workspace.getGenerator().reloadGradleCaches();
+								} else {
+									fail("Gradle MDK setup failed!");
+								}
+								latch.countDown();
+							});
+					latch.await();
+				}
 
-				new MCreator(null, workspace).getGradleConsole()
-						.exec(workspace.getGeneratorConfiguration().getGradleTaskFor("setup_task"), taskResult -> {
-							if (taskResult.getStatusByMCreator() == GradleErrorCodes.STATUS_OK) {
-								workspace.getGenerator().reloadGradleCaches();
-							} else {
-								fail("Gradle MDK setup failed!");
-							}
-							latch.countDown();
-						});
-				latch.await();
-			}
+				LOG.info("[" + generator + "] ----- Testing base generation");
+				assertTrue(workspace.getGenerator().generateBase());
 
-			LOG.info("[" + generator + "] ----- Testing base generation");
-			assertTrue(workspace.getGenerator().generateBase());
+				LOG.info("[" + generator + "] ----- Testing resource setup tasks");
+				workspace.getGenerator().runResourceSetupTasks();
 
-			LOG.info("[" + generator + "] ----- Testing resource setup tasks");
-			workspace.getGenerator().runResourceSetupTasks();
+				LOG.info("[" + generator + "] ----- Testing empty workspace build");
+				GTBuild.runTest(LOG, generator, workspace);
 
-			LOG.info("[" + generator + "] ----- Testing empty workspace build");
-			GTBuild.runTest(LOG, generator, workspace);
+				LOG.info("[" + generator + "] ----- Testing procedure triggers");
+				GTProcedureTriggers.runTest(LOG, generator, workspace);
 
-			LOG.info("[" + generator + "] ----- Testing procedure triggers");
-			GTProcedureTriggers.runTest(LOG, generator, workspace);
+				LOG.info("[" + generator + "] ----- Testing procedure blocks");
+				GTProcedureBlocks.runTest(LOG, generator, random, workspace);
 
-			LOG.info("[" + generator + "] ----- Testing procedure blocks");
-			GTProcedureBlocks.runTest(LOG, generator, random, workspace);
+				LOG.info("[" + generator + "] ----- Testing building after procedure tests");
+				GTBuild.runTest(LOG, generator, workspace);
 
-			LOG.info("[" + generator + "] ----- Testing building after procedure tests");
-			GTBuild.runTest(LOG, generator, workspace);
+				LOG.info("[" + generator + "] ----- Preparing and generating sample mod elements");
+				GTSampleElements.provideAndGenerateSampleElements(random, workspace);
 
-			LOG.info("[" + generator + "] ----- Testing mod elements generation");
+				LOG.info("[" + generator + "] ----- Testing mod elements generation");
+				GTModElements.runTest(LOG, generator, random, workspace);
 
-			// add procedures for testing
-			for (int i = 1; i <= 13; i++) {
-				ModElement me = new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE)
-						.putMetadata("dependencies", new ArrayList<String>());
-				workspace.addModElement(me);
-
-				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
-				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML("");
-				assertTrue(workspace.getGenerator().generateElement(procedure));
-				workspace.getModElementManager().storeModElement(procedure);
-			}
-
-			for (int i = 1; i <= 4; i++) {
-				ModElement me = new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE)
-						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC");
-				workspace.addModElement(me);
-
-				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
-				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
-						"<block type=\"return_logic\"><value name=\"return\">"
-								+ "<block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block>"
-								+ "</value></block>");
-				assertTrue(workspace.getGenerator().generateElement(procedure));
-				workspace.getModElementManager().storeModElement(procedure);
-			}
-
-			GTModElements.runTest(LOG, generator, random, workspace);
-
-			LOG.info("[" + generator + "] ----- Testing workspace build with mod elements");
-			GTBuild.runTest(LOG, generator, workspace);
-		}
-
+				LOG.info("[" + generator + "] ----- Testing workspace build with mod elements");
+				GTBuild.runTest(LOG, generator, workspace);
+			});
+		});
 	}
 
 }
