@@ -36,7 +36,7 @@ package ${package}.gui;
 
 import ${package}.${JavaModName};
 
-@${JavaModName}Elements.ModElement.Tag public class ${name}Gui extends ${JavaModName}Elements.ModElement{
+@${JavaModName}Elements.ModElement.Tag public class ${name}Gui extends ${JavaModName}Elements.ModElement {
 
 	public static HashMap guistate = new HashMap();
 
