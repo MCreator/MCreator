@@ -42,9 +42,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.GradleConnector;
 import org.gradle.tooling.ProjectConnection;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
@@ -77,7 +77,7 @@ public class Generator implements IGenerator, Closeable {
 	@Nullable private ProjectConnection gradleProjectConnection;
 	@Nullable private GeneratorGradleCache generatorGradleCache;
 
-	public Generator(@NotNull Workspace workspace) {
+	public Generator(@Nonnull Workspace workspace) {
 		this.workspace = workspace;
 		this.generatorName = workspace.getWorkspaceSettings().getCurrentGenerator();
 
@@ -106,7 +106,7 @@ public class Generator implements IGenerator, Closeable {
 		}
 	}
 
-	@Override public @NotNull Workspace getWorkspace() {
+	@Override public @Nonnull Workspace getWorkspace() {
 		return workspace;
 	}
 
@@ -164,31 +164,33 @@ public class Generator implements IGenerator, Closeable {
 	 * @return true if generator generated all files without any errors
 	 */
 	public boolean generateBase(boolean formatAndOrganiseImports) {
-		List<GeneratorFile> generatorFiles = new ArrayList<>();
-
 		AtomicBoolean success = new AtomicBoolean(true);
 
-		getModBaseGeneratorTemplatesList(true).forEach(generatorTemplate -> {
-			if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
-					&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
-					.equals("true")) // can this file be locked
-				if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
-					return; // if they are, we skip this file
+		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).parallelStream()
+				.map(generatorTemplate -> {
+					if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
+							&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
+							.equals("true")) // can this file be locked
+						if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
+							return null; // if they are, we skip this file
 
-			String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("template");
+					String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData())
+							.get("template");
 
-			Map<String, Object> dataModel = new HashMap<>();
+					Map<String, Object> dataModel = new HashMap<>();
 
-			extractVariables(generatorTemplate, dataModel);
+					extractVariables(generatorTemplate, dataModel);
 
-			try {
-				String code = templateGenerator.generateBaseFromTemplate(templateFileName, dataModel);
-				generatorFiles.add(new GeneratorFile(code, generatorTemplate.getFile(),
-						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer")));
-			} catch (TemplateGeneratorException e) {
-				success.set(false);
-			}
-		});
+					try {
+						String code = templateGenerator.generateBaseFromTemplate(templateFileName, dataModel);
+						return new GeneratorFile(code, generatorTemplate.getFile(),
+								(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
+					} catch (TemplateGeneratorException e) {
+						success.set(false);
+					}
+
+					return null;
+				}).filter(Objects::nonNull).collect(Collectors.toList());
 
 		generateFiles(generatorFiles, formatAndOrganiseImports);
 
@@ -281,7 +283,7 @@ public class Generator implements IGenerator, Closeable {
 			}
 		}
 
-		// do additinal tasks if mod element has them
+		// do additional tasks if mod element has them
 		element.finalizeModElementGeneration();
 
 		return generatorFiles;
@@ -529,7 +531,7 @@ public class Generator implements IGenerator, Closeable {
 						}
 					} else if (workspace.getFolderManager().isFileInWorkspace(new File(to))) {
 						try {
-							BufferedImage resized = ImageUtils.resize(UIRES.get("fallback").getImage(), w, h);
+							BufferedImage resized = ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h);
 							ImageIO.write(resized, "png", new File(to));
 						} catch (IOException e) {
 							LOG.warn("Failed to read image file for resizing", e);

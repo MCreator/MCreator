@@ -18,8 +18,10 @@
 
 package net.mcreator.ui.ide;
 
+import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.laf.AbstractMCreatorTheme;
+import net.mcreator.themes.ThemeLoader;
+import net.mcreator.ui.laf.MCreatorTheme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -27,10 +29,12 @@ import org.fife.ui.rsyntaxtextarea.Style;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.io.IOException;
 import java.util.Locale;
 
@@ -40,8 +44,17 @@ public class RSyntaxTextAreaStyler {
 
 	public static void style(RSyntaxTextArea te, RTextScrollPane sp, int initialFontSize) {
 		try {
-			Theme theme = Theme
-					.load(te.getClass().getResourceAsStream((String) UIManager.get("MCreatorLAF.CODE_EDITOR_XML")));
+			Theme theme;
+
+			if (PluginLoader.INSTANCE
+					.getResourceAsStream("themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml") != null) {
+				theme = Theme.load(PluginLoader.INSTANCE
+						.getResourceAsStream("themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml"));
+			} else {
+				theme = Theme.load(PluginLoader.INSTANCE
+						.getResourceAsStream("themes/default_dark/styles/code_editor.xml"));
+			}
+
 			if (!PreferencesManager.PREFERENCES.ide.editorTheme.equals("MCreator")) {
 				theme = Theme.load(te.getClass().getResourceAsStream(
 						"/org/fife/ui/rsyntaxtextarea/themes/" + PreferencesManager.PREFERENCES.ide.editorTheme
@@ -70,12 +83,13 @@ public class RSyntaxTextAreaStyler {
 		SyntaxScheme ss = te.getSyntaxScheme();
 		for (int i = 0; i < ss.getStyleCount(); i++)
 			if (ss.getStyle(i) != null)
-				ss.getStyle(i).font = AbstractMCreatorTheme.console_font.deriveFont((float) initialFontSize);
-		te.setFont(AbstractMCreatorTheme.console_font.deriveFont((float) initialFontSize));
+				ss.getStyle(i).font = MCreatorTheme.console_font.deriveFont((float) initialFontSize);
+		te.setFont(MCreatorTheme.console_font.deriveFont((float) initialFontSize));
 		te.revalidate();
 
 		sp.addMouseWheelListener(mouseWheelEvent -> {
-			if ((mouseWheelEvent.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK && te.hasFocus()) {
+			if ((mouseWheelEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK && te
+					.hasFocus()) {
 				float current = te.getFont().getSize();
 
 				current -= mouseWheelEvent.getWheelRotation();

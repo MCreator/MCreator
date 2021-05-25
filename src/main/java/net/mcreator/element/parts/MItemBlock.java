@@ -21,7 +21,8 @@ package net.mcreator.element.parts;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public class MItemBlock extends MappableElement {
 
@@ -29,7 +30,7 @@ public class MItemBlock extends MappableElement {
 		super(new NameMapper(null, "blocksitems"));
 	}
 
-	public MItemBlock(@NotNull Workspace owner, String name) {
+	public MItemBlock(@Nonnull Workspace owner, String name) {
 		this();
 		mapper.setWorkspace(owner);
 		setValue(name);

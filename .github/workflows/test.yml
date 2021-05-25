@@ -1,0 +1,48 @@
+name: Build and test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11.0.11'
+          distribution: 'adopt'
+      - name: Cache Gradle Packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.mcreator/gradle/caches/
+            ~/.mcreator/gradle/wrapper/
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Build and Test Using Gradle
+        uses: Pylo/xvfb-action@v1
+        with:
+          run: ./gradlew test
+      - name: Prepare Gradle Cache
+        run: |
+          rm -f  ~/.mcreator/gradle/caches/modules-2/modules-2.lock
+          rm -fr ~/.mcreator/gradle/caches/*/plugin-resolution/
+          rm -f  ~/.mcreator/gradle/caches/minecraft/deobfedDeps/providedDummy.jar
+          rm -f  ~/.mcreator/gradle/caches/minecraft/deobfedDeps/compileDummy.jar
+          rm -f  ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f  ~/.gradle/caches/modules-2/gc.properties
+      - name: Test Failure Report
+        if: failure()
+        uses: Pylo/action-junit-report@v2
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          fail_on_failure: true

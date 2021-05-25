@@ -109,6 +109,12 @@ import java.util.stream.Collectors;
 	private final JLabel but5a = new JLabel(TiledImageCache.workspaceToggle);
 	private final JLabel but6 = new JLabel(TiledImageCache.workspaceModElementIDs);
 
+	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
+	private final JMenuItem duplicateElement = new JMenuItem(L10N.t("workspace.elements.list.edit.duplicate"));
+	private final JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
+	private final JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
+	private final JMenuItem idElement = new JMenuItem(L10N.t("workspace.elements.list.edit.id"));
+
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
 
@@ -140,6 +146,8 @@ import java.util.stream.Collectors;
 
 		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator);
 
+		JPopupMenu contextMenu = new JPopupMenu();
+
 		panels.setOpaque(false);
 
 		list = new JSelectableList<>(dml);
@@ -157,20 +165,7 @@ import java.util.stream.Collectors;
 						if (element.equals(target))
 							continue;
 
-						FolderElement folder = (FolderElement) element;
-						String originalFolderPath = folder.getPath();
-
-						// first remove folder from old parent and assign new parent to the folder
-						folder.getParent().removeChild(folder);
-						((FolderElement) target).addChild(folder);
-
-						// then re-assign mod elements to the new folder ath
-						for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-							if (originalFolderPath.equals(modElement.getFolderPath())) {
-								// set parent folder again to update the path
-								modElement.setParentFolder(folder);
-							}
-						}
+						((FolderElement) element).moveTo(mcreator.getWorkspace(), (FolderElement) target);
 					}
 				}
 				mcreator.getWorkspace().markDirty();
@@ -196,14 +191,34 @@ import java.util.stream.Collectors;
 
 		list.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2 && !e.isConsumed()) {
+				if (e.isConsumed())
+					return;
+
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					list.setSelectedIndex(list.locationToIndex(e.getPoint()));
+					IElement selected = list.getSelectedValue();
+
+					if (selected instanceof FolderElement) {
+						duplicateElement.setEnabled(false);
+						codeElement.setEnabled(false);
+						lockElement.setEnabled(false);
+						idElement.setEnabled(false);
+					} else {
+						duplicateElement.setEnabled(true);
+						codeElement.setEnabled(true);
+						lockElement.setEnabled(true);
+						idElement.setEnabled(true);
+					}
+
+					contextMenu.show(list, e.getX(), e.getY());
+				} else if (e.getClickCount() == 2) {
 					list.cancelDND();
 
 					IElement selected = list.getSelectedValue();
 					if (selected instanceof FolderElement) {
 						switchFolder((FolderElement) selected);
 					} else {
-						if (((e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK))
+						if (((e.getModifiersEx() & InputEvent.ALT_DOWN_MASK) == InputEvent.ALT_DOWN_MASK))
 							editCurrentlySelectedModElementAsCode((ModElement) selected, list, e.getX(), e.getY());
 						else
 							editCurrentlySelectedModElement((ModElement) selected, list, e.getX(), e.getY());
@@ -310,39 +325,7 @@ import java.util.stream.Collectors;
 		upFolder.setToolTipText(L10N.t("workspace.elements.folders.up_tooltip"));
 		upFolder.setEnabled(false);
 
-		addFolder.addActionListener(e -> {
-			String name = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.folders.add.message"),
-					L10N.t("workspace.elements.folders.add.title"), null, new OptionPaneValidatior() {
-						@Override public ValidationResult validate(JComponent component) {
-							String text = ((JTextField) component).getText();
-
-							if (!text.matches("[A-Za-z0-9._ -]+")) {
-								return new Validator.ValidationResult(ValidationResultType.ERROR,
-										L10N.t("workspace.elements.folders.add.error_letters"));
-							}
-
-							List<FolderElement> folderElements = mcreator.getWorkspace().getFoldersRoot()
-									.getRecursiveFolderChildren();
-
-							FolderElement tmpFolder = new FolderElement(text, currentFolder);
-
-							for (FolderElement folderElement : folderElements) {
-								if (folderElement.equals(tmpFolder)) {
-									return new Validator.ValidationResult(ValidationResultType.ERROR,
-											L10N.t("workspace.elements.folders.add.error_exists"));
-								}
-							}
-
-							return Validator.ValidationResult.PASSED;
-						}
-					});
-
-			if (name != null) {
-				currentFolder.addChild(new FolderElement(name, currentFolder));
-				mcreator.getWorkspace().markDirty();
-				reloadElements();
-			}
-		});
+		addFolder.addActionListener(e -> addNewFolder());
 
 		upFolder.addActionListener(e -> {
 			if (!currentFolder.isRoot()) {
@@ -494,14 +477,14 @@ import java.util.stream.Collectors;
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
 		filterPopup.addSeparator();
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"),
-				e -> search.setText("f:locked")));
+				e -> togglefilter("f:locked")));
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
-				e -> search.setText("f:err")));
+				e -> togglefilter("f:err")));
 		filterPopup.addSeparator();
 		for (ModElementType type : Arrays.stream(ModElementType.values())
 				.sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
-					e -> search.setText("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
+					e -> togglefilter("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
 
 		}
@@ -724,59 +707,7 @@ import java.util.stream.Collectors;
 
 		but3.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (but3.isEnabled()) {
-					if (list.getSelectedValue() != null) {
-						Object[] options = { "Yes", "No" };
-						int n = JOptionPane.showOptionDialog(mcreator,
-								L10N.t("workspace.elements.confirm_delete_message",
-										list.getSelectedValuesList().size()),
-								L10N.t("workspace.elements.confirm_delete_title"), JOptionPane.YES_NO_CANCEL_OPTION,
-								JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
-
-						if (n == 0) {
-							AtomicBoolean buildNeeded = new AtomicBoolean(false);
-							list.getSelectedValuesList().forEach(re -> {
-								if (re instanceof ModElement) {
-									if (!buildNeeded.get()) {
-										GeneratableElement ge = ((ModElement) re).getGeneratableElement();
-										if (ge != null && mcreator.getModElementManager()
-												.usesGeneratableElementJava(ge))
-											buildNeeded.set(true);
-									}
-
-									mcreator.getWorkspace().removeModElement(((ModElement) re));
-								} else if (re instanceof FolderElement) {
-									FolderElement folder = (FolderElement) re;
-
-									// re-assign mod-elements from deleted folder to parent folder
-									for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-										if (folder.equals(modElement.getFolderPath())) {
-											modElement.setParentFolder(folder.getParent());
-										}
-									}
-
-									// re-assign deleted recursive children folder's elements to parent folder too
-									for (FolderElement childFolder : folder.getRecursiveFolderChildren()) {
-										for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-											if (childFolder.equals(modElement.getFolderPath())) {
-												modElement.setParentFolder(folder.getParent());
-											}
-										}
-									}
-
-									// remove folder from the parent's child list
-									// all folder's child folders will be orphaned at this point too
-									// and thus removed
-									folder.getParent().removeChild(folder);
-								}
-							});
-							updateMods();
-
-							if (buildNeeded.get())
-								mcreator.actionRegistry.buildWorkspace.doAction();
-						}
-					}
-				}
+				deleteCurrentlySelectedModElement();
 			}
 		});
 		but3.setToolTipText(L10N.t("workspace.elements.delete.tooltip"));
@@ -858,6 +789,61 @@ import java.util.stream.Collectors;
 		updateElementListRenderer();
 
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
+
+		JMenuItem openElement = new JMenuItem(L10N.t("workspace.elements.list.edit.open"));
+		openElement.setFont(openElement.getFont().deriveFont(Font.BOLD));
+		openElement.addActionListener(e -> {
+			IElement selected = list.getSelectedValue();
+			if (selected instanceof FolderElement) {
+				switchFolder((FolderElement) selected);
+			} else
+				editCurrentlySelectedModElement((ModElement) selected, list, 0, 0);
+		});
+
+		deleteElement.setIcon(UIRES.get("16px.clear"));
+		deleteElement.addActionListener(e -> deleteCurrentlySelectedModElement());
+
+		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());
+
+		codeElement.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+			}
+		});
+		codeElement.addActionListener(e -> {
+			IElement selected = list.getSelectedValue();
+			if (selected instanceof ModElement) {
+				Point clickPos = list.getMousePosition();
+				editCurrentlySelectedModElementAsCode((ModElement) selected, list,
+						clickPos == null ? 0 : clickPos.x - 10, clickPos == null ? 0 : clickPos.y - 10);
+			}
+		});
+
+		lockElement.addActionListener(e -> lockCode());
+
+		idElement.addActionListener(e -> {
+			IElement mu = list.getSelectedValue();
+			if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
+				ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
+				if (modified != null)
+					mcreator.getWorkspace().updateModElement(modified);
+			}
+		});
+
+		JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
+		addElementFolder.setIcon(UIRES.get("laf.newFolder.gif"));
+		addElementFolder.addActionListener(e -> addNewFolder());
+
+		contextMenu.add(openElement);
+		contextMenu.add(codeElement);
+		contextMenu.addSeparator();
+		contextMenu.add(addElementFolder);
+		contextMenu.addSeparator();
+		contextMenu.add(deleteElement);
+		contextMenu.addSeparator();
+		contextMenu.add(duplicateElement);
+		contextMenu.add(lockElement);
+		contextMenu.add(idElement);
 	}
 
 	public void switchFolder(FolderElement switchTo) {
@@ -870,6 +856,15 @@ import java.util.stream.Collectors;
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
 		upFolder.setEnabled(!currentFolder.isRoot());
+	}
+
+	private void togglefilter(String filter) {
+		String currentSearchText = search.getText().trim();
+		if (currentSearchText.contains(filter)) {
+			search.setText(currentSearchText.replace(filter, "").replaceAll("\\s{2,}", " ").trim());
+		} else {
+			search.setText(filter + " " + currentSearchText);
+		}
 	}
 
 	private void resort() {
@@ -907,11 +902,13 @@ import java.util.stream.Collectors;
 
 	public void disableRemoving() {
 		but3.setEnabled(false);
+		deleteElement.setEnabled(false);
 		but3.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 	}
 
 	public void enableRemoving() {
 		but3.setEnabled(true);
+		deleteElement.setEnabled(true);
 		but3.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
@@ -1094,6 +1091,93 @@ import java.util.stream.Collectors;
 			codeDropdown.show(component, x, y);
 		} else if (modElementFiles.size() == 1) {
 			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0));
+		}
+	}
+
+	private void deleteCurrentlySelectedModElement() {
+		if (but3.isEnabled()) {
+			if (list.getSelectedValue() != null) {
+				int n = JOptionPane.showConfirmDialog(mcreator,
+						L10N.t("workspace.elements.confirm_delete_message", list.getSelectedValuesList().size()),
+						L10N.t("workspace.elements.confirm_delete_title"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null);
+
+				if (n == 0) {
+					AtomicBoolean buildNeeded = new AtomicBoolean(false);
+					list.getSelectedValuesList().forEach(re -> {
+						if (re instanceof ModElement) {
+							if (!buildNeeded.get()) {
+								GeneratableElement ge = ((ModElement) re).getGeneratableElement();
+								if (ge != null && mcreator.getModElementManager().usesGeneratableElementJava(ge))
+									buildNeeded.set(true);
+							}
+
+							mcreator.getWorkspace().removeModElement(((ModElement) re));
+						} else if (re instanceof FolderElement) {
+							FolderElement folder = (FolderElement) re;
+
+							// re-assign mod-elements from deleted folder to parent folder
+							for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+								if (folder.equals(modElement.getFolderPath())) {
+									modElement.setParentFolder(folder.getParent());
+								}
+							}
+
+							// re-assign deleted recursive children folder's elements to parent folder too
+							for (FolderElement childFolder : folder.getRecursiveFolderChildren()) {
+								for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+									if (childFolder.equals(modElement.getFolderPath())) {
+										modElement.setParentFolder(folder.getParent());
+									}
+								}
+							}
+
+							// remove folder from the parent's child list
+							// all folder's child folders will be orphaned at this point too
+							// and thus removed
+							folder.getParent().removeChild(folder);
+						}
+					});
+					updateMods();
+
+					if (buildNeeded.get())
+						mcreator.actionRegistry.buildWorkspace.doAction();
+				}
+			}
+		}
+	}
+
+	private void addNewFolder() {
+		String name = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.folders.add.message"),
+				L10N.t("workspace.elements.folders.add.title"), null, new OptionPaneValidatior() {
+					@Override public ValidationResult validate(JComponent component) {
+						String folderName = ((JTextField) component).getText();
+
+						if (!folderName.matches("[A-Za-z0-9._ -]+")) {
+							return new Validator.ValidationResult(ValidationResultType.ERROR,
+									L10N.t("workspace.elements.folders.add.error_letters"));
+						}
+
+						List<FolderElement> folderElements = mcreator.getWorkspace().getFoldersRoot()
+								.getRecursiveFolderChildren();
+
+						FolderElement tmpFolder = new FolderElement(folderName, currentFolder);
+
+						for (FolderElement folderElement : folderElements) {
+							if (folderElement.equals(tmpFolder)) {
+								return new Validator.ValidationResult(ValidationResultType.ERROR,
+										L10N.t("workspace.elements.folders.add.error_exists"));
+							}
+						}
+
+						return Validator.ValidationResult.PASSED;
+					}
+				});
+
+		if (name != null) {
+			currentFolder.addChild(new FolderElement(name, currentFolder));
+			mcreator.getWorkspace().markDirty();
+			reloadElements();
 		}
 	}
 

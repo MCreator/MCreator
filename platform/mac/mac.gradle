@@ -17,15 +17,16 @@ task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) 
         from file('platform/mac/mcreator') rename('mcreator', 'mcreatordos')
         from file('LICENSE.txt')
     }
-    into('MacOS/plugins') {from 'build/plugins/'}
+    into('MacOS/plugins') { from 'build/plugins/' }
     into('MacOS/license') { with copySpec { from 'license' } }
     into('MacOS/lib') {
         with copySpec {
             from 'build/libs'
-            from configurations.runtimeClasspath
+            from configurations.export
+            from configurations.mac64
         }
     }
-    into('MacOS/jdk/Contents/Home') { with copySpec { from 'jdk/jdk8_mac_64/' } exclude "jre/lib/tools.jar" }
+    into('MacOS/jdk/Contents/Home') { with copySpec { from 'jdk/jdk11_mac_64/' } exclude "jre/lib/tools.jar" }
     doLast {
         convertCRLF(file(exportPath + '/Info.plistdos'), file(exportPath + '/Info.plist'))
         convertCRLF(file(exportPath + '/MacOS/mcreatordos'), file(exportPath + '/MacOS/mcreator'))
@@ -36,7 +37,13 @@ task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) 
 
 task dmgMac64(dependsOn: [downloadMKISOFS, exportMac64]) {
     doLast {
-        ant.exec(executable: projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs', failonerror: true) {
+        def mkisofs_binary = '';
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            mkisofs_binary = projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs';
+        } else {
+            mkisofs_binary = 'mkisofs';
+        }
+        ant.exec(executable: mkisofs_binary, failonerror: true) {
             arg(value: '-r')
             arg(value: '-D')
             arg(value: '-o')
@@ -56,9 +63,7 @@ static void convertCRLF(File input, File out) {
 }
 
 task exportMac(type: DefaultTask, group: 'export') {
-    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        dependsOn dmgMac64
-    }
+    dependsOn dmgMac64
 
     doLast {
         delete 'build/export/mac64'
