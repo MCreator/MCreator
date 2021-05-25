@@ -1,6 +1,6 @@
 _default: Effects.SPEED
 _mcreator_prefix: "CUSTOM:"
-_mcreator_map_template: "@NAMEPotion.effect"
+_mcreator_map_template: "@NAMEPotionEffect.potion"
 SPEED: Effects.SPEED
 SLOWNESS: Effects.SLOWNESS
 HASTE: Effects.HASTE
