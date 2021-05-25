@@ -19,7 +19,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.element.types.PotionItem;
+import net.mcreator.element.types.Potion;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -36,7 +36,7 @@ import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 
-public class PotionItemGUI extends ModElementGUI<PotionItem> {
+public class PotionGUI extends ModElementGUI<Potion> {
 
 	private final VTextField potionName = new VTextField(40);
 	private final VTextField splashName = new VTextField(40);
@@ -48,7 +48,7 @@ public class PotionItemGUI extends ModElementGUI<PotionItem> {
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
-	public PotionItemGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
+	public PotionGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
@@ -61,27 +61,27 @@ public class PotionItemGUI extends ModElementGUI<PotionItem> {
 		JPanel northPanel = new JPanel(new GridLayout(4, 2, 0, 2));
 		northPanel.setOpaque(false);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potionitem/display_name"),
-				L10N.label("elementgui.potionitem.potion_name")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/display_name"),
+				L10N.label("elementgui.potion.potion_name")));
 		northPanel.add(potionName);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potionitem/display_name"),
-				L10N.label("elementgui.potionitem.splash_name")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/display_name"),
+				L10N.label("elementgui.potion.splash_name")));
 		northPanel.add(splashName);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potionitem/display_name"),
-				L10N.label("elementgui.potionitem.lingering_name")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/display_name"),
+				L10N.label("elementgui.potion.lingering_name")));
 		northPanel.add(lingeringName);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potionitem/display_name"),
-				L10N.label("elementgui.potionitem.arrow_name")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/display_name"),
+				L10N.label("elementgui.potion.arrow_name")));
 		northPanel.add(arrowName);
 
 		JPanel mainEditor = new JPanel(new GridLayout());
 
 		JComponent component = PanelUtils.northAndCenterElement(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potionitem/effects"),
-						L10N.label("elementgui.potionitem.effects")), effectList);
+				.wrapWithHelpButton(this.withEntry("potioneffect/effects"),
+						L10N.label("elementgui.potion.effects")), effectList);
 
 		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -89,23 +89,23 @@ public class PotionItemGUI extends ModElementGUI<PotionItem> {
 
 		mainEditor.setOpaque(false);
 
-		potionName.setValidator(
-				new TextFieldValidator(potionName, L10N.t("elementgui.potionitem.error_potion_needs_display_name")));
+		potionName.setValidator(new TextFieldValidator(potionName,
+				L10N.t("elementgui.potion.error_potion_needs_display_name")));
 		potionName.enableRealtimeValidation();
 		page1group.addValidationElement(potionName);
 
-		splashName.setValidator(
-				new TextFieldValidator(splashName, L10N.t("elementgui.potionitem.error_potion_needs_display_name")));
+		splashName.setValidator(new TextFieldValidator(splashName,
+				L10N.t("elementgui.potion.error_potion_needs_display_name")));
 		splashName.enableRealtimeValidation();
 		page1group.addValidationElement(splashName);
 
-		lingeringName.setValidator(
-				new TextFieldValidator(lingeringName, L10N.t("elementgui.potionitem.error_potion_needs_display_name")));
+		lingeringName.setValidator(new TextFieldValidator(lingeringName,
+				L10N.t("elementgui.potion.error_potion_needs_display_name")));
 		lingeringName.enableRealtimeValidation();
 		page1group.addValidationElement(lingeringName);
 
-		arrowName.setValidator(
-				new TextFieldValidator(arrowName, L10N.t("elementgui.potionitem.error_potion_needs_display_name")));
+		arrowName.setValidator(new TextFieldValidator(arrowName,
+				L10N.t("elementgui.potion.error_potion_needs_display_name")));
 		arrowName.enableRealtimeValidation();
 		page1group.addValidationElement(arrowName);
 
@@ -133,7 +133,7 @@ public class PotionItemGUI extends ModElementGUI<PotionItem> {
 		return new AggregatedValidationResult.PASS();
 	}
 
-	@Override protected void openInEditingMode(PotionItem potion) {
+	@Override protected void openInEditingMode(Potion potion) {
 		potionName.setText(potion.potionName);
 		splashName.setText(potion.splashName);
 		lingeringName.setText(potion.lingeringName);
@@ -141,8 +141,8 @@ public class PotionItemGUI extends ModElementGUI<PotionItem> {
 		effectList.setEffects(potion.effects);
 	}
 
-	@Override public PotionItem getElementFromGUI() {
-		PotionItem potion = new PotionItem(modElement);
+	@Override public Potion getElementFromGUI() {
+		Potion potion = new Potion(modElement);
 		potion.potionName = potionName.getText();
 		potion.splashName = splashName.getText();
 		potion.lingeringName = lingeringName.getText();

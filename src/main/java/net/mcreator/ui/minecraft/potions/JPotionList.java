@@ -19,7 +19,7 @@
 
 package net.mcreator.ui.minecraft.potions;
 
-import net.mcreator.element.types.PotionItem;
+import net.mcreator.element.types.Potion;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
@@ -51,7 +51,7 @@ public class JPotionList extends JPanel {
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
-		add.setText(L10N.t("elementgui.potionitem.add_entry"));
+		add.setText(L10N.t("elementgui.potion.add_entry"));
 		topbar.add(add);
 
 		add("North", topbar);
@@ -64,7 +64,7 @@ public class JPotionList extends JPanel {
 
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.potionitem.effects"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.potion.effects"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 	}
 
@@ -74,11 +74,11 @@ public class JPotionList extends JPanel {
 		add.setEnabled(false);
 	}
 
-	public List<PotionItem.CustomEffectEntry> getEffects() {
+	public List<Potion.CustomEffectEntry> getEffects() {
 		return entryList.stream().map(JPotionListEntry::getEntry).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
-	public void setEffects(List<PotionItem.CustomEffectEntry> pool) {
+	public void setEffects(List<Potion.CustomEffectEntry> pool) {
 		pool.forEach(e -> new JPotionListEntry(mcreator, entries, entryList).setEntry(e));
 	}
 }

@@ -20,7 +20,7 @@
 package net.mcreator.ui.minecraft.potions;
 
 import net.mcreator.element.parts.EffectEntry;
-import net.mcreator.element.types.PotionItem;
+import net.mcreator.element.types.Potion;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -54,19 +54,19 @@ public class JPotionListEntry extends JPanel {
 
 		ElementUtil.loadAllPotionEffects(workspace).forEach(e -> effect.addItem(e.getName()));
 
-		add(L10N.label("elementgui.potionitem.effect"));
+		add(L10N.label("elementgui.potion.effect"));
 		add(effect);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potionitem/duration"),
-				L10N.label("elementgui.potionitem.duration")));
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potioneffect/duration"),
+				L10N.label("elementgui.potion.duration")));
 		add(duration);
 
 		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potionitem/amplifier"),
-				L10N.label("elementgui.potionitem.amplifier")));
+				L10N.label("elementgui.potion.amplifier")));
 		add(amplifier);
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
-		remove.setText(L10N.t("elementgui.potionitem.remove_entry"));
+		remove.setText(L10N.t("elementgui.potion.remove_entry"));
 		remove.addActionListener(e -> {
 			entryList.remove(this);
 			parent.remove(container);
@@ -79,15 +79,15 @@ public class JPotionListEntry extends JPanel {
 		parent.repaint();
 	}
 
-	public PotionItem.CustomEffectEntry getEntry() {
-		PotionItem.CustomEffectEntry entry = new PotionItem.CustomEffectEntry();
+	public Potion.CustomEffectEntry getEntry() {
+		Potion.CustomEffectEntry entry = new Potion.CustomEffectEntry();
 		entry.effect = new EffectEntry(workspace, (String) effect.getSelectedItem());
 		entry.duration = (int) duration.getValue();
 		entry.amplifier = (int) amplifier.getValue();
 		return entry;
 	}
 
-	public void setEntry(PotionItem.CustomEffectEntry e) {
+	public void setEntry(Potion.CustomEffectEntry e) {
 		effect.setSelectedItem(e.effect.getUnmappedValue());
 		duration.setValue(e.duration);
 		amplifier.setValue(e.amplifier);

@@ -51,7 +51,7 @@ public final class ModElementTypeRegistry {
 		put(ModElementType.GUI, new ModTypeRegistration<>('g', 19, CustomGUIGUI::new, GUI.class));
 		put(ModElementType.OVERLAY, new ModTypeRegistration<>('v', 9, OverlayGUI::new, Overlay.class));
 		put(ModElementType.PROCEDURE, new ModTypeRegistration<>('p', 17, ProcedureGUI::new, Procedure.class));
-		put(ModElementType.POTIONEFFECT, new ModTypeRegistration<>('z', 32, PotionEffectGUI::new, PotionEffect.class));
+		put(ModElementType.POTION, new ModTypeRegistration<>('z', 23, PotionGUI::new, Potion.class));
 		put(ModElementType.ENCHANTMENT, new ModTypeRegistration<>('m', 29, EnchantmentGUI::new, Enchantment.class));
 		put(ModElementType.CODE, new ModTypeRegistration<>(null, 24, CustomElementGUI::new, CustomElement.class));
 		put(ModElementType.TAG, new ModTypeRegistration<>('j', 25, TagGUI::new, Tag.class));
@@ -61,7 +61,7 @@ public final class ModElementTypeRegistry {
 		put(ModElementType.PAINTING, new ModTypeRegistration<>(null, 30, PaintingGUI::new, Painting.class));
 		put(ModElementType.PARTICLE, new ModTypeRegistration<>(null, 31, ParticleGUI::new, Particle.class));
 		put(ModElementType.GAMERULE, new ModTypeRegistration<>(null, 32, GameRuleGUI::new, GameRule.class));
-		put(ModElementType.POTIONITEM, new ModTypeRegistration<>(null, 23, PotionItemGUI::new, PotionItem.class));
+		put(ModElementType.POTIONEFFECT, new ModTypeRegistration<>(null, 33, PotionEffectGUI::new, PotionEffect.class));
 	}};
 
 	public static class ModTypeRegistration<GE extends GeneratableElement> {

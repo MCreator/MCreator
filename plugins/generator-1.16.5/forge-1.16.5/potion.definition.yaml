@@ -1,5 +1,5 @@
 templates:
-  - template: potionitem.java.ftl
+  - template: potion.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAME.java"
 
 localizationkeys:

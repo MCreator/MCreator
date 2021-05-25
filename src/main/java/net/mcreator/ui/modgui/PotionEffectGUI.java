@@ -58,9 +58,9 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	private final JColor color = new JColor(mcreator);
 	private final VComboBox<String> icon = new SearchableComboBox<>();
 
-	private final JCheckBox isInstant = L10N.checkbox("elementgui.potion.is_instant");
-	private final JCheckBox isBad = L10N.checkbox("elementgui.potion.is_bad");
-	private final JCheckBox isBenefitical = L10N.checkbox("elementgui.potion.is_benefitical");
+	private final JCheckBox isInstant = L10N.checkbox("elementgui.potioneffect.is_instant");
+	private final JCheckBox isBad = L10N.checkbox("elementgui.potioneffect.is_bad");
+	private final JCheckBox isBenefitical = L10N.checkbox("elementgui.potioneffect.is_benefitical");
 	private final JCheckBox renderStatusInInventory = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox renderStatusInHUD = L10N.checkbox("elementgui.common.enable");
 
@@ -77,14 +77,14 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	}
 
 	@Override protected void initGUI() {
-		onStarted = new ProcedureSelector(this.withEntry("potion/when_potion_applied"), mcreator,
-				L10N.t("elementgui.potion.event_potion_applied"),
+		onStarted = new ProcedureSelector(this.withEntry("potioneffect/when_potion_applied"), mcreator,
+				L10N.t("elementgui.potioneffect.event_potion_applied"),
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
-		onActiveTick = new ProcedureSelector(this.withEntry("potion/when_active_tick"), mcreator,
-				L10N.t("elementgui.potion.event_potion_tick"),
+		onActiveTick = new ProcedureSelector(this.withEntry("potioneffect/when_active_tick"), mcreator,
+				L10N.t("elementgui.potioneffect.event_potion_tick"),
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
-		onExpired = new ProcedureSelector(this.withEntry("potion/when_potion_expires"), mcreator,
-				L10N.t("elementgui.potion.event_potion_expires"),
+		onExpired = new ProcedureSelector(this.withEntry("potioneffect/when_potion_expires"), mcreator,
+				L10N.t("elementgui.potioneffect.event_potion_expires"),
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
 
 		renderStatusInInventory.setSelected(true);
@@ -107,12 +107,12 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		renderStatusInInventory.setOpaque(false);
 		renderStatusInHUD.setOpaque(false);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/effect_display_name"),
-				L10N.label("elementgui.potion.effect_display_name")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/effect_display_name"),
+				L10N.label("elementgui.potioneffect.effect_display_name")));
 		selp.add(effectName);
 
 		JButton importicontexture = new JButton(UIRES.get("18px.add"));
-		importicontexture.setToolTipText(L10N.t("elementgui.potion.import_potion_icon"));
+		importicontexture.setToolTipText(L10N.t("elementgui.potioneffect.import_icon"));
 		importicontexture.setOpaque(false);
 		importicontexture.addActionListener(e -> {
 			TextureImportDialogs.importOtherTextures(mcreator);
@@ -121,29 +121,32 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> icon.addItem(el.getName()));
 		});
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/color"), L10N.label("elementgui.potion.color")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/color"),
+				L10N.label("elementgui.potioneffect.color")));
 		selp.add(color);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/icon"), L10N.label("elementgui.potion.icon")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/icon"),
+				L10N.label("elementgui.potioneffect.icon")));
 		selp.add(PanelUtils.centerAndEastElement(icon, importicontexture));
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/instant"), L10N.label("elementgui.potion.instant")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/instant"),
+				L10N.label("elementgui.potioneffect.instant")));
 		selp.add(isInstant);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/bad"), L10N.label("elementgui.potion.bad")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/bad"),
+				L10N.label("elementgui.potioneffect.bad")));
 		selp.add(isBad);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/benefitical"), L10N.label("elementgui.potion.benefitical")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/benefitical"),
+				L10N.label("elementgui.potioneffect.benefitical")));
 		selp.add(isBenefitical);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/render_in_inventory"),
-				L10N.label("elementgui.potion.render_status_inventory")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/render_in_inventory"),
+				L10N.label("elementgui.potioneffect.render_status_inventory")));
 		selp.add(renderStatusInInventory);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/render_in_hud"),
-				L10N.label("elementgui.potion.render_status_hud")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/render_in_hud"),
+				L10N.label("elementgui.potioneffect.render_status_hud")));
 		selp.add(renderStatusInHUD);
 
 		selp.setOpaque(false);
@@ -167,12 +170,12 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		icon.setValidator(() -> {
 			if (icon.getSelectedItem() == null || icon.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.potion.error_potion_needs_icon"));
+						L10N.t("elementgui.potioneffect.error_effect_needs_icon"));
 			return Validator.ValidationResult.PASSED;
 		});
 
-		effectName.setValidator(
-				new TextFieldValidator(effectName, L10N.t("elementgui.potion.error_potion_effect_needs_display_name")));
+		effectName.setValidator(new TextFieldValidator(effectName,
+				L10N.t("elementgui.potioneffect.error_effect_needs_display_name")));
 		effectName.enableRealtimeValidation();
 		page1group.addValidationElement(effectName);
 

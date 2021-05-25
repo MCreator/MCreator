@@ -26,7 +26,7 @@ import net.mcreator.workspace.elements.ModElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PotionItem extends GeneratableElement {
+public class Potion extends GeneratableElement {
 
 	public String potionName;
 	public String splashName;
@@ -34,7 +34,7 @@ public class PotionItem extends GeneratableElement {
 	public String arrowName;
 	public List<CustomEffectEntry> effects;
 
-	public PotionItem(ModElement element) {
+	public Potion(ModElement element) {
 		super(element);
 		effects = new ArrayList<>();
 	}
