@@ -1,0 +1,1 @@
+This parameter defines how strong the inlined effect is.

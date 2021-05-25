@@ -17,6 +17,7 @@ mod_data_root: "@WORKSPACEROOT/src/main/@modid_behaviourpack"
 # specific resource folders
 sounds_dir: "@RESROOT/sounds"
 other_textures_dir: "@MODASSETSROOT/textures"
+mob_effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
 block_textures_dir: "@MODASSETSROOT/textures/blocks"
 item_textures_dir: "@MODASSETSROOT/textures/items"
 

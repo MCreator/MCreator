@@ -57,11 +57,11 @@ public class JPotionListEntry extends JPanel {
 		add(L10N.label("elementgui.potion.effect"));
 		add(effect);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potioneffect/duration"),
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potion/duration"),
 				L10N.label("elementgui.potion.duration")));
 		add(duration);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potionitem/amplifier"),
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potion/amplifier"),
 				L10N.label("elementgui.potion.amplifier")));
 		add(amplifier);
 

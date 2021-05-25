@@ -108,7 +108,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		renderStatusInHUD.setOpaque(false);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/effect_display_name"),
-				L10N.label("elementgui.potioneffect.effect_display_name")));
+				L10N.label("elementgui.potioneffect.display_name")));
 		selp.add(effectName);
 
 		JButton importicontexture = new JButton(UIRES.get("18px.add"));

@@ -21,8 +21,11 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.EffectEntry;
+import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +47,9 @@ public class Potion extends GeneratableElement {
 		public EffectEntry effect;
 		public int duration;
 		public int amplifier;
+	}
 
+	@Override public BufferedImage generateModElementPicture() {
+		return MinecraftImageGenerator.Preview.generatePotionIcon(Color.red);
 	}
 }

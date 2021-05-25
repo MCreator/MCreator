@@ -1,0 +1,1 @@
+This parameter defines how long the inlined effect lasts.

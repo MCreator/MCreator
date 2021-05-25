@@ -80,7 +80,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		JPanel mainEditor = new JPanel(new GridLayout());
 
 		JComponent component = PanelUtils.northAndCenterElement(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potioneffect/effects"),
+				.wrapWithHelpButton(this.withEntry("potion/effects"),
 						L10N.label("elementgui.potion.effects")), effectList);
 
 		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
