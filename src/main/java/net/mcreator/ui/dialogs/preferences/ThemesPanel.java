@@ -36,7 +36,7 @@ public class ThemesPanel {
 	private final JComboBox<String> themeIDs;
 
 	public ThemesPanel(PreferencesDialog dialog) {
-		dialog.model.addElement("Themes");
+		dialog.model.addElement(L10N.t("dialog.preferences.page_themes"));
 		JList<Theme> themes = new JList<>(tmodel);
 		themes.setCellRenderer(new ThemesListCellRenderer());
 
@@ -63,7 +63,7 @@ public class ThemesPanel {
 				PanelUtils.northAndCenterElement(L10N.label("dialog.preferences.themes.list"), new JScrollPane(themes)),
 				5, 5));
 
-		dialog.preferences.add(sectionPanel, "Themes");
+		dialog.preferences.add(sectionPanel, L10N.t("dialog.preferences.page_themes"));
 	}
 
 	private void reloadThemesList() {
@@ -87,16 +87,18 @@ public class ThemesPanel {
 
 			String text = "<html>" + value.getName();
 			if (!value.getDescription().isEmpty())
-				text += "<br><i>" + value.getDescription() + "</i>";
-			text += "<br><small>ID: " + value.getID();
+				text += "<br><small>" + value.getDescription();
+			text += "<br>Theme ID: " + value.getID();
 			if (value.getVersion() != null)
 				text += ", version: " + value.getVersion();
 			if (value.getCredits() != null)
 				text += ", credits: " + value.getCredits();
+
 			setText(text);
 			setIcon(value.getIcon());
 
 			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+
 			return this;
 		}
 	}

@@ -42,7 +42,7 @@ class PluginsPanel {
 	private final DefaultListModel<Plugin> tmodel = new DefaultListModel<>();
 
 	PluginsPanel(PreferencesDialog preferencesDialog) {
-		preferencesDialog.model.addElement("Manage plugins");
+		preferencesDialog.model.addElement(L10N.t("dialog.preferences.page_plugins"));
 
 		JList<Plugin> plugins = new JList<>(tmodel);
 		plugins.setCellRenderer(new PluginsListCellRenderer());
@@ -81,7 +81,7 @@ class PluginsPanel {
 
 		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, new JScrollPane(plugins), 5, 5));
 
-		preferencesDialog.preferences.add(sectionPanel, "Manage plugins");
+		preferencesDialog.preferences.add(sectionPanel, L10N.t("dialog.preferences.page_plugins"));
 	}
 
 	private void reloadPluginList() {

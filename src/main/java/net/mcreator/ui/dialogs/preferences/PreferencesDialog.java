@@ -50,7 +50,7 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	DefaultListModel<String> model = new DefaultListModel<>();
 	JPanel preferences = new JPanel();
-	private final ThemesPanel themes;
+	private ThemesPanel themes;
 
 	private final JList<String> sections = new JList<>(model);
 	private final CardLayout preferencesLayout = new CardLayout();
@@ -133,7 +133,6 @@ public class PreferencesDialog extends MCreatorDialog {
 		sections.addListSelectionListener(e -> preferencesLayout.show(preferences, sections.getSelectedValue()));
 
 		loadSections();
-		themes = new ThemesPanel(this);
 
 		if (selectedTab != null) {
 			for (int i = 0; i < sections.getModel().getSize(); i++) {
@@ -170,7 +169,11 @@ public class PreferencesDialog extends MCreatorDialog {
 		}
 		sections.setSelectedIndex(0);
 
+		new PluginsPanel(this);
+
+		themes = new ThemesPanel(this);
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ui_backgrounds"), "backgrounds", "png");
+
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_procedure_templates"), "templates/ptpl", "ptpl");
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ai_builder_templates"), "templates/aitpl",
 				"aitpl");
@@ -178,8 +181,6 @@ public class PreferencesDialog extends MCreatorDialog {
 				"templates/textures/texturemaker", "png");
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_armor_templates"), "templates/textures/armormaker",
 				"png");
-		new PluginsPanel(this);
-
 	}
 
 	private void createPreferencesPanel(Field sectionField) {
@@ -230,7 +231,9 @@ public class PreferencesDialog extends MCreatorDialog {
 				LOG.info("Reflection error: " + e.getMessage());
 			}
 		}
+
 		data.hidden.uiTheme = themes.getSelectedTheme();
+
 		PreferencesManager.storePreferences(data);
 	}
 
