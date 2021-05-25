@@ -20,7 +20,8 @@ package net.mcreator.preferences;
 
 import net.mcreator.io.OS;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.AbstractMCreatorTheme;
+import net.mcreator.themes.ThemeLoader;
+import net.mcreator.ui.laf.MCreatorTheme;
 
 import java.awt.*;
 import java.io.File;
@@ -40,7 +41,7 @@ public class PreferencesData {
 
 	public static class UISettings {
 
-		@PreferencesEntry public Color interfaceAccentColor = AbstractMCreatorTheme.MAIN_TINT_DEFAULT;
+		@PreferencesEntry public Color interfaceAccentColor = MCreatorTheme.MAIN_TINT_DEFAULT;
 
 		@PreferencesEntry public Locale language = L10N.DEFAULT_LOCALE;
 
@@ -48,8 +49,6 @@ public class PreferencesData {
 
 		@PreferencesEntry(arrayData = { "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb", "lcd_vbgr" })
 		public String textAntialiasingType = "on";
-
-		@PreferencesEntry(arrayData = { "Dark theme", "Light theme" }) public String interfaceTheme = "Dark theme";
 
 		@PreferencesEntry public boolean expandSectionsByDefault = false;
 		@PreferencesEntry public boolean use2DAcceleration = false;
@@ -131,6 +130,7 @@ public class PreferencesData {
 		public boolean workspaceSortAscending = true;
 		public WorkspaceSortType workspaceSortType = WorkspaceSortType.CREATED;
 		public File java_home = null;
+		public String uiTheme = "default_dark";
 	}
 
 	public enum WorkspaceSortType {

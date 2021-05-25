@@ -24,7 +24,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.SoundElementDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.AbstractMCreatorTheme;
+import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
@@ -249,7 +249,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 			namepan.setOpaque(false);
 
 			JLabel name = new JLabel(ma.getName());
-			name.setFont(AbstractMCreatorTheme.light_font.deriveFont(20.0f));
+			name.setFont(MCreatorTheme.light_font.deriveFont(20.0f));
 			namepan.add("North", name);
 
 			JLabel name2 = L10N.label("workspace.sounds.files", String.join(", ", ma.getFiles()));
