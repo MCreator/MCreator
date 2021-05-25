@@ -72,13 +72,40 @@ import net.minecraft.block.material.Material;
 				.density(${data.density})
 				.viscosity(${data.viscosity})
 				<#if data.isGas>.gaseous()</#if>)
+        .explosionResistance(${data.resistance}f)
 				<#if data.generateBucket>.bucket(() -> bucket)</#if>
 				.block(() -> block);
 
 		still = (FlowingFluid) new ForgeFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
 		flowing = (FlowingFluid) new ForgeFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
 
-		elements.blocks.add(() -> new FlowingFluidBlock(still, Block.Properties.create(Material.${data.type})){
+		elements.blocks.add(() -> new FlowingFluidBlock(still,
+			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
+			Block.Properties.create(Material.${data.type}, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
+			<#else>
+			Block.Properties.create(Material.${data.type})
+			</#if>
+			.hardnessAndResistance(${data.resistance}f)
+			.lightValue(${data.luminance})
+			){
+			<#if data.flammability != 0>
+			@Override public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+				return ${data.flammability};
+			}
+			</#if>
+
+			<#if data.fireSpreadSpeed != 0>
+			@Override public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+				return ${data.fireSpreadSpeed};
+			}
+			</#if>
+
+			<#if data.emissiveRendering>
+			@OnlyIn(Dist.CLIENT) @Override public boolean isEmissiveRendering(BlockState blockState) {
+				return true;
+			}
+			</#if>
+
 			<#if hasProcedure(data.onBlockAdded)>
 			@Override public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
 				super.onBlockAdded(state, world, pos, oldState, moving);
@@ -117,6 +144,28 @@ import net.minecraft.block.material.Material;
 				int y = pos.getY();
 				int z = pos.getZ();
     			<@procedureOBJToCode data.onEntityCollides/>
+			}
+			</#if>
+
+			<#if hasProcedure(data.onRandomUpdateEvent)>
+			@OnlyIn(Dist.CLIENT) @Override
+			public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
+				super.animateTick(state, world, pos, random);
+				PlayerEntity entity = Minecraft.getInstance().player;
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				<@procedureOBJToCode data.onRandomUpdateEvent/>
+			}
+			</#if>
+
+			<#if hasProcedure(data.onDestroyedByExplosion)>
+			@Override public void onExplosionDestroy(World world, BlockPos pos, Explosion e) {
+				super.onExplosionDestroy(world, pos, e);
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				<@procedureOBJToCode data.onDestroyedByExplosion/>
 			}
 			</#if>
 		}.setRegistryName("${registryname}"));
