@@ -49,10 +49,14 @@ import java.util.stream.Collectors;
 
 public class WorkspacePanelTextures extends JPanel implements IReloadableFilterable {
 
-	private FilterModel dmlb = new FilterModel();
-	private FilterModel dmli = new FilterModel();
-	private FilterModel dmla = new FilterModel();
-	private FilterModel dmlo = new FilterModel();
+	private FilterModel fmb = new FilterModel();
+	private FilterModel fmi = new FilterModel();
+	private FilterModel fmen = new FilterModel();
+	private FilterModel fma = new FilterModel();
+	private FilterModel fmg = new FilterModel();
+	private FilterModel fmef = new FilterModel();
+	private FilterModel fmp = new FilterModel();
+	private FilterModel fmo = new FilterModel();
 
 	private final ListGroup<File> listGroup = new ListGroup<>();
 
@@ -60,7 +64,11 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	private final JComponentWithList<File> listb;
 	private final JComponentWithList<File> listi;
+	private final JComponentWithList<File> listen;
 	private final JComponentWithList<File> lista;
+	private final JComponentWithList<File> listg;
+	private final JComponentWithList<File> listef;
+	private final JComponentWithList<File> listp;
 	private final JComponentWithList<File> listo;
 
 	private final MouseAdapter mouseAdapter;
@@ -83,14 +91,22 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		JPanel respan = new JPanel(new GridBagLayout());
 		respan.setLayout(new BoxLayout(respan, BoxLayout.Y_AXIS));
 
-		listb = createListElement(dmlb, L10N.t("workspace.textures.category_blocks"));
-		listi = createListElement(dmli, L10N.t("workspace.textures.category_items"));
-		lista = createListElement(dmla, L10N.t("workspace.textures.category_armor"));
-		listo = createListElement(dmlo, L10N.t("workspace.textures.category_other"));
+		listb = createListElement(fmb, L10N.t("workspace.textures.category_blocks"));
+		listi = createListElement(fmi, L10N.t("workspace.textures.category_items"));
+		listen = createListElement(fmen, L10N.t("workspace.textures.category_entities"));
+		lista = createListElement(fma, L10N.t("workspace.textures.category_armor"));
+		listg = createListElement(fmg, L10N.t("workspace.textures.category_guis"));
+		listef = createListElement(fmef, L10N.t("workspace.textures.category_effects"));
+		listp = createListElement(fmp, L10N.t("workspace.textures.category_particles"));
+		listo = createListElement(fmo, L10N.t("workspace.textures.category_other"));
 
 		respan.add(listb.getComponent());
 		respan.add(listi.getComponent());
+		respan.add(listen.getComponent());
 		respan.add(lista.getComponent());
+		respan.add(listg.getComponent());
+		respan.add(listef.getComponent());
+		respan.add(listp.getComponent());
 		respan.add(listo.getComponent());
 
 		respan.setOpaque(false);
@@ -259,30 +275,51 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		new Thread(() -> {
 			List<File> selectedb = listb.getList().getSelectedValuesList();
 			List<File> selectedi = listi.getList().getSelectedValuesList();
+			List<File> selecteden = listen.getList().getSelectedValuesList();
 			List<File> selecteda = lista.getList().getSelectedValuesList();
+			List<File> selectedg = listg.getList().getSelectedValuesList();
+			List<File> selectedef = listef.getList().getSelectedValuesList();
+			List<File> selectedp = listp.getList().getSelectedValuesList();
 			List<File> selectedo = listo.getList().getSelectedValuesList();
 
 			FilterModel newdmlb = new FilterModel();
 			FilterModel newdmli = new FilterModel();
+			FilterModel newdmlen = new FilterModel();
 			FilterModel newdmla = new FilterModel();
+			FilterModel newdmlg = new FilterModel();
+			FilterModel newdmlef = new FilterModel();
+			FilterModel newdmlp = new FilterModel();
 			FilterModel newdmlo = new FilterModel();
 
 			workspacePanel.getMcreator().getFolderManager().getBlockTexturesList().forEach(newdmlb::addElement);
 			workspacePanel.getMcreator().getFolderManager().getItemTexturesList().forEach(newdmli::addElement);
+			workspacePanel.getMcreator().getFolderManager().getEntityTexturesList().forEach(newdmlen::addElement);
 			workspacePanel.getMcreator().getFolderManager().getArmorTexturesList().forEach(newdmla::addElement);
+			workspacePanel.getMcreator().getFolderManager().getGUITexturesList().forEach(newdmlg::addElement);
+			workspacePanel.getMcreator().getFolderManager().getEffectTexturesList().forEach(newdmlef::addElement);
+			workspacePanel.getMcreator().getFolderManager().getParticleTexturesList().forEach(newdmlp::addElement);
 			workspacePanel.getMcreator().getFolderManager().getOtherTexturesList().forEach(newdmlo::addElement);
 
 			SwingUtilities.invokeLater(() -> {
-				listb.getList().setModel(dmlb = newdmlb);
-				listi.getList().setModel(dmli = newdmli);
-				lista.getList().setModel(dmla = newdmla);
-				listo.getList().setModel(dmlo = newdmlo);
+				listb.getList().setModel(fmb = newdmlb);
+				listi.getList().setModel(fmi = newdmli);
+				listen.getList().setModel(fmen = newdmlen);
+				lista.getList().setModel(fma = newdmla);
+				listg.getList().setModel(fmg = newdmlg);
+				listef.getList().setModel(fmef = newdmlef);
+				listp.getList().setModel(fmp = newdmlp);
+				listo.getList().setModel(fmo = newdmlo);
 
 				textureRender.invalidateIconCache();
 
 				ListUtil.setSelectedValues(listb.getList(), selectedb);
 				ListUtil.setSelectedValues(listi.getList(), selectedi);
+				ListUtil.setSelectedValues(listen.getList(), selecteden);
 				ListUtil.setSelectedValues(lista.getList(), selecteda);
+				ListUtil.setSelectedValues(listg.getList(), selectedg);
+				ListUtil.setSelectedValues(listef.getList(), selectedef);
+				ListUtil.setSelectedValues(listp.getList(), selectedp);
+
 				ListUtil.setSelectedValues(listo.getList(), selectedo);
 
 				refilterElements();
@@ -291,12 +328,16 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	}
 
 	@Override public void refilterElements() {
-		dmli.refilter();
-		dmlb.refilter();
-		dmla.refilter();
-		dmlo.refilter();
+		fmi.refilter();
+		fmb.refilter();
+		fmen.refilter();
+		fma.refilter();
+		fmg.refilter();
+		fmef.refilter();
+		fmp.refilter();
+		fmo.refilter();
 
-		if (dmli.getSize() > 0) {
+		if (fmi.getSize() > 0) {
 			listi.getComponent().setPreferredSize(null);
 			listi.getComponent().setVisible(true);
 		} else {
@@ -304,7 +345,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			listi.getComponent().setVisible(false);
 		}
 
-		if (dmla.getSize() > 0) {
+		if (fma.getSize() > 0) {
 			lista.getComponent().setPreferredSize(null);
 			lista.getComponent().setVisible(true);
 		} else {
@@ -312,7 +353,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			lista.getComponent().setVisible(false);
 		}
 
-		if (dmlb.getSize() > 0) {
+		if (fmb.getSize() > 0) {
 			listb.getComponent().setPreferredSize(null);
 			listb.getComponent().setVisible(true);
 		} else {
@@ -320,7 +361,39 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			listb.getComponent().setVisible(false);
 		}
 
-		if (dmlo.getSize() > 0) {
+		if (fmen.getSize() > 0) {
+			listen.getComponent().setPreferredSize(null);
+			listen.getComponent().setVisible(true);
+		} else {
+			listen.getComponent().setPreferredSize(new Dimension(0, 0));
+			listen.getComponent().setVisible(false);
+		}
+
+		if (fmg.getSize() > 0) {
+			listg.getComponent().setPreferredSize(null);
+			listg.getComponent().setVisible(true);
+		} else {
+			listg.getComponent().setPreferredSize(new Dimension(0, 0));
+			listg.getComponent().setVisible(false);
+		}
+
+		if (fmef.getSize() > 0) {
+			listef.getComponent().setPreferredSize(null);
+			listef.getComponent().setVisible(true);
+		} else {
+			listef.getComponent().setPreferredSize(new Dimension(0, 0));
+			listef.getComponent().setVisible(false);
+		}
+
+		if (fmp.getSize() > 0) {
+			listp.getComponent().setPreferredSize(null);
+			listp.getComponent().setVisible(true);
+		} else {
+			listp.getComponent().setPreferredSize(new Dimension(0, 0));
+			listp.getComponent().setVisible(false);
+		}
+
+		if (fmo.getSize() > 0) {
 			listo.getComponent().setPreferredSize(null);
 			listo.getComponent().setVisible(true);
 		} else {

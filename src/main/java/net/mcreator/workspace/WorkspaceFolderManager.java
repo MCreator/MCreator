@@ -94,8 +94,24 @@ public class WorkspaceFolderManager {
 		return listPNGsInDir(getItemsTexturesDir());
 	}
 
+	public List<File> getEntityTexturesList() {
+		return listPNGsInDir(getEntitiesTexturesDir());
+	}
+
 	public List<File> getArmorTexturesList() {
 		return listPNGsInDir(getArmorTexturesDir());
+	}
+
+	public List<File> getGUITexturesList() {
+		return listPNGsInDir(getGUITexturesDir());
+	}
+
+	public List<File> getEffectTexturesList() {
+		return listPNGsInDir(getEffectsTexturesDir());
+	}
+
+	public List<File> getParticleTexturesList() {
+		return listPNGsInDir(getParticlesTexturesDir());
 	}
 
 	public List<File> getOtherTexturesList() {
@@ -126,8 +142,24 @@ public class WorkspaceFolderManager {
 		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "item_textures_dir");
 	}
 
+	@Nullable public File getEntitiesTexturesDir() {
+		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "entity_textures_dir");
+	}
+
 	@Nullable public File getArmorTexturesDir() {
 		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "armor_textures_dir");
+	}
+
+	@Nullable public File getGUITexturesDir() {
+		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "gui_textures_dir");
+	}
+
+	@Nullable public File getEffectsTexturesDir() {
+		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "effect_textures_dir");
+	}
+
+	@Nullable public File getParticlesTexturesDir() {
+		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "particle_textures_dir");
 	}
 
 	@Nullable public File getOtherTexturesDir() {

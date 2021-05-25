@@ -23,7 +23,11 @@ sounds_dir: "@MODASSETSROOT/sounds"
 other_textures_dir: "@MODASSETSROOT/textures"
 block_textures_dir: "@MODASSETSROOT/textures/blocks"
 item_textures_dir: "@MODASSETSROOT/textures/items"
+entity_textures_dir: "@MODASSETSROOT/textures/entities"
 armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+gui_textures_dir: "@MODASSETSROOT/textures/guis"
+effect_textures_dir: "@MODASSETSROOT/textures/mob_effects"
+particle_textures_dir: "@MODASSETSROOT/textures/particles"
 
 base_templates:
   - template: modbase/modelements.java.ftl
