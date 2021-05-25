@@ -29,7 +29,9 @@ import javafx.scene.web.WebView;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
+import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.L10N;
@@ -43,6 +45,7 @@ import org.w3c.dom.Text;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -100,7 +103,15 @@ public class BlocklyPanel extends JFXPanel {
 						css += FileIO.readResourceToString("/blockly/css/mcreator_blockly_unixfix.css");
 					}
 
-					css += FileIO.readResourceToString("/blockly/css/" + UIManager.get("MCreatorLAF.BLOCKLY_CSS"));
+					if (PluginLoader.INSTANCE
+							.getResourceAsStream("/themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/blockly.css")
+							!= null) {
+						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
+								"/themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/blockly.css");
+					} else {
+						css += FileIO
+								.readResourceToString(PluginLoader.INSTANCE, "/themes/default_dark/styles/blockly.css");
+					}
 
 					//remove font declaration if property set so
 					if (PreferencesManager.PREFERENCES.blockly.legacyFont) {
@@ -126,7 +137,8 @@ public class BlocklyPanel extends JFXPanel {
 
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blockly_compressed.js"));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/messages.js"));
-					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/" + L10N.getLangString() + ".js"));
+					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/" + L10N.getLangString() + ".js",
+							StandardCharsets.UTF_8));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blocks_compressed.js"));
 
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/block_mcitem.js"));
