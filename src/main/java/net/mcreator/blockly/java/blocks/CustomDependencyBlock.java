@@ -28,18 +28,12 @@ import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class CustomDependencyBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public CustomDependencyBlock() {
-		Set<String> temp = new HashSet<>();
-		for (VariableElementType var : VariableElementTypeLoader.getVariables()) {
-			temp.add("custom_dependency_" + var.getName());
-		}
-		names = temp.toArray(new String[0]);
+		names = VariableElementTypeLoader.getVariables().stream().map(VariableElementType::getName)
+				.toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {

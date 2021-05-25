@@ -22,15 +22,12 @@ import com.google.gson.annotations.SerializedName;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 
-import java.awt.*;
-
 public class VariableElementType {
 
 	private String name;
 	private int color;
 	private String defaultValue;
 	private String blocklyVariableType;
-	private String javaClass;
 
 	public int getColor() {
 		return color;
@@ -44,11 +41,7 @@ public class VariableElementType {
 		return blocklyVariableType;
 	}
 
-	public String getJavaClass() {
-		return javaClass;
-	}
-
-	@SuppressWarnings("unused") public String getJavaType(Workspace workspace) {
+	public String getJavaType(Workspace workspace) {
 		return new NameMapper(workspace, "types").getMapping(getName());
 	}
 

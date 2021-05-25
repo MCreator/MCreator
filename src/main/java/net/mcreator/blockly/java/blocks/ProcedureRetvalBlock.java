@@ -30,19 +30,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class ProcedureRetvalBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public ProcedureRetvalBlock() {
-		Set<String> temp = new HashSet<>();
-		for (VariableElementType elementType : VariableElementTypeLoader.getVariables()) {
-			temp.add("procedure_retval_" + elementType.getName());
-		}
-		names = temp.toArray(new String[0]);
+		names = VariableElementTypeLoader.getVariables().stream().map(VariableElementType::getName)
+				.toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {

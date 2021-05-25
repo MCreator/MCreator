@@ -3,6 +3,5 @@
 	"color": 160,
 	"defaultValue": "\"\"",
 	"blocklyVariableType": "String",
-	"javaClass": "String",
 	"blockName": "text"
 }

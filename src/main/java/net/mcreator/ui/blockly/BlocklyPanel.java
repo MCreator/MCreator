@@ -149,7 +149,7 @@ public class BlocklyPanel extends JFXPanel {
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js"));
 
 					//JS code generation for custom variables
-					webEngine.executeScript(VariableElementTypeLoader.INSTANCE.JS_CACHE.toString());
+					webEngine.executeScript(VariableElementTypeLoader.INSTANCE.JS_CACHE);
 
 					// Make the webpage transparent
 					try {

@@ -49,14 +49,14 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 
 		for (VariableElement var2 : editor.mcreator.getWorkspace().getVariableElements()) {
 			name.addItem("<VAR:" + var2.getName() + ">");
-			if (var2.getType() == VariableElementTypeLoader.NUMBER)
+			if (var2.getType() == VariableElementTypeLoader.BuiltInTypes.NUMBER)
 				name.addItem("<VAR:integer:" + var2.getName() + ">");
 		}
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/label_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.label_event_display_condition"), ProcedureSelector.Side.CLIENT, false,
-				VariableElementTypeLoader.LOGIC,
+				VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
 

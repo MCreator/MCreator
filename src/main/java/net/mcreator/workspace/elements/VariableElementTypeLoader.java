@@ -37,13 +37,7 @@ public class VariableElementTypeLoader {
 
 	private static final Map<VariableElementType, String> VARIABLE_LIST = new HashMap<>();
 
-	//Define each global variables. The instantiation is made in VariableElementTypeLoader.
-	public static VariableElementType STRING;
-	public static VariableElementType LOGIC;
-	public static VariableElementType NUMBER;
-	public static VariableElementType ITEMSTACK;
-
-	public final StringBuilder JS_CACHE = new StringBuilder();
+	public String JS_CACHE = "";
 
 	public static void loadVariableTypes() {
 		INSTANCE = new VariableElementTypeLoader();
@@ -62,34 +56,34 @@ public class VariableElementTypeLoader {
 			VariableElementTypeLoader.addVariableTypeToCache(variable);
 
 			//We begin by creating the extensions needed for other blocks
-			JS_CACHE.append(BlocklyJavascriptTemplates.variableListExtension(variable));
-			JS_CACHE.append(BlocklyJavascriptTemplates.procedureListExtensions(variable));
+			JS_CACHE += BlocklyJavascriptTemplates.variableListExtension(variable);
+			JS_CACHE += BlocklyJavascriptTemplates.procedureListExtensions(variable);
 			//Then, we create the blocks related to variables
-			JS_CACHE.append(BlocklyJavascriptTemplates.getVariableBlock(variable));
-			JS_CACHE.append(BlocklyJavascriptTemplates.setVariableBlock(variable));
-			JS_CACHE.append(BlocklyJavascriptTemplates.customDependencyBlock(variable));
-			JS_CACHE.append(BlocklyJavascriptTemplates.procedureReturnValueBlock(variable));
-			JS_CACHE.append(BlocklyJavascriptTemplates.returnBlock(variable));
+			JS_CACHE += BlocklyJavascriptTemplates.getVariableBlock(variable);
+			JS_CACHE += BlocklyJavascriptTemplates.setVariableBlock(variable);
+			JS_CACHE += BlocklyJavascriptTemplates.customDependencyBlock(variable);
+			JS_CACHE += BlocklyJavascriptTemplates.procedureReturnValueBlock(variable);
+			JS_CACHE += BlocklyJavascriptTemplates.returnBlock(variable);
 
 			//We check the type of the variable, if it is a global var, we instantiate it with this variable.
 			switch (variable.getName().toLowerCase()) {
 			case "logic":
-				LOGIC = variable;
+				BuiltInTypes.LOGIC = variable;
 				break;
 			case "number":
-				NUMBER = variable;
+				BuiltInTypes.NUMBER = variable;
 				break;
 			case "string":
-				STRING = variable;
+				BuiltInTypes.STRING = variable;
 				break;
 			case "itemstack":
-				ITEMSTACK = variable;
+				BuiltInTypes.ITEMSTACK = variable;
 				break;
 			}
 		}
 	}
 
-	public static VariableElementType getVariableFromType(String type) {
+	public static VariableElementType getVariableTypeFromString(String type) {
 		for (VariableElementType varType : VARIABLE_LIST.keySet()) {
 			if(varType.getBlocklyVariableType().equalsIgnoreCase(type) || varType.getName().equalsIgnoreCase(type)) {
 				return varType;
@@ -104,5 +98,14 @@ public class VariableElementTypeLoader {
 
 	public static void addVariableTypeToCache(VariableElementType var) {
 		VARIABLE_LIST.put(var, var.getName());
+	}
+
+	public static class BuiltInTypes {
+
+		//Define each global variables. The instantiation is made in VariableElementTypeLoader.
+		public static VariableElementType STRING;
+		public static VariableElementType LOGIC;
+		public static VariableElementType NUMBER;
+		public static VariableElementType ITEMSTACK;
 	}
 }

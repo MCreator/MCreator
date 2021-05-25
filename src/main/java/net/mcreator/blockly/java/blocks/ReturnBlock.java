@@ -29,22 +29,20 @@ import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ReturnBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public ReturnBlock() {
-		Set<String> temp = new HashSet<>();
-		for (VariableElementType var : VariableElementTypeLoader.getVariables()) {
-			temp.add("return_" + var.getName());
-		}
-		names = temp.toArray(new String[0]);
+		names = VariableElementTypeLoader.getVariables().stream().map(VariableElementType::getName)
+				.toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String type = StringUtils.removeStart(block.getAttribute("type"), "return_");
-		VariableElementType returnType = VariableElementTypeLoader.getVariableFromType(type);
+		VariableElementType returnType = VariableElementTypeLoader.getVariableTypeFromString(type);
 
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (master instanceof BlocklyToProcedure && value != null) {

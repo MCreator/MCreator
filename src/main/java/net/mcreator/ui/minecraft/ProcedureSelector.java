@@ -119,7 +119,7 @@ public class ProcedureSelector extends JPanel {
 					.createLineBorder(new Dependency("", returnType.getName()).getColor()));
 		}
 
-		if (returnType == VariableElementTypeLoader.LOGIC) {
+		if (returnType == VariableElementTypeLoader.BuiltInTypes.LOGIC) {
 			defaultName = "(always)";
 		}
 
@@ -175,7 +175,7 @@ public class ProcedureSelector extends JPanel {
 		top.add("South", depslab);
 
 		JComponent procwrap;
-		if (returnType == VariableElementTypeLoader.LOGIC) {
+		if (returnType == VariableElementTypeLoader.BuiltInTypes.LOGIC) {
 			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" if:  "), 15), procedures);
 		} else if (returnType == null) {
 			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" do:  "), 15), procedures);
@@ -295,7 +295,7 @@ public class ProcedureSelector extends JPanel {
 			if (mod.getType() == ModElementType.PROCEDURE) {
 				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
 				VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-						VariableElementTypeLoader.getVariableFromType((String) mod.getMetadata("return_type")) :
+						VariableElementTypeLoader.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
 						null;
 				List<Dependency> realdepsList = new ArrayList<>();
 				if (dependenciesList == null)

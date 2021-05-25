@@ -139,7 +139,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.t("elementgui.tool.event_swings"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow",
-				ProcedureSelector.Side.CLIENT, true, VariableElementTypeLoader.LOGIC,
+				ProcedureSelector.Side.CLIENT, true, VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocks);

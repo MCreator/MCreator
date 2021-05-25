@@ -37,13 +37,13 @@ public class AIConditionEditor {
 		ProcedureSelector startCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("entity/ai_start_condition"), parent,
 				L10N.t("dialog.ai_condition.additional_start"), ProcedureSelector.Side.BOTH, false,
-				VariableElementTypeLoader.LOGIC,
+				VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		ProcedureSelector continueCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("entity/ai_continue_condition"), parent,
 				L10N.t("dialog.ai_condition.additional_continue"), ProcedureSelector.Side.BOTH, false,
-				VariableElementTypeLoader.LOGIC,
+				VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		startCondition.setDefaultName(L10N.t("dialog.ai_condition.no_additional")).refreshList();

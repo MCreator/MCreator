@@ -18,10 +18,6 @@
 
 package net.mcreator.workspace.elements;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 public class VariableElement implements IElement {
 
 	private String name;
@@ -42,7 +38,7 @@ public class VariableElement implements IElement {
 	}
 
 	public VariableElementType getType() {
-		return VariableElementTypeLoader.getVariableFromType(type);
+		return VariableElementTypeLoader.getVariableTypeFromString(type);
 	}
 
 	public void setType(VariableElementType type) {

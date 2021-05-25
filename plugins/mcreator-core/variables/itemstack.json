@@ -2,6 +2,5 @@
 	"name": "itemstack",
 	"color": 350,
 	"defaultValue": "ItemStack.EMPTY",
-	"blocklyVariableType": "MCItem",
-	"javaClass": "ItemStack"
+	"blocklyVariableType": "MCItem"
 }
