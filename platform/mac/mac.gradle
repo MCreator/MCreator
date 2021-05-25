@@ -37,7 +37,13 @@ task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) 
 
 task dmgMac64(dependsOn: [downloadMKISOFS, exportMac64]) {
     doLast {
-        ant.exec(executable: projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs', failonerror: true) {
+        def mkisofs_binary = '';
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            mkisofs_binary = projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs';
+        } else {
+            mkisofs_binary = 'mkisofs';
+        }
+        ant.exec(executable: mkisofs_binary, failonerror: true) {
             arg(value: '-r')
             arg(value: '-D')
             arg(value: '-o')
@@ -57,9 +63,7 @@ static void convertCRLF(File input, File out) {
 }
 
 task exportMac(type: DefaultTask, group: 'export') {
-    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        dependsOn dmgMac64
-    }
+    dependsOn dmgMac64
 
     doLast {
         delete 'build/export/mac64'

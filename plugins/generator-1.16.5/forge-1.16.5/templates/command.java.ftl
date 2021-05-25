@@ -32,34 +32,23 @@
 
 package ${package}.command;
 
-@${JavaModName}Elements.ModElement.Tag
-public class ${name}Command extends ${JavaModName}Elements.ModElement{
+@Mod.EventBusSubscriber public class ${name}Command {
 
-	public ${name}Command (${JavaModName}Elements instance) {
-		super(instance, ${data.getModElement().getSortID()});
-
-		MinecraftForge.EVENT_BUS.register(this);
-	}
-
-	@SubscribeEvent public void registerCommands(RegisterCommandsEvent event) {
-		event.getDispatcher().register(customCommand());
-	}
-
-	private LiteralArgumentBuilder<CommandSource> customCommand() {
-        return LiteralArgumentBuilder.<CommandSource>literal("${data.commandName}")
+	@SubscribeEvent public static void registerCommands(RegisterCommandsEvent event) {
+		event.getDispatcher().register(LiteralArgumentBuilder.<CommandSource>literal("${data.commandName}")
 			<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermissionLevel(${data.permissionLevel}))</#if>
 			.then(Commands.argument("arguments", StringArgumentType.greedyString())
+				<#if hasProcedure(data.onCommandExecuted)>
+            	.executes(${name}Command::execute)
+				</#if>
+			)
 			<#if hasProcedure(data.onCommandExecuted)>
-            .executes(this::execute)
-            </#if>
-        	)
-			<#if hasProcedure(data.onCommandExecuted)>
-            .executes(this::execute)
-            </#if>
-			;
-    }
+            .executes(${name}Command::execute)
+			</#if>
+		);
+	}
 
-    private int execute(CommandContext<CommandSource> ctx) {
+    private static int execute(CommandContext<CommandSource> ctx) {
 		ServerWorld world = ctx.getSource().getWorld();
 
 		double x = ctx.getSource().getPos().getX();
