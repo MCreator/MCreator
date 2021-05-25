@@ -24,11 +24,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VComboBox;
-import net.mcreator.ui.validation.validators.TagsNameValidator;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.workspace.WorkspaceFolderManager;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;
@@ -41,14 +37,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class BlockItemTextureSelector extends MCreatorDialog {
 
-	private static BlockItemTextureSelector instance;
-	private final JButton select = L10N.button("dialog.textures_selector.select");
+	private final JButton naprej = L10N.button("dialog.textures_selector.select");
 	private final FilterModel model = new FilterModel();
+	public JList<File> list = new JList<>(model);
 	private final TextureType type;
 	private final CardLayout layout = new CardLayout();
 	private final JPanel center = new JPanel(layout);
@@ -56,13 +51,11 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	private final JTextField filterField = new JTextField(20);
 
 	private final MCreator mcreator;
-	public JList<File> list = new JList<>(model);
 
 	public BlockItemTextureSelector(MCreator mcreator, TextureType type) {
 		super(mcreator);
 		this.type = type;
 		this.mcreator = mcreator;
-		instance = this;
 
 		setModal(true);
 		setTitle(L10N.t("dialog.textures_selector.title", type));
@@ -83,7 +76,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				super.mouseClicked(mouseEvent);
 				if (mouseEvent.getClickCount() == 2)
-					select.doClick();
+					naprej.doClick();
 			}
 		});
 
@@ -96,14 +89,14 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 
 		JPanel buttons = new JPanel();
 
-		select.setFont(select.getFont().deriveFont(16.0f));
-		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancel.setFont(cancel.getFont().deriveFont(16.0f));
+		naprej.setFont(naprej.getFont().deriveFont(16.0f));
+		JButton naprej2 = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+		naprej2.setFont(naprej2.getFont().deriveFont(16.0f));
 
-		buttons.add(select);
-		buttons.add(cancel);
+		buttons.add(naprej);
+		buttons.add(naprej2);
 
-		cancel.addActionListener(event -> setVisible(false));
+		naprej2.addActionListener(event -> setVisible(false));
 
 		ComponentUtils.deriveFont(filterField, 15);
 		filterField.getDocument().addDocumentListener(new DocumentListener() {
@@ -128,7 +121,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		JPanel pno = new JPanel();
 
 		JButton createTx2 = L10N.button("dialog.textures_selector.create_from_scratch");
-		createTx2.setFont(select.getFont());
+		createTx2.setFont(naprej.getFont());
 		createTx2.setIcon(UIRES.get("18px.add"));
 		createTx2.addActionListener(event -> {
 			setVisible(false);
@@ -138,7 +131,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		pno.add(createTx2);
 
 		JButton importTx = L10N.button("dialog.textures_selector.import", type.name().toLowerCase(Locale.ENGLISH));
-		importTx.setFont(select.getFont());
+		importTx.setFont(naprej.getFont());
 		importTx.setIcon(UIRES.get("18px.add"));
 		importTx.addActionListener(event -> {
 
@@ -160,73 +153,10 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		});
 		pno.add(importTx);
 
-		JButton importMc = L10N.button("dialog.textures_selector.import_mc", type.name().toLowerCase(Locale.ENGLISH));
-		importMc.setFont(select.getFont());
-		importMc.setIcon(UIRES.get("18px.add"));
-		VComboBox<String> ID = new VComboBox<>();
-
-		ID.setValidator(new TagsNameValidator<>(ID, true));
-
-		ID.addItem("");
-		ID.addItem("minecraft:block/cobblestone");
-		ID.addItem("minecraft:item/diamond");
-
-		ID.setEditable(true);
-		ID.setOpaque(false);
-		ID.setForeground(Color.white);
-		ComponentUtils.deriveFont(ID, 16);
-
-		ID.enableRealtimeValidation();
-		importMc.addActionListener(event -> {
-
-			int result = JOptionPane.showConfirmDialog(this, PanelUtils.northAndCenterElement(
-					L10N.label("dialog.textures_selector.enter_id", type.name().toLowerCase(Locale.ENGLISH)), ID),
-					L10N.t("dialog.textures_selector.use_id", type.name().toLowerCase(Locale.ENGLISH)),
-					JOptionPane.OK_CANCEL_OPTION);
-			if (result == JOptionPane.OK_OPTION) {
-				if (ID.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-					String selectedID = ID.getSelectedItem();
-					if (selectedID != null) {
-						File fileID = new File(selectedID);
-						model.addElement(fileID);
-						list.setSelectedValue(fileID, true);
-						if (model.getSize() > 0) {
-							layout.show(center, "list");
-						}
-					}
-				} else {
-					JOptionPane.showMessageDialog(this, L10N.t("dialog.textures_selector.error_invalid_id_message"),
-							L10N.t("dialog.textures_selector.error_invalid_id_title"), JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-		pno.add(importMc);
-
 		pn.add("North", PanelUtils.westAndEastElement(pno, PanelUtils.totalCenterInPanel(pno2)));
 		pn.add("South", buttons);
 
 		add(pn);
-	}
-
-	public static String fixName(String name, WorkspaceFolderManager workspace) {
-		if (name.contains("textures\\blocks\\") || name.contains("textures/blocks/")) {
-			return textureNameReplace(name.replace(Objects.requireNonNull(workspace.getBlocksTexturesDir()).getPath(), ""));
-		} else if (name.contains("textures\\items\\") || name.contains("textures/items/")) {
-			return textureNameReplace(name.replace(Objects.requireNonNull(workspace.getItemsTexturesDir()).getPath(), ""));
-		} else if (name.contains("textures\\others\\") || name.contains("textures/others/")) {
-			return textureNameReplace(name.replace(Objects.requireNonNull(workspace.getOtherTexturesDir()).getPath(), ""));
-		} else {
-			return name.replace("\\", "/");
-		}
-	}
-
-	public static String textureNameReplace(String string) {
-		if (string.contains("\\"))
-			string = string.replace("\\", "");
-		else if (string.contains("//"))
-			string = string.replace("//", "");
-
-		return string;
 	}
 
 	public TextureType getTextureType() {
@@ -256,15 +186,11 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	}
 
 	public JButton getConfirmButton() {
-		return select;
+		return naprej;
 	}
 
 	public MCreator getMCreator() {
 		return mcreator;
-	}
-
-	public enum TextureType {
-		BLOCK, ITEM
 	}
 
 	static class Render extends JLabel implements ListCellRenderer<File> {
@@ -278,17 +204,10 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 				setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 			}
 			if (ma != null) {
-				setToolTipText(FilenameUtils
-						.removeExtension(fixName(ma.toString(), instance.getMCreator().getFolderManager())));
-				if (ma.toString().endsWith(".png")) {
-					ImageIcon icon = new ImageIcon(ma.toString());
-					if (icon.getImage() != null)
-						setIcon(new ImageIcon(ImageUtils.resize(icon.getImage(), 32)));
-					else
-						setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("tag").getImage(), 32)));
-				} else {
-					setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("tag").getImage(), 32)));
-				}
+				setToolTipText(FilenameUtils.removeExtension(ma.getName()));
+				ImageIcon icon = new ImageIcon(ma.toString());
+				if (icon.getImage() != null)
+					setIcon(new ImageIcon(ImageUtils.resize(icon.getImage(), 32)));
 			}
 			return this;
 		}
@@ -343,4 +262,9 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 			fireContentsChanged(this, 0, getSize());
 		}
 	}
+
+	public enum TextureType {
+		BLOCK, ITEM
+	}
+
 }
