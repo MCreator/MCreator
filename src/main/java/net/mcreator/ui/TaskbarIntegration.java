@@ -32,7 +32,7 @@ public class TaskbarIntegration {
 		if (Taskbar.isTaskbarSupported()) {
 			taskbar = Taskbar.getTaskbar();
 			if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE))
-				taskbar.setIconImage(UIRES.get("icon").getImage());
+				taskbar.setIconImage(UIRES.getBuiltIn("icon").getImage());
 		}
 	}
 
