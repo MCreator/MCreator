@@ -20,8 +20,6 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.ThemeLoader;
-import org.apache.commons.io.FilenameUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
@@ -33,50 +31,46 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 public class UIRES {
+
 	private static final Map<String, ImageIcon> CACHE = new ConcurrentHashMap<>();
 
-	private static final Pattern pngPattern = Pattern.compile(".*\\.(png|gif)");
+	private static final Pattern imagePattern = Pattern.compile(".*\\.(png|gif)");
 
 	public static void preloadImages() {
-
 		ImageIO.setUseCache(false); // we use custom image cache for this
+
+		// preload texutres of the current theme
 		new Reflections("themes." + PreferencesManager.PREFERENCES.hidden.uiTheme + ".images", new ResourcesScanner(),
-				PluginLoader.INSTANCE).getResources(pngPattern).parallelStream()
-				.forEach(element -> fromResourceID(element.replace("/", ".")));
-		// We also load default textures in case a resource pack modify only one texture.
+				PluginLoader.INSTANCE).getResources(imagePattern).parallelStream()
+				.forEach(element -> getImageFromResourceID(element.replace("/", ".")));
+
+		// we also load default textures in non-default theme does not specify all textures
 		if (!PreferencesManager.PREFERENCES.hidden.uiTheme.equals("default_dark")) {
 			new Reflections("themes.default_dark.images", new ResourcesScanner(), PluginLoader.INSTANCE)
-					.getResources(pngPattern).parallelStream()
-					.forEach(element -> fromResourceID(element.replace("/", ".")));
+					.getResources(imagePattern).parallelStream()
+					.forEach(element -> getImageFromResourceID(element.replace("/", ".")));
 		}
+
 		ImageIO.setUseCache(true);
 	}
 
 	public static ImageIcon get(String identifier) {
-		String str;
-		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif"))) {
-			str = identifier.replace(".", "/");
+		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
 			identifier += ".png";
-		} else {
-			str = FilenameUtils.removeExtension(identifier).replace(".", "/");
-		}
 
-		if (PluginLoader.INSTANCE
-				.getResource("themes/" + PreferencesManager.PREFERENCES.hidden.uiTheme + "/images/" + str + ".png")
-				!= null) {
-			//We start by checking if the loaded pack contains the image
-			return UIRES.fromResourceID(
-					"themes." + PreferencesManager.PREFERENCES.hidden.uiTheme + ".images." + identifier);
-		} else {
-			// If the loaded pack does not have the image, we load the default one
-			return UIRES.fromResourceID("themes.default_dark.images." + identifier);
+		String themedTextureIdentifier =
+				"themes." + PreferencesManager.PREFERENCES.hidden.uiTheme + ".images." + identifier;
+
+		// we start by checking if the loaded pack contains the image
+		if (PluginLoader.INSTANCE.getResource(identifierToResourcePath(themedTextureIdentifier)) != null) {
+			return getImageFromResourceID(themedTextureIdentifier);
+		} else { // if the loaded pack does not have the image, we fallback to the default one
+			return getImageFromResourceID("themes.default_dark.images." + identifier);
 		}
 	}
 
-	public static ImageIcon fromResourceID(String identifier) {
-		// parse identifier
-		int lastDot = identifier.lastIndexOf('.');
-		identifier = identifier.substring(0, lastDot).replace(".", "/") + identifier.substring(lastDot);
+	public static ImageIcon getImageFromResourceID(String identifier) {
+		identifier = identifierToResourcePath(identifier);
 
 		if (CACHE.get(identifier) != null)
 			return CACHE.get(identifier);
@@ -88,18 +82,19 @@ public class UIRES {
 		}
 	}
 
-	public static ImageIcon getInternal(String identifier) {
-		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
-			identifier += ".png";
-
-		identifier = "net.mcreator.ui.res." + identifier;
+	public static String identifierToResourcePath(String identifier) {
+		// parse identifier
 		int lastDot = identifier.lastIndexOf('.');
 		identifier = identifier.substring(0, lastDot).replace(".", "/") + identifier.substring(lastDot);
 
-		ImageIcon newItem = new ImageIcon(Toolkit.getDefaultToolkit()
-				.createImage(ClassLoader.getSystemClassLoader().getResource(identifier)));
-		CACHE.put(identifier, newItem);
-		return newItem;
+		return identifier;
+	}
+
+	public static ImageIcon getInternal(String identifier) {
+		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
+			identifier += ".png";
+		return new ImageIcon(Toolkit.getDefaultToolkit()
+				.createImage(ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + identifier)));
 	}
 
 }

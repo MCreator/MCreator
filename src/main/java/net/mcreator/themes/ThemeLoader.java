@@ -99,7 +99,7 @@ ThemeLoader {
 			// Load the custom icon if provided otherwise, load the default one
 			String identifier = "themes/" + theme.getID() + "/icon.png";
 			if (PluginLoader.INSTANCE.getResource(identifier) != null) {
-				ImageIcon icon = UIRES.fromResourceID(identifier);
+				ImageIcon icon = UIRES.getImageFromResourceID(identifier);
 				icon = new ImageIcon(ImageUtils.resize(icon.getImage(), 64));
 				theme.setIcon(icon);
 			} else {
