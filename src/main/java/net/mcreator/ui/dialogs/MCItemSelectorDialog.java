@@ -64,7 +64,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 
 		setTitle(L10N.t("dialog.item_selector.title"));
 		setModal(true);
-		setIconImage(UIRES.get("icon").getImage());
+		setIconImage(UIRES.getBuiltIn("icon").getImage());
 		list.setCellRenderer(new Render());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
