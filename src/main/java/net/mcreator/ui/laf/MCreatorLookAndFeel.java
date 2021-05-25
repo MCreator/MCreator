@@ -19,6 +19,7 @@
 package net.mcreator.ui.laf;
 
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.themes.ThemeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,14 +33,11 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 
 	private static final Logger LOG = LogManager.getLogger("Look and Feel");
 
-	private final AbstractMCreatorTheme theme;
+	private final MCreatorTheme theme;
 
 	public MCreatorLookAndFeel() {
-		if (PreferencesManager.PREFERENCES.ui.interfaceTheme.equals("Light theme")) {
-			setCurrentTheme(theme = new LightMCreatorTheme());
-		} else {
-			setCurrentTheme(theme = new DarkMCreatorTheme());
-		}
+		setCurrentTheme(theme = new MCreatorTheme(
+				ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme).getColorScheme()));
 	}
 
 	@Override protected void initClassDefaults(UIDefaults table) {
@@ -59,10 +57,10 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 
 			if (defaultStyles != null) {
 				defaultStyles.addRule("* {color: white;} font, b, i, strong, p, div, li, ul, ol {color: #" + Integer
-						.toHexString(theme.getBrightColor().getRGB()).substring(2)
+						.toHexString(theme.getColorScheme().getForegroundColor().getRGB()).substring(2)
 						+ ";} body {color: white;} html {color: #" + Integer
-						.toHexString(theme.getBrightColor().getRGB()).substring(2) + ";} a {color: #" + Integer
-						.toHexString(theme.getMainTint().getRGB()).substring(2) + ";}");
+						.toHexString(theme.getColorScheme().getForegroundColor().getRGB()).substring(2)
+						+ ";} a {color: #" + Integer.toHexString(theme.getMainTint().getRGB()).substring(2) + ";}");
 
 				appContext.getClass().getMethod("put", Object.class, Object.class)
 						.invoke(appContext, key, defaultStyles);
