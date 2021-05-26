@@ -1,1 +1,0 @@
-Ceci est le son joué lorsque le joueur place la plante dans le monde.

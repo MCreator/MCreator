@@ -1,1 +1,0 @@
-This sound is played when the plant falls.

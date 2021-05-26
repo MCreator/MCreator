@@ -1,1 +1,0 @@
-Ceci est le son joué lorsque la plante est cassée.

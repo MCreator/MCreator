@@ -523,23 +523,23 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.plant.plant_sound"))));
 		soundProperties.add(soundOnStep);
 
-		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/break_sound"),
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/break_sound"),
 				L10N.label("elementgui.common.soundtypes.break_sound")));
 		soundProperties.add(breakSound);
 
-		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/step_sound"),
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/step_sound"),
 				L10N.label("elementgui.common.soundtypes.step_sound")));
 		soundProperties.add(stepSound);
 
-		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/place_sound"),
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/place_sound"),
 				L10N.label("elementgui.common.soundtypes.place_sound")));
 		soundProperties.add(placeSound);
 
-		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/hit_sound"),
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hit_sound"),
 				L10N.label("elementgui.common.soundtypes.hit_sound")));
 		soundProperties.add(hitSound);
 
-		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/fall_sound"),
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fall_sound"),
 				L10N.label("elementgui.common.soundtypes.fall_sound")));
 		soundProperties.add(fallSound);
 

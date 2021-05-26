@@ -1,1 +1,0 @@
-This is the sound played when an entity walks on this plant.
