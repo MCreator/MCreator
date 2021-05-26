@@ -37,7 +37,7 @@ public class ColorScheme {
 
 	/**
 	 *
-	 * @return Background of components (e.g. text fields, checkboxes and sound selectors)
+	 * @return Second background color used (e.g. workspace background)
 	 */
 	public Color getSecondAltBackgroundColor() {
 		return Color.decode(secondAltBackgroundColor);
@@ -51,7 +51,7 @@ public class ColorScheme {
 	}
 
 	/**
-	 * @return Second background color used (e.g. workspace background)
+	 * @return Background of components (e.g. text fields, checkboxes and sound selectors)
 	 */
 	public Color getAltBackgroundColor() {
 		return Color.decode(altBackgroundColor);

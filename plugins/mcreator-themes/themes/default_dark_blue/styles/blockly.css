@@ -1,39 +1,39 @@
 ::-webkit-scrollbar-track {
-    background: #31317C;
+    background: #505050;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #131344;
+    background: #323232;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #18183F;
+    background: #424242;
 }
 
 .blocklyMainBackground {
-    fill: rgba(30, 30, 86, 0.66) !important;
+    fill: rgba(85, 85, 85, 0.66) !important;
 }
 
 .blocklyToolboxDiv {
-    background-color: #131344;
+    background-color: #323232;
     color: white;
 }
 
 .blocklyTreeRow:not(.blocklyTreeSelected):hover {
     background-color: #e4e4e4 !important;
-    color: #131344 !important;
+    color: #323232 !important;
 }
 
 .blocklyTreeSeparator {
-    border-bottom: solid #31317C 1px;
+    border-bottom: solid #505050 1px;
 }
 
 .blocklyFlyout {
-    background-color: #131344c2;
+    background-color: #323232c2;
 }
 
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
-    fill: #131344;
+    fill: #323232;
 }
 
 .blocklyScrollbarVertical:hover .blocklyScrollbarHandle {
@@ -41,7 +41,7 @@
 }
 
 .blocklyScrollbarHorizontal .blocklyScrollbarHandle {
-    fill: #131344;
+    fill: #323232;
 }
 
 .blocklyScrollbarHorizontal:hover .blocklyScrollbarHandle {
@@ -53,8 +53,8 @@
 }
 
 .blocklyDropDownDiv {
-    background: #31317C !important;
-    border-color: #04041C !important;
+    background: #505050 !important;
+    border-color: #1e1e1e !important;
 }
 
 .blocklyDropDownDiv .goog-menuitem-content {
@@ -62,13 +62,13 @@
 }
 
 .blocklyTooltipDiv {
-    background-color: #131344;
+    background-color: #323232;
     color: white;
 }
 
 .blocklyWidgetDiv .goog-menu {
-    background: #131344 !important;
-    border-color: #31317C !important;
+    background: #323232 !important;
+    border-color: #505050 !important;
 }
 
 .blocklyWidgetDiv .goog-menuitem-content {
@@ -91,6 +91,6 @@
 }
 
 .blocklyHtmlTextAreaInput {
-    background: #131344;
+    background: #323232;
     color: white;
 }

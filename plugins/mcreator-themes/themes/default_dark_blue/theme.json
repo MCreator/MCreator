@@ -1,0 +1,10 @@
+{
+  "name": "Default Dark Blue",
+  "colorScheme": {
+    "secondAltBackgroundColor": "0x00082f",
+    "backgroundColor": "0x000b3C",
+    "altBackgroundColor": "0x062589",
+    "altForegroundColor": "0x25ACF9",
+    "foregroundColor": "0xA8E0F7"
+  }
+}
