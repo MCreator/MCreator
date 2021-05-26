@@ -410,11 +410,12 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		CompletableFuture<String[]> newsFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getWebsiteNews(newsFuture);
 		JLabel nov = new JLabel(
-				"<html>Latest news from MCreator website:<br><div style=\"font-size: 14px;\">Loading news ...</div>");
+				"<html>Latest news from MCreator website:<br><div style=\"font-size: 14px; color: #f5f5f5;\">Loading news ...</div>");
 		nov.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		nov.setForeground(new Color(0xf5f5f5));
 		newsFuture.whenComplete((news, throwable) -> SwingUtilities.invokeLater(() -> {
 			if (news != null)
-				nov.setText("<html>Latest news from MCreator website:<br><div style=\"font-size: 14px;\">" + StringUtils
+				nov.setText("<html>Latest news from MCreator website:<br><div style=\"font-size: 14px; color: #f5f5f5;\">" + StringUtils
 						.abbreviateString(news[0], 43) + "</div>");
 			else
 				nov.setText("");
@@ -428,8 +429,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		CompletableFuture<String[]> motwFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getModOfTheWeekData(motwFuture);
-		JLabel lab3 = new JLabel("<html>Mod of the week:<br><font style=\"font-size: 14px;\">Loading data ...");
+		JLabel lab3 = new JLabel("<html>Mod of the week:<br><font style=\"font-size: 14px; color: #f5f5f5;\">Loading data ...");
 		lab3.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+		lab3.setForeground(new Color(0xf5f5f5));
 		JLabel lab2 = new JLabel();
 		lab2.setIcon(new EmptyIcon(48, 48));
 		JComponent motwpan = PanelUtils.westAndEastElement(lab3, lab2);
@@ -442,7 +444,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				}
 			});
 			if (motw != null)
-				lab3.setText("<html>Mod of the week:<br><font style=\"font-size: 14px;\">" + StringUtils
+				lab3.setText("<html>Mod of the week:<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + StringUtils
 						.abbreviateString(motw[0], 33) + "&nbsp;&nbsp;&nbsp;&nbsp;");
 			else
 				lab3.setText("");
