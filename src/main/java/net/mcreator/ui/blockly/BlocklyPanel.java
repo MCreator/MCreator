@@ -103,9 +103,8 @@ public class BlocklyPanel extends JFXPanel {
 						css += FileIO.readResourceToString("/blockly/css/mcreator_blockly_unixfix.css");
 					}
 
-					if (PluginLoader.INSTANCE
-							.getResourceAsStream("/themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/blockly.css")
-							!= null) {
+					if (FileIO.readResourceToString(PluginLoader.INSTANCE,
+							"/themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/blockly.css") != null) {
 						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
 								"/themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/blockly.css");
 					} else {
