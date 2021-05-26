@@ -74,7 +74,6 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 			}
 
 			label.setText(StringUtils.abbreviateString(element.getName(), 6));
-			label.setFont(AbstractMCreatorTheme.light_font.deriveFont(14.0f));
 			label2.setText(StringUtils.abbreviateString(element.getName(), 6));
 			label3.setText(StringUtils.abbreviateString(element.getName(), 12));
 
