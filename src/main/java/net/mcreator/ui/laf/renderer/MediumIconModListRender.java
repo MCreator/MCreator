@@ -22,7 +22,6 @@ package net.mcreator.ui.laf.renderer;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.AbstractMCreatorTheme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
@@ -64,7 +63,6 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 			}
 
 			label.setText(StringUtils.abbreviateString(element.getName(), 30));
-			label.setFont(AbstractMCreatorTheme.light_font.deriveFont(22.0f));
 
 			ImageIcon dva = null;
 
