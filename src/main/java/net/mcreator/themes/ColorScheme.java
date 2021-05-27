@@ -36,7 +36,6 @@ public class ColorScheme {
 	private String foregroundColor;
 
 	/**
-	 *
 	 * @return Background of components (e.g. text fields, checkboxes and sound selectors)
 	 */
 	public Color getSecondAltBackgroundColor() {

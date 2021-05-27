@@ -52,7 +52,7 @@ public class MCreatorTheme extends OceanTheme {
 	private static Font default_font;
 
 	public MCreatorTheme(ColorScheme colorScheme) {
-		
+
 		this.colorScheme = colorScheme;
 		MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
 
@@ -182,9 +182,9 @@ public class MCreatorTheme extends OceanTheme {
 
 		table.put("ComboBox.border", null);
 
-		List<?> buttonGradient = Arrays
-				.asList(0f, 0f, new ColorUIResource(colorScheme.getForegroundColor()), new ColorUIResource(colorScheme.getForegroundColor()),
-						new ColorUIResource(colorScheme.getForegroundColor()));
+		List<?> buttonGradient = Arrays.asList(0f, 0f, new ColorUIResource(colorScheme.getForegroundColor()),
+				new ColorUIResource(colorScheme.getForegroundColor()),
+				new ColorUIResource(colorScheme.getForegroundColor()));
 
 		table.put("Button.gradient", buttonGradient);
 		table.put("Button.rollover", true);
@@ -201,9 +201,9 @@ public class MCreatorTheme extends OceanTheme {
 		table.put("ToggleButton.gradient", buttonGradient);
 		table.put("ToggleButton.rollover", true);
 
-		List<?> sliderGradient = Arrays
-				.asList(0f, 0f, new ColorUIResource(colorScheme.getBackgroundColor()), new ColorUIResource(colorScheme.getBackgroundColor()),
-						new ColorUIResource(colorScheme.getBackgroundColor()));
+		List<?> sliderGradient = Arrays.asList(0f, 0f, new ColorUIResource(colorScheme.getBackgroundColor()),
+				new ColorUIResource(colorScheme.getBackgroundColor()),
+				new ColorUIResource(colorScheme.getBackgroundColor()));
 
 		table.put("Slider.altTrackColor", new ColorUIResource(colorScheme.getBackgroundColor()));
 		table.put("Slider.gradient", sliderGradient);
