@@ -888,6 +888,84 @@ public class MinecraftImageGenerator {
 			return out;
 		}
 
+		public static Image generateWallIcon(Image texture) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			g2d.scale(0.88, 1);
+
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 4, 13, 6, 0, 0, 5), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 8, 16, 8, 4, 0, 4), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 4, 13, 6, 12, 0, 5), null, null);
+			g2d.dispose();
+			return out;
+		}
+
+		public static Image generateFenceIcon(Image texture) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+
+			g2d.scale(0.88, 1);
+
+			// Bars (back)
+			g2d.translate(2,-1);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 2, 2, 0, 5, 7), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 2, 2, 0, 13, 7), null, null);
+			g2d.translate(-2,1);
+			// Left post
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 4, 16, 4, 0, 0, 6), null, null);
+			// Bars (middle)
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 8, 2, 2, 4, 5, 7), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 8, 2, 2, 4, 13, 7), null, null);
+			// Right post
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 4, 16, 4, 12, 0, 6), null, null);
+			// Bars (front)
+			g2d.translate(-2,1);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 2, 2, 14, 5, 7), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 2, 2, 14, 13, 7), null, null);
+
+			g2d.dispose();
+			return out;
+		}
+
+		public static Image generateFenceGateIcon(Image texture) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+
+			g2d.translate(0, 1);
+			g2d.scale(1, 1.1547);
+
+			// Left post
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 11, 2, 0, 5, 7), null, null);
+			// Middle
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 12, 3, 2, 2, 6, 7), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 4, 4, 2, 6, 8, 7), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 12, 3, 2, 2, 12, 7), null, null);
+			// Right post
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 11, 2, 14, 5, 7), null, null);
+
+			g2d.dispose();
+			return out;
+		}
+
+		public static Image generateEndRodIcon(Image texture) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+
+			g2d.scale(1, 1.15);
+
+			// base
+			g2d.translate(8, 6);
+			g2d.drawImage(ImageUtils.generateCuboidImage(ImageUtils.rotate(texture, 90), texture, texture,
+					4, 1, 4, 10, 9, 2), null, null);
+			// rod
+			g2d.translate(4, -9);
+			g2d.drawImage(ImageUtils.generateCuboidImage(ImageUtils.rotate(texture, 90), texture,
+					ImageUtils.translate(texture, 2, 0), 2, 15, 2, 12, 0, 0), null, null);
+
+			g2d.dispose();
+			return out;
+		}
+
 		public static BufferedImage generatePotionIcon(Color color) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
