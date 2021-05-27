@@ -326,7 +326,6 @@ public class ImageUtils {
 		BufferedImage image = rotate(ic.getImage(), degrees);
 
 		return new ImageIcon(image);
-
 	}
 
 	public static BufferedImage crop(BufferedImage src, Rectangle rect) {
@@ -469,6 +468,20 @@ public class ImageUtils {
 		return generateCuboidImage(texture, texture, texture, x, y, z, xOff, yOff, zOff);
 	}
 
+	/**
+	 * Generates a cuboid image given the textures, the dimensions, and the offsets on the axes.</p>
+	 *
+	 * @param top  <p>The top face texture</p>
+	 * @param front  <p>The front face texture</p>
+	 * @param side  <p>The side (right) face texture</p>
+	 * @param x  <p>The length of the cuboid (width of the side face)</p>
+	 * @param y  <p>The height of the cuboid</p>
+	 * @param z  <p>The width of the cuboid (width of the front face)</p>
+	 * @param xOff  <p>The horizontal offset of the cuboid, towards the front face</p>
+	 * @param yOff  <p>The vertical offset of the cuboid, towards the top face</p>
+	 * @param zOff  <p>The horizontal of the cuboid, towards the side face</p>
+	 * @return <p>Returns generated image.</p>
+	 */
 	public static BufferedImage generateCuboidImage(Image top, Image front, Image side, int x, int y, int z,
 			int xOff, int yOff, int zOff) {
 		BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);

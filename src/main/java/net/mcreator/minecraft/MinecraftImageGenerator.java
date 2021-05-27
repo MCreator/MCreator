@@ -888,6 +888,12 @@ public class MinecraftImageGenerator {
 			return out;
 		}
 
+		/**
+		 * <p>This method generates the block icon for walls.</p>
+		 *
+		 * @param texture  <p>Block texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
 		public static Image generateWallIcon(Image texture) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
@@ -900,6 +906,12 @@ public class MinecraftImageGenerator {
 			return out;
 		}
 
+		/**
+		 * <p>This method generates the block icon for fences.</p>
+		 *
+		 * @param texture  <p>Block texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
 		public static Image generateFenceIcon(Image texture) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
@@ -927,6 +939,12 @@ public class MinecraftImageGenerator {
 			return out;
 		}
 
+		/**
+		 * <p>This method generates the block icon for fence gates.</p>
+		 *
+		 * @param texture  <p>Block texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
 		public static Image generateFenceGateIcon(Image texture) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
@@ -947,6 +965,12 @@ public class MinecraftImageGenerator {
 			return out;
 		}
 
+		/**
+		 * <p>This method generates the block icon for end rods.</p>
+		 *
+		 * @param texture  <p>Block texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
 		public static Image generateEndRodIcon(Image texture) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
