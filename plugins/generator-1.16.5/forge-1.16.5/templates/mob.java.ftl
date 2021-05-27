@@ -673,9 +673,15 @@ import net.minecraft.block.material.Material;
 		</#if>
 
 		<#if data.disableCollisions>
-		@Override public boolean canBeCollidedWith() {
-        	return false;
+		@Override public boolean canBePushed() {
+			return false;
 		}
+
+   		@Override protected void collideWithEntity(Entity entityIn) {
+   		}
+
+   		@Override protected void collideWithNearbyEntities() {
+   		}
 		</#if>
 
 		<#if data.isBoss>

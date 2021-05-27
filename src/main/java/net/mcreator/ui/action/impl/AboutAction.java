@@ -28,7 +28,7 @@ import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.AbstractMCreatorTheme;
+import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.image.ImageUtils;
 
@@ -75,9 +75,9 @@ public class AboutAction extends BasicAction {
 	private static Image generateMCreatorLogoForAboutDialog() {
 		BufferedImage image = new BufferedImage(250, 250, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) image.getGraphics();
-		g.drawImage(UIRES.get("icon").getImage(), 54, 24, 128, 128, null);
-		g.drawImage(ImageUtils.colorize(UIRES.get("logo"), new Color(0x2F2F2F), true).getImage(), 22, 170, 200, 36,
-				null);
+		g.drawImage(UIRES.getBuiltIn("icon").getImage(), 54, 24, 128, 128, null);
+		g.drawImage(ImageUtils.colorize(UIRES.getBuiltIn("logo"), new Color(0x2F2F2F), true).getImage(), 22, 170, 200,
+				36, null);
 		return image;
 	}
 
@@ -86,7 +86,7 @@ public class AboutAction extends BasicAction {
 		JScrollPane gradlesp = new JScrollPane(licenseText);
 		licenseText.setEditable(false);
 		licenseText.setLineWrap(true);
-		licenseText.setFont(AbstractMCreatorTheme.console_font);
+		licenseText.setFont(MCreatorTheme.console_font);
 		ComponentUtils.deriveFont(licenseText, 12);
 		licenseText.setWrapStyleWord(true);
 		licenseText.setText(FileIO.readFileToString(new File("./LICENSE.txt")));
