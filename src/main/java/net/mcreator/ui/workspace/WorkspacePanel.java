@@ -61,7 +61,6 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
-
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;

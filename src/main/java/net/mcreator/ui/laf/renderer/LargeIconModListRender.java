@@ -61,9 +61,9 @@ public class LargeIconModListRender extends JPanel implements ListCellRenderer<I
 				setOpaque(false);
 			}
 
-			label.setText(StringUtils.abbreviateString(element.getName(), 24));
+
 			label.setText(StringUtils.abbreviateString(element.getName(), 18));
-			label.setFont(MCreatorTheme.light_font.deriveFont(24.0f));
+			label.setFont(MCreatorTheme.light_font.deriveFont(16.0f));
 
 
 			ImageIcon dva = null;
