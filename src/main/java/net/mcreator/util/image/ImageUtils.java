@@ -21,6 +21,7 @@ package net.mcreator.util.image;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.*;
 import java.util.Random;
 
@@ -254,6 +255,18 @@ public class ImageUtils {
 		return out;
 	}
 
+	public static BufferedImage eraseExceptRect(Image image, int x, int y, int w, int h) {
+		BufferedImage out = toBufferedImage(image);
+		Graphics2D g = out.createGraphics();
+		g.setBackground(new Color(0, 0, 0, 0));
+		g.clearRect(0, 0, out.getWidth(), y);
+		g.clearRect(0, 0, x, out.getHeight());
+		g.clearRect(x + w, 0, out.getWidth(), out.getHeight());
+		g.clearRect(0, y + h, out.getWidth(), out.getHeight());
+		g.dispose();
+		return out;
+	}
+
 	public static BufferedImage maskTransparency(BufferedImage base, BufferedImage mask) {
 		Color[][] baseCol = bufferedImageToColorArray(base);
 		Color[][] maskCol = bufferedImageToColorArray(mask);
@@ -436,5 +449,42 @@ public class ImageUtils {
 
 	public static BufferedImage resizeAndCrop(Image image, int size) {
 		return resizeImageWithHint(autoCropTile(toBufferedImage(image)), size, size);
+	}
+
+	public static BufferedImage generateCuboidImage(Image texture, int x, int y, int z, int xOff, int yOff, int zOff) {
+		return generateCuboidImage(texture, texture, texture, x, y, z, xOff, yOff, zOff);
+	}
+
+	public static BufferedImage generateCuboidImage(Image top, Image front, Image side, int x, int y, int z,
+			int xOff, int yOff, int zOff) {
+		BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = (Graphics2D) out.getGraphics();
+
+		int xTot = x + xOff;
+		int yTot = y + yOff;
+		int zTot = z + zOff;
+
+		// Top face
+		Point2D t2 = new Point2D.Double(16, 16 - yTot), t3 = new Point2D.Double(0, 24 - yTot),
+				t4 = new Point2D.Double(16, 32 - yTot), t1 = new Point2D.Double(32, 24 - yTot);
+		g2d.drawImage(ImageTransformUtil.computeImage(brighten(eraseExceptRect(
+				resizeAndCrop(top, 32), 2*zOff, 32-2*xTot, 2*z, 2*x)),
+				t4, t1,	t2,	t3), null, null);
+
+		// Front face
+		Point2D f1 = new Point2D.Double(16 - xTot, xTot/2d), f2 = new Point2D.Double(16 - xTot, 16 + xTot/2d),
+				f3 = new Point2D.Double(32 - xTot, 24 + xTot/2d), f4 = new Point2D.Double(32 - xTot, 8 + xTot/2d);
+		g2d.drawImage(ImageTransformUtil.computeImage(eraseExceptRect(
+				resizeAndCrop(front, 32), 2*zOff, 32-2*yTot, 2*z, 2*y), f1, f2, f3, f4),
+				null, null);
+
+		// Side face
+		Point2D r1 = new Point2D.Double(zTot, 8 + zTot/2d), r2 = new Point2D.Double(zTot, 24 + zTot/2d),
+				r3 = new Point2D.Double(16 + zTot, 16 + zTot/2d), r4 = new Point2D.Double(16 + zTot, zTot/2d);
+		g2d.drawImage(ImageTransformUtil.computeImage(darken(eraseExceptRect(
+				resizeAndCrop(side, 32), 32-2*xTot, 32-2*yTot, 2*x, 2*y)), r1, r2, r3, r4), null, null);
+
+		g2d.dispose();
+		return out;
 	}
 }
