@@ -303,15 +303,29 @@ public class ImageUtils {
 		return bimage;
 	}
 
-	public static ImageIcon rotate(ImageIcon ic, int radians) {
-		BufferedImage image = toBufferedImage(ic.getImage());
-		double rotationRequired = Math.toRadians(radians);
+	public static BufferedImage translate(Image img, double x, double y) {
+		BufferedImage image = toBufferedImage(img);
+		AffineTransform tx = AffineTransform.getTranslateInstance(x, y);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+
+		return op.filter(image, null);
+	}
+
+	public static BufferedImage rotate(Image img, int degrees) {
+		BufferedImage image = toBufferedImage(img);
+		double rotationRequired = Math.toRadians(degrees);
 		double locationX = image.getWidth() / 2.0;
 		double locationY = image.getHeight() / 2.0;
 		AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
 		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 
-		return new ImageIcon(op.filter(image, null));
+		return op.filter(image, null);
+	}
+
+	public static ImageIcon rotate(ImageIcon ic, int degrees) {
+		BufferedImage image = rotate(ic.getImage(), degrees);
+
+		return new ImageIcon(image);
 
 	}
 
@@ -468,7 +482,7 @@ public class ImageUtils {
 		Point2D t2 = new Point2D.Double(16, 16 - yTot), t3 = new Point2D.Double(0, 24 - yTot),
 				t4 = new Point2D.Double(16, 32 - yTot), t1 = new Point2D.Double(32, 24 - yTot);
 		g2d.drawImage(ImageTransformUtil.computeImage(brighten(eraseExceptRect(
-				resizeAndCrop(top, 32), 2*zOff, 32-2*xTot, 2*z, 2*x)),
+				resizeAndCrop(top, 32), 32-2*zTot, 32-2*xTot, 2*z, 2*x)),
 				t4, t1,	t2,	t3), null, null);
 
 		// Front face
