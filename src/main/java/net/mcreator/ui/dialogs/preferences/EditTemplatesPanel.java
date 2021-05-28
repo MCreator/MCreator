@@ -60,7 +60,7 @@ class EditTemplatesPanel {
 		opts.add(new JEmptyBox(5, 5));
 
 		JButton openFolder = L10N.button("dialog.preferences.open_folder", name.toLowerCase(Locale.ENGLISH));
-		openFolder.setIcon(UIRES.get("16px.mod"));
+		openFolder.setIcon(UIRES.get("16px.open.gif"));
 		opts.add(openFolder);
 
 		DefaultListModel<String> tmodel = new DefaultListModel<>();

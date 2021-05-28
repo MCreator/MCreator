@@ -82,7 +82,7 @@ class PluginsPanel {
 		reloadPluginList();
 
 		JButton openPluginFolder = L10N.button("dialog.preferences.open_folder", L10N.t("dialog.preferences.plugins").toLowerCase(Locale.ENGLISH));
-		openPluginFolder.setIcon(UIRES.get("16px.mod"));
+		openPluginFolder.setIcon(UIRES.get("16px.open.gif"));
 		opts.add(openPluginFolder);
 		opts.add(new JEmptyBox(5, 5));
 
