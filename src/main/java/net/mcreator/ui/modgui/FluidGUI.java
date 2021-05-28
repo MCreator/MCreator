@@ -149,12 +149,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
 		destalx.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
 
-		pane3.add(PanelUtils.totalCenterInPanel(destalx));
-
-		JPanel pane1 = new JPanel(new BorderLayout(10, 10));
-		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
-		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
-
 		JPanel destal = new JPanel(new GridLayout(6, 2, 20, 2));
 		destal.setOpaque(false);
 
@@ -196,6 +190,12 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.fluid.fluid_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(destalx, destal)));
+
+		JPanel pane1 = new JPanel(new BorderLayout(10, 10));
+		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
+		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
 		JPanel bucketProperties = new JPanel(new GridLayout(6, 2, 20, 2));
 		bucketProperties.setOpaque(false);
@@ -280,7 +280,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.block_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent properties = PanelUtils.westAndEastElement(PanelUtils.centerAndSouthElement(destal, bucketProperties), PanelUtils.pullElementUp(blockProperties));
+		JComponent properties = PanelUtils.westAndEastElement(bucketProperties, PanelUtils.pullElementUp(blockProperties));
 		properties.setOpaque(false);
 
 		pane2.setOpaque(false);
@@ -330,20 +330,20 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		textureStill.setValidator(new TileHolderValidator(textureStill));
 		textureFlowing.setValidator(new TileHolderValidator(textureFlowing));
+		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.fluid.error_fluid_needs_name")));
+		name.enableRealtimeValidation();
 
 		page1group.addValidationElement(textureStill);
 		page1group.addValidationElement(textureFlowing);
+		page1group.addValidationElement(name);
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.fluid.error_fluid_needs_name")));
-		name.enableRealtimeValidation();
 		bucketName.setValidator(new TextFieldValidator(bucketName, L10N.t("elementgui.fluid.error_bucket_needs_name")));
 		bucketName.enableRealtimeValidation();
 
-		page2group.addValidationElement(name);
 		page2group.addValidationElement(bucketName);
 
-		addPage(L10N.t("elementgui.common.page_visual"), pane3);
-		addPage(L10N.t("elementgui.common.page_properties"), pane2);
+		addPage(L10N.t("elementgui.fluid.page_visual_and_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane2);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 		addPage(L10N.t("elementgui.common.page_generation"), PanelUtils.totalCenterInPanel(pane1));
 
