@@ -29,6 +29,7 @@ import net.mcreator.ui.init.UIRES;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -56,8 +57,23 @@ class EditTemplatesPanel {
 		remove.setIcon(UIRES.get("16px.delete.gif"));
 		opts.add(remove);
 
+		opts.add(new JEmptyBox(5, 5));
+
+		JButton openFolder = L10N.button("dialog.preferences.open_folder", name.toLowerCase(Locale.ENGLISH));
+		openFolder.setIcon(UIRES.get("16px.mod"));
+		opts.add(openFolder);
+
 		DefaultListModel<String> tmodel = new DefaultListModel<>();
 		JList<String> templates = new JList<>(tmodel);
+
+		openFolder.addActionListener(e -> {
+			Desktop desktop = Desktop.getDesktop();
+			try {
+				desktop.open(UserFolderManager.getFileFromUserFolder(templatesFolder));
+			} catch (IOException ioException) {
+				ioException.printStackTrace();
+			}
+		});
 
 		remove.addActionListener(e -> templates.getSelectedValuesList().forEach(el -> {
 			new File(UserFolderManager.getFileFromUserFolder(templatesFolder), el).delete();

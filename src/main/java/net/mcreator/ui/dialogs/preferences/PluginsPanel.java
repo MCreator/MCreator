@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Locale;
 
 class PluginsPanel {
 
@@ -80,7 +81,7 @@ class PluginsPanel {
 
 		reloadPluginList();
 
-		JButton openPluginFolder = L10N.button("dialog.preferences.open_plugins_folder");
+		JButton openPluginFolder = L10N.button("dialog.preferences.open_folder", L10N.t("dialog.preferences.plugins").toLowerCase(Locale.ENGLISH));
 		openPluginFolder.setIcon(UIRES.get("16px.mod"));
 		opts.add(openPluginFolder);
 		opts.add(new JEmptyBox(5, 5));
