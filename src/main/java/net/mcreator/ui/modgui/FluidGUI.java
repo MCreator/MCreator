@@ -229,6 +229,14 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		generateBucket.setSelected(true);
 
+		generateBucket.addActionListener(e -> {
+			bucketName.setEnabled(generateBucket.isSelected());
+			textureBucket.setEnabled(generateBucket.isSelected());
+			creativeTab.setEnabled(generateBucket.isSelected());
+			emptySound.setEnabled(generateBucket.isSelected());
+			rarity.setEnabled(generateBucket.isSelected());
+		});
+
 		bucketProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.fluid.bucket_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
@@ -403,6 +411,12 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		restrictionBiomes.setListElements(fluid.restrictionBiomes);
 		if (fluid.creativeTab != null)
 			creativeTab.setSelectedItem(fluid.creativeTab);
+
+		bucketName.setEnabled(generateBucket.isSelected());
+		textureBucket.setEnabled(generateBucket.isSelected());
+		creativeTab.setEnabled(generateBucket.isSelected());
+		emptySound.setEnabled(generateBucket.isSelected());
+		rarity.setEnabled(generateBucket.isSelected());
 	}
 
 	@Override public Fluid getElementFromGUI() {
