@@ -34,6 +34,7 @@ import net.mcreator.util.DesktopUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -78,6 +79,20 @@ class PluginsPanel {
 		explorePlugins.addActionListener(e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins"));
 
 		reloadPluginList();
+
+		JButton openPluginFolder = L10N.button("dialog.preferences.open_plugins_folder");
+		openPluginFolder.setIcon(UIRES.get("16px.mod"));
+		opts.add(openPluginFolder);
+		opts.add(new JEmptyBox(5, 5));
+
+		openPluginFolder.addActionListener(e -> {
+			Desktop desktop = Desktop.getDesktop();
+			try {
+				desktop.open(UserFolderManager.getFileFromUserFolder("plugins"));
+			} catch (IOException ioException) {
+				ioException.printStackTrace();
+			}
+		});
 
 		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, new JScrollPane(plugins), 5, 5));
 
