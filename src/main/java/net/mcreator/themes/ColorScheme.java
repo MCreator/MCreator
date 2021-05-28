@@ -36,25 +36,24 @@ public class ColorScheme {
 	private String foregroundColor;
 
 	/**
-	 *
-	 * @return Background of components (e.g. text fields, checkboxes and sound selectors)
-	 */
-	public Color getSecondAltBackgroundColor() {
-		return Color.decode(secondAltBackgroundColor);
-	}
-
-	/**
-	 * @return Main color of the user (e.g. main menu and top bar)
+	 * @return Background of UI panels
 	 */
 	public Color getBackgroundColor() {
 		return Color.decode(backgroundColor);
 	}
 
 	/**
-	 * @return Second background color used (e.g. workspace background)
+	 * @return Background of components (e.g. text fields, checkboxes and sound selectors)
 	 */
 	public Color getAltBackgroundColor() {
 		return Color.decode(altBackgroundColor);
+	}
+
+	/**
+	 * @return Second background color used (e.g. workspace background)
+	 */
+	public Color getSecondAltBackgroundColor() {
+		return Color.decode(secondAltBackgroundColor);
 	}
 
 	/**
