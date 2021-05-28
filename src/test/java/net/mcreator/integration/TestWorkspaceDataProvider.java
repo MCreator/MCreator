@@ -347,6 +347,13 @@ public class TestWorkspaceDataProvider {
 			fluid.emptySound = !emptyLists ? new Sound(modElement.getWorkspace(), "") : new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			fluid.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+			fluid.specialInfo = new ArrayList<>();
+			if (!emptyLists) {
+				fluid.specialInfo = StringUtils
+						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+			} else {
+				fluid.specialInfo = new ArrayList<>();
+			}
 			fluid.resistance = 52.2;
 			fluid.emissiveRendering = _true;
 			fluid.luminance = 6;

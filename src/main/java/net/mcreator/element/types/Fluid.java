@@ -50,6 +50,7 @@ import java.util.List;
 	public TabEntry creativeTab;
 	public Sound emptySound;
 	public String rarity;
+	public List<String> specialInfo;
 
 	public double resistance;
 	public int luminance;
@@ -78,6 +79,7 @@ import java.util.List;
 		super(element);
 
 		this.rarity = "COMMON";
+		this.specialInfo = new ArrayList<>();
 
 		this.resistance = 100;
 		this.colorOnMap = "DEFAULT";

@@ -50,6 +50,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
 
@@ -70,6 +71,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 	private final SoundSelector emptySound = new SoundSelector(mcreator);
 	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
+	private final JTextField specialInfo = new JTextField(20);
 
 	private final JCheckBox isGas = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });
@@ -160,6 +162,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(bucketName, 16);
+		ComponentUtils.deriveFont(specialInfo, 16);
 		ComponentUtils.deriveFont(luminosity, 16);
 		ComponentUtils.deriveFont(density, 16);
 		ComponentUtils.deriveFont(viscosity, 16);
@@ -197,7 +200,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		JPanel bucketProperties = new JPanel(new GridLayout(6, 2, 20, 2));
+		JPanel bucketProperties = new JPanel(new GridLayout(7, 2, 20, 2));
 		bucketProperties.setOpaque(false);
 
 		textureBucket = new TextureHolder(
@@ -227,6 +230,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
 		bucketProperties.add(rarity);
 
+		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				L10N.label("elementgui.fluid.special_information")));
+		bucketProperties.add(specialInfo);
+
 		generateBucket.setSelected(true);
 
 		generateBucket.addActionListener(e -> {
@@ -235,6 +242,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 			creativeTab.setEnabled(generateBucket.isSelected());
 			emptySound.setEnabled(generateBucket.isSelected());
 			rarity.setEnabled(generateBucket.isSelected());
+			specialInfo.setEnabled(generateBucket.isSelected());
 		});
 
 		bucketProperties.setBorder(BorderFactory.createTitledBorder(
@@ -392,6 +400,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		textureBucket.setTextureFromTextureName(fluid.textureBucket);
 		emptySound.setSound(fluid.emptySound);
 		rarity.setSelectedItem(fluid.rarity);
+		specialInfo.setText(
+				fluid.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		resistance.setValue(fluid.resistance);
 		luminance.setValue(fluid.luminance);
 		emissiveRendering.setSelected(fluid.emissiveRendering);
@@ -417,6 +427,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		creativeTab.setEnabled(generateBucket.isSelected());
 		emptySound.setEnabled(generateBucket.isSelected());
 		rarity.setEnabled(generateBucket.isSelected());
+		specialInfo.setEnabled(generateBucket.isSelected());
 	}
 
 	@Override public Fluid getElementFromGUI() {
@@ -433,6 +444,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.textureBucket = textureBucket.getID();
 		fluid.emptySound = emptySound.getSound();
 		fluid.rarity = (String) rarity.getSelectedItem();
+		fluid.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 		fluid.resistance = (double) resistance.getValue();
 		fluid.luminance = (int) luminance.getValue();
 		fluid.emissiveRendering = emissiveRendering.isSelected();

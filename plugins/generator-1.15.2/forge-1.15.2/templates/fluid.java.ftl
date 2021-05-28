@@ -175,6 +175,14 @@ import net.minecraft.block.material.Material;
 		<#if data.generateBucket>
 		elements.items.add(() -> new BucketItem(still, new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1)
 			<#if data.creativeTab??>.group(${data.creativeTab})<#else>.group(ItemGroup.MISC)</#if>.rarity(Rarity.${data.rarity}))
+			<#if data.specialInfo?has_content>{
+			@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+				super.addInformation(itemstack, world, list, flag);
+				<#list data.specialInfo as entry>
+				list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+				</#list>
+			}
+			}</#if>
 			.setRegistryName("${registryname}_bucket"));
 		</#if>
 	}
