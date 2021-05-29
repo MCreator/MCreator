@@ -1046,9 +1046,9 @@ public class TestWorkspaceDataProvider {
 				block.blockBase = "PressurePlate";
 				block.sensitivity = new String[] {"EVERYTHING", "MOBS", "EVERYTHING", "MOBS" }[valueIndex];
 			}
-			if (block.blockBase.equals("PressurePlate")) {
+			if (block.blockBase != null && block.blockBase.equals("PressurePlate")) {
 				block.rotationMode = 0;
-				block.hasGravity = !_true;
+				block.hasGravity = false;
 			} else {
 				block.rotationMode = new int[] { 0, 1, 4, 5 }[valueIndex];
 				block.hasGravity = _true;
