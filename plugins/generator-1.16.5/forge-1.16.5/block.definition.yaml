@@ -328,7 +328,7 @@ templates:
     condition: "blockBase %= PressurePlate"
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname.json"
-  - template: json/txblock/pressure_plate_down.json.ftl
+  - template: json/txblock/pressure_plate.json.ftl
     condition: "blockBase %= PressurePlate"
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
