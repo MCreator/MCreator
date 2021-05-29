@@ -229,7 +229,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JComboBox<String> blockBase = new JComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
-					"Door", "FenceGate", "EndRod" });
+					"Door", "FenceGate", "EndRod", "PressurePlate" });
+
+	private final JComboBox<String> sensitivity = new JComboBox<>(
+			new String[] { "EVERYTHING", "MOBS" });
 
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -308,6 +311,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.setDefaultName("(no additional condition)");
 
+		sensitivity.setEnabled(false);
 		blockBase.addActionListener(e -> {
 			renderType.setEnabled(true);
 			disableOffset.setEnabled(true);
@@ -319,6 +323,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			material.setEnabled(true);
 			connectedSides.setEnabled(true);
 			isWaterloggable.setEnabled(true);
+			sensitivity.setEnabled(false);
 
 			if (blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Pane")) {
 				connectedSides.setEnabled(false);
@@ -327,6 +332,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				rotationMode.setEnabled(false);
 				disableOffset.setEnabled(false);
 				boundingBoxList.setEnabled(false);
+				sensitivity.setEnabled(false);
 
 				connectedSides.setSelected(false);
 				renderType.setSelectedItem(singleTexture);
@@ -345,6 +351,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				isWaterloggable.setSelected(false);
 				disableOffset.setEnabled(false);
 				boundingBoxList.setEnabled(false);
+				sensitivity.setEnabled(false);
 
 				material.setSelectedItem("LEAVES");
 				renderType.setSelectedItem(singleTexture);
@@ -364,15 +371,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 				hasGravity.setEnabled(false);
 				rotationMode.setEnabled(false);
 				isWaterloggable.setEnabled(false);
+				sensitivity.setEnabled(blockBase.getSelectedItem().equals("PressurePlate"));
 
 				hasGravity.setSelected(false);
 				rotationMode.setSelectedIndex(0);
-				isWaterloggable.setSelected(false);
 
 				if (blockBase.getSelectedItem().equals("Wall") || blockBase.getSelectedItem().equals("Fence")
 						|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem().equals("Door")
 						|| blockBase.getSelectedItem().equals("FenceGate") || blockBase.getSelectedItem()
-						.equals("EndRod")) {
+						.equals("EndRod") || blockBase.getSelectedItem().equals("PressurePlate")) {
 					if (!isEditingMode()) {
 						hasTransparency.setSelected(true);
 						lightOpacity.setValue(0);
@@ -461,9 +468,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.block_base_item_texture"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		txblock4.add("Center", PanelUtils.gridElements(3, 2,
+		txblock4.add("Center", PanelUtils.gridElements(4, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
-				blockBase, HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
+				blockBase, HelpUtils.wrapWithHelpButton(this.withEntry("block/sensitivity"),
+						L10N.label("elementgui.block.sensitivity")),
+				PanelUtils.centerInPanel(sensitivity),
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
 						L10N.label("elementgui.block.item_texture")), PanelUtils.centerInPanel(itemTexture), HelpUtils
 						.wrapWithHelpButton(this.withEntry("block/particle_texture"),
 								L10N.label("elementgui.block.particle_texture")),
@@ -1226,6 +1236,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	@Override public void openInEditingMode(Block block) {
 		itemTexture.setTextureFromTextureName(block.itemTexture);
 		particleTexture.setTextureFromTextureName(block.particleTexture);
+		sensitivity.setSelectedItem(block.sensitivity);
 		texture.setTextureFromTextureName(block.texture);
 		textureTop.setTextureFromTextureName(block.textureTop);
 		textureLeft.setTextureFromTextureName(block.textureLeft);
@@ -1436,6 +1447,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.texture = texture.getID();
 		block.itemTexture = itemTexture.getID();
 		block.particleTexture = particleTexture.getID();
+		block.sensitivity = (String) sensitivity.getSelectedItem();
 		block.textureTop = textureTop.getID();
 		block.textureLeft = textureLeft.getID();
 		block.textureFront = textureFront.getID();

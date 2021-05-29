@@ -319,6 +319,25 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
 
+  # TX: PressurePlate templates
+  - template: json/txblock/pressure_plate_item.json.ftl
+    condition: "blockBase %= PressurePlate"
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/txblock/pressure_plate_states.json.ftl
+    condition: "blockBase %= PressurePlate"
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/txblock/pressure_plate_down.json.ftl
+    condition: "blockBase %= PressurePlate"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/txblock/pressure_plate_down.json.ftl
+    deleteWhenConditionFalse: true
+    condition: "blockBase %= PressurePlate"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_down.json"
+
 localizationkeys:
   - key: block.@modid.@registryname
     mapto: name

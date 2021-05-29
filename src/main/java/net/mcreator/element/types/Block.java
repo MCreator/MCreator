@@ -58,6 +58,7 @@ import java.util.stream.Collectors;
 
 	public String itemTexture;
 	public String particleTexture;
+	public String sensitivity;
 
 	public String blockBase;
 
@@ -178,6 +179,7 @@ import java.util.stream.Collectors;
 		this.boundingBoxes = new ArrayList<>();
 		this.spawnWorldTypes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
+		this.sensitivity = "EVERYTHING";
 		this.reactionToPushing = "NORMAL";
 		this.slipperiness = 0.6;
 		this.speedFactor = 1.0;
