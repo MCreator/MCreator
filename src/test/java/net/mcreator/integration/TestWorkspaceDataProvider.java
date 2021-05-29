@@ -1042,7 +1042,7 @@ public class TestWorkspaceDataProvider {
 
 					block.boundingBoxes.add(box);
 				}
-
+			} else {
 				//Pressure plates
 				block.blockBase = "PressurePlate";
 				block.sensitivity = (random.nextBoolean()) ? "EVERYTHING" : "MOBS";
