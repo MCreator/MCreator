@@ -324,6 +324,27 @@ public class WoodPackMakerTool {
 		mcreator.getGenerator().generateElement(fenceGateBlock);
 		mcreator.getModElementManager().storeModElement(fenceGateBlock);
 
+		// we use Block GUI to get default values for the block element (kinda hacky!)
+		Block pressurePlateBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
+				.getModElement(mcreator, new ModElement(workspace, name + "PressurePlate", ModElementType.BLOCK), false)
+				.getElementFromGUI();
+		pressurePlateBlock.name = name + " Pressure Plate";
+		pressurePlateBlock.blockBase = "PressurePlate";
+		pressurePlateBlock.sensitivity = "EVERYTHING";
+		pressurePlateBlock.material = new Material(workspace, "WOOD");
+		pressurePlateBlock.texture = planksTextureName;
+		pressurePlateBlock.soundOnStep = new StepSound(workspace, "WOOD");
+		pressurePlateBlock.hardness = 2 * factor;
+		pressurePlateBlock.resistance = 3 * factor;
+		pressurePlateBlock.breakHarvestLevel = 0;
+		pressurePlateBlock.flammability = (int) Math.round(5 * factor);
+
+		pressurePlateBlock.getModElement().setParentFolder(folder);
+		mcreator.getModElementManager().storeModElementPicture(pressurePlateBlock);
+		mcreator.getWorkspace().addModElement(pressurePlateBlock.getModElement());
+		mcreator.getGenerator().generateElement(pressurePlateBlock);
+		mcreator.getModElementManager().storeModElement(pressurePlateBlock);
+
 		//Tag - Items
 		//Mainly used for recipes and loot tables
 		Tag woodItemTag = (Tag) ModElementTypeRegistry.REGISTRY.get(ModElementType.TAG)
@@ -442,6 +463,20 @@ public class WoodPackMakerTool {
 		mcreator.getWorkspace().addModElement(fenceGateRecipe.getModElement());
 		mcreator.getGenerator().generateElement(fenceGateRecipe);
 		mcreator.getModElementManager().storeModElement(fenceGateRecipe);
+
+		Recipe pressurePlateRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+				.getModElement(mcreator, new ModElement(workspace, name + "PressurePlateRecipe", ModElementType.RECIPE), false)
+				.getElementFromGUI();
+		pressurePlateRecipe.recipeSlots[6] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		pressurePlateRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		pressurePlateRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "PressurePlate");
+		pressurePlateRecipe.recipeRetstackSize = 1;
+
+		pressurePlateRecipe.getModElement().setParentFolder(folder);
+		mcreator.getModElementManager().storeModElementPicture(pressurePlateRecipe);
+		mcreator.getWorkspace().addModElement(pressurePlateRecipe.getModElement());
+		mcreator.getGenerator().generateElement(pressurePlateRecipe);
+		mcreator.getModElementManager().storeModElement(pressurePlateRecipe);
 
 		Recipe stickRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
 				.getModElement(mcreator, new ModElement(workspace, name + "StickRecipe", ModElementType.RECIPE), false)
