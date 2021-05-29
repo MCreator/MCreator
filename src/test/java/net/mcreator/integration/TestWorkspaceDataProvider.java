@@ -1042,6 +1042,10 @@ public class TestWorkspaceDataProvider {
 
 					block.boundingBoxes.add(box);
 				}
+
+				//Pressure plates
+				block.blockBase = "PressurePlate";
+				block.sensitivity = (random.nextBoolean()) ? "EVERYTHING" : "MOBS";
 			}
 			block.rotationMode = new int[] { 0, 1, 4, 5 }[valueIndex];
 			block.hardness = 2.3;
