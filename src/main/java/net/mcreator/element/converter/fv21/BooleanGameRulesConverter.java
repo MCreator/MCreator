@@ -29,7 +29,9 @@ public class BooleanGameRulesConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		if (input.getModElement().getMetadata("type").equals("boolean")) {
+			input.getModElement().clearMetadata();
 			input.getModElement().putMetadata("type", VariableElementTypeLoader.BuiltInTypes.LOGIC.getName());
+			input.getModElement().reinit();
 		}
 
 		return input;
