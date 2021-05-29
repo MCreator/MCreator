@@ -65,8 +65,8 @@ public class ThemeLoader {
 
 			// Load the custom icon if provided, otherwise load the default one
 			if (PluginLoader.INSTANCE.getResource("themes/" + theme.getID() + "/icon.png") != null)
-				theme.setIcon(
-						new ImageIcon(ImageUtils.resize(UIRES.getImageFromResourceID("themes/" + theme.getID() + "/icon.png").getImage(), 64)));
+				theme.setIcon(new ImageIcon(ImageUtils
+						.resize(UIRES.getImageFromResourceID("themes/" + theme.getID() + "/icon.png").getImage(), 64)));
 
 			THEMES.add(theme);
 		}
