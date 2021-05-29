@@ -32,6 +32,7 @@ import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class GetVariableBlock implements IBlockGenerator {
 
 	public GetVariableBlock() {
 		names = VariableElementTypeLoader.getVariables().stream().map(VariableElementType::getName)
-				.toArray(String[]::new);
+				.collect(Collectors.toList()).stream().map(s -> s = "variables_get_" + s).toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {

@@ -66,7 +66,7 @@ public class VariableElementTypeLoader {
 			JS_CACHE += BlocklyJavascriptTemplates.returnBlock(variable);
 
 			//We check the type of the variable, if it is a global var, we instantiate it with this variable.
-			switch (variable.getName().toLowerCase()) {
+			switch (variable.getName()) {
 			case "logic":
 				BuiltInTypes.LOGIC = variable;
 				break;
