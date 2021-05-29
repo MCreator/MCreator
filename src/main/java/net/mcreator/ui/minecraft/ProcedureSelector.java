@@ -20,6 +20,7 @@ package net.mcreator.ui.minecraft;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeRegistry;
@@ -115,12 +116,10 @@ public class ProcedureSelector extends JPanel {
 		setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
 
 		if (returnType != null) {
-			setBorder(BorderFactory
-					.createLineBorder(new Dependency("", returnType.getName()).getColor()));
-		}
+			setBorder(BorderFactory.createLineBorder(BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor())));
 
-		if (returnType == VariableElementTypeLoader.BuiltInTypes.LOGIC) {
-			defaultName = "(always)";
+			if (returnType == VariableElementTypeLoader.BuiltInTypes.LOGIC)
+				defaultName = "(always)";
 		}
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
@@ -294,9 +293,7 @@ public class ProcedureSelector extends JPanel {
 		for (ModElement mod : mcreator.getWorkspace().getModElements()) {
 			if (mod.getType() == ModElementType.PROCEDURE) {
 				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
-				VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-						VariableElementTypeLoader.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
-						null;
+
 				List<Dependency> realdepsList = new ArrayList<>();
 				if (dependenciesList == null)
 					continue;
@@ -312,9 +309,14 @@ public class ProcedureSelector extends JPanel {
 
 				boolean correctReturnType = true;
 
-				if (returnType != null)
+				if (returnType != null) {
+					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
+							VariableElementTypeLoader
+									.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
+							null;
 					if (returnTypeCurrent != returnType)
 						correctReturnType = false;
+				}
 
 				if (!missing && correctReturnType) {
 					depsMap.put(mod.getName(), realdepsList);
