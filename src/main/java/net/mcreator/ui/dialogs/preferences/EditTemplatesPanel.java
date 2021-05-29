@@ -40,14 +40,13 @@ class EditTemplatesPanel {
 
 		JPanel sectionPanel = new JPanel(new BorderLayout(15, 15));
 
-		sectionPanel.add("North",
-				L10N.label("dialog.preferences.change_language", name.toLowerCase(Locale.ENGLISH), templateExt));
+		sectionPanel.add("North", L10N.label("dialog.preferences.change_language", name.toLowerCase(), templateExt));
 		sectionPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
 
 		JToolBar opts = new JToolBar();
 		opts.setFloatable(false);
 
-		JButton add = L10N.button("dialog.preferences.add_language", name.toLowerCase(Locale.ENGLISH));
+		JButton add = L10N.button("dialog.preferences.add_language", name.toLowerCase());
 		add.setIcon(UIRES.get("16px.add.gif"));
 		opts.add(add);
 
@@ -59,16 +58,14 @@ class EditTemplatesPanel {
 
 		opts.add(new JEmptyBox(5, 5));
 
-		JButton openFolder = L10N.button("dialog.preferences.open_folder", name.toLowerCase(Locale.ENGLISH));
+		JButton openFolder = L10N.button("dialog.preferences.open_folder", name.toLowerCase());
 		openFolder.setIcon(UIRES.get("16px.open.gif"));
 		opts.add(openFolder);
 
 		DefaultListModel<String> tmodel = new DefaultListModel<>();
 		JList<String> templates = new JList<>(tmodel);
 
-		openFolder.addActionListener(e -> {
-			DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder(templatesFolder));
-		});
+		openFolder.addActionListener(e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder(templatesFolder)));
 
 		remove.addActionListener(e -> templates.getSelectedValuesList().forEach(el -> {
 			new File(UserFolderManager.getFileFromUserFolder(templatesFolder), el).delete();

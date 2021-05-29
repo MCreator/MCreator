@@ -36,7 +36,6 @@ import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Locale;
 
 class PluginsPanel {
 
@@ -80,14 +79,13 @@ class PluginsPanel {
 
 		reloadPluginList();
 
-		JButton openPluginFolder = L10N.button("dialog.preferences.open_folder", L10N.t("dialog.preferences.plugins").toLowerCase(Locale.ENGLISH));
+		JButton openPluginFolder = L10N
+				.button("dialog.preferences.open_folder", L10N.t("dialog.preferences.plugins").toLowerCase());
 		openPluginFolder.setIcon(UIRES.get("16px.open.gif"));
 		opts.add(openPluginFolder);
 		opts.add(new JEmptyBox(5, 5));
 
-		openPluginFolder.addActionListener(e -> {
-			DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins"));
-		});
+		openPluginFolder.addActionListener(e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins")));
 
 		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, new JScrollPane(plugins), 5, 5));
 
