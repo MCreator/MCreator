@@ -22,7 +22,7 @@ import com.google.gson.annotations.SerializedName;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 
-public class VariableElementType {
+@SuppressWarnings("unused") public class VariableElementType {
 
 	private String name;
 	private int color;
@@ -45,7 +45,7 @@ public class VariableElementType {
 		return new NameMapper(workspace, "types").getMapping(getName());
 	}
 
-	@SuppressWarnings("unused") public String getDefaultValue() {
+	public String getDefaultValue() {
 		return defaultValue;
 	}
 
