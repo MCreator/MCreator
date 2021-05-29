@@ -342,6 +342,26 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				}
 			}
 		}
+
+		List<String> exclusions = mcreator.getGeneratorConfiguration()
+				.getUnsupportedDefinitionFields(modElement.getType());
+
+		if (exclusions != null) {
+			Field[] fields = getClass().getDeclaredFields();
+			for (Field field : fields) {
+				if (Component.class.isAssignableFrom(field.getType())) {
+					if (exclusions.contains(field.getName())) {
+						try {
+							field.setAccessible(true);
+							Component obj = (Component) field.get(this);
+							obj.setEnabled(false);
+						} catch (IllegalAccessException e) {
+							LOG.warn("Failed to access field", e);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	private void showErrorsMessage(AggregatedValidationResult validationResult) {
