@@ -69,11 +69,13 @@ public class NewVariableDialog {
 				&& type.getSelectedItem() != null) {
 			VariableElement element = new VariableElement();
 			VariableElementType variable = VariableElementTypeLoader.getVariableTypeFromString(((VariableElementType) type.getSelectedItem()).getName());
-			element.setName(Transliteration.transliterateString(textField.getText()));
-			element.setType((VariableElementType) type.getSelectedItem());
-			element.setValue(Objects.requireNonNull(variable).getDefaultValue());
-			element.setScope((VariableElementType.Scope) scope.getSelectedItem());
-			return element;
+			if (variable != null) {
+				element.setName(Transliteration.transliterateString(textField.getText()));
+				element.setType((VariableElementType) type.getSelectedItem());
+				element.setValue(variable.getDefaultValue());
+				element.setScope((VariableElementType.Scope) scope.getSelectedItem());
+				return element;
+			}
 		}
 		return null;
 	}

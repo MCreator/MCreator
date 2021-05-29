@@ -36,6 +36,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.VariableElementType;
 import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import netscape.javascript.JSObject;
 import org.apache.logging.log4j.LogManager;
@@ -50,7 +51,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -228,13 +228,16 @@ public class BlocklyPanel extends JFXPanel {
 			return retval;
 
 		String[] vars = query.split(":");
-		for (String varName : vars) {
-			String[] vardata = varName.split(";");
+		for (String varNameType : vars) {
+			String[] vardata = varNameType.split(";");
 			if (vardata.length == 2) {
 				VariableElement element = new VariableElement();
 				element.setName(vardata[0]);
-				element.setType(Objects.requireNonNull(BlocklyVariables.getVarElementTypeFromBlocklyType(vardata[1])));
-				retval.add(element);
+				VariableElementType variableElementType = BlocklyVariables.getVarElementTypeFromBlocklyType(vardata[1]);
+				if (variableElementType != null) {
+					element.setType(variableElementType);
+					retval.add(element);
+				}
 			}
 		}
 		return retval;
