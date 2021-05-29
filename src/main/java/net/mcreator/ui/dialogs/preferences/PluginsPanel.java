@@ -34,7 +34,6 @@ import net.mcreator.util.DesktopUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
@@ -87,12 +86,7 @@ class PluginsPanel {
 		opts.add(new JEmptyBox(5, 5));
 
 		openPluginFolder.addActionListener(e -> {
-			Desktop desktop = Desktop.getDesktop();
-			try {
-				desktop.open(UserFolderManager.getFileFromUserFolder("plugins"));
-			} catch (IOException ioException) {
-				ioException.printStackTrace();
-			}
+			DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins"));
 		});
 
 		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, new JScrollPane(plugins), 5, 5));

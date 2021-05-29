@@ -25,11 +25,11 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -67,12 +67,7 @@ class EditTemplatesPanel {
 		JList<String> templates = new JList<>(tmodel);
 
 		openFolder.addActionListener(e -> {
-			Desktop desktop = Desktop.getDesktop();
-			try {
-				desktop.open(UserFolderManager.getFileFromUserFolder(templatesFolder));
-			} catch (IOException ioException) {
-				ioException.printStackTrace();
-			}
+			DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder(templatesFolder));
 		});
 
 		remove.addActionListener(e -> templates.getSelectedValuesList().forEach(el -> {
