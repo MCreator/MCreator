@@ -990,6 +990,22 @@ public class MinecraftImageGenerator {
 			return out;
 		}
 
+		/**
+		 * <p>This method generates the block icon for pressure plate.</p>
+		 *
+		 * @param texture  <p>Block texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static Image generatePressurePlateIcon(Image texture) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			g2d.scale(0.88, 1);
+
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 14, 1, 14, 1, 0, 1), null, null);
+			g2d.dispose();
+			return out;
+		}
+
 		public static BufferedImage generatePotionIcon(Color color) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();

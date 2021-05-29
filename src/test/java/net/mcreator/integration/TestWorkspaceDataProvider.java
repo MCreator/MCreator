@@ -1046,10 +1046,15 @@ public class TestWorkspaceDataProvider {
 				block.blockBase = "PressurePlate";
 				block.sensitivity = new String[] {"EVERYTHING", "MOBS", "EVERYTHING", "MOBS" }[valueIndex];
 			}
-			block.rotationMode = new int[] { 0, 1, 4, 5 }[valueIndex];
+			if (block.blockBase.equals("PressurePlate")) {
+				block.rotationMode = 0;
+				block.hasGravity = !_true;
+			} else {
+				block.rotationMode = new int[] { 0, 1, 4, 5 }[valueIndex];
+				block.hasGravity = _true;
+			}
 			block.hardness = 2.3;
 			block.resistance = 3.1;
-			block.hasGravity = _true;
 			block.useLootTableForDrops = !_true;
 			block.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
