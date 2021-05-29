@@ -350,14 +350,19 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			Field[] fields = getClass().getDeclaredFields();
 			for (Field field : fields) {
 				if (Component.class.isAssignableFrom(field.getType())) {
-					if (exclusions.contains(field.getName())) {
-						try {
-							field.setAccessible(true);
-							Component obj = (Component) field.get(this);
-							obj.setEnabled(false);
-						} catch (IllegalAccessException e) {
-							LOG.warn("Failed to access field", e);
+					if (!exclusions.contains(field.getName()) && inclusions != null && !inclusions.contains(field.getName())) {
+						if (exclusions.contains(field.getName())) {
+							try {
+								field.setAccessible(true);
+								Component obj = (Component) field.get(this);
+								obj.setEnabled(false);
+							} catch (IllegalAccessException e) {
+								LOG.warn("Failed to access field", e);
+							}
 						}
+					} else {
+						LOG.warn(field.getName()
+								+ " can not be used in both inclusions and exclusions fields at the same time. The field will be enabled.");
 					}
 				}
 			}
