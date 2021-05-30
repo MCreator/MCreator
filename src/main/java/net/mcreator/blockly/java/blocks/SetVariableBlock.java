@@ -47,8 +47,14 @@ public class SetVariableBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_set_");
-		String javaType = new Dependency("", VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type).getName())
+		String javaType = new Dependency("",
+				VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type).getName())
 				.getType(master.getWorkspace());
+		if (javaType.equals("Object")) {
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					type + " variable type does not support the set variable block. Skipping this block."));
+			return;
+		}
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
