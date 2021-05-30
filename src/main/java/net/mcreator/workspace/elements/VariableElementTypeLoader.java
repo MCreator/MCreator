@@ -27,6 +27,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -37,7 +38,7 @@ public class VariableElementTypeLoader {
 
 	public static VariableElementTypeLoader INSTANCE;
 
-	private final Map<VariableElementType, String> VARIABLE_TYPES_LIST = new HashMap<>();
+	private final Map<VariableElementType, String> VARIABLE_TYPES_LIST = new LinkedHashMap<>();
 	private final String variableBlocklyJS;
 
 	public static void loadVariableTypes() {

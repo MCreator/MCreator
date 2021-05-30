@@ -26,13 +26,10 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -119,19 +116,29 @@ public class ExternalBlockLoader {
 			toolboxCategories.add(toolboxCategory);
 		}
 
+		toolboxCategories.sort(Comparator.comparing(ToolboxCategory::getName));
+
+		// setup lookup cache of loaded blocks
+		this.toolboxBlocks = new HashMap<>();
+		for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
+			toolboxBlocks.put(toolboxBlock.machine_name, toolboxBlock);
+		}
+
+		// generate JSON for loaded blocks
+		JsonArray blocksJSON = new JsonArray();
+		for (ToolboxBlock toolboxBlock : toolboxBlocksList)
+			blocksJSON.add(toolboxBlock.blocklyJSON);
+		this.blocksJSONString = blocksJSON.toString();
+
+		// after cache is made, we can load dynamic blocks
+		toolboxBlocksList.addAll(DynamicBlockLoader.getDynamicBlocks());
+
+		// and then sort them for toolbox display
 		if (PreferencesManager.PREFERENCES.blockly.useSmartSort) {
 			toolboxBlocksList
 					.sort(Comparator.comparing(ToolboxBlock::getGroupEstimate).thenComparing(ToolboxBlock::getName));
 		} else {
 			toolboxBlocksList.sort(Comparator.comparing(ToolboxBlock::getName));
-		}
-
-		toolboxCategories.sort(Comparator.comparing(ToolboxCategory::getName));
-
-		// setup lookup cache
-		this.toolboxBlocks = new LinkedHashMap<>();
-		for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
-			toolboxBlocks.put(toolboxBlock.machine_name, toolboxBlock);
 		}
 
 		// setup toolbox
@@ -148,40 +155,8 @@ public class ExternalBlockLoader {
 		toolbox.put("text", new StringBuilder());
 		toolbox.put("advanced", new StringBuilder());
 
-		for (ToolboxCategory category : toolboxCategories) {
-			StringBuilder categoryBuilder = new StringBuilder();
-			categoryBuilder.append("<category name=\"").append(category.getName()).append("\" colour=\"")
-					.append(category.color).append("\">");
-			if (category.description != null) {
-				categoryBuilder.append("<label text=\"").append(category.description)
-						.append("\" web-class=\"whlab\"/>");
-			}
-			for (ToolboxBlock toolboxBlock : toolboxBlocks.values()) {
-				if (toolboxBlock.toolbox_id != null && toolboxBlock.toolbox_id.equals(category.id)) {
-					StringBuilder toolboxXML = new StringBuilder();
-
-					toolboxXML.append("<block type=\"").append(toolboxBlock.machine_name).append("\">");
-					if (toolboxBlock.toolbox_init != null)
-						toolboxBlock.toolbox_init.forEach(toolboxXML::append);
-					toolboxXML.append("</block>");
-
-					categoryBuilder.append(toolboxXML);
-					toolboxBlock.toolboxXML = toolboxXML.toString();
-					toolboxBlock.toolboxCategory = category;
-				}
-			}
-			categoryBuilder.append("</category>");
-			if (categoryBuilder.toString().contains("<block type=")) {
-				if (category.api) {
-					toolbox.get("apis").append(categoryBuilder);
-				} else {
-					toolbox.get("other").append(categoryBuilder);
-				}
-			}
-		}
-
-		JsonArray blocksJSON = new JsonArray();
-		for (ToolboxBlock toolboxBlock : toolboxBlocks.values()) {
+		// Handle built-in categories
+		for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
 			for (Map.Entry<String, StringBuilder> entry : toolbox.entrySet()) {
 				if (entry.getKey().equals("other"))
 					continue;
@@ -198,10 +173,41 @@ public class ExternalBlockLoader {
 					toolboxBlock.toolboxXML = toolboxXML.toString();
 				}
 			}
-			blocksJSON.add(toolboxBlock.blocklyJSON);
 		}
 
-		this.blocksJSONString = blocksJSON.toString();
+		// Handle other and API categories
+		for (ToolboxCategory category : toolboxCategories) {
+			StringBuilder categoryBuilder = new StringBuilder();
+			categoryBuilder.append("<category name=\"").append(category.getName()).append("\" colour=\"")
+					.append(category.color).append("\">");
+			if (category.description != null) {
+				categoryBuilder.append("<label text=\"").append(category.description)
+						.append("\" web-class=\"whlab\"/>");
+			}
+			for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
+				if (toolboxBlock.toolbox_id != null && toolboxBlock.toolbox_id.equals(category.id)) {
+					StringBuilder toolboxXML = new StringBuilder();
+
+					toolboxXML.append("<block type=\"").append(toolboxBlock.machine_name).append("\">");
+					if (toolboxBlock.toolbox_init != null)
+						toolboxBlock.toolbox_init.forEach(toolboxXML::append);
+					toolboxXML.append("</block>");
+
+					categoryBuilder.append(toolboxXML);
+					toolboxBlock.toolboxXML = toolboxXML.toString();
+					toolboxBlock.toolboxCategory = category;
+				}
+			}
+			categoryBuilder.append("</category>");
+
+			if (categoryBuilder.toString().contains("<block type=")) {
+				if (category.api) {
+					toolbox.get("apis").append(categoryBuilder);
+				} else {
+					toolbox.get("other").append(categoryBuilder);
+				}
+			}
+		}
 	}
 
 	public void loadBlocksAndCategoriesInPanel(BlocklyPanel pane, ToolboxType toolboxType) {
@@ -209,11 +215,6 @@ public class ExternalBlockLoader {
 
 		String toolbox_xml = FileIO
 				.readResourceToString("/blockly/toolbox_" + toolboxType.name().toLowerCase(Locale.ENGLISH) + ".xml");
-
-		//We add variable related blocks inside their category
-		if (toolboxType == ExternalBlockLoader.ToolboxType.PROCEDURE) {
-			toolbox_xml = BlocklyBlockUtil.addProcedureBlocksToCategories(toolbox_xml);
-		}
 
 		Matcher m = Pattern.compile("\\$\\{t:([\\w.]+)}").matcher(toolbox_xml);
 		while (m.find()) {
