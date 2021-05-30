@@ -19,6 +19,7 @@
 
 package net.mcreator.themes;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 
 /**
@@ -34,6 +35,7 @@ public class ColorScheme {
 	private String secondAltBackgroundColor;
 	private String altForegroundColor;
 	private String foregroundColor;
+	@Nullable String interfaceAccentColor;
 
 	/**
 	 * @return Background of UI panels
@@ -57,16 +59,23 @@ public class ColorScheme {
 	}
 
 	/**
-	 * @return Secondary text color
+	 * @return <p>Secondary text color </p>
 	 */
 	public Color getAltForegroundColor() {
 		return Color.decode(altForegroundColor);
 	}
 
 	/**
-	 * @return Color used for most of texts
+	 * @return <p>Color used for most of texts </p>
 	 */
 	public Color getForegroundColor() {
 		return Color.decode(foregroundColor);
+	}
+
+	/**
+	 * @return <p>Overrides the interfaceAccentColor defined by the user in {@link net.mcreator.preferences.PreferencesData}</p>
+	 */
+	@Nullable public String getInterfaceAccentColor() {
+		return interfaceAccentColor;
 	}
 }

@@ -249,7 +249,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 			namepan.setOpaque(false);
 
 			JLabel name = new JLabel(ma.getName());
-			name.setFont(MCreatorTheme.light_font.deriveFont(20.0f));
+			name.setFont(MCreatorTheme.secondary_font.deriveFont(20.0f));
 			namepan.add("North", name);
 
 			JLabel name2 = L10N.label("workspace.sounds.files", String.join(", ", ma.getFiles()));
