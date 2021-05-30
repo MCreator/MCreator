@@ -38,24 +38,24 @@ public class ColorScheme {
 	@Nullable String interfaceAccentColor;
 
 	/**
-	 * @return <p>Background of components (e.g. text fields, checkboxes and sound selectors) </p>
-	 */
-	public Color getSecondAltBackgroundColor() {
-		return Color.decode(secondAltBackgroundColor);
-	}
-
-	/**
-	 * @return <p>Main color of the user (e.g. main menu and top bar) </p>
+	 * @return Background of UI panels
 	 */
 	public Color getBackgroundColor() {
 		return Color.decode(backgroundColor);
 	}
 
 	/**
-	 * @return <p>Second background color used (e.g. workspace background) </p>
+	 * @return Background of components (e.g. text fields, checkboxes and sound selectors)
 	 */
 	public Color getAltBackgroundColor() {
 		return Color.decode(altBackgroundColor);
+	}
+
+	/**
+	 * @return Second background color used (e.g. workspace background)
+	 */
+	public Color getSecondAltBackgroundColor() {
+		return Color.decode(secondAltBackgroundColor);
 	}
 
 	/**
