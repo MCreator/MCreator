@@ -61,7 +61,7 @@ public class ListIconModListRender extends JPanel implements ListCellRenderer<IE
 			}
 
 			label.setText(StringUtils.abbreviateString(element.getName(), 200));
-			label.setFont(MCreatorTheme.light_font.deriveFont(14.0f));
+			label.setFont(MCreatorTheme.secondary_font.deriveFont(14.0f));
 
 			ImageIcon dva = null;
 
