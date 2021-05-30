@@ -18,8 +18,11 @@
 
 package net.mcreator.ui.laf;
 
+import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ColorScheme;
+import net.mcreator.themes.Theme;
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import org.apache.logging.log4j.LogManager;
@@ -40,13 +43,13 @@ public class MCreatorTheme extends OceanTheme {
 
 	private static final Logger LOG = LogManager.getLogger("Theme");
 
-	private static final List<String> NON_ROBOTO_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
+	private static final List<String> SPECIAL_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
 
 	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
 	private Color MAIN_TINT;
 	private final ColorScheme colorScheme;
 
-	public static Font light_font;
+	public static Font main_font;
 	public static Font console_font;
 
 	private static Font default_font;
@@ -61,7 +64,7 @@ public class MCreatorTheme extends OceanTheme {
 			} catch (NumberFormatException exception) {
 				LOG.error(colorScheme.getInterfaceAccentColor()
 								+ " in the current theme is not a valid hexadecimal number. The color defined by the user will be used.",
-						exception);
+						exception.getMessage());
 				MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
 			}
 		} else {
@@ -69,15 +72,35 @@ public class MCreatorTheme extends OceanTheme {
 		}
 
 		try {
-			default_font = new Font("Sans-Serif", Font.PLAIN, 13);
-			light_font = default_font;
+			Theme theme = ThemeLoader.CURRENT_THEME;
+			default_font = new Font(theme.getDefaultFont(), Font.PLAIN, theme.getFontSize());
+			main_font = default_font;
 
 			String lang = L10N.getLocale().getLanguage();
-			if (!NON_ROBOTO_LANGUAGES.contains(lang))
-				light_font = Font
-						.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/roboto_light.ttf"));
+			if (!SPECIAL_LANGUAGES.contains(lang)) {
+				// Font loaded from a file in the theme
+				if (PluginLoader.INSTANCE.getResourceAsStream("themes/" + theme.getID() + "/styles/main_font.ttf")
+						!= null) {
+					main_font = Font.createFont(Font.TRUETYPE_FONT, PluginLoader.INSTANCE
+							.getResourceAsStream("themes/" + theme.getID() + "/styles/main_font.ttf"));
+				} else {
+					// Default main front (from the default_dark theme)
+					main_font = Font.createFont(Font.TRUETYPE_FONT,
+							PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/styles/main_font.ttf"));
+					LOG.info("Main font from default_dark will be used.");
+				}
+			}
 
-			console_font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/notomono.ttf"));
+			if (PluginLoader.INSTANCE.getResourceAsStream("themes/" + theme.getID() + "/styles/console_font.ttf")
+					!= null) {
+				console_font = Font.createFont(Font.TRUETYPE_FONT, PluginLoader.INSTANCE
+						.getResourceAsStream("themes/" + theme.getID() + "/styles/console_font.ttf"));
+			} else {
+				// Default main front (from the default_dark theme)
+				console_font = Font.createFont(Font.TRUETYPE_FONT,
+						PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/styles/console_font.ttf"));
+				LOG.info("Console font from default_dark will be used.");
+			}
 		} catch (FontFormatException | IOException e2) {
 			LOG.info("Failed to init MCreator Theme! Error " + e2.getMessage());
 		}
@@ -104,13 +127,13 @@ public class MCreatorTheme extends OceanTheme {
 		super.addCustomEntriesToTable(table);
 
 		initMCreatorThemeColors(table);
-
-		Set<Object> keySet = table.keySet();
+		Set<Object> keySet = table.keySet
+();
 		for (Object key : keySet) {
 			if (key == null)
 				continue;
 			if (key.toString().toLowerCase(Locale.ENGLISH).contains("font")) {
-				table.put(key, light_font.deriveFont(12.0f));
+				table.put(key, main_font.deriveFont((float) ThemeLoader.CURRENT_THEME.getFontSize()));
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).contains("bordercolor")) {
 				table.put(key, MAIN_TINT);
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".background")) {
