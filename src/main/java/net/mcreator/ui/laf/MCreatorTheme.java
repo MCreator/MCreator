@@ -49,7 +49,7 @@ public class MCreatorTheme extends OceanTheme {
 	private Color MAIN_TINT;
 	private final ColorScheme colorScheme;
 
-	public static Font main_font;
+	public static Font secondary_font;
 	public static Font console_font;
 
 	private static Font default_font;
@@ -74,19 +74,19 @@ public class MCreatorTheme extends OceanTheme {
 		try {
 			Theme theme = ThemeLoader.CURRENT_THEME;
 			default_font = new Font(theme.getDefaultFont(), Font.PLAIN, theme.getFontSize());
-			main_font = default_font;
+			secondary_font = default_font;
 
 			String lang = L10N.getLocale().getLanguage();
 			if (!SPECIAL_LANGUAGES.contains(lang) && !theme.isDefaultFontAsMain()) {
 				// Font loaded from a file in the theme
-				if (PluginLoader.INSTANCE.getResourceAsStream("themes/" + theme.getID() + "/styles/main_font.ttf")
+				if (PluginLoader.INSTANCE.getResourceAsStream("themes/" + theme.getID() + "/styles/secondary_font.ttf")
 						!= null) {
-					main_font = Font.createFont(Font.TRUETYPE_FONT, PluginLoader.INSTANCE
-							.getResourceAsStream("themes/" + theme.getID() + "/styles/main_font.ttf"));
+					secondary_font = Font.createFont(Font.TRUETYPE_FONT, PluginLoader.INSTANCE
+							.getResourceAsStream("themes/" + theme.getID() + "/styles/secondary_font.ttf"));
 				} else {
 					// Default main front (from the default_dark theme)
-					main_font = Font.createFont(Font.TRUETYPE_FONT,
-							PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/styles/main_font.ttf"));
+					secondary_font = Font.createFont(Font.TRUETYPE_FONT,
+							PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/styles/secondary_font.ttf"));
 					LOG.info("Main font from default_dark will be used.");
 				}
 			}
@@ -133,7 +133,7 @@ public class MCreatorTheme extends OceanTheme {
 			if (key == null)
 				continue;
 			if (key.toString().toLowerCase(Locale.ENGLISH).contains("font")) {
-				table.put(key, main_font.deriveFont((float) ThemeLoader.CURRENT_THEME.getFontSize()));
+				table.put(key, secondary_font.deriveFont((float) ThemeLoader.CURRENT_THEME.getFontSize()));
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).contains("bordercolor")) {
 				table.put(key, MAIN_TINT);
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".background")) {

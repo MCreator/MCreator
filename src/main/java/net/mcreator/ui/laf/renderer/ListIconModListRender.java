@@ -73,11 +73,11 @@ public class ListIconModListRender extends JPanel implements ListCellRenderer<IE
 				setOpaque(false);
 			}
 
-			label.setFont(MCreatorTheme.main_font.deriveFont(14.0f));
-			label2.setFont(MCreatorTheme.main_font.deriveFont(14.0f));
-			label3.setFont(MCreatorTheme.main_font.deriveFont(13.0f));
-			label4.setFont(MCreatorTheme.main_font.deriveFont(11.0f));
-			label5.setFont(MCreatorTheme.main_font.deriveFont(11.0f));
+			label.setFont(MCreatorTheme.secondary_font.deriveFont(14.0f));
+			label2.setFont(MCreatorTheme.secondary_font.deriveFont(14.0f));
+			label3.setFont(MCreatorTheme.secondary_font.deriveFont(13.0f));
+			label4.setFont(MCreatorTheme.secondary_font.deriveFont(11.0f));
+			label5.setFont(MCreatorTheme.secondary_font.deriveFont(11.0f));
 
 			ImageIcon dva = null;
 

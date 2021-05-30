@@ -82,11 +82,10 @@ import javax.swing.*;
 	 * @return <p>The main font size</p>
 	 */
 	public int getFontSize() {
-		if (fontSize != 0) {
+		if (fontSize != 0)
 			return fontSize;
-		} else {
-			return ThemeLoader.getTheme("default_dark").fontSize;
-		}
+		else
+			return 12;
 	}
 
 	/**
@@ -96,7 +95,7 @@ import javax.swing.*;
 		if (defaultFont != null)
 			return defaultFont;
 		else
-			return ThemeLoader.getTheme("default_dark").defaultFont;
+			return "Sans-Serif";
 	}
 
 	/**

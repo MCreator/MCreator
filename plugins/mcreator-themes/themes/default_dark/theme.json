@@ -1,7 +1,5 @@
 {
   "name": "Default Dark",
-  "defaultFont": "Sans-Serif",
-  "fontSize": 12,
   "colorScheme": {
     "secondAltBackgroundColor": "0x1e1e1e",
     "backgroundColor": "0x323232",
