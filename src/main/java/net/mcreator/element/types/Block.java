@@ -252,6 +252,14 @@ import java.util.stream.Collectors;
 		} else if (blockBase != null && blockBase.equals("Stairs")) {
 			return (BufferedImage) MinecraftImageGenerator.Preview
 					.generateStairsIcon(getTextureWithFallback(textureTop), getTextureWithFallback(textureFront));
+		} else if (blockBase != null && blockBase.equals("Wall")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateWallIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("Fence")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateFenceIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("FenceGate")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateFenceGateIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("EndRod")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateEndRodIcon(getMainTexture());
 		} else if (renderType() == 14) {
 			Image side = ImageUtils.drawOver(new ImageIcon(getTextureWithFallback(textureFront)),
 					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();
