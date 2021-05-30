@@ -1234,13 +1234,14 @@ import java.util.stream.Collectors;
 				FolderElement folder = (FolderElement) re;
 				for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
 					if (folder.equals(modElement.getFolderPath())) {
-						modElement.setParentFolder(new FolderElement(finalNewName, ((FolderElement) selected).getParent()));
+						modElement.setFolderPath(modElement.getFolderPath().replace(selected.getName(), finalNewName));
+
 					}
 				}
 				for (FolderElement childFolder : folder.getRecursiveFolderChildren()) {
 					for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
 						if (childFolder.equals(modElement.getFolderPath())) {
-							modElement.setParentFolder(new FolderElement(finalNewName, ((FolderElement) selected).getParent()));
+							modElement.setFolderPath(modElement.getFolderPath().replace(selected.getName(), finalNewName));
 						}
 					}
 				}
