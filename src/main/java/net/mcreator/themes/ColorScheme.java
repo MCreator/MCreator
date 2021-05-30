@@ -19,6 +19,7 @@
 
 package net.mcreator.themes;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 
 /**
@@ -34,40 +35,47 @@ public class ColorScheme {
 	private String secondAltBackgroundColor;
 	private String altForegroundColor;
 	private String foregroundColor;
+	@Nullable String interfaceAccentColor;
 
 	/**
-	 *
-	 * @return Background of components (e.g. text fields, checkboxes and sound selectors)
+	 * @return <p>Background of components (e.g. text fields, checkboxes and sound selectors) </p>
 	 */
 	public Color getSecondAltBackgroundColor() {
 		return Color.decode(secondAltBackgroundColor);
 	}
 
 	/**
-	 * @return Main color of the user (e.g. main menu and top bar)
+	 * @return <p>Main color of the user (e.g. main menu and top bar) </p>
 	 */
 	public Color getBackgroundColor() {
 		return Color.decode(backgroundColor);
 	}
 
 	/**
-	 * @return Second background color used (e.g. workspace background)
+	 * @return <p>Second background color used (e.g. workspace background) </p>
 	 */
 	public Color getAltBackgroundColor() {
 		return Color.decode(altBackgroundColor);
 	}
 
 	/**
-	 * @return Secondary text color
+	 * @return <p>Secondary text color </p>
 	 */
 	public Color getAltForegroundColor() {
 		return Color.decode(altForegroundColor);
 	}
 
 	/**
-	 * @return Color used for most of texts
+	 * @return <p>Color used for most of texts </p>
 	 */
 	public Color getForegroundColor() {
 		return Color.decode(foregroundColor);
+	}
+
+	/**
+	 * @return <p>Overrides the interfaceAccentColor defined by the user in {@link net.mcreator.preferences.PreferencesData}</p>
+	 */
+	@Nullable public String getInterfaceAccentColor() {
+		return interfaceAccentColor;
 	}
 }

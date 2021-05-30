@@ -43,7 +43,7 @@ public class MCreatorTheme extends OceanTheme {
 	private static final List<String> NON_ROBOTO_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
 
 	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
-	private final Color MAIN_TINT;
+	private Color MAIN_TINT;
 	private final ColorScheme colorScheme;
 
 	public static Font light_font;
@@ -52,9 +52,21 @@ public class MCreatorTheme extends OceanTheme {
 	private static Font default_font;
 
 	public MCreatorTheme(ColorScheme colorScheme) {
-		
+
 		this.colorScheme = colorScheme;
-		MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
+
+		if (colorScheme.getInterfaceAccentColor() != null) {
+			try {
+				MAIN_TINT = Color.decode(colorScheme.getInterfaceAccentColor());
+			} catch (NumberFormatException exception) {
+				LOG.error(colorScheme.getInterfaceAccentColor()
+								+ " in the current theme is not a valid hexadecimal number. The color defined by the user will be used.",
+						exception);
+				MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
+			}
+		} else {
+			MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
+		}
 
 		try {
 			default_font = new Font("Sans-Serif", Font.PLAIN, 13);
