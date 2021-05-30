@@ -34,6 +34,7 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.metal.OceanTheme;
 import java.awt.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +44,7 @@ public class MCreatorTheme extends OceanTheme {
 
 	private static final Logger LOG = LogManager.getLogger("Theme");
 
-	private static final List<String> SPECIAL_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
+	private static final List<String> SYSTEM_FONT_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
 
 	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
 	private Color MAIN_TINT;
@@ -54,15 +55,14 @@ public class MCreatorTheme extends OceanTheme {
 
 	private static Font default_font;
 
-	public MCreatorTheme(ColorScheme colorScheme) {
-
-		this.colorScheme = colorScheme;
+	public MCreatorTheme(Theme theme) {
+		this.colorScheme = theme.getColorScheme();
 
 		if (colorScheme.getInterfaceAccentColor() != null) {
 			try {
 				MAIN_TINT = Color.decode(colorScheme.getInterfaceAccentColor());
 			} catch (NumberFormatException exception) {
-				LOG.error(colorScheme.getInterfaceAccentColor()
+				LOG.warn(colorScheme.getInterfaceAccentColor()
 								+ " in the current theme is not a valid hexadecimal number. The color defined by the user will be used.",
 						exception.getMessage());
 				MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
@@ -72,36 +72,33 @@ public class MCreatorTheme extends OceanTheme {
 		}
 
 		try {
-			Theme theme = ThemeLoader.CURRENT_THEME;
 			default_font = new Font(theme.getDefaultFont(), Font.PLAIN, theme.getFontSize());
 			secondary_font = default_font;
 
 			String lang = L10N.getLocale().getLanguage();
-			if (!SPECIAL_LANGUAGES.contains(lang) && !theme.isDefaultFontAsMain()) {
-				// Font loaded from a file in the theme
-				if (PluginLoader.INSTANCE.getResourceAsStream("themes/" + theme.getID() + "/styles/secondary_font.ttf")
-						!= null) {
-					secondary_font = Font.createFont(Font.TRUETYPE_FONT, PluginLoader.INSTANCE
-							.getResourceAsStream("themes/" + theme.getID() + "/styles/secondary_font.ttf"));
-				} else {
-					// Default main front (from the default_dark theme)
+			if (!SYSTEM_FONT_LANGUAGES.contains(lang) && !theme.useDefaultFontForSecondary()) {
+				InputStream secondaryFontStream = PluginLoader.INSTANCE
+						.getResourceAsStream("themes/" + theme.getID() + "/styles/secondary_font.ttf");
+				if (secondaryFontStream != null) { // Font loaded from a file in the theme
+					secondary_font = Font.createFont(Font.TRUETYPE_FONT, secondaryFontStream);
+				} else { // Default secondary front (from the default_dark theme)
 					secondary_font = Font.createFont(Font.TRUETYPE_FONT,
 							PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/styles/secondary_font.ttf"));
 					LOG.info("Main font from default_dark will be used.");
 				}
 			}
 
-			if (PluginLoader.INSTANCE.getResourceAsStream("themes/" + theme.getID() + "/styles/console_font.ttf")
-					!= null) {
-				console_font = Font.createFont(Font.TRUETYPE_FONT, PluginLoader.INSTANCE
-						.getResourceAsStream("themes/" + theme.getID() + "/styles/console_font.ttf"));
+			InputStream consoleFontStream = PluginLoader.INSTANCE
+					.getResourceAsStream("themes/" + theme.getID() + "/styles/console_font.ttf");
+			if (consoleFontStream != null) {
+				console_font = Font.createFont(Font.TRUETYPE_FONT, consoleFontStream);
 			} else {
 				// Default main front (from the default_dark theme)
 				console_font = Font.createFont(Font.TRUETYPE_FONT,
 						PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/styles/console_font.ttf"));
 				LOG.info("Console font from default_dark will be used.");
 			}
-		} catch (FontFormatException | IOException e2) {
+		} catch (NullPointerException | FontFormatException | IOException e2) {
 			LOG.info("Failed to init MCreator Theme! Error " + e2.getMessage());
 		}
 	}

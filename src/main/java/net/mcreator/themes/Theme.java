@@ -37,7 +37,7 @@ import javax.swing.*;
 	@Nullable private String version;
 	@Nullable private String credits;
 	@Nullable private String defaultFont;
-	private boolean defaultFontAsMain;
+	private boolean useDefaultFontForSecondary;
 	private int fontSize;
 
 	@Nullable private ColorScheme colorScheme;
@@ -101,8 +101,8 @@ import javax.swing.*;
 	/**
 	 * @return <p>Use the default font as the main font</p>
 	 */
-	public boolean isDefaultFontAsMain() {
-		return defaultFontAsMain;
+	public boolean useDefaultFontForSecondary() {
+		return useDefaultFontForSecondary;
 	}
 
 	/**
