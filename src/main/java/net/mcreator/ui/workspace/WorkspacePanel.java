@@ -101,6 +101,7 @@ import java.util.stream.Collectors;
 	private final MCreator mcreator;
 
 	private final JButton upFolder;
+	private final JButton renameFolder;
 
 	private final JLabel but2 = new JLabel(TiledImageCache.workspaceEdit);
 	private final JLabel but2a = new JLabel(TiledImageCache.workspaceDuplicate);
@@ -114,6 +115,8 @@ import java.util.stream.Collectors;
 	private final JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
 	private final JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
 	private final JMenuItem idElement = new JMenuItem(L10N.t("workspace.elements.list.edit.id"));
+	private final JMenuItem renameElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.rename.folder"));
+	public boolean canRename;
 
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
@@ -191,30 +194,31 @@ import java.util.stream.Collectors;
 
 		list.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
+				list.setSelectedIndex(list.locationToIndex(e.getPoint()));
+				IElement selected = list.getSelectedValue();
+
 				if (e.isConsumed())
 					return;
 
 				if (e.getButton() == MouseEvent.BUTTON3) {
-					list.setSelectedIndex(list.locationToIndex(e.getPoint()));
-					IElement selected = list.getSelectedValue();
-
 					if (selected instanceof FolderElement) {
 						duplicateElement.setEnabled(false);
 						codeElement.setEnabled(false);
 						lockElement.setEnabled(false);
 						idElement.setEnabled(false);
+						renameElementFolder.setEnabled(true);
 					} else {
 						duplicateElement.setEnabled(true);
 						codeElement.setEnabled(true);
 						lockElement.setEnabled(true);
 						idElement.setEnabled(true);
+						renameElementFolder.setEnabled(false);
 					}
 
 					contextMenu.show(list, e.getX(), e.getY());
 				} else if (e.getClickCount() == 2) {
 					list.cancelDND();
 
-					IElement selected = list.getSelectedValue();
 					if (selected instanceof FolderElement) {
 						switchFolder((FolderElement) selected);
 					} else {
@@ -223,6 +227,11 @@ import java.util.stream.Collectors;
 						else
 							editCurrentlySelectedModElement((ModElement) selected, list, e.getX(), e.getY());
 					}
+				}
+				if (selected instanceof FolderElement) {
+					renameFolder.setEnabled(true);
+				} else {
+					renameFolder.setEnabled(false);
 				}
 			}
 		});
@@ -311,6 +320,9 @@ import java.util.stream.Collectors;
 		upFolder = new JButton(new ImageIcon(ImageUtils
 				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.upFolder.gif").getImage()),
 						new Rectangle(1, 1, 16, 16))));
+		renameFolder = new JButton(new ImageIcon(ImageUtils
+				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.renameFolder.gif").getImage()),
+						new Rectangle(1, 1, 16, 16))));
 
 		addFolder.setContentAreaFilled(false);
 		addFolder.setBorderPainted(false);
@@ -325,6 +337,13 @@ import java.util.stream.Collectors;
 		upFolder.setToolTipText(L10N.t("workspace.elements.folders.up_tooltip"));
 		upFolder.setEnabled(false);
 
+		renameFolder.setContentAreaFilled(false);
+		renameFolder.setBorderPainted(false);
+		renameFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		renameFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		renameFolder.setToolTipText(L10N.t("workspace.elements.folders.rename_tooltip"));
+		renameFolder.setEnabled(false);
+
 		addFolder.addActionListener(e -> addNewFolder());
 
 		upFolder.addActionListener(e -> {
@@ -333,11 +352,19 @@ import java.util.stream.Collectors;
 			}
 		});
 
+		renameFolder.addActionListener(e -> {
+		IElement selected = list.getSelectedValue();
+		    if (selected instanceof FolderElement) {
+			    renameFolder();
+		    }
+		});
+
 		JComponent folderactions = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.folder_actions"), 12);
 		modElementsBar.add(folderactions);
 
 		modElementsBar.add(addFolder);
 		modElementsBar.add(upFolder);
+		modElementsBar.add(renameFolder);
 
 		modElementsBar.add(new JEmptyBox(7, 1));
 
@@ -833,10 +860,14 @@ import java.util.stream.Collectors;
 		addElementFolder.setIcon(UIRES.get("laf.newFolder.gif"));
 		addElementFolder.addActionListener(e -> addNewFolder());
 
+		renameElementFolder.setIcon(UIRES.get("laf.renameFolder.gif"));
+		renameElementFolder.addActionListener(e -> renameFolder());
+
 		contextMenu.add(openElement);
 		contextMenu.add(codeElement);
 		contextMenu.addSeparator();
 		contextMenu.add(addElementFolder);
+		contextMenu.add(renameElementFolder);
 		contextMenu.addSeparator();
 		contextMenu.add(deleteElement);
 		contextMenu.addSeparator();
@@ -1179,6 +1210,46 @@ import java.util.stream.Collectors;
 			reloadElements();
 		}
 	}
+
+	private void renameFolder() {
+		renameFolder.setEnabled(true);
+		IElement selected = list.getSelectedValue();
+		String newName = VOptionPane
+				.showInputDialog(mcreator, L10N.t("workspace.elements.folders.rename.message"), L10N.t("workspace.elements.folders.rename.title"), null, new OptionPaneValidatior() {
+					@Override public ValidationResult validate(JComponent component) {
+						String newName = ((JTextField) component).getText();
+						if (!newName.matches("[A-Za-z0-9._ -]+")) {
+							canRename = false;
+							return new Validator.ValidationResult(ValidationResultType.ERROR, L10N.t("workspace.elements.folders.add.error_letters"));
+						} else {
+							canRename = true;
+							return Validator.ValidationResult.PASSED;
+						}
+					}
+				});
+		if (canRename == true) {
+			String finalNewName = newName;
+			list.getSelectedValuesList().forEach(re -> {
+				FolderElement folder = (FolderElement) re;
+				for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+					if (folder.equals(modElement.getFolderPath())) {
+						modElement.setParentFolder(new FolderElement(finalNewName, ((FolderElement) selected).getParent()));
+					}
+				}
+				for (FolderElement childFolder : folder.getRecursiveFolderChildren()) {
+					for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+						if (childFolder.equals(modElement.getFolderPath())) {
+							modElement.setParentFolder(new FolderElement(finalNewName, ((FolderElement) selected).getParent()));
+						}
+					}
+				}
+			});
+			((FolderElement) selected).setName(finalNewName);
+			mcreator.getWorkspace().markDirty();
+			reloadElements();
+			updateMods();
+		}
+	};
 
 	private boolean updateRunning = false;
 
