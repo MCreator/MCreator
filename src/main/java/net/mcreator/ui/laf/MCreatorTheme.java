@@ -77,7 +77,7 @@ public class MCreatorTheme extends OceanTheme {
 			main_font = default_font;
 
 			String lang = L10N.getLocale().getLanguage();
-			if (!SPECIAL_LANGUAGES.contains(lang)) {
+			if (!SPECIAL_LANGUAGES.contains(lang) || !theme.isDefaultFontAsMain()) {
 				// Font loaded from a file in the theme
 				if (PluginLoader.INSTANCE.getResourceAsStream("themes/" + theme.getID() + "/styles/main_font.ttf")
 						!= null) {

@@ -37,6 +37,7 @@ import javax.swing.*;
 	@Nullable private String version;
 	@Nullable private String credits;
 	@Nullable private String defaultFont;
+	private boolean defaultFontAsMain;
 	private int fontSize;
 
 	@Nullable private ColorScheme colorScheme;
@@ -96,6 +97,13 @@ import javax.swing.*;
 			return defaultFont;
 		else
 			return ThemeLoader.getTheme("default_dark").defaultFont;
+	}
+
+	/**
+	 * @return <p>Use the default font as the main font</p>
+	 */
+	public boolean isDefaultFontAsMain() {
+		return defaultFontAsMain;
 	}
 
 	/**
