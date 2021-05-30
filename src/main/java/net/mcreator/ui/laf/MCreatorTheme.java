@@ -128,6 +128,7 @@ public class MCreatorTheme extends OceanTheme {
 
 		initMCreatorThemeColors(table);
 		Set<Object> keySet = table.keySet();
+		
 		for (Object key : keySet) {
 			if (key == null)
 				continue;
