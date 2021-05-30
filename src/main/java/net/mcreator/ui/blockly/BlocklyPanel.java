@@ -233,7 +233,7 @@ public class BlocklyPanel extends JFXPanel {
 			if (vardata.length == 2) {
 				VariableElement element = new VariableElement();
 				element.setName(vardata[0]);
-				VariableElementType variableElementType = BlocklyVariables.getVarElementTypeFromBlocklyType(vardata[1]);
+				VariableElementType variableElementType = VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(vardata[1]);
 				if (variableElementType != null) {
 					element.setType(variableElementType);
 					retval.add(element);

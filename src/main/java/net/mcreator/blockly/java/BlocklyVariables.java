@@ -60,12 +60,4 @@ public class BlocklyVariables {
 		return varlist;
 	}
 
-	public static VariableElementType getVarElementTypeFromBlocklyType(String blocklyType) {
-		for(VariableElementType elementType : VariableElementTypeLoader.INSTANCE.getVariableTypes()) {
-			if(elementType.getBlocklyVariableType().equals(blocklyType))
-				return elementType;
-		}
-		return null;
-	}
-
 }

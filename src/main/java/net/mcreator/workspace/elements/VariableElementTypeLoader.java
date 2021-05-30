@@ -92,8 +92,9 @@ public class VariableElementTypeLoader {
 
 	public VariableElementType getVariableTypeFromString(String type) {
 		for (VariableElementType varType : VARIABLE_TYPES_LIST.keySet())
-			if (varType.getBlocklyVariableType().equalsIgnoreCase(type) || varType.getName().equalsIgnoreCase(type))
+			if (varType.getName().equalsIgnoreCase(type) || varType.getBlocklyVariableType().equalsIgnoreCase(type))
 				return varType;
+
 		return null;
 	}
 
