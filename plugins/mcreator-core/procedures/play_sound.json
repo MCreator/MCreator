@@ -24,55 +24,10 @@
       "type": "input_value",
       "name": "pitch",
       "check": "Number"
-    },
-    {
-      "type": "field_dropdown",
-      "name": "category",
-      "options": [
-        [
-          "NEUTRAL",
-          "NEUTRAL"
-        ],
-        [
-          "MASTER",
-          "MASTER"
-        ],
-        [
-          "MUSIC",
-          "MUSIC"
-        ],
-        [
-          "RECORDS",
-          "RECORDS"
-        ],
-        [
-          "WEATHER",
-          "WEATHER"
-        ],
-        [
-          "BLOCKS",
-          "BLOCKS"
-        ],
-        [
-          "HOSTILE",
-          "HOSTILE"
-        ],
-        [
-          "PLAYERS",
-          "PLAYERS"
-        ],
-        [
-          "AMBIENT",
-          "AMBIENT"
-        ],
-        [
-          "VOICE",
-          "VOICE"
-        ]
-      ]
     }
   ],
   "extensions": [
+    "sound_category_list_provider",
     "sound_list_provider"
   ],
   "inputsInline": true,

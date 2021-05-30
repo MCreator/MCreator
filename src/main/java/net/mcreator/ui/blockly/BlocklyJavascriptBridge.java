@@ -235,6 +235,8 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllFluids(workspace);
 		case "sound":
 			return ElementUtil.getAllSounds(workspace);
+		case "soundcategory":
+			return ElementUtil.getAllSoundCategories();
 		case "particle":
 			return ElementUtil.loadAllParticles(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "direction":

@@ -138,6 +138,7 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "path_node_types"), "pathnodetypes", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "potions"), "potions", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "sounds"), "sounds", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "sound_categories"), "soundcategories", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "step_sounds"), "stepsounds", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "plant_types"), "planttypes", supportedElements, stats);
 

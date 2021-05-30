@@ -743,6 +743,12 @@ Blockly.Extensions.register('sound_list_provider',
             arrayToBlocklyDropDownArray(javabridge.getListOf("sound"))), 'sound');
     });
 
+Blockly.Extensions.register('sound_category_list_provider',
+    function () {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArray(javabridge.getListOf("soundcategory"))), 'soundcategory');
+    });
+
 Blockly.Extensions.register('particle_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
