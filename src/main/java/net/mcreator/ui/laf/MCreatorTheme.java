@@ -127,8 +127,7 @@ public class MCreatorTheme extends OceanTheme {
 		super.addCustomEntriesToTable(table);
 
 		initMCreatorThemeColors(table);
-		Set<Object> keySet = table.keySet
-();
+		Set<Object> keySet = table.keySet();
 		for (Object key : keySet) {
 			if (key == null)
 				continue;
