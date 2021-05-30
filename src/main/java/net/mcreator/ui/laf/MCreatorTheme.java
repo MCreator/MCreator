@@ -78,24 +78,24 @@ public class MCreatorTheme extends OceanTheme {
 			String lang = L10N.getLocale().getLanguage();
 			if (!SYSTEM_FONT_LANGUAGES.contains(lang) && !theme.useDefaultFontForSecondary()) {
 				InputStream secondaryFontStream = PluginLoader.INSTANCE
-						.getResourceAsStream("themes/" + theme.getID() + "/styles/secondary_font.ttf");
+						.getResourceAsStream("themes/" + theme.getID() + "/fonts/secondary_font.ttf");
 				if (secondaryFontStream != null) { // Font loaded from a file in the theme
 					secondary_font = Font.createFont(Font.TRUETYPE_FONT, secondaryFontStream);
 				} else { // Default secondary front (from the default_dark theme)
 					secondary_font = Font.createFont(Font.TRUETYPE_FONT,
-							PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/styles/secondary_font.ttf"));
+							PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/fonts/secondary_font.ttf"));
 					LOG.info("Main font from default_dark will be used.");
 				}
 			}
 
 			InputStream consoleFontStream = PluginLoader.INSTANCE
-					.getResourceAsStream("themes/" + theme.getID() + "/styles/console_font.ttf");
+					.getResourceAsStream("themes/" + theme.getID() + "/fonts/console_font.ttf");
 			if (consoleFontStream != null) {
 				console_font = Font.createFont(Font.TRUETYPE_FONT, consoleFontStream);
 			} else {
 				// Default main front (from the default_dark theme)
 				console_font = Font.createFont(Font.TRUETYPE_FONT,
-						PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/styles/console_font.ttf"));
+						PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/fonts/console_font.ttf"));
 				LOG.info("Console font from default_dark will be used.");
 			}
 		} catch (NullPointerException | FontFormatException | IOException e2) {

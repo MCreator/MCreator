@@ -30,11 +30,13 @@ import java.awt.*;
  */
 public class ColorScheme {
 
-	private String altBackgroundColor;
 	private String backgroundColor;
+	private String altBackgroundColor;
 	private String secondAltBackgroundColor;
-	private String altForegroundColor;
+
 	private String foregroundColor;
+	private String altForegroundColor;
+
 	@Nullable String interfaceAccentColor;
 
 	/**
