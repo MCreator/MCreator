@@ -226,6 +226,21 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return null;
 	}
 
+	@Nullable public List<String> getUnsupportedDefinitionFields(ModElementType type) {
+		Map<?, ?> map = definitionsProvider.getModElementDefinition(type);
+
+		if (map == null) {
+			LOG.info("Failed to load element definition for mod element type " + type.name());
+			return null;
+		}
+
+		List<?> exclusions = (List<?>) map.get("field_exclusions");
+		if (exclusions != null)
+			return exclusions.stream().map(Object::toString).map(String::trim).collect(Collectors.toList());
+
+		return null;
+	}
+
 	@Override public int compareTo(@Nonnull GeneratorConfiguration o) {
 		if (o.getGeneratorStats().getStatus() == generatorStats.getStatus()) { // same status, sort by version
 			return o.getGeneratorMinecraftVersion().compareTo(getGeneratorMinecraftVersion());
