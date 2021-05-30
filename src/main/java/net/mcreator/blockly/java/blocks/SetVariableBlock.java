@@ -47,6 +47,8 @@ public class SetVariableBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_set_");
+		String javaType = new Dependency("", VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type).getName())
+				.getType(master.getWorkspace());
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
@@ -98,6 +100,7 @@ public class SetVariableBlock implements IBlockGenerator {
 					dataModel.put("name", name);
 					dataModel.put("scope", scope);
 					dataModel.put("type", type);
+					dataModel.put("javaType", javaType);
 					dataModel.put("value", BlocklyToCode.directProcessOutputBlock(master, value));
 
 					String code = master.getTemplateGenerator()

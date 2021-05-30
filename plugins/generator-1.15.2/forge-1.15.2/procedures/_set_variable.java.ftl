@@ -72,13 +72,9 @@
     }
     </#if>
 <#elseif scope == "local">
-    <#if type == "number">
-        ${name} =(double)${value};
-    <#elseif type == "logic">
-        ${name} =(boolean)${value};
-    <#elseif type == "string">
-        ${name} =(String)${value};
-    <#elseif type == "itemstack">
+    <#if type == "itemstack">
         ${name} = ${mappedMCItemToItemStackCode(value, 1)};
+    <#else>
+        ${name} = (${javaType}) ${value};
     </#if>
 </#if>
