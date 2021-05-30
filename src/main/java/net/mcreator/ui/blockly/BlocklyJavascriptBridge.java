@@ -225,7 +225,7 @@ public class BlocklyJavascriptBridge {
 			retval = new ArrayList<>();
 		}
 
-		//We finish by checking if type is a call procedure with return value
+		// check if type is "call procedure with return value"
 		if(type.contains("procedure_retval_")) {
 			retval = workspace.getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
