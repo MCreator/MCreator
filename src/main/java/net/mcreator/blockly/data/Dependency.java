@@ -36,8 +36,10 @@
 
 package net.mcreator.blockly.data;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -84,21 +86,20 @@ public class Dependency implements Comparable<Dependency> {
 	}
 
 	public static Color getColor(String type) {
+		// Check if the type is a loaded variable and then, get its HUE color
+		if (VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type) != null) {
+			return BlocklyBlockUtil.getBlockColorFromHUE(
+					VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type).getColor());
+		}
+
+		// Return a color for other dependency types
 		switch (type) {
-		case "number":
-			return new Color(0x606999);
-		case "logic":
-			return new Color(0x607c99);
 		case "world":
 			return new Color(0x998160);
 		case "entity":
 			return new Color(0x608a99);
-		case "itemstack":
-			return new Color(0x996069);
 		case "map":
 			return new Color(0x8FD980);
-		case "string":
-			return new Color(0x609986);
 		case "direction":
 			return new Color(0x997360);
 		case "advancement":

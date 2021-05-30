@@ -1,6 +1,5 @@
 {
 	"name": "logic",
-	"dependencyType": "boolean",
 	"color": 210,
 	"defaultValue": "false",
 	"blocklyVariableType": "Boolean"
