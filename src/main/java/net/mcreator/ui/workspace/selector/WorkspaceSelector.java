@@ -415,8 +415,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		nov.setForeground(new Color(0xf5f5f5));
 		newsFuture.whenComplete((news, throwable) -> SwingUtilities.invokeLater(() -> {
 			if (news != null)
-				nov.setText("<html>Latest news from MCreator website:<br><div style=\"font-size: 14px; color: #f5f5f5;\">" + StringUtils
-						.abbreviateString(news[0], 43) + "</div>");
+				nov.setText(
+						"<html>Latest news from MCreator website:<br><div style=\"font-size: 14px; color: #f5f5f5;\">"
+								+ StringUtils.abbreviateString(news[0], 43) + "</div>");
 			else
 				nov.setText("");
 			nov.addMouseListener(new MouseAdapter() {
@@ -429,7 +430,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		CompletableFuture<String[]> motwFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getModOfTheWeekData(motwFuture);
-		JLabel lab3 = new JLabel("<html>Mod of the week:<br><font style=\"font-size: 14px; color: #f5f5f5;\">Loading data ...");
+		JLabel lab3 = new JLabel(
+				"<html>Mod of the week:<br><font style=\"font-size: 14px; color: #f5f5f5;\">Loading data ...");
 		lab3.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		lab3.setForeground(new Color(0xf5f5f5));
 		JLabel lab2 = new JLabel();

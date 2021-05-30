@@ -78,7 +78,11 @@ import net.minecraft.block.material.Material;
 					.luminosity(${data.luminosity})
 					.density(${data.density})
 					.viscosity(${data.viscosity})
-					<#if data.isGas>.gaseous()</#if>)
+					<#if data.isGas>.gaseous()</#if>
+					.rarity(Rarity.${data.rarity})
+					<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
+					.sound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.emptySound}")))
+					</#if>)
 					.explosionResistance(${data.resistance}f)
                     <#if data.generateBucket>.bucket(() -> bucket)</#if>
 					.block(() -> block);
@@ -176,7 +180,15 @@ import net.minecraft.block.material.Material;
 
 		<#if data.generateBucket>
 		elements.items.add(() -> new BucketItem(still, new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1)
-				<#if data.creativeTab??>.group(${data.creativeTab})<#else>.group(ItemGroup.MISC)</#if>).setRegistryName("${registryname}_bucket"));
+			<#if data.creativeTab??>.group(${data.creativeTab})<#else>.group(ItemGroup.MISC)</#if>.rarity(Rarity.${data.rarity}))
+			<#if data.specialInfo?has_content>{
+			@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+				super.addInformation(itemstack, world, list, flag);
+				<#list data.specialInfo as entry>
+				list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+			</#list>
+			}
+			}</#if>.setRegistryName("${registryname}_bucket"));
 		</#if>
 	}
 

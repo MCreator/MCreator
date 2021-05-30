@@ -76,8 +76,8 @@ public class AboutAction extends BasicAction {
 		BufferedImage image = new BufferedImage(250, 250, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) image.getGraphics();
 		g.drawImage(UIRES.getBuiltIn("icon").getImage(), 54, 24, 128, 128, null);
-		g.drawImage(ImageUtils.colorize(UIRES.getBuiltIn("logo"), new Color(0x2F2F2F), true).getImage(), 22, 170, 200, 36,
-				null);
+		g.drawImage(ImageUtils.colorize(UIRES.getBuiltIn("logo"), new Color(0x2F2F2F), true).getImage(), 22, 170, 200,
+				36, null);
 		return image;
 	}
 

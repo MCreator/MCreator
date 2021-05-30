@@ -22,6 +22,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
+import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -39,8 +40,11 @@ import java.util.stream.Collectors;
 
 	private final Workspace workspace;
 
+	private final GeneratorWrapper internalWrapper;
+
 	public WorkspaceInfo(Workspace workspace) {
 		this.workspace = workspace;
+		this.internalWrapper = new GeneratorWrapper(workspace.getGenerator());
 	}
 
 	public boolean hasVariables() {
@@ -95,7 +99,7 @@ import java.util.stream.Collectors;
 		List<T> retval = new ArrayList<>();
 		for (T t : input) {
 			if (t.getUnmappedValue().startsWith("CUSTOM:")) {
-				if (workspace.getModElementByName(t.getUnmappedValue().replaceFirst("CUSTOM:", "")) != null) {
+				if (workspace.getModElementByName(internalWrapper.getElementPlainName(t.getUnmappedValue())) != null) {
 					retval.add(t);
 				} else {
 					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
