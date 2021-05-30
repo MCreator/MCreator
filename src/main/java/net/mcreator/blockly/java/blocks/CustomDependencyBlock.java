@@ -34,7 +34,7 @@ public class CustomDependencyBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public CustomDependencyBlock() {
-		names = VariableElementTypeLoader.getVariables().stream().map(VariableElementType::getName)
+		names = VariableElementTypeLoader.INSTANCE.getVariableTypes().stream().map(VariableElementType::getName)
 				.collect(Collectors.toList()).stream().map(s -> s = "custom_dependency_" + s).toArray(String[]::new);
 	}
 

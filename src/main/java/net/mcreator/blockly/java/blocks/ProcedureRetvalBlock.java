@@ -37,7 +37,7 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public ProcedureRetvalBlock() {
-		names = VariableElementTypeLoader.getVariables().stream().map(VariableElementType::getName)
+		names = VariableElementTypeLoader.INSTANCE.getVariableTypes().stream().map(VariableElementType::getName)
 				.collect(Collectors.toList()).stream().map(s -> s = "procedure_retval_" + s).toArray(String[]::new);
 	}
 

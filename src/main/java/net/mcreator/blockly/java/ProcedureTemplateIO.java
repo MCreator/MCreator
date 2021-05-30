@@ -110,7 +110,7 @@ public class ProcedureTemplateIO {
 
 	public static Set<VariableElement> tryToExtractVariables(String xml) {
 		Set<VariableElement> retval = new HashSet<>();
-		for(VariableElementType elementType : VariableElementTypeLoader.getVariables()) {
+		for(VariableElementType elementType : VariableElementTypeLoader.INSTANCE.getVariableTypes()) {
 			Matcher m = Pattern.compile("<block type=\"(?:variables_set_" + elementType.getName() +
 					"|variables_get_" + elementType.getName() + ")\"><field name=\"VAR\">local:(.*?)</field>").matcher(xml);
 			try {

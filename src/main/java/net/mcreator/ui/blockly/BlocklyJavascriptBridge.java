@@ -230,9 +230,9 @@ public class BlocklyJavascriptBridge {
 			retval = workspace.getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementTypeLoader.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
+							VariableElementTypeLoader.INSTANCE.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
 							null;
-					return returnTypeCurrent == VariableElementTypeLoader.getVariableTypeFromString(StringUtils.removeStart(type, "procedure_retval_"));
+					return returnTypeCurrent == VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(StringUtils.removeStart(type, "procedure_retval_"));
 				}
 				return false;
 			}).map(ModElement::getName).collect(Collectors.toList());

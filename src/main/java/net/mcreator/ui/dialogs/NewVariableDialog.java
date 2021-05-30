@@ -68,7 +68,7 @@ public class NewVariableDialog {
 				&& textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
 				&& type.getSelectedItem() != null) {
 			VariableElement element = new VariableElement();
-			VariableElementType variable = VariableElementTypeLoader.getVariableTypeFromString(((VariableElementType) type.getSelectedItem()).getName());
+			VariableElementType variable = VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(((VariableElementType) type.getSelectedItem()).getName());
 			if (variable != null) {
 				element.setName(Transliteration.transliterateString(textField.getText()));
 				element.setType((VariableElementType) type.getSelectedItem());

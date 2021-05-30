@@ -80,8 +80,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					if (n == JOptionPane.YES_OPTION) {
 						super.setValueAt(value, row, column);
 						if (column == 1) { // variable type has been changed
-							VariableElementType type = VariableElementTypeLoader
-									.getVariableTypeFromString((String) getValueAt(row, column));
+							VariableElementType type = VariableElementTypeLoader.INSTANCE.getVariableTypeFromString((String) getValueAt(row, column));
 							if (type == VariableElementTypeLoader.BuiltInTypes.NUMBER) {
 								elements.setValueAt("0", row, 3);
 							} else if (type == VariableElementTypeLoader.BuiltInTypes.LOGIC) {
@@ -143,7 +142,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			@Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component component = super.prepareRenderer(renderer, row, column);
 				if (column == 1) {
-					VariableElementType value = VariableElementTypeLoader.getVariableTypeFromString(
+					VariableElementType value = VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(
 							(String) getModel().getValueAt(row, column));
 					if (value != null) {
 						component.setForeground(BlocklyBlockUtil.getBlockColorFromHUE(value.getColor()).brighter());
@@ -267,7 +266,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				workspace.getVariableElements().clear();
 				for (int i = 0; i < elements.getModel().getRowCount(); i++) {
 					VariableElement element = new VariableElement();
-					VariableElementType elementType = VariableElementTypeLoader.getVariableTypeFromString((String) elements.getValueAt(i, 1));
+					VariableElementType elementType = VariableElementTypeLoader.INSTANCE.getVariableTypeFromString((String) elements.getValueAt(i, 1));
 					if (elementType != null) {
 						element.setType(elementType);
 						element.setName(Transliteration.transliterateString((String) elements.getValueAt(i, 0)));

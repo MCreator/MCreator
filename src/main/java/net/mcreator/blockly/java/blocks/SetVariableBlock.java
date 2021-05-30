@@ -41,7 +41,7 @@ public class SetVariableBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public SetVariableBlock() {
-		names = VariableElementTypeLoader.getVariables().stream().map(VariableElementType::getName)
+		names = VariableElementTypeLoader.INSTANCE.getVariableTypes().stream().map(VariableElementType::getName)
 				.collect(Collectors.toList()).stream().map(s -> s = "variables_set_" + s).toArray(String[]::new);
 	}
 

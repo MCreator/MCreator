@@ -37,13 +37,13 @@ public class ReturnBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public ReturnBlock() {
-		names = VariableElementTypeLoader.getVariables().stream().map(VariableElementType::getName)
+		names = VariableElementTypeLoader.INSTANCE.getVariableTypes().stream().map(VariableElementType::getName)
 				.collect(Collectors.toList()).stream().map(s -> s = "return_" + s).toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String type = StringUtils.removeStart(block.getAttribute("type"), "return_");
-		VariableElementType returnType = VariableElementTypeLoader.getVariableTypeFromString(type);
+		VariableElementType returnType = VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type);
 
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (master instanceof BlocklyToProcedure && value != null) {

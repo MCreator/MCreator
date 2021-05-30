@@ -311,7 +311,7 @@ public class ProcedureSelector extends JPanel {
 
 				if (returnType != null) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementTypeLoader
+							VariableElementTypeLoader.INSTANCE
 									.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
 							null;
 					if (returnTypeCurrent != returnType)
