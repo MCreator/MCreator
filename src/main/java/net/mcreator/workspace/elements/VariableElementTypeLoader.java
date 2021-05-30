@@ -49,41 +49,40 @@ public class VariableElementTypeLoader {
 
 		final Gson gson = new Gson();
 
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources("variables", Pattern.compile("^[^$].*\\.json"));
-
 		StringBuilder variableBlocklyJSBuilder = new StringBuilder();
 
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources("variables", Pattern.compile("^[^$].*\\.json"));
 		for (String file : fileNames) {
-			VariableElementType variable = gson
+			VariableElementType variableType = gson
 					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), VariableElementType.class);
-			LOG.debug("Added " + variable.getName() + " to variable types");
+			LOG.debug("Added " + variableType.getName() + " to variable types");
 
-			VARIABLE_TYPES_LIST.put(variable, variable.getName());
+			VARIABLE_TYPES_LIST.put(variableType, variableType.getName());
 
 			//We begin by creating the extensions needed for other blocks
-			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.variableListExtension(variable));
-			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.procedureListExtensions(variable));
+			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.variableListExtension(variableType));
+			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.procedureListExtensions(variableType));
 
 			//Then, we create the blocks related to variables
-			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.getVariableBlock(variable));
-			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.setVariableBlock(variable));
-			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.customDependencyBlock(variable));
-			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.procedureReturnValueBlock(variable));
-			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.returnBlock(variable));
+			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.getVariableBlock(variableType));
+			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.setVariableBlock(variableType));
+			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.customDependencyBlock(variableType));
+			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.procedureReturnValueBlock(variableType));
+			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.returnBlock(variableType));
 
 			//We check the type of the variable, if it is a global var, we instantiate it with this variable.
-			switch (variable.getName()) {
+			switch (variableType.getName()) {
 			case "logic":
-				BuiltInTypes.LOGIC = variable;
+				BuiltInTypes.LOGIC = variableType;
 				break;
 			case "number":
-				BuiltInTypes.NUMBER = variable;
+				BuiltInTypes.NUMBER = variableType;
 				break;
 			case "string":
-				BuiltInTypes.STRING = variable;
+				BuiltInTypes.STRING = variableType;
 				break;
 			case "itemstack":
-				BuiltInTypes.ITEMSTACK = variable;
+				BuiltInTypes.ITEMSTACK = variableType;
 				break;
 			}
 		}
@@ -92,11 +91,9 @@ public class VariableElementTypeLoader {
 	}
 
 	public VariableElementType getVariableTypeFromString(String type) {
-		for (VariableElementType varType : VARIABLE_TYPES_LIST.keySet()) {
-			if (varType.getBlocklyVariableType().equalsIgnoreCase(type) || varType.getName().equalsIgnoreCase(type)) {
+		for (VariableElementType varType : VARIABLE_TYPES_LIST.keySet())
+			if (varType.getBlocklyVariableType().equalsIgnoreCase(type) || varType.getName().equalsIgnoreCase(type))
 				return varType;
-			}
-		}
 		return null;
 	}
 
