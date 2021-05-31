@@ -339,6 +339,9 @@ public class TestWorkspaceDataProvider {
 			fluid.flowRate = 8;
 			fluid.levelDecrease = 2;
 			fluid.slopeFindDistance = 3;
+			fluid.spawnParticles = !_true;
+			fluid.dripParticle = new Particle(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			fluid.luminosity = 3;
 			fluid.density = 5;
 			fluid.viscosity = 10;

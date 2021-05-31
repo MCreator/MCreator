@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.Sound;
@@ -43,6 +44,8 @@ import java.util.List;
 	public int flowRate;
 	public int levelDecrease;
 	public int slopeFindDistance;
+	public boolean spawnParticles;
+	public Particle dripParticle;
 
 	public int luminosity;
 	public int density;

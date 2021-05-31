@@ -83,8 +83,8 @@ import net.minecraft.block.material.Material;
 					<#if data.generateBucket>.bucket(() -> bucket)</#if>
 					.block(() -> block);
 
-		still = (FlowingFluid) new ForgeFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
-		flowing = (FlowingFluid) new ForgeFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
+		still = (FlowingFluid) new CustomFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
+		flowing = (FlowingFluid) new CustomFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
 
 		elements.blocks.add(() -> new FlowingFluidBlock(still,
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
@@ -202,6 +202,53 @@ import net.minecraft.block.material.Material;
 			}</#if>
 			.setRegistryName("${registryname}_bucket"));
 		</#if>
+	}
+
+	public static abstract class CustomFlowingFluid extends ForgeFlowingFluid {
+		public CustomFlowingFluid(Properties properties) {
+			super(properties);
+		}
+
+		<#if data.spawnParticles>
+		@OnlyIn(Dist.CLIENT)
+		@Override
+		public IParticleData getDripParticleData() {
+			return ${data.dripParticle.toString()};
+		}
+		</#if>
+
+		public static class Source extends CustomFlowingFluid {
+			public Source(Properties properties) {
+				super(properties);
+			}
+
+			public int getLevel(IFluidState state) {
+				return 8;
+			}
+
+			public boolean isSource(IFluidState state) {
+				return true;
+			}
+		}
+
+		public static class Flowing extends CustomFlowingFluid {
+			public Flowing(Properties properties) {
+				super(properties);
+			}
+
+			protected void fillStateContainer(StateContainer.Builder<Fluid, IFluidState> builder) {
+				super.fillStateContainer(builder);
+				builder.add(LEVEL_1_8);
+			}
+
+			public int getLevel(IFluidState state) {
+				return state.get(LEVEL_1_8);
+			}
+
+			public boolean isSource(IFluidState state) {
+				return false;
+			}
+		}
 	}
 
 	<#if (data.spawnWorldTypes?size > 0)>

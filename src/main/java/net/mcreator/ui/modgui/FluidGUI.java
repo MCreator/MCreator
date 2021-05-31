@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.minecraft.DataListEntry;
@@ -62,6 +63,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner flowRate = new JSpinner(new SpinnerNumberModel(5, 1, 100000, 1));
 	private final JSpinner levelDecrease = new JSpinner(new SpinnerNumberModel(1, 1, 8, 1));
 	private final JSpinner slopeFindDistance = new JSpinner(new SpinnerNumberModel(4, 1, 16, 1));
+	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.common.enable");
+	private final DataListComboBox dripParticle = new DataListComboBox(mcreator);
 
 	private final JSpinner luminosity = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
 	private final JSpinner density = new JSpinner(new SpinnerNumberModel(1000, -100000, 100000, 1));
@@ -156,16 +159,14 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
 		destalx.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
 
-		JPanel destal = new JPanel(new GridLayout(6, 2, 20, 2));
+		JPanel destal = new JPanel(new GridLayout(8, 2, 20, 2));
 		destal.setOpaque(false);
-
-		isGas.setOpaque(false);
-		generateBucket.setOpaque(false);
 
 		canMultiply.setOpaque(false);
 		flowRate.setOpaque(false);
 		levelDecrease.setOpaque(false);
 		slopeFindDistance.setOpaque(false);
+		spawnParticles.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(bucketName, 16);
@@ -194,6 +195,14 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/type"), L10N.label("elementgui.fluid.type")));
 		destal.add(fluidtype);
 
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/spawn_drip_particles"), L10N.label("elementgui.fluid.spawn_particles")));
+		destal.add(spawnParticles);
+
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/drip_particle"), L10N.label("elementgui.fluid.drip_particle")));
+		destal.add(dripParticle);
+
 		destal.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.fluid.fluid_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
@@ -204,6 +213,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		textureBucket = new TextureHolder(
 				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM), 32);
+		generateBucket.setOpaque(false);
 		textureBucket.setOpaque(false);
 
 		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/enable_bucket"),
@@ -307,6 +317,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		density.setOpaque(false);
 		viscosity.setOpaque(false);
 		temperature.setOpaque(false);
+		isGas.setOpaque(false);
 		ComponentUtils.deriveFont(luminosity, 16);
 		ComponentUtils.deriveFont(density, 16);
 		ComponentUtils.deriveFont(viscosity, 16);
@@ -421,6 +432,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		generateCondition.refreshListKeepSelected();
 
+		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
+
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
 
@@ -442,6 +455,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		flowRate.setValue(fluid.flowRate);
 		levelDecrease.setValue(fluid.levelDecrease);
 		slopeFindDistance.setValue(fluid.slopeFindDistance);
+		spawnParticles.setSelected(fluid.spawnParticles);
+		dripParticle.setSelectedItem(fluid.dripParticle);
 		luminosity.setValue(fluid.luminosity);
 		density.setValue(fluid.density);
 		viscosity.setValue(fluid.viscosity);
@@ -492,6 +507,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.flowRate = (int) flowRate.getValue();
 		fluid.levelDecrease = (int) levelDecrease.getValue();
 		fluid.slopeFindDistance = (int) slopeFindDistance.getValue();
+		fluid.spawnParticles = spawnParticles.isSelected();
+		fluid.dripParticle = new Particle(mcreator.getWorkspace(), dripParticle.getSelectedItem());
 		fluid.luminosity = (int) luminosity.getValue();
 		fluid.density = (int) density.getValue();
 		fluid.viscosity = (int) viscosity.getValue();
