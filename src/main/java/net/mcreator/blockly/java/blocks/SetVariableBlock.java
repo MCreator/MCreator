@@ -50,11 +50,6 @@ public class SetVariableBlock implements IBlockGenerator {
 		String javaType = new Dependency("",
 				VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type).getName())
 				.getType(master.getWorkspace());
-		if (javaType.equals("Object")) {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					type + " variable type does not support the set variable block. Skipping this block."));
-			return;
-		}
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
