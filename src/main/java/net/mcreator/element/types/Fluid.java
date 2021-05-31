@@ -39,10 +39,16 @@ import java.util.List;
 	public String textureStill;
 	public String textureFlowing;
 
+	public boolean canMultiply;
+	public int flowRate;
+	public int levelDecrease;
+	public int slopeFindDistance;
+
 	public int luminosity;
 	public int density;
 	public int viscosity;
 	public boolean isGas;
+	public int temperature;
 	public String type;
 
 	public boolean generateBucket;
@@ -54,6 +60,7 @@ import java.util.List;
 
 	public double resistance;
 	public int luminance;
+	public int lightOpacity;
 	public boolean emissiveRendering;
 	public int flammability;
 	public int fireSpreadSpeed;
@@ -80,6 +87,14 @@ import java.util.List;
 
 		this.rarity = "COMMON";
 		this.specialInfo = new ArrayList<>();
+
+		this.flowRate = 5;
+		this.slopeFindDistance = 4;
+		this.levelDecrease = 1;
+
+		this.lightOpacity = 1;
+
+		this.temperature = 300;
 
 		this.resistance = 100;
 		this.colorOnMap = "DEFAULT";

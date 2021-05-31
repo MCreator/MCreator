@@ -673,7 +673,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(luminance);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/light_opacity"),
-				L10N.label("elementgui.block.light_opacity")));
+				L10N.label("elementgui.common.light_opacity")));
 		selp.add(lightOpacity);
 
 		selp.add(HelpUtils

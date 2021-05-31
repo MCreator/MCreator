@@ -69,12 +69,17 @@ import net.minecraft.block.material.Material;
 					.luminosity(${data.luminosity})
 					.density(${data.density})
 					.viscosity(${data.viscosity})
+					.temperature(${data.temperature})
 					<#if data.isGas>.gaseous()</#if>
 					.rarity(Rarity.${data.rarity})
 					<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
 					.sound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.emptySound}")))
 					</#if>)
 					.explosionResistance(${data.resistance}f)
+					<#if data.canMultiply>.canMultiply()</#if>
+					.tickRate(${data.flowRate})
+					.levelDecreasePerBlock(${data.levelDecrease})
+					.slopeFindDistance(${data.slopeFindDistance})
 					<#if data.generateBucket>.bucket(() -> bucket)</#if>
 					.block(() -> block);
 
@@ -105,6 +110,18 @@ import net.minecraft.block.material.Material;
 			<#if data.emissiveRendering>
 			@OnlyIn(Dist.CLIENT) @Override public boolean isEmissiveRendering(BlockState blockState) {
 				return true;
+			}
+			</#if>
+
+			<#if data.lightOpacity == 0>
+			@Override
+			public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+				return true;
+			}
+			<#elseif data.lightOpacity != 1>
+			@Override
+			public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
+				return ${data.lightOpacity};
 			}
 			</#if>
 

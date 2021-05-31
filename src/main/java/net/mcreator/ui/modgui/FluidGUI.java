@@ -58,10 +58,15 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private TextureHolder textureFlowing;
 
 	private final VTextField name = new VTextField(18);
+	private final JCheckBox canMultiply = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner flowRate = new JSpinner(new SpinnerNumberModel(5, 1, 100000, 1));
+	private final JSpinner levelDecrease = new JSpinner(new SpinnerNumberModel(1, 1, 8, 1));
+	private final JSpinner slopeFindDistance = new JSpinner(new SpinnerNumberModel(4, 1, 16, 1));
 
 	private final JSpinner luminosity = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
 	private final JSpinner density = new JSpinner(new SpinnerNumberModel(1000, -100000, 100000, 1));
 	private final JSpinner viscosity = new JSpinner(new SpinnerNumberModel(1000, 0, 100000, 1));
+	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(300, 0, 100000, 1));
 
 	private final JSpinner frequencyOnChunks = new JSpinner(new SpinnerNumberModel(5, 0, 40, 1));
 
@@ -78,6 +83,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(100, 0, Integer.MAX_VALUE, 0.5));
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
+	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -151,14 +157,20 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
 		destalx.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
 
-		JPanel destal = new JPanel(new GridLayout(6, 2, 20, 2));
+		JPanel destal = new JPanel(new GridLayout(7, 2, 20, 2));
 		destal.setOpaque(false);
 
 		luminosity.setOpaque(false);
 		density.setOpaque(false);
 		viscosity.setOpaque(false);
+		temperature.setOpaque(false);
 		isGas.setOpaque(false);
 		generateBucket.setOpaque(false);
+
+		canMultiply.setOpaque(false);
+		flowRate.setOpaque(false);
+		levelDecrease.setOpaque(false);
+		slopeFindDistance.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(bucketName, 16);
@@ -166,10 +178,27 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		ComponentUtils.deriveFont(luminosity, 16);
 		ComponentUtils.deriveFont(density, 16);
 		ComponentUtils.deriveFont(viscosity, 16);
+		ComponentUtils.deriveFont(temperature, 16);
 
 		destal.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
 		destal.add(name);
+
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/can_multiply"), L10N.label("elementgui.fluid.can_multiply")));
+		destal.add(canMultiply);
+
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/flow_rate"), L10N.label("elementgui.fluid.flow_rate")));
+		destal.add(flowRate);
+
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/level_decrease"), L10N.label("elementgui.fluid.level_decrease")));
+		destal.add(levelDecrease);
+
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/slope_find_distance"), L10N.label("elementgui.fluid.slope_find_distance")));
+		destal.add(slopeFindDistance);
 
 		destal.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("fluid/luminosity"), L10N.label("elementgui.fluid.luminosity")));
@@ -182,6 +211,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destal.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("fluid/viscosity"), L10N.label("elementgui.fluid.viscosity")));
 		destal.add(viscosity);
+
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/temperature"), L10N.label("elementgui.fluid.temperature")));
+		destal.add(temperature);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/is_gas"), L10N.label("elementgui.fluid.is_gas")));
 		destal.add(PanelUtils.centerInPanel(isGas));
@@ -250,11 +283,12 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.bucket_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JPanel blockProperties = new JPanel(new GridLayout(6, 2, 20, 2));
+		JPanel blockProperties = new JPanel(new GridLayout(7, 2, 20, 2));
 		blockProperties.setOpaque(false);
 
 		resistance.setOpaque(false);
 		luminance.setOpaque(false);
+		lightOpacity.setOpaque(false);
 		emissiveRendering.setOpaque(false);
 		flammability.setOpaque(false);
 		fireSpreadSpeed.setOpaque(false);
@@ -266,6 +300,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		blockProperties.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/luminance"), L10N.label("elementgui.common.luminance")));
 		blockProperties.add(luminance);
+
+		blockProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/light_opacity"), L10N.label("elementgui.common.light_opacity")));
+		blockProperties.add(lightOpacity);
 
 		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
 				L10N.label("elementgui.common.emissive_rendering")));
@@ -392,9 +430,14 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		textureFlowing.setTextureFromTextureName(fluid.textureFlowing);
 		name.setText(fluid.name);
 		bucketName.setText(fluid.bucketName);
+		canMultiply.setSelected(fluid.canMultiply);
+		flowRate.setValue(fluid.flowRate);
+		levelDecrease.setValue(fluid.levelDecrease);
+		slopeFindDistance.setValue(fluid.slopeFindDistance);
 		luminosity.setValue(fluid.luminosity);
 		density.setValue(fluid.density);
 		viscosity.setValue(fluid.viscosity);
+		temperature.setValue(fluid.temperature);
 		isGas.setSelected(fluid.isGas);
 		generateBucket.setSelected(fluid.generateBucket);
 		textureBucket.setTextureFromTextureName(fluid.textureBucket);
@@ -404,6 +447,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				fluid.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		resistance.setValue(fluid.resistance);
 		luminance.setValue(fluid.luminance);
+		lightOpacity.setValue(fluid.lightOpacity);
 		emissiveRendering.setSelected(fluid.emissiveRendering);
 		flammability.setValue(fluid.flammability);
 		fireSpreadSpeed.setValue(fluid.fireSpreadSpeed);
@@ -436,9 +480,14 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.bucketName = bucketName.getText();
 		fluid.textureFlowing = textureFlowing.getID();
 		fluid.textureStill = textureStill.getID();
+		fluid.canMultiply = canMultiply.isSelected();
+		fluid.flowRate = (int) flowRate.getValue();
+		fluid.levelDecrease = (int) levelDecrease.getValue();
+		fluid.slopeFindDistance = (int) slopeFindDistance.getValue();
 		fluid.luminosity = (int) luminosity.getValue();
 		fluid.density = (int) density.getValue();
 		fluid.viscosity = (int) viscosity.getValue();
+		fluid.temperature = (int) temperature.getValue();
 		fluid.isGas = isGas.isSelected();
 		fluid.generateBucket = generateBucket.isSelected();
 		fluid.textureBucket = textureBucket.getID();
@@ -447,6 +496,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 		fluid.resistance = (double) resistance.getValue();
 		fluid.luminance = (int) luminance.getValue();
+		fluid.lightOpacity = (int) lightOpacity.getValue();
 		fluid.emissiveRendering = emissiveRendering.isSelected();
 		fluid.flammability = (int) flammability.getValue();
 		fluid.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
