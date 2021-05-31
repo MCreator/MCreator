@@ -102,7 +102,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private BiomeListField restrictionBiomes;
 
 	private final ValidationGroup page1group = new ValidationGroup();
-	private final ValidationGroup page2group = new ValidationGroup();
 
 	public FluidGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -157,13 +156,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
 		destalx.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
 
-		JPanel destal = new JPanel(new GridLayout(7, 2, 20, 2));
+		JPanel destal = new JPanel(new GridLayout(6, 2, 20, 2));
 		destal.setOpaque(false);
 
-		luminosity.setOpaque(false);
-		density.setOpaque(false);
-		viscosity.setOpaque(false);
-		temperature.setOpaque(false);
 		isGas.setOpaque(false);
 		generateBucket.setOpaque(false);
 
@@ -175,10 +170,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(bucketName, 16);
 		ComponentUtils.deriveFont(specialInfo, 16);
-		ComponentUtils.deriveFont(luminosity, 16);
-		ComponentUtils.deriveFont(density, 16);
-		ComponentUtils.deriveFont(viscosity, 16);
-		ComponentUtils.deriveFont(temperature, 16);
 
 		destal.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
@@ -200,25 +191,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				.wrapWithHelpButton(this.withEntry("fluid/slope_find_distance"), L10N.label("elementgui.fluid.slope_find_distance")));
 		destal.add(slopeFindDistance);
 
-		destal.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/luminosity"), L10N.label("elementgui.fluid.luminosity")));
-		destal.add(luminosity);
-
-		destal.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("fluid/density"), L10N.label("elementgui.fluid.density")));
-		destal.add(density);
-
-		destal.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/viscosity"), L10N.label("elementgui.fluid.viscosity")));
-		destal.add(viscosity);
-
-		destal.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/temperature"), L10N.label("elementgui.fluid.temperature")));
-		destal.add(temperature);
-
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/is_gas"), L10N.label("elementgui.fluid.is_gas")));
-		destal.add(PanelUtils.centerInPanel(isGas));
-
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/type"), L10N.label("elementgui.fluid.type")));
 		destal.add(fluidtype);
 
@@ -226,12 +198,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.fluid.fluid_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(destalx, destal)));
-
-		JPanel pane1 = new JPanel(new BorderLayout(10, 10));
-		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
-		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
 		JPanel bucketProperties = new JPanel(new GridLayout(7, 2, 20, 2));
 		bucketProperties.setOpaque(false);
@@ -283,6 +249,14 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.bucket_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
+		JComponent fluidPropertiesTexture = PanelUtils.northAndCenterElement(destalx, destal);
+		fluidPropertiesTexture.setOpaque(false);
+		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(fluidPropertiesTexture, bucketProperties)));
+
+		JPanel pane1 = new JPanel(new BorderLayout(10, 10));
+		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
+		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
+
 		JPanel blockProperties = new JPanel(new GridLayout(7, 2, 20, 2));
 		blockProperties.setOpaque(false);
 
@@ -326,7 +300,43 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.block_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent properties = PanelUtils.westAndEastElement(bucketProperties, PanelUtils.pullElementUp(blockProperties));
+		JPanel forgeProperties = new JPanel(new GridLayout(5, 2, 20, 2));
+		forgeProperties.setOpaque(false);
+
+		luminosity.setOpaque(false);
+		density.setOpaque(false);
+		viscosity.setOpaque(false);
+		temperature.setOpaque(false);
+		ComponentUtils.deriveFont(luminosity, 16);
+		ComponentUtils.deriveFont(density, 16);
+		ComponentUtils.deriveFont(viscosity, 16);
+		ComponentUtils.deriveFont(temperature, 16);
+
+		forgeProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/luminosity"), L10N.label("elementgui.fluid.luminosity")));
+		forgeProperties.add(luminosity);
+
+		forgeProperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("fluid/density"), L10N.label("elementgui.fluid.density")));
+		forgeProperties.add(density);
+
+		forgeProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/viscosity"), L10N.label("elementgui.fluid.viscosity")));
+		forgeProperties.add(viscosity);
+
+		forgeProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/temperature"), L10N.label("elementgui.fluid.temperature")));
+		forgeProperties.add(temperature);
+
+		forgeProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/is_gas"), L10N.label("elementgui.fluid.is_gas")));
+		forgeProperties.add(PanelUtils.centerInPanel(isGas));
+
+		forgeProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.fluid.forge_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		JComponent properties = PanelUtils.westAndEastElement(blockProperties, PanelUtils.pullElementUp(forgeProperties));
 		properties.setOpaque(false);
 
 		pane2.setOpaque(false);
@@ -386,7 +396,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		bucketName.setValidator(new TextFieldValidator(bucketName, L10N.t("elementgui.fluid.error_bucket_needs_name")));
 		bucketName.enableRealtimeValidation();
 
-		page2group.addValidationElement(bucketName);
+		page1group.addValidationElement(bucketName);
 
 		addPage(L10N.t("elementgui.fluid.page_visual_and_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane2);
@@ -420,8 +430,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
 			return new AggregatedValidationResult(page1group);
-		else if (page == 1)
-			return new AggregatedValidationResult(page2group);
 		return new AggregatedValidationResult.PASS();
 	}
 
