@@ -159,7 +159,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
 		destalx.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
 
-		JPanel destal = new JPanel(new GridLayout(8, 2, 20, 2));
+		JPanel destal = new JPanel(new GridLayout(8, 2, 5, 2));
 		destal.setOpaque(false);
 
 		canMultiply.setOpaque(false);
@@ -208,7 +208,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.fluid_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JPanel bucketProperties = new JPanel(new GridLayout(7, 2, 20, 2));
+		JPanel bucketProperties = new JPanel(new GridLayout(7, 2, 5, 2));
 		bucketProperties.setOpaque(false);
 
 		textureBucket = new TextureHolder(
@@ -259,9 +259,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.bucket_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent fluidPropertiesTexture = PanelUtils.northAndCenterElement(destalx, destal);
-		fluidPropertiesTexture.setOpaque(false);
-		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(fluidPropertiesTexture, bucketProperties)));
+		JComponent fluidBucketProperties = PanelUtils.westAndEastElement(destal, PanelUtils.pullElementUp(bucketProperties));
+		fluidBucketProperties.setOpaque(false);
+		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(destalx, fluidBucketProperties)));
 
 		JPanel pane1 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
