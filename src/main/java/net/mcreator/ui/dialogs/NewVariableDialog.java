@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.io.Transliteration;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -29,11 +30,10 @@ import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
 
 public class NewVariableDialog {
 
-	public static VariableElement showNewVariableDialog(JFrame frame, boolean showScope,
+	public static VariableElement showNewVariableDialog(MCreator mcreator, boolean showScope,
 			OptionPaneValidatior variableNameValidator, VariableElementType... supportedTypes) {
 		JPanel inp = new JPanel(new BorderLayout(10, 10));
 
@@ -62,17 +62,18 @@ public class NewVariableDialog {
 		inp.add("Center", data);
 
 		int option = JOptionPane
-				.showConfirmDialog(frame, inp, L10N.t("dialog.variables.new_title"), JOptionPane.OK_CANCEL_OPTION,
+				.showConfirmDialog(mcreator, inp, L10N.t("dialog.variables.new_title"), JOptionPane.OK_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION
 				&& textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
 				&& type.getSelectedItem() != null) {
 			VariableElement element = new VariableElement();
-			VariableElementType variable = VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(((VariableElementType) type.getSelectedItem()).getName());
+			VariableElementType variable = VariableElementTypeLoader.INSTANCE
+					.getVariableTypeFromString(((VariableElementType) type.getSelectedItem()).getName());
 			if (variable != null) {
 				element.setName(Transliteration.transliterateString(textField.getText()));
 				element.setType((VariableElementType) type.getSelectedItem());
-				element.setValue(variable.getDefaultValue());
+				element.setValue(variable.getDefaultValue(mcreator.getWorkspace()));
 				element.setScope((VariableElementType.Scope) scope.getSelectedItem());
 				return element;
 			}

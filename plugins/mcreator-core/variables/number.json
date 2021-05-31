@@ -1,6 +1,5 @@
 {
 	"name": "number",
 	"color": 230,
-	"defaultValue": "0",
 	"blocklyVariableType": "Number"
 }

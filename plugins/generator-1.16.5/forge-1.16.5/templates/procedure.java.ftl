@@ -39,7 +39,7 @@ public class ${name}Procedure {
 		if(dependencies.get("${dependency.getName()}") == null) {
 			if(!dependencies.containsKey("${dependency.getName()}"))
 				${JavaModName}.LOGGER.warn("Failed to load dependency ${dependency.getName()} for procedure ${name}!");
-			<#if return_type??>return ${return_type.getDefaultValue()}<#else>return</#if>;
+			<#if return_type??>return ${return_type.getDefaultValue(generator.getWorkspace())}<#else>return</#if>;
 		}
         </#list>
 

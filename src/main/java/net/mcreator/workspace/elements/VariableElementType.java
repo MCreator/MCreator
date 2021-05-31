@@ -26,7 +26,6 @@ import net.mcreator.workspace.Workspace;
 
 	private String name;
 	private int color;
-	private String defaultValue;
 	private String blocklyVariableType;
 
 	public int getColor() {
@@ -45,7 +44,11 @@ import net.mcreator.workspace.Workspace;
 		return new NameMapper(workspace, "types").getMapping(getName());
 	}
 
-	public String getDefaultValue() {
+	public String getDefaultValue(Workspace workspace) {
+		String defaultValue = new NameMapper(workspace, "types").getMapping(getName(), 1);
+		if (defaultValue.equals(getName()))
+			return "null";
+
 		return defaultValue;
 	}
 

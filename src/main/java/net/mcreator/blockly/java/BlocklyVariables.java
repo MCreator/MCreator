@@ -45,8 +45,8 @@ public class BlocklyVariables {
 				String name = variable.getAttribute("id");
 				VariableElementType variableType = VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type);
 				if (variableType != null && variableType.getBlocklyVariableType() != null && name != null) {
-					generator.append(variableType.getJavaType(generator.getWorkspace())).append(" ").append(name).append(" = ")
-							.append(variableType.getDefaultValue()).append(";\n");
+					generator.append(variableType.getJavaType(generator.getWorkspace())).append(" ").append(name)
+							.append(" = ").append(variableType.getDefaultValue(generator.getWorkspace())).append(";\n");
 
 					// add variable to the array of variables
 					varlist.add(name);

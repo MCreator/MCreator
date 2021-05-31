@@ -1,11 +1,19 @@
 _default: Object
+number:
+  - double
+  - 0
+string:
+  - String
+  - '""'
+logic:
+  - boolean
+  - false
+itemstack:
+  - ItemStack
+  - ItemStack.EMPTY
 world: IWorld
-number: double
 entity: Entity
-itemstack: ItemStack
 map: HashMap
-string: String
-logic: boolean
 direction: Direction
 advancement: Advancement
 dimensiontype: int
