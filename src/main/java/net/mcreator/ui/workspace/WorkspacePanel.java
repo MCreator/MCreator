@@ -1239,21 +1239,18 @@ import java.util.stream.Collectors;
 					}
 				});
 		if (canRename == true) {
-			list.getSelectedValuesList().forEach(re -> {
-				FolderElement folder = (FolderElement) re;
+			for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+				if (currentFolder.equals(modElement.getFolderPath())) {
+					modElement.setFolderPath(modElement.getFolderPath().replace(selected.getName(), newName));
+				}
+			}
+			for (FolderElement childFolder : currentFolder.getRecursiveFolderChildren()) {
 				for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-					if (folder.equals(modElement.getFolderPath())) {
+					if (childFolder.equals(modElement.getFolderPath())) {
 						modElement.setFolderPath(modElement.getFolderPath().replace(selected.getName(), newName));
 					}
 				}
-				for (FolderElement childFolder : folder.getRecursiveFolderChildren()) {
-					for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-						if (childFolder.equals(modElement.getFolderPath())) {
-							modElement.setFolderPath(modElement.getFolderPath().replace(selected.getName(), newName));
-						}
-					}
-				}
-			});
+			};
 			((FolderElement) selected).setName(newName);
 			mcreator.getWorkspace().markDirty();
 			reloadElements();
