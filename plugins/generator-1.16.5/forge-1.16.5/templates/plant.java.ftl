@@ -326,11 +326,11 @@ import net.minecraft.util.SoundEvent;
 					</#if>
 					.doesNotBlockMovement()
 					<#if data.isCustomSoundType>
-						.sound(new ForgeSoundType(1.0f, 1.0f, new SoundEvent(new ResourceLocation("${data.breakSound}")),
-						new SoundEvent(new ResourceLocation("${data.stepSound}")),
-						new SoundEvent(new ResourceLocation("${data.placeSound}")),
-						new SoundEvent(new ResourceLocation("${data.hitSound}")),
-						new SoundEvent(new ResourceLocation("${data.fallSound}"))))
+						.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
+						() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
+						() -> new SoundEvent(new ResourceLocation("${data.placeSound}")),
+						() -> new SoundEvent(new ResourceLocation("${data.hitSound}")),
+						() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))))
 					<#else>
 						.sound(SoundType.${data.soundOnStep})
 					</#if>
