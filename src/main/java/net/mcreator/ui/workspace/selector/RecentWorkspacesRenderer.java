@@ -38,7 +38,7 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 				(Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 		setBorder(BorderFactory.createEmptyBorder(2, 5, 3, 0));
 
-		setFont(MCreatorTheme.light_font.deriveFont(16.0f));
+		setFont(MCreatorTheme.secondary_font.deriveFont(16.0f));
 
 		String path = value.getPath().getParentFile().getAbsolutePath().replace("\\", "/");
 
