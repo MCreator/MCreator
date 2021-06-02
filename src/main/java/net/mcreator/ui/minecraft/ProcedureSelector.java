@@ -20,6 +20,7 @@ package net.mcreator.ui.minecraft;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeRegistry;
@@ -46,6 +47,7 @@ import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -113,14 +115,14 @@ public class ProcedureSelector extends JPanel {
 		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
 
-		if (returnType == VariableElementType.LOGIC) {
-			defaultName = "(always)";
-			setBorder(BorderFactory
-					.createLineBorder(new Dependency("", VariableElementType.LOGIC.toDependencyType()).getColor()));
-		} else if (returnType == VariableElementType.ITEMSTACK) {
-			defaultName = "(empty itemstack)";
-			setBorder(BorderFactory
-					.createLineBorder(new Dependency("", VariableElementType.ITEMSTACK.toDependencyType()).getColor()));
+		if (returnType != null) {
+			setBorder(BorderFactory.createLineBorder(BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor())));
+
+			if (returnType == VariableElementTypeLoader.BuiltInTypes.LOGIC) {
+				defaultName = "(always)";
+      } else if (returnType == VariableElementTypeLoader.BuiltInTypes.ITEMSTACK) {
+        defaultName = "(empty itemstack)";
+      }
 		}
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
@@ -175,7 +177,7 @@ public class ProcedureSelector extends JPanel {
 		top.add("South", depslab);
 
 		JComponent procwrap;
-		if (returnType == VariableElementType.LOGIC) {
+		if (returnType == VariableElementTypeLoader.BuiltInTypes.LOGIC) {
 			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" if:  "), 15), procedures);
 		} else if (returnType == VariableElementType.ITEMSTACK) {
 			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" item:  "), 15), procedures);
@@ -296,9 +298,7 @@ public class ProcedureSelector extends JPanel {
 		for (ModElement mod : mcreator.getWorkspace().getModElements()) {
 			if (mod.getType() == ModElementType.PROCEDURE) {
 				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
-				VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-						VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
-						null;
+
 				List<Dependency> realdepsList = new ArrayList<>();
 				if (dependenciesList == null)
 					continue;
@@ -314,9 +314,14 @@ public class ProcedureSelector extends JPanel {
 
 				boolean correctReturnType = true;
 
-				if (returnType != null)
+				if (returnType != null) {
+					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
+							VariableElementTypeLoader.INSTANCE
+									.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
+							null;
 					if (returnTypeCurrent != returnType)
 						correctReturnType = false;
+				}
 
 				if (!missing && correctReturnType) {
 					depsMap.put(mod.getName(), realdepsList);
