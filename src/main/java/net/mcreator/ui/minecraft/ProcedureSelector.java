@@ -114,15 +114,15 @@ public class ProcedureSelector extends JPanel {
 
 		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
-    
+
 		if (returnType != null) {
 			setBorder(BorderFactory.createLineBorder(BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor())));
 
 			if (returnType == VariableElementTypeLoader.BuiltInTypes.LOGIC) {
 				defaultName = "(always)";
-      } else if (returnType == VariableElementTypeLoader.BuiltInTypes.NUMBER) {
-        defaultName = "(0)";
-      }
+			} else if (returnType == VariableElementTypeLoader.BuiltInTypes.NUMBER) {
+				defaultName = "(0)";
+			}
 		}
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
@@ -179,8 +179,6 @@ public class ProcedureSelector extends JPanel {
 		JComponent procwrap;
 		if (returnType == VariableElementTypeLoader.BuiltInTypes.LOGIC) {
 			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" if:  "), 15), procedures);
-		} else if (returnType == VariableElementType.NUMBER) {
-			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" num:  "), 15), procedures);
 		} else if (returnType == null) {
 			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" do:  "), 15), procedures);
 		} else {
