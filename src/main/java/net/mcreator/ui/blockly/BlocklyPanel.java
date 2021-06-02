@@ -36,6 +36,8 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import netscape.javascript.JSObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -104,7 +106,7 @@ public class BlocklyPanel extends JFXPanel {
 					}
 
 					if (PluginLoader.INSTANCE
-							.getResourceAsStream("/themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/blockly.css")
+							.getResourceAsStream("themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/blockly.css")
 							!= null) {
 						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
 								"/themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/blockly.css");
@@ -145,6 +147,9 @@ public class BlocklyPanel extends JFXPanel {
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/field_ai_condition.js"));
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blocks.js"));
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js"));
+
+					//JS code generation for custom variables
+					webEngine.executeScript(VariableElementTypeLoader.INSTANCE.getVariableBlocklyJS());
 
 					// Make the webpage transparent
 					try {
@@ -223,13 +228,16 @@ public class BlocklyPanel extends JFXPanel {
 			return retval;
 
 		String[] vars = query.split(":");
-		for (String var : vars) {
-			String[] vardata = var.split(";");
+		for (String varNameType : vars) {
+			String[] vardata = varNameType.split(";");
 			if (vardata.length == 2) {
 				VariableElement element = new VariableElement();
 				element.setName(vardata[0]);
-				element.setType(BlocklyVariables.getMCreatorVariableTypeFromBlocklyVariableType(vardata[1]));
-				retval.add(element);
+				VariableElementType variableElementType = VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(vardata[1]);
+				if (variableElementType != null) {
+					element.setType(variableElementType);
+					retval.add(element);
+				}
 			}
 		}
 		return retval;
