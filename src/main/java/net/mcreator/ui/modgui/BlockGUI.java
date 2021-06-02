@@ -303,7 +303,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		redstonePowerProvider = new ProcedureSelector(this.withEntry("block/redstone_provider"), mcreator,
 				L10N.t("elementgui.block.event_redstone_provider"), ProcedureSelector.Side.CLIENT, true,
-				VariableElementType.NUMBER, Dependency.fromString("x:number/y:number/z:number/world:world"))
+				VariableElementTypeLoader.BuiltInTypes.NUMBER, Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.setDefaultName(L10N.t("elementgui.common.no_additional_condition"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
