@@ -120,9 +120,9 @@ public class ProcedureSelector extends JPanel {
 
 			if (returnType == VariableElementTypeLoader.BuiltInTypes.LOGIC) {
 				defaultName = "(always)";
-      } else if (returnType == VariableElementTypeLoader.BuiltInTypes.ITEMSTACK) {
-        defaultName = "(empty itemstack)";
-      }
+			} else if (returnType == VariableElementTypeLoader.BuiltInTypes.ITEMSTACK) {
+				defaultName = "(empty itemstack)";
+			}
 		}
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
@@ -179,8 +179,6 @@ public class ProcedureSelector extends JPanel {
 		JComponent procwrap;
 		if (returnType == VariableElementTypeLoader.BuiltInTypes.LOGIC) {
 			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" if:  "), 15), procedures);
-		} else if (returnType == VariableElementType.ITEMSTACK) {
-			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" item:  "), 15), procedures);
 		} else if (returnType == null) {
 			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" do:  "), 15), procedures);
 		} else {
