@@ -1,35 +1,17 @@
+<#if type == "itemstack">
+    /*@ItemStack*/
+<#elseif type == "blockstate">
+    /*@BlockState*/
+</#if>
 <#if scope == "GLOBAL_SESSION">
-    <#if type == "itemstack">
-        /*@ItemStack*/(${JavaModName}Variables.${name})
-    <#else>
-        (${JavaModName}Variables.${name})
-    </#if>
+    (${JavaModName}Variables.${name})
 <#elseif scope == "GLOBAL_WORLD">
-    <#if type == "itemstack">
-        /*@ItemStack*/(${JavaModName}Variables.WorldVariables.get(world).${name})
-    <#else>
-        (${JavaModName}Variables.WorldVariables.get(world).${name})
-    </#if>
+    (${JavaModName}Variables.WorldVariables.get(world).${name})
 <#elseif scope == "GLOBAL_MAP">
-    <#if type == "itemstack">
-        /*@ItemStack*/(${JavaModName}Variables.MapVariables.get(world).${name})
-    <#else>
-        (${JavaModName}Variables.MapVariables.get(world).${name})
-    </#if>
+    (${JavaModName}Variables.MapVariables.get(world).${name})
 <#elseif scope == "PLAYER_LIFETIME" || scope == "PLAYER_PERSISTENT">
-    <#if type == "itemstack">
-        /*@ItemStack*/((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
-            .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
-    <#else>
-        ((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
-            .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
-    </#if>
+    ((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+        .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
 <#elseif scope == "local">
-    <#if type == "itemstack">
-        /*@ItemStack*/(${name})
-    <#elseif type == "blockstate">
-        /*@BlockState*/(${name})
-    <#else>
-        (${name})
-    </#if>
+    (${name})
 </#if>

@@ -8,35 +8,35 @@
         ${JavaModName}Variables.${name} =(String)${value};
     <#elseif type == "itemstack">
         ${JavaModName}Variables.${name} =${mappedMCItemToItemStackCode(value, 1)};
+    <#elseif type == "blockstate">
+        ${JavaModName}Variables.${name} =${mappedBlockToBlockStateCode(value)};
     </#if>
 <#elseif scope == "GLOBAL_WORLD">
     <#if type == "number">
         ${JavaModName}Variables.WorldVariables.get(world).${name} =(double)${value};
-        ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
     <#elseif type == "logic">
         ${JavaModName}Variables.WorldVariables.get(world).${name} =(boolean)${value};
-        ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
     <#elseif type == "string">
         ${JavaModName}Variables.WorldVariables.get(world).${name} =(String)${value};
-        ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
     <#elseif type == "itemstack">
         ${JavaModName}Variables.WorldVariables.get(world).${name} =${mappedMCItemToItemStackCode(value, 1)};
-        ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
+    <#elseif type == "blockstate">
+        ${JavaModName}Variables.WorldVariables.get(world).${name} =${mappedBlockToBlockStateCode(value)};
     </#if>
+    ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
 <#elseif scope == "GLOBAL_MAP">
     <#if type == "number">
         ${JavaModName}Variables.MapVariables.get(world).${name} =(double)${value};
-        ${JavaModName}Variables.MapVariables.get(world).syncData(world);
     <#elseif type == "logic">
         ${JavaModName}Variables.MapVariables.get(world).${name} =(boolean)${value};
-        ${JavaModName}Variables.MapVariables.get(world).syncData(world);
     <#elseif type == "string">
         ${JavaModName}Variables.MapVariables.get(world).${name} =(String)${value};
-        ${JavaModName}Variables.MapVariables.get(world).syncData(world);
     <#elseif type == "itemstack">
         ${JavaModName}Variables.MapVariables.get(world).${name} =${mappedMCItemToItemStackCode(value, 1)};
-        ${JavaModName}Variables.MapVariables.get(world).syncData(world);
+    <#elseif type == "blockstate">
+        ${JavaModName}Variables.MapVariables.get(world).${name} =${mappedBlockToBlockStateCode(value)};
     </#if>
+    ${JavaModName}Variables.MapVariables.get(world).syncData(world);
 <#elseif scope == "PLAYER_LIFETIME" || scope == "PLAYER_PERSISTENT">
     <#if type == "number">
     {
@@ -65,6 +65,14 @@
     <#elseif type == "itemstack">
     {
         ItemStack _setval = ${mappedMCItemToItemStackCode(value, 1)};
+        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+        	capability.${name} = _setval;
+        	capability.syncPlayerVariables(entity);
+		});
+    }
+    <#elseif type == "blockstate">
+    {
+        BlockState _setval = ${mappedBlockToBlockStateCode(value)};
         entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
         	capability.${name} = _setval;
         	capability.syncPlayerVariables(entity);

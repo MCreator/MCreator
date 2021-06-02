@@ -85,6 +85,9 @@ public class VariableElementTypeLoader {
 			case "itemstack":
 				BuiltInTypes.ITEMSTACK = variableType;
 				break;
+			case "blockstate":
+				BuiltInTypes.BLOCKSTATE = variableType;
+				break;
 			}
 		}
 
@@ -112,5 +115,6 @@ public class VariableElementTypeLoader {
 		public static VariableElementType LOGIC;
 		public static VariableElementType NUMBER;
 		public static VariableElementType ITEMSTACK;
+		public static VariableElementType BLOCKSTATE;
 	}
 }

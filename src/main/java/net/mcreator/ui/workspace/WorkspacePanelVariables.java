@@ -61,7 +61,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 						L10N.t("workspace.variables.variable_scope"), L10N.t("workspace.variables.initial_value") },
 				0) {
 			@Override public boolean isCellEditable(int row, int column) {
-				if (getValueAt(row, 1).toString().equals(VariableElementTypeLoader.BuiltInTypes.ITEMSTACK.getName()))
+				if (getValueAt(row, 1).toString().equals(VariableElementTypeLoader.BuiltInTypes.ITEMSTACK.getName())
+						|| getValueAt(row, 1).toString().equals(VariableElementTypeLoader.BuiltInTypes.BLOCKSTATE.getName()))
 					return column != 3;
 				return true;
 			}
@@ -107,7 +108,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 							new String[] { VariableElementTypeLoader.BuiltInTypes.ITEMSTACK.getName(),
 									VariableElementTypeLoader.BuiltInTypes.LOGIC.getName(),
 									VariableElementTypeLoader.BuiltInTypes.NUMBER.getName(),
-									VariableElementTypeLoader.BuiltInTypes.STRING.getName() }));
+									VariableElementTypeLoader.BuiltInTypes.STRING.getName(),
+									VariableElementTypeLoader.BuiltInTypes.BLOCKSTATE.getName()}));
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
 					name.enableRealtimeValidation();
@@ -238,7 +240,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 								}
 							}, VariableElementTypeLoader.BuiltInTypes.LOGIC, VariableElementTypeLoader.BuiltInTypes.NUMBER,
 							VariableElementTypeLoader.BuiltInTypes.STRING,
-							VariableElementTypeLoader.BuiltInTypes.ITEMSTACK);
+							VariableElementTypeLoader.BuiltInTypes.ITEMSTACK,
+							VariableElementTypeLoader.BuiltInTypes.BLOCKSTATE);
 			if (element != null) {
 				workspacePanel.getMcreator().getWorkspace().addVariableElement(element);
 				reloadElements();
