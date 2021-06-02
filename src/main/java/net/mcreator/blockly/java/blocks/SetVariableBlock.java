@@ -96,13 +96,15 @@ public class SetVariableBlock implements IBlockGenerator {
 					}
 				}
 
+				String valuecode = BlocklyToCode.directProcessOutputBlock(master, value);
+
 				if (master.getTemplateGenerator() != null) {
 					Map<String, Object> dataModel = new HashMap<>();
 					dataModel.put("name", name);
 					dataModel.put("scope", scope);
 					dataModel.put("type", type);
 					dataModel.put("javaType", javaType);
-					dataModel.put("value", BlocklyToCode.directProcessOutputBlock(master, value));
+					dataModel.put("value", valuecode);
 
 					String code = master.getTemplateGenerator()
 							.generateFromTemplate("_set_variable.java.ftl", dataModel);

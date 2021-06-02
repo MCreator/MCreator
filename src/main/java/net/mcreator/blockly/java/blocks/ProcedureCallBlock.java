@@ -33,7 +33,7 @@ import java.util.Map;
 public class ProcedureCallBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
+		Element element = XMLUtil.getFirstChildrenWithName(block, "field" );
 
 		if (element != null) {
 			Procedure procedure = new Procedure(element.getTextContent());
@@ -46,9 +46,9 @@ public class ProcedureCallBlock implements IBlockGenerator {
 			}
 
 			Element x = null, y = null, z = null;
-			List<Element> values = XMLUtil.getChildrenWithName(block, "value");
+			List<Element> values = XMLUtil.getChildrenWithName(block, "value" );
 			for (Element e : values)
-				switch (e.getAttribute("name")) {
+				switch (e.getAttribute("name" )) {
 				case "x":
 					x = e;
 					break;
@@ -65,15 +65,25 @@ public class ProcedureCallBlock implements IBlockGenerator {
 					call_at = true;
 				else
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-							"Call procedure at is missing some of the coordinate inputs. It will be processed as normal call procedure block."));
+							"Call procedure at is missing some of the coordinate inputs. It will be processed as normal call procedure block." ));
+
+			String xcode = "";
+			String ycode = "";
+			String zcode = "";
+
+			if (call_at) {
+				xcode = BlocklyToCode.directProcessOutputBlock(master, x);
+				ycode = BlocklyToCode.directProcessOutputBlock(master, y);
+				zcode = BlocklyToCode.directProcessOutputBlock(master, z);
+			}
 
 			if (master.getTemplateGenerator() != null) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("procedure", procedure.getName());
 				if (call_at) {
-					dataModel.put("x", BlocklyToCode.directProcessOutputBlock(master, x));
-					dataModel.put("y", BlocklyToCode.directProcessOutputBlock(master, y));
-					dataModel.put("z", BlocklyToCode.directProcessOutputBlock(master, z));
+					dataModel.put("x", xcode);
+					dataModel.put("y", ycode);
+					dataModel.put("z", zcode);
 					dataModel.put("dependencies", procedure.getDependencies(master.getWorkspace()));
 					String code = master.getTemplateGenerator()
 							.generateFromTemplate("_call_procedure_at.java.ftl", dataModel);
@@ -87,8 +97,8 @@ public class ProcedureCallBlock implements IBlockGenerator {
 			}
 
 		} else {
-			master.addCompileNote(
-					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Empty procedure call block was skipped."));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					"Empty procedure call block was skipped." ));
 		}
 	}
 
