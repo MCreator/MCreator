@@ -39,8 +39,8 @@ public class BlocklyJavascriptTemplates {
 	public static String getVariableBlock(VariableElementType variableType) {
 		return "Blockly.defineBlocksWithJsonArray([{\"type\":\"variables_get_" + variableType.getName()
 				+ "\",\"message0\":\"" + L10N.t("blockly.block.get_var")
-				+ " %1\",\"args0\":[{\"type\": \"input_dummy\",\"name\": \"var\"" + "}]," + "\"extensions\": [\"" + variableType
-				.getName() + "_variables\"],\"inputsInline\": true,\"output\": \"" + variableType
+				+ " %1\",\"args0\":[{\"type\": \"input_dummy\",\"name\": \"var\"" + "}]," + "\"extensions\": [\""
+				+ variableType.getName() + "_variables\"],\"inputsInline\": true,\"output\": \"" + variableType
 				.getBlocklyVariableType() + "\",\"colour\":" + variableType.getColor() + "}]);";
 	}
 
@@ -48,7 +48,8 @@ public class BlocklyJavascriptTemplates {
 		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"variables_set_" + variableType.getName()
 				+ "\",\"message0\":\"" + L10N.t("blockly.block.set_var") + " %1 " + L10N.t("blockly.block.set_to")
 				+ " %2\",\"args0\":[{\"type\":\"input_dummy\",\"name\":\"var\"},{\"type\":\"input_value\",\"name\":\"VAL\","
-				+ "\"check\":\"" + variableType.getBlocklyVariableType() + "\"}],\"extensions\":[\"" + variableType.getName()
+				+ "\"check\":\"" + variableType.getBlocklyVariableType() + "\"}],\"extensions\":[\"" + variableType
+				.getName()
 				+ "_variables\"],\"inputsInline\":true,\"previousStatement\": null,\"nextStatement\": null,\"colour\":"
 				+ variableType.getColor() + "}]);";
 	}
@@ -62,15 +63,16 @@ public class BlocklyJavascriptTemplates {
 	public static String procedureReturnValueBlock(VariableElementType variableType) {
 		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"procedure_retval_" + variableType.getName()
 				+ "\",\"message0\": \"" + L10N.t("blockly.block.procedure_retval")
-				+ "\",\"extensions\": [\"procedure_retval_" + variableType.getName() + "\"],\"output\": \"" + variableType
-				.getBlocklyVariableType() + "\",\"inputsInline\": true,\"colour\": " + variableType.getColor() + "}]);";
+				+ "\",\"extensions\": [\"procedure_retval_" + variableType.getName() + "\"],\"output\": \""
+				+ variableType.getBlocklyVariableType() + "\",\"inputsInline\": true,\"colour\": " + variableType
+				.getColor() + "}]);";
 	}
 
 	public static String returnBlock(VariableElementType variableType) {
-		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"return_" + variableType.getName() + "\",\"message0\":\""
-				+ L10N.t("blockly.block.return")
+		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"return_" + variableType.getName()
+				+ "\",\"message0\":\"" + L10N.t("blockly.block.return")
 				+ " %1\",\"args0\":[{\"type\":\"input_value\",\"name\":\"return\",\"check\":\"" + variableType
-				.getBlocklyVariableType() + "\"}],\"previousStatement\":null,\"colour\":"
-				+ variableType.getColor() + "}]);";
+				.getBlocklyVariableType() + "\"}],\"previousStatement\":null,\"colour\":" + variableType.getColor()
+				+ "}]);";
 	}
 }

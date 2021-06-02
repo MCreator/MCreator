@@ -226,13 +226,15 @@ public class BlocklyJavascriptBridge {
 		}
 
 		// check if type is "call procedure with return value"
-		if(type.contains("procedure_retval_")) {
+		if (type.contains("procedure_retval_")) {
 			retval = workspace.getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementTypeLoader.INSTANCE.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
+							VariableElementTypeLoader.INSTANCE
+									.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
 							null;
-					return returnTypeCurrent == VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(StringUtils.removeStart(type, "procedure_retval_"));
+					return returnTypeCurrent == VariableElementTypeLoader.INSTANCE
+							.getVariableTypeFromString(StringUtils.removeStart(type, "procedure_retval_"));
 				}
 				return false;
 			}).map(ModElement::getName).collect(Collectors.toList());

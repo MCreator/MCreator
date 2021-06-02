@@ -891,7 +891,7 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates the block icon for walls.</p>
 		 *
-		 * @param texture  <p>Block texture</p>
+		 * @param texture <p>Block texture</p>
 		 * @return <p>Returns generated image.</p>
 		 */
 		public static Image generateWallIcon(Image texture) {
@@ -909,7 +909,7 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates the block icon for fences.</p>
 		 *
-		 * @param texture  <p>Block texture</p>
+		 * @param texture <p>Block texture</p>
 		 * @return <p>Returns generated image.</p>
 		 */
 		public static Image generateFenceIcon(Image texture) {
@@ -919,10 +919,10 @@ public class MinecraftImageGenerator {
 			g2d.scale(0.88, 1);
 
 			// Bars (back)
-			g2d.translate(2,-1);
+			g2d.translate(2, -1);
 			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 2, 2, 0, 5, 7), null, null);
 			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 2, 2, 0, 13, 7), null, null);
-			g2d.translate(-2,1);
+			g2d.translate(-2, 1);
 			// Left post
 			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 4, 16, 4, 0, 0, 6), null, null);
 			// Bars (middle)
@@ -931,7 +931,7 @@ public class MinecraftImageGenerator {
 			// Right post
 			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 4, 16, 4, 12, 0, 6), null, null);
 			// Bars (front)
-			g2d.translate(-2,1);
+			g2d.translate(-2, 1);
 			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 2, 2, 14, 5, 7), null, null);
 			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 2, 2, 14, 13, 7), null, null);
 
@@ -942,7 +942,7 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates the block icon for fence gates.</p>
 		 *
-		 * @param texture  <p>Block texture</p>
+		 * @param texture <p>Block texture</p>
 		 * @return <p>Returns generated image.</p>
 		 */
 		public static Image generateFenceGateIcon(Image texture) {
@@ -968,7 +968,7 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates the block icon for end rods.</p>
 		 *
-		 * @param texture  <p>Block texture</p>
+		 * @param texture <p>Block texture</p>
 		 * @return <p>Returns generated image.</p>
 		 */
 		public static Image generateEndRodIcon(Image texture) {
@@ -979,12 +979,14 @@ public class MinecraftImageGenerator {
 
 			// base
 			g2d.translate(8, 6);
-			g2d.drawImage(ImageUtils.generateCuboidImage(ImageUtils.rotate(texture, 90), texture, texture,
-					4, 1, 4, 10, 9, 2), null, null);
+			g2d.drawImage(
+					ImageUtils.generateCuboidImage(ImageUtils.rotate(texture, 90), texture, texture, 4, 1, 4, 10, 9, 2),
+					null, null);
 			// rod
 			g2d.translate(4, -9);
-			g2d.drawImage(ImageUtils.generateCuboidImage(ImageUtils.rotate(texture, 90), texture,
-					ImageUtils.translate(texture, 2, 0), 2, 15, 2, 12, 0, 0), null, null);
+			g2d.drawImage(ImageUtils
+					.generateCuboidImage(ImageUtils.rotate(texture, 90), texture, ImageUtils.translate(texture, 2, 0),
+							2, 15, 2, 12, 0, 0), null, null);
 
 			g2d.dispose();
 			return out;
