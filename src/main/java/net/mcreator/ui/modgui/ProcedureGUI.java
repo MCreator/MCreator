@@ -411,7 +411,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					VariableElement selectedVar = localVarsList.getSelectedValue();
 					VariableElementType type = selectedVar.getType();
 					String blockXml = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"variables_"
-							+ (!e.isAltDown() ? "get_" : "set_") + type.getName() + "\"><field name=\"VAR\">local:"
+							+ (e.isAltDown() ? "set_" : "get_") + type.getName() + "\"><field name=\"VAR\">local:"
 							+ selectedVar.getName() + "</field></block></xml>";
 					blocklyPanel.addBlocksFromXML(blockXml);
 				}
