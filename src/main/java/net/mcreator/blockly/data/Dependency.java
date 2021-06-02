@@ -85,6 +85,48 @@ public class Dependency implements Comparable<Dependency> {
 		return getColor(type);
 	}
 
+	public String getDependencyBlockXml() {
+		StringBuilder blockXml = new StringBuilder("<xml xmlns=\"http://www.w3.org/1999/xhtml\">");
+		switch (name) {
+		case "x":
+			blockXml.append("<block type=\"coord_x\"></block>");
+			break;
+		case "y":
+			blockXml.append("<block type=\"coord_y\"></block>");
+			break;
+		case "z":
+			blockXml.append("<block type=\"coord_z\"></block>");
+			break;
+		case "entity":
+			blockXml.append("<block type=\"entity_from_deps\"></block>");
+			break;
+		case "sourceentity":
+			blockXml.append("<block type=\"source_entity_from_deps\"></block>");
+			break;
+		case "immediatesourceentity":
+			blockXml.append("<block type=\"immediate_source_entity_from_deps\"></block>");
+			break;
+		case "direction":
+			blockXml.append("<block type=\"direction_from_deps\"></block>");
+			break;
+		case "itemstack":
+			blockXml.append("<block type=\"itemstack_to_mcitem\"></block>");
+			break;
+		default:
+			if (VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type) != null) {
+				blockXml.append("<block type=\"custom_dependency_");
+				blockXml.append(type);
+				blockXml.append("\"><field name=\"NAME\">");
+				blockXml.append(name);
+				blockXml.append("</field></block>");
+			}
+			else
+				return null;
+		}
+		blockXml.append("</xml>");
+		return blockXml.toString();
+	}
+
 	public static Color getColor(String type) {
 		// Check if the type is a loaded variable and then, get its HUE color
 		if (VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type) != null) {
