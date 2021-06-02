@@ -32,6 +32,10 @@ import net.mcreator.workspace.Workspace;
 		return color;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getName() {
 		return name;
 	}

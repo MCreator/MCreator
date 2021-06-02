@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.blockly.BlocklyJavascriptTemplates;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,7 +47,7 @@ public class VariableElementTypeLoader {
 	}
 
 	public VariableElementTypeLoader() {
-		LOG.debug("Loading variables");
+		LOG.debug("Loading variable types");
 
 		final Gson gson = new Gson();
 
@@ -54,9 +55,9 @@ public class VariableElementTypeLoader {
 
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources("variables", Pattern.compile("^[^$].*\\.json"));
 		for (String file : fileNames) {
-			VariableElementType variableType = gson
-					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), VariableElementType.class);
-			LOG.debug("Added " + variableType.getName() + " to variable types");
+			String variableJSON = FileIO.readResourceToString(PluginLoader.INSTANCE, file);
+			VariableElementType variableType = gson.fromJson(variableJSON, VariableElementType.class);
+			variableType.setName(FilenameUtils.getBaseName(file));
 
 			VARIABLE_TYPES_LIST.put(variableType, variableType.getName());
 
