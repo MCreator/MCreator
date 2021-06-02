@@ -55,8 +55,7 @@ public class BlocklyJavascriptTemplates {
 
 	public static String customDependencyBlock(VariableElementType variableType) {
 		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"custom_dependency_" + variableType.getName()
-				+ "\",\"message0\":\"" + L10N.t("blockly.block.custom_dependency_" + variableType.getName())
-				+ " %1\",\"args0\":[{\"type\":\"field_input\",\"name\":\"NAME\",\"text\":\"dependencyName\"}],\"output\":\""
+				+ "\",\"message0\":\"%1\",\"args0\":[{\"type\":\"field_input\",\"name\":\"NAME\",\"text\":\"dependencyName\"}],\"output\":\""
 				+ variableType.getBlocklyVariableType() + "\",\"colour\":" + variableType.getColor() + "}]);";
 	}
 
