@@ -14,6 +14,9 @@ itemstack:
 direction:
   - Direction
   - Direction.NORTH
+blockstate:
+  - BlockState
+  - Blocks.AIR.getDefaultState()
 world: IWorld
 entity: Entity
 map: HashMap

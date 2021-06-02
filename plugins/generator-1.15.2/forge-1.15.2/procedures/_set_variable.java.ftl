@@ -74,6 +74,8 @@
 <#elseif scope == "local">
     <#if type == "itemstack">
         ${name} = ${mappedMCItemToItemStackCode(value, 1)};
+    <#elseif type == "blockstate">
+        ${name} = ${mappedBlockToBlockStateCode(value)};
     <#else>
         ${name} = (${javaType}) ${value};
     </#if>

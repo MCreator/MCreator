@@ -48,6 +48,8 @@ public class CustomDependencyBlock implements IBlockGenerator {
 
 			if (deptype.equalsIgnoreCase("itemstack"))
 				master.append("/*@ItemStack*/");
+			else if (deptype.equalsIgnoreCase("blockstate"))
+				master.append("/*@BlockState*/");
 
 			master.append("(").append(element.getTextContent()).append(")");
 		} else {

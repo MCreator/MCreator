@@ -27,6 +27,8 @@
 <#elseif scope == "local">
     <#if type == "itemstack">
         /*@ItemStack*/(${name})
+    <#elseif type == "blockstate">
+        /*@BlockState*/(${name})
     <#else>
         (${name})
     </#if>
