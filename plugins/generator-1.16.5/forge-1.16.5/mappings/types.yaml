@@ -11,9 +11,11 @@ logic:
 itemstack:
   - ItemStack
   - ItemStack.EMPTY
+direction:
+  - Direction
+  - Direction.NORTH
 world: IWorld
 entity: Entity
 map: HashMap
-direction: Direction
 advancement: Advancement
 dimensiontype: RegistryKey<World>
