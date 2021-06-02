@@ -18,10 +18,10 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
-import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.parts.Procedure;
@@ -50,6 +50,7 @@ import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -144,9 +145,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			if (blocklyToJava.getReturnType() != null) {
 				returnType.setVisible(true);
-				returnTypeLabel.setText(blocklyToJava.getReturnType().name());
-				returnTypeLabel.setForeground(
-						new Dependency("", blocklyToJava.getReturnType().toDependencyType()).getColor().brighter());
+				returnTypeLabel.setText(blocklyToJava.getReturnType().getName().toUpperCase());
+				returnTypeLabel.setForeground(BlocklyBlockUtil.getBlockColorFromHUE(blocklyToJava.getReturnType().getColor()).brighter());
 			} else {
 				returnType.setVisible(false);
 			}
@@ -262,9 +262,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBorder(null);
-			Color varc = new Color(value.getType().getColor());
-			setBackground(isSelected ? varc : (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : varc);
+			setBackground(isSelected ? BlocklyBlockUtil.getBlockColorFromHUE(value.getType().getColor()) : (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : BlocklyBlockUtil.getBlockColorFromHUE(value.getType().getColor()));
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
 			return this;
@@ -383,11 +382,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 									}
 									return validator.validate();
 								}
-							}, VariableElementType.LOGIC, VariableElementType.NUMBER, VariableElementType.STRING,
-							VariableElementType.ITEMSTACK);
+							}, VariableElementTypeLoader.INSTANCE.getVariableTypes().toArray(new VariableElementType[0]));
 			if (element != null) {
 				blocklyPanel.addLocalVariable(element.getName(),
-						BlocklyVariables.getBlocklyVariableTypeFromMCreatorVariable(element));
+						element.getType().getBlocklyVariableType());
 				localVars.addElement(element);
 			}
 		});
@@ -512,7 +510,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					.forEach(blocklyPanel.getJSBridge()::addExternalTrigger);
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
 				blocklyPanel.addGlobalVariable(variable.getName(),
-						BlocklyVariables.getBlocklyVariableTypeFromMCreatorVariable(variable));
+						variable.getType().getBlocklyVariableType());
 			}
 			blocklyPanel.getJSBridge().setJavaScriptEventListener(() -> new Thread(this::regenerateProcedure).start());
 			if (!isEditingMode()) {
