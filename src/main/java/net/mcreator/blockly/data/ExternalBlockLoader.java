@@ -19,7 +19,6 @@
 package net.mcreator.blockly.data;
 
 import com.google.gson.*;
-import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;

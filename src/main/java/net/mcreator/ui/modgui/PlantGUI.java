@@ -195,7 +195,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				.setDefaultName(L10N.t("elementgui.plant.no_additional_condition"));
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				L10N.t("elementgui.plant.event_additional_generation_condition"), VariableElementTypeLoader.BuiltInTypes.LOGIC,
+				L10N.t("elementgui.plant.event_additional_generation_condition"),
+				VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.setDefaultName(L10N.t("elementgui.plant.no_additional_condition"));
 

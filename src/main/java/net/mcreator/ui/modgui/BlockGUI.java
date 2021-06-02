@@ -296,7 +296,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
-				VariableElementTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString("x:number/y:number/z:number/world:world"));
+				VariableElementTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableElementTypeLoader.BuiltInTypes.LOGIC,

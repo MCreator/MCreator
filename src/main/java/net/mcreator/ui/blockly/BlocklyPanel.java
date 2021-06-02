@@ -26,7 +26,6 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
 import net.mcreator.plugin.PluginLoader;
@@ -233,7 +232,8 @@ public class BlocklyPanel extends JFXPanel {
 			if (vardata.length == 2) {
 				VariableElement element = new VariableElement();
 				element.setName(vardata[0]);
-				VariableElementType variableElementType = VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(vardata[1]);
+				VariableElementType variableElementType = VariableElementTypeLoader.INSTANCE
+						.getVariableTypeFromString(vardata[1]);
 				if (variableElementType != null) {
 					element.setType(variableElementType);
 					retval.add(element);

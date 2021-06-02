@@ -471,19 +471,19 @@ public class ImageUtils {
 	/**
 	 * Generates a cuboid image given the textures, the dimensions, and the offsets on the axes.</p>
 	 *
-	 * @param top  <p>The top face texture</p>
-	 * @param front  <p>The front face texture</p>
+	 * @param top   <p>The top face texture</p>
+	 * @param front <p>The front face texture</p>
 	 * @param side  <p>The side (right) face texture</p>
-	 * @param x  <p>The length of the cuboid (width of the side face)</p>
-	 * @param y  <p>The height of the cuboid</p>
-	 * @param z  <p>The width of the cuboid (width of the front face)</p>
+	 * @param x     <p>The length of the cuboid (width of the side face)</p>
+	 * @param y     <p>The height of the cuboid</p>
+	 * @param z     <p>The width of the cuboid (width of the front face)</p>
 	 * @param xOff  <p>The horizontal offset of the cuboid, towards the front face</p>
 	 * @param yOff  <p>The vertical offset of the cuboid, towards the top face</p>
 	 * @param zOff  <p>The horizontal of the cuboid, towards the side face</p>
 	 * @return <p>Returns generated image.</p>
 	 */
-	public static BufferedImage generateCuboidImage(Image top, Image front, Image side, int x, int y, int z,
-			int xOff, int yOff, int zOff) {
+	public static BufferedImage generateCuboidImage(Image top, Image front, Image side, int x, int y, int z, int xOff,
+			int yOff, int zOff) {
 		BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = (Graphics2D) out.getGraphics();
 
@@ -492,24 +492,27 @@ public class ImageUtils {
 		int zTot = z + zOff;
 
 		// Top face
-		Point2D t2 = new Point2D.Double(16, 16 - yTot), t3 = new Point2D.Double(0, 24 - yTot),
-				t4 = new Point2D.Double(16, 32 - yTot), t1 = new Point2D.Double(32, 24 - yTot);
-		g2d.drawImage(ImageTransformUtil.computeImage(brighten(eraseExceptRect(
-				resizeAndCrop(top, 32), 32-2*zTot, 32-2*xTot, 2*z, 2*x)),
-				t4, t1,	t2,	t3), null, null);
+		Point2D t2 = new Point2D.Double(16, 16 - yTot), t3 = new Point2D.Double(0, 24 - yTot), t4 = new Point2D.Double(
+				16, 32 - yTot), t1 = new Point2D.Double(32, 24 - yTot);
+		g2d.drawImage(ImageTransformUtil.computeImage(
+				brighten(eraseExceptRect(resizeAndCrop(top, 32), 32 - 2 * zTot, 32 - 2 * xTot, 2 * z, 2 * x)), t4, t1,
+				t2, t3), null, null);
 
 		// Front face
-		Point2D f1 = new Point2D.Double(16 - xTot, xTot/2d), f2 = new Point2D.Double(16 - xTot, 16 + xTot/2d),
-				f3 = new Point2D.Double(32 - xTot, 24 + xTot/2d), f4 = new Point2D.Double(32 - xTot, 8 + xTot/2d);
-		g2d.drawImage(ImageTransformUtil.computeImage(eraseExceptRect(
-				resizeAndCrop(front, 32), 2*zOff, 32-2*yTot, 2*z, 2*y), f1, f2, f3, f4),
-				null, null);
+		Point2D f1 = new Point2D.Double(16 - xTot, xTot / 2d), f2 = new Point2D.Double(16 - xTot,
+				16 + xTot / 2d), f3 = new Point2D.Double(32 - xTot, 24 + xTot / 2d), f4 = new Point2D.Double(32 - xTot,
+				8 + xTot / 2d);
+		g2d.drawImage(ImageTransformUtil
+				.computeImage(eraseExceptRect(resizeAndCrop(front, 32), 2 * zOff, 32 - 2 * yTot, 2 * z, 2 * y), f1, f2,
+						f3, f4), null, null);
 
 		// Side face
-		Point2D r1 = new Point2D.Double(zTot, 8 + zTot/2d), r2 = new Point2D.Double(zTot, 24 + zTot/2d),
-				r3 = new Point2D.Double(16 + zTot, 16 + zTot/2d), r4 = new Point2D.Double(16 + zTot, zTot/2d);
-		g2d.drawImage(ImageTransformUtil.computeImage(darken(eraseExceptRect(
-				resizeAndCrop(side, 32), 32-2*xTot, 32-2*yTot, 2*x, 2*y)), r1, r2, r3, r4), null, null);
+		Point2D r1 = new Point2D.Double(zTot, 8 + zTot / 2d), r2 = new Point2D.Double(zTot,
+				24 + zTot / 2d), r3 = new Point2D.Double(16 + zTot, 16 + zTot / 2d), r4 = new Point2D.Double(16 + zTot,
+				zTot / 2d);
+		g2d.drawImage(ImageTransformUtil.computeImage(
+				darken(eraseExceptRect(resizeAndCrop(side, 32), 32 - 2 * xTot, 32 - 2 * yTot, 2 * x, 2 * y)), r1, r2,
+				r3, r4), null, null);
 
 		g2d.dispose();
 		return out;

@@ -146,7 +146,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			if (blocklyToJava.getReturnType() != null) {
 				returnType.setVisible(true);
 				returnTypeLabel.setText(blocklyToJava.getReturnType().getName().toUpperCase());
-				returnTypeLabel.setForeground(BlocklyBlockUtil.getBlockColorFromHUE(blocklyToJava.getReturnType().getColor()).brighter());
+				returnTypeLabel.setForeground(
+						BlocklyBlockUtil.getBlockColorFromHUE(blocklyToJava.getReturnType().getColor()).brighter());
 			} else {
 				returnType.setVisible(false);
 			}
@@ -262,8 +263,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBorder(null);
-			setBackground(isSelected ? BlocklyBlockUtil.getBlockColorFromHUE(value.getType().getColor()) : (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : BlocklyBlockUtil.getBlockColorFromHUE(value.getType().getColor()));
+			setBackground(isSelected ?
+					BlocklyBlockUtil.getBlockColorFromHUE(value.getType().getColor()) :
+					(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			setForeground(isSelected ?
+					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
+					BlocklyBlockUtil.getBlockColorFromHUE(value.getType().getColor()));
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
 			return this;
@@ -365,27 +370,26 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		addvar.addActionListener(e -> {
 			VariableElement element = NewVariableDialog
 					.showNewVariableDialog(mcreator, false, new OptionPaneValidatior() {
-								@Override public Validator.ValidationResult validate(JComponent component) {
-									Validator validator = new JavaMemeberNameValidator((VTextField) component, false);
-									String textname = Transliteration.transliterateString(((VTextField) component).getText());
-									for (int i = 0; i < localVars.getSize(); i++) {
-										String nameinrow = localVars.get(i).getName();
-										if (textname.equals(nameinrow))
-											return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-													L10N.t("elementgui.procedure.name_already_exists"));
-									}
-									for (Dependency dependency : dependenciesArrayList) {
-										String nameinrow = dependency.getName();
-										if (textname.equals(nameinrow))
-											return new ValidationResult(ValidationResultType.ERROR,
-													L10N.t("elementgui.procedure.name_already_exists_dep"));
-									}
-									return validator.validate();
-								}
-							}, VariableElementTypeLoader.INSTANCE.getVariableTypes().toArray(new VariableElementType[0]));
+						@Override public Validator.ValidationResult validate(JComponent component) {
+							Validator validator = new JavaMemeberNameValidator((VTextField) component, false);
+							String textname = Transliteration.transliterateString(((VTextField) component).getText());
+							for (int i = 0; i < localVars.getSize(); i++) {
+								String nameinrow = localVars.get(i).getName();
+								if (textname.equals(nameinrow))
+									return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+											L10N.t("elementgui.procedure.name_already_exists"));
+							}
+							for (Dependency dependency : dependenciesArrayList) {
+								String nameinrow = dependency.getName();
+								if (textname.equals(nameinrow))
+									return new ValidationResult(ValidationResultType.ERROR,
+											L10N.t("elementgui.procedure.name_already_exists_dep"));
+							}
+							return validator.validate();
+						}
+					}, VariableElementTypeLoader.INSTANCE.getVariableTypes().toArray(new VariableElementType[0]));
 			if (element != null) {
-				blocklyPanel.addLocalVariable(element.getName(),
-						element.getType().getBlocklyVariableType());
+				blocklyPanel.addLocalVariable(element.getName(), element.getType().getBlocklyVariableType());
 				localVars.addElement(element);
 			}
 		});
@@ -509,8 +513,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
 					.forEach(blocklyPanel.getJSBridge()::addExternalTrigger);
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
-				blocklyPanel.addGlobalVariable(variable.getName(),
-						variable.getType().getBlocklyVariableType());
+				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
 			blocklyPanel.getJSBridge().setJavaScriptEventListener(() -> new Thread(this::regenerateProcedure).start());
 			if (!isEditingMode()) {
