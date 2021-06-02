@@ -54,6 +54,8 @@ import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -399,6 +401,41 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				if (n == JOptionPane.YES_OPTION) {
 					blocklyPanel.removeLocalVariable(element.getName());
 					localVars.removeElement(element);
+				}
+			}
+		});
+
+		localVarsList.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (localVars.getSize() > 0 && e.getClickCount() == 2) {
+					VariableElement selectedVar = localVarsList.getSelectedValue();
+					VariableElementType type = selectedVar.getType();
+					String blockXml = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"variables_"
+							+ (!e.isAltDown() ? "get_" : "set_") + type.getName() + "\"><field name=\"VAR\">local:"
+							+ selectedVar.getName() + "</field></block></xml>";
+					blocklyPanel.addBlocksFromXML(blockXml);
+				}
+			}
+		});
+
+		dependenciesList.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (dependencies.getSize() > 0 && e.getClickCount() == 2) {
+					Dependency selectedDep = dependenciesList.getSelectedValue();
+					String blockXml = selectedDep.getDependencyBlockXml();
+					if (blockXml != null)
+						blocklyPanel.addBlocksFromXML(blockXml);
+				}
+			}
+		});
+
+		dependenciesExtTrigList.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (dependenciesExtTrigger.getSize() > 0 && e.getClickCount() == 2) {
+					Dependency selectedDep = dependenciesExtTrigList.getSelectedValue();
+					String blockXml = selectedDep.getDependencyBlockXml();
+					if (blockXml != null)
+						blocklyPanel.addBlocksFromXML(blockXml);
 				}
 			}
 		});
