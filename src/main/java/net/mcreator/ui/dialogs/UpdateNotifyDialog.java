@@ -26,7 +26,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.AbstractMCreatorTheme;
+import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.MCreatorVersionNumber;
 import org.apache.logging.log4j.LogManager;
@@ -58,7 +58,7 @@ public class UpdateNotifyDialog {
 					ComponentUtils.deriveFont(upde, 13);
 					pan.add("North", upde);
 					JTextPane ar = new JTextPane();
-					ar.setFont(AbstractMCreatorTheme.console_font);
+					ar.setFont(MCreatorTheme.console_font);
 					ar.setEnabled(false);
 					ar.setMargin(new Insets(5, 10, 5, 5));
 					DefaultCaret caret = (DefaultCaret) ar.getCaret();
@@ -93,7 +93,7 @@ public class UpdateNotifyDialog {
 							ComponentUtils.deriveFont(upde, 13);
 							pan.add("North", upde);
 							JTextPane ar = new JTextPane();
-							ar.setFont(AbstractMCreatorTheme.console_font);
+							ar.setFont(MCreatorTheme.console_font);
 							ar.setEnabled(false);
 							ar.setMargin(new Insets(5, 10, 5, 5));
 							DefaultCaret caret = (DefaultCaret) ar.getCaret();

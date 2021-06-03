@@ -84,7 +84,7 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 				int n = JOptionPane
 						.showOptionDialog(actionRegistry.getMCreator(), L10N.t("dialog.workspace.export.message"),
 								L10N.t("dialog.workspace.export.title"), JOptionPane.YES_NO_CANCEL_OPTION,
-								JOptionPane.PLAIN_MESSAGE, UIRES.get("icon"), options2, options2[0]);
+								JOptionPane.PLAIN_MESSAGE, UIRES.getBuiltIn("icon"), options2, options2[0]);
 				if (n == 2 || n == JOptionPane.CLOSED_OPTION) {
 					return;
 				} else if (n == 0) {

@@ -39,7 +39,7 @@ public class TextureSelectorDialog extends MCreatorDialog {
 
 	public TextureSelectorDialog(Iterable<ResourcePointer> block, JFrame f) {
 		super(f, L10N.t("dialog.textures_selector.title_window"), true);
-		setIconImage(UIRES.get("icon").getImage());
+		setIconImage(UIRES.getBuiltIn("icon").getImage());
 		list.setCellRenderer(new Render());
 
 		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);

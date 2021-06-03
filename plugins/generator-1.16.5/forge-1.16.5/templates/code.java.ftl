@@ -29,47 +29,54 @@
 
 <#-- @formatter:off -->
 /**
- * This mod element is always locked. Enter your code in the methods below.
- * If you don't need some of these methods, you can remove them as they
- * are overrides of the base class ${JavaModName}Elements.ModElement.
+ * The code of this mod element is always locked.
  *
  * You can register new events in this class too.
  *
- * As this class is loaded into mod element list, it NEEDS to extend
- * ModElement class. If you remove this extend statement or remove the
- * constructor, the compilation will fail.
- *
  * If you want to make a plain independent class, create it using
- * Project Browser - New... and make sure to make the class
+ * Project Browser -> New... and make sure to make the class
  * outside ${package} as this package is managed by MCreator.
  *
  * If you change workspace package, modid or prefix, you will need
  * to manually adapt this file to these changes or remake it.
+ *
+ * This class will be added in the mod root package.
 */
 
 package ${package};
 
-@${JavaModName}Elements.ModElement.Tag public class ${name} extends ${JavaModName}Elements.ModElement{
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+public class ${name} {
 
-	/**
-	 * Do not remove this constructor
-	 */
-	public ${name} (${JavaModName}Elements instance) {
-		super(instance, ${data.getModElement().getSortID()});
+	public ${name}() {
+
 	}
 
-	@Override public void initElements() {
+	@SubscribeEvent
+	public static void init(FMLCommonSetupEvent event) {
+		new ${name}();
 	}
 
-	@Override public void init(FMLCommonSetupEvent event) {
-	}
+	@SubscribeEvent
+	public static void serverLoad(FMLServerStartingEvent event) {
 
-	@Override public void serverLoad(FMLServerStartingEvent event) {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	@Override public void clientLoad(FMLClientSetupEvent event) {
+	@SubscribeEvent
+	public static void clientLoad(FMLClientSetupEvent event) {
+
     }
+
+    @Mod.EventBusSubscriber
+	private static class ForgeBusEvents {
+
+		// Example Forge bus event registration
+		@SubscribeEvent public static void addFeatureToBiomes(BiomeLoadingEvent event) {
+
+		}
+
+	}
 
 }
 <#-- @formatter:on -->

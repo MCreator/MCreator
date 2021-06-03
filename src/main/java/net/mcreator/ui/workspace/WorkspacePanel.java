@@ -191,19 +191,10 @@ import java.util.stream.Collectors;
 
 		list.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2 && !e.isConsumed() && SwingUtilities.isLeftMouseButton(e)) {
-					list.cancelDND();
+				if (e.isConsumed())
+					return;
 
-					IElement selected = list.getSelectedValue();
-					if (selected instanceof FolderElement) {
-						switchFolder((FolderElement) selected);
-					} else {
-						if (((e.getModifiersEx() & InputEvent.ALT_DOWN_MASK) == InputEvent.ALT_DOWN_MASK))
-							editCurrentlySelectedModElementAsCode((ModElement) selected, list, e.getX(), e.getY());
-						else
-							editCurrentlySelectedModElement((ModElement) selected, list, e.getX(), e.getY());
-					}
-				} else if (SwingUtilities.isRightMouseButton(e)) {
+				if (e.getButton() == MouseEvent.BUTTON3) {
 					list.setSelectedIndex(list.locationToIndex(e.getPoint()));
 					IElement selected = list.getSelectedValue();
 
@@ -220,6 +211,18 @@ import java.util.stream.Collectors;
 					}
 
 					contextMenu.show(list, e.getX(), e.getY());
+				} else if (e.getClickCount() == 2) {
+					list.cancelDND();
+
+					IElement selected = list.getSelectedValue();
+					if (selected instanceof FolderElement) {
+						switchFolder((FolderElement) selected);
+					} else {
+						if (((e.getModifiersEx() & InputEvent.ALT_DOWN_MASK) == InputEvent.ALT_DOWN_MASK))
+							editCurrentlySelectedModElementAsCode((ModElement) selected, list, e.getX(), e.getY());
+						else
+							editCurrentlySelectedModElement((ModElement) selected, list, e.getX(), e.getY());
+					}
 				}
 			}
 		});
@@ -474,14 +477,14 @@ import java.util.stream.Collectors;
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
 		filterPopup.addSeparator();
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"),
-				e -> search.setText("f:locked")));
+				e -> togglefilter("f:locked")));
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
-				e -> search.setText("f:err")));
+				e -> togglefilter("f:err")));
 		filterPopup.addSeparator();
 		for (ModElementType type : Arrays.stream(ModElementType.values())
 				.sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
-					e -> search.setText("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
+					e -> togglefilter("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
 
 		}
@@ -832,13 +835,13 @@ import java.util.stream.Collectors;
 		addElementFolder.addActionListener(e -> addNewFolder());
 
 		contextMenu.add(openElement);
+		contextMenu.add(codeElement);
 		contextMenu.addSeparator();
 		contextMenu.add(addElementFolder);
 		contextMenu.addSeparator();
 		contextMenu.add(deleteElement);
 		contextMenu.addSeparator();
 		contextMenu.add(duplicateElement);
-		contextMenu.add(codeElement);
 		contextMenu.add(lockElement);
 		contextMenu.add(idElement);
 	}
@@ -853,6 +856,15 @@ import java.util.stream.Collectors;
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
 		upFolder.setEnabled(!currentFolder.isRoot());
+	}
+
+	private void togglefilter(String filter) {
+		String currentSearchText = search.getText().trim();
+		if (currentSearchText.contains(filter)) {
+			search.setText(currentSearchText.replace(filter, "").replaceAll("\\s{2,}", " ").trim());
+		} else {
+			search.setText(filter + " " + currentSearchText);
+		}
 	}
 
 	private void resort() {

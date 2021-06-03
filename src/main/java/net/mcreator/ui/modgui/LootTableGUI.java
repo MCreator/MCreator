@@ -49,7 +49,8 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 	private final VComboBox<String> name = new VComboBox<>();
 
 	private final JComboBox<String> type = new JComboBox<>(
-			new String[] { "Generic", "Entity", "Block", "Chest", "Fishing", "Empty", "Advancement reward" });
+			new String[] { "Block", "Entity", "Generic", "Chest", "Fishing", "Empty", "Advancement reward", "Gift",
+					"Barter" });
 
 	private final List<JLootTablePool> poolList = new ArrayList<>();
 
@@ -70,10 +71,8 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		name.enableRealtimeValidation();
 
 		name.addItem("blocks/stone");
-		name.addItem("chests/abandoned_mineshaft");
 		name.addItem("entities/chicken");
 		name.addItem("gameplay/fishing");
-		name.addItem("gameplay/hero_of_the_village/armorer_gift");
 
 		name.setEditable(true);
 		name.setOpaque(false);
@@ -82,7 +81,30 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 			name.setEnabled(false);
 			namespace.setEnabled(false);
 		} else {
-			name.getEditor().setItem(RegistryNameFixer.fromCamelCase(modElement.getName()));
+			name.getEditor().setItem("blocks/" + RegistryNameFixer.fromCamelCase(modElement.getName()));
+
+			type.addActionListener(e -> {
+				String currName = name.getEditor().getItem().toString();
+				String currNameNoType = currName == null ? "" : currName.split("/")[currName.split("/").length - 1];
+				if (type.getSelectedItem() != null)
+					switch (type.getSelectedItem().toString()) {
+					case "Block":
+						name.getEditor().setItem("blocks/" + currNameNoType);
+						break;
+					case "Chest":
+						name.getEditor().setItem("chests/" + currNameNoType);
+						break;
+					case "Entity":
+					case "Gift":
+					case "Barter":
+					case "Advancement reward":
+						name.getEditor().setItem("entities/" + currNameNoType);
+						break;
+					default:
+						name.getEditor().setItem("gameplay/" + currNameNoType);
+						break;
+					}
+			});
 		}
 
 		JPanel northPanel = new JPanel(new GridLayout(3, 2, 10, 2));
