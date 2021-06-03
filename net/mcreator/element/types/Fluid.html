@@ -181,22 +181,32 @@ implements <a href="interfaces/ITabContainedElement.html" title="interface in ne
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#colorOnMap">colorOnMap</a></span></code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#bucketName">bucketName</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#colorOnMap">colorOnMap</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code><a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#creativeTab">creativeTab</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#density">density</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#emissiveRendering">emissiveRendering</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code><a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#emptySound">emptySound</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
@@ -275,36 +285,51 @@ implements <a href="interfaces/ITabContainedElement.html" title="interface in ne
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#rarity">rarity</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code>double</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#resistance">resistance</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../parts/BiomeEntry.html" title="class in net.mcreator.element.parts">BiomeEntry</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#restrictionBiomes">restrictionBiomes</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#spawnWorldTypes">spawnWorldTypes</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
+<tr class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#specialInfo">specialInfo</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
 <tr class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#textureBucket">textureBucket</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#textureFlowing">textureFlowing</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#textureStill">textureStill</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#type">type</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#viscosity">viscosity</a></span></code></th>
 <td class="colLast">&nbsp;</td>
@@ -405,6 +430,15 @@ implements <a href="interfaces/ITabContainedElement.html" title="interface in ne
 <pre>public&nbsp;java.lang.String name</pre>
 </li>
 </ul>
+<a id="bucketName">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>bucketName</h4>
+<pre>public&nbsp;java.lang.String bucketName</pre>
+</li>
+</ul>
 <a id="textureStill">
 <!--   -->
 </a>
@@ -477,6 +511,15 @@ implements <a href="interfaces/ITabContainedElement.html" title="interface in ne
 <pre>public&nbsp;boolean generateBucket</pre>
 </li>
 </ul>
+<a id="textureBucket">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>textureBucket</h4>
+<pre>public&nbsp;java.lang.String textureBucket</pre>
+</li>
+</ul>
 <a id="creativeTab">
 <!--   -->
 </a>
@@ -484,6 +527,33 @@ implements <a href="interfaces/ITabContainedElement.html" title="interface in ne
 <li class="blockList">
 <h4>creativeTab</h4>
 <pre>public&nbsp;<a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a> creativeTab</pre>
+</li>
+</ul>
+<a id="emptySound">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>emptySound</h4>
+<pre>public&nbsp;<a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a> emptySound</pre>
+</li>
+</ul>
+<a id="rarity">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>rarity</h4>
+<pre>public&nbsp;java.lang.String rarity</pre>
+</li>
+</ul>
+<a id="specialInfo">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>specialInfo</h4>
+<pre>public&nbsp;java.util.List&lt;java.lang.String&gt; specialInfo</pre>
 </li>
 </ul>
 <a id="resistance">

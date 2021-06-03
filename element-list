@@ -17,6 +17,8 @@ net.mcreator.element.converter.fv16
 net.mcreator.element.converter.fv17
 net.mcreator.element.converter.fv18
 net.mcreator.element.converter.fv19
+net.mcreator.element.converter.fv20
+net.mcreator.element.converter.fv21
 net.mcreator.element.converter.fv4
 net.mcreator.element.converter.fv5
 net.mcreator.element.converter.fv6
@@ -47,6 +49,7 @@ net.mcreator.minecraft
 net.mcreator.minecraft.api
 net.mcreator.plugin
 net.mcreator.preferences
+net.mcreator.themes
 net.mcreator.ui
 net.mcreator.ui.action
 net.mcreator.ui.action.impl

@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9,"i7":9,"i8":9,"i9":9,"i10":9,"i11":9,"i12":9,"i13":9,"i14":9,"i15":9,"i16":9,"i17":9,"i18":9,"i19":9,"i20":9,"i21":9,"i22":9,"i23":9,"i24":9,"i25":9,"i26":9,"i27":9,"i28":9};
+var data = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9,"i7":9,"i8":9,"i9":9,"i10":9,"i11":9,"i12":9,"i13":9,"i14":9,"i15":9,"i16":9,"i17":9,"i18":9,"i19":9,"i20":9,"i21":9,"i22":9,"i23":9,"i24":9,"i25":9,"i26":9,"i27":9,"i28":9,"i29":9,"i30":9,"i31":9,"i32":9,"i33":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -249,6 +249,15 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>static java.awt.image.BufferedImage</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#eraseExceptRect(java.awt.Image,int,int,int,int)">eraseExceptRect</a></span>&#8203;(java.awt.Image&nbsp;image,
+               int&nbsp;x,
+               int&nbsp;y,
+               int&nbsp;w,
+               int&nbsp;h)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i13" class="rowColor">
+<td class="colFirst"><code>static java.awt.image.BufferedImage</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#eraseRect(java.awt.Image,int,int,int,int)">eraseRect</a></span>&#8203;(java.awt.Image&nbsp;image,
          int&nbsp;x,
          int&nbsp;y,
@@ -256,42 +265,68 @@ extends java.lang.Object</pre>
          int&nbsp;h)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>static javax.swing.ImageIcon</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#fit(java.awt.Image,int)">fit</a></span>&#8203;(java.awt.Image&nbsp;image,
    int&nbsp;size)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>static javax.swing.ImageIcon</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#fit(java.awt.Image,int,int)">fit</a></span>&#8203;(java.awt.Image&nbsp;image,
    int&nbsp;width,
    int&nbsp;height)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
+<td class="colFirst"><code>static java.awt.image.BufferedImage</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#generateCuboidImage(java.awt.Image,int,int,int,int,int,int)">generateCuboidImage</a></span>&#8203;(java.awt.Image&nbsp;texture,
+                   int&nbsp;x,
+                   int&nbsp;y,
+                   int&nbsp;z,
+                   int&nbsp;xOff,
+                   int&nbsp;yOff,
+                   int&nbsp;zOff)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i17" class="rowColor">
+<td class="colFirst"><code>static java.awt.image.BufferedImage</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#generateCuboidImage(java.awt.Image,java.awt.Image,java.awt.Image,int,int,int,int,int,int)">generateCuboidImage</a></span>&#8203;(java.awt.Image&nbsp;top,
+                   java.awt.Image&nbsp;front,
+                   java.awt.Image&nbsp;side,
+                   int&nbsp;x,
+                   int&nbsp;y,
+                   int&nbsp;z,
+                   int&nbsp;xOff,
+                   int&nbsp;yOff,
+                   int&nbsp;zOff)</code></th>
+<td class="colLast">
+<div class="block">Generates a cuboid image given the textures, the dimensions, and the offsets on the axes.</div>
+</td>
+</tr>
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>static java.awt.Image</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#generateTransparentImage(int,int)">generateTransparentImage</a></span>&#8203;(int&nbsp;w,
                         int&nbsp;h)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>static java.awt.Color</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAverageColor(java.awt.image.BufferedImage)">getAverageColor</a></span>&#8203;(java.awt.image.BufferedImage&nbsp;image)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>static float</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAverageLuminance(java.awt.image.BufferedImage)">getAverageLuminance</a></span>&#8203;(java.awt.image.BufferedImage&nbsp;image)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>static java.awt.image.BufferedImage</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#maskTransparency(java.awt.image.BufferedImage,java.awt.image.BufferedImage)">maskTransparency</a></span>&#8203;(java.awt.image.BufferedImage&nbsp;base,
                 java.awt.image.BufferedImage&nbsp;mask)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>static java.awt.image.BufferedImage</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#noiseHSV(java.awt.image.BufferedImage,float,float,float,long)">noiseHSV</a></span>&#8203;(java.awt.image.BufferedImage&nbsp;image,
         float&nbsp;hfactor,
@@ -300,61 +335,74 @@ extends java.lang.Object</pre>
         long&nbsp;seed)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>static java.awt.Image</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#randomTile(java.awt.image.BufferedImage)">randomTile</a></span>&#8203;(java.awt.image.BufferedImage&nbsp;tile)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>static java.awt.Image</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#randomTile(java.awt.image.BufferedImage,java.util.Random)">randomTile</a></span>&#8203;(java.awt.image.BufferedImage&nbsp;tile,
           java.util.Random&nbsp;random)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>static java.awt.image.BufferedImage</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#resize(java.awt.Image,int)">resize</a></span>&#8203;(java.awt.Image&nbsp;image,
       int&nbsp;size)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>static java.awt.image.BufferedImage</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#resize(java.awt.Image,int,int)">resize</a></span>&#8203;(java.awt.Image&nbsp;image,
       int&nbsp;size,
       int&nbsp;y)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>static java.awt.image.BufferedImage</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#resizeAA(java.awt.Image,int)">resizeAA</a></span>&#8203;(java.awt.Image&nbsp;image,
         int&nbsp;size)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>static java.awt.image.BufferedImage</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#resizeAA(java.awt.Image,int,int)">resizeAA</a></span>&#8203;(java.awt.Image&nbsp;image,
         int&nbsp;size,
         int&nbsp;y)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>static java.awt.image.BufferedImage</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#resizeAndCrop(java.awt.Image,int)">resizeAndCrop</a></span>&#8203;(java.awt.Image&nbsp;image,
              int&nbsp;size)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i27" class="rowColor">
-<td class="colFirst"><code>static javax.swing.ImageIcon</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#rotate(javax.swing.ImageIcon,int)">rotate</a></span>&#8203;(javax.swing.ImageIcon&nbsp;ic,
-      int&nbsp;radians)</code></th>
+<tr id="i30" class="altColor">
+<td class="colFirst"><code>static java.awt.image.BufferedImage</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#rotate(java.awt.Image,int)">rotate</a></span>&#8203;(java.awt.Image&nbsp;img,
+      int&nbsp;degrees)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i31" class="rowColor">
+<td class="colFirst"><code>static javax.swing.ImageIcon</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#rotate(javax.swing.ImageIcon,int)">rotate</a></span>&#8203;(javax.swing.ImageIcon&nbsp;ic,
+      int&nbsp;degrees)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>static java.awt.image.BufferedImage</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toBufferedImage(java.awt.Image)">toBufferedImage</a></span>&#8203;(java.awt.Image&nbsp;img)</code></th>
 <td class="colLast">
 <div class="block">Converts a given Image into a BufferedImage</div>
 </td>
+</tr>
+<tr id="i33" class="rowColor">
+<td class="colFirst"><code>static java.awt.image.BufferedImage</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#translate(java.awt.Image,double,double)">translate</a></span>&#8203;(java.awt.Image&nbsp;img,
+         double&nbsp;x,
+         double&nbsp;y)</code></th>
+<td class="colLast">&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -538,6 +586,19 @@ extends java.lang.Object</pre>
                                                      int&nbsp;h)</pre>
 </li>
 </ul>
+<a id="eraseExceptRect(java.awt.Image,int,int,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>eraseExceptRect</h4>
+<pre class="methodSignature">public static&nbsp;java.awt.image.BufferedImage&nbsp;eraseExceptRect&#8203;(java.awt.Image&nbsp;image,
+                                                           int&nbsp;x,
+                                                           int&nbsp;y,
+                                                           int&nbsp;w,
+                                                           int&nbsp;h)</pre>
+</li>
+</ul>
 <a id="maskTransparency(java.awt.image.BufferedImage,java.awt.image.BufferedImage)">
 <!--   -->
 </a>
@@ -564,6 +625,27 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
+<a id="translate(java.awt.Image,double,double)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>translate</h4>
+<pre class="methodSignature">public static&nbsp;java.awt.image.BufferedImage&nbsp;translate&#8203;(java.awt.Image&nbsp;img,
+                                                     double&nbsp;x,
+                                                     double&nbsp;y)</pre>
+</li>
+</ul>
+<a id="rotate(java.awt.Image,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>rotate</h4>
+<pre class="methodSignature">public static&nbsp;java.awt.image.BufferedImage&nbsp;rotate&#8203;(java.awt.Image&nbsp;img,
+                                                  int&nbsp;degrees)</pre>
+</li>
+</ul>
 <a id="rotate(javax.swing.ImageIcon,int)">
 <!--   -->
 </a>
@@ -571,7 +653,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>rotate</h4>
 <pre class="methodSignature">public static&nbsp;javax.swing.ImageIcon&nbsp;rotate&#8203;(javax.swing.ImageIcon&nbsp;ic,
-                                           int&nbsp;radians)</pre>
+                                           int&nbsp;degrees)</pre>
 </li>
 </ul>
 <a id="crop(java.awt.image.BufferedImage,java.awt.Rectangle)">
@@ -696,11 +778,58 @@ extends java.lang.Object</pre>
 <a id="resizeAndCrop(java.awt.Image,int)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>resizeAndCrop</h4>
 <pre class="methodSignature">public static&nbsp;java.awt.image.BufferedImage&nbsp;resizeAndCrop&#8203;(java.awt.Image&nbsp;image,
                                                          int&nbsp;size)</pre>
+</li>
+</ul>
+<a id="generateCuboidImage(java.awt.Image,int,int,int,int,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>generateCuboidImage</h4>
+<pre class="methodSignature">public static&nbsp;java.awt.image.BufferedImage&nbsp;generateCuboidImage&#8203;(java.awt.Image&nbsp;texture,
+                                                               int&nbsp;x,
+                                                               int&nbsp;y,
+                                                               int&nbsp;z,
+                                                               int&nbsp;xOff,
+                                                               int&nbsp;yOff,
+                                                               int&nbsp;zOff)</pre>
+</li>
+</ul>
+<a id="generateCuboidImage(java.awt.Image,java.awt.Image,java.awt.Image,int,int,int,int,int,int)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>generateCuboidImage</h4>
+<pre class="methodSignature">public static&nbsp;java.awt.image.BufferedImage&nbsp;generateCuboidImage&#8203;(java.awt.Image&nbsp;top,
+                                                               java.awt.Image&nbsp;front,
+                                                               java.awt.Image&nbsp;side,
+                                                               int&nbsp;x,
+                                                               int&nbsp;y,
+                                                               int&nbsp;z,
+                                                               int&nbsp;xOff,
+                                                               int&nbsp;yOff,
+                                                               int&nbsp;zOff)</pre>
+<div class="block">Generates a cuboid image given the textures, the dimensions, and the offsets on the axes.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>top</code> - <p>The top face texture</p></dd>
+<dd><code>front</code> - <p>The front face texture</p></dd>
+<dd><code>side</code> - <p>The side (right) face texture</p></dd>
+<dd><code>x</code> - <p>The length of the cuboid (width of the side face)</p></dd>
+<dd><code>y</code> - <p>The height of the cuboid</p></dd>
+<dd><code>z</code> - <p>The width of the cuboid (width of the front face)</p></dd>
+<dd><code>xOff</code> - <p>The horizontal offset of the cuboid, towards the front face</p></dd>
+<dd><code>yOff</code> - <p>The vertical offset of the cuboid, towards the top face</p></dd>
+<dd><code>zOff</code> - <p>The horizontal of the cuboid, towards the side face</p></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd><p>Returns generated image.</p></dd>
+</dl>
 </li>
 </ul>
 </li>
