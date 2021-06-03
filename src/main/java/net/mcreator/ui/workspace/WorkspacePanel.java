@@ -348,9 +348,9 @@ import java.util.stream.Collectors;
 		});
 
 		renameFolder.addActionListener(e -> {
-		    if (list.getSelectedValue() instanceof FolderElement) {
-			    renameFolder();
-		    }
+			if (list.getSelectedValue() instanceof FolderElement) {
+				renameFolder((FolderElement) list.getSelectedValue());
+			}
 		});
 
 		JComponent folderactions = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.folder_actions"), 12);
@@ -856,7 +856,11 @@ import java.util.stream.Collectors;
 		addElementFolder.addActionListener(e -> addNewFolder());
 
 		renameElementFolder.setIcon(UIRES.get("laf.renameFolder.gif"));
-		renameElementFolder.addActionListener(e -> renameFolder());
+		renameElementFolder.addActionListener(e -> {
+			if (list.getSelectedValue() instanceof FolderElement) {
+				renameFolder((FolderElement) list.getSelectedValue());
+			}
+		});
 
 		contextMenu.add(openElement);
 		contextMenu.add(codeElement);
@@ -1206,10 +1210,9 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	private void renameFolder() {
-		IElement selected = list.getSelectedValue();
-		String newName = VOptionPane
-				.showInputDialog(mcreator, L10N.t("workspace.elements.folders.rename.message"), L10N.t("workspace.elements.folders.rename.title"), null, new OptionPaneValidatior() {
+	private void renameFolder(FolderElement selected) {
+		String newName = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.folders.rename.message"),
+				L10N.t("workspace.elements.folders.rename.title"), null, new OptionPaneValidatior() {
 					@Override public ValidationResult validate(JComponent component) {
 						String newName = ((JTextField) component).getText();
 						if (!newName.matches("[A-Za-z0-9._ -]+")) {
@@ -1231,20 +1234,22 @@ import java.util.stream.Collectors;
 					}
 				});
 		if (newName != null) {
-			String startpath = currentFolder.getPath() + "/";
+			selected.setName(newName);
+
 			for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
 				if (currentFolder.equals(modElement.getFolderPath())) {
-					modElement.setFolderPath(modElement.getFolderPath().replace(startpath + selected.getName(), startpath + newName));
+					modElement.setParentFolder(selected);
 				}
 			}
+			
 			for (FolderElement childFolder : currentFolder.getRecursiveFolderChildren()) {
 				for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
 					if (childFolder.equals(modElement.getFolderPath())) {
-						modElement.setFolderPath(modElement.getFolderPath().replace(startpath + selected.getName(), startpath + newName));
+						modElement.setParentFolder(selected);
 					}
 				}
 			}
-			((FolderElement) selected).setName(newName);
+
 			mcreator.getWorkspace().markDirty();
 			reloadElements();
 			updateMods();
