@@ -24,6 +24,7 @@ import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -135,11 +136,12 @@ public class ElementUtil {
 	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
 			if (modelement.getType() == ModElementType.GAMERULE)
-				return modelement.getMetadata("type").equals("boolean");
+				return modelement.getMetadata("type").equals(VariableElementTypeLoader.BuiltInTypes.LOGIC.getName());
 			return false;
 		});
 
-		retval.addAll(DataListLoader.loadDataList("gamerules").stream().filter(e -> e.getType().equals("boolean"))
+		retval.addAll(DataListLoader.loadDataList("gamerules").stream()
+				.filter(e -> e.getType().equals(VariableElementTypeLoader.BuiltInTypes.LOGIC.getName()))
 				.collect(Collectors.toList()));
 		return retval;
 	}
@@ -147,11 +149,12 @@ public class ElementUtil {
 	public static List<DataListEntry> getAllNumberGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
 			if (modelement.getType() == ModElementType.GAMERULE)
-				return modelement.getMetadata("type").equals("number");
+				return modelement.getMetadata("type").equals(VariableElementTypeLoader.BuiltInTypes.NUMBER.getName());
 			return false;
 		});
 
-		retval.addAll(DataListLoader.loadDataList("gamerules").stream().filter(e -> e.getType().equals("number"))
+		retval.addAll(DataListLoader.loadDataList("gamerules").stream()
+				.filter(e -> e.getType().equals(VariableElementTypeLoader.BuiltInTypes.NUMBER.getName()))
 				.collect(Collectors.toList()));
 		return retval;
 	}

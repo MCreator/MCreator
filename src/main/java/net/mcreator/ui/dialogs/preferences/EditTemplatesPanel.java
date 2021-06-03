@@ -65,7 +65,8 @@ class EditTemplatesPanel {
 		DefaultListModel<String> tmodel = new DefaultListModel<>();
 		JList<String> templates = new JList<>(tmodel);
 
-		openFolder.addActionListener(e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder(templatesFolder)));
+		openFolder.addActionListener(
+				e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder(templatesFolder)));
 
 		remove.addActionListener(e -> templates.getSelectedValuesList().forEach(el -> {
 			new File(UserFolderManager.getFileFromUserFolder(templatesFolder), el).delete();
