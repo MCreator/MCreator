@@ -46,8 +46,8 @@ import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -75,7 +75,7 @@ public class ProcedureSelector extends JPanel {
 
 	private final MCreator mcreator;
 
-	private final VariableElementType returnType;
+	private final VariableType returnType;
 
 	private String defaultName = "(no procedure)";
 
@@ -95,12 +95,12 @@ public class ProcedureSelector extends JPanel {
 	}
 
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName,
-			@Nullable VariableElementType returnType, Dependency... providedDependencies) {
+			@Nullable VariableType returnType, Dependency... providedDependencies) {
 		this(helpContext, mcreator, eventName, Side.BOTH, true, returnType, providedDependencies);
 	}
 
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
-			boolean allowInlineEditor, @Nullable VariableElementType returnType, Dependency... providedDependencies) {
+			boolean allowInlineEditor, @Nullable VariableType returnType, Dependency... providedDependencies) {
 		super(new BorderLayout(0, 0));
 
 		this.mcreator = mcreator;
@@ -118,7 +118,7 @@ public class ProcedureSelector extends JPanel {
 		if (returnType != null) {
 			setBorder(BorderFactory.createLineBorder(BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor())));
 
-			if (returnType == VariableElementTypeLoader.BuiltInTypes.LOGIC)
+			if (returnType == VariableTypeLoader.BuiltInTypes.LOGIC)
 				defaultName = "(always)";
 		}
 
@@ -174,7 +174,7 @@ public class ProcedureSelector extends JPanel {
 		top.add("South", depslab);
 
 		JComponent procwrap;
-		if (returnType == VariableElementTypeLoader.BuiltInTypes.LOGIC) {
+		if (returnType == VariableTypeLoader.BuiltInTypes.LOGIC) {
 			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" if:  "), 15), procedures);
 		} else if (returnType == null) {
 			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" do:  "), 15), procedures);
@@ -310,8 +310,8 @@ public class ProcedureSelector extends JPanel {
 				boolean correctReturnType = true;
 
 				if (returnType != null) {
-					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementTypeLoader.INSTANCE
+					VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
+							VariableTypeLoader.INSTANCE
 									.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
 							null;
 					if (returnTypeCurrent != returnType)

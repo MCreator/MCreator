@@ -22,7 +22,7 @@ import com.google.gson.annotations.SerializedName;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 
-@SuppressWarnings("unused") public class VariableElementType {
+@SuppressWarnings("unused") public class VariableType {
 
 	private String name;
 	private int color;

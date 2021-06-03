@@ -32,7 +32,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
 import net.mcreator.util.MCreatorVersionNumber;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -93,7 +93,7 @@ public class TestSetup {
 		ModAPIManager.initAPIs();
 
 		// load variable elements
-		VariableElementTypeLoader.loadVariableTypes();
+		VariableTypeLoader.loadVariableTypes();
 
 		// blockly mod elements need blockly blocks loaded
 		BlocklyLoader.init();
