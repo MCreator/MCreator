@@ -40,10 +40,10 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.apache.commons.io.FilenameUtils;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -98,7 +98,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 		generateCondition = new ProcedureSelector(this.withEntry("structure/condition"), mcreator,
 				L10N.t("elementgui.structuregen.event_additional_structure_condition_is"),
-				ProcedureSelector.Side.SERVER, true, VariableElementType.LOGIC,
+				ProcedureSelector.Side.SERVER, true, VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.setDefaultName(L10N.t("elementgui.structuregen.event_additional_structure_condition_none"));
 
@@ -124,9 +124,9 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 			if (sch != null) {
 				String strname = Transliteration.transliterateString(sch.getName().toLowerCase(Locale.ENGLISH))
 						.replace(" ", "_");
-				FileIO.copyFile(sch, new File(mcreator.getWorkspace().getFolderManager().getStructuresDir(), strname));
+				FileIO.copyFile(sch, new File(mcreator.getFolderManager().getStructuresDir(), strname));
 				structureSelector.removeAllItems();
-				mcreator.getWorkspace().getFolderManager().getStructureList().forEach(structureSelector::addItem);
+				mcreator.getFolderManager().getStructureList().forEach(structureSelector::addItem);
 				structureSelector.setSelectedItem(FilenameUtils.removeExtension(strname));
 			}
 		});
@@ -198,8 +198,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 		generateCondition.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(structureSelector,
-				mcreator.getWorkspace().getFolderManager().getStructureList());
+		ComboBoxUtil.updateComboBoxContents(structureSelector, mcreator.getFolderManager().getStructureList());
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

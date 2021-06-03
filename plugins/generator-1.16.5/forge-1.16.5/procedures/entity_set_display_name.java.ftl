@@ -1,0 +1,1 @@
+${input$entity}.setCustomName(new StringTextComponent(${input$displayname}));

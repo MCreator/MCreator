@@ -1,0 +1,46 @@
+templates:
+  - template: dimension.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEDimension.java"
+  - template: json/dimension/dimension_type.json.ftl
+    writer: json
+    name: "@MODDATAROOT/dimension_type/@registryname.json"
+  - template: json/dimension/dimension_overworld.json.ftl
+    writer: json
+    condition: "worldGenType %= Normal world gen"
+    name: "@MODDATAROOT/dimension/@registryname.json"
+  - template: json/dimension/dimension_nether.json.ftl
+    writer: json
+    condition: "worldGenType %= Nether like gen"
+    name: "@MODDATAROOT/dimension/@registryname.json"
+  - template: json/dimension/dimension_end.json.ftl
+    writer: json
+    condition: "worldGenType %= End like gen"
+    name: "@MODDATAROOT/dimension/@registryname.json"
+  - template: dimension/portaltrigger.java.ftl
+    condition: enablePortal
+    deleteWhenConditionFalse: true
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: json/dimension_portal.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname_portal.json"
+    condition: enablePortal
+    deleteWhenConditionFalse: true
+  - template: json/dimension_portal_ew.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_portal_ew.json"
+    condition: enablePortal
+    deleteWhenConditionFalse: true
+  - template: json/dimension_portal_ns.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_portal_ns.json"
+    condition: enablePortal
+    deleteWhenConditionFalse: true
+  - template: json/item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+    condition: enablePortal
+    deleteWhenConditionFalse: true
+
+localizationkeys:
+  - key: item.@modid.@registryname
+    mapto: igniterName

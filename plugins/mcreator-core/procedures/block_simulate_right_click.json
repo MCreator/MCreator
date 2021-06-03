@@ -38,12 +38,6 @@
       "y",
       "z",
       "entity"
-    ],
-    "dependencies": [
-      {
-        "name": "world",
-        "type": "world"
-      }
     ]
   }
 }

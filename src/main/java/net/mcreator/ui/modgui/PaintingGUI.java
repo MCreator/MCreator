@@ -35,8 +35,8 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -67,7 +67,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
 
-		JPanel selp = new JPanel(new GridLayout(3, 2, 50, 20));
+		JPanel selp = new JPanel(new GridLayout(3, 2, 50, 2));
 		selp.setOpaque(false);
 
 		JButton importicontexture = new JButton(UIRES.get("18px.add"));
@@ -77,8 +77,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			texture.removeAllItems();
 			texture.addItem("");
-			mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
-					.forEach(el -> texture.addItem(el.getName()));
+			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> texture.addItem(el.getName()));
 		});
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/texture"),
@@ -99,7 +98,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 			if (texture.getSelectedItem() == null || texture.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.painting.error_painting_needs_texture"));
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+			return Validator.ValidationResult.PASSED;
 		});
 		page1group.addValidationElement(texture);
 
@@ -110,7 +109,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		super.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(texture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 	}
 

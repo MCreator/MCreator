@@ -37,11 +37,14 @@ public class BaseDataModelProvider {
 
 	private final TemplateHelper templateHelper;
 
+	private final FileProvider fileProvider;
+
 	private static final Logger TEMPLATE_LOG = LogManager.getLogger("Template Generator LOG");
 
 	public BaseDataModelProvider(Generator generator) {
 		this.javaConventions = new JavaConventions();
 		this.generatorWrapper = new GeneratorWrapper(generator);
+		this.fileProvider = new FileProvider(generator);
 
 		this.templateHelper = new TemplateHelper();
 
@@ -53,10 +56,11 @@ public class BaseDataModelProvider {
 		retval.put("generator", generatorWrapper);
 
 		retval.put("w", generator.getWorkspace().getWorkspaceInfo());
-		retval.put("modid", generator.getWorkspace().getWorkspaceSettings().getModID());
-		retval.put("JavaModName", generator.getWorkspace().getWorkspaceSettings().getJavaModName());
-		retval.put("package", generator.getWorkspace().getWorkspaceSettings().getModElementsPackage());
-		retval.put("settings", generator.getWorkspace().getWorkspaceSettings());
+		retval.put("modid", generator.getWorkspaceSettings().getModID());
+		retval.put("JavaModName", generator.getWorkspaceSettings().getJavaModName());
+		retval.put("package", generator.getWorkspaceSettings().getModElementsPackage());
+		retval.put("settings", generator.getWorkspaceSettings());
+		retval.put("fp", fileProvider);
 
 		retval.put("mcc", generator.getMinecraftCodeProvider());
 		retval.put("JavaConventions", javaConventions);

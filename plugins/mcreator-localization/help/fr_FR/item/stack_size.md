@@ -1,3 +1,3 @@
-This is maximal number of items of this type that can fit in a stack. 
+C'est le nombre maximal d'item de ce type qui peuvent tenir dans un stack.
 
-Vanilla example: Ender Pearls have a stack size of 16.
+Exemple vanilla: les Perles de l'Ender ont une taille de stack de 16.

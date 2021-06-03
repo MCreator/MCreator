@@ -1,1 +1,1 @@
-The procedure will be executed when a player enters the dimension.
+Cette procédure sera exécutée quand un joueur entre dans la dimension.

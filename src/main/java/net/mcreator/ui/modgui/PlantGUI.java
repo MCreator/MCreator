@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Plant;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -44,11 +45,12 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import net.mcreator.workspace.resources.Model;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.net.URI;
@@ -70,9 +72,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JLabel dyn = new JLabel(TiledImageCache.plantGrowingNo);
 	private final JLabel dbl = new JLabel(TiledImageCache.plantDoubleNo);
 
+	private final JCheckBox customBoundingBox = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
+	private final JBoundingBoxList boundingBoxList = new JBoundingBoxList(mcreator);
+
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(0, -1, 64000, 0.1));
-	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(0, 0, 64000, 0.5));
-	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0.00, 0, 1, 0.01));
+	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
+	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 0.5));
 	private final JSpinner frequencyOnChunks = new JSpinner(new SpinnerNumberModel(5, 0, 40, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 200, 1));
 
@@ -97,8 +103,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
 	private final JRadioButton normalType = L10N.radiobutton("elementgui.plant.use_static_plant_type");
-	private final JComboBox<String> growapableSpawnType = new JComboBox<>(
-			new String[] { "Plains", "Desert", "Beach", "Cave", "Water", "Nether", "Crop" });
+	private final JComboBox<String> growapableSpawnType = new JComboBox<>();
 	private final JSpinner growapableMaxHeight = new JSpinner(new SpinnerNumberModel(3, 1, 14, 1));
 
 	private final JComboBox<String> staticPlantGenerationType = new JComboBox<>(new String[] { "Flower", "Grass" });
@@ -113,6 +118,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
 	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
 
+	private final JComboBox<String> tintType = new JComboBox<>(
+			new String[] { "No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog" });
+	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
+
+	private MCItemListField canBePlacedOn;
+
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourBlockChanges;
 	private ProcedureSelector onTickUpdate;
@@ -124,6 +135,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private ProcedureSelector onBlockPlacedBy;
 	private ProcedureSelector onRightClicked;
 
+	private ProcedureSelector placingCondition;
 	private ProcedureSelector generateCondition;
 
 	private DimensionListField spawnWorldTypes;
@@ -133,6 +145,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(100, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(60, 0, 1024, 1));
+	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
+	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
 
 	public PlantGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -142,6 +156,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	@Override protected void initGUI() {
 		restrictionBiomes = new BiomeListField(mcreator);
+		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.plant.event_on_added"),
@@ -174,8 +189,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.plant.event_on_right_clicked"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/direction:direction"));
 
+		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
+				L10N.t("elementgui.plant.condition_additional_placing"), VariableElementTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world"))
+				.setDefaultName(L10N.t("elementgui.plant.no_additional_condition"));
+
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				L10N.t("elementgui.plant.event_additional_generation_condition"), VariableElementType.LOGIC,
+				L10N.t("elementgui.plant.event_additional_generation_condition"),
+				VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.setDefaultName(L10N.t("elementgui.plant.no_additional_condition"));
 
@@ -183,13 +204,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
+		ComponentUtils.deriveFont(tintType, 16);
+		ComponentUtils.deriveFont(growapableSpawnType, 16);
+		ComponentUtils.deriveFont(doublePlantGenerationType, 16);
+		ComponentUtils.deriveFont(staticPlantGenerationType, 16);
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
-		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
-		JPanel destal = new JPanel(new GridLayout(2, 1));
-
-		destal.setOpaque(false);
+		JPanel pane4 = new JPanel(new BorderLayout(2, 2));
+		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
+		JPanel bbPane = new JPanel(new BorderLayout(10, 10));
 
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
 		textureBottom = new TextureHolder(
@@ -205,52 +229,67 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK), 32);
 		particleTexture.setOpaque(false);
 
-		JPanel infopanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-		infopanel.setOpaque(false);
-		infopanel.setBorder(BorderFactory.createTitledBorder(
+		JPanel tintPanel = new JPanel(new GridLayout(1, 2, 0, 2));
+		tintPanel.setOpaque(false);
+		isItemTinted.setOpaque(false);
+		tintPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.plant.special_information_title"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.plant.plant_info"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		infopanel.add("South", PanelUtils.gridElements(3, 2, HelpUtils
-						.wrapWithHelpButton(this.withEntry("item/special_information"),
-								L10N.label("elementgui.plant.special_information_tip")), specialInfo, HelpUtils
-						.wrapWithHelpButton(this.withEntry("block/item_texture"), L10N.label("elementgui.plant.item_texture")),
-				PanelUtils.centerInPanel(itemTexture), HelpUtils
-						.wrapWithHelpButton(this.withEntry("block/particle_texture"),
-								L10N.label("elementgui.plant.particle_texture")),
-				PanelUtils.centerInPanel(particleTexture)));
 
-		JPanel rent = new JPanel();
-		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
+		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				L10N.label("elementgui.plant.special_information_tip")));
+		tintPanel.add(specialInfo);
+
+		JPanel rent = new JPanel(new GridLayout(5, 2, 2, 2));
 		rent.setOpaque(false);
-		rent.add(PanelUtils.join(HelpUtils
-						.wrapWithHelpButton(this.withEntry("block/model"), L10N.label("elementgui.plant.block_model")),
-				renderType));
+
+		rent.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/model"), L10N.label("elementgui.plant.block_model")));
+		rent.add(renderType);
+
+		rent.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/item_texture"), L10N.label("elementgui.plant.item_texture")));
+		rent.add(PanelUtils.centerInPanel(itemTexture));
+
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
+				L10N.label("elementgui.plant.particle_texture")));
+		rent.add(PanelUtils.centerInPanel(particleTexture));
+
+		rent.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/tint_type"), L10N.label("elementgui.common.tint_type")));
+		rent.add(tintType);
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
+				L10N.label("elementgui.plant.is_item_tinted")));
+		rent.add(isItemTinted);
+
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
-		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.plant.3dmodel"), 0, 0, getFont().deriveFont(12.0f),
+
+		JPanel texturesAndRent = new JPanel(new BorderLayout(50, 0));
+		texturesAndRent.setOpaque(false);
+
+		texturesAndRent.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.gridElements(2, 1, ComponentUtils
+						.squareAndBorder(texture, new Color(125, 255, 174), L10N.t("elementgui.plant.texture_place_top_main")),
+				ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom")))));
+		texturesAndRent.add("East", rent);
+
+		texturesAndRent.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.plant.textures_and_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		destal.add(ComponentUtils
-				.squareAndBorder(texture, new Color(125, 255, 174), L10N.t("elementgui.plant.texture_place_top_main")));
-		destal.add(ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom")));
-		destal.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.plant.texture_title"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		JPanel render = new JPanel();
+		render.setLayout(new BoxLayout(render, BoxLayout.PAGE_AXIS));
+		render.setOpaque(false);
+
+		render.add(texturesAndRent);
+		render.add(tintPanel);
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 
-		JPanel sbbp22 = new JPanel();
-
-		sbbp22.setOpaque(false);
 		sbbp2.setOpaque(false);
-
-		sbbp22.add("East", destal);
-		sbbp22.add("Center", PanelUtils.northAndCenterElement(rent, infopanel));
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(normalType);
@@ -340,19 +379,63 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		ptipe.add("Center", ptipe3);
 		ptipe.add("East", ptipe2);
 
-		sbbp2.add("North", sbbp22);
+		sbbp2.add("North", render);
 		sbbp2.add("Center", PanelUtils.totalCenterInPanel(ptipe));
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
-		JPanel selp = new JPanel(new GridLayout(10, 2, 25, 4));
-		JPanel selp2 = new JPanel(new GridLayout(11, 2, 25, 4));
+		JPanel northPanel = new JPanel(new GridLayout(2, 2, 10, 2));
+		northPanel.setOpaque(false);
+
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_bounding_box"),
+				L10N.label("elementgui.common.custom_bounding_box")));
+		northPanel.add(customBoundingBox);
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/disable_offset"),
+				L10N.label("elementgui.common.disable_offset")));
+		northPanel.add(disableOffset);
+
+		customBoundingBox.setOpaque(false);
+		disableOffset.setOpaque(false);
+
+		bbPane.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), boundingBoxList));
+		bbPane.setOpaque(false);
+
+		bbPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		customBoundingBox.addActionListener(e -> {
+			disableOffset.setEnabled(customBoundingBox.isSelected());
+			if (!customBoundingBox.isSelected()) {
+				disableOffset.setSelected(false);
+			}
+			boundingBoxList.setEnabled(customBoundingBox.isSelected());
+		});
+
+		if (!isEditingMode()) { // Add first bounding box, disable custom bounding box options
+			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
+			disableOffset.setEnabled(false);
+			boundingBoxList.setEnabled(false);
+		}
+
+		JPanel selp = new JPanel(new GridLayout(9, 2, 5, 2));
+		selp.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		selp.setOpaque(false);
+
+		JPanel selp2 = new JPanel(new GridLayout(6, 2, 5, 2));
+		selp2.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		selp2.setOpaque(false);
 
 		useLootTableForDrops.setOpaque(false);
 		unbreakable.setOpaque(false);
-		forceTicking.setOpaque(false);
-		hasTileEntity.setOpaque(false);
+		hardness.setOpaque(false);
+		resistance.setOpaque(false);
+		dropAmount.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -365,11 +448,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(creativeTab);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/color_on_map"), L10N.label("elementgui.plant.color_on_map")));
-		selp.add(colorOnMap);
-
-		hardness.setOpaque(false);
-		resistance.setOpaque(false);
+				.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.common.block_sound")));
+		selp.add(soundOnStep);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/hardness"), L10N.label("elementgui.common.hardness")));
@@ -380,43 +460,20 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(resistance);
 
 		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.common.block_sound")));
-		selp.add(soundOnStep);
+				.wrapWithHelpButton(this.withEntry("block/jump_factor"), L10N.label("elementgui.block.jump_factor")));
+		selp.add(jumpFactor);
+
+		selp.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/speed_factor"), L10N.label("elementgui.block.speed_factor")));
+		selp.add(speedFactor);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/luminance"), L10N.label("elementgui.common.luminance")));
 		selp.add(luminance);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/type"), L10N.label("elementgui.plant.type")));
-		selp.add(growapableSpawnType);
-
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/flammability"), L10N.label("elementgui.plant.flammability")));
-		selp.add(flammability);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
-				L10N.label("elementgui.common.fire_spread_speed")));
-		selp.add(fireSpreadSpeed);
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
 				L10N.label("elementgui.common.emissive_rendering")));
-		selp2.add(emissiveRendering);
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/force_ticking"),
-				L10N.label("elementgui.plant.force_ticking")));
-		selp2.add(forceTicking);
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
-				L10N.label("elementgui.plant.is_unbreakable")));
-		selp2.add(unbreakable);
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
-				L10N.label("elementgui.plant.plant_is_replaceable")));
-		selp2.add(isReplaceable);
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
-				L10N.label("elementgui.common.creative_pick_item")));
-		selp2.add(PanelUtils.join(FlowLayout.LEFT, creativePickItem));
+		selp.add(emissiveRendering);
 
 		selp2.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/custom_drop"), L10N.label("elementgui.common.custom_drop")));
@@ -430,35 +487,83 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.common.use_loot_table_for_drop")));
 		selp2.add(useLootTableForDrops);
 
-		selp2.setOpaque(false);
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
+				L10N.label("elementgui.common.creative_pick_item")));
+		selp2.add(PanelUtils.join(FlowLayout.LEFT, creativePickItem));
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ai_path_node_type"),
-				L10N.label("elementgui.common.ai_path_node_type")));
-		selp2.add(aiPathNodeType);
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
+				L10N.label("elementgui.plant.is_unbreakable")));
+		selp2.add(unbreakable);
 
-		selp2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/offset_type"), L10N.label("elementgui.common.offset_type")));
-		selp2.add(offsetType);
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/has_tile_entity"),
-				L10N.label("elementgui.plant.has_tile_entity")));
-		selp2.add(hasTileEntity);
-
-		dropAmount.setOpaque(false);
-
-		selp.setOpaque(false);
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
+				L10N.label("elementgui.plant.plant_is_replaceable")));
+		selp2.add(isReplaceable);
 
 		useLootTableForDrops.addActionListener(e -> {
 			customDrop.setEnabled(!useLootTableForDrops.isSelected());
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 		});
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils
-				.westAndEastElement(PanelUtils.centerInPanel(selp), PanelUtils.centerInPanel(selp2), 20, 20)));
+		JComponent ploca = PanelUtils.westAndEastElement(selp, PanelUtils.pullElementUp(selp2));
+		ploca.setOpaque(false);
 
+		pane3.add("Center", PanelUtils.totalCenterInPanel(ploca));
 		pane3.setOpaque(false);
 
-		JPanel events2 = new JPanel(new GridLayout(3, 4, 5, 8));
+		JPanel advancedProperties = new JPanel(new GridLayout(9, 2, 10, 2));
+		advancedProperties.setOpaque(false);
+
+		forceTicking.setOpaque(false);
+		hasTileEntity.setOpaque(false);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/has_tile_entity"),
+				L10N.label("elementgui.plant.has_tile_entity")));
+		advancedProperties.add(hasTileEntity);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/force_ticking"),
+				L10N.label("elementgui.plant.force_ticking")));
+		advancedProperties.add(forceTicking);
+
+		advancedProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/color_on_map"), L10N.label("elementgui.plant.color_on_map")));
+		advancedProperties.add(colorOnMap);
+
+		advancedProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/flammability"), L10N.label("elementgui.plant.flammability")));
+		advancedProperties.add(flammability);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
+				L10N.label("elementgui.common.fire_spread_speed")));
+		advancedProperties.add(fireSpreadSpeed);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ai_path_node_type"),
+				L10N.label("elementgui.common.ai_path_node_type")));
+		advancedProperties.add(aiPathNodeType);
+
+		advancedProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("block/offset_type"), L10N.label("elementgui.common.offset_type")));
+		advancedProperties.add(offsetType);
+
+		advancedProperties
+				.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/type"), L10N.label("elementgui.plant.type")));
+		advancedProperties.add(growapableSpawnType);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/can_be_placed_on"),
+				L10N.label("elementgui.plant.can_be_placed_on")));
+		advancedProperties.add(canBePlacedOn);
+
+		JComponent plocb = PanelUtils
+				.northAndCenterElement(advancedProperties, PanelUtils.join(FlowLayout.LEFT, placingCondition));
+		plocb.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.plant.properties_advanced_plant"), TitledBorder.LEADING,
+				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		plocb.setOpaque(false);
+
+		pane5.add("Center", PanelUtils.totalCenterInPanel(plocb));
+		pane5.setOpaque(false);
+
+		JPanel events2 = new JPanel(new GridLayout(3, 4, 5, 5));
 		events2.setOpaque(false);
 		events2.add(onRightClicked);
 		events2.add(onBlockAdded);
@@ -472,7 +577,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		events2.add(onRandomUpdateEvent);
 		events2.add(new JLabel(""));
 
-		JPanel spawning = new JPanel(new GridLayout(3, 2, 5, 5));
+		JPanel spawning = new JPanel(new GridLayout(3, 2, 5, 2));
 		spawning.setOpaque(false);
 
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/gen_chunk_count"),
@@ -504,7 +609,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		page2group.addValidationElement(name);
 
 		addPage(L10N.t("elementgui.plant.page_visual_and_type"), pane2);
+		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane5);
 		addPage(L10N.t("elementgui.common.page_triggers"), PanelUtils.totalCenterInPanel(events2));
 		addPage(L10N.t("elementgui.common.page_generation"), PanelUtils.totalCenterInPanel(pane4));
 
@@ -539,6 +646,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onBlockPlacedBy.refreshListKeepSelected();
 		onRightClicked.refreshListKeepSelected();
 
+		placingCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
@@ -548,6 +656,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				.updateComboBoxContents(soundOnStep, ElementUtil.loadStepSounds(), new DataListEntry.Dummy("PLANT"));
 
 		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.loadMapColors()), "DEFAULT");
+		ComboBoxUtil
+				.updateComboBoxContents(growapableSpawnType, Arrays.asList(ElementUtil.getAllPlantTypes()), "Plains");
 
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(cross, crop),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
@@ -597,6 +707,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		growapableMaxHeight.setValue(plant.growapableMaxHeight);
 		spawnWorldTypes.setListElements(plant.spawnWorldTypes);
 		restrictionBiomes.setListElements(plant.restrictionBiomes);
+		canBePlacedOn.setListElements(plant.canBePlacedOn);
 		isReplaceable.setSelected(plant.isReplaceable);
 		colorOnMap.setSelectedItem(plant.colorOnMap);
 		offsetType.setSelectedItem(plant.offsetType);
@@ -604,9 +715,17 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		creativePickItem.setBlock(plant.creativePickItem);
 		flammability.setValue(plant.flammability);
 		fireSpreadSpeed.setValue(plant.fireSpreadSpeed);
+		jumpFactor.setValue(plant.jumpFactor);
+		speedFactor.setValue(plant.speedFactor);
+
 		specialInfo.setText(
 				plant.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		placingCondition.setSelectedProcedure(plant.placingCondition);
 		generateCondition.setSelectedProcedure(plant.generateCondition);
+
+		customBoundingBox.setSelected(plant.customBoundingBox);
+		disableOffset.setSelected(plant.disableOffset);
+		boundingBoxList.setBoundingBoxes(plant.boundingBoxes);
 
 		Model model = plant.getItemModel();
 		if (model != null && model.getType() != null && model.getReadableName() != null)
@@ -632,8 +751,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		staticPlantGenerationType.setSelectedItem(plant.staticPlantGenerationType);
 		doublePlantGenerationType.setSelectedItem(plant.doublePlantGenerationType);
 
+		tintType.setSelectedItem(plant.tintType);
+		isItemTinted.setSelected(plant.isItemTinted);
+
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
+		disableOffset.setEnabled(customBoundingBox.isSelected());
+		boundingBoxList.setEnabled(customBoundingBox.isSelected());
 
 		if (normalType.isSelected())
 			stl.setIcon(TiledImageCache.plantStaticYes);
@@ -661,6 +785,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.textureBottom = textureBottom.getID();
 		plant.itemTexture = itemTexture.getID();
 		plant.particleTexture = particleTexture.getID();
+		plant.tintType = (String) tintType.getSelectedItem();
+		plant.isItemTinted = isItemTinted.isSelected();
 		if (normalType.isSelected())
 			plant.plantType = "normal";
 		else if (growapableType.isSelected())
@@ -673,7 +799,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.growapableMaxHeight = (int) growapableMaxHeight.getValue();
 		plant.hardness = (double) hardness.getValue();
 		plant.resistance = (double) resistance.getValue();
-		plant.luminance = (double) luminance.getValue();
+		plant.luminance = (int) luminance.getValue();
 		plant.unbreakable = unbreakable.isSelected();
 		plant.forceTicking = forceTicking.isSelected();
 		plant.hasTileEntity = hasTileEntity.isSelected();
@@ -694,6 +820,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.onRightClicked = onRightClicked.getSelectedProcedure();
 		plant.spawnWorldTypes = spawnWorldTypes.getListElements();
 		plant.restrictionBiomes = restrictionBiomes.getListElements();
+		plant.canBePlacedOn = canBePlacedOn.getListElements();
 		plant.isReplaceable = isReplaceable.isSelected();
 		plant.colorOnMap = (String) colorOnMap.getSelectedItem();
 		plant.offsetType = (String) offsetType.getSelectedItem();
@@ -701,9 +828,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.creativePickItem = creativePickItem.getBlock();
 		plant.flammability = (int) flammability.getValue();
 		plant.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
+		plant.speedFactor = (double) speedFactor.getValue();
+		plant.jumpFactor = (double) jumpFactor.getValue();
 		plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
+		plant.placingCondition = placingCondition.getSelectedProcedure();
 		plant.generateCondition = generateCondition.getSelectedProcedure();
 		plant.emissiveRendering = emissiveRendering.isSelected();
+
+		plant.customBoundingBox = customBoundingBox.isSelected();
+		plant.disableOffset = disableOffset.isSelected();
+		plant.boundingBoxes = boundingBoxList.getBoundingBoxes();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		plant.renderType = 12;
@@ -712,7 +846,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		else if (model.getType() == Model.Type.OBJ)
 			plant.renderType = 3;
 		else if (model.equals(cross))
-			plant.renderType = 12;
+			plant.renderType = "No tint".equals(tintType.getSelectedItem()) ? 12 : 120;
 		else if (model.equals(crop))
 			plant.renderType = 13;
 		plant.customModelName = model.getReadableName();

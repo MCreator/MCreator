@@ -41,9 +41,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.List;
+import java.util.*;
 
 public class PreferencesDialog extends MCreatorDialog {
 
@@ -51,6 +50,7 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	DefaultListModel<String> model = new DefaultListModel<>();
 	JPanel preferences = new JPanel();
+	private ThemesPanel themes;
 
 	private final JList<String> sections = new JList<>(model);
 	private final CardLayout preferencesLayout = new CardLayout();
@@ -80,9 +80,9 @@ public class PreferencesDialog extends MCreatorDialog {
 		spne.setLeftComponent(new JScrollPane(sections));
 		spne.setContinuousLayout(true);
 		spne.setUI(new BasicSplitPaneUI() {
-			public BasicSplitPaneDivider createDefaultDivider() {
+			@Override public BasicSplitPaneDivider createDefaultDivider() {
 				return new BasicSplitPaneDivider(this) {
-					public void setBorder(Border b) {
+					@Override public void setBorder(Border b) {
 					}
 
 					@Override public void paint(Graphics g) {
@@ -169,13 +169,18 @@ public class PreferencesDialog extends MCreatorDialog {
 		}
 		sections.setSelectedIndex(0);
 
+		new PluginsPanel(this);
+
+		themes = new ThemesPanel(this);
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ui_backgrounds"), "backgrounds", "png");
+
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_procedure_templates"), "templates/ptpl", "ptpl");
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ai_builder_templates"), "templates/aitpl",
 				"aitpl");
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_texture_templates"),
 				"templates/textures/texturemaker", "png");
-		new PluginsPanel(this);
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_armor_templates"), "templates/textures/armormaker",
+				"png");
 	}
 
 	private void createPreferencesPanel(Field sectionField) {
@@ -210,7 +215,6 @@ public class PreferencesDialog extends MCreatorDialog {
 				LOG.info("Reflection error: " + e.getMessage());
 			}
 		}
-
 		preferences.add(new JScrollPane(PanelUtils.pullElementUp(sectionPanel)), name);
 	}
 
@@ -227,6 +231,9 @@ public class PreferencesDialog extends MCreatorDialog {
 				LOG.info("Reflection error: " + e.getMessage());
 			}
 		}
+
+		data.hidden.uiTheme = themes.getSelectedTheme();
+
 		PreferencesManager.storePreferences(data);
 	}
 
@@ -278,7 +285,16 @@ public class PreferencesDialog extends MCreatorDialog {
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
 		} else if (actualField.getType().equals(Locale.class)) {
-			JComboBox<Locale> box = new JComboBox<>(L10N.getSupportedLocales().toArray(new Locale[0]));
+			List<Locale> locales = new ArrayList<>(L10N.getSupportedLocales());
+			locales.sort((a, b) -> {
+				int sa = L10N.getLocaleSupport(a);
+				int sb = L10N.getLocaleSupport(b);
+				if (sa == sb)
+					return a.getDisplayName().compareTo(b.getDisplayName());
+
+				return sb - sa;
+			});
+			JComboBox<Locale> box = new JComboBox<>(locales.toArray(new Locale[0]));
 			box.setRenderer(new LocaleListRenderer());
 			box.setSelectedItem(value);
 			box.addActionListener(e -> apply.setEnabled(true));
@@ -305,6 +321,10 @@ public class PreferencesDialog extends MCreatorDialog {
 		return null;
 	}
 
+	public void markChanged() {
+		apply.setEnabled(true);
+	}
+
 	private static class PreferencesUnit {
 
 		Field entry;
@@ -317,15 +337,21 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private static class LocaleListRenderer extends JLabel implements ListCellRenderer<Locale> {
+
+		private int percent = 0;
+
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Locale> list, Locale value, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 			setForeground(Color.white);
+			setBorder(new EmptyBorder(0, 1, 0, 0));
 
 			ComponentUtils.deriveFont(this, 12);
-			setText(" " + value.getDisplayName());
+			setText(" " + value.getDisplayName(Locale.ROOT));
+
+			percent = L10N.getLocaleSupport(value);
 
 			try {
 				String flagpath = "/flags/" + value.toString().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
@@ -336,6 +362,30 @@ public class PreferencesDialog extends MCreatorDialog {
 
 			return this;
 		}
+
+		@Override public Dimension getPreferredSize() {
+			return new Dimension(super.getPreferredSize().width, super.getPreferredSize().height + 15);
+		}
+
+		@Override protected void paintComponent(Graphics gx) {
+			Graphics2D g = (Graphics2D) gx;
+
+			g.translate(0, -5);
+			super.paintComponent(g);
+			g.translate(0, 5);
+
+			g.setColor(Color.lightGray);
+			g.fillRect(0, getHeight() - 11, getWidth(), 11);
+
+			g.setColor(Color.getHSBColor((float) (1 / 3d - ((100 - percent) / 3d / 100d)), 0.65f, 0.9f));
+			g.fillRect(0, getHeight() - 11, (int) (getWidth() * (percent / 100d)), 11);
+
+			g.setFont(getFont().deriveFont(9f));
+			g.setColor(Color.darkGray);
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.drawString("Coverage: " + percent + "%", 2, getHeight() - 2);
+		}
+
 	}
 
 }

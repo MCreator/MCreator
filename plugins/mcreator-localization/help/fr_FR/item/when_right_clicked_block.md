@@ -1,1 +1,1 @@
-The procedure is executed when the player right-clicks on a block with this item in his hand.
+Cette procédure est exécutée quand le joueur fait un clic droit sur un bloc avec cet item dans sa main.

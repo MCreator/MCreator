@@ -1,4 +1,6 @@
-This parameter will make the dimension have skylight in a similar way as overworld with daynight cycle.
+Ce paramètre fera en sorte que la dimension ait une lumière de jour de la même manière que l'Overworld
+avec un cycle jour-nuit.
 
-Keep in mind that skylight does not propagate through blocks, so nether dimensions with skylight will
-still be dark and need Global light source enabled to not be dark.
+N'oubliez pas que la lumière du jour ne se propage pas à travers les blocs, donc les dimensions de type
+Nether avec la lumière de jour seront quand même sombres et auront besoin d'une source de lumière globale
+activée pour ne pas être dans le noir.

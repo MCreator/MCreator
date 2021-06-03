@@ -1,1 +1,1 @@
-The fluid for lakes like the Water for the Overworld and the lava for the Nether
+Le fluide pour les lacs comme l'eau pour l'Overworld et la lave pour le Nether

@@ -22,7 +22,8 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.workspace.Workspace;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public class AchievementEntry extends MappableElement {
 
@@ -36,7 +37,7 @@ public class AchievementEntry extends MappableElement {
 		setValue(name);
 	}
 
-	public AchievementEntry(@NotNull Workspace owner, DataListEntry name) {
+	public AchievementEntry(@Nonnull Workspace owner, DataListEntry name) {
 		this(owner, name.getName());
 	}
 

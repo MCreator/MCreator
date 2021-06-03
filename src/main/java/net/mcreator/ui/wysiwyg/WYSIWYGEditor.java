@@ -65,6 +65,13 @@ public class WYSIWYGEditor extends JPanel {
 	public JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -256, 256, 1));
 	public JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -256, 256, 1));
 
+	public JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
+	public JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
+	public JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
+	public JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
+
+	public JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
+
 	public JButton button = new JButton(UIRES.get("32px.addbutton"));
 	public JButton text = new JButton(UIRES.get("32px.addtextinput"));
 	public JButton slot1 = new JButton(UIRES.get("32px.addinslot"));
@@ -126,7 +133,7 @@ public class WYSIWYGEditor extends JPanel {
 		});
 
 		list.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent evt) {
+			@Override public void mouseClicked(MouseEvent evt) {
 				if (evt.getClickCount() == 2) {
 					editComponent.doClick();
 				}
@@ -251,17 +258,11 @@ public class WYSIWYGEditor extends JPanel {
 		slot1.addActionListener(e -> new InputSlotDialog(this, null));
 		slot2.addActionListener(e -> new OutputSlotDialog(this, null));
 
-		JCheckBox snapOnGrid = new JCheckBox((L10N.t("elementgui.gui.snap_components_on_grid")));
 		snapOnGrid.setOpaque(false);
 		snapOnGrid.addActionListener(event -> {
 			editor.showGrid = snapOnGrid.isSelected();
 			editor.repaint();
 		});
-
-		JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-		JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-		JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
-		JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
 
 		sx.addChangeListener(e -> {
 			editor.grid_x_spacing = (int) sx.getValue();
@@ -333,10 +334,9 @@ public class WYSIWYGEditor extends JPanel {
 				invOffX.setEnabled(lol.getSelectedIndex() == 1);
 				invOffY.setEnabled(lol.getSelectedIndex() == 1);
 				if (lol.getSelectedIndex() == 0 && !isOpening()) {
-					Object[] options = { "Yes", "No" };
-					int n = JOptionPane.showOptionDialog(mcreator, (L10N.t("elementgui.gui.warning_switch_gui")),
-							(L10N.t("elementgui.gui.warning")), JOptionPane.YES_NO_CANCEL_OPTION,
-							JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+					int n = JOptionPane.showConfirmDialog(mcreator, (L10N.t("elementgui.gui.warning_switch_gui")),
+							(L10N.t("elementgui.gui.warning")), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+							null);
 					if (n == 0) {
 						slot1.setEnabled(false);
 						slot2.setEnabled(false);
@@ -365,7 +365,8 @@ public class WYSIWYGEditor extends JPanel {
 			});
 
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, pon));
-		adds2.add(PanelUtils.join(FlowLayout.LEFT, new JLabel("GUI WxH: "), spa1, new JLabel("x"), spa2));
+		adds2.add(PanelUtils
+				.join(FlowLayout.LEFT, L10N.label("elementgui.gui.width_height"), spa1, new JLabel("x"), spa2));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.gui.inventory_offset"), invOffX, invOffY));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, renderBgLayer));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, doesPauseGame));
@@ -382,7 +383,7 @@ public class WYSIWYGEditor extends JPanel {
 			ovst.setLayout(new BoxLayout(ovst, BoxLayout.PAGE_AXIS));
 			ovst.setBorder(BorderFactory.createTitledBorder(
 					BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
-					"Overlay properties", 0, 0, getFont().deriveFont(12.0f),
+					L10N.t("elementgui.gui.overlay_properties"), 0, 0, getFont().deriveFont(12.0f),
 					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 			overlayBaseTexture.addActionListener(e -> editor.repaint());
@@ -391,23 +392,23 @@ public class WYSIWYGEditor extends JPanel {
 
 			ovst.add(PanelUtils.join(FlowLayout.LEFT, HelpUtils
 					.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/rendering_priority"),
-							new JLabel("Rendering priority:")), priority));
+							L10N.label("elementgui.gui.rendering_priority")), priority));
 
 			JButton importmobtexture = new JButton(UIRES.get("18px.add"));
-			importmobtexture.setToolTipText("Click this to import overlay base texture");
+			importmobtexture.setToolTipText(L10N.t("elementgui.gui.import_overlay_base_texture"));
 			importmobtexture.setOpaque(false);
 			importmobtexture.setMargin(new Insets(0, 0, 0, 0));
 			importmobtexture.addActionListener(e -> {
 				TextureImportDialogs.importOtherTextures(mcreator);
 				overlayBaseTexture.removeAllItems();
 				overlayBaseTexture.addItem("");
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList()
+				mcreator.getFolderManager().getOtherTexturesList()
 						.forEach(el -> overlayBaseTexture.addItem(el.getName()));
 			});
 
 			ovst.add(PanelUtils.northAndCenterElement(HelpUtils
 							.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/base_texture"),
-									new JLabel("Overlay base texture:")),
+									L10N.label("elementgui.gui.overlay_base_texture")),
 					PanelUtils.join(FlowLayout.LEFT, overlayBaseTexture, importmobtexture)));
 
 			sidebar.add("North", ovst);
@@ -457,8 +458,8 @@ public class WYSIWYGEditor extends JPanel {
 			} else if (component instanceof Image) {
 				component = new ImageDialog(this, (Image) component).getEditingComponent();
 			} else {
-				JOptionPane.showMessageDialog(mcreator, "This component can only be repositioned or removed!",
-						"Edit component", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.gui.edit_component_message"),
+						L10N.t("elementgui.gui.edit_component_title"), JOptionPane.WARNING_MESSAGE);
 			}
 
 			list.setSelectedValue(component, true);

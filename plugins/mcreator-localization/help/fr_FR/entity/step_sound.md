@@ -1,1 +1,1 @@
-The sound played when tye entity walks.
+Le son joué quand l'entité marche.

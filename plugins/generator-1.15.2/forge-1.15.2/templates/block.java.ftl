@@ -28,6 +28,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "boundingboxes.java.ftl">
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
 <#include "particles.java.ftl">
@@ -50,7 +51,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	public ${name}Block (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
-		<#if data.hasInventory>
+		<#if data.hasInventory || data.tintType != "No tint">
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 		</#if>
 	}
@@ -86,6 +87,44 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	}
 	</#if>
 
+	<#if data.tintType != "No tint">
+	@OnlyIn(Dist.CLIENT) @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
+		event.getBlockColors().register((bs, world, pos, index) -> {
+			return world != null && pos != null ?
+			<#if data.tintType == "Grass">
+				BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
+			<#elseif data.tintType == "Foliage">
+				BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
+			<#elseif data.tintType == "Water">
+				BiomeColors.getWaterColor(world, pos) : -1;
+			<#elseif data.tintType == "Sky">
+				Minecraft.getInstance().world.getBiome(pos).getSkyColor() : 8562943;
+			<#else>
+				Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
+			</#if>
+		}, block);
+	}
+
+		<#if data.isItemTinted>
+		@OnlyIn(Dist.CLIENT) @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
+			event.getItemColors().register((stack, index) -> {
+				<#if data.tintType == "Grass">
+					return GrassColors.get(0.5D, 1.0D);
+				<#elseif data.tintType == "Foliage">
+					return FoliageColors.getDefault();
+				<#elseif data.tintType == "Water">
+					return 3694022;
+				<#elseif data.tintType == "Sky">
+					return 8562943;
+				<#else>
+					return 329011;
+				</#if>
+			}, block);
+		}
+		</#if>
+	</#if>
+
+
 	public static class CustomBlock extends
 			<#if data.hasGravity>
 				FallingBlock
@@ -107,47 +146,46 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
         </#if>
 
+		<#macro blockProterties>
+			Block.Properties.create(Material.${data.material})
+				.sound(SoundType.${data.soundOnStep})
+				<#if data.unbreakable>
+					.hardnessAndResistance(-1, 3600000)
+				<#else>
+					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
+				</#if>
+					.lightValue(${data.luminance})
+				<#if data.destroyTool != "Not specified" && data.destroyTool != "hoe">
+					.harvestLevel(${data.breakHarvestLevel})
+					.harvestTool(ToolType.${data.destroyTool?upper_case})
+				</#if>
+				<#if data.isNotColidable>
+					.doesNotBlockMovement()
+				</#if>
+				<#if data.slipperiness != 0.6>
+					.slipperiness(${data.slipperiness}f)
+				</#if>
+				<#if data.speedFactor != 1.0>
+					.speedFactor(${data.speedFactor}f)
+				</#if>
+				<#if data.jumpFactor != 1.0>
+					.jumpFactor(${data.jumpFactor}f)
+				</#if>
+				<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
+					.notSolid()
+				</#if>
+				<#if data.tickRandomly>
+					.tickRandomly()
+				</#if>
+		</#macro>
+
 		public CustomBlock() {
 			<#if data.blockBase?has_content && data.blockBase == "Stairs">
-			super(new Block(Block.Properties.create(Material.ROCK)
-					<#if data.unbreakable>
-					.hardnessAndResistance(-1, 3600000)
-					<#else>
-					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
-					</#if>
-					).getDefaultState(),
-			<#elseif data.blockBase?has_content && data.blockBase == "Wall">
-			super(
-			<#elseif data.blockBase?has_content && data.blockBase == "Fence">
-			super(
+			super(() -> new Block(<@blockProterties/>).getDefaultState(),
 			<#else>
 			super(
 			</#if>
-
-			Block.Properties.create(Material.${data.material})
-					.sound(SoundType.${data.soundOnStep})
-					<#if data.unbreakable>
-					.hardnessAndResistance(-1, 3600000)
-					<#else>
-					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
-					</#if>
-					.lightValue(${(data.luminance * 15)?round})
-					<#if data.destroyTool != "Not specified">
-					.harvestLevel(${data.breakHarvestLevel})
-					.harvestTool(ToolType.${data.destroyTool?upper_case})
-					</#if>
-					<#if data.isNotColidable>
-					.doesNotBlockMovement()
-					</#if>
-					<#if data.slipperiness != 0.6>
-					.slipperiness(${data.slipperiness}f)
-					</#if>
-					<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
-					.notSolid()
-					</#if>
-					<#if data.tickRandomly>
-					.tickRandomly()
-					</#if>
+			<@blockProterties/>
 			);
 
             <#if data.rotationMode != 0 || data.isWaterloggable>
@@ -228,71 +266,16 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-		<#if data.mx != 0 || data.my != 0 || data.mz != 0 || data.Mx != 1 || data.My != 1 || data.Mz != 1>
+		<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
 		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-			Vec3d offset = state.getOffset(world, pos);
-			<#if data.rotationMode == 1 || data.rotationMode == 3>
-			switch ((Direction) state.get(FACING)) {
-			case UP:
-			case DOWN:
-			case SOUTH:
-			default:
-				return VoxelShapes.create(${1-data.mx}D, ${data.my}D, ${1-data.mz}D, ${1-data.Mx}D, ${data.My}D,
-                            ${1-data.Mz}D).withOffset(offset.x, offset.y, offset.z);
-			case NORTH:
-				return VoxelShapes.create(${data.mx}D, ${data.my}D, ${data.mz}D, ${data.Mx}D, ${data.My}D, ${data.Mz}D)
-						.withOffset(offset.x, offset.y, offset.z);
-			case WEST:
-				return VoxelShapes.create(${data.mz}D, ${data.my}D, ${1-data.mx}D, ${data.Mz}D, ${data.My}D,
-                            ${1-data.Mx}D).withOffset(offset.x, offset.y, offset.z);
-			case EAST:
-				return VoxelShapes.create(${1-data.mz}D, ${data.my}D, ${data.mx}D, ${1-data.Mz}D, ${data.My}D,
-                            ${data.Mx}D).withOffset(offset.x, offset.y, offset.z);
-			}
-			<#elseif data.rotationMode == 2 || data.rotationMode == 4>
-			switch ((Direction) state.get(FACING)) {
-			case SOUTH:
-			default:
-				return VoxelShapes.create(${1-data.mx}D, ${data.my}D, ${1-data.mz}D, ${1-data.Mx}D, ${data.My}D,
-                            ${1-data.Mz}D).withOffset(offset.x, offset.y, offset.z);
-			case NORTH:
-				return VoxelShapes.create(${data.mx}D, ${data.my}D, ${data.mz}D, ${data.Mx}D, ${data.My}D, ${data.Mz}D)
-						.withOffset(offset.x, offset.y, offset.z);
-			case WEST:
-				return VoxelShapes.create(${data.mz}D, ${data.my}D, ${1-data.mx}D, ${data.Mz}D, ${data.My}D,
-                            ${1-data.Mx}D).withOffset(offset.x, offset.y, offset.z);
-			case EAST:
-				return VoxelShapes.create(${1-data.mz}D, ${data.my}D, ${data.mx}D, ${1-data.Mz}D, ${data.My}D,
-                            ${data.Mx}D).withOffset(offset.x, offset.y, offset.z);
-			case UP:
-				return VoxelShapes.create(${data.mx}D, ${1-data.mz}D, ${data.my}D, ${data.Mx}D, ${1-data.Mz}D,
-                            ${data.My}D).withOffset(offset.x, offset.y, offset.z);
-			case DOWN:
-				return VoxelShapes.create(${data.mx}D, ${data.mz}D, ${1-data.my}D, ${data.Mx}D, ${data.Mz}D,
-                            ${1-data.My}D).withOffset(offset.x, offset.y, offset.z);
-			}
-			<#elseif data.rotationMode == 5>
-			switch ((Direction) state.get(FACING)) {
-			case SOUTH:
-			case NORTH:
-			default:
-				return VoxelShapes.create(${data.mx}D, ${data.my}D, ${data.mz}D, ${data.Mx}D, ${data.My}D, ${data.Mz}D)
-						.withOffset(offset.x, offset.y, offset.z);
-			case EAST:
-			case WEST:
-				return VoxelShapes.create(${data.mx}D, ${1-data.mz}D, ${data.my}D, ${data.Mx}D, ${1-data.Mz}D,
-							${data.My}D).withOffset(offset.x, offset.y, offset.z);
-			case UP:
-			case DOWN:
-				return VoxelShapes.create(${data.my}D, ${1-data.mx}D, ${1-data.mz}D, ${data.My}D, ${1-data.Mx}D,
-							${1-data.Mz}D).withOffset(offset.x, offset.y, offset.z);
-			}
-            <#else>
-			return VoxelShapes.create(${data.mx}D, ${data.my}D, ${data.mz}D, ${data.Mx}D, ${data.My}D, ${data.Mz}D)
-					.withOffset(offset.x, offset.y, offset.z);
-            </#if>
+			<#if data.isBoundingBoxEmpty()>
+				return VoxelShapes.empty();
+			<#else>
+				<#if !data.disableOffset>Vec3d offset = state.getOffset(world, pos);</#if>
+				<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset data.rotationMode/>
+			</#if>
 		}
-        </#if>
+		</#if>
 
 		<#if data.tickRate != 10>
 		@Override public int tickRate(IWorldReader world) {
@@ -375,6 +358,16 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
+		<#if hasCondition(data.placingCondition)>
+		@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+			World world = worldIn.getDimension().getWorld();
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			return <@procedureOBJToConditionCode data.placingCondition/>;
+		}
+		</#if>
+
         <#if data.isWaterloggable>
             <#if data.rotationMode == 0>
             @Override
@@ -390,20 +383,20 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         @Override public IFluidState getFluidState(BlockState state) {
             return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
         }
-	
-		@Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-	        if (state.get(WATERLOGGED)) {
-		        world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
-	        }
-	        return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
-        }
-        </#if>
+		</#if>
 
-		<#if data.isBeaconBase>
-		@Override public boolean isBeaconBase(BlockState state, IWorldReader world, BlockPos pos, BlockPos beacon) {
-			return true;
+		<#if data.isWaterloggable || hasCondition(data.placingCondition)>
+		@Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+			<#if data.isWaterloggable>
+			if (state.get(WATERLOGGED)) {
+				world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+			}
+			</#if>
+			return <#if hasCondition(data.placingCondition)>
+			!state.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() :
+			</#if> super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 		}
-        </#if>
+		</#if>
 
 		<#if data.enchantPowerBonus != 0>
 		@Override public float getEnchantPowerBonus(BlockState state, IWorldReader world, BlockPos pos) {
@@ -413,7 +406,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.isReplaceable>
         @Override public boolean isReplaceable(BlockState state, BlockItemUseContext context) {
-			return true;
+			return context.getItem().getItem() != this.asItem();
 		}
         </#if>
 
@@ -561,7 +554,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
+
 			<@procedureOBJToCode data.onTickUpdate/>
+
 			<#if !data.tickRandomly>
 			world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, this.tickRate(world));
 			</#if>

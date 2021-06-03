@@ -1,1 +1,1 @@
-This parameter controls the number of vanilla flowers (poppy and dandelion only) per biome chunk
+Ce paramètre contrôle le nombre de fleurs vanilla (coquelicots et pissenlits uniquement) par tronçon de biome

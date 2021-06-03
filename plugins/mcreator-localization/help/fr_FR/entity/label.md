@@ -1,2 +1,2 @@
-This allows the mob to set a name that will be shown above their head similar to how the player
-names or nametags are shown.
+Cela permet à l'entité de définir un nom qui sera affiché au-dessus de sa tête, de la même manière que
+le nom ou le tag du joueur sont affichés.

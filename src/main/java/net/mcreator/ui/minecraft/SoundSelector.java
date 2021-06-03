@@ -23,17 +23,26 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.util.ListUtils;
+import net.mcreator.util.SoundUtils;
+import net.mcreator.workspace.elements.SoundElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.util.Arrays;
 
 public class SoundSelector extends JPanel {
 
 	private final VTextField tfe = new VTextField(14);
 	private final JButton bt = new JButton("...");
 	private final JButton rm = new JButton(UIRES.get("18px.remove"));
+	private final JButton play = new JButton(UIRES.get("16px.play"));
 
 	private final MCreator mcreator;
 
@@ -43,22 +52,52 @@ public class SoundSelector extends JPanel {
 		setOpaque(false);
 		bt.addActionListener(event -> {
 			String[] sounds = ElementUtil.getAllSounds(frame.getWorkspace());
-			String s = (String) JOptionPane
-					.showInputDialog(frame, "Please select sound:", "Selection", JOptionPane.PLAIN_MESSAGE, null,
-							sounds, sounds[0]);
-			tfe.setText(s);
-			tfe.getValidationStatus();
+			Arrays.sort(sounds);
+			String s = (String) JOptionPane.showInputDialog(frame, L10N.t("dialog.selector.sound_message"),
+					L10N.t("dialog.selector.sound_title"), JOptionPane.PLAIN_MESSAGE, null, sounds, sounds[0]);
+			setSound(s);
 		});
-		rm.addActionListener(e -> tfe.setText(""));
+		rm.addActionListener(e -> setSound((String) null));
 		tfe.setEditable(false);
 		ComponentUtils.deriveFont(tfe, 16);
 		bt.setOpaque(false);
+
 		rm.setOpaque(false);
-		rm.setMargin(new Insets(0, 0, 0, 0));
+		rm.setMargin(new Insets(0, 3, 0, 3));
+
+		play.setOpaque(false);
+		play.setMargin(new Insets(0, 0, 0, 0));
+		play.setContentAreaFilled(false);
+
+		play.setVisible(false);
+		rm.setEnabled(false);
+
+		play.addMouseListener(new MouseAdapter() {
+			@Override public void mousePressed(MouseEvent me) {
+				SoundElement soundElement = frame.getWorkspace().getSoundElements().stream()
+						.filter(e -> e.getName().equals(getSound().getUnmappedValue().replaceFirst("CUSTOM:", "")))
+						.findFirst().orElse(null);
+				if (soundElement != null) {
+					if (!soundElement.getFiles().isEmpty()) {
+						SoundUtils.playSound(new File(frame.getWorkspace().getFolderManager().getSoundsDir(),
+								ListUtils.getRandomItem(soundElement.getFiles()) + ".ogg"));
+						play.setEnabled(false);
+					}
+				}
+			}
+
+			@Override public void mouseReleased(MouseEvent e) {
+				SoundUtils.stopAllSounds();
+				play.setEnabled(true);
+			}
+
+		});
 
 		setLayout(new BorderLayout(0, 0));
+
+		add("West", play);
 		add("Center", tfe);
-		add("East", PanelUtils.westAndEastElement(rm, bt));
+		add("East", PanelUtils.gridElements(1, 2, bt, rm));
 	}
 
 	@Override public void setEnabled(boolean enabled) {
@@ -77,13 +116,26 @@ public class SoundSelector extends JPanel {
 
 	public void setSound(Sound sound) {
 		if (sound != null)
-			tfe.setText(sound.getUnmappedValue());
+			this.setSound(sound.getUnmappedValue());
 		else
-			tfe.setText("");
+			this.setSound((String) null);
+	}
+
+	public void setSound(String sound) {
+		tfe.setText(sound);
+		tfe.getValidationStatus();
+
+		if (sound != null && !sound.equals("")) {
+			play.setVisible(sound.startsWith("CUSTOM:"));
+			rm.setEnabled(true);
+		} else {
+			play.setVisible(false);
+			rm.setEnabled(false);
+		}
 	}
 
 	public void setText(String text) {
-		tfe.setText(text);
+		this.setSound(text);
 	}
 
 }

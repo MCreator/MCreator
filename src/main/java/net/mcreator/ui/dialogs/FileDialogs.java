@@ -68,8 +68,10 @@ public class FileDialogs {
 					return;
 				} else if (selectedFile != null && selectedFile.isDirectory() && selectedFile.list() != null
 						&& Objects.requireNonNull(selectedFile.list()).length > 0) {
-					JOptionPane.showMessageDialog(this, L10N.t("dialog.file.error_save_inside_folder_not_empty_message"),
-									L10N.t("dialog.file.error_save_inside_folder_not_empty_title"), JOptionPane.ERROR_MESSAGE);
+					JOptionPane
+							.showMessageDialog(this, L10N.t("dialog.file.error_save_inside_folder_not_empty_message"),
+									L10N.t("dialog.file.error_save_inside_folder_not_empty_title"),
+									JOptionPane.ERROR_MESSAGE);
 					return;
 				} else if (selectedFile != null && selectedFile.isDirectory() && !selectedFile.getAbsolutePath()
 						.matches("[a-zA-Z0-9_/+\\-\\\\:()\\[\\].,@$=`' ]+")) {
@@ -154,8 +156,8 @@ public class FileDialogs {
 					if ((selectedFile != null) && selectedFile.exists()) {
 						int response = JOptionPane.showConfirmDialog(this,
 								L10N.t("dialog.file.error_already_exists", selectedFile.getName()),
-								L10N.t("dialog.file.error_already_exists_title"),
-								JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+								L10N.t("dialog.file.error_already_exists_title"), JOptionPane.YES_NO_OPTION,
+								JOptionPane.WARNING_MESSAGE);
 						if (response != JOptionPane.YES_OPTION)
 							return;
 					}

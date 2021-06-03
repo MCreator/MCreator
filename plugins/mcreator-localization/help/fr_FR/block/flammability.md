@@ -1,5 +1,5 @@
-This parameter determines how quickly the block is consumed by fire.
+Ce paramètre détermine la vitesse à laquelle le bloc est consommé par le feu.
 
-Vanilla examples: 
-* logs have a flammability of 5
-* planks have a flammability of 20
+Exemples de vanille:
+* les bûches ont une inflammabilité de 5
+* les planches ont une inflammabilité de 20

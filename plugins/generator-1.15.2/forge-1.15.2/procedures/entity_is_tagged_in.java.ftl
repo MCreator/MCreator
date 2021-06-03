@@ -1,0 +1,1 @@
+(EntityTypeTags.getCollection().getOrCreate(new ResourceLocation((${input$tag}).toLowerCase(java.util.Locale.ENGLISH))).contains(${input$entity}.getType()))

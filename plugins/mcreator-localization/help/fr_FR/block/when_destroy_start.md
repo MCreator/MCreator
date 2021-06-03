@@ -1,1 +1,1 @@
-Triggers a procedure when a player starts to destroy the block.
+Déclenche une procédure lorsqu'un joueur commence à détruire le bloc.

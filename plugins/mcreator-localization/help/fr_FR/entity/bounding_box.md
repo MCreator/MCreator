@@ -1,5 +1,5 @@
- This parameter controls the size of your mob's hitbox in blocks, as well as the size of its shadow. 
- The first option sets the width and depth, whilst the second option sets the height. 
- The final option sets size in blocks for the radius of the mob's shadow.
+ Ce paramètre contrôle la taille de la hitbox de votre entité en blocs, ainsi que la taille de son ombre. 
+ La première option définit la largeur et la profondeur, tandis que la seconde définit la hauteur. 
+ La dernière option définit la taille en blocs pour le rayon de l'ombre de l'entité.
  
- You can get more details on the entity model size [here](https://mcreator.net/wiki/entity-model-sizes).
+ Vous pouvez obtenir plus de détails sur la taille du modèle d'entité [ici] (https://mcreator.net/wiki/entity-model-sizes).

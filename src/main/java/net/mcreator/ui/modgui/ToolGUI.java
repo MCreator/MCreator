@@ -46,10 +46,10 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import net.mcreator.workspace.resources.Model;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
@@ -74,6 +74,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JComboBox<String> toolType = new JComboBox<>(
 			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Special", "MultiTool" });
 
+	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
 
@@ -138,7 +139,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.t("elementgui.tool.event_swings"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow",
-				ProcedureSelector.Side.CLIENT, true, VariableElementType.LOGIC,
+				ProcedureSelector.Side.CLIENT, true, VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocks);
@@ -160,6 +161,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		hasGlow.setOpaque(false);
 		hasGlow.setSelected(false);
 
+		immuneToFire.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
 
@@ -169,8 +171,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
 
 		rent.setOpaque(false);
-		rent.add(PanelUtils.join(HelpUtils.
-						wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
+		rent.add(PanelUtils.join(HelpUtils
+						.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
 				PanelUtils.join(renderType)));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
@@ -201,7 +203,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		pane2.add("Center", PanelUtils
 				.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.join(destal, rent), visualBottom)));
 
-		JPanel selp = new JPanel(new GridLayout(13, 2, 10, 2));
+		JPanel selp = new JPanel(new GridLayout(14, 2, 10, 2));
 		selp.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -253,6 +255,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
 				L10N.label("elementgui.tool.blocks_affected")));
 		selp.add(blocksAffected);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+				L10N.label("elementgui.tool.is_immune_to_fire")));
+		selp.add(immuneToFire);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item"),
 				L10N.label("elementgui.tool.stays_in_grid_when_crafting")));
@@ -365,6 +371,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		specialInfo.setText(
 				tool.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		stayInGridWhenCrafting.setSelected(tool.stayInGridWhenCrafting);
+		immuneToFire.setSelected(tool.immuneToFire);
 		damageOnCrafting.setSelected(tool.damageOnCrafting);
 
 		blocksAffected.setListElements(tool.blocksAffected);
@@ -406,6 +413,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
 		tool.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
+		tool.immuneToFire = immuneToFire.isSelected();
 		tool.damageOnCrafting = damageOnCrafting.isSelected();
 
 		tool.texture = texture.getID();

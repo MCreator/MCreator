@@ -1,1 +1,1 @@
-If you want to use this biome in custom dimensions only, disable this option.
+Si vous souhaitez utiliser ce biome uniquement dans des dimensions personnalisées, désactivez cette option.

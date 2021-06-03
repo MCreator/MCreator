@@ -1,1 +1,1 @@
-When this conditional procedure is true, the entity will spawn particles based on the settings.
+Quand cette procédure conditionnelle est vraie, l'entité fera apparaitre des particules basées sur les paramètres.

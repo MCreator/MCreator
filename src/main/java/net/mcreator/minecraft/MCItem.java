@@ -18,17 +18,19 @@
 
 package net.mcreator.minecraft;
 
+import net.mcreator.element.types.Armor;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 public class MCItem extends DataListEntry {
 
@@ -76,18 +78,36 @@ public class MCItem extends DataListEntry {
 		try {
 			if (name.startsWith("CUSTOM:")) {
 				if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
-						name.replaceAll("CUSTOM:", "") + ".png").isFile())
+						name.replace("CUSTOM:", "") + ".png").isFile()) {
 					retval = new ImageIcon(
 							workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/" + name
-									.replaceAll("CUSTOM:", "") + ".png");
-				else if (name.endsWith(".helmet"))
-					retval = TiledImageCache.armorHelmet;
-				else if (name.endsWith(".body"))
-					retval = TiledImageCache.armorBody;
-				else if (name.endsWith(".legs"))
-					retval = TiledImageCache.armorLegs;
-				else if (name.endsWith(".boots"))
-					retval = TiledImageCache.armorBoots;
+									.replace("CUSTOM:", "") + ".png");
+				} else if (name.endsWith(".helmet")) {
+					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
+							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".helmet", ""))
+									.getGeneratableElement())).textureHelmet);
+				} else if (name.endsWith(".body")) {
+					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
+							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".body", ""))
+									.getGeneratableElement())).textureBody);
+				} else if (name.endsWith(".legs")) {
+					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
+							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".legs", ""))
+									.getGeneratableElement())).textureLeggings);
+				} else if (name.endsWith(".boots")) {
+					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
+							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".boots", ""))
+									.getGeneratableElement())).textureBoots);
+				} else if (name.endsWith(".bucket")) {
+					if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
+							name.replaceAll("CUSTOM:", "").replaceAll(".bucket", "") + ".png").isFile()) {
+						retval = MinecraftImageGenerator.generateFluidBucketIcon(new ImageIcon(
+								workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
+										+ name.replaceAll("CUSTOM:", "").replaceAll(".bucket", "") + ".png"));
+					} else {
+						retval = TiledImageCache.bucket;
+					}
+				}
 			} else if (name.startsWith("TAG:")) {
 				return TAG_ICON;
 			} else {
@@ -124,7 +144,7 @@ public class MCItem extends DataListEntry {
 
 	public static final class Tag extends MCItem {
 
-		public Tag(@NotNull Workspace workspace, String name) {
+		public Tag(@Nonnull Workspace workspace, String name) {
 			super("TAG:" + name);
 			setType("tag");
 			icon = MCItem.getBlockIconBasedOnName(workspace, "TAG:" + name);

@@ -1,8 +1,8 @@
 (new Object(){
-public boolean getValue(BlockPos pos, String tag) {
+public boolean getValue(IWorld world, BlockPos pos, String tag) {
 		TileEntity tileEntity=world.getTileEntity(pos);
 		if(tileEntity!=null)
 			return tileEntity.getTileData().getBoolean(tag);
 		return false;
 	}
-}.getValue(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), ${input$tagName}))
+}.getValue(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), ${input$tagName}))

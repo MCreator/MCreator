@@ -1,1 +1,1 @@
-An average number of particles to spawn on spawn iteration.
+Un nombre moyen de particules à faire apparaitre lors de l'itération des apparitions.

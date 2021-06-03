@@ -23,6 +23,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
+import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageTransformUtil;
@@ -172,6 +173,13 @@ public class MinecraftImageGenerator {
 		return bi;
 	}
 
+	public static ImageIcon generateFluidBucketIcon(ImageIcon fluid) {
+		ImageIcon bucket = TiledImageCache.bucket;
+		BufferedImage bucketMask = ImageUtils.toBufferedImage(TiledImageCache.bucketMask.getImage());
+		BufferedImage fluidOverlay = ImageUtils.toBufferedImage(fluid.getImage());
+		return ImageUtils.drawOver(bucket, new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
+	}
+
 	public static class Preview {
 
 		public static Image generateArmorPreviewFrame1() {
@@ -216,12 +224,47 @@ public class MinecraftImageGenerator {
 			graphics2D.drawLine(27, oSlotOffsetY, 27, 9 + oSlotOffsetY);
 
 			//elements
-			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
 							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, input.getUnmappedValue()).getImage())),
-					1, 1 + slotOffsetY, 8, 8, null);
-			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils
+					8), 1, 1 + slotOffsetY, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
 							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, result.getUnmappedValue()).getImage())),
-					19, 1 + oSlotOffsetY, 8, 8, null);
+					8), 19, 1 + oSlotOffsetY, null);
+		}
+
+		private static void drawThreeSlotRecipe(Graphics2D graphics2D, Workspace workspace, MItemBlock input0,
+				MItemBlock input1, MItemBlock result) {
+			int slotOffsetY = 9;
+			int oSlotOffsetY = 9;
+
+			//box 1
+			graphics2D.drawLine(1, slotOffsetY - 9, 8, slotOffsetY - 9);
+			graphics2D.drawLine(1, 9 + slotOffsetY - 9, 8, 9 + slotOffsetY - 9);
+			graphics2D.drawLine(0, slotOffsetY - 9, 0, 9 + slotOffsetY - 9);
+			graphics2D.drawLine(9, slotOffsetY - 9, 9, 9 + slotOffsetY - 9);
+
+			//box 2
+			graphics2D.drawLine(1, slotOffsetY + 9, 8, slotOffsetY + 9);
+			graphics2D.drawLine(1, 9 + slotOffsetY + 9, 8, 9 + slotOffsetY + 9);
+			graphics2D.drawLine(0, slotOffsetY + 9, 0, 9 + slotOffsetY + 9);
+			graphics2D.drawLine(9, slotOffsetY + 9, 9, 9 + slotOffsetY + 9);
+
+			//box 3
+			graphics2D.drawLine(19, oSlotOffsetY, 26, oSlotOffsetY);
+			graphics2D.drawLine(19, 9 + oSlotOffsetY, 26, 9 + oSlotOffsetY);
+			graphics2D.drawLine(18, oSlotOffsetY, 18, 9 + oSlotOffsetY);
+			graphics2D.drawLine(27, oSlotOffsetY, 27, 9 + oSlotOffsetY);
+
+			//elements
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
+							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, input0.getUnmappedValue()).getImage())),
+					8), 1, 1 + slotOffsetY - 9, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
+							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, input1.getUnmappedValue()).getImage())),
+					8), 1, 1 + slotOffsetY + 9, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
+							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, result.getUnmappedValue()).getImage())),
+					8), 19, 1 + oSlotOffsetY, null);
 		}
 
 		/**
@@ -251,9 +294,9 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates smithing recipe images.</p>
 		 *
-		 * @param input  Input of the recipe.
+		 * @param input    Input of the recipe.
 		 * @param addition Addition of the recipe
-		 * @param result Result of the recipe.
+		 * @param result   Result of the recipe.
 		 * @return Returns the generated image.
 		 */
 		public static BufferedImage generateSmithingPreviewPicture(Workspace workspace, MItemBlock input,
@@ -274,6 +317,37 @@ public class MinecraftImageGenerator {
 
 			graphics2D.drawLine(13, 11, 13, 16);
 			graphics2D.drawLine(14, 11, 14, 16);
+			graphics2D.dispose();
+
+			return icon;
+		}
+
+		/**
+		 * <p>This method generates brewing recipe images.</p>
+		 *
+		 * @param input      Input of the recipe.
+		 * @param ingredient Ingredient of the recipe
+		 * @param result     Result of the recipe.
+		 * @return Returns the generated image.
+		 */
+		public static BufferedImage generateBrewingPreviewPicture(Workspace workspace, MItemBlock input,
+				MItemBlock ingredient, MItemBlock result) {
+			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2D = icon.createGraphics();
+			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			graphics2D.setColor(new Color(190, 190, 190, 65));
+
+			drawThreeSlotRecipe(graphics2D, workspace, ingredient, input, result);
+
+			//arrow
+			graphics2D.drawLine(10, 13, 16, 13);
+			graphics2D.drawLine(10, 14, 16, 14);
+
+			graphics2D.drawLine(14, 11, 14, 12);
+			graphics2D.drawLine(15, 12, 15, 12);
+
+			graphics2D.drawLine(14, 15, 14, 16);
+			graphics2D.drawLine(15, 15, 15, 15);
 			graphics2D.dispose();
 
 			return icon;
@@ -376,7 +450,14 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates recipe images.</p>
 		 *
-		 * @param recipe <p>The recipe field is an ArrayList of Images. If containing 1 element, it generates furnace recipe picture. If it contains 9 elements it creates a crafting recipe and are inserted as shown in the table:</p> <table summary="Recipe slot IDs"><tr><td>0</td><td>1</td><td>2</td></tr><tr><td>3</td><td>4</td><td>5</td></tr><tr><td>6</td><td>7</td><td>8</td></tr></table> <p>Null elements are ignored/not drawn.</p>
+		 * @param recipe <p>The recipe field is an ArrayList of Images.
+		 *               If containing 1 element, it generates furnace recipe picture.
+		 *               If it contains 9 elements it creates a crafting recipe and are inserted as shown in the table:</p>
+		 *               <table>
+		 *               	 <caption>Recipe slot IDs</caption>
+		 *                   <tr><td>0</td><td>1</td><td>2</td></tr><tr><td>3</td><td>4</td><td>5</td></tr><tr><td>6</td><td>7</td><td>8</td></tr>
+		 *               </table>
+		 *               <p>Null elements are ignored/not drawn.</p>
 		 * @param result Result of a recipe is only drawn on furnace recipes.
 		 * @return Returns generated image.
 		 */
@@ -413,9 +494,9 @@ public class MinecraftImageGenerator {
 				for (int i = 0; i < 9; i++)
 					if (recipe[i] != null) {
 						int x = (i % 3) * 9 + 1, y = (i / 3) * 9 + 1;
-						graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
-								MCItem.getBlockIconBasedOnName(workspace, recipe[i].getUnmappedValue()).getImage())), x,
-								y, 8, 8, null);
+						graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+								MCItem.getBlockIconBasedOnName(workspace, recipe[i].getUnmappedValue()).getImage())),
+								8), x, y, null);
 					}
 			}
 
@@ -438,9 +519,9 @@ public class MinecraftImageGenerator {
 
 			graphics2D.fillRect(0, 8, 28, 12);
 
-			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
-					MCItem.getBlockIconBasedOnName(workspace, achievementIcon.getUnmappedValue()).getImage())), 2, 10,
-					8, 8, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+					MCItem.getBlockIconBasedOnName(workspace, achievementIcon.getUnmappedValue()).getImage())), 8), 2,
+					10, null);
 
 			graphics2D.setFont(new Font(null, Font.PLAIN, 9));
 
@@ -611,9 +692,9 @@ public class MinecraftImageGenerator {
 			graphics2D.drawLine(16, 12 + zamik, 16, 11 + zamik);
 			graphics2D.drawLine(17, 10 + zamik, 17, 10 + zamik);
 
-			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, fuel.getUnmappedValue()).getImage())), 9,
-					15, 10, 10, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
+							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, fuel.getUnmappedValue()).getImage())),
+					10), 9, 15, null);
 
 			graphics2D.dispose();
 			return icon;
@@ -632,28 +713,42 @@ public class MinecraftImageGenerator {
 			try {
 				switch (armorPieces.size()) {
 				case 1:
-					graphics2D.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 0, 0, 28, 28, null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 28), 0, 0,
+							null);
 					break;
 				case 2:
-					graphics2D.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 0, 7, 14, 14, null);
-					graphics2D
-							.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 14, 7, 14, 14, null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 14), 0, 7,
+							null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 14), 14, 7,
+							null);
 					break;
 				case 3:
-					graphics2D.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 7, 0, 14, 14, null);
-					graphics2D
-							.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 0, 14, 14, 14, null);
-					graphics2D
-							.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(2))), 14, 14, 14, 14, null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 14), 7, 0,
+							null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 14), 0, 14,
+							null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(2))), 14), 14, 14,
+							null);
 					break;
 				case 4:
-					graphics2D.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 0, 0, 14, 14, null);
-					graphics2D
-							.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 14, 0, 14, 14, null);
-					graphics2D
-							.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(2))), 0, 14, 14, 14, null);
-					graphics2D
-							.drawImage(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(3))), 14, 14, 14, 14, null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 14), 0, 0,
+							null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 14), 14, 0,
+							null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(2))), 14), 0, 14,
+							null);
+					graphics2D.drawImage(
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(3))), 14), 14, 14,
+							null);
 					break;
 				}
 			} catch (IOException e) {
@@ -689,6 +784,211 @@ public class MinecraftImageGenerator {
 			g2d.drawImage(ImageTransformUtil
 							.computeImage(ImageUtils.darken(ImageUtils.resizeAndCrop(front, 32)), t3f4r1, f3r2, r3, t4r4), null,
 					null);
+			g2d.dispose();
+			return out;
+		}
+
+		/**
+		 * <p>This method generates the block icon for slabs.</p>
+		 *
+		 * @param top  <p>Top side texture</p>
+		 * @param side <p>Side texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static Image generateSlabIcon(Image top, Image side) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+
+			Point2D t1 = new Point2D.Double(16, 8), t2 = new Point2D.Double(2, 16), t3 = new Point2D.Double(16,
+					24), t4 = new Point2D.Double(30, 16), f1 = new Point2D.Double(2, 7.6), f2 = new Point2D.Double(2,
+					24.5), f3r2 = new Point2D.Double(16, 31), f4r1 = new Point2D.Double(16,
+					14.6), r3 = new Point2D.Double(30, 24.5), r4 = new Point2D.Double(30, 7.6);
+
+			g2d.drawImage(ImageTransformUtil
+					.computeImage(ImageUtils.brighten(ImageUtils.resizeAndCrop(top, 32)), t4, t1, t2, t3), null, null);
+			g2d.drawImage(ImageTransformUtil
+					.computeImage(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 0, 0, 32, 16), f1, f2, f3r2,
+							f4r1), null, null);
+			g2d.drawImage(ImageTransformUtil.computeImage(
+					ImageUtils.darken(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 0, 0, 32, 16)), f4r1,
+					f3r2, r3, r4), null, null);
+			g2d.dispose();
+			return out;
+		}
+
+		/**
+		 * <p>This method generates the block icon for trapdoors.</p>
+		 *
+		 * @param texture <p>Block texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static Image generateTrapdoorIcon(Image texture) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+
+			Point2D t1 = new Point2D.Double(16, 13), t2 = new Point2D.Double(2, 21), t3 = new Point2D.Double(16,
+					28), t4 = new Point2D.Double(30, 21), f1 = new Point2D.Double(2, 20.6), f2 = new Point2D.Double(2,
+					37), f3r2 = new Point2D.Double(16, 44), f4r1 = new Point2D.Double(16, 28), r3 = new Point2D.Double(
+					30, 37), r4 = new Point2D.Double(30, 20.6);
+
+			g2d.drawImage(ImageTransformUtil
+							.computeImage(ImageUtils.brighten(ImageUtils.resizeAndCrop(texture, 32)), t1, t4, t3, t2), null,
+					null);
+			g2d.drawImage(ImageTransformUtil
+					.computeImage(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(texture, 32), 0, 6, 32, 26), f1, f2,
+							f3r2, f4r1), null, null);
+			g2d.drawImage(ImageTransformUtil.computeImage(
+					ImageUtils.darken(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(texture, 32), 0, 6, 32, 26)), f4r1,
+					f3r2, r3, r4), null, null);
+			g2d.dispose();
+			return out;
+		}
+
+		/**
+		 * <p>This method generates the block icon for stairs.</p>
+		 *
+		 * @param top  <p>Top side texture</p>
+		 * @param side <p>Side texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static Image generateStairsIcon(Image top, Image side) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+
+			Point2D t1 = new Point2D.Double(15.5, 0.2), f2 = new Point2D.Double(2, 24.5), r3 = new Point2D.Double(29.5,
+					24), t2f1 = new Point2D.Double(1.5, 7.6), t4r4 = new Point2D.Double(29.9,
+					7.5), f3r2 = new Point2D.Double(15.5, 31), t3f4r1 = new Point2D.Double(15.5, 14.7);
+
+			// Top face of lower step
+			g2d.drawImage(ImageTransformUtil.computeImage(
+					ImageUtils.brighten(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(top, 32), 16, 0, 16, 32)),
+					new Point2D.Double(t3f4r1.getX(), t3f4r1.getY() + 8),
+					new Point2D.Double(t4r4.getX(), t4r4.getY() + 8), new Point2D.Double(t1.getX(), t1.getY() + 8),
+					new Point2D.Double(t2f1.getX(), t2f1.getY() + 8)), null, null);
+			// Top face of upper step
+			g2d.drawImage(ImageTransformUtil.computeImage(
+					ImageUtils.brighten(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(top, 32), 0, 0, 16, 32)), t3f4r1,
+					t4r4, t1, t2f1), null, null);
+			// Left side
+			g2d.drawImage(ImageTransformUtil
+					.computeImage(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 16, 0, 16, 16), t2f1, f2,
+							f3r2, t3f4r1), null, null);
+			// Front face of upper step
+			g2d.drawImage(ImageTransformUtil.computeImage(
+					ImageUtils.darken(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 0, 16, 32, 16)),
+					new Point2D.Double(t3f4r1.getX() - 7.5, t3f4r1.getY() - 3),
+					new Point2D.Double(f3r2.getX() - 7.5, f3r2.getY() - 3),
+					new Point2D.Double(r3.getX() - 7.5, r3.getY() - 3),
+					new Point2D.Double(t4r4.getX() - 7.5, t4r4.getY() - 3)), null, null);
+			// Front face of lower step
+			g2d.drawImage(ImageTransformUtil.computeImage(
+					ImageUtils.darken(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 0, 0, 32, 16)), t3f4r1,
+					f3r2, r3, t4r4), null, null);
+			g2d.dispose();
+			return out;
+		}
+
+		/**
+		 * <p>This method generates the block icon for walls.</p>
+		 *
+		 * @param texture <p>Block texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static Image generateWallIcon(Image texture) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			g2d.scale(0.88, 1);
+
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 4, 13, 6, 0, 0, 5), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 8, 16, 8, 4, 0, 4), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 4, 13, 6, 12, 0, 5), null, null);
+			g2d.dispose();
+			return out;
+		}
+
+		/**
+		 * <p>This method generates the block icon for fences.</p>
+		 *
+		 * @param texture <p>Block texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static Image generateFenceIcon(Image texture) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+
+			g2d.scale(0.88, 1);
+
+			// Bars (back)
+			g2d.translate(2, -1);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 2, 2, 0, 5, 7), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 2, 2, 0, 13, 7), null, null);
+			g2d.translate(-2, 1);
+			// Left post
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 4, 16, 4, 0, 0, 6), null, null);
+			// Bars (middle)
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 8, 2, 2, 4, 5, 7), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 8, 2, 2, 4, 13, 7), null, null);
+			// Right post
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 4, 16, 4, 12, 0, 6), null, null);
+			// Bars (front)
+			g2d.translate(-2, 1);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 2, 2, 14, 5, 7), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 2, 2, 14, 13, 7), null, null);
+
+			g2d.dispose();
+			return out;
+		}
+
+		/**
+		 * <p>This method generates the block icon for fence gates.</p>
+		 *
+		 * @param texture <p>Block texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static Image generateFenceGateIcon(Image texture) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+
+			g2d.translate(0, 1);
+			g2d.scale(1, 1.1547);
+
+			// Left post
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 11, 2, 0, 5, 7), null, null);
+			// Middle
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 12, 3, 2, 2, 6, 7), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 4, 4, 2, 6, 8, 7), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 12, 3, 2, 2, 12, 7), null, null);
+			// Right post
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 11, 2, 14, 5, 7), null, null);
+
+			g2d.dispose();
+			return out;
+		}
+
+		/**
+		 * <p>This method generates the block icon for end rods.</p>
+		 *
+		 * @param texture <p>Block texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static Image generateEndRodIcon(Image texture) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+
+			g2d.scale(1, 1.15);
+
+			// base
+			g2d.translate(8, 6);
+			g2d.drawImage(
+					ImageUtils.generateCuboidImage(ImageUtils.rotate(texture, 90), texture, texture, 4, 1, 4, 10, 9, 2),
+					null, null);
+			// rod
+			g2d.translate(4, -9);
+			g2d.drawImage(ImageUtils
+					.generateCuboidImage(ImageUtils.rotate(texture, 90), texture, ImageUtils.translate(texture, 2, 0),
+							2, 15, 2, 12, 0, 0), null, null);
+
+			g2d.dispose();
 			return out;
 		}
 
@@ -990,6 +1290,66 @@ public class MinecraftImageGenerator {
 					tex3 = ImageUtils.resizeAA(rantex.get(2), drawWidth3, drawHeight3);
 				graphics2D.drawImage(tex3, 9 - drawWidth3 / 2, 20 - drawHeight3 / 2, null);
 			}
+
+			graphics2D.dispose();
+			return icon;
+		}
+
+		/**
+		 * This method generates tag images.
+		 *
+		 * @param type Tag type string.
+		 * @return Returns generated image of the appropriate colour.
+		 */
+		public static BufferedImage generateTagPreviewPicture(String type) {
+			switch (type) {
+			case "Items":
+				return ImageUtils.toBufferedImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("itemstack"), false)
+								.getImage());
+			case "Blocks":
+				return ImageUtils.toBufferedImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), new Color(0x999960), false).getImage());
+			case "Entities":
+				return ImageUtils.toBufferedImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("entity"), false)
+								.getImage());
+			case "Functions":
+				return ImageUtils.toBufferedImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("string"), false)
+								.getImage());
+			default:
+				return null;
+			}
+		}
+
+		/**
+		 * This method generates game rule images.
+		 *
+		 * @param type Game rule type string.
+		 * @return Returns generated image.
+		 */
+		public static BufferedImage generateGameRulePreviewPicture(String type) {
+			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2D = icon.createGraphics();
+
+			Color textureColor;
+
+			switch (type) {
+			case "Number":
+				textureColor = new Color(0x606999);
+				break;
+			case "Logic":
+				textureColor = new Color(0x607c99);
+				break;
+			default:
+				textureColor = Color.WHITE;
+				break;
+			}
+
+			graphics2D.drawImage(
+					ImageUtils.colorize(UIRES.get("mod_preview_bases.gamerule_base"), textureColor, false).getImage(),
+					0, 0, null);
 
 			graphics2D.dispose();
 			return icon;

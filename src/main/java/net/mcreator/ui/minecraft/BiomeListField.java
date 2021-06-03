@@ -24,6 +24,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import java.util.Collections;
@@ -43,9 +44,9 @@ public class BiomeListField extends JItemListField<BiomeEntry> {
 				ElementUtil.loadAllBiomes(frame.getWorkspace()).stream().map(DataListEntry::getName)
 						.toArray(String[]::new));
 		int option = JOptionPane.showOptionDialog(frame, PanelUtils
-						.northAndCenterElement(new JLabel("Select biomes you would like to add to the list:"),
-								new JScrollPane(vlist)), "Select biomes", JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, null, null);
+						.northAndCenterElement(L10N.label("dialog.list_field.biome_list_message"), new JScrollPane(vlist)),
+				L10N.t("dialog.list_field.biome_list_title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+				null, null, null);
 
 		if (option == JOptionPane.OK_OPTION && vlist.getSelectedValue() != null) {
 			return vlist.getSelectedValuesList().stream().map(e -> new BiomeEntry(frame.getWorkspace(), e))

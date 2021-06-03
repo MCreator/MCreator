@@ -38,37 +38,34 @@ import net.minecraft.block.material.Material;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Entity extends ${JavaModName}Elements.ModElement {
 
-	public static EntityType entity = null;
+	public static EntityType entity = (EntityType.Builder.<CustomEntity>create(CustomEntity::new, ${generator.map(data.mobSpawningType, "mobspawntypes")})
+			.setShouldReceiveVelocityUpdates(true).setTrackingRange(${data.trackingRange}).setUpdateInterval(3).setCustomClientFactory(CustomEntity::new)
+					<#if data.immuneToFire>.immuneToFire()</#if>.size(${data.modelWidth}f, ${data.modelHeight}f))
+			.build("${registryname}").setRegistryName("${registryname}");
 
 	<#if data.ranged && data.rangedItemType == "Default item">
-	@ObjectHolder("${modid}:entitybullet${registryname}")
-	public static final EntityType arrow = null;
+	public static final EntityType arrow = (EntityType.Builder.<ArrowCustomEntity>create(ArrowCustomEntity::new, EntityClassification.MISC)
+			.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1)
+			.setCustomClientFactory(ArrowCustomEntity::new).size(0.5f, 0.5f)).build("entitybullet${registryname}").setRegistryName("entitybullet${registryname}");
 	</#if>
 
-	public ${name}Entity (${JavaModName}Elements instance) {
+	public ${name}Entity(${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 	}
 
 	@Override public void initElements() {
-		entity = (EntityType.Builder.<CustomEntity>create(CustomEntity::new, ${generator.map(data.mobSpawningType, "mobspawntypes")})
-					.setShouldReceiveVelocityUpdates(true).setTrackingRange(${data.trackingRange}).setUpdateInterval(3).setCustomClientFactory(CustomEntity::new)
-					<#if data.immuneToFire>.immuneToFire()</#if>.size(${data.modelWidth}f, ${data.modelHeight}f))
-					.build("${registryname}").setRegistryName("${registryname}");
-
 		elements.entities.add(() -> entity);
+
+		<#if data.ranged && data.rangedItemType == "Default item">
+		elements.entities.add(() -> arrow);
+		</#if>
 
 		<#if data.hasSpawnEgg>
 		elements.items.add(() -> new SpawnEggItem(entity, ${data.spawnEggBaseColor.getRGB()}, ${data.spawnEggDotColor.getRGB()},
 				new Item.Properties()<#if data.creativeTab??>.group(${data.creativeTab})<#else>.group(ItemGroup.MISC)</#if>)
 				.setRegistryName("${registryname}_spawn_egg"));
-		</#if>
-
-		<#if data.ranged && data.rangedItemType == "Default item">
-		elements.entities.add(() -> (EntityType.Builder.<ArrowCustomEntity>create(ArrowCustomEntity::new, EntityClassification.MISC)
-					.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1)
-					.setCustomClientFactory(ArrowCustomEntity::new).size(0.5f, 0.5f)).build("entitybullet${registryname}").setRegistryName("entitybullet${registryname}"));
 		</#if>
 	}
 
@@ -400,7 +397,9 @@ import net.minecraft.block.material.Material;
         </#if>
 
 		<#if hasProcedure(data.whenMobIsHurt) || data.immuneToArrows || data.immuneToFallDamage
-			|| data.immuneToCactus || data.immuneToDrowning || data.immuneToLightning || data.immuneToPotions || data.immuneToPlayer>
+			|| data.immuneToCactus || data.immuneToDrowning || data.immuneToLightning || data.immuneToPotions
+			|| data.immuneToPlayer || data.immuneToExplosion || data.immuneToTrident || data.immuneToAnvil
+			|| data.immuneToDragonBreath || data.immuneToWither>
 		@Override public boolean attackEntityFrom(DamageSource source, float amount) {
 			<#if hasProcedure(data.whenMobIsHurt)>
 				double x = this.getPosX();
@@ -436,6 +435,28 @@ import net.minecraft.block.material.Material;
 			</#if>
 			<#if data.immuneToLightning>
 				if (source == DamageSource.LIGHTNING_BOLT)
+					return false;
+			</#if>
+			<#if data.immuneToExplosion>
+				if (source.isExplosion())
+					return false;
+			</#if>
+			<#if data.immuneToTrident>
+				if (source.getDamageType().equals("trident"))
+					return false;
+			</#if>
+			<#if data.immuneToAnvil>
+				if (source == DamageSource.ANVIL)
+					return false;
+			</#if>
+			<#if data.immuneToDragonBreath>
+				if (source == DamageSource.DRAGON_BREATH)
+					return false;
+			</#if>
+			<#if data.immuneToWither>
+				if (source == DamageSource.WITHER)
+					return false;
+				if (source.getDamageType().equals("witherSkull"))
 					return false;
 			</#if>
 			return super.attackEntityFrom(source, amount);
@@ -714,8 +735,14 @@ import net.minecraft.block.material.Material;
 		</#if>
 
 		<#if data.disableCollisions>
-		@Override public boolean canBeCollidedWith() {
-        	return false;
+		@Override public boolean canBePushed() {
+			return false;
+		}
+
+   		@Override protected void collideWithEntity(Entity entityIn) {
+		}
+
+   		@Override protected void collideWithNearbyEntities() {
 		}
 		</#if>
 
@@ -860,6 +887,11 @@ import net.minecraft.block.material.Material;
 		@Override public IPacket<?> createSpawnPacket() {
         	return NetworkHooks.getEntitySpawningPacket(this);
     	}
+
+		@Override protected void arrowHit(LivingEntity livingEntity) {
+			super.arrowHit(livingEntity);
+			livingEntity.setArrowCountInEntity(livingEntity.getArrowCountInEntity() - 1);
+		}
 
 		@Override @OnlyIn(Dist.CLIENT) public ItemStack getItem() {
 			return ${mappedMCItemToItemStackCode(data.rangedAttackItem, 1)};

@@ -1,3 +1,3 @@
-The minimum and maximum set here set the size of groups that the mob will spawn in. 
+Le minimum et le maximum fixés ici déterminent la taille des groupes dans lesquels l'entité apparaitra.
 
-Be warned that mobs that try to spawn in groups of over 20 will struggle to do so (mobs will rarely spawn).
+Soyez avertis que les entités qui tentent d'apparaitre en groupes de plus de 20 auront du mal à le faire (les entités apparaitront très rarement).

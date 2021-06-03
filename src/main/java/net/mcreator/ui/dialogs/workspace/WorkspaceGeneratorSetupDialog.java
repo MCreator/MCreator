@@ -56,7 +56,7 @@ public class WorkspaceGeneratorSetupDialog {
 			p1.ok();
 			dial.refreshDisplay();
 
-			if (m.getWorkspace().getGenerator().getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
+			if (m.getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
 				m.getGradleConsole().setGradleSetupTaskRunningFlag(true);
 
 				ProgressDialog.ProgressUnit p20 = new ProgressDialog.ProgressUnit(
@@ -78,8 +78,7 @@ public class WorkspaceGeneratorSetupDialog {
 
 				m.mcreatorTabs.showTab(m.consoleTab);
 
-				m.getGradleConsole().exec(m.getWorkspace().getGenerator().getGeneratorConfiguration()
-						.getGradleTaskFor("setup_task"), taskResult -> {
+				m.getGradleConsole().exec(m.getGeneratorConfiguration().getGradleTaskFor("setup_task"), taskResult -> {
 					m.getGradleConsole().setGradleSetupTaskRunningFlag(false);
 					if (taskResult.getStatusByMCreator() == GradleErrorCodes.STATUS_OK) {
 						p2.ok();
@@ -111,16 +110,16 @@ public class WorkspaceGeneratorSetupDialog {
 		dial.addProgress(p3);
 		new Thread(() -> {
 			try {
-				m.getWorkspace().getGenerator().reloadGradleCaches();
+				m.getGenerator().reloadGradleCaches();
 				p3.ok();
 
 				ProgressDialog.ProgressUnit p4 = new ProgressDialog.ProgressUnit(
 						L10N.t("dialog.setup_workspace.step.generating_base"));
 				dial.addProgress(p4);
-				m.getWorkspace().getGenerator().generateBase();
+				m.getGenerator().generateBase();
 				p4.ok();
 
-				WorkspaceGeneratorSetup.completeSetup(m.getWorkspace().getGenerator());
+				WorkspaceGeneratorSetup.completeSetup(m.getGenerator());
 
 				dial.hideAll();
 			} catch (Exception e) {
@@ -140,11 +139,12 @@ public class WorkspaceGeneratorSetupDialog {
 		int action = JOptionPane.showOptionDialog(m, "<html><big>Workspace setup failed</big><br>"
 						+ "<br>The setup of MCreator failed. Based on the suggestions you got, try to fix any errors you have and run it again. "
 						+ "<br><br><b>Check https://mcreator.net/support/knowledgebase for tips on fixing the setup errors.</b>"
+						+ "<br><br>If this is the first time you are seeing this message, try re-running the setup first."
 						+ "<br><br>If the error is fixable by you (internet connection problems, ...), you can fix the problem and click the first button"
 						+ "<br><b>after</b> you fix the problem. MCreator will run the setup again automatically. You choose to copy the error log to"
 						+ "<br>the clipboard for further investigation. You can close the MCreator and run it again when you think you fixed the problem."
 						+ (s != null ? "<br><br>Additional info: " + s : "") + "<br><br>", "MCreator setup failed!",
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[2]);
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 		if (action == 0) {
 			runSetup(m, false);
 		} else if (action == 1) {

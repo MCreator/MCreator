@@ -1,3 +1,3 @@
-This list degfines what blocks the tool can be used on. 
+Cette liste défini sur quels blocs l'outil peut intérragir.
 
-This parameter is only used by the special tool type.
+Ce paramètre est utilisé seulement pour le type d'outil spécial.

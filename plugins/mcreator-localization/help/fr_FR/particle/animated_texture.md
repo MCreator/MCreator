@@ -1,0 +1,1 @@
+Cochez cette case si la texture de votre particule doit être animée.

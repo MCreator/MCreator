@@ -37,7 +37,7 @@ public class JSpawnEntriesList extends JPanel {
 
 	private final MCreator mcreator;
 
-	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
+	private final JPanel entries = new JPanel();
 
 	private final JButton add = new JButton(UIRES.get("16px.add.gif"));
 
@@ -55,16 +55,18 @@ public class JSpawnEntriesList extends JPanel {
 
 		add("North", topbar);
 
+		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
 		entries.setOpaque(false);
 
 		add.addActionListener(e -> new JSpawnListEntry(mcreator, entries, entryList));
 
-		add("Center", PanelUtils.pullElementUp(entries));
+		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
 				L10N.t("elementgui.spawnlist.spawn_entries"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
 	}
 
 	@Override public void setEnabled(boolean enabled) {

@@ -1,6 +1,6 @@
-Destroy speed parameter controls how fast this item destroys the blocks.
+Le paramètre de vitesse de destruction contrôle la vitesse à laquelle cet item détruit les blocs.
 
-Typical values:
-* **1** - normal item
-* **1.5** sword
-* **2>** harvesting tool
+Valeurs typiques :
+* **1** - élément normal
+* **1.5** épée
+* **2>** outil de récolte

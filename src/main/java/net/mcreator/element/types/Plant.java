@@ -19,22 +19,25 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.IItemWithModel;
-import net.mcreator.element.ITabContainedElement;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
+import net.mcreator.element.types.interfaces.IItemWithModel;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
+import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Plant extends GeneratableElement
-		implements IItemWithModel, ITabContainedElement {
+		implements IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	public int renderType;
 	public String texture;
@@ -43,6 +46,9 @@ import java.util.Map;
 
 	public String itemTexture;
 	public String particleTexture;
+
+	public String tintType;
+	public boolean isItemTinted;
 
 	public String plantType;
 
@@ -53,12 +59,16 @@ import java.util.Map;
 
 	public String doublePlantGenerationType;
 
+	public boolean customBoundingBox;
+	public boolean disableOffset;
+	public List<BoxEntry> boundingBoxes;
+
 	public String name;
 	public List<String> specialInfo;
 	public TabEntry creativeTab;
 	public double hardness;
 	public double resistance;
-	public double luminance;
+	public int luminance;
 	public boolean unbreakable;
 	public StepSound soundOnStep;
 	public boolean useLootTableForDrops;
@@ -77,6 +87,11 @@ import java.util.Map;
 
 	public int flammability;
 	public int fireSpreadSpeed;
+	public double jumpFactor;
+	public double speedFactor;
+
+	public List<MItemBlock> canBePlacedOn;
+	public Procedure placingCondition;
 
 	public int frequencyOnChunks;
 	public List<String> spawnWorldTypes;
@@ -101,6 +116,7 @@ import java.util.Map;
 	public Plant(ModElement element) {
 		super(element);
 
+		this.canBePlacedOn = new ArrayList<>();
 		this.spawnWorldTypes = new ArrayList<>();
 		this.spawnWorldTypes.add("Surface");
 		this.restrictionBiomes = new ArrayList<>();
@@ -110,11 +126,16 @@ import java.util.Map;
 		this.colorOnMap = "DEFAULT";
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "XZ";
+		this.tintType = "No tint";
+
+		this.jumpFactor = 1.0;
+		this.speedFactor = 1.0;
 
 		this.staticPlantGenerationType = "Flower";
 		this.doublePlantGenerationType = "Flower";
 
 		this.specialInfo = new ArrayList<>();
+		this.boundingBoxes = new ArrayList<>();
 	}
 
 	@Override public Model getItemModel() {
@@ -134,12 +155,18 @@ import java.util.Map;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils
-				.resizeAndCrop(getModElement().getWorkspace().getFolderManager().getBlockImageIcon(texture).getImage(),
-						32);
+		return ImageUtils.resizeAndCrop(getModElement().getFolderManager().getBlockImageIcon(texture).getImage(), 32);
 	}
 
 	@Override public TabEntry getCreativeTab() {
 		return creativeTab;
+	}
+
+	public boolean isBlockTinted() {
+		return !"No tint".equals(tintType);
+	}
+
+	@Override public @Nonnull List<BoxEntry> getValidBoundingBoxes() {
+		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
 	}
 }

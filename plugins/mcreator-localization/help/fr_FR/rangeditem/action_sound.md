@@ -1,1 +1,1 @@
-This parameter controls the sound played when the ranged item is used.
+Ce paramètre contrôle le son joué lorsque l'arme à distance est utilisée.

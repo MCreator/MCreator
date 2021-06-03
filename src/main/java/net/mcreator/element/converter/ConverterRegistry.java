@@ -24,6 +24,17 @@ import net.mcreator.element.converter.fv11.GUICoordinateConverter;
 import net.mcreator.element.converter.fv11.OverlayCoordinateConverter;
 import net.mcreator.element.converter.fv12.BiomeDefaultFeaturesConverter;
 import net.mcreator.element.converter.fv13.ProcedureSpawnGemPickupDelayFixer;
+import net.mcreator.element.converter.fv14.BlockLuminanceFixer;
+import net.mcreator.element.converter.fv14.DimensionLuminanceFixer;
+import net.mcreator.element.converter.fv14.PlantLuminanceFixer;
+import net.mcreator.element.converter.fv15.DimensionPortalSelectedFixer;
+import net.mcreator.element.converter.fv16.BlockBoundingBoxFixer;
+import net.mcreator.element.converter.fv17.GameruleDisplayNameFixer;
+import net.mcreator.element.converter.fv18.BiomeFrozenTopLayerConverter;
+import net.mcreator.element.converter.fv19.FluidBucketSelectedFixer;
+import net.mcreator.element.converter.fv20.FluidNameFixer;
+import net.mcreator.element.converter.fv21.BooleanGameRulesConverter;
+import net.mcreator.element.converter.fv21.ProcedureVariablesConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -40,9 +51,16 @@ public class ConverterRegistry {
 		put(ModElementType.ACHIEVEMENT, Collections.singletonList(new AchievementFixer()));
 		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
 		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
-				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer()));
-		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter()));
+				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
+				new ProcedureVariablesConverter()));
+		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
+				new BiomeFrozenTopLayerConverter()));
 		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
+		put(ModElementType.BLOCK, Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer()));
+		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
+		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
+		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
+		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType modElementType) {

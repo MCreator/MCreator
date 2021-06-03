@@ -9,6 +9,7 @@ Vanilla values for the reference:
 * Stone: 131 uses.
 * Iron: 250 uses.
 * Diamond: 1561 uses.
+* Netherite: 2031 uses.
 * Fishing rod: 64 uses.
 * Flint and steel: 64 uses.
 * Carrot on a stick: 25 uses.

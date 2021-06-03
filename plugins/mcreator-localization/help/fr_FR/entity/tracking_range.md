@@ -1,1 +1,1 @@
-This parameter controls how many blocks far the entity can be seen.
+Ce paramètre contrôle de combien de blocs l'entité peut être vue.

@@ -1,4 +1,4 @@
-This trigger triggers the procedure when the entity is hurt.
+Déclenche la procédure quand l'entité est blessée.
 
-`sourceentity` dependency in this case is the entity causing the damage to this entity and can be null
-if the damage is caused by a non-entity source.
+La dépendance `sourceentité` est l'entité causant des dégâts à cette entité et peut être nulle si les dégâts sont
+causés par une source qui n'est pas une entité.

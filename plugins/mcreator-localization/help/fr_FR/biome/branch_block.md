@@ -1,1 +1,1 @@
-This parameter controls the block used for the leaves in case custom trees are selected
+Ce paramètre contrôle le bloc utilisé pour les feuilles au cas où des arbres personnalisés seraient sélectionnés

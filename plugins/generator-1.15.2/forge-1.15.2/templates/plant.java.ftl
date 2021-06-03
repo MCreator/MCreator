@@ -28,6 +28,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "boundingboxes.java.ftl">
 <#include "procedures.java.ftl">
 <#include "mcitems.ftl">
 
@@ -48,7 +49,7 @@ import net.minecraft.block.material.Material;
 	public ${name}Block(${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
-		<#if data.hasTileEntity>
+		<#if data.hasTileEntity || data.tintType != "No tint">
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 		</#if>
 	}
@@ -67,6 +68,43 @@ import net.minecraft.block.material.Material;
 	@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
 		RenderTypeLookup.setRenderLayer(block, RenderType.getCutout());
 	}
+
+	<#if data.tintType != "No tint">
+	@OnlyIn(Dist.CLIENT) @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
+		event.getBlockColors().register((bs, world, pos, index) -> {
+			return world != null && pos != null ?
+			<#if data.tintType == "Grass">
+				BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
+			<#elseif data.tintType == "Foliage">
+				BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
+			<#elseif data.tintType == "Water">
+				BiomeColors.getWaterColor(world, pos) : -1;
+			<#elseif data.tintType == "Sky">
+				Minecraft.getInstance().world.getBiome(pos).getSkyColor() : 8562943;
+			<#else>
+				Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
+			</#if>
+		}, block);
+	}
+
+		<#if data.isItemTinted>
+		@OnlyIn(Dist.CLIENT) @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
+			event.getItemColors().register((stack, index) -> {
+				<#if data.tintType == "Grass">
+					return GrassColors.get(0.5D, 1.0D);
+				<#elseif data.tintType == "Foliage">
+					return FoliageColors.getDefault();
+				<#elseif data.tintType == "Water">
+					return 3694022;
+				<#elseif data.tintType == "Sky">
+					return 8562943;
+				<#else>
+					return 329011;
+				</#if>
+			}, block);
+		}
+		</#if>
+	</#if>
 
 	<#if (data.spawnWorldTypes?size > 0)>
 	@Override public void init(FMLCommonSetupEvent event) {
@@ -249,14 +287,31 @@ import net.minecraft.block.material.Material;
 					<#else>
 					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
 					</#if>
-					.lightValue(${(data.luminance * 15)?round})
+					<#if data.speedFactor != 1.0>
+					.speedFactor(${data.speedFactor}f)
+					</#if>
+					<#if data.jumpFactor != 1.0>
+					.jumpFactor(${data.jumpFactor}f)
+					</#if>
+					.lightValue(${data.luminance})
 			);
 			setRegistryName("${registryname}");
 		}
 
+		<#if data.customBoundingBox && data.boundingBoxes??>
+		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+			<#if data.isBoundingBoxEmpty()>
+				return VoxelShapes.empty();
+			<#else>
+				<#if !data.disableOffset> Vec3d offset = state.getOffset(world, pos); </#if>
+				<@makeBoundingBox data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset "north"/>
+			</#if>
+		}
+		</#if>
+
         <#if data.isReplaceable>
         @Override public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
-			return true;
+			return useContext.getItem().getItem() != this.asItem();
 		}
         </#if>
 
@@ -345,8 +400,71 @@ import net.minecraft.block.material.Material;
             </#if>
         </#if>
 
+		<#if (data.canBePlacedOn?size > 0) || hasCondition(data.placingCondition)>
+			<#if data.plantType != "growapable">
+			@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+				<#if hasCondition(data.placingCondition)>
+				boolean additionalCondition = true;
+				if (worldIn instanceof IWorld) {
+					IWorld world = (IWorld) worldIn;
+					int x = pos.getX();
+					int y = pos.getY() + 1;
+					int z = pos.getZ();
+					additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+				}
+				</#if>
+
+				Block ground = state.getBlock();
+				return
+				<#if (data.canBePlacedOn?size > 0)>(
+					<#list data.canBePlacedOn as canBePlacedOn>
+						ground == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						<#if canBePlacedOn?has_next>||</#if>
+					</#list>)
+				</#if>
+				<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
+				<#if hasCondition(data.placingCondition)> additionalCondition </#if>;
+			}
+			</#if>
+
+			@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+				BlockPos blockpos = pos.down();
+				BlockState blockstate = worldIn.getBlockState(blockpos);
+				Block ground = blockstate.getBlock();
+
+				<#if data.plantType = "normal">
+					return this.isValidGround(blockstate, worldIn, blockpos)
+				<#elseif data.plantType == "growapable">
+					<#if hasCondition(data.placingCondition)>
+					boolean additionalCondition = true;
+					if (worldIn instanceof IWorld) {
+						IWorld world = (IWorld) worldIn;
+						int x = pos.getX();
+						int y = pos.getY();
+						int z = pos.getZ();
+						additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
+					}
+					</#if>
+
+					return ground == this ||
+					<#if (data.canBePlacedOn?size > 0)>(
+						<#list data.canBePlacedOn as canBePlacedOn>
+						ground == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						<#if canBePlacedOn?has_next>||</#if>
+					</#list>)</#if>
+					<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
+					<#if hasCondition(data.placingCondition)> additionalCondition </#if>
+				<#else>
+					if (state.get(HALF) == DoubleBlockHalf.UPPER)
+						return ground == this && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
+					else
+						return this.isValidGround(blockstate, worldIn, blockpos)
+				</#if>;
+			}
+		</#if>
+
 		@Override public PlantType getPlantType(IBlockReader world, BlockPos pos) {
-			return PlantType.${data.growapableSpawnType};
+			return PlantType.${generator.map(data.growapableSpawnType, "planttypes")};
 		}
 
         <#if hasProcedure(data.onBlockAdded)>

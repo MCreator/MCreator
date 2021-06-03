@@ -24,8 +24,8 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import org.apache.commons.io.FilenameUtils;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -88,7 +88,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		pane.setWheelScrollingEnabled(false);
 		pane.addMouseWheelListener(new MouseAdapter() {
-			public void mouseWheelMoved(MouseWheelEvent evt) {
+			@Override public void mouseWheelMoved(MouseWheelEvent evt) {
 				int amount = evt.getScrollAmount();
 				if (evt.getWheelRotation() == 1) {
 					int value = pane.getHorizontalScrollBar().getValue()
@@ -172,8 +172,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	}
 
 	@Override public Validator.ValidationResult getValidationStatus() {
-
-		Validator.ValidationResult validationResult = validator == null ? null : validator.validate();
+		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
 
 		this.currentValidationResult = validationResult;
 

@@ -1,3 +1,3 @@
-Triggers a procedure when the entity walks on the block. 
+Déclenche une procédure lorsque l'entité marche sur le bloc.
 
-It won't be called if the entity is sneaking.
+Il ne sera pas appelé si l'entité s'accroupi.

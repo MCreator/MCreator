@@ -1,2 +1,2 @@
-This parameter controls if the item stays in the crafting grid when crafted.
-This means the item will be part of the recipe, but not consumed by it.
+Ce paramètre contrôle si l'objet reste dans la grille d'artisanat lors de son utilisation pour une fabrication.
+Cela signifie que l'objet fera partie de la recette, mais ne sera pas consommé par celle-ci.

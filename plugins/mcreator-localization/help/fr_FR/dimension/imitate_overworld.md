@@ -1,2 +1,2 @@
-This parameter controls certain aspects of the dimension in relation to weather,
-compass function and creature spawning.
+Ce paramètre contrôle certains aspects de la dimension en relation avec la météo,
+la fonction de la boussole et l'apparition de créatures.

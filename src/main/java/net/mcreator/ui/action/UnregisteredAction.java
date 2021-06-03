@@ -20,8 +20,8 @@ package net.mcreator.ui.action;
 
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -87,7 +87,7 @@ public class UnregisteredAction extends AbstractAction implements Comparable {
 		this.actionPerformed(new ActionEvent(this, 0, (String) getValue(NAME)));
 	}
 
-	@Override public int compareTo(@NotNull Object o) {
+	@Override public int compareTo(@Nonnull Object o) {
 		if (o instanceof UnregisteredAction)
 			return this.name.compareTo(((UnregisteredAction) o).name);
 		return 0;

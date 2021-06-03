@@ -1,3 +1,3 @@
-When the bullet hits a block, it will execute the selected procedure.
+Lorsque la balle frappera un bloc, la procédure sélectionnée sera exécutée.
 
-Passed x, y, and z are the coordinates of the block hit.
+Les données x, y et z passées sont les coordonnées de la frappe de bloc.

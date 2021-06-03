@@ -28,8 +28,8 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import javax.swing.plaf.basic.BasicProgressBarUI;
@@ -139,6 +139,7 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "potions"), "potions", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "sounds"), "sounds", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "step_sounds"), "stepsounds", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "plant_types"), "planttypes", supportedElements, stats);
 
 			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
 				addStatsBar(L10N.t(covpfx + "biome_dictionary"), "biomedictionarytypes", supportedElements, stats);
@@ -219,11 +220,11 @@ public class GeneratorSelector {
 		}
 
 		bar.setUI(new BasicProgressBarUI() {
-			protected Color getSelectionBackground() {
+			@Override protected Color getSelectionBackground() {
 				return (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
 			}
 
-			protected Color getSelectionForeground() {
+			@Override protected Color getSelectionForeground() {
 				return (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT");
 			}
 		});

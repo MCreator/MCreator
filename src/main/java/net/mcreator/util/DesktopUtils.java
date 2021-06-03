@@ -19,8 +19,8 @@
 package net.mcreator.util;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +30,7 @@ import java.util.List;
 
 public class DesktopUtils {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DesktopUtils.class);
+	private static final Logger LOG = LogManager.getLogger(DesktopUtils.class);
 
 	public static void browseSafe(String uri) {
 		try {

@@ -1,1 +1,1 @@
-Check this parameter if you want the block to work with comparators.
+Cochez ce paramètre si vous souhaitez que le bloc fonctionne avec des comparateurs.

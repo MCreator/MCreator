@@ -46,10 +46,10 @@ public class MCreatorDialog extends JDialog {
 		super(w);
 		setModal(modal);
 		setTitle(title);
-		setIconImage(UIRES.get("icon").getImage());
+		setIconImage(UIRES.getBuiltIn("icon").getImage());
 
 		Action dispatchClosing = new AbstractAction() {
-			public void actionPerformed(ActionEvent event) {
+			@Override public void actionPerformed(ActionEvent event) {
 				if (closable) {
 					dispatchEvent(new WindowEvent(MCreatorDialog.this, WindowEvent.WINDOW_CLOSING));
 					setVisible(false);
@@ -65,7 +65,7 @@ public class MCreatorDialog extends JDialog {
 
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent we) {
+			@Override public void windowClosing(WindowEvent we) {
 				if (closable)
 					dispose();
 				else

@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.workspace;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TransparentToolBar;
@@ -35,6 +36,7 @@ import net.mcreator.util.DesktopUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -59,7 +61,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 						L10N.t("workspace.variables.variable_scope"), L10N.t("workspace.variables.initial_value") },
 				0) {
 			@Override public boolean isCellEditable(int row, int column) {
-				if (getValueAt(row, 1).toString().equals("ITEMSTACK"))
+				if (getValueAt(row, 1).toString().equals(VariableElementTypeLoader.BuiltInTypes.ITEMSTACK.getName()))
 					return column != 3;
 				return true;
 			}
@@ -70,7 +72,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					return;
 
 				if (column != 3) {
-					int n = JOptionPane.showConfirmDialog(workspacePanel.mcreator,
+					int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
 							"<html>Are you sure that you want to change this variable?"
 									+ "<br>If this variable is in use, this action might cause compilation errors."
 									+ "<br>If you just created it, it is perfectly fine to change it.", "Confirmation",
@@ -78,12 +80,13 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					if (n == JOptionPane.YES_OPTION) {
 						super.setValueAt(value, row, column);
 						if (column == 1) { // variable type has been changed
-							VariableElementType type = (VariableElementType) getValueAt(row, column);
-							if (type == VariableElementType.NUMBER) {
+							VariableElementType type = VariableElementTypeLoader.INSTANCE
+									.getVariableTypeFromString((String) getValueAt(row, column));
+							if (type == VariableElementTypeLoader.BuiltInTypes.NUMBER) {
 								elements.setValueAt("0", row, 3);
-							} else if (type == VariableElementType.LOGIC) {
+							} else if (type == VariableElementTypeLoader.BuiltInTypes.LOGIC) {
 								elements.setValueAt("false", row, 3);
-							} else if (type == VariableElementType.STRING) {
+							} else if (type == VariableElementTypeLoader.BuiltInTypes.STRING) {
 								elements.setValueAt("", row, 3);
 							} else {
 								elements.setValueAt("", row, 3);
@@ -101,8 +104,10 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					return new DefaultCellEditor(new JComboBox<>(VariableElementType.Scope.values()));
 				} else if (modelColumn == 1) {
 					return new DefaultCellEditor(new JComboBox<>(
-							new VariableElementType[] { VariableElementType.NUMBER, VariableElementType.LOGIC,
-									VariableElementType.STRING, VariableElementType.ITEMSTACK }));
+							new String[] { VariableElementTypeLoader.BuiltInTypes.ITEMSTACK.getName(),
+									VariableElementTypeLoader.BuiltInTypes.LOGIC.getName(),
+									VariableElementTypeLoader.BuiltInTypes.NUMBER.getName(),
+									VariableElementTypeLoader.BuiltInTypes.STRING.getName() }));
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
 					name.enableRealtimeValidation();
@@ -124,12 +129,13 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 						}
 					};
 				} else if (modelColumn == 3) {
-					VariableElementType data = (VariableElementType) elements.getValueAt(row, 1);
-					if (data == VariableElementType.NUMBER) {
+					VariableElementType data = VariableElementTypeLoader.INSTANCE
+							.getVariableTypeFromString((String) elements.getValueAt(row, 1));
+					if (data == VariableElementTypeLoader.BuiltInTypes.NUMBER) {
 						JSpinner spinner = new JSpinner(
 								new SpinnerNumberModel(0, -Double.MAX_VALUE, Double.MAX_VALUE, 0.1));
 						return new SpinnerCellEditor(spinner);
-					} else if (data == VariableElementType.LOGIC) {
+					} else if (data == VariableElementTypeLoader.BuiltInTypes.LOGIC) {
 						return new DefaultCellEditor(new JComboBox<>(new String[] { "true", "false" }));
 					}
 				}
@@ -140,9 +146,10 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			@Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component component = super.prepareRenderer(renderer, row, column);
 				if (column == 1) {
-					VariableElementType value = (VariableElementType) getModel().getValueAt(row, column);
+					VariableElementType value = VariableElementTypeLoader.INSTANCE
+							.getVariableTypeFromString((String) getModel().getValueAt(row, column));
 					if (value != null) {
-						component.setForeground(new Color(value.getColor()).brighter());
+						component.setForeground(BlocklyBlockUtil.getBlockColorFromHUE(value.getColor()).brighter());
 					}
 				} else {
 					component.setForeground(elements.getForeground());
@@ -217,7 +224,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 
 		addvar.addActionListener(e -> {
 			VariableElement element = NewVariableDialog
-					.showNewVariableDialog(workspacePanel.mcreator, true, new OptionPaneValidatior() {
+					.showNewVariableDialog(workspacePanel.getMcreator(), true, new OptionPaneValidatior() {
 								@Override public ValidationResult validate(JComponent component) {
 									Validator validator = new JavaMemeberNameValidator((VTextField) component, false);
 									String textname = Transliteration.transliterateString(((VTextField) component).getText());
@@ -229,10 +236,11 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 									}
 									return validator.validate();
 								}
-							}, VariableElementType.LOGIC, VariableElementType.NUMBER, VariableElementType.STRING,
-							VariableElementType.ITEMSTACK);
+							}, VariableElementTypeLoader.BuiltInTypes.LOGIC, VariableElementTypeLoader.BuiltInTypes.NUMBER,
+							VariableElementTypeLoader.BuiltInTypes.STRING,
+							VariableElementTypeLoader.BuiltInTypes.ITEMSTACK);
 			if (element != null) {
-				workspacePanel.mcreator.getWorkspace().addVariableElement(element);
+				workspacePanel.getMcreator().getWorkspace().addVariableElement(element);
 				reloadElements();
 			}
 		});
@@ -241,7 +249,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			if (elements.getSelectedRow() == -1)
 				return;
 
-			int n = JOptionPane.showConfirmDialog(workspacePanel.mcreator,
+			int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
 					"<html>Are you sure that you want to remove selected variables?"
 							+ "<br>If this variable is in use, this action might cause compilation errors.",
 					"Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -250,7 +258,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 						.forEach(el -> {
 							VariableElement element = new VariableElement();
 							element.setName(el);
-							workspacePanel.mcreator.getWorkspace().removeVariableElement(element);
+							workspacePanel.getMcreator().getWorkspace().removeVariableElement(element);
 						});
 				reloadElements();
 			}
@@ -259,30 +267,34 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		// save values on table edit, do it in another thread
 		elements.getModel().addTableModelListener(e -> new Thread(() -> {
 			if (e.getType() == TableModelEvent.UPDATE) {
-				Workspace workspace = workspacePanel.mcreator.getWorkspace();
+				Workspace workspace = workspacePanel.getMcreator().getWorkspace();
 				workspace.getVariableElements().clear();
 				for (int i = 0; i < elements.getModel().getRowCount(); i++) {
 					VariableElement element = new VariableElement();
-					element.setType((VariableElementType) elements.getValueAt(i, 1));
-					element.setName(Transliteration.transliterateString((String) elements.getValueAt(i, 0)));
-					element.setValue(elements.getValueAt(i, 3));
-					element.setScope((VariableElementType.Scope) elements.getValueAt(i, 2));
-					workspace.addVariableElement(element);
+					VariableElementType elementType = VariableElementTypeLoader.INSTANCE
+							.getVariableTypeFromString((String) elements.getValueAt(i, 1));
+					if (elementType != null) {
+						element.setType(elementType);
+						element.setName(Transliteration.transliterateString((String) elements.getValueAt(i, 0)));
+						element.setValue(elements.getValueAt(i, 3));
+						element.setScope((VariableElementType.Scope) elements.getValueAt(i, 2));
+						workspace.addVariableElement(element);
+					}
 				}
 			}
 		}).start());
 
 	}
 
-	public void reloadElements() {
+	@Override public void reloadElements() {
 		int row = elements.getSelectedRow();
 
 		DefaultTableModel model = (DefaultTableModel) elements.getModel();
 		model.setRowCount(0);
 
-		for (VariableElement variable : workspacePanel.mcreator.getWorkspace().getVariableElements()) {
-			model.addRow(
-					new Object[] { variable.getName(), variable.getType(), variable.getScope(), variable.getValue() });
+		for (VariableElement variable : workspacePanel.getMcreator().getWorkspace().getVariableElements()) {
+			model.addRow(new Object[] { variable.getName(), variable.getType().getName(), variable.getScope(),
+					variable.getValue() });
 		}
 		refilterElements();
 
@@ -292,7 +304,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		}
 	}
 
-	public void refilterElements() {
+	@Override public void refilterElements() {
 		try {
 			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
 		} catch (Exception ignored) {

@@ -1,1 +1,1 @@
-This parameter defines the group inside the recipe book under which this recipe will be shown.
+Ce paramètre définit le groupe à l'intérieur du livre de recettes sous lequel cette recette sera affichée.

@@ -90,7 +90,10 @@ import net.minecraft.block.material.Material;
 			setRegistryName("${registryname}");
 
 			<#list data.defaultFeatures as defaultFeature>
-			DefaultBiomeFeatures.add${generator.map(defaultFeature, "defaultfeatures")}(this);
+				<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
+				<#if mfeat != "null">
+					DefaultBiomeFeatures.add${mfeat}(this);
+				</#if>
 			</#list>
 
 			<#if data.spawnStronghold>
@@ -186,8 +189,8 @@ import net.minecraft.block.material.Material;
 			addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.CACTUS_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(${data.cactiPerChunk}))));
 			</#if>
 
-			<#if (data.sandPathcesPerChunk > 0)>
-			addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.DISK.withConfiguration(new SphereReplaceConfig(Blocks.SAND.getDefaultState(), 7, 2, Lists.newArrayList(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}))).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(${data.sandPathcesPerChunk}))));
+			<#if (data.sandPatchesPerChunk > 0)>
+			addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.DISK.withConfiguration(new SphereReplaceConfig(Blocks.SAND.getDefaultState(), 7, 2, Lists.newArrayList(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}))).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(${data.sandPatchesPerChunk}))));
 			</#if>
 
 			<#if (data.gravelPatchesPerChunk > 0)>
@@ -198,7 +201,7 @@ import net.minecraft.block.material.Material;
 				<#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
 				<#if entity != "null">
 					<#if !entity.toString().contains(".CustomEntity")>
-						this.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")}, new Biome.SpawnListEntry(EntityType.${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
+						this.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")}, new Biome.SpawnListEntry(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
 					<#else>
 						this.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")}, new Biome.SpawnListEntry(${entity.toString().replace(".CustomEntity", "")}.entity, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
 					</#if>
@@ -319,7 +322,7 @@ import net.minecraft.block.material.Material;
 										|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeVines)}.getBlock()
 										|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeBranch)}.getBlock()){
 
-								<#if data.spawnVines>
+								<#if (data.treeVines?has_content && !data.treeVines.isEmpty())>
 								if (genh > 0) {
 									if (rand.nextInt(3) > 0 && world.isAirBlock(position.add(-1, genh, 0)))
 										setTreeBlockState(changedBlocks, world, position.add(-1, genh, 0), ${mappedBlockToBlockStateCode(data.treeVines)}, bbox);
@@ -337,7 +340,7 @@ import net.minecraft.block.material.Material;
 							}
 						}
 
-						<#if data.spawnVines>
+						<#if (data.treeVines?has_content && !data.treeVines.isEmpty())>
 							for (int genh = position.getY() - 3 + height; genh <= position.getY() + height; genh++) {
 								int k4 = (int) (1 - (genh - (position.getY() + height)) * 0.5);
 								for (int genx = position.getX() - k4; genx <= position.getX() + k4; genx++) {
@@ -369,6 +372,7 @@ import net.minecraft.block.material.Material;
 							}
                         </#if>
 
+						<#if (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
 						if (rand.nextInt(4) == 0 && height > 5) {
 							for (int hlevel = 0; hlevel < 2; hlevel++) {
 								for (Direction Direction : Direction.Plane.HORIZONTAL) {
@@ -380,6 +384,7 @@ import net.minecraft.block.material.Material;
 								}
 							}
 						}
+						</#if>
 
 						return true;
 					} else {

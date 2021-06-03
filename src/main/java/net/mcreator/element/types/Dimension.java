@@ -19,10 +19,10 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ITabContainedElement;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -32,9 +32,29 @@ import java.util.List;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement implements ITabContainedElement {
 
+	public List<BiomeEntry> biomesInDimension;
+
+	public String worldGenType;
+
+	public MItemBlock mainFillerBlock;
+	public MItemBlock fluidBlock;
+
+	public Color airColor;
+	public boolean canRespawnHere;
+	public boolean hasFog;
+	public boolean isDark;
+	public boolean doesWaterVaporize;
+
+	public String sleepResult;
+	public boolean hasSkyLight;
+	public boolean imitateOverworldBehaviour;
+
+	public Procedure onPlayerEntersDimension;
+	public Procedure onPlayerLeavesDimension;
+
 	public MItemBlock portalFrame;
 	public Particle portalParticles;
-	public double portalLuminance;
+	public int portalLuminance;
 	public Sound portalSound;
 	public String igniterName;
 	public TabEntry igniterTab;
@@ -43,28 +63,8 @@ import java.util.List;
 	public boolean enablePortal;
 	public Procedure portalMakeCondition;
 	public Procedure portalUseCondition;
-
-	public List<BiomeEntry> biomesInDimension;
-
-	public String worldGenType;
-	public MItemBlock mainFillerBlock;
-	public MItemBlock fluidBlock;
-
-	public Color airColor;
-	public boolean canRespawnHere;
-	public boolean hasFog;
-	public boolean hasWeather;
-	public boolean isDark;
-	public boolean doesWaterVaporize;
-
-	public String sleepResult;
-	public boolean hasSkyLight;
-	public boolean imitateOverworldBehaviour;
-
 	public Procedure whenPortaTriggerlUsed;
 	public Procedure onPortalTickUpdate;
-	public Procedure onPlayerEntersDimension;
-	public Procedure onPlayerLeavesDimension;
 
 	private Dimension() {
 		this(null);
@@ -74,15 +74,14 @@ import java.util.List;
 		super(element);
 
 		// DEFAULT VALUES
-		this.hasWeather = true;
 		this.enablePortal = true;
 		this.sleepResult = "ALLOW";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
-				getModElement().getWorkspace().getFolderManager().getBlockTextureFile(portalTexture),
-				getModElement().getWorkspace().getFolderManager().getItemTextureFile(texture), portalFrame);
+				getModElement().getFolderManager().getBlockTextureFile(portalTexture),
+				getModElement().getFolderManager().getItemTextureFile(texture), portalFrame);
 	}
 
 	@Override public TabEntry getCreativeTab() {

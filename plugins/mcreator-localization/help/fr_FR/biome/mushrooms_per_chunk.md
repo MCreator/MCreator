@@ -1,1 +1,1 @@
-This parameter controls the number of mushroom blocks (plants) per chunk in this biome
+Ce paramètre contrôle le nombre de blocs de champignons (plantes) par tronçon dans ce biome

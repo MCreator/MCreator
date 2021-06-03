@@ -1,1 +1,1 @@
-The amount of damage the mob deals to entities when attacking.
+Le nombre de dégâts que l'entité inflige quand elle attaque.

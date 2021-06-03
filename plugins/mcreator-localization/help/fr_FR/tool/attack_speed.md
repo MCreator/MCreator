@@ -1,8 +1,5 @@
-This parameter controls how fast your tool can be used. 
+Ce paramètre contrôle la vitesse d'utilisation de l'outil.
 
-This attribute controls the length of the cooldown time, 
-with the time taken being T = 1 / attackSpeed * 20ticks. 
+Cet attribut contrôle la durée du cooldown d'utilisation avec le temps T = 1 / attackSpeed * 20 ticks.
 
-The damage multiplier is then 0.2 + ((t + 0.5) / T) ^ 2 * 0.8, 
-restricted to the range 0.2 – 1, where t is the number 
-of ticks since the last attack or item switch.
+La multiplication de dégâts est alors 0,2 + ((t + 0,5) / T) ^ 2 * 0,8, restreint à la portée 0,2 - 1, où t est le nombre de ticks depuis la dernière attaque ou le changement d'item dans la main.

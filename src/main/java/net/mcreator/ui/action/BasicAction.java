@@ -31,12 +31,12 @@ public class BasicAction extends UnregisteredAction {
 		this.actionRegistry.addAction(this);
 	}
 
-	public BasicAction setIcon(ImageIcon icon) {
+	@Override public BasicAction setIcon(ImageIcon icon) {
 		super.setIcon(icon);
 		return this;
 	}
 
-	public BasicAction setTooltip(String tooltip) {
+	@Override public BasicAction setTooltip(String tooltip) {
 		super.setTooltip(tooltip);
 		return this;
 	}

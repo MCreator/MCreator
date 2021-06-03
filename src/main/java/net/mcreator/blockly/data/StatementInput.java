@@ -18,8 +18,7 @@
 
 package net.mcreator.blockly.data;
 
-import org.jetbrains.annotations.Nullable;
-
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class StatementInput {
@@ -27,5 +26,6 @@ public class StatementInput {
 	public String name;
 
 	@Nullable public List<Dependency> provides;
+	public boolean disable_local_variables;
 
 }

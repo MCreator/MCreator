@@ -1,5 +1,5 @@
-Select your GUI here to enable inventory and GUI binding on this item.
+Sélectionnez votre GUI ici pour activer l'inventaire et la liaison avec le GUI pour cet item.
 
-Set to Empty to disable inventory (you want this in most cases).
+Sélectionnez "Empty" pour désactiver l'inventaire (ce que vous voulez dans la plupart des cas).
 
-Enabling inventory will make this item unstackable.
+L'activation de l'inventaire rendra cet item non stackable.

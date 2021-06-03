@@ -28,9 +28,9 @@ import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
-import org.jetbrains.annotations.Nullable;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
@@ -49,14 +49,14 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 
 		for (VariableElement var2 : editor.mcreator.getWorkspace().getVariableElements()) {
 			name.addItem("<VAR:" + var2.getName() + ">");
-			if (var2.getType() == VariableElementType.NUMBER)
+			if (var2.getType() == VariableElementTypeLoader.BuiltInTypes.NUMBER)
 				name.addItem("<VAR:integer:" + var2.getName() + ">");
 		}
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/label_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.label_event_display_condition"), ProcedureSelector.Side.CLIENT, false,
-				VariableElementType.LOGIC,
+				VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
 

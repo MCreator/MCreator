@@ -48,7 +48,7 @@ public class GeneratorTokens {
 		if (rawname.contains("@MODDATAROOT"))
 			rawname = rawname.replace("@MODDATAROOT", workspace.getGenerator().getModDataRoot().getAbsolutePath());
 
-		return rawname.replace("@WORKSPACEROOT", workspace.getFolderManager().getWorkspaceFolder().getAbsolutePath())
+		return rawname.replace("@WORKSPACEROOT", workspace.getWorkspaceFolder().getAbsolutePath())
 				.replace("@modid", workspaceSettings.getModID())
 				.replace("@JavaModName", workspaceSettings.getJavaModName()).replace("@modpicture",
 						workspaceSettings.getModPicture() != null ? workspaceSettings.getModPicture() : "")

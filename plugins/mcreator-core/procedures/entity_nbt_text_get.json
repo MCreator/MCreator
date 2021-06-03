@@ -23,6 +23,9 @@
     "inputs": [
       "tagName",
       "entity"
+    ],
+    "warnings": [
+      "no_side_sync"
     ]
   }
 }

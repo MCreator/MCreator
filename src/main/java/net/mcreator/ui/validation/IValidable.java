@@ -26,4 +26,6 @@ public interface IValidable {
 
 	Validator getValidator();
 
+	boolean isEnabled();
+
 }

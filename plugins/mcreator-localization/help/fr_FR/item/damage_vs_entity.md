@@ -1,1 +1,1 @@
-You can activate melee damage for your item with this parameter, and set a value of damage.
+Vous pouvez activer les dégâts de mêlée pour votre item avec ce paramètre, et définir une valeur de dégâts.

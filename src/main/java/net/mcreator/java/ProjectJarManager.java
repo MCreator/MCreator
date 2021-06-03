@@ -27,6 +27,7 @@ import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.JarManager;
 import org.fife.rsta.ac.java.buildpath.DirSourceLocation;
 import org.fife.rsta.ac.java.buildpath.JarLibraryInfo;
+import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
 import org.gradle.tooling.BuildException;
 import org.gradle.tooling.ProjectConnection;
@@ -49,7 +50,7 @@ public class ProjectJarManager extends JarManager {
 		if (generator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 				== GeneratorFlavor.BaseLanguage.JAVA)
 			try {
-				addCurrentJreClassFileSource();
+				addClassFileSource(getJVMLibraryInfo());
 			} catch (IOException e) {
 				LOG.warn("Failed to load JVM to JAR manager", e);
 			}
@@ -62,7 +63,7 @@ public class ProjectJarManager extends JarManager {
 		if (generator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 				== GeneratorFlavor.BaseLanguage.JAVA)
 			try {
-				addCurrentJreClassFileSource();
+				addClassFileSource(getJVMLibraryInfo());
 			} catch (IOException e) {
 				LOG.warn("Failed to load JVM to JAR manager", e);
 			}
@@ -138,6 +139,42 @@ public class ProjectJarManager extends JarManager {
 			throw new GradleCacheImportFailedException(
 					new IOException("Failed to load classpath file " + classpathEntry.getLib()));
 		}
+	}
+
+	private static LibraryInfo getJVMLibraryInfo() {
+		File jreHome = new File(System.getProperty("java.home"));
+
+		final File classesArchive = findExistingPath(jreHome, "lib/rt.jar", "../Classes/classes.jar",
+				"jmods/java.base.jmod");
+		if (classesArchive == null) {
+			LOG.warn("Failed to load default JRE JAR info");
+			return null;
+		}
+
+		final LibraryInfo info;
+
+		if (classesArchive.getName().endsWith(".jmod")) {
+			info = new JModLibraryInfo(classesArchive);
+		} else {
+			info = new JarLibraryInfo(classesArchive);
+		}
+
+		final File sourcesArchive = findExistingPath(jreHome, "lib/src.zip", "lib/src.jar", "src.zip", "../src.zip",
+				"src.jar", "../src.jar");
+		if (sourcesArchive != null) {
+			info.setSourceLocation(new ZipSourceLocation(sourcesArchive));
+		}
+
+		return info;
+	}
+
+	private static File findExistingPath(final File baseDir, String... paths) {
+		for (final String path : paths) {
+			File file = new File(baseDir, path);
+			if (file.exists())
+				return file;
+		}
+		return null;
 	}
 
 }

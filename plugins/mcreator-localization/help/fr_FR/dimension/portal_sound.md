@@ -1,1 +1,1 @@
-This parameter controls the sound played by the portal randomly when active.
+Ce paramètre contrôle le son joué par le portail quand ce-dernier est actif.

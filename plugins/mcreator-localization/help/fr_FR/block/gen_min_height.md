@@ -1,10 +1,10 @@
-This parameter controls the minimum Y height that this block can generate in.
+Ce paramètre contrôle la hauteur Y minimale que ce bloc peut générer.
 
-Vanilla minimum Y levels heights:
-* Coal Ore - 1
-* Iron Ore - 5
-* Gold Ore - 1
-* Redstone Ore - 1
-* Diamond Ore - 1
-* Emerald Ore - 4
+Hauteurs minimales des niveaux Y de vanille:
+* Minerai de charbon - 1
+* Minerai de fer - 5
+* Minerai d'or - 1
+* Minerai de pierre rouge - 1
+* Minerai de diamant - 1
+* Minerai d'émeraude - 4
 * Lapis Lazuli - 1

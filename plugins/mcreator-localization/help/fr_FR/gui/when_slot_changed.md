@@ -1,0 +1,1 @@
+Déclenche une procédure quand un item est mis/pris de ce slot.

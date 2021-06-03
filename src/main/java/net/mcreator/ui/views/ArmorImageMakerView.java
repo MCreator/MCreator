@@ -24,17 +24,19 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.ArmorMakerTexturesCache;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Locale;
-import java.util.Objects;
+
+import static net.mcreator.ui.init.ArmorMakerTexturesCache.ArmorTexturePart.*;
 
 public class ArmorImageMakerView extends ViewBase {
 
@@ -44,7 +46,7 @@ public class ArmorImageMakerView extends ViewBase {
 	private final JLabel ar2 = new JLabel();
 	private final JLabel arI = new JLabel();
 
-	private final JComboBox<String> str = new JComboBox<>(new String[] { "Standard", "Chainmail", "Leather" });
+	private final JComboBox<String> str = new JComboBox<>(ArmorMakerTexturesCache.getTemplateNames());
 	private final JCheckBox type1 = new JCheckBox();
 
 	public ArmorImageMakerView(final MCreator fra) {
@@ -60,11 +62,11 @@ public class ArmorImageMakerView extends ViewBase {
 
 		type1.setOpaque(false);
 
-		controls.add(new JLabel("Armor texture type: "));
+		controls.add(L10N.label("dialog.armor_image_maker.type"));
 		controls.add(str);
-		controls.add(new JLabel("Texture color: "));
+		controls.add(L10N.label("dialog.armor_image_maker.color"));
 		controls.add(PanelUtils.join(col));
-		controls.add(new JLabel("Lock saturation and lightness: "));
+		controls.add(L10N.label("dialog.armor_image_maker.saturation_lightness_lock"));
 		controls.add(type1);
 
 		col.setColorSelectedListener(event -> updateARM());
@@ -74,7 +76,7 @@ public class ArmorImageMakerView extends ViewBase {
 		JPanel wrap = PanelUtils.centerInPanelPadding(controls, 10, 10);
 		wrap.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				"Armor texture properties", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("dialog.armor_image_maker.properties"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		add("Center", wrap);
@@ -95,12 +97,12 @@ public class ArmorImageMakerView extends ViewBase {
 		spom.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		spom.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				"Armor texture preview", 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("dialog.armor_image_maker.preview"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		add("South", spom);
 
-		JButton save = new JButton("Save this armor");
+		JButton save = L10N.button("dialog.armor_image_maker.save");
 		save.setMargin(new Insets(1, 40, 1, 40));
 		save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -109,13 +111,13 @@ public class ArmorImageMakerView extends ViewBase {
 				PanelUtils.westAndEastElement(new JEmptyBox(0, 0), PanelUtils.centerInPanelPadding(save, 0, 0)), 5,
 				true, true, false, true));
 		save.addActionListener(event -> {
-			String namec = JOptionPane.showInputDialog("Name of armor texture (without spaces): ");
+			String namec = JOptionPane.showInputDialog(L10N.t("dialog.armor_image_maker.name"));
 			if (namec != null && !namec.trim().equals("")) {
 				namec = RegistryNameFixer.fix(namec);
-				File[] armorPars = mcreator.getWorkspace().getFolderManager().getArmorTextureFilesForName(namec);
+				File[] armorPars = mcreator.getFolderManager().getArmorTextureFilesForName(namec);
 				if (armorPars[0].isFile() || armorPars[1].isFile()) {
-					JOptionPane.showMessageDialog(mcreator, "Armor with this name already exists!", "Resource error",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.armor_image_maker.name_already_exists"),
+							L10N.t("dialog.armor_image_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
 				} else {
 					generateArmorImages(mcreator.getWorkspace(), namec, (String) str.getSelectedItem(), col.getColor(),
 							!type1.isSelected());
@@ -145,39 +147,15 @@ public class ArmorImageMakerView extends ViewBase {
 		use(workspace, images[5], namec + "_boots");
 	}
 
-	private static Image[] getImages(String type, Color color, boolean colorizeType) {
+	private static Image[] getImages(String type, Color color, boolean colType) {
 		Image[] images = new Image[6];
 		try {
-			Image ari1 = ImageUtils.colorize(new ImageIcon(ImageIO.read(Objects.requireNonNull(
-					ClassLoader.getSystemClassLoader()
-							.getResourceAsStream("templates/textures/armor/" + type + "1.png")))), color, colorizeType)
-					.getImage();
-			Image ari2 = ImageUtils.colorize(new ImageIcon(ImageIO.read(Objects.requireNonNull(
-					ClassLoader.getSystemClassLoader()
-							.getResourceAsStream("templates/textures/armor/" + type + "2.png")))), color, colorizeType)
-					.getImage();
-			Image helmet = ImageUtils.colorize(new ImageIcon(ImageIO.read(Objects.requireNonNull(
-					ClassLoader.getSystemClassLoader()
-							.getResourceAsStream("templates/textures/armor/" + type + "H.png")))), color, colorizeType)
-					.getImage();
-			Image body = ImageUtils.colorize(new ImageIcon(ImageIO.read(Objects.requireNonNull(
-					ClassLoader.getSystemClassLoader()
-							.getResourceAsStream("templates/textures/armor/" + type + "By.png")))), color, colorizeType)
-					.getImage();
-			Image leggins = ImageUtils.colorize(new ImageIcon(ImageIO.read(Objects.requireNonNull(
-					ClassLoader.getSystemClassLoader()
-							.getResourceAsStream("templates/textures/armor/" + type + "L.png")))), color, colorizeType)
-					.getImage();
-			Image boots = ImageUtils.colorize(new ImageIcon(ImageIO.read(Objects.requireNonNull(
-					ClassLoader.getSystemClassLoader()
-							.getResourceAsStream("templates/textures/armor/" + type + "Bs.png")))), color, colorizeType)
-					.getImage();
-			images[0] = ari1;
-			images[1] = ari2;
-			images[2] = helmet;
-			images[3] = body;
-			images[4] = leggins;
-			images[5] = boots;
+			images[0] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, LAYER1), color, colType).getImage();
+			images[1] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, LAYER2), color, colType).getImage();
+			images[2] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, HELMET), color, colType).getImage();
+			images[3] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, BODY), color, colType).getImage();
+			images[4] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, LEGGINGS), color, colType).getImage();
+			images[5] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, BOOTS), color, colType).getImage();
 		} catch (Exception ignored) {
 			images[0] = new EmptyIcon.ImageIcon(380, 190).getImage();
 			images[1] = new EmptyIcon.ImageIcon(380, 190).getImage();

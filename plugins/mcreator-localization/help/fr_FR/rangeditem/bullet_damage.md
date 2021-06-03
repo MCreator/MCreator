@@ -1,1 +1,1 @@
-Higher the number the stronger the damage the bullet deals to the entity hit.
+Plus le nombre est élevé, plus les dégâts infligés par la balle à l'entité touchée sont plus fortes.

@@ -1,0 +1,2 @@
+Le recul de l'attaque définit la valeur du recul de chaque attaque de cette entité
+La plupart des entités vanilla ne l'utilisent pas. Certaines le font, comme le ravager, qui a une valeur de recul de 1,5.

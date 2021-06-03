@@ -1,1 +1,1 @@
-This parameter controls what happens if the player tries to sleep in bed in this dimension.
+Ce paramètre contrôle ce qui se passe quand un joueur essaie de dormir dans un lit dans cette dimension.

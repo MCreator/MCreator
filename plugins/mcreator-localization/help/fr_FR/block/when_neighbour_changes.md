@@ -1,2 +1,2 @@
-Triggers a procedure when a block next to this one is updated (blockstate changes, new block is placed or 
-a block is removed).
+Déclenche une procédure lorsqu'un bloc à côté de celui-ci est mis à jour (l'état du bloc change, un nouveau bloc est placé ou
+un bloc est supprimé).

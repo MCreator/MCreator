@@ -1,1 +1,1 @@
-This parameter controls how long the item can be used in one take.
+Ce paramètre contrôle combien de temps l'item peut être utilisé en une prise.

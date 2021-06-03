@@ -1,3 +1,3 @@
-To spawn your entity like the vanilla ones, you don't need to change this option. 
+Pour faire apparaitre votre entité comme celles vanilla, vous n'avez pas besoin de changer cette option. 
 
-However, if you want to have custom spawning conditions, you need to create a new condition procedure.
+Cependant, si vous souhaitez avoir des conditions d'apparition personnalisées, vous devez créer une nouvelle procédure de condition.

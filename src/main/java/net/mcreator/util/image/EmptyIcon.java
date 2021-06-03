@@ -31,15 +31,15 @@ public final class EmptyIcon implements Icon {
 		this.height = height;
 	}
 
-	public int getIconHeight() {
+	@Override public int getIconHeight() {
 		return height;
 	}
 
-	public int getIconWidth() {
+	@Override public int getIconWidth() {
 		return width;
 	}
 
-	public void paintIcon(Component c, Graphics g, int x, int y) {
+	@Override public void paintIcon(Component c, Graphics g, int x, int y) {
 	}
 
 	public static final class ImageIcon extends javax.swing.ImageIcon {

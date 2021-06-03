@@ -1,3 +1,3 @@
-This parameter controls how many slots your block will use for its internal inventory.
+Ce paramètre contrôle le nombre d'emplacements que votre bloc utilisera pour son inventaire interne.
 
-If the block is bound to GUI, set this value to `the biggest slot ID in the GUI + 1`
+Si le bloc est lié à l'interface graphique, définissez cette valeur sur `le plus grand ID d'emplacement dans l'interface graphique + 1`

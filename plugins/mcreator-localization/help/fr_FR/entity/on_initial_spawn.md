@@ -1,3 +1,4 @@
-Triggers the procedure when the entity spawns.
+Déclenche la procédure quand l'entité apparait.
 
-Keep in mind some procedure blocks might not work properly in this trigger during early world generation.
+Gardez à l'esprit que quelques blocs de procédure peuvent ne pas fonctionner normalement
+dans ce déclencheur durant la génération du monde.

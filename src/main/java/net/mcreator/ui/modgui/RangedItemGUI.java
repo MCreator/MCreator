@@ -48,10 +48,10 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import net.mcreator.workspace.resources.Model;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -147,11 +147,11 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		useCondition = new ProcedureSelector(this.withEntry("rangeditem/use_condition"), mcreator,
-				L10N.t("elementgui.ranged_item.can_use"), VariableElementType.LOGIC,
+				L10N.t("elementgui.ranged_item.can_use"), VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.ranged_item.make_glow"), ProcedureSelector.Side.CLIENT, true,
-				VariableElementType.LOGIC,
+				VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		customBulletModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
@@ -298,7 +298,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			customBulletModelTexture.removeAllItems();
 			customBulletModelTexture.addItem("");
-			List<File> textures = mcreator.getWorkspace().getFolderManager().getOtherTexturesList();
+			List<File> textures = mcreator.getFolderManager().getOtherTexturesList();
 			for (File element : textures)
 				if (element.getName().endsWith(".png"))
 					customBulletModelTexture.addItem(element.getName());
@@ -336,7 +336,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		name.enableRealtimeValidation();
 		bulletItemTexture.setValidator(() -> {
 			if (bulletItemTexture.containsItem() || !adefault.equals(bulletModel.getSelectedItem()))
-				return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+				return Validator.ValidationResult.PASSED;
 			else
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.ranged_item.error_select_element"));
@@ -348,7 +348,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 						.equals(""))
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 							L10N.t("elementgui.ranged_item.error_custom_model_needs_texture"));
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+			return Validator.ValidationResult.PASSED;
 		});
 
 		page2group.addValidationElement(bulletItemTexture);
@@ -380,9 +380,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(customBulletModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
-						.filter(element -> element.getName().endsWith(".png")).map(File::getName)
-						.collect(Collectors.toList())), "");
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bulletModel, ListUtils.merge(Collections.singletonList(adefault),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()

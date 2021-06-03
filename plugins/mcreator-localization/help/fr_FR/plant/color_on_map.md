@@ -1,3 +1,3 @@
-This parameter controls what color your plant will appear as on maps. 
+Ce paramètre contrôle de quelle couleur est votre plante quand elle apparait sur les cartes.
 
-If it's set to Default, the color will be FOLIAGE.
+Si définit sur Default, la couleur sera FOLIAGE.

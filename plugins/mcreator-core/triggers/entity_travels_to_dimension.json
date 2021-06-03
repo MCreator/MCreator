@@ -10,7 +10,7 @@
     },
     {
       "name": "dimension",
-      "type": "number"
+      "type": "dimensiontype"
     },
     {
       "name": "x",

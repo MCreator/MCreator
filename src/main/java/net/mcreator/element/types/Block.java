@@ -19,26 +19,30 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.IItemWithModel;
-import net.mcreator.element.ITabContainedElement;
 import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
+import net.mcreator.element.types.interfaces.IItemWithModel;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
+import javax.annotation.Nonnull;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
-		implements IItemWithModel, ITabContainedElement {
+		implements IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	public String texture;
 	public String textureTop;
@@ -57,10 +61,15 @@ import java.util.Map;
 
 	public String blockBase;
 
+	public String tintType;
+	public boolean isItemTinted;
+
 	public boolean hasTransparency;
 	public boolean connectedSides;
 	public String transparencyType;
-	public double mx, my, mz, Mx, My, Mz;
+
+	public boolean disableOffset;
+	public List<BoxEntry> boundingBoxes;
 
 	public String name;
 	public List<String> specialInfo;
@@ -75,7 +84,6 @@ import java.util.Map;
 	public int dropAmount;
 	public boolean useLootTableForDrops;
 
-	public boolean isBeaconBase;
 	public double enchantPowerBonus;
 	public boolean plantsGrowOn;
 	public boolean canProvidePower;
@@ -97,11 +105,13 @@ import java.util.Map;
 
 	public boolean isLadder;
 	public double slipperiness;
+	public double speedFactor;
+	public double jumpFactor;
 	public String reactionToPushing;
 
 	public boolean isNotColidable;
 	public StepSound soundOnStep;
-	public double luminance;
+	public int luminance;
 	public boolean unbreakable;
 	public int breakHarvestLevel;
 
@@ -111,6 +121,8 @@ import java.util.Map;
 	public double particleSpawningRadious;
 	public int particleAmount;
 	public Procedure particleCondition;
+
+	public Procedure placingCondition;
 
 	public boolean hasInventory;
 	public String guiBoundTo;
@@ -162,10 +174,14 @@ import java.util.Map;
 	public Block(ModElement element) {
 		super(element);
 
+		this.tintType = "No tint";
+		this.boundingBoxes = new ArrayList<>();
 		this.spawnWorldTypes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
 		this.reactionToPushing = "NORMAL";
 		this.slipperiness = 0.6;
+		this.speedFactor = 1.0;
+		this.jumpFactor = 1.0;
 		this.colorOnMap = "DEFAULT";
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
@@ -192,21 +208,8 @@ import java.util.Map;
 		return !spawnWorldTypes.isEmpty();
 	}
 
-	@Override public BufferedImage generateModElementPicture() {
-		if (renderType() == 10 && !textureTop.equals("") && !textureFront.equals("") && !textureLeft.equals("")) {
-			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(
-					getModElement().getWorkspace().getFolderManager().getBlockImageIcon(textureTop).getImage(),
-					getModElement().getWorkspace().getFolderManager().getBlockImageIcon(textureLeft).getImage(),
-					getModElement().getWorkspace().getFolderManager().getBlockImageIcon(textureFront).getImage());
-		} else if (renderType() == 11 && !texture.equals("")) {
-			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(
-					getModElement().getWorkspace().getFolderManager().getBlockImageIcon(texture).getImage(),
-					getModElement().getWorkspace().getFolderManager().getBlockImageIcon(texture).getImage(),
-					getModElement().getWorkspace().getFolderManager().getBlockImageIcon(texture).getImage());
-		} else {
-			return ImageUtils.resizeAndCrop(
-					getModElement().getWorkspace().getFolderManager().getBlockImageIcon(texture).getImage(), 32);
-		}
+	public boolean isBlockTinted() {
+		return !"No tint".equals(tintType);
 	}
 
 	@Override public Model getItemModel() {
@@ -227,6 +230,54 @@ import java.util.Map;
 
 	@Override public TabEntry getCreativeTab() {
 		return creativeTab;
+	}
+
+	@Override public @Nonnull List<BoxEntry> getValidBoundingBoxes() {
+		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
+	}
+
+	@Override public BufferedImage generateModElementPicture() {
+		if (renderType() == 10) {
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateBlockIcon(getTextureWithFallback(textureTop), getTextureWithFallback(textureLeft),
+							getTextureWithFallback(textureFront));
+		} else if (renderType() == 11 || renderType() == 110 || (blockBase != null && blockBase.equals("Leaves"))) {
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateBlockIcon(getMainTexture(), getMainTexture(), getMainTexture());
+		} else if (blockBase != null && blockBase.equals("Slab")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateSlabIcon(getTextureWithFallback(textureTop), getTextureWithFallback(textureFront));
+		} else if (blockBase != null && blockBase.equals("TrapDoor")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateTrapdoorIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("Stairs")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateStairsIcon(getTextureWithFallback(textureTop), getTextureWithFallback(textureFront));
+		} else if (blockBase != null && blockBase.equals("Wall")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateWallIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("Fence")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateFenceIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("FenceGate")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateFenceGateIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("EndRod")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateEndRodIcon(getMainTexture());
+		} else if (renderType() == 14) {
+			Image side = ImageUtils.drawOver(new ImageIcon(getTextureWithFallback(textureFront)),
+					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();
+			return (BufferedImage) MinecraftImageGenerator.Preview
+					.generateBlockIcon(getTextureWithFallback(textureTop), side, side);
+		} else {
+			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
+		}
+	}
+
+	private Image getMainTexture() {
+		return getModElement().getFolderManager().getBlockImageIcon(texture).getImage();
+	}
+
+	private Image getTextureWithFallback(String textureName) {
+		if (textureName.equals(""))
+			return getMainTexture();
+		return getModElement().getFolderManager().getBlockImageIcon(textureName).getImage();
 	}
 
 }

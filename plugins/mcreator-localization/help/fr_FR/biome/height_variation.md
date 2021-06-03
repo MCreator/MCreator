@@ -1,4 +1,4 @@
-This parameter controls the height variation of this biome.
+Ce paramètre contrôle la variation de hauteur de ce biome.
 
-Lower values will make this biome more even and flat, while big values will make this biome
-very dynamic in terrain.
+Des valeurs plus basses rendront ce biome plus uniforme et plat, tandis que de grandes valeurs rendront ce biome
+très dynamique en terrain.

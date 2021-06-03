@@ -18,8 +18,7 @@
 
 package net.mcreator.io;
 
-import org.jetbrains.annotations.NotNull;
-
+import javax.annotation.Nonnull;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -29,7 +28,7 @@ public class OutputStreamEventHandler extends OutputStream {
 
 	private final LineReceiver lineReceiver;
 
-	public OutputStreamEventHandler(@NotNull LineReceiver lineReceiver) {
+	public OutputStreamEventHandler(@Nonnull LineReceiver lineReceiver) {
 		this.lineReceiver = lineReceiver;
 	}
 
@@ -39,7 +38,7 @@ public class OutputStreamEventHandler extends OutputStream {
 			event();
 	}
 
-	@Override public void write(@NotNull byte[] b, int off, int len) {
+	@Override public void write(@Nonnull byte[] b, int off, int len) {
 		int start = off;
 		int finallen = off + len;
 		for (int i = off; i < finallen; i++) {

@@ -27,8 +27,8 @@ import org.commonmark.ext.autolink.AutolinkExtension;
 import org.commonmark.ext.gfm.tables.TablesExtension;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -88,23 +88,20 @@ public class HelpLoader {
 				if (getFromCache(helpContext.getEntry()) != null) {
 					helpString.append(renderer.render(parser.parse(getFromCache(helpContext.getEntry()))));
 				} else {
-					helpString.append("No help entry is defined for <tt>").append(helpContext.getEntry())
-							.append("</tt> yet.<br>");
+					helpString.append(L10N.t("help_loader.no_help_entry", helpContext.getEntry()));
 				}
 
 				if (uri != null && helpContext.getContextName() != null) {
-					helpString.append("<br>Learn more about <a href=\"").append(uri.toString()).append("\">")
-							.append(helpContext.getContextName()).append("</a> on MCreator's wiki.");
+					helpString.append(L10N.t("help_loader.learn_about", uri.toString(), helpContext.getContextName()));
 				}
 
 				return helpString.toString();
 			} else if (uri != null && helpContext.getContextName() != null) {
-				return "<html><body>No help entry is defined. Learn more about <a href=\"" + uri.toString() + "\">"
-						+ helpContext.getContextName() + "</a> on MCreator's wiki.";
+				return L10N.t("help_loader.no_entry_learn_more", uri.toString(), helpContext.getContextName());
 			}
 		}
 
-		return "<html><body>No help was found for the given help context.";
+		return L10N.t("help_loader.no_help_found");
 	}
 
 }

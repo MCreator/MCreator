@@ -1,0 +1,1 @@
+Ce paramètre contrôle le nombre de tics qui doivent passer avant de passer à l'image d'animation suivante.

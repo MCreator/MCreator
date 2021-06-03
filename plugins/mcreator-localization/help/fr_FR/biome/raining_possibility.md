@@ -1,1 +1,1 @@
-This parameter controls the possibility of raining inside the biome.
+Ce paramètre contrôle la possibilité de pleuvoir à l'intérieur du biome.

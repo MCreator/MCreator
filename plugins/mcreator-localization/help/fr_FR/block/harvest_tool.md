@@ -1,3 +1,3 @@
-This parameter controls what tool you want to mine the block.
+Ce paramètre contrôle quel outil est utilisé pour miner (tout court ou plus facilement) le bloc.
 
-Ores use pickaxe here, logs axe, for example.
+Les minerais nécessitent une pioche, une hache pour des bûches, par exemple.

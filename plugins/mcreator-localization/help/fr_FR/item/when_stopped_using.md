@@ -1,1 +1,1 @@
-This procedure is called when the player stops using this item (usually when the right-click is released).
+Cette procédure est appelée quand le joueur arrête d'utiliser cet item (usuellement quand le clic droit est relaché).

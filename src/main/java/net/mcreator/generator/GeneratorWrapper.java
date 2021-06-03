@@ -19,9 +19,9 @@
 package net.mcreator.generator;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.NamespacedGeneratableElement;
+import net.mcreator.element.RecipeType;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
@@ -69,19 +69,24 @@ import java.util.stream.Collectors;
 		}).collect(Collectors.toList());
 	}
 
-	public ModElementType.RecipeElementType getRecipeElementType(String elementName) {
+	public RecipeType getRecipeElementType(String elementName) {
 		try {
 			return generator.getWorkspace().getModElementByName(getElementPlainName(elementName)).getType()
-					.getRecipeElementType();
+					.getRecipeType();
 		} catch (Exception e) {
 			generator.getLogger().warn("Failed to determine recipe type for: " + elementName, e);
-			return ModElementType.RecipeElementType.NONE;
+			return RecipeType.NONE;
 		}
+	}
+
+	public boolean isRecipeTypeBlockOrBucket(String elementName) {
+		RecipeType recipeType = this.getRecipeElementType(elementName);
+		return recipeType == RecipeType.BLOCK || recipeType == RecipeType.BUCKET;
 	}
 
 	public String getElementPlainName(String elementName) {
 		return elementName.replace("CUSTOM:", "").replace(".block", "").replace(".helmet", "").replace(".body", "")
-				.replace(".legs", "").replace(".boots", "");
+				.replace(".legs", "").replace(".boots", "").replace(".bucket", "");
 	}
 
 	public String getElementExtension(String elementName) {
@@ -99,7 +104,9 @@ import java.util.stream.Collectors;
 		ModElement element = generator.getWorkspace().getModElementByName(modElement);
 		if (element != null)
 			return element.getRegistryName();
-		return "unknown_element";
+
+		generator.LOG.warn("Failed to determine registry name for: " + modElement);
+		return NameMapper.UNKNOWN_ELEMENT;
 	}
 
 	public String getResourceLocationForModElement(String modElement) {
@@ -114,10 +121,12 @@ import java.util.stream.Collectors;
 				}
 			}
 
-			// otherwise use normal registry name
-			return generator.getWorkspace().getWorkspaceSettings().getModID() + ":" + element.getRegistryName();
+			// otherwise we use a normal registry name
+			return generator.getWorkspaceSettings().getModID() + ":" + element.getRegistryName();
 		}
-		return "unknown_element";
+
+		generator.LOG.warn("Failed to determine resource location for mod element: " + modElement);
+		return generator.getWorkspaceSettings().getModID() + ":" + NameMapper.UNKNOWN_ELEMENT;
 	}
 
 }

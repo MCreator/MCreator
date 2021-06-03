@@ -1,1 +1,2 @@
-Portal frame block is the block used to make the portal frame for the dimension if the portal is enabled.
+Le bloc de cadre de portail est le bloc utilisé pour faire le cadre du portail de la dimension si l'option
+du portail est activée.

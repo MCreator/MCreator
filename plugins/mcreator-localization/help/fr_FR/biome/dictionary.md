@@ -1,2 +1,2 @@
-Describe your biome using tags here. These tags might be used by other mods for biome compatiblity and
-parameters such as spawning properties.
+Décrivez votre biome à l'aide de tags ici. Ces tags peuvent être utilisées par d'autres mods pour la compatibilité du biome et
+les paramètres tels que les propriétés d'apparition.

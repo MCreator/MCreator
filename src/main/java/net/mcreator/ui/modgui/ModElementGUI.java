@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JModElementProgressPanel;
+import net.mcreator.ui.component.UnsupportedComponent;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -37,9 +38,9 @@ import net.mcreator.ui.views.ViewBase;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Field;
@@ -53,13 +54,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private final boolean editingMode;
 	private MCreatorTabs.Tab tabIn;
 
-	@NotNull protected ModElement modElement;
+	@Nonnull protected ModElement modElement;
 
 	private ModElementCreatedListener<GE> modElementCreatedListener;
 
 	private final Map<String, JComponent> pages = new LinkedHashMap<>();
 
-	public ModElementGUI(MCreator mcreator, @NotNull ModElement modElement, boolean editingMode) {
+	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator);
 		this.editingMode = editingMode;
 		this.modElement = modElement;
@@ -323,8 +324,16 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	private void disableUnsupportedFields() {
-		List<String> inclusions = mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
+		List<String> inclusions = mcreator.getGeneratorConfiguration()
 				.getSupportedDefinitionFields(modElement.getType());
+
+		List<String> exclusions = mcreator.getGeneratorConfiguration()
+				.getUnsupportedDefinitionFields(modElement.getType());
+
+		if (inclusions != null && exclusions != null) {
+			LOG.warn("Field inclusions and exclusions can not be used at the same time. Skipping them.");
+			return;
+		}
 
 		if (inclusions != null) {
 			Field[] fields = getClass().getDeclaredFields();
@@ -334,10 +343,40 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 						try {
 							field.setAccessible(true);
 							Component obj = (Component) field.get(this);
-							obj.setEnabled(false);
+
+							Container parent = obj.getParent();
+							int index = Arrays.asList(parent.getComponents()).indexOf(obj);
+							parent.remove(index);
+							parent.add(new UnsupportedComponent(obj), index);
 						} catch (IllegalAccessException e) {
 							LOG.warn("Failed to access field", e);
 						}
+					}
+				}
+			}
+		}
+
+		if (exclusions != null) {
+			Field[] fields = getClass().getDeclaredFields();
+			for (Field field : fields) {
+				if (Component.class.isAssignableFrom(field.getType())) {
+					if (!exclusions.contains(field.getName())) {
+						if (exclusions.contains(field.getName())) {
+							try {
+								field.setAccessible(true);
+								Component obj = (Component) field.get(this);
+
+								Container parent = obj.getParent();
+								int index = Arrays.asList(parent.getComponents()).indexOf(obj);
+								parent.remove(index);
+								parent.add(new UnsupportedComponent(obj), index);
+							} catch (IllegalAccessException e) {
+								LOG.warn("Failed to access field", e);
+							}
+						}
+					} else {
+						LOG.warn(field.getName()
+								+ " can not be used in both inclusions and exclusions fields at the same time. The field will be enabled.");
 					}
 				}
 			}
@@ -375,21 +414,24 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// add it before generating so all references are loaded
 		mcreator.getWorkspace().addModElement(modElement);
 
+		// we perform any custom defined before the generatable element is generated
+		beforeGeneratableElementGenerated();
+
 		// generate mod element code
-		mcreator.getWorkspace().getGenerator().generateElement(element);
+		mcreator.getGenerator().generateElement(element);
 
 		// save custom mod element (preview) picture if it has one
-		mcreator.getWorkspace().getModElementManager().storeModElementPicture(element);
+		mcreator.getModElementManager().storeModElementPicture(element);
 		modElement.reinit(); // re-init mod element to pick up the new mod element picture
 
 		// save the GeneratableElement definition
-		mcreator.getWorkspace().getModElementManager().storeModElement(element);
+		mcreator.getModElementManager().storeModElement(element);
 
 		// we perform any custom defined after all other operations are complete
 		afterGeneratableElementStored();
 
 		// build if selected and needed
-		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getWorkspace().getModElementManager()
+		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
 				.usesGeneratableElementJava(element))
 			mcreator.actionRegistry.buildWorkspace.doAction();
 
@@ -401,13 +443,16 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			modElementCreatedListener.modElementCreated(element);
 	}
 
-	public @NotNull ModElement getModElement() {
+	public @Nonnull ModElement getModElement() {
 		return modElement;
 	}
 
 	protected abstract void initGUI();
 
 	protected abstract AggregatedValidationResult validatePage(int page);
+
+	protected void beforeGeneratableElementGenerated() {
+	}
 
 	protected void afterGeneratableElementStored() {
 	}

@@ -26,10 +26,11 @@ import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
-import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +87,13 @@ public class BlocklyBlockCodeGenerator {
 					return;
 				}
 			}
+		}
+
+		// check if the block does work inside statement blocks
+		if (toolboxBlock.error_in_statement_blocks && !master.getStatementInputsMatching(si -> true).isEmpty()) {
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					"Block " + type + " does not work inside statement blocks!"));
+			return;
 		}
 
 		// add dependencies to the master
@@ -176,11 +184,19 @@ public class BlocklyBlockCodeGenerator {
 
 		if (toolboxBlock.required_apis != null) {
 			for (String required_api : toolboxBlock.required_apis) {
-				if (!master.getWorkspace().getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
+				if (!master.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							"Block " + type + " requires " + required_api
 									+ " enabled in workspace settings, or the current generator does not support it"));
 				}
+			}
+		}
+
+		// add custom warnings if present
+		if (toolboxBlock.warnings != null) {
+			for (String warning : toolboxBlock.warnings) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+						L10N.t("blockly.warning." + warning, type)));
 			}
 		}
 

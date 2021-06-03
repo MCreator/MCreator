@@ -1,1 +1,1 @@
-This parameter sets the initial (and maximal base) health of the mob. 2 health = 1 heart
+Ce paramètre définit la vie initiale (et maximale) de l'entité. 2 unités de vie = 1 coeur.

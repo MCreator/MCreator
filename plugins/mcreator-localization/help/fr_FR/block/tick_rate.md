@@ -1,8 +1,8 @@
-This parameter controls how often the block will tick. If tick randomly is selected, this parameter
-has no effect.
+Ce paramètre contrôle la fréquence à laquelle le bloc est tick. Si Tick au hasard est sélectionné, ce paramètre
+n'a aucun effet.
 
-Keep in mind that usually, blocks naturally generated will not tick by default, unless tick randomly
-is used.
+Gardez à l'esprit qu'en général, les blocs générés naturellement ne tick pas par défaut, sauf si Tick au hasard
+est utilisé.
 
-Default tick rate of 10 means the block will tick each 10 world ticks. There are 20 world ticks in
-a second so this means the block will tick twice a second.
+Le taux de ticks par défaut de 10 signifie que le bloc cochera tous les 10 ticks mondiaux. Il y a 20 ticks mondiaux dans
+une seconde, cela signifie que le bloc tickera deux fois par seconde.

@@ -1,0 +1,1 @@
+This parameter controls the spinning acceleration of the particle.

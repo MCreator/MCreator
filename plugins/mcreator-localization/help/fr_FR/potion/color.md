@@ -1,3 +1,3 @@
-Select the color of the bottles and the arrow. 
+Sélectionnez la couleur des bouteilles et les flèches.
 
-You don't need this option if you don't want the items.
+Vous n'avez pas besoin de cette option si vous ne voulez pas les items.

@@ -1,2 +1,2 @@
-If you have enabled "Does item stay in crafting grid when crafted?", 
-you can enable this option to damage the item instead of simply keeping it in the crafting grid.
+Si vous avez activé "Est-ce que l'objet reste dans la grille de fabrication après la fabrication?",
+vous pouvez activer cette option pour endommager l'item au lieu de simplement le garder dans la grille d'artisanat.

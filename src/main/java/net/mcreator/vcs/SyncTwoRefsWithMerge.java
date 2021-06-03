@@ -29,16 +29,16 @@ import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.merge.RecursiveMerger;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SyncTwoRefsWithMerge {
 
-	public static SyncResult sync(Git git, @NotNull ObjectId local, @NotNull ObjectId remote,
+	public static SyncResult sync(Git git, @Nonnull ObjectId local, @Nonnull ObjectId remote,
 			ICustomSyncHandler customSyncHandler, @Nullable PreCustomMergeAction preCustomMergeAction, boolean dryRun)
 			throws GitAPIException, IOException, TooNewWorkspaceVerisonException {
 

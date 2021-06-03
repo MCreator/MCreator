@@ -71,7 +71,7 @@ public class MergeHandle<T> {
 	}
 
 	@Override public boolean equals(Object o) {
-		return o instanceof MergeHandle && ((MergeHandle) o).local.equals(local) && ((MergeHandle) o).remote
+		return o instanceof MergeHandle && ((MergeHandle<?>) o).local.equals(local) && ((MergeHandle<?>) o).remote
 				.equals(remote);
 	}
 

@@ -1,0 +1,21 @@
+_default: Object
+number:
+  - double
+  - 0
+string:
+  - String
+  - '""'
+logic:
+  - boolean
+  - false
+itemstack:
+  - ItemStack
+  - ItemStack.EMPTY
+direction:
+  - Direction
+  - Direction.NORTH
+world: IWorld
+entity: Entity
+map: HashMap
+advancement: Advancement
+dimensiontype: RegistryKey<World>

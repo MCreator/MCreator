@@ -1,2 +1,1 @@
-This parameter controls how many structures the game will generate around the first 
-structure generated. Use this option to make forests for example.
+Ce paramètre contrôle combien de structure le jeu générera autour de la première structure générée. Utilisez cette option pour faire des forêts par exemple.

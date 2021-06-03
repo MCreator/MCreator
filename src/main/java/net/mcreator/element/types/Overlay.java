@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.GridSettings;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.workspace.elements.ModElement;
@@ -41,8 +42,16 @@ import java.util.List;
 
 	public Procedure displayCondition;
 
+	public GridSettings gridSettings;
+
+	private Overlay() {
+		this(null);
+	}
+
 	public Overlay(ModElement element) {
 		super(element);
+
+		this.gridSettings = new GridSettings();
 	}
 
 	public int getBaseTextureWidth() {
@@ -56,11 +65,11 @@ import java.util.List;
 	private Dimension getBaseTextureSize() {
 		if (this.baseTexture != null && !this.baseTexture.equals("")) {
 			try {
-				ImageIcon texture = new ImageIcon(getModElement().getWorkspace().getFolderManager()
+				ImageIcon texture = new ImageIcon(getModElement().getFolderManager()
 						.getOtherTextureFile(FilenameUtils.removeExtension(this.baseTexture)).getAbsolutePath());
 				texture.getImage().flush();
 
-				texture = new ImageIcon(getModElement().getWorkspace().getFolderManager()
+				texture = new ImageIcon(getModElement().getFolderManager()
 						.getOtherTextureFile(FilenameUtils.removeExtension(this.baseTexture)).getAbsolutePath());
 
 				return new Dimension(texture.getIconWidth(), texture.getIconHeight());

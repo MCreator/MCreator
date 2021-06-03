@@ -1,1 +1,1 @@
-This parameter controls the texture of the portal like the purple animated texture of the Nether portal.
+Ce paramètre contrôle la texture du portail comme la texture violette animée du portail du Nether.

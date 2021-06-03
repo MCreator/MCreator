@@ -53,15 +53,14 @@ public class SyncRemoteToLocalAction extends VCSAction {
 			actionRegistry.getMCreator().setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 			// save workspace to FS first here, so the changes get detected by git
-			actionRegistry.getMCreator().getWorkspace().getFileManager().saveWorkspaceDirectlyAndWait();
+			actionRegistry.getMCreator().getFileManager().saveWorkspaceDirectlyAndWait();
 			// generate base at this point too
-			actionRegistry.getMCreator().getWorkspace().getGenerator().generateBase();
+			actionRegistry.getMCreator().getGenerator().generateBase();
 
 			Git git = actionRegistry.getMCreator().getWorkspace().getVCS().getGit();
 
 			CredentialsProvider credentialsProvider = actionRegistry.getMCreator().getWorkspace().getVCS()
-					.getCredentialsProvider(
-							actionRegistry.getMCreator().getWorkspace().getFolderManager().getWorkspaceFolder(),
+					.getCredentialsProvider(actionRegistry.getMCreator().getWorkspaceFolder(),
 							actionRegistry.getMCreator());
 
 			ICustomSyncHandler mergeHandler = new MCreatorWorkspaceSyncHandler(actionRegistry.getMCreator());

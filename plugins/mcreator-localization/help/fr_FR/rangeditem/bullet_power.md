@@ -1,1 +1,1 @@
-This parameter controls the speed of the bullet (its kinetic energy).
+Ce paramètre contrôle la vitesse de la balle (son énergie cinétique).

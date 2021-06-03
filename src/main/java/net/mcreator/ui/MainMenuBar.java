@@ -24,6 +24,7 @@ import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
+import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.image.ImageUtils;
 
@@ -48,7 +49,7 @@ public class MainMenuBar extends JMenuBar {
 
 		JMenu logo = new JMenu("  MCreator");
 		logo.setMnemonic('M');
-		logo.setIcon(new ImageIcon(ImageUtils.resizeAA(UIRES.get("icon").getImage(), 14, 14)));
+		logo.setIcon(new ImageIcon(ImageUtils.resizeAA(UIRES.getBuiltIn("icon").getImage(), 14, 14)));
 
 		logo.add(mcreator.actionRegistry.mcreatorWebsite);
 		logo.add(mcreator.actionRegistry.mcreatorCommunity);
@@ -71,9 +72,8 @@ public class MainMenuBar extends JMenuBar {
 		if (mcreator.getApplication() != null) {
 			JMenu recentWorkspacesList = new JMenu(L10N.t("menubar.file.recent"));
 			int number = 0;
-			for (WorkspaceSelector.RecentWorkspaceEntry recentWorkspaceEntry : mcreator.getApplication()
-					.getRecentWorkspaces()) {
-				if (recentWorkspaceEntry.getPath().equals(mcreator.getWorkspace().getFileManager().getWorkspaceFile()))
+			for (RecentWorkspaceEntry recentWorkspaceEntry : mcreator.getApplication().getRecentWorkspaces()) {
+				if (recentWorkspaceEntry.getPath().equals(mcreator.getFileManager().getWorkspaceFile()))
 					continue;
 
 				JMenuItem recent = new JMenuItem(recentWorkspaceEntry.getName());
@@ -140,6 +140,7 @@ public class MainMenuBar extends JMenuBar {
 
 		workspace.addSeparator();
 		workspace.add(mcreator.actionRegistry.setCreativeTabItemOrder);
+		workspace.add(mcreator.actionRegistry.injectDefaultTags);
 		workspace.addSeparator();
 		workspace.add(mcreator.actionRegistry.openWorkspaceFolder);
 		workspace.addSeparator();

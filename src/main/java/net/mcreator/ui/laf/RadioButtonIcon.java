@@ -27,7 +27,7 @@ public class RadioButtonIcon implements Icon {
 		return 14;
 	}
 
-	public void paintIcon(Component c, Graphics g, int x, int y) {
+	@Override public void paintIcon(Component c, Graphics g, int x, int y) {
 		JRadioButton cb = (JRadioButton) c;
 		ButtonModel model = cb.getModel();
 		int controlSize = getControlSize();
@@ -60,11 +60,11 @@ public class RadioButtonIcon implements Icon {
 		g.fillOval(x + 3, y + 3, controlSize - 7, controlSize - 7);
 	}
 
-	public int getIconWidth() {
+	@Override public int getIconWidth() {
 		return getControlSize();
 	}
 
-	public int getIconHeight() {
+	@Override public int getIconHeight() {
 		return getControlSize();
 	}
 }

@@ -19,6 +19,7 @@
 package net.mcreator.ui.vcs;
 
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.init.L10N;
 import org.eclipse.jgit.api.Status;
 
 import javax.swing.*;
@@ -29,37 +30,35 @@ public class LocalChangesPanel extends JPanel {
 	public LocalChangesPanel(Status status) {
 		super(new BorderLayout());
 
-		JLabel changes = new JLabel("<html>Local uncommited/unsynced files:<br><br>");
+		JLabel changes = L10N.label("dialog.remote_workspace.local_uncommited_changes");
 		JPanel changelist = new JPanel();
 		changelist.setLayout(new BoxLayout(changelist, BoxLayout.PAGE_AXIS));
 
 		for (String file : status.getAdded())
-			changelist.add(ComponentUtils.deriveFont(
-					ComponentUtils.setForeground(new JLabel("\u2022 " + file + " (added)"), new Color(155, 255, 185)),
-					11));
+			changelist.add(ComponentUtils.deriveFont(ComponentUtils
+					.setForeground(L10N.label("dialog.remote_workspace.added", file), new Color(155, 255, 185)), 11));
 
 		for (String file : status.getChanged())
-			changelist.add(ComponentUtils.deriveFont(
-					ComponentUtils.setForeground(new JLabel("\u2022 " + file + " (changed)"), new Color(225, 255, 164)),
-					11));
+			changelist.add(ComponentUtils.deriveFont(ComponentUtils
+					.setForeground(L10N.label("dialog.remote_workspace.changed", file), new Color(225, 255, 164)), 11));
 
 		for (String file : status.getRemoved())
-			changelist.add(ComponentUtils.deriveFont(
-					ComponentUtils.setForeground(new JLabel("\u2022 " + file + " (removed)"), new Color(251, 255, 154)),
-					11));
+			changelist.add(ComponentUtils.deriveFont(ComponentUtils
+					.setForeground(L10N.label("dialog.remote_workspace.removed", file), new Color(251, 255, 154)), 11));
 
 		for (String file : status.getMissing())
-			changelist.add(ComponentUtils.deriveFont(
-					ComponentUtils.setForeground(new JLabel("\u2022 " + file + " (missing)"), new Color(255, 165, 139)),
-					11));
+			changelist.add(ComponentUtils.deriveFont(ComponentUtils
+					.setForeground(L10N.label("dialog.remote_workspace.missing", file), new Color(255, 165, 139)), 11));
 
 		for (String file : status.getModified())
 			changelist.add(ComponentUtils.deriveFont(ComponentUtils
-					.setForeground(new JLabel("\u2022 " + file + " (modified)"), new Color(225, 255, 164)), 11));
+							.setForeground(L10N.label("dialog.remote_workspace.modified", file), new Color(225, 255, 164)),
+					11));
 
 		for (String file : status.getConflicting())
 			changelist.add(ComponentUtils.deriveFont(ComponentUtils
-					.setForeground(new JLabel("\u2022 " + file + " (conflicting)"), new Color(255, 165, 139)), 11));
+							.setForeground(L10N.label("dialog.remote_workspace.conflicting", file), new Color(255, 165, 139)),
+					11));
 
 		JScrollPane cscroll = new JScrollPane(changelist);
 		cscroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

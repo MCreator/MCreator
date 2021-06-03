@@ -1,3 +1,2 @@
-Mob name is used in death messages,
-is shown in in-game menus and other
-places where visual name display is possible.
+Le nom de l'entité est utilisé dans les messages de mort, est montré dans les menus en jeu et
+les autres endroits où les noms visuels sont affichés si possible.

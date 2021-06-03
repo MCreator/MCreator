@@ -24,7 +24,6 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.OS;
 import net.mcreator.io.net.analytics.Analytics;
 import net.mcreator.io.net.analytics.DeviceInfo;
 import net.mcreator.io.net.api.D8WebAPI;
@@ -33,18 +32,23 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.util.DiscordClient;
-import net.mcreator.ui.component.util.MacOSUIUtil;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
+import net.mcreator.ui.dialogs.UpdatePluginDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
+import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
+import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
+import net.mcreator.util.SoundUtils;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -73,11 +77,26 @@ public final class MCreatorApplication {
 
 	private final DiscordClient discordClient;
 
+	private final TaskbarIntegration taskbarIntegration;
+
 	private MCreatorApplication(List<String> launchArguments) {
+
 		final SplashScreen splashScreen = new SplashScreen();
 		splashScreen.setVisible(true);
 
-		splashScreen.setProgress(5, "Loading UI core");
+		splashScreen.setProgress(5, "Loading plugins");
+
+		// Plugins are loaded before the Splash screen is visible, so every image can be changed
+		PluginLoader.initInstance();
+
+		splashScreen.setProgress(10, "Loading UI Themes");
+
+		// We load UI themes now as theme plugins are loaded at this point
+		ThemeLoader.initUIThemes();
+
+		splashScreen.setProgress(15, "Loading UI core");
+
+		UIRES.preloadImages();
 
 		try {
 			UIManager.setLookAndFeel(new MCreatorLookAndFeel());
@@ -85,16 +104,11 @@ public final class MCreatorApplication {
 			LOG.error("Failed to set look and feel: " + e.getMessage());
 		}
 
-		splashScreen.setProgress(20, "Preloading resources");
+		SoundUtils.initSoundSystem();
 
-		UIRES.preloadImages();
-		TiledImageCache.loadAndTileImages();
+		taskbarIntegration = new TaskbarIntegration();
 
-		splashScreen.setProgress(30, "Loading plugins");
-
-		PluginLoader.initInstance();
-
-		splashScreen.setProgress(40, "Loading interface components");
+		splashScreen.setProgress(25, "Loading interface components");
 
 		// load translations after plugins are loaded
 		L10N.initTranslations();
@@ -102,29 +116,43 @@ public final class MCreatorApplication {
 		// preload help entries cache
 		HelpLoader.preloadCache();
 
-		splashScreen.setProgress(45, "Loading plugin data");
+		splashScreen.setProgress(35, "Loading plugin data");
 
 		// load datalists and icons for them after plugins are loaded
 		BlockItemIcons.init();
 		DataListLoader.preloadCache();
 
-		// load templates for image maker
+		splashScreen.setProgress(45, "Building plugin cache");
+
+		// load templates for image makers
 		ImageMakerTexturesCache.init();
+		ArmorMakerTexturesCache.init();
+
+		splashScreen.setProgress(55, "Loading plugin templates");
 
 		// load apis defined by plugins after plugins are loaded
 		ModAPIManager.initAPIs();
 
+		// load variable elements
+		VariableElementTypeLoader.loadVariableTypes();
+
 		// load blockly blocks after plugins are loaded
 		BlocklyLoader.init();
 
-		splashScreen.setProgress(55, "Loading generators");
+		// load entity animations for the Java Model animation editor
+		EntityAnimationsLoader.init();
+
+		splashScreen.setProgress(60, "Preloading resources");
+		TiledImageCache.loadAndTileImages();
+
+		splashScreen.setProgress(70, "Loading generators");
 
 		Set<String> fileNamesUnordered = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
 		List<String> fileNames = new ArrayList<>(fileNamesUnordered);
 		Collections.sort(fileNames);
 		int i = 0;
 		for (String generator : fileNames) {
-			splashScreen.setProgress(55 + i * ((85 - 55) / fileNames.size()),
+			splashScreen.setProgress(70 + i * ((90 - 70) / fileNames.size()),
 					"Loading generators: " + generator.split("/")[0]);
 			LOG.info("Loading generator: " + generator);
 			generator = generator.replace("/generator.yaml", "");
@@ -136,7 +164,7 @@ public final class MCreatorApplication {
 			i++;
 		}
 
-		splashScreen.setProgress(88, "Initiating user session");
+		splashScreen.setProgress(93, "Initiating user session");
 
 		deviceInfo = new DeviceInfo();
 		analytics = new Analytics(deviceInfo);
@@ -145,13 +173,21 @@ public final class MCreatorApplication {
 
 		// we do async login attempt
 		UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
+		UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(splashScreen);
 
 		splashScreen.setProgress(100, "Loading MCreator windows");
 
-		if (OS.getOS() == OS.MAC) {
-			MacOSUIUtil.registerAboutHandler(() -> AboutAction.showDialog(null));
-			MacOSUIUtil.registerPreferencesHandler(() -> new PreferencesDialog(null, null));
-			MacOSUIUtil.registerQuitHandler(this::closeApplication);
+		try {
+			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_ABOUT))
+				Desktop.getDesktop().setAboutHandler(aboutEvent -> AboutAction.showDialog(null));
+
+			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_PREFERENCES))
+				Desktop.getDesktop().setPreferencesHandler(preferencesEvent -> new PreferencesDialog(null, null));
+
+			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_QUIT_HANDLER))
+				Desktop.getDesktop().setQuitHandler((e, response) -> MCreatorApplication.this.closeApplication());
+		} catch (Exception e) {
+			LOG.warn("Failed to register desktop handlers", e);
 		}
 
 		discordClient = new DiscordClient();
@@ -232,8 +268,8 @@ public final class MCreatorApplication {
 						}
 					}
 				}
-				this.workspaceSelector.addRecentWorkspace(new WorkspaceSelector.RecentWorkspaceEntry(
-						mcreator.getWorkspace().getWorkspaceSettings().getModName(), workspaceFile));
+				this.workspaceSelector
+						.addOrUpdateRecentWorkspace(new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile));
 			}
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
 			LOG.fatal("Failed to open workspace!", corruptedWorkspaceFile);
@@ -289,6 +325,8 @@ public final class MCreatorApplication {
 
 		discordClient.close(); // close discord client
 
+		SoundUtils.close();
+
 		// we close all windows and exit fx platform
 		try {
 			LOG.debug("Stopping AWT and FX threads");
@@ -316,8 +354,8 @@ public final class MCreatorApplication {
 		workspaceSelector.setVisible(true);
 	}
 
-	List<WorkspaceSelector.RecentWorkspaceEntry> getRecentWorkspaces() {
-		return workspaceSelector.recentWorkspaces.list;
+	List<RecentWorkspaceEntry> getRecentWorkspaces() {
+		return workspaceSelector.getRecentWorkspaces().getList();
 	}
 
 	public List<MCreator> getOpenMCreators() {
@@ -327,4 +365,9 @@ public final class MCreatorApplication {
 	public DiscordClient getDiscordClient() {
 		return discordClient;
 	}
+
+	public TaskbarIntegration getTaskbarIntegration() {
+		return taskbarIntegration;
+	}
+
 }

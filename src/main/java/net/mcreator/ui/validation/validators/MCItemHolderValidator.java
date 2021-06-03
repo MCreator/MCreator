@@ -39,7 +39,7 @@ public class MCItemHolderValidator implements Validator {
 
 	@Override public ValidationResult validate() {
 		if (holder.containsItem() || (requirement != null && !requirement.isSelected()))
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+			return Validator.ValidationResult.PASSED;
 		else
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, "Please select element");
 	}

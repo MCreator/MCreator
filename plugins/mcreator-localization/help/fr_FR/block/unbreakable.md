@@ -1,3 +1,3 @@
-This parameter defines if the player will be able to mine it. 
+Ce paramètre définit si le joueur pourra le miner.
 
-Vanilla examples: Bedrock and command block
+Exemples Vanilla: Bedrock et bloc de commande

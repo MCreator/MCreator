@@ -21,8 +21,8 @@ package net.mcreator.blockly.data;
 import com.google.gson.JsonElement;
 import net.mcreator.blockly.IBlockGenerator;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ToolboxBlock {
@@ -30,17 +30,20 @@ public class ToolboxBlock {
 	public String machine_name;
 	public IBlockGenerator.BlockType type;
 
+	public boolean error_in_statement_blocks = false;
+
 	@Nullable public List<String> toolbox_init;
 
 	@Nullable public List<String> fields;
 	@Nullable public List<String> inputs;
 	@Nullable public List<StatementInput> statements;
 	@Nullable public List<Dependency> dependencies;
+	@Nullable public List<String> warnings;
 
 	@Nullable public List<String> required_apis;
 
+	/* Fields below are not included in block JSON but loaded dynamically */
 	public JsonElement blocklyJSON;
-
 	@Nullable public String toolboxXML;
 	@Nullable public ToolboxCategory toolboxCategory;
 

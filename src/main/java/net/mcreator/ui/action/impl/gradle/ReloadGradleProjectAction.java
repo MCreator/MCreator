@@ -27,7 +27,7 @@ public class ReloadGradleProjectAction extends GradleAction {
 	public ReloadGradleProjectAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.gradle.reload_project"), evt -> {
 			ProgressDialog progressDialog = new ProgressDialog(actionRegistry.getMCreator(),
-					L10N.t("dialog.setup_workspace.title"));
+					L10N.t("dialog.reload_gradle_project.title"));
 			new Thread(() -> {
 				ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 						L10N.t("dialog.setup_workspace.progress.reloading_gradle_dependencies"));
@@ -42,7 +42,7 @@ public class ReloadGradleProjectAction extends GradleAction {
 
 					new Thread(() -> {
 						try {
-							actionRegistry.getMCreator().getWorkspace().getGenerator().reloadGradleCaches();
+							actionRegistry.getMCreator().getGenerator().reloadGradleCaches();
 							p3.ok();
 							progressDialog.hideAll();
 						} catch (Exception e) {

@@ -1,1 +1,1 @@
-This trigger triggers the procedure when the entity falls.
+Déclenche la procédure quand l'entité tombe.

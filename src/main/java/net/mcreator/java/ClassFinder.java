@@ -39,29 +39,31 @@ public class ClassFinder {
 
 	private static final Logger LOG = LogManager.getLogger("Class Finder");
 
-	public static DeclarationFinder.InClassPosition fqdnToInClassPosition(Workspace workspace, String classfqdn,
+	public static DeclarationFinder.InClassPosition fqdnToInClassPosition(Workspace workspace, String classIn,
 			String packagefqdn, JarManager jarManager) {
 		DeclarationFinder.InClassPosition position = new DeclarationFinder.InClassPosition();
+		String classFQDN;
 
 		// if there is no package, it is a class in the current package
-		if (!classfqdn.contains(".")) {
+		if (!classIn.contains(".")) {
 			if (new File(workspace.getGenerator().getSourceRoot(),
-					packagefqdn.replace(".", "/") + "/" + classfqdn + ".java").isFile()) {
+					packagefqdn.replace(".", "/") + "/" + classIn + ".java").isFile()) {
 				position.classFileNode = new File(workspace.getGenerator().getSourceRoot(),
-						packagefqdn.replace(".", "/") + "/" + classfqdn + ".java");
+						packagefqdn.replace(".", "/") + "/" + classIn + ".java");
 				position.openInReadOnly = false;
 				position.virtualFile = position.classFileNode;
 				return position;
 			}
 
-			// if there was no package, but the class was not found in SRCROOT, add package declatation to it
-			classfqdn = packagefqdn + "." + classfqdn;
-		}
+			// if there was no package, but the class was not found in SRCROOT, add package declaration to it
+			classFQDN = packagefqdn + "." + classIn;
+		} else
+			classFQDN = classIn;
 
-		// next we check if the class might be located in the src direcotry of the project under the given fqdn
-		if (new File(workspace.getGenerator().getSourceRoot(), classfqdn.replace(".", "/") + ".java").isFile()) {
+		// next we check if the class might be located in the src directory of the project under the given fqdn
+		if (new File(workspace.getGenerator().getSourceRoot(), classFQDN.replace(".", "/") + ".java").isFile()) {
 			position.classFileNode = new File(workspace.getGenerator().getSourceRoot(),
-					classfqdn.replace(".", "/") + ".java");
+					classFQDN.replace(".", "/") + ".java");
 			position.openInReadOnly = false;
 			position.virtualFile = position.classFileNode;
 			return position;
@@ -69,16 +71,16 @@ public class ClassFinder {
 
 		// next we try to find the declaration using JarManager to check
 		// if the class we are looking for is loaded with source
-		SourceLocation sourceLocation = jarManager.getSourceLocForClass(classfqdn);
-		DeclarationFinder.InClassPosition position1 = sourceLocationToInClassPosition(sourceLocation, classfqdn);
+		SourceLocation sourceLocation = jarManager.getSourceLocForClass(classFQDN);
+		DeclarationFinder.InClassPosition position1 = sourceLocationToInClassPosition(sourceLocation, classFQDN);
 		if (position1 != null)
 			return position1;
 
 		// next we try to find the declaration using JarManager to check
 		// if the class we are looking for is loaded with source
 		// this time in default java lang package
-		sourceLocation = jarManager.getSourceLocForClass("java.lang." + classfqdn);
-		position1 = sourceLocationToInClassPosition(sourceLocation, "java.lang." + classfqdn);
+		sourceLocation = jarManager.getSourceLocForClass("java.lang." + classIn);
+		position1 = sourceLocationToInClassPosition(sourceLocation, "java.lang." + classIn);
 
 		return position1; // position1 can be null if position was not found
 	}

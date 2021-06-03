@@ -62,15 +62,13 @@ public class CodeErrorDialog {
 		boolean moddefinitionfileerrors = false;
 
 		for (File problematicFile : problematicFiles) {
-			ModElement modElementWithError = mcreator.getWorkspace().getGenerator()
-					.getModElementThisFileBelongsTo(problematicFile);
+			ModElement modElementWithError = mcreator.getGenerator().getModElementThisFileBelongsTo(problematicFile);
 			if (modElementWithError != null) {
 				problematicMods.add(modElementWithError);
 				modElementWithError.setCompiles(false);
 				mcreator.getWorkspace().updateModElement(modElementWithError);
-			} else if (FileIO.isFileOnFileList(
-					mcreator.getWorkspace().getGenerator().getModBaseGeneratorTemplatesList(false).stream()
-							.map(GeneratorTemplate::getFile).collect(Collectors.toList()), problematicFile)) {
+			} else if (FileIO.isFileOnFileList(mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).stream()
+					.map(GeneratorTemplate::getFile).collect(Collectors.toList()), problematicFile)) {
 				moddefinitionfileerrors = true;
 			} else {
 				LOG.warn("[ForgeGradleUtil] Error from non MCreator generated class!");
@@ -85,8 +83,8 @@ public class CodeErrorDialog {
 		if (moddefinitionfileerrors) { // first we try to fix mod definition errors
 			Object[] options = { "Regenerate code", "Ignore error" };
 			int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.code_error.compilation_desc"),
-					L10N.t("dialog.code_error.compilation_title"), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE,
-					null, options, options[0]);
+					L10N.t("dialog.code_error.compilation_title"), JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 			if (n == 0) {
 				RegenerateCodeAction.regenerateCode(mcreator, true, true);
 			}
@@ -110,15 +108,17 @@ public class CodeErrorDialog {
 
 		JPanel list = new JPanel(new BorderLayout());
 		list.add("North", L10N.label("dialog.code_error.compilation_list"));
-
 		list.add("Center", sp);
 
-		Object[] options = { "OK", "Show console tab", "Support page" };
+		Object[] options = { "Show in workspace", "Show build log", "Do nothing", "Support" };
 		int n = JOptionPane.showOptionDialog(mcreator, list, "Some mod elements cause compilation errors",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-		if (n == 1) {
+		if (n == 0) {
+			mcreator.mcreatorTabs.showTab(mcreator.workspaceTab);
+			mcreator.mv.search.setText("f:err");
+		} else if (n == 1) {
 			mcreator.mcreatorTabs.showTab(mcreator.consoleTab);
-		} else if (n == 2) {
+		} else if (n == 3) {
 			DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/support");
 		}
 

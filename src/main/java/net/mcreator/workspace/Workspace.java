@@ -19,26 +19,24 @@
 package net.mcreator.workspace;
 
 import net.mcreator.Launcher;
-import net.mcreator.element.ModElementType;
+import net.mcreator.element.BaseType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.vcs.WorkspaceVCS;
-import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.ModElementManager;
-import net.mcreator.workspace.elements.SoundElement;
-import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.misc.WorkspaceInfo;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.Closeable;
@@ -48,18 +46,21 @@ import java.io.IOException;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
-public class Workspace implements Closeable {
+public class Workspace implements Closeable, IGeneratorProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace");
 
-	private ConcurrentHashMap<ModElementType.BaseType, Integer> id_map = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<BaseType, Integer> id_map = new ConcurrentHashMap<>();
 	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language_map = new ConcurrentHashMap<String, ConcurrentHashMap<String, String>>() {{
 		put("en_us", new ConcurrentHashMap<>());
 	}};
+
+	protected FolderElement foldersRoot = FolderElement.ROOT;
 
 	private WorkspaceSettings workspaceSettings;
 	private long mcreatorVersion;
@@ -70,8 +71,9 @@ public class Workspace implements Closeable {
 	protected transient Generator generator;
 	@Nullable private transient WorkspaceVCS vcs;
 	private transient boolean regenerateRequired = false;
+	private transient boolean failingGradleDependencies = false;
 
-	@NotNull private final transient WorkspaceInfo workspaceInfo;
+	@Nonnull private final transient WorkspaceInfo workspaceInfo;
 
 	private Workspace(WorkspaceSettings workspaceSettings) {
 		this();
@@ -82,12 +84,17 @@ public class Workspace implements Closeable {
 		this.workspaceInfo = new WorkspaceInfo(this);
 	}
 
-	public WorkspaceSettings getWorkspaceSettings() {
+	@Override public WorkspaceSettings getWorkspaceSettings() {
 		return workspaceSettings;
 	}
 
 	public void setWorkspaceSettings(WorkspaceSettings workspaceSettings) {
 		this.workspaceSettings = workspaceSettings;
+		markDirty();
+	}
+
+	public void setFoldersRoot(FolderElement foldersRoot) {
+		this.foldersRoot = foldersRoot;
 		markDirty();
 	}
 
@@ -107,11 +114,15 @@ public class Workspace implements Closeable {
 		return language_map;
 	}
 
-	public ConcurrentHashMap<ModElementType.BaseType, Integer> getIDMap() {
+	public ConcurrentHashMap<BaseType, Integer> getIDMap() {
 		return id_map;
 	}
 
-	@NotNull public WorkspaceInfo getWorkspaceInfo() {
+	public FolderElement getFoldersRoot() {
+		return foldersRoot;
+	}
+
+	@Nonnull public WorkspaceInfo getWorkspaceInfo() {
 		return workspaceInfo;
 	}
 
@@ -258,7 +269,7 @@ public class Workspace implements Closeable {
 		markDirty();
 	}
 
-	public int getNextFreeIDAndIncrease(ModElementType.BaseType baseType) {
+	public int getNextFreeIDAndIncrease(BaseType baseType) {
 		if (id_map.get(baseType) == null) {
 			id_map.put(baseType, 1);
 			markDirty();
@@ -280,19 +291,19 @@ public class Workspace implements Closeable {
 		return mcreatorVersion;
 	}
 
-	public WorkspaceFileManager getFileManager() {
+	@Override public WorkspaceFileManager getFileManager() {
 		return fileManager;
 	}
 
-	public WorkspaceFolderManager getFolderManager() {
+	@Override public WorkspaceFolderManager getFolderManager() {
 		return fileManager.getFolderManager();
 	}
 
-	public Generator getGenerator() {
+	@Override public Generator getGenerator() {
 		return generator;
 	}
 
-	public ModElementManager getModElementManager() {
+	@Override public ModElementManager getModElementManager() {
 		return fileManager.getModElementManager();
 	}
 
@@ -307,7 +318,7 @@ public class Workspace implements Closeable {
 		return workspaceSettings.getModID();
 	}
 
-	void markDirty() {
+	public void markDirty() {
 		changed = true;
 	}
 
@@ -323,6 +334,25 @@ public class Workspace implements Closeable {
 		for (ModElement modElement : mod_elements) {
 			modElement.setWorkspace(this);
 			modElement.reinit();
+		}
+	}
+
+	void reloadFolderStructure() {
+		this.foldersRoot.updateStructure();
+
+		Set<String> validPaths = foldersRoot.getRecursiveFolderChildren().stream().map(FolderElement::getPath)
+				.collect(Collectors.toSet());
+
+		for (ModElement modElement : mod_elements) {
+			if (modElement.getFolderPath() != null && !modElement.getFolderPath()
+					.equals(FolderElement.ROOT.getName())) {
+				if (!validPaths.contains(modElement.getFolderPath())) {
+					LOG.warn("Mod element: " + modElement.getName() + " has invalid path: " + modElement
+							.getFolderPath());
+					// reset orphaned elements to root
+					modElement.setParentFolder(null);
+				}
+			}
 		}
 	}
 
@@ -345,6 +375,24 @@ public class Workspace implements Closeable {
 		this.fileManager.close(); // first close current workspace file
 		this.fileManager = null; // reset reference
 		this.fileManager = new WorkspaceFileManager(workspaceFile, this); // new file manager instance for the new file
+	}
+
+	public void markFailingGradleDependencies() {
+		this.failingGradleDependencies = true;
+		LOG.error("Detected failing Gradle dependencies. Will try to recover on next build.");
+	}
+
+	public boolean checkFailingGradleDependenciesAndClear() {
+		boolean retval = failingGradleDependencies;
+		if (retval)
+			LOG.warn("Reported failing Gradle dependencies in the workspace");
+
+		this.failingGradleDependencies = false;
+		return retval;
+	}
+
+	@Override public @Nonnull Workspace getWorkspace() {
+		return this;
 	}
 
 	public static Workspace readFromFS(File workspaceFile, @Nullable Window ui)
@@ -417,6 +465,7 @@ public class Workspace implements Closeable {
 			}
 
 			retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
+			retval.reloadFolderStructure(); // assign parents to the folders
 			LOG.info("Loaded workspace file " + workspaceFile);
 			return retval;
 		} else {
@@ -442,6 +491,7 @@ public class Workspace implements Closeable {
 		Workspace workspace_on_fs = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
 		loadStoredDataFrom(workspace_on_fs);
 		reloadModElements();
+		reloadFolderStructure();
 		LOG.info("Reloaded current workspace from the workspace file");
 	}
 
@@ -451,6 +501,7 @@ public class Workspace implements Closeable {
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;
 		this.language_map = other.language_map;
+		this.foldersRoot = other.foldersRoot;
 		this.mcreatorVersion = other.mcreatorVersion;
 		this.workspaceSettings = other.workspaceSettings;
 		this.workspaceSettings.setWorkspace(this);
@@ -472,6 +523,7 @@ public class Workspace implements Closeable {
 			this.generator.setGradleCache(this.generator.getGradleCache());
 			this.fileManager = original.getFileManager();
 			this.reloadModElements();
+			this.reloadFolderStructure();
 		}
 
 	}

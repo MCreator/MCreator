@@ -1,3 +1,3 @@
-This parameter controls the block on the top layer of the biome. 
+Ce paramètre contrôle le bloc sur la couche supérieure du biome.
 
-Generally, vanilla or custom grass is used here for most biomes.
+Généralement, l'herbe vanilla ou personnalisée est utilisée ici pour la plupart des biomes.

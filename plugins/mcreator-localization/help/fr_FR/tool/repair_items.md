@@ -1,1 +1,1 @@
-The item(s) which the tool can be repaired in an anvil with.
+Le(s) item(s) pouvant réparer l'outil dans une enclume.

@@ -64,7 +64,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 
 		setTitle(L10N.t("dialog.item_selector.title"));
 		setModal(true);
-		setIconImage(UIRES.get("icon").getImage());
+		setIconImage(UIRES.getBuiltIn("icon").getImage());
 		list.setCellRenderer(new Render());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -142,10 +142,10 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 								itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
 						}
 					} else {
-						JOptionPane.showMessageDialog(this,
-								L10N.t("dialog.item_selector.error_invalid_tag_name_message"),
-								L10N.t("dialog.item_selector.error_invalid_tag_name_title"),
-								JOptionPane.ERROR_MESSAGE);
+						JOptionPane
+								.showMessageDialog(this, L10N.t("dialog.item_selector.error_invalid_tag_name_message"),
+										L10N.t("dialog.item_selector.error_invalid_tag_name_title"),
+										JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			});
@@ -178,8 +178,8 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		mods.addActionListener(event -> filterField.setText("mcreator"));
 
 		JComponent top = PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.item_selector.name"), jtf,
-				L10N.label("dialog.item_selector.display_filter"), filterField, new JLabel(""),
-				all, blocks, items, mods);
+				L10N.label("dialog.item_selector.display_filter"), filterField, new JLabel(""), all, blocks, items,
+				mods);
 
 		top.setBorder(BorderFactory.createEmptyBorder(0, 0, 7, 0));
 

@@ -28,10 +28,10 @@ import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 import org.apache.commons.io.FilenameUtils;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -45,7 +45,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog {
 		setModal(true);
 
 		VComboBox<String> textureSelector = new SearchableComboBox<>(
-				editor.mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				editor.mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
 						.toArray(String[]::new));
 		textureSelector.setRenderer(new WTextureComboBoxRenderer.OtherTextures(editor.mcreator.getWorkspace()));
 
@@ -59,8 +59,8 @@ public class ImageDialog extends AbstractWYSIWYGDialog {
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/image_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.image_display_condition"), ProcedureSelector.Side.CLIENT, false,
-				VariableElementType.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				VariableElementTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		displayCondition.refreshList();
 
 		add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(options, displayCondition, 20, 5)));
@@ -87,7 +87,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog {
 			String imageTxt = textureSelector.getSelectedItem();
 			if (imageTxt != null) {
 				if (image == null) {
-					ImageIcon a = new ImageIcon(editor.mcreator.getWorkspace().getFolderManager()
+					ImageIcon a = new ImageIcon(editor.mcreator.getFolderManager()
 							.getOtherTextureFile(FilenameUtils.removeExtension(imageTxt)).getAbsolutePath());
 
 					if (scale1x.isSelected())

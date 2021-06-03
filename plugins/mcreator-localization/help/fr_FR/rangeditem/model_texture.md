@@ -1,1 +1,1 @@
-This texture is the texture of the bullet model if custom model is used.
+Cette texture est la texture du modèle de balle si un modèle personnalisé est utilisé.

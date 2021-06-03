@@ -1,1 +1,1 @@
-This parameter controls the number of reeds (plants like sugar canes) in custom biome per chunk.
+Ce paramètre contrôle le nombre de roseaux (plantes comme les cannes à sucre) dans le biome personnalisé par tronçon.

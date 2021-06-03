@@ -1,0 +1,1 @@
+C'est la valeur par défaut de la GameRule. La GameRule aura cette valeur tant que quelque chose dans le jeu (joueur ou commande) ne la change.

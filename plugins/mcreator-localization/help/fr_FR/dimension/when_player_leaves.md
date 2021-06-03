@@ -1,1 +1,1 @@
-The procedure will be executed when a player leaves the dimension.
+Cette procédure sera exécutée quand un joueur quitte la dimension.

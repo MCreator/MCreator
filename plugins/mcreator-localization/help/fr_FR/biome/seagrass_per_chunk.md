@@ -1,0 +1,1 @@
+Ce paramètre contrôle le nombre de grandes herbes aquatiques par tronçon dans votre biome.

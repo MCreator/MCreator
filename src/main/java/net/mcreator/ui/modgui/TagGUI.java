@@ -27,14 +27,15 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.EntityListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.ModElementListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.TagsNameValidator;
 import net.mcreator.workspace.elements.ModElement;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
@@ -44,12 +45,13 @@ import java.util.Objects;
 public class TagGUI extends ModElementGUI<Tag> {
 
 	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "forge", "minecraft", "mod" });
-	private final JComboBox<String> type = new JComboBox<>(new String[] { "Items", "Blocks", "Functions" });
+	private final JComboBox<String> type = new JComboBox<>(new String[] { "Items", "Blocks", "Entities", "Functions" });
 
 	private MCItemListField items;
 	private MCItemListField blocks;
 
 	private ModElementListField functions;
+	private EntityListField entities;
 
 	private final VComboBox<String> name = new VComboBox<>();
 
@@ -66,6 +68,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		items = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 		blocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		functions = new ModElementListField(mcreator, ModElementType.FUNCTION);
+		entities = new EntityListField(mcreator);
 
 		name.setValidator(new TagsNameValidator<>(name, false));
 		name.enableRealtimeValidation();
@@ -74,6 +77,8 @@ public class TagGUI extends ModElementGUI<Tag> {
 		name.addItem("category/tag");
 		name.addItem("tick");
 		name.addItem("load");
+		name.addItem("logs");
+		name.addItem("beacon_base_blocks");
 
 		name.setEditable(true);
 		name.setOpaque(false);
@@ -86,6 +91,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		valuesPan.add(items, "Items");
 		valuesPan.add(blocks, "Blocks");
 		valuesPan.add(functions, "Functions");
+		valuesPan.add(entities, "Entities");
 
 		if (isEditingMode()) {
 			type.setEnabled(false);
@@ -102,7 +108,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 			});
 		}
 
-		JPanel main = new JPanel(new GridLayout(4, 2, 10, 10));
+		JPanel main = new JPanel(new GridLayout(4, 2, 10, 2));
 		main.setOpaque(false);
 
 		main.add(HelpUtils
@@ -139,6 +145,8 @@ public class TagGUI extends ModElementGUI<Tag> {
 		blocks.setListElements(tag.blocks);
 
 		functions.setListElements(tag.functions);
+
+		entities.setListElements(tag.entities);
 	}
 
 	@Override public Tag getElementFromGUI() {
@@ -149,6 +157,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		tag.items = items.getListElements();
 		tag.blocks = blocks.getListElements();
 		tag.functions = functions.getListElements();
+		tag.entities = entities.getListElements();
 
 		tag.name = name.getEditor().getItem().toString();
 		return tag;

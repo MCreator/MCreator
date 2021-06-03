@@ -20,6 +20,7 @@ package net.mcreator.ui.vcs;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.vcs.FileSyncHandle;
 import net.mcreator.vcs.diff.MergeHandle;
 
@@ -41,8 +42,8 @@ class VCSFileMergeDialog {
 
 		List<MergeHandleComponent> mergeHandleComponents = new ArrayList<>();
 
-		JButton allLocal = new JButton("All local");
-		JButton allRemote = new JButton("All remote");
+		JButton allLocal = L10N.button("dialog.vcs.file_merge_all_local");
+		JButton allRemote = L10N.button("dialog.vcs.file_merge_all_remote");
 		allLocal.addActionListener(e -> mergeHandleComponents.forEach(mhc -> mhc.local.setSelected(true)));
 		allRemote.addActionListener(e -> mergeHandleComponents.forEach(mhc -> mhc.remote.setSelected(true)));
 		merges.add(PanelUtils.westAndEastElement(allLocal, allRemote));
@@ -57,14 +58,10 @@ class VCSFileMergeDialog {
 		scrollPane.setPreferredSize(new Dimension(650, 350));
 
 		dialog.add("Center", scrollPane);
-		dialog.add("North", new JLabel(
-				"<html><b>Some of the workspace files were changed both on remote and your local side.</b>"
-						+ "<br><small>For such files, you need to choose if you want to keep your local changes or the changes from the"
-						+ "<br>remote workspace. To do this, select local or remote side to be preserved for each file listed below<br>"
-						+ "and click \"Finish merge\" after you are done."));
+		dialog.add("North", L10N.label("dialog.vcs.file_merge_manual_message"));
 
-		JOptionPane.showOptionDialog(mcreator, dialog, "Manual files merge required", JOptionPane.DEFAULT_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, new String[] { "Finish merge" }, null);
+		JOptionPane.showOptionDialog(mcreator, dialog, L10N.t("dialog.vcs.file_merge_manual_required"),
+				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { "Finish merge" }, null);
 	}
 
 }

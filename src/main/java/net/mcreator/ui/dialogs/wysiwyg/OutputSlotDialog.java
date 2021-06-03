@@ -30,8 +30,8 @@ import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
@@ -65,7 +65,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog {
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("dialog.gui.slot_id_must_be_number"));
 			}
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+			return Validator.ValidationResult.PASSED;
 		});
 		slotID.setText("0");
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_id"), slotID));
@@ -92,7 +92,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog {
 		eh2.refreshList();
 
 		ProcedureSelector eh3 = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_transferred_from_slot"),
-				editor.mcreator, L10N.t("dialog.gui.slot_event_transfered_from_slot"), ProcedureSelector.Side.BOTH,
+				editor.mcreator, L10N.t("dialog.gui.slot_event_transferred_from_slot"), ProcedureSelector.Side.BOTH,
 				false, Dependency
 				.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map/amount:number"));
 		eh3.refreshList();

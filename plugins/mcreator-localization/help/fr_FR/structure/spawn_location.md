@@ -1,1 +1,1 @@
-That parameter controls where your structure will be generated in the world.
+Ce paramètre contrôle où votre structure sera générée dans le monde.

@@ -20,10 +20,10 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import org.apache.commons.io.FilenameUtils;
-import org.jetbrains.annotations.Nullable;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -77,6 +77,7 @@ public class BlockItemIcons {
 		put("pickaxe", 				"IRON_PICKAXE");
 		put("axe", 					"IRON_AXE");
 		put("shovel", 				"IRON_SHOVEL");
+		put("hoe",					"IRON_HOE");
 
 		// biome types
 		put("WARM", 				"GRASS");

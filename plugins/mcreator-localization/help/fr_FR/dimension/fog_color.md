@@ -1,1 +1,1 @@
-The color of the fog inside the dimension. 
+La couleur du brouillard dans la dimension.

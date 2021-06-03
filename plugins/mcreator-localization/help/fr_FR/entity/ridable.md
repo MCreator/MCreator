@@ -1,3 +1,3 @@
-These parameter enables the player to mount to this entity.
+Ces paramètres autorisent le joueur à monter sur l'entité.
 
-You can enable optional controlls too.
+Vous pouvez activer des contrôles optionels aussi.

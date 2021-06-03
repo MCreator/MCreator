@@ -26,13 +26,13 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.AbstractMCreatorTheme;
+import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.MCreatorVersionNumber;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
@@ -49,15 +49,16 @@ public class UpdateNotifyDialog {
 			UpdateInfo updateInfo = MCreatorApplication.WEB_API.getUpdateInfo();
 			if (updateInfo != null) {
 				long newMajor = MCreatorVersionNumber.majorStringToLong(updateInfo.getLatestMajor());
-				if (newMajor > oldMajor && (PreferencesManager.PREFERENCES.notification.checkAndNotifyForUpdates
+				if (newMajor > oldMajor && (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates
 						|| Launcher.version.isSnapshot())) {
 					JPanel pan = new JPanel(new BorderLayout());
-					JLabel upde = L10N.label("dialog.update_notify.message", Launcher.version.major, updateInfo.getLatestMajor());
+					JLabel upde = L10N
+							.label("dialog.update_notify.message", Launcher.version.major, updateInfo.getLatestMajor());
 
 					ComponentUtils.deriveFont(upde, 13);
 					pan.add("North", upde);
 					JTextPane ar = new JTextPane();
-					ar.setFont(AbstractMCreatorTheme.console_font);
+					ar.setFont(MCreatorTheme.console_font);
 					ar.setEnabled(false);
 					ar.setMargin(new Insets(5, 10, 5, 5));
 					DefaultCaret caret = (DefaultCaret) ar.getCaret();
@@ -72,9 +73,8 @@ public class UpdateNotifyDialog {
 					ar.setText(fullChangelog(updateInfo));
 
 					Object[] options = { "Open download page", "Remind me later" };
-					int option = JOptionPane
-							.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
-									JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+					int option = JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
+							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 					if (option == 0) {
 						DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#update");
 					}
@@ -82,15 +82,18 @@ public class UpdateNotifyDialog {
 					Release thisRelease = updateInfo.getReleases().get(Launcher.version.major);
 					if (thisRelease != null) {
 						if (Launcher.version.buildlong < Long.parseLong(thisRelease.getLatestBuild()) && (
-								PreferencesManager.PREFERENCES.notification.checkAndNotifyForPatches || Launcher.version
-										.isSnapshot())) {
+								PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPatches
+										|| Launcher.version.isSnapshot())) {
 							JPanel pan = new JPanel(new BorderLayout());
-							JLabel upde = L10N.label("dialog.update_notify.more_recent_build", Launcher.version.major, Launcher.version.build, updateInfo.getReleases().get(Launcher.version.major).getLatestBuild(), Launcher.version.major);
+							JLabel upde = L10N.label("dialog.update_notify.more_recent_build", Launcher.version.major,
+									Launcher.version.build,
+									updateInfo.getReleases().get(Launcher.version.major).getLatestBuild(),
+									Launcher.version.major);
 
 							ComponentUtils.deriveFont(upde, 13);
 							pan.add("North", upde);
 							JTextPane ar = new JTextPane();
-							ar.setFont(AbstractMCreatorTheme.console_font);
+							ar.setFont(MCreatorTheme.console_font);
 							ar.setEnabled(false);
 							ar.setMargin(new Insets(5, 10, 5, 5));
 							DefaultCaret caret = (DefaultCaret) ar.getCaret();
@@ -109,7 +112,8 @@ public class UpdateNotifyDialog {
 							Object[] options = { "Open download page", "Remind me later" };
 							int option = JOptionPane
 									.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
-											JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+											JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options,
+											options[0]);
 							if (option == 0) {
 								DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#updatebuild");
 							}

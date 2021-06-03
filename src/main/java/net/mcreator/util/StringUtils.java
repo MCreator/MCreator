@@ -19,8 +19,8 @@
 package net.mcreator.util;
 
 import org.apache.commons.text.WordUtils;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -61,11 +61,17 @@ public class StringUtils {
 		return name.substring(0, 1).toUpperCase(Locale.ENGLISH) + name.substring(1);
 	}
 
+	public static String lowercaseFirstLetter(String name) {
+		if (name.length() <= 1)
+			return name.toLowerCase(Locale.ENGLISH);
+		return name.substring(0, 1).toLowerCase(Locale.ENGLISH) + name.substring(1);
+	}
+
 	public static String camelToSnake(String original) {
 		return String.join("_", original.split(NAME_PARTS_SPLITTER_REGEX)).replaceAll("(?<=\\d)_(?=\\d)", "");
 	}
 
-	public static String machineToReadableName(@NotNull String input) {
+	public static String machineToReadableName(@Nonnull String input) {
 		String merged = String.join(" ", input.split(NAME_PARTS_SPLITTER_REGEX));
 		return WordUtils.capitalize(org.apache.commons.lang3.StringUtils.normalizeSpace(merged));
 	}

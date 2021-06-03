@@ -51,7 +51,7 @@ public class WorkspaceVCS {
 		this.info = info;
 
 		try {
-			this.git = Git.init().setDirectory(workspace.getFolderManager().getWorkspaceFolder()).call();
+			this.git = Git.init().setDirectory(workspace.getWorkspaceFolder()).call();
 		} catch (GitAPIException e) {
 			LOG.error("Failed to load repository", e);
 		}
@@ -77,7 +77,7 @@ public class WorkspaceVCS {
 			throws WorkspaceNotEmptyException {
 		Git git = null;
 		try {
-			git = Git.init().setDirectory(workspace.getFolderManager().getWorkspaceFolder()).call();
+			git = Git.init().setDirectory(workspace.getWorkspaceFolder()).call();
 
 			// add remote first
 			RemoteAddCommand remoteAddCommand = git.remoteAdd();
@@ -116,7 +116,7 @@ public class WorkspaceVCS {
 		// create gitignore
 		String gitignore = FileIO.readResourceToString(PluginLoader.INSTANCE,
 				workspace.getGenerator().getGeneratorName() + "/workspace.gitignore");
-		FileIO.writeStringToFile(gitignore, new File(workspace.getFolderManager().getWorkspaceFolder(), ".gitignore"));
+		FileIO.writeStringToFile(gitignore, new File(workspace.getWorkspaceFolder(), ".gitignore"));
 
 		VCSInfo.saveToFile(vcsInfo, new File(workspace.getFolderManager().getWorkspaceCacheDir(), "vcsInfo"));
 
@@ -137,7 +137,7 @@ public class WorkspaceVCS {
 	private static boolean isVCSInitialized(Workspace workspace) {
 		try {
 			if (new File(workspace.getFolderManager().getWorkspaceCacheDir(), "vcsInfo").isFile()) {
-				Git git = Git.init().setDirectory(workspace.getFolderManager().getWorkspaceFolder()).call();
+				Git git = Git.init().setDirectory(workspace.getWorkspaceFolder()).call();
 				Repository repository = git.getRepository();
 				return !repository.getRemoteNames().isEmpty();
 			}

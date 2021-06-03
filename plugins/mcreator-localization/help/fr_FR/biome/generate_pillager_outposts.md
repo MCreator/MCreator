@@ -1,0 +1,1 @@
+Utilisez ce paramètre pour avoir des Avant-postes de Pilleurs dans votre biome.

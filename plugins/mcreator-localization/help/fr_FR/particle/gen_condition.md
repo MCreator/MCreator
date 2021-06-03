@@ -1,4 +1,4 @@
-The condition type to spawn particles.
+Type de condition pour faire apparaitre des particules.
 
-* Always: The particles will spawn without restrictions. They will always spawn.
-* Global logic variable: this variable will control particle spawning
+* Toujours: Les particules apparaitront sans restrictions. Elles apparaissent toujours.
+* Variable logique globale: cette variable contrôle l'apparition des particules

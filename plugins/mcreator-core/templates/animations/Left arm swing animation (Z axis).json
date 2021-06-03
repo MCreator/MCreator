@@ -1,0 +1,3 @@
+[
+    ".rotateAngleZ = MathHelper.cos(f * 0.6662F) * f1;"
+]

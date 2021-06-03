@@ -19,7 +19,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ITabContainedElement;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.component.ReordarableListTransferHandler;
@@ -49,7 +49,7 @@ public class ElementOrderEditor {
 		JTabbedPane tabs = new JTabbedPane();
 		tabs.setBorder(BorderFactory.createEmptyBorder());
 		tabs.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
-			protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
+			@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 			}
 		});
 

@@ -1,3 +1,3 @@
-The living sound is the ambient sound that the entity will play randomly. 
+Le son vivant est le son ambiant que l'entité jouera aléatoirement.
 
-Leave blank to deactivate its ambient sound.
+Laissez vide pour désactiver le son ambiant.

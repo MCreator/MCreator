@@ -31,7 +31,7 @@ public class DefaultFreemarkerConfiguration extends Configuration {
 	private final BeansWrapper beansWrapper;
 
 	public DefaultFreemarkerConfiguration() {
-		super(Configuration.VERSION_2_3_30);
+		super(Configuration.VERSION_2_3_31);
 		setAutoEscapingPolicy(Configuration.DISABLE_AUTO_ESCAPING_POLICY);
 		setDefaultEncoding("UTF-8");
 		setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
@@ -42,7 +42,7 @@ public class DefaultFreemarkerConfiguration extends Configuration {
 		setLocale(Locale.ENGLISH);
 		setLogTemplateExceptions(false);
 
-		BeansWrapperBuilder wrapperBuilder = new BeansWrapperBuilder(Configuration.VERSION_2_3_28);
+		BeansWrapperBuilder wrapperBuilder = new BeansWrapperBuilder(Configuration.VERSION_2_3_31);
 		wrapperBuilder.setExposeFields(true);
 		this.beansWrapper = wrapperBuilder.build();
 	}

@@ -21,8 +21,8 @@ package net.mcreator.minecraft;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -126,7 +126,7 @@ public class DataListEntry {
 			}
 		}
 
-		return supportedGenerators.contains(workspace.getGenerator().getGeneratorConfiguration());
+		return supportedGenerators.contains(workspace.getGeneratorConfiguration());
 	}
 
 	public static class Null extends DataListEntry {

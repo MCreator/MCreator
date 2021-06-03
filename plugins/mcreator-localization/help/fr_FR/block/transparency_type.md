@@ -1,9 +1,9 @@
-**Check this box if your block has transparency** - 
-Leave unchecked for a solid block, check it if your block is similar to leaves, glass, iron bars, etc.
+**Cochez cette case si votre bloc a de la transparence** -
+Laissez décoché pour un bloc solide, vérifiez-le si votre bloc est similaire à des feuilles, du verre, des barres de fer, etc.
 
-Transparency types:
+Types de transparence:
 
-* **Solid:** No transparency (similar to dirt, stone, etc.)
-* **Cutout:** Transparent without mipmapping (similar to glass)
-* **Cutout mipped:** Like Cutout, but with mipmapping
-* **Translucent:** Partially transparent and the most resource heavy option (similar to ice)
+* **Solide:** Aucune transparence (similaire à la saleté, à la pierre, etc.)
+* **Découpe:** Transparent sans mipmapping (similaire au verre)
+* **Cutout mipped:** Comme Cutout, mais avec mipmapping
+* **Translucide:** Partiellement transparent et l'option la plus lourde en ressources (similaire à la glace)

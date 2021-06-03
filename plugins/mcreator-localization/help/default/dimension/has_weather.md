@@ -1,1 +1,0 @@
-This parameter controls if weather effects like raining, snowing and thundering occur in this dimension.

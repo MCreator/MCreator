@@ -1,1 +1,1 @@
-This procedure will be executed when an entity loses the potion effect.
+Cette procédure sera exécutée lorsqu'une entité perdra l'effet de potion.

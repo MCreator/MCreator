@@ -8,3 +8,4 @@ Valeurs Vanilla:
 * Armure de fer: 9
 * Armure d'or: 25
 * Armure de diamant: 10
+* Armure de netherite: 15

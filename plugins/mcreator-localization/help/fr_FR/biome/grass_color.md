@@ -1,3 +1,3 @@
-This parameter controls the color of the grass in this biome.
+Ce paramètre contrôle la couleur de l'herbe dans ce biome.
 
-This parameter changes the color of other plants (foliage) too.
+Ce paramètre modifie également la couleur des autres plantes (feuillage).

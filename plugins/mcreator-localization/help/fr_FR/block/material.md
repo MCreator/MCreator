@@ -1,7 +1,7 @@
-Block material defines some base block properties such as
-reaction to pistons, water, plant growing options and more.
+Le matériau du bloc définit certaines propriétés du bloc de base telles que
+réaction aux pistons, à l'eau, aux options de culture des plantes et plus encore.
 
-If you intend to use the block for ore, select ROCK material
-so the harvest level is properly applied.
+Si vous avez l'intention d'utiliser le bloc pour le minerai, sélectionnez le matériau ROCK
+afin que le niveau de récolte soit correctement appliqué.
 
-Click [here](https://mcreator.net/wiki/materials) to read more about materials.
+Cliquez [ici] (https://mcreator.net/wiki/materials) pour en savoir plus sur les matériaux.

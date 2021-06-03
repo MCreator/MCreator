@@ -1,2 +1,3 @@
-Sets the movement speed of the mob.
-Most normal mobs move at the speed around 0.25, while faster ones such as spiders and wolves move at 0.3.
+Définit la vitesse de mouvement de l'entité.
+La plupart des entités normales bougent à une vitesse d'environ 0,25, tandis que les entités plus rapides
+comme les araignées et les loups bougent à 0,3.

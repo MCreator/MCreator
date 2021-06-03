@@ -1,1 +1,1 @@
-This parameter controls the number of sand block groups per biome chunk.
+Ce paramètre contrôle le nombre de groupes de blocs de sable par tronçon de biome.

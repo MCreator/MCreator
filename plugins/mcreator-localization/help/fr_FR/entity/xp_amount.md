@@ -1,3 +1,3 @@
-This parameter controls the amount of experience earned from killing the mob. 
+Ce paramètre contrôle le nombre d'expérience gagné quand on tue l'entité.
 
-This parameter is usually 1-3 for an animal and 5 for a monster.
+Ce paramètre varie entre 1 et 3 pour un animal et 5 pour un monstre.

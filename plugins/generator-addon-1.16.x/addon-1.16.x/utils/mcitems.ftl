@@ -13,13 +13,14 @@
 <#function mappedMCItemToIngameItemName mappedBlock skipDefaultMetadata=false>
     <#if mappedBlock.toString().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.toString().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", ""))!""/>
+        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
         <#if customelement?has_content>
             <#return "\"item\": \"" + "${modid}:" + customelement
             + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
             + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
             + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
             + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
+            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")
             + "\"">
         <#else>
             <#return "\"item\": \"minecraft:air\"">
@@ -42,13 +43,14 @@
 <#function mappedMCItemToIngameNameNoTags mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", ""))!""/>
+        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
         <#if customelement?has_content>
             <#return "${modid}:" + customelement
             + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
             + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
             + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")>
+            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
+            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")>
         <#else>
             <#return "minecraft:air">
         </#if>

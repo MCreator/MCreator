@@ -56,8 +56,8 @@ import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
 import org.fife.ui.rtextarea.RTextScrollPane;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -71,6 +71,7 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -137,8 +138,7 @@ public class CodeEditorView extends ViewBase {
 
 		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 
-		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, fileWorkingOn,
-				fa.getWorkspace().getFolderManager().getWorkspaceFolder());
+		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, fileWorkingOn, fa.getWorkspaceFolder());
 
 		te.addFocusListener(new FocusAdapter() {
 			@Override public void focusGained(FocusEvent focusEvent) {
@@ -258,9 +258,9 @@ public class CodeEditorView extends ViewBase {
 		spne.setContinuousLayout(true);
 
 		spne.setUI(new BasicSplitPaneUI() {
-			public BasicSplitPaneDivider createDefaultDivider() {
+			@Override public BasicSplitPaneDivider createDefaultDivider() {
 				return new BasicSplitPaneDivider(this) {
-					public void setBorder(Border b) {
+					@Override public void setBorder(Border b) {
 					}
 
 					@Override public void paint(Graphics g) {
@@ -318,7 +318,7 @@ public class CodeEditorView extends ViewBase {
 
 		if (!readOnly)
 			KeyStrokes.registerKeyStroke(
-					KeyStroke.getKeyStroke(KeyEvent.VK_B, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), te,
+					KeyStroke.getKeyStroke(KeyEvent.VK_B, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), te,
 					new AbstractAction() {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
@@ -332,7 +332,7 @@ public class CodeEditorView extends ViewBase {
 
 		if (!readOnly)
 			KeyStrokes.registerKeyStroke(
-					KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), te,
+					KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), te,
 					new AbstractAction() {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
@@ -345,7 +345,7 @@ public class CodeEditorView extends ViewBase {
 
 		if (!readOnly)
 			KeyStrokes.registerKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_M,
-					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() | InputEvent.SHIFT_DOWN_MASK, false), te,
+					Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK, false), te,
 					new AbstractAction() {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
@@ -384,7 +384,7 @@ public class CodeEditorView extends ViewBase {
 			try {
 				Field field = jls.getClass().getDeclaredField("jarManager");
 				field.setAccessible(true);
-				field.set(jls, mcreator.getWorkspace().getGenerator().getProjectJarManager());
+				field.set(jls, mcreator.getGenerator().getProjectJarManager());
 			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
 				LOG.error(e1.getMessage(), e1);
 			}
@@ -462,7 +462,7 @@ public class CodeEditorView extends ViewBase {
 
 				@Override public void mouseEntered(MouseEvent e) {
 					super.mouseEntered(e);
-					if ((e.getModifiers() & MouseEvent.CTRL_MASK) == MouseEvent.CTRL_MASK) {
+					if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK) {
 						te.setCursor(new Cursor(Cursor.HAND_CURSOR));
 						jumpToMode = true;
 					}
@@ -507,6 +507,8 @@ public class CodeEditorView extends ViewBase {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE));
 		} else if (fileName.endsWith(".gradle")) {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_GROOVY));
+		} else if (fileName.endsWith(".md")) {
+			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_MARKDOWN));
 		} else if (fileName.endsWith(".js")) {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT));
 
@@ -624,14 +626,14 @@ public class CodeEditorView extends ViewBase {
 			return;
 
 		try {
-			Rectangle r = te.modelToView(te.getCaretPosition());
+			Rectangle2D r = te.modelToView2D(te.getCaretPosition());
 			if (r == null)
 				return;
 			JViewport viewport = (JViewport) container;
 			int extentHeight = viewport.getExtentSize().height;
 			int viewHeight = viewport.getViewSize().height;
 
-			int y = Math.max(0, r.y - ((extentHeight - r.height) / 2));
+			int y = (int) Math.max(0, r.getY() - ((extentHeight - r.getHeight()) / 2));
 			y = Math.min(y, viewHeight - extentHeight);
 
 			viewport.setViewPosition(new Point(0, y));
@@ -730,7 +732,7 @@ public class CodeEditorView extends ViewBase {
 	public static boolean isFileSupported(String fileName) {
 		return Arrays
 				.asList("java", "info", "txt", "json", "mcmeta", "lang", "gradle", "ini", "conf", "xml", "properties",
-						"mcfunction", "toml", "js", "yaml", "yml").contains(FilenameUtils.getExtension(fileName));
+						"mcfunction", "toml", "js", "yaml", "yml", "md").contains(FilenameUtils.getExtension(fileName));
 	}
 
 	public void jumpToLine(int linenum) {

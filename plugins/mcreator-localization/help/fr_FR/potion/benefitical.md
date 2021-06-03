@@ -1,3 +1,3 @@
-Check this parameter in case if your effect is beneficial for the player 
+Cochez ce paramètre si votre effet est bénéfique pour le joueur.
 
-Example: Regeneration or Instant Health.
+Exemple: régénération ou soin instantané.

@@ -1,1 +1,1 @@
-The sound played when the entity is hurt.
+Le son joué quand l'entité est blessée.

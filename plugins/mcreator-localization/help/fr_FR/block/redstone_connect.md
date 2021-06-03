@@ -1,2 +1,2 @@
-If this parameter is checked, redstone dust will always connect to 
-this block (similar to the Redstone Blocks).
+Si ce paramètre est coché, la poussière de redstone se connectera toujours à
+ce bloc (similaire aux blocs de Redstone).

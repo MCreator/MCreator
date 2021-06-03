@@ -22,12 +22,14 @@ import com.google.gson.*;
 import net.mcreator.element.converter.ConverterRegistry;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -40,7 +42,7 @@ public abstract class GeneratableElement {
 
 	private transient ModElement element;
 
-	public static final transient int formatVersion = 13;
+	public static final transient int formatVersion = 21;
 
 	public GeneratableElement(ModElement element) {
 		if (element != null)
@@ -55,6 +57,9 @@ public abstract class GeneratableElement {
 		this.element = element;
 	}
 
+	/**
+	 * @return BufferedImage of mod element preview or null if default mod element icon should be used
+	 */
 	public BufferedImage generateModElementPicture() {
 		return null;
 	}
@@ -66,17 +71,26 @@ public abstract class GeneratableElement {
 	public void finalizeModElementGeneration() {
 	}
 
+	/**
+	 * Override this to add additional data to the element data model
+	 *
+	 * @return null if no additional data, or IAdditionalTemplateDataProvider implementation
+	 */
+	public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
+		return null;
+	}
+
 	public static class GSONAdapter
 			implements JsonSerializer<GeneratableElement>, JsonDeserializer<GeneratableElement> {
 
 		protected static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
 				.create();
 
-		@NotNull private final Workspace workspace;
+		@Nonnull private final Workspace workspace;
 
 		private ModElement lastModElement;
 
-		public GSONAdapter(@NotNull Workspace workspace) {
+		public GSONAdapter(@Nonnull Workspace workspace) {
 			this.workspace = workspace;
 		}
 

@@ -1,3 +1,3 @@
-Triggers a procedure when the entity swings the item in air. 
+Déclenche une procédure quand l'entité bouge l'item dans l'air.
 
-For example, if you right click on your item in air, the procedure will be executed.
+Par exemple, si vous faites un clic droit dans l'air, la procédure sera exécutée.

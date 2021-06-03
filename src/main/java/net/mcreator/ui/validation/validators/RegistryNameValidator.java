@@ -89,7 +89,7 @@ public class RegistryNameValidator implements Validator {
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 					name + " can only contain lowercase English letters, numbers and " + validChars.toString());
 
-		return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+		return Validator.ValidationResult.PASSED;
 	}
 
 	private static boolean isLCLetter(char c) {

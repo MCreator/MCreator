@@ -1,0 +1,1 @@
+((world instanceof World)?((World) world).getRedstonePower(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), ${input$direction}):0)

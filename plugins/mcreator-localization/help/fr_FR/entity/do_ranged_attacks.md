@@ -1,3 +1,3 @@
-If checked, your entity will attack with a ranged item (similar to the Skeleton). 
+Si coché, votre entité attaquera avec un objet à distance (similaire au Squelette).
 
-You can select your own ranged item from the list or use default (arrow).
+Vous pouvez selectionner votre propre item à distance depuis la liste ou utiliser celui par défaut (flèche).

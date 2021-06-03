@@ -1,0 +1,1 @@
+Ce paramètre contrôle la largeur de cette particule (en pixels).

@@ -1,1 +1,1 @@
-When this conditional procedure is true, the block at x, y, and z will spawn particles based on the settings.
+Lorsque cette procédure conditionnelle est vraie, le bloc en x, y et z va générer des particules en fonction des paramètres

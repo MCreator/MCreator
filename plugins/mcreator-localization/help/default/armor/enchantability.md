@@ -8,3 +8,4 @@ Vanilla values:
 * Iron armor: 9
 * Gold armor: 25
 * Diamond armor: 10
+* Netherite armor: 15

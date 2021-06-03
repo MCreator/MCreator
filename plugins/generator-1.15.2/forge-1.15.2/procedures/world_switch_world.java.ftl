@@ -11,7 +11,9 @@ if (world instanceof ServerWorld) {
         world = ((ServerWorld) world).getServer().getWorld(${(field$dimension.toString().replace("CUSTOM:", ""))}Dimension.type);
     </#if>
 
-    ${statement$worldstatements}
+    if (world != null) {
+        ${statement$worldstatements}
+    }
 
     world = _worldorig;
 }

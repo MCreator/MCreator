@@ -27,10 +27,6 @@
     {
       "name": "duration",
       "type": "number"
-    },
-    {
-      "name": "getresultstack",
-      "type": "itemstack"
     }
   ]
 }

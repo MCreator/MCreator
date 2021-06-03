@@ -19,12 +19,12 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.IItemWithModel;
-import net.mcreator.element.IItemWithTexture;
-import net.mcreator.element.ITabContainedElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.types.interfaces.IItemWithModel;
+import net.mcreator.element.types.interfaces.IItemWithTexture;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
@@ -60,9 +60,14 @@ import java.util.Map;
 	public Procedure glowCondition;
 
 	public Procedure onRightClicked;
+	public Procedure onRightClickedOnBlock;
 	public Procedure onEaten;
+	public Procedure onEntityHitWith;
+	public Procedure onItemInInventoryTick;
+	public Procedure onItemInUseTick;
 	public Procedure onCrafted;
 	public Procedure onEntitySwing;
+	public Procedure onDroppedByPlayer;
 
 	private Food() {
 		this(null);
@@ -99,9 +104,7 @@ import java.util.Map;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils
-				.resizeAndCrop(getModElement().getWorkspace().getFolderManager().getItemImageIcon(texture).getImage(),
-						32);
+		return ImageUtils.resizeAndCrop(getModElement().getFolderManager().getItemImageIcon(texture).getImage(), 32);
 	}
 
 	@Override public TabEntry getCreativeTab() {

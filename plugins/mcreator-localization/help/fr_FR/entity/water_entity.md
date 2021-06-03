@@ -1,3 +1,3 @@
-Checking this parameter makes the entity a water entity.
+Cocher de paramètre rend l'entité une entité marine.
 
-Enabling this parameter will make the entity have water type navigator and motion controller.
+Activer de paramètre fera en sorte que l'entité aie un type de navigateur et de controlleur marin.

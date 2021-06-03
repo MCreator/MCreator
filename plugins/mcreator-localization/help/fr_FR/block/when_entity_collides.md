@@ -1,1 +1,1 @@
-Triggers a procedure when an entity is inside the block.
+Déclenche une procédure lorsqu'une entité est à l'intérieur du bloc.

@@ -1,1 +1,1 @@
-Triggers a procedure when the player breaks the block.
+Déclenche une procédure lorsque le joueur brise le bloc.

@@ -23,3 +23,6 @@ templates:
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Stone cutting"
+  - template: brewingrecipe.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/@NAMEBrewingRecipe.java"
+    condition: "recipeType %= Brewing"

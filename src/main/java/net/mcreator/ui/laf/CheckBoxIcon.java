@@ -27,7 +27,7 @@ public class CheckBoxIcon implements Icon {
 		return 14;
 	}
 
-	public void paintIcon(Component c, Graphics g, int x, int y) {
+	@Override public void paintIcon(Component c, Graphics g, int x, int y) {
 		JCheckBox cb = (JCheckBox) c;
 		ButtonModel model = cb.getModel();
 		int controlSize = getControlSize();
@@ -62,11 +62,11 @@ public class CheckBoxIcon implements Icon {
 		g.drawLine(x + (controlSize - 4), y + 4, x + 5, y + (controlSize - 5));
 	}
 
-	public int getIconWidth() {
+	@Override public int getIconWidth() {
 		return getControlSize();
 	}
 
-	public int getIconHeight() {
+	@Override public int getIconHeight() {
 		return getControlSize();
 	}
 }

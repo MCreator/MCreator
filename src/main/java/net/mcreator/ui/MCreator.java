@@ -19,6 +19,7 @@
 package net.mcreator.ui;
 
 import net.mcreator.Launcher;
+import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.gradle.GradleTaskResult;
@@ -27,10 +28,9 @@ import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
-import net.mcreator.ui.browser.ProjectBrowser;
+import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.util.EDTUtils;
-import net.mcreator.ui.component.util.MacOSUIUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
@@ -41,13 +41,14 @@ import net.mcreator.util.ListUtils;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.vcs.WorkspaceVCS;
+import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -59,14 +60,14 @@ import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public final class MCreator extends JFrame {
+public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider {
 
 	private static final Logger LOG = LogManager.getLogger("MCreator");
 
 	public WorkspacePanel mv;
 	private final GradleConsole gradleConsole;
 
-	private final ProjectBrowser projectBrowser;
+	private final WorkspaceFileBrowser workspaceFileBrowser;
 
 	public final ActionRegistry actionRegistry;
 
@@ -84,7 +85,7 @@ public final class MCreator extends JFrame {
 
 	private final long windowUID;
 
-	public MCreator(@Nullable MCreatorApplication application, @NotNull Workspace workspace) {
+	public MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
 		LOG.info("Opening MCreator workspace: " + workspace.getWorkspaceSettings().getModID());
 
 		this.windowUID = System.currentTimeMillis();
@@ -113,7 +114,7 @@ public final class MCreator extends JFrame {
 		this.actionRegistry = new ActionRegistry(this);
 		this.statusBar = new StatusBar(this);
 
-		this.projectBrowser = new ProjectBrowser(this);
+		this.workspaceFileBrowser = new WorkspaceFileBrowser(this);
 
 		new MCreatorDropTarget(this);
 
@@ -133,12 +134,12 @@ public final class MCreator extends JFrame {
 			setSize(1002, 640);
 
 		if (OS.getOS() == OS.MAC)
-			MacOSUIUtil.enableTrueFullscreen(this);
+			getRootPane().putClientProperty("apple.awt.fullscreenable", true);
 
 		if (PreferencesManager.PREFERENCES.hidden.fullScreen)
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-		setIconImage(UIRES.get("icon").getImage());
+		setIconImage(UIRES.getBuiltIn("icon").getImage());
 		setLocationRelativeTo(null);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -228,7 +229,7 @@ public final class MCreator extends JFrame {
 		consoleTab.setHasRightBorder(false);
 		consoleTab.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK))
+				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK)
 					actionRegistry.buildWorkspace.doAction();
 			}
 		});
@@ -242,7 +243,7 @@ public final class MCreator extends JFrame {
 		workspace.getFileManager().setDataSavedListener(() -> statusBar.setPersistentMessage(
 				L10N.t("workspace.statusbar.autosave_message", new SimpleDateFormat("HH:mm").format(new Date()))));
 
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, projectBrowser,
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser,
 				PanelUtils.northAndCenterElement(pon, mpan));
 		splitPane.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		splitPane.setOneTouchExpandable(true);
@@ -250,7 +251,7 @@ public final class MCreator extends JFrame {
 		splitPane.setDividerLocation(280);
 		splitPane.setDividerLocation(PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos);
 
-		projectBrowser.setMinimumSize(new Dimension(0, 0));
+		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
 
 		add("South", statusBar);
 		add("North", toolBar);
@@ -269,7 +270,7 @@ public final class MCreator extends JFrame {
 						Launcher.version.versionlong); // if we open dev version, store new version number in it
 			}
 
-			new Thread(this.projectBrowser::reloadTree).start();
+			new Thread(this.workspaceFileBrowser::reloadTree).start();
 
 			// backup if new version and backups are enabled
 			if (workspace.getMCreatorVersion() < Launcher.version.versionlong
@@ -282,7 +283,7 @@ public final class MCreator extends JFrame {
 			// if we need to setup MCreator, we do so
 			if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
 				WorkspaceGeneratorSetupDialog
-						.runSetup(this, PreferencesManager.PREFERENCES.notification.openWhatsNextPage);
+						.runSetup(this, PreferencesManager.PREFERENCES.notifications.openWhatsNextPage);
 			}
 
 			if (workspace.getMCreatorVersion()
@@ -306,11 +307,11 @@ public final class MCreator extends JFrame {
 		return gradleConsole;
 	}
 
-	public ProjectBrowser getProjectBrowser() {
-		return projectBrowser;
+	public WorkspaceFileBrowser getProjectBrowser() {
+		return workspaceFileBrowser;
 	}
 
-	public Workspace getWorkspace() {
+	@Override public @Nonnull Workspace getWorkspace() {
 		return workspace;
 	}
 
@@ -377,7 +378,7 @@ public final class MCreator extends JFrame {
 					.updatePresence("Working on " + workspace.getWorkspaceSettings().getModName() + tabAddition,
 							Launcher.version.getMajorString() + " for " + workspace.getGenerator()
 									.getGeneratorMinecraftVersion(),
-							"type-" + workspace.getGenerator().getGeneratorConfiguration().getGeneratorFlavor().name()
+							"type-" + workspace.getGeneratorConfiguration().getGeneratorFlavor().name()
 									.toLowerCase(Locale.ENGLISH));
 		}
 	}

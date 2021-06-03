@@ -18,10 +18,10 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
-import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.parts.Procedure;
@@ -50,9 +50,12 @@ import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -101,7 +104,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private void regenerateProcedure() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
-				mcreator.getWorkspace().getGenerator().getGeneratorStats().getGeneratorProcedures());
+				mcreator.getGeneratorStats().getGeneratorProcedures());
 		BlocklyToProcedure blocklyToJava;
 
 		try {
@@ -144,9 +147,9 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			if (blocklyToJava.getReturnType() != null) {
 				returnType.setVisible(true);
-				returnTypeLabel.setText(blocklyToJava.getReturnType().name());
+				returnTypeLabel.setText(blocklyToJava.getReturnType().getName().toUpperCase());
 				returnTypeLabel.setForeground(
-						new Dependency("", blocklyToJava.getReturnType().toDependencyType()).getColor().brighter());
+						BlocklyBlockUtil.getBlockColorFromHUE(blocklyToJava.getReturnType().getColor()).brighter());
 			} else {
 				returnType.setVisible(false);
 			}
@@ -197,20 +200,24 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						hasResultTriggerLabel.setIcon(UIRES.get("info"));
 					}
 
-					if (!mcreator.getWorkspace().getGenerator().getGeneratorStats().getGeneratorTriggers()
-							.contains(trigger.getID())) {
+					if (!mcreator.getGeneratorStats().getGeneratorTriggers().contains(trigger.getID())) {
 						compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 								L10N.t("elementgui.procedure.global_trigger_unsupported")));
 					}
 
 					if (trigger.required_apis != null) {
 						for (String required_api : trigger.required_apis) {
-							if (!mcreator.getWorkspace().getWorkspaceSettings().getMCreatorDependencies()
-									.contains(required_api)) {
+							if (!mcreator.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
 								compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 										L10N.t("elementgui.procedure.global_trigger_not_activated", required_api)));
 							}
 						}
+					}
+
+					// Check if trigger is tick based
+					if (trigger.getID().endsWith("_ticks")) {
+						compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.INFO,
+								L10N.t("elementgui.procedure.global_trigger_tick_based", trigger.getName())));
 					}
 				} else {
 					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
@@ -258,9 +265,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBorder(null);
-			Color varc = new Color(value.getType().getColor());
-			setBackground(isSelected ? varc : (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : varc);
+			setBackground(isSelected ?
+					BlocklyBlockUtil.getBlockColorFromHUE(value.getType().getColor()) :
+					(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			setForeground(isSelected ?
+					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
+					BlocklyBlockUtil.getBlockColorFromHUE(value.getType().getColor()));
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
 			return this;
@@ -362,22 +372,26 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		addvar.addActionListener(e -> {
 			VariableElement element = NewVariableDialog
 					.showNewVariableDialog(mcreator, false, new OptionPaneValidatior() {
-								@Override public Validator.ValidationResult validate(JComponent component) {
-									Validator validator = new JavaMemeberNameValidator((VTextField) component, false);
-									String textname = Transliteration.transliterateString(((VTextField) component).getText());
-									for (int i = 0; i < localVars.getSize(); i++) {
-										String nameinrow = localVars.get(i).getName();
-										if (textname.equals(nameinrow))
-											return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-													L10N.t("elementgui.procedure.name_already_exists"));
-									}
-									return validator.validate();
-								}
-							}, VariableElementType.LOGIC, VariableElementType.NUMBER, VariableElementType.STRING,
-							VariableElementType.ITEMSTACK);
+						@Override public Validator.ValidationResult validate(JComponent component) {
+							Validator validator = new JavaMemeberNameValidator((VTextField) component, false);
+							String textname = Transliteration.transliterateString(((VTextField) component).getText());
+							for (int i = 0; i < localVars.getSize(); i++) {
+								String nameinrow = localVars.get(i).getName();
+								if (textname.equals(nameinrow))
+									return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+											L10N.t("elementgui.procedure.name_already_exists"));
+							}
+							for (Dependency dependency : dependenciesArrayList) {
+								String nameinrow = dependency.getName();
+								if (textname.equals(nameinrow))
+									return new ValidationResult(ValidationResultType.ERROR,
+											L10N.t("elementgui.procedure.name_already_exists_dep"));
+							}
+							return validator.validate();
+						}
+					}, VariableElementTypeLoader.INSTANCE.getVariableTypes().toArray(new VariableElementType[0]));
 			if (element != null) {
-				blocklyPanel.addLocalVariable(element.getName(),
-						BlocklyVariables.getBlocklyVariableTypeFromMCreatorVariable(element));
+				blocklyPanel.addLocalVariable(element.getName(), element.getType().getBlocklyVariableType());
 				localVars.addElement(element);
 			}
 		});
@@ -391,6 +405,41 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				if (n == JOptionPane.YES_OPTION) {
 					blocklyPanel.removeLocalVariable(element.getName());
 					localVars.removeElement(element);
+				}
+			}
+		});
+
+		localVarsList.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (localVars.getSize() > 0 && e.getClickCount() == 2) {
+					VariableElement selectedVar = localVarsList.getSelectedValue();
+					VariableElementType type = selectedVar.getType();
+					String blockXml = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"variables_"
+							+ (e.isAltDown() ? "set_" : "get_") + type.getName() + "\"><field name=\"VAR\">local:"
+							+ selectedVar.getName() + "</field></block></xml>";
+					blocklyPanel.addBlocksFromXML(blockXml);
+				}
+			}
+		});
+
+		dependenciesList.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (dependencies.getSize() > 0 && e.getClickCount() == 2) {
+					Dependency selectedDep = dependenciesList.getSelectedValue();
+					String blockXml = selectedDep.getDependencyBlockXml();
+					if (blockXml != null)
+						blocklyPanel.addBlocksFromXML(blockXml);
+				}
+			}
+		});
+
+		dependenciesExtTrigList.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (dependenciesExtTrigger.getSize() > 0 && e.getClickCount() == 2) {
+					Dependency selectedDep = dependenciesExtTrigList.getSelectedValue();
+					String blockXml = selectedDep.getDependencyBlockXml();
+					if (blockXml != null)
+						blocklyPanel.addBlocksFromXML(blockXml);
 				}
 			}
 		});
@@ -501,8 +550,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
 					.forEach(blocklyPanel.getJSBridge()::addExternalTrigger);
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
-				blocklyPanel.addGlobalVariable(variable.getName(),
-						BlocklyVariables.getBlocklyVariableTypeFromMCreatorVariable(variable));
+				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
 			blocklyPanel.getJSBridge().setJavaScriptEventListener(() -> new Thread(this::regenerateProcedure).start());
 			if (!isEditingMode()) {
@@ -558,11 +606,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 							}
 						}
 						if (procedureUsedByGUI)
-							mcreator.getWorkspace().getGenerator().generateElement(generatableElement);
+							mcreator.getGenerator().generateElement(generatableElement);
 					} else if (generatableElement != null && ModElementTypeRegistry.REGISTRY.get(element.getType())
 							.hasProcedureTriggers()) {
 						if (Procedure.isElementUsingProcedure(generatableElement, modElement.getName())) {
-							mcreator.getWorkspace().getGenerator().generateElement(generatableElement);
+							mcreator.getGenerator().generateElement(generatableElement);
 						}
 					}
 				}

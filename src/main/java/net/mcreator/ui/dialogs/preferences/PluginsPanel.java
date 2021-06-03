@@ -42,7 +42,7 @@ class PluginsPanel {
 	private final DefaultListModel<Plugin> tmodel = new DefaultListModel<>();
 
 	PluginsPanel(PreferencesDialog preferencesDialog) {
-		preferencesDialog.model.addElement("Manage plugins");
+		preferencesDialog.model.addElement(L10N.t("dialog.preferences.page_plugins"));
 
 		JList<Plugin> plugins = new JList<>(tmodel);
 		plugins.setCellRenderer(new PluginsListCellRenderer());
@@ -79,9 +79,18 @@ class PluginsPanel {
 
 		reloadPluginList();
 
+		JButton openPluginFolder = L10N
+				.button("dialog.preferences.open_folder", L10N.t("dialog.preferences.plugins").toLowerCase());
+		openPluginFolder.setIcon(UIRES.get("16px.open.gif"));
+		opts.add(openPluginFolder);
+		opts.add(new JEmptyBox(5, 5));
+
+		openPluginFolder
+				.addActionListener(e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins")));
+
 		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, new JScrollPane(plugins), 5, 5));
 
-		preferencesDialog.preferences.add(sectionPanel, "Manage plugins");
+		preferencesDialog.preferences.add(sectionPanel, L10N.t("dialog.preferences.page_plugins"));
 	}
 
 	private void reloadPluginList() {

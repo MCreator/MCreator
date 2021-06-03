@@ -1,3 +1,3 @@
-This parameter is controls the ammo used by the ranged item. 
+Ce paramètre contrôle les munitions utilisées par l'arme à distance.
 
-Example: the arow for the bow.
+Exemple: la flèche pour l'arc.

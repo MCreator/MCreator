@@ -19,6 +19,7 @@
 package net.mcreator.ui.vcs;
 
 import net.mcreator.vcs.diff.MergeHandle;
+import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
 import net.mcreator.workspace.elements.VariableElement;
@@ -33,16 +34,19 @@ public class WorkspaceMergeHandles {
 	private final Set<MergeHandle<VariableElement>> conflictingVariableElements;
 	private final Set<MergeHandle<SoundElement>> conflictingSoundElements;
 	private final Set<MergeHandle<String>> conflictingLangMaps;
+	private final MergeHandle<FolderElement> workspaceFoldersMergeHandle;
 
 	public WorkspaceMergeHandles(MergeHandle<WorkspaceSettings> workspaceSettingsMergeHandle,
 			Set<MergeHandle<ModElement>> conflictingModElements,
 			Set<MergeHandle<VariableElement>> conflictingVariableElements,
-			Set<MergeHandle<SoundElement>> conflictingSoundElements, Set<MergeHandle<String>> conflictingLangMaps) {
+			Set<MergeHandle<SoundElement>> conflictingSoundElements, Set<MergeHandle<String>> conflictingLangMaps,
+			MergeHandle<FolderElement> workspaceFoldersMergeHandle) {
 		this.workspaceSettingsMergeHandle = workspaceSettingsMergeHandle;
 		this.conflictingModElements = conflictingModElements;
 		this.conflictingVariableElements = conflictingVariableElements;
 		this.conflictingSoundElements = conflictingSoundElements;
 		this.conflictingLangMaps = conflictingLangMaps;
+		this.workspaceFoldersMergeHandle = workspaceFoldersMergeHandle;
 	}
 
 	public MergeHandle<WorkspaceSettings> getWorkspaceSettingsMergeHandle() {
@@ -63,5 +67,9 @@ public class WorkspaceMergeHandles {
 
 	public Set<MergeHandle<String>> getConflictingLangMaps() {
 		return conflictingLangMaps;
+	}
+
+	public MergeHandle<FolderElement> getWorkspaceFoldersMergeHandle() {
+		return workspaceFoldersMergeHandle;
 	}
 }

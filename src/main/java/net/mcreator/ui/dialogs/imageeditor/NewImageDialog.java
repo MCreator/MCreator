@@ -134,7 +134,7 @@ public class NewImageDialog extends MCreatorDialog {
 			imageMakerView.showView();
 		});
 
-		properties.add(new JLabel("Fill with:"));
+		properties.add(L10N.label("dialog.imageeditor.new_image_fill_with"));
 		properties.add(layerType);
 
 		specialSettings

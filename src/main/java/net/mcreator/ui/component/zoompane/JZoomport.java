@@ -18,8 +18,7 @@
 
 package net.mcreator.ui.component.zoompane;
 
-import org.jetbrains.annotations.NotNull;
-
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -45,7 +44,7 @@ public class JZoomport extends JComponent {
 	private Cursor lastCursor = Cursor.getDefaultCursor();
 	boolean first = true;
 
-	public JZoomport(JComponent toZoom, @NotNull JZoomPane zoomPane) {
+	public JZoomport(JComponent toZoom, @Nonnull JZoomPane zoomPane) {
 		this.zoomPane = zoomPane;
 		this.toZoom = toZoom;
 
@@ -55,7 +54,7 @@ public class JZoomport extends JComponent {
 
 		addMouseWheelListener(e -> {
 			int sign = e.getWheelRotation();
-			if (((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK)) {
+			if (((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK)) {
 				if (getMousePosition() != null) {
 					Point2D mouseLoc = getMousePosition();
 					Point2D zoomportMouseLocation = new Point2D.Double(mouseLoc.getX() + viewPosX,
@@ -89,7 +88,7 @@ public class JZoomport extends JComponent {
 							(int) (mouseLocOnPanel.getY() - mouseLoc.getY())));
 					repaint();
 				}
-			} else if (((e.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK)) {
+			} else if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == InputEvent.SHIFT_DOWN_MASK) {
 				setViewPosX(viewPosX + (int) (maxScrollX * SCROLL_SPEED * sign));
 				repaint();
 			} else {

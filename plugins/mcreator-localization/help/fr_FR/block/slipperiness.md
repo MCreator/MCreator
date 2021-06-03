@@ -1,3 +1,3 @@
-This parameter controls how slippery the block is.
+Ce paramètre contrôle le degré de glissement du bloc.
 
-Default value used by most of the blocks is 0.6
+La valeur par défaut utilisée par la plupart des blocs est 0,6

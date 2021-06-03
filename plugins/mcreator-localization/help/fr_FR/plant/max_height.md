@@ -1,1 +1,1 @@
-The growable plant will grow until it reaches this height.
+La plante grandissante grandira jusqu'à ce qu'elle atteigne cette hauteur.

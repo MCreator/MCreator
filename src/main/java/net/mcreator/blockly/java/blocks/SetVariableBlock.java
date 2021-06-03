@@ -22,38 +22,34 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class SetVariableBlock implements IBlockGenerator {
+	private final String[] names;
+
+	public SetVariableBlock() {
+		names = VariableElementTypeLoader.INSTANCE.getVariableTypes().stream().map(VariableElementType::getName)
+				.collect(Collectors.toList()).stream().map(s -> s = "variables_set_" + s).toArray(String[]::new);
+	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String type;
-
-		String blocktype = block.getAttribute("type");
-		switch (blocktype) {
-		case "variables_set_number":
-			type = "NUMBER";
-			break;
-		case "variables_set_text":
-			type = "STRING";
-			break;
-		case "variables_set_logic":
-			type = "LOGIC";
-			break;
-		case "variables_set_itemstack":
-			type = "ITEMSTACK";
-			break;
-		default:
-			return;
-		}
+		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_set_");
+		String javaType = new Dependency("",
+				VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type).getName())
+				.getType(master.getWorkspace());
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
@@ -78,6 +74,17 @@ public class SetVariableBlock implements IBlockGenerator {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							"This editor does not support local variables! Skipping this block"));
 					return;
+				} else if (scope.equalsIgnoreCase("local")) {
+					List<StatementInput> statementInputList = master
+							.getStatementInputsMatching(statementInput -> statementInput.disable_local_variables);
+					if (!statementInputList.isEmpty()) {
+						for (StatementInput statementInput : statementInputList) {
+							master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+									"Statement " + statementInput.name + " does not support local variables."));
+							break;
+						}
+						return;
+					}
 				}
 
 				if (scope.equals("global")) {
@@ -89,12 +96,15 @@ public class SetVariableBlock implements IBlockGenerator {
 					}
 				}
 
+				String valuecode = BlocklyToCode.directProcessOutputBlock(master, value);
+
 				if (master.getTemplateGenerator() != null) {
 					Map<String, Object> dataModel = new HashMap<>();
 					dataModel.put("name", name);
 					dataModel.put("scope", scope);
 					dataModel.put("type", type);
-					dataModel.put("value", BlocklyToCode.directProcessOutputBlock(master, value));
+					dataModel.put("javaType", javaType);
+					dataModel.put("value", valuecode);
 
 					String code = master.getTemplateGenerator()
 							.generateFromTemplate("_set_variable.java.ftl", dataModel);
@@ -108,8 +118,7 @@ public class SetVariableBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "variables_set_number", "variables_set_text", "variables_set_logic",
-				"variables_set_itemstack" };
+		return names;
 	}
 
 	@Override public BlockType getBlockType() {

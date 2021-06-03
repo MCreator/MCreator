@@ -19,9 +19,12 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.NamespacedGeneratableElement;
+import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,13 +35,21 @@ import java.util.Locale;
 	public List<MItemBlock> items;
 	public List<MItemBlock> blocks;
 	public List<String> functions;
+	public List<EntityEntry> entities;
 
 	public Tag(ModElement element) {
 		super(element);
 	}
 
 	public String tagType() {
+		if (type.equals("Entities"))
+			return "entity_types";
+
 		return type.toLowerCase(Locale.ENGLISH);
+	}
+
+	@Override public BufferedImage generateModElementPicture() {
+		return MinecraftImageGenerator.Preview.generateTagPreviewPicture(type);
 	}
 
 }

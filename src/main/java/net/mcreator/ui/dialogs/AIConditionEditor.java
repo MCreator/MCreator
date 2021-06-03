@@ -24,9 +24,9 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.ProcedureSelector;
-import net.mcreator.workspace.elements.VariableElementType;
-import org.jetbrains.annotations.Nullable;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
@@ -35,13 +35,15 @@ public class AIConditionEditor {
 
 	public static List<String> open(MCreator parent, @Nullable String[] data) {
 		ProcedureSelector startCondition = new ProcedureSelector(
-				IHelpContext.NONE.withEntry("entity/ai_start_condition"), parent, L10N.t("dialog.ai_condition.additional_start"),
-				ProcedureSelector.Side.BOTH, false, VariableElementType.LOGIC,
+				IHelpContext.NONE.withEntry("entity/ai_start_condition"), parent,
+				L10N.t("dialog.ai_condition.additional_start"), ProcedureSelector.Side.BOTH, false,
+				VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		ProcedureSelector continueCondition = new ProcedureSelector(
-				IHelpContext.NONE.withEntry("entity/ai_continue_condition"), parent, L10N.t("dialog.ai_condition.additional_continue"),
-				ProcedureSelector.Side.BOTH, false, VariableElementType.LOGIC,
+				IHelpContext.NONE.withEntry("entity/ai_continue_condition"), parent,
+				L10N.t("dialog.ai_condition.additional_continue"), ProcedureSelector.Side.BOTH, false,
+				VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		startCondition.setDefaultName(L10N.t("dialog.ai_condition.no_additional")).refreshList();

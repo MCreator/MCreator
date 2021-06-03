@@ -23,10 +23,11 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.BlockItemIcons;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -61,7 +62,7 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 		super.setSelectedItem(dataListEntry);
 	}
 
-	@Override @NotNull public DataListEntry getSelectedItem() {
+	@Override @Nonnull public DataListEntry getSelectedItem() {
 		Object superretval = super.getSelectedItem();
 		if (superretval == null)
 			return new DataListEntry.Null();
@@ -108,7 +109,7 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 				Icon imageIcon = getIcon();
 				if (imageIcon instanceof ImageIcon)
 					setIcon(ImageUtils.changeSaturation((ImageIcon) imageIcon, 0.1f));
-				setText("<html>" + getText() + "<small> - not supported");
+				setText(L10N.t("datalist_combobox.not_supported", getText()));
 				setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 			}
 

@@ -157,7 +157,7 @@ public class FileSyncHandle {
 	}
 
 	public File toFileInWorkspace(Workspace workspace, ResultSide resultSide) {
-		return new File(workspace.getFolderManager().getWorkspaceFolder(), getPath(resultSide));
+		return new File(workspace.getWorkspaceFolder(), getPath(resultSide));
 	}
 
 	@Override public boolean equals(Object o) {

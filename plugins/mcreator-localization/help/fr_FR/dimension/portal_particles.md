@@ -1,1 +1,1 @@
-This parameter selects the particle type that is emitted by the portal when the portal is active.
+Ce paramètre sélectionne le type de particule émis par le portail quand ce-dernier est actif.

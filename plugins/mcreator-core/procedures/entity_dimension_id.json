@@ -6,8 +6,8 @@
       "check": "Entity"
     }
   ],
-  "output": "Number",
-  "colour": "%{BKY_MATH_HUE}",
+  "output": "DimensionType",
+  "colour": 123,
   "mcreator": {
     "toolbox_id": "entitydata",
     "toolbox_init": [

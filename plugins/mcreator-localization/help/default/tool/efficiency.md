@@ -7,4 +7,5 @@ Vanilla values:
 * Stone tools have 4.
 * Iron tools have 6.
 * Diamond tools have 8.
-* Gold tools have 10.
+* Netherite tools have 9.
+* Gold tools have 12.

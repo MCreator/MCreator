@@ -1,10 +1,10 @@
-This parameter controls the maximum Y height that this block can generate in.
+Ce paramètre contrôle la hauteur Y maximale que ce bloc peut générer.
 
-Vanilla maximum Y levels heights:
-* Coal Ore - 125
-* Iron Ore - 40
-* Gold Ore - 32
-* Redstone Ore - 16
-* Diamond Ore - 16
-* Emerald Ore - 32
+Hauteurs maximales des niveaux Y vanilla:
+* Minerai de charbon - 125
+* Minerai de fer - 40
+* Minerai d'or - 32
+* Minerai de Redstone - 16
+* Minerai de diamant - 16
+* Minerai d'émeraude - 32
 * Lapis Lazuli - 31

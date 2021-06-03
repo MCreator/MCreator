@@ -1,1 +1,1 @@
-This paremeter controls the color of the water inside the biome
+Ce paramètre contrôle la couleur de l'eau à l'intérieur du biome

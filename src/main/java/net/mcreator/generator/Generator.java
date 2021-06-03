@@ -19,21 +19,8 @@
 package net.mcreator.generator;
 
 import com.google.gson.GsonBuilder;
-import net.mcreator.blockly.BlocklyToAITasks;
-import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.Dependency;
-import net.mcreator.blockly.data.ExternalTrigger;
-import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
-import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.types.Achievement;
-import net.mcreator.element.types.Mob;
-import net.mcreator.element.types.Procedure;
-import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
-import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
-import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
-import net.mcreator.generator.mapping.MappingLoader;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.generator.template.MinecraftCodeProvider;
 import net.mcreator.generator.template.TemplateConditionParser;
@@ -55,9 +42,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.GradleConnector;
 import org.gradle.tooling.ProjectConnection;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
@@ -68,12 +55,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-public class Generator implements Closeable {
+public class Generator implements IGenerator, Closeable {
 
 	public static final Map<String, GeneratorConfiguration> GENERATOR_CACHE = Collections
 			.synchronizedMap(new LinkedHashMap<>());
 
-	private final Logger LOG;
+	protected final Logger LOG;
 	private final String generatorName;
 	private final GeneratorConfiguration generatorConfiguration;
 
@@ -90,7 +77,7 @@ public class Generator implements Closeable {
 	@Nullable private ProjectConnection gradleProjectConnection;
 	@Nullable private GeneratorGradleCache generatorGradleCache;
 
-	public Generator(@NotNull Workspace workspace) {
+	public Generator(@Nonnull Workspace workspace) {
 		this.workspace = workspace;
 		this.generatorName = workspace.getWorkspaceSettings().getCurrentGenerator();
 
@@ -119,20 +106,12 @@ public class Generator implements Closeable {
 		}
 	}
 
-	public Workspace getWorkspace() {
+	@Override public @Nonnull Workspace getWorkspace() {
 		return workspace;
 	}
 
-	public String getGeneratorName() {
-		return generatorName;
-	}
-
-	public MappingLoader getMappings() {
-		return generatorConfiguration.getMappingLoader();
-	}
-
-	public String getGeneratorMinecraftVersion() {
-		return generatorConfiguration.getGeneratorMinecraftVersion();
+	@Override public GeneratorConfiguration getGeneratorConfiguration() {
+		return generatorConfiguration;
 	}
 
 	public TemplateGenerator getProcedureGenerator() {
@@ -151,32 +130,8 @@ public class Generator implements Closeable {
 		return jsonTriggerGenerator;
 	}
 
-	public GeneratorConfiguration getGeneratorConfiguration() {
-		return generatorConfiguration;
-	}
-
-	public GeneratorStats getGeneratorStats() {
-		return generatorConfiguration.getGeneratorStats();
-	}
-
-	public String getGeneratorBuildFileVersion() {
-		return generatorConfiguration.getGeneratorBuildFileVersion();
-	}
-
-	public File getSourceRoot() {
-		return GeneratorUtils.getSourceRoot(workspace, generatorConfiguration);
-	}
-
-	public File getResourceRoot() {
-		return GeneratorUtils.getResourceRoot(workspace, generatorConfiguration);
-	}
-
-	public File getModAssetsRoot() {
-		return GeneratorUtils.getModAssetsRoot(workspace, generatorConfiguration);
-	}
-
-	public File getModDataRoot() {
-		return GeneratorUtils.getModDataRoot(workspace, generatorConfiguration);
+	public String getGeneratorName() {
+		return generatorName;
 	}
 
 	public MinecraftCodeProvider getMinecraftCodeProvider() {
@@ -209,31 +164,33 @@ public class Generator implements Closeable {
 	 * @return true if generator generated all files without any errors
 	 */
 	public boolean generateBase(boolean formatAndOrganiseImports) {
-		List<GeneratorFile> generatorFiles = new ArrayList<>();
-
 		AtomicBoolean success = new AtomicBoolean(true);
 
-		getModBaseGeneratorTemplatesList(true).forEach(generatorTemplate -> {
-			if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
-					&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
-					.equals("true")) // can this file be locked
-				if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
-					return; // if they are, we skip this file
+		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).parallelStream()
+				.map(generatorTemplate -> {
+					if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
+							&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
+							.equals("true")) // can this file be locked
+						if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
+							return null; // if they are, we skip this file
 
-			String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("template");
+					String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData())
+							.get("template");
 
-			Map<String, Object> dataModel = new HashMap<>();
+					Map<String, Object> dataModel = new HashMap<>();
 
-			extractVariables(generatorTemplate, dataModel);
+					extractVariables(generatorTemplate, dataModel);
 
-			try {
-				String code = templateGenerator.generateBaseFromTemplate(templateFileName, dataModel);
-				generatorFiles.add(new GeneratorFile(code, generatorTemplate.getFile(),
-						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer")));
-			} catch (TemplateGeneratorException e) {
-				success.set(false);
-			}
-		});
+					try {
+						String code = templateGenerator.generateBaseFromTemplate(templateFileName, dataModel);
+						return new GeneratorFile(code, generatorTemplate.getFile(),
+								(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
+					} catch (TemplateGeneratorException e) {
+						success.set(false);
+					}
+
+					return null;
+				}).filter(Objects::nonNull).collect(Collectors.toList());
 
 		generateFiles(generatorFiles, formatAndOrganiseImports);
 
@@ -286,94 +243,10 @@ public class Generator implements Closeable {
 				String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("template");
 
 				Map<String, Object> dataModel = new HashMap<>();
-
 				extractVariables(generatorTemplate, dataModel);
 
-				String code;
-				if (element instanceof Procedure) {
-					code = templateGenerator
-							.generateElementFromTemplate(element, templateFileName, dataModel, additionalData -> {
-								BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-										BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks(),
-										this.getProcedureGenerator(), additionalData);
-
-								// load blocklytojava with custom generators loaded
-								BlocklyToProcedure blocklyToJava = new BlocklyToProcedure(this.getWorkspace(),
-										((Procedure) element).procedurexml, this.getProcedureGenerator(),
-										new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
-										new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
-
-								List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE
-										.getExternalTriggerLoader().getExternalTrigers();
-								ExternalTrigger trigger = null;
-								for (ExternalTrigger externalTrigger : externalTriggers) {
-									if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger()))
-										trigger = externalTrigger;
-								}
-
-								// we update the dependency list of the procedure
-								List<Dependency> dependenciesArrayList = blocklyToJava.getDependencies();
-
-								element.getModElement().clearMetadata()
-										.putMetadata("dependencies", dependenciesArrayList).putMetadata("return_type",
-										blocklyToJava.getReturnType() == null ?
-												null :
-												blocklyToJava.getReturnType().name());
-
-								((Procedure) element).reloadDependencies();
-
-								String triggerCode = "";
-								if (trigger != null) {
-									TemplateGenerator templateGenerator = this.getTriggerGenerator();
-									triggerCode = templateGenerator
-											.generateFromTemplate(trigger.getID() + ".java.ftl", additionalData);
-								}
-
-								additionalData.put("procedurecode", blocklyToJava.getGeneratedCode());
-								additionalData.put("return_type", blocklyToJava.getReturnType());
-								additionalData.put("has_trigger", trigger != null);
-								additionalData.put("trigger_code", triggerCode);
-								additionalData.put("dependencies", dependenciesArrayList);
-							});
-				} else if (element instanceof Achievement) {
-					code = templateGenerator
-							.generateElementFromTemplate(element, templateFileName, dataModel, additionalData -> {
-								BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-										BlocklyLoader.INSTANCE.getJSONTriggerLoader().getDefinedBlocks(),
-										this.getJSONTriggerGenerator(), additionalData).setTemplateExtension("json");
-
-								// load blocklytojava with custom generators loaded
-								BlocklyToJSONTrigger blocklyToJSONTrigger = new BlocklyToJSONTrigger(
-										this.getWorkspace(), ((Achievement) element).triggerxml,
-										this.getJSONTriggerGenerator(),
-										new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
-
-								String triggerCode = blocklyToJSONTrigger.getGeneratedCode();
-								if (triggerCode == null || triggerCode.equals(""))
-									triggerCode = "{\"trigger\": \"minecraft:impossible\"}";
-								additionalData.put("triggercode", triggerCode);
-							});
-				} else if (element instanceof Mob) {
-					code = templateGenerator
-							.generateElementFromTemplate(element, templateFileName, dataModel, additionalData -> {
-								BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-										BlocklyLoader.INSTANCE.getAITaskBlockLoader().getDefinedBlocks(),
-										this.getAITaskGenerator(), additionalData).setTemplateExtension(
-										generatorConfiguration.getGeneratorFlavor().getBaseLanguage().name()
-												.toLowerCase(Locale.ENGLISH));
-								BlocklyToAITasks blocklyToJava = new BlocklyToAITasks(this.getWorkspace(),
-										((Mob) element).aixml, this.getAITaskGenerator(),
-										new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
-
-								String aicode = blocklyToJava.getGeneratedCode();
-								if (aicode == null)
-									aicode = "";
-
-								additionalData.put("aicode", aicode);
-							});
-				} else {
-					code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel, null);
-				}
+				String code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel,
+						element.getAdditionalTemplateData());
 
 				generatorFiles.add(new GeneratorFile(code, generatorTemplate.getFile(),
 						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer")));
@@ -410,7 +283,7 @@ public class Generator implements Closeable {
 			}
 		}
 
-		// do additinal tasks if mod element has them
+		// do additional tasks if mod element has them
 		element.finalizeModElementGeneration();
 
 		return generatorFiles;
@@ -658,7 +531,7 @@ public class Generator implements Closeable {
 						}
 					} else if (workspace.getFolderManager().isFileInWorkspace(new File(to))) {
 						try {
-							BufferedImage resized = ImageUtils.resize(UIRES.get("fallback").getImage(), w, h);
+							BufferedImage resized = ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h);
 							ImageIO.write(resized, "png", new File(to));
 						} catch (IOException e) {
 							LOG.warn("Failed to read image file for resizing", e);
@@ -717,7 +590,7 @@ public class Generator implements Closeable {
 		if (gradleProjectConnection == null) {
 			try {
 				gradleProjectConnection = GradleConnector.newConnector()
-						.forProjectDirectory(workspace.getFolderManager().getWorkspaceFolder())
+						.forProjectDirectory(workspace.getWorkspaceFolder())
 						.useGradleUserHomeDir(UserFolderManager.getGradleHome()).connect();
 			} catch (Exception e) {
 				LOG.warn("Failed to load Gradle project", e);

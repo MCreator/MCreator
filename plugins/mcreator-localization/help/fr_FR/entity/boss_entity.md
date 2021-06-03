@@ -1,3 +1,3 @@
-If checked your entity will be boss. 
+Si coché, votre entité sera un Boss.
 
-Color parameter controls the color of the boss bar, similar with the bar style.
+Le paramètre de couleur contrôle la couleur de la barre de Boss, similaire avec le style de la barre.

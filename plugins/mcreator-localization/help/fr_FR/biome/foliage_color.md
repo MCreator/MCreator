@@ -1,0 +1,1 @@
+Ce paramètre contrôle la couleur du feuillage (feuilles) dans ce biome.

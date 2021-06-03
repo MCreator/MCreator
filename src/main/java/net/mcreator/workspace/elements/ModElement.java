@@ -18,19 +18,23 @@
 
 package net.mcreator.workspace.elements;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.RecipeType;
+import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.RegistryNameFixer;
+import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.Serializable;
 import java.util.*;
 
-public class ModElement implements Serializable {
+public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorProvider, IElement {
 
 	private String name;
 	private ModElementType type;
@@ -41,9 +45,11 @@ public class ModElement implements Serializable {
 	private boolean locked_code = false;
 
 	private Map<Integer, Integer> ids = new HashMap<>();
-	private String registry_name = null;
+	@Nullable private String registry_name;
 
-	private Map<String, Object> metadata = null;
+	@Nullable private Map<String, Object> metadata = null;
+
+	@Nullable private String path;
 
 	// MCItem representations of this element
 	// it is transient so it does not get serialized
@@ -57,7 +63,7 @@ public class ModElement implements Serializable {
 	// it is transient so it does not get serialized
 	private transient Workspace workspace;
 
-	public ModElement(@NotNull Workspace workspace, @NotNull String name, ModElementType type) {
+	public ModElement(@Nonnull Workspace workspace, @Nonnull String name, ModElementType type) {
 		this.name = name;
 		this.type = type;
 		this.registry_name = RegistryNameFixer.fromCamelCase(name);
@@ -73,7 +79,7 @@ public class ModElement implements Serializable {
 	 * @param mu            Mod element to be duplicated
 	 * @param duplicateName Name of the duplicate
 	 */
-	public ModElement(@NotNull Workspace workspace, @NotNull ModElement mu, String duplicateName) {
+	public ModElement(@Nonnull Workspace workspace, @Nonnull ModElement mu, String duplicateName) {
 		this.name = duplicateName;
 		this.type = mu.type;
 		this.registry_name = RegistryNameFixer.fromCamelCase(name);
@@ -111,10 +117,16 @@ public class ModElement implements Serializable {
 
 		mcItems = new ArrayList<>();
 
-		if (type.getRecipeElementType() == ModElementType.RecipeElementType.ITEM
-				|| type.getRecipeElementType() == ModElementType.RecipeElementType.BLOCK) {
+		if (type == ModElementType.DIMENSION) {
+			if (getMetadata("ep") != null && (Boolean) getMetadata("ep"))
+				mcItems.add(new MCItem.Custom(this, null));
+		} else if (type.getRecipeType() == RecipeType.ITEM || type.getRecipeType() == RecipeType.BLOCK) {
 			mcItems.add(new MCItem.Custom(this, null));
-		} else if (type.getBaseType() == ModElementType.BaseType.ARMOR) {
+		} else if (type.getRecipeType() == RecipeType.BUCKET) {
+			mcItems.add(new MCItem.Custom(this, null));
+			if (getMetadata("gb") != null && (Boolean) getMetadata("gb"))
+				mcItems.add(new MCItem.Custom(this, "bucket"));
+		} else if (type.getBaseType() == BaseType.ARMOR) {
 			if (getMetadata("eh") != null && (Boolean) getMetadata("eh"))
 				mcItems.add(new MCItem.Custom(this, "helmet"));
 			if (getMetadata("ec") != null && (Boolean) getMetadata("ec"))
@@ -134,7 +146,7 @@ public class ModElement implements Serializable {
 				workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/" + name + ".png");
 	}
 
-	public Workspace getWorkspace() {
+	@Override public @Nonnull Workspace getWorkspace() {
 		return workspace;
 	}
 
@@ -227,7 +239,7 @@ public class ModElement implements Serializable {
 	 * @param baseType The base type under which to look for the free IDs
 	 * @return The ID of the element for the given index, could be newly created
 	 */
-	public int getID(int index, ModElementType.BaseType baseType) {
+	public int getID(int index, BaseType baseType) {
 		if (ids.get(index) == null) { // id at this index is not set yet, create id
 			int free_id = workspace.getNextFreeIDAndIncrease(baseType);
 			ids.put(index, free_id);
@@ -245,8 +257,7 @@ public class ModElement implements Serializable {
 	 */
 	@SuppressWarnings("unused") public int getID(int index, String baseType) {
 		if (ids.get(index) == null) { // id at this index is not set yet, create id
-			int free_id = workspace
-					.getNextFreeIDAndIncrease(ModElementType.BaseType.valueOf(baseType.toUpperCase(Locale.ENGLISH)));
+			int free_id = workspace.getNextFreeIDAndIncrease(BaseType.valueOf(baseType.toUpperCase(Locale.ENGLISH)));
 			ids.put(index, free_id);
 			return free_id;
 		}
@@ -261,7 +272,7 @@ public class ModElement implements Serializable {
 		this.compiles = compiles;
 	}
 
-	public String getName() {
+	@Override public String getName() {
 		return name;
 	}
 
@@ -300,6 +311,17 @@ public class ModElement implements Serializable {
 
 	public void setRegistryName(String registry_name) {
 		this.registry_name = registry_name;
+	}
+
+	public @Nullable String getFolderPath() {
+		return path;
+	}
+
+	public void setParentFolder(@Nullable FolderElement parent) {
+		if (parent == null || parent.isRoot())
+			this.path = null;
+		else
+			this.path = parent.getPath();
 	}
 
 }

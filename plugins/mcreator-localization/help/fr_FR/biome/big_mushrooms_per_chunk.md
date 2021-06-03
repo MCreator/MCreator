@@ -1,1 +1,1 @@
-This parameter controls how many big mushrooms should be spawned per biome chunk.
+Ce paramètre contrôle le nombre de gros champignons à générer par tronçon de biome.

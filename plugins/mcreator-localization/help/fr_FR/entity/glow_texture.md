@@ -1,8 +1,8 @@
-Glow texture is additional optional texture layer on the mob.
+La texture luminescente est une couche de texture supplémentaire facultative sur l'entité.
 
-This texture layer should have the same size and layout as the standard mob texture.
+Cette couche de texture doit avoir la même taille et la même disposition que la texture standard de l'entité.
 
-Glow texture will be used to define mob glowing layer. More bright texture areas will
-result in these parts of the mob to glow more.
+La texture luminescente sera utilisée pour définir la couche luminescente de l'entité.
+Des zones de texture plus brillantes rendront les parties correspondantes de l'entité plus luminescentes.
 
-If you don't need glow layer, keep this at default value (empty).
+Si vous n'avez pas besoin de couche luminescente, gardez la valeur par défaut (vide).

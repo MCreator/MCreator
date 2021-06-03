@@ -23,14 +23,15 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public class ModElementNameValidator extends JavaMemeberNameValidator {
 
 	private final VTextField textField;
 	private final Workspace workspace;
 
-	public ModElementNameValidator(@NotNull Workspace workspace, VTextField textField) {
+	public ModElementNameValidator(@Nonnull Workspace workspace, VTextField textField) {
 		super(textField, true);
 		this.textField = textField;
 		this.workspace = workspace;
@@ -40,7 +41,7 @@ public class ModElementNameValidator extends JavaMemeberNameValidator {
 		for (ModElement element : workspace.getModElements()) {
 			if (element.getName().equalsIgnoreCase(JavaConventions.convertToValidClassName(textField.getText()))) {
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"This mod element already exists");
+						"Mod element with this name already exists in this workspace");
 			}
 		}
 		return super.validate();

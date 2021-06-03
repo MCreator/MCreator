@@ -64,8 +64,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -186,7 +186,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 
 		armorTextureFile.setRenderer(new WTextureComboBoxRenderer(element -> {
-			File[] armorTextures = mcreator.getWorkspace().getFolderManager().getArmorTextureFilesForName(element);
+			File[] armorTextures = mcreator.getFolderManager().getArmorTextureFilesForName(element);
 			if (armorTextures[0].isFile() && armorTextures[1].isFile()) {
 				return new ImageIcon(armorTextures[0].getAbsolutePath());
 			}
@@ -325,9 +325,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodyModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_body"), PanelUtils
 				.northAndCenterElement(PanelUtils
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bodyModel,
-								new JLabel(":"), bodyModelPart, new JLabel("arms L"), armsModelPartL,
-								new JLabel("arms R"), armsModelPartR, L10N.label("elementgui.armor.texture"),
-								bodyModelTexture), PanelUtils
+								new JLabel(":"), bodyModelPart, L10N.label("elementgui.armor.part_arm_left"),
+								armsModelPartL, L10N.label("elementgui.armor.part_arm_right"), armsModelPartR,
+								L10N.label("elementgui.armor.texture"), bodyModelTexture), PanelUtils
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), bodySpecialInfo)));
 		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
@@ -488,28 +488,28 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			if (enableHelmet.isSelected() && !textureHelmet.has())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+			return Validator.ValidationResult.PASSED;
 		});
 
 		textureBody.setValidator(() -> {
 			if (enableBody.isSelected() && !textureBody.has())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+			return Validator.ValidationResult.PASSED;
 		});
 
 		textureLeggings.setValidator(() -> {
 			if (enableLeggings.isSelected() && !textureLeggings.has())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+			return Validator.ValidationResult.PASSED;
 		});
 
 		textureBoots.setValidator(() -> {
 			if (enableBoots.isSelected() && !textureBoots.has())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+			return Validator.ValidationResult.PASSED;
 		});
 
 		helmetModelListener = actionEvent -> {
@@ -640,7 +640,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			if (armorTextureFile.getSelectedItem() == null || armorTextureFile.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.armor_needs_texture"));
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
+			return Validator.ValidationResult.PASSED;
 		});
 
 		group2page.addValidationElement(armorTextureFile);
@@ -694,26 +694,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(helmetModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
-						.filter(element -> element.getName().endsWith(".png")).map(File::getName)
-						.collect(Collectors.toList())), "");
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bodyModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
-						.filter(element -> element.getName().endsWith(".png")).map(File::getName)
-						.collect(Collectors.toList())), "");
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(leggingsModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
-						.filter(element -> element.getName().endsWith(".png")).map(File::getName)
-						.collect(Collectors.toList())), "");
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bootsModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getWorkspace().getFolderManager().getOtherTexturesList().stream()
-						.filter(element -> element.getName().endsWith(".png")).map(File::getName)
-						.collect(Collectors.toList())), "");
+				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
-		List<File> armors = mcreator.getWorkspace().getFolderManager().getArmorTexturesList();
+		List<File> armors = mcreator.getFolderManager().getArmorTexturesList();
 		List<String> armorPart1s = new ArrayList<>();
 		for (File texture : armors)
 			if (texture.getName().endsWith("_layer_1.png"))
@@ -735,7 +731,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	}
 
 	private void updateArmorTexturePreview() {
-		File[] armorTextures = mcreator.getWorkspace().getFolderManager()
+		File[] armorTextures = mcreator.getFolderManager()
 				.getArmorTextureFilesForName(armorTextureFile.getSelectedItem());
 		if (armorTextures[0].isFile() && armorTextures[1].isFile()) {
 			ImageIcon bg1 = new ImageIcon(ImageUtils

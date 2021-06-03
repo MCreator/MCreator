@@ -108,14 +108,14 @@ public class Canvas extends ArrayListListModel<Layer> {
 		return removed;
 	}
 
-	public boolean moveUp(int index) {
+	@Override public boolean moveUp(int index) {
 		boolean mu = super.moveUp(index);
 		if (mu)
 			layerPanel.select(index - 1);
 		return mu;
 	}
 
-	public boolean moveDown(int index) {
+	@Override public boolean moveDown(int index) {
 		boolean md = super.moveDown(index);
 		if (md)
 			layerPanel.select(index + 1);
