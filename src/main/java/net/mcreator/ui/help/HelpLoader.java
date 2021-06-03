@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +73,7 @@ public class HelpLoader {
 		return helpContext != null && helpContext.getEntry() != null && getFromCache(helpContext.getEntry()) != null;
 	}
 
-	public static String loadHelpFor(IHelpContext helpContext) {
+	public static String loadHelpFor(IHelpContext helpContext, @Nullable Object... arguments) {
 		if (helpContext != null) {
 			URI uri = null;
 			try {
@@ -86,7 +87,8 @@ public class HelpLoader {
 
 			if (helpContext.getEntry() != null) {
 				if (getFromCache(helpContext.getEntry()) != null) {
-					helpString.append(renderer.render(parser.parse(getFromCache(helpContext.getEntry()))));
+					helpString.append(renderer.render(
+						parser.parse(MessageFormat.format(getFromCache(helpContext.getEntry()), arguments))));
 				} else {
 					helpString.append(L10N.t("help_loader.no_help_entry", helpContext.getEntry()));
 				}
