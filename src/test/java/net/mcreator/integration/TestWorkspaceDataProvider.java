@@ -44,6 +44,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import java.awt.*;
 import java.awt.image.RenderedImage;
@@ -111,7 +112,7 @@ public class TestWorkspaceDataProvider {
 		VariableElement sampleVariable1 = new VariableElement();
 		sampleVariable1.setName("test");
 		sampleVariable1.setValue("true");
-		sampleVariable1.setType(VariableElementType.LOGIC);
+		sampleVariable1.setType(VariableElementTypeLoader.BuiltInTypes.LOGIC);
 		sampleVariable1.setScope(VariableElementType.Scope.GLOBAL_WORLD);
 		workspace.addVariableElement(sampleVariable1);
 
@@ -344,8 +345,10 @@ public class TestWorkspaceDataProvider {
 			fluid.textureBucket = emptyLists ? "" : "itest";
 			fluid.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			fluid.emptySound = !emptyLists ? new Sound(modElement.getWorkspace(), "") : new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			fluid.emptySound = !emptyLists ?
+					new Sound(modElement.getWorkspace(), "") :
+					new Sound(modElement.getWorkspace(),
+							getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			fluid.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			fluid.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
