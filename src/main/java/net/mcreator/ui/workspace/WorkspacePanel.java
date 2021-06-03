@@ -1241,7 +1241,7 @@ import java.util.stream.Collectors;
 					modElement.setParentFolder(selected);
 				}
 			}
-			
+
 			for (FolderElement childFolder : currentFolder.getRecursiveFolderChildren()) {
 				for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
 					if (childFolder.equals(modElement.getFolderPath())) {
