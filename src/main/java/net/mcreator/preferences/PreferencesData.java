@@ -123,7 +123,7 @@ public class PreferencesData {
 	}
 
 	public static class HiddenPreferences {
-		public WorkspaceIconSize workspaceIconSize = WorkspaceIconSize.LARGE;
+		public WorkspaceIconSize workspaceModElementIconSize = WorkspaceIconSize.TILES;
 		public boolean fullScreen = false;
 		public int projectTreeSplitPos = 0;
 		public boolean workspaceSortAscending = true;
@@ -137,7 +137,7 @@ public class PreferencesData {
 	}
 
 	public enum WorkspaceIconSize {
-		LARGE, MEDIUM, SMALL, LIST, TILES, DETAILS
+		TILES, LARGE, MEDIUM, SMALL, LIST, DETAILS
 	}
 
 }
