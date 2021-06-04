@@ -31,7 +31,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -74,7 +74,7 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 		ProcedureSelector isCheckedProcedure = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/checkbox_procedure_value"), editor.mcreator,
 				L10N.t("dialog.gui.checkbox_procedure_value"), ProcedureSelector.Side.CLIENT, false,
-				VariableElementType.LOGIC,
+				VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"))
 				.setDefaultName(L10N.t("condition.common.false"));
 		isCheckedProcedure.refreshList();
@@ -110,8 +110,8 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 					} else {
 						int idx = editor.components.indexOf(checkbox);
 						editor.components.remove(checkbox);
-						Checkbox checkboxNew = new Checkbox(text, checkbox.getX(), checkbox.getY(), checkboxText.getText(),
-								isCheckedProcedure.getSelectedProcedure());
+						Checkbox checkboxNew = new Checkbox(text, checkbox.getX(), checkbox.getY(),
+								checkboxText.getText(), isCheckedProcedure.getSelectedProcedure());
 						editor.components.add(idx, checkboxNew);
 						setEditingComponent(checkboxNew);
 					}
