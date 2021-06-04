@@ -218,7 +218,7 @@ import net.minecraft.block.material.Material;
 		@OnlyIn(Dist.CLIENT)
 		@Override
 		public IParticleData getDripParticleData() {
-			return ${data.dripParticle.toString()};
+			return ${data.dripParticle};
 		}
 		</#if>
 
