@@ -352,9 +352,6 @@ import java.util.stream.Collectors;
 		modElementsBar.add(view);
 
 		JRadioButtonMenuItem tilesIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.tiles"));
-		tilesIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		tilesIcons.setContentAreaFilled(false);
-		tilesIcons.setOpaque(false);
 		tilesIcons.addActionListener(e -> {
 			if (tilesIcons.isSelected()) {
 				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.TILES;
@@ -366,12 +363,8 @@ import java.util.stream.Collectors;
 		Arrays.stream(tilesIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(tilesIcons)));
 		ComponentUtils.deriveFont(tilesIcons, 12);
 		tilesIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
-		modElementsBar.add(tilesIcons);
 
 		JRadioButtonMenuItem largeIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.large"));
-		largeIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		largeIcons.setContentAreaFilled(false);
-		largeIcons.setOpaque(false);
 		largeIcons.addActionListener(e -> {
 			if (largeIcons.isSelected()) {
 				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.LARGE;
@@ -383,12 +376,8 @@ import java.util.stream.Collectors;
 		Arrays.stream(largeIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(largeIcons)));
 		ComponentUtils.deriveFont(largeIcons, 12);
 		largeIcons.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		modElementsBar.add(largeIcons);
 
 		JRadioButtonMenuItem mediumIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.medium"));
-		mediumIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		mediumIcons.setContentAreaFilled(false);
-		mediumIcons.setOpaque(false);
 		mediumIcons.addActionListener(e -> {
 			if (mediumIcons.isSelected()) {
 				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.MEDIUM;
@@ -400,12 +389,8 @@ import java.util.stream.Collectors;
 		Arrays.stream(mediumIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(mediumIcons)));
 		ComponentUtils.deriveFont(mediumIcons, 12);
 		mediumIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
-		modElementsBar.add(mediumIcons);
 
 		JRadioButtonMenuItem smallIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.small"));
-		smallIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		smallIcons.setContentAreaFilled(false);
-		smallIcons.setOpaque(false);
 		smallIcons.addActionListener(e -> {
 			if (smallIcons.isSelected()) {
 				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.SMALL;
@@ -417,12 +402,8 @@ import java.util.stream.Collectors;
 		Arrays.stream(smallIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(smallIcons)));
 		ComponentUtils.deriveFont(smallIcons, 12);
 		smallIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
-		modElementsBar.add(smallIcons);
 
 		JRadioButtonMenuItem listIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.list"));
-		listIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		listIcons.setContentAreaFilled(false);
-		listIcons.setOpaque(false);
 		listIcons.addActionListener(e -> {
 			if (listIcons.isSelected()) {
 				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.LIST;
@@ -434,12 +415,8 @@ import java.util.stream.Collectors;
 		Arrays.stream(listIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(listIcons)));
 		ComponentUtils.deriveFont(listIcons, 12);
 		listIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
-		modElementsBar.add(listIcons);
 
 		JRadioButtonMenuItem detailsIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.details"));
-		detailsIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		detailsIcons.setContentAreaFilled(false);
-		detailsIcons.setOpaque(false);
 		detailsIcons.addActionListener(e -> {
 			if (detailsIcons.isSelected()) {
 				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.DETAILS;
@@ -451,7 +428,6 @@ import java.util.stream.Collectors;
 		Arrays.stream(detailsIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(detailsIcons)));
 		ComponentUtils.deriveFont(detailsIcons, 12);
 		detailsIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
-		modElementsBar.add(detailsIcons);
 
 		sp.addMouseWheelListener(new MouseAdapter() {
 			@Override public void mouseWheelMoved(MouseWheelEvent e) {
