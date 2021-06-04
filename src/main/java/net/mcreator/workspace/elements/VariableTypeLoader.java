@@ -23,12 +23,17 @@ import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.blockly.BlocklyJavascriptTemplates;
+import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class VariableTypeLoader {
 
@@ -80,9 +85,6 @@ public class VariableTypeLoader {
 			case "string":
 				BuiltInTypes.STRING = variableType;
 				break;
-			case "itemstack":
-				BuiltInTypes.ITEMSTACK = variableType;
-				break;
 			}
 		}
 
@@ -101,8 +103,13 @@ public class VariableTypeLoader {
 		return VARIABLE_TYPES_LIST.keySet();
 	}
 
-	public Collection<VariableType> getGlobalVariableTypes() {
-		return Arrays.asList(BuiltInTypes.LOGIC, BuiltInTypes.NUMBER, BuiltInTypes.STRING, BuiltInTypes.ITEMSTACK);
+	public boolean doesVariableTypeExist(String name) {
+		return VARIABLE_TYPES_LIST.containsValue(name);
+	}
+
+	public Collection<VariableType> getGlobalVariableTypes(Workspace workspace) {
+		return VARIABLE_TYPES_LIST.keySet().stream().filter(type -> type.canBeGlobal(workspace))
+				.collect(Collectors.toList());
 	}
 
 	public String getVariableBlocklyJS() {
@@ -113,6 +120,5 @@ public class VariableTypeLoader {
 		public static VariableType LOGIC;
 		public static VariableType NUMBER;
 		public static VariableType STRING;
-		public static VariableType ITEMSTACK;
 	}
 }

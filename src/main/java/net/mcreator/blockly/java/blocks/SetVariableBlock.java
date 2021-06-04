@@ -34,6 +34,7 @@ import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -47,9 +48,9 @@ public class SetVariableBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_set_");
-		String javaType = new Dependency("",
-				VariableTypeLoader.INSTANCE.getVariableTypeFromString(type).getName())
-				.getType(master.getWorkspace());
+		VariableType typeObject = VariableTypeLoader.INSTANCE.getVariableTypeFromString(type);
+
+		String javaType = new Dependency("", typeObject.getName()).getType(master.getWorkspace());
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
@@ -85,9 +86,7 @@ public class SetVariableBlock implements IBlockGenerator {
 						}
 						return;
 					}
-				}
-
-				if (scope.equals("global")) {
+				} else if (scope.equals("global")) {
 					scope = master.getWorkspace().getVariableElementByName(name).getScope().name();
 					if (scope.equals("GLOBAL_MAP") || scope.equals("GLOBAL_WORLD")) {
 						master.addDependency(new Dependency("world", "world"));
@@ -96,18 +95,26 @@ public class SetVariableBlock implements IBlockGenerator {
 					}
 				}
 
+				Object setterTemplate = typeObject
+						.getScopeDefinition(master.getWorkspace(), scope.toUpperCase(Locale.ENGLISH)).get("set");
+				if (setterTemplate == null) {
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+							"Current generator does not support setting variables of type " + type
+									+ " in " + scope + " scope. Skipping this block."));
+					return;
+				}
+
 				String valuecode = BlocklyToCode.directProcessOutputBlock(master, value);
 
 				if (master.getTemplateGenerator() != null) {
 					Map<String, Object> dataModel = new HashMap<>();
 					dataModel.put("name", name);
-					dataModel.put("scope", scope);
+					dataModel.put("scope", scope.toUpperCase(Locale.ENGLISH));
 					dataModel.put("type", type);
 					dataModel.put("javaType", javaType);
 					dataModel.put("value", valuecode);
-
 					String code = master.getTemplateGenerator()
-							.generateFromTemplate("_set_variable.java.ftl", dataModel);
+							.generateFromString(setterTemplate.toString(), dataModel);
 					master.append(code);
 				}
 			}

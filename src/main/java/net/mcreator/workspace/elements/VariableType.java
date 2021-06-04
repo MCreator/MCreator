@@ -22,15 +22,13 @@ import com.google.gson.annotations.SerializedName;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 
+import java.util.Map;
+
 @SuppressWarnings("unused") public class VariableType {
 
 	private String name;
 	private int color;
 	private String blocklyVariableType;
-
-	public int getColor() {
-		return color;
-	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -38,6 +36,10 @@ import net.mcreator.workspace.Workspace;
 
 	public String getName() {
 		return name;
+	}
+
+	public int getColor() {
+		return color;
 	}
 
 	public String getBlocklyVariableType() {
@@ -49,11 +51,19 @@ import net.mcreator.workspace.Workspace;
 	}
 
 	public String getDefaultValue(Workspace workspace) {
-		String defaultValue = new NameMapper(workspace, "types").getMapping(getName(), 1);
-		if (defaultValue.equals(getName()))
-			return "null";
+		return workspace.getGeneratorConfiguration().getVariableTypes().getDefaultValue(this);
+	}
 
-		return defaultValue;
+	public boolean canBeGlobal(Workspace workspace) {
+		return workspace.getGeneratorConfiguration().getVariableTypes().canBeGlobal(this);
+	}
+
+	public Scope[] getSupportedScopesWithoutLocal(Workspace workspace) {
+		return workspace.getGeneratorConfiguration().getVariableTypes().getSupportedScopesWithoutLocal(this);
+	}
+
+	public Map<?, ?> getScopeDefinition(Workspace workspace, String scope) {
+		return workspace.getGeneratorConfiguration().getVariableTypes().getScopeDefinition(this, scope);
 	}
 
 	@Override public String toString() {
@@ -61,7 +71,7 @@ import net.mcreator.workspace.Workspace;
 	}
 
 	public enum Scope {
-		@SerializedName("map") GLOBAL_MAP, @SerializedName("world") GLOBAL_WORLD, @SerializedName("global") GLOBAL_SESSION, @SerializedName("player_lifetime") PLAYER_LIFETIME, @SerializedName("player_persistent") PLAYER_PERSISTENT
+		@SerializedName("map") GLOBAL_MAP, @SerializedName("world") GLOBAL_WORLD, @SerializedName("global") GLOBAL_SESSION, @SerializedName("player_lifetime") PLAYER_LIFETIME, @SerializedName("player_persistent") PLAYER_PERSISTENT, @SerializedName("local") LOCAL
 	}
 
 }

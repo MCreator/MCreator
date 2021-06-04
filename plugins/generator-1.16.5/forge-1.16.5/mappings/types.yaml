@@ -5,15 +5,11 @@ number:
 string:
   - String
   - '""'
-logic:
-  - boolean
-  - false
+logic: boolean
 itemstack:
   - ItemStack
   - ItemStack.EMPTY
-direction:
-  - Direction
-  - Direction.NORTH
+direction: Direction
 world: IWorld
 entity: Entity
 map: HashMap
