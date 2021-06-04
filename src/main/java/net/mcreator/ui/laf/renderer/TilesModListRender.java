@@ -63,7 +63,7 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 
 
 			label.setText(StringUtils.abbreviateString(element.getName(), 18));
-			label.setFont(MCreatorTheme.secondary_font.deriveFont(24.0f));
+			label.setFont(MCreatorTheme.secondary_font.deriveFont(20.0f));
 
 			ImageIcon dva = null;
 
