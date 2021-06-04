@@ -251,7 +251,7 @@ import java.util.stream.Collectors;
 							editCurrentlySelectedModElement((ModElement) selected, list, e.getX(), e.getY());
 					}
 				}
-				
+
 				renameFolder.setEnabled(selected instanceof FolderElement);
 			}
 		});
