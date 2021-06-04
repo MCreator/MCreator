@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2021, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +17,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.laf.renderer;
+/*
+ * MCreator (https://mcreator.net/)
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2021, Pylo, opensource contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package net.mcreator.ui.laf.renderer.elementlist;
 
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.init.TiledImageCache;
@@ -31,13 +51,14 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 
-public class TilesModListRender extends JPanel implements ListCellRenderer<IElement> {
+public class MediumIconModListRender extends JPanel implements ListCellRenderer<IElement> {
 
 	private final boolean showText;
 
-	public TilesModListRender(boolean showText) {
+	public MediumIconModListRender(boolean showText) {
 		if (showText)
-			setLayout(new GridBagLayout());
+			setLayout(new BorderLayout(5, 0));
+
 		this.showText = showText;
 	}
 
@@ -61,9 +82,8 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 				setOpaque(false);
 			}
 
-
-			label.setText(StringUtils.abbreviateString(element.getName(), 18));
-			label.setFont(MCreatorTheme.secondary_font.deriveFont(24.0f));
+			label.setText(StringUtils.abbreviateString(element.getName(), 30));
+			label.setFont(MCreatorTheme.secondary_font.deriveFont(20.0f));
 
 			ImageIcon dva = null;
 
@@ -83,7 +103,7 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 			}
 
 			if (element instanceof FolderElement) {
-				icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("folder").getImage(), 80)));
+				icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("folder").getImage(), 31)));
 			} else if (element instanceof ModElement) {
 				ImageIcon modIcon = ((ModElement) element).getElementIcon();
 
@@ -91,19 +111,19 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 						&& modIcon.getIconHeight() > 0 && modIcon != MCItem.DEFAULT_ICON) {
 					if (dva != null) {
 						ImageIcon iconbig = ImageUtils.drawOver(modIcon, dva);
-						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 80)));
+						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 31)));
 					} else {
-						icon.setIcon(new ImageIcon(ImageUtils.resize(modIcon.getImage(), 80)));
+						icon.setIcon(new ImageIcon(ImageUtils.resize(modIcon.getImage(), 31)));
 					}
 				} else {
 					if (dva != null) {
 						ImageIcon iconbig = ImageUtils
 								.drawOver(TiledImageCache.getModTypeIcon(((ModElement) element).getType()), dva);
-						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 80)));
+						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 31)));
 					} else {
 						icon.setIcon(new ImageIcon(ImageUtils
 								.resizeAA(TiledImageCache.getModTypeIcon(((ModElement) element).getType()).getImage(),
-										80)));
+										31)));
 					}
 				}
 			}
@@ -111,16 +131,10 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 			setToolTipText(element.getName());
 		}
 
-		GridBagConstraints c = new GridBagConstraints();
-
 		if (showText)
-			c.gridx = 0;
-	    	c.gridy = 1;
-	    	add(label,c);
-		    c.gridx = 0;
-		    c.gridy = 2;
-			add(icon);
+			add("Center", label);
 
+		add("West", icon);
 		return this;
 	}
 
