@@ -144,8 +144,7 @@ import java.util.stream.Collectors;
 						L10N.t("workspace.elements.folders.add.error_letters"));
 			}
 
-			List<FolderElement> folderElements = mcreator.getWorkspace().getFoldersRoot()
-					.getRecursiveFolderChildren();
+			List<FolderElement> folderElements = mcreator.getWorkspace().getFoldersRoot().getRecursiveFolderChildren();
 
 			FolderElement tmpFolder = new FolderElement(folderName, currentFolder);
 
@@ -252,6 +251,7 @@ import java.util.stream.Collectors;
 							editCurrentlySelectedModElement((ModElement) selected, list, e.getX(), e.getY());
 					}
 				}
+				
 				renameFolder.setEnabled(selected instanceof FolderElement);
 			}
 		});
