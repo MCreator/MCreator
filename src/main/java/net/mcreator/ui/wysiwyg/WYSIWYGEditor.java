@@ -254,8 +254,8 @@ public class WYSIWYGEditor extends JPanel {
 
 		add.add(label);
 		add.add(button);
-		add.add(checkbox);
 		add.add(image);
+		add.add(checkbox);
 		add.add(text);
 		add.add(slot1);
 		add.add(slot2);

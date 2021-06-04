@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.wysiwyg;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.element.parts.gui.IMachineNamedComponent;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -34,6 +35,7 @@ import net.mcreator.workspace.elements.VariableElementType;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
 
 public class CheckboxDialog extends AbstractWYSIWYGDialog {
 
@@ -48,6 +50,7 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
 		VTextField nameField = new VTextField(20);
+		nameField.setPreferredSize(new Dimension(200, 28));
 		nameField.enableRealtimeValidation();
 		Validator validator = new JavaMemeberNameValidator(nameField, false);
 		nameField.setValidator(() -> {
@@ -56,23 +59,24 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 				GUIComponent component = editor.list.getModel().getElementAt(i);
 				if (checkbox != null && component.name.equals(checkbox.name)) // skip current element if edit mode
 					continue;
-				if (component instanceof net.mcreator.element.parts.gui.Checkbox && component.name.equals(textname))
+				if (component instanceof IMachineNamedComponent && component.name.equals(textname))
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 							L10N.t("dialog.gui.textfield_name_already_exists"));
 			}
 			return validator.validate();
 		});
-		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_input_name"), nameField));
+		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_name"), nameField));
 
-		JTextField deft = new JTextField(20);
-		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_text"), deft));
+		JTextField checkboxText = new JTextField(20);
+		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_text"), checkboxText));
+		checkboxText.setPreferredSize(new Dimension(200, 28));
 
 		ProcedureSelector isCheckedProcedure = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/checkbox_procedure_value"), editor.mcreator,
 				L10N.t("dialog.gui.checkbox_procedure_value"), ProcedureSelector.Side.CLIENT, false,
 				VariableElementType.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"))
-				.setDefaultName("Not selected");
+				.setDefaultName(L10N.t("condition.common.false"));
 		isCheckedProcedure.refreshList();
 		options.add(PanelUtils.join(isCheckedProcedure));
 
@@ -87,7 +91,7 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 		if (checkbox != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
 			nameField.setText(checkbox.name);
-			deft.setText(checkbox.text);
+			checkboxText.setText(checkbox.text);
 			isCheckedProcedure.setSelectedProcedure(checkbox.isCheckedProcedure);
 		}
 
@@ -101,12 +105,12 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 						editor.editor.setPositioningMode(20, 20);
 						editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
 								new Checkbox(text, editor.editor.newlyAddedComponentPosX,
-										editor.editor.newlyAddedComponentPosY, deft.getText(),
+										editor.editor.newlyAddedComponentPosY, checkboxText.getText(),
 										isCheckedProcedure.getSelectedProcedure()))));
 					} else {
 						int idx = editor.components.indexOf(checkbox);
 						editor.components.remove(checkbox);
-						Checkbox checkboxNew = new Checkbox(text, checkbox.getX(), checkbox.getY(), deft.getText(),
+						Checkbox checkboxNew = new Checkbox(text, checkbox.getX(), checkbox.getY(), checkboxText.getText(),
 								isCheckedProcedure.getSelectedProcedure());
 						editor.components.add(idx, checkboxNew);
 						setEditingComponent(checkboxNew);

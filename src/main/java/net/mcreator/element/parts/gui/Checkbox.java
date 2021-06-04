@@ -19,26 +19,24 @@
 package net.mcreator.element.parts.gui;
 
 import net.mcreator.element.parts.Procedure;
-import net.mcreator.ui.init.UIRES;
+import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
 
 import java.awt.*;
 
-public class Checkbox extends GUIComponent{
+public class Checkbox extends GUIComponent implements IMachineNamedComponent {
 	public String text;
 	public Procedure isCheckedProcedure;
 
-	public Checkbox(String name, int x, int y, String text, Procedure isCheckedProcedure){
+	public Checkbox(String name, int x, int y, String text, Procedure isCheckedProcedure) {
 		super(name, x, y);
 		this.text = text;
 		this.isCheckedProcedure = isCheckedProcedure;
 	}
 
-
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
-		g.setFont(g.getFont().deriveFont(5f));
-		g.drawImage(UIRES.get("32px.checkbox").getImage(), cx, cy, 20, 20, wysiwygEditor);
+		g.drawImage(MinecraftImageGenerator.generateCheckbox(), cx, cy, 20, 20, wysiwygEditor);
 	}
 
 	@Override public int getWidth(Workspace workspace) {
