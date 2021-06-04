@@ -80,11 +80,4 @@ public final class JavaKeywordsMap {
 		put("NAN", "Double.NaN");
 	}};
 
-	public static final HashMap<String, String[]> VARIABLE_TYPES = new HashMap<String, String[]>() {{
-		put("Number", new String[] { "double", "0" });
-		put("Boolean", new String[] { "boolean", "false" });
-		put("String", new String[] { "String", "\"\"" });
-		put("MCItem", new String[] { "ItemStack", "ItemStack.EMPTY" });
-	}};
-
 }
