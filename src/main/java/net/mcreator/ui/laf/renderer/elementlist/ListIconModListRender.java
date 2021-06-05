@@ -16,13 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.laf.renderer;
+package net.mcreator.ui.laf.renderer.elementlist;
 
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.StringUtils;
+import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
@@ -31,10 +33,11 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 
-public class TilesModListRender extends JPanel implements ListCellRenderer<IElement> {
+public class ListIconModListRender extends JPanel implements ListCellRenderer<IElement> {
 
-	public TilesModListRender() {
-			setLayout(new GridBagLayout());
+	public ListIconModListRender() {
+		setLayout(new BorderLayout(5, 0));
+
 	}
 
 	@Override
@@ -57,9 +60,8 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 				setOpaque(false);
 			}
 
-
-			label.setText(StringUtils.abbreviateString(element.getName(), 18));
-			label.setFont(MCreatorTheme.secondary_font.deriveFont(20.0f));
+			label.setText(StringUtils.abbreviateString(element.getName(), 200));
+			label.setFont(MCreatorTheme.secondary_font.deriveFont(14.0f));
 
 			ImageIcon dva = null;
 
@@ -79,7 +81,7 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 			}
 
 			if (element instanceof FolderElement) {
-				icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("folder").getImage(), 80)));
+				icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("folder").getImage(), 22)));
 			} else if (element instanceof ModElement) {
 				ImageIcon modIcon = ((ModElement) element).getElementIcon();
 
@@ -87,19 +89,19 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 						&& modIcon.getIconHeight() > 0 && modIcon != MCItem.DEFAULT_ICON) {
 					if (dva != null) {
 						ImageIcon iconbig = ImageUtils.drawOver(modIcon, dva);
-						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 80)));
+						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 22)));
 					} else {
-						icon.setIcon(new ImageIcon(ImageUtils.resize(modIcon.getImage(), 80)));
+						icon.setIcon(new ImageIcon(ImageUtils.resize(modIcon.getImage(), 22)));
 					}
 				} else {
 					if (dva != null) {
 						ImageIcon iconbig = ImageUtils
 								.drawOver(TiledImageCache.getModTypeIcon(((ModElement) element).getType()), dva);
-						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 80)));
+						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 22)));
 					} else {
 						icon.setIcon(new ImageIcon(ImageUtils
 								.resizeAA(TiledImageCache.getModTypeIcon(((ModElement) element).getType()).getImage(),
-										80)));
+										22)));
 					}
 				}
 			}
@@ -107,16 +109,9 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 			setToolTipText(element.getName());
 		}
 
-		GridBagConstraints c = new GridBagConstraints();
+		add("Center", label);
 
-			c.gridx = 0;
-	    	c.gridy = 1;
-	    	add(label,c);
-		    c.gridx = 0;
-		    c.gridy = 2;
-			add(icon);
-
+		add("West", icon);
 		return this;
 	}
-
 }

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.laf.renderer;
+package net.mcreator.ui.laf.renderer.elementlist;
 
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.init.TiledImageCache;

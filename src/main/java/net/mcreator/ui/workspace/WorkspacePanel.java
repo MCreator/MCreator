@@ -41,7 +41,7 @@ import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
-import net.mcreator.ui.laf.renderer.*;
+import net.mcreator.ui.laf.renderer.elementlist.*;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.modgui.ModTypeDropdown;
 import net.mcreator.ui.validation.Validator;
@@ -557,6 +557,13 @@ import java.util.stream.Collectors;
 		viewPopup.add(smallIcons);
 		viewPopup.add(listIcons);
 		viewPopup.add(detailsIcons);
+
+		tilesIcons.setIcon(UIRES.get("16px.tiles.gif"));
+		largeIcons.setIcon(UIRES.get("16px.large.gif"));
+		mediumIcons.setIcon(UIRES.get("16px.medium.gif"));
+		smallIcons.setIcon(UIRES.get("16px.small.gif"));
+		listIcons.setIcon(UIRES.get("16px.list.gif"));
+		detailsIcons.setIcon(UIRES.get("16px.details.gif"));
 
 		view.addActionListener(e -> viewPopup.show(view, 0, 25));
 
