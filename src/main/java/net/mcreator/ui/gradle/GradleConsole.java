@@ -323,7 +323,7 @@ public class GradleConsole extends JPanel {
 		if (PreferencesManager.PREFERENCES.gradle.offline)
 			arguments.add("--offline");
 
-		task.withArguments(arguments);
+		task.addArguments(arguments);
 
 		task.withCancellationToken(cancellationSource.token());
 

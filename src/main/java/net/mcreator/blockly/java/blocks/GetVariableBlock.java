@@ -27,6 +27,9 @@ import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
@@ -35,27 +38,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GetVariableBlock implements IBlockGenerator {
+	private final String[] names;
+
+	public GetVariableBlock() {
+		names = VariableElementTypeLoader.INSTANCE.getVariableTypes().stream().map(VariableElementType::getName)
+				.collect(Collectors.toList()).stream().map(s -> s = "variables_get_" + s).toArray(String[]::new);
+	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String type;
-
-		String blocktype = block.getAttribute("type");
-		switch (blocktype) {
-		case "variables_get_number":
-			type = "NUMBER";
-			break;
-		case "variables_get_text":
-			type = "STRING";
-			break;
-		case "variables_get_logic":
-			type = "LOGIC";
-			break;
-		case "variables_get_itemstack":
-			type = "ITEMSTACK";
-			break;
-		default:
-			return;
-		}
+		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_get_");
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (variable != null) {
@@ -118,8 +109,7 @@ public class GetVariableBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "variables_get_logic", "variables_get_number", "variables_get_text",
-				"variables_get_itemstack" };
+		return names;
 	}
 
 	@Override public BlockType getBlockType() {

@@ -41,7 +41,7 @@ import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -134,9 +134,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				"Additional generation condition", VariableElementType.LOGIC,
+				"Additional generation condition", VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName("(no additional condition)");
+				.setDefaultName(L10N.t("condition.common.no_additional"));
 
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
@@ -224,19 +224,20 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.bucket_name_in_gui")));
 		bucketProperties.add(bucketName);
 
-		bucketProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/bucket_texture"), L10N.label("elementgui.fluid.bucket_texture")));
+		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/bucket_texture"),
+				L10N.label("elementgui.fluid.bucket_texture")));
 		bucketProperties.add(PanelUtils.centerInPanel(textureBucket));
 
 		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.common.creative_tab")));
 		bucketProperties.add(creativeTab);
 
-		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/empty_sound"),
-				L10N.label("elementgui.fluid.empty_sound")));
+		bucketProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/empty_sound"), L10N.label("elementgui.fluid.empty_sound")));
 		bucketProperties.add(emptySound);
 
-		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		bucketProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
 		bucketProperties.add(rarity);
 
 		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
@@ -347,7 +348,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.forge_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent properties = PanelUtils.westAndEastElement(blockProperties, PanelUtils.pullElementUp(forgeProperties));
+		JComponent properties = PanelUtils
+				.westAndEastElement(blockProperties, PanelUtils.pullElementUp(forgeProperties));
 		properties.setOpaque(false);
 
 		pane2.setOpaque(false);
