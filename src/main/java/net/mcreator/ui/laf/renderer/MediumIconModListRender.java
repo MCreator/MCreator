@@ -34,13 +34,9 @@ import java.awt.*;
 
 public class MediumIconModListRender extends JPanel implements ListCellRenderer<IElement> {
 
-	private final boolean showText;
-
-	public MediumIconModListRender(boolean showText) {
-		if (showText)
+	public MediumIconModListRender() {
 			setLayout(new BorderLayout(5, 0));
 
-		this.showText = showText;
 	}
 
 	@Override
@@ -112,8 +108,7 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 			setToolTipText(element.getName());
 		}
 
-		if (showText)
-			add("Center", label);
+		add("Center", label);
 
 		add("West", icon);
 		return this;

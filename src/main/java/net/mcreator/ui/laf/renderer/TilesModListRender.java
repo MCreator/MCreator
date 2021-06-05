@@ -33,12 +33,8 @@ import java.awt.*;
 
 public class TilesModListRender extends JPanel implements ListCellRenderer<IElement> {
 
-	private final boolean showText;
-
-	public TilesModListRender(boolean showText) {
-		if (showText)
+	public TilesModListRender() {
 			setLayout(new GridBagLayout());
-		this.showText = showText;
 	}
 
 	@Override
@@ -113,7 +109,6 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 
 		GridBagConstraints c = new GridBagConstraints();
 
-		if (showText)
 			c.gridx = 0;
 	    	c.gridy = 1;
 	    	add(label,c);

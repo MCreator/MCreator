@@ -933,7 +933,7 @@ import java.util.stream.Collectors;
 			view.setText(L10N.t("workspace.elements.list.tiles"));
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.LARGE) {
-			list.setCellRenderer(new TilesModListRender(true));
+			list.setCellRenderer(new TilesModListRender());
 			list.setFixedCellHeight(120);
 			list.setFixedCellWidth(120);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -941,7 +941,7 @@ import java.util.stream.Collectors;
 			view.setText(L10N.t("workspace.elements.list.large"));
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.MEDIUM) {
-			list.setCellRenderer(new MediumIconModListRender(true));
+			list.setCellRenderer(new MediumIconModListRender());
 			list.setFixedCellHeight(40);
 			list.setFixedCellWidth(250);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
