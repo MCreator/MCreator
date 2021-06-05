@@ -80,8 +80,8 @@ public class FunctionGUI extends ModElementGUI<Function> {
 				L10N.label("elementgui.function.registry_name")));
 		northPanel.add(name);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("function/namespace", modElement.getWorkspace()
-				.getWorkspaceSettings().getModID(), modElement.getRegistryName()),
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("function/namespace", new Object[] { modElement.getWorkspace()
+				.getWorkspaceSettings().getModID(), modElement.getRegistryName() }),
 				L10N.label("elementgui.function.namespace")));
 		northPanel.add(namespace);
 
