@@ -37,19 +37,31 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class HelpUtils {
 
-	public static Component wrapWithHelpButton(IHelpContext context, @Nullable Object[] context_arguments, Component ca) {
-		return wrapWithHelpButton(context, context_arguments, ca, null, SwingConstants.RIGHT);
+	public static Component wrapWithHelpButton(IHelpContext context, Component ca) {
+		return wrapWithHelpButton(context, new Object[] { }, ca, null, SwingConstants.RIGHT);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, @Nullable Object[] context_arguments, Component ca, int direction) {
-		return wrapWithHelpButton(context, context_arguments, ca, null, direction);
+	public static Component wrapWithHelpButton(IHelpContext context, Component ca, int direction) {
+		return wrapWithHelpButton(context, new Object[] { }, ca, null, direction);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, @Nullable Object[] context_arguments, Component ca, @Nullable Color ac) {
-		return wrapWithHelpButton(context, context_arguments, ca, ac, SwingConstants.RIGHT);
+	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac) {
+		return wrapWithHelpButton(context, new Object[] { }, ca, ac, SwingConstants.RIGHT);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, @Nullable Object[] context_arguments, Component ca, @Nullable Color ac, int direction) {
+	public static Component wrapWithHelpButton(IHelpContext context, Object[] contextArguments, Component ca) {
+		return wrapWithHelpButton(context, contextArguments, ca, null, SwingConstants.RIGHT);
+	}
+
+	public static Component wrapWithHelpButton(IHelpContext context, Object[] contextArguments, Component ca, int direction) {
+		return wrapWithHelpButton(context, contextArguments, ca, null, direction);
+	}
+
+	public static Component wrapWithHelpButton(IHelpContext context, Object[] contextArguments, Component ca, @Nullable Color ac) {
+		return wrapWithHelpButton(context, contextArguments, ca, ac, SwingConstants.RIGHT);
+	}
+
+	public static Component wrapWithHelpButton(IHelpContext context, Object[] contextArguments, Component ca, @Nullable Color ac, int direction) {
 		JLabel lab = new JLabel(HelpLoader.hasFullHelp(context) ? UIRES.get("help") : UIRES.get("help_partial"));
 		lab.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -74,7 +86,7 @@ public class HelpUtils {
 						}
 					});
 
-					editorPane.setText(HelpLoader.loadHelpFor(context, context_arguments));
+					editorPane.setText(HelpLoader.loadHelpFor(context, contextArguments));
 
 					JScrollPane scrollPane = new JScrollPane(editorPane);
 					scrollPane.setPreferredSize(new Dimension(335, 190));
