@@ -700,8 +700,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				.wrapWithHelpButton(this.withEntry("block/drop_amount"), L10N.label("elementgui.common.drop_amount")));
 		selp3.add(dropAmount);
 
-		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"), new Object[] { modElement.getRegistryName() },
-				L10N.label("elementgui.common.use_loot_table_for_drop")));
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
+				L10N.label("elementgui.common.use_loot_table_for_drop"), modElement.getRegistryName()));
 		selp3.add(PanelUtils.centerInPanel(useLootTableForDrops));
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),

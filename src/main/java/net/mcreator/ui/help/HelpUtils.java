@@ -38,30 +38,30 @@ import java.util.concurrent.atomic.AtomicReference;
 public class HelpUtils {
 
 	public static Component wrapWithHelpButton(IHelpContext context, Component ca) {
-		return wrapWithHelpButton(context, new Object[] { }, ca, null, SwingConstants.RIGHT);
+		return wrapWithHelpButton(context, ca, null, SwingConstants.RIGHT, (Object) null);
 	}
 
 	public static Component wrapWithHelpButton(IHelpContext context, Component ca, int direction) {
-		return wrapWithHelpButton(context, new Object[] { }, ca, null, direction);
+		return wrapWithHelpButton(context, ca, null, direction, (Object) null);
 	}
 
 	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac) {
-		return wrapWithHelpButton(context, new Object[] { }, ca, ac, SwingConstants.RIGHT);
+		return wrapWithHelpButton(context, ca, ac, SwingConstants.RIGHT, (Object) null);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, Object[] contextArguments, Component ca) {
-		return wrapWithHelpButton(context, contextArguments, ca, null, SwingConstants.RIGHT);
+	public static Component wrapWithHelpButton(IHelpContext context, Component ca, Object... contextArguments) {
+		return wrapWithHelpButton(context, ca, null, SwingConstants.RIGHT, contextArguments);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, Object[] contextArguments, Component ca, int direction) {
-		return wrapWithHelpButton(context, contextArguments, ca, null, direction);
+	public static Component wrapWithHelpButton(IHelpContext context, Component ca, int direction, Object... contextArguments) {
+		return wrapWithHelpButton(context, ca, null, direction, contextArguments);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, Object[] contextArguments, Component ca, @Nullable Color ac) {
-		return wrapWithHelpButton(context, contextArguments, ca, ac, SwingConstants.RIGHT);
+	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac, Object... contextArguments) {
+		return wrapWithHelpButton(context, ca, ac, SwingConstants.RIGHT, contextArguments);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, Object[] contextArguments, Component ca, @Nullable Color ac, int direction) {
+	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac, int direction, Object[] contextArguments) {
 		JLabel lab = new JLabel(HelpLoader.hasFullHelp(context) ? UIRES.get("help") : UIRES.get("help_partial"));
 		lab.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
