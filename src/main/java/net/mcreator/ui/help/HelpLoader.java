@@ -73,7 +73,7 @@ public class HelpLoader {
 		return helpContext != null && helpContext.getEntry() != null && getFromCache(helpContext.getEntry()) != null;
 	}
 
-	public static String loadHelpFor(IHelpContext helpContext, @Nullable Object[] contextArguments) {
+	public static String loadHelpFor(IHelpContext helpContext, Object[] contextArguments) {
 		if (helpContext != null) {
 			URI uri = null;
 			try {
