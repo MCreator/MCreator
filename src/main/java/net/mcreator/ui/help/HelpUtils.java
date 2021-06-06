@@ -37,19 +37,19 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class HelpUtils {
 
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Object[] context_arguments) {
-		return wrapWithHelpButton(context, ca, null, SwingConstants.RIGHT, context_arguments);
+	public static Component wrapWithHelpButton(IHelpContext context, @Nullable Object[] context_arguments, Component ca) {
+		return wrapWithHelpButton(context, context_arguments, ca, null, SwingConstants.RIGHT);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca, int direction, @Nullable Object[] context_arguments) {
-		return wrapWithHelpButton(context, ca, null, direction, context_arguments);
+	public static Component wrapWithHelpButton(IHelpContext context, @Nullable Object[] context_arguments, Component ca, int direction) {
+		return wrapWithHelpButton(context, context_arguments, ca, null, direction);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac, @Nullable Object[] context_arguments) {
-		return wrapWithHelpButton(context, ca, ac, SwingConstants.RIGHT, context_arguments);
+	public static Component wrapWithHelpButton(IHelpContext context, @Nullable Object[] context_arguments, Component ca, @Nullable Color ac) {
+		return wrapWithHelpButton(context, context_arguments, ca, ac, SwingConstants.RIGHT);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac, int direction, @Nullable Object[] context_arguments) {
+	public static Component wrapWithHelpButton(IHelpContext context, @Nullable Object[] context_arguments, Component ca, @Nullable Color ac, int direction) {
 		JLabel lab = new JLabel(HelpLoader.hasFullHelp(context) ? UIRES.get("help") : UIRES.get("help_partial"));
 		lab.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
