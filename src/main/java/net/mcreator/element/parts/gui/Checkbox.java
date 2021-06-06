@@ -20,6 +20,7 @@ package net.mcreator.element.parts.gui;
 
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
 
@@ -37,6 +38,7 @@ public class Checkbox extends GUIComponent implements IMachineNamedComponent {
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
 		g.drawImage(MinecraftImageGenerator.generateCheckbox(), cx, cy, 20, 20, wysiwygEditor);
+		g.drawString(this.text, cx + 20, cy + 10);
 	}
 
 	@Override public int getWidth(Workspace workspace) {
