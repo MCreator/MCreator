@@ -1,7 +1,5 @@
 _default: Object
-number:
-  - double
-  - 0
+number: double
 string:
   - String
   - '""'
