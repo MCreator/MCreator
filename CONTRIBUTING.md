@@ -5,7 +5,7 @@ by [donating](https://mcreator.net/donate).
 # General contributing tips
 
 * **Prioritize bug fixes before new features**
-* **Consider checking and testing existing PRs** and leaving feedback on them (test on different Minecraft versions, test on your workspaces, ...)
+* **Check and test existing PRs** of other contributors and leave feedback on them (test on different Minecraft versions, test on your workspaces, ...). This helps maintainers with the reviewing process a lot.
 * A good starting point into contributing is fixing or adding one of the features requested on our forums or bug reports from the issue tracker
 * Follow existing code style, naming conventions, and UI/UX philosophy as much as possible, texts in UI should be written "Everywhere like this" and not "Do Not Write Like This"
 * When adding features to code generators, make sure to cover all generators currently supported
