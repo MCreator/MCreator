@@ -2,9 +2,7 @@ _default: Object
 number: double
 string: String
 logic: boolean
-itemstack:
-  - ItemStack
-  - ItemStack.EMPTY
+itemstack: ItemStack
 direction: Direction
 world: IWorld
 entity: Entity
