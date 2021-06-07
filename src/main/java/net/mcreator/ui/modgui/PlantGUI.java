@@ -192,13 +192,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
 				L10N.t("elementgui.plant.condition_additional_placing"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("elementgui.plant.no_additional_condition"));
+				.setDefaultName(L10N.t("condition.common.no_additional"));
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				L10N.t("elementgui.plant.event_additional_generation_condition"),
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("elementgui.plant.no_additional_condition"));
+				.setDefaultName(L10N.t("condition.common.no_additional"));
 
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));

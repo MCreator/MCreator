@@ -309,7 +309,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 				L10N.t("elementgui.living_entity.condition_natural_spawn"),
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("elementgui.living_entity.condition_use_vanilla"));
+				.setDefaultName(L10N.t("condition.common.use_vanilla"));
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
