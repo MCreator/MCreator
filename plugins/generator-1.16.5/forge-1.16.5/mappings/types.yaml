@@ -1,8 +1,6 @@
 _default: Object
 number: double
-string:
-  - String
-  - '""'
+string: String
 logic: boolean
 itemstack:
   - ItemStack
