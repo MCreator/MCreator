@@ -2,17 +2,18 @@ defaultvalue: ItemStack.EMPTY
 scopes:
   local:
     get: /*@ItemStack*/(${name})
-    set: ${name} = ${mappedMCItemToItemStackCode(value, 1)};
+    set: <#include "mcitems.ftl"> ${name} = ${mappedMCItemToItemStackCode(value, 1)};
   global_session:
     init: public static ItemStack ${var.getName()} = ItemStack.EMPTY;
     get: /*@ItemStack*/(${JavaModName}Variables.${name})
-    set: ${JavaModName}Variables.${name} = ${mappedMCItemToItemStackCode(value, 1)};
+    set: <#include "mcitems.ftl"> ${JavaModName}Variables.${name} = ${mappedMCItemToItemStackCode(value, 1)};
   global_world:
     init: public ItemStack ${var.getName()} = ItemStack.EMPTY;
     read: ${var.getName()} = ItemStack.read(nbt.getCompound("${var.getName()}"));
     write: nbt.put("${var.getName()}", ${var.getName()}.write(new CompoundNBT()));
     get: /*@ItemStack*/(${JavaModName}Variables.WorldVariables.get(world).${name})
     set: |
+      <#include "mcitems.ftl">
       ${JavaModName}Variables.WorldVariables.get(world).${name} = ${mappedMCItemToItemStackCode(value, 1)};
       ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
   global_map:
@@ -21,6 +22,7 @@ scopes:
     write: nbt.put("${var.getName()}", ${var.getName()}.write(new CompoundNBT()));
     get: /*@ItemStack*/(${JavaModName}Variables.MapVariables.get(world).${name})
     set: |
+      <#include "mcitems.ftl">
       ${JavaModName}Variables.MapVariables.get(world).${name} = ${mappedMCItemToItemStackCode(value, 1)};
       ${JavaModName}Variables.MapVariables.get(world).syncData(world);
   player_lifetime:
@@ -31,6 +33,7 @@ scopes:
       /*@ItemStack*/((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
     set: |
+      <#include "mcitems.ftl">
       {
         ItemStack _setval = ${mappedMCItemToItemStackCode(value, 1)};
         entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
@@ -46,6 +49,7 @@ scopes:
       /*@ItemStack*/((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
     set: |
+      <#include "mcitems.ftl">
       {
         ItemStack _setval = ${mappedMCItemToItemStackCode(value, 1)};
         entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
