@@ -1,50 +1,35 @@
 If you are interested in helping with MCreator development, you are welcome to support this project by 
-opening pull requests. Even if you do not code, you can help by contributing translations, in-app tips, or
+opening pull requests. Even if you do not code, you can help by [contributing translations](https://translate.mcreator.net/), [in-app tips](https://github.com/MCreator/MCreator/tree/master/plugins/mcreator-localization/help), or
 by [donating](https://mcreator.net/donate).
 
-# Tips
+# General contributing tips
 
-* **Before contributing a brand new feature into MCreator, open an issue for the feature and tell you would like to work on this, so we can discuss and confirm the suggested 
-changes, and the way how to implement them to fit the existing code base and UX flow as good as possible.**
-* **Check existing issues and consider fixing one before considering adding a brand new feature not discussed before**
-* **Prioritize bug fixes before new features, better stable interface with less features than buggy interface clogged with features**
-* A good starting point into contributing is fixing or adding one of the features or bug reports from the issue tracker
-* Try to follow existing code style, naming conventions, and UI/UX philosophy as much as possible
-* When committing, make sure to reference the issue by #ID in the commit message to link commits to the issue
-* Reference potential issues the pull request relates to when an issue(s) related to the pull request exists
-* Make sure to update files with license headers
-* Consider checking and testing existing PRs and confirm they work as designed to help us avoid bugs (try testing different MC versions, generators, also importing old workspaces, ...)
-* Be human, we are humans too, keep the community positive when colaborating with contributors and maintainers :)
+* **Prioritize bug fixes before new features**
+* **Consider checking and testing existing PRs** and leaving feedback on them (test on different Minecraft versions, test on your workspaces, ...)
+* A good starting point into contributing is fixing or adding one of the features requested on our forums or bug reports from the issue tracker
+* Follow existing code style, naming conventions, and UI/UX philosophy as much as possible, texts in UI should be written "Everywhere like this" and not "Do Not Write Like This"
+* When adding features to code generators, make sure to cover all generators currently supported
 * Maintainers of this project do this for hobby. There might be cases of slow responses, or even inability to review or merge PR due to its scope and our (time) inability to review it properly or assist with changes needed to make it acceptable for merge.
-* Texts in UI should be written "Everywhere like this" and not "Do Not Write Like This"
+* Be human, we are humans too, keep the community positive when colaborating with contributors and maintainers :)
 
-*Learn more about the development process and tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).*
-
-If you are looking for a good issues for a starter, check [good first issue candidates](https://github.com/MCreator/MCreator/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
-
-# Pull requests
-
-Once you complete your feature and are sure you followed the tips and tried to make the code blend in as much as possible, we will review the code.
-
-The contributed code must pass all tests and be mergeable into the master branch. Expect comments on code after the code review. You will likely
-need to change some code parts based on the maintainer's suggestions.
+# Pull request rules
 
 Some features might not be accepted into the core if they do not follow our guidelines, are low quality, or steer MCreator away from its roadmap 
 or do not fit the current UX flow of the application. Too specific features that would make UI more complex, but would not be beneficial to the
-most of the users might be rejected too, or suggested to be distributed in a plugin format.
+most of the users might be rejected too, or suggested to be distributed in a plugin format. Expect comments on code after the code review. You will likely
+need to change some code parts based on the maintainer's suggestions.
 
-If maintainers are busy, it can take a few days (or more) to properly review your PR so please be patient ;)
+General rules on pull requests are:
 
-Some pull request tips and standards:
-* **Please separate different features in different pull requests**
-* **Avoid big PRs.** They will be likely take much more time to review. Too big PRs might not be accepted due to amount of code reviewing and testing needed. Similar rule applies to PRs that significantly change core implementation.
-* If possible, prepare a changelog of your pull request that is ready to be used in the final MCreator changelog
-* When adding features to generator, make sure to cover all generators currently supported
+* The contributed code must pass all tests and be mergeable into the master branch.
+* **Separate different features in different pull requests.**
+* **Avoid big PRs.** They will be likely take much more time to review. Large PRs might not be accepted due to amount of code reviewing and testing needed. Similar rule applies to PRs that significantly change core implementation.
+* **PRs with low code quality, bugs (or code that seems untested), may be closed without further comments.** PRs from contributors breaking this rule multiple times may no longer be accepted.
+* Prepare a changelog of your pull request that is ready to be used in the final MCreator changelog
 * Add tests for features you added with the PR, if new fields were added to mod elements, update TestWorkspaceDataProvider
+* If a contributor opens multiple new PRs without finishing old ones, we may assume the older PRs are no longer in their interest and close them, so other contributors and maintainers don't spend too much time reviewing PRs that will likely not get merged down the road.
 
-# Localization (translation of the UI)
-
-If you would like to contribute to the translations, make Crowdin user account and visit https://crowdin.com/project/mcreator. If you would like a brand new language added, check [issue #15](https://github.com/MCreator/MCreator/issues/15) and leave a comment on this issue.
+*Learn more about the development process and tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).*
 
 # CLA
 
