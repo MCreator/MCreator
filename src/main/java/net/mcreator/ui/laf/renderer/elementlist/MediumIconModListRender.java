@@ -59,8 +59,8 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 				setOpaque(false);
 			}
 
-			label.setText(StringUtils.abbreviateString(element.getName(), 30));
-			label.setFont(MCreatorTheme.secondary_font.deriveFont(20.0f));
+			label.setText(StringUtils.abbreviateString(element.getName(), 25));
+			label.setFont(MCreatorTheme.secondary_font.deriveFont(19.0f));
 
 			ImageIcon dva = null;
 
@@ -80,7 +80,7 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 			}
 
 			if (element instanceof FolderElement) {
-				icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("folder").getImage(), 31)));
+				icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("folder").getImage(), 42)));
 			} else if (element instanceof ModElement) {
 				ImageIcon modIcon = ((ModElement) element).getElementIcon();
 
@@ -88,19 +88,19 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 						&& modIcon.getIconHeight() > 0 && modIcon != MCItem.DEFAULT_ICON) {
 					if (dva != null) {
 						ImageIcon iconbig = ImageUtils.drawOver(modIcon, dva);
-						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 31)));
+						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 42)));
 					} else {
-						icon.setIcon(new ImageIcon(ImageUtils.resize(modIcon.getImage(), 31)));
+						icon.setIcon(new ImageIcon(ImageUtils.resize(modIcon.getImage(), 42)));
 					}
 				} else {
 					if (dva != null) {
 						ImageIcon iconbig = ImageUtils
 								.drawOver(TiledImageCache.getModTypeIcon(((ModElement) element).getType()), dva);
-						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 31)));
+						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 42)));
 					} else {
 						icon.setIcon(new ImageIcon(ImageUtils
 								.resizeAA(TiledImageCache.getModTypeIcon(((ModElement) element).getType()).getImage(),
-										31)));
+										42)));
 					}
 				}
 			}
@@ -108,9 +108,11 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 			setToolTipText(element.getName());
 		}
 
-		add("Center", label);
+		icon.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 6));
 
+		add("Center", label);
 		add("West", icon);
+
 		return this;
 	}
 

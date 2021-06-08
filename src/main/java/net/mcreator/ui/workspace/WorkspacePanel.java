@@ -941,16 +941,16 @@ import java.util.stream.Collectors;
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.LARGE) {
 			list.setCellRenderer(new LargeIconModListRender());
-			list.setFixedCellHeight(120);
-			list.setFixedCellWidth(120);
+			list.setFixedCellHeight(97);
+			list.setFixedCellWidth(90);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.large.gif"));
 			view.setText(L10N.t("workspace.elements.list.large"));
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.MEDIUM) {
 			list.setCellRenderer(new MediumIconModListRender());
-			list.setFixedCellHeight(40);
-			list.setFixedCellWidth(250);
+			list.setFixedCellHeight(52);
+			list.setFixedCellWidth(287);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.medium.gif"));
 			view.setText(L10N.t("workspace.elements.list.medium"));
