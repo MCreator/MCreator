@@ -123,8 +123,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			int y = pos.getY();
 			int z = pos.getZ();
 			ItemStack itemstack = context.getItem();
-			<@procedureOBJToCode data.onRightClickedOnBlock/>
-			return retval;
+			<@procedureOBJToCodeWithResult data.onRightClickedOnBlock/>
+			return (ActionResultType) $_resultValues.getOrDefault("actionResult", retval);
 		}
         </#if>
 

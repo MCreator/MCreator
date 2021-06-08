@@ -630,8 +630,8 @@ import net.minecraft.block.material.Material;
 			int y = pos.getY();
 			int z = pos.getZ();
 			Direction direction = hit.getFace();
-			<@procedureOBJToCode data.onRightClicked/>
-			return ActionResultType.SUCCESS;
+			<@procedureOBJToCodeWithResult data.onRightClicked/>
+			return (ActionResultType) $_resultValues.getOrDefault("actionResult", ActionResultType.SUCCESS);
 		}
         </#if>
 
