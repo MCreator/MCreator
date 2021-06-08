@@ -65,15 +65,15 @@ task buildInstallerWin64(type: Exec, dependsOn: [downloadNSIS, exportWin64]) {
             }
         }
     }
-    
-    def nsis_binary = '';
+
+    def nsis_binary
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        nsis_binary = projectDir.toString() + '/build/tools/nsis/makensis';
+        nsis_binary = projectDir.toString() + '/build/tools/nsis/makensis'
     } else {
-        nsis_binary = 'makensis';
+        nsis_binary = 'makensis'
     }
     commandLine nsis_binary, 'build/export/install64.nsi'
-    
+
     doLast { delete 'build/export/install64.nsi' }
 }
 

@@ -1,7 +1,8 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
+def exportPath = 'build/export/mac64/MCreator.app/Contents/'
+
 task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) {
-    def exportPath = 'build/export/mac64/MCreator.app/Contents/'
     into exportPath
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
@@ -37,11 +38,14 @@ task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) 
 
 task dmgMac64(dependsOn: [downloadMKISOFS, exportMac64]) {
     doLast {
-        def mkisofs_binary = '';
+        def mkisofs_binary
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            mkisofs_binary = projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs';
-        } else {
-            mkisofs_binary = 'mkisofs';
+            mkisofs_binary = projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs'
+        } else { // we are on Nix system
+            mkisofs_binary = 'mkisofs'
+
+            // chmod needed on executable as mkisofs does not +x on Nix systems
+            project.exec.commandLine('chmod', '+x', exportPath + '/MacOS/mcreator')
         }
         ant.exec(executable: mkisofs_binary, failonerror: true) {
             arg(value: '-r')
