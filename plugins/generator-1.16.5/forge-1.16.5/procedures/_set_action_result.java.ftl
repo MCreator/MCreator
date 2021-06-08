@@ -1,0 +1,1 @@
+resultValues.put("actionResult", ActionResultType.${field$resulttype});
