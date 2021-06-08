@@ -24,6 +24,31 @@
     </#if>
 </#macro>
 
+<#macro procedureToCodeWithResult name dependencies customVals={}>
+	Map<String, Object> $_resultValues = new HashMap<>();
+    {
+		Map<String, Object> $_dependencies = new HashMap<>();
+
+        <#list dependencies as dependency>
+            <#if !customVals[dependency.getName()]?? >
+	    	    $_dependencies.put("${dependency.getName()}",${dependency.getName()});
+            </#if>
+        </#list>
+
+        <#list customVals as key, value>
+        $_dependencies.put("${key}",${value});
+        </#list>
+
+        ${(name)}Procedure.executeProcedure($_dependencies, $_resultValues);
+	}
+</#macro>
+
+<#macro procedureOBJToCodeWithResult object="">
+    <#if object?? && object?has_content && object.getName() != "null">
+        <@procedureToCodeWithResult name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
+    </#if>
+</#macro>
+
 <#macro procedureToRetvalCode name dependencies customVals={}>
     <#assign depsBuilder = []>
 

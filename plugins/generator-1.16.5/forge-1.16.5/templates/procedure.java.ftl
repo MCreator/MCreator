@@ -35,6 +35,10 @@ public class ${name}Procedure {
 	${trigger_code}
 
 	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> executeProcedure(Map<String, Object> dependencies){
+		<#if return_type??>return</#if> executeProcedure(dependencies, new HashMap<>());
+	}
+
+	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> executeProcedure(Map<String, Object> dependencies, Map<String, Object> resultValues){
 		<#list dependencies as dependency>
 		if(dependencies.get("${dependency.getName()}") == null) {
 			if(!dependencies.containsKey("${dependency.getName()}"))
