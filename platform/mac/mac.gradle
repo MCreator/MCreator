@@ -15,7 +15,7 @@ task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) 
         from file('platform/mac/mcreator.icns')
     }
     into('MacOS') {
-        from file('platform/mac/mcreator') rename('mcreator', 'mcreatordos')
+        from file('platform/mac/mcreator')
         from file('LICENSE.txt')
     }
     into('MacOS/plugins') { from 'build/plugins/' }
@@ -30,9 +30,7 @@ task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) 
     into('MacOS/jdk/') { with copySpec { from 'jdk/jdk11_mac_64/' } }
     doLast {
         convertCRLF(file(exportPath + '/Info.plistdos'), file(exportPath + '/Info.plist'))
-        convertCRLF(file(exportPath + '/MacOS/mcreatordos'), file(exportPath + '/MacOS/mcreator'))
         delete exportPath + '/Info.plistdos'
-        delete exportPath + '/MacOS/mcreatordos'
     }
 }
 
@@ -43,7 +41,7 @@ task dmgMac64(dependsOn: [downloadMKISOFS, exportMac64]) {
             mkisofs_binary = projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs'
         } else { // we are on Nix system
             mkisofs_binary = 'mkisofs'
-            
+
             // chmod needed on executable as mkisofs does not +x on Nix systems
             exec { commandLine('chmod', '+x', exportPath + '/MacOS/mcreator') }
         }
