@@ -109,9 +109,11 @@ public class ListIconModListRender extends JPanel implements ListCellRenderer<IE
 			setToolTipText(element.getName());
 		}
 
-		add("Center", label);
+		icon.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
+		add("Center", label);
 		add("West", icon);
+
 		return this;
 	}
 }

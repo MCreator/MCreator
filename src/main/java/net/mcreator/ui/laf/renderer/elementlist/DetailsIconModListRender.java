@@ -23,6 +23,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.IElement;
@@ -73,9 +74,11 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 				setOpaque(false);
 			}
 
-			label.setText(StringUtils.abbreviateString(element.getName(), 6));
-			label2.setText(StringUtils.abbreviateString(element.getName(), 6));
-			label3.setText(StringUtils.abbreviateString(element.getName(), 12));
+			label.setFont(MCreatorTheme.secondary_font.deriveFont(14.0f));
+			label2.setFont(MCreatorTheme.secondary_font.deriveFont(14.0f));
+			label3.setFont(MCreatorTheme.secondary_font.deriveFont(12.0f));
+			label4.setFont(MCreatorTheme.secondary_font.deriveFont(12.0f));
+			label5.setFont(MCreatorTheme.secondary_font.deriveFont(12.0f));
 
 			ImageIcon dva = null;
 
