@@ -932,7 +932,7 @@ import java.util.stream.Collectors;
 	private void updateElementListRenderer() {
 		if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.TILES) {
-			list.setCellRenderer(new LargeIconModListRender());
+			list.setCellRenderer(new TilesModListRender());
 			list.setFixedCellHeight(72);
 			list.setFixedCellWidth(287);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -940,7 +940,7 @@ import java.util.stream.Collectors;
 			view.setText(L10N.t("workspace.elements.list.tiles"));
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.LARGE) {
-			list.setCellRenderer(new TilesModListRender());
+			list.setCellRenderer(new LargeIconModListRender());
 			list.setFixedCellHeight(120);
 			list.setFixedCellWidth(120);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
