@@ -43,9 +43,9 @@ task dmgMac64(dependsOn: [downloadMKISOFS, exportMac64]) {
             mkisofs_binary = projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs'
         } else { // we are on Nix system
             mkisofs_binary = 'mkisofs'
-
+            
             // chmod needed on executable as mkisofs does not +x on Nix systems
-            project.exec.commandLine('chmod', '+x', exportPath + '/MacOS/mcreator')
+            exec { commandLine('chmod', '+x', exportPath + '/MacOS/mcreator') }
         }
         ant.exec(executable: mkisofs_binary, failonerror: true) {
             arg(value: '-r')
