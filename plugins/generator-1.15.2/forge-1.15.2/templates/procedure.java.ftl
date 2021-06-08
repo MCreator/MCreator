@@ -42,7 +42,7 @@ public class ${name}Procedure extends ${JavaModName}Elements.ModElement{
 	}
 
 	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> executeProcedure(Map<String, Object> dependencies){
-		<#if return_type??>return</#if> executeProcedure(dependencies, Collections.emptyMap());
+		<#if return_type??>return</#if> executeProcedure(dependencies, new HashMap<>());
 	}
 
 	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> executeProcedure(Map<String, Object> dependencies, Map<String, Object> resultValues){
