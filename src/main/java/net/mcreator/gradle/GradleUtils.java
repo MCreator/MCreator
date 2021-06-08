@@ -30,10 +30,7 @@ import org.gradle.tooling.BuildLauncher;
 import org.gradle.tooling.ProjectConnection;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GradleUtils {
 
@@ -64,10 +61,7 @@ public class GradleUtils {
 		// use custom set of environment variables to prevent system overrides
 		retval.setEnvironmentVariables(environment);
 
-		List<String> arguments = new ArrayList<>();
-		if (java_home != null)
-			arguments.add("-Dorg.gradle.java.home=" + java_home);
-		retval.withArguments(arguments);
+		retval.withArguments(Collections.emptyList());
 
 		return retval;
 	}
