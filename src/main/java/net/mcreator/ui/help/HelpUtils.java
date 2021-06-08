@@ -125,11 +125,10 @@ public class HelpUtils {
 					closeButton.setContentAreaFilled(false);
 					closeButton.setIcon(UIRES.get("close_small"));
 					balloonTip.setCloseButton(closeButton, false);
-
-					editorPane.setCaretPosition(0);
 				}
 
 				editorPane.setText(HelpLoader.loadHelpFor(context, contextArguments));
+				editorPane.setCaretPosition(0);
 
 				balloonTip.setVisible(!balloonTip.isVisible());
 
