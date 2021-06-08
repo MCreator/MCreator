@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 public class HelpLoader {
@@ -73,7 +74,7 @@ public class HelpLoader {
 		return helpContext != null && helpContext.getEntry() != null && getFromCache(helpContext.getEntry()) != null;
 	}
 
-	public static String loadHelpFor(IHelpContext helpContext, Object[] contextArguments) {
+	public static String loadHelpFor(IHelpContext helpContext, @Nullable Supplier<?>... contextArguments) {
 		if (helpContext != null) {
 			URI uri = null;
 			try {
@@ -86,9 +87,13 @@ public class HelpLoader {
 							+ "th { border: 1px solid #a0a0a0; } td { border: 1px solid #a0a0a0; } </style></head><body>");
 
 			if (helpContext.getEntry() != null) {
-				if (getFromCache(helpContext.getEntry()) != null) {
-					helpString.append(renderer.render(
-						parser.parse(MessageFormat.format(getFromCache(helpContext.getEntry()), contextArguments))));
+				String helpText = getFromCache(helpContext.getEntry());
+				if (helpText != null) {
+					if (contextArguments != null)
+						helpString.append(renderer.render(parser.parse(MessageFormat
+								.format(helpText, Arrays.stream(contextArguments).map(Supplier::get).toArray()))));
+					else
+						helpString.append(renderer.render(parser.parse(helpText)));
 				} else {
 					helpString.append(L10N.t("help_loader.no_help_entry", helpContext.getEntry()));
 				}
