@@ -100,7 +100,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 				L10N.t("elementgui.structuregen.event_additional_structure_condition_is"),
 				ProcedureSelector.Side.SERVER, true, VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("elementgui.structuregen.event_additional_structure_condition_none"));
+				.setDefaultName(L10N.t("condition.common.no_additional"));
 
 		restrictionBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		restrictionBiomes = new BiomeListField(mcreator);
