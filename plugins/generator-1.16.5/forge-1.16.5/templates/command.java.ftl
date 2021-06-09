@@ -38,22 +38,22 @@ package ${package}.command;
 		event.getDispatcher().register(LiteralArgumentBuilder.<CommandSource>literal("${data.commandName}")
 			<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermissionLevel(${data.permissionLevel}))</#if>
 			<#if !argscode??>
-			.then(Commands.argument("arguments", StringArgumentType.greedyString())
-				<#if hasProcedure(data.onCommandExecuted)>
-            	.executes(${name}Command::execute)
-				</#if>
-			)
-			<#if hasProcedure(data.onCommandExecuted)>
-            .executes(${name}Command::execute)
-            </#if>
-        	)
-        	<#if hasProcedure(data.onCommandExecuted)>
-            .executes(${name}Command::execute)
-            </#if>
+			    .then(Commands.argument("arguments", StringArgumentType.greedyString())
+				    <#if hasProcedure(data.onCommandExecuted)>
+            	        .executes(${name}Command::execute)
+				    </#if>
+			    )
+			    <#if hasProcedure(data.onCommandExecuted)>
+                    .executes(${name}Command::execute)
+                </#if>
+        	    )
+        	    <#if hasProcedure(data.onCommandExecuted)>
+                    .executes(${name}Command::execute)
+                </#if>
+                ;
             <#else>
-            ${argscode}
+                ${argscode});
             </#if>
-			;
     }
 
 	<#if hasProcedure(data.onCommandExecuted)>
