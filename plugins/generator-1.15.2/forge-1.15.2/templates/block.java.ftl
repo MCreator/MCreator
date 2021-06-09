@@ -183,7 +183,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<#if data.blockBase?has_content && data.blockBase == "Stairs">
 			super(() -> new Block(<@blockProperties/>).getDefaultState(),
 			<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
-			super(Sensitivity.${data.sensitivity},
+			    <#if data.material.getUnmappedValue() == "WOOD">
+			        super(Sensitivity.EVERYTHING,
+			    <#else>
+			        super(Sensitivity.MOBS,
+			    </#if>
 			<#else>
 			super(
 			</#if>

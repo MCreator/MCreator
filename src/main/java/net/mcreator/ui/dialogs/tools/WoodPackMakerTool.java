@@ -330,7 +330,6 @@ public class WoodPackMakerTool {
 				.getElementFromGUI();
 		pressurePlateBlock.name = name + " Pressure Plate";
 		pressurePlateBlock.blockBase = "PressurePlate";
-		pressurePlateBlock.sensitivity = "EVERYTHING";
 		pressurePlateBlock.material = new Material(workspace, "WOOD");
 		pressurePlateBlock.texture = planksTextureName;
 		pressurePlateBlock.soundOnStep = new StepSound(workspace, "WOOD");
