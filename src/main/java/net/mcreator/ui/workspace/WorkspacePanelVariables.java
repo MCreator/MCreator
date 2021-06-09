@@ -146,12 +146,11 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 
 			@Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component component = super.prepareRenderer(renderer, row, column);
-				if (column == 1) {
+				if (column == 1 && component instanceof JLabel) {
 					VariableType value = VariableTypeLoader.INSTANCE
-							.getVariableTypeFromString((String) getModel().getValueAt(row, column));
-					if (value != null) {
+							.getVariableTypeFromString(((JLabel) component).getText());
+					if (value != null)
 						component.setForeground(BlocklyBlockUtil.getBlockColorFromHUE(value.getColor()).brighter());
-					}
 				} else {
 					component.setForeground(elements.getForeground());
 				}
@@ -161,6 +160,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 
 		sorter = new TableRowSorter<>(elements.getModel());
 		elements.setRowSorter(sorter);
+
 		elements.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		elements.setSelectionBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		elements.setForeground(Color.white);
