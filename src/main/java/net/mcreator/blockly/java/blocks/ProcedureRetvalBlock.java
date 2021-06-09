@@ -24,33 +24,25 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
+import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ProcedureRetvalBlock implements IBlockGenerator {
+	private final String[] names;
+
+	public ProcedureRetvalBlock() {
+		names = VariableElementTypeLoader.INSTANCE.getVariableTypes().stream().map(VariableElementType::getName)
+				.collect(Collectors.toList()).stream().map(s -> s = "procedure_retval_" + s).toArray(String[]::new);
+	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String type;
-
-		String blocktype = block.getAttribute("type");
-		switch (blocktype) {
-		case "procedure_retval_number":
-			type = "NUMBER";
-			break;
-		case "procedure_retval_string":
-			type = "STRING";
-			break;
-		case "procedure_retval_logic":
-			type = "LOGIC";
-			break;
-		case "procedure_retval_itemstack":
-			type = "ITEMSTACK";
-			break;
-		default:
-			return;
-		}
+		String type = StringUtils.removeStart(block.getAttribute("type"), "procedure_retval_");
 
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 
@@ -81,8 +73,7 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "procedure_retval_logic", "procedure_retval_number", "procedure_retval_string",
-				"procedure_retval_itemstack" };
+		return names;
 	}
 
 	@Override public BlockType getBlockType() {
