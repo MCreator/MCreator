@@ -620,9 +620,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
-		JPanel selp = new JPanel(new GridLayout(14, 2, 0, 2));
+		JPanel selp = new JPanel(new GridLayout(13, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
-		JPanel soundProperties = new JPanel(new GridLayout(6, 2, 0, 2));
+		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
 		JPanel advancedProperties = new JPanel(new GridLayout(13, 2, 0, 2));
 
@@ -738,9 +738,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		defaultSoundType.addActionListener(event -> updateSoundType());
 		customSoundType.addActionListener(event -> updateSoundType());
 
-		soundProperties.add(PanelUtils.join(FlowLayout.LEFT, defaultSoundType, customSoundType,
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.block.block_sound"))));
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), defaultSoundType));
 		soundProperties.add(soundOnStep);
+
+		soundProperties.add(PanelUtils.join(FlowLayout.LEFT, customSoundType));
+		soundProperties.add(new JEmptyBox());
 
 		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/break_sound"),
 				L10N.label("elementgui.common.soundtypes.break_sound")));
@@ -854,14 +856,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.properties_advanced_block"), TitledBorder.LEADING,
 				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent ploca = PanelUtils.westAndEastElement(selp, PanelUtils.centerAndSouthElement(
-				selp3, soundProperties));
-
-		ploca.setOpaque(false);
 		selp.setOpaque(false);
 		soundProperties.setOpaque(false);
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(ploca));
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(PanelUtils.pullElementUp(selp),
+				PanelUtils.centerAndSouthElement(selp3, soundProperties))));
 		pane3.setOpaque(false);
 
 		JPanel events2 = new JPanel(new GridLayout(4, 5, 5, 5));
@@ -1351,13 +1350,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		stepSound.setSound(block.stepSound);
 		placeSound.setSound(block.placeSound);
 		fallSound.setSound(block.fallSound);
-		if (block.isCustomSoundType) {
-			defaultSoundType.setSelected(false);
-			customSoundType.setSelected(true);
-		} else {
-			defaultSoundType.setSelected(true);
-			customSoundType.setSelected(false);
-		}
+		defaultSoundType.setSelected(!block.isCustomSoundType);
+		customSoundType.setSelected(block.isCustomSoundType);
 		hitSound.setSound(block.hitSound);
 		luminance.setValue(block.luminance);
 		breakHarvestLevel.setValue(block.breakHarvestLevel);
