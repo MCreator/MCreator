@@ -18,28 +18,36 @@
 
 package net.mcreator.ui.dialogs.wysiwyg;
 
+import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.IMachineNamedComponent;
-import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import net.mcreator.workspace.elements.VariableElementTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class TextFieldDialog extends AbstractWYSIWYGDialog {
+public class CheckboxDialog extends AbstractWYSIWYGDialog {
 
-	public TextFieldDialog(WYSIWYGEditor editor, @Nullable TextField textField) {
-		super(editor.mcreator, textField);
-		setModal(true);
-		setSize(480, 150);
+	public CheckboxDialog(WYSIWYGEditor editor, @Nullable Checkbox checkbox) {
+		super(editor.mcreator, checkbox);
+		setSize(480, 220);
 		setLocationRelativeTo(editor.mcreator);
+		setModal(true);
+		setTitle(L10N.t("dialog.gui.checkbox_add"));
+
+		JPanel options = new JPanel();
+		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
 		VTextField nameField = new VTextField(20);
 		nameField.setPreferredSize(new Dimension(200, 28));
@@ -49,7 +57,7 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog {
 			String textname = Transliteration.transliterateString(nameField.getText());
 			for (int i = 0; i < editor.list.getModel().getSize(); i++) {
 				GUIComponent component = editor.list.getModel().getElementAt(i);
-				if (textField != null && component.name.equals(textField.name)) // skip current element if edit mode
+				if (checkbox != null && component.name.equals(checkbox.name)) // skip current element if edit mode
 					continue;
 				if (component instanceof IMachineNamedComponent && component.name.equals(textname))
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
@@ -57,20 +65,22 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog {
 			}
 			return validator.validate();
 		});
-		JTextField deft = new JTextField(20);
-		deft.setPreferredSize(new Dimension(200, 28));
-		JPanel options = new JPanel();
+		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_name"), nameField));
 
-		if (textField == null)
-			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.textfield_change_width")));
-		else
-			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.textfield_resize")));
+		JTextField checkboxText = new JTextField(20);
+		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_text"), checkboxText));
+		checkboxText.setPreferredSize(new Dimension(200, 28));
 
-		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
-		options.add(PanelUtils.join(L10N.label("dialog.gui.textfield_input_name"), nameField));
+		ProcedureSelector isCheckedProcedure = new ProcedureSelector(
+				IHelpContext.NONE.withEntry("gui/checkbox_procedure_value"), editor.mcreator,
+				L10N.t("dialog.gui.checkbox_procedure_value"), ProcedureSelector.Side.CLIENT, false,
+				VariableElementTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"))
+				.setDefaultName(L10N.t("condition.common.false"));
+		isCheckedProcedure.refreshList();
+		options.add(PanelUtils.join(isCheckedProcedure));
+
 		add("Center", options);
-		setTitle(L10N.t("dialog.gui.textfield_add"));
-		options.add(PanelUtils.join(L10N.label("dialog.gui.textfield_initial_text"), deft));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -78,10 +88,11 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog {
 
 		getRootPane().setDefaultButton(ok);
 
-		if (textField != null) {
+		if (checkbox != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
-			nameField.setText(textField.name);
-			deft.setText(textField.placeholder);
+			nameField.setText(checkbox.name);
+			checkboxText.setText(checkbox.text);
+			isCheckedProcedure.setSelectedProcedure(checkbox.isCheckedProcedure);
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));
@@ -90,19 +101,19 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog {
 				setVisible(false);
 				String text = Transliteration.transliterateString(nameField.getText());
 				if (!text.equals("")) {
-					if (textField == null) {
-						editor.editor.setPositioningMode(120, 20);
+					if (checkbox == null) {
+						editor.editor.setPositioningMode(20, 20);
 						editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
-								new TextField(text, editor.editor.newlyAddedComponentPosX,
-										editor.editor.newlyAddedComponentPosY, editor.editor.ow, editor.editor.oh,
-										deft.getText()))));
+								new Checkbox(text, editor.editor.newlyAddedComponentPosX,
+										editor.editor.newlyAddedComponentPosY, checkboxText.getText(),
+										isCheckedProcedure.getSelectedProcedure()))));
 					} else {
-						int idx = editor.components.indexOf(textField);
-						editor.components.remove(textField);
-						TextField textfieldNew = new TextField(text, textField.getX(), textField.getY(),
-								textField.width, textField.height, deft.getText());
-						editor.components.add(idx, textfieldNew);
-						setEditingComponent(textfieldNew);
+						int idx = editor.components.indexOf(checkbox);
+						editor.components.remove(checkbox);
+						Checkbox checkboxNew = new Checkbox(text, checkbox.getX(), checkbox.getY(),
+								checkboxText.getText(), isCheckedProcedure.getSelectedProcedure());
+						editor.components.add(idx, checkboxNew);
+						setEditingComponent(checkboxNew);
 					}
 				}
 			}
@@ -110,5 +121,4 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog {
 
 		setVisible(true);
 	}
-
 }
