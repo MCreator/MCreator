@@ -21,6 +21,7 @@ package net.mcreator.ui.help;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.HtmlUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.commonmark.Extension;
 import org.commonmark.ext.autolink.AutolinkExtension;
@@ -90,8 +91,9 @@ public class HelpLoader {
 				String helpText = getFromCache(helpContext.getEntry());
 				if (helpText != null) {
 					if (contextArguments != null)
-						helpString.append(renderer.render(parser.parse(MessageFormat
-								.format(helpText, Arrays.stream(contextArguments).map(Supplier::get).toArray()))));
+						helpString.append(renderer.render(parser.parse(MessageFormat.format(helpText,
+								Arrays.stream(contextArguments).map(Supplier::get)
+										.map(e -> e == null ? "" : HtmlUtils.unescapeHtml(e.toString())).toArray()))));
 					else
 						helpString.append(renderer.render(parser.parse(helpText)));
 				} else {

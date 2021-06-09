@@ -118,6 +118,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 		keyBindingCategoryKey.setValidator(new RegistryNameValidator(keyBindingCategoryKey,
 				L10N.t("elementgui.keybind.error_key_category_needs_name")));
+		keyBindingCategoryKey.enableRealtimeValidation();
 
 		addPage(pane5);
 
