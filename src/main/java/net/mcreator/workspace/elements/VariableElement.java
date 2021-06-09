@@ -21,7 +21,7 @@ package net.mcreator.workspace.elements;
 public class VariableElement implements IElement {
 
 	private String name;
-	private String type;
+	private VariableElementType type;
 	private VariableElementType.Scope scope = VariableElementType.Scope.GLOBAL_SESSION;
 	private Object value;
 
@@ -38,11 +38,11 @@ public class VariableElement implements IElement {
 	}
 
 	public VariableElementType getType() {
-		return VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type);
+		return type;
 	}
 
 	public void setType(VariableElementType type) {
-		this.type = type.getName();
+		this.type = type;
 	}
 
 	@Override public String getName() {
@@ -67,5 +67,17 @@ public class VariableElement implements IElement {
 
 	public void setScope(VariableElementType.Scope scope) {
 		this.scope = scope;
+	}
+
+	public static Object getDefaultValueForType(VariableElementType type) {
+		switch (type) {
+		case STRING:
+			return "";
+		case LOGIC:
+			return "false";
+		case NUMBER:
+			return "0";
+		}
+		return "";
 	}
 }

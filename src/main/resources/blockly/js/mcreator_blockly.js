@@ -5,7 +5,7 @@ Blockly.HSV_VALUE = 0.6;
 
 var blockly = document.getElementById('blockly');
 var workspace = Blockly.inject(blockly, {
-    media: 'res/',
+    media: '@RESOURCES_PATH',
     oneBasedIndex: false,
     sounds: false,
     comments: MCR_BLCKLY_PREF['comments'],

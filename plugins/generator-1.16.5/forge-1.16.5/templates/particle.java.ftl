@@ -32,15 +32,22 @@
 
 package ${package}.particle;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Particle {
+@${JavaModName}Elements.ModElement.Tag
+public class ${name}Particle extends ${JavaModName}Elements.ModElement{
 
 	public static final BasicParticleType particle = new BasicParticleType(${data.alwaysShow});
 
-	@SubscribeEvent public static void registerParticleType(RegistryEvent.Register<ParticleType<?>> event) {
+	public ${name}Particle (${JavaModName}Elements instance) {
+		super(instance, ${data.getModElement().getSortID()});
+
+		FMLJavaModLoadingContext.get().getModEventBus().register(this);
+	}
+
+	@SubscribeEvent public void registerParticleType(RegistryEvent.Register<ParticleType<?>> event) {
 		event.getRegistry().register(particle.setRegistryName("${registryname}"));
 	}
 
-	@OnlyIn(Dist.CLIENT) @SubscribeEvent public static void registerParticle(ParticleFactoryRegisterEvent event) {
+	@OnlyIn(Dist.CLIENT) @SubscribeEvent public void registerParticle(ParticleFactoryRegisterEvent event) {
 		Minecraft.getInstance().particles.registerFactory(particle, CustomParticleFactory::new);
 	}
 

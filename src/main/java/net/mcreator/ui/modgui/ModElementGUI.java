@@ -25,7 +25,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JModElementProgressPanel;
-import net.mcreator.ui.component.UnsupportedComponent;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -327,14 +326,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		List<String> inclusions = mcreator.getGeneratorConfiguration()
 				.getSupportedDefinitionFields(modElement.getType());
 
-		List<String> exclusions = mcreator.getGeneratorConfiguration()
-				.getUnsupportedDefinitionFields(modElement.getType());
-
-		if (inclusions != null && exclusions != null) {
-			LOG.warn("Field inclusions and exclusions can not be used at the same time. Skipping them.");
-			return;
-		}
-
 		if (inclusions != null) {
 			Field[] fields = getClass().getDeclaredFields();
 			for (Field field : fields) {
@@ -343,40 +334,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 						try {
 							field.setAccessible(true);
 							Component obj = (Component) field.get(this);
-
-							Container parent = obj.getParent();
-							int index = Arrays.asList(parent.getComponents()).indexOf(obj);
-							parent.remove(index);
-							parent.add(new UnsupportedComponent(obj), index);
+							obj.setEnabled(false);
 						} catch (IllegalAccessException e) {
 							LOG.warn("Failed to access field", e);
 						}
-					}
-				}
-			}
-		}
-
-		if (exclusions != null) {
-			Field[] fields = getClass().getDeclaredFields();
-			for (Field field : fields) {
-				if (Component.class.isAssignableFrom(field.getType())) {
-					if (!exclusions.contains(field.getName())) {
-						if (exclusions.contains(field.getName())) {
-							try {
-								field.setAccessible(true);
-								Component obj = (Component) field.get(this);
-
-								Container parent = obj.getParent();
-								int index = Arrays.asList(parent.getComponents()).indexOf(obj);
-								parent.remove(index);
-								parent.add(new UnsupportedComponent(obj), index);
-							} catch (IllegalAccessException e) {
-								LOG.warn("Failed to access field", e);
-							}
-						}
-					} else {
-						LOG.warn(field.getName()
-								+ " can not be used in both inclusions and exclusions fields at the same time. The field will be enabled.");
 					}
 				}
 			}

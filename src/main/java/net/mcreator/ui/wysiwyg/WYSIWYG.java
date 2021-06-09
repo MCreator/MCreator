@@ -25,7 +25,7 @@ import net.mcreator.ui.component.zoompane.IZoomable;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.component.zoompane.JZoomport;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.AbstractMCreatorTheme;
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.jgit.annotations.Nullable;
 
@@ -58,7 +58,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 	private boolean componentMoveMode;
 	private boolean componentDragMode;
 
-	public boolean showGrid = false;
+	boolean showGrid = false;
 
 	@Nullable private GUIComponent selected;
 
@@ -82,7 +82,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 	WYSIWYG(WYSIWYGEditor wysiwygEditor) {
 		if (fontMC == null)
-			fontMC = MCreatorTheme.console_font.deriveFont(8f);
+			fontMC = AbstractMCreatorTheme.console_font.deriveFont(8f);
 
 		this.wysiwygEditor = wysiwygEditor;
 

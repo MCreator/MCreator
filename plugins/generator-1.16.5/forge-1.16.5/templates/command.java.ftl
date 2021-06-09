@@ -32,23 +32,30 @@
 
 package ${package}.command;
 
-@Mod.EventBusSubscriber public class ${name}Command {
+@${JavaModName}Elements.ModElement.Tag
+public class ${name}Command extends ${JavaModName}Elements.ModElement{
 
-	@SubscribeEvent public static void registerCommands(RegisterCommandsEvent event) {
-		event.getDispatcher().register(LiteralArgumentBuilder.<CommandSource>literal("${data.commandName}")
+	public ${name}Command (${JavaModName}Elements instance) {
+		super(instance, ${data.getModElement().getSortID()});
+
+		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	@SubscribeEvent public void registerCommands(RegisterCommandsEvent event) {
+		event.getDispatcher().register(customCommand());
+	}
+
+	private LiteralArgumentBuilder<CommandSource> customCommand() {
+        return LiteralArgumentBuilder.<CommandSource>literal("${data.commandName}")
 			<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermissionLevel(${data.permissionLevel}))</#if>
 			<#if !argscode??>
 			.then(Commands.argument("arguments", StringArgumentType.greedyString())
-				<#if hasProcedure(data.onCommandExecuted)>
-            	.executes(${name}Command::execute)
-				</#if>
-			)
 			<#if hasProcedure(data.onCommandExecuted)>
-            .executes(${name}Command::execute)
+            .executes(this::execute)
             </#if>
         	)
         	<#if hasProcedure(data.onCommandExecuted)>
-            .executes(${name}Command::execute)
+            .executes(this::execute)
             </#if>
             <#else>
             ${argscode}

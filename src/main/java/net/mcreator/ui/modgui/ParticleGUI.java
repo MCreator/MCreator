@@ -37,7 +37,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableElementType;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -80,8 +80,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	@Override protected void initGUI() {
 		additionalExpiryCondition = new ProcedureSelector(this.withEntry("particle/additional_expiry_condition"),
 				mcreator, L10N.t("elementgui.particle.expiry_condition"), ProcedureSelector.Side.CLIENT, true,
-				VariableElementTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/age:number/onGround:logic"))
+				VariableElementType.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/age:number/onGround:boolean"))
 				.setDefaultName("(no additional condition)");
 
 		JPanel pane3 = new JPanel(new BorderLayout());

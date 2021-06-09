@@ -34,17 +34,12 @@ public class GradleDaemonUtils {
 	private static Process getGradleCompatibleBashProcess(Workspace workspace) throws IOException {
 		ProcessBuilder processBuilder = new ProcessBuilder(OS.getRuntimeProvider());
 		processBuilder.directory(workspace.getWorkspaceFolder());
-		Map<String, String> environment = processBuilder.environment();
-
-		// avoid global overrides
-		GradleUtils.cleanupEnvironment(environment);
-
-		environment.put("GRADLE_USER_HOME", UserFolderManager.getGradleHome().getAbsolutePath());
-
+		Map<String, String> env = processBuilder.environment();
+		env.remove("_JAVA_OPTIONS"); // to avoid global overrides
+		env.put("GRADLE_USER_HOME", UserFolderManager.getGradleHome().getAbsolutePath());
 		String java_home = GradleUtils.getJavaHome();
 		if (java_home != null) // make sure detected JAVA_HOME is not null
-			environment.put("JAVA_HOME", java_home);
-
+			env.put("JAVA_HOME", java_home);
 		return processBuilder.start();
 	}
 
@@ -63,10 +58,10 @@ public class GradleDaemonUtils {
 		}
 
 		if (OS.getOS() == OS.WINDOWS) {
-			stdin.println("gradlew " + paramsBuilder + " --stop");
+			stdin.println("gradlew " + paramsBuilder.toString() + " --stop");
 		} else {
 			stdin.println("chmod 777 gradlew");
-			stdin.println("./gradlew " + paramsBuilder + " --stop");
+			stdin.println("./gradlew " + paramsBuilder.toString() + " --stop");
 		}
 
 		stdin.close();

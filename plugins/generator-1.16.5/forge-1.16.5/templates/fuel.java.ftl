@@ -32,10 +32,16 @@
 
 package ${package}.fuel;
 
-@Mod.EventBusSubscriber public class ${name}Fuel {
+@${JavaModName}Elements.ModElement.Tag
+public class ${name}Fuel extends ${JavaModName}Elements.ModElement{
 
-	@SubscribeEvent
-	public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
+	public ${name}Fuel (${JavaModName}Elements instance) {
+		super(instance, ${data.getModElement().getSortID()});
+
+		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	@SubscribeEvent public void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
 		if(event.getItemStack().getItem() == ${mappedMCItemToItem(data.block)})
 			event.setBurnTime(${data.power});
 	}

@@ -31,6 +31,7 @@ import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.util.EDTUtils;
+import net.mcreator.ui.component.util.MacOSUIUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
@@ -134,12 +135,12 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			setSize(1002, 640);
 
 		if (OS.getOS() == OS.MAC)
-			getRootPane().putClientProperty("apple.awt.fullscreenable", true);
+			MacOSUIUtil.enableTrueFullscreen(this);
 
 		if (PreferencesManager.PREFERENCES.hidden.fullScreen)
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-		setIconImage(UIRES.getBuiltIn("icon").getImage());
+		setIconImage(UIRES.get("icon").getImage());
 		setLocationRelativeTo(null);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

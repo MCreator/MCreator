@@ -33,14 +33,21 @@
 
 package ${package}.world.structure;
 
-@Mod.EventBusSubscriber public class ${name}Structure {
+@${JavaModName}Elements.ModElement.Tag public class ${name}Structure extends ${JavaModName}Elements.ModElement{
 
 	private static Feature<NoFeatureConfig> feature = null;
 	private static ConfiguredFeature<?, ?> configuredFeature = null;
 
-	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class FeatureRegisterHandler {
+	public ${name}Structure (${JavaModName}Elements instance) {
+		super(instance, ${data.getModElement().getSortID()});
 
-		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
+		MinecraftForge.EVENT_BUS.register(this);
+		FMLJavaModLoadingContext.get().getModEventBus().register(new FeatureRegisterHandler());
+	}
+
+	private static class FeatureRegisterHandler {
+
+		@SubscribeEvent public void registerFeature(RegistryEvent.Register<Feature<?>> event) {
 			feature = new Feature<NoFeatureConfig>(NoFeatureConfig.field_236558_a_) {
 				@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 					int ci = (pos.getX() >> 4) << 4;
@@ -148,7 +155,7 @@ package ${package}.world.structure;
 
 	}
 
-	@SubscribeEvent public static void addFeatureToBiomes(BiomeLoadingEvent event) {
+	@SubscribeEvent public void addFeatureToBiomes(BiomeLoadingEvent event) {
 		<#if data.restrictionBiomes?has_content>
 				boolean biomeCriteria = false;
 			<#list data.restrictionBiomes as restrictionBiome>

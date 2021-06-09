@@ -22,42 +22,55 @@ import com.google.gson.annotations.SerializedName;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 
-@SuppressWarnings("unused") public class VariableElementType {
+public enum VariableElementType {
 
-	private String name;
-	private int color;
-	private String blocklyVariableType;
+	@SerializedName("string") STRING(0x609986), @SerializedName("logic") LOGIC(
+			0x607c99), @SerializedName("number") NUMBER(0x606999), @SerializedName("itemstack") ITEMSTACK(0x996069);
+
+	private final int color;
+
+	VariableElementType(int color) {
+		this.color = color;
+	}
 
 	public int getColor() {
 		return color;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String toDependencyType() {
+		switch (this) {
+		case NUMBER:
+			return "number";
+		case LOGIC:
+			return "boolean";
+		case STRING:
+			return "string";
+		case ITEMSTACK:
+			return "itemstack";
+		}
+
+		return null;
 	}
 
-	public String getName() {
-		return name;
+	@SuppressWarnings("unused") public String getJavaType(Workspace workspace) {
+		if (toDependencyType() != null)
+			return new NameMapper(workspace, "types").getMapping(toDependencyType());
+		return null;
 	}
 
-	public String getBlocklyVariableType() {
-		return blocklyVariableType;
-	}
+	@SuppressWarnings("unused") public String getDefaultValue(Workspace workspace) {
+		switch (this) {
+		case NUMBER:
+			return "0";
+		case LOGIC:
+			return "false";
+		case STRING:
+			return "\"\"";
+		case ITEMSTACK:
+			return "ItemStack.EMPTY";
+		}
 
-	public String getJavaType(Workspace workspace) {
-		return new NameMapper(workspace, "types").getMapping(getName());
-	}
-
-	public String getDefaultValue(Workspace workspace) {
-		String defaultValue = new NameMapper(workspace, "types").getMapping(getName(), 1);
-		if (defaultValue.equals(getName()))
-			return "null";
-
-		return defaultValue;
-	}
-
-	@Override public String toString() {
-		return getName();
+		return "";
 	}
 
 	public enum Scope {

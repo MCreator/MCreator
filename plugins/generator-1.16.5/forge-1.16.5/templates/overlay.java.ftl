@@ -41,11 +41,21 @@
 
 package ${package}.gui.overlay;
 
-@Mod.EventBusSubscriber public class ${name}Overlay {
+@${JavaModName}Elements.ModElement.Tag
+public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
+
+	public ${name}Overlay (${JavaModName}Elements instance) {
+		super(instance, ${data.getModElement().getSortID()});
+	}
+
+	@Override
+	public void initElements() {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent(priority = EventPriority.${data.priority})
-	public static void eventHandler(RenderGameOverlayEvent event) {
+	public void eventHandler(RenderGameOverlayEvent event) {
 		if (!event.isCancelable() && event.getType() == RenderGameOverlayEvent.ElementType.HELMET) {
 			int posX = (event.getWindow().getScaledWidth()) / 2;
 			int posY = (event.getWindow().getScaledHeight()) / 2;

@@ -94,7 +94,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		this.workspaceOpenListener = workspaceOpenListener;
 
 		reloadTitle();
-		setIconImage(UIRES.getBuiltIn("icon").getImage());
+		setIconImage(UIRES.get("icon").getImage());
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -156,7 +156,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		}, actions);
 
 		JPanel logoPanel = new JPanel(new BorderLayout());
-		JLabel logo = new JLabel(new ImageIcon(ImageUtils.resizeAA(UIRES.getBuiltIn("logo").getImage(), 250, 45)));
+		JLabel logo = new JLabel(new ImageIcon(ImageUtils.resizeAA(UIRES.get("logo").getImage(), 250, 45)));
 		logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		logo.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
@@ -410,14 +410,12 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		CompletableFuture<String[]> newsFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getWebsiteNews(newsFuture);
 		JLabel nov = new JLabel(
-				"<html>Latest news from MCreator website:<br><div style=\"font-size: 14px; color: #f5f5f5;\">Loading news ...</div>");
+				"<html>Latest news from MCreator website:<br><div style=\"font-size: 14px;\">Loading news ...</div>");
 		nov.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		nov.setForeground(new Color(0xf5f5f5));
 		newsFuture.whenComplete((news, throwable) -> SwingUtilities.invokeLater(() -> {
 			if (news != null)
-				nov.setText(
-						"<html>Latest news from MCreator website:<br><div style=\"font-size: 14px; color: #f5f5f5;\">"
-								+ StringUtils.abbreviateString(news[0], 43) + "</div>");
+				nov.setText("<html>Latest news from MCreator website:<br><div style=\"font-size: 14px;\">" + StringUtils
+						.abbreviateString(news[0], 43) + "</div>");
 			else
 				nov.setText("");
 			nov.addMouseListener(new MouseAdapter() {
@@ -430,10 +428,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		CompletableFuture<String[]> motwFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getModOfTheWeekData(motwFuture);
-		JLabel lab3 = new JLabel(
-				"<html>Mod of the week:<br><font style=\"font-size: 14px; color: #f5f5f5;\">Loading data ...");
+		JLabel lab3 = new JLabel("<html>Mod of the week:<br><font style=\"font-size: 14px;\">Loading data ...");
 		lab3.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
-		lab3.setForeground(new Color(0xf5f5f5));
 		JLabel lab2 = new JLabel();
 		lab2.setIcon(new EmptyIcon(48, 48));
 		JComponent motwpan = PanelUtils.westAndEastElement(lab3, lab2);
@@ -446,7 +442,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				}
 			});
 			if (motw != null)
-				lab3.setText("<html>Mod of the week:<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + StringUtils
+				lab3.setText("<html>Mod of the week:<br><font style=\"font-size: 14px;\">" + StringUtils
 						.abbreviateString(motw[0], 33) + "&nbsp;&nbsp;&nbsp;&nbsp;");
 			else
 				lab3.setText("");
@@ -462,7 +458,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		JPanel soim;
 		if (!Launcher.version.isSnapshot()) {
-			soim = new ImagePanel(UIRES.getBuiltIn("splash").getImage());
+			soim = new ImagePanel(UIRES.get("splash").getImage());
 			((ImagePanel) soim).setFitToWidth(true);
 			((ImagePanel) soim).setOffsetY(-320);
 		} else {

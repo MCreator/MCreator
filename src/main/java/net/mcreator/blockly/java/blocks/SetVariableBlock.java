@@ -27,9 +27,6 @@ import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
-import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
@@ -38,18 +35,27 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class SetVariableBlock implements IBlockGenerator {
-	private final String[] names;
-
-	public SetVariableBlock() {
-		names = VariableElementTypeLoader.INSTANCE.getVariableTypes().stream().map(VariableElementType::getName)
-				.collect(Collectors.toList()).stream().map(s -> s = "variables_set_" + s).toArray(String[]::new);
-	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_set_");
-		String javaType = new Dependency("",
-				VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type).getName())
-				.getType(master.getWorkspace());
+		String type;
+
+		String blocktype = block.getAttribute("type");
+		switch (blocktype) {
+		case "variables_set_number":
+			type = "NUMBER";
+			break;
+		case "variables_set_text":
+			type = "STRING";
+			break;
+		case "variables_set_logic":
+			type = "LOGIC";
+			break;
+		case "variables_set_itemstack":
+			type = "ITEMSTACK";
+			break;
+		default:
+			return;
+		}
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
@@ -96,15 +102,12 @@ public class SetVariableBlock implements IBlockGenerator {
 					}
 				}
 
-				String valuecode = BlocklyToCode.directProcessOutputBlock(master, value);
-
 				if (master.getTemplateGenerator() != null) {
 					Map<String, Object> dataModel = new HashMap<>();
 					dataModel.put("name", name);
 					dataModel.put("scope", scope);
 					dataModel.put("type", type);
-					dataModel.put("javaType", javaType);
-					dataModel.put("value", valuecode);
+					dataModel.put("value", BlocklyToCode.directProcessOutputBlock(master, value));
 
 					String code = master.getTemplateGenerator()
 							.generateFromTemplate("_set_variable.java.ftl", dataModel);
@@ -118,7 +121,8 @@ public class SetVariableBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return names;
+		return new String[] { "variables_set_number", "variables_set_text", "variables_set_logic",
+				"variables_set_itemstack" };
 	}
 
 	@Override public BlockType getBlockType() {

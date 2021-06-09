@@ -32,7 +32,7 @@ public class TaskbarIntegration {
 		if (Taskbar.isTaskbarSupported()) {
 			taskbar = Taskbar.getTaskbar();
 			if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE))
-				taskbar.setIconImage(UIRES.getBuiltIn("icon").getImage());
+				taskbar.setIconImage(UIRES.get("icon").getImage());
 		}
 	}
 
@@ -42,12 +42,12 @@ public class TaskbarIntegration {
 	}
 
 	public void setIntermediateProgress(Window w) {
-		if (taskbar != null && taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW))
+		if (taskbar != null)
 			taskbar.setWindowProgressState(w, Taskbar.State.INDETERMINATE);
 	}
 
 	public void clearState(Window w) {
-		if (taskbar != null && taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW)) {
+		if (taskbar != null) {
 			setProgressState(w, -1);
 			taskbar.setWindowProgressState(w, Taskbar.State.NORMAL);
 			taskbar.setWindowProgressState(w, Taskbar.State.OFF);
@@ -55,12 +55,12 @@ public class TaskbarIntegration {
 	}
 
 	public void setWarningIndicator(Window w) {
-		if (taskbar != null && taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW))
+		if (taskbar != null)
 			taskbar.setWindowProgressState(w, Taskbar.State.PAUSED);
 	}
 
 	public void setErrorIndicator(Window w) {
-		if (taskbar != null && taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW))
+		if (taskbar != null)
 			taskbar.setWindowProgressState(w, Taskbar.State.ERROR);
 	}
 

@@ -673,15 +673,9 @@ import net.minecraft.block.material.Material;
 		</#if>
 
 		<#if data.disableCollisions>
-		@Override public boolean canBePushed() {
-			return false;
+		@Override public boolean canBeCollidedWith() {
+        	return false;
 		}
-
-   		@Override protected void collideWithEntity(Entity entityIn) {
-   		}
-
-   		@Override protected void collideWithNearbyEntities() {
-   		}
 		</#if>
 
 		<#if data.isBoss>
@@ -809,11 +803,6 @@ import net.minecraft.block.material.Material;
 		@Override public IPacket<?> createSpawnPacket() {
         	return NetworkHooks.getEntitySpawningPacket(this);
     	}
-
-		@Override protected void arrowHit(LivingEntity livingEntity) {
-			super.arrowHit(livingEntity);
-			livingEntity.setArrowCountInEntity(livingEntity.getArrowCountInEntity() - 1);
-		}
 
 		@Override @OnlyIn(Dist.CLIENT) public ItemStack getItem() {
 			return ${mappedMCItemToItemStackCode(data.rangedAttackItem, 1)};

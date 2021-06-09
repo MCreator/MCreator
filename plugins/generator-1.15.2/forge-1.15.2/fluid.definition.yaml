@@ -6,9 +6,8 @@ templates:
     name: "@MODASSETSROOT/models/item/@registryname_bucket.json"
 
 localizationkeys:
-  - key: fluid.@modid.@registryname
-    mapto: name
-  - key: block.@modid.@registryname
+  - key: fluid.@registryname
     mapto: name
   - key: item.@modid.@registryname_bucket
-    mapto: bucketName
+    mapto: name
+    suffix: " Bucket"

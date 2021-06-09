@@ -28,7 +28,7 @@ import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableElementType;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
@@ -59,8 +59,8 @@ public class ImageDialog extends AbstractWYSIWYGDialog {
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/image_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.image_display_condition"), ProcedureSelector.Side.CLIENT, false,
-				VariableElementTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				VariableElementType.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
 
 		add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(options, displayCondition, 20, 5)));

@@ -10,7 +10,7 @@
     },
     {
       "name": "risingEdge",
-      "type": "logic"
+      "type": "boolean"
     }
   ],
   "required_apis": [

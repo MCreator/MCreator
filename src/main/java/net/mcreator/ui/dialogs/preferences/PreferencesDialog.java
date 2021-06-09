@@ -50,7 +50,6 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	DefaultListModel<String> model = new DefaultListModel<>();
 	JPanel preferences = new JPanel();
-	private ThemesPanel themes;
 
 	private final JList<String> sections = new JList<>(model);
 	private final CardLayout preferencesLayout = new CardLayout();
@@ -169,11 +168,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		}
 		sections.setSelectedIndex(0);
 
-		new PluginsPanel(this);
-
-		themes = new ThemesPanel(this);
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ui_backgrounds"), "backgrounds", "png");
-
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_procedure_templates"), "templates/ptpl", "ptpl");
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ai_builder_templates"), "templates/aitpl", "aitpl");
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_cmd_builder_templates"), "templates/cmdtpl", "cmdtpl");
@@ -181,6 +176,7 @@ public class PreferencesDialog extends MCreatorDialog {
 				"templates/textures/texturemaker", "png");
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_armor_templates"), "templates/textures/armormaker",
 				"png");
+		new PluginsPanel(this);
 	}
 
 	private void createPreferencesPanel(Field sectionField) {
@@ -215,6 +211,7 @@ public class PreferencesDialog extends MCreatorDialog {
 				LOG.info("Reflection error: " + e.getMessage());
 			}
 		}
+
 		preferences.add(new JScrollPane(PanelUtils.pullElementUp(sectionPanel)), name);
 	}
 
@@ -231,9 +228,6 @@ public class PreferencesDialog extends MCreatorDialog {
 				LOG.info("Reflection error: " + e.getMessage());
 			}
 		}
-
-		data.hidden.uiTheme = themes.getSelectedTheme();
-
 		PreferencesManager.storePreferences(data);
 	}
 
@@ -319,10 +313,6 @@ public class PreferencesDialog extends MCreatorDialog {
 			return ((JComboBox<?>) value).getSelectedItem();
 		}
 		return null;
-	}
-
-	public void markChanged() {
-		apply.setEnabled(true);
 	}
 
 	private static class PreferencesUnit {

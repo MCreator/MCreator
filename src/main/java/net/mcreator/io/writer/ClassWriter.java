@@ -28,10 +28,7 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collection;
 import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntConsumer;
-import java.util.stream.Collectors;
 
 public class ClassWriter {
 
@@ -51,22 +48,24 @@ public class ClassWriter {
 
 	public static void formatAndOrganiseImportsForFiles(@Nullable Workspace workspace, @Nonnull Collection<File> files,
 			@Nullable IntConsumer intConsumer) {
-		Map<File, String> codes = files.stream()
-				.filter(file -> FilenameUtils.isExtension(file.getName().toLowerCase(Locale.ENGLISH), "java"))
-				.collect(Collectors.toMap(file -> file, FileIO::readFileToString));
+		boolean skipModClassReloading = false;
 
-		// reload mod classes by "dummy" formatting the first element
-		codes.values().stream().findFirst()
-				.ifPresent(code -> codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code, false));
+		int idx = 0;
+		for (File file : files) {
+			if (FilenameUtils.isExtension(file.getName().toLowerCase(Locale.ENGLISH), "java")) {
+				if (file.isFile()) {
+					String code = FileIO.readFileToString(file);
+					FileIO.writeStringToFile(
+							codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code, skipModClassReloading),
+							file);
 
-		AtomicInteger counter = new AtomicInteger();
-		Map<File, String> formattedCodes = files.parallelStream().peek(file -> {
+					skipModClassReloading = true; // after first reload, we do not reload for each file
+				}
+			}
+
 			if (intConsumer != null)
-				intConsumer.accept(counter.incrementAndGet());
-		}).filter(codes::containsKey).collect(Collectors.toMap(file -> file,
-				file -> codeCleanup.reformatTheCodeAndOrganiseImports(workspace, codes.get(file), true)));
-
-		formattedCodes.forEach((file, code) -> FileIO.writeStringToFile(code, file));
+				intConsumer.accept(idx++);
+		}
 	}
 
 }

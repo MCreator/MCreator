@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.blockly;
 
+import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.java.ProcedureTemplateIO;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.component.JScrollablePopupMenu;
@@ -60,7 +61,7 @@ public class ProcedureTemplateDropdown extends JScrollablePopupMenu {
 							continue; // skip if variable with this name already exists
 
 						blocklyPanel.addLocalVariable(localVariable.getName(),
-								localVariable.getType().getBlocklyVariableType());
+								BlocklyVariables.getBlocklyVariableTypeFromMCreatorVariable(localVariable));
 						procedureGUI.localVars.addElement(localVariable);
 					}
 

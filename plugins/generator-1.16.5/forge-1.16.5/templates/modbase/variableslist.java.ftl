@@ -25,13 +25,13 @@ public class ${JavaModName}Variables {
 	<#if w.hasVariablesOfScope("GLOBAL_SESSION")>
 		<#list variables as var>
 			<#if var.getScope().name() == "GLOBAL_SESSION">
-				<#if var.getType().getName() == "number">
+				<#if var.getType().name() == "NUMBER">
 	        public static double ${var.getName()} = ${var.getValue()};
-				<#elseif var.getType().getName() == "logic">
+				<#elseif var.getType().name() == "LOGIC">
 	        public static boolean ${var.getName()} = ${var.getValue()};
-				<#elseif var.getType().getName() == "string">
+				<#elseif var.getType().name() == "STRING">
 	        public static String ${var.getName()} ="${JavaConventions.escapeStringForJava(var.getValue())}";
-				<#elseif var.getType().getName() == "itemstack">
+				<#elseif var.getType().name() == "ITEMSTACK">
 	        public static ItemStack ${var.getName()} = ItemStack.EMPTY;
 				</#if>
 			</#if>
@@ -64,13 +64,13 @@ public class ${JavaModName}Variables {
 
 		<#list variables as var>
             <#if var.getScope().name() == "GLOBAL_WORLD">
-                <#if var.getType().getName() == "number">
+                <#if var.getType().name() == "NUMBER">
         			public double ${var.getName()} = ${var.getValue()};
-                <#elseif var.getType().getName() == "logic">
+                <#elseif var.getType().name() == "LOGIC">
 					public boolean ${var.getName()} = ${var.getValue()};
-                <#elseif var.getType().getName() == "string">
+                <#elseif var.getType().name() == "STRING">
        				 public String ${var.getName()} ="${JavaConventions.escapeStringForJava(var.getValue())}";
-				<#elseif var.getType().getName() == "itemstack">
+				<#elseif var.getType().name() == "ITEMSTACK">
 					public ItemStack ${var.getName()} = ItemStack.EMPTY;
                 </#if>
             </#if>
@@ -87,13 +87,13 @@ public class ${JavaModName}Variables {
 		@Override public void read(CompoundNBT nbt) {
 			<#list variables as var>
                 <#if var.getScope().name() == "GLOBAL_WORLD">
-                    <#if var.getType().getName() == "number">
+                    <#if var.getType().name() == "NUMBER">
                         ${var.getName()} =nbt.getDouble("${var.getName()}");
-                    <#elseif var.getType().getName() == "logic">
+                    <#elseif var.getType().name() == "LOGIC">
                         ${var.getName()} =nbt.getBoolean("${var.getName()}");
-                    <#elseif var.getType().getName() == "string">
+                    <#elseif var.getType().name() == "STRING">
                         ${var.getName()} =nbt.getString("${var.getName()}");
-					<#elseif var.getType().getName() == "itemstack">
+					<#elseif var.getType().name() == "ITEMSTACK">
 						${var.getName()} = ItemStack.read(nbt.getCompound("${var.getName()}"));
                     </#if>
                 </#if>
@@ -103,13 +103,13 @@ public class ${JavaModName}Variables {
 		@Override public CompoundNBT write(CompoundNBT nbt) {
 			<#list variables as var>
                 <#if var.getScope().name() == "GLOBAL_WORLD">
-                    <#if var.getType().getName() == "number">
+                    <#if var.getType().name() == "NUMBER">
         				nbt.putDouble("${var.getName()}" , ${var.getName()});
-                    <#elseif var.getType().getName() == "logic">
+                    <#elseif var.getType().name() == "LOGIC">
 						nbt.putBoolean("${var.getName()}" , ${var.getName()});
-                    <#elseif var.getType().getName() == "string">
+                    <#elseif var.getType().name() == "STRING">
 						nbt.putString("${var.getName()}" , ${var.getName()});
-					<#elseif var.getType().getName() == "itemstack">
+					<#elseif var.getType().name() == "ITEMSTACK">
 						nbt.put("${var.getName()}", ${var.getName()}.write(new CompoundNBT()));
                     </#if>
                 </#if>
@@ -142,13 +142,13 @@ public class ${JavaModName}Variables {
 
 		<#list variables as var>
             <#if var.getScope().name() == "GLOBAL_MAP">
-                <#if var.getType().getName() == "number">
+                <#if var.getType().name() == "NUMBER">
         			public double ${var.getName()} = ${var.getValue()};
-                <#elseif var.getType().getName() == "logic">
+                <#elseif var.getType().name() == "LOGIC">
 					public boolean ${var.getName()} = ${var.getValue()};
-                <#elseif var.getType().getName() == "string">
+                <#elseif var.getType().name() == "STRING">
        				 public String ${var.getName()} ="${JavaConventions.escapeStringForJava(var.getValue())}";
-				<#elseif var.getType().getName() == "itemstack">
+				<#elseif var.getType().name() == "ITEMSTACK">
 					public ItemStack ${var.getName()} = ItemStack.EMPTY;
                 </#if>
             </#if>
@@ -165,13 +165,13 @@ public class ${JavaModName}Variables {
 		@Override public void read(CompoundNBT nbt) {
 			<#list variables as var>
                 <#if var.getScope().name() == "GLOBAL_MAP">
-                    <#if var.getType().getName() == "number">
+                    <#if var.getType().name() == "NUMBER">
                         ${var.getName()} =nbt.getDouble("${var.getName()}");
-                    <#elseif var.getType().getName() == "logic">
+                    <#elseif var.getType().name() == "LOGIC">
                         ${var.getName()} =nbt.getBoolean("${var.getName()}");
-                    <#elseif var.getType().getName() == "string">
+                    <#elseif var.getType().name() == "STRING">
                         ${var.getName()} =nbt.getString("${var.getName()}");
-					<#elseif var.getType().getName() == "itemstack">
+					<#elseif var.getType().name() == "ITEMSTACK">
 						${var.getName()} = ItemStack.read(nbt.getCompound("${var.getName()}"));
                     </#if>
                 </#if>
@@ -181,13 +181,13 @@ public class ${JavaModName}Variables {
 		@Override public CompoundNBT write(CompoundNBT nbt) {
 			<#list variables as var>
                 <#if var.getScope().name() == "GLOBAL_MAP">
-                    <#if var.getType().getName() == "number">
+                    <#if var.getType().name() == "NUMBER">
         				nbt.putDouble("${var.getName()}" , ${var.getName()});
-                    <#elseif var.getType().getName() == "logic">
+                    <#elseif var.getType().name() == "LOGIC">
 						nbt.putBoolean("${var.getName()}" , ${var.getName()});
-                    <#elseif var.getType().getName() == "string">
+                    <#elseif var.getType().name() == "STRING">
 						nbt.putString("${var.getName()}" , ${var.getName()});
-					<#elseif var.getType().getName() == "itemstack">
+					<#elseif var.getType().name() == "ITEMSTACK">
 						nbt.put("${var.getName()}", ${var.getName()}.write(new CompoundNBT()));
                     </#if>
                 </#if>
@@ -283,13 +283,13 @@ public class ${JavaModName}Variables {
 			CompoundNBT nbt = new CompoundNBT();
 			<#list variables as var>
 				<#if var.getScope().name() == "PLAYER_LIFETIME" || var.getScope().name() == "PLAYER_PERSISTENT">
-					<#if var.getType().getName() == "number">
+					<#if var.getType().name() == "NUMBER">
 			        	nbt.putDouble("${var.getName()}" , instance.${var.getName()});
-					<#elseif var.getType().getName() == "logic">
+					<#elseif var.getType().name() == "LOGIC">
 						nbt.putBoolean("${var.getName()}" , instance.${var.getName()});
-					<#elseif var.getType().getName() == "string">
+					<#elseif var.getType().name() == "STRING">
 						nbt.putString("${var.getName()}" , instance.${var.getName()});
-					<#elseif var.getType().getName() == "itemstack">
+					<#elseif var.getType().name() == "ITEMSTACK">
 						nbt.put("${var.getName()}", instance.${var.getName()}.write(new CompoundNBT()));
 					</#if>
 				</#if>
@@ -301,13 +301,13 @@ public class ${JavaModName}Variables {
 			CompoundNBT nbt = (CompoundNBT) inbt;
 			<#list variables as var>
 				<#if var.getScope().name() == "PLAYER_LIFETIME" || var.getScope().name() == "PLAYER_PERSISTENT">
-					<#if var.getType().getName() == "number">
+					<#if var.getType().name() == "NUMBER">
 						instance.${var.getName()} =nbt.getDouble("${var.getName()}");
-					<#elseif var.getType().getName() == "logic">
+					<#elseif var.getType().name() == "LOGIC">
 						instance.${var.getName()} =nbt.getBoolean("${var.getName()}");
-					<#elseif var.getType().getName() == "string">
+					<#elseif var.getType().name() == "STRING">
 						instance.${var.getName()} =nbt.getString("${var.getName()}");
-					<#elseif var.getType().getName() == "itemstack">
+					<#elseif var.getType().name() == "ITEMSTACK">
 						instance.${var.getName()} = ItemStack.read(nbt.getCompound("${var.getName()}"));
 					</#if>
 				</#if>
@@ -320,13 +320,13 @@ public class ${JavaModName}Variables {
 
 		<#list variables as var>
 			<#if var.getScope().name() == "PLAYER_LIFETIME" || var.getScope().name() == "PLAYER_PERSISTENT">
-				<#if var.getType().getName() == "number">
+				<#if var.getType().name() == "NUMBER">
 			public double ${var.getName()} = ${var.getValue()};
-				<#elseif var.getType().getName() == "logic">
+				<#elseif var.getType().name() == "LOGIC">
 			public boolean ${var.getName()} = ${var.getValue()};
-				<#elseif var.getType().getName() == "string">
+				<#elseif var.getType().name() == "STRING">
 			 public String ${var.getName()} ="${JavaConventions.escapeStringForJava(var.getValue())}";
-				<#elseif var.getType().getName() == "itemstack">
+				<#elseif var.getType().name() == "ITEMSTACK">
 			public ItemStack ${var.getName()} = ItemStack.EMPTY;
 				</#if>
 			</#if>
