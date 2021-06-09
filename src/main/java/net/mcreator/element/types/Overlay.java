@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.GridSettings;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.workspace.elements.ModElement;
@@ -41,8 +42,16 @@ import java.util.List;
 
 	public Procedure displayCondition;
 
+	public GridSettings gridSettings;
+
+	private Overlay() {
+		this(null);
+	}
+
 	public Overlay(ModElement element) {
 		super(element);
+
+		this.gridSettings = new GridSettings();
 	}
 
 	public int getBaseTextureWidth() {

@@ -1,3 +1,5 @@
-@SubscribeEvent public void onLinkDeviceConnected(LinkDeviceConnectedEvent event){
-		this.executeProcedure(Collections.emptyMap());
-		}
+@Mod.EventBusSubscriber private static class GlobalTrigger {
+	@SubscribeEvent public static void onLinkDeviceConnected(LinkDeviceConnectedEvent event){
+		executeProcedure(Collections.emptyMap());
+	}
+}

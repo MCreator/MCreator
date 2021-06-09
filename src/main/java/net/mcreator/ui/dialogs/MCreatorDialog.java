@@ -46,7 +46,7 @@ public class MCreatorDialog extends JDialog {
 		super(w);
 		setModal(modal);
 		setTitle(title);
-		setIconImage(UIRES.get("icon").getImage());
+		setIconImage(UIRES.getBuiltIn("icon").getImage());
 
 		Action dispatchClosing = new AbstractAction() {
 			@Override public void actionPerformed(ActionEvent event) {

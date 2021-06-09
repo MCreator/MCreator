@@ -2,7 +2,7 @@
 <#if entity != "null">
 	if(world instanceof ServerWorld) {
 		<#if !entity.toString().contains(".CustomEntity")>
-			Entity entityToSpawn = new ${generator.map(field$entity, "entities", 0)}(EntityType.${entity}, (World) world);
+			Entity entityToSpawn = new ${generator.map(field$entity, "entities", 0)}(${entity}, (World) world);
 		<#else>
 			Entity entityToSpawn = new ${entity}(${entity.toString().replace(".CustomEntity", "")}.entity, (World) world);
 		</#if>

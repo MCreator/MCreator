@@ -19,7 +19,7 @@
 package net.mcreator.ui.laf.renderer;
 
 import net.mcreator.ui.init.BlockItemIcons;
-import net.mcreator.ui.laf.AbstractMCreatorTheme;
+import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.image.ImageUtils;
 import org.fife.rsta.ac.java.JavaCellRenderer;
 import org.fife.ui.autocomplete.Completion;
@@ -51,7 +51,7 @@ public class MinecraftCompletionCellRenderer extends JavaCellRenderer {
 			}
 		}
 
-		setFont(AbstractMCreatorTheme.console_font.deriveFont(12.0f));
+		setFont(MCreatorTheme.console_font.deriveFont(12.0f));
 
 		if (selected) {
 			setBackground(new Color(0, 58, 80));
