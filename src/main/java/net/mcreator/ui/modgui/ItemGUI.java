@@ -277,7 +277,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		subpane2.add(stayInGridWhenCrafting);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
-				L10N.label("elementgui.item.container_item_damage")));
+				L10N.label("elementgui.item.container_item_damage"), () -> L10N.t("elementgui.item.container_item")));
 		subpane2.add(damageOnCrafting);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/recipe_remainder"),
