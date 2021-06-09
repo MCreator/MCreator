@@ -328,9 +328,7 @@ import ${package}.${JavaModName};
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
             TextFieldWidget ${component.name};
-		    <#elseif component.getClass().getSimpleName() == "Checkbox">
-	        CheckboxButton ${component.name};
-		    </#if>
+			</#if>
 		</#list>
 
 		public GuiWindow(GuiContainerMod container, PlayerInventory inventory, ITextComponent text) {
@@ -490,12 +488,6 @@ import ${package}.${JavaModName};
 					}
 					</#if>);
 					<#assign btid +=1>
-			    <#elseif component.getClass().getSimpleName() == "Checkbox">
-            	    ${component.name} = new CheckboxButton(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-            	        150, 20, "${component.text}", <#if hasCondition(component.isCheckedProcedure)>
-            	        <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
-                    ${name}Gui.guistate.put("checkbox:${component.name}", ${component.name});
-                    this.addButton(${component.name});
 				</#if>
 			</#list>
 		}

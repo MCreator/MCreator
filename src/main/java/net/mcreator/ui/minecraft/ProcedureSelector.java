@@ -77,7 +77,7 @@ public class ProcedureSelector extends JPanel {
 
 	private final VariableElementType returnType;
 
-	private String defaultName = L10N.t("procedure.common.no_procedure");
+	private String defaultName = "(no procedure)";
 
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName,
 			Dependency... providedDependencies) {
@@ -119,7 +119,7 @@ public class ProcedureSelector extends JPanel {
 			setBorder(BorderFactory.createLineBorder(BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor())));
 
 			if (returnType == VariableElementTypeLoader.BuiltInTypes.LOGIC)
-				defaultName = L10N.t("condition.common.true");
+				defaultName = "(always)";
 		}
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());

@@ -46,8 +46,8 @@ public class AIConditionEditor {
 				VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
-		startCondition.setDefaultName(L10N.t("condition.common.no_additional")).refreshList();
-		continueCondition.setDefaultName(L10N.t("condition.common.no_additional")).refreshList();
+		startCondition.setDefaultName(L10N.t("dialog.ai_condition.no_additional")).refreshList();
+		continueCondition.setDefaultName(L10N.t("dialog.ai_condition.no_additional")).refreshList();
 
 		if (data != null && data.length == 2) {
 			startCondition.setSelectedProcedure(data[0]);

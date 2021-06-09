@@ -91,23 +91,13 @@ public class FolderElement implements IElement {
 	}
 
 	public void moveTo(Workspace workspace, FolderElement newParent) {
-		doActionAndReassignRecursive(workspace, () -> {
-			// first remove folder from old parent and assign new parent to the folder
-			this.getParent().removeChild(this);
-			newParent.addChild(this);
-		});
-	}
-
-	public void setName(Workspace workspace, String name) {
-		doActionAndReassignRecursive(workspace, () -> this.name = name);
-	}
-
-	private void doActionAndReassignRecursive(Workspace workspace, Runnable action) {
 		String originalFolderPath = this.getPath();
 		List<String> originalRecursiveFolderChildrenPaths = this.getRecursiveFolderChildren().stream()
 				.map(FolderElement::getPath).collect(Collectors.toList());
 
-		action.run();
+		// first remove folder from old parent and assign new parent to the folder
+		this.getParent().removeChild(this);
+		newParent.addChild(this);
 
 		// then re-assign mod elements from this folder to the new folder ath
 		for (ModElement modElement : workspace.getModElements()) {
@@ -150,6 +140,10 @@ public class FolderElement implements IElement {
 			return parent.buildPath(storage);
 		else
 			return storage;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override public String getName() {

@@ -33,53 +33,34 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.function.Supplier;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class HelpUtils {
 
 	public static Component wrapWithHelpButton(IHelpContext context, Component ca) {
-		return wrapWithHelpButton(context, ca, null, SwingConstants.RIGHT, (Supplier<?>) null);
+		return wrapWithHelpButton(context, ca, null, SwingConstants.RIGHT);
 	}
 
 	public static Component wrapWithHelpButton(IHelpContext context, Component ca, int direction) {
-		return wrapWithHelpButton(context, ca, null, direction, (Supplier<?>) null);
+		return wrapWithHelpButton(context, ca, null, direction);
 	}
 
 	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac) {
-		return wrapWithHelpButton(context, ca, ac, SwingConstants.RIGHT, (Supplier<?>) null);
+		return wrapWithHelpButton(context, ca, ac, SwingConstants.RIGHT);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca,
-			@Nullable Supplier<?>... contextArguments) {
-		return wrapWithHelpButton(context, ca, null, SwingConstants.RIGHT, contextArguments);
-	}
-
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca, int direction,
-			@Nullable Supplier<?>... contextArguments) {
-		return wrapWithHelpButton(context, ca, null, direction, contextArguments);
-	}
-
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac,
-			@Nullable Supplier<?>... contextArguments) {
-		return wrapWithHelpButton(context, ca, ac, SwingConstants.RIGHT, contextArguments);
-	}
-
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac, int direction,
-			@Nullable Supplier<?>... contextArguments) {
+	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac, int direction) {
 		JLabel lab = new JLabel(HelpLoader.hasFullHelp(context) ? UIRES.get("help") : UIRES.get("help_partial"));
 		lab.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+		AtomicReference<BalloonTip> balloonTipAtomicReference = new AtomicReference<>();
 		lab.addMouseListener(new MouseAdapter() {
-
-			BalloonTip balloonTip = null;
-			JTextPane editorPane = null;
-
 			@Override public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
 
 				// lazy load tooltip for performance reasons
-				if (balloonTip == null) {
-					editorPane = new JTextPane();
+				if (balloonTipAtomicReference.get() == null) {
+					JTextPane editorPane = new JTextPane();
 
 					editorPane.setContentType("text/html");
 					editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
@@ -93,10 +74,12 @@ public class HelpUtils {
 						}
 					});
 
+					editorPane.setText(HelpLoader.loadHelpFor(context));
+
 					JScrollPane scrollPane = new JScrollPane(editorPane);
 					scrollPane.setPreferredSize(new Dimension(335, 190));
 
-					balloonTip = new BalloonTip(lab, scrollPane,
+					BalloonTip balloonTip = new BalloonTip(lab, scrollPane,
 							new EdgedBalloonStyle((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
 									(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")), BalloonTip.Orientation.LEFT_BELOW,
 							BalloonTip.AttachLocation.ALIGNED, 10, 10, false);
@@ -125,15 +108,16 @@ public class HelpUtils {
 					closeButton.setContentAreaFilled(false);
 					closeButton.setIcon(UIRES.get("close_small"));
 					balloonTip.setCloseButton(closeButton, false);
+
+					editorPane.setCaretPosition(0);
+
+					balloonTipAtomicReference.set(balloonTip);
 				}
 
-				editorPane.setText(HelpLoader.loadHelpFor(context, contextArguments));
-				editorPane.setCaretPosition(0);
+				balloonTipAtomicReference.get().setVisible(!balloonTipAtomicReference.get().isVisible());
 
-				balloonTip.setVisible(!balloonTip.isVisible());
-
-				if (balloonTip.isVisible())
-					balloonTip.requestFocus(true);
+				if (balloonTipAtomicReference.get().isVisible())
+					balloonTipAtomicReference.get().requestFocus(true);
 			}
 		});
 

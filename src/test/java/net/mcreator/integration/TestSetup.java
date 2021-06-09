@@ -58,8 +58,8 @@ public class TestSetup {
 
 		// print version of Java
 		String java_spec_version = System.getProperty("java.specification.version");
-		LOG.info("Java version: " + System.getProperty("java.version") + ", VM: " + System.getProperty("java.vm.name")
-				+ ", vendor: " + System.getProperty("java.vendor"));
+		LOG.info("Java version: " + System.getProperty("java.version") + ", specification: " + java_spec_version
+				+ ", VM name: " + System.getProperty("java.vm.name"));
 		LOG.info("Current JAVA_HOME for running instance: " + System.getProperty("java.home"));
 
 		Properties conf = new Properties();

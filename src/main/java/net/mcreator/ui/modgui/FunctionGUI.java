@@ -81,8 +81,7 @@ public class FunctionGUI extends ModElementGUI<Function> {
 		northPanel.add(name);
 
 		northPanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("function/namespace"), L10N.label("elementgui.function.namespace"),
-						modElement.getWorkspace().getWorkspaceSettings()::getModID, modElement::getRegistryName));
+				.wrapWithHelpButton(this.withEntry("function/namespace"), L10N.label("elementgui.function.namespace")));
 		northPanel.add(namespace);
 
 		RTextScrollPane sp = new RTextScrollPane(te, true);

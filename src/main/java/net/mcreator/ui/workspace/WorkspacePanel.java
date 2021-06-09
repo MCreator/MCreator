@@ -101,7 +101,6 @@ import java.util.stream.Collectors;
 	private final MCreator mcreator;
 
 	private final JButton upFolder;
-	private final JButton renameFolder;
 
 	private final JLabel but2 = new JLabel(TiledImageCache.workspaceEdit);
 	private final JLabel but2a = new JLabel(TiledImageCache.workspaceDuplicate);
@@ -115,7 +114,6 @@ import java.util.stream.Collectors;
 	private final JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
 	private final JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
 	private final JMenuItem idElement = new JMenuItem(L10N.t("workspace.elements.list.edit.id"));
-	private final JMenuItem renameElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.rename.folder"));
 
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
@@ -134,30 +132,6 @@ import java.util.stream.Collectors;
 	private final JRadioButtonMenuItem sortType = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_type"));
 	private final JRadioButtonMenuItem sortLoadingOrder = new JRadioButtonMenuItem(
 			L10N.t("workspace.elements.list.sort_loading_order"));
-
-	private final OptionPaneValidatior folderNameValidator = new OptionPaneValidatior() {
-		@Override public ValidationResult validate(JComponent component) {
-			String folderName = ((JTextField) component).getText();
-
-			if (!folderName.matches("[A-Za-z0-9._ -]+")) {
-				return new Validator.ValidationResult(ValidationResultType.ERROR,
-						L10N.t("workspace.elements.folders.add.error_letters"));
-			}
-
-			List<FolderElement> folderElements = mcreator.getWorkspace().getFoldersRoot().getRecursiveFolderChildren();
-
-			FolderElement tmpFolder = new FolderElement(folderName, currentFolder);
-
-			for (FolderElement folderElement : folderElements) {
-				if (folderElement.equals(tmpFolder)) {
-					return new Validator.ValidationResult(ValidationResultType.ERROR,
-							L10N.t("workspace.elements.folders.add.error_exists"));
-				}
-			}
-
-			return Validator.ValidationResult.PASSED;
-		}
-	};
 
 	public WorkspacePanel(final MCreator mcreator) {
 		super(new BorderLayout(5, 5));
@@ -217,31 +191,30 @@ import java.util.stream.Collectors;
 
 		list.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				list.setSelectedIndex(list.locationToIndex(e.getPoint()));
-				IElement selected = list.getSelectedValue();
-
 				if (e.isConsumed())
 					return;
 
 				if (e.getButton() == MouseEvent.BUTTON3) {
+					list.setSelectedIndex(list.locationToIndex(e.getPoint()));
+					IElement selected = list.getSelectedValue();
+
 					if (selected instanceof FolderElement) {
 						duplicateElement.setEnabled(false);
 						codeElement.setEnabled(false);
 						lockElement.setEnabled(false);
 						idElement.setEnabled(false);
-						renameElementFolder.setEnabled(true);
 					} else {
 						duplicateElement.setEnabled(true);
 						codeElement.setEnabled(true);
 						lockElement.setEnabled(true);
 						idElement.setEnabled(true);
-						renameElementFolder.setEnabled(false);
 					}
 
 					contextMenu.show(list, e.getX(), e.getY());
 				} else if (e.getClickCount() == 2) {
 					list.cancelDND();
 
+					IElement selected = list.getSelectedValue();
 					if (selected instanceof FolderElement) {
 						switchFolder((FolderElement) selected);
 					} else {
@@ -251,8 +224,6 @@ import java.util.stream.Collectors;
 							editCurrentlySelectedModElement((ModElement) selected, list, e.getX(), e.getY());
 					}
 				}
-
-				renameFolder.setEnabled(selected instanceof FolderElement);
 			}
 		});
 
@@ -340,9 +311,6 @@ import java.util.stream.Collectors;
 		upFolder = new JButton(new ImageIcon(ImageUtils
 				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.upFolder.gif").getImage()),
 						new Rectangle(1, 1, 16, 16))));
-		renameFolder = new JButton(new ImageIcon(ImageUtils
-				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.renameFolder.gif").getImage()),
-						new Rectangle(1, 1, 16, 16))));
 
 		addFolder.setContentAreaFilled(false);
 		addFolder.setBorderPainted(false);
@@ -357,13 +325,6 @@ import java.util.stream.Collectors;
 		upFolder.setToolTipText(L10N.t("workspace.elements.folders.up_tooltip"));
 		upFolder.setEnabled(false);
 
-		renameFolder.setContentAreaFilled(false);
-		renameFolder.setBorderPainted(false);
-		renameFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-		renameFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		renameFolder.setToolTipText(L10N.t("workspace.elements.folders.rename_tooltip"));
-		renameFolder.setEnabled(false);
-
 		addFolder.addActionListener(e -> addNewFolder());
 
 		upFolder.addActionListener(e -> {
@@ -372,18 +333,11 @@ import java.util.stream.Collectors;
 			}
 		});
 
-		renameFolder.addActionListener(e -> {
-			if (list.getSelectedValue() instanceof FolderElement) {
-				renameFolder((FolderElement) list.getSelectedValue());
-			}
-		});
-
 		JComponent folderactions = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.folder_actions"), 12);
 		modElementsBar.add(folderactions);
 
 		modElementsBar.add(addFolder);
 		modElementsBar.add(upFolder);
-		modElementsBar.add(renameFolder);
 
 		modElementsBar.add(new JEmptyBox(7, 1));
 
@@ -880,18 +834,10 @@ import java.util.stream.Collectors;
 		addElementFolder.setIcon(UIRES.get("laf.newFolder.gif"));
 		addElementFolder.addActionListener(e -> addNewFolder());
 
-		renameElementFolder.setIcon(UIRES.get("laf.renameFolder.gif"));
-		renameElementFolder.addActionListener(e -> {
-			if (list.getSelectedValue() instanceof FolderElement) {
-				renameFolder((FolderElement) list.getSelectedValue());
-			}
-		});
-
 		contextMenu.add(openElement);
 		contextMenu.add(codeElement);
 		contextMenu.addSeparator();
 		contextMenu.add(addElementFolder);
-		contextMenu.add(renameElementFolder);
 		contextMenu.addSeparator();
 		contextMenu.add(deleteElement);
 		contextMenu.addSeparator();
@@ -1203,21 +1149,33 @@ import java.util.stream.Collectors;
 
 	private void addNewFolder() {
 		String name = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.folders.add.message"),
-				L10N.t("workspace.elements.folders.add.title"), null, folderNameValidator);
+				L10N.t("workspace.elements.folders.add.title"), null, new OptionPaneValidatior() {
+					@Override public ValidationResult validate(JComponent component) {
+						String folderName = ((JTextField) component).getText();
+
+						if (!folderName.matches("[A-Za-z0-9._ -]+")) {
+							return new Validator.ValidationResult(ValidationResultType.ERROR,
+									L10N.t("workspace.elements.folders.add.error_letters"));
+						}
+
+						List<FolderElement> folderElements = mcreator.getWorkspace().getFoldersRoot()
+								.getRecursiveFolderChildren();
+
+						FolderElement tmpFolder = new FolderElement(folderName, currentFolder);
+
+						for (FolderElement folderElement : folderElements) {
+							if (folderElement.equals(tmpFolder)) {
+								return new Validator.ValidationResult(ValidationResultType.ERROR,
+										L10N.t("workspace.elements.folders.add.error_exists"));
+							}
+						}
+
+						return Validator.ValidationResult.PASSED;
+					}
+				});
 
 		if (name != null) {
 			currentFolder.addChild(new FolderElement(name, currentFolder));
-			mcreator.getWorkspace().markDirty();
-			reloadElements();
-		}
-	}
-
-	private void renameFolder(FolderElement selected) {
-		String newName = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.folders.rename.message"),
-				L10N.t("workspace.elements.folders.rename.title"), null, folderNameValidator);
-		if (newName != null) {
-			selected.setName(mcreator.getWorkspace(), newName);
-
 			mcreator.getWorkspace().markDirty();
 			reloadElements();
 		}

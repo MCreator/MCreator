@@ -469,7 +469,7 @@ public class ImageUtils {
 	}
 
 	/**
-	 * Generates a cuboid image given the textures, the dimensions, and the offsets on the axes.
+	 * Generates a cuboid image given the textures, the dimensions, and the offsets on the axes.</p>
 	 *
 	 * @param top   <p>The top face texture</p>
 	 * @param front <p>The front face texture</p>

@@ -60,7 +60,6 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 
 		editor = new WYSIWYGEditor(mcreator, false);
 		editor.button.setVisible(false);
-		editor.checkbox.setVisible(false);
 		editor.slot1.setVisible(false);
 		editor.slot2.setVisible(false);
 		editor.text.setVisible(false);
