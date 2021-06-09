@@ -92,8 +92,7 @@ public class HelpLoader {
 				if (helpText != null) {
 					if (contextArguments != null)
 						helpString.append(renderer.render(parser.parse(MessageFormat.format(helpText,
-								Arrays.stream(contextArguments).map(Supplier::get)
-										.map(e -> e == null ? "" : HtmlUtils.unescapeHtml(e.toString())).toArray()))));
+								Arrays.stream(contextArguments).map(e -> HtmlUtils.unescapeHtml(e.get().toString())).toArray()))));
 					else
 						helpString.append(renderer.render(parser.parse(helpText)));
 				} else {
