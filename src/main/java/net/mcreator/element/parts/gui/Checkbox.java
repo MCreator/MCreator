@@ -38,7 +38,10 @@ public class Checkbox extends GUIComponent implements IMachineNamedComponent {
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
 		g.drawImage(MinecraftImageGenerator.generateCheckbox(), cx, cy, 20, 20, wysiwygEditor);
-		g.drawString(this.text, cx + 20, cy + 10);
+		g.setColor(new Color(0x373737));
+		g.drawString(this.text, cx + 24 + 1, cy + 13 + 1);
+		g.setColor(new Color(0xdddddd));
+		g.drawString(this.text, cx + 24, cy + 13);
 	}
 
 	@Override public int getWidth(Workspace workspace) {
