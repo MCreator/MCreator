@@ -66,7 +66,7 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 			RecipeType.NONE, KeyBindGUI::new, KeyBinding.class);
 	public static final ModElementType<?> LOOTTABLE = new ModElementType<>("loottable", 'l', BaseType.DATAPACK,
 			RecipeType.NONE, LootTableGUI::new, LootTable.class);
-	public static final ModElementType<?> MOB = new ModElementType<>("mob", "entity", 'e', BaseType.ENTITY,
+	public static final ModElementType<?> MOB = new ModElementType<>("mob", "living_entity", 'e', BaseType.ENTITY,
 			RecipeType.NONE, LivingEntityGUI::new, Mob.class);
 	public static final ModElementType<?> MUSICDISC = new ModElementType<>("musicdisc", 'x', BaseType.OTHER,
 			RecipeType.ITEM, MusicDiscGUI::new, MusicDisc.class);
@@ -78,11 +78,11 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 			RecipeType.NONE, ParticleGUI::new, Particle.class);
 	public static final ModElementType<?> PLANT = new ModElementType<>("plant", 'n', BaseType.BLOCK, RecipeType.BLOCK,
 			PlantGUI::new, Plant.class);
-	public static final ModElementType<?> POTION = new ModElementType<>("potion", "potioneffect", "potioneffect", 'z',
+	public static final ModElementType<?> POTION = new ModElementType<>("potion", 'z',
 			BaseType.POTION, RecipeType.NONE, PotionGUI::new, Potion.class);
 	public static final ModElementType<?> PROCEDURE = new ModElementType<>("procedure", 'p', BaseType.PROCEDURE,
 			RecipeType.NONE, ProcedureGUI::new, Procedure.class);
-	public static final ModElementType<?> RANGEDITEM = new ModElementType<>("gun", "rangeditem", "rangeditem", 'q',
+	public static final ModElementType<?> RANGEDITEM = new ModElementType<>("gun", "rangeditem", "ranged_item", 'q',
 			BaseType.ITEM, RecipeType.ITEM, RangedItemGUI::new, RangedItem.class);
 	public static final ModElementType<?> RECIPE = new ModElementType<>("recipe", 'r', BaseType.DATAPACK,
 			RecipeType.NONE, RecipeGUI::new, Recipe.class);
@@ -90,7 +90,7 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 			BaseType.ACHIEVEMENT, RecipeType.NONE, AchievementGUI::new, Achievement.class);
 	public static final ModElementType<?> STRUCTURE = new ModElementType<>("structure", 's', BaseType.STRUCTURE,
 			RecipeType.NONE, StructureGenGUI::new, Structure.class);
-	public static final ModElementType<?> TAB = new ModElementType<>("tab", 'w', BaseType.TAB, RecipeType.NONE,
+	public static final ModElementType<?> TAB = new ModElementType<>("tab", "item_group", 'w', BaseType.TAB, RecipeType.NONE,
 			TabGUI::new, Tab.class);
 	public static final ModElementType<?> TAG = new ModElementType<>("tag", 'j', BaseType.OTHER, RecipeType.NONE,
 			TagGUI::new, Tag.class);
@@ -134,7 +134,7 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 		this.recipeType = recipeType;
 		this.registryName = registryName;
 		this.name = name;
-		this.icon = UIRES.get(iconID);
+		this.icon = UIRES.get("mod_types." + iconID);
 		this.shortcut = shortcut;
 
 		this.readableName = L10N.t("modelement." + name.toLowerCase(Locale.ENGLISH));
