@@ -1,53 +1,53 @@
 - ANNOUNCE_ADVANCEMENTS:
-  type: boolean
+  type: logic
 - COMMAND_BLOCK_OUTPUT:
-  type: boolean
+  type: logic
 - DISABLE_ELYTRA_MOVEMENT_CHECK:
-  type: boolean
+  type: logic
 - DISABLE_RAIDS:
-  type: boolean
+  type: logic
 - DO_DAYLIGHT_CYCLE:
-  type: boolean
+  type: logic
 - DO_ENTITY_DROPS:
-  type: boolean
+  type: logic
 - DO_FIRE_TICK:
-  type: boolean
+  type: logic
 - DO_INSOMNIA:
-  type: boolean
+  type: logic
 - DO_IMMEDIATE_RESPAWN:
-  type: boolean
+  type: logic
 - DO_LIMITED_CRAFTING:
-  type: boolean
+  type: logic
 - DO_MOB_LOOT:
-  type: boolean
+  type: logic
 - DO_MOB_SPAWNING:
-  type: boolean
+  type: logic
 - DO_TILE_DROPS:
-  type: boolean
+  type: logic
 - DO_WEATHER_CYCLE:
-  type: boolean
+  type: logic
 - DROWNING_DAMAGE:
-  type: boolean
+  type: logic
 - FALL_DAMAGE:
-  type: boolean
+  type: logic
 - FIRE_DAMAGE:
-  type: boolean
+  type: logic
 - KEEP_INVENTORY:
-  type: boolean
+  type: logic
 - LOG_ADMIN_COMMANDS:
-  type: boolean
+  type: logic
 - MOB_GRIEFING:
-  type: boolean
+  type: logic
 - NATURAL_REGENERATION:
-  type: boolean
+  type: logic
 - REDUCED_DEBUG_INFO:
-  type: boolean
+  type: logic
 - SEND_COMMAND_FEEDBACK:
-  type: boolean
+  type: logic
 - SHOW_DEATH_MESSAGES:
-  type: boolean
+  type: logic
 - SPECTATORS_GENERATE_CHUNKS:
-  type: boolean
+  type: logic
 - MAX_COMMAND_CHAIN_LENGTH:
   type: number
 - MAX_ENTITY_CRAMMING:
@@ -57,10 +57,10 @@
 - SPAWN_RADIUS:
   type: number
 - DO_PATROL_SPAWNING:
-  type: boolean
+  type: logic
 - DO_TRADER_SPAWNING:
-  type: boolean
+  type: logic
 - FORGIVE_DEAD_PLAYERS:
-  type: boolean
+  type: logic
 - UNIVERSAL_ANGER:
-  type: boolean
+  type: logic

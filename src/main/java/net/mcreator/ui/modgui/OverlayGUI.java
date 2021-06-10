@@ -30,7 +30,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,11 +55,12 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 
 		displayCondition = new ProcedureSelector(this.withEntry("overlay/display_condition"), mcreator,
 				L10N.t("elementgui.overlay.event_display_ingame"), ProcedureSelector.Side.CLIENT, true,
-				VariableElementType.LOGIC,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		editor = new WYSIWYGEditor(mcreator, false);
 		editor.button.setVisible(false);
+		editor.checkbox.setVisible(false);
 		editor.slot1.setVisible(false);
 		editor.slot2.setVisible(false);
 		editor.text.setVisible(false);

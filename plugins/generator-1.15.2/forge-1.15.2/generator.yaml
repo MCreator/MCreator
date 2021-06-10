@@ -1,5 +1,5 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-basefeatures: [variables, model_json, model_java, model_obj]
+basefeatures: [model_json, model_java, model_obj]
 status: lts
 buildfileversion: 31.2.0
 subversion: 1.0.1
