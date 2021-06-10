@@ -292,7 +292,7 @@ public class Generator implements IGenerator, Closeable {
 	/**
 	 * Load any hardcoded variables from template definition into dataModel
 	 *
-	 * @param generatorTemplate Template from which to get variables
+	 * @param generatorTemplate Template from which to getModElementType variables
 	 * @param dataModel         Data model to place variables into
 	 */
 	private void extractVariables(GeneratorTemplate generatorTemplate, Map<String, Object> dataModel) {
@@ -444,7 +444,7 @@ public class Generator implements IGenerator, Closeable {
 						return element;
 				}
 			} catch (Exception e) {
-				LOG.warn("Failed to get list of mod element files for mod element " + element, e);
+				LOG.warn("Failed to getModElementType list of mod element files for mod element " + element, e);
 			}
 		}
 
@@ -453,7 +453,7 @@ public class Generator implements IGenerator, Closeable {
 
 	private void generateFiles(List<GeneratorFile> generatorFiles, boolean formatAndOrganiseImports) {
 		// first create Java files if they do not exist already
-		// so the imports get properly organised in the next step
+		// so the imports getModElementType properly organised in the next step
 		if (formatAndOrganiseImports) {
 			generatorFiles.forEach(generatorFile -> {
 				if (workspace.getFolderManager().isFileInWorkspace(generatorFile.getFile())) {

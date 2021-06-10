@@ -40,7 +40,7 @@ public class TemplateConditionParser {
 
 		boolean skipThisTemplate = false; // by default, we include template
 
-		// get list of all conditions that need to be met for template to be included
+		// getModElementType list of all conditions that need to be met for template to be included
 		List<String> conditions = new ArrayList<>();
 		if (conditionRaw instanceof List) {
 			List<?> conditionRawList = (List<?>) conditionRaw;

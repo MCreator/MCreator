@@ -78,7 +78,7 @@ public class ShareableZIPManager {
 					GeneratableElement generatableElement = mod.getGeneratableElement();
 					workspace.getModElementManager().storeModElementPicture(
 							generatableElement); // save custom mod element picture if it has one
-					workspace.addModElement(mod); // add mod element to workspace again, so the icons get reloaded
+					workspace.addModElement(mod); // add mod element to workspace again, so the icons getModElementType reloaded
 					mod.reinit(); // we reinit the mod to load new icons etc.
 					i++;
 					p1.setPercent((int) (((float) i / (float) modstoload) * 100.0f));

@@ -34,10 +34,10 @@ class DefinitionsProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Definition Loader");
 
-	private final Map<ModElementType, Map<?, ?>> cache = new ConcurrentHashMap<>();
+	private final Map<ModElementType<?>, Map<?, ?>> cache = new ConcurrentHashMap<>();
 
 	DefinitionsProvider(String generatorName) {
-		for (ModElementType type : ModElementType.values()) {
+		for (ModElementType<?> type : ModElementType.elements) {
 			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
 					"/" + generatorName + "/" + type.name().toLowerCase(Locale.ENGLISH) + ".definition.yaml");
 
@@ -54,7 +54,7 @@ class DefinitionsProvider {
 		}
 	}
 
-	Map<?, ?> getModElementDefinition(ModElementType elementType) {
+	Map<?, ?> getModElementDefinition(ModElementType<?> elementType) {
 		return cache.get(elementType);
 	}
 

@@ -152,7 +152,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			JTable elements = new JTable(new DefaultTableModel(
 					new Object[] { L10N.t("workspace.localization.column_key"),
 							"Localized text for " + entry.getKey() + (entry.getKey().equals("en_us") ?
-									" - values in en_us might get overwritten!" :
+									" - values in en_us might getModElementType overwritten!" :
 									" - mappings can be edited here") }, 0));
 
 			TableRowSorter<TableModel> sorter = new TableRowSorter<>(elements.getModel());

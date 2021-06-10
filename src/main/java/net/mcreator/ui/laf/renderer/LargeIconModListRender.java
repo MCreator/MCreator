@@ -115,18 +115,18 @@ public class LargeIconModListRender extends JPanel implements ListCellRenderer<I
 						&& modIcon.getIconHeight() > 0 && modIcon != MCItem.DEFAULT_ICON) {
 					if (dva != null) {
 						icon.setIcon(ImageUtils.drawOver(
-								ImageUtils.drawOver(TiledImageCache.getModTypeIcon(null), modIcon, 18, 18, 28, 28),
+								ImageUtils.drawOver(UIRES.get("modtypes.empty"), modIcon, 18, 18, 28, 28),
 								dva));
 					} else {
 						icon.setIcon(
-								ImageUtils.drawOver(TiledImageCache.getModTypeIcon(null), modIcon, 18, 18, 28, 28));
+								ImageUtils.drawOver(UIRES.get("modtypes.empty"), modIcon, 18, 18, 28, 28));
 					}
 				} else {
 					if (dva != null) {
 						icon.setIcon(ImageUtils
-								.drawOver(TiledImageCache.getModTypeIcon(((ModElement) element).getType()), dva));
+								.drawOver(((ModElement) element).getType().getIcon(), dva));
 					} else {
-						icon.setIcon(TiledImageCache.getModTypeIcon(((ModElement) element).getType()));
+						icon.setIcon(((ModElement) element).getType().getIcon());
 					}
 				}
 			}

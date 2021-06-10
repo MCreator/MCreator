@@ -128,7 +128,7 @@ public class Dependency implements Comparable<Dependency> {
 	}
 
 	public static Color getColor(String type) {
-		// Check if the type is a loaded variable and then, get its HUE color
+		// Check if the type is a loaded variable and then, getModElementType its HUE color
 		if (VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type) != null) {
 			return BlocklyBlockUtil.getBlockColorFromHUE(
 					VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type).getColor());

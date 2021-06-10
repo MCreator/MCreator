@@ -481,11 +481,10 @@ import java.util.stream.Collectors;
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
 				e -> togglefilter("f:err")));
 		filterPopup.addSeparator();
-		for (ModElementType type : Arrays.stream(ModElementType.values())
-				.sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
+		for (ModElementType<?> type : ModElementType.elements) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
 					e -> togglefilter("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
-					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
+					.setIcon(new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 16))));
 
 		}
 		filter.addActionListener(e -> filterPopup.show(filter, 0, 25));
@@ -1050,8 +1049,7 @@ import java.util.stream.Collectors;
 			if (mu.isCodeLocked()) {
 				editCurrentlySelectedModElementAsCode(mu, component, x, y);
 			} else {
-				ModElementGUI<?> modeditor = ModElementTypeRegistry.REGISTRY.get(mu.getType())
-						.getModElement(mcreator, mu, true);
+				ModElementGUI<?> modeditor = mu.getType().getModElement(mcreator, mu, true);
 				if (modeditor != null) {
 					modeditor.showView();
 				}
@@ -1334,7 +1332,7 @@ import java.util.stream.Collectors;
 			filterItems.clear();
 			String searchInput = search.getText();
 
-			List<ModElementType> metfilters = new ArrayList<>();
+			List<ModElementType<?>> metfilters = new ArrayList<>();
 			List<String> filters = new ArrayList<>();
 			List<String> keyWords = new ArrayList<>();
 
@@ -1345,7 +1343,7 @@ import java.util.stream.Collectors;
 					pat = pat.replaceFirst("f:", "");
 					if (pat.equals("locked") || pat.equals("ok") || pat.equals("err"))
 						filters.add(pat);
-					for (ModElementType type : ModElementType.values()) {
+					for (ModElementType<?> type : ModElementType.elements) {
 						if (pat.equals(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))) {
 							metfilters.add(type);
 						}
@@ -1407,7 +1405,7 @@ import java.util.stream.Collectors;
 						if (metfilters.size() == 0)
 							return true;
 
-						for (ModElementType type : metfilters)
+						for (ModElementType<?> type : metfilters)
 							if (item.getType() == type)
 								return true;
 						return false;

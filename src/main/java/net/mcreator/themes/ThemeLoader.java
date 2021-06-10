@@ -60,7 +60,7 @@ public class ThemeLoader {
 		for (String file : files) {
 			Theme theme = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), Theme.class);
 
-			// The ID will be used to get images from this theme if the user select it.
+			// The ID will be used to getModElementType images from this theme if the user select it.
 			theme.setID(new File(file).getParentFile().getName());
 
 			// Load the custom icon if provided, otherwise load the default one
@@ -89,9 +89,9 @@ public class ThemeLoader {
 	}
 
 	/**
-	 * <p>This method checks in all loaded themes to get the theme matching the ID.</p>
+	 * <p>This method checks in all loaded themes to getModElementType the theme matching the ID.</p>
 	 *
-	 * @param id The theme's id we want to get
+	 * @param id The theme's id we want to getModElementType
 	 * @return Returns the {@link net.mcreator.themes.Theme}, if found in the cache, otherwise null
 	 */
 	public static Theme getTheme(String id) {

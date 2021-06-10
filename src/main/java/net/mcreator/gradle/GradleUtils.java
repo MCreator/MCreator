@@ -72,7 +72,7 @@ public class GradleUtils {
 		// check if JAVA_HOME was overwritten in preferences and return this one in such case
 		if (PreferencesManager.PREFERENCES.hidden.java_home != null && PreferencesManager.PREFERENCES.hidden.java_home
 				.isFile()) {
-			LOG.warn("Using java home override specified by users. Things may get bad!");
+			LOG.warn("Using java home override specified by users. Things may getModElementType bad!");
 			String path = PreferencesManager.PREFERENCES.hidden.java_home.toString().replace("\\", "/");
 			if (new File(path).exists() && path.contains("/bin/java"))
 				return path.split("/bin/java")[0];
@@ -91,7 +91,7 @@ public class GradleUtils {
 
 		LOG.error("Failed to find any bundled JDKs, using system's default if it exists");
 
-		// if we can not get a better match, use system default JAVA_HOME variable
+		// if we can not getModElementType a better match, use system default JAVA_HOME variable
 		// THIS ONE CAN BE null!!!, so handle this with care where used
 		return System.getenv("JAVA_HOME");
 	}

@@ -19,7 +19,6 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Material;
 import net.mcreator.element.parts.StepSound;
@@ -173,7 +172,7 @@ public class OrePackMakerTool {
 			oreItemName = name + "Ingot";
 		}
 
-		Item oreItem = (Item) ModElementTypeRegistry.REGISTRY.get(ModElementType.ITEM)
+		Item oreItem = (Item) ModElementType.ITEM
 				.getModElement(mcreator, new ModElement(workspace, oreItemName, ModElementType.ITEM), false)
 				.getElementFromGUI();
 		oreItem.name = name;
@@ -185,8 +184,8 @@ public class OrePackMakerTool {
 		mcreator.getGenerator().generateElement(oreItem);
 		mcreator.getModElementManager().storeModElement(oreItem);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
-		Block oreBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
+		// we use Block GUI to getModElementType default values for the block element (kinda hacky!)
+		Block oreBlock = (Block) ModElementType.BLOCK
 				.getModElement(mcreator, new ModElement(workspace, name + "Ore", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		oreBlock.name = name + " Ore";
@@ -215,8 +214,8 @@ public class OrePackMakerTool {
 		mcreator.getGenerator().generateElement(oreBlock);
 		mcreator.getModElementManager().storeModElement(oreBlock);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
-		Block oreBlockBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
+		// we use Block GUI to getModElementType default values for the block element (kinda hacky!)
+		Block oreBlockBlock = (Block) ModElementType.BLOCK
 				.getModElement(mcreator, new ModElement(workspace, name + "Block", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		oreBlockBlock.name = "Block of " + name;
@@ -236,7 +235,7 @@ public class OrePackMakerTool {
 		mcreator.getGenerator().generateElement(oreBlockBlock);
 		mcreator.getModElementManager().storeModElement(oreBlockBlock);
 
-		Recipe itemToBlockRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe itemToBlockRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "OreBlockRecipe", ModElementType.RECIPE),
 						false).getElementFromGUI();
 		itemToBlockRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
@@ -256,7 +255,7 @@ public class OrePackMakerTool {
 		mcreator.getGenerator().generateElement(itemToBlockRecipe);
 		mcreator.getModElementManager().storeModElement(itemToBlockRecipe);
 
-		Recipe blockToItemRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe blockToItemRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "BlockOreRecipe", ModElementType.RECIPE),
 						false).getElementFromGUI();
 		blockToItemRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + name + "Block");
@@ -270,7 +269,7 @@ public class OrePackMakerTool {
 		mcreator.getGenerator().generateElement(blockToItemRecipe);
 		mcreator.getModElementManager().storeModElement(blockToItemRecipe);
 
-		Recipe oreSmeltingRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe oreSmeltingRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "OreSmelting", ModElementType.RECIPE), false)
 				.getElementFromGUI();
 		oreSmeltingRecipe.recipeType = "Smelting";

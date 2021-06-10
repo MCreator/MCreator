@@ -101,14 +101,14 @@ public abstract class GeneratableElement {
 		@Override
 		public GeneratableElement deserialize(JsonElement jsonElement, Type type,
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-			ModElementType modElementType = jsonDeserializationContext
-					.deserialize(jsonElement.getAsJsonObject().get("_type"), ModElementType.class);
+			ModElementType<? extends GeneratableElement> modElementType = ModElementType
+					.getModElementType(jsonElement.getAsJsonObject().get("_type").getAsString());
 			int importedFormatVersion = jsonDeserializationContext
 					.deserialize(jsonElement.getAsJsonObject().get("_fv"), Integer.class);
 
 			final GeneratableElement[] generatableElement = {
 					gson.fromJson(jsonElement.getAsJsonObject().get("definition"),
-							ModElementTypeRegistry.REGISTRY.get(modElementType).getModElementStorageClass()) };
+							modElementType.getModElementStorageClass()) };
 
 			generatableElement[0].setModElement(this.lastModElement); // set the mod element reference
 			passWorkspaceToFields(generatableElement[0], workspace);

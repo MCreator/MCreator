@@ -19,7 +19,6 @@
 package net.mcreator.ui.init;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
@@ -95,18 +94,6 @@ public class TiledImageCache {
 		} catch (InvalidTileSizeException e) {
 			LOG.error(e.getMessage(), e);
 		}
-	}
-
-	public static ImageIcon getModTypeIcon(ModElementType modType) {
-		if (modType == null)
-			return modTypes.getIcon(1, 1);
-
-		ModElementTypeRegistry.ModTypeRegistration<?> modRegistration = ModElementTypeRegistry.REGISTRY.get(modType);
-		if (modRegistration != null) {
-			return modTypes.getIcon(modRegistration.getIconID(), 1);
-		}
-
-		return modTypes.getIcon(1, 1);
 	}
 
 }

@@ -152,7 +152,7 @@ public class ModElementManager {
 	public static ImageIcon getModElementIcon(ModElement element) {
 		ImageIcon icon = element.getElementIcon();
 		if (icon == null || icon.getImage() == null || icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0)
-			icon = TiledImageCache.getModTypeIcon(element.getType());
+			icon = element.getType().getIcon();
 		return icon;
 	}
 

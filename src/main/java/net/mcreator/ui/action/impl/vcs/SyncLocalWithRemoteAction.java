@@ -59,7 +59,7 @@ public class SyncLocalWithRemoteAction extends VCSAction {
 
 			boolean needsWorkspaceBuildAfter = false;
 
-			// save workspace to FS first here, so the changes get detected by git
+			// save workspace to FS first here, so the changes getModElementType detected by git
 			actionRegistry.getMCreator().getFileManager().saveWorkspaceDirectlyAndWait();
 			// generate base at this point too
 			actionRegistry.getMCreator().getGenerator().generateBase();
@@ -78,7 +78,7 @@ public class SyncLocalWithRemoteAction extends VCSAction {
 				git.add().addFilepattern(".").call();
 				status = git.status().call();
 			} catch (GitAPIException ex) {
-				LOG.error("Failed to update untracked files and get repo status", ex);
+				LOG.error("Failed to update untracked files and getModElementType repo status", ex);
 				actionRegistry.getMCreator().setCursor(Cursor.getDefaultCursor());
 				return;
 			}

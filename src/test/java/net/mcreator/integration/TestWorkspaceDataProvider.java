@@ -25,6 +25,7 @@ import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.Image;
+import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.element.parts.gui.*;
 import net.mcreator.element.types.Dimension;
@@ -55,11 +56,11 @@ import java.util.stream.Collectors;
 
 public class TestWorkspaceDataProvider {
 
-	private static ModElement me(Workspace workspace, ModElementType type, String sufix) {
+	private static ModElement me(Workspace workspace, ModElementType<?> type, String sufix) {
 		return new ModElement(workspace, "Example" + type.name() + sufix, type);
 	}
 
-	public static List<GeneratableElement> getModElementExamplesFor(Workspace workspace, ModElementType type,
+	public static List<GeneratableElement> getModElementExamplesFor(Workspace workspace, ModElementType<?> type,
 			Random random) {
 		List<GeneratableElement> generatableElements = new ArrayList<>();
 
@@ -165,8 +166,7 @@ public class TestWorkspaceDataProvider {
 
 	private static GeneratableElement getExampleFor(ModElement modElement, Random random, boolean _true,
 			boolean emptyLists, int valueIndex) {
-		switch (modElement.getType()) {
-		case ACHIEVEMENT:
+		if (ModElementType.ADVANCEMENT.equals(modElement.getType())) {
 			Achievement achievement = new Achievement(modElement);
 			achievement.achievementName = "Test Achievement";
 			achievement.achievementDescription = "Description of it";
@@ -195,13 +195,13 @@ public class TestWorkspaceDataProvider {
 			achievement.triggerxml = "<xml><block type=\"tick\" x=\"40\" y=\"80\"><next>"
 					+ "<block type=\"advancement_trigger\" deletable=\"false\"/></next></block></xml>";
 			return achievement;
-		case FUEL:
+		} else if (ModElementType.FUEL.equals(modElement.getType())) {
 			Fuel fuel = new Fuel(modElement);
 			fuel.power = new int[] { 0, 100, 1000, 4000 }[valueIndex];
 			fuel.block = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			return fuel;
-		case BIOME:
+		} else if (ModElementType.BIOME.equals(modElement.getType())) {
 			Biome biome = new Biome(modElement);
 			biome.name = modElement.getName();
 			biome.groundBlock = new MItemBlock(modElement.getWorkspace(),
@@ -331,7 +331,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.spawnBiome = !_true;
 			return biome;
-		case FLUID:
+		} else if (ModElementType.FLUID.equals(modElement.getType())) {
 			Fluid fluid = new Fluid(modElement);
 			fluid.name = modElement.getName();
 			fluid.textureFlowing = "test";
@@ -385,7 +385,7 @@ public class TestWorkspaceDataProvider {
 			fluid.frequencyOnChunks = 13;
 			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
 			return fluid;
-		case FOOD:
+		} else if (ModElementType.FOOD.equals(modElement.getType())) {
 			Food food = new Food(modElement);
 			food.name = modElement.getName();
 			food.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
@@ -423,13 +423,13 @@ public class TestWorkspaceDataProvider {
 			food.renderType = 0;
 			food.customModelName = "Normal";
 			return food;
-		case COMMAND:
+		} else if (ModElementType.COMMAND.equals(modElement.getType())) {
 			Command command = new Command(modElement);
 			command.commandName = modElement.getName();
 			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
 			command.onCommandExecuted = new Procedure("procedure2");
 			return command;
-		case KEYBIND:
+		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
 			keyBinding.triggerKey = getRandomItem(random,
 					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName)
@@ -439,25 +439,22 @@ public class TestWorkspaceDataProvider {
 			keyBinding.onKeyPressed = new Procedure("procedure3");
 			keyBinding.onKeyReleased = new Procedure("procedure2");
 			return keyBinding;
-		case TAB:
+		} else if (ModElementType.TAB.equals(modElement.getType())) {
 			Tab tab = new Tab(modElement);
 			tab.name = modElement.getName();
 			tab.icon = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			tab.showSearch = _true;
 			return tab;
-		case OVERLAY:
+		} else if (ModElementType.OVERLAY.equals(modElement.getType())) {
 			Overlay overlay = new Overlay(modElement);
 			overlay.priority = getRandomItem(random, new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 			ArrayList<GUIComponent> components = new ArrayList<>();
 			if (!emptyLists) {
-				components.add(new net.mcreator.element.parts.gui.Label("text", 100, 150, "text", Color.red,
+				components.add(new Label("text", 100, 150, "text", Color.red, new Procedure("condition1")));
+				components.add(new Label("text2", 100, 150, "text2", Color.white, new Procedure("condition4")));
+				components.add(new Label("text3 <VAR:test>", 100, 150, "text3 <VAR:test>", Color.black,
 						new Procedure("condition1")));
-				components.add(new net.mcreator.element.parts.gui.Label("text2", 100, 150, "text2", Color.white,
-						new Procedure("condition4")));
-				components
-						.add(new net.mcreator.element.parts.gui.Label("text3 <VAR:test>", 100, 150, "text3 <VAR:test>",
-								Color.black, new Procedure("condition1")));
 				components.add(new Image("picture1", 20, 30, "pricture1", true, new Procedure("condition1")));
 				components.add(new Image("picture2", 22, 31, "pricture2", false, new Procedure("condition2")));
 			}
@@ -465,7 +462,8 @@ public class TestWorkspaceDataProvider {
 			overlay.components = components;
 			overlay.baseTexture = "test.png";
 			return overlay;
-		case GUI:
+		} else if (ModElementType.GUI.equals(modElement.getType())) {
+			ArrayList<GUIComponent> components;
 			GUI gui = new GUI(modElement);
 			gui.type = new int[] { 0, 0, 1, 1 }[valueIndex];
 			gui.width = new int[] { 600, 400, 352, 500 }[valueIndex];
@@ -481,13 +479,10 @@ public class TestWorkspaceDataProvider {
 			}
 			components = new ArrayList<>();
 			if (!emptyLists) {
-				components.add(new net.mcreator.element.parts.gui.Label("text", 100, 150, "text", Color.red,
-						new Procedure("condition2")));
-				components.add(new net.mcreator.element.parts.gui.Label("text2", 100, 150, "text2", Color.white,
-						new Procedure("condition1")));
-				components
-						.add(new net.mcreator.element.parts.gui.Label("text3 <VAR:test>", 100, 150, "text3 <VAR:test>",
-								Color.black, new Procedure("condition4")));
+				components.add(new Label("text", 100, 150, "text", Color.red, new Procedure("condition2")));
+				components.add(new Label("text2", 100, 150, "text2", Color.white, new Procedure("condition1")));
+				components.add(new Label("text3 <VAR:test>", 100, 150, "text3 <VAR:test>", Color.black,
+						new Procedure("condition4")));
 				components.add(new Image("picture1", 20, 30, "picture1", true, new Procedure("condition1")));
 				components.add(new Image("picture2", 22, 31, "picture2", false, new Procedure("condition2")));
 				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure1"), null));
@@ -511,7 +506,7 @@ public class TestWorkspaceDataProvider {
 			}
 			gui.components = components;
 			return gui;
-		case MOB:
+		} else if (ModElementType.MOB.equals(modElement.getType())) {
 			Mob mob = new Mob(modElement);
 			mob.mobName = modElement.getName();
 			mob.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
@@ -666,7 +661,7 @@ public class TestWorkspaceDataProvider {
 			mob.mountedYOffset = -3.1;
 			mob.modelShadowSize = 1.8;
 			return mob;
-		case DIMENSION:
+		} else if (ModElementType.DIMENSION.equals(modElement.getType())) {
 			Dimension dimension = new Dimension(modElement);
 			dimension.texture = "test";
 			dimension.portalTexture = "test2";
@@ -710,7 +705,7 @@ public class TestWorkspaceDataProvider {
 			dimension.portalMakeCondition = new Procedure("condition3");
 			dimension.portalUseCondition = new Procedure("condition4");
 			return dimension;
-		case STRUCTURE:
+		} else if (ModElementType.STRUCTURE.equals(modElement.getType())) {
 			Structure structure = new Structure(modElement);
 			structure.structure = "test";
 			structure.spawnProbability = 310000;
@@ -750,7 +745,7 @@ public class TestWorkspaceDataProvider {
 				structure.onStructureGenerated = new Procedure("procedure3");
 			}
 			return structure;
-		case ARMOR:
+		} else if (ModElementType.ARMOR.equals(modElement.getType())) {
 			Armor armor = new Armor(modElement);
 			armor.enableHelmet = !_true;
 			armor.textureHelmet = "test";
@@ -814,7 +809,7 @@ public class TestWorkspaceDataProvider {
 						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
 			}
 			return armor;
-		case PLANT:
+		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
 			plant.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
@@ -918,7 +913,7 @@ public class TestWorkspaceDataProvider {
 					"Cross model" }[valueIndex];
 			plant.isItemTinted = _true;
 			return plant;
-		case ITEM:
+		} else if (ModElementType.ITEM.equals(modElement.getType())) {
 			Item item = new Item(modElement);
 			item.name = modElement.getName();
 			item.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
@@ -961,7 +956,7 @@ public class TestWorkspaceDataProvider {
 			item.renderType = 0;
 			item.customModelName = "Normal";
 			return item;
-		case RANGEDITEM:
+		} else if (ModElementType.RANGEDITEM.equals(modElement.getType())) {
 			RangedItem rangedItem = new RangedItem(modElement);
 			rangedItem.name = modElement.getName();
 			rangedItem.creativeTab = new TabEntry(modElement.getWorkspace(),
@@ -1004,7 +999,7 @@ public class TestWorkspaceDataProvider {
 			rangedItem.enableMeleeDamage = !_true;
 			rangedItem.damageVsEntity = 2;
 			return rangedItem;
-		case POTION:
+		} else if (ModElementType.POTION.equals(modElement.getType())) {
 			Potion potion = new Potion(modElement);
 			potion.name = modElement.getName();
 			potion.effectName = modElement.getName() + " Effect Name";
@@ -1020,7 +1015,7 @@ public class TestWorkspaceDataProvider {
 			potion.onActiveTick = new Procedure("procedure2");
 			potion.onExpired = new Procedure("procedure3");
 			return potion;
-		case BLOCK:
+		} else if (ModElementType.BLOCK.equals(modElement.getType())) {
 			Block block = new Block(modElement);
 			block.name = modElement.getName();
 			block.hasTransparency = new boolean[] { _true, _true, true,
@@ -1199,7 +1194,7 @@ public class TestWorkspaceDataProvider {
 			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",
 					"Grass block" }[valueIndex];
 			return block;
-		case TAG:
+		} else if (ModElementType.TAG.equals(modElement.getType())) {
 			Tag tag = new Tag(modElement);
 			tag.namespace = getRandomItem(random, new String[] { "forge", "minecraft", "test1", "test2" });
 			tag.type = getRandomItem(random, new String[] { "Items", "Blocks", "Entities", "Functions" });
@@ -1228,7 +1223,7 @@ public class TestWorkspaceDataProvider {
 						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace()))));
 			}
 			return tag;
-		case LOOTTABLE:
+		} else if (ModElementType.LOOTTABLE.equals(modElement.getType())) {
 			LootTable lootTable = new LootTable(modElement);
 
 			lootTable.name = modElement.getName().toLowerCase(Locale.ENGLISH);
@@ -1279,13 +1274,13 @@ public class TestWorkspaceDataProvider {
 			}
 
 			return lootTable;
-		case FUNCTION:
+		} else if (ModElementType.FUNCTION.equals(modElement.getType())) {
 			Function function = new Function(modElement);
 			function.name = modElement.getName().toLowerCase(Locale.ENGLISH);
 			function.namespace = getRandomItem(random, new String[] { "minecraft", "mod" });
 			function.code = "execute as @a at @s run function custom:test\n";
 			return function;
-		case MUSICDISC:
+		} else if (ModElementType.MUSICDISC.equals(modElement.getType())) {
 			MusicDisc musicDisc = new MusicDisc(modElement);
 			musicDisc.name = modElement.getName();
 			musicDisc.description = modElement.getName();
@@ -1310,7 +1305,7 @@ public class TestWorkspaceDataProvider {
 			}
 			musicDisc.texture = "itest";
 			return musicDisc;
-		case ENCHANTMENT:
+		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {
 			Enchantment enchantment = new Enchantment(modElement);
 			enchantment.name = modElement.getName().toLowerCase(Locale.ENGLISH);
 			enchantment.rarity = getRandomItem(random, new String[] { "COMMON", "UNCOMMON", "RARE", "VERY_RARE" });
@@ -1352,13 +1347,13 @@ public class TestWorkspaceDataProvider {
 										ElementUtil.loadAllEnchantments(modElement.getWorkspace()))));
 			}
 			return enchantment;
-		case PAINTING:
+		} else if (ModElementType.PAINTING.equals(modElement.getType())) {
 			Painting painting = new Painting(modElement);
 			painting.texture = "test.png";
 			painting.width = 16;
 			painting.height = 16;
 			return painting;
-		case PARTICLE:
+		} else if (ModElementType.PARTICLE.equals(modElement.getType())) {
 			net.mcreator.element.types.Particle particle = new net.mcreator.element.types.Particle(modElement);
 			particle.texture = "test.png";
 			particle.width = 2.3;
@@ -1377,7 +1372,7 @@ public class TestWorkspaceDataProvider {
 			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "LIT" }[valueIndex];
 			particle.additionalExpiryCondition = new Procedure("condition1");
 			return particle;
-		case GAMERULE:
+		} else if (ModElementType.GAMERULE.equals(modElement.getType())) {
 			GameRule gamerule = new GameRule(modElement);
 			gamerule.displayName = modElement.getName();
 			gamerule.description = modElement.getName() + " description";
@@ -1387,9 +1382,8 @@ public class TestWorkspaceDataProvider {
 			gamerule.defaultValueLogic = _true;
 			gamerule.defaultValueNumber = -45;
 			return gamerule;
-		default:
-			return null;
 		}
+		return null;
 	}
 
 	private static GeneratableElement getToolExample(ModElement modElement, String recipeType, Random random,

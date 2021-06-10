@@ -633,7 +633,7 @@ public class MinecraftImageGenerator {
 			Graphics2D graphics2D = icon.createGraphics();
 			graphics2D.setColor(new Color(255, 255, 255, 180));
 
-			//get avg color of the portal frame
+			//getModElementType avg color of the portal frame
 			graphics2D.setColor(ImageUtils.getAverageColor(ImageUtils.toBufferedImage(ImageUtils
 					.changeSaturation(MCItem.getBlockIconBasedOnName(workspace, portalFrameTexture.getUnmappedValue()),
 							0.3f).getImage())));

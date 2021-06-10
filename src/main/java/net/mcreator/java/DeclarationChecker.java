@@ -68,7 +68,7 @@ class DeclarationChecker {
 			CompilationUnit compilationUnit, JarManager jarManager) {
 		List<ImportDeclaration> imports = compilationUnit.getImports();
 
-		// first we check if the word could be found in imports, to get the fqdn
+		// first we check if the word could be found in imports, to getModElementType the fqdn
 		for (ImportDeclaration singleImport : imports) {
 			String[] path = singleImport.getName().split("\\.");
 			if (path.length > 0) {

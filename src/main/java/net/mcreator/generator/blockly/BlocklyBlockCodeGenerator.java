@@ -102,7 +102,7 @@ public class BlocklyBlockCodeGenerator {
 
 		Map<String, Object> dataModel = new HashMap<>();
 
-		// we get the list of all elements present in the actual xml
+		// we getModElementType the list of all elements present in the actual xml
 		List<Element> elements = XMLUtil.getDirectChildren(block);
 
 		// check for all fields if they exist, if they do, add them to data model

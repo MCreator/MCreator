@@ -20,7 +20,6 @@ package net.mcreator.integration;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -132,13 +131,12 @@ public class ModElementUITest {
 
 	private void testModElementLoading(Random random)
 			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
-		for (Map.Entry<ModElementType, ModElementTypeRegistry.ModTypeRegistration<?>> modElementRegistration : ModElementTypeRegistry.REGISTRY
-				.entrySet()) {
+		for (ModElementType<?> modElementType : ModElementType.elements) {
 
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider
-					.getModElementExamplesFor(workspace, modElementRegistration.getKey(), random);
+					.getModElementExamplesFor(workspace, modElementType, random);
 
-			LOG.info("Testing mod element type UI " + modElementRegistration.getKey().getReadableName() + " with "
+			LOG.info("Testing mod element type UI " + modElementType.getReadableName() + " with "
 					+ generatableElements.size() + " variants");
 
 			for (GeneratableElement generatableElementOrig : generatableElements) {
@@ -159,8 +157,7 @@ public class ModElementUITest {
 					continue;
 				}
 
-				ModElementGUI<?> modElementGUI = modElementRegistration.getValue()
-						.getModElement(mcreator, modElement, false);
+				ModElementGUI<?> modElementGUI = modElementType.getModElement(mcreator, modElement, false);
 
 				Field field = modElementGUI.getClass().getSuperclass().getDeclaredField("editingMode");
 				field.setAccessible(true);

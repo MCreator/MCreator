@@ -77,7 +77,7 @@ import java.util.stream.Collectors;
 	}
 
 	public List<ModElement> getElementsOfType(String typestring) {
-		ModElementType type = ModElementType.valueOf(typestring);
+		ModElementType<?> type = ModElementType.getModElementType(typestring);
 		return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
 				.collect(Collectors.toList());
 	}

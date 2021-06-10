@@ -33,8 +33,8 @@ public class GeneratorStats {
 
 	private static final Pattern ftlFile = Pattern.compile(".*\\.ftl");
 
-	private final Map<ModElementType, CoverageStatus> modElementTypeCoverageInfo = new TreeMap<>(
-			Comparator.comparing(Enum::name));
+	private final Map<ModElementType<?>, CoverageStatus> modElementTypeCoverageInfo = new TreeMap<>(
+			Comparator.comparing(ModElementType::name));
 	private final Map<String, Double> coverageInfo = new HashMap<>();
 	private final Map<String, CoverageStatus> baseCoverageInfo = new HashMap<>();
 
@@ -53,7 +53,7 @@ public class GeneratorStats {
 		List<?> partials = ((List<?>) generatorConfiguration.getRaw().get("partial_support"));
 		if (partials == null)
 			partials = new ArrayList<>();
-		for (ModElementType type : ModElementType.values()) {
+		for (ModElementType<?> type : ModElementType.elements) {
 			if (generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type) != null) {
 				if (partials.contains(type.name().toLowerCase(Locale.ENGLISH))) {
 					modElementTypeCoverageInfo.put(type, CoverageStatus.PARTIAL);
@@ -67,7 +67,7 @@ public class GeneratorStats {
 
 		Map<String, LinkedHashMap<String, DataListEntry>> datalistchache = DataListLoader.getCache();
 
-		// caclulate percentage of mappings/element lists supported
+		// calculate percentage of mappings/element lists supported
 		for (Map.Entry<String, LinkedHashMap<String, DataListEntry>> list : datalistchache.entrySet()) {
 			int elementsCount = list.getValue().size();
 			int supportedElementsCount = 0;
@@ -152,7 +152,7 @@ public class GeneratorStats {
 				(features.contains(feature) ? CoverageStatus.FULL : CoverageStatus.NONE);
 	}
 
-	public Map<ModElementType, CoverageStatus> getModElementTypeCoverageInfo() {
+	public Map<ModElementType<?>, CoverageStatus> getModElementTypeCoverageInfo() {
 		return modElementTypeCoverageInfo;
 	}
 

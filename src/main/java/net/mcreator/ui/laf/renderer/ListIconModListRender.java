@@ -124,11 +124,11 @@ public class ListIconModListRender extends JPanel implements ListCellRenderer<IE
 			} else if (element instanceof ModElement) {
 				if (dva != null) {
 					ImageIcon iconbig = ImageUtils
-							.drawOver(TiledImageCache.getModTypeIcon(((ModElement) element).getType()), dva);
+							.drawOver(((ModElement) element).getType().getIcon(), dva);
 					icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 16)));
 				} else {
 					icon.setIcon(new ImageIcon(ImageUtils
-							.resize(TiledImageCache.getModTypeIcon(((ModElement) element).getType()).getImage(), 16)));
+							.resize(((ModElement) element).getType().getIcon().getImage(), 16)));
 				}
 			}
 

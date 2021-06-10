@@ -49,7 +49,7 @@ public class SyncTwoRefsWithMerge {
 
 		List<FileSyncHandle> fileSyncHandles = new ArrayList<>();
 
-		// get the merge base commit from the merge based used by git merger
+		// getModElementType the merge base commit from the merge based used by git merger
 		RevCommit mergeBase = VCSUtils.commitFromObjectId(git, merger.getBaseCommitId());
 
 		AbstractTreeIterator remoteTreeParser = VCSUtils.prepareTreeParser(git, remote);

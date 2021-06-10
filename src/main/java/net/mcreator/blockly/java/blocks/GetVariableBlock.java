@@ -58,13 +58,13 @@ public class GetVariableBlock implements IBlockGenerator {
 				if (scope.equals("global") && !master.getWorkspace().getVariableElements().stream()
 						.map(VariableElement::getName).collect(Collectors.toList()).contains(name)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Variable get block is bound to a variable that does not exist. Remove this block!"));
+							"Variable getModElementType block is bound to a variable that does not exist. Remove this block!"));
 					return;
 				} else if (master instanceof BlocklyToProcedure && scope.equals("local")
 						&& !((BlocklyToProcedure) master).getVariables()
 						.contains(name)) { // check if local variable exists
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Variable get block is bound to a local variable that does not exist. Remove this block!"));
+							"Variable getModElementType block is bound to a local variable that does not exist. Remove this block!"));
 					return;
 				} else if (scope.equals("local") && !(master instanceof BlocklyToProcedure)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
@@ -104,7 +104,7 @@ public class GetVariableBlock implements IBlockGenerator {
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"One of the get variable blocks is improperly defined."));
+					"One of the getModElementType variable blocks is improperly defined."));
 		}
 	}
 

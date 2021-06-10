@@ -50,7 +50,7 @@ public class GUIBindingInverter implements IConverter {
 				}
 			}
 		} catch (Exception e) {
-			LOG.warn("Could not get bound block for " + input.getModElement().getName());
+			LOG.warn("Could not getModElementType bound block for " + input.getModElement().getName());
 		}
 		return gui;
 	}

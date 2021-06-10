@@ -30,7 +30,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -87,7 +86,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0 && modIcon.getIconHeight() > 0
 				&& modIcon != MCItem.DEFAULT_ICON)
 			return modIcon;
-		return TiledImageCache.getModTypeIcon(modElement.getType());
+		return modElement.getType().getIcon();
 	}
 
 	@Override public ViewBase showView() {

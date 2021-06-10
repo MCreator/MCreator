@@ -19,7 +19,6 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -39,7 +38,7 @@ import java.awt.*;
 
 public class NewModElementDialog {
 
-	public static void showNameDialog(MCreator mcreator, ModElementType type) {
+	public static void showNameDialog(MCreator mcreator, ModElementType<?> type) {
 		JLabel regName = L10N.label("dialog.new_modelement.registry_name_default");
 		regName.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 		regName.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
@@ -47,7 +46,7 @@ public class NewModElementDialog {
 		String modName = VOptionPane
 				.showInputDialog(mcreator, L10N.t("dialog.new_modelement.desc", type.getReadableName()),
 						L10N.t("dialog.new_modelement.title_window", type.getReadableName()),
-						TiledImageCache.getModTypeIcon(type), new OptionPaneValidatior() {
+						type.getIcon(), new OptionPaneValidatior() {
 							@Override public Validator.ValidationResult validate(JComponent component) {
 								regName.setText("Registry name: " + RegistryNameFixer
 										.fromCamelCase(((VTextField) component).getText()));
@@ -66,7 +65,7 @@ public class NewModElementDialog {
 			if (!mcreator.mv.currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
 				element.setParentFolder(mcreator.mv.currentFolder);
 
-			ModElementGUI<?> newGUI = ModElementTypeRegistry.REGISTRY.get(type).getModElement(mcreator, element, false);
+			ModElementGUI<?> newGUI = type.getModElement(mcreator, element, false);
 			if (newGUI != null) {
 				newGUI.showView();
 				mcreator.getApplication().getAnalytics().async(() -> mcreator.getApplication().getAnalytics()

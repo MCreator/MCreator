@@ -19,7 +19,6 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Material;
 import net.mcreator.element.parts.StepSound;
@@ -148,7 +147,7 @@ public class WoodPackMakerTool {
 				mcreator.getFolderManager().getBlockTextureFile(RegistryNameFixer.fix(leavesTextureName)));
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
-		Block woodBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
+		Block woodBlock = (Block) ModElementType.BLOCK
 				.getModElement(mcreator, new ModElement(workspace, name + "Wood", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		woodBlock.name = name + " Wood";
@@ -171,7 +170,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(woodBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
-		Block logBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
+		Block logBlock = (Block) ModElementType.BLOCK
 				.getModElement(mcreator, new ModElement(workspace, name + "Log", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		logBlock.name = name + " Log";
@@ -199,7 +198,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(logBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
-		Block planksBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
+		Block planksBlock = (Block) ModElementType.BLOCK
 				.getModElement(mcreator, new ModElement(workspace, name + "Planks", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		planksBlock.name = name + " Planks";
@@ -221,7 +220,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(planksBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
-		Block leavesBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
+		Block leavesBlock = (Block) ModElementType.BLOCK
 				.getModElement(mcreator, new ModElement(workspace, name + "Leaves", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		leavesBlock.name = name + " Leaves";
@@ -241,7 +240,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(leavesBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
-		Block stairsBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
+		Block stairsBlock = (Block) ModElementType.BLOCK
 				.getModElement(mcreator, new ModElement(workspace, name + "Stairs", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		stairsBlock.name = name + " Stairs";
@@ -263,7 +262,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(stairsBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
-		Block slabBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
+		Block slabBlock = (Block) ModElementType.BLOCK
 				.getModElement(mcreator, new ModElement(workspace, name + "Slab", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		slabBlock.name = name + " Slab";
@@ -285,7 +284,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(slabBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
-		Block fenceBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
+		Block fenceBlock = (Block) ModElementType.BLOCK
 				.getModElement(mcreator, new ModElement(workspace, name + "Fence", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		fenceBlock.name = name + " Fence";
@@ -305,7 +304,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(fenceBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
-		Block fenceGateBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
+		Block fenceGateBlock = (Block) ModElementType.BLOCK
 				.getModElement(mcreator, new ModElement(workspace, name + "FenceGate", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		fenceGateBlock.name = name + " Fence Gate";
@@ -326,7 +325,7 @@ public class WoodPackMakerTool {
 
 		//Tag - Items
 		//Mainly used for recipes and loot tables
-		Tag woodItemTag = (Tag) ModElementTypeRegistry.REGISTRY.get(ModElementType.TAG)
+		Tag woodItemTag = (Tag) ModElementType.TAG
 				.getModElement(mcreator, new ModElement(workspace, name + "ItemsTag", ModElementType.TAG), false)
 				.getElementFromGUI();
 		woodItemTag.namespace = "forge";
@@ -343,7 +342,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(woodItemTag);
 
 		//Recipes
-		Recipe woodRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe woodRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "WoodRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
 		woodRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName());
@@ -359,7 +358,7 @@ public class WoodPackMakerTool {
 		mcreator.getGenerator().generateElement(woodRecipe);
 		mcreator.getModElementManager().storeModElement(woodRecipe);
 
-		Recipe planksRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe planksRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "PlanksRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
 		planksRecipe.recipeSlots[4] = new MItemBlock(workspace,
@@ -374,7 +373,7 @@ public class WoodPackMakerTool {
 		mcreator.getGenerator().generateElement(planksRecipe);
 		mcreator.getModElementManager().storeModElement(planksRecipe);
 
-		Recipe stairsRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe stairsRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "StairsRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
 		stairsRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
@@ -392,7 +391,7 @@ public class WoodPackMakerTool {
 		mcreator.getGenerator().generateElement(stairsRecipe);
 		mcreator.getModElementManager().storeModElement(stairsRecipe);
 
-		Recipe slabRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe slabRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "SlabRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
 		slabRecipe.recipeSlots[6] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
@@ -407,7 +406,7 @@ public class WoodPackMakerTool {
 		mcreator.getGenerator().generateElement(slabRecipe);
 		mcreator.getModElementManager().storeModElement(slabRecipe);
 
-		Recipe fenceRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe fenceRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "FenceRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
 		fenceRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
@@ -425,7 +424,7 @@ public class WoodPackMakerTool {
 		mcreator.getGenerator().generateElement(fenceRecipe);
 		mcreator.getModElementManager().storeModElement(fenceRecipe);
 
-		Recipe fenceGateRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe fenceGateRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "FenceGateRecipe", ModElementType.RECIPE),
 						false).getElementFromGUI();
 		fenceGateRecipe.recipeSlots[3] = new MItemBlock(workspace, "Items.STICK");
@@ -443,7 +442,7 @@ public class WoodPackMakerTool {
 		mcreator.getGenerator().generateElement(fenceGateRecipe);
 		mcreator.getModElementManager().storeModElement(fenceGateRecipe);
 
-		Recipe stickRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe stickRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "StickRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
 		stickRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());

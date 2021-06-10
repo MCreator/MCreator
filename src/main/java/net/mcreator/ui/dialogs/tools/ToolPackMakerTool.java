@@ -19,7 +19,6 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Recipe;
@@ -180,8 +179,8 @@ public class ToolPackMakerTool {
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hoe.getImage()),
 				mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(hoeTextureName)));
 
-		// we use Tool GUI to get default values for the block element (kinda hacky!)
-		Tool pickaxeTool = (Tool) ModElementTypeRegistry.REGISTRY.get(ModElementType.TOOL)
+		// we use Tool GUI to getModElementType default values for the block element (kinda hacky!)
+		Tool pickaxeTool = (Tool) ModElementType.TOOL
 				.getModElement(mcreator, new ModElement(workspace, name + "Pickaxe", ModElementType.TOOL), false)
 				.getElementFromGUI();
 		pickaxeTool.name = name + " Pickaxe";
@@ -190,8 +189,8 @@ public class ToolPackMakerTool {
 		pickaxeTool.repairItems = Collections.singletonList(base);
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, pickaxeTool, folder);
 
-		// we use Tool GUI to get default values for the block element (kinda hacky!)
-		Tool axeTool = (Tool) ModElementTypeRegistry.REGISTRY.get(ModElementType.TOOL)
+		// we use Tool GUI to getModElementType default values for the block element (kinda hacky!)
+		Tool axeTool = (Tool) ModElementType.TOOL
 				.getModElement(mcreator, new ModElement(workspace, name + "Axe", ModElementType.TOOL), false)
 				.getElementFromGUI();
 		axeTool.name = name + " Axe";
@@ -201,8 +200,8 @@ public class ToolPackMakerTool {
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, axeTool, folder);
 		axeTool.damageVsEntity = (double) Math.round(9.0f * factor);
 
-		// we use Tool GUI to get default values for the block element (kinda hacky!)
-		Tool swordTool = (Tool) ModElementTypeRegistry.REGISTRY.get(ModElementType.TOOL)
+		// we use Tool GUI to getModElementType default values for the block element (kinda hacky!)
+		Tool swordTool = (Tool) ModElementType.TOOL
 				.getModElement(mcreator, new ModElement(workspace, name + "Sword", ModElementType.TOOL), false)
 				.getElementFromGUI();
 		swordTool.name = name + " Sword";
@@ -213,8 +212,8 @@ public class ToolPackMakerTool {
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, swordTool, folder);
 		swordTool.damageVsEntity = (double) Math.round(6.0f * factor);
 
-		// we use Tool GUI to get default values for the block element (kinda hacky!)
-		Tool shovelTool = (Tool) ModElementTypeRegistry.REGISTRY.get(ModElementType.TOOL)
+		// we use Tool GUI to getModElementType default values for the block element (kinda hacky!)
+		Tool shovelTool = (Tool) ModElementType.TOOL
 				.getModElement(mcreator, new ModElement(workspace, name + "Shovel", ModElementType.TOOL), false)
 				.getElementFromGUI();
 		shovelTool.name = name + " Shovel";
@@ -223,8 +222,8 @@ public class ToolPackMakerTool {
 		shovelTool.repairItems = Collections.singletonList(base);
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, shovelTool, folder);
 
-		// we use Tool GUI to get default values for the block element (kinda hacky!)
-		Tool hoeTool = (Tool) ModElementTypeRegistry.REGISTRY.get(ModElementType.TOOL)
+		// we use Tool GUI to getModElementType default values for the block element (kinda hacky!)
+		Tool hoeTool = (Tool) ModElementType.TOOL
 				.getModElement(mcreator, new ModElement(workspace, name + "Hoe", ModElementType.TOOL), false)
 				.getElementFromGUI();
 		hoeTool.name = name + " Hoe";
@@ -233,7 +232,7 @@ public class ToolPackMakerTool {
 		hoeTool.repairItems = Collections.singletonList(base);
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, hoeTool, folder);
 
-		Recipe pickaxeRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe pickaxeRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "PickaxeRecipe", ModElementType.RECIPE),
 						false).getElementFromGUI();
 		pickaxeRecipe.recipeSlots[0] = base;
@@ -249,7 +248,7 @@ public class ToolPackMakerTool {
 		mcreator.getGenerator().generateElement(pickaxeRecipe);
 		mcreator.getModElementManager().storeModElement(pickaxeRecipe);
 
-		Recipe axeRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe axeRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "AxeRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
 		axeRecipe.recipeSlots[0] = base;
@@ -265,7 +264,7 @@ public class ToolPackMakerTool {
 		mcreator.getGenerator().generateElement(axeRecipe);
 		mcreator.getModElementManager().storeModElement(axeRecipe);
 
-		Recipe swordRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe swordRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "SwordRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
 		swordRecipe.recipeSlots[1] = base;
@@ -279,7 +278,7 @@ public class ToolPackMakerTool {
 		mcreator.getGenerator().generateElement(swordRecipe);
 		mcreator.getModElementManager().storeModElement(swordRecipe);
 
-		Recipe shovelRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe shovelRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "ShovelRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
 		shovelRecipe.recipeSlots[1] = base;
@@ -293,7 +292,7 @@ public class ToolPackMakerTool {
 		mcreator.getGenerator().generateElement(shovelRecipe);
 		mcreator.getModElementManager().storeModElement(shovelRecipe);
 
-		Recipe hoeRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+		Recipe hoeRecipe = (Recipe) ModElementType.RECIPE
 				.getModElement(mcreator, new ModElement(workspace, name + "HoeRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
 		hoeRecipe.recipeSlots[0] = base;
