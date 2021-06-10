@@ -117,7 +117,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 		mcItems = new ArrayList<>();
 
-		if (type == ModElementType.DIMENSION) {
+		if (type == ModElementType.BuiltInTypes.DIMENSION) {
 			if (getMetadata("ep") != null && (Boolean) getMetadata("ep"))
 				mcItems.add(new MCItem.Custom(this, null));
 		} else if (type.getRecipeType() == RecipeType.ITEM || type.getRecipeType() == RecipeType.BLOCK) {
@@ -293,7 +293,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	public void setCodeLock(boolean codeLock) {
-		if (this.type == ModElementType.CODE && !codeLock)
+		if (this.type == ModElementType.BuiltInTypes.CODE && !codeLock)
 			return;
 		this.locked_code = codeLock;
 	}

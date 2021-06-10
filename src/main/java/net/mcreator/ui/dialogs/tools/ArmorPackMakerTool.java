@@ -132,8 +132,8 @@ public class ArmorPackMakerTool {
 		ArmorImageMakerView.generateArmorImages(workspace, name.toLowerCase(Locale.ENGLISH), "Standard", color, true);
 
 		// generate armor item
-		Armor armor = (Armor) ModElementType.ARMOR
-				.getModElement(mcreator, new ModElement(workspace, name + "Armor", ModElementType.ARMOR), false)
+		Armor armor = (Armor) ModElementType.BuiltInTypes.ARMOR
+				.getModElement(mcreator, new ModElement(workspace, name + "Armor", ModElementType.BuiltInTypes.ARMOR), false)
 				.getElementFromGUI();
 		armor.helmetName = name + " Helmet";
 		armor.bodyName = name + " Chestplate";
@@ -169,8 +169,8 @@ public class ArmorPackMakerTool {
 		armor.getModElement().reinit();
 
 		// generate recipes
-		Recipe armorHelmetRecipe = (Recipe) ModElementType.RECIPE
-				.getModElement(mcreator, new ModElement(workspace, name + "ArmorHelmetRecipe", ModElementType.RECIPE),
+		Recipe armorHelmetRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
+				.getModElement(mcreator, new ModElement(workspace, name + "ArmorHelmetRecipe", ModElementType.BuiltInTypes.RECIPE),
 						false).getElementFromGUI();
 		armorHelmetRecipe.recipeSlots[0] = base;
 		armorHelmetRecipe.recipeSlots[1] = base;
@@ -185,8 +185,8 @@ public class ArmorPackMakerTool {
 		mcreator.getGenerator().generateElement(armorHelmetRecipe);
 		mcreator.getModElementManager().storeModElement(armorHelmetRecipe);
 
-		Recipe armorBodyRecipe = (Recipe) ModElementType.RECIPE
-				.getModElement(mcreator, new ModElement(workspace, name + "ArmorBodyRecipe", ModElementType.RECIPE),
+		Recipe armorBodyRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
+				.getModElement(mcreator, new ModElement(workspace, name + "ArmorBodyRecipe", ModElementType.BuiltInTypes.RECIPE),
 						false).getElementFromGUI();
 		armorBodyRecipe.recipeSlots[0] = base;
 		armorBodyRecipe.recipeSlots[2] = base;
@@ -204,8 +204,8 @@ public class ArmorPackMakerTool {
 		mcreator.getGenerator().generateElement(armorBodyRecipe);
 		mcreator.getModElementManager().storeModElement(armorBodyRecipe);
 
-		Recipe armorLeggingsRecipe = (Recipe) ModElementType.RECIPE
-				.getModElement(mcreator, new ModElement(workspace, name + "ArmorLeggingsRecipe", ModElementType.RECIPE),
+		Recipe armorLeggingsRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
+				.getModElement(mcreator, new ModElement(workspace, name + "ArmorLeggingsRecipe", ModElementType.BuiltInTypes.RECIPE),
 						false).getElementFromGUI();
 		armorLeggingsRecipe.recipeSlots[0] = base;
 		armorLeggingsRecipe.recipeSlots[1] = base;
@@ -222,8 +222,8 @@ public class ArmorPackMakerTool {
 		mcreator.getGenerator().generateElement(armorLeggingsRecipe);
 		mcreator.getModElementManager().storeModElement(armorLeggingsRecipe);
 
-		Recipe armorBootsRecipe = (Recipe) ModElementType.RECIPE
-				.getModElement(mcreator, new ModElement(workspace, name + "ArmorBootsRecipe", ModElementType.RECIPE),
+		Recipe armorBootsRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
+				.getModElement(mcreator, new ModElement(workspace, name + "ArmorBootsRecipe", ModElementType.BuiltInTypes.RECIPE),
 						false).getElementFromGUI();
 		armorBootsRecipe.recipeSlots[3] = base;
 		armorBootsRecipe.recipeSlots[5] = base;
@@ -243,9 +243,9 @@ public class ArmorPackMakerTool {
 				e -> open(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
-				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
+				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.RECIPE)
 						!= GeneratorStats.CoverageStatus.NONE
-						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ARMOR)
+						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.ARMOR)
 						!= GeneratorStats.CoverageStatus.NONE;
 			}
 		}.setIcon(UIRES.get("16px.armorpack"));

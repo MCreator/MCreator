@@ -108,15 +108,15 @@ public class MaterialPackMakerTool {
 				e -> open(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
-				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
+				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.RECIPE)
 						!= GeneratorStats.CoverageStatus.NONE
-						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
+						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.ITEM)
 						!= GeneratorStats.CoverageStatus.NONE
-						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
+						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.BLOCK)
 						!= GeneratorStats.CoverageStatus.NONE
-						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TOOL)
+						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.TOOL)
 						!= GeneratorStats.CoverageStatus.NONE
-						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ARMOR)
+						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.ARMOR)
 						!= GeneratorStats.CoverageStatus.NONE;
 			}
 		}.setIcon(UIRES.get("16px.materialpack"));

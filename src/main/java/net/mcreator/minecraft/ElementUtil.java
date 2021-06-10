@@ -83,7 +83,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllAchievements(Workspace workspace) {
-		List<DataListEntry> achievements = getCustomElementsOfType(workspace, ModElementType.ADVANCEMENT);
+		List<DataListEntry> achievements = getCustomElementsOfType(workspace, ModElementType.BuiltInTypes.ADVANCEMENT);
 		achievements.addAll(DataListLoader.loadDataList("achievements"));
 		return achievements;
 	}
@@ -134,7 +134,7 @@ public class ElementUtil {
 
 	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
-			if (modelement.getType() == ModElementType.GAMERULE)
+			if (modelement.getType() == ModElementType.BuiltInTypes.GAMERULE)
 				return modelement.getMetadata("type").equals(VariableElementTypeLoader.BuiltInTypes.LOGIC.getName());
 			return false;
 		});
@@ -147,7 +147,7 @@ public class ElementUtil {
 
 	public static List<DataListEntry> getAllNumberGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
-			if (modelement.getType() == ModElementType.GAMERULE)
+			if (modelement.getType() == ModElementType.BuiltInTypes.GAMERULE)
 				return modelement.getMetadata("type").equals(VariableElementTypeLoader.BuiltInTypes.NUMBER.getName());
 			return false;
 		});
@@ -162,7 +162,7 @@ public class ElementUtil {
 		ArrayList<String> retval = new ArrayList<>();
 
 		for (ModElement modElement : workspace.getModElements()) {
-			if (modElement.getType() == ModElementType.FLUID) {
+			if (modElement.getType() == ModElementType.BuiltInTypes.FLUID) {
 				retval.add("CUSTOM:" + modElement.getName());
 				retval.add("CUSTOM:" + modElement.getName() + ":Flowing");
 			}

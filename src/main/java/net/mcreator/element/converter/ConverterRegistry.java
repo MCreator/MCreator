@@ -47,20 +47,20 @@ import java.util.*;
 public class ConverterRegistry {
 
 	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<ModElementType<?>, List<IConverter>>() {{
-		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
-		put(ModElementType.ADVANCEMENT, Collections.singletonList(new AchievementFixer()));
-		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
-		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
+		put(ModElementType.BuiltInTypes.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
+		put(ModElementType.BuiltInTypes.ADVANCEMENT, Collections.singletonList(new AchievementFixer()));
+		put(ModElementType.BuiltInTypes.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
+		put(ModElementType.BuiltInTypes.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
 				new ProcedureVariablesConverter()));
-		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
+		put(ModElementType.BuiltInTypes.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
 				new BiomeFrozenTopLayerConverter()));
-		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
-		put(ModElementType.BLOCK, Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer()));
-		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
-		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
-		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
-		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
+		put(ModElementType.BuiltInTypes.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
+		put(ModElementType.BuiltInTypes.BLOCK, Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer()));
+		put(ModElementType.BuiltInTypes.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
+		put(ModElementType.BuiltInTypes.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
+		put(ModElementType.BuiltInTypes.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
+		put(ModElementType.BuiltInTypes.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {

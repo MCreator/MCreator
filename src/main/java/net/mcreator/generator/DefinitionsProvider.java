@@ -37,7 +37,7 @@ class DefinitionsProvider {
 	private final Map<ModElementType<?>, Map<?, ?>> cache = new ConcurrentHashMap<>();
 
 	DefinitionsProvider(String generatorName) {
-		for (ModElementType<?> type : ModElementType.elements) {
+		for (ModElementType<?> type : ModElementType.getModElementTypes()) {
 			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
 					"/" + generatorName + "/" + type.name().toLowerCase(Locale.ENGLISH) + ".definition.yaml");
 

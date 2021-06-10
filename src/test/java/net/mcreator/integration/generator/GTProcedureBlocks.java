@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTProcedureBlocks {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE) {
 			LOG.warn("[" + generatorName
 					+ "] Skipping procedure blocks test as the current generator does not support them.");
@@ -212,7 +212,7 @@ public class GTProcedureBlocks {
 			}
 
 			ModElement modElement = new ModElement(workspace, "TestBlock" + procedureBlock.machine_name,
-					ModElementType.PROCEDURE);
+					ModElementType.BuiltInTypes.PROCEDURE);
 
 			String testXML = procedureBlock.toolboxXML;
 

@@ -37,10 +37,10 @@ public class GTSampleElements {
 
 	public static void provideAndGenerateSampleElements(Random random, Workspace workspace) {
 		// add sample procedures (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.PROCEDURE)
 				!= GeneratorStats.CoverageStatus.NONE) {
 			for (int i = 1; i <= 13; i++) {
-				ModElement me = new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE)
+				ModElement me = new ModElement(workspace, "procedure" + i, ModElementType.BuiltInTypes.PROCEDURE)
 						.putMetadata("dependencies", new ArrayList<String>());
 				workspace.addModElement(me);
 
@@ -51,7 +51,7 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 4; i++) {
-				ModElement me = new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE)
+				ModElement me = new ModElement(workspace, "condition" + i, ModElementType.BuiltInTypes.PROCEDURE)
 						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC");
 				workspace.addModElement(me);
 
@@ -66,10 +66,10 @@ public class GTSampleElements {
 		}
 
 		// add sample recipes (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.RECIPE)
 				!= GeneratorStats.CoverageStatus.NONE) {
 			for (int i = 1; i <= 2; i++) {
-				ModElement me = new ModElement(workspace, "ExampleRecipe" + i, ModElementType.RECIPE);
+				ModElement me = new ModElement(workspace, "ExampleRecipe" + i, ModElementType.BuiltInTypes.RECIPE);
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.Recipe recipe = new net.mcreator.element.types.Recipe(me);
@@ -88,10 +88,10 @@ public class GTSampleElements {
 		}
 
 		// add sample functions (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.FUNCTION)
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.FUNCTION)
 				!= GeneratorStats.CoverageStatus.NONE) {
 			for (int i = 1; i <= 2; i++) {
-				ModElement me = new ModElement(workspace, "ExampleFunction" + i, ModElementType.FUNCTION);
+				ModElement me = new ModElement(workspace, "ExampleFunction" + i, ModElementType.BuiltInTypes.FUNCTION);
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.Function function = new net.mcreator.element.types.Function(me);
@@ -104,10 +104,10 @@ public class GTSampleElements {
 		}
 
 		// add sample loot tables (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LOOTTABLE)
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.LOOTTABLE)
 				!= GeneratorStats.CoverageStatus.NONE) {
 			for (int i = 1; i <= 2; i++) {
-				ModElement me = new ModElement(workspace, "ExampleLootTable" + i, ModElementType.LOOTTABLE);
+				ModElement me = new ModElement(workspace, "ExampleLootTable" + i, ModElementType.BuiltInTypes.LOOTTABLE);
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.LootTable lootTable = new net.mcreator.element.types.LootTable(me);

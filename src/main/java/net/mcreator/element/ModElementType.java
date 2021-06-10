@@ -34,69 +34,8 @@ import java.util.Locale;
 
 public class ModElementType<GE extends GeneratableElement> implements Comparable<ModElementType<?>> {
 
-	public static final ModElementType<?> ARMOR = new ModElementType<>("armor", 'a', BaseType.ARMOR, RecipeType.ARMOR,
-			ArmorGUI::new, Armor.class);
-	public static final ModElementType<?> BIOME = new ModElementType<>("biome", 'o', BaseType.BIOME, RecipeType.NONE,
-			BiomeGUI::new, Biome.class);
-	public static final ModElementType<?> BLOCK = new ModElementType<>("block", 'b', BaseType.BLOCK, RecipeType.BLOCK,
-			BlockGUI::new, Block.class);
-	public static final ModElementType<?> COMMAND = new ModElementType<>("command", 'c', BaseType.COMMAND,
-			RecipeType.NONE, CommandGUI::new, Command.class);
-	public static final ModElementType<?> DIMENSION = new ModElementType<>("dimension", 'd', BaseType.DIMENSION,
-			RecipeType.ITEM, DimensionGUI::new, Dimension.class);
-	public static final ModElementType<?> CODE = new ModElementType<>("code", null, BaseType.OTHER, RecipeType.NONE,
-			CustomElementGUI::new, CustomElement.class);
-	public static final ModElementType<?> ENCHANTMENT = new ModElementType<>("enchantment", 'm', BaseType.ENCHANTMENT,
-			RecipeType.NONE, EnchantmentGUI::new, Enchantment.class);
-	public static final ModElementType<?> FLUID = new ModElementType<>("fluid", 'u', BaseType.BLOCK, RecipeType.BLOCK,
-			FluidGUI::new, Fluid.class);
-	public static final ModElementType<?> FOOD = new ModElementType<>("food", 'f', BaseType.ITEM, RecipeType.ITEM,
-			FoodGUI::new, Food.class);
-	public static final ModElementType<?> FUEL = new ModElementType<>("fuel", '/', BaseType.FUEL, RecipeType.NONE,
-			FuelGUI::new, Fuel.class);
-	public static final ModElementType<?> FUNCTION = new ModElementType<>("function", '\'', BaseType.DATAPACK,
-			RecipeType.NONE, FunctionGUI::new, Function.class);
-	public static final ModElementType<?> GAMERULE = new ModElementType<>("gamerule", ';', BaseType.OTHER,
-			RecipeType.NONE, GameRuleGUI::new, GameRule.class);
-	public static final ModElementType<?> GUI = new ModElementType<>("gui", 'g', BaseType.GUI, RecipeType.NONE,
-			CustomGUIGUI::new, net.mcreator.element.types.GUI.class);
-	public static final ModElementType<?> ITEM = new ModElementType<>("item", 'i', BaseType.ITEM, RecipeType.ITEM,
-			ItemGUI::new, Item.class);
-	public static final ModElementType<?> KEYBIND = new ModElementType<>("keybind", 'k', BaseType.KEYBIND,
-			RecipeType.NONE, KeyBindGUI::new, KeyBinding.class);
-	public static final ModElementType<?> LOOTTABLE = new ModElementType<>("loottable", 'l', BaseType.DATAPACK,
-			RecipeType.NONE, LootTableGUI::new, LootTable.class);
-	public static final ModElementType<?> MOB = new ModElementType<>("mob", "living_entity", 'e', BaseType.ENTITY,
-			RecipeType.NONE, LivingEntityGUI::new, Mob.class);
-	public static final ModElementType<?> MUSICDISC = new ModElementType<>("musicdisc", 'x', BaseType.OTHER,
-			RecipeType.ITEM, MusicDiscGUI::new, MusicDisc.class);
-	public static final ModElementType<?> OVERLAY = new ModElementType<>("overlay", 'v', BaseType.OVERLAY,
-			RecipeType.NONE, OverlayGUI::new, Overlay.class);
-	public static final ModElementType<?> PAINTING = new ModElementType<>("painting", '.', BaseType.OTHER,
-			RecipeType.NONE, PaintingGUI::new, Painting.class);
-	public static final ModElementType<?> PARTICLE = new ModElementType<>("particle", 'y', BaseType.PARTICLE,
-			RecipeType.NONE, ParticleGUI::new, Particle.class);
-	public static final ModElementType<?> PLANT = new ModElementType<>("plant", 'n', BaseType.BLOCK, RecipeType.BLOCK,
-			PlantGUI::new, Plant.class);
-	public static final ModElementType<?> POTION = new ModElementType<>("potion", 'z',
-			BaseType.POTION, RecipeType.NONE, PotionGUI::new, Potion.class);
-	public static final ModElementType<?> PROCEDURE = new ModElementType<>("procedure", 'p', BaseType.PROCEDURE,
-			RecipeType.NONE, ProcedureGUI::new, Procedure.class);
-	public static final ModElementType<?> RANGEDITEM = new ModElementType<>("gun", "rangeditem", "ranged_item", 'q',
-			BaseType.ITEM, RecipeType.ITEM, RangedItemGUI::new, RangedItem.class);
-	public static final ModElementType<?> RECIPE = new ModElementType<>("recipe", 'r', BaseType.DATAPACK,
-			RecipeType.NONE, RecipeGUI::new, Recipe.class);
-	public static final ModElementType<?> ADVANCEMENT = new ModElementType<>("achievement", "advancement", 'h',
-			BaseType.ACHIEVEMENT, RecipeType.NONE, AchievementGUI::new, Achievement.class);
-	public static final ModElementType<?> STRUCTURE = new ModElementType<>("structure", 's', BaseType.STRUCTURE,
-			RecipeType.NONE, StructureGenGUI::new, Structure.class);
-	public static final ModElementType<?> TAB = new ModElementType<>("tab", "item_group", 'w', BaseType.TAB, RecipeType.NONE,
-			TabGUI::new, Tab.class);
-	public static final ModElementType<?> TAG = new ModElementType<>("tag", 'j', BaseType.OTHER, RecipeType.NONE,
-			TagGUI::new, Tag.class);
-	public static final ModElementType<?> TOOL = new ModElementType<>("tool", 't', BaseType.ITEM, RecipeType.ITEM,
-			ToolGUI::new, Tool.class);
-	public static List<ModElementType<?>> elements = new ArrayList<>();
+	private static final List<ModElementType<?>> elements = new ArrayList<>();
+
 	//Variables used for each mod element
 	private final BaseType baseType;
 	private final String registryName;
@@ -150,6 +89,10 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 			}
 
 		elements.add(this);
+	}
+
+	public static List<ModElementType<?>> getModElementTypes() {
+		return elements;
 	}
 
 	public static ModElementType<?> getModElementType(String modElementName) {
@@ -219,6 +162,74 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 
 	private interface ModElementGUIProvider<GE extends GeneratableElement> {
 		ModElementGUI<GE> get(MCreator mcreator, ModElement modElement, boolean editingMode);
+	}
+
+	public static class BuiltInTypes {
+		public static final ModElementType<?> ARMOR = new ModElementType<>("armor", 'a', BaseType.ARMOR,
+				RecipeType.ARMOR, ArmorGUI::new, Armor.class);
+		public static final ModElementType<?> BIOME = new ModElementType<>("biome", 'o', BaseType.BIOME,
+				RecipeType.NONE, BiomeGUI::new, Biome.class);
+		public static final ModElementType<?> BLOCK = new ModElementType<>("block", 'b', BaseType.BLOCK,
+				RecipeType.BLOCK, BlockGUI::new, Block.class);
+		public static final ModElementType<?> COMMAND = new ModElementType<>("command", 'c', BaseType.COMMAND,
+				RecipeType.NONE, CommandGUI::new, Command.class);
+		public static final ModElementType<?> DIMENSION = new ModElementType<>("dimension", 'd', BaseType.DIMENSION,
+				RecipeType.ITEM, DimensionGUI::new, Dimension.class);
+		public static final ModElementType<?> CODE = new ModElementType<>("code", null, BaseType.OTHER, RecipeType.NONE,
+				CustomElementGUI::new, CustomElement.class);
+		public static final ModElementType<?> ENCHANTMENT = new ModElementType<>("enchantment", 'm',
+				BaseType.ENCHANTMENT, RecipeType.NONE, EnchantmentGUI::new, Enchantment.class);
+		public static final ModElementType<?> FOOD = new ModElementType<>("food", 'f', BaseType.ITEM, RecipeType.ITEM,
+				FoodGUI::new, Food.class);
+		public static final ModElementType<?> FLUID = new ModElementType<>("fluid", 'u', BaseType.BLOCK,
+				RecipeType.BLOCK, FluidGUI::new, Fluid.class);
+		public static final ModElementType<?> FUEL = new ModElementType<>("fuel", '/', BaseType.FUEL, RecipeType.NONE,
+				FuelGUI::new, Fuel.class);
+		public static final ModElementType<?> FUNCTION = new ModElementType<>("function", '\'', BaseType.DATAPACK,
+				RecipeType.NONE, FunctionGUI::new, Function.class);
+		public static final ModElementType<?> GAMERULE = new ModElementType<>("gamerule", ';', BaseType.OTHER,
+				RecipeType.NONE, GameRuleGUI::new, GameRule.class);
+		public static final ModElementType<?> GUI = new ModElementType<>("gui", 'g', BaseType.GUI, RecipeType.NONE,
+				CustomGUIGUI::new, net.mcreator.element.types.GUI.class);
+		public static final ModElementType<?> ITEM = new ModElementType<>("item", 'i', BaseType.ITEM, RecipeType.ITEM,
+				ItemGUI::new, Item.class);
+		public static final ModElementType<?> KEYBIND = new ModElementType<>("keybind", 'k', BaseType.KEYBIND,
+				RecipeType.NONE, KeyBindGUI::new, KeyBinding.class);
+		public static final ModElementType<?> LOOTTABLE = new ModElementType<>("loottable", 'l', BaseType.DATAPACK,
+				RecipeType.NONE, LootTableGUI::new, LootTable.class);
+		public static final ModElementType<?> LIVING_ENTITY = new ModElementType<>("mob", "living_entity", 'e',
+				BaseType.ENTITY, RecipeType.NONE, LivingEntityGUI::new, Mob.class);
+		public static final ModElementType<?> MUSICDISC = new ModElementType<>("musicdisc", 'x', BaseType.OTHER,
+				RecipeType.ITEM, MusicDiscGUI::new, MusicDisc.class);
+		public static final ModElementType<?> OVERLAY = new ModElementType<>("overlay", 'v', BaseType.OVERLAY,
+				RecipeType.NONE, OverlayGUI::new, Overlay.class);
+		public static final ModElementType<?> PAINTING = new ModElementType<>("painting", '.', BaseType.OTHER,
+				RecipeType.NONE, PaintingGUI::new, Painting.class);
+		public static final ModElementType<?> PARTICLE = new ModElementType<>("particle", 'y', BaseType.PARTICLE,
+				RecipeType.NONE, ParticleGUI::new, Particle.class);
+		public static final ModElementType<?> PLANT = new ModElementType<>("plant", 'n', BaseType.BLOCK,
+				RecipeType.BLOCK, PlantGUI::new, Plant.class);
+		public static final ModElementType<?> POTION = new ModElementType<>("potion", 'z', BaseType.POTION,
+				RecipeType.NONE, PotionGUI::new, Potion.class);
+		public static final ModElementType<?> PROCEDURE = new ModElementType<>("procedure", 'p', BaseType.PROCEDURE,
+				RecipeType.NONE, ProcedureGUI::new, Procedure.class);
+		public static final ModElementType<?> RANGEDITEM = new ModElementType<>("gun", "rangeditem", "ranged_item", 'q',
+				BaseType.ITEM, RecipeType.ITEM, RangedItemGUI::new, RangedItem.class);
+		public static final ModElementType<?> RECIPE = new ModElementType<>("recipe", 'r', BaseType.DATAPACK,
+				RecipeType.NONE, RecipeGUI::new, Recipe.class);
+		public static final ModElementType<?> ADVANCEMENT = new ModElementType<>("achievement", "advancement", 'h',
+				BaseType.ACHIEVEMENT, RecipeType.NONE, AchievementGUI::new, Achievement.class);
+		public static final ModElementType<?> STRUCTURE = new ModElementType<>("structure", 's', BaseType.STRUCTURE,
+				RecipeType.NONE, StructureGenGUI::new, Structure.class);
+
+		public static final ModElementType<?> TAB = new ModElementType<>("tab", "item_group", 'w', BaseType.TAB,
+				RecipeType.NONE, TabGUI::new, Tab.class);
+
+		public static final ModElementType<?> TAG = new ModElementType<>("tag", 'j', BaseType.OTHER, RecipeType.NONE,
+				TagGUI::new, Tag.class);
+
+		public static final ModElementType<?> TOOL = new ModElementType<>("tool", 't', BaseType.ITEM, RecipeType.ITEM,
+				ToolGUI::new, Tool.class);
 	}
 
 }

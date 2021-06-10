@@ -163,7 +163,7 @@ public class BlocklyJavascriptBridge {
 		//We check for general cases
 		switch (type) {
 		case "procedure":
-			retval = workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
+			retval = workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.BuiltInTypes.PROCEDURE)
 					.map(ModElement::getName).collect(Collectors.toList());
 			break;
 		case "entity":
@@ -216,7 +216,7 @@ public class BlocklyJavascriptBridge {
 			break;
 		case "rangeditem":
 			retval = ListUtils.merge(Collections.singleton("Arrow"),
-					workspace.getModElements().stream().filter(var -> var.getType() == ModElementType.RANGEDITEM)
+					workspace.getModElements().stream().filter(var -> var.getType() == ModElementType.BuiltInTypes.RANGEDITEM)
 							.map(ModElement::getName).collect(Collectors.toList()));
 			break;
 		case "planttype":
@@ -228,7 +228,7 @@ public class BlocklyJavascriptBridge {
 		// check if type is "call procedure with return value"
 		if (type.contains("procedure_retval_")) {
 			retval = workspace.getModElements().stream().filter(mod -> {
-				if (mod.getType() == ModElementType.PROCEDURE) {
+				if (mod.getType() == ModElementType.BuiltInTypes.PROCEDURE) {
 					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
 							VariableElementTypeLoader.INSTANCE
 									.getVariableTypeFromString((String) mod.getMetadata("return_type")) :

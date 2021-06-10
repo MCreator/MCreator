@@ -86,12 +86,12 @@ public class ModElementUITest {
 
 		// generate some "dummy" procedures for dropdowns to work
 		for (int i = 1; i <= 13; i++) {
-			workspace.addModElement(new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE)
+			workspace.addModElement(new ModElement(workspace, "procedure" + i, ModElementType.BuiltInTypes.PROCEDURE)
 					.putMetadata("dependencies", new ArrayList<String>()));
 		}
 
 		for (int i = 1; i <= 4; i++) {
-			workspace.addModElement(new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE)
+			workspace.addModElement(new ModElement(workspace, "condition" + i, ModElementType.BuiltInTypes.PROCEDURE)
 					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
 		}
 
@@ -131,7 +131,7 @@ public class ModElementUITest {
 
 	private void testModElementLoading(Random random)
 			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
-		for (ModElementType<?> modElementType : ModElementType.elements) {
+		for (ModElementType<?> modElementType : ModElementType.getModElementTypes()) {
 
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider
 					.getModElementExamplesFor(workspace, modElementType, random);

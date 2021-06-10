@@ -379,7 +379,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 						.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
-				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
+				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.BuiltInTypes.GUI)
 						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
 	}
 

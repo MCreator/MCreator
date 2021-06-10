@@ -27,7 +27,6 @@ import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -75,7 +74,7 @@ public class ModElementManager {
 	}
 
 	GeneratableElement loadGeneratableElement(ModElement element) {
-		if (element.getType() == ModElementType.CODE) {
+		if (element.getType() == ModElementType.BuiltInTypes.CODE) {
 			return new CustomElement(element);
 		}
 
@@ -111,7 +110,7 @@ public class ModElementManager {
 			return false;
 
 		// custom code mod element does not actually have one, but is provided by this manager
-		if (element.getType() == ModElementType.CODE)
+		if (element.getType() == ModElementType.BuiltInTypes.CODE)
 			return true;
 
 		return new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").isFile();

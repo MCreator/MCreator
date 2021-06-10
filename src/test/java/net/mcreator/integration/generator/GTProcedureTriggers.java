@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTProcedureTriggers {
 
 	public static void runTest(Logger LOG, String generatorName, Workspace workspace) {
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE) {
 			LOG.warn("[" + generatorName
 					+ "] Skipping procedure triggers test as the current generator does not support them.");
@@ -70,7 +70,7 @@ public class GTProcedureTriggers {
 			}
 
 			ModElement modElement = new ModElement(workspace, "Test" + externalTrigger.getID(),
-					ModElementType.PROCEDURE);
+					ModElementType.BuiltInTypes.PROCEDURE);
 
 			Procedure procedure = new Procedure(modElement);
 			procedure.procedurexml =

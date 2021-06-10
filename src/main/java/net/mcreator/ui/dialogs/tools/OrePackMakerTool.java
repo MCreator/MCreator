@@ -172,8 +172,8 @@ public class OrePackMakerTool {
 			oreItemName = name + "Ingot";
 		}
 
-		Item oreItem = (Item) ModElementType.ITEM
-				.getModElement(mcreator, new ModElement(workspace, oreItemName, ModElementType.ITEM), false)
+		Item oreItem = (Item) ModElementType.BuiltInTypes.ITEM
+				.getModElement(mcreator, new ModElement(workspace, oreItemName, ModElementType.BuiltInTypes.ITEM), false)
 				.getElementFromGUI();
 		oreItem.name = name;
 		oreItem.texture = gemTextureName;
@@ -185,8 +185,8 @@ public class OrePackMakerTool {
 		mcreator.getModElementManager().storeModElement(oreItem);
 
 		// we use Block GUI to getModElementType default values for the block element (kinda hacky!)
-		Block oreBlock = (Block) ModElementType.BLOCK
-				.getModElement(mcreator, new ModElement(workspace, name + "Ore", ModElementType.BLOCK), false)
+		Block oreBlock = (Block) ModElementType.BuiltInTypes.BLOCK
+				.getModElement(mcreator, new ModElement(workspace, name + "Ore", ModElementType.BuiltInTypes.BLOCK), false)
 				.getElementFromGUI();
 		oreBlock.name = name + " Ore";
 		oreBlock.material = new Material(workspace, "ROCK");
@@ -215,8 +215,8 @@ public class OrePackMakerTool {
 		mcreator.getModElementManager().storeModElement(oreBlock);
 
 		// we use Block GUI to getModElementType default values for the block element (kinda hacky!)
-		Block oreBlockBlock = (Block) ModElementType.BLOCK
-				.getModElement(mcreator, new ModElement(workspace, name + "Block", ModElementType.BLOCK), false)
+		Block oreBlockBlock = (Block) ModElementType.BuiltInTypes.BLOCK
+				.getModElement(mcreator, new ModElement(workspace, name + "Block", ModElementType.BuiltInTypes.BLOCK), false)
 				.getElementFromGUI();
 		oreBlockBlock.name = "Block of " + name;
 		oreBlockBlock.customModelName = "Single texture";
@@ -235,8 +235,8 @@ public class OrePackMakerTool {
 		mcreator.getGenerator().generateElement(oreBlockBlock);
 		mcreator.getModElementManager().storeModElement(oreBlockBlock);
 
-		Recipe itemToBlockRecipe = (Recipe) ModElementType.RECIPE
-				.getModElement(mcreator, new ModElement(workspace, name + "OreBlockRecipe", ModElementType.RECIPE),
+		Recipe itemToBlockRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
+				.getModElement(mcreator, new ModElement(workspace, name + "OreBlockRecipe", ModElementType.BuiltInTypes.RECIPE),
 						false).getElementFromGUI();
 		itemToBlockRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		itemToBlockRecipe.recipeSlots[1] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
@@ -255,8 +255,8 @@ public class OrePackMakerTool {
 		mcreator.getGenerator().generateElement(itemToBlockRecipe);
 		mcreator.getModElementManager().storeModElement(itemToBlockRecipe);
 
-		Recipe blockToItemRecipe = (Recipe) ModElementType.RECIPE
-				.getModElement(mcreator, new ModElement(workspace, name + "BlockOreRecipe", ModElementType.RECIPE),
+		Recipe blockToItemRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
+				.getModElement(mcreator, new ModElement(workspace, name + "BlockOreRecipe", ModElementType.BuiltInTypes.RECIPE),
 						false).getElementFromGUI();
 		blockToItemRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + name + "Block");
 		blockToItemRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
@@ -269,8 +269,8 @@ public class OrePackMakerTool {
 		mcreator.getGenerator().generateElement(blockToItemRecipe);
 		mcreator.getModElementManager().storeModElement(blockToItemRecipe);
 
-		Recipe oreSmeltingRecipe = (Recipe) ModElementType.RECIPE
-				.getModElement(mcreator, new ModElement(workspace, name + "OreSmelting", ModElementType.RECIPE), false)
+		Recipe oreSmeltingRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
+				.getModElement(mcreator, new ModElement(workspace, name + "OreSmelting", ModElementType.BuiltInTypes.RECIPE), false)
 				.getElementFromGUI();
 		oreSmeltingRecipe.recipeType = "Smelting";
 		oreSmeltingRecipe.smeltingInputStack = new MItemBlock(workspace, "CUSTOM:" + name + "Ore");
@@ -292,11 +292,11 @@ public class OrePackMakerTool {
 				e -> open(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
-				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
+				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.RECIPE)
 						!= GeneratorStats.CoverageStatus.NONE
-						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
+						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.ITEM)
 						!= GeneratorStats.CoverageStatus.NONE
-						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
+						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.BLOCK)
 						!= GeneratorStats.CoverageStatus.NONE;
 			}
 		}.setIcon(UIRES.get("16px.orepack"));

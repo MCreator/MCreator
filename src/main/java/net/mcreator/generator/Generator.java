@@ -437,7 +437,7 @@ public class Generator implements IGenerator, Closeable {
 					return element;
 
 				// if this is GUI, we check for generated UI texture file too
-				if (element.getType() == ModElementType.GUI) {
+				if (element.getType() == ModElementType.BuiltInTypes.GUI) {
 					File guiTextureFile = workspace.getFolderManager()
 							.getOtherTextureFile(element.getName().toLowerCase(Locale.ENGLISH));
 					if (guiTextureFile.getCanonicalPath().equals(file.getCanonicalPath()))

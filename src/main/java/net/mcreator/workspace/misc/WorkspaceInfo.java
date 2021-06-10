@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
 
 	public boolean hasFluids() {
 		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.FLUID)
+			if (element.getType() == ModElementType.BuiltInTypes.FLUID)
 				return true;
 		return false;
 	}

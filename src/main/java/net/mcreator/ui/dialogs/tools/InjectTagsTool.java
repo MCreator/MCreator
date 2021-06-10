@@ -119,16 +119,16 @@ public class InjectTagsTool {
 		JLabel icon = new JLabel();
 		if (type.equals("Blocks"))
 			icon.setIcon(new ImageIcon(
-					ImageUtils.resizeAA(ModElementType.BLOCK.getIcon().getImage(), 32)));
+					ImageUtils.resizeAA(ModElementType.BuiltInTypes.BLOCK.getIcon().getImage(), 32)));
 		if (type.equals("Items"))
 			icon.setIcon(new ImageIcon(
-					ImageUtils.resizeAA(ModElementType.ITEM.getIcon().getImage(), 32)));
+					ImageUtils.resizeAA(ModElementType.BuiltInTypes.ITEM.getIcon().getImage(), 32)));
 		if (type.equals("Functions"))
 			icon.setIcon(new ImageIcon(
-					ImageUtils.resizeAA(ModElementType.FUNCTION.getIcon().getImage(), 32)));
+					ImageUtils.resizeAA(ModElementType.BuiltInTypes.FUNCTION.getIcon().getImage(), 32)));
 		if (type.equals("Entities"))
 			icon.setIcon(new ImageIcon(
-					ImageUtils.resizeAA(ModElementType.MOB.getIcon().getImage(), 32)));
+					ImageUtils.resizeAA(ModElementType.BuiltInTypes.LIVING_ENTITY.getIcon().getImage(), 32)));
 
 		panel.add(PanelUtils.centerAndEastElement(box, icon));
 
@@ -153,7 +153,7 @@ public class InjectTagsTool {
 		Workspace workspace = mcreator.getWorkspace();
 
 		if (workspace.getModElementByName(modElementName) == null) {
-			Tag tag = new Tag(new ModElement(workspace, modElementName, ModElementType.TAG));
+			Tag tag = new Tag(new ModElement(workspace, modElementName, ModElementType.BuiltInTypes.TAG));
 			tag.name = name;
 			tag.namespace = namespace;
 			tag.type = type;
@@ -175,7 +175,7 @@ public class InjectTagsTool {
 				e -> open(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
-				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TAG)
+				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.TAG)
 						!= GeneratorStats.CoverageStatus.NONE;
 			}
 		}.setIcon(UIRES.get("16px.injecttags"));

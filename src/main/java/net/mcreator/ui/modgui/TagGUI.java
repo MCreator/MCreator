@@ -67,7 +67,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 		items = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 		blocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
-		functions = new ModElementListField(mcreator, ModElementType.FUNCTION);
+		functions = new ModElementListField(mcreator, ModElementType.BuiltInTypes.FUNCTION);
 		entities = new EntityListField(mcreator);
 
 		name.setValidator(new TagsNameValidator<>(name, false));

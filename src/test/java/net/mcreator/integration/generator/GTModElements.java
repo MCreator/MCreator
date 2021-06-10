@@ -40,7 +40,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -50,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTModElements {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
-		for (ModElementType<?> modElementType : ModElementType.elements) {
+		for (ModElementType<?> modElementType : ModElementType.getModElementTypes()) {
 
 			// silently skip mod elements not supported by this generator
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(modElementType)

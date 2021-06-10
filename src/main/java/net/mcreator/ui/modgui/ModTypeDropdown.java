@@ -23,7 +23,6 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.NewModElementDialog;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -38,7 +37,7 @@ public class ModTypeDropdown extends JPopupMenu {
 		setBorder(BorderFactory.createEmptyBorder());
 
 		SortedSet<ModElementType<?>> setMET = new TreeSet<>(Comparator.comparing(ModElementType::getReadableName));
-		setMET.addAll(ModElementType.elements);
+		setMET.addAll(ModElementType.getModElementTypes());
 
 		List<ModElementType<?>> types = setMET.stream()
 				.filter(entry -> mcreator.getGeneratorStats().getModElementTypeCoverageInfo().get(entry)

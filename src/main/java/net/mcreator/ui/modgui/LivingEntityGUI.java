@@ -859,11 +859,11 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 
 		ComboBoxUtil.updateComboBoxContents(rangedItemType, ListUtils.merge(Collections.singleton("Default item"),
 				mcreator.getWorkspace().getModElements().stream()
-						.filter(var -> var.getType() == ModElementType.RANGEDITEM).map(ModElement::getName)
+						.filter(var -> var.getType() == ModElementType.BuiltInTypes.RANGEDITEM).map(ModElement::getName)
 						.collect(Collectors.toList())), "Default item");
 
 		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
-				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
+				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.BuiltInTypes.GUI)
 						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
 
 		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));

@@ -212,8 +212,8 @@ public class ProcedureSelector extends JPanel {
 
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
-							ModElementType.PROCEDURE);
-					ModElementGUI<?> newGUI = ModElementType.PROCEDURE.getModElement(mcreator, element, false);
+							ModElementType.BuiltInTypes.PROCEDURE);
+					ModElementGUI<?> newGUI = ModElementType.BuiltInTypes.PROCEDURE.getModElement(mcreator, element, false);
 					if (newGUI != null) {
 						newGUI.showView();
 						newGUI.setModElementCreatedListener(generatableElement -> {
@@ -224,7 +224,7 @@ public class ProcedureSelector extends JPanel {
 						});
 						mcreator.getApplication().getAnalytics().async(() -> mcreator.getApplication().getAnalytics()
 								.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
-										ModElementType.PROCEDURE.getReadableName(), null, null));
+										ModElementType.BuiltInTypes.PROCEDURE.getReadableName(), null, null));
 					}
 				}
 			});
@@ -258,7 +258,7 @@ public class ProcedureSelector extends JPanel {
 		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXX"));
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
+		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE)
 			setEnabled(false);
 	}
@@ -270,7 +270,7 @@ public class ProcedureSelector extends JPanel {
 
 	@Override public void setEnabled(boolean enabled) {
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
+		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE)
 			enabled = false;
 
@@ -288,7 +288,7 @@ public class ProcedureSelector extends JPanel {
 		procedures.addItem(new CBoxEntry(defaultName));
 
 		for (ModElement mod : mcreator.getWorkspace().getModElements()) {
-			if (mod.getType() == ModElementType.PROCEDURE) {
+			if (mod.getType() == ModElementType.BuiltInTypes.PROCEDURE) {
 				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
 
 				List<Dependency> realdepsList = new ArrayList<>();

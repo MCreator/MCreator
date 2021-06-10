@@ -109,8 +109,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		JPanel selp = new JPanel(new GridLayout(10, 2, 15, 2));
 		JPanel selp2 = new JPanel(new GridLayout(4, 2, 10, 2));
 
-		rewardLoot = new ModElementListField(mcreator, ModElementType.LOOTTABLE);
-		rewardRecipes = new ModElementListField(mcreator, ModElementType.RECIPE);
+		rewardLoot = new ModElementListField(mcreator, ModElementType.BuiltInTypes.LOOTTABLE);
+		rewardRecipes = new ModElementListField(mcreator, ModElementType.BuiltInTypes.RECIPE);
 
 		ComponentUtils.deriveFont(achievementName, 16);
 		ComponentUtils.deriveFont(achievementDescription, 16);
@@ -280,7 +280,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 				.updateComboBoxContents(parentAchievement, ElementUtil.loadAllAchievements(mcreator.getWorkspace()));
 
 		ComboBoxUtil.updateComboBoxContents(rewardFunction, ListUtils.merge(Collections.singleton("No function"),
-				mcreator.getWorkspace().getModElements().stream().filter(e -> e.getType() == ModElementType.FUNCTION)
+				mcreator.getWorkspace().getModElements().stream().filter(e -> e.getType() == ModElementType.BuiltInTypes.FUNCTION)
 						.map(ModElement::getName).collect(Collectors.toList())), "No function");
 
 		ComboBoxUtil.updateComboBoxContents(background, ListUtils.merge(Collections.singleton("Default"),
