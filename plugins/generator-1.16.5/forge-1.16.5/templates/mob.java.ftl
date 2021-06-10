@@ -581,12 +581,16 @@ import net.minecraft.block.material.Material;
             sourceentity.startRiding(this);
             </#if>
 
-			double x = this.getPosX();
-			double y = this.getPosY();
-			double z = this.getPosZ();
-			Entity entity = this;
-			<@procedureOBJToCode data.onRightClickedOn/>
-			return retval;
+			<#if hasProcedure(data.onRightClickedOn)>
+				double x = this.getPosX();
+				double y = this.getPosY();
+				double z = this.getPosZ();
+				Entity entity = this;
+				<@procedureOBJToCodeWithResult data.onRightClickedOn/>
+				return (ActionResultType) $_resultValues.getOrDefault("actionResult", retval);
+			<#else>
+				return retval;
+			</#if>
 		}
         </#if>
 

@@ -53,15 +53,17 @@ public class ${name}Item extends Item {
 			int y = pos.getY();
 			int z = pos.getZ();
 
-			if (world.isAirBlock(pos) && <@procedureOBJToConditionCode data.portalMakeCondition/>)
+			if (world.isAirBlock(pos) && <@procedureOBJToConditionCode data.portalMakeCondition/>) {
 				${name}Dimension.portal.portalSpawn(world, pos);
+				itemstack.damageItem(1, entity, c -> c.sendBreakAnimation(context.getHand()));
+			}
 
 			<#if hasProcedure(data.whenPortaTriggerlUsed)>
-				<@procedureOBJToCode data.whenPortaTriggerlUsed/>
+				<@procedureOBJToCodeWithResult data.whenPortaTriggerlUsed/>
+				return (ActionResultType) $_resultValues.getOrDefault("actionResult", ActionResultType.SUCCESS);
+			<#else>
+				return ActionResultType.SUCCESS;
 			</#if>
-
-			itemstack.damageItem(1, entity, c -> c.sendBreakAnimation(context.getHand()));
-			return ActionResultType.SUCCESS;
 		}
 	}
 }
