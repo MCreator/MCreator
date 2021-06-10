@@ -54,17 +54,7 @@ public class ${JavaModName}Variables {
 	<#if w.hasVariablesOfScope("GLOBAL_SESSION")>
 		<#list variables as var>
 			<#if var.getScope().name() == "GLOBAL_SESSION">
-				<#if var.getType().getName() == "number">
-	        public static double ${var.getName()} = ${var.getValue()};
-				<#elseif var.getType().getName() == "logic">
-	        public static boolean ${var.getName()} = ${var.getValue()};
-				<#elseif var.getType().getName() == "string">
-	        public static String ${var.getName()} ="${JavaConventions.escapeStringForJava(var.getValue())}";
-				<#elseif var.getType().getName() == "itemstack">
-	        public static ItemStack ${var.getName()} = ItemStack.EMPTY;
-				<#elseif var.getType().getName() == "blockstate">
-	        public static BlockState ${var.getName()} = Blocks.AIR.getDefaultState();
-				</#if>
+				<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_SESSION")['init']?interpret/>
 			</#if>
 		</#list>
 	</#if>
@@ -94,20 +84,10 @@ public class ${JavaModName}Variables {
 		public static final String DATA_NAME = "${modid}_worldvars";
 
 		<#list variables as var>
-            <#if var.getScope().name() == "GLOBAL_WORLD">
-                <#if var.getType().getName() == "number">
-        			public double ${var.getName()} = ${var.getValue()};
-                <#elseif var.getType().getName() == "logic">
-					public boolean ${var.getName()} = ${var.getValue()};
-                <#elseif var.getType().getName() == "string">
-       				 public String ${var.getName()} ="${JavaConventions.escapeStringForJava(var.getValue())}";
-				<#elseif var.getType().getName() == "itemstack">
-					public ItemStack ${var.getName()} = ItemStack.EMPTY;
-				<#elseif var.getType().getName() == "blockstate">
-					public BlockState ${var.getName()} = Blocks.AIR.getDefaultState();
-                </#if>
-            </#if>
-        </#list>
+			<#if var.getScope().name() == "GLOBAL_WORLD">
+				<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['init']?interpret/>
+			</#if>
+		</#list>
 
 		public WorldVariables() {
 			super(DATA_NAME);
@@ -119,38 +99,18 @@ public class ${JavaModName}Variables {
 
 		@Override public void read(CompoundNBT nbt) {
 			<#list variables as var>
-                <#if var.getScope().name() == "GLOBAL_WORLD">
-                    <#if var.getType().getName() == "number">
-                        ${var.getName()} =nbt.getDouble("${var.getName()}");
-                    <#elseif var.getType().getName() == "logic">
-                        ${var.getName()} =nbt.getBoolean("${var.getName()}");
-                    <#elseif var.getType().getName() == "string">
-                        ${var.getName()} =nbt.getString("${var.getName()}");
-					<#elseif var.getType().getName() == "itemstack">
-						${var.getName()} = ItemStack.read(nbt.getCompound("${var.getName()}"));
-					<#elseif var.getType().getName() == "blockstate">
-						${var.getName()} = NBTUtil.readBlockState(nbt.getCompound("${var.getName()}"));
-                    </#if>
-                </#if>
-            </#list>
+				<#if var.getScope().name() == "GLOBAL_WORLD">
+					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['read']?interpret/>
+				</#if>
+			</#list>
 		}
 
 		@Override public CompoundNBT write(CompoundNBT nbt) {
 			<#list variables as var>
-                <#if var.getScope().name() == "GLOBAL_WORLD">
-                    <#if var.getType().getName() == "number">
-        				nbt.putDouble("${var.getName()}" , ${var.getName()});
-                    <#elseif var.getType().getName() == "logic">
-						nbt.putBoolean("${var.getName()}" , ${var.getName()});
-                    <#elseif var.getType().getName() == "string">
-						nbt.putString("${var.getName()}" , ${var.getName()});
-					<#elseif var.getType().getName() == "itemstack">
-						nbt.put("${var.getName()}", ${var.getName()}.write(new CompoundNBT()));
-					<#elseif var.getType().getName() == "blockstate">
-						nbt.put("${var.getName()}", NBTUtil.writeBlockState(${var.getName()}));
-                    </#if>
-                </#if>
-            </#list>
+				<#if var.getScope().name() == "GLOBAL_WORLD">
+					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['write']?interpret/>
+				</#if>
+			</#list>
 			return nbt;
 		}
 
@@ -178,20 +138,10 @@ public class ${JavaModName}Variables {
 		public static final String DATA_NAME = "${modid}_mapvars";
 
 		<#list variables as var>
-            <#if var.getScope().name() == "GLOBAL_MAP">
-                <#if var.getType().getName() == "number">
-        			public double ${var.getName()} = ${var.getValue()};
-                <#elseif var.getType().getName() == "logic">
-					public boolean ${var.getName()} = ${var.getValue()};
-                <#elseif var.getType().getName() == "string">
-       				 public String ${var.getName()} ="${JavaConventions.escapeStringForJava(var.getValue())}";
-				<#elseif var.getType().getName() == "itemstack">
-					public ItemStack ${var.getName()} = ItemStack.EMPTY;
-				<#elseif var.getType().getName() == "blockstate">
-					public BlockState ${var.getName()} = Blocks.AIR.getDefaultState();
-                </#if>
-            </#if>
-        </#list>
+			<#if var.getScope().name() == "GLOBAL_MAP">
+				<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['init']?interpret/>
+			</#if>
+		</#list>
 
 		public MapVariables() {
 			super(DATA_NAME);
@@ -203,38 +153,18 @@ public class ${JavaModName}Variables {
 
 		@Override public void read(CompoundNBT nbt) {
 			<#list variables as var>
-                <#if var.getScope().name() == "GLOBAL_MAP">
-                    <#if var.getType().getName() == "number">
-                        ${var.getName()} =nbt.getDouble("${var.getName()}");
-                    <#elseif var.getType().getName() == "logic">
-                        ${var.getName()} =nbt.getBoolean("${var.getName()}");
-                    <#elseif var.getType().getName() == "string">
-                        ${var.getName()} =nbt.getString("${var.getName()}");
-					<#elseif var.getType().getName() == "itemstack">
-						${var.getName()} = ItemStack.read(nbt.getCompound("${var.getName()}"));
-					<#elseif var.getType().getName() == "blockstate">
-						${var.getName()} = NBTUtil.readBlockState(nbt.getCompound("${var.getName()}"));
-                    </#if>
-                </#if>
-            </#list>
+				<#if var.getScope().name() == "GLOBAL_MAP">
+					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['read']?interpret/>
+				</#if>
+			</#list>
 		}
 
 		@Override public CompoundNBT write(CompoundNBT nbt) {
 			<#list variables as var>
-                <#if var.getScope().name() == "GLOBAL_MAP">
-                    <#if var.getType().getName() == "number">
-        				nbt.putDouble("${var.getName()}" , ${var.getName()});
-                    <#elseif var.getType().getName() == "logic">
-						nbt.putBoolean("${var.getName()}" , ${var.getName()});
-                    <#elseif var.getType().getName() == "string">
-						nbt.putString("${var.getName()}" , ${var.getName()});
-					<#elseif var.getType().getName() == "itemstack">
-						nbt.put("${var.getName()}", ${var.getName()}.write(new CompoundNBT()));
-					<#elseif var.getType().getName() == "blockstate">
-						nbt.put("${var.getName()}", NBTUtil.writeBlockState(${var.getName()}));
-                    </#if>
-                </#if>
-            </#list>
+				<#if var.getScope().name() == "GLOBAL_MAP">
+					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['write']?interpret/>
+				</#if>
+			</#list>
 			return nbt;
 		}
 
@@ -325,18 +255,10 @@ public class ${JavaModName}Variables {
 		@Override public INBT writeNBT(Capability<PlayerVariables> capability, PlayerVariables instance, Direction side) {
 			CompoundNBT nbt = new CompoundNBT();
 			<#list variables as var>
-				<#if var.getScope().name() == "PLAYER_LIFETIME" || var.getScope().name() == "PLAYER_PERSISTENT">
-					<#if var.getType().getName() == "number">
-			        	nbt.putDouble("${var.getName()}" , instance.${var.getName()});
-					<#elseif var.getType().getName() == "logic">
-						nbt.putBoolean("${var.getName()}" , instance.${var.getName()});
-					<#elseif var.getType().getName() == "string">
-						nbt.putString("${var.getName()}" , instance.${var.getName()});
-					<#elseif var.getType().getName() == "itemstack">
-						nbt.put("${var.getName()}", instance.${var.getName()}.write(new CompoundNBT()));
-					<#elseif var.getType().getName() == "blockstate">
-						nbt.put("${var.getName()}", NBTUtil.writeBlockState(instance.${var.getName()}));
-					</#if>
+				<#if var.getScope().name() == "PLAYER_LIFETIME">
+					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['write']?interpret/>
+				<#elseif var.getScope().name() == "PLAYER_PERSISTENT">
+					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_PERSISTENT")['write']?interpret/>
 				</#if>
 			</#list>
 			return nbt;
@@ -345,18 +267,10 @@ public class ${JavaModName}Variables {
 		@Override public void readNBT(Capability<PlayerVariables> capability, PlayerVariables instance, Direction side, INBT inbt) {
 			CompoundNBT nbt = (CompoundNBT) inbt;
 			<#list variables as var>
-				<#if var.getScope().name() == "PLAYER_LIFETIME" || var.getScope().name() == "PLAYER_PERSISTENT">
-					<#if var.getType().getName() == "number">
-						instance.${var.getName()} =nbt.getDouble("${var.getName()}");
-					<#elseif var.getType().getName() == "logic">
-						instance.${var.getName()} =nbt.getBoolean("${var.getName()}");
-					<#elseif var.getType().getName() == "string">
-						instance.${var.getName()} =nbt.getString("${var.getName()}");
-					<#elseif var.getType().getName() == "itemstack">
-						instance.${var.getName()} = ItemStack.read(nbt.getCompound("${var.getName()}"));
-					<#elseif var.getType().getName() == "blockstate">
-						instance.${var.getName()} = NBTUtil.readBlockState(nbt.getCompound("${var.getName()}"));
-					</#if>
+				<#if var.getScope().name() == "PLAYER_LIFETIME">
+					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['read']?interpret/>
+				<#elseif var.getScope().name() == "PLAYER_PERSISTENT">
+					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_PERSISTENT")['read']?interpret/>
 				</#if>
 			</#list>
 		}
@@ -366,18 +280,10 @@ public class ${JavaModName}Variables {
 	public static class PlayerVariables {
 
 		<#list variables as var>
-			<#if var.getScope().name() == "PLAYER_LIFETIME" || var.getScope().name() == "PLAYER_PERSISTENT">
-				<#if var.getType().getName() == "number">
-			public double ${var.getName()} = ${var.getValue()};
-				<#elseif var.getType().getName() == "logic">
-			public boolean ${var.getName()} = ${var.getValue()};
-				<#elseif var.getType().getName() == "string">
-			 public String ${var.getName()} ="${JavaConventions.escapeStringForJava(var.getValue())}";
-				<#elseif var.getType().getName() == "itemstack">
-			public ItemStack ${var.getName()} = ItemStack.EMPTY;
-				<#elseif var.getType().getName() == "blockstate">
-			public BlockState ${var.getName()} = Blocks.AIR.getDefaultState();
-				</#if>
+			<#if var.getScope().name() == "PLAYER_LIFETIME">
+				<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['init']?interpret/>
+			<#elseif var.getScope().name() == "PLAYER_PERSISTENT">
+				<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_PERSISTENT")['init']?interpret/>
 			</#if>
 		</#list>
 

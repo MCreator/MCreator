@@ -26,7 +26,7 @@ import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableType;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,7 +46,7 @@ public class BlocklyToProcedure extends BlocklyToJava {
 
 	private String externalTrigger = null;
 	private List<String> variables;
-	private VariableElementType returnType = null;
+	private VariableType returnType = null;
 
 	public BlocklyToProcedure(Workspace workspace, String sourceXML, TemplateGenerator templateGenerator,
 			IBlockGenerator... externalGenerators) throws TemplateGeneratorException {
@@ -97,11 +97,11 @@ public class BlocklyToProcedure extends BlocklyToJava {
 		}
 	}
 
-	public VariableElementType getReturnType() {
+	public VariableType getReturnType() {
 		return returnType;
 	}
 
-	public void setReturnType(VariableElementType returnType) {
+	public void setReturnType(VariableType returnType) {
 		this.returnType = returnType;
 	}
 
