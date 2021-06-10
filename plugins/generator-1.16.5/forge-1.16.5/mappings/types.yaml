@@ -1,11 +1,11 @@
 _default: Object
-world: IWorld
 number: double
-entity: Entity
-itemstack: ItemStack
-map: HashMap
 string: String
-boolean: boolean
+logic: boolean
+itemstack: ItemStack
 direction: Direction
+world: IWorld
+entity: Entity
+map: HashMap
 advancement: Advancement
 dimensiontype: RegistryKey<World>

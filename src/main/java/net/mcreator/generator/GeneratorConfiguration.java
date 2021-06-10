@@ -54,6 +54,8 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 	private final GeneratorFlavor generatorFlavor;
 
+	private final GeneratorVariableTypes generatorVariableTypes;
+
 	private final TemplateGeneratorConfiguration templateGeneratorConfiguration;
 	private final TemplateGeneratorConfiguration procedureGeneratorConfiguration;
 	private final TemplateGeneratorConfiguration triggerGeneratorConfiguration;
@@ -87,6 +89,9 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		this.triggerGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "triggers");
 		this.aitaskGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "aitasks");
 		this.jsonTriggerGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "jsontriggers");
+
+		// load global variable definitions
+		this.generatorVariableTypes = new GeneratorVariableTypes(this);
 
 		this.generatorStats = new GeneratorStats(this);
 	}
@@ -211,6 +216,10 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return jsonTriggerGeneratorConfiguration;
 	}
 
+	public GeneratorVariableTypes getVariableTypes() {
+		return generatorVariableTypes;
+	}
+
 	@Nullable public List<String> getSupportedDefinitionFields(ModElementType type) {
 		Map<?, ?> map = definitionsProvider.getModElementDefinition(type);
 
@@ -222,6 +231,21 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		List<?> inclusions = (List<?>) map.get("field_inclusions");
 		if (inclusions != null)
 			return inclusions.stream().map(Object::toString).map(String::trim).collect(Collectors.toList());
+
+		return null;
+	}
+
+	@Nullable public List<String> getUnsupportedDefinitionFields(ModElementType type) {
+		Map<?, ?> map = definitionsProvider.getModElementDefinition(type);
+
+		if (map == null) {
+			LOG.info("Failed to load element definition for mod element type " + type.name());
+			return null;
+		}
+
+		List<?> exclusions = (List<?>) map.get("field_exclusions");
+		if (exclusions != null)
+			return exclusions.stream().map(Object::toString).map(String::trim).collect(Collectors.toList());
 
 		return null;
 	}

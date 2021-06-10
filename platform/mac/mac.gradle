@@ -1,7 +1,8 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
+def exportPath = 'build/export/mac64/MCreator.app/Contents/'
+
 task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) {
-    def exportPath = 'build/export/mac64/MCreator.app/Contents/'
     into exportPath
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
@@ -14,7 +15,7 @@ task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) 
         from file('platform/mac/mcreator.icns')
     }
     into('MacOS') {
-        from file('platform/mac/mcreator') rename('mcreator', 'mcreatordos')
+        from file('platform/mac/mcreator')
         from file('LICENSE.txt')
     }
     into('MacOS/plugins') { from 'build/plugins/' }
@@ -26,22 +27,23 @@ task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) 
             from configurations.mac64
         }
     }
-    into('MacOS/jdk/Contents/Home') { with copySpec { from 'jdk/jdk11_mac_64/' } exclude "jre/lib/tools.jar" }
+    into('MacOS/jdk/') { with copySpec { from 'jdk/jdk11_mac_64/' } }
     doLast {
         convertCRLF(file(exportPath + '/Info.plistdos'), file(exportPath + '/Info.plist'))
-        convertCRLF(file(exportPath + '/MacOS/mcreatordos'), file(exportPath + '/MacOS/mcreator'))
         delete exportPath + '/Info.plistdos'
-        delete exportPath + '/MacOS/mcreatordos'
     }
 }
 
 task dmgMac64(dependsOn: [downloadMKISOFS, exportMac64]) {
     doLast {
-        def mkisofs_binary = '';
+        def mkisofs_binary
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            mkisofs_binary = projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs';
-        } else {
-            mkisofs_binary = 'mkisofs';
+            mkisofs_binary = projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs'
+        } else { // we are on Nix system
+            mkisofs_binary = 'mkisofs'
+
+            // chmod needed on executable as mkisofs does not +x on Nix systems
+            exec { commandLine('chmod', '+x', exportPath + '/MacOS/mcreator') }
         }
         ant.exec(executable: mkisofs_binary, failonerror: true) {
             arg(value: '-r')
