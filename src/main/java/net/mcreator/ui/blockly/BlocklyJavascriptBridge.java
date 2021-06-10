@@ -35,8 +35,8 @@ import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import netscape.javascript.JSObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -229,11 +229,11 @@ public class BlocklyJavascriptBridge {
 		if (type.contains("procedure_retval_")) {
 			retval = workspace.getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
-					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementTypeLoader.INSTANCE
+					VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
+							VariableTypeLoader.INSTANCE
 									.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
 							null;
-					return returnTypeCurrent == VariableElementTypeLoader.INSTANCE
+					return returnTypeCurrent == VariableTypeLoader.INSTANCE
 							.getVariableTypeFromString(StringUtils.removeStart(type, "procedure_retval_"));
 				}
 				return false;

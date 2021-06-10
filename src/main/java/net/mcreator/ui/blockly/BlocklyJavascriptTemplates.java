@@ -20,23 +20,23 @@
 package net.mcreator.ui.blockly;
 
 import net.mcreator.ui.init.L10N;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableType;
 
 public class BlocklyJavascriptTemplates {
 
-	public static String variableListExtension(VariableElementType variableType) {
+	public static String variableListExtension(VariableType variableType) {
 		return "Blockly.Extensions.register('" + variableType.getName() + "_variables',function () {"
 				+ "this.getInput(\"var\").appendField(new Blockly.FieldDropdown(getVariablesOfType(\"" + variableType
 				.getBlocklyVariableType() + "\")), 'VAR');" + "});";
 	}
 
-	public static String procedureListExtensions(VariableElementType variableType) {
+	public static String procedureListExtensions(VariableType variableType) {
 		return "Blockly.Extensions.register('procedure_retval_" + variableType.getName() + "',function () {"
 				+ "this.appendDummyInput().appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf(\"procedure_retval_"
 				+ variableType.getName() + "\"))), 'procedure');" + "});";
 	}
 
-	public static String getVariableBlock(VariableElementType variableType) {
+	public static String getVariableBlock(VariableType variableType) {
 		return "Blockly.defineBlocksWithJsonArray([{\"type\":\"variables_get_" + variableType.getName()
 				+ "\",\"message0\":\"" + L10N.t("blockly.block.get_var")
 				+ " %1\",\"args0\":[{\"type\": \"input_dummy\",\"name\": \"var\"" + "}]," + "\"extensions\": [\""
@@ -44,7 +44,7 @@ public class BlocklyJavascriptTemplates {
 				.getBlocklyVariableType() + "\",\"colour\":" + variableType.getColor() + "}]);";
 	}
 
-	public static String setVariableBlock(VariableElementType variableType) {
+	public static String setVariableBlock(VariableType variableType) {
 		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"variables_set_" + variableType.getName()
 				+ "\",\"message0\":\"" + L10N.t("blockly.block.set_var") + " %1 " + L10N.t("blockly.block.set_to")
 				+ " %2\",\"args0\":[{\"type\":\"input_dummy\",\"name\":\"var\"},{\"type\":\"input_value\",\"name\":\"VAL\","
@@ -54,13 +54,13 @@ public class BlocklyJavascriptTemplates {
 				+ variableType.getColor() + "}]);";
 	}
 
-	public static String customDependencyBlock(VariableElementType variableType) {
+	public static String customDependencyBlock(VariableType variableType) {
 		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"custom_dependency_" + variableType.getName()
 				+ "\",\"message0\":\"%1\",\"args0\":[{\"type\":\"field_input\",\"name\":\"NAME\",\"text\":\"dependencyName\"}],\"output\":\""
 				+ variableType.getBlocklyVariableType() + "\",\"colour\":" + variableType.getColor() + "}]);";
 	}
 
-	public static String procedureReturnValueBlock(VariableElementType variableType) {
+	public static String procedureReturnValueBlock(VariableType variableType) {
 		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"procedure_retval_" + variableType.getName()
 				+ "\",\"message0\": \"" + L10N.t("blockly.block.procedure_retval")
 				+ "\",\"extensions\": [\"procedure_retval_" + variableType.getName() + "\"],\"output\": \""
@@ -68,7 +68,7 @@ public class BlocklyJavascriptTemplates {
 				.getColor() + "}]);";
 	}
 
-	public static String returnBlock(VariableElementType variableType) {
+	public static String returnBlock(VariableType variableType) {
 		return "Blockly.defineBlocksWithJsonArray([" + "{\"type\":\"return_" + variableType.getName()
 				+ "\",\"message0\":\"" + L10N.t("blockly.block.return")
 				+ " %1\",\"args0\":[{\"type\":\"input_value\",\"name\":\"return\",\"check\":\"" + variableType
