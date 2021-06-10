@@ -85,6 +85,9 @@ public class VariableTypeLoader {
 			case "string":
 				BuiltInTypes.STRING = variableType;
 				break;
+			case "direction":
+				BuiltInTypes.DIRECTION = variableType;
+				break;
 			}
 		}
 
@@ -120,5 +123,6 @@ public class VariableTypeLoader {
 		public static VariableType LOGIC;
 		public static VariableType NUMBER;
 		public static VariableType STRING;
+		public static VariableType DIRECTION;
 	}
 }

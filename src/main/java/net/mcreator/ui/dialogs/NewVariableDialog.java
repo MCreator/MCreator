@@ -30,6 +30,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Collection;
 
 public class NewVariableDialog {
@@ -46,7 +47,8 @@ public class NewVariableDialog {
 
 		JComboBox<VariableType> type = new JComboBox<>(supportedTypes.toArray(new VariableType[0]));
 
-		JComboBox<VariableType.Scope> scope = new JComboBox<>(VariableType.Scope.values());
+		JComboBox<VariableType.Scope> scope = new JComboBox<>(Arrays.copyOf(VariableType.Scope.values(),
+				VariableType.Scope.values().length - 1));
 
 		inp.add("North", L10N.label("dialog.variables.enter_name_select_type"));
 

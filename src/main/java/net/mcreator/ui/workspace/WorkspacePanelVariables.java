@@ -63,7 +63,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			@Override public boolean isCellEditable(int row, int column) {
 				if (!getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.STRING.getName())
 						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName())
-						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
+						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName())
+						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.DIRECTION.getName()))
 					return column != 3;
 				return true;
 			}
@@ -91,7 +92,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 							} else if (type == VariableTypeLoader.BuiltInTypes.STRING) {
 								elements.setValueAt("", row, 3);
 							} else {
-								elements.setValueAt("", row, 3);
+								elements.setValueAt(type.getDefaultValue(workspacePanel.getMcreator().getWorkspace()), row, 3);
 							}
 						}
 					}
@@ -138,6 +139,9 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 						return new SpinnerCellEditor(spinner);
 					} else if (variableType == VariableTypeLoader.BuiltInTypes.LOGIC) {
 						return new DefaultCellEditor(new JComboBox<>(new String[] { "true", "false" }));
+					} else if (variableType == VariableTypeLoader.BuiltInTypes.DIRECTION) {
+						return new DefaultCellEditor(new JComboBox<>(new String[] { "Direction.DOWN", "Direction.UP",
+								"Direction.NORTH", "Direction.SOUTH", "Direction.WEST", "Direction.EAST" }));
 					}
 				}
 
