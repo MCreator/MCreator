@@ -34,7 +34,7 @@ public class GeneratorStats {
 	private static final Pattern ftlFile = Pattern.compile(".*\\.ftl");
 
 	private final Map<ModElementType<?>, CoverageStatus> modElementTypeCoverageInfo = new TreeMap<>(
-			Comparator.comparing(ModElementType::name));
+			Comparator.comparing(ModElementType::getName));
 	private final Map<String, Double> coverageInfo = new HashMap<>();
 	private final Map<String, CoverageStatus> baseCoverageInfo = new HashMap<>();
 
@@ -55,7 +55,7 @@ public class GeneratorStats {
 			partials = new ArrayList<>();
 		for (ModElementType<?> type : ModElementType.getModElementTypes()) {
 			if (generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type) != null) {
-				if (partials.contains(type.name().toLowerCase(Locale.ENGLISH))) {
+				if (partials.contains(type.getName().toLowerCase(Locale.ENGLISH))) {
 					modElementTypeCoverageInfo.put(type, CoverageStatus.PARTIAL);
 				} else {
 					modElementTypeCoverageInfo.put(type, CoverageStatus.FULL);

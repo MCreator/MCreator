@@ -26,7 +26,6 @@ import net.mcreator.plugin.PluginLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,19 +33,19 @@ class DefinitionsProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Definition Loader");
 
-	private final Map<ModElementType<?>, Map<?, ?>> cache = new ConcurrentHashMap<>();
+	private final Map<String, Map<?, ?>> cache = new ConcurrentHashMap<>();
 
 	DefinitionsProvider(String generatorName) {
 		for (ModElementType<?> type : ModElementType.getModElementTypes()) {
 			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
-					"/" + generatorName + "/" + type.name().toLowerCase(Locale.ENGLISH) + ".definition.yaml");
+					"/" + generatorName + "/" + type.getName() + ".definition.yaml");
 
 			if (config.equals("")) // definition not specified
 				continue;
 
 			YamlReader reader = new YamlReader(config);
 			try {
-				cache.put(type, new ConcurrentHashMap<>((Map<?, ?>) reader.read())); // add definition to the cache
+				cache.put(type.getName(), new ConcurrentHashMap<>((Map<?, ?>) reader.read())); // add definition to the cache
 			} catch (YamlException e) {
 				LOG.error(e.getMessage(), e);
 				LOG.info("[" + generatorName + "] Error: " + e.getMessage());
@@ -55,7 +54,7 @@ class DefinitionsProvider {
 	}
 
 	Map<?, ?> getModElementDefinition(ModElementType<?> elementType) {
-		return cache.get(elementType);
+		return cache.get(elementType.getRegistryName());
 	}
 
 }

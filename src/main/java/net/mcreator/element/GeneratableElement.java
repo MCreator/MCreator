@@ -101,7 +101,8 @@ public abstract class GeneratableElement {
 		@Override
 		public GeneratableElement deserialize(JsonElement jsonElement, Type type,
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-			ModElementType<? extends GeneratableElement> modElementType = ModElementType
+			System.out.println(jsonElement.getAsJsonObject().get("_type").getAsString());
+			ModElementType<?> modElementType = ModElementType
 					.getModElementType(jsonElement.getAsJsonObject().get("_type").getAsString());
 			int importedFormatVersion = jsonDeserializationContext
 					.deserialize(jsonElement.getAsJsonObject().get("_fv"), Integer.class);
@@ -133,7 +134,7 @@ public abstract class GeneratableElement {
 				JsonSerializationContext jsonSerializationContext) {
 			JsonObject root = new JsonObject();
 			root.add("_fv", new JsonPrimitive(GeneratableElement.formatVersion));
-			root.add("_type", gson.toJsonTree(modElement.getModElement().getType()));
+			root.add("_type", gson.toJsonTree(modElement.getModElement().getType().getRegistryName()));
 			root.add("definition", gson.toJsonTree(modElement));
 			return root;
 		}

@@ -37,7 +37,7 @@ import java.util.*;
 public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorProvider, IElement {
 
 	private String name;
-	private ModElementType type;
+	private String type;
 
 	private Integer sortid = null;
 
@@ -63,9 +63,9 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	// it is transient so it does not getModElementType serialized
 	private transient Workspace workspace;
 
-	public ModElement(@Nonnull Workspace workspace, @Nonnull String name, ModElementType type) {
+	public ModElement(@Nonnull Workspace workspace, @Nonnull String name, ModElementType<?> type) {
 		this.name = name;
-		this.type = type;
+		this.type = type.getRegistryName();
 		this.registry_name = RegistryNameFixer.fromCamelCase(name);
 
 		setWorkspace(workspace);
@@ -117,16 +117,16 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 		mcItems = new ArrayList<>();
 
-		if (type == ModElementType.BuiltInTypes.DIMENSION) {
+		if (getType() == ModElementType.BuiltInTypes.DIMENSION) {
 			if (getMetadata("ep") != null && (Boolean) getMetadata("ep"))
 				mcItems.add(new MCItem.Custom(this, null));
-		} else if (type.getRecipeType() == RecipeType.ITEM || type.getRecipeType() == RecipeType.BLOCK) {
+		} else if (getType().getRecipeType() == RecipeType.ITEM || getType().getRecipeType() == RecipeType.BLOCK) {
 			mcItems.add(new MCItem.Custom(this, null));
-		} else if (type.getRecipeType() == RecipeType.BUCKET) {
+		} else if (getType().getRecipeType() == RecipeType.BUCKET) {
 			mcItems.add(new MCItem.Custom(this, null));
 			if (getMetadata("gb") != null && (Boolean) getMetadata("gb"))
 				mcItems.add(new MCItem.Custom(this, "bucket"));
-		} else if (type.getBaseType() == BaseType.ARMOR) {
+		} else if (getType().getBaseType() == BaseType.ARMOR) {
 			if (getMetadata("eh") != null && (Boolean) getMetadata("eh"))
 				mcItems.add(new MCItem.Custom(this, "helmet"));
 			if (getMetadata("ec") != null && (Boolean) getMetadata("ec"))
@@ -229,7 +229,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	 * @return The ID of the element for the given index, could be newly created
 	 */
 	public int getID(int index) {
-		return getID(index, type.getBaseType());
+		return getID(index, getType().getBaseType());
 	}
 
 	/**
@@ -280,12 +280,12 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.name = name;
 	}
 
-	public ModElementType getType() {
-		return type;
+	public ModElementType<?> getType() {
+		return ModElementType.getModElementType(type);
 	}
 
-	public void setType(ModElementType type) {
-		this.type = type;
+	public void setType(ModElementType<?> type) {
+		this.type = type.getName();
 	}
 
 	public boolean isCodeLocked() {
@@ -293,7 +293,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	public void setCodeLock(boolean codeLock) {
-		if (this.type == ModElementType.BuiltInTypes.CODE && !codeLock)
+		if (this.getType() == ModElementType.BuiltInTypes.CODE && !codeLock)
 			return;
 		this.locked_code = codeLock;
 	}

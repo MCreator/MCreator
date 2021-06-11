@@ -57,7 +57,7 @@ import java.util.stream.Collectors;
 public class TestWorkspaceDataProvider {
 
 	private static ModElement me(Workspace workspace, ModElementType<?> type, String sufix) {
-		return new ModElement(workspace, "Example" + type.name() + sufix, type);
+		return new ModElement(workspace, "Example" + type.getName() + sufix, type.getRegistryName());
 	}
 
 	public static List<GeneratableElement> getModElementExamplesFor(Workspace workspace, ModElementType<?> type,
@@ -92,7 +92,7 @@ public class TestWorkspaceDataProvider {
 		} else if (type == ModElementType.BuiltInTypes.COMMAND || type == ModElementType.BuiltInTypes.FUNCTION || type == ModElementType.BuiltInTypes.PAINTING
 				|| type == ModElementType.BuiltInTypes.KEYBIND) {
 			generatableElements
-					.add(getExampleFor(new ModElement(workspace, "Example" + type.name(), type), random, true, true,
+					.add(getExampleFor(new ModElement(workspace, "Example" + type.getName(), type.getRegistryName()), random, true, true,
 							0));
 		} else {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));

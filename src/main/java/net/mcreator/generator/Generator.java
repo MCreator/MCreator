@@ -229,7 +229,7 @@ public class Generator implements IGenerator, Closeable {
 				.getModElementDefinition(element.getModElement().getType()); // config map
 		if (map == null) {
 			LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
-					.name());
+					.getName());
 			return Collections.emptyList();
 		}
 
@@ -313,7 +313,7 @@ public class Generator implements IGenerator, Closeable {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(element.getType());
 
 		if (map == null) {
-			LOG.warn("Failed to load element definition for mod element type " + element.getType().name());
+			LOG.warn("Failed to load element definition for mod element type " + element.getType().getName());
 			return;
 		}
 
@@ -366,7 +366,7 @@ public class Generator implements IGenerator, Closeable {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(element.getType());
 
 		if (map == null) {
-			LOG.info("Failed to load element definition for mod element type " + element.getType().name());
+			LOG.info("Failed to load element definition for mod element type " + element.getType().getName());
 			return null;
 		}
 
