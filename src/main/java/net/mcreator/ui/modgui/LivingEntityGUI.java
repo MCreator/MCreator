@@ -306,8 +306,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		spawningCondition = new ProcedureSelector(this.withEntry("entity/condition_natural_spawning"), mcreator,
-				L10N.t("elementgui.living_entity.condition_natural_spawn"),
-				VariableTypeLoader.BuiltInTypes.LOGIC,
+				L10N.t("elementgui.living_entity.condition_natural_spawn"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.setDefaultName(L10N.t("condition.common.use_vanilla"));
 

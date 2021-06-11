@@ -218,8 +218,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		g.scale(2, 2);
 
 		g.setFont(fontMC);
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
 
 		g.setColor(Color.gray.brighter().brighter());
 
