@@ -20,6 +20,7 @@ package net.mcreator.ui.workspace;
 
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.io.Transliteration;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -140,8 +141,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					} else if (variableType == VariableTypeLoader.BuiltInTypes.LOGIC) {
 						return new DefaultCellEditor(new JComboBox<>(new String[] { "true", "false" }));
 					} else if (variableType == VariableTypeLoader.BuiltInTypes.DIRECTION) {
-						return new DefaultCellEditor(new JComboBox<>(new String[] { "Direction.DOWN", "Direction.UP",
-								"Direction.NORTH", "Direction.SOUTH", "Direction.WEST", "Direction.EAST" }));
+						return new DefaultCellEditor(new JComboBox<>(ElementUtil.loadDirections()));
 					}
 				}
 
