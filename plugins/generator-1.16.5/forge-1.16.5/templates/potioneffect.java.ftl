@@ -33,18 +33,12 @@
 
 package ${package}.potion;
 
-@${JavaModName}Elements.ModElement.Tag public class ${name}PotionEffect extends ${JavaModName}Elements.ModElement{
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)  public class ${name}PotionEffect {
 
 	@ObjectHolder("${modid}:${registryname}")
 	public static final Effect potion = null;
 
-	public ${name}PotionEffect (${JavaModName}Elements instance) {
-		super(instance, ${data.getModElement().getSortID()});
-
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
-	}
-
-	@SubscribeEvent public void registerEffect(RegistryEvent.Register<Effect> event) {
+	@SubscribeEvent public static void registerEffect(RegistryEvent.Register<Effect> event) {
 		event.getRegistry().register(new EffectCustom());
 	}
 

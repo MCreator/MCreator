@@ -29,21 +29,15 @@
 
 <#-- @formatter:off -->
 
-package ${package}.item;
+package ${package}.potion;
 
-@${JavaModName}Elements.ModElement.Tag public class ${name} extends ${JavaModName}Elements.ModElement{
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Potion {
 
 	@ObjectHolder("${modid}:${registryname}")
 	public static final Potion potionType = null;
 
-	public ${name} (${JavaModName}Elements instance) {
-		super(instance, ${data.getModElement().getSortID()});
 
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
-	}
-
-
-	@SubscribeEvent public void registerPotion(RegistryEvent.Register<Potion> event) {
+	@SubscribeEvent public static void registerPotion(RegistryEvent.Register<Potion> event) {
 		event.getRegistry().register(new PotionCustom());
 	}
 

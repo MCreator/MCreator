@@ -31,12 +31,12 @@
 
 package ${package}.item;
 
-@${JavaModName}Elements.ModElement.Tag public class ${name} extends ${JavaModName}Elements.ModElement{
+@${JavaModName}Elements.ModElement.Tag public class ${name}Potion extends ${JavaModName}Elements.ModElement{
 
 	@ObjectHolder("${modid}:${registryname}")
 	public static final Potion potionType = null;
 
-	public ${name} (${JavaModName}Elements instance) {
+	public ${name}Potion (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
