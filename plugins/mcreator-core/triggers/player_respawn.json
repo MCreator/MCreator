@@ -22,7 +22,7 @@
     },
     {
       "name": "endconquered",
-      "type": "boolean"
+      "type": "logic"
     }
   ]
 }

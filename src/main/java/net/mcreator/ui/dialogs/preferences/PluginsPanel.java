@@ -85,7 +85,8 @@ class PluginsPanel {
 		opts.add(openPluginFolder);
 		opts.add(new JEmptyBox(5, 5));
 
-		openPluginFolder.addActionListener(e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins")));
+		openPluginFolder
+				.addActionListener(e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins")));
 
 		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, new JScrollPane(plugins), 5, 5));
 
