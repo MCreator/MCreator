@@ -1,19 +1,9 @@
 _default: Object
-number:
-  - double
-  - 0
-string:
-  - String
-  - '""'
-logic:
-  - boolean
-  - false
-itemstack:
-  - ItemStack
-  - ItemStack.EMPTY
-direction:
-  - Direction
-  - Direction.NORTH
+number: double
+string: String
+logic: boolean
+itemstack: ItemStack
+direction: Direction
 world: IWorld
 entity: Entity
 map: HashMap

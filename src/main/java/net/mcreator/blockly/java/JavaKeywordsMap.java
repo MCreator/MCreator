@@ -18,9 +18,6 @@
 
 package net.mcreator.blockly.java;
 
-import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
-
 import java.util.HashMap;
 
 public final class JavaKeywordsMap {

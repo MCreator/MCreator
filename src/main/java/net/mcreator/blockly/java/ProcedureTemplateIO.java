@@ -22,8 +22,8 @@ import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.io.BinaryStringIO;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.ls.DOMImplementationLS;
@@ -110,9 +110,10 @@ public class ProcedureTemplateIO {
 
 	public static Set<VariableElement> tryToExtractVariables(String xml) {
 		Set<VariableElement> retval = new HashSet<>();
-		for(VariableElementType elementType : VariableElementTypeLoader.INSTANCE.getVariableTypes()) {
-			Matcher m = Pattern.compile("<block type=\"(?:variables_set_" + elementType.getName() +
-					"|variables_get_" + elementType.getName() + ")\"><field name=\"VAR\">local:(.*?)</field>").matcher(xml);
+		for (VariableType elementType : VariableTypeLoader.INSTANCE.getAllVariableTypes()) {
+			Matcher m = Pattern.compile(
+					"<block type=\"(?:variables_set_" + elementType.getName() + "|variables_get_" + elementType
+							.getName() + ")\"><field name=\"VAR\">local:(.*?)</field>").matcher(xml);
 			try {
 				while (m.find()) {
 					VariableElement element = new VariableElement();
@@ -120,7 +121,7 @@ public class ProcedureTemplateIO {
 					element.setType(elementType);
 					retval.add(element);
 				}
-			} catch (Exception ignored){
+			} catch (Exception ignored) {
 			}
 		}
 		return retval;

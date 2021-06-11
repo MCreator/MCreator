@@ -32,6 +32,8 @@ jobs:
         uses: Pylo/xvfb-action@v1
         with:
           run: ./gradlew test
+      - name: Test Javadoc Generation
+        run: ./gradlew javadoc
       - name: Prepare Gradle Cache
         run: |
           rm -f  ~/.mcreator/gradle/caches/modules-2/modules-2.lock

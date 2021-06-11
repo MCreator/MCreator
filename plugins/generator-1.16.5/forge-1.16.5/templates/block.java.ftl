@@ -167,7 +167,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
         </#if>
 
-		<#macro blockProterties>
+		<#macro blockProperties>
 			Block.Properties.create(Material.${data.material})
 				.sound(SoundType.${data.soundOnStep})
 				<#if data.unbreakable>
@@ -209,11 +209,17 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		public CustomBlock() {
 			<#if data.blockBase?has_content && data.blockBase == "Stairs">
-			super(() -> new Block(<@blockProterties/>).getDefaultState(),
+			super(() -> new Block(<@blockProperties/>).getDefaultState(),
+			<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
+			    <#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>
+			        super(Sensitivity.EVERYTHING,
+			    <#else>
+			        super(Sensitivity.MOBS,
+			    </#if>
 			<#else>
 			super(
 			</#if>
-			<@blockProterties/>
+			<@blockProperties/>
 			);
 
             <#if data.rotationMode != 0 || data.isWaterloggable>
