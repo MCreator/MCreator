@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Map;
 
@@ -76,6 +77,11 @@ public class TemplateGenerator {
 		return generateTemplate(templateName, dataModel);
 	}
 
+	public String generateFromString(String template, Map<String, Object> dataModel) throws TemplateGeneratorException {
+		dataModel.putAll(baseDataModelProvider.provide());
+		return generateTemplateFromString(template, dataModel);
+	}
+
 	private String generateTemplate(String templateName, Map<String, Object> dataModel)
 			throws TemplateGeneratorException {
 		try {
@@ -85,6 +91,20 @@ public class TemplateGenerator {
 			return stringWriter.getBuffer().toString();
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template: " + templateName, e);
+			throw new TemplateGeneratorException();
+		}
+	}
+
+	private String generateTemplateFromString(String template, Map<String, Object> dataModel)
+			throws TemplateGeneratorException {
+		try {
+			Template freemarkerTemplate = new Template("DIRECT", new StringReader(template),
+					templateGeneratorConfiguration.getConfiguration());
+			StringWriter stringWriter = new StringWriter();
+			freemarkerTemplate.process(dataModel, stringWriter, templateGeneratorConfiguration.getBeansWrapper());
+			return stringWriter.getBuffer().toString();
+		} catch (IOException | TemplateException e) {
+			LOG.error("Failed to generate template from string", e);
 			throw new TemplateGeneratorException();
 		}
 	}

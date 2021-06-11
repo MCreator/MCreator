@@ -23,14 +23,14 @@ import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 public class BooleanGameRulesConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		if (input.getModElement().getMetadata("type").equals("boolean")) {
 			input.getModElement().clearMetadata();
-			input.getModElement().putMetadata("type", VariableElementTypeLoader.BuiltInTypes.LOGIC.getName());
+			input.getModElement().putMetadata("type", VariableTypeLoader.BuiltInTypes.LOGIC.getName());
 			input.getModElement().reinit();
 		}
 

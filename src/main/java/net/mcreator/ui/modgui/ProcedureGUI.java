@@ -49,8 +49,8 @@ import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -389,7 +389,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 							}
 							return validator.validate();
 						}
-					}, VariableElementTypeLoader.INSTANCE.getVariableTypes().toArray(new VariableElementType[0]));
+					}, VariableTypeLoader.INSTANCE.getAllVariableTypes());
 			if (element != null) {
 				blocklyPanel.addLocalVariable(element.getName(), element.getType().getBlocklyVariableType());
 				localVars.addElement(element);
@@ -413,10 +413,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			@Override public void mouseClicked(MouseEvent e) {
 				if (localVars.getSize() > 0 && e.getClickCount() == 2) {
 					VariableElement selectedVar = localVarsList.getSelectedValue();
-					VariableElementType type = selectedVar.getType();
-					String blockXml = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"variables_"
-							+ (e.isAltDown() ? "set_" : "get_") + type.getName() + "\"><field name=\"VAR\">local:"
-							+ selectedVar.getName() + "</field></block></xml>";
+					VariableType type = selectedVar.getType();
+					String blockXml =
+							"<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"variables_" + (e.isAltDown() ?
+									"set_" :
+									"get_") + type.getName() + "\"><field name=\"VAR\">local:" + selectedVar.getName()
+									+ "</field></block></xml>";
 					blocklyPanel.addBlocksFromXML(blockXml);
 				}
 			}
