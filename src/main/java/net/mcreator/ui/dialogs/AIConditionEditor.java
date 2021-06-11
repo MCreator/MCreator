@@ -54,9 +54,15 @@ public class AIConditionEditor {
 			continueCondition.setSelectedProcedure(data[1]);
 		}
 
-		JOptionPane pane = new JOptionPane(PanelUtils.gridElements(1, 2, 10, 10, startCondition, continueCondition));
-		JDialog dialog = pane.createDialog(parent, L10N.t("dialog.ai_condition.panel_name"));
-		dialog.setVisible(true);
+		MCreatorDialog window = new MCreatorDialog(parent, L10N.t("dialog.ai_condition.panel_name"));
+		window.setSize(450, 140);
+		window.setLocationRelativeTo(parent);
+		window.setModal(true);
+
+		JPanel conditions = new JPanel();
+		conditions.add(PanelUtils.centerAndEastElement(startCondition, continueCondition, 20, 5));
+		window.add("Center", PanelUtils.totalCenterInPanel(conditions));
+		window.setVisible(true);
 
 		return Arrays.asList(startCondition.getSelectedProcedure() != null ?
 				startCondition.getSelectedProcedure().getName() :
