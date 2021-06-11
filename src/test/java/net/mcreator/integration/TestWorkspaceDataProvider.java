@@ -44,8 +44,8 @@ import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import java.awt.*;
 import java.awt.image.RenderedImage;
@@ -113,8 +113,8 @@ public class TestWorkspaceDataProvider {
 		VariableElement sampleVariable1 = new VariableElement();
 		sampleVariable1.setName("test");
 		sampleVariable1.setValue("true");
-		sampleVariable1.setType(VariableElementTypeLoader.BuiltInTypes.LOGIC);
-		sampleVariable1.setScope(VariableElementType.Scope.GLOBAL_WORLD);
+		sampleVariable1.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
+		sampleVariable1.setScope(VariableType.Scope.GLOBAL_WORLD);
 		workspace.addVariableElement(sampleVariable1);
 
 		EmptyIcon.ImageIcon imageIcon = new EmptyIcon.ImageIcon(16, 16);

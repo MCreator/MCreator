@@ -48,7 +48,7 @@ import net.mcreator.util.SoundUtils;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -134,7 +134,7 @@ public final class MCreatorApplication {
 		ModAPIManager.initAPIs();
 
 		// load variable elements
-		VariableElementTypeLoader.loadVariableTypes();
+		VariableTypeLoader.loadVariableTypes();
 
 		// load blockly blocks after plugins are loaded
 		BlocklyLoader.init();
