@@ -52,8 +52,7 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean hasVariablesOfScope(String type) {
-		return workspace.getVariableElements().stream()
-				.anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
+		return workspace.getVariableElements().stream().anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
 	}
 
 	public boolean hasFluids() {
