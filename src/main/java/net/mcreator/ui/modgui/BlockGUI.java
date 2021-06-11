@@ -1349,7 +1349,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 
-		hasGravity.setEnabled(!isWaterloggable.isSelected());
+		if (hasGravity.isEnabled())
+			hasGravity.setEnabled(!isWaterloggable.isSelected());
 	}
 
 	@Override public Block getElementFromGUI() {

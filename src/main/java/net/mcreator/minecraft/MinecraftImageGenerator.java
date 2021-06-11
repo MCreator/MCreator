@@ -1020,7 +1020,7 @@ public class MinecraftImageGenerator {
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
 			g2d.scale(0.88, 1);
 
-			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 14, 1, 14, 1, 0, 1), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 14, 2, 14, 1, 0, 1), null, null);
 			g2d.dispose();
 			return out;
 		}
