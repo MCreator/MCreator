@@ -29,7 +29,7 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.registry.ModElementRegistry;
 import net.mcreator.element.types.GUI;
-import net.mcreator.element.types.Mob;
+import net.mcreator.element.types.LivingEntity;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -75,7 +75,7 @@ import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class LivingEntityGUI extends ModElementGUI<Mob> {
+public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private ProcedureSelector onStruckByLightning;
 	private ProcedureSelector whenMobFalls;
@@ -191,7 +191,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 					"MagmaCube", "Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse",
 					"Spider", "IronGolem" });
 
-	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature" });
+	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "LivingEntity", "Creature" });
 	private final JComboBox<String> mobCreatureType = new JComboBox<>(
 			new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
 	private final JComboBox<String> bossBarColor = new JComboBox<>(
@@ -876,7 +876,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		} else if (page == 5) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-						.map(compileNote -> "Mob AI builder: " + compileNote.getMessage())
+						.map(compileNote -> "LivingEntity AI builder: " + compileNote.getMessage())
 						.collect(Collectors.toList()));
 		} else if (page == 6) {
 			if ((int) minNumberOfMobsPerGroup.getValue() > (int) maxNumberOfMobsPerGroup.getValue()) {
@@ -886,7 +886,7 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		return new AggregatedValidationResult.PASS();
 	}
 
-	@Override public void openInEditingMode(Mob mob) {
+	@Override public void openInEditingMode(LivingEntity mob) {
 		disableMobModelCheckBoxListener = true;
 		mobName.setText(mob.mobName);
 		mobModelTexture.setSelectedItem(mob.mobModelTexture);
@@ -1011,8 +1011,8 @@ public class LivingEntityGUI extends ModElementGUI<Mob> {
 		disableMobModelCheckBoxListener = false;
 	}
 
-	@Override public Mob getElementFromGUI() {
-		Mob mob = new Mob(modElement);
+	@Override public LivingEntity getElementFromGUI() {
+		LivingEntity mob = new LivingEntity(modElement);
 		mob.mobName = mobName.getText();
 		mob.mobLabel = mobLabel.getText();
 		mob.mobModelTexture = mobModelTexture.getSelectedItem();

@@ -18,11 +18,11 @@
 
 package net.mcreator.workspace.elements;
 
-import net.mcreator.element.registry.BaseType;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.registry.BaseType;
+import net.mcreator.element.registry.ModElementRegistry;
 import net.mcreator.element.registry.ModElementType;
 import net.mcreator.element.registry.RecipeType;
-import net.mcreator.element.registry.ModElementRegistry;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.RegistryNameFixer;

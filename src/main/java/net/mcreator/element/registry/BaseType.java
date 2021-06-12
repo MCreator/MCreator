@@ -41,25 +41,25 @@ package net.mcreator.element.registry;
 // @formatter:off
 public enum BaseType {
 
-	BLOCK,
-	ITEM,
 	ARMOR,
 	BIOME,
+	BLOCK,
 	COMMAND,
-	FUEL,
-	ENTITY,
-	TAB,
-	DIMENSION,
-	STRUCTURE,
-	GUI,
-	KEYBIND,
-	PROCEDURE,
-	OVERLAY,
-	POTION,
 	DATAPACK,
+	DIMENSION,
 	ENCHANTMENT,
-	PARTICLE,
+	ENTITY,
+	FUEL,
+	GUI,
+	ITEM,
+	KEYBIND,
 	OTHER,
+	OVERLAY,
+	PARTICLE,
+	PROCEDURE,
+	POTION,
+	STRUCTURE,
+	TAB,
 
 	/* legacy base types */
 	ACHIEVEMENT

@@ -56,7 +56,7 @@ public class ModElementRegistry {
 		add(KEYBIND = new ModElementType<>("keybind", 'k', BaseType.KEYBIND, RecipeType.NONE, KeyBindGUI::new,
 				KeyBinding.class));
 		add(LIVING_ENTITY = new ModElementType<>("livingentity", 'e', BaseType.ENTITY, RecipeType.NONE,
-				LivingEntityGUI::new, Mob.class));
+				LivingEntityGUI::new, LivingEntity.class));
 		add(LOOTTABLE = new ModElementType<>("loottable", 'l', BaseType.DATAPACK, RecipeType.NONE, LootTableGUI::new,
 				LootTable.class));
 		add(MUSICDISC = new ModElementType<>("musicdisc", 'x', BaseType.OTHER, RecipeType.ITEM, MusicDiscGUI::new,

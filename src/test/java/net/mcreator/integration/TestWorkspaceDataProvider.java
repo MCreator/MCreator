@@ -512,7 +512,7 @@ public class TestWorkspaceDataProvider {
 			gui.components = components;
 			return gui;
 		} else if (LIVING_ENTITY.equals(modElement.getType())) {
-			Mob mob = new Mob(modElement);
+			LivingEntity mob = new LivingEntity(modElement);
 			mob.mobName = modElement.getName();
 			mob.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
 			mob.mobModelTexture = "test.png";
@@ -539,7 +539,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			mob.equipmentBoots = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-			mob.mobBehaviourType = _true ? "Creature" : "Mob";
+			mob.mobBehaviourType = _true ? "Creature" : "LivingEntity";
 			mob.mobCreatureType = getRandomItem(random,
 					new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
 			mob.attackStrength = 4;
