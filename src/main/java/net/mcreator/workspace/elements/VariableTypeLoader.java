@@ -28,10 +28,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -112,7 +109,7 @@ public class VariableTypeLoader {
 
 	public Collection<VariableType> getGlobalVariableTypes(Workspace workspace) {
 		return VARIABLE_TYPES_LIST.keySet().stream().filter(type -> type.canBeGlobal(workspace))
-				.collect(Collectors.toList());
+				.sorted(Comparator.comparing(VariableType::toString)).collect(Collectors.toList());
 	}
 
 	public String getVariableBlocklyJS() {
