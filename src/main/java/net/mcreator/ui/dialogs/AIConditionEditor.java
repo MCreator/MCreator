@@ -28,12 +28,15 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class AIConditionEditor {
 
 	public static List<String> open(MCreator parent, @Nullable String[] data) {
+		List<String> retVal = data != null ? Arrays.asList(data) : new ArrayList<>(2);
+
 		ProcedureSelector startCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("entity/ai_start_condition"), parent,
 				L10N.t("dialog.ai_condition.additional_start"), ProcedureSelector.Side.BOTH, false,
@@ -61,14 +64,25 @@ public class AIConditionEditor {
 
 		JPanel conditions = new JPanel();
 		conditions.add(PanelUtils.centerAndEastElement(startCondition, continueCondition, 20, 5));
-		window.add("Center", PanelUtils.totalCenterInPanel(conditions));
+
+		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
+		ok.addActionListener(e -> {
+			retVal.set(0, startCondition.getSelectedProcedure() != null
+					? startCondition.getSelectedProcedure().getName() : "null");
+			retVal.set(1, continueCondition.getSelectedProcedure() != null
+					? continueCondition.getSelectedProcedure().getName() : "null");
+			window.setVisible(false);
+		});
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+		cancel.addActionListener(e -> window.setVisible(false));
+		parent.getRootPane().setDefaultButton(ok);
+		JPanel options = new JPanel();
+		options.add(PanelUtils.westAndCenterElement(ok, cancel));
+
+		window.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(conditions, options)));
 		window.setVisible(true);
 
-		return Arrays.asList(startCondition.getSelectedProcedure() != null ?
-				startCondition.getSelectedProcedure().getName() :
-				"null", continueCondition.getSelectedProcedure() != null ?
-				continueCondition.getSelectedProcedure().getName() :
-				"null");
+		return retVal;
 	}
 
 }
