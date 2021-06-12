@@ -1468,7 +1468,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.placeSound = placeSound.getSound();
 		block.hitSound = hitSound.getSound();
 		block.fallSound = fallSound.getSound();
-		block.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
 		block.luminance = (int) luminance.getValue();
 		block.unbreakable = unbreakable.isSelected();
 		block.breakHarvestLevel = (int) breakHarvestLevel.getValue();

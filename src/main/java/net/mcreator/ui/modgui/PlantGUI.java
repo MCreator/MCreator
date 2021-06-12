@@ -882,7 +882,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.placeSound = placeSound.getSound();
 		plant.hitSound = hitSound.getSound();
 		plant.fallSound = fallSound.getSound();
-		plant.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
 		plant.useLootTableForDrops = useLootTableForDrops.isSelected();
 		plant.customDrop = customDrop.getBlock();
 		plant.dropAmount = (int) dropAmount.getValue();
