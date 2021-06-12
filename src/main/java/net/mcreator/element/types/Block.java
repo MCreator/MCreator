@@ -86,7 +86,7 @@ import java.util.stream.Collectors;
 
 	public double enchantPowerBonus;
 	public boolean plantsGrowOn;
-	public boolean canProvidePower;
+	public boolean canRedstoneConnect;
 	public int lightOpacity;
 	public Material material;
 
@@ -94,7 +94,7 @@ import java.util.stream.Collectors;
 	public boolean tickRandomly;
 
 	public boolean isReplaceable;
-	public boolean emitsRedstone;
+	public boolean canProvidePower;
 	public int emittedRedstonePower;
 	public Procedure redstonePowerProvider;
 	public String colorOnMap;

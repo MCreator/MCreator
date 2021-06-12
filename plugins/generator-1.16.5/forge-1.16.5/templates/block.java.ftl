@@ -449,7 +449,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
-		<#if data.emitsRedstone>
+		<#if data.canProvidePower>
 		@Override public boolean canProvidePower(BlockState state) {
 			return true;
 		}
@@ -522,7 +522,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-        <#if data.canProvidePower>
+        <#if data.canRedstoneConnect>
         @Override
 		public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
 			return true;
