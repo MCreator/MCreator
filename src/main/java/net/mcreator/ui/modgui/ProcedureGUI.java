@@ -594,7 +594,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		if (isEditingMode() && dependenciesChanged) {
 			for (ModElement element : mcreator.getWorkspace().getModElements()) {
 				// if this mod element is not locked and has procedures, we try to update dependencies
-				// in this case, we (re)generate mod element code so dependencies getModElementType updated in the trigger code
+				// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
 				if (!element.isCodeLocked()) {
 					GeneratableElement generatableElement = element.getGeneratableElement();
 					if (generatableElement instanceof GUI) {

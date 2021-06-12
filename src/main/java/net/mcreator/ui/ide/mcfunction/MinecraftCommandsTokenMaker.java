@@ -938,7 +938,7 @@ public class MinecraftCommandsTokenMaker extends AbstractJFlexTokenMaker {
 	 * from <code>text</code>.  This method must be implemented by
 	 * subclasses so they can correctly implement syntax highlighting.
 	 *
-	 * @param text             The text from which to getModElementType tokens.
+	 * @param text             The text from which to get tokens.
 	 * @param initialTokenType The token type we should start with.
 	 * @param startOffset      The offset into the document at which
 	 *                         <code>text</code> starts.
@@ -1182,7 +1182,7 @@ public class MinecraftCommandsTokenMaker extends AbstractJFlexTokenMaker {
 						zzCurrentPos = zzCurrentPosL;
 						zzMarkedPos = zzMarkedPosL;
 						boolean eof = zzRefill();
-						// getModElementType translated positions and possibly new buffer
+						// get translated positions and possibly new buffer
 						zzCurrentPosL = zzCurrentPos;
 						zzMarkedPosL = zzMarkedPos;
 						zzBufferL = zzBuffer;

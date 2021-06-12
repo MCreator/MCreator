@@ -184,7 +184,7 @@ public class OrePackMakerTool {
 		mcreator.getGenerator().generateElement(oreItem);
 		mcreator.getModElementManager().storeModElement(oreItem);
 
-		// we use Block GUI to getModElementType default values for the block element (kinda hacky!)
+		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block oreBlock = (Block) ModElementType.BuiltInTypes.BLOCK
 				.getModElementGUI(mcreator, new ModElement(workspace, name + "Ore", ModElementType.BuiltInTypes.BLOCK), false)
 				.getElementFromGUI();
@@ -214,7 +214,7 @@ public class OrePackMakerTool {
 		mcreator.getGenerator().generateElement(oreBlock);
 		mcreator.getModElementManager().storeModElement(oreBlock);
 
-		// we use Block GUI to getModElementType default values for the block element (kinda hacky!)
+		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block oreBlockBlock = (Block) ModElementType.BuiltInTypes.BLOCK
 				.getModElementGUI(mcreator, new ModElement(workspace, name + "Block", ModElementType.BuiltInTypes.BLOCK), false)
 				.getElementFromGUI();

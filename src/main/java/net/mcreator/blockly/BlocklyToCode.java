@@ -181,11 +181,11 @@ public abstract class BlocklyToCode implements IWorkspaceProvider {
 
 	public static String directProcessOutputBlock(BlocklyToCode master, Element element)
 			throws TemplateGeneratorException {
-		// we do a little hack to getModElementType the code of the input only
+		// we do a little hack to get the code of the input only
 		String originalMasterCode = master.getGeneratedCode();
 		master.clearCodeGeneratorBuffer(); // we clear all the existing code
 		master.processOutputBlock(element);
-		String generatedCode = master.getGeneratedCode(); // getModElementType the generated code
+		String generatedCode = master.getGeneratedCode(); // get the generated code
 		master.clearCodeGeneratorBuffer(); // we clear the master again to remove the code we just generated
 		master.append(originalMasterCode); // set the master code to the original code
 		return generatedCode;
@@ -193,12 +193,12 @@ public abstract class BlocklyToCode implements IWorkspaceProvider {
 
 	public static String directProcessStatementBlock(BlocklyToCode master, Element element)
 			throws TemplateGeneratorException {
-		// we do a little hack to getModElementType the code of the input only
+		// we do a little hack to get the code of the input only
 		String originalMasterCode = master.getGeneratedCode();
 		master.clearCodeGeneratorBuffer(); // we clear all the existing code
 		List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithBlock(element);
 		master.processBlockProcedure(base_blocks);
-		String generatedCode = master.getGeneratedCode(); // getModElementType the generated code
+		String generatedCode = master.getGeneratedCode(); // get the generated code
 		master.clearCodeGeneratorBuffer(); // we clear the master again to remove the code we just generated
 		master.append(originalMasterCode); // set the master code to the original code
 		return generatedCode;

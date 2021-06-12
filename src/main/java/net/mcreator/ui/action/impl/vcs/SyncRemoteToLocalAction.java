@@ -52,7 +52,7 @@ public class SyncRemoteToLocalAction extends VCSAction {
 		super(actionRegistry, L10N.t("action.vcs.pull"), e -> {
 			actionRegistry.getMCreator().setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-			// save workspace to FS first here, so the changes getModElementType detected by git
+			// save workspace to FS first here, so the changes get detected by git
 			actionRegistry.getMCreator().getFileManager().saveWorkspaceDirectlyAndWait();
 			// generate base at this point too
 			actionRegistry.getMCreator().getGenerator().generateBase();

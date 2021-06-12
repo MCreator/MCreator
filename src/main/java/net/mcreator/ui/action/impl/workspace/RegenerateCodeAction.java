@@ -154,7 +154,7 @@ public class RegenerateCodeAction extends GradleAction {
 					// save custom mod element picture if it has one
 					mcreator.getModElementManager().storeModElementPicture(generatableElement);
 
-					// add mod element to workspace again, so the icons getModElementType reloaded
+					// add mod element to workspace again, so the icons get reloaded
 					mcreator.getWorkspace().addModElement(mod);
 
 					// we reinit the mod to load new icons etc.
@@ -204,7 +204,7 @@ public class RegenerateCodeAction extends GradleAction {
 			mcreator.getGenerator().generateBase(false);
 			mcreator.mv.updateMods();
 
-			// remove custom API libraries so they getModElementType re-downloaded
+			// remove custom API libraries so they get re-downloaded
 			ModAPIManager.deleteAPIs(mcreator.getWorkspace(), mcreator.getWorkspaceSettings());
 
 			p2.ok();

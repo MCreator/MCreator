@@ -89,7 +89,7 @@ public class WrapLayout extends FlowLayout {
 	 * Returns the minimum or preferred dimension needed to layout the target
 	 * container.
 	 *
-	 * @param target    target to getModElementType layout size for
+	 * @param target    target to get layout size for
 	 * @param preferred should preferred size be calculated
 	 * @return the dimension to layout the target container
 	 */

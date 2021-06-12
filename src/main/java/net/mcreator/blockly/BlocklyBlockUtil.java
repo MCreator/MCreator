@@ -88,7 +88,7 @@ public class BlocklyBlockUtil {
 		Element current = start_block;
 		List<Element> base_blocks = new ArrayList<>();
 		while (true) {
-			// getModElementType next element if there is one
+			// get next element if there is one
 			List<Element> nextchildren = XMLUtil.getChildrenWithName(current, "next");
 			if (nextchildren.size() == 0)
 				break;

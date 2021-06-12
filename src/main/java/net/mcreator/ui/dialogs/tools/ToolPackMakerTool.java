@@ -179,7 +179,7 @@ public class ToolPackMakerTool {
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hoe.getImage()),
 				mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(hoeTextureName)));
 
-		// we use Tool GUI to getModElementType default values for the block element (kinda hacky!)
+		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool pickaxeTool = (Tool) ModElementType.BuiltInTypes.TOOL
 				.getModElementGUI(mcreator, new ModElement(workspace, name + "Pickaxe", ModElementType.BuiltInTypes.TOOL), false)
 				.getElementFromGUI();
@@ -189,7 +189,7 @@ public class ToolPackMakerTool {
 		pickaxeTool.repairItems = Collections.singletonList(base);
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, pickaxeTool, folder);
 
-		// we use Tool GUI to getModElementType default values for the block element (kinda hacky!)
+		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool axeTool = (Tool) ModElementType.BuiltInTypes.TOOL
 				.getModElementGUI(mcreator, new ModElement(workspace, name + "Axe", ModElementType.BuiltInTypes.TOOL), false)
 				.getElementFromGUI();
@@ -200,7 +200,7 @@ public class ToolPackMakerTool {
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, axeTool, folder);
 		axeTool.damageVsEntity = (double) Math.round(9.0f * factor);
 
-		// we use Tool GUI to getModElementType default values for the block element (kinda hacky!)
+		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool swordTool = (Tool) ModElementType.BuiltInTypes.TOOL
 				.getModElementGUI(mcreator, new ModElement(workspace, name + "Sword", ModElementType.BuiltInTypes.TOOL), false)
 				.getElementFromGUI();
@@ -212,7 +212,7 @@ public class ToolPackMakerTool {
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, swordTool, folder);
 		swordTool.damageVsEntity = (double) Math.round(6.0f * factor);
 
-		// we use Tool GUI to getModElementType default values for the block element (kinda hacky!)
+		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool shovelTool = (Tool) ModElementType.BuiltInTypes.TOOL
 				.getModElementGUI(mcreator, new ModElement(workspace, name + "Shovel", ModElementType.BuiltInTypes.TOOL), false)
 				.getElementFromGUI();
@@ -222,7 +222,7 @@ public class ToolPackMakerTool {
 		shovelTool.repairItems = Collections.singletonList(base);
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, shovelTool, folder);
 
-		// we use Tool GUI to getModElementType default values for the block element (kinda hacky!)
+		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool hoeTool = (Tool) ModElementType.BuiltInTypes.TOOL
 				.getModElementGUI(mcreator, new ModElement(workspace, name + "Hoe", ModElementType.BuiltInTypes.TOOL), false)
 				.getElementFromGUI();

@@ -258,7 +258,7 @@ public class GradleConsole extends JPanel {
 
 	private void scrollToBottom() {
 		if (!slock.isSelected() && pan.isDisplayable()) // check if pan is displayable
-			// so we don't getModElementType IllegalComponentStateException: see http://www.oreilly.com/openbook/javawt/book/ch13.pdf, page 467
+			// so we don't get IllegalComponentStateException: see http://www.oreilly.com/openbook/javawt/book/ch13.pdf, page 467
 			pan.setCaretPosition(pan.getDocument().getLength());
 	}
 
