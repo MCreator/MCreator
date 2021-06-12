@@ -1,0 +1,5 @@
+defaultvalue: DyeColor.WHITE
+scopes:
+  local:
+    get: ${name}
+    set: ${name} = (${javaType}) ${value};
