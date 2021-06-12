@@ -324,8 +324,8 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(fenceGateBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
-		Block pressurePlateBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
-				.getModElement(mcreator, new ModElement(workspace, name + "PressurePlate", ModElementType.BLOCK), false)
+		Block pressurePlateBlock = (Block) ModElementType.BuiltInTypes.BLOCK
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "PressurePlate", ModElementType.BuiltInTypes.BLOCK), false)
 				.getElementFromGUI();
 		pressurePlateBlock.name = name + " Pressure Plate";
 		pressurePlateBlock.blockBase = "PressurePlate";
@@ -462,8 +462,8 @@ public class WoodPackMakerTool {
 		mcreator.getGenerator().generateElement(fenceGateRecipe);
 		mcreator.getModElementManager().storeModElement(fenceGateRecipe);
 
-		Recipe pressurePlateRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "PressurePlateRecipe", ModElementType.RECIPE), false)
+		Recipe pressurePlateRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "PressurePlateRecipe", ModElementType.BuiltInTypes.RECIPE), false)
 				.getElementFromGUI();
 		pressurePlateRecipe.recipeSlots[6] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		pressurePlateRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
