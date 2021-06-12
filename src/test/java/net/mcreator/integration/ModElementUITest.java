@@ -19,7 +19,8 @@
 package net.mcreator.integration;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
+import net.mcreator.element.registry.ModElementType;
+import net.mcreator.element.registry.ModElementRegistry;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -86,12 +87,12 @@ public class ModElementUITest {
 
 		// generate some "dummy" procedures for dropdowns to work
 		for (int i = 1; i <= 13; i++) {
-			workspace.addModElement(new ModElement(workspace, "procedure" + i, ModElementType.BuiltInTypes.PROCEDURE)
+			workspace.addModElement(new ModElement(workspace, "procedure" + i, ModElementRegistry.BuiltInTypes.PROCEDURE)
 					.putMetadata("dependencies", new ArrayList<String>()));
 		}
 
 		for (int i = 1; i <= 4; i++) {
-			workspace.addModElement(new ModElement(workspace, "condition" + i, ModElementType.BuiltInTypes.PROCEDURE)
+			workspace.addModElement(new ModElement(workspace, "condition" + i, ModElementRegistry.BuiltInTypes.PROCEDURE)
 					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
 		}
 
@@ -131,7 +132,7 @@ public class ModElementUITest {
 
 	private void testModElementLoading(Random random)
 			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
-		for (ModElementType<?> modElementType : ModElementType.ELEMENTS) {
+		for (ModElementType<?> modElementType : ModElementRegistry.ELEMENTS) {
 
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider
 					.getModElementExamplesFor(workspace, modElementType, random);

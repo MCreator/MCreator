@@ -20,7 +20,7 @@ package net.mcreator.generator;
 
 import com.google.gson.GsonBuilder;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
+import net.mcreator.element.registry.ModElementRegistry;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.generator.template.MinecraftCodeProvider;
 import net.mcreator.generator.template.TemplateConditionParser;
@@ -437,7 +437,7 @@ public class Generator implements IGenerator, Closeable {
 					return element;
 
 				// if this is GUI, we check for generated UI texture file too
-				if (element.getType() == ModElementType.BuiltInTypes.GUI) {
+				if (element.getType() == ModElementRegistry.BuiltInTypes.GUI) {
 					File guiTextureFile = workspace.getFolderManager()
 							.getOtherTextureFile(element.getName().toLowerCase(Locale.ENGLISH));
 					if (guiTextureFile.getCanonicalPath().equals(file.getCanonicalPath()))

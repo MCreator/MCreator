@@ -18,9 +18,10 @@
 
 package net.mcreator.workspace.misc;
 
-import net.mcreator.element.BaseType;
+import net.mcreator.element.registry.BaseType;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
+import net.mcreator.element.registry.ModElementType;
+import net.mcreator.element.registry.ModElementRegistry;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
@@ -57,7 +58,7 @@ import java.util.stream.Collectors;
 
 	public boolean hasFluids() {
 		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.BuiltInTypes.FLUID)
+			if (element.getType() == ModElementRegistry.BuiltInTypes.FLUID)
 				return true;
 		return false;
 	}
@@ -76,7 +77,7 @@ import java.util.stream.Collectors;
 	}
 
 	public List<ModElement> getElementsOfType(String typestring) {
-		ModElementType<?> type = ModElementType.getModElementType(typestring);
+		ModElementType<?> type = ModElementRegistry.getModElementType(typestring);
 		return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
 				.collect(Collectors.toList());
 	}

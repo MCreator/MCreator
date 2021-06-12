@@ -19,7 +19,7 @@
 package net.mcreator.ui.vcs;
 
 import net.mcreator.Launcher;
-import net.mcreator.element.BaseType;
+import net.mcreator.element.registry.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;

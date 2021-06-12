@@ -18,7 +18,7 @@
 
 package net.mcreator.element.converter;
 
-import net.mcreator.element.ModElementType;
+import net.mcreator.element.registry.ModElementType;
 import net.mcreator.element.converter.fv10.BiomeSpawnListConverter;
 import net.mcreator.element.converter.fv11.GUICoordinateConverter;
 import net.mcreator.element.converter.fv11.OverlayCoordinateConverter;
@@ -41,26 +41,27 @@ import net.mcreator.element.converter.fv6.GUIBindingInverter;
 import net.mcreator.element.converter.fv7.ProcedureEntityDepFixer;
 import net.mcreator.element.converter.fv8.OpenGUIProcedureDepFixer;
 import net.mcreator.element.converter.fv9.ProcedureGlobalTriggerFixer;
+import net.mcreator.element.registry.ModElementRegistry;
 
 import java.util.*;
 
 public class ConverterRegistry {
 
 	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<ModElementType<?>, List<IConverter>>() {{
-		put(ModElementType.BuiltInTypes.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
-		put(ModElementType.BuiltInTypes.ADVANCEMENT, Collections.singletonList(new AchievementFixer()));
-		put(ModElementType.BuiltInTypes.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
-		put(ModElementType.BuiltInTypes.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
+		put(ModElementRegistry.BuiltInTypes.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
+		put(ModElementRegistry.BuiltInTypes.ADVANCEMENT, Collections.singletonList(new AchievementFixer()));
+		put(ModElementRegistry.BuiltInTypes.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
+		put(ModElementRegistry.BuiltInTypes.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
 				new ProcedureVariablesConverter()));
-		put(ModElementType.BuiltInTypes.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
+		put(ModElementRegistry.BuiltInTypes.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
 				new BiomeFrozenTopLayerConverter()));
-		put(ModElementType.BuiltInTypes.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
-		put(ModElementType.BuiltInTypes.BLOCK, Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer()));
-		put(ModElementType.BuiltInTypes.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
-		put(ModElementType.BuiltInTypes.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
-		put(ModElementType.BuiltInTypes.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
-		put(ModElementType.BuiltInTypes.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
+		put(ModElementRegistry.BuiltInTypes.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
+		put(ModElementRegistry.BuiltInTypes.BLOCK, Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer()));
+		put(ModElementRegistry.BuiltInTypes.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
+		put(ModElementRegistry.BuiltInTypes.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
+		put(ModElementRegistry.BuiltInTypes.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
+		put(ModElementRegistry.BuiltInTypes.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {

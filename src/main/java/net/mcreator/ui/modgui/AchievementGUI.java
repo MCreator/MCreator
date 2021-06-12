@@ -23,8 +23,8 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.AchievementEntry;
+import net.mcreator.element.registry.ModElementRegistry;
 import net.mcreator.element.types.Achievement;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -109,8 +109,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		JPanel selp = new JPanel(new GridLayout(10, 2, 15, 2));
 		JPanel selp2 = new JPanel(new GridLayout(4, 2, 10, 2));
 
-		rewardLoot = new ModElementListField(mcreator, ModElementType.BuiltInTypes.LOOTTABLE);
-		rewardRecipes = new ModElementListField(mcreator, ModElementType.BuiltInTypes.RECIPE);
+		rewardLoot = new ModElementListField(mcreator, ModElementRegistry.BuiltInTypes.LOOTTABLE);
+		rewardRecipes = new ModElementListField(mcreator, ModElementRegistry.BuiltInTypes.RECIPE);
 
 		ComponentUtils.deriveFont(achievementName, 16);
 		ComponentUtils.deriveFont(achievementDescription, 16);
@@ -280,7 +280,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 				.updateComboBoxContents(parentAchievement, ElementUtil.loadAllAchievements(mcreator.getWorkspace()));
 
 		ComboBoxUtil.updateComboBoxContents(rewardFunction, ListUtils.merge(Collections.singleton("No function"),
-				mcreator.getWorkspace().getModElements().stream().filter(e -> e.getType() == ModElementType.BuiltInTypes.FUNCTION)
+				mcreator.getWorkspace().getModElements().stream().filter(e -> e.getType() == ModElementRegistry.BuiltInTypes.FUNCTION)
 						.map(ModElement::getName).collect(Collectors.toList())), "No function");
 
 		ComboBoxUtil.updateComboBoxContents(background, ListUtils.merge(Collections.singleton("Default"),

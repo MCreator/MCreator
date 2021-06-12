@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.dialogs.workspace;
 
-import net.mcreator.element.ModElementType;
+import net.mcreator.element.registry.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;

@@ -20,7 +20,7 @@ package net.mcreator.generator;
 
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
-import net.mcreator.element.ModElementType;
+import net.mcreator.element.registry.ModElementType;
 import net.mcreator.generator.mapping.MappingLoader;
 import net.mcreator.generator.template.TemplateGeneratorConfiguration;
 import net.mcreator.io.FileIO;

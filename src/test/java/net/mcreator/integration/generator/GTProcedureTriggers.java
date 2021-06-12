@@ -20,7 +20,7 @@ package net.mcreator.integration.generator;
 
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalTrigger;
-import net.mcreator.element.ModElementType;
+import net.mcreator.element.registry.ModElementRegistry;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.workspace.Workspace;
@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTProcedureTriggers {
 
 	public static void runTest(Logger LOG, String generatorName, Workspace workspace) {
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.PROCEDURE)
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementRegistry.BuiltInTypes.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE) {
 			LOG.warn("[" + generatorName
 					+ "] Skipping procedure triggers test as the current generator does not support them.");
@@ -70,7 +70,7 @@ public class GTProcedureTriggers {
 			}
 
 			ModElement modElement = new ModElement(workspace, "Test" + externalTrigger.getID(),
-					ModElementType.BuiltInTypes.PROCEDURE);
+					ModElementRegistry.BuiltInTypes.PROCEDURE);
 
 			Procedure procedure = new Procedure(modElement);
 			procedure.procedurexml =

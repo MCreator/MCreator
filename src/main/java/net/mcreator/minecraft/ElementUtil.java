@@ -18,8 +18,9 @@
 
 package net.mcreator.minecraft;
 
-import net.mcreator.element.BaseType;
-import net.mcreator.element.ModElementType;
+import net.mcreator.element.registry.BaseType;
+import net.mcreator.element.registry.ModElementType;
+import net.mcreator.element.registry.ModElementRegistry;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -83,7 +84,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllAchievements(Workspace workspace) {
-		List<DataListEntry> achievements = getCustomElementsOfType(workspace, ModElementType.BuiltInTypes.ADVANCEMENT);
+		List<DataListEntry> achievements = getCustomElementsOfType(workspace, ModElementRegistry.BuiltInTypes.ADVANCEMENT);
 		achievements.addAll(DataListLoader.loadDataList("achievements"));
 		return achievements;
 	}
@@ -134,7 +135,7 @@ public class ElementUtil {
 
 	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
-			if (modelement.getType() == ModElementType.BuiltInTypes.GAMERULE)
+			if (modelement.getType() == ModElementRegistry.BuiltInTypes.GAMERULE)
 				return modelement.getMetadata("type").equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName());
 			return false;
 		});
@@ -147,7 +148,7 @@ public class ElementUtil {
 
 	public static List<DataListEntry> getAllNumberGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
-			if (modelement.getType() == ModElementType.BuiltInTypes.GAMERULE)
+			if (modelement.getType() == ModElementRegistry.BuiltInTypes.GAMERULE)
 				return modelement.getMetadata("type").equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName());
 			return false;
 		});
@@ -162,7 +163,7 @@ public class ElementUtil {
 		ArrayList<String> retval = new ArrayList<>();
 
 		for (ModElement modElement : workspace.getModElements()) {
-			if (modElement.getType() == ModElementType.BuiltInTypes.FLUID) {
+			if (modElement.getType() == ModElementRegistry.BuiltInTypes.FLUID) {
 				retval.add("CUSTOM:" + modElement.getName());
 				retval.add("CUSTOM:" + modElement.getName() + ":Flowing");
 			}

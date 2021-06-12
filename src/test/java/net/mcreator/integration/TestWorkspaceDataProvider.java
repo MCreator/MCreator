@@ -19,7 +19,7 @@
 package net.mcreator.integration;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
+import net.mcreator.element.registry.ModElementType;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
@@ -55,7 +55,7 @@ import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static net.mcreator.element.ModElementType.BuiltInTypes.*;
+import static net.mcreator.element.registry.ModElementRegistry.BuiltInTypes.*;
 
 public class TestWorkspaceDataProvider {
 

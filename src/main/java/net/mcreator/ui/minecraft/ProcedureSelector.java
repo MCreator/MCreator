@@ -22,8 +22,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.registry.ModElementRegistry;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
@@ -212,8 +212,8 @@ public class ProcedureSelector extends JPanel {
 
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
-							ModElementType.BuiltInTypes.PROCEDURE);
-					ModElementGUI<?> newGUI = ModElementType.BuiltInTypes.PROCEDURE.getModElementGUI(mcreator, element, false);
+							ModElementRegistry.BuiltInTypes.PROCEDURE);
+					ModElementGUI<?> newGUI = ModElementRegistry.BuiltInTypes.PROCEDURE.getModElementGUI(mcreator, element, false);
 					if (newGUI != null) {
 						newGUI.showView();
 						newGUI.setModElementCreatedListener(generatableElement -> {
@@ -224,7 +224,7 @@ public class ProcedureSelector extends JPanel {
 						});
 						mcreator.getApplication().getAnalytics().async(() -> mcreator.getApplication().getAnalytics()
 								.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
-										ModElementType.BuiltInTypes.PROCEDURE.getReadableName(), null, null));
+										ModElementRegistry.BuiltInTypes.PROCEDURE.getReadableName(), null, null));
 					}
 				}
 			});
@@ -258,7 +258,7 @@ public class ProcedureSelector extends JPanel {
 		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXX"));
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.PROCEDURE)
+		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementRegistry.BuiltInTypes.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE)
 			setEnabled(false);
 	}
@@ -270,7 +270,7 @@ public class ProcedureSelector extends JPanel {
 
 	@Override public void setEnabled(boolean enabled) {
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BuiltInTypes.PROCEDURE)
+		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementRegistry.BuiltInTypes.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE)
 			enabled = false;
 
@@ -288,7 +288,7 @@ public class ProcedureSelector extends JPanel {
 		procedures.addItem(new CBoxEntry(defaultName));
 
 		for (ModElement mod : mcreator.getWorkspace().getModElements()) {
-			if (mod.getType() == ModElementType.BuiltInTypes.PROCEDURE) {
+			if (mod.getType() == ModElementRegistry.BuiltInTypes.PROCEDURE) {
 				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
 
 				List<Dependency> realdepsList = new ArrayList<>();

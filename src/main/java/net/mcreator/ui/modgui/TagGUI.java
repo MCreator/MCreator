@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.element.ModElementType;
+import net.mcreator.element.registry.ModElementRegistry;
 import net.mcreator.element.types.Tag;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -67,7 +67,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 		items = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 		blocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
-		functions = new ModElementListField(mcreator, ModElementType.BuiltInTypes.FUNCTION);
+		functions = new ModElementListField(mcreator, ModElementRegistry.BuiltInTypes.FUNCTION);
 		entities = new EntityListField(mcreator);
 
 		name.setValidator(new TagsNameValidator<>(name, false));

@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.dialogs;
 
-import net.mcreator.element.ModElementType;
+import net.mcreator.element.registry.ModElementType;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;

@@ -20,12 +20,12 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.InputSlot;
 import net.mcreator.element.parts.gui.OutputSlot;
 import net.mcreator.element.parts.gui.Slot;
+import net.mcreator.element.registry.ModElementRegistry;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
@@ -1196,7 +1196,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 								.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
-				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.BuiltInTypes.GUI)
+				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementRegistry.BuiltInTypes.GUI)
 						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
