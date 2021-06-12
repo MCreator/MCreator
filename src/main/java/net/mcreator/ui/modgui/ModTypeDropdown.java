@@ -37,7 +37,7 @@ public class ModTypeDropdown extends JPopupMenu {
 		setBorder(BorderFactory.createEmptyBorder());
 
 		SortedSet<ModElementType<?>> setMET = new TreeSet<>(Comparator.comparing(ModElementType::getReadableName));
-		setMET.addAll(ModElementType.getModElementTypes());
+		setMET.addAll(ModElementType.ELEMENTS);
 
 		List<ModElementType<?>> types = setMET.stream()
 				.filter(entry -> mcreator.getGeneratorStats().getModElementTypeCoverageInfo().get(entry)
