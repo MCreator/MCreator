@@ -477,7 +477,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(pressurePlateRecipe);
 
 		Recipe stickRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
-				.getModElementGUI(mcreator, new ModElement(workspace, name + "StickRecipe", ModElementType.RECIPE), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "StickRecipe", ModElementType.BuiltInTypes.RECIPE), false)
 				.getElementFromGUI();
 		stickRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		stickRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
