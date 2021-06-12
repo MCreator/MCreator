@@ -539,7 +539,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			mob.equipmentBoots = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-			mob.mobBehaviourType = _true ? "Creature" : "LivingEntity";
+			mob.mobBehaviourType = _true ? "Creature" : "Mob";
 			mob.mobCreatureType = getRandomItem(random,
 					new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
 			mob.attackStrength = 4;
