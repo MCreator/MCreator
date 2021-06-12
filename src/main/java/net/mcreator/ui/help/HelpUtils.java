@@ -33,7 +33,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 public class HelpUtils {
 
@@ -49,18 +49,37 @@ public class HelpUtils {
 		return wrapWithHelpButton(context, ca, ac, SwingConstants.RIGHT);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac, int direction) {
+	public static Component wrapWithHelpButton(IHelpContext context, Component ca,
+			@Nullable Supplier<?>... contextArguments) {
+		return wrapWithHelpButton(context, ca, null, SwingConstants.RIGHT, contextArguments);
+	}
+
+	public static Component wrapWithHelpButton(IHelpContext context, Component ca, int direction,
+			@Nullable Supplier<?>... contextArguments) {
+		return wrapWithHelpButton(context, ca, null, direction, contextArguments);
+	}
+
+	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac,
+			@Nullable Supplier<?>... contextArguments) {
+		return wrapWithHelpButton(context, ca, ac, SwingConstants.RIGHT, contextArguments);
+	}
+
+	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac, int direction,
+			@Nullable Supplier<?>... contextArguments) {
 		JLabel lab = new JLabel(HelpLoader.hasFullHelp(context) ? UIRES.get("help") : UIRES.get("help_partial"));
 		lab.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-		AtomicReference<BalloonTip> balloonTipAtomicReference = new AtomicReference<>();
 		lab.addMouseListener(new MouseAdapter() {
+
+			BalloonTip balloonTip = null;
+			JTextPane editorPane = null;
+
 			@Override public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
 
 				// lazy load tooltip for performance reasons
-				if (balloonTipAtomicReference.get() == null) {
-					JTextPane editorPane = new JTextPane();
+				if (balloonTip == null) {
+					editorPane = new JTextPane();
 
 					editorPane.setContentType("text/html");
 					editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
@@ -74,12 +93,10 @@ public class HelpUtils {
 						}
 					});
 
-					editorPane.setText(HelpLoader.loadHelpFor(context));
-
 					JScrollPane scrollPane = new JScrollPane(editorPane);
 					scrollPane.setPreferredSize(new Dimension(335, 190));
 
-					BalloonTip balloonTip = new BalloonTip(lab, scrollPane,
+					balloonTip = new BalloonTip(lab, scrollPane,
 							new EdgedBalloonStyle((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
 									(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")), BalloonTip.Orientation.LEFT_BELOW,
 							BalloonTip.AttachLocation.ALIGNED, 10, 10, false);
@@ -108,16 +125,15 @@ public class HelpUtils {
 					closeButton.setContentAreaFilled(false);
 					closeButton.setIcon(UIRES.get("close_small"));
 					balloonTip.setCloseButton(closeButton, false);
-
-					editorPane.setCaretPosition(0);
-
-					balloonTipAtomicReference.set(balloonTip);
 				}
 
-				balloonTipAtomicReference.get().setVisible(!balloonTipAtomicReference.get().isVisible());
+				editorPane.setText(HelpLoader.loadHelpFor(context, contextArguments));
+				editorPane.setCaretPosition(0);
 
-				if (balloonTipAtomicReference.get().isVisible())
-					balloonTipAtomicReference.get().requestFocus(true);
+				balloonTip.setVisible(!balloonTip.isVisible());
+
+				if (balloonTip.isVisible())
+					balloonTip.requestFocus(true);
 			}
 		});
 

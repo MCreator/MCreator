@@ -24,6 +24,7 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.Button;
+import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
@@ -44,8 +45,8 @@ import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import java.awt.*;
 import java.awt.image.RenderedImage;
@@ -113,8 +114,8 @@ public class TestWorkspaceDataProvider {
 		VariableElement sampleVariable1 = new VariableElement();
 		sampleVariable1.setName("test");
 		sampleVariable1.setValue("true");
-		sampleVariable1.setType(VariableElementTypeLoader.BuiltInTypes.LOGIC);
-		sampleVariable1.setScope(VariableElementType.Scope.GLOBAL_WORLD);
+		sampleVariable1.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
+		sampleVariable1.setScope(VariableType.Scope.GLOBAL_WORLD);
 		workspace.addVariableElement(sampleVariable1);
 
 		EmptyIcon.ImageIcon imageIcon = new EmptyIcon.ImageIcon(16, 16);
@@ -503,6 +504,8 @@ public class TestWorkspaceDataProvider {
 				components.add(new OutputSlot(6, "sot", 243, 563, Color.black, _true, _true, null, null, null));
 				components.add(new TextField("text1", 0, 10, 100, 20, "Input value ..."));
 				components.add(new TextField("text2", 55, 231, 90, 20, ""));
+				components.add(new Checkbox("checkbox1", 100, 100, "Text", new Procedure("condition1")));
+				components.add(new Checkbox("checkbox2", 125, 125, "Other text", new Procedure("condition2")));
 			}
 			gui.components = components;
 			return gui;

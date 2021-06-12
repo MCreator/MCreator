@@ -21,6 +21,7 @@ package net.mcreator.ui.help;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.HtmlUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.commonmark.Extension;
 import org.commonmark.ext.autolink.AutolinkExtension;
@@ -32,10 +33,12 @@ import javax.annotation.Nullable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 public class HelpLoader {
@@ -72,7 +75,7 @@ public class HelpLoader {
 		return helpContext != null && helpContext.getEntry() != null && getFromCache(helpContext.getEntry()) != null;
 	}
 
-	public static String loadHelpFor(IHelpContext helpContext) {
+	public static String loadHelpFor(IHelpContext helpContext, @Nullable Supplier<?>... contextArguments) {
 		if (helpContext != null) {
 			URI uri = null;
 			try {
@@ -85,8 +88,14 @@ public class HelpLoader {
 							+ "th { border: 1px solid #a0a0a0; } td { border: 1px solid #a0a0a0; } </style></head><body>");
 
 			if (helpContext.getEntry() != null) {
-				if (getFromCache(helpContext.getEntry()) != null) {
-					helpString.append(renderer.render(parser.parse(getFromCache(helpContext.getEntry()))));
+				String helpText = getFromCache(helpContext.getEntry());
+				if (helpText != null) {
+					if (contextArguments != null)
+						helpString.append(renderer.render(parser.parse(MessageFormat.format(helpText,
+								Arrays.stream(contextArguments).map(Supplier::get)
+										.map(e -> e == null ? "" : HtmlUtils.unescapeHtml(e.toString())).toArray()))));
+					else
+						helpString.append(renderer.render(parser.parse(helpText)));
 				} else {
 					helpString.append(L10N.t("help_loader.no_help_entry", helpContext.getEntry()));
 				}

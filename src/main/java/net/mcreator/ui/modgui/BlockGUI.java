@@ -56,7 +56,7 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
@@ -229,7 +229,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JComboBox<String> blockBase = new JComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
-					"Door", "FenceGate", "EndRod" });
+					"Door", "FenceGate", "EndRod", "PressurePlate" });
 
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -296,18 +296,17 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
-				VariableElementTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world"));
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString("x:number/y:number/z:number/world:world"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
-				L10N.t("elementgui.block.event_placing_condition"), VariableElementTypeLoader.BuiltInTypes.LOGIC,
+				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName("(no additional condition)");
+				.setDefaultName(L10N.t("condition.common.no_additional"));
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				L10N.t("elementgui.block.event_generate_condition"), VariableElementTypeLoader.BuiltInTypes.LOGIC,
+				L10N.t("elementgui.block.event_generate_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName("(no additional condition)");
+				.setDefaultName(L10N.t("condition.common.no_additional"));
 
 		blockBase.addActionListener(e -> {
 			renderType.setEnabled(true);
@@ -368,12 +367,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 				hasGravity.setSelected(false);
 				rotationMode.setSelectedIndex(0);
-				isWaterloggable.setSelected(false);
 
 				if (blockBase.getSelectedItem().equals("Wall") || blockBase.getSelectedItem().equals("Fence")
 						|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem().equals("Door")
 						|| blockBase.getSelectedItem().equals("FenceGate") || blockBase.getSelectedItem()
-						.equals("EndRod")) {
+						.equals("EndRod") || blockBase.getSelectedItem().equals("PressurePlate")) {
 					if (!isEditingMode()) {
 						hasTransparency.setSelected(true);
 						lightOpacity.setValue(0);
@@ -701,7 +699,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp3.add(dropAmount);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
-				L10N.label("elementgui.common.use_loot_table_for_drop")));
+				L10N.label("elementgui.common.use_loot_table_for_drop"), modElement::getRegistryName));
 		selp3.add(PanelUtils.centerInPanel(useLootTableForDrops));
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
@@ -1351,7 +1349,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 
-		hasGravity.setEnabled(!isWaterloggable.isSelected());
+		if (hasGravity.isEnabled())
+			hasGravity.setEnabled(!isWaterloggable.isSelected());
 	}
 
 	@Override public Block getElementFromGUI() {
