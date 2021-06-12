@@ -55,6 +55,8 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 	//Variables used for each mod element
 	private final BaseType baseType;
 	private final String registryName;
+	private final String readableName;
+	private final String description;
 	private final Character shortcut;
 	private final RecipeType recipeType;
 	private final ModElementGUIProvider<GE> modElementGUIProvider;
@@ -71,6 +73,9 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 
 		this.modElementGUIProvider = modElementGUIProvider;
 		this.modElementStorageClass = modElementStorageClass;
+
+		this.readableName = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH));
+		this.description = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH) + ".description");
 
 		for (Field field : modElementStorageClass.getFields())
 			if (field.getType().isAssignableFrom(Procedure.class)) {
@@ -96,11 +101,11 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 	}
 
 	public String getReadableName() {
-		return L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH));
+		return readableName;
 	}
 
 	public String getDescription() {
-		return L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH) + ".description");
+		return description;
 	}
 
 	public ImageIcon getIcon() {
