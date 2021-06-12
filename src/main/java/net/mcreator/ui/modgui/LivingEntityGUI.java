@@ -191,7 +191,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 					"MagmaCube", "Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse",
 					"Spider", "IronGolem" });
 
-	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "LivingEntity", "Creature" });
+	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature" });
 	private final JComboBox<String> mobCreatureType = new JComboBox<>(
 			new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
 	private final JComboBox<String> bossBarColor = new JComboBox<>(
