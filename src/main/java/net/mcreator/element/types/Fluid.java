@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.util.image.ImageUtils;
@@ -33,6 +34,7 @@ import java.util.List;
 @SuppressWarnings("unused") public class Fluid extends GeneratableElement implements ITabContainedElement {
 
 	public String name;
+	public String bucketName;
 
 	public String textureStill;
 	public String textureFlowing;
@@ -44,7 +46,11 @@ import java.util.List;
 	public String type;
 
 	public boolean generateBucket;
+	public String textureBucket;
 	public TabEntry creativeTab;
+	public Sound emptySound;
+	public String rarity;
+	public List<String> specialInfo;
 
 	public double resistance;
 	public int luminance;
@@ -71,6 +77,9 @@ import java.util.List;
 
 	public Fluid(ModElement element) {
 		super(element);
+
+		this.rarity = "COMMON";
+		this.specialInfo = new ArrayList<>();
 
 		this.resistance = 100;
 		this.colorOnMap = "DEFAULT";

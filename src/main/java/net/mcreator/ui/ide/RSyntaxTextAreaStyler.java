@@ -29,8 +29,6 @@ import org.fife.ui.rsyntaxtextarea.Style;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,12 +45,13 @@ public class RSyntaxTextAreaStyler {
 			Theme theme;
 
 			if (PluginLoader.INSTANCE
-					.getResourceAsStream("themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml") != null) {
-				theme = Theme.load(PluginLoader.INSTANCE
-						.getResourceAsStream("themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml"));
+					.getResourceAsStream("themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml")
+					!= null) {
+				theme = Theme.load(PluginLoader.INSTANCE.getResourceAsStream(
+						"themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml"));
 			} else {
-				theme = Theme.load(PluginLoader.INSTANCE
-						.getResourceAsStream("themes/default_dark/styles/code_editor.xml"));
+				theme = Theme
+						.load(PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/styles/code_editor.xml"));
 			}
 
 			if (!PreferencesManager.PREFERENCES.ide.editorTheme.equals("MCreator")) {

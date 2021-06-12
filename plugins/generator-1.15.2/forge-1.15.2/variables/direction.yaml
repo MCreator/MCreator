@@ -1,0 +1,5 @@
+defaultvalue: Direction.NORTH
+scopes:
+  local:
+    get: ${name}
+    set: ${name} = (${javaType}) ${value};
