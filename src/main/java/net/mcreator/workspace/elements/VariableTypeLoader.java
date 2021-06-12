@@ -100,7 +100,8 @@ public class VariableTypeLoader {
 	}
 
 	public Collection<VariableType> getAllVariableTypes() {
-		return VARIABLE_TYPES_LIST.keySet();
+		return VARIABLE_TYPES_LIST.keySet().stream().sorted(Comparator.comparing(VariableType::toString))
+				.collect(Collectors.toList());
 	}
 
 	public boolean doesVariableTypeExist(String name) {
