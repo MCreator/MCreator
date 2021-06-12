@@ -131,7 +131,7 @@ public class ModElementUITest {
 
 	private void testModElementLoading(Random random)
 			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
-		for (ModElementType<?> modElementType : ModElementType.getModElementTypes()) {
+		for (ModElementType<?> modElementType : ModElementType.ELEMENTS) {
 
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider
 					.getModElementExamplesFor(workspace, modElementType, random);
