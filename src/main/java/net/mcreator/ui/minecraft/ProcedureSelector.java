@@ -213,7 +213,7 @@ public class ProcedureSelector extends JPanel {
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
 							ModElementType.BuiltInTypes.PROCEDURE);
-					ModElementGUI<?> newGUI = ModElementType.BuiltInTypes.PROCEDURE.getModElement(mcreator, element, false);
+					ModElementGUI<?> newGUI = ModElementType.BuiltInTypes.PROCEDURE.getModElementGUI(mcreator, element, false);
 					if (newGUI != null) {
 						newGUI.showView();
 						newGUI.setModElementCreatedListener(generatableElement -> {
@@ -237,7 +237,7 @@ public class ProcedureSelector extends JPanel {
 					ModElement selectedProcedureAsModElement = mcreator.getWorkspace()
 							.getModElementByName(getSelectedProcedure().getName());
 					ModElementGUI<?> modeditor = selectedProcedureAsModElement.getType()
-							.getModElement(mcreator, selectedProcedureAsModElement, true);
+							.getModElementGUI(mcreator, selectedProcedureAsModElement, true);
 					if (modeditor != null)
 						modeditor.showView();
 				}

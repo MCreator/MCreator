@@ -24,7 +24,6 @@ import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -65,7 +64,7 @@ public class NewModElementDialog {
 			if (!mcreator.mv.currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
 				element.setParentFolder(mcreator.mv.currentFolder);
 
-			ModElementGUI<?> newGUI = type.getModElement(mcreator, element, false);
+			ModElementGUI<?> newGUI = type.getModElementGUI(mcreator, element, false);
 			if (newGUI != null) {
 				newGUI.showView();
 				mcreator.getApplication().getAnalytics().async(() -> mcreator.getApplication().getAnalytics()

@@ -215,7 +215,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		Map<?, ?> map = definitionsProvider.getModElementDefinition(type);
 
 		if (map == null) {
-			LOG.info("Failed to load element definition for mod element type " + type.getName());
+			LOG.info("Failed to load element definition for mod element type " + type.getRegistryName());
 			return null;
 		}
 
@@ -230,7 +230,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		Map<?, ?> map = definitionsProvider.getModElementDefinition(type);
 
 		if (map == null) {
-			LOG.info("Failed to load element definition for mod element type " + type.getName());
+			LOG.info("Failed to load element definition for mod element type " + type.getRegistryName());
 			return null;
 		}
 

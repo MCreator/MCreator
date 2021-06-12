@@ -51,7 +51,7 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 
 			Object appContext = Class.forName("sun.awt.AppContext").getMethod("getAppContext").invoke(null);
 
-			StyleSheet defaultStyles = (StyleSheet) appContext.getClass().getMethod("getModElementType", Object.class)
+			StyleSheet defaultStyles = (StyleSheet) appContext.getClass().getMethod("get", Object.class)
 					.invoke(appContext, key);
 
 			if (defaultStyles != null) {

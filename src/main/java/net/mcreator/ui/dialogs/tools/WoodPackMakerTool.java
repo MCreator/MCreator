@@ -148,7 +148,7 @@ public class WoodPackMakerTool {
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block woodBlock = (Block) ModElementType.BuiltInTypes.BLOCK
-				.getModElement(mcreator, new ModElement(workspace, name + "Wood", ModElementType.BuiltInTypes.BLOCK), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "Wood", ModElementType.BuiltInTypes.BLOCK), false)
 				.getElementFromGUI();
 		woodBlock.name = name + " Wood";
 		woodBlock.material = new Material(workspace, "WOOD");
@@ -171,7 +171,7 @@ public class WoodPackMakerTool {
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block logBlock = (Block) ModElementType.BuiltInTypes.BLOCK
-				.getModElement(mcreator, new ModElement(workspace, name + "Log", ModElementType.BuiltInTypes.BLOCK), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "Log", ModElementType.BuiltInTypes.BLOCK), false)
 				.getElementFromGUI();
 		logBlock.name = name + " Log";
 		logBlock.material = new Material(workspace, "WOOD");
@@ -199,7 +199,7 @@ public class WoodPackMakerTool {
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block planksBlock = (Block) ModElementType.BuiltInTypes.BLOCK
-				.getModElement(mcreator, new ModElement(workspace, name + "Planks", ModElementType.BuiltInTypes.BLOCK), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "Planks", ModElementType.BuiltInTypes.BLOCK), false)
 				.getElementFromGUI();
 		planksBlock.name = name + " Planks";
 		planksBlock.material = new Material(workspace, "WOOD");
@@ -221,7 +221,7 @@ public class WoodPackMakerTool {
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block leavesBlock = (Block) ModElementType.BuiltInTypes.BLOCK
-				.getModElement(mcreator, new ModElement(workspace, name + "Leaves", ModElementType.BuiltInTypes.BLOCK), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "Leaves", ModElementType.BuiltInTypes.BLOCK), false)
 				.getElementFromGUI();
 		leavesBlock.name = name + " Leaves";
 		leavesBlock.blockBase = "Leaves";
@@ -241,7 +241,7 @@ public class WoodPackMakerTool {
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block stairsBlock = (Block) ModElementType.BuiltInTypes.BLOCK
-				.getModElement(mcreator, new ModElement(workspace, name + "Stairs", ModElementType.BuiltInTypes.BLOCK), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "Stairs", ModElementType.BuiltInTypes.BLOCK), false)
 				.getElementFromGUI();
 		stairsBlock.name = name + " Stairs";
 		stairsBlock.blockBase = "Stairs";
@@ -263,7 +263,7 @@ public class WoodPackMakerTool {
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block slabBlock = (Block) ModElementType.BuiltInTypes.BLOCK
-				.getModElement(mcreator, new ModElement(workspace, name + "Slab", ModElementType.BuiltInTypes.BLOCK), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "Slab", ModElementType.BuiltInTypes.BLOCK), false)
 				.getElementFromGUI();
 		slabBlock.name = name + " Slab";
 		slabBlock.blockBase = "Slab";
@@ -285,7 +285,7 @@ public class WoodPackMakerTool {
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block fenceBlock = (Block) ModElementType.BuiltInTypes.BLOCK
-				.getModElement(mcreator, new ModElement(workspace, name + "Fence", ModElementType.BuiltInTypes.BLOCK), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "Fence", ModElementType.BuiltInTypes.BLOCK), false)
 				.getElementFromGUI();
 		fenceBlock.name = name + " Fence";
 		fenceBlock.blockBase = "Fence";
@@ -305,7 +305,7 @@ public class WoodPackMakerTool {
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block fenceGateBlock = (Block) ModElementType.BuiltInTypes.BLOCK
-				.getModElement(mcreator, new ModElement(workspace, name + "FenceGate", ModElementType.BuiltInTypes.BLOCK), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "FenceGate", ModElementType.BuiltInTypes.BLOCK), false)
 				.getElementFromGUI();
 		fenceGateBlock.name = name + " Fence Gate";
 		fenceGateBlock.blockBase = "FenceGate";
@@ -326,7 +326,7 @@ public class WoodPackMakerTool {
 		//Tag - Items
 		//Mainly used for recipes and loot tables
 		Tag woodItemTag = (Tag) ModElementType.BuiltInTypes.TAG
-				.getModElement(mcreator, new ModElement(workspace, name + "ItemsTag", ModElementType.BuiltInTypes.TAG), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "ItemsTag", ModElementType.BuiltInTypes.TAG), false)
 				.getElementFromGUI();
 		woodItemTag.namespace = "forge";
 		woodItemTag.name = RegistryNameFixer.fix(name) + "_log";
@@ -343,7 +343,7 @@ public class WoodPackMakerTool {
 
 		//Recipes
 		Recipe woodRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
-				.getModElement(mcreator, new ModElement(workspace, name + "WoodRecipe", ModElementType.BuiltInTypes.RECIPE), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "WoodRecipe", ModElementType.BuiltInTypes.RECIPE), false)
 				.getElementFromGUI();
 		woodRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName());
 		woodRecipe.recipeSlots[1] = new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName());
@@ -359,7 +359,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(woodRecipe);
 
 		Recipe planksRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
-				.getModElement(mcreator, new ModElement(workspace, name + "PlanksRecipe", ModElementType.BuiltInTypes.RECIPE), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "PlanksRecipe", ModElementType.BuiltInTypes.RECIPE), false)
 				.getElementFromGUI();
 		planksRecipe.recipeSlots[4] = new MItemBlock(workspace,
 				"TAG:" + woodItemTag.namespace + ":" + woodItemTag.name);
@@ -374,7 +374,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(planksRecipe);
 
 		Recipe stairsRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
-				.getModElement(mcreator, new ModElement(workspace, name + "StairsRecipe", ModElementType.BuiltInTypes.RECIPE), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "StairsRecipe", ModElementType.BuiltInTypes.RECIPE), false)
 				.getElementFromGUI();
 		stairsRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		stairsRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
@@ -392,7 +392,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(stairsRecipe);
 
 		Recipe slabRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
-				.getModElement(mcreator, new ModElement(workspace, name + "SlabRecipe", ModElementType.BuiltInTypes.RECIPE), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "SlabRecipe", ModElementType.BuiltInTypes.RECIPE), false)
 				.getElementFromGUI();
 		slabRecipe.recipeSlots[6] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		slabRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
@@ -407,7 +407,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(slabRecipe);
 
 		Recipe fenceRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
-				.getModElement(mcreator, new ModElement(workspace, name + "FenceRecipe", ModElementType.BuiltInTypes.RECIPE), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "FenceRecipe", ModElementType.BuiltInTypes.RECIPE), false)
 				.getElementFromGUI();
 		fenceRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		fenceRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
@@ -425,7 +425,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(fenceRecipe);
 
 		Recipe fenceGateRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
-				.getModElement(mcreator, new ModElement(workspace, name + "FenceGateRecipe", ModElementType.BuiltInTypes.RECIPE),
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "FenceGateRecipe", ModElementType.BuiltInTypes.RECIPE),
 						false).getElementFromGUI();
 		fenceGateRecipe.recipeSlots[3] = new MItemBlock(workspace, "Items.STICK");
 		fenceGateRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
@@ -443,7 +443,7 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(fenceGateRecipe);
 
 		Recipe stickRecipe = (Recipe) ModElementType.BuiltInTypes.RECIPE
-				.getModElement(mcreator, new ModElement(workspace, name + "StickRecipe", ModElementType.BuiltInTypes.RECIPE), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "StickRecipe", ModElementType.BuiltInTypes.RECIPE), false)
 				.getElementFromGUI();
 		stickRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		stickRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());

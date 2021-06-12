@@ -101,9 +101,19 @@ public abstract class GeneratableElement {
 		@Override
 		public GeneratableElement deserialize(JsonElement jsonElement, Type type,
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-			System.out.println(jsonElement.getAsJsonObject().get("_type").getAsString());
+			String newType = jsonElement.getAsJsonObject().get("_type").getAsString();
+			switch (newType) {
+			case "gun":
+				newType = "rangeditem";
+				break;
+			case "mob":
+				newType = "livingentity";
+				break;
+			}
+			jsonElement.getAsJsonObject().addProperty("_type", newType);
 			ModElementType<?> modElementType = ModElementType
-					.getModElementType(jsonElement.getAsJsonObject().get("_type").getAsString());
+					.getModElementType(newType);
+
 			int importedFormatVersion = jsonDeserializationContext
 					.deserialize(jsonElement.getAsJsonObject().get("_fv"), Integer.class);
 

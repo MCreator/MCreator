@@ -1049,7 +1049,7 @@ import java.util.stream.Collectors;
 			if (mu.isCodeLocked()) {
 				editCurrentlySelectedModElementAsCode(mu, component, x, y);
 			} else {
-				ModElementGUI<?> modeditor = mu.getType().getModElement(mcreator, mu, true);
+				ModElementGUI<?> modeditor = mu.getType().getModElementGUI(mcreator, mu, true);
 				if (modeditor != null) {
 					modeditor.showView();
 				}

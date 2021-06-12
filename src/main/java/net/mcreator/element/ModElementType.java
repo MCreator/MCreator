@@ -41,7 +41,6 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 	private final String registryName;
 	private final String description;
 	private final String readableName;
-	private final String name;
 	private final ImageIcon icon;
 	private final Character shortcut;
 	private final RecipeType recipeType;
@@ -50,34 +49,18 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 	private GeneratorStats.CoverageStatus status = GeneratorStats.CoverageStatus.FULL;
 	private boolean hasProcedureTriggers;
 
-	//Constructor used for the same registry name, localization ID and icon ID
-	private ModElementType(String registryName, Character shortcut, BaseType baseType, RecipeType RecipeType,
-			ModElementGUIProvider<GE> modElementGUIProvider, Class<? extends GE> modElementStorageClass) {
-		this(registryName, registryName, registryName, shortcut, baseType, RecipeType, modElementGUIProvider,
-				modElementStorageClass);
-	}
 
-	//Constructor used for the same registry name and localization ID.
-	private ModElementType(String registryName, String iconID, Character shortcut, BaseType baseType,
-			RecipeType RecipeType, ModElementGUIProvider<GE> modElementGUIProvider,
-			Class<? extends GE> modElementStorageClass) {
-		this(registryName, registryName, iconID, shortcut, baseType, RecipeType, modElementGUIProvider,
-				modElementStorageClass);
-	}
-
-	//Used to have a different name and registry name
-	private ModElementType(String registryName, String name, String iconID, Character shortcut, BaseType baseType,
+	private ModElementType(String registryName, Character shortcut, BaseType baseType,
 			RecipeType recipeType, ModElementGUIProvider<GE> modElementGUIProvider,
 			Class<? extends GE> modElementStorageClass) {
 		this.baseType = baseType;
 		this.recipeType = recipeType;
 		this.registryName = registryName;
-		this.name = name;
-		this.icon = UIRES.get("mod_types." + iconID);
+		this.icon = UIRES.get("mod_types." + registryName);
 		this.shortcut = shortcut;
 
-		this.readableName = L10N.t("modelement." + name.toLowerCase(Locale.ENGLISH));
-		this.description = L10N.t("modelement." + name.toLowerCase(Locale.ENGLISH) + ".description");
+		this.readableName = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH));
+		this.description = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH) + ".description");
 
 		this.modElementGUIProvider = modElementGUIProvider;
 		this.modElementStorageClass = modElementStorageClass;
@@ -95,9 +78,9 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 		return elements;
 	}
 
-	public static ModElementType<?> getModElementType(String modElementName) {
-		for (ModElementType<?> me : elements) {
-			if (me.registryName.equals(modElementName) || me.name.equals(modElementName)) {
+	public static ModElementType<?> getModElementType(String modElementName){
+		for(ModElementType<?> me : elements){
+			if(me.registryName.equals(modElementName)){
 				return me;
 			}
 		}
@@ -106,10 +89,6 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 
 	public String getRegistryName() {
 		return registryName;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public String getReadableName() {
@@ -136,7 +115,7 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 		return baseType;
 	}
 
-	public ModElementGUI<GE> getModElement(MCreator mcreator, ModElement modElement, boolean editingMode) {
+	public ModElementGUI<GE> getModElementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		return modElementGUIProvider.get(mcreator, modElement, editingMode);
 	}
 
@@ -165,7 +144,7 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 	}
 
 	public static class BuiltInTypes {
-		public static final ModElementType<?> ADVANCEMENT = new ModElementType<>("achievement", "advancement", 'h',
+		public static final ModElementType<?> ADVANCEMENT = new ModElementType<>("achievement", 'h',
 				BaseType.ACHIEVEMENT, RecipeType.NONE, AchievementGUI::new, Achievement.class);
 
 		public static final ModElementType<?> ARMOR = new ModElementType<>("armor", 'a', BaseType.ARMOR,
@@ -216,7 +195,7 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 		public static final ModElementType<?> LOOTTABLE = new ModElementType<>("loottable", 'l', BaseType.DATAPACK,
 				RecipeType.NONE, LootTableGUI::new, LootTable.class);
 
-		public static final ModElementType<?> LIVING_ENTITY = new ModElementType<>("mob", "living_entity", 'e',
+		public static final ModElementType<?> LIVING_ENTITY = new ModElementType<>("livingentity", 'e',
 				BaseType.ENTITY, RecipeType.NONE, LivingEntityGUI::new, Mob.class);
 
 		public static final ModElementType<?> MUSICDISC = new ModElementType<>("musicdisc", 'x', BaseType.OTHER,
@@ -240,7 +219,7 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 		public static final ModElementType<?> PROCEDURE = new ModElementType<>("procedure", 'p', BaseType.PROCEDURE,
 				RecipeType.NONE, ProcedureGUI::new, Procedure.class);
 
-		public static final ModElementType<?> RANGEDITEM = new ModElementType<>("gun", "rangeditem", "rangeditem", 'q',
+		public static final ModElementType<?> RANGEDITEM = new ModElementType<>("rangeditem", 'q',
 				BaseType.ITEM, RecipeType.ITEM, RangedItemGUI::new, RangedItem.class);
 
 		public static final ModElementType<?> RECIPE = new ModElementType<>("recipe", 'r', BaseType.DATAPACK,

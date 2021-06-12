@@ -401,6 +401,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			String workspace_string = FileIO.readFileToString(workspaceFile);
 			Workspace retval;
 			try {
+				workspace_string = workspace_string.replaceAll("\"type\": \"mob\",", "\"type\": \"livingentity\",")
+						.replaceAll("\"type\": \"gun\",", "\"type\": \"rangeditem\",");
 				retval = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
 			} catch (Exception jse) {
 				throw new CorruptedWorkspaceFileException(jse);
@@ -488,6 +490,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void reloadFromFS() {
 		String workspace_string = FileIO.readFileToString(fileManager.getWorkspaceFile());
+		workspace_string = workspace_string.replaceAll("\"type\": \"mob\",", "\"type\": \"livingentity\",")
+				.replaceAll("\"type\": \"gun\",", "\"type\": \"rangeditem\",");
 		Workspace workspace_on_fs = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
 		loadStoredDataFrom(workspace_on_fs);
 		reloadModElements();

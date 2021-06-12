@@ -52,15 +52,15 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	@Nullable private String path;
 
 	// MCItem representations of this element
-	// it is transient so it does not getModElementType serialized
+	// it is transient so it does not get serialized
 	private transient List<MCItem> mcItems = null;
 
 	// current mod icon if not obtained from mcitem - used for recipes
-	// it is transient so it does not getModElementType serialized
+	// it is transient so it does not get serialized
 	private transient ImageIcon elementIcon;
 
 	// Workspace this ModElement is in
-	// it is transient so it does not getModElementType serialized
+	// it is transient so it does not get serialized
 	private transient Workspace workspace;
 
 	public ModElement(@Nonnull Workspace workspace, @Nonnull String name, ModElementType<?> type) {
@@ -223,7 +223,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	/**
-	 * Get id for given index or getModElementType one for base type of this mod element
+	 * Get id for given index or get one for base type of this mod element
 	 *
 	 * @param index The ID index
 	 * @return The ID of the element for the given index, could be newly created
@@ -233,7 +233,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	/**
-	 * Get id for given index or getModElementType one for base type provided
+	 * Get id for given index or get one for base type provided
 	 *
 	 * @param index    The ID index
 	 * @param baseType The base type under which to look for the free IDs
@@ -249,7 +249,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	/**
-	 * Get id for given index or getModElementType one for base type string provided
+	 * Get id for given index or get one for base type string provided
 	 *
 	 * @param index    The ID index
 	 * @param baseType The base type under which to look for the free IDs
@@ -285,7 +285,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	public void setType(ModElementType<?> type) {
-		this.type = type.getName();
+		this.type = type.getRegistryName();
 	}
 
 	public boolean isCodeLocked() {
