@@ -276,8 +276,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.container_item")));
 		subpane2.add(stayInGridWhenCrafting);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
-				L10N.label("elementgui.item.container_item_damage"), () -> L10N.t("elementgui.item.container_item")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage")
+						.withArguments(() -> L10N.t("elementgui.item.container_item")),
+				L10N.label("elementgui.item.container_item_damage")));
 		subpane2.add(damageOnCrafting);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/recipe_remainder"),
@@ -467,13 +468,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
 		item.texture = texture.getID();
-		Model.Type modelType = ((Model) Objects.requireNonNull(renderType.getSelectedItem())).getType();
+		Model.Type modelType = Objects.requireNonNull(renderType.getSelectedItem()).getType();
 		item.renderType = 0;
 		if (modelType == Model.Type.JSON)
 			item.renderType = 1;
 		else if (modelType == Model.Type.OBJ)
 			item.renderType = 2;
-		item.customModelName = ((Model) Objects.requireNonNull(renderType.getSelectedItem())).getReadableName();
+		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
 
 		return item;
 	}
