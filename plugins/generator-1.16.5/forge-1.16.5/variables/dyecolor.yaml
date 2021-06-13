@@ -1,5 +1,55 @@
-defaultvalue: DyeColor.WHITE
+defaultvalue: WHITE # unmapped, map in scopes code
 scopes:
   local:
     get: ${name}
-    set: ${name} = (${javaType}) ${value};
+    set: ${name} = (${javaType}) ${generator.map(var.getValue(), "dyecolors")};
+  global_session:
+    init: public static DyeColor ${var.getName()} = ${generator.map(var.getValue(), "dyecolors")};
+    get: ${JavaModName}Variables.${name}
+    set: ${JavaModName}Variables.${name} = (DyeColor)${value};
+  global_world:
+    init: public DyeColor ${var.getName()} = ${generator.map(var.getValue(), "dyecolors")};
+    read: ${var.getName()} = DyeColor.byId(nbt.getInt("${var.getName()}"));
+    write: nbt.putInt("${var.getName()}" , ${var.getName()}.getId());
+    get: ${JavaModName}Variables.WorldVariables.get(world).${name}
+    set: |
+      ${JavaModName}Variables.WorldVariables.get(world).${name} = (DyeColor)${value};
+      ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
+  global_map:
+    init: public DyeColor ${var.getName()} = ${generator.map(var.getValue(), "dyecolors")};
+    read: ${var.getName()} = DyeColor.byId(nbt.getInt("${var.getName()}"));
+    write: nbt.putInt("${var.getName()}" , ${var.getName()}.getId());
+    get: ${JavaModName}Variables.MapVariables.get(world).${name}
+    set: |
+      ${JavaModName}Variables.MapVariables.get(world).${name} = (DyeColor)${value};
+      ${JavaModName}Variables.MapVariables.get(world).syncData(world);
+  player_lifetime:
+    init: public DyeColor ${var.getName()} = ${generator.map(var.getValue(), "dyecolors")};
+    read: instance.${var.getName()} = DyeColor.byId(nbt.getInt("${var.getName()}"));
+    write: nbt.putInt("${var.getName()}" , instance.${var.getName()}.getId());
+    get: |
+      ((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+        .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
+    set: |
+      {
+        DyeColor _setval = (DyeColor)${value};
+        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+          capability.${name} = _setval;
+          capability.syncPlayerVariables(entity);
+        });
+      }
+  player_persistent:
+    init: public DyeColor ${var.getName()} = ${generator.map(var.getValue(), "dyecolors")};
+    read: instance.${var.getName()} = DyeColor.byId(nbt.getInt("${var.getName()}"));
+    write: nbt.putInt("${var.getName()}" , instance.${var.getName()}.getId());
+    get: |
+      ((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+        .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
+    set: |
+      {
+        DyeColor _setval = (DyeColor)${value};
+        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+          capability.${name} = _setval;
+          capability.syncPlayerVariables(entity);
+        });
+      }

@@ -4,6 +4,7 @@ string: String
 logic: boolean
 itemstack: ItemStack
 direction: Direction
+dyecolor: DyeColor
 world: IWorld
 entity: Entity
 map: HashMap
