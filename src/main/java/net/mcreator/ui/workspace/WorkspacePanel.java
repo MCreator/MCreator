@@ -817,19 +817,10 @@ import java.util.stream.Collectors;
 		emptct.setLayout(new BoxLayout(emptct, BoxLayout.LINE_AXIS));
 		emptct.setOpaque(false);
 
-		String workspaceEmptyTip = L10N.t("workspace.elements.empty.tip");
-		String workspaceEmptyTipPart1 = "";
-		String workspaceEmptyTipPart2 = workspaceEmptyTip;
-		if(workspaceEmptyTip.contains("%1")) {
-			workspaceEmptyTipPart1 = workspaceEmptyTip.substring(0, workspaceEmptyTip.indexOf("%1"));
-			workspaceEmptyTipPart2 = workspaceEmptyTip.substring(workspaceEmptyTip.indexOf("%1") + 2);
-		}
-		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTipPart1), 24));
-
-		JLabel but1_empty = new JLabel(new ImageIcon(ImageUtils.resize(TiledImageCache.workspaceAdd.getImage(), 32)));
-		emptct.add(but1_empty);
-
-		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTipPart2), 24));
+		String[] workspaceEmptyTip = L10N.t("workspace.elements.empty.tip").split("%1");
+		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTip[0]), 24));
+		emptct.add(new JLabel(new ImageIcon(ImageUtils.resize(TiledImageCache.workspaceAdd.getImage(), 32))));
+		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTip[1]), 24));
 
 		JPanel emptbtpd = new JPanel(new BorderLayout());
 		emptbtpd.setOpaque(false);
