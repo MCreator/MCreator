@@ -817,19 +817,19 @@ import java.util.stream.Collectors;
 		emptct.setLayout(new BoxLayout(emptct, BoxLayout.LINE_AXIS));
 		emptct.setOpaque(false);
 
-		String workspaceTip = L10N.t("workspace.elements.empty.tip");
-		String workspaceTipPart1 = "";
-		String workspaceTipPart2 = workspaceTip;
-		if(workspaceTip.contains("%1")) {
-			workspaceTipPart1 = workspaceTip.substring(0, workspaceTip.indexOf("%1"));
-			workspaceTipPart2 = workspaceTip.substring(workspaceTip.indexOf("%1") + 2);
+		String workspaceEmptyTip = L10N.t("workspace.elements.empty.tip");
+		String workspaceEmptyTipPart1 = "";
+		String workspaceEmptyTipPart2 = workspaceEmptyTip;
+		if(workspaceEmptyTip.contains("%1")) {
+			workspaceEmptyTipPart1 = workspaceEmptyTip.substring(0, workspaceEmptyTip.indexOf("%1"));
+			workspaceEmptyTipPart2 = workspaceEmptyTip.substring(workspaceEmptyTip.indexOf("%1") + 2);
 		}
-		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceTipPart1), 24));
+		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTipPart1), 24));
 
 		JLabel but1_empty = new JLabel(new ImageIcon(ImageUtils.resize(TiledImageCache.workspaceAdd.getImage(), 32)));
 		emptct.add(but1_empty);
 
-		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceTipPart2), 24));
+		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTipPart2), 24));
 
 		JPanel emptbtpd = new JPanel(new BorderLayout());
 		emptbtpd.setOpaque(false);
