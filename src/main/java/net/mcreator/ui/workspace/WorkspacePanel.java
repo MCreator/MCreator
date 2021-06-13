@@ -817,12 +817,19 @@ import java.util.stream.Collectors;
 		emptct.setLayout(new BoxLayout(emptct, BoxLayout.LINE_AXIS));
 		emptct.setOpaque(false);
 
-		emptct.add(ComponentUtils.deriveFont(L10N.label("workspace.elements.empty.tip_part1"), 24));
+		String workspaceTip = L10N.t("workspace.elements.empty.tip");
+		String workspaceTipPart1 = "";
+		String workspaceTipPart2 = workspaceTip;
+		if(workspaceTip.contains("%1")) {
+			workspaceTipPart1 = workspaceTip.substring(0, workspaceTip.indexOf("%1"));
+			workspaceTipPart2 = workspaceTip.substring(workspaceTip.indexOf("%1") + 2);
+		}
+		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceTipPart1), 24));
 
 		JLabel but1_empty = new JLabel(new ImageIcon(ImageUtils.resize(TiledImageCache.workspaceAdd.getImage(), 32)));
 		emptct.add(but1_empty);
 
-		emptct.add(ComponentUtils.deriveFont(L10N.label("workspace.elements.empty.tip_part2"), 24));
+		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceTipPart2), 24));
 
 		JPanel emptbtpd = new JPanel(new BorderLayout());
 		emptbtpd.setOpaque(false);
