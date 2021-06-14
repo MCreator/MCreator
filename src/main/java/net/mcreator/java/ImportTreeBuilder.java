@@ -48,35 +48,35 @@ public class ImportTreeBuilder {
 			if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || libraryFile.getName().endsWith(".jmod"))) {
 				try (ZipFile zipFile = new ZipFile(libraryFile)) {
 					Enumeration<? extends ZipEntry> entries = zipFile.entries();
+					boolean isJmod = libraryFile.getName().endsWith(".jmod");
 					while (entries.hasMoreElements()) {
 						ZipEntry entry = entries.nextElement();
 						String entryName = entry.getName();
 
-						if (libraryFile.getName().endsWith(".jmod")) {
+						if (isJmod) {
 							if (!entryName.startsWith("classes/"))
 								continue;
-
-							entryName = StringUtils.stripStart(entryName, "classes/");
+							entryName = entryName.substring(8);
 						}
-
-						// quickly skip all meta-info paths
-						if (entryName.startsWith("META-INF/"))
-							continue;
 
 						// only load classes that are not inner
 						if (!entryName.endsWith(".class") || entryName.contains("$"))
 							continue;
 
-						// skip Sun APIs
-						if (entryName.startsWith("sun/") || entryName.startsWith("com/sun/"))
-							continue;
-
 						// skip internal JDK APIs
 						if (entryName.startsWith("jdk/internal/"))
 							continue;
-
+						
+						// skip Sun APIs
+						if (entryName.startsWith("sun/") || entryName.startsWith("com/sun/"))
+							continue;
+						
 						// skip package and modules info entries
 						if (entryName.endsWith("package-info.class") || entryName.endsWith("module-info.class"))
+							continue;
+						
+						// skip all meta-info paths
+						if (entryName.startsWith("META-INF/"))
 							continue;
 
 						// check if class is public or protected
