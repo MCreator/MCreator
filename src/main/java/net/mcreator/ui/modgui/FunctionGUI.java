@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.element.types.Function;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
