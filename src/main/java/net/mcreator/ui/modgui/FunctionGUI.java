@@ -68,7 +68,7 @@ public class FunctionGUI extends ModElementGUI<Function> {
 			name.setEnabled(false);
 			namespace.setEnabled(false);
 		} else {
-			name.setText(modElement.getName().toLowerCase(Locale.ENGLISH).replaceAll("[^a-z0-9/._-]+", ""));
+			name.setText(RegistryNameFixer.fromCamelCase(modElement.getName()));
 
 			te.setText("# Enter the function code here");
 		}
