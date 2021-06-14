@@ -53,12 +53,12 @@ public class StructureUtils {
 		if (tag instanceof CompoundTag) {
 			CompoundTag compoundTag = (CompoundTag) tag;
 			Map<String, Tag> map = new HashMap<>(compoundTag.getValue());
-			map.replace((key, value) -> replaceAllStringTags(value, from, to));
+			map.replaceAll((key, value) -> replaceAllStringTags(value, from, to));
 			return new CompoundTag(compoundTag.getName(), map);
 		} else if (tag instanceof ListTag) {
 			ListTag listTag = (ListTag) tag;
 			List<Tag> list = new ArrayList<>(listTag.getValue());
-			list.replace(value -> replaceAllStringTags(value, from, to));
+			list.replaceAll(value -> replaceAllStringTags(value, from, to));
 			return new ListTag(listTag.getName(), listTag.getType(), list);
 		} else if (tag instanceof StringTag) {
 			StringTag stringTag = (StringTag) tag;
