@@ -23,7 +23,6 @@ import javassist.bytecode.ConstPool;
 import net.mcreator.generator.Generator;
 import net.mcreator.io.zip.ZipIO;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
@@ -66,15 +65,15 @@ public class ImportTreeBuilder {
 						// skip internal JDK APIs
 						if (entryName.startsWith("jdk/internal/"))
 							continue;
-						
+
 						// skip Sun APIs
 						if (entryName.startsWith("sun/") || entryName.startsWith("com/sun/"))
 							continue;
-						
+
 						// skip package and modules info entries
 						if (entryName.endsWith("package-info.class") || entryName.endsWith("module-info.class"))
 							continue;
-						
+
 						// skip all meta-info paths
 						if (entryName.startsWith("META-INF/"))
 							continue;
@@ -135,10 +134,10 @@ public class ImportTreeBuilder {
 	}
 
 	private static void addClassToTree(String packageName, String className, Map<String, List<String>> store) {
-		if (store.get(packageName) == null) {
-			store.put(packageName, new ArrayList<>(Collections.singletonList(className)));
+		if (store.get(className) == null) {
+			store.put(className, new ArrayList<>(Collections.singletonList(packageName + '.' + className)));
 		} else {
-			store.get(packageName).add(className);
+			store.get(className).add(packageName + '.' + className);
 		}
 	}
 
