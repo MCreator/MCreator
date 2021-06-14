@@ -81,7 +81,7 @@ public class StringUtils {
 	public static List<String> splitCommaSeparatedStringListWithEscapes(String specialInfoString) {
 		List<String> retval = new ArrayList<>();
 		if (!specialInfoString.equals("")) {
-			String[] info = nonescapedCommaSplitter.split("(?<!\\\\),");
+			String[] info = nonescapedCommaSplitter.split(specialInfoString);
 			for (String infoelement : info) {
 				String data = infoelement.trim().replace("\\,", ",");
 				if (!data.trim().equals(""))
