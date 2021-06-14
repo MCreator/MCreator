@@ -85,7 +85,6 @@ public class TextureSelectorDialog extends MCreatorDialog {
 		ComponentUtils.deriveFont(jtf, 17);
 		jtf.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
-		add("North", PanelUtils.join(FlowLayout.LEFT, jtf));
 		add("South", buttons);
 		add("Center", new JScrollPane(list));
 		add("North", PanelUtils.westAndEastElement(jtf, PanelUtils.totalCenterInPanel(pno2)));
