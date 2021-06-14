@@ -345,7 +345,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		forgeProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.fluid.forge_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				L10N.t("elementgui.fluid.modded_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JComponent properties = PanelUtils
