@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":9,"i1":9,"i2":9,"i3":9};
+var data = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -188,17 +188,41 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>static java.awt.Component</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#wrapWithHelpButton(net.mcreator.ui.help.IHelpContext,java.awt.Component,int,java.util.function.Supplier...)">wrapWithHelpButton</a></span>&#8203;(<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;context,
+                  java.awt.Component&nbsp;ca,
+                  int&nbsp;direction,
+                  java.util.function.Supplier&lt;?&gt;...&nbsp;contextArguments)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>static java.awt.Component</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#wrapWithHelpButton(net.mcreator.ui.help.IHelpContext,java.awt.Component,java.awt.Color)">wrapWithHelpButton</a></span>&#8203;(<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;context,
                   java.awt.Component&nbsp;ca,
                   java.awt.Color&nbsp;ac)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>static java.awt.Component</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#wrapWithHelpButton(net.mcreator.ui.help.IHelpContext,java.awt.Component,java.awt.Color,int)">wrapWithHelpButton</a></span>&#8203;(<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;context,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#wrapWithHelpButton(net.mcreator.ui.help.IHelpContext,java.awt.Component,java.awt.Color,int,java.util.function.Supplier...)">wrapWithHelpButton</a></span>&#8203;(<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;context,
                   java.awt.Component&nbsp;ca,
                   java.awt.Color&nbsp;ac,
-                  int&nbsp;direction)</code></th>
+                  int&nbsp;direction,
+                  java.util.function.Supplier&lt;?&gt;...&nbsp;contextArguments)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>static java.awt.Component</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#wrapWithHelpButton(net.mcreator.ui.help.IHelpContext,java.awt.Component,java.awt.Color,java.util.function.Supplier...)">wrapWithHelpButton</a></span>&#8203;(<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;context,
+                  java.awt.Component&nbsp;ca,
+                  java.awt.Color&nbsp;ac,
+                  java.util.function.Supplier&lt;?&gt;...&nbsp;contextArguments)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i6" class="altColor">
+<td class="colFirst"><code>static java.awt.Component</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#wrapWithHelpButton(net.mcreator.ui.help.IHelpContext,java.awt.Component,java.util.function.Supplier...)">wrapWithHelpButton</a></span>&#8203;(<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;context,
+                  java.awt.Component&nbsp;ca,
+                  java.util.function.Supplier&lt;?&gt;...&nbsp;contextArguments)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -277,7 +301,46 @@ extends java.lang.Object</pre>
                                                     java.awt.Color&nbsp;ac)</pre>
 </li>
 </ul>
-<a id="wrapWithHelpButton(net.mcreator.ui.help.IHelpContext,java.awt.Component,java.awt.Color,int)">
+<a id="wrapWithHelpButton(net.mcreator.ui.help.IHelpContext,java.awt.Component,java.util.function.Supplier...)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>wrapWithHelpButton</h4>
+<pre class="methodSignature">public static&nbsp;java.awt.Component&nbsp;wrapWithHelpButton&#8203;(<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;context,
+                                                    java.awt.Component&nbsp;ca,
+                                                    @Nullable
+                                                    java.util.function.Supplier&lt;?&gt;...&nbsp;contextArguments)</pre>
+</li>
+</ul>
+<a id="wrapWithHelpButton(net.mcreator.ui.help.IHelpContext,java.awt.Component,int,java.util.function.Supplier...)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>wrapWithHelpButton</h4>
+<pre class="methodSignature">public static&nbsp;java.awt.Component&nbsp;wrapWithHelpButton&#8203;(<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;context,
+                                                    java.awt.Component&nbsp;ca,
+                                                    int&nbsp;direction,
+                                                    @Nullable
+                                                    java.util.function.Supplier&lt;?&gt;...&nbsp;contextArguments)</pre>
+</li>
+</ul>
+<a id="wrapWithHelpButton(net.mcreator.ui.help.IHelpContext,java.awt.Component,java.awt.Color,java.util.function.Supplier...)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>wrapWithHelpButton</h4>
+<pre class="methodSignature">public static&nbsp;java.awt.Component&nbsp;wrapWithHelpButton&#8203;(<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;context,
+                                                    java.awt.Component&nbsp;ca,
+                                                    @Nullable
+                                                    java.awt.Color&nbsp;ac,
+                                                    @Nullable
+                                                    java.util.function.Supplier&lt;?&gt;...&nbsp;contextArguments)</pre>
+</li>
+</ul>
+<a id="wrapWithHelpButton(net.mcreator.ui.help.IHelpContext,java.awt.Component,java.awt.Color,int,java.util.function.Supplier...)">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -287,7 +350,9 @@ extends java.lang.Object</pre>
                                                     java.awt.Component&nbsp;ca,
                                                     @Nullable
                                                     java.awt.Color&nbsp;ac,
-                                                    int&nbsp;direction)</pre>
+                                                    int&nbsp;direction,
+                                                    @Nullable
+                                                    java.util.function.Supplier&lt;?&gt;...&nbsp;contextArguments)</pre>
 </li>
 </ul>
 </li>

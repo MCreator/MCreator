@@ -180,7 +180,8 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>static java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadHelpFor(net.mcreator.ui.help.IHelpContext)">loadHelpFor</a></span>&#8203;(<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;helpContext)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadHelpFor(net.mcreator.ui.help.IHelpContext,java.util.function.Supplier...)">loadHelpFor</a></span>&#8203;(<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;helpContext,
+           java.util.function.Supplier&lt;?&gt;...&nbsp;contextArguments)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
@@ -249,13 +250,15 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public static&nbsp;boolean&nbsp;hasFullHelp&#8203;(<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;helpContext)</pre>
 </li>
 </ul>
-<a id="loadHelpFor(net.mcreator.ui.help.IHelpContext)">
+<a id="loadHelpFor(net.mcreator.ui.help.IHelpContext,java.util.function.Supplier...)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>loadHelpFor</h4>
-<pre class="methodSignature">public static&nbsp;java.lang.String&nbsp;loadHelpFor&#8203;(<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;helpContext)</pre>
+<pre class="methodSignature">public static&nbsp;java.lang.String&nbsp;loadHelpFor&#8203;(<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;helpContext,
+                                           @Nullable
+                                           java.util.function.Supplier&lt;?&gt;...&nbsp;contextArguments)</pre>
 </li>
 </ul>
 </li>

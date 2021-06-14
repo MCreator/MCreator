@@ -82,6 +82,7 @@ net.mcreator.ui.ide.mcfunction
 net.mcreator.ui.init
 net.mcreator.ui.laf
 net.mcreator.ui.laf.renderer
+net.mcreator.ui.laf.renderer.elementlist
 net.mcreator.ui.minecraft
 net.mcreator.ui.minecraft.spawntypes
 net.mcreator.ui.modgui

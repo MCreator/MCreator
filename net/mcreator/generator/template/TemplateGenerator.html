@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -190,6 +190,12 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#generateFromString(java.lang.String,java.util.Map)">generateFromString</a></span>&#8203;(java.lang.String&nbsp;template,
+                  java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;dataModel)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#generateFromTemplate(java.lang.String,java.util.Map)">generateFromTemplate</a></span>&#8203;(java.lang.String&nbsp;templateName,
                     java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;dataModel)</code></th>
 <td class="colLast">&nbsp;</td>
@@ -274,12 +280,27 @@ extends java.lang.Object</pre>
 <a id="generateFromTemplate(java.lang.String,java.util.Map)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>generateFromTemplate</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;generateFromTemplate&#8203;(java.lang.String&nbsp;templateName,
                                              java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;dataModel)
                                       throws <a href="TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></pre>
+<dl>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></code></dd>
+</dl>
+</li>
+</ul>
+<a id="generateFromString(java.lang.String,java.util.Map)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>generateFromString</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;generateFromString&#8203;(java.lang.String&nbsp;template,
+                                           java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;dataModel)
+                                    throws <a href="TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></code></dd>
