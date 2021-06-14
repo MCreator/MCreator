@@ -39,7 +39,7 @@ public class ExternalBlockLoader {
 
 	private static final Pattern blockFormat = Pattern.compile("^[^$].*\\.json");
 	private static final Pattern categoryFormat = Pattern.compile("^\\$.*\\.json");
-	
+
 	private static final Pattern translationsMatcher = Pattern.compile("\\$\\{t:([\\w.]+)}");
 
 	private final Map<String, ToolboxBlock> toolboxBlocks;
@@ -229,7 +229,7 @@ public class ExternalBlockLoader {
 		}
 
 		pane.executeJavaScriptSynchronously(
-				"workspace.updateToolbox('" + toolbox_xml.replaceAll("[\n\r]", "\\\\\n") + "')");
+				"workspace.updateToolbox('" + toolbox_xml.replace("\n", "").replace("\r", "") + "')");
 	}
 
 	public Map<String, ToolboxBlock> getDefinedBlocks() {

@@ -56,7 +56,7 @@ public class OutputStreamEventHandler extends OutputStream {
 	}
 
 	private void event() {
-		lineReceiver.lineReceived(buffer.toString().trim());
+		lineReceiver.lineReceived(buffer.toString().replace("\n", "").replace("\r", ""));
 		buffer.setLength(0);
 	}
 
