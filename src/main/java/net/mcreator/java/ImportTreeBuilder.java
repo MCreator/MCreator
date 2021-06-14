@@ -95,7 +95,7 @@ public class ImportTreeBuilder {
 							LOG.debug("Failed to check access flags of " + entryName + " - assuming public");
 						}
 
-						String fqdn = entryName.replaceAll("[\\\\/]", ".");
+						String fqdn = entryName.replace('\\', '.').replace('/', '.');
 						fqdn = fqdn.substring(0, fqdn.length() - 6);
 						int lastIndxDot = fqdn.lastIndexOf('.');
 						String className = fqdn;
@@ -121,7 +121,7 @@ public class ImportTreeBuilder {
 
 	private static void reloadClassesFromModImpl(File parent, File root, Map<String, List<String>> store) {
 		String pathRelativeToRoot = parent.getAbsolutePath().replace(root.getAbsolutePath(), "");
-		String packageName = pathRelativeToRoot.replaceAll("[\\\\/]", ".").replaceFirst("\\.", "");
+		String packageName = pathRelativeToRoot.replace('\\', '.').replace('/', '.').replaceFirst("\\.", "");
 
 		File[] files = parent.listFiles();
 		for (File file : files != null ? files : new File[0]) {
