@@ -66,7 +66,7 @@ public class ConsolePane extends JTextPane {
 			LOG.info(s.trim());
 
 		insertHTML("<span " + parseSimpleAttributeSetToCSS(set) + ">" + s.replace("<", "&lt;").replace(">", "&gt;")
-				.replaceAll("([\\r\\n])", "<br>") + "</span>");
+				.replace("\n", "<br>") + "</span>");
 	}
 
 	public void insertLink(String link, String text, String textAfter, SimpleAttributeSet set) {
@@ -103,7 +103,7 @@ public class ConsolePane extends JTextPane {
 		}
 
 		try {
-			kit.read(new StringReader(htmlContent.replaceAll(" (?![^<]*>)", "&#32;").replace("\t", "&#32;&#32;&#32;")),
+			kit.read(new StringReader(htmlContent.replace(" ", "&#32;").replace("\t", "&#32;&#32;&#32;")),
 					getDocument(), getDocument().getLength());
 		} catch (BadLocationException | IOException e) {
 			LOG.error(e.getMessage(), e);
