@@ -18,6 +18,7 @@
 
 package net.mcreator.workspace.elements;
 
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
@@ -304,7 +305,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	public String getRegistryName() {
 		if (registry_name == null)
-			return getName().toLowerCase(Locale.ENGLISH).replaceAll("[^a-z0-9/._-]+", "");
+			return RegistryNameFixer.fromCamelCase(this.name);
 		else
 			return registry_name;
 	}
