@@ -1,0 +1,41 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "item",
+      "check": "MCItem"
+    },
+    {
+      "type": "input_value",
+      "name": "shooter",
+      "check": [
+        "Entity",
+        "Null"
+      ]
+    },
+    {
+      "type": "input_value",
+      "name": "boosted_entity",
+      "check": [
+        "Entity",
+        "Null"
+      ]
+    }
+  ],
+  "inputsInline": true,
+  "output": "ProjectileEntity",
+  "colour": 270,
+  "mcreator": {
+    "toolbox_id": "projectileactions",
+    "toolbox_init": [
+      "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
+      "<value name=\"shooter\"><block type=\"entity_none\"></block></value>",
+      "<value name=\"boosted_entity\"><block type=\"entity_none\"></block></value>"
+    ],
+    "inputs": [
+      "item",
+      "shooter",
+      "boosted_entity"
+    ]
+  }
+}
