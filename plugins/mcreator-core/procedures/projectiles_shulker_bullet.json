@@ -1,0 +1,35 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "shooter",
+      "check": "Entity"
+    },
+    {
+      "type": "input_value",
+      "name": "target",
+      "check": "Entity"
+    },
+    {
+      "type": "input_value",
+      "name": "direction",
+      "check": "Direction"
+    }
+  ],
+  "inputsInline": true,
+  "output": "ProjectileEntity",
+  "colour": 270,
+  "mcreator": {
+    "toolbox_id": "projectileactions",
+    "toolbox_init": [
+      "<value name=\"shooter\"><block type=\"entity_from_deps\"></block></value>",
+      "<value name=\"target\"><block type=\"source_entity_from_deps\"></block></value>",
+      "<value name=\"direction\"><block type=\"direction_constant\">DOWN</block></value>"
+    ],
+    "inputs": [
+      "shooter",
+      "target",
+      "direction"
+    ]
+  }
+}
