@@ -32,8 +32,7 @@ public class ProcedureVariablesConverter implements IConverter {
 		procedure.procedurexml = procedure.procedurexml.replace("variables_get_text", "variables_get_string")
 				.replace("variables_set_text", "variables_set_string")
 				.replace("custom_dependency_text", "custom_dependency_string")
-				.replace("procedure_retval_text", "procedure_retval_string")
-				.replace("return_text", "return_string");
+				.replace("procedure_retval_text", "procedure_retval_string").replace("return_text", "return_string");
 
 		return procedure;
 	}

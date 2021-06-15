@@ -93,7 +93,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 							} else if (type == VariableTypeLoader.BuiltInTypes.STRING) {
 								elements.setValueAt("", row, 3);
 							} else {
-								elements.setValueAt(type.getDefaultValue(workspacePanel.getMcreator().getWorkspace()), row, 3);
+								elements.setValueAt(type.getDefaultValue(workspacePanel.getMcreator().getWorkspace()),
+										row, 3);
 							}
 						}
 					}

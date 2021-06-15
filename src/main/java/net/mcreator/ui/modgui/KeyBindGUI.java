@@ -83,9 +83,10 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 				L10N.label("elementgui.keybind.key_binding_name")));
 		enderpanel.add(keyBindingName);
 
-		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("keybinding/category").withArguments(() -> L10N.t("tab.workspace"),
-				() -> L10N.t("workspace.category.localization"), () -> L10N.t("workspace.localization.add_entry"),
-				keyBindingCategoryKey.getEditor()::getItem), L10N.label("elementgui.keybind.key_binding_category")));
+		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("keybinding/category")
+						.withArguments(() -> L10N.t("tab.workspace"), () -> L10N.t("workspace.category.localization"),
+								() -> L10N.t("workspace.localization.add_entry"), keyBindingCategoryKey.getEditor()::getItem),
+				L10N.label("elementgui.keybind.key_binding_category")));
 		enderpanel.add(PanelUtils.westAndCenterElement(L10N.label("elementgui.keybind.key_binding_category_key"),
 				keyBindingCategoryKey));
 

@@ -25,11 +25,13 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class RegistryNameFixer {
-	
+
 	private static final Pattern registryNamePattern = Pattern.compile("[^a-z0-9/._-]+");
 
 	public static String fix(String original) {
-		return registryNamePattern.matcher(Transliteration.transliterateString(original).toLowerCase(Locale.ENGLISH).replace(" ", "_")).replaceAll("");
+		return registryNamePattern
+				.matcher(Transliteration.transliterateString(original).toLowerCase(Locale.ENGLISH).replace(" ", "_"))
+				.replaceAll("");
 	}
 
 	public static String fromCamelCase(String original) {

@@ -35,7 +35,7 @@ import java.awt.*;
 public class MediumIconModListRender extends JPanel implements ListCellRenderer<IElement> {
 
 	public MediumIconModListRender() {
-			setLayout(new BorderLayout(5, 0));
+		setLayout(new BorderLayout(5, 0));
 
 	}
 

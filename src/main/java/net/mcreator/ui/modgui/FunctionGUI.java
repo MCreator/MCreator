@@ -18,8 +18,8 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.element.types.Function;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -43,7 +43,6 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.Locale;
 
 public class FunctionGUI extends ModElementGUI<Function> {
 
@@ -81,9 +80,9 @@ public class FunctionGUI extends ModElementGUI<Function> {
 				L10N.label("elementgui.function.registry_name")));
 		northPanel.add(name);
 
-		northPanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("function/namespace").withArguments(modElement.getWorkspace().getWorkspaceSettings()::getModID,
-						modElement::getRegistryName), L10N.label("elementgui.function.namespace")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("function/namespace")
+						.withArguments(modElement.getWorkspace().getWorkspaceSettings()::getModID, modElement::getRegistryName),
+				L10N.label("elementgui.function.namespace")));
 		northPanel.add(namespace);
 
 		RTextScrollPane sp = new RTextScrollPane(te, true);

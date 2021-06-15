@@ -146,9 +146,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				L10N.t("elementgui.ranged_item.swinged_by_entity"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		useCondition = new ProcedureSelector(this.withEntry("rangeditem/use_condition")
-				.withArguments(() -> L10N.t("condition.common.true")), mcreator,
-				L10N.t("elementgui.ranged_item.can_use"), VariableTypeLoader.BuiltInTypes.LOGIC,
+		useCondition = new ProcedureSelector(
+				this.withEntry("rangeditem/use_condition").withArguments(() -> L10N.t("condition.common.true")),
+				mcreator, L10N.t("elementgui.ranged_item.can_use"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.ranged_item.make_glow"), ProcedureSelector.Side.CLIENT, true,

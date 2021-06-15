@@ -18,15 +18,14 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
-import java.util.Locale;
 
 @SuppressWarnings("unused") public class Recipe extends NamespacedGeneratableElement {
 

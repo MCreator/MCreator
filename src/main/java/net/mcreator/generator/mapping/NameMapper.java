@@ -72,8 +72,7 @@ public class NameMapper {
 				origName = origName.replace(mcreator_prefix, "");
 				String retval = GeneratorTokens.replaceTokens(workspace,
 						mcreator_map_template.replace("@NAME", origName)
-								.replace("@name", origName.toLowerCase(Locale.ENGLISH))
-								.replace("@NAME", origName));
+								.replace("@name", origName.toLowerCase(Locale.ENGLISH)).replace("@NAME", origName));
 				if (mcreator_map_template.contains("@registryname")) {
 					ModElement element = workspace.getModElementByName(origName);
 					if (element != null) {

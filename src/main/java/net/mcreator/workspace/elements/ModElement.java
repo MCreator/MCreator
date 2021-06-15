@@ -18,7 +18,6 @@
 
 package net.mcreator.workspace.elements;
 
-import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;

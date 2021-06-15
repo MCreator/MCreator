@@ -119,6 +119,7 @@ public class TextureSelectorDialog extends MCreatorDialog {
 			return this;
 		}
 	}
+
 	private class FilterModel extends DefaultListModel<ResourcePointer> {
 		ArrayList<ResourcePointer> items;
 		ArrayList<ResourcePointer> filterItems;
@@ -128,6 +129,7 @@ public class TextureSelectorDialog extends MCreatorDialog {
 			items = new ArrayList<>();
 			filterItems = new ArrayList<>();
 		}
+
 		@Override public ResourcePointer getElementAt(int index) {
 			if (index < filterItems.size())
 				return filterItems.get(index);
