@@ -38,7 +38,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 public class HelpLoader {
@@ -75,7 +74,7 @@ public class HelpLoader {
 		return helpContext != null && helpContext.getEntry() != null && getFromCache(helpContext.getEntry()) != null;
 	}
 
-	public static String loadHelpFor(IHelpContext helpContext, @Nullable Supplier<?>... contextArguments) {
+	public static String loadHelpFor(IHelpContext helpContext) {
 		if (helpContext != null) {
 			URI uri = null;
 			try {
@@ -90,10 +89,10 @@ public class HelpLoader {
 			if (helpContext.getEntry() != null) {
 				String helpText = getFromCache(helpContext.getEntry());
 				if (helpText != null) {
-					if (contextArguments != null)
+					if (helpContext.getArguments() != null)
 						helpString.append(renderer.render(parser.parse(MessageFormat.format(helpText,
-								Arrays.stream(contextArguments).map(Supplier::get)
-										.map(e -> e == null ? "" : HtmlUtils.unescapeHtml(e.toString())).toArray()))));
+								Arrays.stream(helpContext.getArguments()).map(e -> e == null ? "" : e.get().toString())
+										.map(HtmlUtils::unescapeHtml).toArray()))));
 					else
 						helpString.append(renderer.render(parser.parse(helpText)));
 				} else {
