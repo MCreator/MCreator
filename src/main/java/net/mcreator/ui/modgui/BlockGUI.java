@@ -51,6 +51,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
+import net.mcreator.ui.validation.validators.SoundSelectorValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
@@ -232,7 +233,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JTextField specialInfo = new JTextField(25);
 
 	private final ValidationGroup page1group = new ValidationGroup();
-	private final ValidationGroup page2group = new ValidationGroup();
+	private final ValidationGroup page3group = new ValidationGroup();
+	private final ValidationGroup page4group = new ValidationGroup();
 
 	private final JComboBox<String> blockBase = new JComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
@@ -1137,7 +1139,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.block.error_block_must_have_name")));
 		name.enableRealtimeValidation();
 
-		page2group.addValidationElement(name);
+		page3group.addValidationElement(name);
+
+		if (customSoundType.isSelected()) {
+			breakSound.setValidator(new SoundSelectorValidator(breakSound, L10N.t("elementgui.block.error_sound_not_selected")));
+			stepSound.setValidator(new SoundSelectorValidator(stepSound, L10N.t("elementgui.block.error_sound_not_selected")));
+			placeSound.setValidator(new SoundSelectorValidator(placeSound, L10N.t("elementgui.block.error_sound_not_selected")));
+			hitSound.setValidator(new SoundSelectorValidator(hitSound, L10N.t("elementgui.block.error_sound_not_selected")));
+			fallSound.setValidator(new SoundSelectorValidator(fallSound, L10N.t("elementgui.block.error_sound_not_selected")));
+
+			page4group.addValidationElement(breakSound);
+			page4group.addValidationElement(stepSound);
+			page4group.addValidationElement(placeSound);
+			page4group.addValidationElement(hitSound);
+			page4group.addValidationElement(fallSound);
+		}
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
@@ -1274,11 +1290,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
 			return new AggregatedValidationResult(page1group);
-		else if (page == 1)
-			return new AggregatedValidationResult(page2group);
+		else if (page == 2)
+			return new AggregatedValidationResult(page3group);
 		else if (page == 3)
+			return new AggregatedValidationResult(page4group);
+		else if (page == 4)
 			return new AggregatedValidationResult(outSlotIDs, inSlotIDs);
-		else if (page == 6) {
+		else if (page == 7) {
 			if ((int) minGenerateHeight.getValue() >= (int) maxGenerateHeight.getValue()) {
 				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.block.error_minimal_generation_height"));
 			}

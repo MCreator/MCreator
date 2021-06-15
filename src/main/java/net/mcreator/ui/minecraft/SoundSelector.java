@@ -23,8 +23,11 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.SoundUtils;
@@ -37,7 +40,10 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Arrays;
 
-public class SoundSelector extends JPanel {
+public class SoundSelector extends JPanel implements IValidable {
+
+	private Validator validator = null;
+	private boolean showPassed = true;
 
 	private final VTextField tfe = new VTextField(14);
 	private final JButton bt = new JButton("...");
@@ -138,4 +144,28 @@ public class SoundSelector extends JPanel {
 		this.setSound(text);
 	}
 
+	@Override public Validator.ValidationResult getValidationStatus() {
+		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
+
+		//repaint as new validation status might have to be rendered
+		ThreadUtil.runOnSwingThread(this::repaint);
+
+		return validationResult;
+	}
+
+	@Override public void setValidator(Validator validator) {
+		this.validator = validator;
+	}
+
+	@Override public Validator getValidator() {
+		return validator;
+	}
+
+	public boolean isShowPassed() {
+		return showPassed;
+	}
+
+	public void setShowPassed(boolean showPassed) {
+		this.showPassed = showPassed;
+	}
 }
