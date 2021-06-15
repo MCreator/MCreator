@@ -1,6 +1,6 @@
 <#function mappedBlockToBlockStateCode mappedBlock>
     <#if mappedBlock.toString().contains("(world.") || mappedBlock.toString().contains("/*@BlockState*/")>
-        <#return mappedBlock>
+        <#return mappedBlock?replace("/*@BlockState*/", "")>
     <#elseif mappedBlock.toString().startsWith("CUSTOM:")>
         <#if !mappedBlock.toString().contains(".")>
             <#return (generator.getElementPlainName(mappedBlock))
