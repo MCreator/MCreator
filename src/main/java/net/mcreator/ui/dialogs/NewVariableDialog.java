@@ -30,6 +30,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Collection;
 
 public class NewVariableDialog {
@@ -46,7 +47,7 @@ public class NewVariableDialog {
 
 		JComboBox<VariableType> type = new JComboBox<>(supportedTypes.toArray(new VariableType[0]));
 
-		JComboBox<VariableType.Scope> scope = new JComboBox<>(VariableType.Scope.values());
+		JComboBox<VariableType.Scope> scope = new JComboBox<>();
 
 		inp.add("North", L10N.label("dialog.variables.enter_name_select_type"));
 
@@ -55,9 +56,24 @@ public class NewVariableDialog {
 		data.add(textField);
 		data.add(L10N.label("dialog.variables.variable_type"));
 		data.add(type);
+
 		if (showScope) {
 			data.add(L10N.label("dialog.variables.variable_scope"));
 			data.add(scope);
+
+			type.addActionListener(e -> {
+				scope.removeAllItems();
+				VariableType typeSelectedItem = (VariableType) type.getSelectedItem();
+				if (typeSelectedItem != null)
+					Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getWorkspace()))
+							.forEach(scope::addItem);
+			});
+
+			// intial
+			VariableType typeSelectedItem = (VariableType) type.getSelectedItem();
+			if (typeSelectedItem != null)
+				Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getWorkspace()))
+						.forEach(scope::addItem);
 		}
 
 		inp.add("Center", data);
@@ -75,7 +91,10 @@ public class NewVariableDialog {
 				element.setName(Transliteration.transliterateString(textField.getText()));
 				element.setType((VariableType) type.getSelectedItem());
 				element.setValue(variable.getDefaultValue(mcreator.getWorkspace()));
-				element.setScope((VariableType.Scope) scope.getSelectedItem());
+				if (showScope)
+					element.setScope((VariableType.Scope) scope.getSelectedItem());
+				else
+					element.setScope(VariableType.Scope.LOCAL);
 				return element;
 			}
 		}

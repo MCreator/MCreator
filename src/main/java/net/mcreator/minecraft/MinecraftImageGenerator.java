@@ -1012,7 +1012,7 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates the block icon for pressure plate.</p>
 		 *
-		 * @param texture  <p>Block texture</p>
+		 * @param texture <p>Block texture</p>
 		 * @return <p>Returns generated image.</p>
 		 */
 		public static Image generatePressurePlateIcon(Image texture) {
