@@ -57,12 +57,20 @@ public class WorkspaceFolderManager {
 		return new ImageIcon(getItemTextureFile(textureIdentifier).getAbsolutePath());
 	}
 
+	public ImageIcon getPotionEffectImageIcon(String textureIdentifier) {
+		return new ImageIcon(getPotionEffectIconTextureFile(textureIdentifier).getAbsolutePath());
+	}
+
 	public File getBlockTextureFile(String textureIdentifier) {
 		return new File(getBlocksTexturesDir(), textureIdentifier + ".png");
 	}
 
 	public File getItemTextureFile(String textureIdentifier) {
 		return new File(getItemsTexturesDir(), textureIdentifier + ".png");
+	}
+
+	public File getPotionEffectIconTextureFile(String textureIdentifier) {
+		return new File(getOtherTexturesDir(), "mob_effect/" + textureIdentifier + ".png");
 	}
 
 	public File getOtherTextureFile(String textureIdentifier) {

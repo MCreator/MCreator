@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.commons.io.FilenameUtils;
 
@@ -49,7 +50,8 @@ public class PotionEffect extends GeneratableElement {
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generatePotionIcon(color);
+		return ImageUtils.resizeAndCrop(
+				getModElement().getFolderManager().getPotionEffectImageIcon(getModElement().getRegistryName()).getImage(), 33);
 	}
 
 	@Override public void finalizeModElementGeneration() {
