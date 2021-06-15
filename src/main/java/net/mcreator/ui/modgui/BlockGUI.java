@@ -1142,11 +1142,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page3group.addValidationElement(name);
 
 		if (customSoundType.isSelected()) {
-			breakSound.setValidator(new SoundSelectorValidator(breakSound, L10N.t("elementgui.block.error_sound_not_selected")));
-			stepSound.setValidator(new SoundSelectorValidator(stepSound, L10N.t("elementgui.block.error_sound_not_selected")));
-			placeSound.setValidator(new SoundSelectorValidator(placeSound, L10N.t("elementgui.block.error_sound_not_selected")));
-			hitSound.setValidator(new SoundSelectorValidator(hitSound, L10N.t("elementgui.block.error_sound_not_selected")));
-			fallSound.setValidator(new SoundSelectorValidator(fallSound, L10N.t("elementgui.block.error_sound_not_selected")));
+			breakSound.setValidator(new SoundSelectorValidator(breakSound, L10N.t("elementgui.common.error_sound_empty_null")));
+			stepSound.setValidator(new SoundSelectorValidator(stepSound, L10N.t("elementgui.common.error_sound_empty_null")));
+			placeSound.setValidator(new SoundSelectorValidator(placeSound, L10N.t("elementgui.common.error_sound_empty_null")));
+			hitSound.setValidator(new SoundSelectorValidator(hitSound, L10N.t("elementgui.common.error_sound_empty_null")));
+			fallSound.setValidator(new SoundSelectorValidator(fallSound, L10N.t("elementgui.common.error_sound_empty_null")));
 
 			page4group.addValidationElement(breakSound);
 			page4group.addValidationElement(stepSound);
