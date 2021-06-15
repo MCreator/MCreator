@@ -41,7 +41,7 @@ import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.SoundSelectorValidator;
+import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
@@ -654,19 +654,22 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		page3group.addValidationElement(name);
 
-		if (customSoundType.isSelected()) {
-			breakSound.setValidator(new SoundSelectorValidator(breakSound, L10N.t("elementgui.common.error_sound_empty_null")));
-			stepSound.setValidator(new SoundSelectorValidator(stepSound, L10N.t("elementgui.common.error_sound_empty_null")));
-			placeSound.setValidator(new SoundSelectorValidator(placeSound, L10N.t("elementgui.common.error_sound_empty_null")));
-			hitSound.setValidator(new SoundSelectorValidator(hitSound, L10N.t("elementgui.common.error_sound_empty_null")));
-			fallSound.setValidator(new SoundSelectorValidator(fallSound, L10N.t("elementgui.common.error_sound_empty_null")));
+		breakSound.getVTextField().setValidator(new ConditionalTextFieldValidator(breakSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+		stepSound.getVTextField().setValidator(new ConditionalTextFieldValidator(stepSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+		placeSound.getVTextField().setValidator(new ConditionalTextFieldValidator(placeSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+		hitSound.getVTextField().setValidator(new ConditionalTextFieldValidator(hitSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+		fallSound.getVTextField().setValidator(new ConditionalTextFieldValidator(fallSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
 
-			page3group.addValidationElement(breakSound);
-			page3group.addValidationElement(stepSound);
-			page3group.addValidationElement(placeSound);
-			page3group.addValidationElement(hitSound);
-			page3group.addValidationElement(fallSound);
-		}
+		page3group.addValidationElement(breakSound.getVTextField());
+		page3group.addValidationElement(stepSound.getVTextField());
+		page3group.addValidationElement(placeSound.getVTextField());
+		page3group.addValidationElement(hitSound.getVTextField());
+		page3group.addValidationElement(fallSound.getVTextField());
 
 		addPage(L10N.t("elementgui.plant.page_visual_and_type"), pane2);
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
@@ -750,9 +753,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
 			return new AggregatedValidationResult(texture);
-		else if (page == 2)
+		else if (page == 2) {
+			System.err.println("pagec");
 			return new AggregatedValidationResult(page3group);
-		return new AggregatedValidationResult.PASS();
+		}return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(Plant plant) {
@@ -860,6 +864,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			dbl.setIcon(TiledImageCache.plantDoubleYes);
 		else
 			dbl.setIcon(TiledImageCache.plantDoubleNo);
+
+		updateSoundType();
 
 		updateTextureOptions();
 	}
