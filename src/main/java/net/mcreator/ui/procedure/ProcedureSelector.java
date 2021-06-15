@@ -54,30 +54,28 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName,
 			Dependency... providedDependencies) {
-		super(helpContext, mcreator, eventName, providedDependencies);
+		this(helpContext, mcreator, eventName, Side.BOTH, providedDependencies);
 	}
 
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
 			Dependency... providedDependencies) {
-		super(helpContext, mcreator, eventName, side, providedDependencies);
+		this(helpContext, mcreator, eventName, side, true, null, providedDependencies);
 	}
 
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
 			boolean allowInlineEditor, Dependency... providedDependencies) {
-		super(helpContext, mcreator, eventName, side, allowInlineEditor, providedDependencies);
+		this(helpContext, mcreator, eventName, side, allowInlineEditor, null, providedDependencies);
 	}
 
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName,
 			@Nullable VariableType returnType, Dependency... providedDependencies) {
-		super(helpContext, mcreator, eventName, returnType, providedDependencies);
+		this(helpContext, mcreator, eventName, Side.BOTH, true, returnType, providedDependencies);
 	}
 
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
 			boolean allowInlineEditor, @Nullable VariableType returnType, Dependency... providedDependencies) {
-		super(helpContext, mcreator, eventName, side, allowInlineEditor, returnType, providedDependencies);
-	}
+		super(mcreator, returnType, providedDependencies);
 
-	@Override protected void initUI(IHelpContext helpContext, String eventName, Side side, boolean allowInlineEditor) {
 		setLayout(new BorderLayout(0, 0));
 
 		addMouseListener(new MouseAdapter() {

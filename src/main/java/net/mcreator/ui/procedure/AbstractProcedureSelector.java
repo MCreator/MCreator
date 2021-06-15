@@ -46,7 +46,6 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
-import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.workspace.elements.ModElement;
@@ -78,37 +77,12 @@ public abstract class AbstractProcedureSelector extends JPanel {
 
 	protected String defaultName = L10N.t("procedure.common.no_procedure");
 
-	public AbstractProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName,
-			Dependency... providedDependencies) {
-		this(helpContext, mcreator, eventName, Side.BOTH, providedDependencies);
-	}
-
-	public AbstractProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
-			Dependency... providedDependencies) {
-		this(helpContext, mcreator, eventName, side, true, null, providedDependencies);
-	}
-
-	public AbstractProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
-			boolean allowInlineEditor, Dependency... providedDependencies) {
-		this(helpContext, mcreator, eventName, side, allowInlineEditor, null, providedDependencies);
-	}
-
-	public AbstractProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName,
-			@Nullable VariableType returnType, Dependency... providedDependencies) {
-		this(helpContext, mcreator, eventName, Side.BOTH, true, returnType, providedDependencies);
-	}
-
-	public AbstractProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
-			boolean allowInlineEditor, @Nullable VariableType returnType, Dependency... providedDependencies) {
+	public AbstractProcedureSelector(MCreator mcreator, @Nullable VariableType returnType, Dependency... providedDependencies) {
 		this.mcreator = mcreator;
 		this.returnType = returnType;
 
 		this.providedDependencies = providedDependencies;
-
-		initUI(helpContext, eventName, side, allowInlineEditor);
 	}
-
-	protected abstract void initUI(IHelpContext helpContext, String eventName, Side side, boolean allowInlineEditor);
 
 	@Override public void setEnabled(boolean enabled) {
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
