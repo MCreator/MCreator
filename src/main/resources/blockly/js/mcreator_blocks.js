@@ -408,6 +408,12 @@ Blockly.defineBlocksWithJsonArray([
         "colour": "195"
     },
     {
+        "type": "entity_none",
+        "message0": "No entity",
+        "output": "Null",
+        "colour": "195"
+    },
+    {
         "type": "math_from_text",
         "message0": "number from text %1",
         "args0": [

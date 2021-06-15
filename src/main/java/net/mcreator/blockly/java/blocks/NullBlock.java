@@ -29,7 +29,7 @@ public class NullBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "direction_unspecified" };
+		return new String[] { "direction_unspecified", "entity_none" };
 	}
 
 	@Override public BlockType getBlockType() {
