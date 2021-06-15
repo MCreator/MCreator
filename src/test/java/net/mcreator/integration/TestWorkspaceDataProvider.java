@@ -1084,7 +1084,7 @@ public class TestWorkspaceDataProvider {
 			block.luminance = 3;
 			block.isReplaceable = !_true;
 			block.canProvidePower = !_true;
-			block.emittedRedstonePower = 4;
+			block.emittedRedstonePower = new IntegerProcedure(emptyLists ? null : "number1", 8);
 			block.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			block.colorOnMap = getRandomItem(random, ElementUtil.loadMapColors());
@@ -1180,7 +1180,6 @@ public class TestWorkspaceDataProvider {
 				block.generateCondition = new Procedure("condition1");
 				block.placingCondition = new Procedure("condition2");
 				block.particleCondition = new Procedure("condition4");
-				block.redstonePowerProvider = new Procedure("number1");
 			}
 			block.itemTexture = emptyLists ? "" : "itest";
 			block.particleTexture = emptyLists ? "" : "test7";

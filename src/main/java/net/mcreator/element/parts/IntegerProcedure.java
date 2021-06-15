@@ -17,29 +17,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.procedure;
+package net.mcreator.element.parts;
 
-class CBoxEntry {
-	String string;
-	boolean correctDependencies;
+public class IntegerProcedure extends Procedure {
 
-	CBoxEntry(String string) {
-		this(string, true);
+	private double fixedValue;
+
+	public IntegerProcedure(String name, double fixedValue) {
+		super(name);
+		this.fixedValue = fixedValue;
 	}
 
-	CBoxEntry(String string, boolean correctDependencies) {
-		this.string = string;
-		if (this.string == null)
-			this.string = "";
-		this.correctDependencies = correctDependencies;
-	}
-
-	@Override public boolean equals(Object o) {
-		return o instanceof CBoxEntry && ((CBoxEntry) o).string.equals(this.string);
-	}
-
-	@Override public String toString() {
-		return string;
+	public double getFixedValue() {
+		return fixedValue;
 	}
 
 }

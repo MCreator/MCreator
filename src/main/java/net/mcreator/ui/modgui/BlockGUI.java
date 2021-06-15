@@ -47,6 +47,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.procedure.IntegerProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -105,7 +106,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onRedstoneOff;
 
 	private ProcedureSelector particleCondition;
-	private ProcedureSelector redstonePowerProvider;
+	private IntegerProcedureSelector emittedRedstonePower;
 	private ProcedureSelector placingCondition;
 	private ProcedureSelector generateCondition;
 
@@ -153,7 +154,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner emittedRedstonePower = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 	private final JComboBox<String> colorOnMap = new JComboBox<>();
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -302,10 +302,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString("x:number/y:number/z:number/world:world"));
 
-		redstonePowerProvider = new ProcedureSelector(this.withEntry("block/redstone_provider"), mcreator,
-				L10N.t("elementgui.block.event_redstone_provider"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.NUMBER, Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("condition.common.no_additional"));
+		emittedRedstonePower = new IntegerProcedureSelector(this.withEntry("block/redstone_provider"), mcreator,
+				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)),
+				Dependency.fromString("x:number/y:number/z:number/world:world"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -1085,13 +1084,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.redstone_power")));
 		redstoneParameters.add(emittedRedstonePower);
 
-		JComponent redCond = PanelUtils.northAndCenterElement(redstoneParameters,
-				PanelUtils.join(FlowLayout.LEFT, redstonePowerProvider));
-		redCond.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+		redstoneParameters.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.properties_redstone"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent parred = PanelUtils.centerAndSouthElement(parpar, PanelUtils.pullElementUp(redCond));
+		JComponent parred = PanelUtils.centerAndSouthElement(parpar, PanelUtils.pullElementUp(redstoneParameters));
 
 		canProvidePower.addActionListener(e -> refreshRedstoneEmitted());
 		refreshRedstoneEmitted();
@@ -1224,7 +1222,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRedstoneOff.refreshListKeepSelected();
 
 		particleCondition.refreshListKeepSelected();
-		redstonePowerProvider.refreshListKeepSelected();
+		emittedRedstonePower.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
 
@@ -1307,7 +1305,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		particleToSpawn.setSelectedItem(block.particleToSpawn);
 		particleSpawningShape.setSelectedItem(block.particleSpawningShape);
 		particleCondition.setSelectedProcedure(block.particleCondition);
-		redstonePowerProvider.setSelectedProcedure(block.redstonePowerProvider);
+		emittedRedstonePower.setSelectedProcedure(block.emittedRedstonePower);
 		generateCondition.setSelectedProcedure(block.generateCondition);
 		particleSpawningRadious.setValue(block.particleSpawningRadious);
 		particleAmount.setValue(block.particleAmount);
@@ -1346,7 +1344,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		inventoryDropWhenDestroyed.setSelected(block.inventoryDropWhenDestroyed);
 		inventoryComparatorPower.setSelected(block.inventoryComparatorPower);
 		inventorySize.setValue(block.inventorySize);
-		emittedRedstonePower.setValue(block.emittedRedstonePower);
 		inventoryStackSize.setValue(block.inventoryStackSize);
 		tickRate.setValue(block.tickRate);
 
@@ -1441,13 +1438,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.particleSpawningRadious = (double) particleSpawningRadious.getValue();
 		block.particleAmount = (int) particleAmount.getValue();
 		block.particleCondition = particleCondition.getSelectedProcedure();
-		block.redstonePowerProvider = redstonePowerProvider.getSelectedProcedure();
+		block.emittedRedstonePower = emittedRedstonePower.getSelectedProcedure();
 		block.generateCondition = generateCondition.getSelectedProcedure();
 		block.hasInventory = hasInventory.isSelected();
 		block.useLootTableForDrops = useLootTableForDrops.isSelected();
 		block.openGUIOnRightClick = openGUIOnRightClick.isSelected();
 		block.inventorySize = (int) inventorySize.getValue();
-		block.emittedRedstonePower = (int) emittedRedstonePower.getValue();
 		block.inventoryStackSize = (int) inventoryStackSize.getValue();
 		block.inventoryDropWhenDestroyed = inventoryDropWhenDestroyed.isSelected();
 		block.inventoryComparatorPower = inventoryComparatorPower.isSelected();

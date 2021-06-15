@@ -426,10 +426,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			int y = pos.getY();
 			int z = pos.getZ();
 			World world = (World) blockAccess;
-			<#if hasProcedure(data.redstonePowerProvider)>
-				return (int) <@procedureOBJToIntegerCode data.redstonePowerProvider/>;
+			<#if hasProcedure(data.emittedRedstonePower)>
+				return (int) <@procedureOBJToIntegerCode data.emittedRedstonePower/>;
 			<#else>
-				return ${data.emittedRedstonePower};
+				return ${data.emittedRedstonePower.getFixedValue()};
 			</#if>
 		}
 		</#if>
