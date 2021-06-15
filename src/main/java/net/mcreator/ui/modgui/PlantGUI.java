@@ -151,7 +151,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private BiomeListField restrictionBiomes;
 
 	private final ValidationGroup page3group = new ValidationGroup();
-	private final ValidationGroup page4group = new ValidationGroup();
 
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(100, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(60, 0, 1024, 1));
@@ -662,11 +661,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			hitSound.setValidator(new SoundSelectorValidator(hitSound, L10N.t("elementgui.common.error_sound_empty_null")));
 			fallSound.setValidator(new SoundSelectorValidator(fallSound, L10N.t("elementgui.common.error_sound_empty_null")));
 
-			page4group.addValidationElement(breakSound);
-			page4group.addValidationElement(stepSound);
-			page4group.addValidationElement(placeSound);
-			page4group.addValidationElement(hitSound);
-			page4group.addValidationElement(fallSound);
+			page3group.addValidationElement(breakSound);
+			page3group.addValidationElement(stepSound);
+			page3group.addValidationElement(placeSound);
+			page3group.addValidationElement(hitSound);
+			page3group.addValidationElement(fallSound);
 		}
 
 		addPage(L10N.t("elementgui.plant.page_visual_and_type"), pane2);
@@ -753,8 +752,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			return new AggregatedValidationResult(texture);
 		else if (page == 2)
 			return new AggregatedValidationResult(page3group);
-		else if (page == 3)
-			return new AggregatedValidationResult(page4group);
 		return new AggregatedValidationResult.PASS();
 	}
 
