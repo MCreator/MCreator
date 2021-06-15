@@ -754,10 +754,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
 			return new AggregatedValidationResult(texture);
-		else if (page == 2) {
-			System.err.println("pagec");
+		else if (page == 2)
 			return new AggregatedValidationResult(page3group);
-		}return new AggregatedValidationResult.PASS();
+		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(Plant plant) {
