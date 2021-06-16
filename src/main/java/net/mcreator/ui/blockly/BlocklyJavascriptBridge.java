@@ -215,7 +215,6 @@ public class BlocklyJavascriptBridge {
 			break;
 		case "rangeditem":
 			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-			//break;
 		case "throwableprojectiles":
 			return ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "fireballprojectiles":

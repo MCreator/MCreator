@@ -1,6 +1,8 @@
 _default:
   - SnowballEntity
   - EntityType.SNOWBALL
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template: "@NAMEItem.ArrowCustomEntity"
 Snowball:
   - SnowballEntity
   - EntityType.SNOWBALL
