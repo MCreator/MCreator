@@ -50,7 +50,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 
 public class NumberProcedureSelector extends AbstractProcedureSelector {
 
@@ -94,11 +93,14 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 					oldItem = selectedItem;
 				}
 			}
-			updateDepsList();
+			updateDepsList(true);
 		});
 
 		JPanel top = new JPanel(new BorderLayout());
 		top.setOpaque(false);
+
+		JLabel nameLabel = new JLabel(eventName);
+		ComponentUtils.deriveFont(nameLabel, 12);
 
 		JLabel eventNameLabel = new JLabel();
 		eventNameLabel.setFont(eventNameLabel.getFont().deriveFont(9f));
@@ -106,29 +108,23 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 			eventNameLabel.setIcon(UIRES.get("16px.client"));
 			eventNameLabel.setToolTipText(L10N.t("trigger.triggers_on_client_side_only"));
 			if (helpContext == null)
-				top.add("North", PanelUtils
-						.westAndCenterElement(eventNameLabel, ComponentUtils.deriveFont(new JLabel(eventName), 12)));
+				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, nameLabel));
 			else
-				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, HelpUtils
-						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 12),
-								SwingConstants.LEFT)));
+				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel,
+						HelpUtils.wrapWithHelpButton(helpContext, nameLabel, SwingConstants.LEFT)));
 		} else if (side == Side.SERVER) {
 			eventNameLabel.setToolTipText(L10N.t("trigger.triggers_on_server_side_only"));
 			eventNameLabel.setIcon(UIRES.get("16px.server"));
 			if (helpContext == null)
-				top.add("North", PanelUtils
-						.westAndCenterElement(eventNameLabel, ComponentUtils.deriveFont(new JLabel(eventName), 12)));
+				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, nameLabel));
 			else
-				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, HelpUtils
-						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 12),
-								SwingConstants.LEFT)));
+				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel,
+						HelpUtils.wrapWithHelpButton(helpContext, nameLabel, SwingConstants.LEFT)));
 		} else {
 			if (helpContext == null)
-				top.add("North", ComponentUtils.deriveFont(new JLabel(eventName), 12));
+				top.add("North", nameLabel);
 			else
-				top.add("North", HelpUtils
-						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 12),
-								SwingConstants.LEFT));
+				top.add("North", HelpUtils.wrapWithHelpButton(helpContext, nameLabel, SwingConstants.LEFT));
 		}
 
 		top.add("South", depslab);
@@ -218,37 +214,15 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 			setEnabled(false);
 	}
 
-	@Override protected void updateDepsList() {
-		CBoxEntry selected = procedures.getSelectedItem();
-
-		List<Dependency> dependencies = null;
-		if (selected != null) {
-			dependencies = depsMap.get(selected.string);
-		}
-
-		StringBuilder deps = new StringBuilder(
-				"<html><div style='font-size: 8px; margin-top: 0; margin-bottom: 0; color: white;'>");
-		for (Dependency dependency : providedDependencies) {
-			String bg = "999999";
-			String optcss = "color: #444444;";
-			if (dependencies != null && dependencies.contains(dependency)) {
-				optcss = "color: #ffffff;";
-				bg = Integer.toHexString(dependency.getColor().getRGB()).substring(2);
-			}
-			deps.append("<span style='background: #").append(bg).append("; ").append(optcss).append("'>&nbsp;")
-					.append(dependency.getName()).append("&nbsp;</span>&#32;");
-		}
-
-		depslab.setText(deps.toString());
-
-		if (selected == null || !selected.correctDependencies) {
-			edit.setEnabled(false);
-		}
+	@Override protected CBoxEntry updateDepsList(boolean smallIcons) {
+		CBoxEntry selected = super.updateDepsList(true);
 
 		edit.setEnabled(selected != null && !selected.string.equals(defaultName));
 
 		if (fixedValue != null)
 			fixedValue.setEnabled(!edit.isEnabled());
+
+		return selected;
 	}
 
 	@Override public void setEnabled(boolean enabled) {
@@ -270,7 +244,7 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 		edit.setEnabled(enabled);
 		add.setEnabled(enabled);
 
-		updateDepsList();
+		updateDepsList(true);
 	}
 
 	@Override public NumberProcedure getSelectedProcedure() {
