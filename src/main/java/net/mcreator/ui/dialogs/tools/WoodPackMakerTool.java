@@ -464,10 +464,12 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(fenceGateRecipe);
 
 		Recipe pressurePlateRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "PressurePlateRecipe", ModElementType.RECIPE), false)
-				.getElementFromGUI();
-		pressurePlateRecipe.recipeSlots[6] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
-		pressurePlateRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+				.getModElement(mcreator, new ModElement(workspace, name + "PressurePlateRecipe", ModElementType.RECIPE),
+						false).getElementFromGUI();
+		pressurePlateRecipe.recipeSlots[6] = new MItemBlock(workspace,
+				"CUSTOM:" + planksBlock.getModElement().getName());
+		pressurePlateRecipe.recipeSlots[7] = new MItemBlock(workspace,
+				"CUSTOM:" + planksBlock.getModElement().getName());
 		pressurePlateRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "PressurePlate");
 		pressurePlateRecipe.recipeRetstackSize = 1;
 

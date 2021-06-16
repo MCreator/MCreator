@@ -33,9 +33,10 @@ public class OutputStreamEventHandler extends OutputStream {
 	}
 
 	@Override public void write(int i) {
-		buffer.append((char) i);
 		if (i == '\n')
 			event();
+		else
+			buffer.append((char) i);
 	}
 
 	@Override public void write(@Nonnull byte[] b, int off, int len) {
@@ -55,7 +56,7 @@ public class OutputStreamEventHandler extends OutputStream {
 	}
 
 	private void event() {
-		lineReceiver.lineReceived(buffer.toString().replaceAll("([\n\r])", ""));
+		lineReceiver.lineReceived(buffer.toString().replace("\n", "").replace("\r", ""));
 		buffer.setLength(0);
 	}
 

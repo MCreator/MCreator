@@ -109,6 +109,7 @@ public class Procedure extends GeneratableElement {
 			additionalData.put("has_trigger", trigger != null);
 			additionalData.put("trigger_code", triggerCode);
 			additionalData.put("dependencies", dependenciesArrayList);
+			additionalData.put("localvariables", blocklyToJava.getLocalVariables());
 		};
 	}
 

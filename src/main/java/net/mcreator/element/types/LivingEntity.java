@@ -41,7 +41,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-@SuppressWarnings("unused") public class Mob extends GeneratableElement
+@SuppressWarnings("unused") public class LivingEntity extends GeneratableElement
 		implements IEntityWithModel, ITabContainedElement {
 
 	public String mobName;
@@ -153,11 +153,11 @@ import java.util.Locale;
 	public List<BiomeEntry> restrictionBiomes;
 	public boolean spawnInDungeons;
 
-	private Mob() {
+	private LivingEntity() {
 		this(null);
 	}
 
-	public Mob(ModElement element) {
+	public LivingEntity(ModElement element) {
 		super(element);
 
 		this.modelShadowSize = 0.5;
