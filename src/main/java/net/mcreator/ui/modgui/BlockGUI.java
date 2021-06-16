@@ -47,6 +47,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -229,7 +230,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JComboBox<String> blockBase = new JComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
-					"Door", "FenceGate", "EndRod" });
+					"Door", "FenceGate", "EndRod", "PressurePlate" });
 
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -296,13 +297,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world"));
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString("x:number/y:number/z:number/world:world"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("condition.common.no_additional"));
+				.setDefaultName(L10N.t("condition.common.no_additional")).makeInline();
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				L10N.t("elementgui.block.event_generate_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -368,12 +368,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 				hasGravity.setSelected(false);
 				rotationMode.setSelectedIndex(0);
-				isWaterloggable.setSelected(false);
 
 				if (blockBase.getSelectedItem().equals("Wall") || blockBase.getSelectedItem().equals("Fence")
 						|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem().equals("Door")
 						|| blockBase.getSelectedItem().equals("FenceGate") || blockBase.getSelectedItem()
-						.equals("EndRod")) {
+						.equals("EndRod") || blockBase.getSelectedItem().equals("PressurePlate")) {
 					if (!isEditingMode()) {
 						hasTransparency.setSelected(true);
 						lightOpacity.setValue(0);
@@ -700,8 +699,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				.wrapWithHelpButton(this.withEntry("block/drop_amount"), L10N.label("elementgui.common.drop_amount")));
 		selp3.add(dropAmount);
 
-		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
-				L10N.label("elementgui.common.use_loot_table_for_drop"), modElement::getRegistryName));
+		selp3.add(HelpUtils.wrapWithHelpButton(
+				this.withEntry("block/use_loot_table_for_drops").withArguments(modElement::getRegistryName),
+				L10N.label("elementgui.common.use_loot_table_for_drop")));
 		selp3.add(PanelUtils.centerInPanel(useLootTableForDrops));
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
@@ -779,7 +779,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedProperties.add(offsetType);
 
 		JComponent advancedWithCondition = PanelUtils
-				.northAndCenterElement(advancedProperties, PanelUtils.join(FlowLayout.LEFT, placingCondition));
+				.northAndCenterElement(advancedProperties, placingCondition, 5, 5);
 
 		isWaterloggable.setOpaque(false);
 		canProvidePower.setOpaque(false);
@@ -1351,7 +1351,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());
 		dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 
-		hasGravity.setEnabled(!isWaterloggable.isSelected());
+		if (hasGravity.isEnabled())
+			hasGravity.setEnabled(!isWaterloggable.isSelected());
 	}
 
 	@Override public Block getElementFromGUI() {

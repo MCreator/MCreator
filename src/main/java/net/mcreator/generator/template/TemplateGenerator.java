@@ -77,8 +77,7 @@ public class TemplateGenerator {
 		return generateTemplate(templateName, dataModel);
 	}
 
-	public String generateFromString(String template, Map<String, Object> dataModel)
-			throws TemplateGeneratorException {
+	public String generateFromString(String template, Map<String, Object> dataModel) throws TemplateGeneratorException {
 		dataModel.putAll(baseDataModelProvider.provide());
 		return generateTemplateFromString(template, dataModel);
 	}

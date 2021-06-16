@@ -63,8 +63,8 @@ public class GetVariableBlock implements IBlockGenerator {
 							"Variable get block is bound to a variable that does not exist. Remove this block!"));
 					return;
 				} else if (master instanceof BlocklyToProcedure && scope.equals("local")
-						&& !((BlocklyToProcedure) master).getVariables()
-						.contains(name)) { // check if local variable exists
+						&& !((BlocklyToProcedure) master).getLocalVariables().stream().map(VariableElement::toString)
+						.collect(Collectors.toList()).contains(name)) { // check if local variable exists
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							"Variable get block is bound to a local variable that does not exist. Remove this block!"));
 					return;
@@ -96,8 +96,8 @@ public class GetVariableBlock implements IBlockGenerator {
 						.getScopeDefinition(master.getWorkspace(), scope.toUpperCase(Locale.ENGLISH)).get("get");
 				if (getterTemplate == null) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Current generator does not support getting variables of type " + type + " in "
-									+ scope + " scope"));
+							"Current generator does not support getting variables of type " + type + " in " + scope
+									+ " scope"));
 					return;
 				}
 

@@ -35,7 +35,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.minecraft.DimensionListField;
 import net.mcreator.ui.minecraft.MCItemListField;
-import net.mcreator.ui.minecraft.ProcedureSelector;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;

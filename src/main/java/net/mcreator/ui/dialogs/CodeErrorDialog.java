@@ -50,13 +50,12 @@ public class CodeErrorDialog {
 
 		mcreator.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-		String[] lines = stderroutput.split("\n");
-		for (String line : lines) {
+		stderroutput.lines().forEach(line -> {
 			if (line.contains(".java:") && line.contains(": error:")) {
 				File fileWithError = new File(line.split(":\\d+: error:")[0].replaceAll("build[/|\\\\]sources", "src"));
 				problematicFiles.add(fileWithError);
 			}
-		}
+		});
 
 		Set<ModElement> problematicMods = new HashSet<>();
 		boolean moddefinitionfileerrors = false;
