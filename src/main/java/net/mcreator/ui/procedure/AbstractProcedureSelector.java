@@ -77,7 +77,8 @@ public abstract class AbstractProcedureSelector extends JPanel {
 
 	protected String defaultName = L10N.t("procedure.common.no_procedure");
 
-	public AbstractProcedureSelector(MCreator mcreator, @Nullable VariableType returnType, Dependency... providedDependencies) {
+	public AbstractProcedureSelector(MCreator mcreator, @Nullable VariableType returnType,
+			Dependency... providedDependencies) {
 		this.mcreator = mcreator;
 		this.returnType = returnType;
 
@@ -145,10 +146,10 @@ public abstract class AbstractProcedureSelector extends JPanel {
 		Procedure selected = getSelectedProcedure();
 		refreshList();
 		setSelectedProcedure(selected);
-		updateDepsList();
+		updateDepsList(false);
 	}
 
-	protected void updateDepsList() {
+	protected CBoxEntry updateDepsList(boolean smallIcons) {
 		CBoxEntry selected = procedures.getSelectedItem();
 
 		List<Dependency> dependencies = null;
@@ -156,8 +157,11 @@ public abstract class AbstractProcedureSelector extends JPanel {
 			dependencies = depsMap.get(selected.string);
 		}
 
-		StringBuilder deps = new StringBuilder(
-				"<html><div style='font-size: 9px; margin-top: 2px; margin-bottom: 1px; color: white;'>");
+		StringBuilder deps = new StringBuilder();
+		if (smallIcons)
+			deps.append("<html><div style='font-size: 8px; margin-top: 0; margin-bottom: 0; color: white;'>");
+		else
+			deps.append("<html><div style='font-size: 9px; margin-top: 2px; margin-bottom: 1px; color: white;'>");
 		for (Dependency dependency : providedDependencies) {
 			String bg = "999999";
 			String optcss = "color: #444444;";
@@ -175,6 +179,8 @@ public abstract class AbstractProcedureSelector extends JPanel {
 		if (selected == null || !selected.correctDependencies) {
 			edit.setEnabled(false);
 		}
+
+		return selected;
 	}
 
 	public Procedure getSelectedProcedure() {

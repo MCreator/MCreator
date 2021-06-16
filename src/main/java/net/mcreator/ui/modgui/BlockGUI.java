@@ -309,7 +309,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("condition.common.no_additional"));
+				.setDefaultName(L10N.t("condition.common.no_additional")).makeInline();
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				L10N.t("elementgui.block.event_generate_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -783,7 +783,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedProperties.add(offsetType);
 
 		JComponent advancedWithCondition = PanelUtils
-				.northAndCenterElement(advancedProperties, PanelUtils.join(FlowLayout.LEFT, placingCondition));
+				.northAndCenterElement(advancedProperties, placingCondition, 5, 5);
 
 		isWaterloggable.setOpaque(false);
 		canRedstoneConnect.setOpaque(false);

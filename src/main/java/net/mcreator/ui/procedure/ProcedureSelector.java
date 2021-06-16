@@ -52,6 +52,13 @@ import java.awt.event.MouseEvent;
 
 public class ProcedureSelector extends AbstractProcedureSelector {
 
+	private boolean inline = false;
+
+	private final JLabel nameLabel;
+	private final JLabel actionLabel;
+	private final JComponent componentA;
+	private final JComponent componentB;
+
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName,
 			Dependency... providedDependencies) {
 		this(helpContext, mcreator, eventName, Side.BOTH, providedDependencies);
@@ -108,49 +115,50 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 					oldItem = selectedItem;
 				}
 			}
-			updateDepsList();
+			updateDepsList(false);
 		});
 
 		JPanel top = new JPanel(new BorderLayout());
 		top.setOpaque(false);
+
+		nameLabel = new JLabel(eventName);
+		ComponentUtils.deriveFont(nameLabel, 14);
 
 		JLabel eventNameLabel = new JLabel();
 		if (side == Side.CLIENT) {
 			eventNameLabel.setIcon(UIRES.get("16px.client"));
 			eventNameLabel.setToolTipText(L10N.t("trigger.triggers_on_client_side_only"));
 			if (helpContext == null)
-				top.add("North", PanelUtils
-						.westAndCenterElement(eventNameLabel, ComponentUtils.deriveFont(new JLabel(eventName), 14)));
+				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, nameLabel));
 			else
-				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, HelpUtils
-						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 14),
-								SwingConstants.LEFT)));
+				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel,
+						HelpUtils.wrapWithHelpButton(helpContext, nameLabel, SwingConstants.LEFT)));
 		} else if (side == Side.SERVER) {
 			eventNameLabel.setToolTipText(L10N.t("trigger.triggers_on_server_side_only"));
 			eventNameLabel.setIcon(UIRES.get("16px.server"));
 			if (helpContext == null)
-				top.add("North", PanelUtils
-						.westAndCenterElement(eventNameLabel, ComponentUtils.deriveFont(new JLabel(eventName), 14)));
+				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, nameLabel));
 			else
-				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, HelpUtils
-						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 14),
-								SwingConstants.LEFT)));
+				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel,
+						HelpUtils.wrapWithHelpButton(helpContext, nameLabel, SwingConstants.LEFT)));
 		} else {
 			if (helpContext == null)
-				top.add("North", ComponentUtils.deriveFont(new JLabel(eventName), 14));
+				top.add("North", nameLabel);
 			else
-				top.add("North", HelpUtils
-						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 14),
-								SwingConstants.LEFT));
+				top.add("North", HelpUtils.wrapWithHelpButton(helpContext, nameLabel, SwingConstants.LEFT));
 		}
 
 		top.add("South", depslab);
 
+		actionLabel = L10N.label("procedure.common.if");
+		ComponentUtils.deriveFont(actionLabel, 14);
+
 		JComponent procwrap;
 		if (returnType == VariableTypeLoader.BuiltInTypes.LOGIC) {
-			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" if:  "), 15), procedures);
+			procwrap = PanelUtils.westAndCenterElement(actionLabel, procedures);
 		} else if (returnType == null) {
-			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" do:  "), 15), procedures);
+			actionLabel.setText(L10N.t("procedure.common.do"));
+			procwrap = PanelUtils.westAndCenterElement(actionLabel, procedures);
 		} else {
 			procwrap = procedures;
 		}
@@ -219,15 +227,17 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 				}
 			});
 
-			JComponent component = PanelUtils.centerAndEastElement(procwrap, PanelUtils.westAndEastElement(add, edit));
-			component.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 4));
-			add("South", component);
+			componentB = PanelUtils.centerAndEastElement(procwrap, PanelUtils.westAndEastElement(add, edit));
+			componentB.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 4));
 		} else {
 			procwrap.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 4));
-			add("South", procwrap);
+			componentB = procwrap;
 		}
 
-		add("North", PanelUtils.join(FlowLayout.LEFT, 4, 4, top));
+		componentA = PanelUtils.join(FlowLayout.LEFT, 4, 4, top);
+
+		add("North", componentA);
+		add("South", componentB);
 
 		procedures.setToolTipText(L10N.t("action.procedure.match_dependencies"));
 
@@ -244,4 +254,22 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		return this;
 	}
 
+	public ProcedureSelector makeInline() {
+		inline = true;
+
+		removeAll();
+		setLayout(new GridLayout(1, 2));
+		add(componentA);
+		add(componentB);
+
+		updateDepsList(true);
+		ComponentUtils.deriveFont(nameLabel, 12);
+		actionLabel.setVisible(false);
+
+		return this;
+	}
+
+	@Override protected CBoxEntry updateDepsList(boolean smallIcons) {
+		return super.updateDepsList(inline);
+	}
 }
