@@ -36,6 +36,10 @@ public class NumberProcedure extends Procedure {
 		return fixedValue;
 	}
 
+	@Override public String toString() {
+		return "" + fixedValue;
+	}
+
 	public static class GSONAdapter implements JsonDeserializer<NumberProcedure> {
 
 		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()

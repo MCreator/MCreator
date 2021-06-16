@@ -252,18 +252,25 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 	}
 
 	@Override public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
-
 		if (fixedValue != null)
-			fixedValue.setEnabled(this.isEnabled());
+			fixedValue.setEnabled(enabled);
 
-		updateDepsList();
-
-		if (this.isEnabled()) {
+		if (enabled) {
 			setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		} else {
 			setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		}
+
+		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
+		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
+				== GeneratorStats.CoverageStatus.NONE)
+			enabled = false;
+
+		procedures.setEnabled(enabled);
+		edit.setEnabled(enabled);
+		add.setEnabled(enabled);
+
+		updateDepsList();
 	}
 
 	@Override public NumberProcedure getSelectedProcedure() {
