@@ -13,9 +13,6 @@ ExperienceBottle:
 EnderPearl:
   - EnderPearlEntity
   - EntityType.ENDER_PEARL
-LlamaSpit:
-  - SnowballEntity
-  - EntityType.SNOWBALL
 Arrow:
   - ArrowEntity
   - EntityType.ARROW
