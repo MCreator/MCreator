@@ -29,7 +29,7 @@ import java.util.Map;
 
 public final class ModElementTypeRegistry {
 
-	public static final Map<ModElementType, ModTypeRegistration<?>> REGISTRY = new LinkedHashMap<ModElementType, ModTypeRegistration<?>>() {{
+	public static final Map<ModElementType, ModTypeRegistration<?>> REGISTRY = new LinkedHashMap<>() {{
 		put(ModElementType.BLOCK, new ModTypeRegistration<>('b', 16, BlockGUI::new, Block.class));
 		put(ModElementType.ITEM, new ModTypeRegistration<>('i', 6, ItemGUI::new, Item.class));
 		put(ModElementType.TOOL, new ModTypeRegistration<>('t', 15, ToolGUI::new, Tool.class));
@@ -40,7 +40,7 @@ public final class ModElementTypeRegistry {
 		put(ModElementType.RECIPE, new ModTypeRegistration<>('r', 11, RecipeGUI::new, Recipe.class));
 		put(ModElementType.FUEL, new ModTypeRegistration<>(null, 4, FuelGUI::new, Fuel.class));
 		put(ModElementType.TAB, new ModTypeRegistration<>('w', 14, TabGUI::new, Tab.class));
-		put(ModElementType.MOB, new ModTypeRegistration<>('e', 8, LivingEntityGUI::new, Mob.class));
+		put(ModElementType.LIVINGENTITY, new ModTypeRegistration<>('e', 8, LivingEntityGUI::new, LivingEntity.class));
 		put(ModElementType.PLANT, new ModTypeRegistration<>('y', 10, PlantGUI::new, Plant.class));
 		put(ModElementType.STRUCTURE, new ModTypeRegistration<>('s', 13, StructureGenGUI::new, Structure.class));
 		put(ModElementType.BIOME, new ModTypeRegistration<>('o', 20, BiomeGUI::new, Biome.class));
