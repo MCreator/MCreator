@@ -455,11 +455,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 
 		@Override public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			World world = (World) blockAccess;
 			<#if hasProcedure(data.emittedRedstonePower)>
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				World world = (World) blockAccess;
 				return (int) <@procedureOBJToNumberCode data.emittedRedstonePower/>;
 			<#else>
 				return ${data.emittedRedstonePower.getFixedValue()};
