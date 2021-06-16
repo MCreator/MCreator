@@ -427,7 +427,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			int z = pos.getZ();
 			World world = (World) blockAccess;
 			<#if hasProcedure(data.emittedRedstonePower)>
-				return (int) <@procedureOBJToIntegerCode data.emittedRedstonePower/>;
+				return (int) <@procedureOBJToNumberCode data.emittedRedstonePower/>;
 			<#else>
 				return ${data.emittedRedstonePower.getFixedValue()};
 			</#if>

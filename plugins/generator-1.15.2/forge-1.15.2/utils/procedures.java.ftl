@@ -54,7 +54,7 @@
     </#if>
 </#macro>
 
-<#macro procedureOBJToIntegerCode object="">
+<#macro procedureOBJToNumberCode object="">
     <#if object?? && object?has_content && object.getName() != "null">
         <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
     <#else>
@@ -63,11 +63,11 @@
 </#macro>
 
 <#function hasProcedure object="">
-    <#return object?? && object?has_content && object.getName() != "null">
+    <#return object?? && object?has_content && object.getName()?has_content && object.getName() != "null">
 </#function>
 
 <#function hasCondition object="">
-    <#return object?? && object?has_content && object.getName() != "null">
+    <#return hasProcedure(object)>
 </#function>
 
 <#-- @formatter:on -->

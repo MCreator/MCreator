@@ -47,7 +47,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
-import net.mcreator.ui.procedure.IntegerProcedureSelector;
+import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -106,7 +106,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onRedstoneOff;
 
 	private ProcedureSelector particleCondition;
-	private IntegerProcedureSelector emittedRedstonePower;
+	private NumberProcedureSelector emittedRedstonePower;
 	private ProcedureSelector placingCondition;
 	private ProcedureSelector generateCondition;
 
@@ -302,7 +302,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString("x:number/y:number/z:number/world:world"));
 
-		emittedRedstonePower = new IntegerProcedureSelector(this.withEntry("block/redstone_provider"), mcreator,
+		emittedRedstonePower = new NumberProcedureSelector(null, mcreator,
 				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 
@@ -434,7 +434,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		isReplaceable.setOpaque(false);
 		canProvidePower.setOpaque(false);
-		emittedRedstonePower.setOpaque(false);
 
 		destal.add(new JLabel());
 		destal.add(ComponentUtils.squareAndBorder(textureTop, L10N.t("elementgui.block.texture_place_top")));

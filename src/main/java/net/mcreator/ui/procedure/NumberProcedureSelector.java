@@ -22,12 +22,13 @@ import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeRegistry;
-import net.mcreator.element.parts.IntegerProcedure;
+import net.mcreator.element.parts.NumberProcedure;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -49,25 +50,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
-public class IntegerProcedureSelector extends AbstractProcedureSelector {
+public class NumberProcedureSelector extends AbstractProcedureSelector {
 
-	private final JSpinner fixedValue;
+	@Nullable private final JSpinner fixedValue;
 
-	public IntegerProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, JSpinner fixedValue,
+	public NumberProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, @Nullable JSpinner fixedValue,
 			Dependency... providedDependencies) {
-		this(helpContext, mcreator, L10N.t("elementgui.common.value"), fixedValue, providedDependencies);
+		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, providedDependencies);
 	}
 
-	public IntegerProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName,
-			JSpinner fixedValue, Dependency... providedDependencies) {
-		super(helpContext, mcreator, eventName, Side.BOTH, true, VariableTypeLoader.BuiltInTypes.NUMBER,
-				providedDependencies);
+	public NumberProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
+			@Nullable JSpinner fixedValue, Dependency... providedDependencies) {
+		super(mcreator, VariableTypeLoader.BuiltInTypes.NUMBER, providedDependencies);
 
 		this.fixedValue = fixedValue;
-	}
-
-	@Override protected void initUI(IHelpContext helpContext, String eventName, Side side, boolean allowInlineEditor) {
 		this.defaultName = L10N.t("procedure.common.fixed");
 
 		setLayout(new BorderLayout(0, 0));
@@ -78,9 +76,12 @@ public class IntegerProcedureSelector extends AbstractProcedureSelector {
 			}
 		});
 
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		setBorder(BorderFactory.createLineBorder(
-				BlocklyBlockUtil.getBlockColorFromHUE(VariableTypeLoader.BuiltInTypes.NUMBER.getColor())));
+		setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
+
+		setOpaque(true);
+		procedures.setBorder(
+				BorderFactory.createLineBorder(BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor())));
+		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
 		procedures.addPopupMenuListener(new ComboBoxFullWidthPopup());
@@ -100,32 +101,33 @@ public class IntegerProcedureSelector extends AbstractProcedureSelector {
 		top.setOpaque(false);
 
 		JLabel eventNameLabel = new JLabel();
+		eventNameLabel.setFont(eventNameLabel.getFont().deriveFont(9f));
 		if (side == Side.CLIENT) {
 			eventNameLabel.setIcon(UIRES.get("16px.client"));
 			eventNameLabel.setToolTipText(L10N.t("trigger.triggers_on_client_side_only"));
 			if (helpContext == null)
 				top.add("North", PanelUtils
-						.westAndCenterElement(eventNameLabel, ComponentUtils.deriveFont(new JLabel(eventName), 14)));
+						.westAndCenterElement(eventNameLabel, ComponentUtils.deriveFont(new JLabel(eventName), 12)));
 			else
 				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, HelpUtils
-						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 14),
+						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 12),
 								SwingConstants.LEFT)));
 		} else if (side == Side.SERVER) {
 			eventNameLabel.setToolTipText(L10N.t("trigger.triggers_on_server_side_only"));
 			eventNameLabel.setIcon(UIRES.get("16px.server"));
 			if (helpContext == null)
 				top.add("North", PanelUtils
-						.westAndCenterElement(eventNameLabel, ComponentUtils.deriveFont(new JLabel(eventName), 14)));
+						.westAndCenterElement(eventNameLabel, ComponentUtils.deriveFont(new JLabel(eventName), 12)));
 			else
 				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, HelpUtils
-						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 14),
+						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 12),
 								SwingConstants.LEFT)));
 		} else {
 			if (helpContext == null)
-				top.add("North", ComponentUtils.deriveFont(new JLabel(eventName), 14));
+				top.add("North", ComponentUtils.deriveFont(new JLabel(eventName), 12));
 			else
 				top.add("North", HelpUtils
-						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 14),
+						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 12),
 								SwingConstants.LEFT));
 		}
 
@@ -192,13 +194,23 @@ public class IntegerProcedureSelector extends AbstractProcedureSelector {
 			}
 		});
 
-		add("East", PanelUtils.join(procedures, add, edit, fixedValue));
+		if (fixedValue != null)
+			add("East", PanelUtils.totalCenterInPanel(PanelUtils
+					.join(FlowLayout.LEFT, 0, 1, PanelUtils.westAndEastElement(procedures, fixedValue),
+							new JEmptyBox(1, 1), PanelUtils.gridElements(1, 2, add, edit))));
+		else
+			add("East", PanelUtils.totalCenterInPanel(PanelUtils
+					.join(FlowLayout.LEFT, 0, 1, procedures, new JEmptyBox(1, 1),
+							PanelUtils.gridElements(1, 2, add, edit))));
 
 		add("West", PanelUtils.join(FlowLayout.LEFT, 4, 4, top));
 
 		procedures.setToolTipText(L10N.t("action.procedure.match_dependencies"));
 
-		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXX"));
+		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXXX"));
+
+		if (fixedValue != null)
+			fixedValue.setPreferredSize(new Dimension(50, 0));
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
 		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
@@ -206,38 +218,85 @@ public class IntegerProcedureSelector extends AbstractProcedureSelector {
 			setEnabled(false);
 	}
 
-	@Override public IntegerProcedure getSelectedProcedure() {
-		Object rawValue = fixedValue.getValue();
-		Double value = (double) 0;
-		if (rawValue instanceof Double)
-			value = (Double) rawValue;
-		else if (rawValue instanceof Float)
-			value = Double.valueOf((Float) rawValue);
-		else if (rawValue instanceof Integer)
-			value = Double.valueOf((Integer) rawValue);
-		else if (rawValue instanceof Short)
-			value = Double.valueOf((Short) rawValue);
-		else if (rawValue instanceof Byte)
-			value = Double.valueOf((Byte) rawValue);
-
+	@Override protected void updateDepsList() {
 		CBoxEntry selected = procedures.getSelectedItem();
-		if (selected == null || selected.string.equals(defaultName))
-			return new IntegerProcedure(null, value);
-		return new IntegerProcedure(selected.string, value);
+
+		List<Dependency> dependencies = null;
+		if (selected != null) {
+			dependencies = depsMap.get(selected.string);
+		}
+
+		StringBuilder deps = new StringBuilder(
+				"<html><div style='font-size: 8px; margin-top: 0; margin-bottom: 0; color: white;'>");
+		for (Dependency dependency : providedDependencies) {
+			String bg = "999999";
+			String optcss = "color: #444444;";
+			if (dependencies != null && dependencies.contains(dependency)) {
+				optcss = "color: #ffffff;";
+				bg = Integer.toHexString(dependency.getColor().getRGB()).substring(2);
+			}
+			deps.append("<span style='background: #").append(bg).append("; ").append(optcss).append("'>&nbsp;")
+					.append(dependency.getName()).append("&nbsp;</span>&#32;");
+		}
+
+		depslab.setText(deps.toString());
+
+		if (selected == null || !selected.correctDependencies) {
+			edit.setEnabled(false);
+		}
+
+		edit.setEnabled(selected != null && !selected.string.equals(defaultName));
+
+		if (fixedValue != null)
+			fixedValue.setEnabled(!edit.isEnabled());
 	}
 
-	public void setSelectedProcedure(IntegerProcedure procedure) {
-		if (procedure != null) {
-			if (procedure.getName() != null)
-				procedures.setSelectedItem(new CBoxEntry(procedure.getName()));
-			fixedValue.setValue(procedure.getFixedValue());
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+
+		if (fixedValue != null)
+			fixedValue.setEnabled(this.isEnabled());
+
+		updateDepsList();
+
+		if (this.isEnabled()) {
+			setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		} else {
+			setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		}
 	}
 
-	@Override protected void updateDepsList() {
-		super.updateDepsList();
+	@Override public NumberProcedure getSelectedProcedure() {
+		Double value = (double) 0;
+
+		if (fixedValue != null) {
+			Object rawValue = fixedValue.getValue();
+			if (rawValue instanceof Double)
+				value = (Double) rawValue;
+			else if (rawValue instanceof Float)
+				value = Double.valueOf((Float) rawValue);
+			else if (rawValue instanceof Integer)
+				value = Double.valueOf((Integer) rawValue);
+			else if (rawValue instanceof Short)
+				value = Double.valueOf((Short) rawValue);
+			else if (rawValue instanceof Byte)
+				value = Double.valueOf((Byte) rawValue);
+		}
 
 		CBoxEntry selected = procedures.getSelectedItem();
-		fixedValue.setEnabled(!(selected == null || selected.string.equals(defaultName)));
+		if (selected == null || selected.string.equals(defaultName))
+			return new NumberProcedure(null, value);
+		return new NumberProcedure(selected.string, value);
 	}
+
+	public void setSelectedProcedure(NumberProcedure procedure) {
+		if (procedure != null) {
+			if (procedure.getName() != null)
+				procedures.setSelectedItem(new CBoxEntry(procedure.getName()));
+
+			if (fixedValue != null)
+				fixedValue.setValue(procedure.getFixedValue());
+		}
+	}
+
 }

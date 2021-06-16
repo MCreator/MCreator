@@ -19,17 +19,38 @@
 
 package net.mcreator.element.parts;
 
-public class IntegerProcedure extends Procedure {
+import com.google.gson.*;
+
+import java.lang.reflect.Type;
+
+public class NumberProcedure extends Procedure {
 
 	private double fixedValue;
 
-	public IntegerProcedure(String name, double fixedValue) {
+	public NumberProcedure(String name, double fixedValue) {
 		super(name);
 		this.fixedValue = fixedValue;
 	}
 
 	public double getFixedValue() {
 		return fixedValue;
+	}
+
+	public static class GSONAdapter implements JsonDeserializer<NumberProcedure> {
+
+		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
+				.create();
+
+		@Override
+		public NumberProcedure deserialize(JsonElement jsonElement, Type type,
+				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+			try {
+				return gson.fromJson(jsonElement, NumberProcedure.class);
+			} catch (Exception e) {
+				return new NumberProcedure(null, jsonElement.getAsDouble());
+			}
+		}
+
 	}
 
 }
