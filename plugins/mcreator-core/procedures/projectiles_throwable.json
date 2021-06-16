@@ -1,0 +1,30 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "shooter",
+      "check": [
+        "Entity",
+        "Null"
+      ]
+    }
+  ],
+  "extensions": [
+    "throwableprojectile_list_provider"
+  ],
+  "inputsInline": true,
+  "output": "ProjectileEntity",
+  "colour": 270,
+  "mcreator": {
+    "toolbox_id": "projectileactions",
+    "toolbox_init": [
+      "<value name=\"shooter\"><block type=\"entity_none\"></block></value>"
+    ],
+    "inputs": [
+      "shooter"
+    ],
+    "fields": [
+      "throwableprojectile"
+    ]
+  }
+}

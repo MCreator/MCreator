@@ -1,0 +1,44 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "damage",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "knockback",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "shooter",
+      "check": [
+        "Entity",
+        "Null"
+      ]
+    }
+  ],
+  "extensions": [
+    "rangeditem_list_provider"
+  ],
+  "inputsInline": true,
+  "output": "ProjectileEntity",
+  "colour": 270,
+  "mcreator": {
+    "toolbox_id": "projectileactions",
+    "toolbox_init": [
+      "<value name=\"damage\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value>",
+      "<value name=\"knockback\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value>",
+      "<value name=\"shooter\"><block type=\"entity_none\"></block></value>"
+    ],
+    "inputs": [
+      "damage",
+      "knockback",
+      "shooter"
+    ],
+    "fields": [
+      "rangeditem"
+    ]
+  }
+}
