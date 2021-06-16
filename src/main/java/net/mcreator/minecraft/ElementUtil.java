@@ -203,6 +203,24 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("stepsounds");
 	}
 
+	public static List<DataListEntry> loadArrowProjectiles(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.RANGEDITEM);
+
+		retval.addAll(DataListLoader.loadDataList("projectiles").stream().filter(e -> e.getType().equals("arrow"))
+				.collect(Collectors.toList()));
+		return retval;
+	}
+
+	public static List<DataListEntry> loadThrowableProjectiles() {
+		return DataListLoader.loadDataList("projectiles").stream().filter(e -> e.getType().equals("throwable"))
+				.collect(Collectors.toList());
+	}
+
+	public static List<DataListEntry> loadFireballProjectiles() {
+		return DataListLoader.loadDataList("projectiles").stream().filter(e -> e.getType().equals("fireball"))
+				.collect(Collectors.toList());
+	}
+
 	public static String[] loadBiomeDictionaryTypes() {
 		return DataListLoader.loadDataList("biomedictionarytypes").stream().map(DataListEntry::getName)
 				.toArray(String[]::new);

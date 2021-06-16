@@ -1,0 +1,22 @@
+- Snowball:
+  type: throwable
+- Egg:
+  type: throwable
+- ExperienceBottle:
+  type: throwable
+- EnderPearl:
+  type: throwable
+- LlamaSpit:
+  type: throwable
+- Arrow:
+  type: arrow
+- SpectralArrow:
+  type: arrow
+- SmallFireball:
+  type: fireball
+- Fireball:
+  type: fireball
+- DragonFireball:
+  type: fireball
+- WitherSkull:
+  type: fireball

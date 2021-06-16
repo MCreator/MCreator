@@ -31,7 +31,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.AIConditionEditor;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -138,7 +137,7 @@ public class BlocklyJavascriptBridge {
 		callback.call("callback", StringUtils.join(retval, ','));
 	}
 
-	private final Map<String, String> ext_triggers = new LinkedHashMap<String, String>() {{
+	private final Map<String, String> ext_triggers = new LinkedHashMap<>() {{
 		put("no_ext_trigger", L10N.t("trigger.no_ext_trigger"));
 	}};
 
@@ -215,10 +214,12 @@ public class BlocklyJavascriptBridge {
 			retval = ElementUtil.loadMaterials().stream().map(DataListEntry::getName).collect(Collectors.toList());
 			break;
 		case "rangeditem":
-			retval = ListUtils.merge(Collections.singleton("Arrow"),
-					workspace.getModElements().stream().filter(var -> var.getType() == ModElementType.RANGEDITEM)
-							.map(ModElement::getName).collect(Collectors.toList()));
-			break;
+			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
+			//break;
+		case "throwableprojectiles":
+			return ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "fireballprojectiles":
+			return ElementUtil.loadFireballProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "planttype":
 			return ElementUtil.getAllPlantTypes();
 		default:
