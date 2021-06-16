@@ -52,6 +52,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
+import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
@@ -149,6 +150,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private FluidListField fluidRestrictions;
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
+	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
+	private final JRadioButton customSoundType = L10N.radiobutton("elementgui.common.custom_sound_type");
+	private final SoundSelector breakSound = new SoundSelector(mcreator);
+	private final SoundSelector stepSound = new SoundSelector(mcreator);
+	private final SoundSelector placeSound = new SoundSelector(mcreator);
+	private final SoundSelector hitSound = new SoundSelector(mcreator);
+	private final SoundSelector fallSound = new SoundSelector(mcreator);
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> colorOnMap = new JComboBox<>();
@@ -226,7 +234,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JTextField specialInfo = new JTextField(25);
 
 	private final ValidationGroup page1group = new ValidationGroup();
-	private final ValidationGroup page2group = new ValidationGroup();
+	private final ValidationGroup page3group = new ValidationGroup();
 
 	private final JComboBox<String> blockBase = new JComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
@@ -612,8 +620,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
-		JPanel selp = new JPanel(new GridLayout(14, 2, 0, 2));
+		JPanel selp = new JPanel(new GridLayout(13, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
+		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
 		JPanel advancedProperties = new JPanel(new GridLayout(13, 2, 0, 2));
 
@@ -643,10 +652,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.common.creative_tab")));
 		selp.add(creativeTab);
-
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.common.block_sound")));
-		selp.add(soundOnStep);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/hardness"), L10N.label("elementgui.common.hardness")));
@@ -723,6 +728,42 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
 				L10N.label("elementgui.block.is_replaceable")));
 		selp3.add(isReplaceable);
+
+		ButtonGroup bg = new ButtonGroup();
+		bg.add(defaultSoundType);
+		bg.add(customSoundType);
+		defaultSoundType.setSelected(true);
+		defaultSoundType.setOpaque(false);
+		customSoundType.setOpaque(false);
+
+		defaultSoundType.addActionListener(event -> updateSoundType());
+		customSoundType.addActionListener(event -> updateSoundType());
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), defaultSoundType));
+		soundProperties.add(soundOnStep);
+
+		soundProperties.add(PanelUtils.join(FlowLayout.LEFT, customSoundType));
+		soundProperties.add(new JEmptyBox());
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/break_sound"),
+				L10N.label("elementgui.common.soundtypes.break_sound")));
+		soundProperties.add(breakSound);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/step_sound"),
+				L10N.label("elementgui.common.soundtypes.step_sound")));
+		soundProperties.add(stepSound);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/place_sound"),
+				L10N.label("elementgui.common.soundtypes.place_sound")));
+		soundProperties.add(placeSound);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hit_sound"),
+				L10N.label("elementgui.common.soundtypes.hit_sound")));
+		soundProperties.add(hitSound);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fall_sound"),
+				L10N.label("elementgui.common.soundtypes.fall_sound")));
+		soundProperties.add(fallSound);
 
 		advancedProperties.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/tick_rate"), L10N.label("elementgui.block.tick_rate")));
@@ -806,17 +847,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
+		soundProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.common.properties_sound"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
 		advancedWithCondition.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.properties_advanced_block"), TitledBorder.LEADING,
 				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent ploca = PanelUtils.westAndEastElement(selp, PanelUtils.pullElementUp(selp3));
-
-		ploca.setOpaque(false);
 		selp.setOpaque(false);
+		soundProperties.setOpaque(false);
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(ploca));
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(PanelUtils.pullElementUp(selp),
+				PanelUtils.centerAndSouthElement(selp3, soundProperties))));
 		pane3.setOpaque(false);
 
 		JPanel events2 = new JPanel(new GridLayout(4, 5, 5, 5));
@@ -1095,7 +1140,24 @@ public class BlockGUI extends ModElementGUI<Block> {
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.block.error_block_must_have_name")));
 		name.enableRealtimeValidation();
 
-		page2group.addValidationElement(name);
+		page3group.addValidationElement(name);
+
+		breakSound.getVTextField().setValidator(new ConditionalTextFieldValidator(breakSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+		stepSound.getVTextField().setValidator(new ConditionalTextFieldValidator(stepSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+		placeSound.getVTextField().setValidator(new ConditionalTextFieldValidator(placeSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+		hitSound.getVTextField().setValidator(new ConditionalTextFieldValidator(hitSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+		fallSound.getVTextField().setValidator(new ConditionalTextFieldValidator(fallSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+
+		page3group.addValidationElement(breakSound.getVTextField());
+		page3group.addValidationElement(stepSound.getVTextField());
+		page3group.addValidationElement(placeSound.getVTextField());
+		page3group.addValidationElement(hitSound.getVTextField());
+		page3group.addValidationElement(fallSound.getVTextField());
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
@@ -1110,6 +1172,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
+
+		updateSoundType();
 	}
 
 	private void refreshFiledsTileEntity() {
@@ -1171,6 +1235,24 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}
 	}
 
+	private void updateSoundType() {
+		if (customSoundType.isSelected()) {
+			breakSound.setEnabled(true);
+			stepSound.setEnabled(true);
+			placeSound.setEnabled(true);
+			hitSound.setEnabled(true);
+			fallSound.setEnabled(true);
+			soundOnStep.setEnabled(false);
+		} else {
+			breakSound.setEnabled(false);
+			stepSound.setEnabled(false);
+			placeSound.setEnabled(false);
+			hitSound.setEnabled(false);
+			fallSound.setEnabled(false);
+			soundOnStep.setEnabled(true);
+		}
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onBlockAdded.refreshListKeepSelected();
@@ -1212,11 +1294,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
 			return new AggregatedValidationResult(page1group);
-		else if (page == 1)
-			return new AggregatedValidationResult(page2group);
-		else if (page == 3)
+		else if (page == 2)
+			return new AggregatedValidationResult(page3group);
+		else if (page == 4)
 			return new AggregatedValidationResult(outSlotIDs, inSlotIDs);
-		else if (page == 6) {
+		else if (page == 7) {
 			if ((int) minGenerateHeight.getValue() >= (int) maxGenerateHeight.getValue()) {
 				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.block.error_minimal_generation_height"));
 			}
@@ -1282,6 +1364,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 		creativeTab.setSelectedItem(block.creativeTab);
 		destroyTool.setSelectedItem(block.destroyTool);
 		soundOnStep.setSelectedItem(block.soundOnStep.getUnmappedValue());
+		breakSound.setSound(block.breakSound);
+		stepSound.setSound(block.stepSound);
+		placeSound.setSound(block.placeSound);
+		fallSound.setSound(block.fallSound);
+		defaultSoundType.setSelected(!block.isCustomSoundType);
+		customSoundType.setSelected(block.isCustomSoundType);
+		hitSound.setSound(block.hitSound);
 		luminance.setValue(block.luminance);
 		breakHarvestLevel.setValue(block.breakHarvestLevel);
 		customDrop.setBlock(block.customDrop);
@@ -1353,6 +1442,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		if (hasGravity.isEnabled())
 			hasGravity.setEnabled(!isWaterloggable.isSelected());
+
+		updateSoundType();
 	}
 
 	@Override public Block getElementFromGUI() {
@@ -1390,7 +1481,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.lightOpacity = (int) lightOpacity.getValue();
 		block.material = new Material(mcreator.getWorkspace(), material.getSelectedItem());
 		block.tickRate = (int) tickRate.getValue();
+		block.isCustomSoundType = customSoundType.isSelected();
 		block.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
+		block.breakSound = breakSound.getSound();
+		block.stepSound = stepSound.getSound();
+		block.placeSound = placeSound.getSound();
+		block.hitSound = hitSound.getSound();
+		block.fallSound = fallSound.getSound();
 		block.luminance = (int) luminance.getValue();
 		block.unbreakable = unbreakable.isSelected();
 		block.breakHarvestLevel = (int) breakHarvestLevel.getValue();
