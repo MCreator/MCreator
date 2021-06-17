@@ -168,6 +168,11 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		public ArrowCustomEntity(EntityType<? extends ArrowCustomEntity> type, World world) {
 			super(type, world);
+			this.setSilent(true);
+			this.setIsCritical(${data.bulletParticles});
+			<#if data.bulletIgnitesFire>
+				this.setFire(100);
+			</#if>
 		}
 
 		public ArrowCustomEntity(EntityType<? extends ArrowCustomEntity> type, double x, double y, double z, World world) {
@@ -180,6 +185,11 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		public ArrowCustomEntity(World world, LivingEntity entity) {
 			super(arrow, entity, world);
+			this.setSilent(true);
+			this.setIsCritical(${data.bulletParticles});
+			<#if data.bulletIgnitesFire>
+				this.setFire(100);
+			</#if>
 		}
 
 		@Override public IPacket<?> createSpawnPacket() {
