@@ -19,6 +19,7 @@
 package net.mcreator.workspace.elements;
 
 import com.google.gson.annotations.SerializedName;
+import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 
@@ -50,20 +51,24 @@ import java.util.Map;
 		return new NameMapper(workspace, "types").getMapping(getName());
 	}
 
-	public String getDefaultValue(Workspace workspace) {
-		return workspace.getGeneratorConfiguration().getVariableTypes().getDefaultValue(this);
+	public String getDefaultValue(GeneratorConfiguration generatorConfiguration) {
+		return generatorConfiguration.getVariableTypes().getDefaultValue(this);
 	}
 
-	public boolean canBeGlobal(Workspace workspace) {
-		return workspace.getGeneratorConfiguration().getVariableTypes().canBeGlobal(this);
+	public boolean canBeGlobal(GeneratorConfiguration generatorConfiguration) {
+		return generatorConfiguration.getVariableTypes().canBeGlobal(this);
 	}
 
-	public Scope[] getSupportedScopesWithoutLocal(Workspace workspace) {
-		return workspace.getGeneratorConfiguration().getVariableTypes().getSupportedScopesWithoutLocal(this);
+	public boolean canBeLocal(GeneratorConfiguration generatorConfiguration) {
+		return generatorConfiguration.getVariableTypes().canBeLocal(this);
 	}
 
-	public Map<?, ?> getScopeDefinition(Workspace workspace, String scope) {
-		return workspace.getGeneratorConfiguration().getVariableTypes().getScopeDefinition(this, scope);
+	public Scope[] getSupportedScopesWithoutLocal(GeneratorConfiguration generatorConfiguration) {
+		return generatorConfiguration.getVariableTypes().getSupportedScopesWithoutLocal(this);
+	}
+
+	public Map<?, ?> getScopeDefinition(GeneratorConfiguration generatorConfiguration, String scope) {
+		return generatorConfiguration.getVariableTypes().getScopeDefinition(this, scope);
 	}
 
 	@Override public String toString() {

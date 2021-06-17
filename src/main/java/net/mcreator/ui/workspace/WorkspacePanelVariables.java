@@ -93,7 +93,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 							} else if (type == VariableTypeLoader.BuiltInTypes.STRING) {
 								elements.setValueAt("", row, 3);
 							} else {
-								elements.setValueAt(type.getDefaultValue(workspacePanel.getMcreator().getWorkspace()),
+								elements.setValueAt(type.getDefaultValue(workspacePanel.getMcreator().getGeneratorConfiguration()),
 										row, 3);
 							}
 						}
@@ -109,10 +109,10 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 						.getVariableTypeFromString((String) elements.getValueAt(row, 1));
 				if (modelColumn == 2) {
 					return new DefaultCellEditor(new JComboBox<>(
-							variableType.getSupportedScopesWithoutLocal(workspacePanel.getMcreator().getWorkspace())));
+							variableType.getSupportedScopesWithoutLocal(workspacePanel.getMcreator().getGeneratorConfiguration())));
 				} else if (modelColumn == 1) {
 					return new DefaultCellEditor(new JComboBox<>(VariableTypeLoader.INSTANCE
-							.getGlobalVariableTypes(workspacePanel.getMcreator().getWorkspace()).stream()
+							.getGlobalVariableTypes(workspacePanel.getMcreator().getGeneratorConfiguration()).stream()
 							.map(VariableType::getName).toArray(String[]::new)));
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
@@ -242,7 +242,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 							}
 							return validator.validate();
 						}
-					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(workspacePanel.getMcreator().getWorkspace()));
+					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(workspacePanel.getMcreator().getGeneratorConfiguration()));
 			if (element != null) {
 				workspacePanel.getMcreator().getWorkspace().addVariableElement(element);
 				reloadElements();

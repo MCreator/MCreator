@@ -65,14 +65,14 @@ public class NewVariableDialog {
 				scope.removeAllItems();
 				VariableType typeSelectedItem = (VariableType) type.getSelectedItem();
 				if (typeSelectedItem != null)
-					Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getWorkspace()))
+					Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getGeneratorConfiguration()))
 							.forEach(scope::addItem);
 			});
 
 			// intial
 			VariableType typeSelectedItem = (VariableType) type.getSelectedItem();
 			if (typeSelectedItem != null)
-				Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getWorkspace()))
+				Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getGeneratorConfiguration()))
 						.forEach(scope::addItem);
 		}
 
@@ -90,7 +90,7 @@ public class NewVariableDialog {
 			if (variable != null) {
 				element.setName(Transliteration.transliterateString(textField.getText()));
 				element.setType((VariableType) type.getSelectedItem());
-				element.setValue(variable.getDefaultValue(mcreator.getWorkspace()));
+				element.setValue(variable.getDefaultValue(mcreator.getGeneratorConfiguration()));
 				if (showScope)
 					element.setScope((VariableType.Scope) scope.getSelectedItem());
 				else

@@ -96,7 +96,7 @@ public class SetVariableBlock implements IBlockGenerator {
 				}
 
 				Object setterTemplate = typeObject
-						.getScopeDefinition(master.getWorkspace(), scope.toUpperCase(Locale.ENGLISH)).get("set");
+						.getScopeDefinition(master.getGeneratorConfiguration(), scope.toUpperCase(Locale.ENGLISH)).get("set");
 				if (setterTemplate == null) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							"Current generator does not support setting variables of type " + type + " in " + scope
