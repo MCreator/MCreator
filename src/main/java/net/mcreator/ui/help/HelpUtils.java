@@ -33,7 +33,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.function.Supplier;
 
 public class HelpUtils {
 
@@ -49,23 +48,7 @@ public class HelpUtils {
 		return wrapWithHelpButton(context, ca, ac, SwingConstants.RIGHT);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca,
-			@Nullable Supplier<?>... contextArguments) {
-		return wrapWithHelpButton(context, ca, null, SwingConstants.RIGHT, contextArguments);
-	}
-
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca, int direction,
-			@Nullable Supplier<?>... contextArguments) {
-		return wrapWithHelpButton(context, ca, null, direction, contextArguments);
-	}
-
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac,
-			@Nullable Supplier<?>... contextArguments) {
-		return wrapWithHelpButton(context, ca, ac, SwingConstants.RIGHT, contextArguments);
-	}
-
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac, int direction,
-			@Nullable Supplier<?>... contextArguments) {
+	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac, int direction) {
 		JLabel lab = new JLabel(HelpLoader.hasFullHelp(context) ? UIRES.get("help") : UIRES.get("help_partial"));
 		lab.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -127,7 +110,7 @@ public class HelpUtils {
 					balloonTip.setCloseButton(closeButton, false);
 				}
 
-				editorPane.setText(HelpLoader.loadHelpFor(context, contextArguments));
+				editorPane.setText(HelpLoader.loadHelpFor(context));
 				editorPane.setCaretPosition(0);
 
 				balloonTip.setVisible(!balloonTip.isVisible());

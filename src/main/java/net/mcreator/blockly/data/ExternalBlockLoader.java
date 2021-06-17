@@ -40,6 +40,8 @@ public class ExternalBlockLoader {
 	private static final Pattern blockFormat = Pattern.compile("^[^$].*\\.json");
 	private static final Pattern categoryFormat = Pattern.compile("^\\$.*\\.json");
 
+	private static final Pattern translationsMatcher = Pattern.compile("\\$\\{t:([\\w.]+)}");
+
 	private final Map<String, ToolboxBlock> toolboxBlocks;
 
 	private final String blocksJSONString;
@@ -215,7 +217,7 @@ public class ExternalBlockLoader {
 		String toolbox_xml = FileIO
 				.readResourceToString("/blockly/toolbox_" + toolboxType.name().toLowerCase(Locale.ENGLISH) + ".xml");
 
-		Matcher m = Pattern.compile("\\$\\{t:([\\w.]+)}").matcher(toolbox_xml);
+		Matcher m = translationsMatcher.matcher(toolbox_xml);
 		while (m.find()) {
 			String m1 = L10N.t(m.group(1));
 			if (m1 != null)
@@ -227,7 +229,7 @@ public class ExternalBlockLoader {
 		}
 
 		pane.executeJavaScriptSynchronously(
-				"workspace.updateToolbox('" + toolbox_xml.replaceAll("[\n\r]", "\\\\\n") + "')");
+				"workspace.updateToolbox('" + toolbox_xml.replace("\n", "").replace("\r", "") + "')");
 	}
 
 	public Map<String, ToolboxBlock> getDefinedBlocks() {

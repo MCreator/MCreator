@@ -203,10 +203,8 @@ class ImportFormat {
 	}
 
 	private Set<String> getUsedWildcardImports(Set<String> memberList, Map<String, List<String>> loadFrom) {
-		return loadFrom.keySet().stream().flatMap(
-				wildcardImport -> loadFrom.get(wildcardImport).parallelStream().filter(memberList::contains)
-						.map(possibleImport -> (wildcardImport + "." + possibleImport)).collect(Collectors.toSet())
-						.stream()).collect(Collectors.toSet());
+		return memberList.parallelStream().filter(loadFrom::containsKey)
+				.flatMap(member -> loadFrom.get(member).stream()).collect(Collectors.toSet());
 	}
 
 	private Set<String> getUsedImports(Set<String> memberList, Set<String> normalImports) {
