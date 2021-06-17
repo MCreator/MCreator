@@ -182,6 +182,10 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			super(type, entity, world);
 		}
 
+		public ArrowCustomEntity(World world, LivingEntity entity) {
+			super(arrow, entity, world);
+		}
+
 		@Override public IPacket<?> createSpawnPacket() {
         	return NetworkHooks.getEntitySpawningPacket(this);
     	}
