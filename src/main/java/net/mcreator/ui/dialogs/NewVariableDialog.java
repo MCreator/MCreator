@@ -90,7 +90,7 @@ public class NewVariableDialog {
 			if (variable != null) {
 				element.setName(Transliteration.transliterateString(textField.getText()));
 				element.setType((VariableType) type.getSelectedItem());
-				element.setValue(variable.getDefaultValue(mcreator.getGeneratorConfiguration()));
+				element.setValue(variable.getDefaultValue(mcreator.getWorkspace()));
 				if (showScope)
 					element.setScope((VariableType.Scope) scope.getSelectedItem());
 				else

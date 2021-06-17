@@ -51,8 +51,12 @@ import java.util.Map;
 		return new NameMapper(workspace, "types").getMapping(getName());
 	}
 
-	public String getDefaultValue(GeneratorConfiguration generatorConfiguration) {
-		return generatorConfiguration.getVariableTypes().getDefaultValue(this);
+	public String getDefaultValue(Workspace Workspace) {
+		return Workspace.getGeneratorConfiguration().getVariableTypes().getDefaultValue(this);
+	}
+
+	public Map<?, ?> getScopeDefinition(Workspace workspace, String scope) {
+		return workspace.getGeneratorConfiguration().getVariableTypes().getScopeDefinition(this, scope);
 	}
 
 	public boolean canBeGlobal(GeneratorConfiguration generatorConfiguration) {
@@ -65,10 +69,6 @@ import java.util.Map;
 
 	public Scope[] getSupportedScopesWithoutLocal(GeneratorConfiguration generatorConfiguration) {
 		return generatorConfiguration.getVariableTypes().getSupportedScopesWithoutLocal(this);
-	}
-
-	public Map<?, ?> getScopeDefinition(GeneratorConfiguration generatorConfiguration, String scope) {
-		return generatorConfiguration.getVariableTypes().getScopeDefinition(this, scope);
 	}
 
 	@Override public String toString() {

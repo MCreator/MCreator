@@ -93,7 +93,7 @@ public class GetVariableBlock implements IBlockGenerator {
 				}
 
 				Object getterTemplate = typeObject
-						.getScopeDefinition(master.getGeneratorConfiguration(), scope.toUpperCase(Locale.ENGLISH)).get("get");
+						.getScopeDefinition(master.getWorkspace(), scope.toUpperCase(Locale.ENGLISH)).get("get");
 				if (getterTemplate == null) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							"Current generator does not support getting variables of type " + type + " in " + scope
