@@ -21,11 +21,11 @@ package net.mcreator.element.types;
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
-import java.util.Locale;
 
 @SuppressWarnings("unused") public class Recipe extends NamespacedGeneratableElement {
 
@@ -90,7 +90,7 @@ import java.util.Locale;
 
 		// for workspaces before 2020.1
 		if (this.name == null)
-			this.name = element.getName().toLowerCase(Locale.ENGLISH).replaceAll("[^a-z0-9/._-]+", "");
+			this.name = RegistryNameFixer.fromCamelCase(element.getName());
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

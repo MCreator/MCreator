@@ -23,10 +23,10 @@ import net.mcreator.element.parts.gui.Button;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.ProcedureSelector;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -59,7 +59,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/button_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.button_display_condition"), ProcedureSelector.Side.BOTH, false,
-				VariableElementTypeLoader.BuiltInTypes.LOGIC,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		displayCondition.refreshList();
 

@@ -39,13 +39,14 @@ import java.util.stream.Collectors;
 
 	public transient UUID uuid;
 
-	private static transient final Map<String, Class<? extends GUIComponent>> typeMappings = new HashMap<String, Class<? extends GUIComponent>>() {{
+	private static transient final Map<String, Class<? extends GUIComponent>> typeMappings = new HashMap<>() {{
 		put("button", Button.class);
 		put("image", Image.class);
 		put("inputslot", InputSlot.class);
 		put("outputslot", OutputSlot.class);
 		put("label", Label.class);
 		put("textfield", TextField.class);
+		put("checkbox", Checkbox.class);
 	}};
 
 	private static transient final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings

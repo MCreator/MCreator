@@ -36,6 +36,7 @@
 package ${package}.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.util.SoundEvent;
 
 @${JavaModName}Elements.ModElement.Tag
 public class ${name}Block extends ${JavaModName}Elements.ModElement {
@@ -167,9 +168,17 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
         </#if>
 
-		<#macro blockProterties>
+		<#macro blockProperties>
 			Block.Properties.create(Material.${data.material})
-				.sound(SoundType.${data.soundOnStep})
+				<#if data.isCustomSoundType>
+					.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
+					() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
+					() -> new SoundEvent(new ResourceLocation("${data.placeSound}")),
+					() -> new SoundEvent(new ResourceLocation("${data.hitSound}")),
+					() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))))
+				<#else>
+					.sound(SoundType.${data.soundOnStep})
+				</#if>
 				<#if data.unbreakable>
 					.hardnessAndResistance(-1, 3600000)
 				<#else>
@@ -209,11 +218,17 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		public CustomBlock() {
 			<#if data.blockBase?has_content && data.blockBase == "Stairs">
-			super(() -> new Block(<@blockProterties/>).getDefaultState(),
+			super(() -> new Block(<@blockProperties/>).getDefaultState(),
+			<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
+			    <#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>
+			        super(Sensitivity.EVERYTHING,
+			    <#else>
+			        super(Sensitivity.MOBS,
+			    </#if>
 			<#else>
 			super(
 			</#if>
-			<@blockProterties/>
+			<@blockProperties/>
 			);
 
             <#if data.rotationMode != 0 || data.isWaterloggable>
