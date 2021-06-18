@@ -221,6 +221,10 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("mapcolors").stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
+	public static String[] loadScreens() {
+		return DataListLoader.loadDataList("screens").stream().map(DataListEntry::getName).toArray(String[]::new);
+	}
+
 	public static String[] loadAllDimensions(Workspace workspace) {
 		ArrayList<String> dimensions = new ArrayList<>();
 		dimensions.add("Surface");

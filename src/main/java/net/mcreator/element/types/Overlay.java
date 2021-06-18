@@ -39,6 +39,7 @@ import java.util.List;
 	public List<GUIComponent> components;
 
 	public String baseTexture;
+	public String overlayTarget;
 
 	public Procedure displayCondition;
 
@@ -52,6 +53,7 @@ import java.util.List;
 		super(element);
 
 		this.gridSettings = new GridSettings();
+		this.overlayTarget = "Ingame";
 	}
 
 	public int getBaseTextureWidth() {

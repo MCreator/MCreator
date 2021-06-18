@@ -95,6 +95,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		editor.priority.setSelectedItem(overlay.priority);
 		editor.setComponentList(overlay.components);
 		editor.overlayBaseTexture.setSelectedItem(overlay.baseTexture);
+		editor.overlayTarget.setSelectedItem(overlay.overlayTarget);
 		displayCondition.setSelectedProcedure(overlay.displayCondition);
 
 		editor.sx.setValue(overlay.gridSettings.sx);
@@ -113,6 +114,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		overlay.priority = (String) editor.priority.getSelectedItem();
 		overlay.components = editor.getComponentList();
 		overlay.baseTexture = editor.overlayBaseTexture.getSelectedItem();
+		overlay.overlayTarget = editor.overlayTarget.getSelectedItem();
 		overlay.displayCondition = displayCondition.getSelectedProcedure();
 
 		overlay.gridSettings.sx = (int) editor.sx.getValue();
