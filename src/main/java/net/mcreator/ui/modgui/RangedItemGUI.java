@@ -37,7 +37,10 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
-import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.DataListComboBox;
+import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.SoundSelector;
+import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -154,7 +157,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.ranged_item.make_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"))
+				.makeInline();
 
 		customBulletModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 

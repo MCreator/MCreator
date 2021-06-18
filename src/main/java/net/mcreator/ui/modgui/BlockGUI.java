@@ -305,7 +305,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString("x:number/y:number/z:number/world:world"));
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString("x:number/y:number/z:number/world:world"))
+				.makeInline();
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -315,7 +316,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				L10N.t("elementgui.block.event_generate_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("condition.common.no_additional"));
+				.setDefaultName(L10N.t("condition.common.no_additional")).makeInline();
 
 		blockBase.addActionListener(e -> {
 			renderType.setEnabled(true);
@@ -819,8 +820,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				.wrapWithHelpButton(this.withEntry("block/offset_type"), L10N.label("elementgui.common.offset_type")));
 		advancedProperties.add(offsetType);
 
-		JComponent advancedWithCondition = PanelUtils
-				.northAndCenterElement(advancedProperties, placingCondition, 5, 5);
+		JComponent advancedWithCondition = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 5, 5);
 
 		isWaterloggable.setOpaque(false);
 		canProvidePower.setOpaque(false);
@@ -1073,8 +1073,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		slip.setOpaque(false);
 
 		enderpanel2.add("West", PanelUtils.totalCenterInPanel(new JLabel(UIRES.get("chunk"))));
-		enderpanel2.add("Center",
-				PanelUtils.northAndCenterElement(slip, PanelUtils.join(FlowLayout.LEFT, generateCondition)));
+		enderpanel2.add("Center", PanelUtils.pullElementUp(PanelUtils
+				.northAndCenterElement(slip, PanelUtils.westAndCenterElement(new JEmptyBox(5, 5), generateCondition), 5,
+						5)));
 
 		enderpanel2.setOpaque(false);
 
@@ -1099,8 +1100,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.particle_gen_average_amount")));
 		particleParameters.add(particleAmount);
 
-		JComponent parpar = PanelUtils
-				.northAndCenterElement(particleParameters, PanelUtils.join(FlowLayout.LEFT, particleCondition));
+		JComponent parpar = PanelUtils.northAndCenterElement(particleParameters, particleCondition, 5, 5);
 
 		parpar.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
