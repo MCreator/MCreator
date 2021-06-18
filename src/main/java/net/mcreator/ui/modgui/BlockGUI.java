@@ -629,8 +629,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
-		JPanel selp = new JPanel(new GridLayout(13, 2, 0, 2));
-		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
+		JPanel selp = new JPanel(new GridLayout(14, 2, 0, 2));
+		JPanel selp3 = new JPanel(new GridLayout(7, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
 		JPanel advancedProperties = new JPanel(new GridLayout(12, 2, 0, 2));
@@ -702,6 +702,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.emissive_rendering")));
 		selp.add(emissiveRendering);
 
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
+				L10N.label("elementgui.block.is_replaceable")));
+		selp.add(isReplaceable);
+
 		creativeTab.setPrototypeDisplayValue(new DataListEntry.Dummy("BUILDING_BLOCKS"));
 		creativeTab.addPopupMenuListener(new ComboBoxFullWidthPopup());
 
@@ -733,10 +737,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
 				L10N.label("elementgui.block.is_unbreakable")));
 		selp3.add(unbreakable);
-
-		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
-				L10N.label("elementgui.block.is_replaceable")));
-		selp3.add(isReplaceable);
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(defaultSoundType);
@@ -864,8 +864,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.setOpaque(false);
 		soundProperties.setOpaque(false);
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(PanelUtils.pullElementUp(selp),
-				PanelUtils.centerAndSouthElement(selp3, soundProperties))));
+		pane3.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.westAndEastElement(selp, PanelUtils.centerAndSouthElement(selp3, soundProperties))));
 		pane3.setOpaque(false);
 
 		JPanel events2 = new JPanel(new GridLayout(4, 5, 5, 5));

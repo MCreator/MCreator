@@ -77,6 +77,8 @@ public abstract class AbstractProcedureSelector extends JPanel {
 
 	protected String defaultName = L10N.t("procedure.common.no_procedure");
 
+	private boolean returnTypeOptional;
+
 	public AbstractProcedureSelector(MCreator mcreator, @Nullable VariableType returnType,
 			Dependency... providedDependencies) {
 		this.mcreator = mcreator;
@@ -102,7 +104,7 @@ public abstract class AbstractProcedureSelector extends JPanel {
 		depsMap.clear();
 		procedures.removeAllItems();
 
-		procedures.addItem(new CBoxEntry(defaultName));
+		procedures.addItem(new CBoxEntry(defaultName, null));
 
 		for (ModElement mod : mcreator.getWorkspace().getModElements()) {
 			if (mod.getType() == ModElementType.PROCEDURE) {
@@ -121,23 +123,21 @@ public abstract class AbstractProcedureSelector extends JPanel {
 						missing = true;
 				}
 
-				boolean correctReturnType = true;
+				VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
+						VariableTypeLoader.INSTANCE.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
+						null;
 
+				boolean correctReturnType = true;
 				if (returnType != null) {
-					VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableTypeLoader.INSTANCE
-									.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
-							null;
 					if (returnTypeCurrent != returnType)
 						correctReturnType = false;
 				}
 
-				if (!missing && correctReturnType) {
+				if (!missing)
 					depsMap.put(mod.getName(), realdepsList);
-				}
 
-				if (correctReturnType)
-					procedures.addItem(new CBoxEntry(mod.getName(), !missing));
+				if (correctReturnType || (returnTypeCurrent == null && returnTypeOptional))
+					procedures.addItem(new CBoxEntry(mod.getName(), returnTypeCurrent, !missing));
 			}
 		}
 	}
@@ -192,12 +192,17 @@ public abstract class AbstractProcedureSelector extends JPanel {
 
 	public void setSelectedProcedure(String procedure) {
 		if (procedure != null)
-			procedures.setSelectedItem(new CBoxEntry(procedure));
+			procedures.setSelectedItem(new CBoxEntry(procedure, null));
 	}
 
 	public void setSelectedProcedure(Procedure procedure) {
 		if (procedure != null)
-			procedures.setSelectedItem(new CBoxEntry(procedure.getName()));
+			procedures.setSelectedItem(new CBoxEntry(procedure.getName(), null));
+	}
+
+	public AbstractProcedureSelector makeReturnValueOptional() {
+		returnTypeOptional = true;
+		return this;
 	}
 
 	public enum Side {
