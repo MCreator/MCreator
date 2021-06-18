@@ -86,10 +86,8 @@ public class JModLibraryInfo extends LibraryInfo {
 
 	private static ClassFile createClassFileImpl(ZipFile jar, String entryName) throws IOException {
 		ZipEntry entry = jar.getEntry("classes/" + entryName);
-		if (entry == null) {
-			System.err.println("ERROR: Invalid entry: " + entryName);
+		if (entry == null)
 			return null;
-		}
 		DataInputStream in = new DataInputStream(new BufferedInputStream(jar.getInputStream(entry)));
 		ClassFile cf;
 		try {

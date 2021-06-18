@@ -128,7 +128,7 @@ public class D8WebAPI implements IWebAPI {
 	}
 
 	@Override public String getSearchURL(String searchTerm) {
-		return MCreatorApplication.SERVER_DOMAIN + "/search/content?keys=" + searchTerm.replaceAll(" ", "+");
+		return MCreatorApplication.SERVER_DOMAIN + "/search/content?keys=" + searchTerm.replace(' ', '+');
 	}
 
 	@Override public void getWebsiteNews(CompletableFuture<String[]> data) {

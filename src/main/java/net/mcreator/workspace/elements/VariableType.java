@@ -19,18 +19,17 @@
 package net.mcreator.workspace.elements;
 
 import com.google.gson.annotations.SerializedName;
+import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 
-@SuppressWarnings("unused") public class VariableElementType {
+import java.util.Map;
+
+@SuppressWarnings("unused") public class VariableType {
 
 	private String name;
 	private int color;
 	private String blocklyVariableType;
-
-	public int getColor() {
-		return color;
-	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -38,6 +37,10 @@ import net.mcreator.workspace.Workspace;
 
 	public String getName() {
 		return name;
+	}
+
+	public int getColor() {
+		return color;
 	}
 
 	public String getBlocklyVariableType() {
@@ -48,12 +51,24 @@ import net.mcreator.workspace.Workspace;
 		return new NameMapper(workspace, "types").getMapping(getName());
 	}
 
-	public String getDefaultValue(Workspace workspace) {
-		String defaultValue = new NameMapper(workspace, "types").getMapping(getName(), 1);
-		if (defaultValue.equals(getName()))
-			return "null";
+	public String getDefaultValue(Workspace Workspace) {
+		return Workspace.getGeneratorConfiguration().getVariableTypes().getDefaultValue(this);
+	}
 
-		return defaultValue;
+	public Map<?, ?> getScopeDefinition(Workspace workspace, String scope) {
+		return workspace.getGeneratorConfiguration().getVariableTypes().getScopeDefinition(this, scope);
+	}
+
+	public boolean canBeGlobal(GeneratorConfiguration generatorConfiguration) {
+		return generatorConfiguration.getVariableTypes().canBeGlobal(this);
+	}
+
+	public boolean canBeLocal(GeneratorConfiguration generatorConfiguration) {
+		return generatorConfiguration.getVariableTypes().canBeLocal(this);
+	}
+
+	public Scope[] getSupportedScopesWithoutLocal(GeneratorConfiguration generatorConfiguration) {
+		return generatorConfiguration.getVariableTypes().getSupportedScopesWithoutLocal(this);
 	}
 
 	@Override public String toString() {
@@ -61,7 +76,7 @@ import net.mcreator.workspace.Workspace;
 	}
 
 	public enum Scope {
-		@SerializedName("map") GLOBAL_MAP, @SerializedName("world") GLOBAL_WORLD, @SerializedName("global") GLOBAL_SESSION, @SerializedName("player_lifetime") PLAYER_LIFETIME, @SerializedName("player_persistent") PLAYER_PERSISTENT
+		@SerializedName("map") GLOBAL_MAP, @SerializedName("world") GLOBAL_WORLD, @SerializedName("global") GLOBAL_SESSION, @SerializedName("player_lifetime") PLAYER_LIFETIME, @SerializedName("player_persistent") PLAYER_PERSISTENT, @SerializedName("local") LOCAL
 	}
 
 }

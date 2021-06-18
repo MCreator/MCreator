@@ -100,10 +100,10 @@ public class MCItem extends DataListEntry {
 									.getGeneratableElement())).textureBoots);
 				} else if (name.endsWith(".bucket")) {
 					if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
-							name.replaceAll("CUSTOM:", "").replaceAll(".bucket", "") + ".png").isFile()) {
+							name.replace("CUSTOM:", "").replace(".bucket", "") + ".png").isFile()) {
 						retval = MinecraftImageGenerator.generateFluidBucketIcon(new ImageIcon(
 								workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
-										+ name.replaceAll("CUSTOM:", "").replaceAll(".bucket", "") + ".png"));
+										+ name.replace("CUSTOM:", "").replace(".bucket", "") + ".png"));
 					} else {
 						retval = TiledImageCache.bucket;
 					}

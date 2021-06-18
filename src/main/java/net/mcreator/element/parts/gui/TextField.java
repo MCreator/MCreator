@@ -23,7 +23,7 @@ import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 
 import java.awt.*;
 
-public class TextField extends SizedComponent {
+public class TextField extends SizedComponent implements IMachineNamedComponent {
 
 	public String placeholder;
 

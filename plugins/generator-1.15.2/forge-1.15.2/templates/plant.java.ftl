@@ -35,6 +35,7 @@
 package ${package}.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.util.SoundEvent;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
@@ -281,7 +282,17 @@ import net.minecraft.block.material.Material;
 					.tickRandomly()
 					</#if>
 					.doesNotBlockMovement()
-					.sound(SoundType.${data.soundOnStep})
+					<#if data.isCustomSoundType>
+						.sound(new SoundType(1.0f, 1.0f, null, null, null, null, null){
+							@Override public SoundEvent getBreakSound() { return new SoundEvent(new ResourceLocation("${data.breakSound}")); }
+							@Override public SoundEvent getStepSound() { return new SoundEvent(new ResourceLocation("${data.stepSound}")); }
+							@Override public SoundEvent getPlaceSound() { return new SoundEvent(new ResourceLocation("${data.placeSound}")); }
+							@Override public SoundEvent getHitSound() { return new SoundEvent(new ResourceLocation("${data.hitSound}")); }
+							@Override public SoundEvent getFallSound() { return new SoundEvent(new ResourceLocation("${data.fallSound}")); }
+						})
+					<#else>
+						.sound(SoundType.${data.soundOnStep})
+					</#if>
 					<#if data.unbreakable>
 					.hardnessAndResistance(-1, 3600000)
 					<#else>

@@ -20,6 +20,7 @@
 package net.mcreator.workspace.elements;
 
 import com.google.gson.Gson;
+import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.blockly.BlocklyJavascriptTemplates;
@@ -27,25 +28,24 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-public class VariableElementTypeLoader {
+public class VariableTypeLoader {
 
 	private static final Logger LOG = LogManager.getLogger("Variable loader");
 
-	public static VariableElementTypeLoader INSTANCE;
+	public static VariableTypeLoader INSTANCE;
 
-	private final Map<VariableElementType, String> VARIABLE_TYPES_LIST = new LinkedHashMap<>();
+	private final Map<VariableType, String> VARIABLE_TYPES_LIST = new LinkedHashMap<>();
 	private final String variableBlocklyJS;
 
 	public static void loadVariableTypes() {
-		INSTANCE = new VariableElementTypeLoader();
+		INSTANCE = new VariableTypeLoader();
 	}
 
-	public VariableElementTypeLoader() {
+	public VariableTypeLoader() {
 		LOG.debug("Loading variable types");
 
 		final Gson gson = new Gson();
@@ -55,7 +55,7 @@ public class VariableElementTypeLoader {
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources("variables", Pattern.compile("^[^$].*\\.json"));
 		for (String file : fileNames) {
 			String variableJSON = FileIO.readResourceToString(PluginLoader.INSTANCE, file);
-			VariableElementType variableType = gson.fromJson(variableJSON, VariableElementType.class);
+			VariableType variableType = gson.fromJson(variableJSON, VariableType.class);
 			variableType.setName(FilenameUtils.getBaseName(file));
 
 			VARIABLE_TYPES_LIST.put(variableType, variableType.getName());
@@ -82,8 +82,8 @@ public class VariableElementTypeLoader {
 			case "string":
 				BuiltInTypes.STRING = variableType;
 				break;
-			case "itemstack":
-				BuiltInTypes.ITEMSTACK = variableType;
+			case "direction":
+				BuiltInTypes.DIRECTION = variableType;
 				break;
 			}
 		}
@@ -91,16 +91,31 @@ public class VariableElementTypeLoader {
 		variableBlocklyJS = variableBlocklyJSBuilder.toString();
 	}
 
-	public VariableElementType getVariableTypeFromString(String type) {
-		for (VariableElementType varType : VARIABLE_TYPES_LIST.keySet())
+	public VariableType getVariableTypeFromString(String type) {
+		for (VariableType varType : VARIABLE_TYPES_LIST.keySet())
 			if (varType.getName().equalsIgnoreCase(type) || varType.getBlocklyVariableType().equalsIgnoreCase(type))
 				return varType;
 
 		return null;
 	}
 
-	public Set<VariableElementType> getVariableTypes() {
-		return VARIABLE_TYPES_LIST.keySet();
+	public boolean doesVariableTypeExist(String name) {
+		return VARIABLE_TYPES_LIST.containsValue(name);
+	}
+
+	public Collection<VariableType> getGlobalVariableTypes(GeneratorConfiguration generatorConfiguration) {
+		return VARIABLE_TYPES_LIST.keySet().stream().filter(type -> type.canBeGlobal(generatorConfiguration))
+				.sorted(Comparator.comparing(VariableType::toString)).collect(Collectors.toList());
+	}
+
+	public Collection<VariableType> getLocalVariableTypes(GeneratorConfiguration generatorConfiguration) {
+		return VARIABLE_TYPES_LIST.keySet().stream().filter(type -> type.canBeLocal(generatorConfiguration))
+				.sorted(Comparator.comparing(VariableType::toString)).collect(Collectors.toList());
+	}
+
+	public Collection<VariableType> getAllVariableTypes() {
+		return VARIABLE_TYPES_LIST.keySet().stream().sorted(Comparator.comparing(VariableType::toString))
+				.collect(Collectors.toList());
 	}
 
 	public String getVariableBlocklyJS() {
@@ -108,9 +123,9 @@ public class VariableElementTypeLoader {
 	}
 
 	public static class BuiltInTypes {
-		public static VariableElementType STRING;
-		public static VariableElementType LOGIC;
-		public static VariableElementType NUMBER;
-		public static VariableElementType ITEMSTACK;
+		public static VariableType LOGIC;
+		public static VariableType NUMBER;
+		public static VariableType STRING;
+		public static VariableType DIRECTION;
 	}
 }
