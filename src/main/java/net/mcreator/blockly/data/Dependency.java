@@ -112,6 +112,9 @@ public class Dependency implements Comparable<Dependency> {
 		case "itemstack":
 			blockXml.append("<block type=\"itemstack_to_mcitem\"></block>");
 			break;
+		case "state":
+			blockXml.append("<block type=\"blockstate_from_deps\"></block>");
+			break;
 		default:
 			if (VariableTypeLoader.INSTANCE.getVariableTypeFromString(type) != null) {
 				blockXml.append("<block type=\"custom_dependency_");
