@@ -177,9 +177,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
 		destal.add(name);
 
-		destal.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/can_multiply"), L10N.label("elementgui.fluid.can_multiply")));
-		destal.add(canMultiply);
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/type"), L10N.label("elementgui.fluid.type")));
+		destal.add(fluidtype);
 
 		destal.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("fluid/flow_rate"), L10N.label("elementgui.fluid.flow_rate")));
@@ -193,8 +192,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				.wrapWithHelpButton(this.withEntry("fluid/slope_find_distance"), L10N.label("elementgui.fluid.slope_find_distance")));
 		destal.add(slopeFindDistance);
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/type"), L10N.label("elementgui.fluid.type")));
-		destal.add(fluidtype);
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/can_multiply"), L10N.label("elementgui.fluid.can_multiply")));
+		destal.add(canMultiply);
 
 		destal.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("fluid/spawn_drip_particles"), L10N.label("elementgui.fluid.spawn_particles")));
@@ -291,10 +291,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				.wrapWithHelpButton(this.withEntry("block/light_opacity"), L10N.label("elementgui.common.light_opacity")));
 		blockProperties.add(lightOpacity);
 
-		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
-				L10N.label("elementgui.common.emissive_rendering")));
-		blockProperties.add(emissiveRendering);
-
 		blockProperties.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/flammability"), L10N.label("elementgui.block.flammability")));
 		blockProperties.add(flammability);
@@ -306,6 +302,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		blockProperties.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/color_on_map"), L10N.label("elementgui.block.color_on_map")));
 		blockProperties.add(colorOnMap);
+
+		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
+				L10N.label("elementgui.common.emissive_rendering")));
+		blockProperties.add(emissiveRendering);
 
 		blockProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
