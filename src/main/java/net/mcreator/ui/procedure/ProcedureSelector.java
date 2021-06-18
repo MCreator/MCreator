@@ -97,11 +97,8 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		if (returnType != null) {
 			setBorder(BorderFactory.createLineBorder(BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor())));
 
-			if (returnType == VariableTypeLoader.BuiltInTypes.LOGIC) {
+			if (returnType == VariableTypeLoader.BuiltInTypes.LOGIC)
 				defaultName = L10N.t("condition.common.true");
-			} else if (returnType == VariableTypeLoader.BuiltInTypes.NUMBER) {
-				defaultName = "(0)";
-			}
 		}
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
