@@ -259,6 +259,8 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		add(componentA);
 		add(componentB);
 
+		componentB.setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 2));
+
 		updateDepsList(true);
 		ComponentUtils.deriveFont(nameLabel, 12);
 		actionLabel.setVisible(false);

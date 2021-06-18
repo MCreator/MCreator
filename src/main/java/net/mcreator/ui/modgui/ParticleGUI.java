@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.Particle;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -82,7 +83,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				mcreator, L10N.t("elementgui.particle.expiry_condition"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/age:number/onGround:logic"))
-				.setDefaultName(L10N.t("condition.common.no_additional"));
+				.setDefaultName(L10N.t("condition.common.no_additional")).makeInline();
 
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
@@ -162,8 +163,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				L10N.label("elementgui.particle.does_collide")));
 		spo2.add(canCollide);
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils
-				.centerAndSouthElement(spo2, PanelUtils.join(FlowLayout.LEFT, additionalExpiryCondition), 0, 10)));
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(spo2,
+				PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), additionalExpiryCondition), 5, 10)));
 
 		texture.setValidator(() -> {
 			if (texture.getSelectedItem() == null || texture.getSelectedItem().equals(""))

@@ -514,109 +514,109 @@ public class TestWorkspaceDataProvider {
 			}
 			gui.components = components;
 			return gui;
-		case MOB:
-			Mob mob = new Mob(modElement);
-			mob.mobName = modElement.getName();
-			mob.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
-			mob.mobModelTexture = "test.png";
-			mob.mobModelGlowTexture = emptyLists ? "" : "test.png";
-			mob.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
-			mob.spawnEggBaseColor = Color.red;
-			mob.spawnEggDotColor = Color.green;
-			mob.isBoss = _true;
-			mob.creativeTab = new TabEntry(modElement.getWorkspace(),
+		case LIVINGENTITY:
+			LivingEntity livingEntity = new LivingEntity(modElement);
+			livingEntity.mobName = modElement.getName();
+			livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
+			livingEntity.mobModelTexture = "test.png";
+			livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
+			livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
+			livingEntity.spawnEggBaseColor = Color.red;
+			livingEntity.spawnEggDotColor = Color.green;
+			livingEntity.isBoss = _true;
+			livingEntity.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			mob.bossBarColor = getRandomItem(random,
+			livingEntity.bossBarColor = getRandomItem(random,
 					new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
-			mob.bossBarType = getRandomItem(random,
+			livingEntity.bossBarType = getRandomItem(random,
 					new String[] { "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" });
-			mob.equipmentMainHand = new MItemBlock(modElement.getWorkspace(),
+			livingEntity.equipmentMainHand = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-			mob.equipmentOffHand = new MItemBlock(modElement.getWorkspace(),
+			livingEntity.equipmentOffHand = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-			mob.equipmentHelmet = new MItemBlock(modElement.getWorkspace(),
+			livingEntity.equipmentHelmet = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-			mob.equipmentBody = new MItemBlock(modElement.getWorkspace(),
+			livingEntity.equipmentBody = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-			mob.equipmentLeggings = new MItemBlock(modElement.getWorkspace(),
+			livingEntity.equipmentLeggings = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-			mob.equipmentBoots = new MItemBlock(modElement.getWorkspace(),
+			livingEntity.equipmentBoots = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-			mob.mobBehaviourType = _true ? "Creature" : "Mob";
-			mob.mobCreatureType = getRandomItem(random,
+			livingEntity.mobBehaviourType = _true ? "Creature" : "Mob";
+			livingEntity.mobCreatureType = getRandomItem(random,
 					new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
-			mob.attackStrength = 4;
-			mob.attackKnockback = 1.5;
-			mob.knockbackResistance = 0.5;
-			mob.movementSpeed = 0.76;
-			mob.armorBaseValue = 0.123;
-			mob.health = 42;
-			mob.trackingRange = 27;
-			mob.waterMob = !_true;
-			mob.flyingMob = !_true;
-			mob.inventorySize = 10;
-			mob.inventoryStackSize = 42;
-			mob.disableCollisions = !_true;
-			mob.immuneToFire = _true;
-			mob.immuneToArrows = !_true;
-			mob.immuneToFallDamage = !_true;
-			mob.immuneToCactus = !_true;
-			mob.immuneToDrowning = !_true;
-			mob.immuneToLightning = !_true;
-			mob.immuneToPotions = !_true;
-			mob.immuneToPlayer = !_true;
-			mob.immuneToExplosion = !_true;
-			mob.immuneToTrident = !_true;
-			mob.immuneToAnvil = !_true;
-			mob.immuneToDragonBreath = !_true;
-			mob.immuneToWither = !_true;
-			mob.hasSpawnEgg = !_true;
-			mob.xpAmount = 8;
-			mob.ridable = _true;
-			mob.canControlStrafe = !_true;
-			mob.canControlForward = _true;
-			mob.guiBoundTo = "<NONE>";
-			mob.mobDrop = new MItemBlock(modElement.getWorkspace(),
+			livingEntity.attackStrength = 4;
+			livingEntity.attackKnockback = 1.5;
+			livingEntity.knockbackResistance = 0.5;
+			livingEntity.movementSpeed = 0.76;
+			livingEntity.armorBaseValue = 0.123;
+			livingEntity.health = 42;
+			livingEntity.trackingRange = 27;
+			livingEntity.waterMob = !_true;
+			livingEntity.flyingMob = !_true;
+			livingEntity.inventorySize = 10;
+			livingEntity.inventoryStackSize = 42;
+			livingEntity.disableCollisions = !_true;
+			livingEntity.immuneToFire = _true;
+			livingEntity.immuneToArrows = !_true;
+			livingEntity.immuneToFallDamage = !_true;
+			livingEntity.immuneToCactus = !_true;
+			livingEntity.immuneToDrowning = !_true;
+			livingEntity.immuneToLightning = !_true;
+			livingEntity.immuneToPotions = !_true;
+			livingEntity.immuneToPlayer = !_true;
+			livingEntity.immuneToExplosion = !_true;
+			livingEntity.immuneToTrident = !_true;
+			livingEntity.immuneToAnvil = !_true;
+			livingEntity.immuneToDragonBreath = !_true;
+			livingEntity.immuneToWither = !_true;
+			livingEntity.hasSpawnEgg = !_true;
+			livingEntity.xpAmount = 8;
+			livingEntity.ridable = _true;
+			livingEntity.canControlStrafe = !_true;
+			livingEntity.canControlForward = _true;
+			livingEntity.guiBoundTo = "<NONE>";
+			livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-			mob.livingSound = new Sound(modElement.getWorkspace(),
+			livingEntity.livingSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			mob.hurtSound = new Sound(modElement.getWorkspace(),
+			livingEntity.hurtSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			mob.deathSound = new Sound(modElement.getWorkspace(),
+			livingEntity.deathSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			if (!emptyLists) {
-				mob.stepSound = new Sound(modElement.getWorkspace(),
+				livingEntity.stepSound = new Sound(modElement.getWorkspace(),
 						getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			} else {
-				mob.stepSound = new Sound(modElement.getWorkspace(), "");
+				livingEntity.stepSound = new Sound(modElement.getWorkspace(), "");
 			}
-			mob.spawnParticles = _true;
-			mob.particleToSpawn = new Particle(modElement.getWorkspace(),
+			livingEntity.spawnParticles = _true;
+			livingEntity.particleToSpawn = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			mob.particleSpawningShape = new String[] { "Spread", "Top", "Tube", "Plane" }[valueIndex];
-			mob.rangedItemType = "Default item";
-			mob.particleSpawningRadious = 4;
-			mob.particleAmount = 13;
+			livingEntity.particleSpawningShape = new String[] { "Spread", "Top", "Tube", "Plane" }[valueIndex];
+			livingEntity.rangedItemType = "Default item";
+			livingEntity.particleSpawningRadious = 4;
+			livingEntity.particleAmount = 13;
 			if (!emptyLists) {
-				mob.particleCondition = new Procedure("condition2");
-				mob.spawningCondition = new Procedure("condition3");
-				mob.onStruckByLightning = new Procedure("procedure1");
-				mob.whenMobFalls = new Procedure("procedure2");
-				mob.whenMobDies = new Procedure("procedure3");
-				mob.whenMobIsHurt = new Procedure("procedure4");
-				mob.onRightClickedOn = new Procedure("procedure5");
-				mob.whenThisMobKillsAnother = new Procedure("procedure6");
-				mob.onMobTickUpdate = new Procedure("procedure7");
-				mob.onPlayerCollidesWith = new Procedure("procedure8");
-				mob.onInitialSpawn = new Procedure("procedure9");
+				livingEntity.particleCondition = new Procedure("condition2");
+				livingEntity.spawningCondition = new Procedure("condition3");
+				livingEntity.onStruckByLightning = new Procedure("procedure1");
+				livingEntity.whenMobFalls = new Procedure("procedure2");
+				livingEntity.whenMobDies = new Procedure("procedure3");
+				livingEntity.whenMobIsHurt = new Procedure("procedure4");
+				livingEntity.onRightClickedOn = new Procedure("procedure5");
+				livingEntity.whenThisMobKillsAnother = new Procedure("procedure6");
+				livingEntity.onMobTickUpdate = new Procedure("procedure7");
+				livingEntity.onPlayerCollidesWith = new Procedure("procedure8");
+				livingEntity.onInitialSpawn = new Procedure("procedure9");
 			}
-			mob.hasAI = _true;
-			mob.aiBase = "(none)";
+			livingEntity.hasAI = _true;
+			livingEntity.aiBase = "(none)";
 			if (!emptyLists) {
 				Set<String> aiTasks = modElement.getGeneratorStats().getGeneratorAITasks();
 				if (aiTasks.contains("wander") && aiTasks.contains("look_around") && aiTasks
 						.contains("panic_when_attacked") && aiTasks.contains("attack_action")) {
-					mob.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\">"
+					livingEntity.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\">"
 							+ "<next><block type=\"wander\"><field name=\"speed\">1</field>"
 							+ "<next><block type=\"look_around\"><next><block type=\"swim_in_water\">"
 							+ "<next><block type=\"panic_when_attacked\"><field name=\"speed\">1.2</field>"
@@ -625,50 +625,50 @@ public class TestWorkspaceDataProvider {
 				}
 			}
 			// fallback
-			if (mob.aixml == null) {
-				mob.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\"></block></xml>";
+			if (livingEntity.aixml == null) {
+				livingEntity.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\"></block></xml>";
 			}
-			mob.breedable = _true;
-			mob.tameable = _true;
-			mob.breedTriggerItems = new ArrayList<>();
+			livingEntity.breedable = _true;
+			livingEntity.tameable = _true;
+			livingEntity.breedTriggerItems = new ArrayList<>();
 			if (!emptyLists) {
-				mob.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
+				livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
 						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
-				mob.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
+				livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
 						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
-				mob.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
+				livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
 						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
-				mob.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
+				livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
 						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
-				mob.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
+				livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
 						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
 			}
-			mob.ranged = _true;
-			mob.rangedAttackItem = new MItemBlock(modElement.getWorkspace(),
+			livingEntity.ranged = _true;
+			livingEntity.rangedAttackItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-			mob.spawnThisMob = !_true;
-			mob.doesDespawnWhenIdle = _true;
-			mob.spawningProbability = 23;
-			mob.mobSpawningType = new String[] { "monster", "creature", "ambient", "waterCreature" }[valueIndex];
-			mob.minNumberOfMobsPerGroup = 4;
-			mob.maxNumberOfMobsPerGroup = 40;
-			mob.restrictionBiomes = new ArrayList<>();
+			livingEntity.spawnThisMob = !_true;
+			livingEntity.doesDespawnWhenIdle = _true;
+			livingEntity.spawningProbability = 23;
+			livingEntity.mobSpawningType = new String[] { "monster", "creature", "ambient", "waterCreature" }[valueIndex];
+			livingEntity.minNumberOfMobsPerGroup = 4;
+			livingEntity.maxNumberOfMobsPerGroup = 40;
+			livingEntity.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
-				mob.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+				livingEntity.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
-				mob.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+				livingEntity.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
-				mob.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+				livingEntity.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
-				mob.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
+				livingEntity.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
 			}
-			mob.spawnInDungeons = _true;
-			mob.modelWidth = 0.4;
-			mob.modelHeight = 1.3;
-			mob.mountedYOffset = -3.1;
-			mob.modelShadowSize = 1.8;
-			return mob;
+			livingEntity.spawnInDungeons = _true;
+			livingEntity.modelWidth = 0.4;
+			livingEntity.modelHeight = 1.3;
+			livingEntity.mountedYOffset = -3.1;
+			livingEntity.modelShadowSize = 1.8;
+			return livingEntity;
 		case DIMENSION:
 			Dimension dimension = new Dimension(modElement);
 			dimension.texture = "test";
@@ -870,8 +870,19 @@ public class TestWorkspaceDataProvider {
 			plant.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
 			plant.aiPathNodeType = getRandomItem(random, ElementUtil.loadPathNodeTypes());
 			plant.unbreakable = _true;
+			plant.isCustomSoundType = !_true;
 			plant.soundOnStep = new StepSound(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
+			plant.breakSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			plant.stepSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			plant.placeSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			plant.hitSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			plant.fallSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			plant.customDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			plant.dropAmount = 4;
@@ -1079,8 +1090,19 @@ public class TestWorkspaceDataProvider {
 			block.material = new Material(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadMaterials()));
 			block.tickRate = 24;
+			block.isCustomSoundType = !_true;
 			block.soundOnStep = new StepSound(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
+			block.breakSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			block.stepSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			block.placeSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			block.hitSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			block.fallSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			block.luminance = 3;
 			block.isReplaceable = !_true;
 			block.canProvidePower = !_true;
