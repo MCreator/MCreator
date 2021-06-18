@@ -83,8 +83,13 @@ import net.minecraft.block.material.Material;
 					<#if data.generateBucket>.bucket(() -> bucket)</#if>
 					.block(() -> block);
 
+		<#if data.spawnParticles>
 		still = (FlowingFluid) new CustomFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
 		flowing = (FlowingFluid) new CustomFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
+		<#else>
+		still = (FlowingFluid) new ForgeFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
+		flowing = (FlowingFluid) new ForgeFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
+		</#if>
 
 		elements.blocks.add(() -> new FlowingFluidBlock(still,
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
@@ -204,18 +209,17 @@ import net.minecraft.block.material.Material;
 		</#if>
 	}
 
+	<#if data.spawnParticles>
 	public static abstract class CustomFlowingFluid extends ForgeFlowingFluid {
 		public CustomFlowingFluid(Properties properties) {
 			super(properties);
 		}
 
-		<#if data.spawnParticles>
 		@OnlyIn(Dist.CLIENT)
 		@Override
 		public IParticleData getDripParticleData() {
 			return ${data.dripParticle};
 		}
-		</#if>
 
 		public static class Source extends CustomFlowingFluid {
 			public Source(Properties properties) {
@@ -250,6 +254,7 @@ import net.minecraft.block.material.Material;
 			}
 		}
 	}
+	</#if>
 
 	<#if (data.spawnWorldTypes?size > 0)>
 	@Override public void init(FMLCommonSetupEvent event) {
