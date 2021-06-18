@@ -19,17 +19,27 @@
 
 package net.mcreator.ui.procedure;
 
-class CBoxEntry {
-	String string;
-	boolean correctDependencies;
+import net.mcreator.workspace.elements.VariableType;
 
-	CBoxEntry(String string) {
-		this(string, true);
+import javax.annotation.Nullable;
+
+class CBoxEntry {
+	final String string;
+	final boolean correctDependencies;
+	@Nullable private final VariableType variableType;
+
+	CBoxEntry(String string, @Nullable VariableType variableType) {
+		this(string, variableType, true);
 	}
 
-	CBoxEntry(String string, boolean correctDependencies) {
+	CBoxEntry(String string, @Nullable VariableType variableType, boolean correctDependencies) {
 		this.string = string;
 		this.correctDependencies = correctDependencies;
+		this.variableType = variableType;
+	}
+
+	@Nullable public VariableType getVariableType() {
+		return variableType;
 	}
 
 	@Override public boolean equals(Object o) {
