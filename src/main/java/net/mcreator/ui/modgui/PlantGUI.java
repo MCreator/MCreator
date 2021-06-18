@@ -170,38 +170,38 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.plant.event_on_added"),
-				Dependency.fromString("x:number/y:number/z:number/world:world"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/state:blockstate"));
 		onNeighbourBlockChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
 				L10N.t("elementgui.common.event_on_neighbour_block_changes"),
-				Dependency.fromString("x:number/y:number/z:number/world:world"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/state:blockstate"));
 		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator,
 				L10N.t("elementgui.common.event_on_update_tick"),
-				Dependency.fromString("x:number/y:number/z:number/world:world"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/state:blockstate"));
 		onRandomUpdateEvent = new ProcedureSelector(this.withEntry("block/display_tick_update"), mcreator,
 				L10N.t("elementgui.common.event_on_random_update"), ProcedureSelector.Side.CLIENT,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/state:blockstate"));
 		onDestroyedByPlayer = new ProcedureSelector(this.withEntry("block/when_destroyed_player"), mcreator,
 				L10N.t("elementgui.plant.event_on_destroyed_by_player"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/state:blockstate"));
 		onDestroyedByExplosion = new ProcedureSelector(this.withEntry("block/when_destroyed_explosion"), mcreator,
 				L10N.t("elementgui.plant.event_on_destroyed_by_explosion"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onStartToDestroy = new ProcedureSelector(this.withEntry("block/when_destroy_start"), mcreator,
 				L10N.t("elementgui.plant.event_on_start_to_destroy"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/state:blockstate"));
 		onEntityCollides = new ProcedureSelector(this.withEntry("block/when_entity_collides"), mcreator,
 				L10N.t("elementgui.plant.event_on_entity_collides"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/state:blockstate"));
 		onBlockPlacedBy = new ProcedureSelector(this.withEntry("block/when_block_placed_by"), mcreator,
 				L10N.t("elementgui.common.event_on_block_placed_by"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/state:blockstate"));
 		onRightClicked = new ProcedureSelector(this.withEntry("block/when_right_clicked"), mcreator,
 				L10N.t("elementgui.plant.event_on_right_clicked"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/direction:direction"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/direction:direction/state:blockstate"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
 				L10N.t("elementgui.plant.condition_additional_placing"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world"))
+				Dependency.fromString("x:number/y:number/z:number/world:world/state:blockstate"))
 				.setDefaultName(L10N.t("condition.common.no_additional")).makeInline();
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,

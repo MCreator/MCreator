@@ -644,6 +644,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
+			BlockState state = world.getBlockState(pos);
 			<@procedureOBJToCode data.onEntityWalksOn/>
 		}
         </#if>

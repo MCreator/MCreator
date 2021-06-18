@@ -212,6 +212,7 @@ package ${package}.item;
       		BlockPos pos = context.getPos();
       		PlayerEntity entity = context.getPlayer();
       		Direction direction = context.getFace();
+      		BlockState state = world.getBlockState(pos);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();

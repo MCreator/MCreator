@@ -119,10 +119,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
 				L10N.t("elementgui.common.event_right_clicked_block"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction"));
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction/state:blockstate"));
 		onBlockDestroyedWithTool = new ProcedureSelector(this.withEntry("tool/when_block_destroyed"), mcreator,
-				L10N.t("elementgui.tool.event_block_destroyed"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+				L10N.t("elementgui.tool.event_block_destroyed"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/state:blockstate"));
 		onEntityHitWith = new ProcedureSelector(this.withEntry("item/when_entity_hit"), mcreator,
 				L10N.t("elementgui.tool.event_entity_hit_with"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack"));
