@@ -238,7 +238,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 		procedures.setToolTipText(L10N.t("action.procedure.match_dependencies"));
 
-		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXX"));
+		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXX", null));
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
 		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
@@ -266,6 +266,18 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		actionLabel.setVisible(false);
 
 		return this;
+	}
+
+	@Override public ProcedureSelector makeReturnValueOptional() {
+		AbstractProcedureSelector retval = super.makeReturnValueOptional();
+
+		if (returnType != null)
+			setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createMatteBorder(0, 0, 1, 1, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+					BorderFactory.createMatteBorder(1, 1, 0, 0,
+							BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor()))));
+
+		return (ProcedureSelector) retval;
 	}
 
 	@Override protected CBoxEntry updateDepsList(boolean smallIcons) {
