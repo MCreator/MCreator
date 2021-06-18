@@ -202,12 +202,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
 				L10N.t("elementgui.plant.condition_additional_placing"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("condition.common.no_additional"));
+				.setDefaultName(L10N.t("condition.common.no_additional")).makeInline();
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				L10N.t("elementgui.plant.event_additional_generation_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("condition.common.no_additional"));
+				.setDefaultName(L10N.t("condition.common.no_additional")).makeInline();
 
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
@@ -599,8 +599,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.can_be_placed_on")));
 		advancedProperties.add(canBePlacedOn);
 
-		JComponent plocb = PanelUtils
-				.northAndCenterElement(advancedProperties, PanelUtils.join(FlowLayout.LEFT, placingCondition));
+		JComponent plocb = PanelUtils.northAndCenterElement(advancedProperties,
+				PanelUtils.westAndCenterElement(new JEmptyBox(5, 5), placingCondition), 2, 2);
 		plocb.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.properties_advanced_plant"), TitledBorder.LEADING,
@@ -639,12 +639,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.common.restrict_to_biomes")));
 		spawning.add(restrictionBiomes);
 
-		JPanel lastPan = new JPanel(new BorderLayout(15, 15));
-		lastPan.setOpaque(false);
-		lastPan.add("North", spawning);
-
-		pane4.add("Center", PanelUtils.totalCenterInPanel(lastPan));
-		pane4.add("South", PanelUtils.join(FlowLayout.LEFT, generateCondition));
+		pane4.add("Center", PanelUtils.totalCenterInPanel(spawning));
+		pane4.add("South", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition));
 
 		pane4.setOpaque(false);
 
