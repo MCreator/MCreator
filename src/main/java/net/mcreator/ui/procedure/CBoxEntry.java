@@ -24,7 +24,7 @@ import net.mcreator.workspace.elements.VariableType;
 import javax.annotation.Nullable;
 
 class CBoxEntry {
-	final String string;
+	String string;
 	final boolean correctDependencies;
 	@Nullable private final VariableType variableType;
 
