@@ -50,7 +50,7 @@ public class NewModElementDialog {
 						TiledImageCache.getModTypeIcon(type), new OptionPaneValidatior() {
 							@Override public Validator.ValidationResult validate(JComponent component) {
 								String regNameString = RegistryNameFixer.fromCamelCase(((VTextField) component).getText());
-								regName.setText(L10N.t("dialog.new_modelement.registry_name", regNameString == null ?
+								regName.setText(L10N.t("dialog.new_modelement.registry_name", regNameString == null || regNameString.equals("") ?
 										L10N.t("dialog.new_modelement.registry_name.empty") :
 										regNameString));
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component)
