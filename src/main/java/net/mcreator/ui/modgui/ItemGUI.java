@@ -179,6 +179,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
+		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 
@@ -335,11 +336,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		dispenseProperties.setOpaque(false);
 
-		JComponent generalAndDispenseProperties = PanelUtils.westAndEastElement(subpane2, PanelUtils.pullElementUp(dispenseProperties));
-		generalAndDispenseProperties.setOpaque(false);
-
 		pane3.setOpaque(false);
-		pane3.add("Center", PanelUtils.totalCenterInPanel(generalAndDispenseProperties));
+		pane3.add("Center", PanelUtils.totalCenterInPanel(subpane2));
+
+		advancedProperties.setOpaque(false);
+		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(dispenseProperties));
 
 		JPanel events = new JPanel(new GridLayout(3, 3, 10, 10));
 		events.setOpaque(false);
@@ -382,6 +383,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane5);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
