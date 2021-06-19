@@ -10,6 +10,7 @@
 	dependencies.put("pz",entity.getPosZ());
 	dependencies.put("world",event.getWorld().getWorld());
 	dependencies.put("entity",entity);
+	dependencies.put("state",event.getState());
 	dependencies.put("event",event);
 	this.executeProcedure(dependencies);
 }

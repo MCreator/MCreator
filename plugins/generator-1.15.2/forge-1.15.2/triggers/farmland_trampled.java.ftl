@@ -7,6 +7,7 @@
 	dependencies.put("z",event.getPos().getZ());
 	dependencies.put("world",event.getWorld().getWorld());
 	dependencies.put("entity",entity);
+	dependencies.put("state",event.getState());
 	dependencies.put("falldistance",falldistance);
 	dependencies.put("event",event);
 	this.executeProcedure(dependencies);

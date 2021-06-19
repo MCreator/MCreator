@@ -21,6 +21,10 @@
       "type": "entity"
     },
     {
+      "name": "state",
+      "type": "blockstate"
+    },
+    {
       "name": "falldistance",
       "type": "number"
     }

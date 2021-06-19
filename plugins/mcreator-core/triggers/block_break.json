@@ -9,6 +9,10 @@
       "type": "entity"
     },
     {
+      "name": "state",
+      "type": "blockstate"
+    },
+    {
       "name": "x",
       "type": "number"
     },

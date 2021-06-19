@@ -5,6 +5,10 @@
       "type": "entity"
     },
     {
+      "name": "state",
+      "type": "blockstate"
+    },
+    {
       "name": "world",
       "type": "world"
     },
