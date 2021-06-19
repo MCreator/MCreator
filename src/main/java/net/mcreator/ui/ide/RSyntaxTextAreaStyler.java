@@ -58,7 +58,8 @@ public class RSyntaxTextAreaStyler {
 				theme = Theme.load(te.getClass().getResourceAsStream(
 						"/org/fife/ui/rsyntaxtextarea/themes/" + PreferencesManager.PREFERENCES.ide.editorTheme
 								.toLowerCase(Locale.ENGLISH) + ".xml"));
-			} else {
+			} else if (ThemeLoader.CURRENT_THEME.getID().equals("default_dark") ||
+					ThemeLoader.CURRENT_THEME.getID().equals("default_light")) {
 				theme.scheme.setStyle(SyntaxScheme.RESERVED_WORD,
 						new Style((Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 				theme.scheme.setStyle(SyntaxScheme.RESERVED_WORD_2,
