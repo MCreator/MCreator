@@ -49,8 +49,10 @@ public class NewModElementDialog {
 						L10N.t("dialog.new_modelement.title_window", type.getReadableName()),
 						TiledImageCache.getModTypeIcon(type), new OptionPaneValidatior() {
 							@Override public Validator.ValidationResult validate(JComponent component) {
-								regName.setText(L10N.t("dialog.new_modelement.registry_name", RegistryNameFixer
-										.fromCamelCase(((VTextField) component).getText())));
+								String regNameString = RegistryNameFixer.fromCamelCase(((VTextField) component).getText());
+								regName.setText(L10N.t("dialog.new_modelement.registry_name", regNameString == null || regNameString.equals("") ?
+										L10N.t("dialog.new_modelement.registry_name.empty") :
+										regNameString));
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component)
 										.validate();
 							}
