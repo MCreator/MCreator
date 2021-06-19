@@ -1076,7 +1076,7 @@ public class TestWorkspaceDataProvider {
 			block.dropAmount = 3;
 			block.plantsGrowOn = _true;
 			block.isNotColidable = _true;
-			block.canProvidePower = _true;
+			block.canRedstoneConnect = _true;
 			block.isWaterloggable = !block.hasGravity; // only works if block has no gravity, emptyLists for more randomness
 			block.isLadder = _true;
 			block.enchantPowerBonus = 1.2342;
@@ -1105,6 +1105,8 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			block.luminance = 3;
 			block.isReplaceable = !_true;
+			block.canProvidePower = !_true;
+			block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);
 			block.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			block.colorOnMap = getRandomItem(random, ElementUtil.loadMapColors());

@@ -47,6 +47,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -106,6 +107,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onRedstoneOff;
 
 	private ProcedureSelector particleCondition;
+	private NumberProcedureSelector emittedRedstonePower;
 	private ProcedureSelector placingCondition;
 	private ProcedureSelector generateCondition;
 
@@ -128,7 +130,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox tickRandomly = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox unbreakable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isNotColidable = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox canRedstoneConnect = L10N.checkbox("elementgui.common.enable");
 
 	private final JComboBox<String> tintType = new JComboBox<>(
 			new String[] { "No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog" });
@@ -159,6 +161,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final SoundSelector fallSound = new SoundSelector(mcreator);
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> colorOnMap = new JComboBox<>();
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -308,6 +311,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString("x:number/y:number/z:number/world:world"))
 				.makeInline();
 
+		emittedRedstonePower = new NumberProcedureSelector(null, mcreator,
+				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)),
+				Dependency.fromString("x:number/y:number/z:number/world:world"));
+
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
@@ -435,6 +442,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureBack.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
+		canProvidePower.setOpaque(false);
 
 		destal.add(new JLabel());
 		destal.add(ComponentUtils.squareAndBorder(textureTop, L10N.t("elementgui.block.texture_place_top")));
@@ -625,7 +633,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel selp3 = new JPanel(new GridLayout(7, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
-		JPanel advancedProperties = new JPanel(new GridLayout(13, 2, 0, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(12, 2, 0, 2));
 
 		hasGravity.setOpaque(false);
 		tickRandomly.setOpaque(false);
@@ -792,10 +800,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				.wrapWithHelpButton(this.withEntry("block/is_ladder"), L10N.label("elementgui.block.is_ladder")));
 		advancedProperties.add(isLadder);
 
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/redstone_connect"),
-				L10N.label("elementgui.block.redstone_connect")));
-		advancedProperties.add(canProvidePower);
-
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/enchantments_bonus"),
 				L10N.label("elementgui.block.enchantments_bonus")));
 		advancedProperties.add(enchantPowerBonus);
@@ -823,7 +827,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JComponent advancedWithCondition = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 5, 5);
 
 		isWaterloggable.setOpaque(false);
-		canProvidePower.setOpaque(false);
+		canRedstoneConnect.setOpaque(false);
 		isLadder.setOpaque(false);
 
 		useLootTableForDrops.addActionListener(e -> {
@@ -1109,6 +1113,31 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		particleParameters.setOpaque(false);
 
+		JPanel redstoneParameters = new JPanel(new GridLayout(3, 2, 0, 2));
+		redstoneParameters.setOpaque(false);
+
+		redstoneParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/redstone_connect"),
+				L10N.label("elementgui.block.redstone_connect")));
+		redstoneParameters.add(canRedstoneConnect);
+
+		redstoneParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emits_redstone"),
+				L10N.label("elementgui.block.emits_redstone")));
+		redstoneParameters.add(canProvidePower);
+
+		redstoneParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/redstone_power"),
+				L10N.label("elementgui.block.redstone_power")));
+		redstoneParameters.add(emittedRedstonePower);
+
+		redstoneParameters.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.block.properties_redstone"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		JComponent parred = PanelUtils.centerAndSouthElement(parpar, PanelUtils.pullElementUp(redstoneParameters));
+
+		canProvidePower.addActionListener(e -> refreshRedstoneEmitted());
+		refreshRedstoneEmitted();
+
 		particleSpawningRadious.setOpaque(false);
 		spawnParticles.setOpaque(false);
 
@@ -1126,7 +1155,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		});
 
 		pane7.add(PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(advancedWithCondition, PanelUtils.pullElementUp(parpar))));
+				PanelUtils.westAndEastElement(advancedWithCondition, PanelUtils.pullElementUp(parred))));
 
 		pane7.setOpaque(false);
 		pane9.setOpaque(false);
@@ -1191,6 +1220,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isFluidTank.setEnabled(hasInventory.isSelected());
 		fluidCapacity.setEnabled(hasInventory.isSelected());
 		fluidRestrictions.setEnabled(hasInventory.isSelected());
+	}
+
+	private void refreshRedstoneEmitted() {
+		emittedRedstonePower.setEnabled(canProvidePower.isSelected());
 	}
 
 	private void updateTextureOptions() {
@@ -1270,6 +1303,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRedstoneOff.refreshListKeepSelected();
 
 		particleCondition.refreshListKeepSelected();
+		emittedRedstonePower.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
 
@@ -1352,6 +1386,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		particleToSpawn.setSelectedItem(block.particleToSpawn);
 		particleSpawningShape.setSelectedItem(block.particleSpawningShape);
 		particleCondition.setSelectedProcedure(block.particleCondition);
+		emittedRedstonePower.setSelectedProcedure(block.emittedRedstonePower);
 		generateCondition.setSelectedProcedure(block.generateCondition);
 		particleSpawningRadious.setValue(block.particleSpawningRadious);
 		particleAmount.setValue(block.particleAmount);
@@ -1377,7 +1412,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		dropAmount.setValue(block.dropAmount);
 		isNotColidable.setSelected(block.isNotColidable);
 		unbreakable.setSelected(block.unbreakable);
-		canProvidePower.setSelected(block.canProvidePower);
+		canRedstoneConnect.setSelected(block.canRedstoneConnect);
 		lightOpacity.setValue(block.lightOpacity);
 		material.setSelectedItem(block.material.getUnmappedValue());
 		transparencyType.setSelectedItem(block.transparencyType);
@@ -1406,6 +1441,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		fluidRestrictions.setListElements(block.fluidRestrictions);
 
 		isReplaceable.setSelected(block.isReplaceable);
+		canProvidePower.setSelected(block.canProvidePower);
 		colorOnMap.setSelectedItem(block.colorOnMap);
 		offsetType.setSelectedItem(block.offsetType);
 		aiPathNodeType.setSelectedItem(block.aiPathNodeType);
@@ -1430,6 +1466,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 
 		refreshFiledsTileEntity();
+		refreshRedstoneEmitted();
 
 		tickRate.setEnabled(!tickRandomly.isSelected());
 
@@ -1477,7 +1514,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.energyMaxExtract = (int) energyMaxExtract.getValue();
 		block.fluidCapacity = (int) fluidCapacity.getValue();
 		block.isNotColidable = isNotColidable.isSelected();
-		block.canProvidePower = canProvidePower.isSelected();
+		block.canRedstoneConnect = canRedstoneConnect.isSelected();
 		block.lightOpacity = (int) lightOpacity.getValue();
 		block.material = new Material(mcreator.getWorkspace(), material.getSelectedItem());
 		block.tickRate = (int) tickRate.getValue();
@@ -1497,6 +1534,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.particleSpawningRadious = (double) particleSpawningRadious.getValue();
 		block.particleAmount = (int) particleAmount.getValue();
 		block.particleCondition = particleCondition.getSelectedProcedure();
+		block.emittedRedstonePower = emittedRedstonePower.getSelectedProcedure();
 		block.generateCondition = generateCondition.getSelectedProcedure();
 		block.hasInventory = hasInventory.isSelected();
 		block.useLootTableForDrops = useLootTableForDrops.isSelected();
@@ -1552,6 +1590,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.blocksToReplace = blocksToReplace.getListElements();
 
 		block.isReplaceable = isReplaceable.isSelected();
+		block.canProvidePower = canProvidePower.isSelected();
 		block.colorOnMap = (String) colorOnMap.getSelectedItem();
 		block.offsetType = (String) offsetType.getSelectedItem();
 		block.aiPathNodeType = (String) aiPathNodeType.getSelectedItem();
