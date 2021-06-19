@@ -29,6 +29,7 @@ public class ProcedureVariablesConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Procedure procedure = (Procedure) input;
+		if(procedure.procedurexml == null) procedure.procedurexml = "";
 		procedure.procedurexml = procedure.procedurexml.replace("variables_get_text", "variables_get_string")
 				.replace("variables_set_text", "variables_set_string")
 				.replace("custom_dependency_text", "custom_dependency_string")
