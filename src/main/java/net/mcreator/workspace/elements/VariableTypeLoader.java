@@ -127,5 +127,6 @@ public class VariableTypeLoader {
 		public static VariableType NUMBER;
 		public static VariableType STRING;
 		public static VariableType DIRECTION;
+		public static VariableType ITEMSTACK;
 	}
 }
