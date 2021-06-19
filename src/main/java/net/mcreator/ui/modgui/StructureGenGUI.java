@@ -35,12 +35,12 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.minecraft.DimensionListField;
 import net.mcreator.ui.minecraft.MCItemListField;
-import net.mcreator.ui.minecraft.ProcedureSelector;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
@@ -98,9 +98,9 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 		generateCondition = new ProcedureSelector(this.withEntry("structure/condition"), mcreator,
 				L10N.t("elementgui.structuregen.event_additional_structure_condition_is"),
-				ProcedureSelector.Side.SERVER, true, VariableElementTypeLoader.BuiltInTypes.LOGIC,
+				ProcedureSelector.Side.SERVER, true, VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("elementgui.structuregen.event_additional_structure_condition_none"));
+				.setDefaultName(L10N.t("condition.common.no_additional"));
 
 		restrictionBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		restrictionBiomes = new BiomeListField(mcreator);

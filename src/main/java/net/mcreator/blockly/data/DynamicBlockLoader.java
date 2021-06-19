@@ -19,8 +19,8 @@
 
 package net.mcreator.blockly.data;
 
-import net.mcreator.workspace.elements.VariableElementType;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class DynamicBlockLoader {
 
 	public static List<ToolboxBlock> getDynamicBlocks() {
 		List<ToolboxBlock> list = new ArrayList<>();
-		for (VariableElementType varType : VariableElementTypeLoader.INSTANCE.getVariableTypes()) {
+		for (VariableType varType : VariableTypeLoader.INSTANCE.getAllVariableTypes()) {
 			ToolboxBlock getBlock = new DynamicToolboxBlock();
 			getBlock.machine_name = "variables_get_" + varType.getName();
 			getBlock.toolbox_id = "customvariables";

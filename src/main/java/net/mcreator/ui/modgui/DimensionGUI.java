@@ -28,6 +28,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -37,6 +38,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -46,7 +48,7 @@ import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -124,12 +126,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		portalMakeCondition = new ProcedureSelector(this.withEntry("dimension/condition_portal_make"), mcreator,
-				L10N.t("elementgui.dimension.event_can_make_portal"), VariableElementTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+				L10N.t("elementgui.dimension.event_can_make_portal"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"))
+				.makeInline();
 		portalUseCondition = new ProcedureSelector(this.withEntry("dimension/condition_portal_use"), mcreator,
-				L10N.t("elementgui.dimension.event_can_travel_through_portal"),
-				VariableElementTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				L10N.t("elementgui.dimension.event_can_travel_through_portal"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeInline();
 
 		worldGenType.setRenderer(new ItemTexturesComboBoxRenderer());
 		biomesInDimension = new BiomeListField(mcreator);
@@ -260,13 +262,14 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		portalParticles.setFont(portalParticles.getFont().deriveFont(16.0f));
 
-		JPanel dsg = new JPanel(new BorderLayout(5, 5));
+		JPanel dsg = new JPanel(new BorderLayout(5, 2));
 
 		dsg.setOpaque(false);
 
 		dsg.add("North", proper);
-		dsg.add("Center", proper22);
-		dsg.add("South", PanelUtils.join(FlowLayout.LEFT, portalMakeCondition, portalUseCondition));
+		dsg.add("South", proper22);
+		dsg.add("Center", PanelUtils.westAndCenterElement(new JEmptyBox(5, 5),
+				PanelUtils.gridElements(2, 1, 5, 2, portalMakeCondition, portalUseCondition)));
 
 		pane2.setOpaque(false);
 

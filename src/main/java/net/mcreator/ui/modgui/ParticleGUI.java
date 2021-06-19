@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.Particle;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -31,13 +32,13 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
-import net.mcreator.ui.minecraft.ProcedureSelector;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -80,9 +81,9 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	@Override protected void initGUI() {
 		additionalExpiryCondition = new ProcedureSelector(this.withEntry("particle/additional_expiry_condition"),
 				mcreator, L10N.t("elementgui.particle.expiry_condition"), ProcedureSelector.Side.CLIENT, true,
-				VariableElementTypeLoader.BuiltInTypes.LOGIC,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/age:number/onGround:logic"))
-				.setDefaultName("(no additional condition)");
+				.setDefaultName(L10N.t("condition.common.no_additional")).makeInline();
 
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
@@ -162,8 +163,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				L10N.label("elementgui.particle.does_collide")));
 		spo2.add(canCollide);
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils
-				.centerAndSouthElement(spo2, PanelUtils.join(FlowLayout.LEFT, additionalExpiryCondition), 0, 10)));
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(spo2,
+				PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), additionalExpiryCondition), 5, 10)));
 
 		texture.setValidator(() -> {
 			if (texture.getSelectedItem() == null || texture.getSelectedItem().equals(""))
