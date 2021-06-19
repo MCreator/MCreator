@@ -62,8 +62,8 @@ public abstract class AbstractProcedureSelector extends JPanel {
 
 	protected final SearchableComboBox<CBoxEntry> procedures = new SearchableComboBox<>();
 
-	private final Dependency[] providedDependencies;
-	private final Map<String, List<Dependency>> depsMap = new HashMap<>();
+	protected final Dependency[] providedDependencies;
+	protected final Map<String, List<Dependency>> depsMap = new HashMap<>();
 	protected final JLabel depslab = new JLabel();
 
 	protected final JButton edit = new JButton(UIRES.get("18px.edit"));
