@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.procedure;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
@@ -36,9 +37,12 @@ class ConditionalComboBoxRenderer implements ListCellRenderer<CBoxEntry> {
 				.getListCellRendererComponent(list, value.string, index, isSelected, cellHasFocus);
 
 		if (!value.correctDependencies) {
-			component.setBackground(list.getBackground());
-			component.setForeground(Color.gray.brighter());
+			component.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 			component.setText("<html>" + component.getText() + L10N.t("action.procedure.missing_dependencies"));
+		}
+
+		if (value.getVariableType() != null && !cellHasFocus && value.correctDependencies) {
+			component.setForeground(BlocklyBlockUtil.getBlockColorFromHUE(value.getVariableType().getColor()).brighter());
 		}
 
 		return component;

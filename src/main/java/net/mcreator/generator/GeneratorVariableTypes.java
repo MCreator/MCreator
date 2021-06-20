@@ -66,7 +66,15 @@ public class GeneratorVariableTypes {
 	}
 
 	public boolean canBeGlobal(VariableType type) {
-		return variableTypesCache.containsKey(type) && !variableTypesCache.get(type).isEmpty();
+		return getSupportedScopesWithoutLocal(type).length > 0;
+	}
+
+	public boolean canBeLocal(VariableType type) {
+		if (!variableTypesCache.containsKey(type) || !variableTypesCache.get(type).containsKey("scopes"))
+			return false;
+
+		Map<?, ?> scopes = (Map<?, ?>) variableTypesCache.get(type).get("scopes");
+		return scopes.keySet().stream().map(Object::toString).anyMatch(s -> s.equals("local"));
 	}
 
 	public String getDefaultValue(VariableType type) {

@@ -427,6 +427,24 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
+		<#if data.canProvidePower>
+		@Override public boolean canProvidePower(BlockState state) {
+			return true;
+		}
+
+		@Override public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+			<#if hasProcedure(data.emittedRedstonePower)>
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				World world = (World) blockAccess;
+				return (int) <@procedureOBJToNumberCode data.emittedRedstonePower/>;
+			<#else>
+				return ${data.emittedRedstonePower.getFixedValue()};
+			</#if>
+		}
+		</#if>
+
 		<#if data.flammability != 0>
 		@Override public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
 			return ${data.flammability};
@@ -482,7 +500,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-        <#if data.canProvidePower>
+        <#if data.canRedstoneConnect>
         @Override
 		public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
 			return true;

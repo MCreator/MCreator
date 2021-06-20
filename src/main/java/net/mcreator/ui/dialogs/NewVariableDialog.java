@@ -65,14 +65,14 @@ public class NewVariableDialog {
 				scope.removeAllItems();
 				VariableType typeSelectedItem = (VariableType) type.getSelectedItem();
 				if (typeSelectedItem != null)
-					Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getWorkspace()))
+					Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getGeneratorConfiguration()))
 							.forEach(scope::addItem);
 			});
 
 			// intial
 			VariableType typeSelectedItem = (VariableType) type.getSelectedItem();
 			if (typeSelectedItem != null)
-				Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getWorkspace()))
+				Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getGeneratorConfiguration()))
 						.forEach(scope::addItem);
 		}
 
