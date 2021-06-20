@@ -124,7 +124,7 @@ public abstract class AbstractProcedureSelector extends JPanel {
 				}
 
 				VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-						VariableTypeLoader.INSTANCE.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
+						VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
 						null;
 
 				boolean correctReturnType = true;

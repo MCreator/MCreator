@@ -44,7 +44,7 @@ public class BlocklyVariables {
 			for (Element variable : variables) {
 				String type = variable.getAttribute("type");
 				String name = variable.getAttribute("id");
-				VariableType variableType = VariableTypeLoader.INSTANCE.getVariableTypeFromString(type);
+				VariableType variableType = VariableTypeLoader.INSTANCE.fromName(type);
 				if (variableType != null && variableType.getBlocklyVariableType() != null && name != null) {
 					VariableElement element = new VariableElement();
 					element.setName(name);

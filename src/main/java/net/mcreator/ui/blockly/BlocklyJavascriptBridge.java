@@ -231,10 +231,10 @@ public class BlocklyJavascriptBridge {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
 							VariableTypeLoader.INSTANCE
-									.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
+									.fromName((String) mod.getMetadata("return_type")) :
 							null;
 					return returnTypeCurrent == VariableTypeLoader.INSTANCE
-							.getVariableTypeFromString(StringUtils.removeStart(type, "procedure_retval_"));
+							.fromName(StringUtils.removeStart(type, "procedure_retval_"));
 				}
 				return false;
 			}).map(ModElement::getName).collect(Collectors.toList());

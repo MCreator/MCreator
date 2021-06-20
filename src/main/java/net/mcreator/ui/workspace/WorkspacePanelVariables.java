@@ -85,7 +85,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 						super.setValueAt(value, row, column);
 						if (column == 1) { // variable type has been changed
 							VariableType type = VariableTypeLoader.INSTANCE
-									.getVariableTypeFromString((String) getValueAt(row, column));
+									.fromName((String) getValueAt(row, column));
 							if (type == VariableTypeLoader.BuiltInTypes.NUMBER) {
 								elements.setValueAt("0", row, 3);
 							} else if (type == VariableTypeLoader.BuiltInTypes.LOGIC) {
@@ -106,7 +106,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			@Override public TableCellEditor getCellEditor(int row, int column) {
 				int modelColumn = convertColumnIndexToModel(column);
 				VariableType variableType = VariableTypeLoader.INSTANCE
-						.getVariableTypeFromString((String) elements.getValueAt(row, 1));
+						.fromName((String) elements.getValueAt(row, 1));
 				if (modelColumn == 2) {
 					return new DefaultCellEditor(new JComboBox<>(
 							variableType.getSupportedScopesWithoutLocal(workspacePanel.getMcreator().getGeneratorConfiguration())));
@@ -153,7 +153,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				Component component = super.prepareRenderer(renderer, row, column);
 				if (column == 1 && component instanceof JLabel) {
 					VariableType value = VariableTypeLoader.INSTANCE
-							.getVariableTypeFromString(((JLabel) component).getText());
+							.fromName(((JLabel) component).getText());
 					if (value != null)
 						component.setForeground(BlocklyBlockUtil.getBlockColorFromHUE(value.getColor()).brighter());
 				} else {
@@ -276,7 +276,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				for (int i = 0; i < elements.getModel().getRowCount(); i++) {
 					VariableElement element = new VariableElement();
 					VariableType elementType = VariableTypeLoader.INSTANCE
-							.getVariableTypeFromString((String) elements.getValueAt(i, 1));
+							.fromName((String) elements.getValueAt(i, 1));
 					if (elementType != null) {
 						element.setType(elementType);
 						element.setName(Transliteration.transliterateString((String) elements.getValueAt(i, 0)));
