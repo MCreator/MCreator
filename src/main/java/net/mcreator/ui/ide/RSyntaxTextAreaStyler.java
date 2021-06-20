@@ -58,20 +58,6 @@ public class RSyntaxTextAreaStyler {
 				theme = Theme.load(te.getClass().getResourceAsStream(
 						"/org/fife/ui/rsyntaxtextarea/themes/" + PreferencesManager.PREFERENCES.ide.editorTheme
 								.toLowerCase(Locale.ENGLISH) + ".xml"));
-			} else if (ThemeLoader.CURRENT_THEME.getID().equals("default_dark") ||
-					ThemeLoader.CURRENT_THEME.getID().equals("default_light")) {
-				theme.scheme.setStyle(SyntaxScheme.RESERVED_WORD,
-						new Style((Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
-				theme.scheme.setStyle(SyntaxScheme.RESERVED_WORD_2,
-						new Style((Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
-				theme.scheme.setStyle(SyntaxScheme.LITERAL_BOOLEAN,
-						new Style((Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
-				theme.scheme.setStyle(SyntaxScheme.LITERAL_NUMBER_DECIMAL_INT,
-						new Style((Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
-				theme.scheme.setStyle(SyntaxScheme.LITERAL_NUMBER_FLOAT,
-						new Style((Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
-				theme.scheme.setStyle(SyntaxScheme.LITERAL_NUMBER_HEXADECIMAL,
-						new Style((Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 			}
 			theme.matchedBracketBG = (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT");
 			theme.matchedBracketFG = Color.white;
