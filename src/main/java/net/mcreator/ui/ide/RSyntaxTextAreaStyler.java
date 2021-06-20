@@ -25,7 +25,6 @@ import net.mcreator.ui.laf.MCreatorTheme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.Style;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -60,7 +59,7 @@ public class RSyntaxTextAreaStyler {
 								.toLowerCase(Locale.ENGLISH) + ".xml"));
 			}
 			theme.matchedBracketBG = (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT");
-			theme.matchedBracketFG = Color.white;
+			theme.matchedBracketFG = (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
 			theme.apply(te);
 		} catch (IOException ioe) {
 			LOG.error(ioe.getMessage(), ioe);
