@@ -262,12 +262,15 @@ public class MainMenuBar extends JMenuBar {
 				g.setColor(new Color(0x9C9C9C));
 				g.setFont(getFont().deriveFont(11.0f));
 				if (getText().equals(""))
-					g.drawString(L10N.t("menubar.help.search.tooltip"), 28, 14);
+					g.drawString(MCreatorApplication.isInternet ?
+							L10N.t("menubar.help.search.tooltip") :
+							L10N.t("menubar.help.search.disabled"), 28, 14);
 			}
 		};
 		searchField.setOpaque(true);
 		ComponentUtils.deriveFont(searchField, 13);
 		searchField.setBorder(BorderFactory.createEmptyBorder(1, 28, 1, 0));
+		searchField.setEnabled(MCreatorApplication.isInternet);
 		searchField.addKeyListener(new KeyAdapter() {
 			@Override public void keyTyped(KeyEvent e) {
 				if (e.getKeyChar() == KeyEvent.VK_ENTER) {

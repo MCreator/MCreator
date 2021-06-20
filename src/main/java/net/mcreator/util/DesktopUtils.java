@@ -18,6 +18,7 @@
 
 package net.mcreator.util;
 
+import net.mcreator.ui.MCreatorApplication;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,7 +37,8 @@ public class DesktopUtils {
 		try {
 			new Thread(() -> {
 				try {
-					browse(new URI(uri));
+					if (MCreatorApplication.isInternet)
+						browse(new URI(uri));
 				} catch (Exception ignored) {
 				}
 			}).start();

@@ -61,7 +61,7 @@ public class D8WebAPI implements IWebAPI {
 		updateInfo = new Gson().fromJson(appData, UpdateInfo.class);
 
 		new Thread(() -> {
-			initAPIPrivte();
+			initAPIPrivate();
 			newsFutures.forEach(future -> future.complete(news));
 			motwFutures.forEach(future -> future.complete(motw));
 		}).start();
@@ -69,7 +69,7 @@ public class D8WebAPI implements IWebAPI {
 		return true;
 	}
 
-	private void initAPIPrivte() {
+	private void initAPIPrivate() {
 		String motwXML = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/app/motw");
 		String newsXML = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/app/news");
 
@@ -86,8 +86,9 @@ public class D8WebAPI implements IWebAPI {
 					Node node = nodes.item(i);
 					if (node.getNodeType() != Node.ELEMENT_NODE)
 						continue;
-					news[0] = ((Element) node).getElementsByTagName("title").item(1).getChildNodes().item(0)
-							.getNodeValue();
+					news[0] = MCreatorApplication.isInternet ?
+							((Element) node).getElementsByTagName("title").item(1).getChildNodes().item(0).getNodeValue() :
+							"Connection error";
 					news[1] = ((Element) node).getElementsByTagName("link").item(1).getChildNodes().item(0)
 							.getNodeValue();
 				}
@@ -105,10 +106,10 @@ public class D8WebAPI implements IWebAPI {
 					Node node = nodes.item(i);
 					if (node.getNodeType() != Node.ELEMENT_NODE)
 						continue;
-					motw[0] = ((Element) node).getElementsByTagName("title").item(1).getChildNodes().item(0)
-							.getNodeValue();
-					motw[1] =
-							MCreatorApplication.SERVER_DOMAIN + "/node/" + ((Element) node).getElementsByTagName("guid")
+					motw[0] = MCreatorApplication.isInternet ?
+							((Element) node).getElementsByTagName("title").item(1).getChildNodes().item(0).getNodeValue() :
+							"Connection error";
+					motw[1] = MCreatorApplication.SERVER_DOMAIN + "/node/" + ((Element) node).getElementsByTagName("guid")
 									.item(0).getChildNodes().item(0).getNodeValue().split("mcreator\\.net/")[1];
 					motw[2] = ((Element) node).getElementsByTagName("pubDate").item(0).getChildNodes().item(0)
 							.getNodeValue();
