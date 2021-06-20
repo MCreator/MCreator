@@ -39,7 +39,7 @@
   ],
   "inputsInline": true,
   "output": "ProjectileEntity",
-  "colour": 270,
+  "colour": 290,
   "mcreator": {
     "toolbox_id": "projectileactions",
     "toolbox_init": [
