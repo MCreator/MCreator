@@ -65,8 +65,6 @@ public class GradleErrorDialogs {
 		return errorCode;
 	}
 
-	private static final String MESSAGE_TITLE = "Gradle task failed with error";
-
 	private static String applyAppendx(String msg, int errorCode) {
 		String appendx = "<small><br><br><font color=gray>" + L10N.t("gradle.errors.error") + GradleErrorCodes
 				.toString(errorCode) + " [" + errorCode + "]";
@@ -80,7 +78,7 @@ public class GradleErrorDialogs {
 			String msg = L10N.t("gradle.errors.cache_corrupted");
 
 			String[] options = { L10N.t("gradle.errors.clear_caches"), L10N.t("gradle.errors.do_nothing") };
-			int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), MESSAGE_TITLE,
+			int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 			if (option == 0) {
 				ClearAllGradleCachesAction.clearAllGradleCaches(whereToShow, false, false);
@@ -92,7 +90,7 @@ public class GradleErrorDialogs {
 		String msg = L10N.t("gradle.errors.cache_outdated");
 
 		String[] options = { L10N.t("gradle.errors.open_options"), L10N.t("gradle.errors.do_nothing") };
-		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), MESSAGE_TITLE,
+		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"),
 				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 		if (option == 0) {
 			new PreferencesDialog(whereToShow, "Gradle settings");
@@ -103,7 +101,7 @@ public class GradleErrorDialogs {
 		String msg = L10N.t("gradle.errors.invalid_java_version");
 
 		String[] options = { L10N.t("gradle.errors.open_options"), L10N.t("gradle.errors.do_nothing") };
-		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), MESSAGE_TITLE,
+		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"),
 				JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 		if (option == 0) {
 			new PreferencesDialog(whereToShow, "Gradle settings");
@@ -128,7 +126,7 @@ public class GradleErrorDialogs {
 		String msg = L10N.t("gradle.errors.jvm_heap_space");
 
 		String[] options = { L10N.t("gradle.errors.open_options"), L10N.t("gradle.errors.do_nothing") };
-		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), GradleErrorDialogs.MESSAGE_TITLE,
+		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"),
 				JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 		if (option == 0) {
 			new PreferencesDialog(whereToShow, "Gradle settings");
@@ -162,7 +160,7 @@ public class GradleErrorDialogs {
 	}
 
 	private static void showErrorDialog(Window window, String msg, int type, Icon icon, int errorCode) {
-		JOptionPane.showMessageDialog(window, applyAppendx(msg, errorCode), MESSAGE_TITLE, type, icon);
+		JOptionPane.showMessageDialog(window, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"), type, icon);
 	}
 
 }
