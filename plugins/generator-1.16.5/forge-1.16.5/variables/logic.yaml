@@ -1,6 +1,7 @@
 defaultvalue: false
 scopes:
   local:
+    init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};
     get: ${name}
     set: ${name} = (${javaType}) ${value};
   global_session:

@@ -38,8 +38,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -147,7 +147,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"))
+				.makeInline();
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -276,8 +277,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.container_item")));
 		subpane2.add(stayInGridWhenCrafting);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
-				L10N.label("elementgui.item.container_item_damage"), () -> L10N.t("elementgui.item.container_item")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage")
+						.withArguments(() -> L10N.t("elementgui.item.container_item")),
+				L10N.label("elementgui.item.container_item_damage")));
 		subpane2.add(damageOnCrafting);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/recipe_remainder"),
@@ -467,13 +469,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
 		item.texture = texture.getID();
-		Model.Type modelType = ((Model) Objects.requireNonNull(renderType.getSelectedItem())).getType();
+		Model.Type modelType = Objects.requireNonNull(renderType.getSelectedItem()).getType();
 		item.renderType = 0;
 		if (modelType == Model.Type.JSON)
 			item.renderType = 1;
 		else if (modelType == Model.Type.OBJ)
 			item.renderType = 2;
-		item.customModelName = ((Model) Objects.requireNonNull(renderType.getSelectedItem())).getReadableName();
+		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
 
 		return item;
 	}

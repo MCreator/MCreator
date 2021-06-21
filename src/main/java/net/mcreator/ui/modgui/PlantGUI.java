@@ -27,6 +27,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -37,9 +38,11 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.ListUtils;
@@ -93,6 +96,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JTextField specialInfo = new JTextField(20);
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator);
+	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
+	private final JRadioButton customSoundType = L10N.radiobutton("elementgui.common.custom_sound_type");
+	private final SoundSelector breakSound = new SoundSelector(mcreator);
+	private final SoundSelector stepSound = new SoundSelector(mcreator);
+	private final SoundSelector placeSound = new SoundSelector(mcreator);
+	private final SoundSelector hitSound = new SoundSelector(mcreator);
+	private final SoundSelector fallSound = new SoundSelector(mcreator);
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.plant.is_replaceable");
 	private final JComboBox<String> colorOnMap = new JComboBox<>();
@@ -141,7 +151,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private DimensionListField spawnWorldTypes;
 	private BiomeListField restrictionBiomes;
 
-	private final ValidationGroup page2group = new ValidationGroup();
+	private final ValidationGroup page3group = new ValidationGroup();
 
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(100, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(60, 0, 1024, 1));
@@ -192,12 +202,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
 				L10N.t("elementgui.plant.condition_additional_placing"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("condition.common.no_additional"));
+				.setDefaultName(L10N.t("condition.common.no_additional")).makeInline();
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				L10N.t("elementgui.plant.event_additional_generation_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("condition.common.no_additional"));
+				.setDefaultName(L10N.t("condition.common.no_additional")).makeInline();
 
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
@@ -416,7 +426,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			boundingBoxList.setEnabled(false);
 		}
 
-		JPanel selp = new JPanel(new GridLayout(9, 2, 5, 2));
+		JPanel selp = new JPanel(new GridLayout(8, 2, 5, 2));
 		selp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
@@ -429,6 +439,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		selp2.setOpaque(false);
+
+		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
+		soundProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.common.properties_sound"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		soundProperties.setOpaque(false);
 
 		useLootTableForDrops.setOpaque(false);
 		unbreakable.setOpaque(false);
@@ -445,10 +462,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.common.creative_tab")));
 		selp.add(creativeTab);
-
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/block_sound"), L10N.label("elementgui.common.block_sound")));
-		selp.add(soundOnStep);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/hardness"), L10N.label("elementgui.common.hardness")));
@@ -498,15 +511,50 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.plant_is_replaceable")));
 		selp2.add(isReplaceable);
 
+		ButtonGroup bg2 = new ButtonGroup();
+		bg2.add(defaultSoundType);
+		bg2.add(customSoundType);
+		defaultSoundType.setSelected(true);
+		defaultSoundType.setOpaque(false);
+		customSoundType.setOpaque(false);
+
+		defaultSoundType.addActionListener(event -> updateSoundType());
+		customSoundType.addActionListener(event -> updateSoundType());
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), defaultSoundType));
+		soundProperties.add(soundOnStep);
+
+		soundProperties.add(PanelUtils.join(FlowLayout.LEFT, customSoundType));
+		soundProperties.add(new JEmptyBox());
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/break_sound"),
+				L10N.label("elementgui.common.soundtypes.break_sound")));
+		soundProperties.add(breakSound);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/step_sound"),
+				L10N.label("elementgui.common.soundtypes.step_sound")));
+		soundProperties.add(stepSound);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/place_sound"),
+				L10N.label("elementgui.common.soundtypes.place_sound")));
+		soundProperties.add(placeSound);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hit_sound"),
+				L10N.label("elementgui.common.soundtypes.hit_sound")));
+		soundProperties.add(hitSound);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fall_sound"),
+				L10N.label("elementgui.common.soundtypes.fall_sound")));
+		soundProperties.add(fallSound);
+
 		useLootTableForDrops.addActionListener(e -> {
 			customDrop.setEnabled(!useLootTableForDrops.isSelected());
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 		});
 
-		JComponent ploca = PanelUtils.westAndEastElement(selp, PanelUtils.pullElementUp(selp2));
-		ploca.setOpaque(false);
-
-		pane3.add("Center", PanelUtils.totalCenterInPanel(ploca));
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils
+				.westAndEastElement(PanelUtils.centerAndSouthElement(selp, selp2),
+						PanelUtils.pullElementUp(soundProperties))));
 		pane3.setOpaque(false);
 
 		JPanel advancedProperties = new JPanel(new GridLayout(9, 2, 10, 2));
@@ -551,8 +599,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.can_be_placed_on")));
 		advancedProperties.add(canBePlacedOn);
 
-		JComponent plocb = PanelUtils
-				.northAndCenterElement(advancedProperties, PanelUtils.join(FlowLayout.LEFT, placingCondition));
+		JComponent plocb = PanelUtils.northAndCenterElement(advancedProperties,
+				PanelUtils.westAndCenterElement(new JEmptyBox(5, 5), placingCondition), 2, 2);
 		plocb.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.properties_advanced_plant"), TitledBorder.LEADING,
@@ -591,12 +639,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.common.restrict_to_biomes")));
 		spawning.add(restrictionBiomes);
 
-		JPanel lastPan = new JPanel(new BorderLayout(15, 15));
-		lastPan.setOpaque(false);
-		lastPan.add("North", spawning);
-
-		pane4.add("Center", PanelUtils.totalCenterInPanel(lastPan));
-		pane4.add("South", PanelUtils.join(FlowLayout.LEFT, generateCondition));
+		pane4.add("Center", PanelUtils.totalCenterInPanel(spawning));
+		pane4.add("South", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition));
 
 		pane4.setOpaque(false);
 
@@ -605,7 +649,24 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.plant.error_plant_needs_name")));
 		name.enableRealtimeValidation();
 
-		page2group.addValidationElement(name);
+		page3group.addValidationElement(name);
+
+		breakSound.getVTextField().setValidator(new ConditionalTextFieldValidator(breakSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+		stepSound.getVTextField().setValidator(new ConditionalTextFieldValidator(stepSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+		placeSound.getVTextField().setValidator(new ConditionalTextFieldValidator(placeSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+		hitSound.getVTextField().setValidator(new ConditionalTextFieldValidator(hitSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+		fallSound.getVTextField().setValidator(new ConditionalTextFieldValidator(fallSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+
+		page3group.addValidationElement(breakSound.getVTextField());
+		page3group.addValidationElement(stepSound.getVTextField());
+		page3group.addValidationElement(placeSound.getVTextField());
+		page3group.addValidationElement(hitSound.getVTextField());
+		page3group.addValidationElement(fallSound.getVTextField());
 
 		addPage(L10N.t("elementgui.plant.page_visual_and_type"), pane2);
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
@@ -618,6 +679,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
+
+		updateSoundType();
 	}
 
 	private void updateTextureOptions() {
@@ -629,6 +692,24 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			textureBottom.setVisible(true);
 		} else {
 			texture.setVisible(true);
+		}
+	}
+
+	private void updateSoundType() {
+		if (customSoundType.isSelected()) {
+			breakSound.setEnabled(true);
+			stepSound.setEnabled(true);
+			placeSound.setEnabled(true);
+			hitSound.setEnabled(true);
+			fallSound.setEnabled(true);
+			soundOnStep.setEnabled(false);
+		} else {
+			breakSound.setEnabled(false);
+			stepSound.setEnabled(false);
+			placeSound.setEnabled(false);
+			hitSound.setEnabled(false);
+			fallSound.setEnabled(false);
+			soundOnStep.setEnabled(true);
 		}
 	}
 
@@ -669,8 +750,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
 			return new AggregatedValidationResult(texture);
-		else if (page == 1)
-			return new AggregatedValidationResult(page2group);
+		else if (page == 2)
+			return new AggregatedValidationResult(page3group);
 		return new AggregatedValidationResult.PASS();
 	}
 
@@ -683,6 +764,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		hardness.setValue(plant.hardness);
 		resistance.setValue(plant.resistance);
 		soundOnStep.setSelectedItem(plant.soundOnStep.getUnmappedValue());
+		breakSound.setSound(plant.breakSound);
+		stepSound.setSound(plant.stepSound);
+		placeSound.setSound(plant.placeSound);
+		fallSound.setSound(plant.fallSound);
+		defaultSoundType.setSelected(!plant.isCustomSoundType);
+		customSoundType.setSelected(plant.isCustomSoundType);
+		hitSound.setSound(plant.hitSound);
 		luminance.setValue(plant.luminance);
 		unbreakable.setSelected(plant.unbreakable);
 		forceTicking.setSelected(plant.forceTicking);
@@ -773,6 +861,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		else
 			dbl.setIcon(TiledImageCache.plantDoubleNo);
 
+		updateSoundType();
+
 		updateTextureOptions();
 	}
 
@@ -802,7 +892,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.unbreakable = unbreakable.isSelected();
 		plant.forceTicking = forceTicking.isSelected();
 		plant.hasTileEntity = hasTileEntity.isSelected();
+		plant.isCustomSoundType = customSoundType.isSelected();
 		plant.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
+		plant.breakSound = breakSound.getSound();
+		plant.stepSound = stepSound.getSound();
+		plant.placeSound = placeSound.getSound();
+		plant.hitSound = hitSound.getSound();
+		plant.fallSound = fallSound.getSound();
 		plant.useLootTableForDrops = useLootTableForDrops.isSelected();
 		plant.customDrop = customDrop.getBlock();
 		plant.dropAmount = (int) dropAmount.getValue();

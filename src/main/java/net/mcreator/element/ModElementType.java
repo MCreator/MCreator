@@ -39,7 +39,7 @@ public enum ModElementType {
 
 	@SerializedName("fuel") FUEL(BaseType.FUEL, RecipeType.NONE),
 
-	@SerializedName("mob") MOB(BaseType.ENTITY, RecipeType.NONE),
+	@SerializedName("mob") LIVINGENTITY(BaseType.ENTITY, RecipeType.NONE),
 
 	@SerializedName("food") FOOD(BaseType.ITEM, RecipeType.ITEM),
 

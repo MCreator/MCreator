@@ -20,6 +20,7 @@ package net.mcreator.ui.workspace;
 
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.io.Transliteration;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -63,7 +64,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			@Override public boolean isCellEditable(int row, int column) {
 				if (!getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.STRING.getName())
 						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName())
-						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
+						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName())
+						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.DIRECTION.getName()))
 					return column != 3;
 				return true;
 			}
@@ -82,8 +84,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					if (n == JOptionPane.YES_OPTION) {
 						super.setValueAt(value, row, column);
 						if (column == 1) { // variable type has been changed
-							VariableType type = VariableTypeLoader.INSTANCE
-									.getVariableTypeFromString((String) getValueAt(row, column));
+							VariableType type = VariableTypeLoader.INSTANCE.fromName((String) getValueAt(row, column));
 							if (type == VariableTypeLoader.BuiltInTypes.NUMBER) {
 								elements.setValueAt("0", row, 3);
 							} else if (type == VariableTypeLoader.BuiltInTypes.LOGIC) {
@@ -91,7 +92,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 							} else if (type == VariableTypeLoader.BuiltInTypes.STRING) {
 								elements.setValueAt("", row, 3);
 							} else {
-								elements.setValueAt("", row, 3);
+								elements.setValueAt(type.getDefaultValue(workspacePanel.getMcreator().getWorkspace()),
+										row, 3);
 							}
 						}
 					}
@@ -102,14 +104,13 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		}) {
 			@Override public TableCellEditor getCellEditor(int row, int column) {
 				int modelColumn = convertColumnIndexToModel(column);
-				VariableType variableType = VariableTypeLoader.INSTANCE
-						.getVariableTypeFromString((String) elements.getValueAt(row, 1));
+				VariableType variableType = VariableTypeLoader.INSTANCE.fromName((String) elements.getValueAt(row, 1));
 				if (modelColumn == 2) {
-					return new DefaultCellEditor(new JComboBox<>(
-							variableType.getSupportedScopesWithoutLocal(workspacePanel.getMcreator().getWorkspace())));
+					return new DefaultCellEditor(new JComboBox<>(variableType
+							.getSupportedScopesWithoutLocal(workspacePanel.getMcreator().getGeneratorConfiguration())));
 				} else if (modelColumn == 1) {
 					return new DefaultCellEditor(new JComboBox<>(VariableTypeLoader.INSTANCE
-							.getGlobalVariableTypes(workspacePanel.getMcreator().getWorkspace()).stream()
+							.getGlobalVariableTypes(workspacePanel.getMcreator().getGeneratorConfiguration()).stream()
 							.map(VariableType::getName).toArray(String[]::new)));
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
@@ -138,6 +139,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 						return new SpinnerCellEditor(spinner);
 					} else if (variableType == VariableTypeLoader.BuiltInTypes.LOGIC) {
 						return new DefaultCellEditor(new JComboBox<>(new String[] { "true", "false" }));
+					} else if (variableType == VariableTypeLoader.BuiltInTypes.DIRECTION) {
+						return new DefaultCellEditor(new JComboBox<>(ElementUtil.loadDirections()));
 					}
 				}
 
@@ -147,8 +150,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			@Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component component = super.prepareRenderer(renderer, row, column);
 				if (column == 1 && component instanceof JLabel) {
-					VariableType value = VariableTypeLoader.INSTANCE
-							.getVariableTypeFromString(((JLabel) component).getText());
+					VariableType value = VariableTypeLoader.INSTANCE.fromName(((JLabel) component).getText());
 					if (value != null)
 						component.setForeground(BlocklyBlockUtil.getBlockColorFromHUE(value.getColor()).brighter());
 				} else {
@@ -237,7 +239,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 							}
 							return validator.validate();
 						}
-					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(workspacePanel.getMcreator().getWorkspace()));
+					}, VariableTypeLoader.INSTANCE
+							.getGlobalVariableTypes(workspacePanel.getMcreator().getGeneratorConfiguration()));
 			if (element != null) {
 				workspacePanel.getMcreator().getWorkspace().addVariableElement(element);
 				reloadElements();
@@ -270,8 +273,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				workspace.getVariableElements().clear();
 				for (int i = 0; i < elements.getModel().getRowCount(); i++) {
 					VariableElement element = new VariableElement();
-					VariableType elementType = VariableTypeLoader.INSTANCE
-							.getVariableTypeFromString((String) elements.getValueAt(i, 1));
+					VariableType elementType = VariableTypeLoader.INSTANCE.fromName((String) elements.getValueAt(i, 1));
 					if (elementType != null) {
 						element.setType(elementType);
 						element.setName(Transliteration.transliterateString((String) elements.getValueAt(i, 0)));

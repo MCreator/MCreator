@@ -34,8 +34,8 @@ public class GradleErrorDecoder {
 	 */
 	public static int processErrorAndShowMessage(String out, String err, MCreator whereToShow) {
 		// normalize spaces
-		out = out.replaceAll("\u00a0", " ");
-		err = err.replaceAll("\u00a0", " ");
+		out = out.replace('\u00a0', ' ');
+		err = err.replace('\u00a0', ' ');
 
 		if (err.contains("\nExecution failed for task ':reobfJar'")) {
 			return GradleErrorDialogs.showErrorDialog(GradleErrorCodes.GRADLE_REOBF_FAILED, whereToShow);
@@ -91,12 +91,6 @@ public class GradleErrorDecoder {
 			return GradleErrorDialogs.showErrorDialog(GradleErrorCodes.JAVA_XMS_INVALID_VALUE, whereToShow);
 		}
 
-		//Check if invalid Java version is used
-		if (err.contains("Could not determine java version from") || out
-				.contains("Could not determine java version from")) {
-			return GradleErrorDialogs.showErrorDialog(GradleErrorCodes.JAVA_INVALID_VERSION, whereToShow);
-		}
-
 		//check if the error was caused by JVM crash and no other errors are present
 		if ((out.contains("The crash happened outside the Java Virtual Machine in native code") || err
 				.contains("The crash happened outside the Java Virtual Machine in native code")) && (
@@ -123,7 +117,7 @@ public class GradleErrorDecoder {
 
 	public static boolean isErrorCausedByCorruptedCaches(String errortext) {
 		// normalize spaces
-		errortext = errortext.replaceAll("\u00a0", " ");
+		errortext = errortext.replace('\u00a0', ' ');
 		if (!errortext.contains("Could not GET ") && !errortext.contains("Could not HEAD ") && !errortext
 				.contains("Network is unreachable:")) { // eliminate networking problems first
 			if (errortext.contains("java.util.zip.ZipException: error in opening zip file")) {
@@ -139,7 +133,7 @@ public class GradleErrorDecoder {
 
 	public static boolean doesErrorSuggestRerun(String errortext) {
 		// normalize spaces
-		errortext = errortext.replaceAll("\u00a0", " ");
+		errortext = errortext.replace('\u00a0', ' ');
 		return errortext.contains("try running the task again.");
 	}
 

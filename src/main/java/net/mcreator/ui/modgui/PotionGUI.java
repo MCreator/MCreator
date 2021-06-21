@@ -73,15 +73,14 @@ public class PotionGUI extends ModElementGUI<Potion> {
 				L10N.label("elementgui.potion.lingering_name")));
 		northPanel.add(lingeringName);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/display_name"),
-				L10N.label("elementgui.potion.arrow_name")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/display_name"), L10N.label("elementgui.potion.arrow_name")));
 		northPanel.add(arrowName);
 
 		JPanel mainEditor = new JPanel(new GridLayout());
 
-		JComponent component = PanelUtils.northAndCenterElement(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/effects"),
-						L10N.label("elementgui.potion.effects")), effectList);
+		JComponent component = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("potion/effects"), L10N.label("elementgui.potion.effects")),
+				effectList);
 
 		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -89,23 +88,19 @@ public class PotionGUI extends ModElementGUI<Potion> {
 
 		mainEditor.setOpaque(false);
 
-		potionName.setValidator(new TextFieldValidator(potionName,
-				L10N.t("elementgui.potion.error_potion_needs_display_name")));
+		potionName.setValidator(new TextFieldValidator(potionName, L10N.t("elementgui.potion.error_potion_needs_display_name")));
 		potionName.enableRealtimeValidation();
 		page1group.addValidationElement(potionName);
 
-		splashName.setValidator(new TextFieldValidator(splashName,
-				L10N.t("elementgui.potion.error_potion_needs_display_name")));
+		splashName.setValidator(new TextFieldValidator(splashName, L10N.t("elementgui.potion.error_potion_needs_display_name")));
 		splashName.enableRealtimeValidation();
 		page1group.addValidationElement(splashName);
 
-		lingeringName.setValidator(new TextFieldValidator(lingeringName,
-				L10N.t("elementgui.potion.error_potion_needs_display_name")));
+		lingeringName.setValidator(new TextFieldValidator(lingeringName, L10N.t("elementgui.potion.error_potion_needs_display_name")));
 		lingeringName.enableRealtimeValidation();
 		page1group.addValidationElement(lingeringName);
 
-		arrowName.setValidator(new TextFieldValidator(arrowName,
-				L10N.t("elementgui.potion.error_potion_needs_display_name")));
+		arrowName.setValidator(new TextFieldValidator(arrowName, L10N.t("elementgui.potion.error_potion_needs_display_name")));
 		arrowName.enableRealtimeValidation();
 		page1group.addValidationElement(arrowName);
 

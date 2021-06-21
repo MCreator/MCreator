@@ -47,7 +47,7 @@ import java.util.*;
 
 public class ConverterRegistry {
 
-	private static final Map<ModElementType, List<IConverter>> converters = new HashMap<ModElementType, List<IConverter>>() {{
+	private static final Map<ModElementType, List<IConverter>> converters = new HashMap<>() {{
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
 		put(ModElementType.ACHIEVEMENT, Collections.singletonList(new AchievementFixer()));
 		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
