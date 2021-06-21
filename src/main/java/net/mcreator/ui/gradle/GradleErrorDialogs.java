@@ -66,21 +66,23 @@ public class GradleErrorDialogs {
 
 		return errorCode;
 	}
+	
+	private static String applyAppendx(String msg, int errorCode) {
+		String appendx = "<small><br><br><font color=gray>ERROR CODE: " + GradleErrorCodes.toString(errorCode) + " [" + errorCode + "]";
+		return msg + appendx;
+	}
 
 	private static void showGradleCacheDataErrorDialog(MCreator whereToShow, int errorCode) {
 		if (PreferencesManager.PREFERENCES.gradle.offline) {
 			showGradleCacheOutdatedDialogOfflineMode(whereToShow, errorCode);
 		} else {
-			String appendx =
-					"<small><br><br><font color=gray>ERROR CODE: " + GradleErrorCodes.toString(errorCode) + " ["
-							+ errorCode + "]";
 			String msg = "<html><big>Gradle caches are corrupted!</big><br>"
 					+ "<br>It seems that the cached dependencies of Gradle got corrupted or are outdated.<br>"
 					+ "Cache needs to be cleared and re-downloaded. You can do this by pressing the button below.<br>"
 					+ "<br>After you clear cache, the first Gradle build could take a but longer than usual.";
 
 			String[] options = { "Clear Gradle caches", "Do nothing" };
-			int option = JOptionPane.showOptionDialog(whereToShow, msg + appendx, GradleErrorDialogs.MESSAGE_TITLE,
+			int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), MESSAGE_TITLE,
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 			if (option == 0) {
 				ClearAllGradleCachesAction.clearAllGradleCaches(whereToShow, false, false);
@@ -89,9 +91,6 @@ public class GradleErrorDialogs {
 	}
 
 	private static void showGradleCacheOutdatedDialogOfflineMode(Window whereToShow, int errorCode) {
-		String appendx =
-				"<small><br><br><font color=gray>ERROR CODE: " + GradleErrorCodes.toString(errorCode) + " [" + errorCode
-						+ "]";
 		String msg = "<html><big>Gradle caches are outdated!</big><br>"
 				+ "<br>You are using MCreator in offline mode. Caches got outdated and need to be updated.<br>"
 				+ "You need to disable offline mode in MCreator's preferences under Gradle options section<br>"
@@ -99,7 +98,7 @@ public class GradleErrorDialogs {
 				+ "<br>Afterwards, you can turn the offline mode back on.";
 
 		String[] options = { "Open Gradle options", "Do nothing" };
-		int option = JOptionPane.showOptionDialog(whereToShow, msg + appendx, GradleErrorDialogs.MESSAGE_TITLE,
+		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), MESSAGE_TITLE,
 				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 		if (option == 0) {
 			new PreferencesDialog(whereToShow, "Gradle settings");
@@ -107,9 +106,6 @@ public class GradleErrorDialogs {
 	}
 
 	private static void showGradleInvalidJavaVersionDialog(Window whereToShow, int errorCode) {
-		String appendx =
-				"<small><br><br><font color=gray>ERROR CODE: " + GradleErrorCodes.toString(errorCode) + " [" + errorCode
-						+ "]";
 		String msg = "<html><big>Invalid Java version is in use!</big><br>"
 				+ "<br>Gradle only works with Java JDK 8. If you use other versions of Java, MCreator won't be able to compile<br>"
 				+ "your mod. MCreator tries to find Java JDK 8 automatically. Install Java JDK 8 and try again.<br>"
@@ -117,7 +113,7 @@ public class GradleErrorDialogs {
 				+ "<br>go to Preferences and manually enter the <i>Java 8 java executable path</i>.";
 
 		String[] options = { "Open Gradle options", "Do nothing" };
-		int option = JOptionPane.showOptionDialog(whereToShow, msg + appendx, GradleErrorDialogs.MESSAGE_TITLE,
+		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), MESSAGE_TITLE,
 				JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 		if (option == 0) {
 			new PreferencesDialog(whereToShow, "Gradle settings");
@@ -153,15 +149,12 @@ public class GradleErrorDialogs {
 	}
 
 	private static void showJVMHeapSpaceErrorDialog(Window whereToShow, int errorCode) {
-		String appendx =
-				"<small><br><br><font color=gray>ERROR CODE: " + GradleErrorCodes.toString(errorCode) + " [" + errorCode
-						+ "]";
 		String msg = "<html><big>Java JVM used by Gradle ran out of available RAM!</big><br>"
 				+ "The amount of RAM allocated to Java JVM used by Gradle is too low.<br>"
 				+ "You can change this setting in MCreator's preferences under Gradle options section.";
 
 		String[] options = { "Open Gradle options", "Do nothing" };
-		int option = JOptionPane.showOptionDialog(whereToShow, msg + appendx, GradleErrorDialogs.MESSAGE_TITLE,
+		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), GradleErrorDialogs.MESSAGE_TITLE,
 				JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 		if (option == 0) {
 			new PreferencesDialog(whereToShow, "Gradle settings");
@@ -209,10 +202,7 @@ public class GradleErrorDialogs {
 	}
 
 	private static void showErrorDialog(Window window, String msg, int type, Icon icon, int errorCode) {
-		String appendx =
-				"<small><br><br><font color=gray>ERROR CODE: " + GradleErrorCodes.toString(errorCode) + " [" + errorCode
-						+ "]";
-		JOptionPane.showMessageDialog(window, msg + appendx, GradleErrorDialogs.MESSAGE_TITLE, type, icon);
+		JOptionPane.showMessageDialog(window, applyAppendx(msg, errorCode), MESSAGE_TITLE, type, icon);
 	}
 
 }
