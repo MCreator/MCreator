@@ -77,9 +77,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 
 				if (column != 3) {
 					int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-							"<html>Are you sure that you want to change this variable?"
-									+ "<br>If this variable is in use, this action might cause compilation errors."
-									+ "<br>If you just created it, it is perfectly fine to change it.", "Confirmation",
+							L10N.t("workspace.variables.change_type"), L10N.t("global.confirmation"),
 							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (n == JOptionPane.YES_OPTION) {
 						super.setValueAt(value, row, column);

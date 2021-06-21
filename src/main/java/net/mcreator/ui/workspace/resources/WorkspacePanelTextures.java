@@ -187,7 +187,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			if (files.size() > 0) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
 						L10N.t("workspace.textures.confirm_deletion_message"),
-						L10N.t("workspace.textures.confirm_deletion_title"), JOptionPane.YES_NO_OPTION,
+						L10N.t("global.confirmation"), JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null);
 
 				if (n == 0) {
