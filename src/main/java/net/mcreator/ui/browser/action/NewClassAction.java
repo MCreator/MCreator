@@ -22,6 +22,7 @@ import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -42,11 +43,8 @@ public class NewClassAction extends BasicAction {
 
 	public NewClassAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, "Java class", actionEvent -> {
-			String classname = VOptionPane.showInputDialog(actionRegistry.getMCreator(),
-					"<html><b>Enter the class name:</b>"
-							+ "<br>Make sure the class name is a valid Java name without .java extension.<br>"
-							+ "File will be added to the selected package or to default if none is selected.",
-					"Class name", null, new OptionPaneValidatior() {
+			String classname = VOptionPane.showInputDialog(actionRegistry.getMCreator(), L10N.t("workspace_file_browser.new_class.class_name"),
+					L10N.t("workspace_file_browser.new_class.class_name.title"), null, new OptionPaneValidatior() {
 						@Override public Validator.ValidationResult validate(JComponent component) {
 							return new JavaMemeberNameValidator((VTextField) component, true).validate();
 						}
