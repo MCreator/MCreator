@@ -166,7 +166,7 @@ public class L10N {
 	public static JRadioButton radiobutton(String key, Object... parameter) {
 		return new JRadioButton(t(key, parameter));
 	}
-	
+
 	public static JMenu menu(String key, Object... parameter) {
 		return new JMenu(t(key, parameter));
 	}

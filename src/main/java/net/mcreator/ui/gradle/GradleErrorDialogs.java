@@ -76,8 +76,9 @@ public class GradleErrorDialogs {
 			String msg = L10N.t("gradle.errors.cache_corrupted");
 
 			String[] options = { L10N.t("gradle.errors.clear_caches"), L10N.t("gradle.errors.do_nothing") };
-			int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+			int option = JOptionPane
+					.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"),
+							JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 			if (option == 0) {
 				ClearAllGradleCachesAction.clearAllGradleCaches(whereToShow, false, false);
 			}
@@ -88,21 +89,21 @@ public class GradleErrorDialogs {
 		String msg = L10N.t("gradle.errors.cache_outdated");
 
 		String[] options = { L10N.t("gradle.errors.open_options"), L10N.t("gradle.errors.do_nothing") };
-		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"),
-				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+		int option = JOptionPane
+				.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"),
+						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 		if (option == 0) {
 			new PreferencesDialog(whereToShow, "Gradle settings");
 		}
 	}
 
 	private static void showGradleReobfFailedErrorDialog(Window whereToShow, int errorCode) {
-		showErrorDialog(whereToShow, L10N.t("gradle.errors.reobf_failed"),
-				JOptionPane.ERROR_MESSAGE, null, errorCode);
+		showErrorDialog(whereToShow, L10N.t("gradle.errors.reobf_failed"), JOptionPane.ERROR_MESSAGE, null, errorCode);
 	}
 
 	private static void showInternetInterruptedErrorDialog(Window whereToShow, int errorCode) {
-		showErrorDialog(whereToShow, L10N.t("gradle.errors.internet_interrupted"),
-				JOptionPane.ERROR_MESSAGE, null, errorCode);
+		showErrorDialog(whereToShow, L10N.t("gradle.errors.internet_interrupted"), JOptionPane.ERROR_MESSAGE, null,
+				errorCode);
 	}
 
 	private static void showNoInternetErrorDialog(Window whereToShow, int errorCode) {
@@ -113,34 +114,31 @@ public class GradleErrorDialogs {
 		String msg = L10N.t("gradle.errors.jvm_heap_space");
 
 		String[] options = { L10N.t("gradle.errors.open_options"), L10N.t("gradle.errors.do_nothing") };
-		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"),
-				JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+		int option = JOptionPane
+				.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"),
+						JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 		if (option == 0) {
 			new PreferencesDialog(whereToShow, "Gradle settings");
 		}
 	}
 
 	private static void showXMSInvalidErrorDialog(Window whereToShow, int errorCode) {
-		showErrorDialog(whereToShow, L10N.t("gradle.errors.xms_invalid"),
-				JOptionPane.ERROR_MESSAGE, null, errorCode);
+		showErrorDialog(whereToShow, L10N.t("gradle.errors.xms_invalid"), JOptionPane.ERROR_MESSAGE, null, errorCode);
 	}
 
 	private static void showXMXInvalidErrorDialog(Window whereToShow, int errorCode) {
-		showErrorDialog(whereToShow, L10N.t("gradle.errors.xmx_invalid"),
-				JOptionPane.ERROR_MESSAGE, null, errorCode);
+		showErrorDialog(whereToShow, L10N.t("gradle.errors.xmx_invalid"), JOptionPane.ERROR_MESSAGE, null, errorCode);
 	}
 
 	private static void showJVMCrashErrorDialog(Window whereToShow, int errorCode) {
-		showErrorDialog(whereToShow, L10N.t("gradle.errors.jvm_crashed"), JOptionPane.ERROR_MESSAGE,
-				null, errorCode);
+		showErrorDialog(whereToShow, L10N.t("gradle.errors.jvm_crashed"), JOptionPane.ERROR_MESSAGE, null, errorCode);
 	}
 
 	private static void showGradleBuildFailedErrorDialog(Window whereToShow) {
 		Object[] options = { L10N.t("gradle.errors.open_help_page"), L10N.t("gradle.errors.do_nothing") };
-		int reply = JOptionPane.showOptionDialog(whereToShow,
-				L10N.t("gradle.errors.build_failed"),
-				L10N.t("gradle.errors.build_failed.title"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options,
-				options[0]);
+		int reply = JOptionPane.showOptionDialog(whereToShow, L10N.t("gradle.errors.build_failed"),
+				L10N.t("gradle.errors.build_failed.title"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, options, options[0]);
 		if (reply == 0) {
 			DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/gradle-setup-errors");
 		}
