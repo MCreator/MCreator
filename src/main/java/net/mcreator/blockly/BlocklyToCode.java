@@ -20,10 +20,10 @@ package net.mcreator.blockly;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.StatementInput;
+import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
 import org.w3c.dom.Element;
 
@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public abstract class BlocklyToCode implements IWorkspaceProvider {
+public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	private final StringBuilder code;
 	private final List<BlocklyCompileNote> compile_notes;

@@ -38,7 +38,8 @@ import java.awt.*;
 public class NewModElementDialog {
 
 	public static void showNameDialog(MCreator mcreator, ModElementType<?> type) {
-		JLabel regName = L10N.label("dialog.new_modelement.registry_name_default");
+		JLabel regName = L10N
+				.label("dialog.new_modelement.registry_name", L10N.t("dialog.new_modelement.registry_name.empty"));
 		regName.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 		regName.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
@@ -47,8 +48,12 @@ public class NewModElementDialog {
 						L10N.t("dialog.new_modelement.title_window", type.getReadableName()),
 						type.getIcon(), new OptionPaneValidatior() {
 							@Override public Validator.ValidationResult validate(JComponent component) {
-								regName.setText("Registry name: " + RegistryNameFixer
-										.fromCamelCase(((VTextField) component).getText()));
+								String regNameString = RegistryNameFixer
+										.fromCamelCase(((VTextField) component).getText());
+								regName.setText(L10N.t("dialog.new_modelement.registry_name",
+										regNameString == null || regNameString.equals("") ?
+												L10N.t("dialog.new_modelement.registry_name.empty") :
+												regNameString));
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component)
 										.validate();
 							}

@@ -48,7 +48,7 @@ public class GetVariableBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_get_");
-		VariableType typeObject = VariableTypeLoader.INSTANCE.getVariableTypeFromString(type);
+		VariableType typeObject = VariableTypeLoader.INSTANCE.fromName(type);
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (variable != null) {
@@ -63,8 +63,8 @@ public class GetVariableBlock implements IBlockGenerator {
 							"Variable get block is bound to a variable that does not exist. Remove this block!"));
 					return;
 				} else if (master instanceof BlocklyToProcedure && scope.equals("local")
-						&& !((BlocklyToProcedure) master).getVariables()
-						.contains(name)) { // check if local variable exists
+						&& !((BlocklyToProcedure) master).getLocalVariables().stream().map(VariableElement::toString)
+						.collect(Collectors.toList()).contains(name)) { // check if local variable exists
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							"Variable get block is bound to a local variable that does not exist. Remove this block!"));
 					return;

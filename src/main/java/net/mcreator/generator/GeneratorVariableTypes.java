@@ -53,8 +53,7 @@ public class GeneratorVariableTypes {
 					Map<?, ?> variableTypesData = (Map<?, ?>) reader.read();
 					variableTypesData = new ConcurrentHashMap<>(
 							variableTypesData); // make this map concurrent, cache can be reused by multiple instances
-					variableTypesCache.put(VariableTypeLoader.INSTANCE.getVariableTypeFromString(variableTypeName),
-							variableTypesData);
+					variableTypesCache.put(VariableTypeLoader.INSTANCE.fromName(variableTypeName), variableTypesData);
 				} catch (YamlException e) {
 					LOG.fatal("[" + generatorConfiguration.getGeneratorName()
 							+ "] Failed to load variable type definition: " + e.getMessage());
@@ -66,7 +65,15 @@ public class GeneratorVariableTypes {
 	}
 
 	public boolean canBeGlobal(VariableType type) {
-		return variableTypesCache.containsKey(type) && !variableTypesCache.get(type).isEmpty();
+		return getSupportedScopesWithoutLocal(type).length > 0;
+	}
+
+	public boolean canBeLocal(VariableType type) {
+		if (!variableTypesCache.containsKey(type) || !variableTypesCache.get(type).containsKey("scopes"))
+			return false;
+
+		Map<?, ?> scopes = (Map<?, ?>) variableTypesCache.get(type).get("scopes");
+		return scopes.keySet().stream().map(Object::toString).anyMatch(s -> s.equals("local"));
 	}
 
 	public String getDefaultValue(VariableType type) {

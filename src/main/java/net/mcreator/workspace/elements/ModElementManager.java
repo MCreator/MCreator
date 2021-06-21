@@ -57,8 +57,9 @@ public class ModElementManager {
 		this.workspace = workspace;
 
 		this.gsonAdapter = new GeneratableElement.GSONAdapter(this.workspace);
-		this.gson = new GsonBuilder().registerTypeHierarchyAdapter(GeneratableElement.class, this.gsonAdapter)
-				.disableHtmlEscaping().setPrettyPrinting().setLenient().create();
+		this.gson = new GsonBuilder().registerTypeAdapter(NumberProcedure.class, new NumberProcedure.GSONAdapter())
+				.registerTypeHierarchyAdapter(GeneratableElement.class, this.gsonAdapter).disableHtmlEscaping()
+				.setPrettyPrinting().setLenient().create();
 	}
 
 	public void invalidateCache() {

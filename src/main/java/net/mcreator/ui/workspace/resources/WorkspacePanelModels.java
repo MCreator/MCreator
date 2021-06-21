@@ -201,7 +201,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 					AtomicInteger i = new AtomicInteger();
 					// this model might be in use, we need to regenerate code of mobs
 					workspacePanel.getMcreator().getWorkspace().getModElements().forEach(e -> {
-						if (e.getType() == ModElementRegistry.BuiltInTypes.LIVING_ENTITY && !e.isCodeLocked()) {
+						if (e.getType() == ModElementRegistry.BuiltInTypes.LIVINGENTITY && !e.isCodeLocked()) {
 							GeneratableElement generatableElement = e.getGeneratableElement();
 							if (generatableElement != null) {
 								// generate mod element

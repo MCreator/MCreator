@@ -16,10 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.minecraft;
+package net.mcreator.ui.procedure;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.Procedure;
@@ -29,7 +27,6 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -38,7 +35,6 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.modgui.ModElementGUI;
-import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
@@ -50,33 +46,18 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
-import java.util.*;
 
-public class ProcedureSelector extends JPanel {
+public class ProcedureSelector extends AbstractProcedureSelector {
 
-	private static final Gson gson = new GsonBuilder().setLenient().create();
+	private boolean inline = false;
 
-	private final SearchableComboBox<CBoxEntry> procedures = new SearchableComboBox<>();
-
-	private final Dependency[] providedDependencies;
-	private final Map<String, List<Dependency>> depsMap = new HashMap<>();
-	private final JLabel depslab = new JLabel();
-
-	private final JButton edit = new JButton(UIRES.get("18px.edit"));
-	private final JButton add = new JButton(UIRES.get("18px.add"));
-
-	private CBoxEntry oldItem;
-
-	private final MCreator mcreator;
-
-	private final VariableType returnType;
-
-	private String defaultName = L10N.t("procedure.common.no_procedure");
+	private final JLabel nameLabel;
+	private final JLabel actionLabel;
+	private final JComponent componentA;
+	private final JComponent componentB;
 
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName,
 			Dependency... providedDependencies) {
@@ -100,10 +81,9 @@ public class ProcedureSelector extends JPanel {
 
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
 			boolean allowInlineEditor, @Nullable VariableType returnType, Dependency... providedDependencies) {
-		super(new BorderLayout(0, 0));
+		super(mcreator, returnType, providedDependencies);
 
-		this.mcreator = mcreator;
-		this.returnType = returnType;
+		setLayout(new BorderLayout(0, 0));
 
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -132,51 +112,50 @@ public class ProcedureSelector extends JPanel {
 					oldItem = selectedItem;
 				}
 			}
-			updateDepsList();
+			updateDepsList(false);
 		});
-
-		this.providedDependencies = providedDependencies;
 
 		JPanel top = new JPanel(new BorderLayout());
 		top.setOpaque(false);
+
+		nameLabel = new JLabel(eventName);
+		ComponentUtils.deriveFont(nameLabel, 14);
 
 		JLabel eventNameLabel = new JLabel();
 		if (side == Side.CLIENT) {
 			eventNameLabel.setIcon(UIRES.get("16px.client"));
 			eventNameLabel.setToolTipText(L10N.t("trigger.triggers_on_client_side_only"));
 			if (helpContext == null)
-				top.add("North", PanelUtils
-						.westAndCenterElement(eventNameLabel, ComponentUtils.deriveFont(new JLabel(eventName), 14)));
+				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, nameLabel));
 			else
-				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, HelpUtils
-						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 14),
-								SwingConstants.LEFT)));
+				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel,
+						HelpUtils.wrapWithHelpButton(helpContext, nameLabel, SwingConstants.LEFT)));
 		} else if (side == Side.SERVER) {
 			eventNameLabel.setToolTipText(L10N.t("trigger.triggers_on_server_side_only"));
 			eventNameLabel.setIcon(UIRES.get("16px.server"));
 			if (helpContext == null)
-				top.add("North", PanelUtils
-						.westAndCenterElement(eventNameLabel, ComponentUtils.deriveFont(new JLabel(eventName), 14)));
+				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, nameLabel));
 			else
-				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, HelpUtils
-						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 14),
-								SwingConstants.LEFT)));
+				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel,
+						HelpUtils.wrapWithHelpButton(helpContext, nameLabel, SwingConstants.LEFT)));
 		} else {
 			if (helpContext == null)
-				top.add("North", ComponentUtils.deriveFont(new JLabel(eventName), 14));
+				top.add("North", nameLabel);
 			else
-				top.add("North", HelpUtils
-						.wrapWithHelpButton(helpContext, ComponentUtils.deriveFont(new JLabel(eventName), 14),
-								SwingConstants.LEFT));
+				top.add("North", HelpUtils.wrapWithHelpButton(helpContext, nameLabel, SwingConstants.LEFT));
 		}
 
 		top.add("South", depslab);
 
+		actionLabel = L10N.label("procedure.common.if");
+		ComponentUtils.deriveFont(actionLabel, 14);
+
 		JComponent procwrap;
 		if (returnType == VariableTypeLoader.BuiltInTypes.LOGIC) {
-			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" if:  "), 15), procedures);
+			procwrap = PanelUtils.westAndCenterElement(actionLabel, procedures);
 		} else if (returnType == null) {
-			procwrap = PanelUtils.westAndCenterElement(ComponentUtils.deriveFont(new JLabel(" do:  "), 15), procedures);
+			actionLabel.setText(L10N.t("procedure.common.do"));
+			procwrap = PanelUtils.westAndCenterElement(actionLabel, procedures);
 		} else {
 			procwrap = procedures;
 		}
@@ -203,7 +182,7 @@ public class ProcedureSelector extends JPanel {
 						.showInputDialog(mcreator, L10N.t("action.procedure.enter_procedure_name"),
 								L10N.t("action.procedure.new_procedure_dialog_title"), null,
 								new OptionPaneValidatior() {
-									@Override public Validator.ValidationResult validate(JComponent component) {
+									@Override public ValidationResult validate(JComponent component) {
 										return new ModElementNameValidator(mcreator.getWorkspace(),
 												(VTextField) component).validate();
 									}
@@ -243,19 +222,21 @@ public class ProcedureSelector extends JPanel {
 				}
 			});
 
-			JComponent component = PanelUtils.centerAndEastElement(procwrap, PanelUtils.westAndEastElement(add, edit));
-			component.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 4));
-			add("South", component);
+			componentB = PanelUtils.centerAndEastElement(procwrap, PanelUtils.westAndEastElement(add, edit));
+			componentB.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 4));
 		} else {
 			procwrap.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 4));
-			add("South", procwrap);
+			componentB = procwrap;
 		}
 
-		add("North", PanelUtils.join(FlowLayout.LEFT, 4, 4, top));
+		componentA = PanelUtils.join(FlowLayout.LEFT, 4, 4, top);
+
+		add("North", componentA);
+		add("South", componentB);
 
 		procedures.setToolTipText(L10N.t("action.procedure.match_dependencies"));
 
-		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXX"));
+		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXX", null));
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
 		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementRegistry.BuiltInTypes.PROCEDURE)
@@ -268,161 +249,36 @@ public class ProcedureSelector extends JPanel {
 		return this;
 	}
 
-	@Override public void setEnabled(boolean enabled) {
-		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementRegistry.BuiltInTypes.PROCEDURE)
-				== GeneratorStats.CoverageStatus.NONE)
-			enabled = false;
+	public ProcedureSelector makeInline() {
+		inline = true;
 
-		super.setEnabled(enabled);
+		removeAll();
+		setLayout(new GridLayout(1, 2));
+		add(componentA);
+		add(componentB);
 
-		procedures.setEnabled(enabled);
-		edit.setEnabled(enabled);
-		add.setEnabled(enabled);
+		componentB.setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 2));
+
+		updateDepsList(true);
+		ComponentUtils.deriveFont(nameLabel, 12);
+		actionLabel.setVisible(false);
+
+		return this;
 	}
 
-	public void refreshList() {
-		depsMap.clear();
-		procedures.removeAllItems();
+	@Override public ProcedureSelector makeReturnValueOptional() {
+		AbstractProcedureSelector retval = super.makeReturnValueOptional();
 
-		procedures.addItem(new CBoxEntry(defaultName));
+		if (returnType != null)
+			setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createMatteBorder(0, 0, 1, 1, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+					BorderFactory.createMatteBorder(1, 1, 0, 0,
+							BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor()))));
 
-		for (ModElement mod : mcreator.getWorkspace().getModElements()) {
-			if (mod.getType() == ModElementRegistry.BuiltInTypes.PROCEDURE) {
-				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
-
-				List<Dependency> realdepsList = new ArrayList<>();
-				if (dependenciesList == null)
-					continue;
-
-				boolean missing = false;
-
-				for (Object depobj : dependenciesList) {
-					Dependency dependency = gson.fromJson(gson.toJsonTree(depobj).getAsJsonObject(), Dependency.class);
-					realdepsList.add(dependency);
-					if (!Arrays.asList(providedDependencies).contains(dependency))
-						missing = true;
-				}
-
-				boolean correctReturnType = true;
-
-				if (returnType != null) {
-					VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableTypeLoader.INSTANCE
-									.getVariableTypeFromString((String) mod.getMetadata("return_type")) :
-							null;
-					if (returnTypeCurrent != returnType)
-						correctReturnType = false;
-				}
-
-				if (!missing && correctReturnType) {
-					depsMap.put(mod.getName(), realdepsList);
-				}
-
-				if (correctReturnType)
-					procedures.addItem(new CBoxEntry(mod.getName(), !missing));
-			}
-		}
+		return (ProcedureSelector) retval;
 	}
 
-	public void refreshListKeepSelected() {
-		Procedure selected = getSelectedProcedure();
-		refreshList();
-		setSelectedProcedure(selected);
-		updateDepsList();
+	@Override protected CBoxEntry updateDepsList(boolean smallIcons) {
+		return super.updateDepsList(inline);
 	}
-
-	private void updateDepsList() {
-		CBoxEntry selected = procedures.getSelectedItem();
-
-		List<Dependency> dependencies = null;
-		if (selected != null) {
-			dependencies = depsMap.get(selected.string);
-		}
-
-		StringBuilder deps = new StringBuilder(
-				"<html><div style='font-size: 9px; margin-top: 2px; margin-bottom: 1px; color: white;'>");
-		for (Dependency dependency : providedDependencies) {
-			String bg = "999999";
-			String optcss = "color: #444444;";
-			if (dependencies != null && dependencies.contains(dependency)) {
-				optcss = "color: #ffffff;";
-				bg = Integer.toHexString(dependency.getColor().getRGB()).substring(2);
-			}
-			deps.append("<span style='background: #").append(bg).append("; ").append(optcss).append("'>&nbsp;")
-					.append(dependency.getName()).append("&nbsp;</span>&#32;");
-		}
-
-		depslab.setText(deps.toString());
-		edit.setEnabled(getSelectedProcedure() != null);
-
-		if (selected == null || !selected.correctDependencies) {
-			edit.setEnabled(false);
-		}
-	}
-
-	public Procedure getSelectedProcedure() {
-		CBoxEntry selected = procedures.getSelectedItem();
-		if (selected == null || selected.string.equals(defaultName))
-			return null;
-		return new Procedure(selected.string);
-	}
-
-	public void setSelectedProcedure(String procedure) {
-		if (procedure != null)
-			procedures.setSelectedItem(new CBoxEntry(procedure));
-	}
-
-	public void setSelectedProcedure(Procedure procedure) {
-		if (procedure != null)
-			procedures.setSelectedItem(new CBoxEntry(procedure.getName()));
-	}
-
-	static class ConditionalComboBoxRenderer implements ListCellRenderer<CBoxEntry> {
-
-		private final BasicComboBoxRenderer renderer = new BasicComboBoxRenderer();
-
-		@Override
-		public Component getListCellRendererComponent(JList list, CBoxEntry value, int index, boolean isSelected,
-				boolean cellHasFocus) {
-			JLabel component = (JLabel) renderer
-					.getListCellRendererComponent(list, value.string, index, isSelected, cellHasFocus);
-
-			if (!value.correctDependencies) {
-				component.setBackground(list.getBackground());
-				component.setForeground(Color.gray.brighter());
-				component.setText("<html>" + component.getText() + L10N.t("action.procedure.missing_dependencies"));
-			}
-
-			return component;
-		}
-	}
-
-	private static class CBoxEntry {
-		String string;
-		boolean correctDependencies;
-
-		CBoxEntry(String string) {
-			this(string, true);
-		}
-
-		CBoxEntry(String string, boolean correctDependencies) {
-			this.string = string;
-			this.correctDependencies = correctDependencies;
-		}
-
-		@Override public boolean equals(Object o) {
-			return o instanceof CBoxEntry && ((CBoxEntry) o).string.equals(this.string);
-		}
-
-		@Override public String toString() {
-			return string;
-		}
-
-	}
-
-	public enum Side {
-		BOTH, CLIENT, SERVER
-	}
-
 }

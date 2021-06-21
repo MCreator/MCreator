@@ -128,7 +128,7 @@ public class InjectTagsTool {
 					ImageUtils.resizeAA(ModElementRegistry.BuiltInTypes.FUNCTION.getIcon().getImage(), 32)));
 		if (type.equals("Entities"))
 			icon.setIcon(new ImageIcon(
-					ImageUtils.resizeAA(ModElementRegistry.BuiltInTypes.LIVING_ENTITY.getIcon().getImage(), 32)));
+					ImageUtils.resizeAA(ModElementRegistry.BuiltInTypes.LIVINGENTITY.getIcon().getImage(), 32)));
 
 		panel.add(PanelUtils.centerAndEastElement(box, icon));
 

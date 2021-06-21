@@ -36,6 +36,7 @@
 package ${package}.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.util.SoundEvent;
 
 @${JavaModName}Elements.ModElement.Tag
 public class ${name}Block extends ${JavaModName}Elements.ModElement {
@@ -148,7 +149,17 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#macro blockProperties>
 			Block.Properties.create(Material.${data.material})
-				.sound(SoundType.${data.soundOnStep})
+				<#if data.isCustomSoundType>
+					.sound(new SoundType(1.0f, 1.0f, null, null, null, null, null){
+						@Override public SoundEvent getBreakSound() { return new SoundEvent(new ResourceLocation("${data.breakSound}")); }
+						@Override public SoundEvent getStepSound() { return new SoundEvent(new ResourceLocation("${data.stepSound}")); }
+						@Override public SoundEvent getPlaceSound() { return new SoundEvent(new ResourceLocation("${data.placeSound}")); }
+						@Override public SoundEvent getHitSound() { return new SoundEvent(new ResourceLocation("${data.hitSound}")); }
+						@Override public SoundEvent getFallSound() { return new SoundEvent(new ResourceLocation("${data.fallSound}")); }
+					})
+				<#else>
+					.sound(SoundType.${data.soundOnStep})
+				</#if>
 				<#if data.unbreakable>
 					.hardnessAndResistance(-1, 3600000)
 				<#else>
@@ -416,6 +427,24 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
+		<#if data.canProvidePower>
+		@Override public boolean canProvidePower(BlockState state) {
+			return true;
+		}
+
+		@Override public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+			<#if hasProcedure(data.emittedRedstonePower)>
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				World world = (World) blockAccess;
+				return (int) <@procedureOBJToNumberCode data.emittedRedstonePower/>;
+			<#else>
+				return ${data.emittedRedstonePower.getFixedValue()};
+			</#if>
+		}
+		</#if>
+
 		<#if data.flammability != 0>
 		@Override public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
 			return ${data.flammability};
@@ -471,7 +500,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-        <#if data.canProvidePower>
+        <#if data.canRedstoneConnect>
         @Override
 		public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
 			return true;

@@ -86,7 +86,7 @@ import java.util.stream.Collectors;
 
 	public double enchantPowerBonus;
 	public boolean plantsGrowOn;
-	public boolean canProvidePower;
+	public boolean canRedstoneConnect;
 	public int lightOpacity;
 	public Material material;
 
@@ -94,6 +94,8 @@ import java.util.stream.Collectors;
 	public boolean tickRandomly;
 
 	public boolean isReplaceable;
+	public boolean canProvidePower;
+	public NumberProcedure emittedRedstonePower;
 	public String colorOnMap;
 	public MItemBlock creativePickItem;
 	public String offsetType;
@@ -110,7 +112,15 @@ import java.util.stream.Collectors;
 	public String reactionToPushing;
 
 	public boolean isNotColidable;
+
+	public boolean isCustomSoundType;
 	public StepSound soundOnStep;
+	public Sound breakSound;
+	public Sound stepSound;
+	public Sound placeSound;
+	public Sound hitSound;
+	public Sound fallSound;
+
 	public int luminance;
 	public boolean unbreakable;
 	public int breakHarvestLevel;

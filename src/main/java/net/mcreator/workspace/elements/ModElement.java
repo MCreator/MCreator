@@ -305,7 +305,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	public String getRegistryName() {
 		if (registry_name == null)
-			return getName().toLowerCase(Locale.ENGLISH).replaceAll("[^a-z0-9/._-]+", "");
+			return RegistryNameFixer.fromCamelCase(this.name);
 		else
 			return registry_name;
 	}

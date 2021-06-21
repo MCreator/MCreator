@@ -29,7 +29,6 @@ public final class GradleErrorCodes {
 	public static final int JAVA_XMX_INVALID_VALUE = -12;
 	public static final int JAVA_XMS_INVALID_VALUE = -13;
 	public static final int JAVA_JVM_HEAP_SPACE = -14;
-	public static final int JAVA_INVALID_VERSION = -15;
 	public static final int JAVA_RUN_CRASHED = -15;
 
 	public static final int GRADLE_NO_INTERNET = -21;
@@ -66,8 +65,6 @@ public final class GradleErrorCodes {
 			return "GRADLE_BUILD_FAILED";
 		case GRADLE_REOBF_FAILED:
 			return "GRADLE_REOBF_FAILED";
-		case JAVA_INVALID_VERSION:
-			return "JAVA_INVALID_VERSION";
 
 		default:
 			return "";
