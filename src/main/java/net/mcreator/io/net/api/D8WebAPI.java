@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import net.mcreator.io.net.WebIO;
 import net.mcreator.io.net.api.update.UpdateInfo;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -70,8 +71,8 @@ public class D8WebAPI implements IWebAPI {
 	}
 
 	private void initAPIPrivate() {
-		String motwXML = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/app/motw");
 		String newsXML = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/app/news");
+		String motwXML = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/app/motw");
 
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -88,7 +89,7 @@ public class D8WebAPI implements IWebAPI {
 						continue;
 					news[0] = MCreatorApplication.isInternet ?
 							((Element) node).getElementsByTagName("title").item(1).getChildNodes().item(0).getNodeValue() :
-							"Connection error";
+							L10N.t("dialog.workspace_selector.news.loading_failed");
 					news[1] = ((Element) node).getElementsByTagName("link").item(1).getChildNodes().item(0)
 							.getNodeValue();
 				}
@@ -108,7 +109,7 @@ public class D8WebAPI implements IWebAPI {
 						continue;
 					motw[0] = MCreatorApplication.isInternet ?
 							((Element) node).getElementsByTagName("title").item(1).getChildNodes().item(0).getNodeValue() :
-							"Connection error";
+							L10N.t("dialog.workspace_selector.motw.loading_failed");
 					motw[1] = MCreatorApplication.SERVER_DOMAIN + "/node/" + ((Element) node).getElementsByTagName("guid")
 									.item(0).getChildNodes().item(0).getNodeValue().split("mcreator\\.net/")[1];
 					motw[2] = ((Element) node).getElementsByTagName("pubDate").item(0).getChildNodes().item(0)

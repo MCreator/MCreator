@@ -238,7 +238,8 @@ public class MainMenuBar extends JMenuBar {
 		add(window);
 
 		JMenu help = new JMenu(L10N.t("menubar.help"));
-		addHelpSearch(help);
+		if (MCreatorApplication.isInternet)
+			addHelpSearch(help);
 		help.add(mcreator.actionRegistry.help);
 		help.add(mcreator.actionRegistry.support);
 		help.add(mcreator.actionRegistry.knowledgeBase);
@@ -262,9 +263,7 @@ public class MainMenuBar extends JMenuBar {
 				g.setColor(new Color(0x9C9C9C));
 				g.setFont(getFont().deriveFont(11.0f));
 				if (getText().equals(""))
-					g.drawString(MCreatorApplication.isInternet ?
-							L10N.t("menubar.help.search.tooltip") :
-							L10N.t("menubar.help.search.disabled"), 28, 14);
+					g.drawString(L10N.t("menubar.help.search.tooltip"), 28, 14);
 			}
 		};
 		searchField.setOpaque(true);
