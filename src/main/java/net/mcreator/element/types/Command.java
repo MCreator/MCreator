@@ -40,8 +40,6 @@ import java.util.Locale;
 
 	public String argsxml;
 
-	public Procedure onCommandExecuted;
-
 	private Command() {
 		this(null);
 	}
@@ -53,11 +51,7 @@ import java.util.Locale;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		//It does not work every time properly in every case, but in most cases, it will work.
-		if (!onCommandExecuted.exists)
-			return MinecraftImageGenerator.Preview.generateCommandWithArgsPreviewPicture(argsxml);
-		else
-			return MinecraftImageGenerator.Preview.generateCommandPreviewPicture(commandName);
+		return MinecraftImageGenerator.Preview.generateCommandPreviewPicture(commandName);
 	}
 
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {

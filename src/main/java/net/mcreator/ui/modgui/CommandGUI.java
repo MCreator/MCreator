@@ -61,7 +61,6 @@ public class CommandGUI extends ModElementGUI<Command> {
 			new String[] { "No requirement", "1", "2", "3", "4" });
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private final ValidationGroup page1group = new ValidationGroup();
-	private ProcedureSelector onCommandExecuted;
 	private BlocklyPanel blocklyPanel;
 	private boolean hasErrors = false;
 	private Map<String, ToolboxBlock> externalBlocks;
@@ -99,12 +98,6 @@ public class CommandGUI extends ModElementGUI<Command> {
 	}
 
 	@Override protected void initGUI() {
-		onCommandExecuted = new ProcedureSelector(this.withEntry("command/when_executed"), mcreator,
-				L10N.t("elementgui.command.when_command_executed"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/cmdparams:map"));
-
-		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
-
 		ComponentUtils.deriveFont(commandName, 16);
 
 		JPanel enderpanel = new JPanel(new GridLayout(2, 2, 10, 2));
@@ -118,7 +111,6 @@ public class CommandGUI extends ModElementGUI<Command> {
 		enderpanel.add(permissionLevel);
 
 		enderpanel.setOpaque(false);
-		pane5.setOpaque(false);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks();
 
@@ -141,16 +133,13 @@ public class CommandGUI extends ModElementGUI<Command> {
 				compileNotesPanel);
 		args.setOpaque(false);
 
-		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(PanelUtils.centerInPanel(enderpanel),
-				PanelUtils.centerInPanel(onCommandExecuted))));
-
 		commandName
 				.setValidator(new TextFieldValidator(commandName, L10N.t("elementgui.command.warning.empty_string")));
 		commandName.enableRealtimeValidation();
 
 		page1group.addValidationElement(commandName);
 
-		addPage(L10N.t("elementgui.common.page_properties"), pane5);
+		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(enderpanel));
 		addPage(L10N.t("elementgui.command.page_arguments"), args);
 
 		if (!isEditingMode()) {
@@ -158,17 +147,11 @@ public class CommandGUI extends ModElementGUI<Command> {
 		}
 	}
 
-	@Override public void reloadDataLists() {
-		super.reloadDataLists();
-		onCommandExecuted.refreshListKeepSelected();
-	}
-
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		return new AggregatedValidationResult(page1group);
 	}
 
 	@Override public void openInEditingMode(Command command) {
-		onCommandExecuted.setSelectedProcedure(command.onCommandExecuted);
 		commandName.setText(command.commandName);
 		permissionLevel.setSelectedItem(command.permissionLevel);
 
@@ -183,7 +166,6 @@ public class CommandGUI extends ModElementGUI<Command> {
 	@Override public Command getElementFromGUI() {
 		Command command = new Command(modElement);
 		command.commandName = commandName.getText();
-		command.onCommandExecuted = onCommandExecuted.getSelectedProcedure();
 		command.permissionLevel = (String) permissionLevel.getSelectedItem();
 		command.argsxml = blocklyPanel.getXML();
 		return command;
