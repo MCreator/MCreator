@@ -23,6 +23,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.io.FilenameUtils;
 
 import java.util.*;
@@ -95,7 +96,7 @@ public class GeneratorStats {
 					.getResources(generatorConfiguration.getGeneratorName() + ".procedures", ftlFile).stream()
 					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
 			coverageInfo.put("procedures", Math.min((((double) generatorProcedures.size()) / (
-					BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks().size() + 6)) * 100, 100));
+					BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks().size() + 4)) * 100, 100));
 
 			generatorTriggers = PluginLoader.INSTANCE
 					.getResources(generatorConfiguration.getGeneratorName() + ".triggers", ftlFile).stream()
@@ -125,8 +126,15 @@ public class GeneratorStats {
 							.getDefinedBlocks().size()) * 100, 100));
 		}).start();
 
-		baseCoverageInfo.put("variables",
-				forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "variables"));
+		if (generatorConfiguration.getVariableTypes().getSupportedVariableTypes().isEmpty()) {
+			baseCoverageInfo.put("variables", CoverageStatus.NONE);
+		} else {
+			baseCoverageInfo.put("variables",
+					generatorConfiguration.getVariableTypes().getSupportedVariableTypes().size()
+							== VariableTypeLoader.INSTANCE.getAllVariableTypes().size() ?
+							CoverageStatus.FULL :
+							CoverageStatus.PARTIAL);
+		}
 
 		baseCoverageInfo.put("model_json",
 				forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_json"));

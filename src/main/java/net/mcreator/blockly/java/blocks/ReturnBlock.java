@@ -24,8 +24,8 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.elements.VariableElementType;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
@@ -37,13 +37,13 @@ public class ReturnBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public ReturnBlock() {
-		names = VariableElementTypeLoader.INSTANCE.getVariableTypes().stream().map(VariableElementType::getName)
+		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName)
 				.collect(Collectors.toList()).stream().map(s -> s = "return_" + s).toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String type = StringUtils.removeStart(block.getAttribute("type"), "return_");
-		VariableElementType returnType = VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type);
+		VariableType returnType = VariableTypeLoader.INSTANCE.fromName(type);
 
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (master instanceof BlocklyToProcedure && value != null) {

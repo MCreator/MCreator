@@ -54,6 +54,8 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 	private final GeneratorFlavor generatorFlavor;
 
+	private final GeneratorVariableTypes generatorVariableTypes;
+
 	private final TemplateGeneratorConfiguration templateGeneratorConfiguration;
 	private final TemplateGeneratorConfiguration procedureGeneratorConfiguration;
 	private final TemplateGeneratorConfiguration triggerGeneratorConfiguration;
@@ -89,6 +91,9 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		this.aitaskGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "aitasks");
 		this.cmdargsGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "cmdargs");
 		this.jsonTriggerGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "jsontriggers");
+
+		// load global variable definitions
+		this.generatorVariableTypes = new GeneratorVariableTypes(this);
 
 		this.generatorStats = new GeneratorStats(this);
 	}
@@ -215,6 +220,10 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 	public TemplateGeneratorConfiguration getJSONTriggerGeneratorConfiguration() {
 		return jsonTriggerGeneratorConfiguration;
+	}
+
+	public GeneratorVariableTypes getVariableTypes() {
+		return generatorVariableTypes;
 	}
 
 	@Nullable public List<String> getSupportedDefinitionFields(ModElementType type) {

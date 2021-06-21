@@ -26,12 +26,12 @@ import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.ProcedureSelector;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -74,7 +74,7 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 		ProcedureSelector isCheckedProcedure = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/checkbox_procedure_value"), editor.mcreator,
 				L10N.t("dialog.gui.checkbox_procedure_value"), ProcedureSelector.Side.CLIENT, false,
-				VariableElementTypeLoader.BuiltInTypes.LOGIC,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"))
 				.setDefaultName(L10N.t("condition.common.false"));
 		isCheckedProcedure.refreshList();

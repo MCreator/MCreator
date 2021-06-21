@@ -22,7 +22,7 @@ public class VariableElement implements IElement {
 
 	private String name;
 	private String type;
-	private VariableElementType.Scope scope = VariableElementType.Scope.GLOBAL_SESSION;
+	private VariableType.Scope scope = VariableType.Scope.GLOBAL_SESSION;
 	private Object value;
 
 	@Override public String toString() {
@@ -37,11 +37,11 @@ public class VariableElement implements IElement {
 		return name.hashCode();
 	}
 
-	public VariableElementType getType() {
-		return VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type);
+	public VariableType getType() {
+		return VariableTypeLoader.INSTANCE.fromName(type);
 	}
 
-	public void setType(VariableElementType type) {
+	public void setType(VariableType type) {
 		this.type = type.getName();
 	}
 
@@ -61,11 +61,11 @@ public class VariableElement implements IElement {
 		this.value = value;
 	}
 
-	public VariableElementType.Scope getScope() {
+	public VariableType.Scope getScope() {
 		return scope;
 	}
 
-	public void setScope(VariableElementType.Scope scope) {
+	public void setScope(VariableType.Scope scope) {
 		this.scope = scope;
 	}
 }

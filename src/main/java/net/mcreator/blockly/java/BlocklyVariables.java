@@ -20,8 +20,9 @@ package net.mcreator.blockly.java;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.elements.VariableElementType;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
@@ -35,21 +36,21 @@ public class BlocklyVariables {
 		this.generator = generator;
 	}
 
-	List<String> processLocalVariables(Element variables_block) {
-		List<String> varlist = new ArrayList<>();
+	List<VariableElement> processLocalVariables(Element variables_block) {
+		List<VariableElement> varlist = new ArrayList<>();
 
 		if (variables_block != null) {
 			List<Element> variables = XMLUtil.getChildrenWithName(variables_block, "variable");
 			for (Element variable : variables) {
 				String type = variable.getAttribute("type");
 				String name = variable.getAttribute("id");
-				VariableElementType variableType = VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type);
+				VariableType variableType = VariableTypeLoader.INSTANCE.fromName(type);
 				if (variableType != null && variableType.getBlocklyVariableType() != null && name != null) {
-					generator.append(variableType.getJavaType(generator.getWorkspace())).append(" ").append(name)
-							.append(" = ").append(variableType.getDefaultValue(generator.getWorkspace())).append(";\n");
-
-					// add variable to the array of variables
-					varlist.add(name);
+					VariableElement element = new VariableElement();
+					element.setName(name);
+					element.setType(variableType);
+					element.setScope(VariableType.Scope.LOCAL);
+					varlist.add(element); // add variable to the array of variables
 				} else {
 					generator.addCompileNote(
 							new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Skipping unknown variable type!"));
