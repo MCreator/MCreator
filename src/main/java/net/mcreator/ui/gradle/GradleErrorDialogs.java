@@ -57,8 +57,6 @@ public class GradleErrorDialogs {
 			showGradleCacheDataErrorDialog(whereToShow, errorCode);
 		else if (errorCode == GradleErrorCodes.GRADLE_CACHEDATA_OUTDATED)
 			showGradleCacheOutdatedDialogOfflineMode(whereToShow, errorCode);
-		else if (errorCode == GradleErrorCodes.JAVA_INVALID_VERSION)
-			showGradleInvalidJavaVersionDialog(whereToShow, errorCode);
 		else
 			LOG.warn("Error with code " + errorCode + " was reported, but no response is registered.");
 
@@ -92,17 +90,6 @@ public class GradleErrorDialogs {
 		String[] options = { L10N.t("gradle.errors.open_options"), L10N.t("gradle.errors.do_nothing") };
 		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"),
 				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-		if (option == 0) {
-			new PreferencesDialog(whereToShow, "Gradle settings");
-		}
-	}
-
-	private static void showGradleInvalidJavaVersionDialog(Window whereToShow, int errorCode) {
-		String msg = L10N.t("gradle.errors.invalid_java_version");
-
-		String[] options = { L10N.t("gradle.errors.open_options"), L10N.t("gradle.errors.do_nothing") };
-		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"),
-				JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 		if (option == 0) {
 			new PreferencesDialog(whereToShow, "Gradle settings");
 		}

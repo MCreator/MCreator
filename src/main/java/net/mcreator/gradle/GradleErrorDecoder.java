@@ -91,12 +91,6 @@ public class GradleErrorDecoder {
 			return GradleErrorDialogs.showErrorDialog(GradleErrorCodes.JAVA_XMS_INVALID_VALUE, whereToShow);
 		}
 
-		//Check if invalid Java version is used
-		if (err.contains("Could not determine java version from") || out
-				.contains("Could not determine java version from")) {
-			return GradleErrorDialogs.showErrorDialog(GradleErrorCodes.JAVA_INVALID_VERSION, whereToShow);
-		}
-
 		//check if the error was caused by JVM crash and no other errors are present
 		if ((out.contains("The crash happened outside the Java Virtual Machine in native code") || err
 				.contains("The crash happened outside the Java Virtual Machine in native code")) && (
