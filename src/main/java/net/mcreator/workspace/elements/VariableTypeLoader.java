@@ -85,6 +85,9 @@ public class VariableTypeLoader {
 			case "direction":
 				BuiltInTypes.DIRECTION = variableType;
 				break;
+			case "itemstack":
+				BuiltInTypes.ITEMSTACK = variableType;
+				break;
 			}
 		}
 
