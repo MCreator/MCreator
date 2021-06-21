@@ -79,7 +79,7 @@ public class GradleErrorDialogs {
 		} else {
 			String msg = L10N.t("gradle.errors.cache_corrupted");
 
-			String[] options = { "Clear Gradle caches", "Do nothing" };
+			String[] options = { L10N.t("gradle.errors.clear_caches"), L10N.t("gradle.errors.do_nothing") };
 			int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), MESSAGE_TITLE,
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 			if (option == 0) {
@@ -91,7 +91,7 @@ public class GradleErrorDialogs {
 	private static void showGradleCacheOutdatedDialogOfflineMode(Window whereToShow, int errorCode) {
 		String msg = L10N.t("gradle.errors.cache_outdated");
 
-		String[] options = { "Open Gradle options", "Do nothing" };
+		String[] options = { L10N.t("gradle.errors.open_options"), L10N.t("gradle.errors.do_nothing") };
 		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), MESSAGE_TITLE,
 				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 		if (option == 0) {
@@ -102,7 +102,7 @@ public class GradleErrorDialogs {
 	private static void showGradleInvalidJavaVersionDialog(Window whereToShow, int errorCode) {
 		String msg = L10N.t("gradle.errors.invalid_java_version");
 
-		String[] options = { "Open Gradle options", "Do nothing" };
+		String[] options = { L10N.t("gradle.errors.open_options"), L10N.t("gradle.errors.do_nothing") };
 		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), MESSAGE_TITLE,
 				JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 		if (option == 0) {
@@ -127,7 +127,7 @@ public class GradleErrorDialogs {
 	private static void showJVMHeapSpaceErrorDialog(Window whereToShow, int errorCode) {
 		String msg = L10N.t("gradle.errors.jvm_heap_space");
 
-		String[] options = { "Open Gradle options", "Do nothing" };
+		String[] options = { L10N.t("gradle.errors.open_options"), L10N.t("gradle.errors.do_nothing") };
 		int option = JOptionPane.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), GradleErrorDialogs.MESSAGE_TITLE,
 				JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 		if (option == 0) {
@@ -151,7 +151,7 @@ public class GradleErrorDialogs {
 	}
 
 	private static void showGradleBuildFailedErrorDialog(Window whereToShow) {
-		Object[] options = { "Open help page", "Do nothing" };
+		Object[] options = { L10N.t("gradle.errors.open_help_page"), L10N.t("gradle.errors.do_nothing") };
 		int reply = JOptionPane.showOptionDialog(whereToShow,
 				L10N.t("gradle.errors.build_failed"),
 				L10N.t("gradle.errors.build_failed.title"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options,
