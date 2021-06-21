@@ -35,8 +35,6 @@ public class GradleErrorDialogs {
 
 	private static final Logger LOG = LogManager.getLogger("Gradle Error Dialogs");
 
-	private static final String MESSAGE_TITLE = "Gradle task failed with error";
-
 	public static int showErrorDialog(int errorCode, MCreator whereToShow) {
 		if (errorCode == GradleErrorCodes.JAVA_JVM_CRASH_ERROR)
 			showJVMCrashErrorDialog(whereToShow, errorCode);
@@ -60,12 +58,13 @@ public class GradleErrorDialogs {
 			showGradleCacheOutdatedDialogOfflineMode(whereToShow, errorCode);
 		else if (errorCode == GradleErrorCodes.JAVA_INVALID_VERSION)
 			showGradleInvalidJavaVersionDialog(whereToShow, errorCode);
-
 		else
-			LOG.warn("Error with code " + errorCode + " was reported, but no action is registered.");
+			LOG.warn("Error with code " + errorCode + " was reported, but no response is registered.");
 
 		return errorCode;
 	}
+	
+	private static final String MESSAGE_TITLE = "Gradle task failed with error";
 	
 	private static String applyAppendx(String msg, int errorCode) {
 		String appendx = "<small><br><br><font color=gray>ERROR CODE: " + GradleErrorCodes.toString(errorCode) + " [" + errorCode + "]";
