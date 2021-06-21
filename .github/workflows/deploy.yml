@@ -58,9 +58,9 @@ jobs:
           file_glob: true
           file: build/export/*
           body: > 
-            ### **?? Download: https://mcreator.net/download**
+            ### **Download: https://mcreator.net/download**
             
-            ### ?? Changelog: https://mcreator.net/changelog
+            ### Changelog: https://mcreator.net/changelog
             
             <!--[[
             {

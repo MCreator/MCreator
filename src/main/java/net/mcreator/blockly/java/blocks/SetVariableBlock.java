@@ -27,13 +27,14 @@ import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
-import net.mcreator.workspace.elements.VariableElementTypeLoader;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -41,15 +42,15 @@ public class SetVariableBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public SetVariableBlock() {
-		names = VariableElementTypeLoader.INSTANCE.getVariableTypes().stream().map(VariableElementType::getName)
+		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName)
 				.collect(Collectors.toList()).stream().map(s -> s = "variables_set_" + s).toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_set_");
-		String javaType = new Dependency("",
-				VariableElementTypeLoader.INSTANCE.getVariableTypeFromString(type).getName())
-				.getType(master.getWorkspace());
+		VariableType typeObject = VariableTypeLoader.INSTANCE.getVariableTypeFromString(type);
+
+		String javaType = new Dependency("", typeObject.getName()).getType(master.getWorkspace());
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
@@ -65,8 +66,8 @@ public class SetVariableBlock implements IBlockGenerator {
 							"Variable set block is bound to a variable that does not exist. Skipping this block."));
 					return;
 				} else if (master instanceof BlocklyToProcedure && scope.equals("local")
-						&& !((BlocklyToProcedure) master).getVariables()
-						.contains(name)) { // check if local variable exists
+						&& !((BlocklyToProcedure) master).getLocalVariables().stream().map(VariableElement::toString)
+						.collect(Collectors.toList()).contains(name)) { // check if local variable exists
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							"Variable set block is bound to a local variable that does not exist. Skipping this block."));
 					return;
@@ -85,9 +86,7 @@ public class SetVariableBlock implements IBlockGenerator {
 						}
 						return;
 					}
-				}
-
-				if (scope.equals("global")) {
+				} else if (scope.equals("global")) {
 					scope = master.getWorkspace().getVariableElementByName(name).getScope().name();
 					if (scope.equals("GLOBAL_MAP") || scope.equals("GLOBAL_WORLD")) {
 						master.addDependency(new Dependency("world", "world"));
@@ -96,18 +95,26 @@ public class SetVariableBlock implements IBlockGenerator {
 					}
 				}
 
+				Object setterTemplate = typeObject
+						.getScopeDefinition(master.getWorkspace(), scope.toUpperCase(Locale.ENGLISH)).get("set");
+				if (setterTemplate == null) {
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+							"Current generator does not support setting variables of type " + type + " in " + scope
+									+ " scope. Skipping this block."));
+					return;
+				}
+
 				String valuecode = BlocklyToCode.directProcessOutputBlock(master, value);
 
 				if (master.getTemplateGenerator() != null) {
 					Map<String, Object> dataModel = new HashMap<>();
 					dataModel.put("name", name);
-					dataModel.put("scope", scope);
+					dataModel.put("scope", scope.toUpperCase(Locale.ENGLISH));
 					dataModel.put("type", type);
 					dataModel.put("javaType", javaType);
 					dataModel.put("value", valuecode);
-
 					String code = master.getTemplateGenerator()
-							.generateFromTemplate("_set_variable.java.ftl", dataModel);
+							.generateFromString(setterTemplate.toString(), dataModel);
 					master.append(code);
 				}
 			}

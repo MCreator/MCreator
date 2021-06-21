@@ -74,8 +74,8 @@ public class Launcher {
 		LOG.info("Starting MCreator " + version);
 
 		// print version of Java
-		LOG.info("Java version: " + System.getProperty("java.version") + ", specification: " + System
-				.getProperty("java.specification.version") + ", VM name: " + System.getProperty("java.vm.name"));
+		LOG.info("Java version: " + System.getProperty("java.version") + ", VM: " + System.getProperty("java.vm.name")
+				+ ", vendor: " + System.getProperty("java.vendor"));
 		LOG.info("Current JAVA_HOME for running instance: " + System.getProperty("java.home"));
 
 		// after we have libraries loaded, we load preferences
