@@ -237,7 +237,7 @@ public class MainMenuBar extends JMenuBar {
 		window.setMnemonic('W');
 		add(window);
 
-		JMenu help = L10N.menu"menubar.help");
+		JMenu help = L10N.menu("menubar.help");
 		addHelpSearch(help);
 		help.add(mcreator.actionRegistry.help);
 		help.add(mcreator.actionRegistry.support);
