@@ -65,7 +65,7 @@ public class GradleErrorDialogs {
 		return errorCode;
 	}
 
-	private static final String MESSAGE_TITLE = L10N.t("gradle.errors.title");
+	private static final String MESSAGE_TITLE = "Gradle task failed with error";
 
 	private static String applyAppendx(String msg, int errorCode) {
 		String appendx = "<small><br><br><font color=gray>" + L10N.t("gradle.errors.error") + GradleErrorCodes
