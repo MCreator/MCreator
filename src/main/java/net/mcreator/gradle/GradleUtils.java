@@ -30,9 +30,7 @@ import org.gradle.tooling.BuildLauncher;
 import org.gradle.tooling.ProjectConnection;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class GradleUtils {
 

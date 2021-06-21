@@ -128,7 +128,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				"Additional generation condition", VariableElementTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName("(no additional condition)");
+				.setDefaultName(L10N.t("condition.common.no_additional"));
 
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
