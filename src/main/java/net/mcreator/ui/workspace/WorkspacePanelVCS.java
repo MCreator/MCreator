@@ -163,12 +163,9 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 						.call()) {
 					if (commit.abbreviate(7).name().equals(shortCommitId)) {
 						int option = JOptionPane.showOptionDialog(workspacePanel.getMcreator(),
-								"<html><b>Are you sure you want to jump to commit " + commit.getShortMessage()
-										+ "?</b><br>"
-										+ "All your local unsynced changes will be dropped after this action!<br><br>"
-										+ "<small>Make sure you don't jump between different MCreator workspace version checkpoints!",
-								"Jump to commit", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-								new String[] { "Jump to " + commit.abbreviate(7).name(), "Cancel" }, null);
+								L10N.t("workspace.vcs.jump_commit_confirmation", commit.getShortMessage()),
+								L10N.t("workspace.vcs.jump_commit_confirmation.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+								new String[] { L10N.t("workspace.vcs.jump_to" + commit.abbreviate(7).name()), L10N.t("common.cancel") }, null);
 
 						if (option == 0) {
 							// track all so they can be stashed properly
@@ -234,7 +231,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 				}
 
 				switchBranch
-						.setText("Current branch: " + git.getRepository().getFullBranch().replace("refs/heads/", ""));
+						.setText(L10N.t("workspace.vcs.current_branch", git.getRepository().getFullBranch().replace("refs/heads/", "")));
 			} catch (Exception ignored) {
 			}
 
