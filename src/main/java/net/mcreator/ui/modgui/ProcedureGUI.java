@@ -379,7 +379,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 								String nameinrow = localVars.get(i).getName();
 								if (textname.equals(nameinrow))
 									return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-											L10N.t("elementgui.procedure.name_already_exists"));
+											L10N.t("common.name_already_exists"));
 							}
 							for (Dependency dependency : dependenciesArrayList) {
 								String nameinrow = dependency.getName();

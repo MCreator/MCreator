@@ -120,7 +120,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 							String nameinrow = (String) elements.getValueAt(i, 0);
 							if (i != row && textname.equals(nameinrow))
 								return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-										"This name already exists");
+										L10N.t("common.name_already_exists"));
 						}
 						return validator.validate();
 					});
