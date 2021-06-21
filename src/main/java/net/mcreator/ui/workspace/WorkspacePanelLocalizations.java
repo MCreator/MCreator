@@ -213,7 +213,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			button.addActionListener(e -> {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
 						L10N.t("workspace.localization.confirm_delete_map"),
-						L10N.t("global.confirmation"), JOptionPane.YES_NO_OPTION,
+						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null);
 				if (n == 0) {
 					workspacePanel.getMcreator().getWorkspace().removeLocalizationLanguage(entry.getKey());
@@ -244,7 +244,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 				if (key != null) {
 					int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
 							L10N.t("workspace.localization.confirm_delete_entry"),
-							L10N.t("global.confirmation"), JOptionPane.YES_NO_OPTION,
+							L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
 					if (n == 0) {
 						Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))

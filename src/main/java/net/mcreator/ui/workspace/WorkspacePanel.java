@@ -1356,7 +1356,7 @@ import java.util.stream.Collectors;
 			if (list.getSelectedValue() != null) {
 				int n = JOptionPane.showConfirmDialog(mcreator,
 						L10N.t("workspace.elements.confirm_delete_message", list.getSelectedValuesList().size()),
-						L10N.t("global.confirmation"), JOptionPane.YES_NO_OPTION,
+						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null);
 
 				if (n == 0) {

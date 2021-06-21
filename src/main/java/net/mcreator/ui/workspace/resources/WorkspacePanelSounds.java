@@ -108,7 +108,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 			if (file.size() > 0) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
 						L10N.t("workspace.sounds.confirm_deletion_message"),
-						L10N.t("global.confirmation"), JOptionPane.YES_NO_OPTION,
+						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE);
 				if (n == 0) {
 					file.forEach(workspacePanel.getMcreator().getWorkspace()::removeSoundElement);

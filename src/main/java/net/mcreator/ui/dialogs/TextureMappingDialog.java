@@ -181,7 +181,7 @@ public class TextureMappingDialog {
 		button.setMargin(new Insets(0, 0, 0, 0));
 		button.addActionListener(e -> {
 			int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.textures_mapping.confirm_deletion_message"),
-					L10N.t("global.confirmation"), JOptionPane.YES_NO_OPTION,
+					L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null);
 			if (n == 0) {
 				for (int i = 0; i < addTo.getTabCount(); i++) {
