@@ -37,7 +37,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class NewImageDialog extends MCreatorDialog {
-	private final String[] layerTypes = { L10N.t("dialog.imageeditor.transparency"), L10N.t("dialog.imageeditor.color"),
+	private final String[] layerTypes = { L10N.t("dialog.imageeditor.transparency"), L10N.t("dialog.imageeditor.color_layer_type"),
 			L10N.t("dialog.imageeditor.template"), L10N.t("dialog.imageeditor.no_layer") };
 
 	private ResourcePointer selection;
