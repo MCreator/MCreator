@@ -56,12 +56,12 @@ public class ModElementTypeRegistry {
 		ModElementType.FOOD = register(
 				new ModElementType<>("food", 'f', BaseType.ITEM, RecipeType.ITEM, FoodGUI::new, Food.class));
 		ModElementType.FUEL = register(
-				new ModElementType<>("fuel", '/', BaseType.FUEL, RecipeType.NONE, FuelGUI::new, Fuel.class));
+				new ModElementType<>("fuel", '1', BaseType.FUEL, RecipeType.NONE, FuelGUI::new, Fuel.class));
 		ModElementType.FUNCTION = register(
-				new ModElementType<>("function", '\'', BaseType.DATAPACK, RecipeType.NONE, FunctionGUI::new,
+				new ModElementType<>("function", '2', BaseType.DATAPACK, RecipeType.NONE, FunctionGUI::new,
 						Function.class));
 		ModElementType.GAMERULE = register(
-				new ModElementType<>("gamerule", ';', BaseType.OTHER, RecipeType.NONE, GameRuleGUI::new,
+				new ModElementType<>("gamerule", '3', BaseType.OTHER, RecipeType.NONE, GameRuleGUI::new,
 						GameRule.class));
 		ModElementType.GUI = register(
 				new ModElementType<>("gui", 'g', BaseType.GUI, RecipeType.NONE, CustomGUIGUI::new, GUI.class));
@@ -83,7 +83,7 @@ public class ModElementTypeRegistry {
 				new ModElementType<>("overlay", 'v', BaseType.OVERLAY, RecipeType.NONE, OverlayGUI::new,
 						Overlay.class));
 		ModElementType.PAINTING = register(
-				new ModElementType<>("painting", '.', BaseType.OTHER, RecipeType.NONE, PaintingGUI::new,
+				new ModElementType<>("painting", '4', BaseType.OTHER, RecipeType.NONE, PaintingGUI::new,
 						Painting.class));
 		ModElementType.PARTICLE = register(
 				new ModElementType<>("particle", 'y', BaseType.PARTICLE, RecipeType.NONE, ParticleGUI::new,
