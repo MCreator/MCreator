@@ -55,6 +55,7 @@ public class DownloadJDK {
 				}
 
 			} else {
+				LOG.info(jdkVersion + " is already downloaded.");
 				return true;
 			}
 		} else {

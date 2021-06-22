@@ -82,11 +82,9 @@ public class GradleUtils {
 				LOG.error("Java home override from preferences is not valid!");
 		}
 
-		System.out.println("1");
 		// if the generator has a JDK, we set JAVA_HOME to generator's JDK
 		if (UserFolderManager.getSpecificJDK(genConfig.getJDKVersion() + "/bin/javac.exe").isFile() || UserFolderManager
 				.getSpecificJDK(genConfig.getJDKVersion() + "bin/javac").isFile()) {
-			System.out.println("2");
 			return FilenameUtils.normalize(UserFolderManager.getSpecificJDK(genConfig.getJDKVersion()).getAbsolutePath());
 		}
 
