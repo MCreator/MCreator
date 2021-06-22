@@ -20,7 +20,7 @@ package net.mcreator.ui.workspace;
 
 import net.mcreator.element.*;
 import net.mcreator.element.registry.BaseType;
-import net.mcreator.element.registry.ModElementRegistry;
+import net.mcreator.element.registry.ModElementTypeRegistry;
 import net.mcreator.element.registry.ModElementType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
@@ -582,7 +582,7 @@ import java.util.stream.Collectors;
 
 						togglefilter("f:err")));
 		filterPopup.addSeparator();
-		for (ModElementType<?> type : ModElementRegistry.ELEMENTS) {
+		for (ModElementType<?> type : ModElementTypeRegistry.ELEMENTS) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
 					e -> togglefilter("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 16))));
@@ -1263,7 +1263,7 @@ import java.util.stream.Collectors;
 						mcreator.getModElementManager().storeModElementPicture(generatableElementDuplicate);
 						mcreator.getModElementManager().storeModElement(generatableElementDuplicate);
 
-						if (mu.getType() == ModElementRegistry.BuiltInTypes.CODE || mu.isCodeLocked()) {
+						if (mu.getType() == ModElementType.CODE || mu.isCodeLocked()) {
 							List<GeneratorTemplate> originalFiles = mcreator.getGenerator()
 									.getModElementGeneratorTemplatesList(mu);
 							List<GeneratorTemplate> duplicateFiles = mcreator.getGenerator()
@@ -1587,7 +1587,7 @@ import java.util.stream.Collectors;
 					pat = pat.replaceFirst("f:", "");
 					if (pat.equals("locked") || pat.equals("ok") || pat.equals("err"))
 						filters.add(pat);
-					for (ModElementType<?> type : ModElementRegistry.ELEMENTS) {
+					for (ModElementType<?> type : ModElementTypeRegistry.ELEMENTS) {
 						if (pat.equals(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))) {
 							metfilters.add(type);
 						}

@@ -24,7 +24,7 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
-import net.mcreator.element.registry.ModElementRegistry;
+import net.mcreator.element.registry.ModElementType;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.TestWorkspaceDataProvider;
@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTProcedureBlocks {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementRegistry.BuiltInTypes.PROCEDURE)
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE) {
 			LOG.warn("[" + generatorName
 					+ "] Skipping procedure blocks test as the current generator does not support them.");
@@ -212,7 +212,7 @@ public class GTProcedureBlocks {
 			}
 
 			ModElement modElement = new ModElement(workspace, "TestBlock" + procedureBlock.machine_name,
-					ModElementRegistry.BuiltInTypes.PROCEDURE);
+					ModElementType.PROCEDURE);
 
 			String testXML = procedureBlock.toolboxXML;
 

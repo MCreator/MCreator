@@ -51,7 +51,6 @@ import java.lang.reflect.Field;
 import java.util.Locale;
 
 public class ModElementType<GE extends GeneratableElement> implements Comparable<ModElementType<?>> {
-
 	//Variables used for each mod element
 	private final BaseType baseType;
 	private final String registryName;
@@ -63,6 +62,38 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 	private final Class<? extends GE> modElementStorageClass;
 	private GeneratorStats.CoverageStatus status = GeneratorStats.CoverageStatus.FULL;
 	private boolean hasProcedureTriggers;
+
+	public static ModElementType<?> ADVANCEMENT;
+	public static ModElementType<?> ARMOR;
+	public static ModElementType<?> BIOME;
+	public static ModElementType<?> BLOCK;
+	public static ModElementType<?> COMMAND;
+	public static ModElementType<?> DIMENSION;
+	public static ModElementType<?> CODE;
+	public static ModElementType<?> ENCHANTMENT;
+	public static ModElementType<?> FLUID;
+	public static ModElementType<?> FOOD;
+	public static ModElementType<?> FUEL;
+	public static ModElementType<?> FUNCTION;
+	public static ModElementType<?> GAMERULE;
+	public static ModElementType<?> GUI;
+	public static ModElementType<?> ITEM;
+	public static ModElementType<?> KEYBIND;
+	public static ModElementType<?> LIVINGENTITY;
+	public static ModElementType<?> LOOTTABLE;
+	public static ModElementType<?> MUSICDISC;
+	public static ModElementType<?> OVERLAY;
+	public static ModElementType<?> PAINTING;
+	public static ModElementType<?> PARTICLE;
+	public static ModElementType<?> PLANT;
+	public static ModElementType<?> POTION;
+	public static ModElementType<?> PROCEDURE;
+	public static ModElementType<?> RANGEDITEM;
+	public static ModElementType<?> RECIPE;
+	public static ModElementType<?> STRUCTURE;
+	public static ModElementType<?> TAB;
+	public static ModElementType<?> TAG;
+	public static ModElementType<?> TOOL;
 
 	public ModElementType(String registryName, Character shortcut, BaseType baseType, RecipeType recipeType,
 			ModElementGUIProvider<GE> modElementGUIProvider, Class<? extends GE> modElementStorageClass) {

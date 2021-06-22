@@ -21,7 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.registry.ModElementRegistry;
+import net.mcreator.element.registry.ModElementType;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.Item;
 import net.mcreator.minecraft.DataListEntry;
@@ -381,7 +381,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 						.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
-				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementRegistry.BuiltInTypes.GUI)
+				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
 						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
 	}
 

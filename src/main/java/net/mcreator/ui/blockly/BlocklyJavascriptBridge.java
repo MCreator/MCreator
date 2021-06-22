@@ -21,7 +21,7 @@ package net.mcreator.ui.blockly;
 import com.google.gson.Gson;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.element.registry.BaseType;
-import net.mcreator.element.registry.ModElementRegistry;
+import net.mcreator.element.registry.ModElementType;
 import net.mcreator.io.OS;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
@@ -163,7 +163,7 @@ public class BlocklyJavascriptBridge {
 		//We check for general cases
 		switch (type) {
 		case "procedure":
-			retval = workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementRegistry.BuiltInTypes.PROCEDURE)
+			retval = workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
 					.map(ModElement::getName).collect(Collectors.toList());
 			break;
 		case "entity":
@@ -216,7 +216,7 @@ public class BlocklyJavascriptBridge {
 			break;
 		case "rangeditem":
 			retval = ListUtils.merge(Collections.singleton("Arrow"),
-					workspace.getModElements().stream().filter(var -> var.getType() == ModElementRegistry.BuiltInTypes.RANGEDITEM)
+					workspace.getModElements().stream().filter(var -> var.getType() == ModElementType.RANGEDITEM)
 							.map(ModElement::getName).collect(Collectors.toList()));
 			break;
 		case "planttype":
@@ -228,7 +228,7 @@ public class BlocklyJavascriptBridge {
 		// check if type is "call procedure with return value"
 		if (type.contains("procedure_retval_")) {
 			retval = workspace.getModElements().stream().filter(mod -> {
-				if (mod.getType() == ModElementRegistry.BuiltInTypes.PROCEDURE) {
+				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
 							VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
 							null;

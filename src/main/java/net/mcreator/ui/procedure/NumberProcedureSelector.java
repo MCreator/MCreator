@@ -21,7 +21,7 @@ package net.mcreator.ui.procedure;
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.NumberProcedure;
-import net.mcreator.element.registry.ModElementRegistry;
+import net.mcreator.element.registry.ModElementType;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
@@ -156,8 +156,8 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 
 			if (procedureNameString != null) {
 				ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
-						ModElementRegistry.BuiltInTypes.PROCEDURE);
-				ModElementGUI<?> newGUI = ModElementRegistry.BuiltInTypes.PROCEDURE
+						ModElementType.PROCEDURE);
+				ModElementGUI<?> newGUI = ModElementType.PROCEDURE
 						.getModElementGUI(mcreator, element, false);
 				if (newGUI != null) {
 					newGUI.showView();
@@ -169,7 +169,7 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 					});
 					mcreator.getApplication().getAnalytics().async(() -> mcreator.getApplication().getAnalytics()
 							.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
-									ModElementRegistry.BuiltInTypes.PROCEDURE.getReadableName(), null, null));
+									ModElementType.PROCEDURE.getReadableName(), null, null));
 				}
 			}
 		});
@@ -207,7 +207,7 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 			fixedValue.setPreferredSize(new Dimension(50, 0));
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementRegistry.BuiltInTypes.PROCEDURE)
+		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE)
 			setEnabled(false);
 	}
@@ -234,7 +234,7 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 		}
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementRegistry.BuiltInTypes.PROCEDURE)
+		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE)
 			enabled = false;
 

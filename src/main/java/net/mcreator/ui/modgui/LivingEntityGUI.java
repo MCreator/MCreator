@@ -27,7 +27,7 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.registry.ModElementRegistry;
+import net.mcreator.element.registry.ModElementType;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -858,11 +858,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		ComboBoxUtil.updateComboBoxContents(rangedItemType, ListUtils.merge(Collections.singleton("Default item"),
 				mcreator.getWorkspace().getModElements().stream()
-						.filter(var -> var.getType() == ModElementRegistry.BuiltInTypes.RANGEDITEM).map(ModElement::getName)
+						.filter(var -> var.getType() == ModElementType.RANGEDITEM).map(ModElement::getName)
 						.collect(Collectors.toList())), "Default item");
 
 		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
-				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementRegistry.BuiltInTypes.GUI)
+				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
 						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
 
 		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
@@ -876,7 +876,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		} else if (page == 5) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-						.map(compileNote -> "LivingEntity AI builder: " + compileNote.getMessage())
+						.map(compileNote -> "Living Entity AI builder: " + compileNote.getMessage())
 						.collect(Collectors.toList()));
 		} else if (page == 6) {
 			if ((int) minNumberOfMobsPerGroup.getValue() > (int) maxNumberOfMobsPerGroup.getValue()) {

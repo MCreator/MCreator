@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.action.impl.workspace;
 
-import net.mcreator.element.registry.ModElementRegistry;
+import net.mcreator.element.registry.ModElementType;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.action.ActionRegistry;
@@ -37,7 +37,7 @@ public class EditTabOrderAction extends BasicAction {
 
 	@Override public boolean isEnabled() {
 		GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
-		return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementRegistry.BuiltInTypes.TAB)
+		return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TAB)
 				!= GeneratorStats.CoverageStatus.NONE;
 	}
 }

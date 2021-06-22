@@ -30,7 +30,7 @@ package net.mcreator.integration.generator;
 import com.google.gson.Gson;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.registry.ModElementType;
-import net.mcreator.element.registry.ModElementRegistry;
+import net.mcreator.element.registry.ModElementTypeRegistry;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.integration.TestWorkspaceDataProvider;
@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTModElements {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
-		for (ModElementType<?> modElementType : ModElementRegistry.ELEMENTS) {
+		for (ModElementType<?> modElementType : ModElementTypeRegistry.ELEMENTS) {
 
 			// silently skip mod elements not supported by this generator
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(modElementType)

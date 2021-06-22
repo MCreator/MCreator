@@ -20,7 +20,7 @@
 package net.mcreator.integration.generator;
 
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.registry.ModElementRegistry;
+import net.mcreator.element.registry.ModElementType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
@@ -37,10 +37,10 @@ public class GTSampleElements {
 
 	public static void provideAndGenerateSampleElements(Random random, Workspace workspace) {
 		// add sample procedures (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementRegistry.BuiltInTypes.PROCEDURE)
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				!= GeneratorStats.CoverageStatus.NONE) {
 			for (int i = 1; i <= 13; i++) {
-				ModElement me = new ModElement(workspace, "procedure" + i, ModElementRegistry.BuiltInTypes.PROCEDURE)
+				ModElement me = new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE)
 						.putMetadata("dependencies", new ArrayList<String>());
 				workspace.addModElement(me);
 
@@ -51,7 +51,7 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 4; i++) {
-				ModElement me = new ModElement(workspace, "condition" + i, ModElementRegistry.BuiltInTypes.PROCEDURE)
+				ModElement me = new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE)
 						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC");
 				workspace.addModElement(me);
 
@@ -65,7 +65,7 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 1; i++) {
-				ModElement me = new ModElement(workspace, "number" + i, ModElementRegistry.BuiltInTypes.PROCEDURE)
+				ModElement me = new ModElement(workspace, "number" + i, ModElementType.PROCEDURE)
 						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "NUMBER");
 				workspace.addModElement(me);
 
@@ -80,10 +80,10 @@ public class GTSampleElements {
 		}
 
 		// add sample recipes (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementRegistry.BuiltInTypes.RECIPE)
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
 				!= GeneratorStats.CoverageStatus.NONE) {
 			for (int i = 1; i <= 2; i++) {
-				ModElement me = new ModElement(workspace, "ExampleRecipe" + i, ModElementRegistry.BuiltInTypes.RECIPE);
+				ModElement me = new ModElement(workspace, "ExampleRecipe" + i, ModElementType.RECIPE);
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.Recipe recipe = new net.mcreator.element.types.Recipe(me);
@@ -102,10 +102,10 @@ public class GTSampleElements {
 		}
 
 		// add sample functions (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementRegistry.BuiltInTypes.FUNCTION)
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.FUNCTION)
 				!= GeneratorStats.CoverageStatus.NONE) {
 			for (int i = 1; i <= 2; i++) {
-				ModElement me = new ModElement(workspace, "ExampleFunction" + i, ModElementRegistry.BuiltInTypes.FUNCTION);
+				ModElement me = new ModElement(workspace, "ExampleFunction" + i, ModElementType.FUNCTION);
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.Function function = new net.mcreator.element.types.Function(me);
@@ -118,10 +118,10 @@ public class GTSampleElements {
 		}
 
 		// add sample loot tables (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementRegistry.BuiltInTypes.LOOTTABLE)
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LOOTTABLE)
 				!= GeneratorStats.CoverageStatus.NONE) {
 			for (int i = 1; i <= 2; i++) {
-				ModElement me = new ModElement(workspace, "ExampleLootTable" + i, ModElementRegistry.BuiltInTypes.LOOTTABLE);
+				ModElement me = new ModElement(workspace, "ExampleLootTable" + i, ModElementType.LOOTTABLE);
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.LootTable lootTable = new net.mcreator.element.types.LootTable(me);

@@ -22,7 +22,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.Procedure;
-import net.mcreator.element.registry.ModElementRegistry;
 import net.mcreator.element.registry.ModElementType;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
@@ -71,7 +70,7 @@ public abstract class AbstractProcedureSelector extends JPanel {
 
 	@Override public void setEnabled(boolean enabled) {
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementRegistry.BuiltInTypes.PROCEDURE)
+		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE)
 			enabled = false;
 
@@ -89,7 +88,7 @@ public abstract class AbstractProcedureSelector extends JPanel {
 		procedures.addItem(new CBoxEntry(defaultName, null));
 
 		for (ModElement mod : mcreator.getWorkspace().getModElements()) {
-			if (mod.getType() == ModElementRegistry.BuiltInTypes.PROCEDURE) {
+			if (mod.getType() == ModElementType.PROCEDURE) {
 				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
 
 				List<Dependency> realdepsList = new ArrayList<>();

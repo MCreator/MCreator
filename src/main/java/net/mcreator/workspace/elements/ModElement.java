@@ -20,7 +20,7 @@ package net.mcreator.workspace.elements;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.registry.BaseType;
-import net.mcreator.element.registry.ModElementRegistry;
+import net.mcreator.element.registry.ModElementTypeRegistry;
 import net.mcreator.element.registry.ModElementType;
 import net.mcreator.element.registry.RecipeType;
 import net.mcreator.generator.IGeneratorProvider;
@@ -118,7 +118,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 		mcItems = new ArrayList<>();
 
-		if (getType() == ModElementRegistry.BuiltInTypes.DIMENSION) {
+		if (getType() == ModElementType.DIMENSION) {
 			if (getMetadata("ep") != null && (Boolean) getMetadata("ep"))
 				mcItems.add(new MCItem.Custom(this, null));
 		} else if (getType().getRecipeType() == RecipeType.ITEM || getType().getRecipeType() == RecipeType.BLOCK) {
@@ -282,7 +282,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	public ModElementType<?> getType() {
-		return ModElementRegistry.getModElementType(type);
+		return ModElementTypeRegistry.getModElementType(type);
 	}
 
 	public void setType(ModElementType<?> type) {
@@ -294,7 +294,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	public void setCodeLock(boolean codeLock) {
-		if (this.getType() == ModElementRegistry.BuiltInTypes.CODE && !codeLock)
+		if (this.getType() == ModElementType.CODE && !codeLock)
 			return;
 		this.locked_code = codeLock;
 	}
