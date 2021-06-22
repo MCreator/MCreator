@@ -47,7 +47,7 @@ public class DownloadJDK {
 
 					LOG.info("Unzipping the JDK");
 					ZipIO.unzip(UserFolderManager.getSpecificJDK(jdkVersion + ".zip").getAbsolutePath(),
-							UserFolderManager.getFileFromUserFolder("jdk").getAbsolutePath());
+							UserFolderManager.getFileFromUserFolder("jdks").getAbsolutePath());
 					UserFolderManager.getSpecificJDK(jdkVersion + ".zip").delete();
 				} catch (IOException e) {
 					LOG.error("Could not download JDK: " + jdkVersion, e.getMessage());

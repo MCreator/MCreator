@@ -45,7 +45,7 @@ public class UserFolderManager {
 	}
 
 	public static File getSpecificJDK(String jdkVersion) {
-		return getFileFromUserFolder("/jdk/" + jdkVersion);
+		return getFileFromUserFolder("/jdks/" + jdkVersion);
 	}
 
 }
