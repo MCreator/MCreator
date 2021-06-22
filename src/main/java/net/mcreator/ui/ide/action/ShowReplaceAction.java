@@ -21,13 +21,14 @@ package net.mcreator.ui.ide.action;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.ide.CodeEditorView;
+import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 
 public class ShowReplaceAction extends BasicAction {
 
 	public ShowReplaceAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Replace in code", actionEvent -> {
+		super(actionRegistry, L10N.t("action.ide.replace_in_code"), actionEvent -> {
 			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView) {
 				CodeEditorView codeEditorView = (CodeEditorView) pan;

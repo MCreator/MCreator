@@ -20,20 +20,21 @@ package net.mcreator.ui.views.editor.image.action;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 
 import javax.swing.*;
 
 public class ImageEditorRedoAction extends BasicAction {
 	public ImageEditorRedoAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Redo changes", actionEvent -> {
+		super(actionRegistry, L10N.t("action.image_editor.redo"), actionEvent -> {
 			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView) {
 				ImageMakerView codeEditorView = (ImageMakerView) pan;
 				codeEditorView.getVersionManager().redo();
 			}
 		});
-		setTooltip("Click this to redo previous changes");
+		setTooltip(L10N.t("action.image_editor.redo.tooltip"));
 		actionRegistry.getMCreator().mcreatorTabs
 				.addTabShownListener(tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
 	}
