@@ -156,7 +156,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 	private void checkoutToSelectedCommit() {
 		String shortCommitId = commits.getValueAt(commits.getSelectedRow(), 0).toString();
 
-		if (shortCommitId != null) {
+		if (shortCommitId != null && workspacePanel.getMcreator().getWorkspace().getVCS() != null) {
 			try {
 				Git git = workspacePanel.getMcreator().getWorkspace().getVCS().getGit();
 				for (RevCommit commit : git.log().add(git.getRepository().resolve(git.getRepository().getFullBranch()))
@@ -165,7 +165,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 						int option = JOptionPane.showOptionDialog(workspacePanel.getMcreator(),
 								L10N.t("workspace.vcs.jump_commit_confirmation", commit.getShortMessage()),
 								L10N.t("workspace.vcs.jump_commit_confirmation.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-								new String[] { L10N.t("workspace.vcs.jump_to" + commit.abbreviate(7).name()), UIManager.getString("OptionPane.cancelButtonText") }, null);
+								new String[] { L10N.t("workspace.vcs.jump_to", commit.abbreviate(7).name()), UIManager.getString("OptionPane.cancelButtonText") }, null);
 
 						if (option == 0) {
 							// track all so they can be stashed properly
