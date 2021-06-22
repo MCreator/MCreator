@@ -110,7 +110,6 @@ public abstract class GeneratableElement {
 				newType = "livingentity";
 				break;
 			}
-			jsonElement.getAsJsonObject().addProperty("_type", newType);
 			ModElementType<?> modElementType = ModElementTypeRegistry
 					.getModElementType(newType);
 

@@ -18,6 +18,7 @@
 
 package net.mcreator.workspace.elements;
 
+import com.google.gson.*;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementTypeRegistry;
@@ -33,6 +34,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.*;
 
 public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorProvider, IElement {
@@ -323,6 +325,25 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 			this.path = null;
 		else
 			this.path = parent.getPath();
+	}
+
+	public static class ModElementDeserializer implements JsonDeserializer<JsonElement> {
+		@Override
+		public JsonElement deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context)
+				throws JsonParseException {
+			JsonObject json = jsonElement.getAsJsonObject();
+
+			String newType = json.get("type").getAsString();
+			if (newType.equals("gun")) {
+				newType = "rangeditem";
+			} else if (newType.equals("mob")) {
+				newType = "livingentity";
+			}
+
+			json.addProperty("type", newType);
+
+			return json;
+		}
 	}
 
 }
