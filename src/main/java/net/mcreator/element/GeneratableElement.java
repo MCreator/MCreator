@@ -111,7 +111,7 @@ public abstract class GeneratableElement {
 				break;
 			}
 			jsonElement.getAsJsonObject().addProperty("_type", newType);
-			ModElementType<?> modElementType = ModElementType
+			ModElementType<?> modElementType = ModElementTypeRegistry
 					.getModElementType(newType);
 
 			int importedFormatVersion = jsonDeserializationContext

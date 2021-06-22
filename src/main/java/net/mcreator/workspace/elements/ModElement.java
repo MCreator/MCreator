@@ -20,6 +20,7 @@ package net.mcreator.workspace.elements;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.BaseType;
+import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.RecipeType;
 import net.mcreator.generator.IGeneratorProvider;
@@ -281,7 +282,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	public ModElementType<?> getType() {
-		return ModElementType.getModElementType(type);
+		return ModElementTypeRegistry.getModElementType(type);
 	}
 
 	public void setType(ModElementType<?> type) {
