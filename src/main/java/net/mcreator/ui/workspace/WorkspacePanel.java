@@ -834,18 +834,15 @@ import java.util.stream.Collectors;
 		setOpaque(false);
 
 		JPanel pne = new JPanel(new GridLayout(8, 1, 6, 6));
-		pne.setOpaque(false);
+		pne.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 
 		JLabel but1 = new JLabel(TiledImageCache.workspaceAdd);
-		but1.addMouseListener(new
-
-									  MouseAdapter() {
-										  @Override public void mouseClicked(MouseEvent e) {
-											  if (but1.isEnabled())
-												  new ModTypeDropdown(mcreator)
-														  .show(e.getComponent(), e.getComponent().getWidth() + 5, -3);
-										  }
-									  });
+		but1.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (but1.isEnabled())
+					new ModTypeDropdown(mcreator).show(e.getComponent(), e.getComponent().getWidth() + 5, -3);
+			}
+		});
 		but1.setToolTipText(L10N.t("workspace.elements.add.tooltip"));
 		but1.setCursor(new
 
