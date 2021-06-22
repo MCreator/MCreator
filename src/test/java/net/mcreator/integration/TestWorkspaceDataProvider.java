@@ -649,7 +649,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.spawnThisMob = !_true;
 			livingEntity.doesDespawnWhenIdle = _true;
 			livingEntity.spawningProbability = 23;
-			livingEntity.mobSpawningType = new String[] { "monster", "creature", "ambient", "waterCreature" }[valueIndex];
+			livingEntity.mobSpawningType = new String[] { "monster", "creature", "ambient",
+					"waterCreature" }[valueIndex];
 			livingEntity.minNumberOfMobsPerGroup = 4;
 			livingEntity.maxNumberOfMobsPerGroup = 40;
 			livingEntity.restrictionBiomes = new ArrayList<>();

@@ -22,6 +22,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.ide.CodeEditorView;
+import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -30,7 +31,7 @@ import java.io.File;
 public class ReloadCodeAction extends BasicAction {
 
 	public ReloadCodeAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Reload code from file system", actionEvent -> {
+		super(actionRegistry, L10N.t("action.ide.reload_code"), actionEvent -> {
 			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView) {
 				CodeEditorView codeEditorView = (CodeEditorView) pan;
@@ -39,9 +40,7 @@ public class ReloadCodeAction extends BasicAction {
 					int sel = JOptionPane.OK_OPTION;
 					if (codeEditorView.changed)
 						sel = JOptionPane.showConfirmDialog(actionRegistry.getMCreator(),
-								"<html>If you load file from file system, all changes<br>"
-										+ "you made to the code will be overwritten!<br>"
-										+ "<b>Are you sure you want to continue?", "Overwrite?",
+								L10N.t("action.ide.reload_code.dialog"), L10N.t("common.confirmation"),
 								JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (sel == JOptionPane.OK_OPTION) {
 						codeEditorView.te.setText(FileIO.readFileToString(curr));
@@ -52,7 +51,7 @@ public class ReloadCodeAction extends BasicAction {
 				}
 			}
 		});
-		setTooltip("Click this to reload the code from FS in current code editor");
+		setTooltip(L10N.t("action.ide.reload_code.tooltip"));
 		actionRegistry.getMCreator().mcreatorTabs
 				.addTabShownListener(tab -> setEnabled(tab.getContent() instanceof CodeEditorView));
 	}
