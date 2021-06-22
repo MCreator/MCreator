@@ -41,7 +41,8 @@ public class ModElementNameValidator extends JavaMemeberNameValidator {
 	@Override public ValidationResult validate() {
 		for (ModElement element : workspace.getModElements()) {
 			if (element.getName().equalsIgnoreCase(JavaConventions.convertToValidClassName(textField.getText()))) {
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, L10N.t("validators.name_already_exists"));
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("validators.name_already_exists"));
 			}
 		}
 		return super.validate();

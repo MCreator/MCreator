@@ -42,7 +42,8 @@ public class TileHolderValidator implements Validator {
 		if (holder.has() || (requirement != null && !requirement.isSelected()))
 			return Validator.ValidationResult.PASSED;
 		else
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, L10N.t("validator.texture_needed"));
+			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					L10N.t("validator.texture_needed"));
 	}
 
 }

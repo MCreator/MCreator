@@ -487,7 +487,8 @@ public class CodeEditorView extends ViewBase {
 							}
 							disableJumpToMode();
 						} else {
-							new FocusableTip(te, null).toolTipRequested(mouseEvent, L10N.t("ide.errors.failed_find_declaration"));
+							new FocusableTip(te, null)
+									.toolTipRequested(mouseEvent, L10N.t("ide.errors.failed_find_declaration"));
 						}
 					}
 					jumpToMode = false;
@@ -645,8 +646,7 @@ public class CodeEditorView extends ViewBase {
 		this.fileOwner = fileOwner;
 		boolean codeLocked = this.fileOwner.isCodeLocked();
 		if (!codeLocked) {
-			setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()),
-					new Color(0x31332F));
+			setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()), new Color(0x31332F));
 		}
 	}
 
@@ -655,8 +655,7 @@ public class CodeEditorView extends ViewBase {
 			boolean codeLocked = this.fileOwner.isCodeLocked();
 			if (!codeLocked) {
 				Object[] options = { L10N.t("ide.actions.lock_and_save"), L10N.t("ide.actions.save_without_locking") };
-				int n = JOptionPane.showOptionDialog(mcreator,
-						L10N.t("ide.warnings.save_unlocked_element"),
+				int n = JOptionPane.showOptionDialog(mcreator, L10N.t("ide.warnings.save_unlocked_element"),
 						L10N.t("ide.warnings.save_unlocked_element.title"), JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
@@ -676,11 +675,11 @@ public class CodeEditorView extends ViewBase {
 		MCreatorTabs.Tab fileTab = new MCreatorTabs.Tab(this, fileWorkingOn, false);
 		fileTab.setTabClosingListener(tab -> {
 			if (((CodeEditorView) tab.getContent()).changed) {
-				Object[] options = { L10N.t("ide.action.close_and_save"), L10N.t("common.close"), UIManager.getString("OptionPane.cancelButtonText") };
+				Object[] options = { L10N.t("ide.action.close_and_save"), L10N.t("common.close"),
+						UIManager.getString("OptionPane.cancelButtonText") };
 				int res = JOptionPane.showOptionDialog(mcreator, L10N.t("ide.warnings.file_not_saved",
-						((CodeEditorView) tab.getContent()).fileWorkingOn.getName()),
-						L10N.t("common.warning"), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options,
-						options[0]);
+						((CodeEditorView) tab.getContent()).fileWorkingOn.getName()), L10N.t("common.warning"),
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 				if (res == 0) {
 					((CodeEditorView) tab.getContent()).saveCode();
 					return true;

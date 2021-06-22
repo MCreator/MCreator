@@ -36,14 +36,15 @@ public class NewFolderAction extends BasicAction {
 
 	public NewFolderAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.browser.new_folder"), actionEvent -> {
-			String foldername = VOptionPane
-					.showInputDialog(actionRegistry.getMCreator(), L10N.t("workspace_file_browser.new_folder_name.folder_name"),
-							L10N.t("workspace_file_browser.new_folder_name.folder_name.title"), null,
-							new OptionPaneValidatior() {
-								@Override public Validator.ValidationResult validate(JComponent component) {
-									return new RegistryNameValidator((VTextField) component, L10N.t("workspace_file_browser.new_folder_name.folder")).validate();
-								}
-							});
+			String foldername = VOptionPane.showInputDialog(actionRegistry.getMCreator(),
+					L10N.t("workspace_file_browser.new_folder_name.folder_name"),
+					L10N.t("workspace_file_browser.new_folder_name.folder_name.title"), null,
+					new OptionPaneValidatior() {
+						@Override public Validator.ValidationResult validate(JComponent component) {
+							return new RegistryNameValidator((VTextField) component,
+									L10N.t("workspace_file_browser.new_folder_name.folder")).validate();
+						}
+					});
 			if (foldername != null) {
 				if (actionRegistry.getMCreator().getProjectBrowser().tree.getLastSelectedPathComponent() != null) {
 					Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator().getProjectBrowser().tree

@@ -42,6 +42,7 @@ public class MCItemHolderValidator implements Validator {
 		if (holder.containsItem() || (requirement != null && !requirement.isSelected()))
 			return Validator.ValidationResult.PASSED;
 		else
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, L10N.t("validators.select_element"));
+			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					L10N.t("validators.select_element"));
 	}
 }

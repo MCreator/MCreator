@@ -66,7 +66,8 @@ public class RegistryNameValidator implements Validator {
 	@Override public ValidationResult validate() {
 		String text = holder.getText();
 		if (text.length() == 0 && !allowEmpty)
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, L10N.t("validators.registry_name.empty", name));
+			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					L10N.t("validators.registry_name.empty", name));
 		if (text.length() > maxLength)
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 					L10N.t("validators.registry_name.length", name, maxLength));

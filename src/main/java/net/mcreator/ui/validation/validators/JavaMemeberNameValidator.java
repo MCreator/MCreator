@@ -43,7 +43,8 @@ public class JavaMemeberNameValidator implements Validator {
 		String text = textField.getText();
 
 		if (text == null || text.length() == 0)
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, L10N.t("validators.java_name.needs_name"));
+			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					L10N.t("validators.java_name.needs_name"));
 
 		if (firstLetterUppercase && Character.isLowerCase(text.charAt(0))) {
 			if (text.length() > 1)
@@ -54,7 +55,8 @@ public class JavaMemeberNameValidator implements Validator {
 		}
 
 		if (!JavaConventions.isValidJavaIdentifier(textField.getText())) {
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, L10N.t("validators.java_name.invalid_name"));
+			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					L10N.t("validators.java_name.invalid_name"));
 		} else if (JavaConventions.isStringReservedJavaWord(textField.getText())) {
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 					L10N.t("validators.java_name.reserved_keywords"));
