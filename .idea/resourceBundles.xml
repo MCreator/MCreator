@@ -2,23 +2,5 @@
 <project version="4">
   <component name="ResourceBundleManager">
     <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_cs_CZ.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_de_DE.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_es_AR.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_fr_FR.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_he_IL.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_hu_HU.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_it_IT.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_ja_JP.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_ko_KR.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_nl_NL.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_pl_PL.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_pt_BR.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_ru_RU.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_sv_SE.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_tr_TR.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_vi_VN.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_zh_CN.properties" />
-    <file url="file://$PROJECT_DIR$/plugins/mcreator-localization/lang/texts_zh_TW.properties" />
   </component>
 </project>
