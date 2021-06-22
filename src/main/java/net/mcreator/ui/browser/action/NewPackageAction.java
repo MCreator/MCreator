@@ -29,7 +29,7 @@ import java.io.File;
 public class NewPackageAction extends BasicAction {
 
 	public NewPackageAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Package", actionEvent -> {
+		super(actionRegistry, L10N.t("action.browser.new_package"), actionEvent -> {
 			String packagein = JOptionPane.showInputDialog(actionRegistry.getMCreator(), L10N.t(
 					"workspace_file_browser.new_package.package_name"), L10N.t("workspace_file_browser.new_package.package_name.title"),
 					JOptionPane.QUESTION_MESSAGE);

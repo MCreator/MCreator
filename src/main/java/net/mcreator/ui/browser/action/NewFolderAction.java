@@ -35,7 +35,7 @@ import java.io.File;
 public class NewFolderAction extends BasicAction {
 
 	public NewFolderAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Folder", actionEvent -> {
+		super(actionRegistry, L10N.t("action.browser.new_folder"), actionEvent -> {
 			String foldername = VOptionPane
 					.showInputDialog(actionRegistry.getMCreator(), L10N.t("workspace_file_browser.new_folder_name.folder_name"),
 							L10N.t("workspace_file_browser.new_folder_name.folder_name.title"), null,

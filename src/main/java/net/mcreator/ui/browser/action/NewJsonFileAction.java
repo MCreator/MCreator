@@ -32,7 +32,7 @@ import java.io.File;
 public class NewJsonFileAction extends BasicAction {
 
 	public NewJsonFileAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "JSON file", actionEvent -> {
+		super(actionRegistry, L10N.t("action.browser.new_json_file"), actionEvent -> {
 			String fileName = JOptionPane.showInputDialog(actionRegistry.getMCreator(), L10N.t("browser.new_json"));
 
 			if (fileName != null) {

@@ -21,6 +21,7 @@ package net.mcreator.ui.ide.action;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.ide.CodeEditorView;
+import net.mcreator.ui.init.L10N;
 import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
 
 import javax.swing.*;
@@ -28,7 +29,7 @@ import javax.swing.*;
 public class ReformatCodeAction extends BasicAction {
 
 	public ReformatCodeAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Reformat code only", actionEvent -> {
+		super(actionRegistry, L10N.t("action.ide.refomat_code_only"), actionEvent -> {
 			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView) {
 				CodeEditorView codeEditorView = (CodeEditorView) pan;
@@ -37,11 +38,12 @@ public class ReformatCodeAction extends BasicAction {
 					codeEditorView.reformatTheCodeOnly();
 					if (codeEditorView.mouseEvent != null)
 						new FocusableTip(codeEditorView.te, null)
-								.toolTipRequested(codeEditorView.mouseEvent, "Reformatted and organized code");
+								.toolTipRequested(codeEditorView.mouseEvent,
+										L10N.t("action.ide.reformat_code_only.result"));
 				}
 			}
 		});
-		setTooltip("Click this to reformat code in current code editor");
+		setTooltip(L10N.t("action.ide.reformat_code_only.tooltip"));
 		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(tab -> setEnabled(
 				tab.getContent() instanceof CodeEditorView && !((CodeEditorView) tab.getContent()).readOnly));
 	}

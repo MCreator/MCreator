@@ -42,7 +42,7 @@ public class NewClassAction extends BasicAction {
 	private static final Logger LOG = LogManager.getLogger(NewClassAction.class);
 
 	public NewClassAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Java class", actionEvent -> {
+		super(actionRegistry, L10N.t("action.browser.new_class"), actionEvent -> {
 			String classname = VOptionPane.showInputDialog(actionRegistry.getMCreator(), L10N.t("workspace_file_browser.new_class.class_name"),
 					L10N.t("workspace_file_browser.new_class.class_name.title"), null, new OptionPaneValidatior() {
 						@Override public Validator.ValidationResult validate(JComponent component) {
