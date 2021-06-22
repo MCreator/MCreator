@@ -152,7 +152,7 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 							return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component)
 									.validate();
 						}
-					}, L10N.t("action.procedure.create_procedure"), L10N.t("common.cancel"),
+					}, L10N.t("action.procedure.create_procedure"), UIManager.getString("OptionPane.cancelButtonText"),
 					procedureNameString);
 
 			if (procedureNameString != null) {

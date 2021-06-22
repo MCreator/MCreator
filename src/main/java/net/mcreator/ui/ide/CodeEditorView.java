@@ -676,7 +676,7 @@ public class CodeEditorView extends ViewBase {
 		MCreatorTabs.Tab fileTab = new MCreatorTabs.Tab(this, fileWorkingOn, false);
 		fileTab.setTabClosingListener(tab -> {
 			if (((CodeEditorView) tab.getContent()).changed) {
-				Object[] options = { L10N.t("ide.action.close_and_save"), L10N.t("common.close"), L10N.t("common.cancel") };
+				Object[] options = { L10N.t("ide.action.close_and_save"), L10N.t("common.close"), UIManager.getString("OptionPane.cancelButtonText") };
 				int res = JOptionPane.showOptionDialog(mcreator, L10N.t("ide.warnings.file_not_saved",
 						((CodeEditorView) tab.getContent()).fileWorkingOn.getName()),
 						L10N.t("common.warning"), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options,

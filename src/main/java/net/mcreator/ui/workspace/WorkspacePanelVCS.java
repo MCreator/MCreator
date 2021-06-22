@@ -165,7 +165,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 						int option = JOptionPane.showOptionDialog(workspacePanel.getMcreator(),
 								L10N.t("workspace.vcs.jump_commit_confirmation", commit.getShortMessage()),
 								L10N.t("workspace.vcs.jump_commit_confirmation.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-								new String[] { L10N.t("workspace.vcs.jump_to" + commit.abbreviate(7).name()), L10N.t("common.cancel") }, null);
+								new String[] { L10N.t("workspace.vcs.jump_to" + commit.abbreviate(7).name()), UIManager.getString("OptionPane.cancelButtonText") }, null);
 
 						if (option == 0) {
 							// track all so they can be stashed properly
