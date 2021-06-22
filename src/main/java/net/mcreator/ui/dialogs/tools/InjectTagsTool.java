@@ -19,7 +19,7 @@
 package net.mcreator.ui.dialogs.tools;
 
 import com.google.common.base.CaseFormat;
-import net.mcreator.element.registry.ModElementType;
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Tag;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;

@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.action.impl.workspace;
 
-import net.mcreator.element.registry.ModElementType;
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.action.ActionRegistry;

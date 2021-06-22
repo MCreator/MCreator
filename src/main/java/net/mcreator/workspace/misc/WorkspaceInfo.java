@@ -18,10 +18,9 @@
 
 package net.mcreator.workspace.misc;
 
-import net.mcreator.element.registry.BaseType;
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.registry.ModElementType;
-import net.mcreator.element.registry.ModElementTypeRegistry;
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
@@ -77,7 +76,7 @@ import java.util.stream.Collectors;
 	}
 
 	public List<ModElement> getElementsOfType(String typestring) {
-		ModElementType<?> type = ModElementTypeRegistry.getModElementType(typestring);
+		ModElementType<?> type = ModElementType.getModElementType(typestring);
 		return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
 				.collect(Collectors.toList());
 	}

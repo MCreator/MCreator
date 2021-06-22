@@ -21,8 +21,6 @@ package net.mcreator.element;
 import com.google.gson.*;
 import net.mcreator.element.converter.ConverterRegistry;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.registry.ModElementTypeRegistry;
-import net.mcreator.element.registry.ModElementType;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.workspace.Workspace;
@@ -113,7 +111,7 @@ public abstract class GeneratableElement {
 				break;
 			}
 			jsonElement.getAsJsonObject().addProperty("_type", newType);
-			ModElementType<?> modElementType = ModElementTypeRegistry
+			ModElementType<?> modElementType = ModElementType
 					.getModElementType(newType);
 
 			int importedFormatVersion = jsonDeserializationContext

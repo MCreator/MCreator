@@ -27,7 +27,7 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.registry.ModElementType;
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -876,7 +876,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		} else if (page == 5) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-						.map(compileNote -> "Living Entity AI builder: " + compileNote.getMessage())
+						.map(compileNote -> "Living entity AI builder: " + compileNote.getMessage())
 						.collect(Collectors.toList()));
 		} else if (page == 6) {
 			if ((int) minNumberOfMobsPerGroup.getValue() > (int) maxNumberOfMobsPerGroup.getValue()) {

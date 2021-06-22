@@ -19,9 +19,8 @@
 package net.mcreator.ui.workspace;
 
 import net.mcreator.element.*;
-import net.mcreator.element.registry.BaseType;
-import net.mcreator.element.registry.ModElementTypeRegistry;
-import net.mcreator.element.registry.ModElementType;
+import net.mcreator.element.BaseType;
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;
@@ -582,7 +581,7 @@ import java.util.stream.Collectors;
 
 						togglefilter("f:err")));
 		filterPopup.addSeparator();
-		for (ModElementType<?> type : ModElementTypeRegistry.ELEMENTS) {
+		for (ModElementType<?> type : ModElementType.ELEMENTS) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
 					e -> togglefilter("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 16))));
@@ -1587,7 +1586,7 @@ import java.util.stream.Collectors;
 					pat = pat.replaceFirst("f:", "");
 					if (pat.equals("locked") || pat.equals("ok") || pat.equals("err"))
 						filters.add(pat);
-					for (ModElementType<?> type : ModElementTypeRegistry.ELEMENTS) {
+					for (ModElementType<?> type : ModElementType.ELEMENTS) {
 						if (pat.equals(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))) {
 							metfilters.add(type);
 						}

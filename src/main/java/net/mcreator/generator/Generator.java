@@ -20,7 +20,7 @@ package net.mcreator.generator;
 
 import com.google.gson.GsonBuilder;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.registry.ModElementType;
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.generator.template.MinecraftCodeProvider;
 import net.mcreator.generator.template.TemplateConditionParser;

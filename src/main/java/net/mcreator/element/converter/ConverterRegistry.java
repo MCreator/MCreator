@@ -18,7 +18,7 @@
 
 package net.mcreator.element.converter;
 
-import net.mcreator.element.registry.ModElementType;
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.fv10.BiomeSpawnListConverter;
 import net.mcreator.element.converter.fv11.GUICoordinateConverter;
 import net.mcreator.element.converter.fv11.OverlayCoordinateConverter;

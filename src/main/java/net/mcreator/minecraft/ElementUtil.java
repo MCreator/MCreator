@@ -18,8 +18,8 @@
 
 package net.mcreator.minecraft;
 
-import net.mcreator.element.registry.BaseType;
-import net.mcreator.element.registry.ModElementType;
+import net.mcreator.element.BaseType;
+import net.mcreator.element.ModElementType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;

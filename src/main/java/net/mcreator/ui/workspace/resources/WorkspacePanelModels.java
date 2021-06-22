@@ -19,7 +19,7 @@
 package net.mcreator.ui.workspace.resources;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.registry.ModElementType;
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.TransparentToolBar;

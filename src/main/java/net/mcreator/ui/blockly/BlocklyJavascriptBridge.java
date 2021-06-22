@@ -20,8 +20,8 @@ package net.mcreator.ui.blockly;
 
 import com.google.gson.Gson;
 import net.mcreator.blockly.data.ExternalTrigger;
-import net.mcreator.element.registry.BaseType;
-import net.mcreator.element.registry.ModElementType;
+import net.mcreator.element.BaseType;
+import net.mcreator.element.ModElementType;
 import net.mcreator.io.OS;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;

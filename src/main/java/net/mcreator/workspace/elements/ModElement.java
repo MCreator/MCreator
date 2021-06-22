@@ -19,10 +19,9 @@
 package net.mcreator.workspace.elements;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.registry.BaseType;
-import net.mcreator.element.registry.ModElementTypeRegistry;
-import net.mcreator.element.registry.ModElementType;
-import net.mcreator.element.registry.RecipeType;
+import net.mcreator.element.BaseType;
+import net.mcreator.element.ModElementType;
+import net.mcreator.element.RecipeType;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -282,7 +281,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	public ModElementType<?> getType() {
-		return ModElementTypeRegistry.getModElementType(type);
+		return ModElementType.getModElementType(type);
 	}
 
 	public void setType(ModElementType<?> type) {

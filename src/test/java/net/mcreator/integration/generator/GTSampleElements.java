@@ -20,7 +20,7 @@
 package net.mcreator.integration.generator;
 
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.registry.ModElementType;
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
