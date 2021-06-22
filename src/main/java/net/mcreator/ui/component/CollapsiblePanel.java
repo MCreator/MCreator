@@ -132,7 +132,8 @@ public class CollapsiblePanel extends JPanel {
 		String arrow = "";
 		if (getComponentCount() > 0)
 			arrow = (hasInvisibleComponent() ?
-					L10N.t("components.collapsible_panel.expand") : L10N.t("components.collapsible_panel.collapse"));
+					"[" + L10N.t("components.collapsible_panel.expand") + "]" :
+					"[" + L10N.t("components.collapsible_panel.collapse") + "]");
 		border.setTitle("<html>" + title + " <b>" + arrow);
 		repaint();
 	}
