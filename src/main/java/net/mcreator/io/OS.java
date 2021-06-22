@@ -36,6 +36,15 @@ public class OS {
 		return WINDOWS;
 	}
 
+	public static String getOSName() {
+		String os = System.getProperty("os.name");
+		if (os.contains("Mac") || os.contains("OS X"))
+			return "mac";
+		if (os.contains("Linux"))
+			return "linux";
+		return "windows";
+	}
+
 	public static int getSystemBits() {
 		boolean is64bit;
 		if (getOS() == WINDOWS) {

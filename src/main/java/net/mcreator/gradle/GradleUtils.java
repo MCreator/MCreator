@@ -18,7 +18,9 @@
 
 package net.mcreator.gradle;
 
+import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.UserFolderManager;
 import net.mcreator.minecraft.api.ModAPI;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
@@ -48,7 +50,7 @@ public class GradleUtils {
 				.setJvmArguments("-Xms" + PreferencesManager.PREFERENCES.gradle.xms + "m",
 						"-Xmx" + PreferencesManager.PREFERENCES.gradle.xmx + "m");
 
-		String java_home = getJavaHome();
+		String java_home = getJavaHome(workspace.getGeneratorConfiguration());
 		if (java_home != null) // make sure detected JAVA_HOME is not null
 			retval = retval.setJavaHome(new File(java_home));
 
@@ -68,7 +70,7 @@ public class GradleUtils {
 		return retval;
 	}
 
-	public static String getJavaHome() {
+	public static String getJavaHome(GeneratorConfiguration genConfig) {
 		// check if JAVA_HOME was overwritten in preferences and return this one in such case
 		if (PreferencesManager.PREFERENCES.hidden.java_home != null && PreferencesManager.PREFERENCES.hidden.java_home
 				.isFile()) {
@@ -78,6 +80,14 @@ public class GradleUtils {
 				return path.split("/bin/java")[0];
 			else
 				LOG.error("Java home override from preferences is not valid!");
+		}
+
+		System.out.println("1");
+		// if the generator has a JDK, we set JAVA_HOME to generator's JDK
+		if (UserFolderManager.getSpecificJDK(genConfig.getJDKVersion() + "/bin/javac.exe").isFile() || UserFolderManager
+				.getSpecificJDK(genConfig.getJDKVersion() + "bin/javac").isFile()) {
+			System.out.println("2");
+			return FilenameUtils.normalize(UserFolderManager.getSpecificJDK(genConfig.getJDKVersion()).getAbsolutePath());
 		}
 
 		// if we have bundled JDK, we set JAVA_HOME to bundled JDK

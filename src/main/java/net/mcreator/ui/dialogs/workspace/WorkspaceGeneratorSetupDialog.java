@@ -23,6 +23,7 @@ import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.action.impl.workspace.DownloadJDK;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.init.L10N;
@@ -46,6 +47,17 @@ public class WorkspaceGeneratorSetupDialog {
 		AtomicBoolean setupOk = new AtomicBoolean(true);
 
 		Thread t = new Thread(() -> {
+			ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
+					L10N.t("dialog.setup_workspace.step.jdk"));
+			dial.addProgress(p0);
+			boolean success = DownloadJDK.downloadJDK(m.getGeneratorConfiguration());
+			if (!success) {
+				p0.err();
+				dial.refreshDisplay();
+			} else {
+				p0.ok();
+			}
+
 			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.setup_workspace.step.gradle_files"));
 			dial.addProgress(p1);

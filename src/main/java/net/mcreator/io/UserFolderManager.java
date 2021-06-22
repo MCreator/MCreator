@@ -44,4 +44,8 @@ public class UserFolderManager {
 		return getFileFromUserFolder("/gradle/");
 	}
 
+	public static File getSpecificJDK(String jdkVersion) {
+		return getFileFromUserFolder("/jdk/" + jdkVersion);
+	}
+
 }
