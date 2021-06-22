@@ -204,7 +204,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			if (selected != null) {
 				if (selected.getUserObject() instanceof File) {
 					int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("workspace_file_browser.remove_file"),
-							L10N.t("workspace_file_browser.remove_file.title"), JOptionPane.YES_NO_OPTION,
+							L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
 					if (n == 0) {
 						File file = (File) selected.getUserObject();

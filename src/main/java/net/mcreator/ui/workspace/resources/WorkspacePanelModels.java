@@ -156,7 +156,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 			if (model != null) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
 						L10N.t("workspace.3dmodels.delete_confirm_message"),
-						L10N.t("workspace.3dmodels.delete_confirm_title"), JOptionPane.YES_NO_OPTION,
+						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null);
 
 				if (n == 0) {

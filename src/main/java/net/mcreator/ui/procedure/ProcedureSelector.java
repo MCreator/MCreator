@@ -187,7 +187,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 												(VTextField) component).validate();
 									}
 								}, L10N.t("action.procedure.create_procedure"),
-								L10N.t("action.procedure.cancel_creation"), procedureNameString);
+								UIManager.getString("OptionPane.cancelButtonText"), procedureNameString);
 
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
