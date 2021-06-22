@@ -97,7 +97,7 @@ public class ModElementUITest {
 		}
 
 		for (int i = 1; i <= 1; i++) {
-			workspace.addModElement(new ModElement(workspace, "number" + i, ModElementType.PROCEDURE)
+			workspace.addModElement(new ModElement(workspace, "number" + i, ModElementRegistry.BuiltInTypes.PROCEDURE)
 					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "NUMBER"));
 		}
 

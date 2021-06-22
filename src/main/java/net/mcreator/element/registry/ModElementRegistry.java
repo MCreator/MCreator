@@ -55,7 +55,7 @@ public class ModElementRegistry {
 		add(ITEM = new ModElementType<>("item", 'i', BaseType.ITEM, RecipeType.ITEM, ItemGUI::new, Item.class));
 		add(KEYBIND = new ModElementType<>("keybind", 'k', BaseType.KEYBIND, RecipeType.NONE, KeyBindGUI::new,
 				KeyBinding.class));
-		add(LIVING_ENTITY = new ModElementType<>("livingentity", 'e', BaseType.ENTITY, RecipeType.NONE,
+		add(LIVINGENTITY = new ModElementType<>("livingentity", 'e', BaseType.ENTITY, RecipeType.NONE,
 				LivingEntityGUI::new, LivingEntity.class));
 		add(LOOTTABLE = new ModElementType<>("loottable", 'l', BaseType.DATAPACK, RecipeType.NONE, LootTableGUI::new,
 				LootTable.class));
@@ -109,7 +109,7 @@ public class ModElementRegistry {
 		public static ModElementType<?> GUI;
 		public static ModElementType<?> ITEM;
 		public static ModElementType<?> KEYBIND;
-		public static ModElementType<?> LIVING_ENTITY;
+		public static ModElementType<?> LIVINGENTITY;
 		public static ModElementType<?> LOOTTABLE;
 		public static ModElementType<?> MUSICDISC;
 		public static ModElementType<?> OVERLAY;

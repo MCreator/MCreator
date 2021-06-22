@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.NumberProcedure;
 import net.mcreator.element.registry.ModElementRegistry;
 import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.Generator;

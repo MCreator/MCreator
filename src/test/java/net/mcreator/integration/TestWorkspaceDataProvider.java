@@ -511,7 +511,7 @@ public class TestWorkspaceDataProvider {
 			}
 			gui.components = components;
 			return gui;
-		} else if (LIVINGENTITY.equals(modElement.getType()))
+		} else if (LIVINGENTITY.equals(modElement.getType())) {
 			LivingEntity livingEntity = new LivingEntity(modElement);
 			livingEntity.mobName = modElement.getName();
 			livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());

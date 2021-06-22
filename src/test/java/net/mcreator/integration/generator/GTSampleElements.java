@@ -65,7 +65,7 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 1; i++) {
-				ModElement me = new ModElement(workspace, "number" + i, ModElementType.PROCEDURE)
+				ModElement me = new ModElement(workspace, "number" + i, ModElementRegistry.BuiltInTypes.PROCEDURE)
 						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "NUMBER");
 				workspace.addModElement(me);
 
