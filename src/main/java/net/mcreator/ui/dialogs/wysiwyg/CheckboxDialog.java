@@ -61,7 +61,7 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 					continue;
 				if (component instanceof IMachineNamedComponent && component.name.equals(textname))
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							L10N.t("dialog.gui.textfield_name_already_exists"));
+							L10N.t("common.name_already_exists"));
 			}
 			return validator.validate();
 		});

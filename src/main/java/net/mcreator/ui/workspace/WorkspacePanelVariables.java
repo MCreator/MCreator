@@ -76,11 +76,10 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					return;
 
 				if (column != 3) {
-					int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-							"<html>Are you sure that you want to change this variable?"
-									+ "<br>If this variable is in use, this action might cause compilation errors."
-									+ "<br>If you just created it, it is perfectly fine to change it.", "Confirmation",
-							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					int n = JOptionPane
+							.showConfirmDialog(workspacePanel.getMcreator(), L10N.t("workspace.variables.change_type"),
+									L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION,
+									JOptionPane.QUESTION_MESSAGE);
 					if (n == JOptionPane.YES_OPTION) {
 						super.setValueAt(value, row, column);
 						if (column == 1) { // variable type has been changed
@@ -122,7 +121,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 							String nameinrow = (String) elements.getValueAt(i, 0);
 							if (i != row && textname.equals(nameinrow))
 								return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-										"This name already exists");
+										L10N.t("common.name_already_exists"));
 						}
 						return validator.validate();
 					});
@@ -235,7 +234,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 								String nameinrow = (String) elements.getValueAt(i, 0);
 								if (textname.equals(nameinrow))
 									return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-											"This name already exists");
+											L10N.t("common.name_already_exists"));
 							}
 							return validator.validate();
 						}
@@ -252,9 +251,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				return;
 
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-					"<html>Are you sure that you want to remove selected variables?"
-							+ "<br>If this variable is in use, this action might cause compilation errors.",
-					"Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					L10N.t("workspace.variables.remove_variable_confirmation"), L10N.t("common.confirmation"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (n == JOptionPane.YES_OPTION) {
 				Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
 						.forEach(el -> {

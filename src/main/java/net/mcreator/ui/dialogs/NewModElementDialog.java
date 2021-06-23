@@ -58,7 +58,7 @@ public class NewModElementDialog {
 										.validate();
 							}
 						}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()),
-						L10N.t("dialog.new_modelement.cancel"), null, regName);
+						UIManager.getString("OptionPane.cancelButtonText"), null, regName);
 
 		if (modName != null && !modName.equals("")) {
 			modName = JavaConventions.convertToValidClassName(modName);
