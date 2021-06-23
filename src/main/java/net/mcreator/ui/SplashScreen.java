@@ -19,6 +19,7 @@
 package net.mcreator.ui;
 
 import net.mcreator.Launcher;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.ProgressBar;
 import net.mcreator.ui.component.util.EDTUtils;
@@ -75,6 +76,7 @@ public class SplashScreen extends JWindow {
 		}
 
 		initloadprogress.setEmptyColor(null);
+		initloadprogress.setBarColor(PreferencesManager.PREFERENCES.ui.interfaceAccentColor);
 		initloadprogress.setOpaque(false);
 		initloadprogress.setForeground(Color.white);
 		initloadprogress.setMaximalValue(100);
