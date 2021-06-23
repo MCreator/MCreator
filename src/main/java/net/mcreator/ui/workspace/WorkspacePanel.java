@@ -275,8 +275,7 @@ import java.util.stream.Collectors;
 				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 		variablesPan.setBorder(
 				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
-		vcsPan.setBorder(
-				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		vcsPan.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 
 		JPanel slo = new JPanel(new BorderLayout(0, 3));
 
@@ -557,7 +556,8 @@ import java.util.stream.Collectors;
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
 				e -> togglefilter("f:err")));
 		filterPopup.addSeparator();
-		for (ModElementType type : Arrays.stream(ModElementType.values()).sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
+		for (ModElementType type : Arrays.stream(ModElementType.values())
+				.sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
 					e -> togglefilter("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
@@ -771,8 +771,7 @@ import java.util.stream.Collectors;
 		but1.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but1.isEnabled())
-					new ModTypeDropdown(mcreator)
-							.show(e.getComponent(), e.getComponent().getWidth() + 5, -3);
+					new ModTypeDropdown(mcreator).show(e.getComponent(), e.getComponent().getWidth() + 5, -3);
 			}
 		});
 		but1.setToolTipText(L10N.t("workspace.elements.add.tooltip"));
@@ -782,8 +781,8 @@ import java.util.stream.Collectors;
 		but2.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but2.isEnabled() && list.getSelectedValue() instanceof ModElement)
-					editCurrentlySelectedModElement((ModElement) list.getSelectedValue(),
-							but2, e.getComponent().getWidth() + 8, 0);
+					editCurrentlySelectedModElement((ModElement) list.getSelectedValue(), but2,
+							e.getComponent().getWidth() + 8, 0);
 			}
 		});
 		but2.setToolTipText(L10N.t("workspace.elements.edit.tooltip"));
@@ -812,8 +811,7 @@ import java.util.stream.Collectors;
 		but5.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but5.isEnabled() && list.getSelectedValue() instanceof ModElement) {
-					editCurrentlySelectedModElementAsCode(
-							(ModElement) list.getSelectedValue(), but5,
+					editCurrentlySelectedModElementAsCode((ModElement) list.getSelectedValue(), but5,
 							e.getComponent().getWidth() + 8, 0);
 				}
 			}
@@ -837,11 +835,8 @@ import java.util.stream.Collectors;
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but6.isEnabled()) {
 					IElement mu = list.getSelectedValue();
-					if (mu instanceof ModElement
-							&& ((ModElement) mu).getType().getBaseType()
-							!= BaseType.DATAPACK) {
-						ModElement modified = ModElementIDsDialog
-								.openModElementIDDialog(mcreator, ((ModElement) mu));
+					if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
+						ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
 						if (modified != null)
 							mcreator.getWorkspace().updateModElement(modified);
 					}
