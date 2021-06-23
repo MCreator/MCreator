@@ -88,6 +88,10 @@ public class GradleUtils {
 			return FilenameUtils.normalize(UserFolderManager.getSpecificJDK(genConfig.getJDKVersion()).getAbsolutePath());
 		}
 
+		// if we have bundled JDK, we set JAVA_HOME to bundled JDK
+		if (new File("./jdk/bin/javac.exe").isFile() || new File("./jdk/bin/javac").isFile())
+			return FilenameUtils.normalize(new File("./jdk/").getAbsolutePath());
+
 		// otherwise, we try to set JAVA_HOME to the same Java as MCreator is launched with
 		String current_java_home = System.getProperty("java.home");
 		if (current_java_home != null && current_java_home.contains("jdk")) // only set it if it is jdk, not jre

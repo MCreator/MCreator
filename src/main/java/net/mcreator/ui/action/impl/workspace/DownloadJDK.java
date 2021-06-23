@@ -59,7 +59,8 @@ public class DownloadJDK {
 				return true;
 			}
 		} else {
-			return false;
+			LOG.info("Bundled JDK will be used.");
+			return true;
 		}
 
 		return true;

@@ -3,7 +3,6 @@ basefeatures: [model_json, model_java, model_obj]
 status: lts
 buildfileversion: 31.2.0
 subversion: 1.0.1
-jdk: jdk-11.0.11+9
 
 # gradle task definitions
 gradle:
