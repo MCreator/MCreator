@@ -20,7 +20,6 @@ package net.mcreator.minecraft;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
-import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -189,7 +188,8 @@ public class ElementUtil {
 	}
 
 	public static String[] getAllSoundCategories() {
-		return DataListLoader.loadDataList("soundcategories").stream().map(DataListEntry::getName).toArray(String[]::new);
+		return DataListLoader.loadDataList("soundcategories").stream().map(DataListEntry::getName)
+				.toArray(String[]::new);
 	}
 
 	public static String[] getAllDamageSources() {
