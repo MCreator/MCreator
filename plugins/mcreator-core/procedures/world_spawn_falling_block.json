@@ -2,6 +2,11 @@
   "args0": [
     {
       "type": "input_value",
+      "name": "block",
+      "check": "MCItemBlock"
+    },
+    {
+      "type": "input_value",
       "name": "x",
       "check": "Number"
     },
@@ -14,21 +19,7 @@
       "type": "input_value",
       "name": "z",
       "check": "Number"
-    },
-    {
-      "type": "input_value",
-      "name": "level",
-      "check": "Number"
-    },
-    {
-      "type": "input_value",
-      "name": "pitch",
-      "check": "Number"
     }
-  ],
-  "extensions": [
-    "sound_category_list_provider",
-    "sound_list_provider"
   ],
   "inputsInline": true,
   "previousStatement": null,
@@ -37,22 +28,16 @@
   "mcreator": {
     "toolbox_id": "worldmanagement",
     "toolbox_init": [
+      "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
-      "<value name=\"z\"><block type=\"coord_z\"></block></value>",
-      "<value name=\"level\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
-      "<value name=\"pitch\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
-    ],
-    "fields": [
-      "soundcategory",
-      "sound"
+      "<value name=\"z\"><block type=\"coord_z\"></block></value>"
     ],
     "inputs": [
       "x",
       "y",
       "z",
-      "level",
-      "pitch"
+      "block"
     ],
     "dependencies": [
       {
