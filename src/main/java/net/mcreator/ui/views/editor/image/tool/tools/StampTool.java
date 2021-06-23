@@ -68,8 +68,8 @@ public class StampTool extends AbstractModificationTool {
 				UIRES.get("img_editor.stamp"), canvas, colorSelector, versionManager);
 		setLayerPanel(layerPanel);
 
-		width = new JSlidingSpinner("Width:", 16, 0, 10000, 1);
-		height = new JSlidingSpinner("Height:", 16, 0, 10000, 1);
+		width = new JSlidingSpinner(L10N.t("dialog.imageeditor.width"), 16, 0, 10000, 1);
+		height = new JSlidingSpinner(L10N.t("dialog.imageeditor.height"), 16, 0, 10000, 1);
 
 		List<ResourcePointer> templatesSorted = new ArrayList<>(ImageMakerTexturesCache.CACHE.keySet());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
@@ -91,10 +91,10 @@ public class StampTool extends AbstractModificationTool {
 			height.setValue(icon.getIconHeight());
 		});
 
-		JSlidingSpinner opacitySlider = new JSlidingSpinner("Opacity:");
+		JSlidingSpinner opacitySlider = new JSlidingSpinner(L10N.t("dialog.image_maker.tools.types.opacity"));
 		opacitySlider.addChangeListener(e -> opacity = opacitySlider.getValue() / 100.0);
 
-		JSlidingSpinner saturationSlider = new JSlidingSpinner("Saturation:");
+		JSlidingSpinner saturationSlider = new JSlidingSpinner(L10N.t("dialog.image_maker.tools.types.saturation"));
 		saturationSlider.addChangeListener(e -> saturation = saturationSlider.getValue() / 100.0);
 
 		colorize = L10N.checkbox("dialog.imageeditor.stamp_tool_colorize");

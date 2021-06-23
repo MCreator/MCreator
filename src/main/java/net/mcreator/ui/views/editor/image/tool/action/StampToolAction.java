@@ -19,12 +19,13 @@
 package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.tool.tools.StampTool;
 
 public class StampToolAction extends ToolChangeAction {
 	public StampToolAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Stamp", "A tool for applying textures from templates", StampTool.class);
+		super(actionRegistry, L10N.t("dialog.imageeditor.stamp_tool_name"), L10N.t("dialog.imageeditor.stamp_tool_description"), StampTool.class);
 		setIcon(UIRES.get("img_editor.stamp"));
 	}
 }
