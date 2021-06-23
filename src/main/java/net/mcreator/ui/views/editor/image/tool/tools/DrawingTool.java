@@ -56,7 +56,7 @@ public class DrawingTool extends AbstractModificationTool {
 
 		JComboBox<Shape> shapeBox = new JComboBox<>(Shape.values());
 		shapeBox.setSelectedIndex(0);
-		JTitledComponentWrapper titledShape = new JTitledComponentWrapper(L10N.t("dialog.image_maker.tools.types.drawing_shape"), shapeBox);
+		JTitledComponentWrapper titledShape = new JTitledComponentWrapper(L10N.t("dialog.image_maker.tools.types.shape"), shapeBox);
 		shapeBox.addActionListener(e -> {
 			shape = (Shape) shapeBox.getSelectedItem();
 		});
@@ -64,7 +64,7 @@ public class DrawingTool extends AbstractModificationTool {
 		JSlidingSpinner sizeSlider = new JSlidingSpinner(L10N.t("dialog.image_maker.tools.types.drawing_size"), 1, 1, 100, 1);
 		sizeSlider.addChangeListener(e -> size = (int) Math.round(sizeSlider.getValue()));
 
-		aliasing = new JCheckBox(L10N.t("dialog.image_maker.tools.types.drawing_smooth_edge"));
+		aliasing = new JCheckBox(L10N.t("dialog.image_maker.tools.types.smooth_edge"));
 		connect = new JCheckBox(L10N.t("dialog.image_maker.tools.types.drawing_connect_points"));
 		connect.setSelected(true);
 
