@@ -70,8 +70,7 @@ public class ModTypeDropdown extends JPopupMenu {
 			if (type.getShortcut() != null)
 				modTypeButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(type.getShortcut()));
 
-			modTypeButton.setIcon(
-					new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 32, 32)));
+			modTypeButton.setIcon(new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 32, 32)));
 
 			add(modTypeButton);
 		});

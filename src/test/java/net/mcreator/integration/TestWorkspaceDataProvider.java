@@ -93,8 +93,8 @@ public class TestWorkspaceDataProvider {
 		} else if (type == ModElementType.COMMAND || type == ModElementType.FUNCTION || type == ModElementType.PAINTING
 				|| type == ModElementType.KEYBIND) {
 			generatableElements
-					.add(getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), random, true, true,
-							0));
+					.add(getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), random,
+							true, true, 0));
 		} else {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));

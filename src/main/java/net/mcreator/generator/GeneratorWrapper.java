@@ -112,8 +112,7 @@ import java.util.stream.Collectors;
 		ModElement element = generator.getWorkspace().getModElementByName(modElement);
 		if (element != null) {
 			// check if we are dealing with namespaced element
-			if (NamespacedGeneratableElement.class.isAssignableFrom(
-					element.getType().getModElementStorageClass())) {
+			if (NamespacedGeneratableElement.class.isAssignableFrom(element.getType().getModElementStorageClass())) {
 				GeneratableElement namespacedgeneratableemenet = element.getGeneratableElement();
 				if (namespacedgeneratableemenet instanceof NamespacedGeneratableElement) {
 					return ((NamespacedGeneratableElement) namespacedgeneratableemenet).getResourceLocation();

@@ -118,17 +118,13 @@ public class InjectTagsTool {
 
 		JLabel icon = new JLabel();
 		if (type.equals("Blocks"))
-			icon.setIcon(new ImageIcon(
-					ImageUtils.resizeAA(ModElementType.BLOCK.getIcon().getImage(), 32)));
+			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.BLOCK.getIcon().getImage(), 32)));
 		if (type.equals("Items"))
-			icon.setIcon(new ImageIcon(
-					ImageUtils.resizeAA(ModElementType.ITEM.getIcon().getImage(), 32)));
+			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.ITEM.getIcon().getImage(), 32)));
 		if (type.equals("Functions"))
-			icon.setIcon(new ImageIcon(
-					ImageUtils.resizeAA(ModElementType.FUNCTION.getIcon().getImage(), 32)));
+			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.FUNCTION.getIcon().getImage(), 32)));
 		if (type.equals("Entities"))
-			icon.setIcon(new ImageIcon(
-					ImageUtils.resizeAA(ModElementType.LIVINGENTITY.getIcon().getImage(), 32)));
+			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.LIVINGENTITY.getIcon().getImage(), 32)));
 
 		panel.add(PanelUtils.centerAndEastElement(box, icon));
 

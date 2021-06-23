@@ -45,8 +45,8 @@ public class NewModElementDialog {
 
 		String modName = VOptionPane
 				.showInputDialog(mcreator, L10N.t("dialog.new_modelement.desc", type.getReadableName()),
-						L10N.t("dialog.new_modelement.title_window", type.getReadableName()),
-						type.getIcon(), new OptionPaneValidatior() {
+						L10N.t("dialog.new_modelement.title_window", type.getReadableName()), type.getIcon(),
+						new OptionPaneValidatior() {
 							@Override public Validator.ValidationResult validate(JComponent component) {
 								String regNameString = RegistryNameFixer
 										.fromCamelCase(((VTextField) component).getText());

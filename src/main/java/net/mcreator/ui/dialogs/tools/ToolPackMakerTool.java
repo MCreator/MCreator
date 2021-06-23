@@ -18,9 +18,9 @@
 
 package net.mcreator.ui.dialogs.tools;
 
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.element.types.Tool;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -265,8 +265,8 @@ public class ToolPackMakerTool {
 		mcreator.getModElementManager().storeModElement(axeRecipe);
 
 		Recipe swordRecipe = (Recipe) ModElementType.RECIPE
-				.getModElementGUI(mcreator, new ModElement(workspace, name + "SwordRecipe", ModElementType.RECIPE), false)
-				.getElementFromGUI();
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "SwordRecipe", ModElementType.RECIPE),
+						false).getElementFromGUI();
 		swordRecipe.recipeSlots[1] = base;
 		swordRecipe.recipeSlots[4] = base;
 		swordRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
@@ -279,8 +279,8 @@ public class ToolPackMakerTool {
 		mcreator.getModElementManager().storeModElement(swordRecipe);
 
 		Recipe shovelRecipe = (Recipe) ModElementType.RECIPE
-				.getModElementGUI(mcreator, new ModElement(workspace, name + "ShovelRecipe", ModElementType.RECIPE), false)
-				.getElementFromGUI();
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "ShovelRecipe", ModElementType.RECIPE),
+						false).getElementFromGUI();
 		shovelRecipe.recipeSlots[1] = base;
 		shovelRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		shovelRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");

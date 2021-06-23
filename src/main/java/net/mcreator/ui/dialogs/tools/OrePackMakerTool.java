@@ -18,10 +18,10 @@
 
 package net.mcreator.ui.dialogs.tools;
 
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Material;
 import net.mcreator.element.parts.StepSound;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.Item;
 import net.mcreator.element.types.Recipe;
@@ -270,8 +270,8 @@ public class OrePackMakerTool {
 		mcreator.getModElementManager().storeModElement(blockToItemRecipe);
 
 		Recipe oreSmeltingRecipe = (Recipe) ModElementType.RECIPE
-				.getModElementGUI(mcreator, new ModElement(workspace, name + "OreSmelting", ModElementType.RECIPE), false)
-				.getElementFromGUI();
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "OreSmelting", ModElementType.RECIPE),
+						false).getElementFromGUI();
 		oreSmeltingRecipe.recipeType = "Smelting";
 		oreSmeltingRecipe.smeltingInputStack = new MItemBlock(workspace, "CUSTOM:" + name + "Ore");
 		oreSmeltingRecipe.smeltingReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);

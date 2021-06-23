@@ -19,9 +19,6 @@
 package net.mcreator.ui.workspace;
 
 import net.mcreator.element.*;
-import net.mcreator.element.BaseType;
-import net.mcreator.element.ModElementTypeRegistry;
-import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;

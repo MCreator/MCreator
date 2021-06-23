@@ -20,8 +20,8 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.Item;
 import net.mcreator.minecraft.DataListEntry;

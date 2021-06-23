@@ -94,13 +94,11 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 					}
 				} else {
 					if (dva != null) {
-						ImageIcon iconbig = ImageUtils
-								.drawOver(((ModElement) element).getType().getIcon(), dva);
+						ImageIcon iconbig = ImageUtils.drawOver(((ModElement) element).getType().getIcon(), dva);
 						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 42)));
 					} else {
-						icon.setIcon(new ImageIcon(ImageUtils
-								.resizeAA(((ModElement) element).getType().getIcon().getImage(),
-										42)));
+						icon.setIcon(new ImageIcon(
+								ImageUtils.resizeAA(((ModElement) element).getType().getIcon().getImage(), 42)));
 					}
 				}
 			}

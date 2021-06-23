@@ -18,8 +18,8 @@
 
 package net.mcreator.ui.dialogs.tools;
 
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;

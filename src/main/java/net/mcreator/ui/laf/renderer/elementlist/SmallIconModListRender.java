@@ -97,13 +97,11 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<I
 					}
 				} else {
 					if (dva != null) {
-						ImageIcon iconbig = ImageUtils
-								.drawOver(((ModElement) element).getType().getIcon(), dva);
+						ImageIcon iconbig = ImageUtils.drawOver(((ModElement) element).getType().getIcon(), dva);
 						icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 25)));
 					} else {
-						icon.setIcon(new ImageIcon(ImageUtils
-								.resizeAA(((ModElement) element).getType().getIcon().getImage(),
-										25)));
+						icon.setIcon(new ImageIcon(
+								ImageUtils.resizeAA(((ModElement) element).getType().getIcon().getImage(), 25)));
 					}
 				}
 			}

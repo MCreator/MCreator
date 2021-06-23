@@ -44,7 +44,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -142,8 +145,8 @@ public class ModElementUITest {
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider
 					.getModElementExamplesFor(workspace, modElementType, random);
 
-			LOG.info("Testing mod element type UI " + modElementType.getReadableName() + " with "
-					+ generatableElements.size() + " variants");
+			LOG.info("Testing mod element type UI " + modElementType.getReadableName() + " with " + generatableElements
+					.size() + " variants");
 
 			for (GeneratableElement generatableElementOrig : generatableElements) {
 				ModElement modElement = generatableElementOrig.getModElement();

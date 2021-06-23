@@ -18,8 +18,8 @@
 
 package net.mcreator.ui.dialogs.tools;
 
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Armor;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -169,9 +169,9 @@ public class ArmorPackMakerTool {
 		armor.getModElement().reinit();
 
 		// generate recipes
-		Recipe armorHelmetRecipe = (Recipe) ModElementType.RECIPE
-				.getModElementGUI(mcreator, new ModElement(workspace, name + "ArmorHelmetRecipe", ModElementType.RECIPE),
-						false).getElementFromGUI();
+		Recipe armorHelmetRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "ArmorHelmetRecipe", ModElementType.RECIPE), false)
+				.getElementFromGUI();
 		armorHelmetRecipe.recipeSlots[0] = base;
 		armorHelmetRecipe.recipeSlots[1] = base;
 		armorHelmetRecipe.recipeSlots[2] = base;
@@ -204,9 +204,9 @@ public class ArmorPackMakerTool {
 		mcreator.getGenerator().generateElement(armorBodyRecipe);
 		mcreator.getModElementManager().storeModElement(armorBodyRecipe);
 
-		Recipe armorLeggingsRecipe = (Recipe) ModElementType.RECIPE
-				.getModElementGUI(mcreator, new ModElement(workspace, name + "ArmorLeggingsRecipe", ModElementType.RECIPE),
-						false).getElementFromGUI();
+		Recipe armorLeggingsRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "ArmorLeggingsRecipe", ModElementType.RECIPE), false)
+				.getElementFromGUI();
 		armorLeggingsRecipe.recipeSlots[0] = base;
 		armorLeggingsRecipe.recipeSlots[1] = base;
 		armorLeggingsRecipe.recipeSlots[2] = base;

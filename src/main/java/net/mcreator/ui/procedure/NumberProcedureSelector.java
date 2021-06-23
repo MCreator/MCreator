@@ -20,8 +20,8 @@ package net.mcreator.ui.procedure;
 
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.parts.NumberProcedure;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.NumberProcedure;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
@@ -157,8 +157,7 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 			if (procedureNameString != null) {
 				ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
 						ModElementType.PROCEDURE);
-				ModElementGUI<?> newGUI = ModElementType.PROCEDURE
-						.getModElementGUI(mcreator, element, false);
+				ModElementGUI<?> newGUI = ModElementType.PROCEDURE.getModElementGUI(mcreator, element, false);
 				if (newGUI != null) {
 					newGUI.showView();
 					newGUI.setModElementCreatedListener(generatableElement -> {

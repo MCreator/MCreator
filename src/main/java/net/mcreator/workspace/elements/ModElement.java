@@ -19,11 +19,7 @@
 package net.mcreator.workspace.elements;
 
 import com.google.gson.*;
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.BaseType;
-import net.mcreator.element.ModElementTypeRegistry;
-import net.mcreator.element.ModElementType;
-import net.mcreator.element.RecipeType;
+import net.mcreator.element.*;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.RegistryNameFixer;
