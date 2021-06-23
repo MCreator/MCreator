@@ -18,7 +18,6 @@
 
 package net.mcreator.util;
 
-import net.mcreator.io.net.WebIO;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,8 +36,7 @@ public class DesktopUtils {
 		try {
 			new Thread(() -> {
 				try {
-					if (!WebIO.readURLToString(uri).equals(""))
-						browse(new URI(uri));
+					browse(new URI(uri));
 				} catch (Exception ignored) {
 				}
 			}).start();
