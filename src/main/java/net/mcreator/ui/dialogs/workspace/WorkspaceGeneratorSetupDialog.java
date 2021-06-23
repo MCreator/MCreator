@@ -23,7 +23,7 @@ import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.action.impl.workspace.DownloadJDK;
+import net.mcreator.ui.action.impl.workspace.SDKDownloader;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.init.L10N;
@@ -47,17 +47,19 @@ public class WorkspaceGeneratorSetupDialog {
 		AtomicBoolean setupOk = new AtomicBoolean(true);
 
 		Thread t = new Thread(() -> {
-			ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
-					L10N.t("dialog.setup_workspace.step.jdk"));
-			dial.addProgress(p0);
+			if (m.getGeneratorConfiguration().getJDKVersion() != null) {
+				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
+						L10N.t("dialog.setup_workspace.step.jdk"));
+				dial.addProgress(p0);
 
-			// Download the custom JDK if needed
-			if (DownloadJDK.downloadJDK(m.getGeneratorConfiguration())) {
-				p0.ok();
-			} else {
-				p0.err();
+				// Download the custom JDK if needed
+				if (SDKDownloader.downloadJDK(m.getGeneratorConfiguration())) {
+					p0.ok();
+				} else {
+					p0.err();
+				}
+				dial.refreshDisplay();
 			}
-			dial.refreshDisplay();
 
 			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.setup_workspace.step.gradle_files"));

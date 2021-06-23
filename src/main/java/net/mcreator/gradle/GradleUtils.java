@@ -70,7 +70,7 @@ public class GradleUtils {
 		return retval;
 	}
 
-	public static String getJavaHome(GeneratorConfiguration genConfig) {
+	public static String getJavaHome(GeneratorConfiguration generatorConfiguration) {
 		// check if JAVA_HOME was overwritten in preferences and return this one in such case
 		if (PreferencesManager.PREFERENCES.hidden.java_home != null && PreferencesManager.PREFERENCES.hidden.java_home
 				.isFile()) {
@@ -83,9 +83,10 @@ public class GradleUtils {
 		}
 
 		// if the generator has a JDK, we set JAVA_HOME to generator's JDK
-		if (UserFolderManager.getSpecificJDK(genConfig.getJDKVersion() + "/bin/javac.exe").isFile() || UserFolderManager
-				.getSpecificJDK(genConfig.getJDKVersion() + "bin/javac").isFile()) {
-			return FilenameUtils.normalize(UserFolderManager.getSpecificJDK(genConfig.getJDKVersion()).getAbsolutePath());
+		if (generatorConfiguration.getJDKVersion() != null && (UserFolderManager.getSpecificJDK(generatorConfiguration
+				.getJDKVersion() + "/bin/javac.exe").isFile() || UserFolderManager.getSpecificJDK(generatorConfiguration
+				.getJDKVersion() + "bin/javac").isFile())) {
+			return FilenameUtils.normalize(UserFolderManager.getSpecificJDK(generatorConfiguration.getJDKVersion()).getAbsolutePath());
 		}
 
 		// if we have bundled JDK, we set JAVA_HOME to bundled JDK

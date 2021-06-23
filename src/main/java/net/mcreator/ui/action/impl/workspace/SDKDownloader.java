@@ -30,7 +30,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.net.URL;
 
-public class DownloadJDK {
+public class SDKDownloader {
 
 	private static final Logger LOG = LogManager.getLogger("Setup JDK");
 
@@ -56,11 +56,7 @@ public class DownloadJDK {
 
 			} else {
 				LOG.info(jdkVersion + " is already downloaded.");
-				return true;
 			}
-		} else {
-			LOG.info("Bundled JDK will be used.");
-			return true;
 		}
 
 		return true;
