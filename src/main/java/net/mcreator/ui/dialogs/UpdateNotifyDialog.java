@@ -72,7 +72,8 @@ public class UpdateNotifyDialog {
 
 					ar.setText(fullChangelog(updateInfo));
 
-					Object[] options = { "Open download page", "Remind me later" };
+					Object[] options = { L10N.t("dialog.update_notify.open_download_page"),
+							L10N.t("dialog.update_notify.remind_later") };
 					int option = JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
 							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 					if (option == 0) {
@@ -109,7 +110,8 @@ public class UpdateNotifyDialog {
 									releaseChangelog(updateInfo.getReleases().get(Launcher.version.major).getBuilds(),
 											Launcher.version.buildlong));
 
-							Object[] options = { "Open download page", "Remind me later" };
+							Object[] options = { L10N.t("dialog.update_notify.open_download_page"),
+									L10N.t("dialog.update_notify.remind_later") };
 							int option = JOptionPane
 									.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
 											JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options,

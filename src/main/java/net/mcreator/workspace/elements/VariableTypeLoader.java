@@ -91,7 +91,7 @@ public class VariableTypeLoader {
 		variableBlocklyJS = variableBlocklyJSBuilder.toString();
 	}
 
-	public VariableType getVariableTypeFromString(String type) {
+	public VariableType fromName(String type) {
 		for (VariableType varType : VARIABLE_TYPES_LIST.keySet())
 			if (varType.getName().equalsIgnoreCase(type) || varType.getBlocklyVariableType().equalsIgnoreCase(type))
 				return varType;

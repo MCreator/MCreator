@@ -43,7 +43,7 @@ public class ReturnBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String type = StringUtils.removeStart(block.getAttribute("type"), "return_");
-		VariableType returnType = VariableTypeLoader.INSTANCE.getVariableTypeFromString(type);
+		VariableType returnType = VariableTypeLoader.INSTANCE.fromName(type);
 
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (master instanceof BlocklyToProcedure && value != null) {

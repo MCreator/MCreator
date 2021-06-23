@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.validation.validators;
 
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 
@@ -41,6 +42,7 @@ public class MCItemHolderValidator implements Validator {
 		if (holder.containsItem() || (requirement != null && !requirement.isSelected()))
 			return Validator.ValidationResult.PASSED;
 		else
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, "Please select element");
+			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					L10N.t("validators.select_element"));
 	}
 }

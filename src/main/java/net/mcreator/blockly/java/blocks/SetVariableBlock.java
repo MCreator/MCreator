@@ -48,7 +48,7 @@ public class SetVariableBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_set_");
-		VariableType typeObject = VariableTypeLoader.INSTANCE.getVariableTypeFromString(type);
+		VariableType typeObject = VariableTypeLoader.INSTANCE.fromName(type);
 
 		String javaType = new Dependency("", typeObject.getName()).getType(master.getWorkspace());
 

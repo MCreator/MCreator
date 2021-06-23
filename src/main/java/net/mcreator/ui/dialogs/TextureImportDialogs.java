@@ -36,7 +36,8 @@ public class TextureImportDialogs {
 	private static File f1, f2;
 
 	public static void importTextureGeneral(final MCreator mcreator, File file, String message) {
-		Object[] options = { "Block", "Item", "Other" };
+		Object[] options = { L10N.t("dialog.textures_import.block"), L10N.t("dialog.textures_import.item"),
+				L10N.t("dialog.textures_import.other") };
 		int n = JOptionPane.showOptionDialog(mcreator, message, L10N.t("dialog.textures_import.texture_type"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (n == 0) {

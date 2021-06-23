@@ -96,8 +96,7 @@ public class AboutAction extends BasicAction {
 		gradlesp.getVerticalScrollBar().setValue(0);
 		licenseText.setCaretPosition(0);
 		JOptionPane.showOptionDialog(parent, gradlesp, L10N.t("dialog.about.eula.title"), JOptionPane.DEFAULT_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, new Object[] { L10N.t("dialog.about.eula.close") },
-				L10N.t("dialog.about.eula.close"));
+				JOptionPane.PLAIN_MESSAGE, null, new Object[] { L10N.t("common.close") }, L10N.t("common.close"));
 	}
 
 }
