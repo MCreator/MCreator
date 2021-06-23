@@ -116,21 +116,21 @@ class PluginsPanel {
 			ComponentUtils.deriveFont(this, 12);
 
 			if ((value.getInfo().getAuthor() != null) && (value.getInfo().getName() != null) && (value.getInfo()
-					.getCredits().equals("None"))) {
-				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", loaded: " + (value
-						.isLoaded() ? "<html><font color=#a7ed1a>yes</font>" : "<html><font color=#f24122>no</font>"));
+					.getCredits().equals(L10N.t("dialog.preferences.plugins_none")))) {
+				setText("<html>" + value.getInfo().getName() + L10N.t("dialog.preferences.id") + value.getID() + L10N.t("dialog.preferences.version") + value
+						.getPluginVersion() + L10N.t("dialog.preferences.plugins_author") + value.getInfo().getAuthor() + L10N.t("dialog.preferences.plugins_loaded") + (value
+						.isLoaded() ? L10N.t("dialog.preferences.plugins_yes") : L10N.t("dialog.preferences.plugins_no")));
 			} else if (value.getInfo().getAuthor() != null)
-				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", credit: " + value
-						.getInfo().getCredits() + ", loaded: " + (value.isLoaded() ?
-						"<html><font color=#a7ed1a>yes</font>" :
-						"<html><font color=#f24122>no</font>"));
+				setText("<html>" + value.getInfo().getName() + L10N.t("dialog.preferences.id") + value.getID() + L10N.t("dialog.preferences.version") + value
+						.getPluginVersion() + L10N.t("dialog.preferences.plugins_author") + value.getInfo().getAuthor() + L10N.t("dialog.preferences.credits") + value
+						.getInfo().getCredits() + L10N.t("dialog.preferences.plugins_loaded") + (value.isLoaded() ?
+						L10N.t("dialog.preferences.plugins_yes") :
+						L10N.t("dialog.preferences.plugins_no")));
 			else
-				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: " + value
-						.getPluginVersion() + ", loaded: " + (value.isLoaded() ?
-						"<html><font color=#a7ed1a>yes</font>" :
-						"<html><font color=#f24122>no</font>"));
+				setText("<html>" + value.getInfo().getName() + L10N.t("dialog.preferences.id") + value.getID() + L10N.t("dialog.preferences.version") + value
+						.getPluginVersion() + L10N.t("dialog.preferences.plugins_loaded") + (value.isLoaded() ?
+						L10N.t("dialog.preferences.plugins_yes") :
+						L10N.t("dialog.preferences.plugins_no")));
 
 			setToolTipText(value.getInfo().getDescription());
 			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));

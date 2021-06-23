@@ -1170,14 +1170,14 @@ import java.util.stream.Collectors;
 	}
 
 	private void lockCode() {
-		Object[] options = { "Lock/unlock the code", "Cancel" };
+		Object[] options = { L10N.t("workspace.elements.lock_modelement_lock_unlock"), UIManager.getString("OptionPane.cancelButtonText") };
 		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("workspace.elements.lock_modelement_message"),
 				L10N.t("workspace.elements.lock_modelement_confirm"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.WARNING_MESSAGE, null, options, options[1]);
 		if (n == 0) {
 			ProgressDialog dial = new ProgressDialog(mcreator, L10N.t("workspace.elements.lock_modelement_title"));
 			Thread t = new Thread(() -> {
-				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit("Locking/unlocking mod elements");
+				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(L10N.t("workspace.elements.lock_modelement_locking_unlocking"));
 				dial.addProgress(p0);
 
 				List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
@@ -1202,7 +1202,7 @@ import java.util.stream.Collectors;
 				// if we have new unlocked elements, we recreate their code
 				if (elementsThatGotUnlocked.size() > 0) {
 					ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
-							"Regenerating code of unlocked elements");
+							L10N.t("workspace.elements.lock_modelement_regeneration"));
 					dial.addProgress(p1);
 					int i = 0;
 					for (ModElement mod : elementsThatGotUnlocked) {
@@ -1218,7 +1218,7 @@ import java.util.stream.Collectors;
 					p1.ok();
 					dial.refreshDisplay();
 
-					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit("Rebuilding workspace");
+					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(L10N.t("workspace.elements.lock_modelement_rebuilding_workspace"));
 					dial.addProgress(p2);
 					mcreator.actionRegistry.buildWorkspace.doAction();
 					p2.ok();
@@ -1236,15 +1236,15 @@ import java.util.stream.Collectors;
 			ModElement mu = (ModElement) list.getSelectedValue();
 			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
 				String modName = VOptionPane.showInputDialog(mcreator,
-						"<html><font style=\"font-size: 13px;\">Enter the name of the new mod element:</font><br><small>"
-								+ "This mod element will be the same as " + mu.getName()
-								+ ", but with this name.</font>", "Duplicate " + mu.getName(), mu.getElementIcon(),
+						L10N.t("workspace.elements.duplicate_message1")
+								+ L10N.t("workspace.elements.duplicate_message2") + mu.getName()
+								+ L10N.t("workspace.elements.duplicate_message3"), L10N.t("workspace.elements.duplicate") + " " + mu.getName(), mu.getElementIcon(),
 						new OptionPaneValidatior() {
 							@Override public Validator.ValidationResult validate(JComponent component) {
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component)
 										.validate();
 							}
-						}, "Duplicate", "Cancel");
+						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"));
 				if (modName != null && !modName.equals("")) {
 					modName = JavaConventions.convertToValidClassName(modName);
 
@@ -1318,8 +1318,8 @@ import java.util.stream.Collectors;
 				editCurrentlySelectedModElementAsCode(mu, component, x, y);
 			} else {
 				JOptionPane.showMessageDialog(null,
-						"<html>This mod does not have saved instance. If you want to make it editable,<br>you need to remake it.<br>"
-								+ "<small>You probably see this because you have updated MCreator and your mod was made before saving was possible.");
+						L10N.t("workspace.elements.edit_modelement_nosavedinstance")
+								+ L10N.t("workspace.elements.edit_modelement_nosavedinstance2"));
 			}
 		}
 	}

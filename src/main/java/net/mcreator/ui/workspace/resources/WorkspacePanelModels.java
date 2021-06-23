@@ -217,7 +217,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 					p0.ok();
 					dial.refreshDisplay();
 
-					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit("Rebuilding workspace");
+					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(L10N.t("workspace.3dmodels.rebuilding_workspace"));
 					dial.addProgress(p2);
 					workspacePanel.getMcreator().actionRegistry.buildWorkspace.doAction();
 					p2.ok();
