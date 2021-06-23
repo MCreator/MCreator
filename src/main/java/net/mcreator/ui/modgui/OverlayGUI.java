@@ -56,7 +56,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		displayCondition = new ProcedureSelector(this.withEntry("overlay/display_condition"), mcreator,
 				L10N.t("elementgui.overlay.event_display_ingame"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeReturnValueOptional();
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		editor = new WYSIWYGEditor(mcreator, false);
 		editor.button.setVisible(false);

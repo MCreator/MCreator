@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.io.FileIO;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.FileListField;
@@ -59,8 +60,7 @@ public class SoundElementDialog {
 							.collect(Collectors.toList()));
 		}
 
-		JComboBox<String> soundCategory = new JComboBox<>(
-				new String[] { "master", "ambient", "player", "neutral", "hostile", "block", "record", "music" });
+		JComboBox<String> soundCategory = new JComboBox<>(ElementUtil.getAllSoundCategories());
 
 		ui.add(L10N.label("dialog.sounds.registry_name"));
 		ui.add(soundName);

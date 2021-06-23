@@ -27,6 +27,7 @@
     }
   ],
   "extensions": [
+    "sound_category_list_provider",
     "sound_list_provider"
   ],
   "inputsInline": true,
@@ -43,6 +44,7 @@
       "<value name=\"pitch\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
     ],
     "fields": [
+      "soundcategory",
       "sound"
     ],
     "inputs": [

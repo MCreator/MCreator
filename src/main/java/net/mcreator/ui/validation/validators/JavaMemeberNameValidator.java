@@ -19,6 +19,7 @@
 package net.mcreator.ui.validation.validators;
 
 import net.mcreator.java.JavaConventions;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.StringUtils;
@@ -42,7 +43,8 @@ public class JavaMemeberNameValidator implements Validator {
 		String text = textField.getText();
 
 		if (text == null || text.length() == 0)
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, "Name can't be empty");
+			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					L10N.t("validators.java_name.needs_name"));
 
 		if (firstLetterUppercase && Character.isLowerCase(text.charAt(0))) {
 			if (text.length() > 1)
@@ -53,20 +55,21 @@ public class JavaMemeberNameValidator implements Validator {
 		}
 
 		if (!JavaConventions.isValidJavaIdentifier(textField.getText())) {
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, "Invalid name");
+			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					L10N.t("validators.java_name.invalid_name"));
 		} else if (JavaConventions.isStringReservedJavaWord(textField.getText())) {
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-					"Name contains reserved Java keywords");
+					L10N.t("validators.java_name.reserved_keywords"));
 		} else if (common_names.contains(textField.getText())) {
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-					"Do not use vanilla names, this can cause build problems!");
+					L10N.t("validators.java_name.vanilla_names"));
 		} else if (JavaConventions.containsInvalidJavaNameCharacters(textField.getText())) {
 			return new Validator.ValidationResult(Validator.ValidationResultType.WARNING,
-					"Name contains characters that will be converted");
+					L10N.t("validators.java_name.characters_convertible"));
 		} else if (firstLetterUppercase && textField.getText() != null && textField.getText().length() > 0
 				&& !StringUtils.isUppercaseLetter(textField.getText().charAt(0))) {
 			return new Validator.ValidationResult(Validator.ValidationResultType.WARNING,
-					"Java standards recommend uppercase letter for the first character");
+					L10N.t("validators.java_names.upper_case_first_character"));
 		} else {
 			return Validator.ValidationResult.PASSED;
 		}

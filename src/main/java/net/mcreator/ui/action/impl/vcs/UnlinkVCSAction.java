@@ -31,7 +31,7 @@ public class UnlinkVCSAction extends VCSAction {
 	public UnlinkVCSAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.vcs.unlink"), e -> {
 			int n = JOptionPane.showConfirmDialog(actionRegistry.getMCreator(), L10N.t("dialog.vcs.unlink.message"),
-					L10N.t("dialog.vcs.unlink.title"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (n == JOptionPane.YES_OPTION) {
 				Git git = actionRegistry.getMCreator().getWorkspace().getVCS().getGit();
 				FileIO.deleteDir(git.getRepository().getDirectory());
