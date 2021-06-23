@@ -50,13 +50,14 @@ public class WorkspaceGeneratorSetupDialog {
 			ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.setup_workspace.step.jdk"));
 			dial.addProgress(p0);
-			boolean success = DownloadJDK.downloadJDK(m.getGeneratorConfiguration());
-			if (!success) {
-				p0.err();
-				dial.refreshDisplay();
-			} else {
+
+			// Download the custom JDK if needed
+			if (DownloadJDK.downloadJDK(m.getGeneratorConfiguration())) {
 				p0.ok();
+			} else {
+				p0.err();
 			}
+			dial.refreshDisplay();
 
 			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.setup_workspace.step.gradle_files"));
