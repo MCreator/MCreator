@@ -28,7 +28,7 @@ public class ProgressBar extends JPanel {
 	private int wid = -1;
 
 	private Color emptyColor = new Color(80, 80, 80);
-	private Color barColor = (Color) UIManager.get("MCreatorLAF.MAIN_TINT");
+	private Color barColor = Color.white;
 
 	@Override public void paint(Graphics g) {
 		if (emptyColor != null) {
