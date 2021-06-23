@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.ide;
 
+import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
@@ -32,7 +33,9 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 public class RSyntaxTextAreaStyler {
@@ -46,11 +49,17 @@ public class RSyntaxTextAreaStyler {
 			if (PluginLoader.INSTANCE
 					.getResourceAsStream("themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml")
 					!= null) {
-				theme = Theme.load(PluginLoader.INSTANCE.getResourceAsStream(
-						"themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml"));
+				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
+						"themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml");
+				themeXML = themeXML.replace("${mainTint}",
+						Integer.toHexString(((Color) UIManager.get("MCreatorLAF.MAIN_TINT")).getRGB()).substring(2));
+				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));
 			} else {
-				theme = Theme
-						.load(PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/styles/code_editor.xml"));
+				String themeXML = FileIO
+						.readResourceToString(PluginLoader.INSTANCE, "themes/default_dark/styles/code_editor.xml");
+				themeXML = themeXML.replace("${mainTint}",
+						Integer.toHexString(((Color) UIManager.get("MCreatorLAF.MAIN_TINT")).getRGB()).substring(2));
+				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));
 			}
 
 			if (!PreferencesManager.PREFERENCES.ide.editorTheme.equals("MCreator")) {
@@ -58,8 +67,10 @@ public class RSyntaxTextAreaStyler {
 						"/org/fife/ui/rsyntaxtextarea/themes/" + PreferencesManager.PREFERENCES.ide.editorTheme
 								.toLowerCase(Locale.ENGLISH) + ".xml"));
 			}
+
 			theme.matchedBracketBG = (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT");
 			theme.matchedBracketFG = (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
+
 			theme.apply(te);
 		} catch (IOException ioe) {
 			LOG.error(ioe.getMessage(), ioe);
