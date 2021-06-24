@@ -20,6 +20,7 @@ package net.mcreator.gradle;
 
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.minecraft.api.ModAPI;
 import net.mcreator.minecraft.api.ModAPIManager;
@@ -83,10 +84,17 @@ public class GradleUtils {
 		}
 
 		// if the generator has a JDK, we set JAVA_HOME to generator's JDK
-		if (generatorConfiguration.getJDKVersion() != null && (UserFolderManager.getSpecificJDK(generatorConfiguration
-				.getJDKVersion() + "/bin/javac.exe").isFile() || UserFolderManager.getSpecificJDK(generatorConfiguration
-				.getJDKVersion() + "bin/javac").isFile())) {
-			return FilenameUtils.normalize(UserFolderManager.getSpecificJDK(generatorConfiguration.getJDKVersion()).getAbsolutePath());
+		if (generatorConfiguration.getJDKVersion() != null) {
+			if ((OS.getOS() == OS.WINDOWS && (UserFolderManager.getSpecificJDK(generatorConfiguration.getJDKVersion()
+					+ "/bin/javac.exe").isFile() || UserFolderManager.getSpecificJDK(generatorConfiguration.getJDKVersion()
+					+ "bin/javac").isFile()))
+				|| (OS.getOS() == OS.MAC && (UserFolderManager.getSpecificJDK(generatorConfiguration.getJDKVersion()
+					+ "/Contents/Home/bin/javac").isFile()))
+				|| (OS.getOS() == OS.LINUX && (UserFolderManager.getSpecificJDK(generatorConfiguration.getJDKVersion()
+					+ "/bin/javac").isFile()))) {
+				return FilenameUtils.normalize(
+						UserFolderManager.getSpecificJDK(generatorConfiguration.getJDKVersion()).getAbsolutePath());
+			}
 		}
 
 		// if we have bundled JDK, we set JAVA_HOME to bundled JDK

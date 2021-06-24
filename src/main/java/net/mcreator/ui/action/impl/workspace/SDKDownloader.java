@@ -40,15 +40,34 @@ public class SDKDownloader {
 			if (!UserFolderManager.getSpecificJDK(jdkVersion + "/").exists()) {
 				LOG.info("Downloading JDK: " + jdkVersion);
 				try {
-					FileUtils.copyURLToFile(
-							new URL("https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion + "/" + OS
-									.getOSName() + "/x64/jdk/hotspot/normal/adoptopenjdk"),
-							UserFolderManager.getSpecificJDK(jdkVersion + ".zip"));
+					if (OS.getOS() == OS.WINDOWS) {
+						FileUtils.copyURLToFile(new URL("https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion
+										+ "/windows/x64/jdk/hotspot/normal/adoptopenjdk"),
+								UserFolderManager.getSpecificJDK(jdkVersion + ".zip"));
 
-					LOG.info("Unzipping the JDK");
-					ZipIO.unzip(UserFolderManager.getSpecificJDK(jdkVersion + ".zip").getAbsolutePath(),
-							UserFolderManager.getFileFromUserFolder("jdks").getAbsolutePath());
-					UserFolderManager.getSpecificJDK(jdkVersion + ".zip").delete();
+						LOG.info("Unzipping the JDK");
+						ZipIO.unzip(UserFolderManager.getSpecificJDK(jdkVersion + ".zip").getAbsolutePath(),
+								UserFolderManager.getFileFromUserFolder("jdks").getAbsolutePath());
+						UserFolderManager.getSpecificJDK(jdkVersion + ".zip").delete();
+					} else if (OS.getOS() == OS.MAC || OS.getOS() == OS.LINUX) {
+						if (OS.getOS() == OS.MAC) {
+							FileUtils.copyURLToFile(
+									new URL("https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion
+											+ "/mac/x64/jdk/hotspot/normal/adoptopenjdk"),
+									UserFolderManager.getSpecificJDK(jdkVersion + ".tar.gz"));
+						} else {
+							FileUtils.copyURLToFile(
+									new URL("https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion
+											+ "/linux/x64/jdk/hotspot/normal/adoptopenjdk"),
+									UserFolderManager.getSpecificJDK(jdkVersion + ".tar.gz"));
+						}
+
+						LOG.info("Unzipping the JDK");
+						ZipIO.unzip(UserFolderManager.getSpecificJDK(jdkVersion + ".tar.gz").getAbsolutePath(),
+								UserFolderManager.getFileFromUserFolder("jdks").getAbsolutePath());
+						UserFolderManager.getSpecificJDK(jdkVersion + "..tar.gz").delete();
+					}
+
 				} catch (IOException e) {
 					LOG.error("Could not download JDK: " + jdkVersion, e.getMessage());
 					return false;
