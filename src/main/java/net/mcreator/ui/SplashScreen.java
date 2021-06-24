@@ -60,7 +60,8 @@ public class SplashScreen extends JWindow {
 		logo.setBounds(24 + 8 - 4, 70, 350, 63);
 		imagePanel.add(logo);
 
-		JLabel version = new JLabel("VERSION " + (Launcher.version != null ? Launcher.version.getMajorString() : "1234.5"));
+		JLabel version = new JLabel(
+				"VERSION " + (Launcher.version != null ? Launcher.version.getMajorString() : "1234.5"));
 		version.setFont(splashFont.deriveFont(18f));
 		version.setForeground(Color.white);
 		version.setBounds(30 + 10 - 4, 129, 500, 45);
