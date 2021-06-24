@@ -23,7 +23,6 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
-import net.mcreator.ui.views.editor.image.tool.component.JSlidingSpinner;
 import net.mcreator.ui.views.editor.image.tool.component.JTitledComponentWrapper;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
@@ -33,7 +32,6 @@ import java.awt.event.MouseEvent;
 
 public class ShapeTool extends AbstractModificationTool {
 
-	private double opacity = 1;
 	private Shape shape = Shape.SQUARE;
 	private final JCheckBox aliasing;
 	private Point firstPoint = null;
@@ -41,19 +39,14 @@ public class ShapeTool extends AbstractModificationTool {
 	public ShapeTool(Canvas canvas, ColorSelector colorSelector, LayerPanel layerPanel, VersionManager versionManager) {
 		super("Shape", "Shape creation tool", UIRES.get("img_editor.shape"), canvas, colorSelector, versionManager);
 		setLayerPanel(layerPanel);
-		JSlidingSpinner opacitySlider = new JSlidingSpinner("Opacity:");
-		opacitySlider.addChangeListener(e -> opacity = opacitySlider.getValue() / 100.0);
 
 		JComboBox<Shape> shapeBox = new JComboBox<>(Shape.values());
 		shapeBox.setSelectedIndex(0);
 		JTitledComponentWrapper titledShape = new JTitledComponentWrapper("Shape:", shapeBox);
-		shapeBox.addActionListener(e -> {
-			shape = (Shape) shapeBox.getSelectedItem();
-		});
+		shapeBox.addActionListener(e -> shape = (Shape) shapeBox.getSelectedItem());
 
 		aliasing = new JCheckBox("Smooth edge");
 
-		settingsPanel.add(opacitySlider);
 		settingsPanel.add(titledShape);
 		settingsPanel.add(aliasing);
 	}

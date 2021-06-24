@@ -32,21 +32,14 @@ import java.awt.image.BufferedImage;
 public class FloodFillTool extends AbstractModificationTool {
 
 	private int threshold = 30;
-	private double opacity = 1;
 
 	public FloodFillTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager) {
 		super("Flood fill", "A tool for filling in larger areas", UIRES.get("img_editor.bucket"), canvas, colorSelector,
 				versionManager);
 
-		JSlidingSpinner opacitySlider = new JSlidingSpinner("Opacity:");
-		opacitySlider.addChangeListener(e -> opacity = opacitySlider.getValue() / 100.0);
-
 		JSlidingSpinner thresholdSlider = new JSlidingSpinner("Threshold:", threshold, 0, 255, 1);
-		thresholdSlider.addChangeListener(e -> {
-			threshold = (int) Math.round(thresholdSlider.getValue());
-		});
+		thresholdSlider.addChangeListener(e -> threshold = (int) Math.round(thresholdSlider.getValue()));
 
-		settingsPanel.add(opacitySlider);
 		settingsPanel.add(thresholdSlider);
 	}
 

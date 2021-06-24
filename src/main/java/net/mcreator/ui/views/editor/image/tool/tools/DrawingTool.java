@@ -35,7 +35,6 @@ import java.awt.geom.Point2D;
 
 public class DrawingTool extends AbstractModificationTool {
 
-	private double opacity = 1;
 	private int size = 1;
 	private Shape shape = Shape.SQUARE;
 
@@ -50,15 +49,11 @@ public class DrawingTool extends AbstractModificationTool {
 			String description, ImageIcon icon, VersionManager versionManager) {
 		super(name, description, icon, canvas, colorSelector, versionManager);
 		setLayerPanel(layerPanel);
-		JSlidingSpinner opacitySlider = new JSlidingSpinner("Opacity:");
-		opacitySlider.addChangeListener(e -> opacity = opacitySlider.getValue() / 100.0);
 
 		JComboBox<Shape> shapeBox = new JComboBox<>(Shape.values());
 		shapeBox.setSelectedIndex(0);
 		JTitledComponentWrapper titledShape = new JTitledComponentWrapper("Shape:", shapeBox);
-		shapeBox.addActionListener(e -> {
-			shape = (Shape) shapeBox.getSelectedItem();
-		});
+		shapeBox.addActionListener(e -> shape = (Shape) shapeBox.getSelectedItem());
 
 		JSlidingSpinner sizeSlider = new JSlidingSpinner("Size:", 1, 1, 100, 1);
 		sizeSlider.addChangeListener(e -> size = (int) Math.round(sizeSlider.getValue()));
@@ -67,7 +62,6 @@ public class DrawingTool extends AbstractModificationTool {
 		connect = new JCheckBox("Connect points");
 		connect.setSelected(true);
 
-		settingsPanel.add(opacitySlider);
 		settingsPanel.add(titledShape);
 		settingsPanel.add(sizeSlider);
 		settingsPanel.add(aliasing);

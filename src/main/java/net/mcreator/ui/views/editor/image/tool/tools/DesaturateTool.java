@@ -32,7 +32,7 @@ public class DesaturateTool extends AbstractTool {
 
 	public DesaturateTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager, MCreator window) {
 		super("Desaturate tool", "A tool for desaturating layers", UIRES.get("img_editor.desaturate"), canvas,
-				colorSelector, versionManager);
+				colorSelector, versionManager, "");
 		this.window = window;
 		noSettings(true);
 	}

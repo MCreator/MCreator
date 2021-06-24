@@ -27,9 +27,10 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 
 public abstract class AbstractModificationTool extends AbstractTool {
+
 	public AbstractModificationTool(String name, String description, ImageIcon icon, Canvas canvas,
 			ColorSelector colorSelector, VersionManager versionManager) {
-		super(name, description, icon, canvas, colorSelector, versionManager);
+		super(name, description, icon, canvas, colorSelector, versionManager, "Opacity:");
 	}
 
 	@Override public void mousePressed(MouseEvent e) {

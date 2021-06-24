@@ -35,7 +35,7 @@ public class ResizeCanvasTool extends AbstractTool {
 	public ResizeCanvasTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager,
 			MCreator window) {
 		super("Resize canvas", "A tool for resizing the main canvas", UIRES.get("img_editor.resizecanvas"), canvas,
-				colorSelector, versionManager);
+				colorSelector, versionManager, "");
 		this.window = window;
 		noSettings(true);
 	}

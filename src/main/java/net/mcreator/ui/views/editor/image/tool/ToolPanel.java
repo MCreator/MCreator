@@ -113,7 +113,6 @@ public class ToolPanel extends JSplitPane {
 				general);
 		addButton("Redo (Ctrl + Y)", "Redoes the last action", UIRES.get("img_editor.redo"), e -> versionManager.redo(),
 				general);
-		register(new ResizeCanvasTool(canvas, cs, versionManager, frame), general);
 
 		register(new ShapeTool(canvas, cs, layerPanel, versionManager), drawing);
 		register(new EraserTool(canvas, cs, layerPanel, versionManager), drawing);
@@ -127,6 +126,7 @@ public class ToolPanel extends JSplitPane {
 
 		register(new MoveTool(canvas, cs, versionManager), constraints);
 		register(new ResizeTool(canvas, cs, versionManager, frame), constraints);
+		register(new ResizeCanvasTool(canvas, cs, versionManager, frame), constraints);
 
 		pencil.setSelected(true);
 

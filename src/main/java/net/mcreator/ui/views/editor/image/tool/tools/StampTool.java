@@ -46,7 +46,6 @@ import java.util.List;
 public class StampTool extends AbstractModificationTool {
 
 	private double saturation = 1;
-	private double opacity = 1;
 
 	private Point prevPoint = null;
 
@@ -91,9 +90,6 @@ public class StampTool extends AbstractModificationTool {
 			height.setValue(icon.getIconHeight());
 		});
 
-		JSlidingSpinner opacitySlider = new JSlidingSpinner("Opacity:");
-		opacitySlider.addChangeListener(e -> opacity = opacitySlider.getValue() / 100.0);
-
 		JSlidingSpinner saturationSlider = new JSlidingSpinner("Saturation:");
 		saturationSlider.addChangeListener(e -> saturation = saturationSlider.getValue() / 100.0);
 
@@ -107,7 +103,6 @@ public class StampTool extends AbstractModificationTool {
 		connect = L10N.checkbox("dialog.imageeditor.stamp_tool_connect_points");
 		connect.setSelected(true);
 
-		settingsPanel.add(opacitySlider);
 		settingsPanel.add(PanelUtils.westAndCenterElement(L10N.label("dialog.imageeditor.stamp_tool_base_texture"),
 				PanelUtils.centerInPanel(templateChooserButton)));
 		settingsPanel.add(width);

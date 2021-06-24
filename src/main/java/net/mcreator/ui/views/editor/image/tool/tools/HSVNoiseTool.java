@@ -32,7 +32,7 @@ public class HSVNoiseTool extends AbstractTool {
 
 	public HSVNoiseTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager, MCreator window) {
 		super("Noise tool", "A tool for adding noise to layers", UIRES.get("img_editor.noise"), canvas, colorSelector,
-				versionManager);
+				versionManager, "");
 		this.window = window;
 		noSettings(true);
 	}
