@@ -337,9 +337,17 @@ public class TestWorkspaceDataProvider {
 			fluid.name = modElement.getName();
 			fluid.textureFlowing = "test";
 			fluid.textureStill = "test2";
+			fluid.canMultiply = _true;
+			fluid.flowRate = 8;
+			fluid.levelDecrease = 2;
+			fluid.slopeFindDistance = 3;
+			fluid.spawnParticles = !_true;
+			fluid.dripParticle = new Particle(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			fluid.luminosity = 3;
 			fluid.density = 5;
 			fluid.viscosity = 10;
+			fluid.temperature = 375;
 			fluid.isGas = _true;
 			fluid.generateBucket = !_true;
 			fluid.bucketName = modElement.getName() + " Bucket";
@@ -361,6 +369,7 @@ public class TestWorkspaceDataProvider {
 			fluid.resistance = 52.2;
 			fluid.emissiveRendering = _true;
 			fluid.luminance = 6;
+			fluid.lightOpacity = 2;
 			fluid.flammability = 5;
 			fluid.fireSpreadSpeed = 12;
 			fluid.colorOnMap = getRandomItem(random, ElementUtil.loadMapColors());
