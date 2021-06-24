@@ -116,11 +116,6 @@ public class DialogsTest {
 	}
 
 	private void waitUntilWindowIsOpen(Runnable openTask) throws Throwable {
-		waitUntilWindowIsOpen(openTask, 2500);
-	}
-
-	private void waitUntilWindowIsOpen(Runnable openTask, long ms_max) throws Throwable {
-		Arrays.stream(Window.getWindows()).forEach(w -> w.setVisible(false));
 		int frames_start = Window.getWindows().length;
 
 		AtomicReference<Throwable> throwableAtomic = new AtomicReference<>(null);
@@ -136,10 +131,10 @@ public class DialogsTest {
 		long start = System.currentTimeMillis();
 		while (Window.getWindows().length == frames_start) {
 			//noinspection BusyWait
-			Thread.sleep(10);
+			Thread.sleep(5);
 
-			if (System.currentTimeMillis() - start > ms_max)
-				throw new TimeoutException(String.format("No window opened within %s ms", ms_max));
+			if (System.currentTimeMillis() - start > 3000)
+				throw new TimeoutException();
 
 			if (throwableAtomic.get() != null)
 				throw throwableAtomic.get();
@@ -148,7 +143,7 @@ public class DialogsTest {
 		if (throwableAtomic.get() != null)
 			throw throwableAtomic.get();
 
-		Arrays.stream(Window.getWindows()).forEach(w -> w.setVisible(false));
+		Arrays.stream(Window.getWindows()).filter(w -> w != mcreator).forEach(Window::dispose);
 	}
 
 }
