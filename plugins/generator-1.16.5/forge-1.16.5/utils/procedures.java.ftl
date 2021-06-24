@@ -64,9 +64,9 @@
 
 <#macro procedureOBJToItemstackCode object="">
     <#if object?? && object?has_content && object.getName() != "null">
-        "/*@ItemStack*/" + <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
+        /*@ItemStack*/ + <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
     <#else>
-        "/*@ItemStack*/" + ItemStack.EMPTY
+        /*@ItemStack*/ + ItemStack.EMPTY
     </#if>
 </#macro>
 
