@@ -68,6 +68,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -90,18 +91,20 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private final WorkspaceOpenListener workspaceOpenListener;
 	private RecentWorkspaces recentWorkspaces = new RecentWorkspaces();
 
-	public WorkspaceSelector(MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
+	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
 
 		reloadTitle();
 		setIconImage(UIRES.getBuiltIn("icon").getImage());
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-			@Override public void windowClosing(WindowEvent arg0) {
-				application.closeApplication();
-			}
-		});
+
+		if (application != null)
+			addWindowListener(new WindowAdapter() {
+				@Override public void windowClosing(WindowEvent arg0) {
+					application.closeApplication();
+				}
+			});
 
 		JPanel actions = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.new_workspace"), UIRES.get("addwrk"), e -> {
