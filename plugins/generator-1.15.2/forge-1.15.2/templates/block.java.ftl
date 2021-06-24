@@ -277,9 +277,15 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-		<#if data.lightOpacity == 0>
+		<#if (!data.blockBase?? || data.blockBase == "Leaves") && data.lightOpacity == 0>
 		@Override public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
-			return true;
+			return <#if data.isWaterloggable>state.getFluidState().isEmpty()<#else>true</#if>;
+		}
+		</#if>
+
+		<#if !data.blockBase?? || data.blockBase == "Leaves" || data.lightOpacity != 0>
+		@Override public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
+			return ${data.lightOpacity};
 		}
 		</#if>
 
