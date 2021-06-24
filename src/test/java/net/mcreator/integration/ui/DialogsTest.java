@@ -116,7 +116,7 @@ public class DialogsTest {
 	}
 
 	private void waitUntilWindowIsOpen(Runnable openTask) throws Throwable {
-		waitUntilWindowIsOpen(openTask, 1000);
+		waitUntilWindowIsOpen(openTask, 2500);
 	}
 
 	private void waitUntilWindowIsOpen(Runnable openTask, long ms_max) throws Throwable {
