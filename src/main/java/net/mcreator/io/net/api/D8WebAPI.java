@@ -89,9 +89,8 @@ public class D8WebAPI implements IWebAPI {
 						continue;
 					news[0] = MCreatorApplication.isInternet ?
 							((Element) node).getElementsByTagName("title").item(1).getChildNodes().item(0).getNodeValue() :
-							L10N.t("dialog.workspace_selector.news.loading_failed");
-					news[1] = ((Element) node).getElementsByTagName("link").item(1).getChildNodes().item(0)
-							.getNodeValue();
+							L10N.t("dialog.workspace_selector.webdata.loading_failed");
+					news[1] = ((Element) node).getElementsByTagName("link").item(1).getChildNodes().item(0).getNodeValue();
 				}
 			}
 
@@ -109,11 +108,10 @@ public class D8WebAPI implements IWebAPI {
 						continue;
 					motw[0] = MCreatorApplication.isInternet ?
 							((Element) node).getElementsByTagName("title").item(1).getChildNodes().item(0).getNodeValue() :
-							L10N.t("dialog.workspace_selector.motw.loading_failed");
+							L10N.t("dialog.workspace_selector.webdata.loading_failed");
 					motw[1] = MCreatorApplication.SERVER_DOMAIN + "/node/" + ((Element) node).getElementsByTagName("guid")
 									.item(0).getChildNodes().item(0).getNodeValue().split("mcreator\\.net/")[1];
-					motw[2] = ((Element) node).getElementsByTagName("pubDate").item(0).getChildNodes().item(0)
-							.getNodeValue();
+					motw[2] = ((Element) node).getElementsByTagName("pubDate").item(0).getChildNodes().item(0).getNodeValue();
 					motw[3] = MCreatorApplication.SERVER_DOMAIN + "/user/" + ((Element) node)
 							.getElementsByTagName("dc:creator").item(0).getChildNodes().item(0).getNodeValue();
 					motw[4] = ((Element) node).getElementsByTagName("description").item(1).getChildNodes().item(0)
