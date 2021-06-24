@@ -406,7 +406,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		CompletableFuture<String[]> newsFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getWebsiteNews(newsFuture);
 		JLabel nov = new JLabel("<html>" + L10N.t("dialog.workspace_selector.news")
-				+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + L10N.t("dialog.workspace_selector.news.loading"));
+				+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + L10N.t("dialog.workspace_selector.webdata.loading"));
 		nov.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		nov.setForeground(new Color(0xf5f5f5));
 		newsFuture.whenComplete((news, throwable) -> SwingUtilities.invokeLater(() -> {
@@ -426,7 +426,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		CompletableFuture<String[]> motwFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getModOfTheWeekData(motwFuture);
 		JLabel lab3 = new JLabel("<html>" + L10N.t("dialog.workspace_selector.motw")
-				+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + L10N.t("dialog.workspace_selector.motw.loading"));
+				+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + L10N.t("dialog.workspace_selector.webdata.loading"));
 		lab3.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		lab3.setForeground(new Color(0xf5f5f5));
 		JLabel lab2 = new JLabel();
