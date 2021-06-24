@@ -429,8 +429,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		}));
 
 		CompletableFuture<String[]> motwFuture = new CompletableFuture<>();
-		if (MCreatorApplication.isInternet)
-			MCreatorApplication.WEB_API.getModOfTheWeekData(motwFuture);
+		MCreatorApplication.WEB_API.getModOfTheWeekData(motwFuture);
 		JLabel lab3 = new JLabel(
 				"<html>Mod of the week:<br><font style=\"font-size: 14px; color: #f5f5f5;\">Loading data ...");
 		lab3.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));

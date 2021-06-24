@@ -269,7 +269,6 @@ public class MainMenuBar extends JMenuBar {
 		searchField.setOpaque(true);
 		ComponentUtils.deriveFont(searchField, 13);
 		searchField.setBorder(BorderFactory.createEmptyBorder(1, 28, 1, 0));
-		searchField.setEnabled(MCreatorApplication.isInternet);
 		searchField.addKeyListener(new KeyAdapter() {
 			@Override public void keyTyped(KeyEvent e) {
 				if (e.getKeyChar() == KeyEvent.VK_ENTER) {
