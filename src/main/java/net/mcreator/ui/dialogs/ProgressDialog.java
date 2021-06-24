@@ -84,9 +84,6 @@ public class ProgressDialog extends MCreatorDialog {
 
 	public void hideAll() {
 		Thread lo = new Thread(() -> {
-			if (mcreator != null)
-				mcreator.getApplication().getTaskbarIntegration().clearState(mcreator);
-
 			try {
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
@@ -96,6 +93,13 @@ public class ProgressDialog extends MCreatorDialog {
 			SwingUtilities.invokeLater(() -> setVisible(false));
 		});
 		lo.start();
+	}
+	
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+
+		if(!visible && mcreator != null)
+			mcreator.getApplication().getTaskbarIntegration().clearState(mcreator);
 	}
 
 	public void setTopInfoText(String text) {

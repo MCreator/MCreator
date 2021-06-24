@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.ui.init.L10N;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -129,7 +131,9 @@ public class CollapsiblePanel extends JPanel {
 	protected void updateBorderTitle() {
 		String arrow = "";
 		if (getComponentCount() > 0)
-			arrow = (hasInvisibleComponent() ? "[Click to expand]" : "[Click to collapse]");
+			arrow = (hasInvisibleComponent() ?
+					"[" + L10N.t("components.collapsible_panel.expand") + "]" :
+					"[" + L10N.t("components.collapsible_panel.collapse") + "]");
 		border.setTitle("<html>" + title + " <b>" + arrow);
 		repaint();
 	}

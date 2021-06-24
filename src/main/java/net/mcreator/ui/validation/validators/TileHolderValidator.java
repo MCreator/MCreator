@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.validation.validators;
 
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.validation.Validator;
 
@@ -41,7 +42,8 @@ public class TileHolderValidator implements Validator {
 		if (holder.has() || (requirement != null && !requirement.isSelected()))
 			return Validator.ValidationResult.PASSED;
 		else
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, "You need to select a texture");
+			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					L10N.t("validator.texture_needed"));
 	}
 
 }

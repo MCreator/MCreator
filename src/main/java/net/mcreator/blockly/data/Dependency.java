@@ -116,7 +116,7 @@ public class Dependency implements Comparable<Dependency> {
 			blockXml.append("<block type=\"blockstate_from_deps\"></block>");
 			break;
 		default:
-			if (VariableTypeLoader.INSTANCE.getVariableTypeFromString(type) != null) {
+			if (VariableTypeLoader.INSTANCE.fromName(type) != null) {
 				blockXml.append("<block type=\"custom_dependency_");
 				blockXml.append(type);
 				blockXml.append("\"><field name=\"NAME\">");
@@ -131,9 +131,8 @@ public class Dependency implements Comparable<Dependency> {
 
 	public static Color getColor(String type) {
 		// Check if the type is a loaded variable and then, get its HUE color
-		if (VariableTypeLoader.INSTANCE.getVariableTypeFromString(type) != null) {
-			return BlocklyBlockUtil
-					.getBlockColorFromHUE(VariableTypeLoader.INSTANCE.getVariableTypeFromString(type).getColor());
+		if (VariableTypeLoader.INSTANCE.fromName(type) != null) {
+			return BlocklyBlockUtil.getBlockColorFromHUE(VariableTypeLoader.INSTANCE.fromName(type).getColor());
 		}
 
 		// Return a color for other dependency types

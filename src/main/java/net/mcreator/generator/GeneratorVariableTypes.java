@@ -53,8 +53,7 @@ public class GeneratorVariableTypes {
 					Map<?, ?> variableTypesData = (Map<?, ?>) reader.read();
 					variableTypesData = new ConcurrentHashMap<>(
 							variableTypesData); // make this map concurrent, cache can be reused by multiple instances
-					variableTypesCache.put(VariableTypeLoader.INSTANCE.getVariableTypeFromString(variableTypeName),
-							variableTypesData);
+					variableTypesCache.put(VariableTypeLoader.INSTANCE.fromName(variableTypeName), variableTypesData);
 				} catch (YamlException e) {
 					LOG.fatal("[" + generatorConfiguration.getGeneratorName()
 							+ "] Failed to load variable type definition: " + e.getMessage());
