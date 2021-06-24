@@ -41,7 +41,7 @@ public class ColorSelector extends JPanel {
 		foregroundColor.setMargin(new Insets(0, 0, 0, 0));
 		foregroundColor.setBounds(new Rectangle(0, 0, 40, 30));
 
-		backgroundColor.setToolTipText(L10N.t("dialog.image_maker.tools.component.colorselector_foreground"));
+		backgroundColor.setToolTipText(L10N.t("dialog.image_maker.tools.component.colorselector_background"));
 		backgroundColor.setMargin(new Insets(0, 0, 0, 0));
 		backgroundColor.setBounds(new Rectangle(20, 20, 40, 30));
 

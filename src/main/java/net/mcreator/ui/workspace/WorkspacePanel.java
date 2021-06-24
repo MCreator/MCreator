@@ -1318,8 +1318,7 @@ import java.util.stream.Collectors;
 				editCurrentlySelectedModElementAsCode(mu, component, x, y);
 			} else {
 				JOptionPane.showMessageDialog(null,
-						L10N.t("workspace.elements.edit_modelement_nosavedinstance")
-								+ L10N.t("workspace.elements.edit_modelement_nosavedinstance2"));
+						L10N.t("workspace.elements.edit_modelement_nosavedinstance"));
 			}
 		}
 	}

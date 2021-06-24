@@ -88,11 +88,11 @@ public class ThemesPanel {
 			String text = "<html>" + value.getName();
 			if (!value.getDescription().isEmpty())
 				text += "<br><small>" + value.getDescription();
-			text += L10N.t("dialog.preferences.id") + value.getID();
+			text += "<br>Theme ID: " + value.getID();
 			if (value.getVersion() != null)
-				text += L10N.t("dialog.preferences.version") + value.getVersion();
+				text += ", version: " + value.getVersion();
 			if (value.getCredits() != null)
-				text += L10N.t("dialog.preferences.credits") + value.getCredits();
+				text += ", credits: " + value.getCredits();
 
 			setText(text);
 			setIcon(value.getIcon());
