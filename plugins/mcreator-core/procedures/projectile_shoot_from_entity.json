@@ -37,6 +37,12 @@
       "entity",
       "speed",
       "inaccuracy"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ]
   }
 }

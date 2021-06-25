@@ -53,6 +53,12 @@
     ],
     "fields": [
       "fireballprojectile"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ]
   }
 }

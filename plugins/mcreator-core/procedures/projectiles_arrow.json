@@ -58,6 +58,12 @@
       "fire",
       "particles",
       "rangeditem"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ]
   }
 }

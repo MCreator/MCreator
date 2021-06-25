@@ -1,1 +1,1 @@
-ShulkerBulletEntity entityToSpawn = new ShulkerBulletEntity(spawnWorld, ${input$shooter} instanceof LivingEntity ? (LivingEntity) ${input$shooter} : null, ${input$target}, ${input$direction}.getAxis());
+new ShulkerBulletEntity(world.getWorld(), ${input$shooter} instanceof LivingEntity ? (LivingEntity) ${input$shooter} : null, ${input$target}, ${input$direction}.getAxis())

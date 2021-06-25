@@ -1,7 +1,11 @@
 <#include "mcitems.ftl">
-FireworkRocketEntity entityToSpawn;
-if (${input$boosted_entity} instanceof LivingEntity)
-    entityToSpawn = new FireworkRocketEntity(spawnWorld, ${mappedMCItemToItemStackCode(input$item, 1)}, (LivingEntity) ${input$boosted_entity});
-else
-    entityToSpawn = new FireworkRocketEntity(spawnWorld, 0, 0, 0, ${mappedMCItemToItemStackCode(input$item, 1)});
-entityToSpawn.setShooter(${input$shooter});
+new Object() {
+    public ProjectileEntity getFireworkRocket(World world, ItemStack stack, Entity boostedEntity, Entity shooter) {
+        FireworkRocketEntity entityToSpawn;
+        if (boostedEntity instanceof LivingEntity)
+            entityToSpawn = new FireworkRocketEntity(world, stack, (LivingEntity) boostedEntity);
+        else
+            entityToSpawn = new FireworkRocketEntity(world, 0, 0, 0, stack);
+        entityToSpawn.setShooter(shooter);
+        return entityToSpawn;
+}}.getFireworkRocket((World) world, ${mappedMCItemToItemStackCode(input$item, 1)}, ${input$boosted_entity}, ${input$shooter})

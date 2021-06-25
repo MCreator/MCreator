@@ -36,6 +36,12 @@
       "item",
       "shooter",
       "boosted_entity"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ]
   }
 }

@@ -30,6 +30,12 @@
       "shooter",
       "target",
       "direction"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ]
   }
 }

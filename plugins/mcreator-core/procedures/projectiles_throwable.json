@@ -25,6 +25,12 @@
     ],
     "fields": [
       "throwableprojectile"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ]
   }
 }
