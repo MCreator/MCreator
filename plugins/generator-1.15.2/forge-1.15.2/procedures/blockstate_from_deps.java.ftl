@@ -1,1 +1,1 @@
-/*@BlockState*/state
+/*@BlockState*/blockstate

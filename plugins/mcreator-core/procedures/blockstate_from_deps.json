@@ -5,7 +5,7 @@
     "toolbox_id": "mcelements",
     "dependencies": [
       {
-        "name": "state",
+        "name": "blockstate",
         "type": "blockstate"
       }
     ]
