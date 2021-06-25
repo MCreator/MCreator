@@ -112,7 +112,7 @@ public class Dependency implements Comparable<Dependency> {
 		case "itemstack":
 			blockXml.append("<block type=\"itemstack_to_mcitem\"></block>");
 			break;
-		case "state":
+		case "blockstate":
 			blockXml.append("<block type=\"blockstate_from_deps\"></block>");
 			break;
 		default:
