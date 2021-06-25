@@ -156,11 +156,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 				.makeInline();
 		dispenseSuccessCondition = new ProcedureSelector(this.withEntry("item/dispense_success_condition"), mcreator,
 				L10N.t("elementgui.item.dispense_success_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction"))
+				.makeInline();
 		dispenseResultItemstack = new ProcedureSelector(this.withEntry("item/dispense_result_itemstack"), mcreator,
 				L10N.t("elementgui.item.dispense_result_itemstack"), VariableTypeLoader.BuiltInTypes.ITEMSTACK,
-				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:boolean"))
-				.setDefaultName("(provided itemstack)");
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:boolean"))
+				.setDefaultName("(provided itemstack)").makeInline();
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -181,7 +183,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
-		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
 		texture.setOpaque(false);
@@ -318,10 +319,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		subpane2.setOpaque(false);
 
-		JComponent canDispense = PanelUtils.join(FlowLayout.LEFT, 0, 20, HelpUtils
+		JComponent canDispense = PanelUtils.gridElements(1, 2, 0, 5, HelpUtils
 				.wrapWithHelpButton(this.withEntry("item/has_dispense_behavior"),
 						L10N.label("elementgui.item.has_dispense_behavior")), hasDispenseBehavior);
-		JComponent dispenseProcedures = PanelUtils.gridElements(2, 1, 0, 8, dispenseSuccessCondition, dispenseResultItemstack);
+		JComponent dispenseProcedures = PanelUtils
+				.gridElements(2, 1, 0, 2, dispenseSuccessCondition, dispenseResultItemstack);
 
 		hasDispenseBehavior.setOpaque(false);
 		hasDispenseBehavior.setSelected(false);
@@ -340,7 +342,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		pane3.add("Center", PanelUtils.totalCenterInPanel(subpane2));
 
 		advancedProperties.setOpaque(false);
-		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(dispenseProperties));
 
 		JPanel events = new JPanel(new GridLayout(3, 3, 10, 10));
 		events.setOpaque(false);
@@ -356,23 +357,27 @@ public class ItemGUI extends ModElementGUI<Item> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
 		pane4.setOpaque(false);
 
-		JPanel props = new JPanel(new GridLayout(3, 2, 35, 2));
-		props.setOpaque(false);
+		JPanel inventoryProperties = new JPanel(new GridLayout(3, 2, 35, 2));
+		inventoryProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.common.page_inventory"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		inventoryProperties.setOpaque(false);
 
-		props.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"), L10N.label("elementgui.item.bind_gui")));
-		props.add(guiBoundTo);
+		inventoryProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("item/bind_gui"), L10N.label("elementgui.item.bind_gui")));
+		inventoryProperties.add(guiBoundTo);
 
-		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_size"),
+		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_size"),
 				L10N.label("elementgui.item.inventory_size")));
-		props.add(inventorySize);
+		inventoryProperties.add(inventorySize);
 
-		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_stack_size"),
+		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_stack_size"),
 				L10N.label("elementgui.common.max_stack_size")));
-		props.add(inventoryStackSize);
+		inventoryProperties.add(inventoryStackSize);
 
-		pane5.add(PanelUtils.totalCenterInPanel(props));
-		pane5.setOpaque(false);
+		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(dispenseProperties), inventoryProperties)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -384,7 +389,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties);
-		addPage(L10N.t("elementgui.common.page_inventory"), pane5);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
 		if (!isEditingMode()) {
