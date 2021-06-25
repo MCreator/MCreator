@@ -119,19 +119,19 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.fluid.when_added"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/state:blockstate"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 		onNeighbourChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
 				L10N.t("elementgui.common.event_on_neighbour_block_changes"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/state:blockstate"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator,
 				L10N.t("elementgui.common.event_on_update_tick"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/state:blockstate"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 		onEntityCollides = new ProcedureSelector(this.withEntry("block/when_entity_collides"), mcreator,
 				L10N.t("elementgui.fluid.when_entity_collides"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/state:blockstate"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
 		onRandomUpdateEvent = new ProcedureSelector(this.withEntry("block/display_tick_update"), mcreator,
 				L10N.t("elementgui.common.event_on_random_update"), ProcedureSelector.Side.CLIENT,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/state:blockstate"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
 		onDestroyedByExplosion = new ProcedureSelector(this.withEntry("block/when_destroyed_explosion"), mcreator,
 				L10N.t("elementgui.block.event_on_block_destroyed_by_explosion"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));

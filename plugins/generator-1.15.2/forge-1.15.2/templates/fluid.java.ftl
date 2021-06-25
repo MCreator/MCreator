@@ -131,8 +131,8 @@ import net.minecraft.block.material.Material;
 			</#if>
 
 			<#if hasProcedure(data.onBlockAdded)>
-			@Override public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
-				super.onBlockAdded(state, world, pos, oldState, moving);
+			@Override public void onBlockAdded(BlockState blockstate, World world, BlockPos pos, BlockState oldState, boolean moving) {
+				super.onBlockAdded(blockstate, world, pos, oldState, moving);
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
@@ -141,8 +141,8 @@ import net.minecraft.block.material.Material;
             </#if>
 
 			<#if hasProcedure(data.onNeighbourChanges)>
-			public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
-				super.neighborChanged(state, world, pos, neighborBlock, fromPos, moving);
+			public void neighborChanged(BlockState blockstate, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
+				super.neighborChanged(blockstate, world, pos, neighborBlock, fromPos, moving);
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
@@ -151,8 +151,8 @@ import net.minecraft.block.material.Material;
 			</#if>
 
 			<#if hasProcedure(data.onTickUpdate)>
-			@Override public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-				super.tick(state, world, pos, random);
+			@Override public void tick(BlockState blockstate, ServerWorld world, BlockPos pos, Random random) {
+				super.tick(blockstate, world, pos, random);
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
@@ -162,8 +162,8 @@ import net.minecraft.block.material.Material;
 			</#if>
 
 			<#if hasProcedure(data.onEntityCollides)>
-			@Override public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-				super.onEntityCollision(state, world, pos, entity);
+			@Override public void onEntityCollision(BlockState blockstate, World world, BlockPos pos, Entity entity) {
+				super.onEntityCollision(blockstate, world, pos, entity);
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
@@ -173,8 +173,8 @@ import net.minecraft.block.material.Material;
 
 			<#if hasProcedure(data.onRandomUpdateEvent)>
 			@OnlyIn(Dist.CLIENT) @Override
-			public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-				super.animateTick(state, world, pos, random);
+			public void animateTick(BlockState blockstate, World world, BlockPos pos, Random random) {
+				super.animateTick(blockstate, world, pos, random);
 				PlayerEntity entity = Minecraft.getInstance().player;
 				int x = pos.getX();
 				int y = pos.getY();
