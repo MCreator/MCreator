@@ -24,7 +24,7 @@ import net.mcreator.ui.views.editor.image.tool.tools.ColorPickerTool;
 
 public class ColorPickerToolAction extends ToolChangeAction {
 	public ColorPickerToolAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Color picker", "A tool that sets current foreground color to the color under the cursor",
+		super(actionRegistry, "Color picker", "A tool that sets foreground color to the pointed color (shift-click to set background color)",
 				ColorPickerTool.class);
 		setIcon(UIRES.get("img_editor.picker"));
 	}
