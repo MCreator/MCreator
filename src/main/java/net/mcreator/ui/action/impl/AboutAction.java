@@ -49,9 +49,10 @@ public class AboutAction extends BasicAction {
 				L10N.t("dialog.about.option.eula"), L10N.t("dialog.about.option.third_party_licenses"),
 				L10N.t("dialog.about.option.donate") };
 		int n = JOptionPane.showOptionDialog(parent,
-				L10N.t("dialog.about.message", Launcher.version.major, Launcher.version.getFullString(), MCreatorApplication.isInternet ?
-						MCreatorApplication.WEB_API.getUpdateInfo().getLatestMajor() :
-						L10N.t("dialog.about.latest_version_not_applicable"), GeneratableElement.formatVersion,
+				L10N.t("dialog.about.message", Launcher.version.major, Launcher.version.getFullString(), (
+								MCreatorApplication.isInternet ?
+										MCreatorApplication.WEB_API.getUpdateInfo().getLatestMajor() :
+										L10N.t("dialog.about.latest_version_not_applicable")), GeneratableElement.formatVersion,
 						OS.getSystemBits(), OS.getBundledJVMBits()), L10N.t("dialog.about.title"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
 				new ImageIcon(generateMCreatorLogoForAboutDialog()), options, options[0]);

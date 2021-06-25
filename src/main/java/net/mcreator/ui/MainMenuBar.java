@@ -238,8 +238,7 @@ public class MainMenuBar extends JMenuBar {
 		add(window);
 
 		JMenu help = L10N.menu("menubar.help");
-		if (MCreatorApplication.isInternet)
-			addHelpSearch(help);
+		addHelpSearch(help);
 		help.add(mcreator.actionRegistry.help);
 		help.add(mcreator.actionRegistry.support);
 		help.add(mcreator.actionRegistry.knowledgeBase);
