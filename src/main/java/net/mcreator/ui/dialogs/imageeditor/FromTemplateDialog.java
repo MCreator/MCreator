@@ -255,7 +255,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		generateFromTemplate("Random");
 
-		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton merge = L10N.button("dialog.imageeditor.template_create_and_merge");
 		JButton ok = L10N.button("action.common.create");
 

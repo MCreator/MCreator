@@ -337,9 +337,17 @@ public class TestWorkspaceDataProvider {
 			fluid.name = modElement.getName();
 			fluid.textureFlowing = "test";
 			fluid.textureStill = "test2";
+			fluid.canMultiply = _true;
+			fluid.flowRate = 8;
+			fluid.levelDecrease = 2;
+			fluid.slopeFindDistance = 3;
+			fluid.spawnParticles = !_true;
+			fluid.dripParticle = new Particle(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			fluid.luminosity = 3;
 			fluid.density = 5;
 			fluid.viscosity = 10;
+			fluid.temperature = 375;
 			fluid.isGas = _true;
 			fluid.generateBucket = !_true;
 			fluid.bucketName = modElement.getName() + " Bucket";
@@ -361,6 +369,7 @@ public class TestWorkspaceDataProvider {
 			fluid.resistance = 52.2;
 			fluid.emissiveRendering = _true;
 			fluid.luminance = 6;
+			fluid.lightOpacity = 2;
 			fluid.flammability = 5;
 			fluid.fireSpreadSpeed = 12;
 			fluid.colorOnMap = getRandomItem(random, ElementUtil.loadMapColors());
@@ -649,7 +658,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.spawnThisMob = !_true;
 			livingEntity.doesDespawnWhenIdle = _true;
 			livingEntity.spawningProbability = 23;
-			livingEntity.mobSpawningType = new String[] { "monster", "creature", "ambient", "waterCreature" }[valueIndex];
+			livingEntity.mobSpawningType = new String[] { "monster", "creature", "ambient",
+					"waterCreature" }[valueIndex];
 			livingEntity.minNumberOfMobsPerGroup = 4;
 			livingEntity.maxNumberOfMobsPerGroup = 40;
 			livingEntity.restrictionBiomes = new ArrayList<>();
@@ -1076,7 +1086,7 @@ public class TestWorkspaceDataProvider {
 			block.dropAmount = 3;
 			block.plantsGrowOn = _true;
 			block.isNotColidable = _true;
-			block.canProvidePower = _true;
+			block.canRedstoneConnect = _true;
 			block.isWaterloggable = !block.hasGravity; // only works if block has no gravity, emptyLists for more randomness
 			block.isLadder = _true;
 			block.enchantPowerBonus = 1.2342;
@@ -1105,6 +1115,8 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			block.luminance = 3;
 			block.isReplaceable = !_true;
+			block.canProvidePower = !_true;
+			block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);
 			block.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			block.colorOnMap = getRandomItem(random, ElementUtil.loadMapColors());

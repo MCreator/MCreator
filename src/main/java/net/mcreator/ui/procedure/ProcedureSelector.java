@@ -187,7 +187,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 												(VTextField) component).validate();
 									}
 								}, L10N.t("action.procedure.create_procedure"),
-								L10N.t("action.procedure.cancel_creation"), procedureNameString);
+								UIManager.getString("OptionPane.cancelButtonText"), procedureNameString);
 
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
@@ -238,7 +238,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 		procedures.setToolTipText(L10N.t("action.procedure.match_dependencies"));
 
-		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXX"));
+		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXX", null));
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
 		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
@@ -259,11 +259,25 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		add(componentA);
 		add(componentB);
 
+		componentB.setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 2));
+
 		updateDepsList(true);
 		ComponentUtils.deriveFont(nameLabel, 12);
 		actionLabel.setVisible(false);
 
 		return this;
+	}
+
+	@Override public ProcedureSelector makeReturnValueOptional() {
+		AbstractProcedureSelector retval = super.makeReturnValueOptional();
+
+		if (returnType != null)
+			setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createMatteBorder(0, 0, 1, 1, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+					BorderFactory.createMatteBorder(1, 1, 0, 0,
+							BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor()))));
+
+		return (ProcedureSelector) retval;
 	}
 
 	@Override protected CBoxEntry updateDepsList(boolean smallIcons) {

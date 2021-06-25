@@ -78,17 +78,27 @@ import net.minecraft.block.material.Material;
 					.luminosity(${data.luminosity})
 					.density(${data.density})
 					.viscosity(${data.viscosity})
+					.temperature(${data.temperature})
 					<#if data.isGas>.gaseous()</#if>
 					.rarity(Rarity.${data.rarity})
 					<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
 					.sound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.emptySound}")))
 					</#if>)
 					.explosionResistance(${data.resistance}f)
+					<#if data.canMultiply>.canMultiply()</#if>
+					.tickRate(${data.flowRate})
+					.levelDecreasePerBlock(${data.levelDecrease})
+					.slopeFindDistance(${data.slopeFindDistance})
                     <#if data.generateBucket>.bucket(() -> bucket)</#if>
 					.block(() -> block);
 
+		<#if data.spawnParticles>
+		still = (FlowingFluid) new CustomFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
+		flowing = (FlowingFluid) new CustomFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
+		<#else>
 		still = (FlowingFluid) new ForgeFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
 		flowing = (FlowingFluid) new ForgeFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
+		</#if>
 
 		elements.blocks.add(() -> new FlowingFluidBlock(still,
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
@@ -111,6 +121,18 @@ import net.minecraft.block.material.Material;
 			<#if data.fireSpreadSpeed != 0>
 			@Override public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
 				return ${data.fireSpreadSpeed};
+			}
+			</#if>
+
+			<#if data.lightOpacity == 0>
+			@Override
+			public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+				return true;
+			}
+			<#elseif data.lightOpacity != 1>
+			@Override
+			public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
+				return ${data.lightOpacity};
 			}
 			</#if>
 
@@ -192,6 +214,53 @@ import net.minecraft.block.material.Material;
 		</#if>
 	}
 
+	<#if data.spawnParticles>
+	public static abstract class CustomFlowingFluid extends ForgeFlowingFluid {
+		public CustomFlowingFluid(Properties properties) {
+			super(properties);
+		}
+
+		@OnlyIn(Dist.CLIENT)
+		@Override
+		public IParticleData getDripParticleData() {
+			return ${data.dripParticle};
+		}
+
+		public static class Source extends CustomFlowingFluid {
+			public Source(Properties properties) {
+				super(properties);
+			}
+
+			public int getLevel(FluidState state) {
+				return 8;
+			}
+
+			public boolean isSource(FluidState state) {
+				return true;
+			}
+		}
+
+		public static class Flowing extends CustomFlowingFluid {
+			public Flowing(Properties properties) {
+				super(properties);
+			}
+
+			protected void fillStateContainer(StateContainer.Builder<Fluid, FluidState> builder) {
+				super.fillStateContainer(builder);
+				builder.add(LEVEL_1_8);
+			}
+
+			public int getLevel(FluidState state) {
+				return state.get(LEVEL_1_8);
+			}
+
+			public boolean isSource(FluidState state) {
+				return false;
+			}
+		}
+	}
+	</#if>
+
 	<#if (data.spawnWorldTypes?size > 0)>
 	private static Feature<BlockStateFeatureConfig> feature = null;
 	private static ConfiguredFeature<?, ?> configuredFeature = null;
@@ -224,7 +293,7 @@ import net.minecraft.block.material.Material;
 					if(!dimensionCriteria)
 						return false;
 
-					<#if hasCondition(data.generateCondition)>
+					<#if hasProcedure(data.generateCondition)>
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();

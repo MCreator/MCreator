@@ -20,10 +20,10 @@
 package net.mcreator.workspace.elements;
 
 import com.google.gson.Gson;
+import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.blockly.BlocklyJavascriptTemplates;
-import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -91,7 +91,7 @@ public class VariableTypeLoader {
 		variableBlocklyJS = variableBlocklyJSBuilder.toString();
 	}
 
-	public VariableType getVariableTypeFromString(String type) {
+	public VariableType fromName(String type) {
 		for (VariableType varType : VARIABLE_TYPES_LIST.keySet())
 			if (varType.getName().equalsIgnoreCase(type) || varType.getBlocklyVariableType().equalsIgnoreCase(type))
 				return varType;
@@ -99,18 +99,23 @@ public class VariableTypeLoader {
 		return null;
 	}
 
-	public Collection<VariableType> getAllVariableTypes() {
-		return VARIABLE_TYPES_LIST.keySet().stream().sorted(Comparator.comparing(VariableType::toString))
-				.collect(Collectors.toList());
-	}
-
 	public boolean doesVariableTypeExist(String name) {
 		return VARIABLE_TYPES_LIST.containsValue(name);
 	}
 
-	public Collection<VariableType> getGlobalVariableTypes(Workspace workspace) {
-		return VARIABLE_TYPES_LIST.keySet().stream().filter(type -> type.canBeGlobal(workspace))
+	public Collection<VariableType> getGlobalVariableTypes(GeneratorConfiguration generatorConfiguration) {
+		return VARIABLE_TYPES_LIST.keySet().stream().filter(type -> type.canBeGlobal(generatorConfiguration))
 				.sorted(Comparator.comparing(VariableType::toString)).collect(Collectors.toList());
+	}
+
+	public Collection<VariableType> getLocalVariableTypes(GeneratorConfiguration generatorConfiguration) {
+		return VARIABLE_TYPES_LIST.keySet().stream().filter(type -> type.canBeLocal(generatorConfiguration))
+				.sorted(Comparator.comparing(VariableType::toString)).collect(Collectors.toList());
+	}
+
+	public Collection<VariableType> getAllVariableTypes() {
+		return VARIABLE_TYPES_LIST.keySet().stream().sorted(Comparator.comparing(VariableType::toString))
+				.collect(Collectors.toList());
 	}
 
 	public String getVariableBlocklyJS() {

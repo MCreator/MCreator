@@ -65,14 +65,14 @@ public class NewVariableDialog {
 				scope.removeAllItems();
 				VariableType typeSelectedItem = (VariableType) type.getSelectedItem();
 				if (typeSelectedItem != null)
-					Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getWorkspace()))
+					Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getGeneratorConfiguration()))
 							.forEach(scope::addItem);
 			});
 
 			// intial
 			VariableType typeSelectedItem = (VariableType) type.getSelectedItem();
 			if (typeSelectedItem != null)
-				Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getWorkspace()))
+				Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getGeneratorConfiguration()))
 						.forEach(scope::addItem);
 		}
 
@@ -86,7 +86,7 @@ public class NewVariableDialog {
 				&& type.getSelectedItem() != null) {
 			VariableElement element = new VariableElement();
 			VariableType variable = VariableTypeLoader.INSTANCE
-					.getVariableTypeFromString(((VariableType) type.getSelectedItem()).getName());
+					.fromName(((VariableType) type.getSelectedItem()).getName());
 			if (variable != null) {
 				element.setName(Transliteration.transliterateString(textField.getText()));
 				element.setType((VariableType) type.getSelectedItem());

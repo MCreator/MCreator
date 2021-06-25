@@ -18,12 +18,6 @@
 	}
 </#macro>
 
-<#macro procedureOBJToCode object="">
-    <#if object?? && object?has_content && object.getName() != "null">
-        <@procedureToCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
-    </#if>
-</#macro>
-
 <#macro procedureToRetvalCode name dependencies customVals={}>
     <#assign depsBuilder = []>
 
@@ -46,20 +40,30 @@
     ))
 </#macro>
 
+<#macro procedureOBJToCode object="">
+    <#if hasProcedure(object)>
+        <@procedureToCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
+    </#if>
+</#macro>
+
 <#macro procedureOBJToConditionCode object="">
-    <#if object?? && object?has_content && object.getName() != "null">
+    <#if hasProcedure(object)>
         <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
     <#else>
         true
     </#if>
 </#macro>
 
-<#function hasProcedure object="">
-    <#return object?? && object?has_content && object.getName() != "null">
-</#function>
+<#macro procedureOBJToNumberCode object="">
+    <#if hasProcedure(object)>
+        <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
+    <#else>
+        0
+    </#if>
+</#macro>
 
-<#function hasCondition object="">
-    <#return object?? && object?has_content && object.getName() != "null">
+<#function hasProcedure object="">
+    <#return object?? && object?has_content && object.getName()?has_content && object.getName() != "null">
 </#function>
 
 <#-- @formatter:on -->

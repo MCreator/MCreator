@@ -305,11 +305,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		particleCondition = new ProcedureSelector(this.withEntry("entity/particle_condition"), mcreator,
 				L10N.t("elementgui.living_entity.condition_particle_spawn"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeInline();
 		spawningCondition = new ProcedureSelector(this.withEntry("entity/condition_natural_spawning"), mcreator,
 				L10N.t("elementgui.living_entity.condition_natural_spawn"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("condition.common.use_vanilla"));
+				.setDefaultName(L10N.t("condition.common.use_vanilla")).makeInline();
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
@@ -717,8 +717,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		isBoss.setOpaque(false);
 
-		particles.add("West", PanelUtils
-				.join(PanelUtils.northAndCenterElement(options, PanelUtils.join(FlowLayout.LEFT, particleCondition))));
+		particles.add("West", PanelUtils.join(PanelUtils.northAndCenterElement(options, particleCondition, 5, 5)));
 		pane6.add("Center", PanelUtils.totalCenterInPanel(particles));
 
 		pane4.setOpaque(false);
@@ -770,8 +769,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		selp.setOpaque(false);
 
 		JComponent selpcont = PanelUtils.northAndCenterElement(selp, PanelUtils
-				.westAndEastElement(L10N.label("elementgui.living_entity.spawn_general_condition"),
-						PanelUtils.join(spawningCondition)));
+				.gridElements(1, 2, 5, 5, L10N.label("elementgui.living_entity.spawn_general_condition"),
+						PanelUtils.westAndCenterElement(new JEmptyBox(12, 5), spawningCondition)), 5, 5);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(selpcont));
 

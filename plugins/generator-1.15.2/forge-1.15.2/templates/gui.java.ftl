@@ -380,12 +380,12 @@ import ${package}.${JavaModName};
 
 			<#list data.components as component>
 				<#if component.getClass().getSimpleName() == "Image">
-					<#if hasCondition(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+					<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
 						Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/${component.image}"));
 						this.blit(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int}, 0, 0,
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-					<#if hasCondition(component.displayCondition)>}</#if>
+					<#if hasProcedure(component.displayCondition)>}</#if>
 				</#if>
 			</#list>
 
@@ -420,7 +420,7 @@ import ${package}.${JavaModName};
 		@Override protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
             <#list data.components as component>
 				<#if component.getClass().getSimpleName() == "Label">
-					<#if hasCondition(component.displayCondition)>
+					<#if hasProcedure(component.displayCondition)>
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 					</#if>
                 	this.font.drawString("${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
@@ -481,7 +481,7 @@ import ${package}.${JavaModName};
 							}
 						}
 					)
-					<#if hasCondition(component.displayCondition)>
+					<#if hasProcedure(component.displayCondition)>
 					{
 						@Override public void render(int gx, int gy, float ticks) {
 							if (<@procedureOBJToConditionCode component.displayCondition/>)
@@ -492,7 +492,7 @@ import ${package}.${JavaModName};
 					<#assign btid +=1>
 			    <#elseif component.getClass().getSimpleName() == "Checkbox">
             	    ${component.name} = new CheckboxButton(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-            	        150, 20, "${component.text}", <#if hasCondition(component.isCheckedProcedure)>
+            	        150, 20, "${component.text}", <#if hasProcedure(component.isCheckedProcedure)>
             	        <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
                     ${name}Gui.guistate.put("checkbox:${component.name}", ${component.name});
                     this.addButton(${component.name});
