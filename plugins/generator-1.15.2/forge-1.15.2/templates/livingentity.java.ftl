@@ -90,7 +90,7 @@ import net.minecraft.block.material.Material;
 
 		<#if data.mobSpawningType == "creature">
 		EntitySpawnPlacementRegistry.register(entity, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
-				<#if hasCondition(data.spawningCondition)>
+				<#if hasProcedure(data.spawningCondition)>
 				(entityType, world, reason, pos, random) -> {
 					int x = pos.getX();
 					int y = pos.getY();
@@ -103,7 +103,7 @@ import net.minecraft.block.material.Material;
 		);
 		<#elseif data.mobSpawningType == "ambient">
 		EntitySpawnPlacementRegistry.register(entity, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
-				<#if hasCondition(data.spawningCondition)>
+				<#if hasProcedure(data.spawningCondition)>
 				(entityType, world, reason, pos, random) -> {
 					int x = pos.getX();
 					int y = pos.getY();
@@ -116,7 +116,7 @@ import net.minecraft.block.material.Material;
 		);
 		<#elseif data.mobSpawningType == "waterCreature">
 		EntitySpawnPlacementRegistry.register(entity, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
-				<#if hasCondition(data.spawningCondition)>
+				<#if hasProcedure(data.spawningCondition)>
 				(entityType, world, reason, pos, random) -> {
 					int x = pos.getX();
 					int y = pos.getY();
@@ -129,7 +129,7 @@ import net.minecraft.block.material.Material;
 		);
 		<#else>
 		EntitySpawnPlacementRegistry.register(entity, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
-				<#if hasCondition(data.spawningCondition)>
+				<#if hasProcedure(data.spawningCondition)>
 				(entityType, world, reason, pos, random) -> {
 					int x = pos.getX();
 					int y = pos.getY();

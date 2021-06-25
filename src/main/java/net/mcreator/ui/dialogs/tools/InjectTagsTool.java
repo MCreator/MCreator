@@ -60,7 +60,7 @@ public class InjectTagsTool {
 		dialog.add("Center", scrollPane);
 
 		JButton ok = L10N.button("dialog.tools.inject_tags.confirm");
-		JButton canecel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton canecel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		canecel.addActionListener(e -> dialog.setVisible(false));
 		dialog.add("South", PanelUtils.join(ok, canecel));
 

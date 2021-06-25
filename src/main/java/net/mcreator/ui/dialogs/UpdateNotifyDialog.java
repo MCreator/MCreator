@@ -29,8 +29,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.MCreatorVersionNumber;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -40,8 +38,6 @@ import java.util.List;
 import java.util.Map;
 
 public class UpdateNotifyDialog {
-
-	private static final Logger LOG = LogManager.getLogger("UpdateNotify");
 
 	public static void showUpdateDialogIfUpdateExists(Window parent, boolean showNoUpdates) {
 		if (MCreatorApplication.isInternet) {
