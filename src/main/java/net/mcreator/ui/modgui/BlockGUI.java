@@ -313,7 +313,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		emittedRedstonePower = new NumberProcedureSelector(null, mcreator,
 				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)),
-				Dependency.fromString("x:number/y:number/z:number/world:world"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
