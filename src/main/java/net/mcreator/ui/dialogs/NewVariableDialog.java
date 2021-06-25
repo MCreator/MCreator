@@ -19,20 +19,24 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.io.Transliteration;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class NewVariableDialog {
 
-	public static VariableElement showNewVariableDialog(JFrame frame, boolean showScope,
-			OptionPaneValidatior variableNameValidator, VariableElementType... supportedTypes) {
+	public static VariableElement showNewVariableDialog(MCreator mcreator, boolean showScope,
+			OptionPaneValidatior variableNameValidator, Collection<VariableType> supportedTypes) {
 		JPanel inp = new JPanel(new BorderLayout(10, 10));
 
 		VTextField textField = new VTextField(25);
@@ -41,9 +45,9 @@ public class NewVariableDialog {
 		variableNameValidator.setValidatedComponent(textField);
 		textField.setValidator(variableNameValidator);
 
-		JComboBox<VariableElementType> type = new JComboBox<>(supportedTypes);
+		JComboBox<VariableType> type = new JComboBox<>(supportedTypes.toArray(new VariableType[0]));
 
-		JComboBox<VariableElementType.Scope> scope = new JComboBox<>(VariableElementType.Scope.values());
+		JComboBox<VariableType.Scope> scope = new JComboBox<>();
 
 		inp.add("North", L10N.label("dialog.variables.enter_name_select_type"));
 
@@ -52,25 +56,47 @@ public class NewVariableDialog {
 		data.add(textField);
 		data.add(L10N.label("dialog.variables.variable_type"));
 		data.add(type);
+
 		if (showScope) {
 			data.add(L10N.label("dialog.variables.variable_scope"));
 			data.add(scope);
+
+			type.addActionListener(e -> {
+				scope.removeAllItems();
+				VariableType typeSelectedItem = (VariableType) type.getSelectedItem();
+				if (typeSelectedItem != null)
+					Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getGeneratorConfiguration()))
+							.forEach(scope::addItem);
+			});
+
+			// intial
+			VariableType typeSelectedItem = (VariableType) type.getSelectedItem();
+			if (typeSelectedItem != null)
+				Arrays.stream(typeSelectedItem.getSupportedScopesWithoutLocal(mcreator.getGeneratorConfiguration()))
+						.forEach(scope::addItem);
 		}
 
 		inp.add("Center", data);
 
 		int option = JOptionPane
-				.showConfirmDialog(frame, inp, L10N.t("dialog.variables.new_title"), JOptionPane.OK_CANCEL_OPTION,
+				.showConfirmDialog(mcreator, inp, L10N.t("dialog.variables.new_title"), JOptionPane.OK_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION
 				&& textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
 				&& type.getSelectedItem() != null) {
 			VariableElement element = new VariableElement();
-			element.setName(Transliteration.transliterateString(textField.getText()));
-			element.setType((VariableElementType) type.getSelectedItem());
-			element.setValue(VariableElement.getDefaultValueForType((VariableElementType) type.getSelectedItem()));
-			element.setScope((VariableElementType.Scope) scope.getSelectedItem());
-			return element;
+			VariableType variable = VariableTypeLoader.INSTANCE
+					.fromName(((VariableType) type.getSelectedItem()).getName());
+			if (variable != null) {
+				element.setName(Transliteration.transliterateString(textField.getText()));
+				element.setType((VariableType) type.getSelectedItem());
+				element.setValue(variable.getDefaultValue(mcreator.getWorkspace()));
+				if (showScope)
+					element.setScope((VariableType.Scope) scope.getSelectedItem());
+				else
+					element.setScope(VariableType.Scope.LOCAL);
+				return element;
+			}
 		}
 		return null;
 	}

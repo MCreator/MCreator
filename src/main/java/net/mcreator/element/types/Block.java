@@ -86,7 +86,7 @@ import java.util.stream.Collectors;
 
 	public double enchantPowerBonus;
 	public boolean plantsGrowOn;
-	public boolean canProvidePower;
+	public boolean canRedstoneConnect;
 	public int lightOpacity;
 	public Material material;
 
@@ -94,6 +94,8 @@ import java.util.stream.Collectors;
 	public boolean tickRandomly;
 
 	public boolean isReplaceable;
+	public boolean canProvidePower;
+	public NumberProcedure emittedRedstonePower;
 	public String colorOnMap;
 	public MItemBlock creativePickItem;
 	public String offsetType;
@@ -110,7 +112,15 @@ import java.util.stream.Collectors;
 	public String reactionToPushing;
 
 	public boolean isNotColidable;
+
+	public boolean isCustomSoundType;
 	public StepSound soundOnStep;
+	public Sound breakSound;
+	public Sound stepSound;
+	public Sound placeSound;
+	public Sound hitSound;
+	public Sound fallSound;
+
 	public int luminance;
 	public boolean unbreakable;
 	public int breakHarvestLevel;
@@ -252,6 +262,16 @@ import java.util.stream.Collectors;
 		} else if (blockBase != null && blockBase.equals("Stairs")) {
 			return (BufferedImage) MinecraftImageGenerator.Preview
 					.generateStairsIcon(getTextureWithFallback(textureTop), getTextureWithFallback(textureFront));
+		} else if (blockBase != null && blockBase.equals("Wall")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateWallIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("Fence")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateFenceIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("FenceGate")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateFenceGateIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("EndRod")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateEndRodIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("PressurePlate")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generatePressurePlateIcon(getMainTexture());
 		} else if (renderType() == 14) {
 			Image side = ImageUtils.drawOver(new ImageIcon(getTextureWithFallback(textureFront)),
 					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();

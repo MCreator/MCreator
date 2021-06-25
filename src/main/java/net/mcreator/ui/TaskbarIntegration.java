@@ -19,8 +19,6 @@
 
 package net.mcreator.ui;
 
-import net.mcreator.ui.init.UIRES;
-
 import javax.annotation.Nullable;
 import java.awt.*;
 
@@ -29,11 +27,8 @@ public class TaskbarIntegration {
 	@Nullable private Taskbar taskbar = null;
 
 	public TaskbarIntegration() {
-		if (Taskbar.isTaskbarSupported()) {
+		if (Taskbar.isTaskbarSupported())
 			taskbar = Taskbar.getTaskbar();
-			if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE))
-				taskbar.setIconImage(UIRES.getBuiltIn("icon").getImage());
-		}
 	}
 
 	public void setProgressState(Window w, int progress) {
@@ -48,9 +43,9 @@ public class TaskbarIntegration {
 
 	public void clearState(Window w) {
 		if (taskbar != null && taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW)) {
-			setProgressState(w, -1);
 			taskbar.setWindowProgressState(w, Taskbar.State.NORMAL);
 			taskbar.setWindowProgressState(w, Taskbar.State.OFF);
+			setProgressState(w, -1);
 		}
 	}
 

@@ -35,6 +35,7 @@
 package ${package}.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.util.SoundEvent;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
@@ -141,7 +142,7 @@ import net.minecraft.block.material.Material;
 					if(!dimensionCriteria)
 						return false;
 
-					<#if hasCondition(data.generateCondition)>
+					<#if hasProcedure(data.generateCondition)>
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();
@@ -177,7 +178,7 @@ import net.minecraft.block.material.Material;
 					if(!dimensionCriteria)
 						return false;
 
-					<#if hasCondition(data.generateCondition)>
+					<#if hasProcedure(data.generateCondition)>
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();
@@ -228,7 +229,7 @@ import net.minecraft.block.material.Material;
             		if(!dimensionCriteria)
             			return false;
 
-            		<#if hasCondition(data.generateCondition)>
+            		<#if hasProcedure(data.generateCondition)>
             		    int x = pos.getX();
             			int y = pos.getY();
             			int z = pos.getZ();
@@ -281,7 +282,17 @@ import net.minecraft.block.material.Material;
 					.tickRandomly()
 					</#if>
 					.doesNotBlockMovement()
-					.sound(SoundType.${data.soundOnStep})
+					<#if data.isCustomSoundType>
+						.sound(new SoundType(1.0f, 1.0f, null, null, null, null, null){
+							@Override public SoundEvent getBreakSound() { return new SoundEvent(new ResourceLocation("${data.breakSound}")); }
+							@Override public SoundEvent getStepSound() { return new SoundEvent(new ResourceLocation("${data.stepSound}")); }
+							@Override public SoundEvent getPlaceSound() { return new SoundEvent(new ResourceLocation("${data.placeSound}")); }
+							@Override public SoundEvent getHitSound() { return new SoundEvent(new ResourceLocation("${data.hitSound}")); }
+							@Override public SoundEvent getFallSound() { return new SoundEvent(new ResourceLocation("${data.fallSound}")); }
+						})
+					<#else>
+						.sound(SoundType.${data.soundOnStep})
+					</#if>
 					<#if data.unbreakable>
 					.hardnessAndResistance(-1, 3600000)
 					<#else>
@@ -400,10 +411,10 @@ import net.minecraft.block.material.Material;
             </#if>
         </#if>
 
-		<#if (data.canBePlacedOn?size > 0) || hasCondition(data.placingCondition)>
+		<#if (data.canBePlacedOn?size > 0) || hasProcedure(data.placingCondition)>
 			<#if data.plantType != "growapable">
 			@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-				<#if hasCondition(data.placingCondition)>
+				<#if hasProcedure(data.placingCondition)>
 				boolean additionalCondition = true;
 				if (worldIn instanceof IWorld) {
 					IWorld world = (IWorld) worldIn;
@@ -422,8 +433,8 @@ import net.minecraft.block.material.Material;
 						<#if canBePlacedOn?has_next>||</#if>
 					</#list>)
 				</#if>
-				<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
-				<#if hasCondition(data.placingCondition)> additionalCondition </#if>;
+				<#if (data.canBePlacedOn?size > 0) && hasProcedure(data.placingCondition)> && </#if>
+				<#if hasProcedure(data.placingCondition)> additionalCondition </#if>;
 			}
 			</#if>
 
@@ -435,7 +446,7 @@ import net.minecraft.block.material.Material;
 				<#if data.plantType = "normal">
 					return this.isValidGround(blockstate, worldIn, blockpos)
 				<#elseif data.plantType == "growapable">
-					<#if hasCondition(data.placingCondition)>
+					<#if hasProcedure(data.placingCondition)>
 					boolean additionalCondition = true;
 					if (worldIn instanceof IWorld) {
 						IWorld world = (IWorld) worldIn;
@@ -452,8 +463,8 @@ import net.minecraft.block.material.Material;
 						ground == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
 						<#if canBePlacedOn?has_next>||</#if>
 					</#list>)</#if>
-					<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
-					<#if hasCondition(data.placingCondition)> additionalCondition </#if>
+					<#if (data.canBePlacedOn?size > 0) && hasProcedure(data.placingCondition)> && </#if>
+					<#if hasProcedure(data.placingCondition)> additionalCondition </#if>
 				<#else>
 					if (state.get(HALF) == DoubleBlockHalf.UPPER)
 						return ground == this && blockstate.get(HALF) == DoubleBlockHalf.LOWER;

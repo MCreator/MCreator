@@ -27,7 +27,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.ProcedureSelector;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
@@ -83,9 +83,11 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 				L10N.label("elementgui.keybind.key_binding_name")));
 		enderpanel.add(keyBindingName);
 
-		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("keybinding/category"),
+		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("keybinding/category")
+						.withArguments(() -> L10N.t("tab.workspace"), () -> L10N.t("workspace.category.localization"),
+								() -> L10N.t("workspace.localization.add_entry"), keyBindingCategoryKey.getEditor()::getItem),
 				L10N.label("elementgui.keybind.key_binding_category")));
-		enderpanel.add(PanelUtils.westAndCenterElement(L10N.label("elementgui.keybind.key_binding_category_key"),
+		enderpanel.add(PanelUtils.westAndCenterElement(new JLabel("key.categories."),
 				keyBindingCategoryKey));
 
 		keyBindingCategoryKey.setEditable(true);
@@ -116,6 +118,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 		keyBindingCategoryKey.setValidator(new RegistryNameValidator(keyBindingCategoryKey,
 				L10N.t("elementgui.keybind.error_key_category_needs_name")));
+		keyBindingCategoryKey.enableRealtimeValidation();
 
 		addPage(pane5);
 

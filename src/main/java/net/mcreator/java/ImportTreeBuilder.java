@@ -23,7 +23,6 @@ import javassist.bytecode.ConstPool;
 import net.mcreator.generator.Generator;
 import net.mcreator.io.zip.ZipIO;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
@@ -48,35 +47,35 @@ public class ImportTreeBuilder {
 			if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || libraryFile.getName().endsWith(".jmod"))) {
 				try (ZipFile zipFile = new ZipFile(libraryFile)) {
 					Enumeration<? extends ZipEntry> entries = zipFile.entries();
+					boolean isJmod = libraryFile.getName().endsWith(".jmod");
 					while (entries.hasMoreElements()) {
 						ZipEntry entry = entries.nextElement();
 						String entryName = entry.getName();
 
-						if (libraryFile.getName().endsWith(".jmod")) {
+						if (isJmod) {
 							if (!entryName.startsWith("classes/"))
 								continue;
-
-							entryName = StringUtils.stripStart(entryName, "classes/");
+							entryName = entryName.substring(8);
 						}
-
-						// quickly skip all meta-info paths
-						if (entryName.startsWith("META-INF/"))
-							continue;
 
 						// only load classes that are not inner
 						if (!entryName.endsWith(".class") || entryName.contains("$"))
-							continue;
-
-						// skip Sun APIs
-						if (entryName.startsWith("sun/") || entryName.startsWith("com/sun/"))
 							continue;
 
 						// skip internal JDK APIs
 						if (entryName.startsWith("jdk/internal/"))
 							continue;
 
+						// skip Sun APIs
+						if (entryName.startsWith("sun/") || entryName.startsWith("com/sun/"))
+							continue;
+
 						// skip package and modules info entries
 						if (entryName.endsWith("package-info.class") || entryName.endsWith("module-info.class"))
+							continue;
+
+						// skip all meta-info paths
+						if (entryName.startsWith("META-INF/"))
 							continue;
 
 						// check if class is public or protected
@@ -95,7 +94,7 @@ public class ImportTreeBuilder {
 							LOG.debug("Failed to check access flags of " + entryName + " - assuming public");
 						}
 
-						String fqdn = entryName.replaceAll("[\\\\/]", ".");
+						String fqdn = entryName.replace('\\', '.').replace('/', '.');
 						fqdn = fqdn.substring(0, fqdn.length() - 6);
 						int lastIndxDot = fqdn.lastIndexOf('.');
 						String className = fqdn;
@@ -121,7 +120,7 @@ public class ImportTreeBuilder {
 
 	private static void reloadClassesFromModImpl(File parent, File root, Map<String, List<String>> store) {
 		String pathRelativeToRoot = parent.getAbsolutePath().replace(root.getAbsolutePath(), "");
-		String packageName = pathRelativeToRoot.replaceAll("[\\\\/]", ".").replaceFirst("\\.", "");
+		String packageName = pathRelativeToRoot.replace('\\', '.').replace('/', '.').replaceFirst("\\.", "");
 
 		File[] files = parent.listFiles();
 		for (File file : files != null ? files : new File[0]) {
@@ -135,10 +134,10 @@ public class ImportTreeBuilder {
 	}
 
 	private static void addClassToTree(String packageName, String className, Map<String, List<String>> store) {
-		if (store.get(packageName) == null) {
-			store.put(packageName, new ArrayList<>(Collections.singletonList(className)));
+		if (store.get(className) == null) {
+			store.put(className, new ArrayList<>(Collections.singletonList(packageName + '.' + className)));
 		} else {
-			store.get(packageName).add(className);
+			store.get(className).add(packageName + '.' + className);
 		}
 	}
 

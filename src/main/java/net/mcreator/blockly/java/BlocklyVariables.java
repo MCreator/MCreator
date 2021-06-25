@@ -21,7 +21,8 @@ package net.mcreator.blockly.java;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
@@ -35,20 +36,21 @@ public class BlocklyVariables {
 		this.generator = generator;
 	}
 
-	List<String> processLocalVariables(Element variables_block) {
-		List<String> varlist = new ArrayList<>();
+	List<VariableElement> processLocalVariables(Element variables_block) {
+		List<VariableElement> varlist = new ArrayList<>();
 
 		if (variables_block != null) {
 			List<Element> variables = XMLUtil.getChildrenWithName(variables_block, "variable");
 			for (Element variable : variables) {
 				String type = variable.getAttribute("type");
 				String name = variable.getAttribute("id");
-				if (JavaKeywordsMap.VARIABLE_TYPES.get(type) != null && name != null) {
-					generator.append(JavaKeywordsMap.VARIABLE_TYPES.get(type)[0]).append(" ").append(name).append(" = ")
-							.append(JavaKeywordsMap.VARIABLE_TYPES.get(type)[1]).append(";\n");
-
-					// add variable to the array of variables
-					varlist.add(name);
+				VariableType variableType = VariableTypeLoader.INSTANCE.fromName(type);
+				if (variableType != null && variableType.getBlocklyVariableType() != null && name != null) {
+					VariableElement element = new VariableElement();
+					element.setName(name);
+					element.setType(variableType);
+					element.setScope(VariableType.Scope.LOCAL);
+					varlist.add(element); // add variable to the array of variables
 				} else {
 					generator.addCompileNote(
 							new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Skipping unknown variable type!"));
@@ -57,34 +59,6 @@ public class BlocklyVariables {
 		}
 
 		return varlist;
-	}
-
-	public static String getBlocklyVariableTypeFromMCreatorVariable(VariableElement variable) {
-		switch (variable.getType()) {
-		case NUMBER:
-			return "Number";
-		case ITEMSTACK:
-			return "MCItem";
-		case LOGIC:
-			return "Boolean";
-		case STRING:
-			return "String";
-		}
-		return null;
-	}
-
-	public static VariableElementType getMCreatorVariableTypeFromBlocklyVariableType(String blocklyType) {
-		switch (blocklyType) {
-		case "Number":
-			return VariableElementType.NUMBER;
-		case "Boolean":
-			return VariableElementType.LOGIC;
-		case "String":
-			return VariableElementType.STRING;
-		case "MCItem":
-			return VariableElementType.ITEMSTACK;
-		}
-		return null;
 	}
 
 }

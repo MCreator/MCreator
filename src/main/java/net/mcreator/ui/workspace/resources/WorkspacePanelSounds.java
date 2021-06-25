@@ -107,9 +107,8 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 			List<SoundElement> file = soundElementList.getSelectedValuesList();
 			if (file.size() > 0) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-						L10N.t("workspace.sounds.confirm_deletion_message"),
-						L10N.t("workspace.sounds.confirm_deletion_title"), JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
+						L10N.t("workspace.sounds.confirm_deletion_message"), L10N.t("common.confirmation"),
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (n == 0) {
 					file.forEach(workspacePanel.getMcreator().getWorkspace()::removeSoundElement);
 					reloadElements();
@@ -249,7 +248,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 			namepan.setOpaque(false);
 
 			JLabel name = new JLabel(ma.getName());
-			name.setFont(MCreatorTheme.light_font.deriveFont(20.0f));
+			name.setFont(MCreatorTheme.secondary_font.deriveFont(20.0f));
 			namepan.add("North", name);
 
 			JLabel name2 = L10N.label("workspace.sounds.files", String.join(", ", ma.getFiles()));

@@ -251,8 +251,8 @@ public class GradleConsole extends JPanel {
 	}
 
 	public String getConsoleText() {
-		String retval = pan.getText().replaceAll("(?i)<br[^>]* */?>", System.lineSeparator()).replaceAll("<.*?>", "")
-				.trim();
+		String retval = pan.getText().replace("\n", "").replace("\r", "").replaceAll("(?i)<br[^>]* */?>", "\n")
+				.replaceAll("<.*?>", "").replace("  ", " ").replace("  ", " ").replace("  ", " ");
 		return HtmlUtils.unescapeHtml(retval).trim();
 	}
 
@@ -323,7 +323,7 @@ public class GradleConsole extends JPanel {
 		if (PreferencesManager.PREFERENCES.gradle.offline)
 			arguments.add("--offline");
 
-		task.withArguments(arguments);
+		task.addArguments(arguments);
 
 		task.withCancellationToken(cancellationSource.token());
 

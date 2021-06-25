@@ -26,12 +26,14 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.themes.ThemeLoader;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.ui.init.EntityAnimationsLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
 import net.mcreator.util.MCreatorVersionNumber;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -55,10 +57,11 @@ public class TestSetup {
 
 		WebConsoleListener.registerLogger(LOG);
 
+		MCreatorApplication.isInternet = MCreatorApplication.WEB_API.initAPI();
+
 		// print version of Java
-		String java_spec_version = System.getProperty("java.specification.version");
-		LOG.info("Java version: " + System.getProperty("java.version") + ", specification: " + java_spec_version
-				+ ", VM name: " + System.getProperty("java.vm.name"));
+		LOG.info("Java version: " + System.getProperty("java.version") + ", VM: " + System.getProperty("java.vm.name")
+				+ ", vendor: " + System.getProperty("java.vendor"));
 		LOG.info("Current JAVA_HOME for running instance: " + System.getProperty("java.home"));
 
 		Properties conf = new Properties();
@@ -90,6 +93,9 @@ public class TestSetup {
 
 		// load apis defined by plugins after plugins are loaded
 		ModAPIManager.initAPIs();
+
+		// load variable elements
+		VariableTypeLoader.loadVariableTypes();
 
 		// blockly mod elements need blockly blocks loaded
 		BlocklyLoader.init();

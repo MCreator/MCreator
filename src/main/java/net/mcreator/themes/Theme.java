@@ -36,6 +36,9 @@ import javax.swing.*;
 	@Nullable private String description;
 	@Nullable private String version;
 	@Nullable private String credits;
+	@Nullable private String defaultFont;
+	private boolean useDefaultFontForSecondary;
+	private int fontSize;
 
 	@Nullable private ColorScheme colorScheme;
 
@@ -71,6 +74,35 @@ import javax.swing.*;
 
 	@Nullable public String getVersion() {
 		return version;
+	}
+
+	/**
+	 * <p>The main font size changes the size of the text for the main font. Usually, this parameter should not be changed except if the font is too big or too small with the default value.</p>
+	 *
+	 * @return <p>The main font size</p>
+	 */
+	public int getFontSize() {
+		if (fontSize != 0)
+			return fontSize;
+		else
+			return 12;
+	}
+
+	/**
+	 * @return The default font to use with some languages.
+	 */
+	public String getDefaultFont() {
+		if (defaultFont != null)
+			return defaultFont;
+		else
+			return "Sans-Serif";
+	}
+
+	/**
+	 * @return <p>Use the default font as the main font</p>
+	 */
+	public boolean useDefaultFontForSecondary() {
+		return useDefaultFontForSecondary;
 	}
 
 	/**

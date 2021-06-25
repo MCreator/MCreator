@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.workspace.Workspace;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +37,7 @@ public class Procedure {
 		this.name = name;
 	}
 
-	public String getName() {
+	@Nullable public String getName() {
 		return name;
 	}
 
@@ -59,6 +60,9 @@ public class Procedure {
 			try {
 				Object value = field.get(element);
 				if (value instanceof Procedure) {
+					if (((Procedure) value).getName() == null)
+						continue;
+
 					if (((Procedure) value).getName().equals(procedureName)) {
 						isCallingThisProcedure = true;
 						break;

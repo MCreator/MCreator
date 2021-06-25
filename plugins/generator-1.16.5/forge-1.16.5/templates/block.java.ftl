@@ -36,6 +36,7 @@
 package ${package}.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.util.SoundEvent;
 
 @${JavaModName}Elements.ModElement.Tag
 public class ${name}Block extends ${JavaModName}Elements.ModElement {
@@ -167,9 +168,17 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
         </#if>
 
-		<#macro blockProterties>
+		<#macro blockProperties>
 			Block.Properties.create(Material.${data.material})
-				.sound(SoundType.${data.soundOnStep})
+				<#if data.isCustomSoundType>
+					.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
+					() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
+					() -> new SoundEvent(new ResourceLocation("${data.placeSound}")),
+					() -> new SoundEvent(new ResourceLocation("${data.hitSound}")),
+					() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))))
+				<#else>
+					.sound(SoundType.${data.soundOnStep})
+				</#if>
 				<#if data.unbreakable>
 					.hardnessAndResistance(-1, 3600000)
 				<#else>
@@ -209,11 +218,17 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		public CustomBlock() {
 			<#if data.blockBase?has_content && data.blockBase == "Stairs">
-			super(() -> new Block(<@blockProterties/>).getDefaultState(),
+			super(() -> new Block(<@blockProperties/>).getDefaultState(),
+			<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
+			    <#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>
+			        super(Sensitivity.EVERYTHING,
+			    <#else>
+			        super(Sensitivity.MOBS,
+			    </#if>
 			<#else>
 			super(
 			</#if>
-			<@blockProterties/>
+			<@blockProperties/>
 			);
 
             <#if data.rotationMode != 0 || data.isWaterloggable>
@@ -388,7 +403,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
-		<#if hasCondition(data.placingCondition)>
+		<#if hasProcedure(data.placingCondition)>
 		@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
 			if (worldIn instanceof IWorld) {
 				IWorld world = (IWorld) worldIn;
@@ -418,14 +433,14 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         }
 		</#if>
 
-		<#if data.isWaterloggable || hasCondition(data.placingCondition)>
+		<#if data.isWaterloggable || hasProcedure(data.placingCondition)>
 		@Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
 	        <#if data.isWaterloggable>
 			if (state.get(WATERLOGGED)) {
 				world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 			}
 			</#if>
-			return <#if hasCondition(data.placingCondition)>
+			return <#if hasProcedure(data.placingCondition)>
 			!state.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() :
 			</#if> super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 		}
@@ -442,6 +457,24 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			return context.getItem().getItem() != this.asItem();
 		}
         </#if>
+
+		<#if data.canProvidePower>
+		@Override public boolean canProvidePower(BlockState state) {
+			return true;
+		}
+
+		@Override public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+			<#if hasProcedure(data.emittedRedstonePower)>
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				World world = (World) blockAccess;
+				return (int) <@procedureOBJToNumberCode data.emittedRedstonePower/>;
+			<#else>
+				return ${data.emittedRedstonePower.getFixedValue()};
+			</#if>
+		}
+		</#if>
 
 		<#if data.flammability != 0>
 		@Override public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
@@ -498,7 +531,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-        <#if data.canProvidePower>
+        <#if data.canRedstoneConnect>
         @Override
 		public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
 			return true;
@@ -1025,7 +1058,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					if(!dimensionCriteria)
 						return false;
 
-					<#if hasCondition(data.generateCondition)>
+					<#if hasProcedure(data.generateCondition)>
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();

@@ -21,6 +21,7 @@ package net.mcreator.ui.ide.action;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.ide.CodeEditorView;
+import net.mcreator.ui.init.L10N;
 import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
 
 import javax.swing.*;
@@ -28,7 +29,7 @@ import javax.swing.*;
 public class SaveCodeAction extends BasicAction {
 
 	public SaveCodeAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Save code", actionEvent -> {
+		super(actionRegistry, L10N.t("action.ide.save"), actionEvent -> {
 			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView) {
 				CodeEditorView codeEditorView = (CodeEditorView) pan;
@@ -37,11 +38,11 @@ public class SaveCodeAction extends BasicAction {
 					codeEditorView.saveCode();
 					if (codeEditorView.mouseEvent != null)
 						new FocusableTip(codeEditorView.te, null)
-								.toolTipRequested(codeEditorView.mouseEvent, "Code saved");
+								.toolTipRequested(codeEditorView.mouseEvent, L10N.t("action.ide.save.result"));
 				}
 			}
 		});
-		setTooltip("Click this to save code in current code editor");
+		setTooltip(L10N.t("action.ide.save.tooltip"));
 		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(tab -> setEnabled(
 				tab.getContent() instanceof CodeEditorView && !((CodeEditorView) tab.getContent()).readOnly));
 	}

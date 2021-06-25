@@ -37,7 +37,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class NewImageDialog extends MCreatorDialog {
-	private final String[] layerTypes = { "Transparency", "Color", "Template", "No Layer" };
+	private final String[] layerTypes = { L10N.t("dialog.imageeditor.transparency"),
+			L10N.t("dialog.imageeditor.color_layer_type"), L10N.t("dialog.imageeditor.template"),
+			L10N.t("dialog.imageeditor.no_layer") };
 
 	private ResourcePointer selection;
 	private final List<ResourcePointer> templatesSorted;
@@ -81,7 +83,7 @@ public class NewImageDialog extends MCreatorDialog {
 		JSpinner width = new JSpinner(new SpinnerNumberModel(16, 0, 10000, 1));
 		JSpinner height = new JSpinner(new SpinnerNumberModel(16, 0, 10000, 1));
 
-		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("action.common.create");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));

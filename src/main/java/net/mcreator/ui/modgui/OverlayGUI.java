@@ -25,12 +25,12 @@ import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
-import net.mcreator.ui.minecraft.ProcedureSelector;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,11 +55,12 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 
 		displayCondition = new ProcedureSelector(this.withEntry("overlay/display_condition"), mcreator,
 				L10N.t("elementgui.overlay.event_display_ingame"), ProcedureSelector.Side.CLIENT, true,
-				VariableElementType.LOGIC,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		editor = new WYSIWYGEditor(mcreator, false);
 		editor.button.setVisible(false);
+		editor.checkbox.setVisible(false);
 		editor.slot1.setVisible(false);
 		editor.slot2.setVisible(false);
 		editor.text.setVisible(false);
@@ -94,6 +95,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		editor.priority.setSelectedItem(overlay.priority);
 		editor.setComponentList(overlay.components);
 		editor.overlayBaseTexture.setSelectedItem(overlay.baseTexture);
+		editor.overlayTarget.setSelectedItem(overlay.overlayTarget);
 		displayCondition.setSelectedProcedure(overlay.displayCondition);
 
 		editor.sx.setValue(overlay.gridSettings.sx);
@@ -112,6 +114,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		overlay.priority = (String) editor.priority.getSelectedItem();
 		overlay.components = editor.getComponentList();
 		overlay.baseTexture = editor.overlayBaseTexture.getSelectedItem();
+		overlay.overlayTarget = editor.overlayTarget.getSelectedItem();
 		overlay.displayCondition = displayCondition.getSelectedProcedure();
 
 		overlay.gridSettings.sx = (int) editor.sx.getValue();

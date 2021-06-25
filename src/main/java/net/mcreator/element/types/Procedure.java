@@ -92,8 +92,9 @@ public class Procedure extends GeneratableElement {
 			List<Dependency> dependenciesArrayList = blocklyToJava.getDependencies();
 
 			this.getModElement().clearMetadata().putMetadata("dependencies", dependenciesArrayList)
-					.putMetadata("return_type",
-							blocklyToJava.getReturnType() == null ? null : blocklyToJava.getReturnType().name());
+					.putMetadata("return_type", blocklyToJava.getReturnType() == null ?
+							null :
+							blocklyToJava.getReturnType().getName().toLowerCase());
 
 			reloadDependencies();
 
@@ -108,6 +109,7 @@ public class Procedure extends GeneratableElement {
 			additionalData.put("has_trigger", trigger != null);
 			additionalData.put("trigger_code", triggerCode);
 			additionalData.put("dependencies", dependenciesArrayList);
+			additionalData.put("localvariables", blocklyToJava.getLocalVariables());
 		};
 	}
 
