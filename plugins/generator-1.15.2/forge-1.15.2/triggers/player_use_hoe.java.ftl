@@ -11,7 +11,7 @@
 	dependencies.put("z",k);
 	dependencies.put("world",world);
 	dependencies.put("entity",entity);
-	dependencies.put("state",state);
+	dependencies.put("blockstate",state);
 	dependencies.put("event",event);
 	this.executeProcedure(dependencies);
 }

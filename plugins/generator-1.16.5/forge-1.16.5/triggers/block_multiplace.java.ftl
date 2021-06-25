@@ -11,7 +11,7 @@
 		dependencies.put("pz",entity.getPosZ());
 		dependencies.put("world",world);
 		dependencies.put("entity",entity);
-		dependencies.put("state",event.getState());
+		dependencies.put("blockstate",event.getState());
 		dependencies.put("placedagainst",event.getPlacedAgainst());
 		dependencies.put("event",event);
 		executeProcedure(dependencies);

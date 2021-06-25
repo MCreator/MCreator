@@ -9,7 +9,7 @@
       "type": "entity"
     },
     {
-      "name": "state",
+      "name": "blockstate",
       "type": "blockstate"
     },
     {

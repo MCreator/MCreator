@@ -15,7 +15,7 @@
 	dependencies.put("world", world);
 	dependencies.put("entity", entity);
 	dependencies.put("direction", event.getFace());
-	dependencies.put("state", state);
+	dependencies.put("blockstate", state);
 	dependencies.put("event", event);
 	this.executeProcedure(dependencies);
 }

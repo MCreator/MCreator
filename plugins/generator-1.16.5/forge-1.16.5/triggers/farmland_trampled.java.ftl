@@ -9,7 +9,7 @@
 		dependencies.put("z",event.getPos().getZ());
 		dependencies.put("world",world);
 		dependencies.put("entity",entity);
-		dependencies.put("state",event.getState());
+		dependencies.put("blockstate",event.getState());
 		dependencies.put("falldistance",falldistance);
 		dependencies.put("event",event);
 		executeProcedure(dependencies);

@@ -25,7 +25,7 @@
       "type": "itemstack"
     },
     {
-      "name": "state",
+      "name": "blockstate",
       "type": "blockstate"
     }
   ],
