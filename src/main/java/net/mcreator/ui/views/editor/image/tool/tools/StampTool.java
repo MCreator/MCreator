@@ -64,7 +64,7 @@ public class StampTool extends AbstractModificationTool {
 
 	public StampTool(Canvas canvas, ColorSelector colorSelector, LayerPanel layerPanel, VersionManager versionManager,
 			MCreator window) {
-		super(L10N.t("dialog.imageeditor.stamp_tool_name"), L10N.t("dialog.imageeditor.stamp_tool_description"),
+		super(L10N.t("dialog.image_maker.tools.types.stamp"), L10N.t("dialog.image_maker.tools.types.stamp_description"),
 				UIRES.get("img_editor.stamp"), canvas, colorSelector, versionManager);
 		setLayerPanel(layerPanel);
 
@@ -97,7 +97,7 @@ public class StampTool extends AbstractModificationTool {
 		JSlidingSpinner saturationSlider = new JSlidingSpinner(L10N.t("dialog.image_maker.tools.types.saturation"));
 		saturationSlider.addChangeListener(e -> saturation = saturationSlider.getValue() / 100.0);
 
-		colorize = L10N.checkbox("dialog.imageeditor.stamp_tool_colorize");
+		colorize = L10N.checkbox("dialog.image_maker.tools.types.colorize");
 		colorType = L10N.checkbox("dialog.imageeditor.stamp_tool_lock_saturation_brightness");
 		colorize.addActionListener(e -> colorType.setEnabled(colorize.isSelected()));
 		colorize.setSelected(false);

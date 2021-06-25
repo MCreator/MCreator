@@ -25,7 +25,7 @@ import net.mcreator.ui.views.editor.image.tool.tools.StampTool;
 
 public class StampToolAction extends ToolChangeAction {
 	public StampToolAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("dialog.imageeditor.stamp_tool_name"), L10N.t("dialog.imageeditor.stamp_tool_description"), StampTool.class);
+		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.stamp"), L10N.t("dialog.image_maker.tools.types.stamp_description"), StampTool.class);
 		setIcon(UIRES.get("img_editor.stamp"));
 	}
 }
