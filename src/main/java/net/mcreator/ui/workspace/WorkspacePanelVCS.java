@@ -156,19 +156,18 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 	private void checkoutToSelectedCommit() {
 		String shortCommitId = commits.getValueAt(commits.getSelectedRow(), 0).toString();
 
-		if (shortCommitId != null) {
+		if (shortCommitId != null && workspacePanel.getMcreator().getWorkspace().getVCS() != null) {
 			try {
 				Git git = workspacePanel.getMcreator().getWorkspace().getVCS().getGit();
 				for (RevCommit commit : git.log().add(git.getRepository().resolve(git.getRepository().getFullBranch()))
 						.call()) {
 					if (commit.abbreviate(7).name().equals(shortCommitId)) {
 						int option = JOptionPane.showOptionDialog(workspacePanel.getMcreator(),
-								"<html><b>Are you sure you want to jump to commit " + commit.getShortMessage()
-										+ "?</b><br>"
-										+ "All your local unsynced changes will be dropped after this action!<br><br>"
-										+ "<small>Make sure you don't jump between different MCreator workspace version checkpoints!",
-								"Jump to commit", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-								new String[] { "Jump to " + commit.abbreviate(7).name(), "Cancel" }, null);
+								L10N.t("workspace.vcs.jump_commit_confirmation", commit.getShortMessage()),
+								L10N.t("workspace.vcs.jump_commit_confirmation.title"), JOptionPane.DEFAULT_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null,
+								new String[] { L10N.t("workspace.vcs.jump_to", commit.abbreviate(7).name()),
+										UIManager.getString("OptionPane.cancelButtonText") }, null);
 
 						if (option == 0) {
 							// track all so they can be stashed properly
@@ -233,8 +232,8 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 							commit.getAuthorIdent().getName(), commit.getAuthorIdent().getWhen() });
 				}
 
-				switchBranch
-						.setText("Current branch: " + git.getRepository().getFullBranch().replace("refs/heads/", ""));
+				switchBranch.setText(L10N.t("workspace.vcs.current_branch",
+						git.getRepository().getFullBranch().replace("refs/heads/", "")));
 			} catch (Exception ignored) {
 			}
 

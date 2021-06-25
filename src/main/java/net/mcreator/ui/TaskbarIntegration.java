@@ -43,9 +43,9 @@ public class TaskbarIntegration {
 
 	public void clearState(Window w) {
 		if (taskbar != null && taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW)) {
-			setProgressState(w, -1);
 			taskbar.setWindowProgressState(w, Taskbar.State.NORMAL);
 			taskbar.setWindowProgressState(w, Taskbar.State.OFF);
+			setProgressState(w, -1);
 		}
 	}
 

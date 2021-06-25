@@ -86,7 +86,7 @@ public class NewVariableDialog {
 				&& type.getSelectedItem() != null) {
 			VariableElement element = new VariableElement();
 			VariableType variable = VariableTypeLoader.INSTANCE
-					.getVariableTypeFromString(((VariableType) type.getSelectedItem()).getName());
+					.fromName(((VariableType) type.getSelectedItem()).getName());
 			if (variable != null) {
 				element.setName(Transliteration.transliterateString(textField.getText()));
 				element.setType((VariableType) type.getSelectedItem());

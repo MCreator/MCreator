@@ -301,7 +301,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		mainComponent.setPreferredSize(new Dimension(870, 380));
 
 		JOptionPane pane = new JOptionPane(mainComponent);
-		JDialog dialog = pane.createDialog(parent, "Block/item selector");
+		JDialog dialog = pane.createDialog(parent, L10N.t("dialog.item_selector.selector"));
 		bsd.setItemSelectedListener(e -> dialog.dispose());
 		dialog.setVisible(true);
 

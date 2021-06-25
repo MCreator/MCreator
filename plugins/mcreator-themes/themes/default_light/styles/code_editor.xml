@@ -26,8 +26,8 @@
 
     <tokenStyles>
         <style token="IDENTIFIER" fg="232323"/>
-        <style token="RESERVED_WORD" fg="93c54b"/>
-        <style token="RESERVED_WORD_2" fg="93c54b"/>
+        <style token="RESERVED_WORD" fg="${mainTint}"/>
+        <style token="RESERVED_WORD_2" fg="${mainTint}"/>
         <style token="ANNOTATION" fg="928f77"/>
         <style token="COMMENT_DOCUMENTATION" fg="6C788C"/>
         <style token="COMMENT_EOL" fg="66747B"/>
@@ -36,10 +36,10 @@
         <style token="COMMENT_MARKUP" fg="ae9fbf"/>
         <style token="FUNCTION" fg="232323"/>
         <style token="DATA_TYPE" fg="678CB1" bold="true"/>
-        <style token="LITERAL_BOOLEAN" fg="93c54b"/>
-        <style token="LITERAL_NUMBER_DECIMAL_INT" fg="93c54b"/>
-        <style token="LITERAL_NUMBER_FLOAT" fg="93c54b"/>
-        <style token="LITERAL_NUMBER_HEXADECIMAL" fg="93c54b"/>
+        <style token="LITERAL_BOOLEAN" fg="${mainTint}"/>
+        <style token="LITERAL_NUMBER_DECIMAL_INT" fg="${mainTint}"/>
+        <style token="LITERAL_NUMBER_FLOAT" fg="${mainTint}"/>
+        <style token="LITERAL_NUMBER_HEXADECIMAL" fg="${mainTint}"/>
         <style token="LITERAL_STRING_DOUBLE_QUOTE" fg="0095ae"/>
         <style token="LITERAL_CHAR" fg="0095ae"/>
         <style token="LITERAL_BACKQUOTE" fg="0095ae"/>

@@ -1,7 +1,7 @@
 {
 <#list sounds as sound>
 "${sound.getName()}": {
-  "category": "${sound.getCategory()}",
+  "category": "${generator.map(sound.getCategory(), "soundcategories", 1)}",
   <#if sound.getSubtitle()?has_content>"subtitle": "subtitles.${sound.getName()}",</#if>
   "sounds": [
     <#list sound.getFiles() as file>

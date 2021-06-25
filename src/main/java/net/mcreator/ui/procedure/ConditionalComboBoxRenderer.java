@@ -42,7 +42,8 @@ class ConditionalComboBoxRenderer implements ListCellRenderer<CBoxEntry> {
 		}
 
 		if (value.getVariableType() != null && !cellHasFocus && value.correctDependencies) {
-			component.setForeground(BlocklyBlockUtil.getBlockColorFromHUE(value.getVariableType().getColor()).brighter());
+			component.setForeground(
+					BlocklyBlockUtil.getBlockColorFromHUE(value.getVariableType().getColor()).brighter());
 		}
 
 		return component;
