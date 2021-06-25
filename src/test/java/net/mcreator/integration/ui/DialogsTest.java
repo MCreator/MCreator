@@ -26,6 +26,7 @@ import net.mcreator.integration.TestSetup;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.AboutAction;
+import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.dialogs.ElementOrderEditor;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
@@ -36,8 +37,12 @@ import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,9 +58,17 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class DialogsTest {
 
+	private static Logger LOG;
+
 	private static MCreator mcreator;
 
 	@BeforeAll public static void initTest() throws IOException {
+		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
+		LOG = LogManager.getLogger("Mod Element Test");
+
+		// disable webview to avoid issues in headless test environments
+		BlocklyPanel.DISABLE_WEBVIEW = true;
+
 		TestSetup.setupIntegrationTestEnvironment();
 
 		// create temporary directory
@@ -75,6 +88,11 @@ public class DialogsTest {
 				.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"), workspaceSettings);
 
 		mcreator = new MCreator(null, workspace);
+	}
+
+	@BeforeEach
+	void init(TestInfo testInfo) {
+		LOG.info("Running " + testInfo.getDisplayName());
 	}
 
 	@Test public void testWorkspaceSelector() throws Throwable {
