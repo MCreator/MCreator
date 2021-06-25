@@ -50,7 +50,6 @@ PackLoadingManager: PackLoadingManager
 Pack: PackScreen
 ReadBook: ReadBookScreen
 ServerList: ServerListScreen
-ServerSelectionList: ServerSelectionList
 Settings: SettingsScreen
 ShareToLan: ShareToLanScreen
 SleepInMultiplayer: SleepInMultiplayerScreen
@@ -60,7 +59,6 @@ WithNarratorSettings: WithNarratorSettingsScreen
 Working: WorkingScreen
 WorldLoadProgress: WorldLoadProgressScreen
 WorldOptions: WorldOptionsScreen
-WorldSelectionList: WorldSelectionList
 WorldSelection: WorldSelectionScreen
 Anvil: AnvilScreen
 Beacon: BeaconScreen

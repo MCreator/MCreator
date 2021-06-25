@@ -49,7 +49,6 @@
 - Pack
 - ReadBook
 - ServerList
-- ServerSelectionList
 - Settings
 - ShareToLan
 - SleepInMultiplayer
@@ -59,7 +58,6 @@
 - Working
 - WorldLoadProgress
 - WorldOptions
-- WorldSelectionList
 - WorldSelection
 - Anvil
 - Beacon

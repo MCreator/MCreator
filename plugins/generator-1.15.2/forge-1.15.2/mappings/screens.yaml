@@ -44,7 +44,6 @@ Options: OptionsScreen
 OptionsSounds: OptionsSoundsScreen
 ReadBook: ReadBookScreen
 ServerList: ServerListScreen
-ServerSelectionList: ServerSelectionList
 Settings: SettingsScreen
 ShareToLan: ShareToLanScreen
 SleepInMultiplayer: SleepInMultiplayerScreen
@@ -52,7 +51,6 @@ Stats: StatsScreen
 VideoSettings: VideoSettingsScreen
 Working: WorkingScreen
 WorldLoadProgress: WorldLoadProgressScreen
-WorldSelectionList: WorldSelectionList
 WorldSelection: WorldSelectionScreen
 Anvil: AnvilScreen
 Beacon: BeaconScreen
