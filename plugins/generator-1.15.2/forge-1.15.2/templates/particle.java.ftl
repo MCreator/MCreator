@@ -118,7 +118,7 @@ public class ${name}Particle extends ${JavaModName}Elements.ModElement{
 			}
 			</#if>
 
-			<#if hasCondition(data.additionalExpiryCondition)>
+			<#if hasProcedure(data.additionalExpiryCondition)>
 			double x = this.posX;
 			double y = this.posY;
 			double z = this.posZ;

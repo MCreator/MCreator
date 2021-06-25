@@ -187,6 +187,11 @@ public class ElementUtil {
 		return retval.toArray(new String[0]);
 	}
 
+	public static String[] getAllSoundCategories() {
+		return DataListLoader.loadDataList("soundcategories").stream().map(DataListEntry::getName)
+				.toArray(String[]::new);
+	}
+
 	public static String[] getAllDamageSources() {
 		return DataListLoader.loadDataList("damagesources").stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
@@ -219,6 +224,10 @@ public class ElementUtil {
 
 	public static String[] loadMapColors() {
 		return DataListLoader.loadDataList("mapcolors").stream().map(DataListEntry::getName).toArray(String[]::new);
+	}
+
+	public static String[] loadScreens() {
+		return DataListLoader.loadDataList("screens").stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
 	public static String[] loadAllDimensions(Workspace workspace) {
