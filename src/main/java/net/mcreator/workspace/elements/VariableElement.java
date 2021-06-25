@@ -38,7 +38,7 @@ public class VariableElement implements IElement {
 	}
 
 	public VariableType getType() {
-		return VariableTypeLoader.INSTANCE.getVariableTypeFromString(type);
+		return VariableTypeLoader.INSTANCE.fromName(type);
 	}
 
 	public void setType(VariableType type) {

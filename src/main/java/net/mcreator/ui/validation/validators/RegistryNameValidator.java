@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.validation.validators;
 
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
@@ -65,10 +66,11 @@ public class RegistryNameValidator implements Validator {
 	@Override public ValidationResult validate() {
 		String text = holder.getText();
 		if (text.length() == 0 && !allowEmpty)
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, name + " can't be empty");
+			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					L10N.t("validators.registry_name.empty", name));
 		if (text.length() > maxLength)
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-					name + " can't be longer than " + maxLength + " characters");
+					L10N.t("validators.registry_name.length", name, maxLength));
 		char[] chars = text.toCharArray();
 		boolean valid = true;
 		int id = 0;
@@ -87,7 +89,7 @@ public class RegistryNameValidator implements Validator {
 		}
 		if (!valid)
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-					name + " can only contain lowercase English letters, numbers and " + validChars.toString());
+					L10N.t("validators.registry_name.invalid", name, validChars.toString()));
 
 		return Validator.ValidationResult.PASSED;
 	}

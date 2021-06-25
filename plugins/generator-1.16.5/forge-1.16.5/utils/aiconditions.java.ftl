@@ -3,9 +3,9 @@
 <#macro conditionCode conditionfield="" includeBractets=true>
     <#if conditionfield?has_content>
         <#assign conditions = generator.procedureNamesToObjects(conditionfield)>
-        <#if hasCondition(conditions[0]) || hasCondition(conditions[1])>
+        <#if hasProcedure(conditions[0]) || hasProcedure(conditions[1])>
 			<#if includeBractets>{</#if>
-                <#if hasCondition(conditions[0])>
+                <#if hasProcedure(conditions[0])>
                 @Override public boolean shouldExecute() {
                 	double x = CustomEntity.this.getPosX();
 			        double y = CustomEntity.this.getPosY();
@@ -14,7 +14,7 @@
                 	return super.shouldExecute() && <@procedureOBJToConditionCode conditions[0]/>;
                 }
                 </#if>
-                <#if hasCondition(conditions[1])>
+                <#if hasProcedure(conditions[1])>
                 @Override public boolean shouldContinueExecuting() {
                 	double x = CustomEntity.this.getPosX();
 			        double y = CustomEntity.this.getPosY();

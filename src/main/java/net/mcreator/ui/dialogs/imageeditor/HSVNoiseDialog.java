@@ -42,9 +42,9 @@ public class HSVNoiseDialog extends MCreatorDialog {
 		JPanel settings = new JPanel(new GridBagLayout());
 		JPanel controls = new JPanel(new BorderLayout());
 
-		JSlidingSpinner hue = new JSlidingSpinner("Max hue variation", 5, 0, 255, 1);
-		JSlidingSpinner sat = new JSlidingSpinner("Max saturation variation", 30, 0, 255, 1);
-		JSlidingSpinner val = new JSlidingSpinner("Max value variation", 30, 0, 255, 1);
+		JSlidingSpinner hue = new JSlidingSpinner(L10N.t("dialog.imageeditor.hsv_noise_hue"), 5, 0, 255, 1);
+		JSlidingSpinner sat = new JSlidingSpinner(L10N.t("dialog.imageeditor.hsv_noise_saturation"), 30, 0, 255, 1);
+		JSlidingSpinner val = new JSlidingSpinner(L10N.t("dialog.imageeditor.hsv_noise_value"), 30, 0, 255, 1);
 
 		JPanel seedControls = new JPanel(new GridLayout(2, 1, 5, 5));
 		JButton randomize = L10N.button("dialog.imageeditor.noise_randomize_seed");
@@ -57,7 +57,7 @@ public class HSVNoiseDialog extends MCreatorDialog {
 		seedControls.add(new JLabel(""));
 		seedControls.add(randomize);
 
-		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("action.common.apply");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));

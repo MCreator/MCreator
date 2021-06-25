@@ -212,9 +212,8 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			button.setMargin(new Insets(0, 0, 0, 0));
 			button.addActionListener(e -> {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-						L10N.t("workspace.localization.confirm_delete_map"),
-						L10N.t("workspace.localization.confirmation"), JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null);
+						L10N.t("workspace.localization.confirm_delete_map"), L10N.t("common.confirmation"),
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 				if (n == 0) {
 					workspacePanel.getMcreator().getWorkspace().removeLocalizationLanguage(entry.getKey());
 					reloadElements();
@@ -243,9 +242,8 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 				String key = (String) elements.getValueAt(elements.getSelectedRow(), 0);
 				if (key != null) {
 					int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-							L10N.t("workspace.localization.confirm_delete_entry"),
-							L10N.t("workspace.localization.confirmation"), JOptionPane.YES_NO_OPTION,
-							JOptionPane.QUESTION_MESSAGE);
+							L10N.t("workspace.localization.confirm_delete_entry"), L10N.t("common.confirmation"),
+							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (n == 0) {
 						Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
 								.forEach(workspacePanel.getMcreator().getWorkspace()::removeLocalizationEntryByKey);

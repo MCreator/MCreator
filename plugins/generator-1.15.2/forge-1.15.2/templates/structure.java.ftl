@@ -102,7 +102,7 @@ package ${package}.world.structure;
 					int y = spawnTo.getY();
 					int z = spawnTo.getZ();
 
-					<#if hasCondition(data.generateCondition)>
+					<#if hasProcedure(data.generateCondition)>
 					if (!<@procedureOBJToConditionCode data.generateCondition/>)
 						continue;
 					</#if>

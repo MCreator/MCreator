@@ -80,7 +80,8 @@ public class CodeErrorDialog {
 		mcreator.setCursor(Cursor.getDefaultCursor());
 
 		if (moddefinitionfileerrors) { // first we try to fix mod definition errors
-			Object[] options = { "Regenerate code", "Ignore error" };
+			Object[] options = { L10N.t("dialog.code_error.regenerate_code"),
+					L10N.t("dialog.code_error.ignore_error") };
 			int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.code_error.compilation_desc"),
 					L10N.t("dialog.code_error.compilation_title"), JOptionPane.YES_NO_CANCEL_OPTION,
 					JOptionPane.WARNING_MESSAGE, null, options, options[0]);
@@ -109,9 +110,11 @@ public class CodeErrorDialog {
 		list.add("North", L10N.label("dialog.code_error.compilation_list"));
 		list.add("Center", sp);
 
-		Object[] options = { "Show in workspace", "Show build log", "Do nothing", "Support" };
-		int n = JOptionPane.showOptionDialog(mcreator, list, "Some mod elements cause compilation errors",
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+		Object[] options = { L10N.t("dialog.code_error.show_in_workspace"), L10N.t("dialog.code_error.show_build_log"),
+				L10N.t("gradle.errors.do_nothing"), L10N.t("action.support") };
+		int n = JOptionPane
+				.showOptionDialog(mcreator, list, L10N.t("dialog.code_error.title"), JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 		if (n == 0) {
 			mcreator.mcreatorTabs.showTab(mcreator.workspaceTab);
 			mcreator.mv.search.setText("f:err");

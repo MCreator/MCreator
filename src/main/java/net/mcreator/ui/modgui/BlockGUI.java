@@ -566,8 +566,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		rotationMode.setPreferredSize(new Dimension(320, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
-		hasTransparency.setFont(hasTransparency.getFont().deriveFont(12.0f));
-
 		JPanel tintPanel = new JPanel(new GridLayout(2, 2, 0, 2));
 		tintPanel.setOpaque(false);
 		isItemTinted.setOpaque(false);
@@ -687,7 +685,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(luminance);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/light_opacity"),
-				L10N.label("elementgui.block.light_opacity")));
+				L10N.label("elementgui.common.light_opacity")));
 		selp.add(lightOpacity);
 
 		selp.add(HelpUtils
