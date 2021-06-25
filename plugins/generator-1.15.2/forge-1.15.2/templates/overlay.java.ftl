@@ -86,18 +86,18 @@ public class ${name}Overlay extends ${JavaModName}Elements.ModElement{
 	                <#assign x = component.x - 213>
 	                <#assign y = component.y - 120>
 	                <#if component.getClass().getSimpleName() == "Label">
-						<#if hasCondition(component.displayCondition)>
+						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
 						Minecraft.getInstance().fontRenderer.drawString("${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
 									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
 	                <#elseif component.getClass().getSimpleName() == "Image">
-						<#if hasCondition(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+						<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
 						Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/${component.image}"));
 						Minecraft.getInstance().ingameGUI.blit(posX + ${x}, posY + ${y}, 0, 0,
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-						<#if hasCondition(component.displayCondition)>}</#if>
+						<#if hasProcedure(component.displayCondition)>}</#if>
 	                </#if>
 	            </#list>
 			}
