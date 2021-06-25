@@ -63,9 +63,8 @@ package ${package}.item;
 	<#if data.hasDispenseBehavior>
 		@Override
 		public void init(FMLCommonSetupEvent event) {
-			DispenserBlock.registerDispenseBehavior(this.block, new OptionalDispenseBehavior() {
+			DispenserBlock.registerDispenseBehavior(block, new OptionalDispenseBehavior() {
 				public ItemStack dispenseStack(IBlockSource blockSource, ItemStack stack) {
-					this.setSuccessful(true);
 					ItemStack itemstack = stack.copy();
 					World world = blockSource.getWorld();
 					Direction direction = blockSource.getBlockState().get(DispenserBlock.FACING);

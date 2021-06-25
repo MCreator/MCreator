@@ -976,7 +976,7 @@ public class TestWorkspaceDataProvider {
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
 			item.hasDispenseBehavior = _true;
-			item.dispenseSuccessCondition = !_true ? null : new Procedure("condition1");
+			item.dispenseSuccessCondition = (!_true && !emptyLists) ? null : new Procedure("condition1");
 			item.dispenseResultItemstack = !_true ? null : new Procedure("itemstack1");
 			if (!emptyLists) {
 				item.specialInfo = StringUtils
