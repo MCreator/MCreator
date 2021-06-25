@@ -21,6 +21,7 @@ package net.mcreator.ui.views.editor.image.action;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 
 import javax.swing.*;
