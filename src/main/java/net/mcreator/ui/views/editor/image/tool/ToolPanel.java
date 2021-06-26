@@ -110,9 +110,9 @@ public class ToolPanel extends JSplitPane {
 		pt = new PencilTool(canvas, cs, layerPanel, versionManager);
 		JToggleButton pencil = register(pt, drawing);
 
-		addButton("Undo (Ctrl + Z)", L10N.t("dialog.image_maker.tools.undo_description"), UIRES.get("img_editor.undo"), e -> versionManager.undo(),
+		addButton(L10N.t("dialog.image_maker.tools.undo"), L10N.t("dialog.image_maker.tools.undo_description"), UIRES.get("img_editor.undo"), e -> versionManager.undo(),
 				general);
-		addButton("Redo (Ctrl + Y)", L10N.t("dialog.image_maker.tools.redo_description"), UIRES.get("img_editor.redo"), e -> versionManager.redo(),
+		addButton(L10N.t("dialog.image_maker.tools.redo"), L10N.t("dialog.image_maker.tools.redo_description"), UIRES.get("img_editor.redo"), e -> versionManager.redo(),
 				general);
 		register(new ResizeCanvasTool(canvas, cs, versionManager, frame), general);
 
