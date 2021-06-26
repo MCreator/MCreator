@@ -163,6 +163,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
       		BlockPos pos = context.getPos();
       		PlayerEntity entity = context.getPlayer();
       		Direction direction = context.getFace();
+      		BlockState blockstate = world.getBlockState(pos);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -173,8 +174,8 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		</#if>
 
 		<#if hasProcedure(data.onBlockDestroyedWithTool)>
-		@Override public boolean onBlockDestroyed(ItemStack itemstack, World world, BlockState bl, BlockPos pos, LivingEntity entity){
-			boolean retval = super.onBlockDestroyed(itemstack,world,bl,pos,entity);
+		@Override public boolean onBlockDestroyed(ItemStack itemstack, World world, BlockState blockstate, BlockPos pos, LivingEntity entity){
+			boolean retval = super.onBlockDestroyed(itemstack,world,blockstate,pos,entity);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
