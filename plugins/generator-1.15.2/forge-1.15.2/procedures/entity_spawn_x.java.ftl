@@ -3,7 +3,7 @@
 		if (_ent instanceof PlayerEntity) {
 			BlockPos _bp = ((PlayerEntity) _ent).getBedLocation(_world.getDimension().getType());
 			if (_bp != null)
-				retval = _bp.getX();
+				return _bp.getX();
 		}
 		return _world.getSpawnPoint().getX();
 	}

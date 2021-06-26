@@ -3,7 +3,7 @@
 		if (_ent instanceof PlayerEntity) {
 			Optional<BlockPos> _bp = ((PlayerEntity) _ent).getBedPosition();
 			if (_bp.isPresent())
-				retval = _bp.get().getY();
+				return _bp.get().getY();
 		}
 		return _world.getWorldInfo().getSpawnY();
 	}
