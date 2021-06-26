@@ -24,7 +24,7 @@
     "toolbox_id": "blockactions",
     "toolbox_init": [
       "<value name=\"property\"><block type=\"text\"><field name=\"TEXT\">half</field></block></value>",
-      "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+      "<value name=\"block\"><block type=\"blockstate_from_deps\"></block></value>"
     ],
     "inputs": [
       "property",

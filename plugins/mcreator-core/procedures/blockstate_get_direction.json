@@ -12,12 +12,13 @@
       "height": 36
     }
   ],
+  "inputsInline": true,
   "output": "Direction",
   "colour": "20",
   "mcreator": {
     "toolbox_id": "blockactions",
     "toolbox_init": [
-      "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+      "<value name=\"block\"><block type=\"blockstate_from_deps\"></block></value>"
     ],
     "inputs": [
       "block"
