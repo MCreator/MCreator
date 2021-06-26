@@ -23,18 +23,12 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.integration.TestSetup;
-import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.action.impl.AboutAction;
-import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
-import net.mcreator.ui.dialogs.ElementOrderEditor;
-import net.mcreator.ui.dialogs.MCItemSelectorDialog;
-import net.mcreator.ui.dialogs.TextureImportDialogs;
-import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
-import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
-import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
-import net.mcreator.ui.workspace.selector.WorkspaceSelector;
+import net.mcreator.ui.dialogs.imageeditor.*;
+import net.mcreator.ui.init.ImageMakerTexturesCache;
+import net.mcreator.ui.views.editor.image.ImageMakerView;
+import net.mcreator.ui.views.editor.image.layer.Layer;
+import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
@@ -44,6 +38,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -51,7 +46,7 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class DialogsTest {
+public class ImageMakerTest {
 
 	private static Logger LOG;
 
@@ -59,12 +54,11 @@ public class DialogsTest {
 
 	@BeforeAll public static void initTest() throws IOException {
 		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
-		LOG = LogManager.getLogger("Dialogs Test");
-
-		// disable webview to avoid issues in headless test environments
-		BlocklyPanel.DISABLE_WEBVIEW = true;
+		LOG = LogManager.getLogger("Image Maker Test");
 
 		TestSetup.setupIntegrationTestEnvironment();
+
+		ImageMakerTexturesCache.init();
 
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
@@ -89,43 +83,21 @@ public class DialogsTest {
 		LOG.info("Running " + testInfo.getDisplayName());
 	}
 
-	@Test public void testWorkspaceSelector() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new WorkspaceSelector(null, f -> {}));
-	}
+	@Test public void testImageMaker() throws Throwable {
+		ImageMakerView imv = new ImageMakerView(mcreator);
+		imv.newImage(new Layer(100, 100, 0, 0, "Layer", Color.red));
 
-	@Test public void testNewWorkspaceDialog() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new NewWorkspaceDialog(mcreator));
-	}
-
-	@Test public void testGeneratorSelectorDialog() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> GeneratorSelector
-				.getGeneratorSelector(mcreator, mcreator.getGeneratorConfiguration(), GeneratorFlavor.FORGE));
-	}
-
-	@Test public void testAboutDialog() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AboutAction.showDialog(mcreator));
-	}
-
-	@Test public void testPreferencesDialog() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new PreferencesDialog(mcreator, null));
-	}
-
-	@Test public void testMCItemSelector() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new DesaturateDialog(mcreator, imv.getCanvas(), null, null));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new FromTemplateDialog(mcreator, imv.getCanvas(), null));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new HSVNoiseDialog(mcreator, imv.getCanvas(), null, null));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new NewImageDialog(mcreator));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new NewLayerDialog(mcreator, imv.getCanvas()));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> MCItemSelectorDialog.openSelectorDialog(mcreator, ElementUtil::loadBlocksAndItems));
-	}
-
-	@Test public void testElementOrderEditor() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> ElementOrderEditor.openElementOrderEditor(mcreator));
-	}
-
-	@Test public void testTextureDialogs() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importArmor(mcreator));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs
-				.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs
-				.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.ITEM));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importOtherTextures(mcreator));
+				() -> new RecolorDialog(mcreator, imv.getCanvas(), null, new ColorSelector(mcreator), null));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new ResizeCanvasDialog(mcreator, imv.getCanvas()));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> new ResizeDialog(mcreator, imv.getCanvas(), imv.getToolPanel().getCurrentTool().getLayer(),
+						null));
 	}
 
 }
