@@ -76,8 +76,15 @@ package ${package}.item;
 
 					<#if hasProcedure(data.dispenseResultItemstack)>
 						boolean success = this.successful;
-						return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
+						<#if hasReturnValue(data.dispenseResultItemstack)>
+							return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
+						<#else>
+							<@procedureOBJToCode data.dispenseResultItemstack/>
+							if(success) itemstack.shrink(1);
+							return itemstack;
+						</#if>
 					<#else>
+						if(success) itemstack.shrink(1);
 						return itemstack;
 					</#if>
 				}

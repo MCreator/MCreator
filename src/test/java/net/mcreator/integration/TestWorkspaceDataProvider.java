@@ -977,7 +977,9 @@ public class TestWorkspaceDataProvider {
 			item.damageVsEntity = 3;
 			item.hasDispenseBehavior = _true;
 			item.dispenseSuccessCondition = (!_true && !emptyLists) ? null : new Procedure("condition1");
-			item.dispenseResultItemstack = !_true ? null : new Procedure("itemstack1");
+			item.dispenseResultItemstack = !_true ?
+					null :
+					(emptyLists ? new Procedure("itemstack1") : new Procedure("procedure11"));
 			if (!emptyLists) {
 				item.specialInfo = StringUtils
 						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");

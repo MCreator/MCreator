@@ -162,7 +162,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.item.dispense_result_itemstack"), VariableTypeLoader.BuiltInTypes.ITEMSTACK,
 				Dependency.fromString(
 						"x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:boolean"))
-				.setDefaultName("(provided itemstack)").makeInline();
+				.setDefaultName(L10N.t("elementgui.item.dispense_result_itemstack.default")).makeInline()
+				.makeReturnValueOptional();
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -377,7 +378,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		inventoryProperties.add(inventoryStackSize);
 
 		advancedProperties.add("Center", PanelUtils
-				.totalCenterInPanel(PanelUtils.westAndCenterElement(dispenseProperties, inventoryProperties)));
+				.totalCenterInPanel(PanelUtils.westAndEastElement(inventoryProperties, dispenseProperties)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
