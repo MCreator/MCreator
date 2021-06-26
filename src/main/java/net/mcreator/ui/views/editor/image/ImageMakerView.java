@@ -346,4 +346,12 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	public ToolPanel getToolPanel() {
 		return toolPanel;
 	}
+
+	public Canvas getCanvas() {
+		return canvas;
+	}
+
+	public LayerPanel getLayerPanel() {
+		return layerPanel;
+	}
 }

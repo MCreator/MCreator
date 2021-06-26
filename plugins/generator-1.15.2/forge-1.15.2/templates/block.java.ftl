@@ -375,7 +375,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
-		<#if hasCondition(data.placingCondition)>
+		<#if hasProcedure(data.placingCondition)>
 		@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
 			World world = worldIn.getDimension().getWorld();
 			int x = pos.getX();
@@ -402,14 +402,14 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         }
 		</#if>
 
-		<#if data.isWaterloggable || hasCondition(data.placingCondition)>
+		<#if data.isWaterloggable || hasProcedure(data.placingCondition)>
 		@Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
 			<#if data.isWaterloggable>
 			if (state.get(WATERLOGGED)) {
 				world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 			}
 			</#if>
-			return <#if hasCondition(data.placingCondition)>
+			return <#if hasProcedure(data.placingCondition)>
 			!state.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() :
 			</#if> super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 		}
@@ -1007,7 +1007,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					if(!dimensionCriteria)
 						return false;
 
-					<#if hasCondition(data.generateCondition)>
+					<#if hasProcedure(data.generateCondition)>
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();

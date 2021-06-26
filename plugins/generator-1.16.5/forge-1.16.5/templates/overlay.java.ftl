@@ -45,44 +45,65 @@ package ${package}.gui.overlay;
 
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent(priority = EventPriority.${data.priority})
-	public static void eventHandler(RenderGameOverlayEvent event) {
-		if (!event.isCancelable() && event.getType() == RenderGameOverlayEvent.ElementType.HELMET) {
-			int posX = (event.getWindow().getScaledWidth()) / 2;
-			int posY = (event.getWindow().getScaledHeight()) / 2;
+	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
+	public static void eventHandler(RenderGameOverlayEvent.Post event) {
+		if (event.getType() == RenderGameOverlayEvent.ElementType.HELMET) {
+			int w = event.getWindow().getScaledWidth();
+			int h = event.getWindow().getScaledHeight();
+	<#else>
+	public static void eventHandler(GuiScreenEvent.DrawScreenEvent.Post event) {
+		if (event.getGui() instanceof ${generator.map(data.overlayTarget, "screens")}) {
+			int w = event.getGui().width;
+			int h = event.getGui().height;
+	</#if>
+
+			int posX = w / 2;
+			int posY = h / 2;
+
+			World _world = null;
+			double _x = 0;
+			double _y = 0;
+			double _z = 0;
 
 			PlayerEntity entity = Minecraft.getInstance().player;
-			World world = entity.world;
-			double x = entity.getPosX();
-			double y = entity.getPosY();
-			double z = entity.getPosZ();
+			if (entity != null) {
+				_world = entity.world;
+				_x = entity.getPosX();
+				_y = entity.getPosY();
+				_z = entity.getPosZ();
+			}
+
+			World world = _world;
+			double x = _x;
+			double y = _y;
+			double z = _z;
 
 			<#if hasTextures>
 				RenderSystem.disableDepthTest();
 				RenderSystem.depthMask(false);
-				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+						GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				RenderSystem.disableAlphaTest();
 			</#if>
 
 			if (<@procedureOBJToConditionCode data.displayCondition/>) {
 				<#if data.baseTexture?has_content>
-					Minecraft.getInstance().getTextureManager()
-								.bindTexture(new ResourceLocation("${modid}:textures/${data.baseTexture}"));
-					Minecraft.getInstance().ingameGUI.blit(event.getMatrixStack(), 0, 0, 0, 0, event.getWindow().getScaledWidth(), event.getWindow().getScaledHeight(),
-							event.getWindow().getScaledWidth(), event.getWindow().getScaledHeight());
+					Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/${data.baseTexture}"));
+					Minecraft.getInstance().ingameGUI.blit(event.getMatrixStack(), 0, 0, 0, 0, w, h, w, h);
 				</#if>
 
 				<#list data.components as component>
 	                <#assign x = component.x - 213>
 	                <#assign y = component.y - 120>
 	                <#if component.getClass().getSimpleName() == "Label">
-						<#if hasCondition(component.displayCondition)>
+						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
 						Minecraft.getInstance().fontRenderer.drawString(event.getMatrixStack(), "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
 									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
 	                <#elseif component.getClass().getSimpleName() == "Image">
-						<#if hasCondition(component.displayCondition)>
+						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>) {
 						</#if>
 						Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/${component.image}"));
@@ -90,7 +111,7 @@ package ${package}.gui.overlay;
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 
-						<#if hasCondition(component.displayCondition)>}</#if>
+						<#if hasProcedure(component.displayCondition)>}</#if>
 	                </#if>
 	            </#list>
 			}

@@ -68,6 +68,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -90,18 +91,20 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private final WorkspaceOpenListener workspaceOpenListener;
 	private RecentWorkspaces recentWorkspaces = new RecentWorkspaces();
 
-	public WorkspaceSelector(MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
+	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
 
 		reloadTitle();
 		setIconImage(UIRES.getBuiltIn("icon").getImage());
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-			@Override public void windowClosing(WindowEvent arg0) {
-				application.closeApplication();
-			}
-		});
+
+		if (application != null)
+			addWindowListener(new WindowAdapter() {
+				@Override public void windowClosing(WindowEvent arg0) {
+					application.closeApplication();
+				}
+			});
 
 		JPanel actions = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.new_workspace"), UIRES.get("addwrk"), e -> {
@@ -129,10 +132,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		}, actions);
 
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.clone"), UIRES.get("vcsclone"), e -> {
-			VCSInfo vcsInfo = VCSSetupDialogs.getVCSInfoDialog(this,
-					"<html>Please enter the URL of the repository/remote workspace you would like to clone below. In order to be able<br>"
-							+ "to sync back to the remote workspace, you need to be have proper permissions on the remote repository for<br>"
-							+ "the Git account you will enter here. Note that Git account is not your MCreator account.<br>");
+			VCSInfo vcsInfo = VCSSetupDialogs.getVCSInfoDialog(this, L10N.t("dialog.workspace_selector.vcs_info"));
 			if (vcsInfo != null) {
 				File workspaceFolder = FileDialogs.getWorkspaceDirectorySelectDialog(this, null);
 				if (workspaceFolder != null) {
@@ -147,8 +147,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 						}
 					} catch (Exception ex) {
 						JOptionPane.showMessageDialog(this,
-								"<html>Failed to setup remote workspace. Reason:<br><b>" + ex.getMessage(),
-								"Remote workspace setup failed", JOptionPane.ERROR_MESSAGE);
+								L10N.t("dialog.workspace_selector.clone.setup_failed", ex.getMessage()),
+								L10N.t("dialog.workspace_selector.clone.setup_failed.title"), JOptionPane.ERROR_MESSAGE);
 					}
 					setCursor(Cursor.getDefaultCursor());
 				}
@@ -164,7 +164,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			}
 		});
 		logoPanel.add("North", PanelUtils.join(FlowLayout.LEFT, logo));
-		JLabel version = new JLabel("  Version " + Launcher.version.getMajorString());
+		JLabel version = L10N.label("dialog.workspace_selector.version", Launcher.version.getMajorString());
 		version.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				AboutAction.showDialog(WorkspaceSelector.this);
@@ -371,12 +371,11 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			recentPanel.add(scrollPane);
 		} else if (recentWorkspaces == null) {
-			JLabel norecents = new JLabel(
-					"<html><center>Failed to load recent workspaces<br>shortcuts. Re-open them to add<br>them to the list again.");
+			JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces_loaded");
 			norecents.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 			recentPanel.add(PanelUtils.totalCenterInPanel(norecents));
 		} else {
-			JLabel norecents = new JLabel("No recent workspaces");
+			JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces");
 			norecents.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 			recentPanel.add(PanelUtils.totalCenterInPanel(norecents));
 		}
@@ -409,15 +408,14 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private void initWebsitePanel() {
 		CompletableFuture<String[]> newsFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getWebsiteNews(newsFuture);
-		JLabel nov = new JLabel(
-				"<html>Latest news from MCreator website:<br><div style=\"font-size: 14px; color: #f5f5f5;\">Loading news ...</div>");
+		JLabel nov = new JLabel("<html>" + L10N.t("dialog.workspace_selector.news")
+				+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + L10N.t("dialog.workspace_selector.webdata.loading"));
 		nov.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		nov.setForeground(new Color(0xf5f5f5));
 		newsFuture.whenComplete((news, throwable) -> SwingUtilities.invokeLater(() -> {
 			if (news != null)
-				nov.setText(
-						"<html>Latest news from MCreator website:<br><div style=\"font-size: 14px; color: #f5f5f5;\">"
-								+ StringUtils.abbreviateString(news[0], 43) + "</div>");
+				nov.setText("<html>" + L10N.t("dialog.workspace_selector.news")
+						+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + StringUtils.abbreviateString(news[0], 43));
 			else
 				nov.setText("");
 			nov.addMouseListener(new MouseAdapter() {
@@ -430,8 +428,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		CompletableFuture<String[]> motwFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getModOfTheWeekData(motwFuture);
-		JLabel lab3 = new JLabel(
-				"<html>Mod of the week:<br><font style=\"font-size: 14px; color: #f5f5f5;\">Loading data ...");
+		JLabel lab3 = new JLabel("<html>" + L10N.t("dialog.workspace_selector.motw")
+				+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + L10N.t("dialog.workspace_selector.webdata.loading"));
 		lab3.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		lab3.setForeground(new Color(0xf5f5f5));
 		JLabel lab2 = new JLabel();
@@ -446,8 +444,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				}
 			});
 			if (motw != null)
-				lab3.setText("<html>Mod of the week:<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + StringUtils
-						.abbreviateString(motw[0], 33) + "&nbsp;&nbsp;&nbsp;&nbsp;");
+				lab3.setText("<html>" + L10N.t("dialog.workspace_selector.motw") + "<br><font style=\"font-size: 14px; color: #f5f5f5;\">"
+						+ StringUtils.abbreviateString(motw[0], 33) + "&nbsp;&nbsp;&nbsp;&nbsp;");
 			else
 				lab3.setText("");
 			ImageIcon defaultIcon;

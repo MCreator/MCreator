@@ -83,7 +83,7 @@ public class NewImageDialog extends MCreatorDialog {
 		JSpinner width = new JSpinner(new SpinnerNumberModel(16, 0, 10000, 1));
 		JSpinner height = new JSpinner(new SpinnerNumberModel(16, 0, 10000, 1));
 
-		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("action.common.create");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));

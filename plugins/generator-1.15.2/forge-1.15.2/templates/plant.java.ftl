@@ -142,7 +142,7 @@ import net.minecraft.util.SoundEvent;
 					if(!dimensionCriteria)
 						return false;
 
-					<#if hasCondition(data.generateCondition)>
+					<#if hasProcedure(data.generateCondition)>
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();
@@ -178,7 +178,7 @@ import net.minecraft.util.SoundEvent;
 					if(!dimensionCriteria)
 						return false;
 
-					<#if hasCondition(data.generateCondition)>
+					<#if hasProcedure(data.generateCondition)>
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();
@@ -229,7 +229,7 @@ import net.minecraft.util.SoundEvent;
             		if(!dimensionCriteria)
             			return false;
 
-            		<#if hasCondition(data.generateCondition)>
+            		<#if hasProcedure(data.generateCondition)>
             		    int x = pos.getX();
             			int y = pos.getY();
             			int z = pos.getZ();
@@ -411,10 +411,10 @@ import net.minecraft.util.SoundEvent;
             </#if>
         </#if>
 
-		<#if (data.canBePlacedOn?size > 0) || hasCondition(data.placingCondition)>
+		<#if (data.canBePlacedOn?size > 0) || hasProcedure(data.placingCondition)>
 			<#if data.plantType != "growapable">
 			@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-				<#if hasCondition(data.placingCondition)>
+				<#if hasProcedure(data.placingCondition)>
 				boolean additionalCondition = true;
 				if (worldIn instanceof IWorld) {
 					IWorld world = (IWorld) worldIn;
@@ -433,8 +433,8 @@ import net.minecraft.util.SoundEvent;
 						<#if canBePlacedOn?has_next>||</#if>
 					</#list>)
 				</#if>
-				<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
-				<#if hasCondition(data.placingCondition)> additionalCondition </#if>;
+				<#if (data.canBePlacedOn?size > 0) && hasProcedure(data.placingCondition)> && </#if>
+				<#if hasProcedure(data.placingCondition)> additionalCondition </#if>;
 			}
 			</#if>
 
@@ -446,7 +446,7 @@ import net.minecraft.util.SoundEvent;
 				<#if data.plantType = "normal">
 					return this.isValidGround(blockstate, worldIn, blockpos)
 				<#elseif data.plantType == "growapable">
-					<#if hasCondition(data.placingCondition)>
+					<#if hasProcedure(data.placingCondition)>
 					boolean additionalCondition = true;
 					if (worldIn instanceof IWorld) {
 						IWorld world = (IWorld) worldIn;
@@ -463,8 +463,8 @@ import net.minecraft.util.SoundEvent;
 						ground == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
 						<#if canBePlacedOn?has_next>||</#if>
 					</#list>)</#if>
-					<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
-					<#if hasCondition(data.placingCondition)> additionalCondition </#if>
+					<#if (data.canBePlacedOn?size > 0) && hasProcedure(data.placingCondition)> && </#if>
+					<#if hasProcedure(data.placingCondition)> additionalCondition </#if>
 				<#else>
 					if (state.get(HALF) == DoubleBlockHalf.UPPER)
 						return ground == this && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
