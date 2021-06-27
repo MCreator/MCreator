@@ -24,31 +24,23 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Block;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class BlockLightOpacityFixer implements IConverter {
-	private static final Logger LOG = LogManager.getLogger(BlockLightOpacityFixer.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Block block = (Block) input;
-		try {
-			if (block.blockBase == null || block.blockBase.equals("")) {
-				block.lightOpacity /= 16;
-			}
-			else if (block.blockBase.equals("Leaves")) {
-				block.lightOpacity = 1;
-			}
-			else {
-				block.lightOpacity = 0;
-			}
-		} catch (Exception e) {
-			LOG.warn("Could not update light opacity field of: " + block.getModElement().getName());
+		if (block.blockBase == null || block.blockBase.equals("")) {
+			block.lightOpacity /= 16;
+		} else if (block.blockBase.equals("Leaves")) {
+			block.lightOpacity = 1;
+		} else {
+			block.lightOpacity = 0;
 		}
 		return block;
 	}
 
 	@Override public int getVersionConvertingTo() {
 		return 22;
-	}}
+	}
+}
