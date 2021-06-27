@@ -1112,7 +1112,7 @@ import java.util.stream.Collectors;
 			ModElement mu = (ModElement) list.getSelectedValue();
 			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
 				String modName = VOptionPane.showInputDialog(mcreator,
-						L10N.t("workspace.elements.duplicate_message", mu.getName()), L10N.t("workspace.elements.duplicate") + " " + mu.getName(), mu.getElementIcon(),
+						L10N.t("workspace.elements.duplicate_message", mu.getName()), L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
 						new OptionPaneValidatior() {
 							@Override public Validator.ValidationResult validate(JComponent component) {
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component)
