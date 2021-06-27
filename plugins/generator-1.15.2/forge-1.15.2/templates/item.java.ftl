@@ -60,6 +60,38 @@ package ${package}.item;
 		elements.items.add(() -> new ItemCustom());
 	}
 
+	<#if data.hasDispenseBehavior>
+		@Override
+		public void init(FMLCommonSetupEvent event) {
+			DispenserBlock.registerDispenseBehavior(block, new OptionalDispenseBehavior() {
+				public ItemStack dispenseStack(IBlockSource blockSource, ItemStack stack) {
+					ItemStack itemstack = stack.copy();
+					World world = blockSource.getWorld();
+					Direction direction = blockSource.getBlockState().get(DispenserBlock.FACING);
+					int x = blockSource.getBlockPos().getX();
+					int y = blockSource.getBlockPos().getY();
+					int z = blockSource.getBlockPos().getZ();
+
+					this.successful = <@procedureOBJToConditionCode data.dispenseSuccessCondition/>;
+
+					<#if hasProcedure(data.dispenseResultItemstack)>
+						boolean success = this.successful;
+						<#if hasReturnValue(data.dispenseResultItemstack)>
+							return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
+						<#else>
+							<@procedureOBJToCode data.dispenseResultItemstack/>
+							if(success) itemstack.shrink(1);
+							return itemstack;
+						</#if>
+					<#else>
+						if(success) itemstack.shrink(1);
+						return itemstack;
+					</#if>
+				}
+			});
+		}
+	</#if>
+
 	public static class ItemCustom extends Item {
 
 		public ItemCustom() {
