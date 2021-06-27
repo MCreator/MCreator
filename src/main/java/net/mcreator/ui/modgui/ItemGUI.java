@@ -377,8 +377,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.common.max_stack_size")));
 		inventoryProperties.add(inventoryStackSize);
 
-		advancedProperties.add("Center", PanelUtils
-				.totalCenterInPanel(PanelUtils.westAndEastElement(inventoryProperties, dispenseProperties)));
+		advancedProperties.add("Center",
+				PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(inventoryProperties, dispenseProperties)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
