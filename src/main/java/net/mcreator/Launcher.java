@@ -29,6 +29,7 @@ import net.mcreator.util.MCreatorVersionNumber;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.gradle.api.internal.classpath.Module;
 
 import javax.swing.*;
 import java.io.IOException;
