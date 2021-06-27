@@ -5,6 +5,10 @@
       "type": "world"
     },
     {
+      "name": "blockstate",
+      "type": "blockstate"
+    },
+    {
       "name": "x",
       "type": "number"
     },
