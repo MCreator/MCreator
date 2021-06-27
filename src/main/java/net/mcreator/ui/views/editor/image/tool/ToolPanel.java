@@ -104,7 +104,7 @@ public class ToolPanel extends JSplitPane {
 	private void init() {
 		ToolGroup general = new ToolGroup(L10N.t("dialog.image_maker.tools.general"));
 		ToolGroup drawing = new ToolGroup(L10N.t("dialog.image_maker.tools.drawing"));
-		ToolGroup filter = new ToolGroup(L10N.t("dialog.image_maker.tools.filter"));
+		ToolGroup filters = new ToolGroup(L10N.t("dialog.image_maker.tools.filters"));
 		ToolGroup constraints = new ToolGroup(L10N.t("dialog.image_maker.tools.constraints"));
 
 		pt = new PencilTool(canvas, cs, layerPanel, versionManager);
@@ -122,9 +122,9 @@ public class ToolPanel extends JSplitPane {
 		register(new FloodFillTool(canvas, cs, versionManager), drawing);
 		register(new ColorPickerTool(canvas, cs, versionManager), drawing);
 
-		register(new ColorizeTool(canvas, cs, versionManager, frame), filter);
-		register(new DesaturateTool(canvas, cs, versionManager, frame), filter);
-		register(new HSVNoiseTool(canvas, cs, versionManager, frame), filter);
+		register(new ColorizeTool(canvas, cs, versionManager, frame), filters);
+		register(new DesaturateTool(canvas, cs, versionManager, frame), filters);
+		register(new HSVNoiseTool(canvas, cs, versionManager, frame), filters);
 
 		register(new MoveTool(canvas, cs, versionManager), constraints);
 		register(new ResizeTool(canvas, cs, versionManager, frame), constraints);
@@ -133,7 +133,7 @@ public class ToolPanel extends JSplitPane {
 
 		toolGroups.add(general);
 		toolGroups.add(drawing);
-		toolGroups.add(filter);
+		toolGroups.add(filters);
 		toolGroups.add(constraints);
 	}
 
