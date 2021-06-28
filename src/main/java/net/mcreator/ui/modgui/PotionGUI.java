@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.element.types.Potion;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -38,13 +39,11 @@ import java.awt.*;
 
 public class PotionGUI extends ModElementGUI<Potion> {
 
-	private final VTextField potionName = new VTextField(40);
-	private final VTextField splashName = new VTextField(40);
-	private final VTextField lingeringName = new VTextField(40);
-	private final VTextField arrowName = new VTextField(40);
+	private final VTextField potionName = new VTextField(24);
+	private final VTextField splashName = new VTextField(24);
+	private final VTextField lingeringName = new VTextField(24);
+	private final VTextField arrowName = new VTextField(24);
 	private final JPotionList effectList = new JPotionList(mcreator);
-
-	private final JPanel effects = new JPanel(new GridLayout(0, 1, 5, 5));
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -76,6 +75,11 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/display_name"),
 				L10N.label("elementgui.potion.arrow_name")));
 		northPanel.add(arrowName);
+
+		ComponentUtils.deriveFont(potionName, 16);
+		ComponentUtils.deriveFont(splashName, 16);
+		ComponentUtils.deriveFont(lingeringName, 16);
+		ComponentUtils.deriveFont(arrowName, 16);
 
 		JPanel mainEditor = new JPanel(new GridLayout());
 
