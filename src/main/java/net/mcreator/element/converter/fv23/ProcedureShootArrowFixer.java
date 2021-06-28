@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv22;
+package net.mcreator.element.converter.fv23;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;

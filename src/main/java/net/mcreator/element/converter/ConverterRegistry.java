@@ -36,7 +36,7 @@ import net.mcreator.element.converter.fv20.FluidNameFixer;
 import net.mcreator.element.converter.fv21.BooleanGameRulesConverter;
 import net.mcreator.element.converter.fv21.ProcedureVariablesConverter;
 import net.mcreator.element.converter.fv22.BlockLightOpacityFixer;
-import net.mcreator.element.converter.fv22.ProcedureShootArrowFixer;
+import net.mcreator.element.converter.fv23.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
