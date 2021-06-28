@@ -51,7 +51,7 @@ public class SDKDownloader {
 							UserFolderManager.getSpecificJDK(jdkVersion + fileExtension));
 
 				} catch (IOException e) {
-					LOG.error("Could not download JDK: " + jdkVersion, e.getMessage());
+					LOG.error("Could not download JDK: " + jdkVersion + ". Returning to the workspace selector.", e.getMessage());
 					return false;
 				}
 

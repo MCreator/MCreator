@@ -57,6 +57,8 @@ public class WorkspaceGeneratorSetupDialog {
 					p0.ok();
 				} else {
 					p0.err();
+					m.closeThisMCreator(true);
+					return;
 				}
 				dial.refreshDisplay();
 			}
