@@ -1040,10 +1040,10 @@ public class TestWorkspaceDataProvider {
 			return rangedItem;
 		case POTION:
 			Potion potion = new Potion(modElement);
-			potion.potionName = modElement.getName();
-			potion.splashName = modElement.getName();
-			potion.lingeringName = modElement.getName();
-			potion.arrowName = modElement.getName();
+			potion.potionName = modElement.getName() + " Potion";
+			potion.splashName = modElement.getName() + " Splash";
+			potion.lingeringName = modElement.getName() + " Lingering";
+			potion.arrowName = modElement.getName() + " Arrow";
 			List<Potion.CustomEffectEntry> effects = new ArrayList<>();
 			if (!emptyLists) {
 				Potion.CustomEffectEntry entry1 = new Potion.CustomEffectEntry();
