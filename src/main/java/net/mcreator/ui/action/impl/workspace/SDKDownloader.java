@@ -47,7 +47,7 @@ public class SDKDownloader {
 						fileExtension = ".tar.gz";
 					FileUtils.copyURLToFile(
 							new URL("https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion + "/" + OS
-									.getOS() + "/x64/jdk/hotspot/normal/adoptopenjdk"),
+									.getOSName() + "/x64/jdk/hotspot/normal/adoptopenjdk"),
 							UserFolderManager.getSpecificJDK(jdkVersion + fileExtension));
 
 				} catch (IOException e) {
