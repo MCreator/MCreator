@@ -121,10 +121,6 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> icon.addItem(el.getName()));
 		});
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/color"),
-				L10N.label("elementgui.potioneffect.color")));
-		selp.add(color);
-
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/icon"),
 				L10N.label("elementgui.potioneffect.icon")));
 		selp.add(PanelUtils.centerAndEastElement(icon, importicontexture));
@@ -148,6 +144,10 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/render_in_hud"),
 				L10N.label("elementgui.potioneffect.render_status_hud")));
 		selp.add(renderStatusInHUD);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/color"),
+				L10N.label("elementgui.potioneffect.color")));
+		selp.add(color);
 
 		selp.setOpaque(false);
 
