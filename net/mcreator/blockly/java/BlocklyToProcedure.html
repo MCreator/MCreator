@@ -141,7 +141,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../workspace/IWorkspaceProvider.html" title="interface in net.mcreator.workspace">IWorkspaceProvider</a></code></dd>
+<dd><code><a href="../../generator/IGeneratorProvider.html" title="interface in net.mcreator.generator">IGeneratorProvider</a></code>, <code><a href="../../workspace/IWorkspaceProvider.html" title="interface in net.mcreator.workspace">IWorkspaceProvider</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">BlocklyToProcedure</span>
@@ -213,13 +213,13 @@ extends <a href="BlocklyToJava.html" title="class in net.mcreator.blockly.java">
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code><a href="../../workspace/elements/VariableType.html" title="class in net.mcreator.workspace.elements">VariableType</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getReturnType()">getReturnType</a></span>()</code></th>
+<td class="colFirst"><code>java.util.List&lt;<a href="../../workspace/elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLocalVariables()">getLocalVariables</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVariables()">getVariables</a></span>()</code></th>
+<td class="colFirst"><code><a href="../../workspace/elements/VariableType.html" title="class in net.mcreator.workspace.elements">VariableType</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getReturnType()">getReturnType</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i3" class="rowColor">
@@ -241,6 +241,13 @@ extends <a href="BlocklyToJava.html" title="class in net.mcreator.blockly.java">
 </a>
 <h3>Methods inherited from class&nbsp;java.lang.Object</h3>
 <code>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.net.mcreator.generator.IGeneratorProvider">
+<!--   -->
+</a>
+<h3>Methods inherited from interface&nbsp;net.mcreator.generator.<a href="../../generator/IGeneratorProvider.html" title="interface in net.mcreator.generator">IGeneratorProvider</a></h3>
+<code><a href="../../generator/IGeneratorProvider.html#getGenerator()">getGenerator</a>, <a href="../../generator/IGeneratorProvider.html#getGeneratorConfiguration()">getGeneratorConfiguration</a>, <a href="../../generator/IGeneratorProvider.html#getGeneratorStats()">getGeneratorStats</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.net.mcreator.workspace.IWorkspaceProvider">
@@ -319,13 +326,13 @@ extends <a href="BlocklyToJava.html" title="class in net.mcreator.blockly.java">
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getExternalTrigger()</pre>
 </li>
 </ul>
-<a id="getVariables()">
+<a id="getLocalVariables()">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>getVariables</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;getVariables()</pre>
+<h4>getLocalVariables</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../workspace/elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a>&gt;&nbsp;getLocalVariables()</pre>
 </li>
 </ul>
 </li>

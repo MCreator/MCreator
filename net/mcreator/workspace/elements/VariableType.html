@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -198,51 +198,56 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#canBeGlobal(net.mcreator.workspace.Workspace)">canBeGlobal</a></span>&#8203;(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#canBeGlobal(net.mcreator.generator.GeneratorConfiguration)">canBeGlobal</a></span>&#8203;(<a href="../../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#canBeLocal(net.mcreator.generator.GeneratorConfiguration)">canBeLocal</a></span>&#8203;(<a href="../../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getBlocklyVariableType()">getBlocklyVariableType</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getColor()">getColor</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDefaultValue(net.mcreator.workspace.Workspace)">getDefaultValue</a></span>&#8203;(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getJavaType(net.mcreator.workspace.Workspace)">getJavaType</a></span>&#8203;(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDefaultValue(net.mcreator.workspace.Workspace)">getDefaultValue</a></span>&#8203;(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;Workspace)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getName()">getName</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getJavaType(net.mcreator.workspace.Workspace)">getJavaType</a></span>&#8203;(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i6" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getName()">getName</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.Map&lt;?,&#8203;?&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getScopeDefinition(net.mcreator.workspace.Workspace,java.lang.String)">getScopeDefinition</a></span>&#8203;(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
                   java.lang.String&nbsp;scope)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="VariableType.Scope.html" title="enum in net.mcreator.workspace.elements">VariableType.Scope</a>[]</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSupportedScopesWithoutLocal(net.mcreator.workspace.Workspace)">getSupportedScopesWithoutLocal</a></span>&#8203;(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSupportedScopesWithoutLocal(net.mcreator.generator.GeneratorConfiguration)">getSupportedScopesWithoutLocal</a></span>&#8203;(<a href="../../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setName(java.lang.String)">setName</a></span>&#8203;(java.lang.String&nbsp;name)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
@@ -341,25 +346,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getDefaultValue</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDefaultValue&#8203;(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</pre>
-</li>
-</ul>
-<a id="canBeGlobal(net.mcreator.workspace.Workspace)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>canBeGlobal</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;canBeGlobal&#8203;(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</pre>
-</li>
-</ul>
-<a id="getSupportedScopesWithoutLocal(net.mcreator.workspace.Workspace)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getSupportedScopesWithoutLocal</h4>
-<pre class="methodSignature">public&nbsp;<a href="VariableType.Scope.html" title="enum in net.mcreator.workspace.elements">VariableType.Scope</a>[]&nbsp;getSupportedScopesWithoutLocal&#8203;(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</pre>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDefaultValue&#8203;(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;Workspace)</pre>
 </li>
 </ul>
 <a id="getScopeDefinition(net.mcreator.workspace.Workspace,java.lang.String)">
@@ -370,6 +357,33 @@ extends java.lang.Object</pre>
 <h4>getScopeDefinition</h4>
 <pre class="methodSignature">public&nbsp;java.util.Map&lt;?,&#8203;?&gt;&nbsp;getScopeDefinition&#8203;(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
                                                    java.lang.String&nbsp;scope)</pre>
+</li>
+</ul>
+<a id="canBeGlobal(net.mcreator.generator.GeneratorConfiguration)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>canBeGlobal</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;canBeGlobal&#8203;(<a href="../../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</pre>
+</li>
+</ul>
+<a id="canBeLocal(net.mcreator.generator.GeneratorConfiguration)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>canBeLocal</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;canBeLocal&#8203;(<a href="../../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</pre>
+</li>
+</ul>
+<a id="getSupportedScopesWithoutLocal(net.mcreator.generator.GeneratorConfiguration)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getSupportedScopesWithoutLocal</h4>
+<pre class="methodSignature">public&nbsp;<a href="VariableType.Scope.html" title="enum in net.mcreator.workspace.elements">VariableType.Scope</a>[]&nbsp;getSupportedScopesWithoutLocal&#8203;(<a href="../../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</pre>
 </li>
 </ul>
 <a id="toString()">

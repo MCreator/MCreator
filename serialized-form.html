@@ -2015,12 +2015,16 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h3>Serialized Fields</h3>
 <ul class="blockList">
 <li class="blockList">
+<h4>filterField</h4>
+<pre>javax.swing.JTextField filterField</pre>
+</li>
+<li class="blockList">
 <h4>list</h4>
 <pre>javax.swing.JList&lt;<a href="net/mcreator/io/ResourcePointer.html" title="class in net.mcreator.io">ResourcePointer</a>&gt; list</pre>
 </li>
 <li class="blockList">
 <h4>model</h4>
-<pre>javax.swing.DefaultListModel&lt;<a href="net/mcreator/io/ResourcePointer.html" title="class in net.mcreator.io">ResourcePointer</a>&gt; model</pre>
+<pre>net.mcreator.ui.dialogs.TextureSelectorDialog.FilterModel model</pre>
 </li>
 <li class="blockListLast">
 <h4>naprej</h4>
@@ -3225,58 +3229,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
-<li class="blockList"><a id="net.mcreator.ui.minecraft.ProcedureSelector">
-<!--   -->
-</a>
-<h3>Class <a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">net.mcreator.ui.minecraft.ProcedureSelector</a> extends javax.swing.JPanel implements Serializable</h3>
-<ul class="blockList">
-<li class="blockList">
-<h3>Serialized Fields</h3>
-<ul class="blockList">
-<li class="blockList">
-<h4>add</h4>
-<pre>javax.swing.JButton add</pre>
-</li>
-<li class="blockList">
-<h4>defaultName</h4>
-<pre>java.lang.String defaultName</pre>
-</li>
-<li class="blockList">
-<h4>depslab</h4>
-<pre>javax.swing.JLabel depslab</pre>
-</li>
-<li class="blockList">
-<h4>depsMap</h4>
-<pre>java.util.Map&lt;java.lang.String,&#8203;java.util.List&lt;<a href="net/mcreator/blockly/data/Dependency.html" title="class in net.mcreator.blockly.data">Dependency</a>&gt;&gt; depsMap</pre>
-</li>
-<li class="blockList">
-<h4>edit</h4>
-<pre>javax.swing.JButton edit</pre>
-</li>
-<li class="blockList">
-<h4>mcreator</h4>
-<pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
-</li>
-<li class="blockList">
-<h4>oldItem</h4>
-<pre>net.mcreator.ui.minecraft.ProcedureSelector.CBoxEntry oldItem</pre>
-</li>
-<li class="blockList">
-<h4>procedures</h4>
-<pre><a href="net/mcreator/ui/component/SearchableComboBox.html" title="class in net.mcreator.ui.component">SearchableComboBox</a>&lt;net.mcreator.ui.minecraft.ProcedureSelector.CBoxEntry&gt; procedures</pre>
-</li>
-<li class="blockList">
-<h4>providedDependencies</h4>
-<pre><a href="net/mcreator/blockly/data/Dependency.html" title="class in net.mcreator.blockly.data">Dependency</a>[] providedDependencies</pre>
-</li>
-<li class="blockListLast">
-<h4>returnType</h4>
-<pre><a href="net/mcreator/workspace/elements/VariableType.html" title="class in net.mcreator.workspace.elements">VariableType</a> returnType</pre>
-</li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="blockList"><a id="net.mcreator.ui.minecraft.SoundSelector">
 <!--   -->
 </a>
@@ -3721,19 +3673,19 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onBodyTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onBodyTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBodyTick</pre>
 </li>
 <li class="blockList">
 <h4>onBootsTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onBootsTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBootsTick</pre>
 </li>
 <li class="blockList">
 <h4>onHelmetTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onHelmetTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onHelmetTick</pre>
 </li>
 <li class="blockList">
 <h4>onLeggingsTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onLeggingsTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onLeggingsTick</pre>
 </li>
 <li class="blockList">
 <h4>repairItems</h4>
@@ -4048,8 +4000,16 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>javax.swing.JSpinner breakHarvestLevel</pre>
 </li>
 <li class="blockList">
+<h4>breakSound</h4>
+<pre><a href="net/mcreator/ui/minecraft/SoundSelector.html" title="class in net.mcreator.ui.minecraft">SoundSelector</a> breakSound</pre>
+</li>
+<li class="blockList">
 <h4>canProvidePower</h4>
 <pre>javax.swing.JCheckBox canProvidePower</pre>
+</li>
+<li class="blockList">
+<h4>canRedstoneConnect</h4>
+<pre>javax.swing.JCheckBox canRedstoneConnect</pre>
 </li>
 <li class="blockList">
 <h4>colorOnMap</h4>
@@ -4080,6 +4040,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre><a href="net/mcreator/ui/minecraft/MCItemHolder.html" title="class in net.mcreator.ui.minecraft">MCItemHolder</a> customDrop</pre>
 </li>
 <li class="blockList">
+<h4>customSoundType</h4>
+<pre>javax.swing.JRadioButton customSoundType</pre>
+</li>
+<li class="blockList">
+<h4>defaultSoundType</h4>
+<pre>javax.swing.JRadioButton defaultSoundType</pre>
+</li>
+<li class="blockList">
 <h4>destroyTool</h4>
 <pre>javax.swing.JComboBox&lt;java.lang.String&gt; destroyTool</pre>
 </li>
@@ -4100,6 +4068,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>javax.swing.JCheckBox emissiveRendering</pre>
 </li>
 <li class="blockList">
+<h4>emittedRedstonePower</h4>
+<pre><a href="net/mcreator/ui/procedure/NumberProcedureSelector.html" title="class in net.mcreator.ui.procedure">NumberProcedureSelector</a> emittedRedstonePower</pre>
+</li>
+<li class="blockList">
 <h4>enchantPowerBonus</h4>
 <pre>javax.swing.JSpinner enchantPowerBonus</pre>
 </li>
@@ -4118,6 +4090,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>energyMaxReceive</h4>
 <pre>javax.swing.JSpinner energyMaxReceive</pre>
+</li>
+<li class="blockList">
+<h4>fallSound</h4>
+<pre><a href="net/mcreator/ui/minecraft/SoundSelector.html" title="class in net.mcreator.ui.minecraft">SoundSelector</a> fallSound</pre>
 </li>
 <li class="blockList">
 <h4>fireSpreadSpeed</h4>
@@ -4145,7 +4121,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>generateCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> generateCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> generateCondition</pre>
 </li>
 <li class="blockList">
 <h4>grassBlock</h4>
@@ -4174,6 +4150,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>hasTransparency</h4>
 <pre>javax.swing.JCheckBox hasTransparency</pre>
+</li>
+<li class="blockList">
+<h4>hitSound</h4>
+<pre><a href="net/mcreator/ui/minecraft/SoundSelector.html" title="class in net.mcreator.ui.minecraft">SoundSelector</a> hitSound</pre>
 </li>
 <li class="blockList">
 <h4>inSlotIDs</h4>
@@ -4261,55 +4241,55 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onBlockAdded</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onBlockAdded</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBlockAdded</pre>
 </li>
 <li class="blockList">
 <h4>onBlockPlayedBy</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onBlockPlayedBy</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBlockPlayedBy</pre>
 </li>
 <li class="blockList">
 <h4>onDestroyedByExplosion</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onDestroyedByExplosion</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onDestroyedByExplosion</pre>
 </li>
 <li class="blockList">
 <h4>onDestroyedByPlayer</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onDestroyedByPlayer</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onDestroyedByPlayer</pre>
 </li>
 <li class="blockList">
 <h4>onEntityCollides</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onEntityCollides</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEntityCollides</pre>
 </li>
 <li class="blockList">
 <h4>onEntityWalksOn</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onEntityWalksOn</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEntityWalksOn</pre>
 </li>
 <li class="blockList">
 <h4>onNeighbourBlockChanges</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onNeighbourBlockChanges</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onNeighbourBlockChanges</pre>
 </li>
 <li class="blockList">
 <h4>onRandomUpdateEvent</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRandomUpdateEvent</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRandomUpdateEvent</pre>
 </li>
 <li class="blockList">
 <h4>onRedstoneOff</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRedstoneOff</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRedstoneOff</pre>
 </li>
 <li class="blockList">
 <h4>onRedstoneOn</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRedstoneOn</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRedstoneOn</pre>
 </li>
 <li class="blockList">
 <h4>onRightClicked</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRightClicked</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRightClicked</pre>
 </li>
 <li class="blockList">
 <h4>onStartToDestroy</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onStartToDestroy</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onStartToDestroy</pre>
 </li>
 <li class="blockList">
 <h4>onTickUpdate</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onTickUpdate</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onTickUpdate</pre>
 </li>
 <li class="blockList">
 <h4>openGUIOnRightClick</h4>
@@ -4324,8 +4304,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre><a href="net/mcreator/ui/validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a> page1group</pre>
 </li>
 <li class="blockList">
-<h4>page2group</h4>
-<pre><a href="net/mcreator/ui/validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a> page2group</pre>
+<h4>page3group</h4>
+<pre><a href="net/mcreator/ui/validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a> page3group</pre>
 </li>
 <li class="blockList">
 <h4>particleAmount</h4>
@@ -4333,7 +4313,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>particleCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> particleCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> particleCondition</pre>
 </li>
 <li class="blockList">
 <h4>particleSpawningRadious</h4>
@@ -4352,8 +4332,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre><a href="net/mcreator/ui/minecraft/DataListComboBox.html" title="class in net.mcreator.ui.minecraft">DataListComboBox</a> particleToSpawn</pre>
 </li>
 <li class="blockList">
+<h4>placeSound</h4>
+<pre><a href="net/mcreator/ui/minecraft/SoundSelector.html" title="class in net.mcreator.ui.minecraft">SoundSelector</a> placeSound</pre>
+</li>
+<li class="blockList">
 <h4>placingCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> placingCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> placingCondition</pre>
 </li>
 <li class="blockList">
 <h4>plantsGrowOn</h4>
@@ -4406,6 +4390,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>speedFactor</h4>
 <pre>javax.swing.JSpinner speedFactor</pre>
+</li>
+<li class="blockList">
+<h4>stepSound</h4>
+<pre><a href="net/mcreator/ui/minecraft/SoundSelector.html" title="class in net.mcreator.ui.minecraft">SoundSelector</a> stepSound</pre>
 </li>
 <li class="blockList">
 <h4>texture</h4>
@@ -4473,7 +4461,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onCommandExecuted</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onCommandExecuted</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onCommandExecuted</pre>
 </li>
 <li class="blockList">
 <h4>page1group</h4>
@@ -4517,15 +4505,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onClosed</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onClosed</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onClosed</pre>
 </li>
 <li class="blockList">
 <h4>onOpen</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onOpen</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onOpen</pre>
 </li>
 <li class="blockListLast">
 <h4>onTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onTick</pre>
 </li>
 </ul>
 </li>
@@ -4597,15 +4585,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onPlayerEntersDimension</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onPlayerEntersDimension</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onPlayerEntersDimension</pre>
 </li>
 <li class="blockList">
 <h4>onPlayerLeavesDimension</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onPlayerLeavesDimension</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onPlayerLeavesDimension</pre>
 </li>
 <li class="blockList">
 <h4>onPortalTickUpdate</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onPortalTickUpdate</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onPortalTickUpdate</pre>
 </li>
 <li class="blockList">
 <h4>page1group</h4>
@@ -4621,7 +4609,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>portalMakeCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> portalMakeCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> portalMakeCondition</pre>
 </li>
 <li class="blockList">
 <h4>portalParticles</h4>
@@ -4637,7 +4625,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>portalUseCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> portalUseCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> portalUseCondition</pre>
 </li>
 <li class="blockList">
 <h4>sleepResult</h4>
@@ -4649,7 +4637,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>whenPortaTriggerlUsed</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> whenPortaTriggerlUsed</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> whenPortaTriggerlUsed</pre>
 </li>
 <li class="blockListLast">
 <h4>worldGenType</h4>
@@ -4732,6 +4720,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre><a href="net/mcreator/ui/validation/component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a> bucketName</pre>
 </li>
 <li class="blockList">
+<h4>canMultiply</h4>
+<pre>javax.swing.JCheckBox canMultiply</pre>
+</li>
+<li class="blockList">
 <h4>colorOnMap</h4>
 <pre>javax.swing.JComboBox&lt;java.lang.String&gt; colorOnMap</pre>
 </li>
@@ -4742,6 +4734,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>density</h4>
 <pre>javax.swing.JSpinner density</pre>
+</li>
+<li class="blockList">
+<h4>dripParticle</h4>
+<pre><a href="net/mcreator/ui/minecraft/DataListComboBox.html" title="class in net.mcreator.ui.minecraft">DataListComboBox</a> dripParticle</pre>
 </li>
 <li class="blockList">
 <h4>emissiveRendering</h4>
@@ -4760,6 +4756,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>javax.swing.JSpinner flammability</pre>
 </li>
 <li class="blockList">
+<h4>flowRate</h4>
+<pre>javax.swing.JSpinner flowRate</pre>
+</li>
+<li class="blockList">
 <h4>fluidtype</h4>
 <pre>javax.swing.JComboBox&lt;java.lang.String&gt; fluidtype</pre>
 </li>
@@ -4773,11 +4773,19 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>generateCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> generateCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> generateCondition</pre>
 </li>
 <li class="blockList">
 <h4>isGas</h4>
 <pre>javax.swing.JCheckBox isGas</pre>
+</li>
+<li class="blockList">
+<h4>levelDecrease</h4>
+<pre>javax.swing.JSpinner levelDecrease</pre>
+</li>
+<li class="blockList">
+<h4>lightOpacity</h4>
+<pre>javax.swing.JSpinner lightOpacity</pre>
 </li>
 <li class="blockList">
 <h4>luminance</h4>
@@ -4793,35 +4801,31 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onBlockAdded</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onBlockAdded</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBlockAdded</pre>
 </li>
 <li class="blockList">
 <h4>onDestroyedByExplosion</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onDestroyedByExplosion</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onDestroyedByExplosion</pre>
 </li>
 <li class="blockList">
 <h4>onEntityCollides</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onEntityCollides</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEntityCollides</pre>
 </li>
 <li class="blockList">
 <h4>onNeighbourChanges</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onNeighbourChanges</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onNeighbourChanges</pre>
 </li>
 <li class="blockList">
 <h4>onRandomUpdateEvent</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRandomUpdateEvent</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRandomUpdateEvent</pre>
 </li>
 <li class="blockList">
 <h4>onTickUpdate</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onTickUpdate</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onTickUpdate</pre>
 </li>
 <li class="blockList">
 <h4>page1group</h4>
 <pre><a href="net/mcreator/ui/validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a> page1group</pre>
-</li>
-<li class="blockList">
-<h4>page2group</h4>
-<pre><a href="net/mcreator/ui/validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a> page2group</pre>
 </li>
 <li class="blockList">
 <h4>rarity</h4>
@@ -4836,12 +4840,24 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre><a href="net/mcreator/ui/minecraft/BiomeListField.html" title="class in net.mcreator.ui.minecraft">BiomeListField</a> restrictionBiomes</pre>
 </li>
 <li class="blockList">
+<h4>slopeFindDistance</h4>
+<pre>javax.swing.JSpinner slopeFindDistance</pre>
+</li>
+<li class="blockList">
+<h4>spawnParticles</h4>
+<pre>javax.swing.JCheckBox spawnParticles</pre>
+</li>
+<li class="blockList">
 <h4>spawnWorldTypes</h4>
 <pre><a href="net/mcreator/ui/minecraft/DimensionListField.html" title="class in net.mcreator.ui.minecraft">DimensionListField</a> spawnWorldTypes</pre>
 </li>
 <li class="blockList">
 <h4>specialInfo</h4>
 <pre>javax.swing.JTextField specialInfo</pre>
+</li>
+<li class="blockList">
+<h4>temperature</h4>
+<pre>javax.swing.JSpinner temperature</pre>
 </li>
 <li class="blockList">
 <h4>textureBucket</h4>
@@ -4889,7 +4905,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>glowCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> glowCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> glowCondition</pre>
 </li>
 <li class="blockList">
 <h4>hasGlow</h4>
@@ -4913,39 +4929,39 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onCrafted</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onCrafted</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onCrafted</pre>
 </li>
 <li class="blockList">
 <h4>onDroppedByPlayer</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onDroppedByPlayer</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onDroppedByPlayer</pre>
 </li>
 <li class="blockList">
 <h4>onEaten</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onEaten</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEaten</pre>
 </li>
 <li class="blockList">
 <h4>onEntityHitWith</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onEntityHitWith</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEntityHitWith</pre>
 </li>
 <li class="blockList">
 <h4>onEntitySwing</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onEntitySwing</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEntitySwing</pre>
 </li>
 <li class="blockList">
 <h4>onItemInInventoryTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onItemInInventoryTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onItemInInventoryTick</pre>
 </li>
 <li class="blockList">
 <h4>onItemInUseTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onItemInUseTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onItemInUseTick</pre>
 </li>
 <li class="blockList">
 <h4>onRightClicked</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRightClicked</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRightClicked</pre>
 </li>
 <li class="blockList">
 <h4>onRightClickedOnBlock</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRightClickedOnBlock</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRightClickedOnBlock</pre>
 </li>
 <li class="blockList">
 <h4>rarity</h4>
@@ -5104,6 +5120,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>javax.swing.JCheckBox destroyAnyBlock</pre>
 </li>
 <li class="blockList">
+<h4>dispenseResultItemstack</h4>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> dispenseResultItemstack</pre>
+</li>
+<li class="blockList">
+<h4>dispenseSuccessCondition</h4>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> dispenseSuccessCondition</pre>
+</li>
+<li class="blockList">
 <h4>enableMeleeDamage</h4>
 <pre>javax.swing.JCheckBox enableMeleeDamage</pre>
 </li>
@@ -5113,11 +5137,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>glowCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> glowCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> glowCondition</pre>
 </li>
 <li class="blockList">
 <h4>guiBoundTo</h4>
 <pre>javax.swing.JComboBox&lt;java.lang.String&gt; guiBoundTo</pre>
+</li>
+<li class="blockList">
+<h4>hasDispenseBehavior</h4>
+<pre>javax.swing.JCheckBox hasDispenseBehavior</pre>
 </li>
 <li class="blockList">
 <h4>hasGlow</h4>
@@ -5145,39 +5173,39 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onCrafted</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onCrafted</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onCrafted</pre>
 </li>
 <li class="blockList">
 <h4>onDroppedByPlayer</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onDroppedByPlayer</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onDroppedByPlayer</pre>
 </li>
 <li class="blockList">
 <h4>onEntityHitWith</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onEntityHitWith</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEntityHitWith</pre>
 </li>
 <li class="blockList">
 <h4>onEntitySwing</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onEntitySwing</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEntitySwing</pre>
 </li>
 <li class="blockList">
 <h4>onItemInInventoryTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onItemInInventoryTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onItemInInventoryTick</pre>
 </li>
 <li class="blockList">
 <h4>onItemInUseTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onItemInUseTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onItemInUseTick</pre>
 </li>
 <li class="blockList">
 <h4>onRightClickedInAir</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRightClickedInAir</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRightClickedInAir</pre>
 </li>
 <li class="blockList">
 <h4>onRightClickedOnBlock</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRightClickedOnBlock</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRightClickedOnBlock</pre>
 </li>
 <li class="blockList">
 <h4>onStoppedUsing</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onStoppedUsing</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onStoppedUsing</pre>
 </li>
 <li class="blockList">
 <h4>page1group</h4>
@@ -5245,11 +5273,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onKeyPressed</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onKeyPressed</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onKeyPressed</pre>
 </li>
 <li class="blockList">
 <h4>onKeyReleased</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onKeyReleased</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onKeyReleased</pre>
 </li>
 <li class="blockListLast">
 <h4>triggerKey</h4>
@@ -5262,7 +5290,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList"><a id="net.mcreator.ui.modgui.LivingEntityGUI">
 <!--   -->
 </a>
-<h3>Class <a href="net/mcreator/ui/modgui/LivingEntityGUI.html" title="class in net.mcreator.ui.modgui">net.mcreator.ui.modgui.LivingEntityGUI</a> extends <a href="net/mcreator/ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="net/mcreator/element/types/Mob.html" title="class in net.mcreator.element.types">Mob</a>&gt; implements Serializable</h3>
+<h3>Class <a href="net/mcreator/ui/modgui/LivingEntityGUI.html" title="class in net.mcreator.ui.modgui">net.mcreator.ui.modgui.LivingEntityGUI</a> extends <a href="net/mcreator/ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="net/mcreator/element/types/LivingEntity.html" title="class in net.mcreator.element.types">LivingEntity</a>&gt; implements Serializable</h3>
 <ul class="blockList">
 <li class="blockList">
 <h3>Serialized Fields</h3>
@@ -5529,23 +5557,23 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onInitialSpawn</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onInitialSpawn</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onInitialSpawn</pre>
 </li>
 <li class="blockList">
 <h4>onMobTickUpdate</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onMobTickUpdate</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onMobTickUpdate</pre>
 </li>
 <li class="blockList">
 <h4>onPlayerCollidesWith</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onPlayerCollidesWith</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onPlayerCollidesWith</pre>
 </li>
 <li class="blockList">
 <h4>onRightClickedOn</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRightClickedOn</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRightClickedOn</pre>
 </li>
 <li class="blockList">
 <h4>onStruckByLightning</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onStruckByLightning</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onStruckByLightning</pre>
 </li>
 <li class="blockList">
 <h4>particleAmount</h4>
@@ -5553,7 +5581,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>particleCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> particleCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> particleCondition</pre>
 </li>
 <li class="blockList">
 <h4>particleSpawningRadious</h4>
@@ -5601,7 +5629,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>spawningCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> spawningCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> spawningCondition</pre>
 </li>
 <li class="blockList">
 <h4>spawningProbability</h4>
@@ -5633,19 +5661,19 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>whenMobDies</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> whenMobDies</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> whenMobDies</pre>
 </li>
 <li class="blockList">
 <h4>whenMobFalls</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> whenMobFalls</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> whenMobFalls</pre>
 </li>
 <li class="blockList">
 <h4>whenMobIsHurt</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> whenMobIsHurt</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> whenMobIsHurt</pre>
 </li>
 <li class="blockList">
 <h4>whenThisMobKillsAnother</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> whenThisMobKillsAnother</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> whenThisMobKillsAnother</pre>
 </li>
 <li class="blockListLast">
 <h4>xpAmount</h4>
@@ -5754,35 +5782,35 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onCrafted</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onCrafted</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onCrafted</pre>
 </li>
 <li class="blockList">
 <h4>onEntityHitWith</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onEntityHitWith</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEntityHitWith</pre>
 </li>
 <li class="blockList">
 <h4>onEntitySwing</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onEntitySwing</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEntitySwing</pre>
 </li>
 <li class="blockList">
 <h4>onItemInInventoryTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onItemInInventoryTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onItemInInventoryTick</pre>
 </li>
 <li class="blockList">
 <h4>onItemInUseTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onItemInUseTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onItemInUseTick</pre>
 </li>
 <li class="blockList">
 <h4>onRightClickedInAir</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRightClickedInAir</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRightClickedInAir</pre>
 </li>
 <li class="blockList">
 <h4>onRightClickedOnBlock</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRightClickedOnBlock</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRightClickedOnBlock</pre>
 </li>
 <li class="blockList">
 <h4>onStoppedUsing</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onStoppedUsing</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onStoppedUsing</pre>
 </li>
 <li class="blockList">
 <h4>page1group</h4>
@@ -5810,7 +5838,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>displayCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> displayCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> displayCondition</pre>
 </li>
 <li class="blockListLast">
 <h4>editor</h4>
@@ -5858,7 +5886,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>additionalExpiryCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> additionalExpiryCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> additionalExpiryCondition</pre>
 </li>
 <li class="blockList">
 <h4>alwaysShow</h4>
@@ -5941,6 +5969,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre><a href="net/mcreator/ui/minecraft/JBoundingBoxList.html" title="class in net.mcreator.ui.minecraft">JBoundingBoxList</a> boundingBoxList</pre>
 </li>
 <li class="blockList">
+<h4>breakSound</h4>
+<pre><a href="net/mcreator/ui/minecraft/SoundSelector.html" title="class in net.mcreator.ui.minecraft">SoundSelector</a> breakSound</pre>
+</li>
+<li class="blockList">
 <h4>canBePlacedOn</h4>
 <pre><a href="net/mcreator/ui/minecraft/MCItemListField.html" title="class in net.mcreator.ui.minecraft">MCItemListField</a> canBePlacedOn</pre>
 </li>
@@ -5973,8 +6005,16 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre><a href="net/mcreator/ui/minecraft/MCItemHolder.html" title="class in net.mcreator.ui.minecraft">MCItemHolder</a> customDrop</pre>
 </li>
 <li class="blockList">
+<h4>customSoundType</h4>
+<pre>javax.swing.JRadioButton customSoundType</pre>
+</li>
+<li class="blockList">
 <h4>dbl</h4>
 <pre>javax.swing.JLabel dbl</pre>
+</li>
+<li class="blockList">
+<h4>defaultSoundType</h4>
+<pre>javax.swing.JRadioButton defaultSoundType</pre>
 </li>
 <li class="blockList">
 <h4>disableOffset</h4>
@@ -6001,6 +6041,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>javax.swing.JCheckBox emissiveRendering</pre>
 </li>
 <li class="blockList">
+<h4>fallSound</h4>
+<pre><a href="net/mcreator/ui/minecraft/SoundSelector.html" title="class in net.mcreator.ui.minecraft">SoundSelector</a> fallSound</pre>
+</li>
+<li class="blockList">
 <h4>fireSpreadSpeed</h4>
 <pre>javax.swing.JSpinner fireSpreadSpeed</pre>
 </li>
@@ -6018,7 +6062,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>generateCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> generateCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> generateCondition</pre>
 </li>
 <li class="blockList">
 <h4>growapableMaxHeight</h4>
@@ -6039,6 +6083,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>hasTileEntity</h4>
 <pre>javax.swing.JCheckBox hasTileEntity</pre>
+</li>
+<li class="blockList">
+<h4>hitSound</h4>
+<pre><a href="net/mcreator/ui/minecraft/SoundSelector.html" title="class in net.mcreator.ui.minecraft">SoundSelector</a> hitSound</pre>
 </li>
 <li class="blockList">
 <h4>isItemTinted</h4>
@@ -6074,55 +6122,59 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onBlockAdded</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onBlockAdded</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBlockAdded</pre>
 </li>
 <li class="blockList">
 <h4>onBlockPlacedBy</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onBlockPlacedBy</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBlockPlacedBy</pre>
 </li>
 <li class="blockList">
 <h4>onDestroyedByExplosion</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onDestroyedByExplosion</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onDestroyedByExplosion</pre>
 </li>
 <li class="blockList">
 <h4>onDestroyedByPlayer</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onDestroyedByPlayer</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onDestroyedByPlayer</pre>
 </li>
 <li class="blockList">
 <h4>onEntityCollides</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onEntityCollides</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEntityCollides</pre>
 </li>
 <li class="blockList">
 <h4>onNeighbourBlockChanges</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onNeighbourBlockChanges</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onNeighbourBlockChanges</pre>
 </li>
 <li class="blockList">
 <h4>onRandomUpdateEvent</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRandomUpdateEvent</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRandomUpdateEvent</pre>
 </li>
 <li class="blockList">
 <h4>onRightClicked</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRightClicked</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRightClicked</pre>
 </li>
 <li class="blockList">
 <h4>onStartToDestroy</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onStartToDestroy</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onStartToDestroy</pre>
 </li>
 <li class="blockList">
 <h4>onTickUpdate</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onTickUpdate</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onTickUpdate</pre>
 </li>
 <li class="blockList">
-<h4>page2group</h4>
-<pre><a href="net/mcreator/ui/validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a> page2group</pre>
+<h4>page3group</h4>
+<pre><a href="net/mcreator/ui/validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a> page3group</pre>
 </li>
 <li class="blockList">
 <h4>particleTexture</h4>
 <pre><a href="net/mcreator/ui/minecraft/TextureHolder.html" title="class in net.mcreator.ui.minecraft">TextureHolder</a> particleTexture</pre>
 </li>
 <li class="blockList">
+<h4>placeSound</h4>
+<pre><a href="net/mcreator/ui/minecraft/SoundSelector.html" title="class in net.mcreator.ui.minecraft">SoundSelector</a> placeSound</pre>
+</li>
+<li class="blockList">
 <h4>placingCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> placingCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> placingCondition</pre>
 </li>
 <li class="blockList">
 <h4>renderType</h4>
@@ -6155,6 +6207,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>staticPlantGenerationType</h4>
 <pre>javax.swing.JComboBox&lt;java.lang.String&gt; staticPlantGenerationType</pre>
+</li>
+<li class="blockList">
+<h4>stepSound</h4>
+<pre><a href="net/mcreator/ui/minecraft/SoundSelector.html" title="class in net.mcreator.ui.minecraft">SoundSelector</a> stepSound</pre>
 </li>
 <li class="blockList">
 <h4>stl</h4>
@@ -6222,15 +6278,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onActiveTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onActiveTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onActiveTick</pre>
 </li>
 <li class="blockList">
 <h4>onExpired</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onExpired</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onExpired</pre>
 </li>
 <li class="blockList">
 <h4>onStarted</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onStarted</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onStarted</pre>
 </li>
 <li class="blockList">
 <h4>page1group</h4>
@@ -6414,7 +6470,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>glowCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> glowCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> glowCondition</pre>
 </li>
 <li class="blockList">
 <h4>hasGlow</h4>
@@ -6430,27 +6486,27 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onBulletFlyingTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onBulletFlyingTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBulletFlyingTick</pre>
 </li>
 <li class="blockList">
 <h4>onBulletHitsBlock</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onBulletHitsBlock</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBulletHitsBlock</pre>
 </li>
 <li class="blockList">
 <h4>onBulletHitsEntity</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onBulletHitsEntity</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBulletHitsEntity</pre>
 </li>
 <li class="blockList">
 <h4>onBulletHitsPlayer</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onBulletHitsPlayer</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBulletHitsPlayer</pre>
 </li>
 <li class="blockList">
 <h4>onEntitySwing</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onEntitySwing</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEntitySwing</pre>
 </li>
 <li class="blockList">
 <h4>onRangedItemUsed</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRangedItemUsed</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRangedItemUsed</pre>
 </li>
 <li class="blockList">
 <h4>page1group</h4>
@@ -6490,7 +6546,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockListLast">
 <h4>useCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> useCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> useCondition</pre>
 </li>
 </ul>
 </li>
@@ -6578,7 +6634,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>generateCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> generateCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> generateCondition</pre>
 </li>
 <li class="blockList">
 <h4>ignoreBlocks</h4>
@@ -6594,7 +6650,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onStructureGenerated</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onStructureGenerated</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onStructureGenerated</pre>
 </li>
 <li class="blockList">
 <h4>page1group</h4>
@@ -6754,7 +6810,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>glowCondition</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> glowCondition</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> glowCondition</pre>
 </li>
 <li class="blockList">
 <h4>harvestLevel</h4>
@@ -6778,39 +6834,39 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="blockList">
 <h4>onBlockDestroyedWithTool</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onBlockDestroyedWithTool</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBlockDestroyedWithTool</pre>
 </li>
 <li class="blockList">
 <h4>onCrafted</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onCrafted</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onCrafted</pre>
 </li>
 <li class="blockList">
 <h4>onEntityHitWith</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onEntityHitWith</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEntityHitWith</pre>
 </li>
 <li class="blockList">
 <h4>onEntitySwing</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onEntitySwing</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEntitySwing</pre>
 </li>
 <li class="blockList">
 <h4>onItemInInventoryTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onItemInInventoryTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onItemInInventoryTick</pre>
 </li>
 <li class="blockList">
 <h4>onItemInUseTick</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onItemInUseTick</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onItemInUseTick</pre>
 </li>
 <li class="blockList">
 <h4>onRightClickedInAir</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRightClickedInAir</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRightClickedInAir</pre>
 </li>
 <li class="blockList">
 <h4>onRightClickedOnBlock</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onRightClickedOnBlock</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRightClickedOnBlock</pre>
 </li>
 <li class="blockList">
 <h4>onStoppedUsing</h4>
-<pre><a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft">ProcedureSelector</a> onStoppedUsing</pre>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onStoppedUsing</pre>
 </li>
 <li class="blockList">
 <h4>page1group</h4>
@@ -6843,6 +6899,117 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>usageCount</h4>
 <pre>javax.swing.JSpinner usageCount</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</li>
+<li class="blockList">
+<section role="region">
+<h2 title="Package">Package&nbsp;net.mcreator.ui.procedure</h2>
+<ul class="blockList">
+<li class="blockList"><a id="net.mcreator.ui.procedure.AbstractProcedureSelector">
+<!--   -->
+</a>
+<h3>Class <a href="net/mcreator/ui/procedure/AbstractProcedureSelector.html" title="class in net.mcreator.ui.procedure">net.mcreator.ui.procedure.AbstractProcedureSelector</a> extends javax.swing.JPanel implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>add</h4>
+<pre>javax.swing.JButton add</pre>
+</li>
+<li class="blockList">
+<h4>defaultName</h4>
+<pre>java.lang.String defaultName</pre>
+</li>
+<li class="blockList">
+<h4>depslab</h4>
+<pre>javax.swing.JLabel depslab</pre>
+</li>
+<li class="blockList">
+<h4>depsMap</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.util.List&lt;<a href="net/mcreator/blockly/data/Dependency.html" title="class in net.mcreator.blockly.data">Dependency</a>&gt;&gt; depsMap</pre>
+</li>
+<li class="blockList">
+<h4>edit</h4>
+<pre>javax.swing.JButton edit</pre>
+</li>
+<li class="blockList">
+<h4>mcreator</h4>
+<pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
+</li>
+<li class="blockList">
+<h4>oldItem</h4>
+<pre>net.mcreator.ui.procedure.CBoxEntry oldItem</pre>
+</li>
+<li class="blockList">
+<h4>procedures</h4>
+<pre><a href="net/mcreator/ui/component/SearchableComboBox.html" title="class in net.mcreator.ui.component">SearchableComboBox</a>&lt;net.mcreator.ui.procedure.CBoxEntry&gt; procedures</pre>
+</li>
+<li class="blockList">
+<h4>providedDependencies</h4>
+<pre><a href="net/mcreator/blockly/data/Dependency.html" title="class in net.mcreator.blockly.data">Dependency</a>[] providedDependencies</pre>
+</li>
+<li class="blockList">
+<h4>returnType</h4>
+<pre><a href="net/mcreator/workspace/elements/VariableType.html" title="class in net.mcreator.workspace.elements">VariableType</a> returnType</pre>
+</li>
+<li class="blockListLast">
+<h4>returnTypeOptional</h4>
+<pre>boolean returnTypeOptional</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="net.mcreator.ui.procedure.NumberProcedureSelector">
+<!--   -->
+</a>
+<h3>Class <a href="net/mcreator/ui/procedure/NumberProcedureSelector.html" title="class in net.mcreator.ui.procedure">net.mcreator.ui.procedure.NumberProcedureSelector</a> extends <a href="net/mcreator/ui/procedure/AbstractProcedureSelector.html" title="class in net.mcreator.ui.procedure">AbstractProcedureSelector</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>fixedValue</h4>
+<pre>javax.swing.JSpinner fixedValue</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="net.mcreator.ui.procedure.ProcedureSelector">
+<!--   -->
+</a>
+<h3>Class <a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">net.mcreator.ui.procedure.ProcedureSelector</a> extends <a href="net/mcreator/ui/procedure/AbstractProcedureSelector.html" title="class in net.mcreator.ui.procedure">AbstractProcedureSelector</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>actionLabel</h4>
+<pre>javax.swing.JLabel actionLabel</pre>
+</li>
+<li class="blockList">
+<h4>componentA</h4>
+<pre>javax.swing.JComponent componentA</pre>
+</li>
+<li class="blockList">
+<h4>componentB</h4>
+<pre>javax.swing.JComponent componentB</pre>
+</li>
+<li class="blockList">
+<h4>inline</h4>
+<pre>boolean inline</pre>
+</li>
+<li class="blockListLast">
+<h4>nameLabel</h4>
+<pre>javax.swing.JLabel nameLabel</pre>
 </li>
 </ul>
 </li>
@@ -8204,6 +8371,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>overlayBaseTexture</h4>
 <pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;java.lang.String&gt; overlayBaseTexture</pre>
+</li>
+<li class="blockList">
+<h4>overlayTarget</h4>
+<pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;java.lang.String&gt; overlayTarget</pre>
 </li>
 <li class="blockList">
 <h4>ovst</h4>

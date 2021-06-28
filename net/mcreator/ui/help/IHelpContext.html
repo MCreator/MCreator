@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":18,"i2":18,"i3":18};
+var data = {"i0":18,"i1":6,"i2":18,"i3":18,"i4":18,"i5":18};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],16:["t5","Default Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -171,21 +171,31 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>default java.util.function.Supplier&lt;?&gt;[]</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getArguments()">getArguments</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getContextName()">getContextName</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>default java.net.URI</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getContextURL()">getContextURL</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>default java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntry()">getEntry</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>default <a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withArguments(java.util.function.Supplier...)">withArguments</a></span>&#8203;(java.util.function.Supplier&lt;?&gt;...&nbsp;arguments)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>default <a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withEntry(java.lang.String)">withEntry</a></span>&#8203;(java.lang.String&nbsp;entry)</code></th>
 <td class="colLast">&nbsp;</td>
@@ -235,6 +245,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">default&nbsp;<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;withEntry&#8203;(java.lang.String&nbsp;entry)</pre>
 </li>
 </ul>
+<a id="withArguments(java.util.function.Supplier...)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>withArguments</h4>
+<pre class="methodSignature">default&nbsp;<a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;withArguments&#8203;(java.util.function.Supplier&lt;?&gt;...&nbsp;arguments)</pre>
+</li>
+</ul>
 <a id="getEntry()">
 <!--   -->
 </a>
@@ -242,6 +261,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>getEntry</h4>
 <pre class="methodSignature">default&nbsp;java.lang.String&nbsp;getEntry()</pre>
+</li>
+</ul>
+<a id="getArguments()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getArguments</h4>
+<pre class="methodSignature">default&nbsp;java.util.function.Supplier&lt;?&gt;[]&nbsp;getArguments()</pre>
 </li>
 </ul>
 <a id="getContextName()">

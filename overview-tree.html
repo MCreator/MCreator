@@ -183,6 +183,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li><a href="net/mcreator/ui/minecraft/package-tree.html">net.mcreator.ui.minecraft</a>, </li>
 <li><a href="net/mcreator/ui/minecraft/spawntypes/package-tree.html">net.mcreator.ui.minecraft.spawntypes</a>, </li>
 <li><a href="net/mcreator/ui/modgui/package-tree.html">net.mcreator.ui.modgui</a>, </li>
+<li><a href="net/mcreator/ui/procedure/package-tree.html">net.mcreator.ui.procedure</a>, </li>
 <li><a href="net/mcreator/ui/validation/package-tree.html">net.mcreator.ui.validation</a>, </li>
 <li><a href="net/mcreator/ui/validation/component/package-tree.html">net.mcreator.ui.validation.component</a>, </li>
 <li><a href="net/mcreator/ui/validation/optionpane/package-tree.html">net.mcreator.ui.validation.optionpane</a>, </li>
@@ -401,7 +402,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">net.mcreator.ui.blockly.<a href="net/mcreator/ui/blockly/BlocklyJavascriptBridge.html" title="class in net.mcreator.ui.blockly"><span class="typeNameLink">BlocklyJavascriptBridge</span></a></li>
 <li class="circle">net.mcreator.ui.blockly.<a href="net/mcreator/ui/blockly/BlocklyJavascriptTemplates.html" title="class in net.mcreator.ui.blockly"><span class="typeNameLink">BlocklyJavascriptTemplates</span></a></li>
 <li class="circle">net.mcreator.blockly.data.<a href="net/mcreator/blockly/data/BlocklyLoader.html" title="class in net.mcreator.blockly.data"><span class="typeNameLink">BlocklyLoader</span></a></li>
-<li class="circle">net.mcreator.blockly.<a href="net/mcreator/blockly/BlocklyToCode.html" title="class in net.mcreator.blockly"><span class="typeNameLink">BlocklyToCode</span></a> (implements net.mcreator.workspace.<a href="net/mcreator/workspace/IWorkspaceProvider.html" title="interface in net.mcreator.workspace">IWorkspaceProvider</a>)
+<li class="circle">net.mcreator.blockly.<a href="net/mcreator/blockly/BlocklyToCode.html" title="class in net.mcreator.blockly"><span class="typeNameLink">BlocklyToCode</span></a> (implements net.mcreator.generator.<a href="net/mcreator/generator/IGeneratorProvider.html" title="interface in net.mcreator.generator">IGeneratorProvider</a>)
 <ul>
 <li class="circle">net.mcreator.blockly.java.<a href="net/mcreator/blockly/java/BlocklyToJava.html" title="class in net.mcreator.blockly.java"><span class="typeNameLink">BlocklyToJava</span></a>
 <ul>
@@ -554,6 +555,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 <li class="circle">javax.swing.JPanel (implements javax.accessibility.Accessible)
 <ul>
+<li class="circle">net.mcreator.ui.procedure.<a href="net/mcreator/ui/procedure/AbstractProcedureSelector.html" title="class in net.mcreator.ui.procedure"><span class="typeNameLink">AbstractProcedureSelector</span></a>
+<ul>
+<li class="circle">net.mcreator.ui.procedure.<a href="net/mcreator/ui/procedure/NumberProcedureSelector.html" title="class in net.mcreator.ui.procedure"><span class="typeNameLink">NumberProcedureSelector</span></a></li>
+<li class="circle">net.mcreator.ui.procedure.<a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure"><span class="typeNameLink">ProcedureSelector</span></a></li>
+</ul>
+</li>
 <li class="circle">net.mcreator.ui.dialogs.workspace.<a href="net/mcreator/ui/dialogs/workspace/AbstractWorkspacePanel.html" title="class in net.mcreator.ui.dialogs.workspace"><span class="typeNameLink">AbstractWorkspacePanel</span></a>
 <ul>
 <li class="circle">net.mcreator.ui.dialogs.workspace.<a href="net/mcreator/ui/dialogs/workspace/AddonWorkspacePanel.html" title="class in net.mcreator.ui.dialogs.workspace"><span class="typeNameLink">AddonWorkspacePanel</span></a></li>
@@ -608,7 +615,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">net.mcreator.ui.vcs.<a href="net/mcreator/ui/vcs/LocalChangesPanel.html" title="class in net.mcreator.ui.vcs"><span class="typeNameLink">LocalChangesPanel</span></a></li>
 <li class="circle">net.mcreator.ui.<a href="net/mcreator/ui/MCreatorTabs.Tab.html" title="class in net.mcreator.ui"><span class="typeNameLink">MCreatorTabs.Tab</span></a></li>
 <li class="circle">net.mcreator.ui.laf.renderer.elementlist.<a href="net/mcreator/ui/laf/renderer/elementlist/MediumIconModListRender.html" title="class in net.mcreator.ui.laf.renderer.elementlist"><span class="typeNameLink">MediumIconModListRender</span></a> (implements javax.swing.ListCellRenderer&lt;E&gt;)</li>
-<li class="circle">net.mcreator.ui.minecraft.<a href="net/mcreator/ui/minecraft/ProcedureSelector.html" title="class in net.mcreator.ui.minecraft"><span class="typeNameLink">ProcedureSelector</span></a></li>
 <li class="circle">net.mcreator.ui.component.<a href="net/mcreator/ui/component/ProgressBar.html" title="class in net.mcreator.ui.component"><span class="typeNameLink">ProgressBar</span></a></li>
 <li class="circle">net.mcreator.ui.ide.<a href="net/mcreator/ui/ide/ReplaceBar.html" title="class in net.mcreator.ui.ide"><span class="typeNameLink">ReplaceBar</span></a></li>
 <li class="circle">net.mcreator.ui.laf.renderer.elementlist.<a href="net/mcreator/ui/laf/renderer/elementlist/SmallIconModListRender.html" title="class in net.mcreator.ui.laf.renderer.elementlist"><span class="typeNameLink">SmallIconModListRender</span></a> (implements javax.swing.ListCellRenderer&lt;E&gt;)</li>
@@ -1005,7 +1011,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">net.mcreator.element.types.<a href="net/mcreator/element/types/GUI.html" title="class in net.mcreator.element.types"><span class="typeNameLink">GUI</span></a></li>
 <li class="circle">net.mcreator.element.types.<a href="net/mcreator/element/types/Item.html" title="class in net.mcreator.element.types"><span class="typeNameLink">Item</span></a> (implements net.mcreator.element.types.interfaces.<a href="net/mcreator/element/types/interfaces/IItemWithModel.html" title="interface in net.mcreator.element.types.interfaces">IItemWithModel</a>, net.mcreator.element.types.interfaces.<a href="net/mcreator/element/types/interfaces/IItemWithTexture.html" title="interface in net.mcreator.element.types.interfaces">IItemWithTexture</a>, net.mcreator.element.types.interfaces.<a href="net/mcreator/element/types/interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a>)</li>
 <li class="circle">net.mcreator.element.types.<a href="net/mcreator/element/types/KeyBinding.html" title="class in net.mcreator.element.types"><span class="typeNameLink">KeyBinding</span></a></li>
-<li class="circle">net.mcreator.element.types.<a href="net/mcreator/element/types/Mob.html" title="class in net.mcreator.element.types"><span class="typeNameLink">Mob</span></a> (implements net.mcreator.element.types.interfaces.<a href="net/mcreator/element/types/interfaces/IEntityWithModel.html" title="interface in net.mcreator.element.types.interfaces">IEntityWithModel</a>, net.mcreator.element.types.interfaces.<a href="net/mcreator/element/types/interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a>)</li>
+<li class="circle">net.mcreator.element.types.<a href="net/mcreator/element/types/LivingEntity.html" title="class in net.mcreator.element.types"><span class="typeNameLink">LivingEntity</span></a> (implements net.mcreator.element.types.interfaces.<a href="net/mcreator/element/types/interfaces/IEntityWithModel.html" title="interface in net.mcreator.element.types.interfaces">IEntityWithModel</a>, net.mcreator.element.types.interfaces.<a href="net/mcreator/element/types/interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a>)</li>
 <li class="circle">net.mcreator.element.types.<a href="net/mcreator/element/types/MusicDisc.html" title="class in net.mcreator.element.types"><span class="typeNameLink">MusicDisc</span></a> (implements net.mcreator.element.types.interfaces.<a href="net/mcreator/element/types/interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a>)</li>
 <li class="circle">net.mcreator.element.<a href="net/mcreator/element/NamespacedGeneratableElement.html" title="class in net.mcreator.element"><span class="typeNameLink">NamespacedGeneratableElement</span></a>
 <ul>
@@ -1217,6 +1223,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NumberBlock.html" title="class in net.mcreator.blockly.java.blocks"><span class="typeNameLink">NumberBlock</span></a> (implements net.mcreator.blockly.<a href="net/mcreator/blockly/IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>)</li>
 <li class="circle">net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NumberConstantsBlock.html" title="class in net.mcreator.blockly.java.blocks"><span class="typeNameLink">NumberConstantsBlock</span></a> (implements net.mcreator.blockly.<a href="net/mcreator/blockly/IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>)</li>
 <li class="circle">net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NumberFromTextBlock.html" title="class in net.mcreator.blockly.java.blocks"><span class="typeNameLink">NumberFromTextBlock</span></a> (implements net.mcreator.blockly.<a href="net/mcreator/blockly/IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>)</li>
+<li class="circle">net.mcreator.element.parts.<a href="net/mcreator/element/parts/NumberProcedure.GSONAdapter.html" title="class in net.mcreator.element.parts"><span class="typeNameLink">NumberProcedure.GSONAdapter</span></a> (implements com.google.gson.JsonDeserializer&lt;T&gt;)</li>
 <li class="circle">net.mcreator.element.converter.fv8.<a href="net/mcreator/element/converter/fv8/OpenGUIProcedureDepFixer.html" title="class in net.mcreator.element.converter.fv8"><span class="typeNameLink">OpenGUIProcedureDepFixer</span></a> (implements net.mcreator.element.converter.<a href="net/mcreator/element/converter/IConverter.html" title="interface in net.mcreator.element.converter">IConverter</a>)</li>
 <li class="circle">net.mcreator.ui.validation.optionpane.<a href="net/mcreator/ui/validation/optionpane/OptionPaneValidatior.html" title="class in net.mcreator.ui.validation.optionpane"><span class="typeNameLink">OptionPaneValidatior</span></a> (implements net.mcreator.ui.validation.<a href="net/mcreator/ui/validation/Validator.html" title="interface in net.mcreator.ui.validation">Validator</a>)</li>
 <li class="circle">net.mcreator.ui.dialogs.tools.<a href="net/mcreator/ui/dialogs/tools/OrePackMakerTool.html" title="class in net.mcreator.ui.dialogs.tools"><span class="typeNameLink">OrePackMakerTool</span></a></li>
@@ -1248,7 +1255,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">net.mcreator.preferences.<a href="net/mcreator/preferences/PreferencesManager.html" title="class in net.mcreator.preferences"><span class="typeNameLink">PreferencesManager</span></a></li>
 <li class="circle">net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/PrintTextBlock.html" title="class in net.mcreator.blockly.java.blocks"><span class="typeNameLink">PrintTextBlock</span></a> (implements net.mcreator.blockly.<a href="net/mcreator/blockly/IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>)</li>
 <li class="circle">net.mcreator.generator.blockly.<a href="net/mcreator/generator/blockly/ProceduralBlockCodeGenerator.html" title="class in net.mcreator.generator.blockly"><span class="typeNameLink">ProceduralBlockCodeGenerator</span></a> (implements net.mcreator.blockly.<a href="net/mcreator/blockly/IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>)</li>
-<li class="circle">net.mcreator.element.parts.<a href="net/mcreator/element/parts/Procedure.html" title="class in net.mcreator.element.parts"><span class="typeNameLink">Procedure</span></a></li>
+<li class="circle">net.mcreator.element.parts.<a href="net/mcreator/element/parts/Procedure.html" title="class in net.mcreator.element.parts"><span class="typeNameLink">Procedure</span></a>
+<ul>
+<li class="circle">net.mcreator.element.parts.<a href="net/mcreator/element/parts/NumberProcedure.html" title="class in net.mcreator.element.parts"><span class="typeNameLink">NumberProcedure</span></a></li>
+</ul>
+</li>
 <li class="circle">net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/ProcedureCallBlock.html" title="class in net.mcreator.blockly.java.blocks"><span class="typeNameLink">ProcedureCallBlock</span></a> (implements net.mcreator.blockly.<a href="net/mcreator/blockly/IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>)</li>
 <li class="circle">net.mcreator.element.converter.fv7.<a href="net/mcreator/element/converter/fv7/ProcedureEntityDepFixer.html" title="class in net.mcreator.element.converter.fv7"><span class="typeNameLink">ProcedureEntityDepFixer</span></a> (implements net.mcreator.element.converter.<a href="net/mcreator/element/converter/IConverter.html" title="interface in net.mcreator.element.converter">IConverter</a>)</li>
 <li class="circle">net.mcreator.element.converter.fv9.<a href="net/mcreator/element/converter/fv9/ProcedureGlobalTriggerFixer.html" title="class in net.mcreator.element.converter.fv9"><span class="typeNameLink">ProcedureGlobalTriggerFixer</span></a> (implements net.mcreator.element.converter.<a href="net/mcreator/element/converter/IConverter.html" title="interface in net.mcreator.element.converter">IConverter</a>)</li>
@@ -1503,6 +1514,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul>
 <li class="circle">java.lang.Enum&lt;E&gt; (implements java.lang.Comparable&lt;T&gt;, java.io.Serializable)
 <ul>
+<li class="circle">net.mcreator.ui.procedure.<a href="net/mcreator/ui/procedure/AbstractProcedureSelector.Side.html" title="enum in net.mcreator.ui.procedure"><span class="typeNameLink">AbstractProcedureSelector.Side</span></a></li>
 <li class="circle">net.mcreator.ui.init.<a href="net/mcreator/ui/init/ArmorMakerTexturesCache.ArmorTexturePart.html" title="enum in net.mcreator.ui.init"><span class="typeNameLink">ArmorMakerTexturesCache.ArmorTexturePart</span></a></li>
 <li class="circle">net.mcreator.element.<a href="net/mcreator/element/BaseType.html" title="enum in net.mcreator.element"><span class="typeNameLink">BaseType</span></a></li>
 <li class="circle">net.mcreator.ui.dialogs.<a href="net/mcreator/ui/dialogs/BlockItemTextureSelector.TextureType.html" title="enum in net.mcreator.ui.dialogs"><span class="typeNameLink">BlockItemTextureSelector.TextureType</span></a></li>
@@ -1519,7 +1531,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">net.mcreator.element.<a href="net/mcreator/element/ModElementType.html" title="enum in net.mcreator.element"><span class="typeNameLink">ModElementType</span></a></li>
 <li class="circle">net.mcreator.preferences.<a href="net/mcreator/preferences/PreferencesData.WorkspaceIconSize.html" title="enum in net.mcreator.preferences"><span class="typeNameLink">PreferencesData.WorkspaceIconSize</span></a></li>
 <li class="circle">net.mcreator.preferences.<a href="net/mcreator/preferences/PreferencesData.WorkspaceSortType.html" title="enum in net.mcreator.preferences"><span class="typeNameLink">PreferencesData.WorkspaceSortType</span></a></li>
-<li class="circle">net.mcreator.ui.minecraft.<a href="net/mcreator/ui/minecraft/ProcedureSelector.Side.html" title="enum in net.mcreator.ui.minecraft"><span class="typeNameLink">ProcedureSelector.Side</span></a></li>
 <li class="circle">net.mcreator.element.<a href="net/mcreator/element/RecipeType.html" title="enum in net.mcreator.element"><span class="typeNameLink">RecipeType</span></a></li>
 <li class="circle">net.mcreator.vcs.diff.<a href="net/mcreator/vcs/diff/ResultSide.html" title="enum in net.mcreator.vcs.diff"><span class="typeNameLink">ResultSide</span></a></li>
 <li class="circle">net.mcreator.ui.views.editor.image.tool.tools.<a href="net/mcreator/ui/views/editor/image/tool/tools/Shape.html" title="enum in net.mcreator.ui.views.editor.image.tool.tools"><span class="typeNameLink">Shape</span></a></li>

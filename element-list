@@ -86,6 +86,7 @@ net.mcreator.ui.laf.renderer.elementlist
 net.mcreator.ui.minecraft
 net.mcreator.ui.minecraft.spawntypes
 net.mcreator.ui.modgui
+net.mcreator.ui.procedure
 net.mcreator.ui.validation
 net.mcreator.ui.validation.component
 net.mcreator.ui.validation.optionpane

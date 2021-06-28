@@ -137,7 +137,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li><a href="../views/ViewBase.html" title="class in net.mcreator.ui.views">net.mcreator.ui.views.ViewBase</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">net.mcreator.ui.modgui.ModElementGUI</a>&lt;<a href="../../element/types/Mob.html" title="class in net.mcreator.element.types">Mob</a>&gt;</li>
+<li><a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">net.mcreator.ui.modgui.ModElementGUI</a>&lt;<a href="../../element/types/LivingEntity.html" title="class in net.mcreator.element.types">LivingEntity</a>&gt;</li>
 <li>
 <ul class="inheritance">
 <li>net.mcreator.ui.modgui.LivingEntityGUI</li>
@@ -165,7 +165,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">LivingEntityGUI</span>
-extends <a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../element/types/Mob.html" title="class in net.mcreator.element.types">Mob</a>&gt;</pre>
+extends <a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../element/types/LivingEntity.html" title="class in net.mcreator.element.types">LivingEntity</a>&gt;</pre>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
 <dd><a href="../../../../serialized-form.html#net.mcreator.ui.modgui.LivingEntityGUI">Serialized Form</a></dd>
@@ -329,7 +329,7 @@ extends <a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">Mod
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code><a href="../../element/types/Mob.html" title="class in net.mcreator.element.types">Mob</a></code></td>
+<td class="colFirst"><code><a href="../../element/types/LivingEntity.html" title="class in net.mcreator.element.types">LivingEntity</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementFromGUI()">getElementFromGUI</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -340,7 +340,7 @@ extends <a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">Mod
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#openInEditingMode(net.mcreator.element.types.Mob)">openInEditingMode</a></span>&#8203;(<a href="../../element/types/Mob.html" title="class in net.mcreator.element.types">Mob</a>&nbsp;mob)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#openInEditingMode(net.mcreator.element.types.LivingEntity)">openInEditingMode</a></span>&#8203;(<a href="../../element/types/LivingEntity.html" title="class in net.mcreator.element.types">LivingEntity</a>&nbsp;livingEntity)</code></th>
 <td class="colLast">
 <div class="block">This method is called to open a mod element in the GUI</div>
 </td>
@@ -410,7 +410,7 @@ extends <a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">Mod
 <!--   -->
 </a>
 <h3>Methods inherited from interface&nbsp;net.mcreator.ui.help.<a href="../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></h3>
-<code><a href="../help/IHelpContext.html#getEntry()">getEntry</a>, <a href="../help/IHelpContext.html#withEntry(java.lang.String)">withEntry</a></code></li>
+<code><a href="../help/IHelpContext.html#getArguments()">getArguments</a>, <a href="../help/IHelpContext.html#getEntry()">getEntry</a>, <a href="../help/IHelpContext.html#withArguments(java.util.function.Supplier...)">withArguments</a>, <a href="../help/IHelpContext.html#withEntry(java.lang.String)">withEntry</a></code></li>
 </ul>
 </li>
 </ul>
@@ -477,7 +477,7 @@ extends <a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">Mod
 <pre class="methodSignature">protected&nbsp;void&nbsp;initGUI()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="ModElementGUI.html#initGUI()">initGUI</a></code>&nbsp;in class&nbsp;<code><a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../element/types/Mob.html" title="class in net.mcreator.element.types">Mob</a>&gt;</code></dd>
+<dd><code><a href="ModElementGUI.html#initGUI()">initGUI</a></code>&nbsp;in class&nbsp;<code><a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../element/types/LivingEntity.html" title="class in net.mcreator.element.types">LivingEntity</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -490,7 +490,7 @@ extends <a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">Mod
 <pre class="methodSignature">public&nbsp;void&nbsp;reloadDataLists()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ModElementGUI.html#reloadDataLists()">reloadDataLists</a></code>&nbsp;in class&nbsp;<code><a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../element/types/Mob.html" title="class in net.mcreator.element.types">Mob</a>&gt;</code></dd>
+<dd><code><a href="ModElementGUI.html#reloadDataLists()">reloadDataLists</a></code>&nbsp;in class&nbsp;<code><a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../element/types/LivingEntity.html" title="class in net.mcreator.element.types">LivingEntity</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -503,22 +503,22 @@ extends <a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">Mod
 <pre class="methodSignature">protected&nbsp;<a href="../validation/AggregatedValidationResult.html" title="class in net.mcreator.ui.validation">AggregatedValidationResult</a>&nbsp;validatePage&#8203;(int&nbsp;page)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="ModElementGUI.html#validatePage(int)">validatePage</a></code>&nbsp;in class&nbsp;<code><a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../element/types/Mob.html" title="class in net.mcreator.element.types">Mob</a>&gt;</code></dd>
+<dd><code><a href="ModElementGUI.html#validatePage(int)">validatePage</a></code>&nbsp;in class&nbsp;<code><a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../element/types/LivingEntity.html" title="class in net.mcreator.element.types">LivingEntity</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
-<a id="openInEditingMode(net.mcreator.element.types.Mob)">
+<a id="openInEditingMode(net.mcreator.element.types.LivingEntity)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>openInEditingMode</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;openInEditingMode&#8203;(<a href="../../element/types/Mob.html" title="class in net.mcreator.element.types">Mob</a>&nbsp;mob)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;openInEditingMode&#8203;(<a href="../../element/types/LivingEntity.html" title="class in net.mcreator.element.types">LivingEntity</a>&nbsp;livingEntity)</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="ModElementGUI.html#openInEditingMode(GE)">ModElementGUI</a></code></span></div>
 <div class="block">This method is called to open a mod element in the GUI</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="ModElementGUI.html#openInEditingMode(GE)">openInEditingMode</a></code>&nbsp;in class&nbsp;<code><a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../element/types/Mob.html" title="class in net.mcreator.element.types">Mob</a>&gt;</code></dd>
+<dd><code><a href="ModElementGUI.html#openInEditingMode(GE)">openInEditingMode</a></code>&nbsp;in class&nbsp;<code><a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../element/types/LivingEntity.html" title="class in net.mcreator.element.types">LivingEntity</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -528,10 +528,10 @@ extends <a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">Mod
 <ul class="blockList">
 <li class="blockList">
 <h4>getElementFromGUI</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../element/types/Mob.html" title="class in net.mcreator.element.types">Mob</a>&nbsp;getElementFromGUI()</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../element/types/LivingEntity.html" title="class in net.mcreator.element.types">LivingEntity</a>&nbsp;getElementFromGUI()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="ModElementGUI.html#getElementFromGUI()">getElementFromGUI</a></code>&nbsp;in class&nbsp;<code><a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../element/types/Mob.html" title="class in net.mcreator.element.types">Mob</a>&gt;</code></dd>
+<dd><code><a href="ModElementGUI.html#getElementFromGUI()">getElementFromGUI</a></code>&nbsp;in class&nbsp;<code><a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../element/types/LivingEntity.html" title="class in net.mcreator.element.types">LivingEntity</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
