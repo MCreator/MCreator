@@ -19,6 +19,7 @@
 package net.mcreator.ui.views.editor.image.tool.tools;
 
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
@@ -26,7 +27,6 @@ import net.mcreator.ui.views.editor.image.tool.component.JSlidingSpinner;
 import net.mcreator.ui.views.editor.image.tool.component.JTitledComponentWrapper;
 import net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
-import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,12 +56,14 @@ public class DrawingTool extends AbstractModificationTool {
 
 		JComboBox<Shape> shapeBox = new JComboBox<>(Shape.values());
 		shapeBox.setSelectedIndex(0);
-		JTitledComponentWrapper titledShape = new JTitledComponentWrapper(L10N.t("dialog.image_maker.tools.types.shape"), shapeBox);
+		JTitledComponentWrapper titledShape = new JTitledComponentWrapper(
+				L10N.t("dialog.image_maker.tools.types.shape"), shapeBox);
 		shapeBox.addActionListener(e -> {
 			shape = (Shape) shapeBox.getSelectedItem();
 		});
 
-		JSlidingSpinner sizeSlider = new JSlidingSpinner(L10N.t("dialog.image_maker.tools.types.drawing_size"), 1, 1, 100, 1);
+		JSlidingSpinner sizeSlider = new JSlidingSpinner(L10N.t("dialog.image_maker.tools.types.drawing_size"), 1, 1,
+				100, 1);
 		sizeSlider.addChangeListener(e -> size = (int) Math.round(sizeSlider.getValue()));
 
 		aliasing = new JCheckBox(L10N.t("dialog.image_maker.tools.types.smooth_edge"));

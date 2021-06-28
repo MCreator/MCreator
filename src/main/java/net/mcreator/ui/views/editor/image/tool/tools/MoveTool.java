@@ -19,12 +19,12 @@
 package net.mcreator.ui.views.editor.image.tool.tools;
 
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 import net.mcreator.ui.views.editor.image.versioning.change.Relocation;
-import net.mcreator.ui.init.L10N;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -35,8 +35,8 @@ public class MoveTool extends AbstractTool {
 	private Relocation relocation;
 
 	public MoveTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager) {
-		super(L10N.t("dialog.image_maker.tools.types.move"), L10N.t("dialog.image_maker.tools.types.move_description"), UIRES.get("img_editor.move"), canvas, colorSelector,
-				versionManager);
+		super(L10N.t("dialog.image_maker.tools.types.move"), L10N.t("dialog.image_maker.tools.types.move_description"),
+				UIRES.get("img_editor.move"), canvas, colorSelector, versionManager);
 		noSettings(true);
 	}
 

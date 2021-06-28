@@ -25,7 +25,8 @@ import net.mcreator.ui.views.editor.image.tool.tools.ShapeTool;
 
 public class ShapeToolAction extends ToolChangeAction {
 	public ShapeToolAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.shapetool"), L10N.t("dialog.image_maker.tools.types.shapetool_description"), ShapeTool.class);
+		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.shapetool"),
+				L10N.t("dialog.image_maker.tools.types.shapetool_description"), ShapeTool.class);
 		setIcon(UIRES.get("img_editor.shape"));
 	}
 }

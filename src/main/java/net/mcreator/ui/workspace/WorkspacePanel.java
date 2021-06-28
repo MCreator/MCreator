@@ -1046,14 +1046,16 @@ import java.util.stream.Collectors;
 	}
 
 	private void lockCode() {
-		Object[] options = { L10N.t("workspace.elements.lock_modelement_lock_unlock"), UIManager.getString("OptionPane.cancelButtonText") };
+		Object[] options = { L10N.t("workspace.elements.lock_modelement_lock_unlock"),
+				UIManager.getString("OptionPane.cancelButtonText") };
 		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("workspace.elements.lock_modelement_message"),
 				L10N.t("workspace.elements.lock_modelement_confirm"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.WARNING_MESSAGE, null, options, options[1]);
 		if (n == 0) {
 			ProgressDialog dial = new ProgressDialog(mcreator, L10N.t("workspace.elements.lock_modelement_title"));
 			Thread t = new Thread(() -> {
-				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(L10N.t("workspace.elements.lock_modelement_locking_unlocking"));
+				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
+						L10N.t("workspace.elements.lock_modelement_locking_unlocking"));
 				dial.addProgress(p0);
 
 				List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
@@ -1094,7 +1096,8 @@ import java.util.stream.Collectors;
 					p1.ok();
 					dial.refreshDisplay();
 
-					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(L10N.t("workspace.elements.lock_modelement_rebuilding_workspace"));
+					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
+							L10N.t("workspace.elements.lock_modelement_rebuilding_workspace"));
 					dial.addProgress(p2);
 					mcreator.actionRegistry.buildWorkspace.doAction();
 					p2.ok();
@@ -1111,14 +1114,16 @@ import java.util.stream.Collectors;
 		if (list.getSelectedValue() instanceof ModElement) {
 			ModElement mu = (ModElement) list.getSelectedValue();
 			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
-				String modName = VOptionPane.showInputDialog(mcreator,
-						L10N.t("workspace.elements.duplicate_message", mu.getName()), L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
-						new OptionPaneValidatior() {
-							@Override public Validator.ValidationResult validate(JComponent component) {
-								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component)
-										.validate();
-							}
-						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"));
+				String modName = VOptionPane
+						.showInputDialog(mcreator, L10N.t("workspace.elements.duplicate_message", mu.getName()),
+								L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
+								new OptionPaneValidatior() {
+									@Override public Validator.ValidationResult validate(JComponent component) {
+										return new ModElementNameValidator(mcreator.getWorkspace(),
+												(VTextField) component).validate();
+									}
+								}, L10N.t("workspace.elements.duplicate"),
+								UIManager.getString("OptionPane.cancelButtonText"));
 				if (modName != null && !modName.equals("")) {
 					modName = JavaConventions.convertToValidClassName(modName);
 
@@ -1191,8 +1196,7 @@ import java.util.stream.Collectors;
 			if (mu.isCodeLocked()) {
 				editCurrentlySelectedModElementAsCode(mu, component, x, y);
 			} else {
-				JOptionPane.showMessageDialog(null,
-						L10N.t("workspace.elements.edit_modelement_nosavedinstance"));
+				JOptionPane.showMessageDialog(null, L10N.t("workspace.elements.edit_modelement_nosavedinstance"));
 			}
 		}
 	}

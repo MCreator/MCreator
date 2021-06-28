@@ -18,17 +18,18 @@
 
 package net.mcreator.ui.views.editor.image.tool.tools;
 
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
-import net.mcreator.ui.init.L10N;
 
 public class PencilTool extends DrawingTool {
 	public PencilTool(Canvas canvas, ColorSelector colorSelector, LayerPanel layerPanel,
 			VersionManager versionManager) {
-		super(canvas, colorSelector, layerPanel, L10N.t("dialog.image_maker.tools.types.pencil"), L10N.t("dialog.image_maker.tools.types.pencil_description"), UIRES.get("img_editor.pencil"),
+		super(canvas, colorSelector, layerPanel, L10N.t("dialog.image_maker.tools.types.pencil"),
+				L10N.t("dialog.image_maker.tools.types.pencil_description"), UIRES.get("img_editor.pencil"),
 				versionManager);
 	}
 }

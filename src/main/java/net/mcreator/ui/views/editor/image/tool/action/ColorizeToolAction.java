@@ -25,7 +25,8 @@ import net.mcreator.ui.views.editor.image.tool.tools.ColorizeTool;
 
 public class ColorizeToolAction extends ToolChangeAction {
 	public ColorizeToolAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.colorize"), L10N.t("dialog.image_maker.tools.types.colorize_description"), ColorizeTool.class);
+		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.colorize"),
+				L10N.t("dialog.image_maker.tools.types.colorize_description"), ColorizeTool.class);
 		setIcon(UIRES.get("img_editor.colorize"));
 	}
 }

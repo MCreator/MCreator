@@ -64,8 +64,9 @@ public class StampTool extends AbstractModificationTool {
 
 	public StampTool(Canvas canvas, ColorSelector colorSelector, LayerPanel layerPanel, VersionManager versionManager,
 			MCreator window) {
-		super(L10N.t("dialog.image_maker.tools.types.stamp"), L10N.t("dialog.image_maker.tools.types.stamp_description"),
-				UIRES.get("img_editor.stamp"), canvas, colorSelector, versionManager);
+		super(L10N.t("dialog.image_maker.tools.types.stamp"),
+				L10N.t("dialog.image_maker.tools.types.stamp_description"), UIRES.get("img_editor.stamp"), canvas,
+				colorSelector, versionManager);
 		setLayerPanel(layerPanel);
 
 		width = new JSlidingSpinner(L10N.t("dialog.imageeditor.width"), 16, 0, 10000, 1);

@@ -25,7 +25,8 @@ import net.mcreator.ui.views.editor.image.tool.tools.PencilTool;
 
 public class PencilToolAction extends ToolChangeAction {
 	public PencilToolAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.pencil"), L10N.t("dialog.image_maker.tools.types.pencil_description"), PencilTool.class);
+		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.pencil"),
+				L10N.t("dialog.image_maker.tools.types.pencil_description"), PencilTool.class);
 		setIcon(UIRES.get("img_editor.pencil"));
 	}
 }

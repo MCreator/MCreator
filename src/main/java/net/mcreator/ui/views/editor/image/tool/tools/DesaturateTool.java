@@ -21,19 +21,20 @@ package net.mcreator.ui.views.editor.image.tool.tools;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
 import net.mcreator.ui.dialogs.imageeditor.DesaturateDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
-import net.mcreator.ui.init.L10N;
 
 public class DesaturateTool extends AbstractTool {
 
 	private final MCreator window;
 
 	public DesaturateTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager, MCreator window) {
-		super(L10N.t("dialog.image_maker.tools.types.desaturate"), L10N.t("dialog.image_maker.tools.types.desaturate_description"), UIRES.get("img_editor.desaturate"), canvas,
-				colorSelector, versionManager);
+		super(L10N.t("dialog.image_maker.tools.types.desaturate"),
+				L10N.t("dialog.image_maker.tools.types.desaturate_description"), UIRES.get("img_editor.desaturate"),
+				canvas, colorSelector, versionManager);
 		this.window = window;
 		noSettings(true);
 	}

@@ -25,7 +25,8 @@ import net.mcreator.ui.views.editor.image.tool.tools.ResizeTool;
 
 public class ResizeToolAction extends ToolChangeAction {
 	public ResizeToolAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.resize_layer"), L10N.t("dialog.image_maker.tools.types.resize_description"), ResizeTool.class);
+		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.resize_layer"),
+				L10N.t("dialog.image_maker.tools.types.resize_description"), ResizeTool.class);
 		setIcon(UIRES.get("img_editor.resize"));
 	}
 }

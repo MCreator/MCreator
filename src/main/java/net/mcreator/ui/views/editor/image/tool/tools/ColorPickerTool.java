@@ -19,19 +19,20 @@
 package net.mcreator.ui.views.editor.image.tool.tools;
 
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
-import net.mcreator.ui.init.L10N;
 
 import java.awt.*;
 
 public class ColorPickerTool extends AbstractTool {
 
 	public ColorPickerTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager) {
-		super(L10N.t("dialog.image_maker.tools.types.colorpicker"), L10N.t("dialog.image_maker.tools.types.colorpicker_description"),
-				UIRES.get("img_editor.picker"), canvas, colorSelector, versionManager);
+		super(L10N.t("dialog.image_maker.tools.types.colorpicker"),
+				L10N.t("dialog.image_maker.tools.types.colorpicker_description"), UIRES.get("img_editor.picker"),
+				canvas, colorSelector, versionManager);
 		noSettings(true);
 	}
 

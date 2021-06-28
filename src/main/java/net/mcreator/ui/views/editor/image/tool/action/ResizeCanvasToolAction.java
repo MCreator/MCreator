@@ -25,7 +25,8 @@ import net.mcreator.ui.views.editor.image.tool.tools.ResizeCanvasTool;
 
 public class ResizeCanvasToolAction extends ToolChangeAction {
 	public ResizeCanvasToolAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.resizecanvas"), L10N.t("dialog.image_maker.tools.types.resizecanvas_description"), ResizeCanvasTool.class);
+		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.resizecanvas"),
+				L10N.t("dialog.image_maker.tools.types.resizecanvas_description"), ResizeCanvasTool.class);
 		setIcon(UIRES.get("img_editor.resizecanvas"));
 	}
 }

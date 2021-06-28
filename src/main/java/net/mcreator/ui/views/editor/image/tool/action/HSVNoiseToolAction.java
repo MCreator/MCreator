@@ -25,7 +25,8 @@ import net.mcreator.ui.views.editor.image.tool.tools.HSVNoiseTool;
 
 public class HSVNoiseToolAction extends ToolChangeAction {
 	public HSVNoiseToolAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.noise"), L10N.t("dialog.image_maker.tools.types.noise_description"), HSVNoiseTool.class);
+		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.noise"),
+				L10N.t("dialog.image_maker.tools.types.noise_description"), HSVNoiseTool.class);
 		setIcon(UIRES.get("img_editor.noise"));
 	}
 }

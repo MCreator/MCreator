@@ -21,6 +21,7 @@ package net.mcreator.ui.views.editor.image.tool;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.canvas.CanvasRenderer;
@@ -31,7 +32,6 @@ import net.mcreator.ui.views.editor.image.tool.component.ToolGroup;
 import net.mcreator.ui.views.editor.image.tool.tools.*;
 import net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
-import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -110,10 +110,10 @@ public class ToolPanel extends JSplitPane {
 		pt = new PencilTool(canvas, cs, layerPanel, versionManager);
 		JToggleButton pencil = register(pt, drawing);
 
-		addButton(L10N.t("dialog.image_maker.tools.undo"), L10N.t("dialog.image_maker.tools.undo_description"), UIRES.get("img_editor.undo"), e -> versionManager.undo(),
-				general);
-		addButton(L10N.t("dialog.image_maker.tools.redo"), L10N.t("dialog.image_maker.tools.redo_description"), UIRES.get("img_editor.redo"), e -> versionManager.redo(),
-				general);
+		addButton(L10N.t("dialog.image_maker.tools.undo"), L10N.t("dialog.image_maker.tools.undo_description"),
+				UIRES.get("img_editor.undo"), e -> versionManager.undo(), general);
+		addButton(L10N.t("dialog.image_maker.tools.redo"), L10N.t("dialog.image_maker.tools.redo_description"),
+				UIRES.get("img_editor.redo"), e -> versionManager.redo(), general);
 		register(new ResizeCanvasTool(canvas, cs, versionManager, frame), general);
 
 		register(new ShapeTool(canvas, cs, layerPanel, versionManager), drawing);
