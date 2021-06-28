@@ -61,7 +61,7 @@ public class D8WebAPI implements IWebAPI {
 		updateInfo = new Gson().fromJson(appData, UpdateInfo.class);
 
 		new Thread(() -> {
-			initAPIPrivte();
+			initAPIPrivate();
 			newsFutures.forEach(future -> future.complete(news));
 			motwFutures.forEach(future -> future.complete(motw));
 		}).start();
@@ -69,9 +69,9 @@ public class D8WebAPI implements IWebAPI {
 		return true;
 	}
 
-	private void initAPIPrivte() {
-		String motwXML = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/app/motw");
+	private void initAPIPrivate() {
 		String newsXML = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/app/news");
+		String motwXML = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/app/motw");
 
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();

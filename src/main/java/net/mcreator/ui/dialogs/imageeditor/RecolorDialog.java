@@ -53,7 +53,7 @@ public class RecolorDialog extends MCreatorDialog {
 
 		JCheckBox lock = L10N.checkbox("dialog.imageeditor.saturation_brightness_lock");
 
-		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("dialog.imageeditor.recolor_action");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));

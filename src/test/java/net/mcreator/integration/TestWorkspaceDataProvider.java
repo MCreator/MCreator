@@ -87,7 +87,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getToolExample(me(workspace, type, "9"), "Special", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "10"), "MultiTool", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears", random, true, false));
-		} else if (type == ModElementType.FUEL || type == ModElementType.TAB || type == ModElementType.OVERLAY) {
+		} else if (type == ModElementType.FUEL || type == ModElementType.TAB) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));
 		} else if (type == ModElementType.COMMAND || type == ModElementType.FUNCTION || type == ModElementType.PAINTING
@@ -337,9 +337,17 @@ public class TestWorkspaceDataProvider {
 			fluid.name = modElement.getName();
 			fluid.textureFlowing = "test";
 			fluid.textureStill = "test2";
+			fluid.canMultiply = _true;
+			fluid.flowRate = 8;
+			fluid.levelDecrease = 2;
+			fluid.slopeFindDistance = 3;
+			fluid.spawnParticles = !_true;
+			fluid.dripParticle = new Particle(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			fluid.luminosity = 3;
 			fluid.density = 5;
 			fluid.viscosity = 10;
+			fluid.temperature = 375;
 			fluid.isGas = _true;
 			fluid.generateBucket = !_true;
 			fluid.bucketName = modElement.getName() + " Bucket";
@@ -361,6 +369,7 @@ public class TestWorkspaceDataProvider {
 			fluid.resistance = 52.2;
 			fluid.emissiveRendering = _true;
 			fluid.luminance = 6;
+			fluid.lightOpacity = 2;
 			fluid.flammability = 5;
 			fluid.fireSpreadSpeed = 12;
 			fluid.colorOnMap = getRandomItem(random, ElementUtil.loadMapColors());
@@ -462,6 +471,11 @@ public class TestWorkspaceDataProvider {
 			overlay.displayCondition = new Procedure("condition1");
 			overlay.components = components;
 			overlay.baseTexture = "test.png";
+			if (_true) {
+				overlay.overlayTarget = "Ingame";
+			} else {
+				overlay.overlayTarget = getRandomItem(random, ElementUtil.loadScreens());
+			}
 			return overlay;
 		} else if (ModElementType.GUI.equals(modElement.getType())) {
 			ArrayList<GUIComponent> components;
@@ -961,6 +975,11 @@ public class TestWorkspaceDataProvider {
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
+			item.hasDispenseBehavior = _true;
+			item.dispenseSuccessCondition = (!_true && !emptyLists) ? null : new Procedure("condition1");
+			item.dispenseResultItemstack = !_true ?
+					null :
+					(emptyLists ? new Procedure("itemstack1") : new Procedure("procedure11"));
 			if (!emptyLists) {
 				item.specialInfo = StringUtils
 						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
@@ -1081,8 +1100,8 @@ public class TestWorkspaceDataProvider {
 			block.slipperiness = 12.342;
 			block.speedFactor = 34.632;
 			block.jumpFactor = 17.732;
-			block.lightOpacity = new int[] { 123, 25, 0,
-					35 }[valueIndex]; // third is 0 because third index for model is cross which requires transparency;
+			block.lightOpacity = new int[] { 7, 2, 0,
+					3 }[valueIndex]; // third is 0 because third index for model is cross which requires transparency;
 			block.material = new Material(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadMaterials()));
 			block.tickRate = 24;

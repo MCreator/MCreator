@@ -85,7 +85,7 @@ public class WoodPackMakerTool {
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.wood_pack_create");
-		JButton canecel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton canecel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		canecel.addActionListener(e -> dialog.setVisible(false));
 		dialog.add("South", PanelUtils.join(ok, canecel));
 

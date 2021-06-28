@@ -270,8 +270,8 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 		if (returnType != null)
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(0, 0, 1, 1, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
-					BorderFactory.createMatteBorder(1, 1, 0, 0,
+					BorderFactory.createMatteBorder(1, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+					BorderFactory.createMatteBorder(0, 0, 1, 1,
 							BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor()))));
 
 		return (ProcedureSelector) retval;

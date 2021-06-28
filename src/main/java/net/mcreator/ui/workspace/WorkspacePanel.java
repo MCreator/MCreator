@@ -518,13 +518,9 @@ import java.util.stream.Collectors;
 
 		elementsCount.setHorizontalTextPosition(SwingConstants.LEFT);
 
-		modElementsBar.add(new
-
-				JEmptyBox(7, 1));
+		modElementsBar.add(new JEmptyBox(7, 1));
 		modElementsBar.add(ComponentUtils.deriveFont(elementsCount, 12));
-		modElementsBar.add(new
-
-				JEmptyBox(5, 1));
+		modElementsBar.add(new JEmptyBox(5, 1));
 
 		se.add("East", modElementsBar);
 
@@ -536,48 +532,29 @@ import java.util.stream.Collectors;
 		JButton sort = L10N.button("workspace.elements.list.sort");
 
 		ComponentUtils.deriveFont(filter, 11);
-		filter.setMargin(new
-
-				Insets(1, 3, 1, 3));
+		filter.setMargin(new Insets(1, 3, 1, 3));
 		filter.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		filter.setBorderPainted(false);
 
 		ComponentUtils.deriveFont(sort, 11);
-		sort.setMargin(new
-
-				Insets(1, 3, 1, 3));
+		sort.setMargin(new Insets(1, 3, 1, 3));
 		sort.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		sort.setBorderPainted(false);
 
-		leftPan.add(new
-
-				JEmptyBox(2, 2));
+		leftPan.add(new JEmptyBox(2, 2));
 		leftPan.add(filter);
-		leftPan.add(new
-
-				JEmptyBox(2, 2));
+		leftPan.add(new JEmptyBox(2, 2));
 		leftPan.add(sort);
 
 		se.add("West", leftPan);
+
 		JScrollablePopupMenu filterPopup = new JScrollablePopupMenu();
-		filterPopup.add(new
-
-				UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
+		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
 		filterPopup.addSeparator();
-		filterPopup.add(new
-
-				UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"),
-
-				e ->
-
-						togglefilter("f:locked")));
-		filterPopup.add(new
-
-				UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
-
-				e ->
-
-						togglefilter("f:err")));
+		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"),
+				e -> togglefilter("f:locked")));
+		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
+				e -> togglefilter("f:err")));
 		filterPopup.addSeparator();
 		for (ModElementType<?> type : ModElementTypeRegistry.REGISTRY) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
@@ -588,9 +565,7 @@ import java.util.stream.Collectors;
 
 		JPopupMenu sortPopup = new JPopupMenu();
 		EventButtonGroup sortOne = new EventButtonGroup();
-		sortOne.addActionListener(e ->
-
-				resort());
+		sortOne.addActionListener(e -> resort());
 		JRadioButtonMenuItem asc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.ascending"));
 		asc.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceSortAscending);
 		desc.setSelected(!PreferencesManager.PREFERENCES.hidden.workspaceSortAscending);
@@ -601,9 +576,7 @@ import java.util.stream.Collectors;
 		sortPopup.addSeparator();
 
 		EventButtonGroup sortTwo = new EventButtonGroup();
-		sortTwo.addActionListener(e ->
-
-				resort());
+		sortTwo.addActionListener(e -> resort());
 
 		sortTwo.add(sortDateCreated);
 		sortPopup.add(sortDateCreated);
@@ -669,9 +642,7 @@ import java.util.stream.Collectors;
 		slo.setBorder(null);
 
 		JPanel rotatablePanel = new JPanel();
-		rotatablePanel.setLayout(new
-
-				BoxLayout(rotatablePanel, BoxLayout.PAGE_AXIS));
+		rotatablePanel.setLayout(new BoxLayout(rotatablePanel, BoxLayout.PAGE_AXIS));
 
 		VerticalTabButton btt1 = new VerticalTabButton(L10N.t("workspace.category.mod_elements"));
 		VerticalTabButton btt2 = new VerticalTabButton(L10N.t("workspace.category.resources"));
@@ -680,9 +651,7 @@ import java.util.stream.Collectors;
 		VerticalTabButton btt7 = new VerticalTabButton(L10N.t("workspace.category.remote_workspace"));
 
 		btt1.setContentAreaFilled(false);
-		btt1.setMargin(new
-
-				Insets(7, 1, 7, 2));
+		btt1.setMargin(new Insets(7, 1, 7, 2));
 		btt1.setBorderPainted(false);
 		btt1.setFocusPainted(false);
 		btt1.setOpaque(true);
@@ -690,9 +659,7 @@ import java.util.stream.Collectors;
 		btt1.setCursor(new
 
 				Cursor(Cursor.HAND_CURSOR));
-		btt1.addActionListener(actionEvent ->
-
-		{
+		btt1.addActionListener(e -> {
 			btt1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -705,19 +672,13 @@ import java.util.stream.Collectors;
 		rotatablePanel.add(btt1);
 
 		btt2.setContentAreaFilled(false);
-		btt2.setMargin(new
-
-				Insets(7, 1, 7, 2));
+		btt2.setMargin(new Insets(7, 1, 7, 2));
 		btt2.setBorderPainted(false);
 		btt2.setFocusPainted(false);
 		btt2.setOpaque(true);
 		btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		btt2.setCursor(new
-
-				Cursor(Cursor.HAND_CURSOR));
-		btt2.addActionListener(actionEvent ->
-
-		{
+		btt2.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btt2.addActionListener(e -> {
 			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			btt2.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
@@ -732,19 +693,13 @@ import java.util.stream.Collectors;
 			rotatablePanel.add(btt2);
 
 		btt3.setContentAreaFilled(false);
-		btt3.setMargin(new
-
-				Insets(7, 1, 7, 2));
+		btt3.setMargin(new Insets(7, 1, 7, 2));
 		btt3.setBorderPainted(false);
 		btt3.setFocusPainted(false);
 		btt3.setOpaque(true);
 		btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		btt3.setCursor(new
-
-				Cursor(Cursor.HAND_CURSOR));
-		btt3.addActionListener(actionEvent ->
-
-		{
+		btt3.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btt3.addActionListener(e -> {
 			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			btt3.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -755,27 +710,17 @@ import java.util.stream.Collectors;
 			modElementsBar.setVisible(false);
 		});
 
-		if (mcreator.getGeneratorStats().
-
-				getBaseCoverageInfo().
-
-				get("variables") != GeneratorStats.CoverageStatus.NONE)
+		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("variables") != GeneratorStats.CoverageStatus.NONE)
 			rotatablePanel.add(btt3);
 
 		btt6.setContentAreaFilled(false);
-		btt6.setMargin(new
-
-				Insets(7, 1, 7, 2));
+		btt6.setMargin(new Insets(7, 1, 7, 2));
 		btt6.setBorderPainted(false);
 		btt6.setFocusPainted(false);
 		btt6.setOpaque(true);
 		btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		btt6.setCursor(new
-
-				Cursor(Cursor.HAND_CURSOR));
-		btt6.addActionListener(actionEvent ->
-
-		{
+		btt6.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btt6.addActionListener(e -> {
 			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -786,27 +731,17 @@ import java.util.stream.Collectors;
 			modElementsBar.setVisible(false);
 		});
 
-		if (mcreator.getGeneratorStats().
-
-				getBaseCoverageInfo().
-
-				get("i18n") != GeneratorStats.CoverageStatus.NONE)
+		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("i18n") != GeneratorStats.CoverageStatus.NONE)
 			rotatablePanel.add(btt6);
 
 		btt7.setContentAreaFilled(false);
-		btt7.setMargin(new
-
-				Insets(7, 1, 7, 2));
+		btt7.setMargin(new Insets(7, 1, 7, 2));
 		btt7.setBorderPainted(false);
 		btt7.setFocusPainted(false);
 		btt7.setOpaque(true);
 		btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		btt7.setCursor(new
-
-				Cursor(Cursor.HAND_CURSOR));
-		btt7.addActionListener(actionEvent ->
-
-		{
+		btt7.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btt7.addActionListener(e -> {
 			if (vcsPan.panelShown()) {
 				btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 				btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -832,116 +767,83 @@ import java.util.stream.Collectors;
 		pne.setOpaque(false);
 
 		JLabel but1 = new JLabel(TiledImageCache.workspaceAdd);
-		but1.addMouseListener(new
-
-									  MouseAdapter() {
-										  @Override public void mouseClicked(MouseEvent e) {
-											  if (but1.isEnabled())
-												  new ModTypeDropdown(mcreator)
-														  .show(e.getComponent(), e.getComponent().getWidth() + 5, -3);
-										  }
-									  });
+		but1.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (but1.isEnabled())
+					new ModTypeDropdown(mcreator).show(e.getComponent(), e.getComponent().getWidth() + 5, -3);
+			}
+		});
 		but1.setToolTipText(L10N.t("workspace.elements.add.tooltip"));
-		but1.setCursor(new
-
-				Cursor(Cursor.HAND_CURSOR));
+		but1.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but1);
 
-		but2.addMouseListener(new
-
-									  MouseAdapter() {
-										  @Override public void mouseClicked(MouseEvent e) {
-											  if (but2.isEnabled() && list.getSelectedValue() instanceof ModElement)
-												  editCurrentlySelectedModElement((ModElement) list.getSelectedValue(),
-														  but2, e.getComponent().getWidth() + 8, 0);
-										  }
-									  });
+		but2.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (but2.isEnabled() && list.getSelectedValue() instanceof ModElement)
+					editCurrentlySelectedModElement((ModElement) list.getSelectedValue(), but2,
+							e.getComponent().getWidth() + 8, 0);
+			}
+		});
 		but2.setToolTipText(L10N.t("workspace.elements.edit.tooltip"));
-		but2.setCursor(new
-
-				Cursor(Cursor.HAND_CURSOR));
+		but2.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but2);
 
-		but2a.addMouseListener(new
-
-									   MouseAdapter() {
-										   @Override public void mouseClicked(MouseEvent e) {
-											   if (but2a.isEnabled())
-												   duplicateCurrentlySelectedModElement();
-										   }
-									   });
+		but2a.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (but2a.isEnabled())
+					duplicateCurrentlySelectedModElement();
+			}
+		});
 		but2a.setToolTipText(L10N.t("workspace.elements.duplicate.tooltip"));
-		but2a.setCursor(new
-
-				Cursor(Cursor.HAND_CURSOR));
+		but2a.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but2a);
 
-		but3.addMouseListener(new
-
-									  MouseAdapter() {
-										  @Override public void mouseClicked(MouseEvent e) {
-											  deleteCurrentlySelectedModElement();
-										  }
-									  });
+		but3.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				deleteCurrentlySelectedModElement();
+			}
+		});
 		but3.setToolTipText(L10N.t("workspace.elements.delete.tooltip"));
-		but3.setCursor(new
-
-				Cursor(Cursor.HAND_CURSOR));
+		but3.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but3);
 
-		but5.addMouseListener(new
-
-									  MouseAdapter() {
-										  @Override public void mouseClicked(MouseEvent e) {
-											  if (but5.isEnabled() && list.getSelectedValue() instanceof ModElement) {
-												  editCurrentlySelectedModElementAsCode(
-														  (ModElement) list.getSelectedValue(), but5,
-														  e.getComponent().getWidth() + 8, 0);
-											  }
-										  }
-									  });
+		but5.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (but5.isEnabled() && list.getSelectedValue() instanceof ModElement) {
+					editCurrentlySelectedModElementAsCode((ModElement) list.getSelectedValue(), but5,
+							e.getComponent().getWidth() + 8, 0);
+				}
+			}
+		});
 		but5.setToolTipText(L10N.t("workspace.elements.edit_code.tooltip"));
-		but5.setCursor(new
-
-				Cursor(Cursor.HAND_CURSOR));
+		but5.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but5);
 
-		but5a.addMouseListener(new
-
-									   MouseAdapter() {
-										   @Override public void mouseClicked(MouseEvent e) {
-											   if (but5a.isEnabled()) {
-												   lockCode();
-											   }
-										   }
-									   });
+		but5a.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (but5a.isEnabled()) {
+					lockCode();
+				}
+			}
+		});
 		but5a.setToolTipText(L10N.t("workspace.elements.lock_code_tooltip"));
-		but5a.setCursor(new
-
-				Cursor(Cursor.HAND_CURSOR));
+		but5a.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but5a);
 
-		but6.addMouseListener(new
-
-									  MouseAdapter() {
-										  @Override public void mouseClicked(MouseEvent e) {
-											  if (but6.isEnabled()) {
-												  IElement mu = list.getSelectedValue();
-												  if (mu instanceof ModElement
-														  && ((ModElement) mu).getType().getBaseType()
-														  != BaseType.DATAPACK) {
-													  ModElement modified = ModElementIDsDialog
-															  .openModElementIDDialog(mcreator, ((ModElement) mu));
-													  if (modified != null)
-														  mcreator.getWorkspace().updateModElement(modified);
-												  }
-											  }
-										  }
-									  });
+		but6.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (but6.isEnabled()) {
+					IElement mu = list.getSelectedValue();
+					if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
+						ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
+						if (modified != null)
+							mcreator.getWorkspace().updateModElement(modified);
+					}
+				}
+			}
+		});
 		but6.setToolTipText(L10N.t("workspace.elements.edit_registry_names.tooltip"));
-		but6.setCursor(new
-
-				Cursor(Cursor.HAND_CURSOR));
+		but6.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but6);
 
 		JPanel toolp = new JPanel(new BorderLayout(0, 0)) {
@@ -959,9 +861,7 @@ import java.util.stream.Collectors;
 		modElementsPanel.add("West", toolp);
 
 		JPanel emptct = new JPanel();
-		emptct.setLayout(new
-
-				BoxLayout(emptct, BoxLayout.LINE_AXIS));
+		emptct.setLayout(new BoxLayout(emptct, BoxLayout.LINE_AXIS));
 		emptct.setOpaque(false);
 
 		String[] workspaceEmptyTip = L10N.t("workspace.elements.empty.tip").split("%1");
@@ -972,9 +872,7 @@ import java.util.stream.Collectors;
 		JPanel emptbtpd = new JPanel(new BorderLayout());
 		emptbtpd.setOpaque(false);
 		emptbtpd.add("Center", emptct);
-		emptbtpd.add("South", new
-
-				JEmptyBox(1, 40));
+		emptbtpd.add("South", new JEmptyBox(1, 40));
 
 		mainp.add("ep", PanelUtils.totalCenterInPanel(emptbtpd));
 		mainp.add("sp", sp);
@@ -982,12 +880,8 @@ import java.util.stream.Collectors;
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
 		JMenuItem openElement = new JMenuItem(L10N.t("workspace.elements.list.edit.open"));
-		openElement.setFont(openElement.getFont().
-
-				deriveFont(Font.BOLD));
-		openElement.addActionListener(e ->
-
-		{
+		openElement.setFont(openElement.getFont().deriveFont(Font.BOLD));
+		openElement.addActionListener(e -> {
 			IElement selected = list.getSelectedValue();
 			if (selected instanceof FolderElement) {
 				switchFolder((FolderElement) selected);
@@ -996,24 +890,16 @@ import java.util.stream.Collectors;
 		});
 
 		deleteElement.setIcon(UIRES.get("16px.clear"));
-		deleteElement.addActionListener(e ->
+		deleteElement.addActionListener(e -> deleteCurrentlySelectedModElement());
 
-				deleteCurrentlySelectedModElement());
+		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());
 
-		duplicateElement.addActionListener(e ->
-
-				duplicateCurrentlySelectedModElement());
-
-		codeElement.addMouseListener(new
-
-											 MouseAdapter() {
-												 @Override public void mouseClicked(MouseEvent e) {
-													 super.mouseClicked(e);
-												 }
-											 });
-		codeElement.addActionListener(e ->
-
-		{
+		codeElement.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+			}
+		});
+		codeElement.addActionListener(e -> {
 			IElement selected = list.getSelectedValue();
 			if (selected instanceof ModElement) {
 				Point clickPos = list.getMousePosition();
@@ -1022,13 +908,9 @@ import java.util.stream.Collectors;
 			}
 		});
 
-		lockElement.addActionListener(e ->
+		lockElement.addActionListener(e -> lockCode());
 
-				lockCode());
-
-		idElement.addActionListener(e ->
-
-		{
+		idElement.addActionListener(e -> {
 			IElement mu = list.getSelectedValue();
 			if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
 				ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
@@ -1039,9 +921,7 @@ import java.util.stream.Collectors;
 
 		JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
 		addElementFolder.setIcon(UIRES.get("laf.newFolder.gif"));
-		addElementFolder.addActionListener(e ->
-
-				addNewFolder());
+		addElementFolder.addActionListener(e -> addNewFolder());
 
 		renameElementFolder.setIcon(UIRES.get("laf.renameFolder.gif"));
 		renameElementFolder.addActionListener(e -> {
@@ -1165,14 +1045,16 @@ import java.util.stream.Collectors;
 	}
 
 	private void lockCode() {
-		Object[] options = { "Lock/unlock the code", "Cancel" };
+		Object[] options = { L10N.t("workspace.elements.lock_modelement_lock_unlock"),
+				UIManager.getString("OptionPane.cancelButtonText") };
 		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("workspace.elements.lock_modelement_message"),
 				L10N.t("workspace.elements.lock_modelement_confirm"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.WARNING_MESSAGE, null, options, options[1]);
 		if (n == 0) {
 			ProgressDialog dial = new ProgressDialog(mcreator, L10N.t("workspace.elements.lock_modelement_title"));
 			Thread t = new Thread(() -> {
-				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit("Locking/unlocking mod elements");
+				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
+						L10N.t("workspace.elements.lock_modelement_locking_unlocking"));
 				dial.addProgress(p0);
 
 				List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
@@ -1197,7 +1079,7 @@ import java.util.stream.Collectors;
 				// if we have new unlocked elements, we recreate their code
 				if (elementsThatGotUnlocked.size() > 0) {
 					ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
-							"Regenerating code of unlocked elements");
+							L10N.t("workspace.elements.lock_modelement_regeneration"));
 					dial.addProgress(p1);
 					int i = 0;
 					for (ModElement mod : elementsThatGotUnlocked) {
@@ -1213,7 +1095,8 @@ import java.util.stream.Collectors;
 					p1.ok();
 					dial.refreshDisplay();
 
-					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit("Rebuilding workspace");
+					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
+							L10N.t("workspace.elements.lock_modelement_rebuilding_workspace"));
 					dial.addProgress(p2);
 					mcreator.actionRegistry.buildWorkspace.doAction();
 					p2.ok();
@@ -1230,16 +1113,16 @@ import java.util.stream.Collectors;
 		if (list.getSelectedValue() instanceof ModElement) {
 			ModElement mu = (ModElement) list.getSelectedValue();
 			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
-				String modName = VOptionPane.showInputDialog(mcreator,
-						"<html><font style=\"font-size: 13px;\">Enter the name of the new mod element:</font><br><small>"
-								+ "This mod element will be the same as " + mu.getName()
-								+ ", but with this name.</font>", "Duplicate " + mu.getName(), mu.getElementIcon(),
-						new OptionPaneValidatior() {
-							@Override public Validator.ValidationResult validate(JComponent component) {
-								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component)
-										.validate();
-							}
-						}, "Duplicate", "Cancel");
+				String modName = VOptionPane
+						.showInputDialog(mcreator, L10N.t("workspace.elements.duplicate_message", mu.getName()),
+								L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
+								new OptionPaneValidatior() {
+									@Override public Validator.ValidationResult validate(JComponent component) {
+										return new ModElementNameValidator(mcreator.getWorkspace(),
+												(VTextField) component).validate();
+									}
+								}, L10N.t("workspace.elements.duplicate"),
+								UIManager.getString("OptionPane.cancelButtonText"));
 				if (modName != null && !modName.equals("")) {
 					modName = JavaConventions.convertToValidClassName(modName);
 
@@ -1311,9 +1194,7 @@ import java.util.stream.Collectors;
 			if (mu.isCodeLocked()) {
 				editCurrentlySelectedModElementAsCode(mu, component, x, y);
 			} else {
-				JOptionPane.showMessageDialog(null,
-						"<html>This mod does not have saved instance. If you want to make it editable,<br>you need to remake it.<br>"
-								+ "<small>You probably see this because you have updated MCreator and your mod was made before saving was possible.");
+				JOptionPane.showMessageDialog(null, L10N.t("workspace.elements.edit_modelement_nosavedinstance"));
 			}
 		}
 	}

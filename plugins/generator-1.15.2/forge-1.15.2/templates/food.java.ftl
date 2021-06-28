@@ -67,7 +67,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		<#if data.hasGlow>
 		@Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
-		    <#if hasCondition(data.glowCondition)>
+		    <#if hasProcedure(data.glowCondition)>
 			PlayerEntity entity = Minecraft.getInstance().player;
 			World world = entity.world;
 			double x = entity.getPosX();
@@ -119,6 +119,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
       		BlockPos pos = context.getPos();
       		PlayerEntity entity = context.getPlayer();
       		Direction direction = context.getFace();
+      		BlockState blockstate = world.getBlockState(pos);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
