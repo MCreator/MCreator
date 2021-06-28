@@ -39,6 +39,8 @@ public class JPotionListEntry extends JPanel {
 	private final JSpinner duration = new JSpinner(new SpinnerNumberModel(3600, 1, 72000, 1));
 	private final JSpinner amplifier = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
 	private final JComboBox<String> effect = new JComboBox<>();
+	private final JCheckBox ambient = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox showParticles = L10N.checkbox("elementgui.common.enable");
 
 	private final Workspace workspace;
 
@@ -65,6 +67,14 @@ public class JPotionListEntry extends JPanel {
 				L10N.label("elementgui.potion.amplifier")));
 		add(amplifier);
 
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potion/ambient"),
+				L10N.label("elementgui.potion.ambient")));
+		add(ambient);
+
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potion/show_particles"),
+				L10N.label("elementgui.potion.show_particles")));
+		add(showParticles);
+
 		JButton remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.potion.remove_entry"));
 		remove.addActionListener(e -> {
@@ -84,6 +94,8 @@ public class JPotionListEntry extends JPanel {
 		entry.effect = new EffectEntry(workspace, (String) effect.getSelectedItem());
 		entry.duration = (int) duration.getValue();
 		entry.amplifier = (int) amplifier.getValue();
+		entry.ambient = ambient.isSelected();
+		entry.showParticles = showParticles.isSelected();
 		return entry;
 	}
 
@@ -91,5 +103,7 @@ public class JPotionListEntry extends JPanel {
 		effect.setSelectedItem(e.effect.getUnmappedValue());
 		duration.setValue(e.duration);
 		amplifier.setValue(e.amplifier);
+		ambient.setSelected(e.ambient);
+		showParticles.setSelected(e.showParticles);
 	}
 }

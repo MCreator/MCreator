@@ -48,6 +48,8 @@ public class Potion extends GeneratableElement {
 		public EffectEntry effect;
 		public int duration;
 		public int amplifier;
+		public boolean ambient;
+		public boolean showParticles;
 
 		public int getAmplifier() {
 			return amplifier;
