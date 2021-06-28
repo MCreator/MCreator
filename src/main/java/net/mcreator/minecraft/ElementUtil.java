@@ -189,6 +189,11 @@ public class ElementUtil {
 
 	public static String[] getAllCommandArguments() {
 		return DataListLoader.loadDataList("argtypes").stream().map(DataListEntry::getName).toArray(String[]::new);
+  }
+  
+	public static String[] getAllSoundCategories() {
+		return DataListLoader.loadDataList("soundcategories").stream().map(DataListEntry::getName)
+				.toArray(String[]::new);
 	}
 
 	public static String[] getAllDamageSources() {
@@ -223,6 +228,10 @@ public class ElementUtil {
 
 	public static String[] loadMapColors() {
 		return DataListLoader.loadDataList("mapcolors").stream().map(DataListEntry::getName).toArray(String[]::new);
+	}
+
+	public static String[] loadScreens() {
+		return DataListLoader.loadDataList("screens").stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
 	public static String[] loadAllDimensions(Workspace workspace) {

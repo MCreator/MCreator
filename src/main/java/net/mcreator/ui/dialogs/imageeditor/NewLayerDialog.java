@@ -37,7 +37,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class NewLayerDialog extends MCreatorDialog {
-	private final String[] layerTypes = { "Transparency", "Color", "Template" };
+	private final String[] layerTypes = { L10N.t("dialog.imageeditor.transparency"),
+			L10N.t("dialog.imageeditor.color_layer_type"), L10N.t("dialog.imageeditor.template") };
 
 	private ResourcePointer selection;
 	private final List<ResourcePointer> templatesSorted;
@@ -80,7 +81,7 @@ public class NewLayerDialog extends MCreatorDialog {
 		JSpinner offsetX = new JSpinner(new SpinnerNumberModel(0, -10000, 10000, 1));
 		JSpinner offsetY = new JSpinner(new SpinnerNumberModel(0, -10000, 10000, 1));
 
-		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("action.common.create");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));

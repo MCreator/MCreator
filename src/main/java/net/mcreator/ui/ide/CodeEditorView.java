@@ -34,6 +34,7 @@ import net.mcreator.ui.ide.autocomplete.CustomJSCCache;
 import net.mcreator.ui.ide.autocomplete.StringCompletitionProvider;
 import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.SlickTreeUI;
@@ -297,8 +298,7 @@ public class CodeEditorView extends ViewBase {
 			bars.add("Center", sed);
 			bars.add("South", rep);
 		} else {
-			ro.setText(
-					"This is (decompiled/provided) source code and is read-only and intended for internal reference and educational use only");
+			ro.setText(L10N.t("ide.warnings.read_only"));
 			bars.add("North", ro);
 			bars.add("South", sed);
 			ro.setVisible(true);
@@ -326,7 +326,7 @@ public class CodeEditorView extends ViewBase {
 							fa.actionRegistry.buildWorkspace.doAction();
 							if (CodeEditorView.this.mouseEvent != null)
 								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
-										"Code saved and build started");
+										L10N.t("ide.tips.save_and_build"));
 						}
 					});
 
@@ -339,7 +339,7 @@ public class CodeEditorView extends ViewBase {
 							reformatTheCodeOrganiseAndFixImports();
 							if (CodeEditorView.this.mouseEvent != null)
 								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
-										"Reformatted and organized code and imports");
+										L10N.t("ide.tips.reformat_and_organize_imports"));
 						}
 					});
 
@@ -353,7 +353,7 @@ public class CodeEditorView extends ViewBase {
 							fa.actionRegistry.runClient.doAction();
 							if (CodeEditorView.this.mouseEvent != null)
 								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
-										"Code saved and Minecraft launched");
+										L10N.t("ide.tips.save_and_launch"));
 						}
 					});
 
@@ -487,7 +487,8 @@ public class CodeEditorView extends ViewBase {
 							}
 							disableJumpToMode();
 						} else {
-							new FocusableTip(te, null).toolTipRequested(mouseEvent, "Failed to find declaration!");
+							new FocusableTip(te, null)
+									.toolTipRequested(mouseEvent, L10N.t("ide.errors.failed_find_declaration"));
 						}
 					}
 					jumpToMode = false;
@@ -645,9 +646,7 @@ public class CodeEditorView extends ViewBase {
 		this.fileOwner = fileOwner;
 		boolean codeLocked = this.fileOwner.isCodeLocked();
 		if (!codeLocked) {
-			setCustomNotice(this.fileOwner.getName()
-							+ " was created from MCreator's interface. You need to lock its code to prevent the code from being overwritten!",
-					new Color(0x31332F));
+			setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()), new Color(0x31332F));
 		}
 	}
 
@@ -655,16 +654,9 @@ public class CodeEditorView extends ViewBase {
 		if (this.fileOwner != null) {
 			boolean codeLocked = this.fileOwner.isCodeLocked();
 			if (!codeLocked) {
-				Object[] options = { "Lock the code for MCreator and save", "Save without locking" };
-				int n = JOptionPane.showOptionDialog(mcreator,
-						"<html><b>You are trying to save unlocked mod file!</b><br>"
-								+ "<br>This means that MCreator might overwrite your changes in some cases.<br>"
-								+ "To prevent this, you can lock the code.<br><br>"
-								+ "If the code is locked, MCreator won't change the source code, but this means that when<br>"
-								+ "updating MCreator or changing Minecraft version, changes and fixes won't be applied<br>"
-								+ "to the elements that are locked, but will need to be done manually.<br>"
-								+ "<br><small>Please read the wiki page on MCreator's website about locking code before using this action.",
-						"Overwriting MCreator generated file", JOptionPane.YES_NO_CANCEL_OPTION,
+				Object[] options = { L10N.t("ide.actions.lock_and_save"), L10N.t("ide.actions.save_without_locking") };
+				int n = JOptionPane.showOptionDialog(mcreator, L10N.t("ide.warnings.save_unlocked_element"),
+						L10N.t("ide.warnings.save_unlocked_element.title"), JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
 				if (n == 0) {
@@ -672,8 +664,7 @@ public class CodeEditorView extends ViewBase {
 					mcreator.getWorkspace().updateModElement(this.fileOwner);
 					ro.setVisible(false);
 				} else {
-					setCustomNotice(this.fileOwner.getName()
-									+ " was created from MCreator's interface. You need to lock its code to prevent the code from being overwritten!",
+					setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()),
 							new Color(0x31332F));
 				}
 			}
@@ -684,12 +675,11 @@ public class CodeEditorView extends ViewBase {
 		MCreatorTabs.Tab fileTab = new MCreatorTabs.Tab(this, fileWorkingOn, false);
 		fileTab.setTabClosingListener(tab -> {
 			if (((CodeEditorView) tab.getContent()).changed) {
-				Object[] options = { "Close and save", "Close", "Cancel" };
-				int res = JOptionPane.showOptionDialog(mcreator,
-						"<html><b>The file " + ((CodeEditorView) tab.getContent()).fileWorkingOn.getName()
-								+ " has not been saved.</b><br>Please select desired action to solve this conflict:",
-						"Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options,
-						options[0]);
+				Object[] options = { L10N.t("ide.action.close_and_save"), L10N.t("common.close"),
+						UIManager.getString("OptionPane.cancelButtonText") };
+				int res = JOptionPane.showOptionDialog(mcreator, L10N.t("ide.warnings.file_not_saved",
+						((CodeEditorView) tab.getContent()).fileWorkingOn.getName()), L10N.t("common.warning"),
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 				if (res == 0) {
 					((CodeEditorView) tab.getContent()).saveCode();
 					return true;

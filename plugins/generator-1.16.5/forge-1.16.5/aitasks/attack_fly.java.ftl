@@ -12,26 +12,26 @@ this.goalSelector.addGoal(${customBlockIndex+1}, new Goal() {
 
 	public boolean shouldExecute() {
 		if (CustomEntity.this.getAttackTarget() != null && !CustomEntity.this.getMoveHelper().isUpdating()) {
-			<#if hasCondition(conditions[0])>
+			<#if hasProcedure(conditions[0])>
 			double x = CustomEntity.this.getPosX();
 			double y = CustomEntity.this.getPosY();
 			double z = CustomEntity.this.getPosZ();
 			Entity entity = CustomEntity.this;
 			</#if>
-			return <#if hasCondition(conditions[0])><@procedureOBJToConditionCode conditions[0]/><#else>true</#if>;
+			return <#if hasProcedure(conditions[0])><@procedureOBJToConditionCode conditions[0]/><#else>true</#if>;
 		} else {
 			return false;
 		}
 	}
 
 	@Override public boolean shouldContinueExecuting() {
-		<#if hasCondition(conditions[1])>
+		<#if hasProcedure(conditions[1])>
 		double x = CustomEntity.this.getPosX();
 		double y = CustomEntity.this.getPosY();
 		double z = CustomEntity.this.getPosZ();
 		Entity entity = CustomEntity.this;
 		</#if>
-		return <#if hasCondition(conditions[1])><@procedureOBJToConditionCode conditions[1]/> &&</#if>
+		return <#if hasProcedure(conditions[1])><@procedureOBJToConditionCode conditions[1]/> &&</#if>
 			CustomEntity.this.getMoveHelper().isUpdating() && CustomEntity.this.getAttackTarget() != null && CustomEntity.this.getAttackTarget().isAlive();
 	}
 

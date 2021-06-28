@@ -212,6 +212,8 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllFluids(workspace);
 		case "sound":
 			return ElementUtil.getAllSounds(workspace);
+		case "soundcategory":
+			return ElementUtil.getAllSoundCategories();
 		case "particle":
 			return ElementUtil.loadAllParticles(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "direction":
@@ -249,8 +251,7 @@ public class BlocklyJavascriptBridge {
 			retval = workspace.getModElements().stream().filter(mod -> {
 				if (mod.getType() == ModElementType.PROCEDURE) {
 					VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableTypeLoader.INSTANCE
-									.fromName((String) mod.getMetadata("return_type")) :
+							VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
 							null;
 					return returnTypeCurrent == VariableTypeLoader.INSTANCE
 							.fromName(StringUtils.removeStart(type, "procedure_retval_"));
