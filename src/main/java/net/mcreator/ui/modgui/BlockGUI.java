@@ -297,8 +297,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.common.event_on_block_placed_by"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/blockstate:blockstate"));
 		onRightClicked = new ProcedureSelector(this.withEntry("block/when_right_clicked"), mcreator,
-				L10N.t("elementgui.block.event_on_right_clicked"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate"));
+				L10N.t("elementgui.block.event_on_right_clicked"), VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE,
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate"))
+				.makeReturnValueOptional();
 		onRedstoneOn = new ProcedureSelector(this.withEntry("block/on_redstone_on"), mcreator,
 				L10N.t("elementgui.block.event_on_redstone_on"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
