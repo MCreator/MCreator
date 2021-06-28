@@ -47,7 +47,7 @@ public class WorkspaceGeneratorSetupDialog {
 		AtomicBoolean setupOk = new AtomicBoolean(true);
 
 		Thread t = new Thread(() -> {
-			if (m.getGeneratorConfiguration().getJDKVersion() != null) {
+			if (m.getGeneratorConfiguration().getJDKVersionOverride() != null) {
 				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
 						L10N.t("dialog.setup_workspace.step.jdk"));
 				dial.addProgress(p0);

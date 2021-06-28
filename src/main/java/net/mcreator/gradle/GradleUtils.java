@@ -84,16 +84,16 @@ public class GradleUtils {
 		}
 
 		// if the generator has a JDK, we set JAVA_HOME to generator's JDK
-		if (generatorConfiguration.getJDKVersion() != null) {
-			if ((OS.getOS() == OS.WINDOWS && (UserFolderManager.getSpecificJDK(generatorConfiguration.getJDKVersion()
-					+ "/bin/javac.exe").isFile() || UserFolderManager.getSpecificJDK(generatorConfiguration.getJDKVersion()
+		if (generatorConfiguration.getJDKVersionOverride() != null) {
+			if ((OS.getOS() == OS.WINDOWS && (UserFolderManager.getStoredJDKFolderForVersion(generatorConfiguration.getJDKVersionOverride()
+					+ "/bin/javac.exe").isFile() || UserFolderManager.getStoredJDKFolderForVersion(generatorConfiguration.getJDKVersionOverride()
 					+ "bin/javac").isFile()))
-				|| (OS.getOS() == OS.MAC && (UserFolderManager.getSpecificJDK(generatorConfiguration.getJDKVersion()
+				|| (OS.getOS() == OS.MAC && (UserFolderManager.getStoredJDKFolderForVersion(generatorConfiguration.getJDKVersionOverride()
 					+ "/Contents/Home/bin/javac").isFile()))
-				|| (OS.getOS() == OS.LINUX && (UserFolderManager.getSpecificJDK(generatorConfiguration.getJDKVersion()
+				|| (OS.getOS() == OS.LINUX && (UserFolderManager.getStoredJDKFolderForVersion(generatorConfiguration.getJDKVersionOverride()
 					+ "/bin/javac").isFile()))) {
 				return FilenameUtils.normalize(
-						UserFolderManager.getSpecificJDK(generatorConfiguration.getJDKVersion()).getAbsolutePath());
+						UserFolderManager.getStoredJDKFolderForVersion(generatorConfiguration.getJDKVersionOverride()).getAbsolutePath());
 			}
 		}
 

@@ -22,7 +22,6 @@ package net.mcreator.ui.action.impl.workspace;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
-import net.mcreator.io.zip.ZipIO;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,9 +34,9 @@ public class SDKDownloader {
 	private static final Logger LOG = LogManager.getLogger("Setup JDK");
 
 	public static boolean downloadJDK(GeneratorConfiguration genConfig) {
-		String jdkVersion = genConfig.getJDKVersion();
+		String jdkVersion = genConfig.getJDKVersionOverride();
 		if (jdkVersion != null) {
-			if (!UserFolderManager.getSpecificJDK(jdkVersion + "/").exists()) {
+			if (!UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + "/").exists()) {
 				LOG.info("Downloading JDK: " + jdkVersion);
 				try {
 					String fileExtension;
@@ -48,7 +47,7 @@ public class SDKDownloader {
 					FileUtils.copyURLToFile(
 							new URL("https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion + "/" + OS
 									.getOS() + "/x64/jdk/hotspot/normal/adoptopenjdk"),
-							UserFolderManager.getSpecificJDK(jdkVersion + fileExtension));
+							UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension));
 
 				} catch (IOException e) {
 					LOG.error("Could not download JDK: " + jdkVersion + ". Returning to the workspace selector.", e.getMessage());
