@@ -163,8 +163,12 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			int y = pos.getY();
 			int z = pos.getZ();
 			ItemStack itemstack = context.getItem();
+			<#if hasReturnValue(data.onRightClickedOnBlock)>
+			return <@procedureOBJToActionResultTypeCode data.onRightClickedOnBlock/>;
+			<#else>
 			<@procedureOBJToCode data.onRightClickedOnBlock/>
 			return retval;
+			</#if>
 		}
 		</#if>
 
