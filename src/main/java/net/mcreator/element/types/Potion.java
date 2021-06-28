@@ -56,7 +56,7 @@ public class Potion extends GeneratableElement {
 		}
 
 		public boolean doesShowParticles() {
-			return true;
+			return showParticles;
 		}
 
 		public int getLiquidColor(Workspace workspace) {

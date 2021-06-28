@@ -67,13 +67,15 @@ public class JPotionListEntry extends JPanel {
 				L10N.label("elementgui.potion.amplifier")));
 		add(amplifier);
 
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potion/show_particles"),
+				L10N.label("elementgui.potion.show_particles")));
+		add(showParticles);
+
 		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potion/ambient"),
 				L10N.label("elementgui.potion.ambient")));
 		add(ambient);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potion/show_particles"),
-				L10N.label("elementgui.potion.show_particles")));
-		add(showParticles);
+		showParticles.setSelected(true);
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.potion.remove_entry"));
