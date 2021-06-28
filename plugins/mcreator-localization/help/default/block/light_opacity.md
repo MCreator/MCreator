@@ -1,3 +1,2 @@
-This property makes the block allow or not allow the light to pass through, 
-126 makes it semi-transparent (only in some Minecraft versions), 255 will block all light (default value), 
-and 0 will allow all light through.
+This property determines how much the light level decreases when going through this block. For example, a value of 15
+will block all the light, a value of 0 will make the block transparent for light.

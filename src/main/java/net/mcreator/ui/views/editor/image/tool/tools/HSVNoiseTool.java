@@ -21,6 +21,7 @@ package net.mcreator.ui.views.editor.image.tool.tools;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
 import net.mcreator.ui.dialogs.imageeditor.HSVNoiseDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
@@ -31,8 +32,9 @@ public class HSVNoiseTool extends AbstractTool {
 	private final MCreator window;
 
 	public HSVNoiseTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager, MCreator window) {
-		super("Noise tool", "A tool for adding noise to layers", UIRES.get("img_editor.noise"), canvas, colorSelector,
-				versionManager);
+		super(L10N.t("dialog.image_maker.tools.types.noise"),
+				L10N.t("dialog.image_maker.tools.types.noise_description"), UIRES.get("img_editor.noise"), canvas,
+				colorSelector, versionManager);
 		this.window = window;
 		noSettings(true);
 	}

@@ -980,6 +980,11 @@ public class TestWorkspaceDataProvider {
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
+			item.hasDispenseBehavior = _true;
+			item.dispenseSuccessCondition = (!_true && !emptyLists) ? null : new Procedure("condition1");
+			item.dispenseResultItemstack = !_true ?
+					null :
+					(emptyLists ? new Procedure("itemstack1") : new Procedure("procedure11"));
 			if (!emptyLists) {
 				item.specialInfo = StringUtils
 						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
@@ -1100,8 +1105,8 @@ public class TestWorkspaceDataProvider {
 			block.slipperiness = 12.342;
 			block.speedFactor = 34.632;
 			block.jumpFactor = 17.732;
-			block.lightOpacity = new int[] { 123, 25, 0,
-					35 }[valueIndex]; // third is 0 because third index for model is cross which requires transparency;
+			block.lightOpacity = new int[] { 7, 2, 0,
+					3 }[valueIndex]; // third is 0 because third index for model is cross which requires transparency;
 			block.material = new Material(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadMaterials()));
 			block.tickRate = 24;

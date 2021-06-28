@@ -94,11 +94,11 @@ public class ProgressDialog extends MCreatorDialog {
 		});
 		lo.start();
 	}
-	
+
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 
-		if(!visible && mcreator != null)
+		if (!visible && mcreator != null)
 			mcreator.getApplication().getTaskbarIntegration().clearState(mcreator);
 	}
 

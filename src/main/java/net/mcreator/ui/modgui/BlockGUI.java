@@ -117,7 +117,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 64, 1));
-	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(255, 0, 255, 1));
+	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 1, 9999999, 1));
 
@@ -308,8 +308,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
+				VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
 		emittedRedstonePower = new NumberProcedureSelector(null, mcreator,
 				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)),
@@ -352,6 +352,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 				if (!isEditingMode()) {
 					transparencyType.setSelectedItem("CUTOUT_MIPPED");
+					lightOpacity.setValue(0);
 				}
 			} else if (blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Leaves")) {
 				material.setEnabled(false);
@@ -385,13 +386,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 				hasGravity.setSelected(false);
 				rotationMode.setSelectedIndex(0);
 
-				if (blockBase.getSelectedItem().equals("Wall") || blockBase.getSelectedItem().equals("Fence")
-						|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem().equals("Door")
-						|| blockBase.getSelectedItem().equals("FenceGate") || blockBase.getSelectedItem()
-						.equals("EndRod") || blockBase.getSelectedItem().equals("PressurePlate")) {
-					if (!isEditingMode()) {
+				if (!isEditingMode()) {
+					lightOpacity.setValue(0);
+					if (blockBase.getSelectedItem().equals("Wall") || blockBase.getSelectedItem().equals("Fence")
+							|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem()
+							.equals("Door") || blockBase.getSelectedItem().equals("FenceGate") || blockBase
+							.getSelectedItem().equals("EndRod") || blockBase.getSelectedItem()
+							.equals("PressurePlate")) {
 						hasTransparency.setSelected(true);
-						lightOpacity.setValue(0);
 					}
 				}
 			}
