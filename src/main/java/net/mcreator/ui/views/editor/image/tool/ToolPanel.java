@@ -31,6 +31,7 @@ import net.mcreator.ui.views.editor.image.tool.component.ToolGroup;
 import net.mcreator.ui.views.editor.image.tool.tools.*;
 import net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
+import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -101,17 +102,17 @@ public class ToolPanel extends JSplitPane {
 	}
 
 	private void init() {
-		ToolGroup general = new ToolGroup("General");
-		ToolGroup drawing = new ToolGroup("Drawing");
-		ToolGroup filters = new ToolGroup("Filters");
-		ToolGroup constraints = new ToolGroup("Move and resize");
+		ToolGroup general = new ToolGroup(L10N.t("dialog.image_maker.tools.general"));
+		ToolGroup drawing = new ToolGroup(L10N.t("dialog.image_maker.tools.drawing"));
+		ToolGroup filters = new ToolGroup(L10N.t("dialog.image_maker.tools.filters"));
+		ToolGroup constraints = new ToolGroup(L10N.t("dialog.image_maker.tools.constraints"));
 
 		pt = new PencilTool(canvas, cs, layerPanel, versionManager);
 		JToggleButton pencil = register(pt, drawing);
 
-		addButton("Undo (Ctrl + Z)", "Undoes the last action", UIRES.get("img_editor.undo"), e -> versionManager.undo(),
+		addButton(L10N.t("dialog.image_maker.tools.undo"), L10N.t("dialog.image_maker.tools.undo_description"), UIRES.get("img_editor.undo"), e -> versionManager.undo(),
 				general);
-		addButton("Redo (Ctrl + Y)", "Redoes the last action", UIRES.get("img_editor.redo"), e -> versionManager.redo(),
+		addButton(L10N.t("dialog.image_maker.tools.redo"), L10N.t("dialog.image_maker.tools.redo_description"), UIRES.get("img_editor.redo"), e -> versionManager.redo(),
 				general);
 		register(new ResizeCanvasTool(canvas, cs, versionManager, frame), general);
 

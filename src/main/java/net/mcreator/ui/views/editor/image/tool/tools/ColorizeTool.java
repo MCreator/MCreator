@@ -25,13 +25,14 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
+import net.mcreator.ui.init.L10N;
 
 public class ColorizeTool extends AbstractTool {
 
 	private final MCreator window;
 
 	public ColorizeTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager, MCreator window) {
-		super("Colorize tool", "A tool for applying color to layers", UIRES.get("img_editor.colorize"), canvas,
+		super(L10N.t("dialog.image_maker.tools.types.colorize"), L10N.t("dialog.image_maker.tools.types.colorize_description"), UIRES.get("img_editor.colorize"), canvas,
 				colorSelector, versionManager);
 		this.window = window;
 		noSettings(true);

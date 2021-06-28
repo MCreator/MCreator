@@ -25,6 +25,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
+import net.mcreator.ui.init.L10N;
 
 import java.awt.event.MouseEvent;
 
@@ -33,7 +34,7 @@ public class ResizeTool extends AbstractTool {
 	private final MCreator window;
 
 	public ResizeTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager, MCreator window) {
-		super("Resize tool", "A tool for resizing layers", UIRES.get("img_editor.resize"), canvas, colorSelector,
+		super(L10N.t("dialog.image_maker.tools.types.resize"), L10N.t("dialog.image_maker.tools.types.resize_description"), UIRES.get("img_editor.resize"), canvas, colorSelector,
 				versionManager);
 		this.window = window;
 		noSettings(true);

@@ -20,6 +20,7 @@ package net.mcreator.ui.views.editor.image.tool.component;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
@@ -36,16 +37,16 @@ public class ColorSelector extends JPanel {
 	public ColorSelector(MCreator f) {
 		super(null);
 
-		foregroundColor.setToolTipText("Foreground color");
+		foregroundColor.setToolTipText(L10N.t("dialog.image_maker.tools.component.colorselector_foreground"));
 		foregroundColor.setMargin(new Insets(0, 0, 0, 0));
 		foregroundColor.setBounds(new Rectangle(0, 0, 40, 30));
 
-		backgroundColor.setToolTipText("Background color");
+		backgroundColor.setToolTipText(L10N.t("dialog.image_maker.tools.component.colorselector_background"));
 		backgroundColor.setMargin(new Insets(0, 0, 0, 0));
 		backgroundColor.setBounds(new Rectangle(20, 20, 40, 30));
 
 		JButton reset = new JButton();
-		reset.setToolTipText("Reset foreground and background colors");
+		reset.setToolTipText(L10N.t("dialog.image_maker.tools.component.colorselector_reset"));
 		reset.setIcon(UIRES.get("16px.reset"));
 		reset.setMargin(new Insets(0, 0, 0, 0));
 		reset.setBounds(new Rectangle(0, 34, 16, 16));
@@ -53,7 +54,7 @@ public class ColorSelector extends JPanel {
 		reset.setBorder(BorderFactory.createEmptyBorder());
 
 		JButton swap = new JButton();
-		swap.setToolTipText("Swap foreground and background colors");
+		swap.setToolTipText(L10N.t("dialog.image_maker.tools.component.colorselector_swap"));
 		swap.setIcon(UIRES.get("16px.swap"));
 		swap.setMargin(new Insets(0, 0, 0, 0));
 		swap.setBounds(new Rectangle(44, 0, 16, 16));
@@ -62,7 +63,7 @@ public class ColorSelector extends JPanel {
 
 		foregroundColor.addActionListener(e -> {
 			JColor.colorChooser.setColor(foreground);
-			dialog = JColorChooser.createDialog(f, "Select foreground color: ", true, JColor.colorChooser, event -> {
+			dialog = JColorChooser.createDialog(f, L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), true, JColor.colorChooser, event -> {
 				Color c = JColor.colorChooser.getColor();
 				if (c != null) {
 					foreground = c;
@@ -75,7 +76,7 @@ public class ColorSelector extends JPanel {
 
 		backgroundColor.addActionListener(e -> {
 			JColor.colorChooser.setColor(background);
-			dialog = JColorChooser.createDialog(f, "Select background color: ", true, JColor.colorChooser, event -> {
+			dialog = JColorChooser.createDialog(f, L10N.t("dialog.image_maker.tools.component.colorselector_select_background"), true, JColor.colorChooser, event -> {
 				Color c = JColor.colorChooser.getColor();
 				if (c != null) {
 					background = c;
