@@ -41,9 +41,7 @@ import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
-import net.mcreator.ui.laf.renderer.LargeIconModListRender;
-import net.mcreator.ui.laf.renderer.ListIconModListRender;
-import net.mcreator.ui.laf.renderer.SmallIconModListRender;
+import net.mcreator.ui.laf.renderer.elementlist.*;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.modgui.ModTypeDropdown;
 import net.mcreator.ui.validation.Validator;
@@ -119,6 +117,8 @@ import java.util.stream.Collectors;
 
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
+
+	private final JButton view = L10N.button("workspace.elements.list.icon_size");
 
 	private final TransparentToolBar modElementsBar = new TransparentToolBar();
 
@@ -390,102 +390,131 @@ import java.util.stream.Collectors;
 		JComponent isize = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.icon_size"), 12);
 		isize.setToolTipText(L10N.t("workspace.elements.list.icon_size.tooltip"));
 		modElementsBar.add(isize);
+		view.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		view.setContentAreaFilled(false);
+		view.setOpaque(false);
+		view.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		ComponentUtils.deriveFont(view, 12);
+		modElementsBar.add(view);
 
-		JToggleButton largeIcons = new JToggleButton(L10N.t("workspace.elements.list.large"));
-		largeIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		largeIcons.setIcon(UIRES.get("16px.large.gif"));
-		largeIcons.setContentAreaFilled(false);
-		largeIcons.setOpaque(false);
-		largeIcons.addChangeListener(e -> {
-			if (largeIcons.isSelected())
-				largeIcons.setForeground(Color.white);
-			else
-				largeIcons.setForeground(Color.darkGray.brighter());
+		JRadioButtonMenuItem tilesIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.tiles"));
+		tilesIcons.addActionListener(e -> {
+			if (tilesIcons.isSelected()) {
+				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.TILES;
+				updateElementListRenderer();
+			}
 		});
+		tilesIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
+				== PreferencesData.WorkspaceIconSize.TILES);
+		Arrays.stream(tilesIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(tilesIcons)));
+		ComponentUtils.deriveFont(tilesIcons, 12);
+		tilesIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
+
+		JRadioButtonMenuItem largeIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.large"));
 		largeIcons.addActionListener(e -> {
 			if (largeIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.hidden.workspaceIconSize = PreferencesData.WorkspaceIconSize.LARGE;
+				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.LARGE;
 				updateElementListRenderer();
 			}
 		});
-		largeIcons.setSelected(
-				PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.LARGE);
+		largeIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
+				== PreferencesData.WorkspaceIconSize.LARGE);
 		Arrays.stream(largeIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(largeIcons)));
 		ComponentUtils.deriveFont(largeIcons, 12);
-		largeIcons.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-		modElementsBar.add(largeIcons);
+		largeIcons.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-		JToggleButton smallIcons = new JToggleButton(L10N.t("workspace.elements.list.small"));
-		smallIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		smallIcons.setIcon(UIRES.get("16px.small.gif"));
-		smallIcons.setContentAreaFilled(false);
-		smallIcons.setOpaque(false);
-		smallIcons.addChangeListener(e -> {
-			if (smallIcons.isSelected())
-				smallIcons.setForeground(Color.white);
-			else
-				smallIcons.setForeground(Color.darkGray.brighter());
+		JRadioButtonMenuItem mediumIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.medium"));
+		mediumIcons.addActionListener(e -> {
+			if (mediumIcons.isSelected()) {
+				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.MEDIUM;
+				updateElementListRenderer();
+			}
 		});
+		mediumIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
+				== PreferencesData.WorkspaceIconSize.MEDIUM);
+		Arrays.stream(mediumIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(mediumIcons)));
+		ComponentUtils.deriveFont(mediumIcons, 12);
+		mediumIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
+
+		JRadioButtonMenuItem smallIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.small"));
 		smallIcons.addActionListener(e -> {
 			if (smallIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.hidden.workspaceIconSize = PreferencesData.WorkspaceIconSize.SMALL;
+				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.SMALL;
 				updateElementListRenderer();
 			}
 		});
-		smallIcons.setSelected(
-				PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.SMALL);
+		smallIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
+				== PreferencesData.WorkspaceIconSize.SMALL);
 		Arrays.stream(smallIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(smallIcons)));
 		ComponentUtils.deriveFont(smallIcons, 12);
-		smallIcons.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-		modElementsBar.add(smallIcons);
+		smallIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 
-		JToggleButton listIcons = new JToggleButton(L10N.t("workspace.elements.list.list"));
-		listIcons.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		listIcons.setIcon(UIRES.get("16px.list.gif"));
-		listIcons.setContentAreaFilled(false);
-		listIcons.setOpaque(false);
-		listIcons.addChangeListener(e -> {
-			if (listIcons.isSelected())
-				listIcons.setForeground(Color.white);
-			else
-				listIcons.setForeground(Color.darkGray.brighter());
-		});
+		JRadioButtonMenuItem listIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.list"));
 		listIcons.addActionListener(e -> {
 			if (listIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.hidden.workspaceIconSize = PreferencesData.WorkspaceIconSize.LIST;
+				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.LIST;
 				updateElementListRenderer();
 			}
 		});
-		listIcons.setSelected(
-				PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.LIST);
+		listIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
+				== PreferencesData.WorkspaceIconSize.LIST);
 		Arrays.stream(listIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(listIcons)));
 		ComponentUtils.deriveFont(listIcons, 12);
-		listIcons.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-		modElementsBar.add(listIcons);
+		listIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
+
+		JRadioButtonMenuItem detailsIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.details"));
+		detailsIcons.addActionListener(e -> {
+			if (detailsIcons.isSelected()) {
+				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.DETAILS;
+				updateElementListRenderer();
+			}
+		});
+		detailsIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
+				== PreferencesData.WorkspaceIconSize.DETAILS);
+		Arrays.stream(detailsIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(detailsIcons)));
+		ComponentUtils.deriveFont(detailsIcons, 12);
+		detailsIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 
 		sp.addMouseWheelListener(new MouseAdapter() {
 			@Override public void mouseWheelMoved(MouseWheelEvent e) {
 				super.mouseWheelMoved(e);
 				if (e.isControlDown()) {
 					if (e.getWheelRotation() < 0) {
-						if (listIcons.isSelected())
-							smallIcons.doClick();
-						else
-							largeIcons.doClick();
-					} else {
-						if (largeIcons.isSelected())
-							smallIcons.doClick();
-						else
+						if (detailsIcons.isSelected()) {
 							listIcons.doClick();
+						} else if (listIcons.isSelected()) {
+							smallIcons.doClick();
+						} else if (smallIcons.isSelected()) {
+							mediumIcons.doClick();
+						} else if (mediumIcons.isSelected()) {
+							largeIcons.doClick();
+						} else if (largeIcons.isSelected()) {
+							tilesIcons.doClick();
+						}
+					} else {
+						if (tilesIcons.isSelected()) {
+							largeIcons.doClick();
+						} else if (largeIcons.isSelected()) {
+							mediumIcons.doClick();
+						} else if (mediumIcons.isSelected()) {
+							smallIcons.doClick();
+						} else if (smallIcons.isSelected()) {
+							listIcons.doClick();
+						} else if (listIcons.isSelected()) {
+							detailsIcons.doClick();
+						}
 					}
 				}
 			}
 		});
 
 		ButtonGroup buttonGroup = new ButtonGroup();
-		buttonGroup.add(smallIcons);
+		buttonGroup.add(tilesIcons);
 		buttonGroup.add(largeIcons);
+		buttonGroup.add(mediumIcons);
+		buttonGroup.add(smallIcons);
 		buttonGroup.add(listIcons);
+		buttonGroup.add(detailsIcons);
 
 		elementsCount.setHorizontalTextPosition(SwingConstants.LEFT);
 
@@ -532,9 +561,8 @@ import java.util.stream.Collectors;
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
 					e -> togglefilter("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
 					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
-
 		}
-		filter.addActionListener(e -> filterPopup.show(filter, 0, 25));
+		filter.addActionListener(e -> filterPopup.show(filter, 0, 26));
 
 		JPopupMenu sortPopup = new JPopupMenu();
 		EventButtonGroup sortOne = new EventButtonGroup();
@@ -563,7 +591,24 @@ import java.util.stream.Collectors;
 		sortTwo.add(sortLoadingOrder);
 		sortPopup.add(sortLoadingOrder);
 
-		sort.addActionListener(e -> sortPopup.show(sort, 0, 25));
+		sort.addActionListener(e -> sortPopup.show(sort, 0, 26));
+
+		JPopupMenu viewPopup = new JPopupMenu();
+		viewPopup.add(tilesIcons);
+		viewPopup.add(largeIcons);
+		viewPopup.add(mediumIcons);
+		viewPopup.add(smallIcons);
+		viewPopup.add(listIcons);
+		viewPopup.add(detailsIcons);
+
+		tilesIcons.setIcon(UIRES.get("16px.tiles.gif"));
+		largeIcons.setIcon(UIRES.get("16px.large.gif"));
+		mediumIcons.setIcon(UIRES.get("16px.medium.gif"));
+		smallIcons.setIcon(UIRES.get("16px.small.gif"));
+		listIcons.setIcon(UIRES.get("16px.list.gif"));
+		detailsIcons.setIcon(UIRES.get("16px.details.gif"));
+
+		view.addActionListener(e -> viewPopup.show(view, 0, 23));
 
 		if (PreferencesManager.PREFERENCES.hidden.workspaceSortType == PreferencesData.WorkspaceSortType.NAME) {
 			sortName.setSelected(true);
@@ -612,8 +657,10 @@ import java.util.stream.Collectors;
 		btt1.setFocusPainted(false);
 		btt1.setOpaque(true);
 		btt1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		btt1.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btt1.addActionListener(actionEvent -> {
+		btt1.setCursor(new
+
+				Cursor(Cursor.HAND_CURSOR));
+		btt1.addActionListener(e -> {
 			btt1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -632,7 +679,7 @@ import java.util.stream.Collectors;
 		btt2.setOpaque(true);
 		btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		btt2.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btt2.addActionListener(actionEvent -> {
+		btt2.addActionListener(e -> {
 			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			btt2.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
@@ -653,7 +700,7 @@ import java.util.stream.Collectors;
 		btt3.setOpaque(true);
 		btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		btt3.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btt3.addActionListener(actionEvent -> {
+		btt3.addActionListener(e -> {
 			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			btt3.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -674,7 +721,7 @@ import java.util.stream.Collectors;
 		btt6.setOpaque(true);
 		btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		btt6.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btt6.addActionListener(actionEvent -> {
+		btt6.addActionListener(e -> {
 			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -695,7 +742,7 @@ import java.util.stream.Collectors;
 		btt7.setOpaque(true);
 		btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		btt7.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btt7.addActionListener(actionEvent -> {
+		btt7.addActionListener(e -> {
 			if (vcsPan.panelShown()) {
 				btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 				btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -714,6 +761,7 @@ import java.util.stream.Collectors;
 		slo.add("West", rotatablePanel);
 
 		add("Center", slo);
+
 		setOpaque(false);
 
 		JPanel pne = new JPanel(new GridLayout(8, 1, 6, 6));
@@ -817,12 +865,10 @@ import java.util.stream.Collectors;
 		emptct.setLayout(new BoxLayout(emptct, BoxLayout.LINE_AXIS));
 		emptct.setOpaque(false);
 
-		emptct.add(ComponentUtils.deriveFont(L10N.label("workspace.elements.empty.tip_part1"), 24));
-
-		JLabel but1_empty = new JLabel(new ImageIcon(ImageUtils.resize(TiledImageCache.workspaceAdd.getImage(), 32)));
-		emptct.add(but1_empty);
-
-		emptct.add(ComponentUtils.deriveFont(L10N.label("workspace.elements.empty.tip_part2"), 24));
+		String[] workspaceEmptyTip = L10N.t("workspace.elements.empty.tip").split("%1");
+		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTip[0]), 24));
+		emptct.add(new JLabel(new ImageIcon(ImageUtils.resize(TiledImageCache.workspaceAdd.getImage(), 32))));
+		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTip[1]), 24));
 
 		JPanel emptbtpd = new JPanel(new BorderLayout());
 		emptbtpd.setOpaque(false);
@@ -831,8 +877,6 @@ import java.util.stream.Collectors;
 
 		mainp.add("ep", PanelUtils.totalCenterInPanel(emptbtpd));
 		mainp.add("sp", sp);
-
-		updateElementListRenderer();
 
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
@@ -898,6 +942,8 @@ import java.util.stream.Collectors;
 		contextMenu.add(duplicateElement);
 		contextMenu.add(lockElement);
 		contextMenu.add(idElement);
+
+		updateElementListRenderer();
 	}
 
 	public void switchFolder(FolderElement switchTo) {
@@ -936,21 +982,54 @@ import java.util.stream.Collectors;
 	}
 
 	private void updateElementListRenderer() {
-		if (PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.LARGE) {
-			list.setCellRenderer(new LargeIconModListRender());
+		if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
+				== PreferencesData.WorkspaceIconSize.TILES) {
+			list.setCellRenderer(new TilesModListRender());
 			list.setFixedCellHeight(72);
 			list.setFixedCellWidth(287);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceIconSize == PreferencesData.WorkspaceIconSize.SMALL) {
+			view.setIcon(UIRES.get("16px.tiles.gif"));
+			view.setText(L10N.t("workspace.elements.list.tiles"));
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
+				== PreferencesData.WorkspaceIconSize.LARGE) {
+			list.setCellRenderer(new LargeIconModListRender());
+			list.setFixedCellHeight(97);
+			list.setFixedCellWidth(90);
+			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+			view.setIcon(UIRES.get("16px.large.gif"));
+			view.setText(L10N.t("workspace.elements.list.large"));
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
+				== PreferencesData.WorkspaceIconSize.MEDIUM) {
+			list.setCellRenderer(new MediumIconModListRender());
+			list.setFixedCellHeight(52);
+			list.setFixedCellWidth(287);
+			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+			view.setIcon(UIRES.get("16px.medium.gif"));
+			view.setText(L10N.t("workspace.elements.list.medium"));
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
+				== PreferencesData.WorkspaceIconSize.SMALL) {
 			list.setCellRenderer(new SmallIconModListRender(true));
 			list.setFixedCellHeight(32);
 			list.setFixedCellWidth(200);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		} else {
+			view.setIcon(UIRES.get("16px.small.gif"));
+			view.setText(L10N.t("workspace.elements.list.small"));
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
+				== PreferencesData.WorkspaceIconSize.LIST) {
 			list.setCellRenderer(new ListIconModListRender());
+			list.setFixedCellHeight(28);
+			list.setFixedCellWidth(-1);
+			list.setLayoutOrientation(JList.VERTICAL);
+			view.setIcon(UIRES.get("16px.list.gif"));
+			view.setText(L10N.t("workspace.elements.list.list"));
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
+				== PreferencesData.WorkspaceIconSize.DETAILS) {
+			list.setCellRenderer(new DetailsIconModListRender());
 			list.setFixedCellHeight(24);
 			list.setFixedCellWidth(-1);
 			list.setLayoutOrientation(JList.VERTICAL);
+			view.setIcon(UIRES.get("16px.details.gif"));
+			view.setText(L10N.t("workspace.elements.list.details"));
 		}
 	}
 
@@ -967,14 +1046,16 @@ import java.util.stream.Collectors;
 	}
 
 	private void lockCode() {
-		Object[] options = { "Lock/unlock the code", "Cancel" };
+		Object[] options = { L10N.t("workspace.elements.lock_modelement_lock_unlock"),
+				UIManager.getString("OptionPane.cancelButtonText") };
 		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("workspace.elements.lock_modelement_message"),
 				L10N.t("workspace.elements.lock_modelement_confirm"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.WARNING_MESSAGE, null, options, options[1]);
 		if (n == 0) {
 			ProgressDialog dial = new ProgressDialog(mcreator, L10N.t("workspace.elements.lock_modelement_title"));
 			Thread t = new Thread(() -> {
-				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit("Locking/unlocking mod elements");
+				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
+						L10N.t("workspace.elements.lock_modelement_locking_unlocking"));
 				dial.addProgress(p0);
 
 				List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
@@ -999,7 +1080,7 @@ import java.util.stream.Collectors;
 				// if we have new unlocked elements, we recreate their code
 				if (elementsThatGotUnlocked.size() > 0) {
 					ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
-							"Regenerating code of unlocked elements");
+							L10N.t("workspace.elements.lock_modelement_regeneration"));
 					dial.addProgress(p1);
 					int i = 0;
 					for (ModElement mod : elementsThatGotUnlocked) {
@@ -1015,7 +1096,8 @@ import java.util.stream.Collectors;
 					p1.ok();
 					dial.refreshDisplay();
 
-					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit("Rebuilding workspace");
+					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
+							L10N.t("workspace.elements.lock_modelement_rebuilding_workspace"));
 					dial.addProgress(p2);
 					mcreator.actionRegistry.buildWorkspace.doAction();
 					p2.ok();
@@ -1032,16 +1114,16 @@ import java.util.stream.Collectors;
 		if (list.getSelectedValue() instanceof ModElement) {
 			ModElement mu = (ModElement) list.getSelectedValue();
 			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
-				String modName = VOptionPane.showInputDialog(mcreator,
-						"<html><font style=\"font-size: 13px;\">Enter the name of the new mod element:</font><br><small>"
-								+ "This mod element will be the same as " + mu.getName()
-								+ ", but with this name.</font>", "Duplicate " + mu.getName(), mu.getElementIcon(),
-						new OptionPaneValidatior() {
-							@Override public Validator.ValidationResult validate(JComponent component) {
-								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component)
-										.validate();
-							}
-						}, "Duplicate", "Cancel");
+				String modName = VOptionPane
+						.showInputDialog(mcreator, L10N.t("workspace.elements.duplicate_message", mu.getName()),
+								L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
+								new OptionPaneValidatior() {
+									@Override public Validator.ValidationResult validate(JComponent component) {
+										return new ModElementNameValidator(mcreator.getWorkspace(),
+												(VTextField) component).validate();
+									}
+								}, L10N.t("workspace.elements.duplicate"),
+								UIManager.getString("OptionPane.cancelButtonText"));
 				if (modName != null && !modName.equals("")) {
 					modName = JavaConventions.convertToValidClassName(modName);
 
@@ -1114,9 +1196,7 @@ import java.util.stream.Collectors;
 			if (mu.isCodeLocked()) {
 				editCurrentlySelectedModElementAsCode(mu, component, x, y);
 			} else {
-				JOptionPane.showMessageDialog(null,
-						"<html>This mod does not have saved instance. If you want to make it editable,<br>you need to remake it.<br>"
-								+ "<small>You probably see this because you have updated MCreator and your mod was made before saving was possible.");
+				JOptionPane.showMessageDialog(null, L10N.t("workspace.elements.edit_modelement_nosavedinstance"));
 			}
 		}
 	}
@@ -1153,8 +1233,7 @@ import java.util.stream.Collectors;
 			if (list.getSelectedValue() != null) {
 				int n = JOptionPane.showConfirmDialog(mcreator,
 						L10N.t("workspace.elements.confirm_delete_message", list.getSelectedValuesList().size()),
-						L10N.t("workspace.elements.confirm_delete_title"), JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null);
+						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 
 				if (n == 0) {
 					AtomicBoolean buildNeeded = new AtomicBoolean(false);

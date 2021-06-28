@@ -69,18 +69,17 @@ public class NameMapper {
 		if (mcreator_prefix != null && origName.startsWith(mcreator_prefix)) {
 			String mcreator_map_template = (String) mapping.get("_mcreator_map_template");
 			if (mcreator_map_template != null) {
-				origName = origName.replaceAll(mcreator_prefix, "");
+				origName = origName.replace(mcreator_prefix, "");
 				String retval = GeneratorTokens.replaceTokens(workspace,
-						mcreator_map_template.replaceAll("@NAME", origName)
-								.replaceAll("@name", origName.toLowerCase(Locale.ENGLISH))
-								.replaceAll("@NAME", origName));
+						mcreator_map_template.replace("@NAME", origName)
+								.replace("@name", origName.toLowerCase(Locale.ENGLISH)).replace("@NAME", origName));
 				if (mcreator_map_template.contains("@registryname")) {
 					ModElement element = workspace.getModElementByName(origName);
 					if (element != null) {
-						retval = retval.replaceAll("@registryname", element.getRegistryName());
+						retval = retval.replace("@registryname", element.getRegistryName());
 					} else {
 						LOG.warn("Failed to determine registry name for: " + origName);
-						retval = retval.replaceAll("@registryname", UNKNOWN_ELEMENT);
+						retval = retval.replace("@registryname", UNKNOWN_ELEMENT);
 					}
 				}
 				return retval;

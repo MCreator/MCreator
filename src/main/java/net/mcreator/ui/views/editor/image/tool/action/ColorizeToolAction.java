@@ -19,12 +19,14 @@
 package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.tool.tools.ColorizeTool;
 
 public class ColorizeToolAction extends ToolChangeAction {
 	public ColorizeToolAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Colorize", "A tool for applying color to layers", ColorizeTool.class);
+		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.colorize"),
+				L10N.t("dialog.image_maker.tools.types.colorize_description"), ColorizeTool.class);
 		setIcon(UIRES.get("img_editor.colorize"));
 	}
 }

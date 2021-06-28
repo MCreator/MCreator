@@ -36,8 +36,8 @@ import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.minecraft.ProcedureSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
@@ -110,7 +110,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
 				L10N.t("elementgui.common.event_right_clicked_block"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction"));
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction/blockstate:blockstate"));
 		onEaten = new ProcedureSelector(this.withEntry("food/when_eaten"), mcreator,
 				L10N.t("elementgui.food.event_on_eaten"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
@@ -135,7 +135,8 @@ public class FoodGUI extends ModElementGUI<Food> {
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.food.event_make_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"))
+				.makeInline();
 
 		animation.setRenderer(new ItemTexturesComboBoxRenderer());
 

@@ -21,6 +21,7 @@ package net.mcreator.ui.views.editor.image.tool.tools;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
 import net.mcreator.ui.dialogs.imageeditor.ResizeCanvasDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
@@ -34,8 +35,9 @@ public class ResizeCanvasTool extends AbstractTool {
 
 	public ResizeCanvasTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager,
 			MCreator window) {
-		super("Resize canvas", "A tool for resizing the main canvas", UIRES.get("img_editor.resizecanvas"), canvas,
-				colorSelector, versionManager);
+		super(L10N.t("dialog.image_maker.tools.types.resizecanvas"),
+				L10N.t("dialog.image_maker.tools.types.resizecanvas_description"), UIRES.get("img_editor.resizecanvas"),
+				canvas, colorSelector, versionManager);
 		this.window = window;
 		noSettings(true);
 	}

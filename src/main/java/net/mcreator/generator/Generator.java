@@ -613,7 +613,7 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	public void loadOrCreateGradleCaches() throws GradleCacheImportFailedException {
-		File cacheFile = new File(workspace.getFolderManager().getWorkspaceCacheDir(), "gradleCache");
+		File cacheFile = new File(workspace.getFolderManager().getWorkspaceCacheDir(), "generatorGradleCache");
 		if (cacheFile.isFile()) {
 			String cache = FileIO.readFileToString(cacheFile);
 			generatorGradleCache = new GsonBuilder().disableHtmlEscaping().create()
@@ -638,7 +638,8 @@ public class Generator implements IGenerator, Closeable {
 
 		this.generatorGradleCache = new GeneratorGradleCache(this);
 		String cache = new GsonBuilder().disableHtmlEscaping().create().toJson(generatorGradleCache);
-		FileIO.writeStringToFile(cache, new File(workspace.getFolderManager().getWorkspaceCacheDir(), "gradleCache"));
+		FileIO.writeStringToFile(cache,
+				new File(workspace.getFolderManager().getWorkspaceCacheDir(), "generatorGradleCache"));
 	}
 
 	public GeneratorGradleCache getGradleCache() {

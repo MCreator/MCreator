@@ -69,17 +69,27 @@ import net.minecraft.block.material.Material;
 					.luminosity(${data.luminosity})
 					.density(${data.density})
 					.viscosity(${data.viscosity})
+					.temperature(${data.temperature})
 					<#if data.isGas>.gaseous()</#if>
 					.rarity(Rarity.${data.rarity})
 					<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
 					.sound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.emptySound}")))
 					</#if>)
 					.explosionResistance(${data.resistance}f)
+					<#if data.canMultiply>.canMultiply()</#if>
+					.tickRate(${data.flowRate})
+					.levelDecreasePerBlock(${data.levelDecrease})
+					.slopeFindDistance(${data.slopeFindDistance})
 					<#if data.generateBucket>.bucket(() -> bucket)</#if>
 					.block(() -> block);
 
+		<#if data.spawnParticles>
+		still = (FlowingFluid) new CustomFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
+		flowing = (FlowingFluid) new CustomFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
+		<#else>
 		still = (FlowingFluid) new ForgeFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
 		flowing = (FlowingFluid) new ForgeFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
+		</#if>
 
 		elements.blocks.add(() -> new FlowingFluidBlock(still,
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
@@ -108,9 +118,21 @@ import net.minecraft.block.material.Material;
 			}
 			</#if>
 
+			<#if data.lightOpacity == 0>
+			@Override
+			public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+				return true;
+			}
+			<#elseif data.lightOpacity != 1>
+			@Override
+			public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
+				return ${data.lightOpacity};
+			}
+			</#if>
+
 			<#if hasProcedure(data.onBlockAdded)>
-			@Override public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
-				super.onBlockAdded(state, world, pos, oldState, moving);
+			@Override public void onBlockAdded(BlockState blockstate, World world, BlockPos pos, BlockState oldState, boolean moving) {
+				super.onBlockAdded(blockstate, world, pos, oldState, moving);
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
@@ -119,8 +141,8 @@ import net.minecraft.block.material.Material;
             </#if>
 
 			<#if hasProcedure(data.onNeighbourChanges)>
-			public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
-				super.neighborChanged(state, world, pos, neighborBlock, fromPos, moving);
+			public void neighborChanged(BlockState blockstate, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
+				super.neighborChanged(blockstate, world, pos, neighborBlock, fromPos, moving);
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
@@ -129,8 +151,8 @@ import net.minecraft.block.material.Material;
 			</#if>
 
 			<#if hasProcedure(data.onTickUpdate)>
-			@Override public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-				super.tick(state, world, pos, random);
+			@Override public void tick(BlockState blockstate, ServerWorld world, BlockPos pos, Random random) {
+				super.tick(blockstate, world, pos, random);
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
@@ -140,8 +162,8 @@ import net.minecraft.block.material.Material;
 			</#if>
 
 			<#if hasProcedure(data.onEntityCollides)>
-			@Override public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-				super.onEntityCollision(state, world, pos, entity);
+			@Override public void onEntityCollision(BlockState blockstate, World world, BlockPos pos, Entity entity) {
+				super.onEntityCollision(blockstate, world, pos, entity);
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
@@ -151,8 +173,8 @@ import net.minecraft.block.material.Material;
 
 			<#if hasProcedure(data.onRandomUpdateEvent)>
 			@OnlyIn(Dist.CLIENT) @Override
-			public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-				super.animateTick(state, world, pos, random);
+			public void animateTick(BlockState blockstate, World world, BlockPos pos, Random random) {
+				super.animateTick(blockstate, world, pos, random);
 				PlayerEntity entity = Minecraft.getInstance().player;
 				int x = pos.getX();
 				int y = pos.getY();
@@ -186,6 +208,53 @@ import net.minecraft.block.material.Material;
 			.setRegistryName("${registryname}_bucket"));
 		</#if>
 	}
+
+	<#if data.spawnParticles>
+	public static abstract class CustomFlowingFluid extends ForgeFlowingFluid {
+		public CustomFlowingFluid(Properties properties) {
+			super(properties);
+		}
+
+		@OnlyIn(Dist.CLIENT)
+		@Override
+		public IParticleData getDripParticleData() {
+			return ${data.dripParticle};
+		}
+
+		public static class Source extends CustomFlowingFluid {
+			public Source(Properties properties) {
+				super(properties);
+			}
+
+			public int getLevel(IFluidState state) {
+				return 8;
+			}
+
+			public boolean isSource(IFluidState state) {
+				return true;
+			}
+		}
+
+		public static class Flowing extends CustomFlowingFluid {
+			public Flowing(Properties properties) {
+				super(properties);
+			}
+
+			protected void fillStateContainer(StateContainer.Builder<Fluid, IFluidState> builder) {
+				super.fillStateContainer(builder);
+				builder.add(LEVEL_1_8);
+			}
+
+			public int getLevel(IFluidState state) {
+				return state.get(LEVEL_1_8);
+			}
+
+			public boolean isSource(IFluidState state) {
+				return false;
+			}
+		}
+	}
+	</#if>
 
 	<#if (data.spawnWorldTypes?size > 0)>
 	@Override public void init(FMLCommonSetupEvent event) {
@@ -226,7 +295,7 @@ import net.minecraft.block.material.Material;
 					if(!dimensionCriteria)
 						return false;
 
-					<#if hasCondition(data.generateCondition)>
+					<#if hasProcedure(data.generateCondition)>
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();

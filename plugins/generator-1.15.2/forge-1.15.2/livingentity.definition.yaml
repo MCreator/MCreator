@@ -1,5 +1,5 @@
 templates:
-  - template: mob.java.ftl
+  - template: livingentity.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEEntity.java"
   - template: json/spawn_egg.json.ftl
     writer: json

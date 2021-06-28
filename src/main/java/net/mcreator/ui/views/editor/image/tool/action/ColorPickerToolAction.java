@@ -19,13 +19,14 @@
 package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.tool.tools.ColorPickerTool;
 
 public class ColorPickerToolAction extends ToolChangeAction {
 	public ColorPickerToolAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Color picker", "A tool that sets current foreground color to the color under the cursor",
-				ColorPickerTool.class);
+		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.colorpicker"),
+				L10N.t("dialog.image_maker.tools.types.colorpicker_description"), ColorPickerTool.class);
 		setIcon(UIRES.get("img_editor.picker"));
 	}
 }

@@ -26,7 +26,7 @@ import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.ProcedureSelector;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
@@ -61,7 +61,7 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 					continue;
 				if (component instanceof IMachineNamedComponent && component.name.equals(textname))
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							L10N.t("dialog.gui.textfield_name_already_exists"));
+							L10N.t("common.name_already_exists"));
 			}
 			return validator.validate();
 		});

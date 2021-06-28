@@ -379,7 +379,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 								String nameinrow = localVars.get(i).getName();
 								if (textname.equals(nameinrow))
 									return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-											L10N.t("elementgui.procedure.name_already_exists"));
+											L10N.t("common.name_already_exists"));
 							}
 							for (Dependency dependency : dependenciesArrayList) {
 								String nameinrow = dependency.getName();
@@ -389,7 +389,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 							}
 							return validator.validate();
 						}
-					}, VariableTypeLoader.INSTANCE.getAllVariableTypes());
+					}, VariableTypeLoader.INSTANCE.getLocalVariableTypes(mcreator.getGeneratorConfiguration()));
 			if (element != null) {
 				blocklyPanel.addLocalVariable(element.getName(), element.getType().getBlocklyVariableType());
 				localVars.addElement(element);
@@ -400,8 +400,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			VariableElement element = localVarsList.getSelectedValue();
 			if (element != null) {
 				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("elementgui.procedure.confirm_delete_var_msg"),
-						L10N.t("elementgui.procedure.confirm_delete_var_title"), JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
+						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (n == JOptionPane.YES_OPTION) {
 					blocklyPanel.removeLocalVariable(element.getName());
 					localVars.removeElement(element);

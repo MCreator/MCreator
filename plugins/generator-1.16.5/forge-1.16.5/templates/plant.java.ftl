@@ -35,6 +35,7 @@
 package ${package}.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.util.SoundEvent;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
@@ -170,7 +171,7 @@ import net.minecraft.block.material.Material;
 						if(!dimensionCriteria)
 							return false;
 
-						<#if hasCondition(data.generateCondition)>
+						<#if hasProcedure(data.generateCondition)>
 						int x = pos.getX();
 						int y = pos.getY();
 						int z = pos.getZ();
@@ -207,7 +208,7 @@ import net.minecraft.block.material.Material;
 						if(!dimensionCriteria)
 							return false;
 
-						<#if hasCondition(data.generateCondition)>
+						<#if hasProcedure(data.generateCondition)>
 						int x = pos.getX();
 						int y = pos.getY();
 						int z = pos.getZ();
@@ -259,7 +260,7 @@ import net.minecraft.block.material.Material;
 						if(!dimensionCriteria)
 							return false;
 
-			    		<#if hasCondition(data.generateCondition)>
+			    		<#if hasProcedure(data.generateCondition)>
 			    		    int x = pos.getX();
 			    			int y = pos.getY();
 			    			int z = pos.getZ();
@@ -324,7 +325,15 @@ import net.minecraft.block.material.Material;
 					.tickRandomly()
 					</#if>
 					.doesNotBlockMovement()
-					.sound(SoundType.${data.soundOnStep})
+					<#if data.isCustomSoundType>
+						.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
+						() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
+						() -> new SoundEvent(new ResourceLocation("${data.placeSound}")),
+						() -> new SoundEvent(new ResourceLocation("${data.hitSound}")),
+						() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))))
+					<#else>
+						.sound(SoundType.${data.soundOnStep})
+					</#if>
 					<#if data.unbreakable>
 					.hardnessAndResistance(-1, 3600000)
 					<#else>
@@ -440,16 +449,17 @@ import net.minecraft.block.material.Material;
             </#if>
         </#if>
 
-		<#if (data.canBePlacedOn?size > 0) || hasCondition(data.placingCondition)>
+		<#if (data.canBePlacedOn?size > 0) || hasProcedure(data.placingCondition)>
 			<#if data.plantType != "growapable">
 			@Override public boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-				<#if hasCondition(data.placingCondition)>
+				<#if hasProcedure(data.placingCondition)>
 					boolean additionalCondition = true;
 					if (worldIn instanceof IWorld) {
 						IWorld world = (IWorld) worldIn;
 						int x = pos.getX();
 						int y = pos.getY() + 1;
 						int z = pos.getZ();
+						BlockState blockstate = world.getBlockState(pos.up());
 						additionalCondition = <@procedureOBJToConditionCode data.placingCondition/>;
 					}
 				</#if>
@@ -462,20 +472,20 @@ import net.minecraft.block.material.Material;
 						<#if canBePlacedOn?has_next>||</#if>
 					</#list>)
 				</#if>
-				<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
-				<#if hasCondition(data.placingCondition)> additionalCondition </#if>;
+				<#if (data.canBePlacedOn?size > 0) && hasProcedure(data.placingCondition)> && </#if>
+				<#if hasProcedure(data.placingCondition)> additionalCondition </#if>;
 			}
 			</#if>
 
-			@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+			@Override public boolean isValidPosition(BlockState blockstate, IWorldReader worldIn, BlockPos pos) {
 				BlockPos blockpos = pos.down();
-				BlockState blockstate = worldIn.getBlockState(blockpos);
-				Block ground = blockstate.getBlock();
+				BlockState groundState = worldIn.getBlockState(blockpos);
+				Block ground = groundState.getBlock();
 
 				<#if data.plantType = "normal">
-					return this.isValidGround(blockstate, worldIn, blockpos)
+					return this.isValidGround(groundState, worldIn, blockpos)
 				<#elseif data.plantType == "growapable">
-					<#if hasCondition(data.placingCondition)>
+					<#if hasProcedure(data.placingCondition)>
 					boolean additionalCondition = true;
 					if (worldIn instanceof IWorld) {
 						IWorld world = (IWorld) worldIn;
@@ -492,13 +502,13 @@ import net.minecraft.block.material.Material;
 						ground == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
 						<#if canBePlacedOn?has_next>||</#if>
 					</#list>)</#if>
-					<#if (data.canBePlacedOn?size > 0) && hasCondition(data.placingCondition)> && </#if>
-					<#if hasCondition(data.placingCondition)> additionalCondition </#if>
+					<#if (data.canBePlacedOn?size > 0) && hasProcedure(data.placingCondition)> && </#if>
+					<#if hasProcedure(data.placingCondition)> additionalCondition </#if>
 				<#else>
-					if (state.get(HALF) == DoubleBlockHalf.UPPER)
-						return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
+					if (blockstate.get(HALF) == DoubleBlockHalf.UPPER)
+						return groundState.isIn(this) && groundState.get(HALF) == DoubleBlockHalf.LOWER;
 					else
-						return this.isValidGround(blockstate, worldIn, blockpos)
+						return this.isValidGround(groundState, worldIn, blockpos)
 				</#if>;
 			}
 		</#if>
@@ -508,8 +518,8 @@ import net.minecraft.block.material.Material;
 		}
 
         <#if hasProcedure(data.onBlockAdded)>
-		@Override public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
-			super.onBlockAdded(state, world, pos, oldState, moving);
+		@Override public void onBlockAdded(BlockState blockstate, World world, BlockPos pos, BlockState oldState, boolean moving) {
+			super.onBlockAdded(blockstate, world, pos, oldState, moving);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -518,7 +528,7 @@ import net.minecraft.block.material.Material;
         </#if>
 
         <#if hasProcedure(data.onTickUpdate) || data.plantType == "growapable">
-		@Override public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		@Override public void tick(BlockState blockstate, ServerWorld world, BlockPos pos, Random random) {
 			<#if hasProcedure(data.onTickUpdate)>
                 int x = pos.getX();
 			    int y = pos.getY();
@@ -527,18 +537,18 @@ import net.minecraft.block.material.Material;
             </#if>
 
             <#if data.plantType == "growapable">
-			if (!state.isValidPosition(world, pos)) {
+			if (!blockstate.isValidPosition(world, pos)) {
 			   world.destroyBlock(pos, true);
 			} else if (world.isAirBlock(pos.up())) {
 			   int i = 1;
 			   for(;world.getBlockState(pos.down(i)).getBlock() == this; ++i);
 			   if (i < ${data.growapableMaxHeight}) {
-			      int j = state.get(AGE);
+			      int j = blockstate.get(AGE);
 			      if (j == 15) {
 			         world.setBlockState(pos.up(), getDefaultState());
-			         world.setBlockState(pos, state.with(AGE, 0), 4);
+			         world.setBlockState(pos, blockstate.with(AGE, 0), 4);
 			      } else {
-			         world.setBlockState(pos, state.with(AGE, j + 1), 4);
+			         world.setBlockState(pos, blockstate.with(AGE, j + 1), 4);
 			      }
 			   }
 			}
@@ -548,8 +558,8 @@ import net.minecraft.block.material.Material;
 
         <#if hasProcedure(data.onRandomUpdateEvent)>
 		@OnlyIn(Dist.CLIENT) @Override
-		public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-			super.animateTick(state, world, pos, random);
+		public void animateTick(BlockState blockstate, World world, BlockPos pos, Random random) {
+			super.animateTick(blockstate, world, pos, random);
 			PlayerEntity entity = Minecraft.getInstance().player;
 			int x = pos.getX();
 			int y = pos.getY();
@@ -560,8 +570,8 @@ import net.minecraft.block.material.Material;
 
         <#if hasProcedure(data.onNeighbourBlockChanges)>
 		@Override
-		public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean isMoving) {
-			super.neighborChanged(state, world, pos, neighborBlock, fromPos, isMoving);
+		public void neighborChanged(BlockState blockstate, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean isMoving) {
+			super.neighborChanged(blockstate, world, pos, neighborBlock, fromPos, isMoving);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -570,8 +580,8 @@ import net.minecraft.block.material.Material;
         </#if>
 
         <#if hasProcedure(data.onEntityCollides)>
-		@Override public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-			super.onEntityCollision(state, world, pos, entity);
+		@Override public void onEntityCollision(BlockState blockstate, World world, BlockPos pos, Entity entity) {
+			super.onEntityCollision(blockstate, world, pos, entity);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -581,9 +591,9 @@ import net.minecraft.block.material.Material;
 
         <#if hasProcedure(data.onDestroyedByPlayer)>
 		@Override
-		public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity entity,
+		public boolean removedByPlayer(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity,
 				boolean willHarvest, FluidState fluid) {
-			boolean retval = super.removedByPlayer(state, world, pos, entity, willHarvest, fluid);
+			boolean retval = super.removedByPlayer(blockstate, world, pos, entity, willHarvest, fluid);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -603,8 +613,8 @@ import net.minecraft.block.material.Material;
         </#if>
 
         <#if hasProcedure(data.onStartToDestroy)>
-		@Override public void onBlockClicked(BlockState state, World world, BlockPos pos, PlayerEntity entity) {
-			super.onBlockClicked(state, world, pos, entity);
+		@Override public void onBlockClicked(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity) {
+			super.onBlockClicked(blockstate, world, pos, entity);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -614,8 +624,8 @@ import net.minecraft.block.material.Material;
 
         <#if hasProcedure(data.onBlockPlacedBy)>
 		@Override
-		public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemstack) {
-			super.onBlockPlacedBy(world, pos, state, entity, itemstack);
+		public void onBlockPlacedBy(World world, BlockPos pos, BlockState blockstate, LivingEntity entity, ItemStack itemstack) {
+			super.onBlockPlacedBy(world, pos, blockstate, entity, itemstack);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -624,8 +634,8 @@ import net.minecraft.block.material.Material;
         </#if>
 
         <#if hasProcedure(data.onRightClicked)>
-		@Override public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
-			super.onBlockActivated(state, world, pos, entity, hand, hit);
+		@Override public ActionResultType onBlockActivated(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
+			super.onBlockActivated(blockstate, world, pos, entity, hand, hit);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();

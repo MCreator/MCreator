@@ -9,6 +9,8 @@
 	dependencies.put("pz",entity.getPosZ());
 	dependencies.put("world",event.getWorld().getWorld());
 	dependencies.put("entity",entity);
+	dependencies.put("blockstate",event.getState());
+	dependencies.put("placedagainst",event.getPlacedAgainst());
 	dependencies.put("event",event);
 	this.executeProcedure(dependencies);
 }

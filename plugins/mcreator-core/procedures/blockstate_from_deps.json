@@ -1,0 +1,13 @@
+{
+  "output": "MCItemBlock",
+  "colour": 60,
+  "mcreator": {
+    "toolbox_id": "mcelements",
+    "dependencies": [
+      {
+        "name": "blockstate",
+        "type": "blockstate"
+      }
+    ]
+  }
+}
