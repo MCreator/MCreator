@@ -47,10 +47,11 @@ public class SDKDownloader {
 					FileUtils.copyURLToFile(
 							new URL("https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion + "/" + OS
 									.getOSName() + "/x64/jdk/hotspot/normal/adoptopenjdk"),
-							UserFolderManager.getSpecificJDK(jdkVersion + fileExtension));
+							UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension));
 
 				} catch (IOException e) {
-					LOG.error("Could not download JDK: " + jdkVersion + ". Returning to the workspace selector.", e.getMessage());
+					LOG.error("Could not download JDK: " + jdkVersion + ". Returning to the workspace selector.",
+							e.getMessage());
 					return false;
 				}
 
