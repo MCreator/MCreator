@@ -87,8 +87,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 						.withArguments(() -> L10N.t("tab.workspace"), () -> L10N.t("workspace.category.localization"),
 								() -> L10N.t("workspace.localization.add_entry"), keyBindingCategoryKey.getEditor()::getItem),
 				L10N.label("elementgui.keybind.key_binding_category")));
-		enderpanel.add(PanelUtils.westAndCenterElement(new JLabel("key.categories."),
-				keyBindingCategoryKey));
+		enderpanel.add(PanelUtils.westAndCenterElement(new JLabel("key.categories."), keyBindingCategoryKey));
 
 		keyBindingCategoryKey.setEditable(true);
 

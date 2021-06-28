@@ -22,7 +22,6 @@ import com.google.gson.Gson;
 import net.mcreator.io.net.WebIO;
 import net.mcreator.io.net.api.update.UpdateInfo;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -87,8 +86,10 @@ public class D8WebAPI implements IWebAPI {
 					Node node = nodes.item(i);
 					if (node.getNodeType() != Node.ELEMENT_NODE)
 						continue;
-					news[0] = ((Element) node).getElementsByTagName("title").item(1).getChildNodes().item(0).getNodeValue();
-					news[1] = ((Element) node).getElementsByTagName("link").item(1).getChildNodes().item(0).getNodeValue();
+					news[0] = ((Element) node).getElementsByTagName("title").item(1).getChildNodes().item(0)
+							.getNodeValue();
+					news[1] = ((Element) node).getElementsByTagName("link").item(1).getChildNodes().item(0)
+							.getNodeValue();
 				}
 			}
 
@@ -104,10 +105,13 @@ public class D8WebAPI implements IWebAPI {
 					Node node = nodes.item(i);
 					if (node.getNodeType() != Node.ELEMENT_NODE)
 						continue;
-					motw[0] = ((Element) node).getElementsByTagName("title").item(1).getChildNodes().item(0).getNodeValue();
-					motw[1] = MCreatorApplication.SERVER_DOMAIN + "/node/" + ((Element) node).getElementsByTagName("guid")
+					motw[0] = ((Element) node).getElementsByTagName("title").item(1).getChildNodes().item(0)
+							.getNodeValue();
+					motw[1] =
+							MCreatorApplication.SERVER_DOMAIN + "/node/" + ((Element) node).getElementsByTagName("guid")
 									.item(0).getChildNodes().item(0).getNodeValue().split("mcreator\\.net/")[1];
-					motw[2] = ((Element) node).getElementsByTagName("pubDate").item(0).getChildNodes().item(0).getNodeValue();
+					motw[2] = ((Element) node).getElementsByTagName("pubDate").item(0).getChildNodes().item(0)
+							.getNodeValue();
 					motw[3] = MCreatorApplication.SERVER_DOMAIN + "/user/" + ((Element) node)
 							.getElementsByTagName("dc:creator").item(0).getChildNodes().item(0).getNodeValue();
 					motw[4] = ((Element) node).getElementsByTagName("description").item(1).getChildNodes().item(0)
