@@ -24,11 +24,11 @@ import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.element.parts.gui.*;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.TransparentToolBar;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
@@ -88,6 +88,7 @@ public class WYSIWYGEditor extends JPanel {
 	public JComboBox<String> priority = new JComboBox<>(new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 
 	public VComboBox<String> overlayBaseTexture = new SearchableComboBox<>();
+	public VComboBox<String> overlayTarget = new SearchableComboBox<>(ElementUtil.loadScreens());
 
 	public MCreator mcreator;
 
@@ -342,8 +343,7 @@ public class WYSIWYGEditor extends JPanel {
 				invOffY.setEnabled(lol.getSelectedIndex() == 1);
 				if (lol.getSelectedIndex() == 0 && !isOpening()) {
 					int n = JOptionPane.showConfirmDialog(mcreator, (L10N.t("elementgui.gui.warning_switch_gui")),
-							(L10N.t("common.warning")), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-							null);
+							(L10N.t("common.warning")), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null);
 					if (n == 0) {
 						slot1.setEnabled(false);
 						slot2.setEnabled(false);
@@ -388,24 +388,31 @@ public class WYSIWYGEditor extends JPanel {
 		} else {
 			ovst.setOpaque(false);
 			ovst.setLayout(new BoxLayout(ovst, BoxLayout.PAGE_AXIS));
+
+			JPanel ovst2 = new JPanel(new GridLayout(3, 2, 2, 2));
+			ovst2.setOpaque(false);
+
 			ovst.setBorder(BorderFactory.createTitledBorder(
 					BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
 					L10N.t("elementgui.gui.overlay_properties"), 0, 0, getFont().deriveFont(12.0f),
 					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 			overlayBaseTexture.addActionListener(e -> editor.repaint());
-			overlayBaseTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXX");
-			ComponentUtils.deriveFont(overlayBaseTexture, 16);
+			overlayBaseTexture.setPrototypeDisplayValue("XXXXXX");
 
-			ovst.add(PanelUtils.join(FlowLayout.LEFT, HelpUtils
-					.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/rendering_priority"),
-							L10N.label("elementgui.gui.rendering_priority")), priority));
+			ovst2.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/overlay_target"),
+					L10N.label("elementgui.gui.overlay_target")));
+			ovst2.add(overlayTarget);
 
-			JButton importmobtexture = new JButton(UIRES.get("18px.add"));
-			importmobtexture.setToolTipText(L10N.t("elementgui.gui.import_overlay_base_texture"));
-			importmobtexture.setOpaque(false);
-			importmobtexture.setMargin(new Insets(0, 0, 0, 0));
-			importmobtexture.addActionListener(e -> {
+			ovst2.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/rendering_priority"),
+					L10N.label("elementgui.gui.rendering_priority")));
+			ovst2.add(priority);
+
+			JButton importothertexture = new JButton(UIRES.get("18px.add"));
+			importothertexture.setToolTipText(L10N.t("elementgui.gui.import_overlay_base_texture"));
+			importothertexture.setOpaque(false);
+			importothertexture.setMargin(new Insets(0, 0, 0, 0));
+			importothertexture.addActionListener(e -> {
 				TextureImportDialogs.importOtherTextures(mcreator);
 				overlayBaseTexture.removeAllItems();
 				overlayBaseTexture.addItem("");
@@ -413,10 +420,12 @@ public class WYSIWYGEditor extends JPanel {
 						.forEach(el -> overlayBaseTexture.addItem(el.getName()));
 			});
 
-			ovst.add(PanelUtils.northAndCenterElement(HelpUtils
-							.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/base_texture"),
-									L10N.label("elementgui.gui.overlay_base_texture")),
-					PanelUtils.join(FlowLayout.LEFT, overlayBaseTexture, importmobtexture)));
+			ovst2.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/base_texture"),
+					L10N.label("elementgui.gui.overlay_base_texture")));
+			ovst2.add(PanelUtils.centerAndEastElement(overlayBaseTexture, importothertexture));
+
+			ovst.add(ovst2);
+			ovst.add(new JEmptyBox(2, 2));
 
 			sidebar.add("North", ovst);
 		}

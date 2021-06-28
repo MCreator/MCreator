@@ -108,6 +108,10 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 		this.layer = layer;
 	}
 
+	public Layer getLayer() {
+		return layer;
+	}
+
 	public void setCanvas(Canvas canvas) {
 		this.canvas = canvas;
 	}

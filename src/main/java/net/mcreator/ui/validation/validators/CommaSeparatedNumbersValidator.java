@@ -39,7 +39,8 @@ public class CommaSeparatedNumbersValidator implements Validator {
 		try {
 			Stream.of(holder.getText().split(",")).map(Integer::parseInt).collect(Collectors.toList());
 		} catch (Exception e) {
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, L10N.t("validators.only_number_list"));
+			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					L10N.t("validators.only_number_list"));
 		}
 		return Validator.ValidationResult.PASSED;
 	}

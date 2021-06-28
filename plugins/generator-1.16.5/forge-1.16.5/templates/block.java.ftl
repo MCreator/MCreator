@@ -403,8 +403,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
-		<#if hasCondition(data.placingCondition)>
-		@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		<#if hasProcedure(data.placingCondition)>
+		@Override public boolean isValidPosition(BlockState blockstate, IWorldReader worldIn, BlockPos pos) {
 			if (worldIn instanceof IWorld) {
 				IWorld world = (IWorld) worldIn;
 				int x = pos.getX();
@@ -412,7 +412,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				int z = pos.getZ();
 				return <@procedureOBJToConditionCode data.placingCondition/>;
 			}
-			return super.isValidPosition(state, worldIn, pos);
+			return super.isValidPosition(blockstate, worldIn, pos);
 		}
 		</#if>
 
@@ -433,14 +433,14 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         }
 		</#if>
 
-		<#if data.isWaterloggable || hasCondition(data.placingCondition)>
+		<#if data.isWaterloggable || hasProcedure(data.placingCondition)>
 		@Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
 	        <#if data.isWaterloggable>
 			if (state.get(WATERLOGGED)) {
 				world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 			}
 			</#if>
-			return <#if hasCondition(data.placingCondition)>
+			return <#if hasProcedure(data.placingCondition)>
 			!state.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() :
 			</#if> super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 		}
@@ -463,7 +463,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			return true;
 		}
 
-		@Override public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		@Override public int getWeakPower(BlockState blockstate, IBlockReader blockAccess, BlockPos pos, Direction side) {
 			<#if hasProcedure(data.emittedRedstonePower)>
 				int x = pos.getX();
 				int y = pos.getY();
@@ -586,8 +586,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		</#if>
 
         <#if (hasProcedure(data.onTickUpdate) && !data.tickRandomly) || hasProcedure(data.onBlockAdded) >
-		@Override public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
-			super.onBlockAdded(state, world, pos, oldState, moving);
+		@Override public void onBlockAdded(BlockState blockstate, World world, BlockPos pos, BlockState oldState, boolean moving) {
+			super.onBlockAdded(blockstate, world, pos, oldState, moving);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -600,8 +600,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if hasProcedure(data.onRedstoneOn) || hasProcedure(data.onRedstoneOff) || hasProcedure(data.onNeighbourBlockChanges)>
 		@Override
-		public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
-			super.neighborChanged(state, world, pos, neighborBlock, fromPos, moving);
+		public void neighborChanged(BlockState blockstate, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
+			super.neighborChanged(blockstate, world, pos, neighborBlock, fromPos, moving);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -616,8 +616,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
         <#if hasProcedure(data.onTickUpdate)>
 		@Override public void <#if data.tickRandomly && (data.blockBase?has_content && data.blockBase == "Stairs")>randomTick<#else>tick</#if>
-				(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-			super.<#if data.tickRandomly && (data.blockBase?has_content && data.blockBase == "Stairs")>randomTick<#else>tick</#if>(state, world, pos, random);
+				(BlockState blockstate, ServerWorld world, BlockPos pos, Random random) {
+			super.<#if data.tickRandomly && (data.blockBase?has_content && data.blockBase == "Stairs")>randomTick<#else>tick</#if>(blockstate, world, pos, random);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -632,8 +632,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
         <#if hasProcedure(data.onRandomUpdateEvent) || data.spawnParticles>
 		@OnlyIn(Dist.CLIENT) @Override
-		public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-			super.animateTick(state, world, pos, random);
+		public void animateTick(BlockState blockstate, World world, BlockPos pos, Random random) {
+			super.animateTick(blockstate, world, pos, random);
 			PlayerEntity entity = Minecraft.getInstance().player;
 			int x = pos.getX();
 			int y = pos.getY();
@@ -648,8 +648,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
         <#if hasProcedure(data.onDestroyedByPlayer)>
 		@Override
-		public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity entity, boolean willHarvest, FluidState fluid) {
-			boolean retval = super.removedByPlayer(state, world, pos, entity, willHarvest, fluid);
+		public boolean removedByPlayer(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity, boolean willHarvest, FluidState fluid) {
+			boolean retval = super.removedByPlayer(blockstate, world, pos, entity, willHarvest, fluid);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -669,8 +669,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         </#if>
 
         <#if hasProcedure(data.onStartToDestroy)>
-		@Override public void onBlockClicked(BlockState state, World world, BlockPos pos, PlayerEntity entity) {
-			super.onBlockClicked(state, world, pos, entity);
+		@Override public void onBlockClicked(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity) {
+			super.onBlockClicked(blockstate, world, pos, entity);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -679,8 +679,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         </#if>
 
         <#if hasProcedure(data.onEntityCollides)>
-		@Override public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-			super.onEntityCollision(state, world, pos, entity);
+		@Override public void onEntityCollision(BlockState blockstate, World world, BlockPos pos, Entity entity) {
+			super.onEntityCollision(blockstate, world, pos, entity);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -694,14 +694,15 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
+			BlockState blockstate = world.getBlockState(pos);
 			<@procedureOBJToCode data.onEntityWalksOn/>
 		}
         </#if>
 
         <#if hasProcedure(data.onBlockPlayedBy)>
 		@Override
-		public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemstack) {
-			super.onBlockPlacedBy(world, pos, state, entity, itemstack);
+		public void onBlockPlacedBy(World world, BlockPos pos, BlockState blockstate, LivingEntity entity, ItemStack itemstack) {
+			super.onBlockPlacedBy(world, pos, blockstate, entity, itemstack);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -711,8 +712,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
         <#if hasProcedure(data.onRightClicked) || data.openGUIOnRightClick>
 		@Override
-		public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
-			super.onBlockActivated(state, world, pos, entity, hand, hit);
+		public ActionResultType onBlockActivated(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
+			super.onBlockActivated(blockstate, world, pos, entity, hand, hit);
 
 			int x = pos.getX();
 			int y = pos.getY();
@@ -1058,7 +1059,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					if(!dimensionCriteria)
 						return false;
 
-					<#if hasCondition(data.generateCondition)>
+					<#if hasProcedure(data.generateCondition)>
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();

@@ -34,7 +34,8 @@ public class NewImageFileAction extends BasicAction {
 
 	public NewImageFileAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.browser.new_image_file"), actionEvent -> {
-			String fileName = JOptionPane.showInputDialog(actionRegistry.getMCreator(), L10N.t("workspace_file_browser.new_image"));
+			String fileName = JOptionPane
+					.showInputDialog(actionRegistry.getMCreator(), L10N.t("workspace_file_browser.new_image"));
 
 			if (fileName != null) {
 				fileName = RegistryNameFixer.fix(fileName);

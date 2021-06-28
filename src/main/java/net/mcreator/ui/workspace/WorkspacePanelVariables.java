@@ -76,9 +76,10 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					return;
 
 				if (column != 3) {
-					int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-							L10N.t("workspace.variables.change_type"), L10N.t("common.confirmation"),
-							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					int n = JOptionPane
+							.showConfirmDialog(workspacePanel.getMcreator(), L10N.t("workspace.variables.change_type"),
+									L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION,
+									JOptionPane.QUESTION_MESSAGE);
 					if (n == JOptionPane.YES_OPTION) {
 						super.setValueAt(value, row, column);
 						if (column == 1) { // variable type has been changed
@@ -250,8 +251,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				return;
 
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-					L10N.t("workspace.variables.remove_variable_confirmation"),
-					L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					L10N.t("workspace.variables.remove_variable_confirmation"), L10N.t("common.confirmation"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (n == JOptionPane.YES_OPTION) {
 				Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
 						.forEach(el -> {

@@ -164,8 +164,10 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 					if (commit.abbreviate(7).name().equals(shortCommitId)) {
 						int option = JOptionPane.showOptionDialog(workspacePanel.getMcreator(),
 								L10N.t("workspace.vcs.jump_commit_confirmation", commit.getShortMessage()),
-								L10N.t("workspace.vcs.jump_commit_confirmation.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-								new String[] { L10N.t("workspace.vcs.jump_to", commit.abbreviate(7).name()), UIManager.getString("OptionPane.cancelButtonText") }, null);
+								L10N.t("workspace.vcs.jump_commit_confirmation.title"), JOptionPane.DEFAULT_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null,
+								new String[] { L10N.t("workspace.vcs.jump_to", commit.abbreviate(7).name()),
+										UIManager.getString("OptionPane.cancelButtonText") }, null);
 
 						if (option == 0) {
 							// track all so they can be stashed properly
@@ -230,8 +232,8 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 							commit.getAuthorIdent().getName(), commit.getAuthorIdent().getWhen() });
 				}
 
-				switchBranch
-						.setText(L10N.t("workspace.vcs.current_branch", git.getRepository().getFullBranch().replace("refs/heads/", "")));
+				switchBranch.setText(L10N.t("workspace.vcs.current_branch",
+						git.getRepository().getFullBranch().replace("refs/heads/", "")));
 			} catch (Exception ignored) {
 			}
 
