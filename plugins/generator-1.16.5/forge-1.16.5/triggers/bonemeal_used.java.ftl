@@ -13,6 +13,7 @@
 		dependencies.put("world",world);
 		dependencies.put("itemstack",itemstack);
 		dependencies.put("entity",entity);
+		dependencies.put("blockstate",event.getBlock());
 		dependencies.put("event",event);
 		executeProcedure(dependencies);
 	}

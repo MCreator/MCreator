@@ -62,8 +62,20 @@
     </#if>
 </#macro>
 
+<#macro procedureOBJToItemstackCode object="">
+    <#if hasProcedure(object)>
+        /*@ItemStack*/ <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
+    <#else>
+        /*@ItemStack*/ ItemStack.EMPTY
+    </#if>
+</#macro>
+
 <#function hasProcedure object="">
     <#return object?? && object?has_content && object.getName()?has_content && object.getName() != "null">
+</#function>
+
+<#function hasReturnValue object="">
+    <#return hasProcedure(object) && object.hasReturnValue(generator.getWorkspace())>
 </#function>
 
 <#-- @formatter:on -->

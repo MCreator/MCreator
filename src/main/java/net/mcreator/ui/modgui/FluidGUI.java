@@ -118,19 +118,20 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		restrictionBiomes = new BiomeListField(mcreator);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
-				L10N.t("elementgui.fluid.when_added"), Dependency.fromString("x:number/y:number/z:number/world:world"));
+				L10N.t("elementgui.fluid.when_added"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 		onNeighbourChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
 				L10N.t("elementgui.common.event_on_neighbour_block_changes"),
-				Dependency.fromString("x:number/y:number/z:number/world:world"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 		onTickUpdate = new ProcedureSelector(this.withEntry("block/update_tick"), mcreator,
 				L10N.t("elementgui.common.event_on_update_tick"),
-				Dependency.fromString("x:number/y:number/z:number/world:world"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 		onEntityCollides = new ProcedureSelector(this.withEntry("block/when_entity_collides"), mcreator,
 				L10N.t("elementgui.fluid.when_entity_collides"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
 		onRandomUpdateEvent = new ProcedureSelector(this.withEntry("block/display_tick_update"), mcreator,
 				L10N.t("elementgui.common.event_on_random_update"), ProcedureSelector.Side.CLIENT,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
 		onDestroyedByExplosion = new ProcedureSelector(this.withEntry("block/when_destroyed_explosion"), mcreator,
 				L10N.t("elementgui.block.event_on_block_destroyed_by_explosion"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
@@ -185,24 +186,24 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				.wrapWithHelpButton(this.withEntry("fluid/flow_rate"), L10N.label("elementgui.fluid.flow_rate")));
 		destal.add(flowRate);
 
-		destal.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/level_decrease"), L10N.label("elementgui.fluid.level_decrease")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/level_decrease"),
+				L10N.label("elementgui.fluid.level_decrease")));
 		destal.add(levelDecrease);
 
-		destal.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/slope_find_distance"), L10N.label("elementgui.fluid.slope_find_distance")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/slope_find_distance"),
+				L10N.label("elementgui.fluid.slope_find_distance")));
 		destal.add(slopeFindDistance);
 
 		destal.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("fluid/can_multiply"), L10N.label("elementgui.fluid.can_multiply")));
 		destal.add(canMultiply);
 
-		destal.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/spawn_drip_particles"), L10N.label("elementgui.fluid.spawn_particles")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/spawn_drip_particles"),
+				L10N.label("elementgui.fluid.spawn_particles")));
 		destal.add(spawnParticles);
 
-		destal.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/drip_particle"), L10N.label("elementgui.fluid.drip_particle")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/drip_particle"),
+				L10N.label("elementgui.fluid.drip_particle")));
 		destal.add(dripParticle);
 
 		destal.setBorder(BorderFactory.createTitledBorder(
@@ -262,7 +263,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.bucket_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent fluidBucketProperties = PanelUtils.westAndEastElement(destal, PanelUtils.pullElementUp(bucketProperties));
+		JComponent fluidBucketProperties = PanelUtils
+				.westAndEastElement(destal, PanelUtils.pullElementUp(bucketProperties));
 		fluidBucketProperties.setOpaque(false);
 		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(destalx, fluidBucketProperties)));
 
@@ -288,8 +290,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				.wrapWithHelpButton(this.withEntry("block/luminance"), L10N.label("elementgui.common.luminance")));
 		blockProperties.add(luminance);
 
-		blockProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/light_opacity"), L10N.label("elementgui.common.light_opacity")));
+		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/light_opacity"),
+				L10N.label("elementgui.common.light_opacity")));
 		blockProperties.add(lightOpacity);
 
 		blockProperties.add(HelpUtils
@@ -330,8 +332,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				.wrapWithHelpButton(this.withEntry("fluid/luminosity"), L10N.label("elementgui.fluid.luminosity")));
 		forgeProperties.add(luminosity);
 
-		forgeProperties.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("fluid/density"), L10N.label("elementgui.fluid.density")));
+		forgeProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/density"), L10N.label("elementgui.fluid.density")));
 		forgeProperties.add(density);
 
 		forgeProperties.add(HelpUtils
@@ -342,7 +344,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				.wrapWithHelpButton(this.withEntry("fluid/temperature"), L10N.label("elementgui.fluid.temperature")));
 		forgeProperties.add(temperature);
 
-		forgeProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/is_gas"), L10N.label("elementgui.fluid.is_gas")));
+		forgeProperties.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/is_gas"), L10N.label("elementgui.fluid.is_gas")));
 		forgeProperties.add(PanelUtils.centerInPanel(isGas));
 
 		forgeProperties.setBorder(BorderFactory.createTitledBorder(

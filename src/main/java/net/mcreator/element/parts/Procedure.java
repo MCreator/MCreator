@@ -25,9 +25,10 @@ import net.mcreator.workspace.Workspace;
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
-public class Procedure {
+@SuppressWarnings("unused") public class Procedure {
 
 	private String name;
 
@@ -50,6 +51,19 @@ public class Procedure {
 
 		this.exists = false;
 		return Collections.emptyList();
+	}
+
+	public boolean hasReturnValue(Workspace workspace) {
+		GeneratableElement generatableElement = workspace.getModElementByName(name).getGeneratableElement();
+		if (generatableElement instanceof net.mcreator.element.types.Procedure) {
+			try {
+				return ((net.mcreator.element.types.Procedure) generatableElement)
+						.getBlocklyToProcedure(new HashMap<>()).getReturnType() != null;
+			} catch (Exception ignored) {
+			}
+		}
+
+		return false;
 	}
 
 	public static boolean isElementUsingProcedure(Object element, String procedureName) {

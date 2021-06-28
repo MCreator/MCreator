@@ -19,12 +19,14 @@
 package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.tool.tools.EraserTool;
 
 public class EraserToolAction extends ToolChangeAction {
 	public EraserToolAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Eraser", "A basic erasing tool", EraserTool.class);
+		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.eraser"),
+				L10N.t("dialog.image_maker.tools.types.eraser_description"), EraserTool.class);
 		setIcon(UIRES.get("img_editor.rubber"));
 	}
 }
