@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.views.editor.image.tool.tools;
 
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
@@ -29,7 +30,8 @@ public class EraserTool extends DrawingTool {
 
 	public EraserTool(Canvas canvas, ColorSelector colorSelector, LayerPanel layerPanel,
 			VersionManager versionManager) {
-		super(canvas, colorSelector, layerPanel, "Eraser", "A basic erasing tool", UIRES.get("img_editor.rubber"),
+		super(canvas, colorSelector, layerPanel, L10N.t("dialog.image_maker.tools.types.eraser"),
+				L10N.t("dialog.image_maker.tools.types.eraser_description"), UIRES.get("img_editor.rubber"),
 				versionManager);
 	}
 
