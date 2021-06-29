@@ -26,30 +26,40 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.net.URL;
 
 public class SDKDownloader {
 
 	private static final Logger LOG = LogManager.getLogger("Setup JDK");
 
-	public static void downloadJDK(GeneratorConfiguration genConfig) throws Exception {
-		String jdkVersion = genConfig.getJDKVersionOverride();
-		if (jdkVersion != null) {
-			if (!UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + "/").exists()) {
-				LOG.info("Downloading JDK: " + jdkVersion);
-				String fileExtension;
-				if (OS.getOS() == OS.WINDOWS)
-					fileExtension = ".zip";
-				else
-					fileExtension = ".tar.gz";
-				FileUtils.copyURLToFile(
-						new URL("https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion + "/" + OS.getOSName()
-								+ "/x64/jdk/hotspot/normal/adoptopenjdk"),
-						UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension));
+	public static void downloadJDK(GeneratorConfiguration generatorConfiguration) throws Exception {
+		String jdkVersion = generatorConfiguration.getJDKVersionOverride();
+		if (jdkVersion != null && !validateCustomJDK(generatorConfiguration)) {
+			LOG.info("Downloading JDK: " + jdkVersion);
 
-			} else {
-				LOG.info(jdkVersion + " is already downloaded.");
-			}
+			String fileExtension;
+			if (OS.getOS() == OS.WINDOWS)
+				fileExtension = ".zip";
+			else
+				fileExtension = ".tar.gz";
+
+			FileUtils.copyURLToFile(
+					new URL("https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion + "/" + OS.getOSName()
+							+ "/x64/jdk/hotspot/normal/adoptopenjdk"),
+					UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension));
+
 		}
 	}
+
+	public static boolean validateCustomJDK(GeneratorConfiguration generatorConfiguration) {
+		if (generatorConfiguration.getJDKVersionOverride() == null)
+			return true;
+
+		File jdkFolder = UserFolderManager.getStoredJDKFolderForVersion(generatorConfiguration.getJDKVersionOverride());
+		return jdkFolder.isDirectory() && ((OS.getOS() == OS.WINDOWS && new File(jdkFolder, "bin/javac.exe").isFile())
+				|| (OS.getOS() == OS.MAC && new File(jdkFolder, "Contents/Home/bin/javac").isFile()) || (
+				OS.getOS() == OS.LINUX && new File(jdkFolder, "bin/javac").isFile()));
+	}
+
 }
