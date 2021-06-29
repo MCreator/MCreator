@@ -47,20 +47,21 @@ public class WorkspaceGeneratorSetupDialog {
 		AtomicBoolean setupOk = new AtomicBoolean(true);
 
 		Thread t = new Thread(() -> {
+
 			if (m.getGeneratorConfiguration().getJDKVersionOverride() != null) {
 				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
 						L10N.t("dialog.setup_workspace.step.jdk"));
 				dial.addProgress(p0);
 
 				// Download the custom JDK if needed
-				if (SDKDownloader.downloadJDK(m.getGeneratorConfiguration())) {
+				try {
+					SDKDownloader.downloadJDK(m.getGeneratorConfiguration());
 					p0.ok();
-				} else {
+					dial.refreshDisplay();
+				} catch (Exception e) {
 					p0.err();
-					m.closeThisMCreator(true);
-					return;
+					showSetupFailedMessage(dial, m, "Failed to setup JDK. Reason: " + e.getMessage());
 				}
-				dial.refreshDisplay();
 			}
 
 			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(

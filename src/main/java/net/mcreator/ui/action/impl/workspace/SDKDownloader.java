@@ -26,40 +26,30 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.net.URL;
 
 public class SDKDownloader {
 
 	private static final Logger LOG = LogManager.getLogger("Setup JDK");
 
-	public static boolean downloadJDK(GeneratorConfiguration genConfig) {
+	public static void downloadJDK(GeneratorConfiguration genConfig) throws Exception {
 		String jdkVersion = genConfig.getJDKVersionOverride();
 		if (jdkVersion != null) {
 			if (!UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + "/").exists()) {
 				LOG.info("Downloading JDK: " + jdkVersion);
-				try {
-					String fileExtension;
-					if (OS.getOS() == OS.WINDOWS)
-						fileExtension = ".zip";
-					else
-						fileExtension = ".tar.gz";
-					FileUtils.copyURLToFile(
-							new URL("https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion + "/" + OS
-									.getOSName() + "/x64/jdk/hotspot/normal/adoptopenjdk"),
-							UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension));
-
-				} catch (IOException e) {
-					LOG.error("Could not download JDK: " + jdkVersion + ". Returning to the workspace selector.",
-							e.getMessage());
-					return false;
-				}
+				String fileExtension;
+				if (OS.getOS() == OS.WINDOWS)
+					fileExtension = ".zip";
+				else
+					fileExtension = ".tar.gz";
+				FileUtils.copyURLToFile(
+						new URL("https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion + "/" + OS.getOSName()
+								+ "/x64/jdk/hotspot/normal/adoptopenjdk"),
+						UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension));
 
 			} else {
 				LOG.info(jdkVersion + " is already downloaded.");
 			}
 		}
-
-		return true;
 	}
 }
