@@ -89,6 +89,10 @@ import java.util.stream.Collectors;
 				.replace(".legs", "").replace(".boots", "").replace(".bucket", "");
 	}
 
+	public String getElementClassName(String elementName) {
+		return getElementPlainName(elementName) + (isRecipeTypeBlockOrBucket(elementName) ? "Block" : "Item");
+	}
+
 	public String getElementExtension(String elementName) {
 		if (elementName.contains(".")) {
 			return FilenameUtils.getExtension(elementName);
