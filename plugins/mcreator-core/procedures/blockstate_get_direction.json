@@ -16,7 +16,7 @@
   "output": "Direction",
   "colour": "20",
   "mcreator": {
-    "toolbox_id": "blockactions",
+    "toolbox_id": "blockdata",
     "toolbox_init": [
       "<value name=\"block\"><block type=\"blockstate_from_deps\"></block></value>"
     ],

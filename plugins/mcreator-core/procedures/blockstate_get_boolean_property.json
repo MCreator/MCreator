@@ -21,7 +21,7 @@
   "output": "Boolean",
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
-    "toolbox_id": "blockactions",
+    "toolbox_id": "blockdata",
     "toolbox_init": [
       "<value name=\"property\"><block type=\"text\"><field name=\"TEXT\">waterlogged</field></block></value>",
       "<value name=\"block\"><block type=\"blockstate_from_deps\"></block></value>"

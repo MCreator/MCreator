@@ -21,7 +21,7 @@
   "output": "String",
   "colour": "%{BKY_TEXTS_HUE}",
   "mcreator": {
-    "toolbox_id": "blockactions",
+    "toolbox_id": "blockdata",
     "toolbox_init": [
       "<value name=\"property\"><block type=\"text\"><field name=\"TEXT\">half</field></block></value>",
       "<value name=\"block\"><block type=\"blockstate_from_deps\"></block></value>"
