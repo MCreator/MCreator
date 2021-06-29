@@ -1025,6 +1025,12 @@ public class MinecraftImageGenerator {
 			return out;
 		}
 
+		/**
+		 * <p>This method generates the potion bottle icon for potions.</p>
+		 *
+		 * @param color <p>Color of the potion</p>
+		 * @return <p>Returns generated image.</p>
+		 */
 		public static BufferedImage generatePotionIcon(Color color) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
@@ -1035,6 +1041,32 @@ public class MinecraftImageGenerator {
 			g2d.drawImage(ImageUtils.resize(ImageMakerTexturesCache.CACHE
 							.get(new ResourcePointer("templates/textures/texturemaker/potion_bottle_overlay.png")).getImage(),
 					32), null, 0, 0);
+			g2d.dispose();
+
+			return out;
+		}
+
+		/**
+		 * <p>This method generates the potion effect icons.</p>
+		 *
+		 * @param icon <p>Effect icon</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static BufferedImage generatePotionEffectIcon(Image icon) {
+			BufferedImage out = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+
+			g2d.setColor(Color.GRAY);
+			g2d.drawLine(0, 1, 0, 26);
+			g2d.drawLine(27, 1, 27, 26);
+			g2d.drawLine(1, 0, 26, 0);
+			g2d.drawLine(1, 27, 26, 27);
+
+			g2d.setColor(new Color(50, 50, 50));
+			g2d.fillRect(1, 1, 26, 26);
+
+			g2d.drawImage(ImageUtils.resize(icon, 22), null, 3, 3);
+
 			g2d.dispose();
 
 			return out;
