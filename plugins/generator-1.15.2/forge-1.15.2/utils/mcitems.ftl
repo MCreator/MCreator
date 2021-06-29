@@ -11,9 +11,9 @@
         <#return mappedBlock?replace("/*@BlockState*/","") + ".getBlock()">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#if !mappedBlock?contains(".")>
-            <#return generator.getElementClassName(mappedBlock) + ".block">
+            <#return mappedElementToClassName(mappedBlock) + ".block">
         <#else>
-            <#return generator.getElementClassName(mappedBlock) + "." + generator.getElementExtension(mappedBlock)>
+            <#return mappedElementToClassName(mappedBlock) + "." + generator.getElementExtension(mappedBlock)>
         </#if>
     <#else>
         <#return mappedBlock>
@@ -25,10 +25,10 @@
         <#return mappedBlock?replace("/*@ItemStack*/", "")>
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#if !mappedBlock?contains(".")>
-            <#return "new ItemStack("+ (generator.getElementClassName(mappedBlock)) + ".block"
+            <#return "new ItemStack("+ mappedElementToClassName(mappedBlock) + ".block"
             + (amount == 1)?then(")",", (int)(" + amount + "))")>
         <#else>
-            <#return "new ItemStack("+ generator.getElementClassName(mappedBlock) + "."
+            <#return "new ItemStack("+ mappedElementToClassName(mappedBlock) + "."
             + generator.getElementExtension(mappedBlock) + (amount == 1)?then(")",", (int)(" + amount + "))")>
         </#if>
     <#else>
@@ -41,14 +41,18 @@
         <#return mappedBlock?replace("/*@ItemStack*/", "") + ".getItem()">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#if !mappedBlock?contains(".")>
-            <#return generator.getElementClassName(mappedBlock) + ".block"
+            <#return mappedElementToClassName(mappedBlock) + ".block"
             + generator.isRecipeTypeBlockOrBucket(mappedBlock)?then(".asItem()","")>
         <#else>
-            <#return generator.getElementClassName(mappedBlock) + "." + generator.getElementExtension(mappedBlock)>
+            <#return mappedElementToClassName(mappedBlock) + "." + generator.getElementExtension(mappedBlock)>
         </#if>
     <#else>
         <#return mappedBlock?keep_before("#") + mappedBlock?contains("Blocks.")?then(".asItem()","")>
     </#if>
+</#function>
+
+<#function mappedElementToClassName mappedElement>
+    <#return generator.getElementPlainName(mappedElement) + generator.isRecipeTypeBlockOrBucket(mappedElement)?then("Block", "Item")>
 </#function>
 
 <#function mappedMCItemToIngameItemName mappedBlock>
