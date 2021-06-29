@@ -29,7 +29,7 @@
 
 <#-- @formatter:off -->
 
-package ${package}.item;
+package ${package}.potion;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Potion extends ${JavaModName}Elements.ModElement{
 
