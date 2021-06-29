@@ -42,7 +42,7 @@ public static class TeleporterDimensionMod implements ITeleporter {
 		.replace("Blocks.NETHER_PORTAL", "portal")}
 
 	${mcc.getMethod("net.minecraft.world.Teleporter", "makePortal", "BlockPos", "Direction.Axis")
-		.replace("Blocks.OBSIDIAN", mappedBlockToBlockStateCode(data.portalFrame) + ".getBlock()")
+		.replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
 		.replace(",blockstate,18);", ", blockstate, 18);\nthis.world.getPointOfInterestManager().add(blockpos$mutable, poi);")
 		.replace("Blocks.NETHER_PORTAL", "portal")}
 
