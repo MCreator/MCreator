@@ -81,7 +81,7 @@ package ${package}.world.structure;
 						BlockState blockAt = world.getBlockState(new BlockPos(i, j, k));
 						boolean blockCriteria = false;
 						<#list data.restrictionBlocks as restrictionBlock>
-							if (blockAt.getBlock() == ${mappedBlockToBlockStateCode(restrictionBlock)}.getBlock())
+							if (blockAt.getBlock() == ${mappedBlockToBlock(restrictionBlock)})
 								blockCriteria = true;
 						</#list>
 						if (!blockCriteria)

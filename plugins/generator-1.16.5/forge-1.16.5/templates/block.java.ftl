@@ -1022,7 +1022,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			boolean blockCriteria = false;
 
 			<#list data.blocksToReplace as replacementBlock>
-			if(blockAt.getBlock() == ${mappedBlockToBlockStateCode(replacementBlock)}.getBlock())
+			if(blockAt.getBlock() == ${mappedBlockToBlock(replacementBlock)})
 				blockCriteria = true;
 			</#list>
 

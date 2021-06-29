@@ -712,7 +712,7 @@ import net.minecraft.block.material.Material;
 					return false;
 
             	<#list data.breedTriggerItems as breedTriggerItem>
-					if (${mappedMCItemToItemStackCode(breedTriggerItem,1)}.getItem() == stack.getItem())
+					if (${mappedMCItemToItem(breedTriggerItem)} == stack.getItem())
 						return true;
                 </#list>
 
