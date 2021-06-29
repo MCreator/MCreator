@@ -58,7 +58,6 @@ VideoSettings: VideoSettingsScreen
 WithNarratorSettings: WithNarratorSettingsScreen
 Working: WorkingScreen
 WorldLoadProgress: WorldLoadProgressScreen
-WorldOptions: WorldOptionsScreen
 WorldSelection: WorldSelectionScreen
 Anvil: AnvilScreen
 Beacon: BeaconScreen
