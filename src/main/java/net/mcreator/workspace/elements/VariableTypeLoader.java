@@ -60,10 +60,15 @@ public class VariableTypeLoader {
 
 			VARIABLE_TYPES_LIST.put(variableType, variableType.getName());
 
+			//We begin by creating the extensions needed for other blocks
+			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.variableListExtension(variableType));
 			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.procedureListExtensions(variableType));
-			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.procedureReturnValueBlock(variableType));
 
+			//Then, we create the blocks related to variables
+			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.getVariableBlock(variableType));
+			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.setVariableBlock(variableType));
 			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.customDependencyBlock(variableType));
+			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.procedureReturnValueBlock(variableType));
 			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.returnBlock(variableType));
 
 			//We check the type of the variable, if it is a global var, we instantiate it with this variable.
@@ -119,18 +124,8 @@ public class VariableTypeLoader {
 				.collect(Collectors.toList());
 	}
 
-	public String getVariableBlocklyJS(GeneratorConfiguration generatorConfiguration) {
-		StringBuilder finalJSBuilder = new StringBuilder(variableBlocklyJS);
-
-		for (VariableType variableType : VARIABLE_TYPES_LIST.keySet()) {
-			if (variableType.canBeGlobal(generatorConfiguration) || variableType.canBeLocal(generatorConfiguration)) {
-				finalJSBuilder.append(BlocklyJavascriptTemplates.variableListExtension(variableType));
-				finalJSBuilder.append(BlocklyJavascriptTemplates.getVariableBlock(variableType));
-				finalJSBuilder.append(BlocklyJavascriptTemplates.setVariableBlock(variableType));
-			}
-		}
-
-		return finalJSBuilder.toString();
+	public String getVariableBlocklyJS() {
+		return variableBlocklyJS;
 	}
 
 	public static class BuiltInTypes {
