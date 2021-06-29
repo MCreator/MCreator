@@ -222,6 +222,10 @@ import java.util.stream.Collectors;
 		return !"No tint".equals(tintType);
 	}
 
+	public boolean shouldOpenGUIOnRightClick() {
+		return guiBoundTo != null && !guiBoundTo.equals("<NONE>") && openGUIOnRightClick;
+	}
+
 	@Override public Model getItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (renderType == 2)
