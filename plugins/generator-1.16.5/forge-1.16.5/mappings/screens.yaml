@@ -46,7 +46,6 @@ MultiplayerWarning: MultiplayerWarningScreen
 OptimizeWorld: OptimizeWorldScreen
 Options: OptionsScreen
 OptionsSounds: OptionsSoundsScreen
-PackLoadingManager: PackLoadingManager
 Pack: PackScreen
 ReadBook: ReadBookScreen
 ServerList: ServerListScreen
