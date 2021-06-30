@@ -65,8 +65,11 @@ public class PotionToEffectConverter implements IConverter {
 			effectEntry.showParticles = true;
 			potion.effects.add(effectEntry);
 
+			String originalName = input.getModElement().getName();
+			input.getModElement().setName(originalName + "PotionItem");
+
 			// if we did not split potion to effect element yet, add it now
-			if (workspace.getModElementByName(input.getModElement().getName() + "Effect") == null) {
+			if (workspace.getModElementByName(originalName) == null) {
 				PotionEffect potionEffect = new Gson()
 						.fromJson(jsonElementInput.getAsJsonObject().get("definition"), PotionEffect.class);
 
@@ -75,8 +78,9 @@ public class PotionToEffectConverter implements IConverter {
 
 				potionEffect.getModElement()
 						.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
-				potionEffect.getModElement().setRegistryName(
-						input.getModElement().getRegistryName()); // for backwards game saves compatibility
+
+				// for backwards game saves compatibility
+				potionEffect.getModElement().setRegistryName(input.getModElement().getRegistryName());
 
 				workspace.getModElementManager().storeModElementPicture(potionEffect);
 				workspace.addModElement(potionEffect.getModElement());
