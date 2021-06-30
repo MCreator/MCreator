@@ -137,7 +137,7 @@ public class WorkspaceGeneratorSetupDialog {
 				L10N.t("dialog.setup_workspace.step.workspace_setup_openpref"),
 				L10N.t("dialog.setup_workspace.step.workspace_setup_copyclipboard"), L10N.t("dialog.setup_workspace.step.workspace_setup_close") };
 		int action = JOptionPane.showOptionDialog(m, L10N.t("dialog.setup_workspace.step.workspace_setup_fail")
-						+ (s != null ? "<br><br>Additional info: " + s : "") + "<br><br>", L10N.t("dialog.setup_workspace.step.workspace_setup_fail_title"),
+						+ (s != null ? L10N.t("dialog.setup_workspace.step.workspace_setup_fail_additionalinfo") + s : "") + "<br><br>", L10N.t("dialog.setup_workspace.step.workspace_setup_fail_title"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 		if (action == 0) {
 			runSetup(m, false);
