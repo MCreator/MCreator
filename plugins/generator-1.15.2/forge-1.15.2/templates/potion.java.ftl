@@ -28,20 +28,13 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
-<#include "procedures.java.ftl">
 
 package ${package}.potion;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Potion extends ${JavaModName}Elements.ModElement{
 
 	@ObjectHolder("${modid}:${registryname}")
-	public static final Effect potion = null;
-
-	<#if data.registerPotionType>
-	@ObjectHolder("${modid}:${registryname}")
 	public static final Potion potionType = null;
-	</#if>
 
 	public ${name}Potion (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
@@ -49,11 +42,7 @@ package ${package}.potion;
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 	}
 
-	@SubscribeEvent public void registerEffect(RegistryEvent.Register<Effect> event) {
-		event.getRegistry().register(new EffectCustom());
-	}
 
-	<#if data.registerPotionType>
 	@SubscribeEvent public void registerPotion(RegistryEvent.Register<Potion> event) {
 		event.getRegistry().register(new PotionCustom());
 	}
@@ -61,93 +50,12 @@ package ${package}.potion;
 	public static class PotionCustom extends Potion {
 
 		public PotionCustom() {
-			super(new EffectInstance(potion, 3600));
+			super(
+			<#list data.effects as effect>
+			new EffectInstance(${effect.effect?replace("Effect.effect", "PotionEffect.potion")}, ${effect.duration}, ${effect.amplifier}, ${effect.ambient}, ${effect.showParticles})<#if effect?has_next>,</#if>
+			</#list>);
 			setRegistryName("${registryname}");
 		}
 
 	}
-	</#if>
-
-	public static class EffectCustom extends Effect {
-
-		private final ResourceLocation potionIcon;
-
-		public EffectCustom() {
-			super(EffectType.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
-			setRegistryName("${registryname}");
-			potionIcon = new ResourceLocation("${modid}:textures/${data.icon}");
-		}
-
-		@Override public String getName() {
-      		return "effect.${registryname}";
-   		}
-
-		@Override public boolean isBeneficial() {
-        	return ${data.isBenefitical};
-    	}
-
-		@Override public boolean isInstant() {
-        	return ${data.isInstant};
-    	}
-
-   	 	@Override public boolean shouldRenderInvText(EffectInstance effect) {
-    	    return ${data.renderStatusInInventory};
-    	}
-
-		@Override public boolean shouldRender(EffectInstance effect) {
-			return ${data.renderStatusInInventory};
-		}
-
-    	@Override public boolean shouldRenderHUD(EffectInstance effect) {
-    	    return ${data.renderStatusInHUD};
-    	}
-
-		<#if hasProcedure(data.onStarted)>
-			<#if data.isInstant>
-			@Override public void affectEntity(Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
-				World world = entity.world;
-				double x = entity.getPosX();
-				double y = entity.getPosY();
-				double z = entity.getPosZ();
-				<@procedureOBJToCode data.onStarted/>
-			}
-			<#else>
-			@Override public void applyAttributesModifiersToEntity(LivingEntity entity, AbstractAttributeMap attributeMapIn, int amplifier) {
-				World world = entity.world;
-				double x = entity.getPosX();
-				double y = entity.getPosY();
-				double z = entity.getPosZ();
-				<@procedureOBJToCode data.onStarted/>
-			}
-			</#if>
-		</#if>
-
-		<#if hasProcedure(data.onActiveTick)>
-		@Override public void performEffect(LivingEntity entity, int amplifier) {
-			World world = entity.world;
-			double x = entity.getPosX();
-			double y = entity.getPosY();
-			double z = entity.getPosZ();
-			<@procedureOBJToCode data.onActiveTick/>
-		}
-		</#if>
-
-    	<#if hasProcedure(data.onExpired)>
-		@Override public void removeAttributesModifiersFromEntity(LivingEntity entity, AbstractAttributeMap attributeMapIn, int amplifier) {
-    		super.removeAttributesModifiersFromEntity(entity, attributeMapIn, amplifier);
-    		World world = entity.world;
-			double x = entity.getPosX();
-			double y = entity.getPosY();
-			double z = entity.getPosZ();
-			<@procedureOBJToCode data.onExpired/>
-		}
-		</#if>
-
-		@Override public boolean isReady(int duration, int amplifier) {
-    		return true;
-    	}
-
-	}
-
 }
-<#-- @formatter:on -->
