@@ -32,7 +32,7 @@
             + generator.getElementExtension(mappedBlock) + (amount == 1)?then(")",", (int)(" + amount + "))")>
         </#if>
     <#else>
-        <#return "new ItemStack(" + mappedBlock?keep_before("#") + (amount == 1)?then(")",", (int)(" + amount + "))")>
+        <#return "new ItemStack(" + mappedBlock + (amount == 1)?then(")",", (int)(" + amount + "))")>
     </#if>
 </#function>
 
@@ -47,7 +47,7 @@
             <#return mappedElementToClassName(mappedBlock) + "." + generator.getElementExtension(mappedBlock)>
         </#if>
     <#else>
-        <#return mappedBlock?keep_before("#") + mappedBlock?contains("Blocks.")?then(".asItem()","")>
+        <#return mappedBlock + mappedBlock?contains("Blocks.")?then(".asItem()","")>
     </#if>
 </#function>
 
