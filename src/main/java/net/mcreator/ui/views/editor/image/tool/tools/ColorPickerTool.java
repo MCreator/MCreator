@@ -25,14 +25,21 @@ import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class ColorPickerTool extends AbstractTool {
 
+	private final JCheckBox respectOpacity;
+
 	public ColorPickerTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager) {
-		super("Color picker", "A tool that sets current foreground color to the color under the cursor",
-				UIRES.get("img_editor.picker"), canvas, colorSelector, versionManager, "Last picked color opacity:");
+		super("Color picker", "A tool that sets foreground color to the pointed color (shift-click to set background color)",
+				UIRES.get("img_editor.picker"), canvas, colorSelector, versionManager);
+
+		respectOpacity = new JCheckBox("Pick opacity");
+		respectOpacity.setSelected(true);
+		settingsPanel.add(respectOpacity);
 	}
 
 	@Override public boolean process(ZoomedMouseEvent e) {
@@ -40,11 +47,12 @@ public class ColorPickerTool extends AbstractTool {
 		if (layer.in(e.getX(), e.getY())) {
 			Color c = new Color(layer.getRGB(e.getX() - layer.getX(), e.getY() - layer.getY()), true);
 			if (e.isShiftDown()) {
-				colorSelector.setBackgroundColor(new Color(c.getRGB()));
+				colorSelector.setBackgroundColor(new Color(c.getRed(), c.getGreen(), c.getBlue(),
+						respectOpacity.isSelected() ? c.getAlpha() : colorSelector.getBackgroundColor().getAlpha()));
 			} else {
-				colorSelector.setForegroundColor(new Color(c.getRGB()));
+				colorSelector.setForegroundColor(new Color(c.getRed(), c.getGreen(), c.getBlue(),
+						respectOpacity.isSelected() ? c.getAlpha() : colorSelector.getForegroundColor().getAlpha()));
 			}
-			opacitySlider.setValue(c.getAlpha());
 			return true;
 		}
 		return false;

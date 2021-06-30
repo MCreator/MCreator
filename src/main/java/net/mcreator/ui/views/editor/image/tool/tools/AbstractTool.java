@@ -25,12 +25,10 @@ import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
-import net.mcreator.ui.views.editor.image.tool.component.JSlidingSpinner;
 import net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent;
 import net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationListener;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -42,12 +40,8 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 	protected String name, description;
 	protected ImageIcon icon;
 
-	protected final JPanel propertiesPanel = new JPanel(new BorderLayout());
+	private final JPanel propertiesPanel = new JPanel(new BorderLayout());
 	protected JPanel settingsPanel = new JPanel();
-
-	//Opacity slider for modification tools
-	protected final JSlidingSpinner opacitySlider;
-	protected double opacity = 1;
 
 	protected Canvas canvas;
 	protected Layer layer;
@@ -58,7 +52,7 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 	private JToggleButton toolPanelButton;
 
 	public AbstractTool(String name, String description, ImageIcon icon, Canvas canvas, ColorSelector colorSelector,
-			VersionManager versionManager, @Nonnull String opacitySliderName) {
+			VersionManager versionManager) {
 		this.name = name;
 		this.description = description;
 		this.icon = icon;
@@ -71,14 +65,6 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 		settingsPanel.setLayout(new GridLayout(9, 1, 3, 3));
 		settingsPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		settingsPanel.setOpaque(false);
-
-		if (!opacitySliderName.equals("")) {
-			opacitySlider = new JSlidingSpinner(opacitySliderName, 255, 0, 255, 1);
-			opacitySlider.addChangeListener(e -> opacity = opacitySlider.getValue() / 255.0);
-			settingsPanel.add(opacitySlider);
-		} else {
-			opacitySlider = null;
-		}
 
 		JLabel lab = new JLabel(name);
 		lab.setFont(new Font(lab.getFont().getName(), Font.PLAIN, 20));

@@ -30,7 +30,7 @@ public abstract class AbstractModificationTool extends AbstractTool {
 
 	public AbstractModificationTool(String name, String description, ImageIcon icon, Canvas canvas,
 			ColorSelector colorSelector, VersionManager versionManager) {
-		super(name, description, icon, canvas, colorSelector, versionManager, "Opacity:");
+		super(name, description, icon, canvas, colorSelector, versionManager);
 	}
 
 	@Override public void mousePressed(MouseEvent e) {

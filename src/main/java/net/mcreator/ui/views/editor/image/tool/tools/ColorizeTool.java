@@ -32,7 +32,7 @@ public class ColorizeTool extends AbstractTool {
 
 	public ColorizeTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager, MCreator window) {
 		super("Colorize tool", "A tool for applying color to layers", UIRES.get("img_editor.colorize"), canvas,
-				colorSelector, versionManager, "");
+				colorSelector, versionManager);
 		this.window = window;
 		noSettings(true);
 	}

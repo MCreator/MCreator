@@ -53,7 +53,7 @@ public class ShapeTool extends AbstractModificationTool {
 
 	@Override public boolean process(ZoomedMouseEvent e) {
 		layer.resetOverlay();
-		layer.setOverlayOpacity(opacity);
+		layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
 		if (layer.in(e.getX(), e.getY())) {
 			Graphics2D graphics2D = layer.getOverlay().createGraphics();
 			graphics2D.setColor(colorSelector.getForegroundColor());

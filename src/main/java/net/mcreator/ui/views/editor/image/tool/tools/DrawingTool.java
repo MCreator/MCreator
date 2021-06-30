@@ -69,7 +69,7 @@ public class DrawingTool extends AbstractModificationTool {
 	}
 
 	@Override public boolean process(ZoomedMouseEvent e) {
-		layer.setOverlayOpacity(opacity);
+		layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
 		canvas.updateCustomPreview(e, shape, size);
 		if (layer.in(e.getX(), e.getY())) {
 			int sx = e.getX() - layer.getX(), sy = e.getY() - layer.getY();

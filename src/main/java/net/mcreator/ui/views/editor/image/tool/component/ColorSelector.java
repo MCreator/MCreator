@@ -63,7 +63,7 @@ public class ColorSelector extends JPanel {
 		foregroundColor.addActionListener(e -> {
 			JColor.colorChooser.setColor(foreground);
 			dialog = JColorChooser.createDialog(f, "Select foreground color: ", true, JColor.colorChooser, event -> {
-				foreground = new Color(JColor.colorChooser.getColor().getRGB());
+				foreground = new Color(JColor.colorChooser.getColor().getRGB(), true);
 				updateColors();
 				dialog.setVisible(false);
 			}, event -> dialog.setVisible(false));
@@ -73,7 +73,7 @@ public class ColorSelector extends JPanel {
 		backgroundColor.addActionListener(e -> {
 			JColor.colorChooser.setColor(background);
 			dialog = JColorChooser.createDialog(f, "Select background color: ", true, JColor.colorChooser, event -> {
-				background = new Color(JColor.colorChooser.getColor().getRGB());
+				background = new Color(JColor.colorChooser.getColor().getRGB(), true);
 				updateColors();
 				dialog.setVisible(false);
 			}, event -> dialog.setVisible(false));
@@ -105,12 +105,12 @@ public class ColorSelector extends JPanel {
 	}
 
 	private void updateColors() {
-		foregroundColor.setBackground(foreground);
-		backgroundColor.setBackground(background);
+		foregroundColor.setBackground(new Color(foreground.getRGB()));
+		backgroundColor.setBackground(new Color(background.getRGB()));
 	}
 
 	public Color getForegroundColor() {
-		return new Color(foreground.getRGB(), false);
+		return new Color(foreground.getRGB(), true);
 	}
 
 	public void setForegroundColor(Color foreground) {
@@ -119,7 +119,7 @@ public class ColorSelector extends JPanel {
 	}
 
 	public Color getBackgroundColor() {
-		return new Color(background.getRGB(), false);
+		return new Color(background.getRGB(), true);
 	}
 
 	public void setBackgroundColor(Color background) {

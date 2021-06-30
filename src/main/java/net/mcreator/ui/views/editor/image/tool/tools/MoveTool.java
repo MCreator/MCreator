@@ -35,7 +35,7 @@ public class MoveTool extends AbstractTool {
 
 	public MoveTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager) {
 		super("Move tool", "A tool for moving active layers", UIRES.get("img_editor.move"), canvas, colorSelector,
-				versionManager, "");
+				versionManager);
 		noSettings(true);
 	}
 

@@ -45,7 +45,7 @@ public class FloodFillTool extends AbstractModificationTool {
 
 	@Override public boolean process(ZoomedMouseEvent e) {
 		if (layer.in(e.getX(), e.getY())) {
-			layer.setOverlayOpacity(opacity);
+			layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
 			fillArea(layer.getRaster(), layer.getOverlay(), e.getX() - layer.getX(), e.getY() - layer.getY(),
 					colorSelector.getForegroundColor());
 			return true;
