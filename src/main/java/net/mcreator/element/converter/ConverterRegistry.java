@@ -37,7 +37,7 @@ import net.mcreator.element.converter.fv21.BooleanGameRulesConverter;
 import net.mcreator.element.converter.fv21.ProcedureVariablesConverter;
 import net.mcreator.element.converter.fv22.BlockLightOpacityFixer;
 import net.mcreator.element.converter.fv23.PotionToEffectConverter;
-import net.mcreator.element.converter.fv23.ProcedureShootArrowFixer;
+import net.mcreator.element.converter.fv24.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
