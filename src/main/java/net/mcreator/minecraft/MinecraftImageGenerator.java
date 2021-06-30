@@ -1056,16 +1056,21 @@ public class MinecraftImageGenerator {
 			BufferedImage out = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
 
-			g2d.setColor(Color.GRAY);
-			g2d.drawLine(0, 1, 0, 26);
-			g2d.drawLine(27, 1, 27, 26);
-			g2d.drawLine(1, 0, 26, 0);
-			g2d.drawLine(1, 27, 26, 27);
-
 			g2d.setColor(new Color(50, 50, 50));
-			g2d.fillRect(1, 1, 26, 26);
+			g2d.fillRect(2, 2, 24, 24);
 
-			g2d.drawImage(ImageUtils.resize(icon, 22), null, 3, 3);
+			g2d.drawLine(1, 3, 1, 24);
+			g2d.drawLine(26, 3, 26, 24);
+			g2d.drawLine(3, 1, 24, 1);
+			g2d.drawLine(3, 26, 24, 26);
+
+			g2d.setColor(Color.GRAY);
+			g2d.drawLine(2, 3, 2, 24);
+			g2d.drawLine(25, 3, 25, 24);
+			g2d.drawLine(3, 2, 24, 2);
+			g2d.drawLine(3, 25, 24, 25);
+
+			g2d.drawImage(ImageUtils.resize(icon, 20), null, 4, 4);
 
 			g2d.dispose();
 
