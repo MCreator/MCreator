@@ -1250,29 +1250,34 @@ public class MinecraftImageGenerator {
 				startColor = BlocklyBlockUtil.getBlockColorFromHUE(76);
 
 			if (procedurexml.contains("<block type=\"return_")) {
-				if (procedurexml.contains("<block type=\"return_logic\"><value name=\"return\">")) {
-					returnColor = new Color(0x607c99);
-				} else if (procedurexml.contains("<block type=\"return_number\"><value name=\"return\">")) {
-					returnColor = new Color(0x606999);
-				} else if (procedurexml.contains("<block type=\"return_text\"><value name=\"return\">")) {
-					returnColor = new Color(0x609986);
-				} else if (procedurexml.contains("<block type=\"return_itemstack\"><value name=\"return\">")) {
-					returnColor = BlocklyBlockUtil.getBlockColorFromHUE(350);
+				try {
+					String type = procedurexml.split("<block type=\"return_")[1].split("\"><value name=\"return\">")[0];
+					returnColor = Dependency.getColor(type);
+				} catch (Exception e) {
+					if (procedurexml.contains("<block type=\"return_logic\"><value name=\"return\">")) {
+						returnColor = Dependency.getColor("logic");
+					} else if (procedurexml.contains("<block type=\"return_number\"><value name=\"return\">")) {
+						returnColor = Dependency.getColor("number");
+					} else if (procedurexml.contains("<block type=\"return_text\"><value name=\"return\">")) {
+						returnColor = Dependency.getColor("text");
+					} else if (procedurexml.contains("<block type=\"return_itemstack\"><value name=\"return\">")) {
+						returnColor = Dependency.getColor("itemstack");
+					}
 				}
 			}
 
 			if (dependencies.contains(new Dependency("advancement", ""))) {
-				blockColor = new Color(0x68712E);
+				blockColor = Dependency.getColor("advancement");
 			} else if (procedurexml.contains("<block type=\"block_")) {
 				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(60);
 			} else if (dependencies.contains(new Dependency("itemstack", ""))) {
-				blockColor = new Color(0x996069);
+				blockColor = Dependency.getColor("itemstack");
 			} else if (dependencies.contains(new Dependency("entity", "")) || dependencies
 					.contains(new Dependency("sourceentity", "")) || dependencies
 					.contains(new Dependency("imediatesourceentity", ""))) {
-				blockColor = new Color(0x608a99);
+				blockColor = Dependency.getColor("entity");
 			} else if (dependencies.contains(new Dependency("world", ""))) {
-				blockColor = new Color(0x998160);
+				blockColor = Dependency.getColor("world");
 			}
 
 			if (startColor != null)
