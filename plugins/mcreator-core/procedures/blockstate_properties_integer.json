@@ -2,6 +2,7 @@
   "extensions": [
     "blockstate_integer_list_provider"
   ],
+  "inputsInline": true,
   "output": "String",
   "colour": "%{BKY_TEXTS_HUE}",
   "mcreator": {
