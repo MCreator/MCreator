@@ -61,8 +61,7 @@ public class PotionToEffectConverter implements IConverter {
 
 				potion.effects = new ArrayList<>();
 				Potion.CustomEffectEntry effectEntry = new Potion.CustomEffectEntry();
-				effectEntry.effect = new EffectEntry(workspace,
-						"CUSTOM:" + potion.getModElement().getName() + "Effect");
+				effectEntry.effect = new EffectEntry(workspace, "CUSTOM:" + potion.getModElement().getName());
 				effectEntry.amplifier = 0;
 				effectEntry.duration = 3600;
 				effectEntry.ambient = false;
