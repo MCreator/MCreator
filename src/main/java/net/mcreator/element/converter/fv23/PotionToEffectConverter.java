@@ -43,38 +43,38 @@ public class PotionToEffectConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Potion potion = (Potion) input;
 
-		try {
-			potion.potionName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
-					.getAsString();
-			potion.splashName =
-					"Splash " + jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
-							.getAsString();
-			potion.lingeringName =
-					"Lingering " + jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
-							.getAsString();
-			potion.arrowName =
-					"Arrow of " + jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
-							.getAsString();
+		String originalName = input.getModElement().getName();
 
-			potion.effects = new ArrayList<>();
-			Potion.CustomEffectEntry effectEntry = new Potion.CustomEffectEntry();
-			effectEntry.effect = new EffectEntry(workspace, "CUSTOM:" + potion.getModElement().getName() + "Effect");
-			effectEntry.amplifier = 0;
-			effectEntry.duration = 3600;
-			effectEntry.ambient = false;
-			effectEntry.showParticles = true;
-			potion.effects.add(effectEntry);
+		if (workspace.getModElementByName(originalName + "PotionItem") == null) {
+			try {
+				potion.potionName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
+						.getAsString();
+				potion.splashName =
+						"Splash " + jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
+								.getAsString();
+				potion.lingeringName =
+						"Lingering " + jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+								.get("name").getAsString();
+				potion.arrowName =
+						"Arrow of " + jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
+								.getAsString();
 
-			String originalName = input.getModElement().getName();
-			input.getModElement().setName(originalName + "PotionItem");
+				potion.effects = new ArrayList<>();
+				Potion.CustomEffectEntry effectEntry = new Potion.CustomEffectEntry();
+				effectEntry.effect = new EffectEntry(workspace,
+						"CUSTOM:" + potion.getModElement().getName() + "Effect");
+				effectEntry.amplifier = 0;
+				effectEntry.duration = 3600;
+				effectEntry.ambient = false;
+				effectEntry.showParticles = true;
+				potion.effects.add(effectEntry);
 
-			// if we did not split potion to effect element yet, add it now
-			if (workspace.getModElementByName(originalName) == null) {
+				input.getModElement().setName(originalName + "PotionItem");
+
 				PotionEffect potionEffect = new Gson()
 						.fromJson(jsonElementInput.getAsJsonObject().get("definition"), PotionEffect.class);
 
-				potionEffect.setModElement(new ModElement(workspace, input.getModElement().getName() + "Effect",
-						ModElementType.POTIONEFFECT));
+				potionEffect.setModElement(new ModElement(workspace, originalName, ModElementType.POTIONEFFECT));
 
 				potionEffect.getModElement()
 						.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
@@ -86,9 +86,9 @@ public class PotionToEffectConverter implements IConverter {
 				workspace.addModElement(potionEffect.getModElement());
 				workspace.getGenerator().generateElement(potionEffect);
 				workspace.getModElementManager().storeModElement(potionEffect);
+			} catch (Exception e) {
+				LOG.warn("Failed to update potion to new format", e);
 			}
-		} catch (Exception e) {
-			LOG.warn("Failed to update potion to new format", e);
 		}
 
 		return potion;
