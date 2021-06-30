@@ -189,6 +189,15 @@ public class BlocklyJavascriptBridge {
 		case "gamerulesnumber":
 			return ElementUtil.getAllNumberGameRules(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
+		case "blockstatesboolean":
+			return ElementUtil.loadBooleanBlockStateProperties().stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "blockstatesinteger":
+			return ElementUtil.loadIntegerBlockStateProperties().stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "blockstatesenum":
+			return ElementUtil.loadEnumBlockStateProperties().stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
 		case "fluid":
 			return ElementUtil.loadAllFluids(workspace);
 		case "sound":

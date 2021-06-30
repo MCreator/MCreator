@@ -230,6 +230,21 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("screens").stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
+	public static List<DataListEntry> loadBooleanBlockStateProperties() {
+		return DataListLoader.loadDataList("blockstateproperties").stream().filter(e -> e.getType().equals("boolean"))
+				.collect(Collectors.toList());
+	}
+
+	public static List<DataListEntry> loadIntegerBlockStateProperties() {
+		return DataListLoader.loadDataList("blockstateproperties").stream().filter(e -> e.getType().equals("integer"))
+				.collect(Collectors.toList());
+	}
+
+	public static List<DataListEntry> loadEnumBlockStateProperties() {
+		return DataListLoader.loadDataList("blockstateproperties").stream().filter(e -> e.getType().equals("enum"))
+				.collect(Collectors.toList());
+	}
+
 	public static String[] loadAllDimensions(Workspace workspace) {
 		ArrayList<String> dimensions = new ArrayList<>();
 		dimensions.add("Surface");
