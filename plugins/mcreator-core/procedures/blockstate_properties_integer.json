@@ -1,0 +1,12 @@
+{
+  "extensions": [
+    "blockstate_integer_list_provider"
+  ],
+  "output": "String",
+  "colour": "%{BKY_TEXTS_HUE}",
+  "mcreator": {
+    "fields": [
+      "blockstatesinteger"
+    ]
+  }
+}

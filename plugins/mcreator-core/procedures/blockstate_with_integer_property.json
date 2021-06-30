@@ -29,7 +29,7 @@
     "toolbox_id": "blockdata",
     "toolbox_init": [
       "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
-      "<value name=\"property\"><block type=\"text\"><field name=\"TEXT\">age</field></block></value>",
+      "<value name=\"property\"><block type=\"blockstate_properties_integer\"><field name=\"blockstatesinteger\">AGE_0_7</field></block></value>",
       "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
     ],
     "inputs": [

@@ -23,7 +23,7 @@
   "mcreator": {
     "toolbox_id": "blockdata",
     "toolbox_init": [
-      "<value name=\"property\"><block type=\"text\"><field name=\"TEXT\">half</field></block></value>",
+      "<value name=\"property\"><block type=\"blockstate_properties_enum\"><field name=\"blockstatesenum\">DOUBLE_BLOCK_HALF</field></block></value>",
       "<value name=\"block\"><block type=\"blockstate_from_deps\"></block></value>"
     ],
     "inputs": [

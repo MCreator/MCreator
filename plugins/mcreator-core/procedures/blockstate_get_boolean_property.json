@@ -23,7 +23,7 @@
   "mcreator": {
     "toolbox_id": "blockdata",
     "toolbox_init": [
-      "<value name=\"property\"><block type=\"text\"><field name=\"TEXT\">waterlogged</field></block></value>",
+      "<value name=\"property\"><block type=\"blockstate_properties_boolean\"><field name=\"blockstatesboolean\">WATERLOGGED</field></block></value>",
       "<value name=\"block\"><block type=\"blockstate_from_deps\"></block></value>"
     ],
     "inputs": [
