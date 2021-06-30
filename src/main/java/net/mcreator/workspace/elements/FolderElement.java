@@ -179,4 +179,12 @@ public class FolderElement implements IElement {
 		return getPath().hashCode();
 	}
 
+	public static FolderElement dummyFromPath(String path) {
+		return new FolderElement("", null) {
+			@Override public String getPath() {
+				return path;
+			}
+		};
+	}
+
 }

@@ -25,6 +25,7 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.Tuple;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,7 +46,7 @@ public class ExternalBlockLoader {
 	private final Map<String, ToolboxBlock> toolboxBlocks;
 
 	private final String blocksJSONString;
-	private final Map<String, StringBuilder> toolbox = new HashMap<>();
+	private final Map<String, List<Tuple<ToolboxBlock, String>>> toolbox = new HashMap<>();
 
 	ExternalBlockLoader(String resourceFolder) {
 		LOG.debug("Loading blocks for " + resourceFolder);
@@ -145,20 +146,20 @@ public class ExternalBlockLoader {
 		// setup toolbox
 
 		// add default "built-in" categories
-		toolbox.put("other", new StringBuilder());
-		toolbox.put("apis", new StringBuilder());
-		toolbox.put("mcelements", new StringBuilder());
-		toolbox.put("mcvariables", new StringBuilder());
-		toolbox.put("customvariables", new StringBuilder());
-		toolbox.put("logicloops", new StringBuilder());
-		toolbox.put("logicoperations", new StringBuilder());
-		toolbox.put("math", new StringBuilder());
-		toolbox.put("text", new StringBuilder());
-		toolbox.put("advanced", new StringBuilder());
+		toolbox.put("other", new ArrayList<>());
+		toolbox.put("apis", new ArrayList<>());
+		toolbox.put("mcelements", new ArrayList<>());
+		toolbox.put("mcvariables", new ArrayList<>());
+		toolbox.put("customvariables", new ArrayList<>());
+		toolbox.put("logicloops", new ArrayList<>());
+		toolbox.put("logicoperations", new ArrayList<>());
+		toolbox.put("math", new ArrayList<>());
+		toolbox.put("text", new ArrayList<>());
+		toolbox.put("advanced", new ArrayList<>());
 
 		// Handle built-in categories
 		for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
-			for (Map.Entry<String, StringBuilder> entry : toolbox.entrySet()) {
+			for (Map.Entry<String, List<Tuple<ToolboxBlock, String>>> entry : toolbox.entrySet()) {
 				if (entry.getKey().equals("other"))
 					continue;
 
@@ -170,7 +171,7 @@ public class ExternalBlockLoader {
 						toolboxBlock.toolbox_init.forEach(toolboxXML::append);
 					toolboxXML.append("</block>");
 
-					entry.getValue().append(toolboxXML);
+					entry.getValue().add(new Tuple<>(toolboxBlock, toolboxXML.toString()));
 					toolboxBlock.toolboxXML = toolboxXML.toString();
 				}
 			}
@@ -202,11 +203,7 @@ public class ExternalBlockLoader {
 			categoryBuilder.append("</category>");
 
 			if (categoryBuilder.toString().contains("<block type=")) {
-				if (category.api) {
-					toolbox.get("apis").append(categoryBuilder);
-				} else {
-					toolbox.get("other").append(categoryBuilder);
-				}
+				toolbox.get(category.api ? "apis" : "other").add(new Tuple<>(null, categoryBuilder.toString()));
 			}
 		}
 	}
@@ -224,8 +221,16 @@ public class ExternalBlockLoader {
 				toolbox_xml = toolbox_xml.replace(m.group(), m1);
 		}
 
-		for (Map.Entry<String, StringBuilder> entry : toolbox.entrySet()) {
-			toolbox_xml = toolbox_xml.replace("<custom-" + entry.getKey() + "/>", entry.getValue().toString());
+		for (Map.Entry<String, List<Tuple<ToolboxBlock, String>>> entry : toolbox.entrySet()) {
+			StringBuilder categoryBuilderFinal = new StringBuilder();
+			for (Tuple<ToolboxBlock, String> tuple : entry.getValue()) {
+				if (tuple.x instanceof DynamicBlockLoader.DynamicToolboxBlock
+						&& !((DynamicBlockLoader.DynamicToolboxBlock) tuple.x)
+						.shouldLoad(pane.getMCreator().getGeneratorConfiguration()))
+					continue;
+				categoryBuilderFinal.append(tuple.y);
+			}
+			toolbox_xml = toolbox_xml.replace("<custom-" + entry.getKey() + "/>", categoryBuilderFinal.toString());
 		}
 
 		pane.executeJavaScriptSynchronously(

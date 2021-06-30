@@ -1,0 +1,1 @@
+Ce paramètre contrôle le nom de la fiole de potion persistante.

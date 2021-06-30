@@ -716,7 +716,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
-        <#if hasProcedure(data.onRightClicked) || data.openGUIOnRightClick>
+        <#if hasProcedure(data.onRightClicked) || data.shouldOpenGUIOnRightClick()>
 		@Override
 		public ActionResultType onBlockActivated(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
 			super.onBlockActivated(blockstate, world, pos, entity, hand, hit);
@@ -725,7 +725,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			int y = pos.getY();
 			int z = pos.getZ();
 
-			<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>" && data.openGUIOnRightClick && (data.guiBoundTo)?has_content>
+			<#if data.shouldOpenGUIOnRightClick()>
 				if(entity instanceof ServerPlayerEntity) {
 					NetworkHooks.openGui((ServerPlayerEntity) entity, new INamedContainerProvider() {
 						@Override public ITextComponent getDisplayName() {
