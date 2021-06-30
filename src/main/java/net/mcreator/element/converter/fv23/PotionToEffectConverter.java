@@ -70,6 +70,10 @@ public class PotionToEffectConverter implements IConverter {
 				potion.effects.add(effectEntry);
 
 				input.getModElement().setName(originalName + "PotionItem");
+				workspace.getModElementManager().storeModElementPicture(potion);
+				workspace.addModElement(potion.getModElement());
+				workspace.getGenerator().generateElement(potion);
+				workspace.getModElementManager().storeModElement(potion);
 
 				PotionEffect potionEffect = new Gson()
 						.fromJson(jsonElementInput.getAsJsonObject().get("definition"), PotionEffect.class);
