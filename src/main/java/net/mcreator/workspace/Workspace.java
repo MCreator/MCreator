@@ -102,7 +102,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 * @return UNMODIFIABLE! list of mod elements
 	 */
 	public Collection<ModElement> getModElements() {
-		return mod_elements;
+		return Collections.unmodifiableSet(new LinkedHashSet<>(mod_elements));
 	}
 
 	public Collection<VariableElement> getVariableElements() {
