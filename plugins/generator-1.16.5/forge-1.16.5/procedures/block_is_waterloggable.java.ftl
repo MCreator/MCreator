@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-((${mappedBlockToBlockStateCode(input$block)}).getBlock() instanceof IWaterLoggable)
+(${mappedBlockToBlock(input$block)} instanceof IWaterLoggable)
