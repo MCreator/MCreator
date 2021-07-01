@@ -283,7 +283,8 @@ public class WorkspaceDialogs {
 			license.setEditable(true);
 			license.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXX");
 
-			modID.setValidator(new RegistryNameValidator(modID, L10N.t("dialog.workspace.settings.workspace_modid")).setMaxLength(32));
+			modID.setValidator(new RegistryNameValidator(modID, L10N.t("dialog.workspace.settings.workspace_modid"))
+					.setMaxLength(32));
 
 			modName.enableRealtimeValidation();
 			modID.enableRealtimeValidation();
@@ -528,7 +529,7 @@ public class WorkspaceDialogs {
 				license.setSelectedItem(workspace.getWorkspaceSettings().getLicense());
 				websiteURL.setText(workspace.getWorkspaceSettings().getWebsiteURL());
 				modPicture.setSelectedItem(workspace.getWorkspaceSettings().getModPicture() == null ?
-						"No picture / default picture" :
+						L10N.t("dialog.workspace.settings.workspace_nopic_default") :
 						workspace.getWorkspaceSettings().getModPicture());
 				serverSideOnly.setSelected(workspace.getWorkspaceSettings().isServerSideOnly());
 				lockBaseModFiles.setSelected(workspace.getWorkspaceSettings().isLockBaseModFiles());
@@ -565,7 +566,8 @@ public class WorkspaceDialogs {
 					license.getEditor().getItem().toString());
 			retVal.setWebsiteURL(websiteURL.getText().equals("") ? null : websiteURL.getText());
 			retVal.setCredits(credits.getText().equals("") ? null : credits.getText());
-			retVal.setModPicture(Objects.equals(modPicture.getSelectedItem(), L10N.t("dialog.workspace.settings.workspace_nopic_default")) ?
+			retVal.setModPicture(Objects.equals(modPicture.getSelectedItem(),
+					L10N.t("dialog.workspace.settings.workspace_nopic_default")) ?
 					null :
 					(String) modPicture.getSelectedItem());
 			retVal.setModElementsPackage(packageName.getText().equals("") ? null : packageName.getText());
