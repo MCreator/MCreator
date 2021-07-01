@@ -562,7 +562,7 @@ public class WorkspaceDialogs {
 			retVal.setDescription(description.getText().equals("") ? null : description.getText());
 			retVal.setAuthor(author.getText().equals("") ? null : author.getText());
 			retVal.setLicense(license.getEditor().getItem().toString().equals("") ?
-					L10N.t("dialog.workspace.settings.workspace_not_specified") :
+					"Not specified" :
 					license.getEditor().getItem().toString());
 			retVal.setWebsiteURL(websiteURL.getText().equals("") ? null : websiteURL.getText());
 			retVal.setCredits(credits.getText().equals("") ? null : credits.getText());
