@@ -55,7 +55,7 @@ public static class BiomeProviderCustom extends BiomeProvider {
 				biome.addCarver(GenerationStage.Carving.AIR, Biome.createCarver(new CaveWorldCarver(ProbabilityConfig::deserialize, 256) {
 					{
 						carvableBlocks = ImmutableSet.of(
-							${mappedBlockToBlockStateCode(data.mainFillerBlock)}.getBlock(),
+							${mappedBlockToBlock(data.mainFillerBlock)},
 							biome.getSurfaceBuilder().getConfig().getTop().getBlock(),
 							biome.getSurfaceBuilder().getConfig().getUnder().getBlock()
 						);
