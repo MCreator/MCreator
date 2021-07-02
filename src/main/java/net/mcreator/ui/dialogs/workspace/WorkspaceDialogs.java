@@ -283,7 +283,8 @@ public class WorkspaceDialogs {
 			license.setEditable(true);
 			license.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXX");
 
-			modID.setValidator(new RegistryNameValidator(modID, "Mod ID").setMaxLength(32));
+			modID.setValidator(new RegistryNameValidator(modID, L10N.t("dialog.workspace.settings.workspace_modid"))
+					.setMaxLength(32));
 
 			modName.enableRealtimeValidation();
 			modID.enableRealtimeValidation();
@@ -299,7 +300,7 @@ public class WorkspaceDialogs {
 			validationGroup.addValidationElement(websiteURL);
 			validationGroup.addValidationElement(author);
 
-			modPicture.addItem("No picture / default picture");
+			modPicture.addItem(L10N.t("dialog.workspace.settings.workspace_nopic_default"));
 			if (workspace != null) {
 				List<File> other = workspace.getFolderManager().getOtherTexturesList();
 				for (File element : other) {
@@ -407,14 +408,14 @@ public class WorkspaceDialogs {
 				String text = packageName.getText();
 				if (text.length() == 0)
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							"Package name can't be empty");
+							L10N.t("dialog.workspace.settings.workspace_package_empty"));
 				if (text.startsWith(".")) {
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							"Package name can't start with a dot");
+							L10N.t("dialog.workspace.settings.workspace_package_startdot"));
 				}
 				if (text.endsWith(".")) {
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							"Package name can't end with a dot");
+							L10N.t("dialog.workspace.settings.workspace_package_enddot"));
 				}
 				char[] chars = text.toCharArray();
 				boolean valid = true;
@@ -432,11 +433,11 @@ public class WorkspaceDialogs {
 				}
 				if (!valid)
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							"Package name can only contain EN letters, numbers, underscore and dots.");
+							L10N.t("dialog.workspace.settings.workspace_package_pattern"));
 
 				if (text.matches(".*\\d+.*"))
 					return new Validator.ValidationResult(Validator.ValidationResultType.WARNING,
-							"Avoid using numbers in package names");
+							L10N.t("dialog.workspace.settings.workspace_package_avoid_numbers"));
 
 				return Validator.ValidationResult.PASSED;
 			});
@@ -528,7 +529,7 @@ public class WorkspaceDialogs {
 				license.setSelectedItem(workspace.getWorkspaceSettings().getLicense());
 				websiteURL.setText(workspace.getWorkspaceSettings().getWebsiteURL());
 				modPicture.setSelectedItem(workspace.getWorkspaceSettings().getModPicture() == null ?
-						"No picture / default picture" :
+						L10N.t("dialog.workspace.settings.workspace_nopic_default") :
 						workspace.getWorkspaceSettings().getModPicture());
 				serverSideOnly.setSelected(workspace.getWorkspaceSettings().isServerSideOnly());
 				lockBaseModFiles.setSelected(workspace.getWorkspaceSettings().isLockBaseModFiles());
@@ -565,7 +566,8 @@ public class WorkspaceDialogs {
 					license.getEditor().getItem().toString());
 			retVal.setWebsiteURL(websiteURL.getText().equals("") ? null : websiteURL.getText());
 			retVal.setCredits(credits.getText().equals("") ? null : credits.getText());
-			retVal.setModPicture(Objects.equals(modPicture.getSelectedItem(), "No picture / default picture") ?
+			retVal.setModPicture(Objects.equals(modPicture.getSelectedItem(),
+					L10N.t("dialog.workspace.settings.workspace_nopic_default")) ?
 					null :
 					(String) modPicture.getSelectedItem());
 			retVal.setModElementsPackage(packageName.getText().equals("") ? null : packageName.getText());

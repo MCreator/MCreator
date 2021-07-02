@@ -1034,7 +1034,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			}}.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockAt -> {
 						boolean blockCriteria = false;
 					<#list data.blocksToReplace as replacementBlock>
-						if(blockAt.getBlock() == ${mappedBlockToBlockStateCode(replacementBlock)}.getBlock())
+						if(blockAt.getBlock() == ${mappedBlockToBlock(replacementBlock)})
 							blockCriteria = true;
 					</#list>
 						return blockCriteria;

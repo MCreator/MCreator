@@ -123,9 +123,9 @@ public class WorkspaceGeneratorSetupDialog {
 
 				dial.hideAll();
 			} catch (Exception e) {
-				LOG.error("Failed to reload Gradle caches", e);
+				LOG.error(L10N.t("dialog.setup_workspace.step.failed_gradle_caches"), e);
 				p3.err();
-				showSetupFailedMessage(dial, m, "Failed to build cache. Reason: " + e.getMessage());
+				showSetupFailedMessage(dial, m, L10N.t("dialog.setup_workspace.step.failed_build_caches") + e.getMessage());
 			}
 		}).start();
 	}
@@ -133,17 +133,11 @@ public class WorkspaceGeneratorSetupDialog {
 	private static void showSetupFailedMessage(ProgressDialog dial, MCreator m, String s) {
 		dial.hideAll();
 
-		Object[] options = { "<html>Re-run the setup<br><small>I've fixed the problem",
-				"<html>Open preferences<br><small>And re-run afterwards",
-				"<html>Copy error to clipboard<br><small>And close this workspace", "Close this workspace" };
-		int action = JOptionPane.showOptionDialog(m, "<html><big>Workspace setup failed</big><br>"
-						+ "<br>The setup of MCreator failed. Based on the suggestions you got, try to fix any errors you have and run it again. "
-						+ "<br><br><b>Check https://mcreator.net/support/knowledgebase for tips on fixing the setup errors.</b>"
-						+ "<br><br>If this is the first time you are seeing this message, try re-running the setup first."
-						+ "<br><br>If the error is fixable by you (internet connection problems, ...), you can fix the problem and click the first button"
-						+ "<br><b>after</b> you fix the problem. MCreator will run the setup again automatically. You choose to copy the error log to"
-						+ "<br>the clipboard for further investigation. You can close the MCreator and run it again when you think you fixed the problem."
-						+ (s != null ? "<br><br>Additional info: " + s : "") + "<br><br>", "MCreator setup failed!",
+		Object[] options = { L10N.t("dialog.setup_workspace.step.workspace_setup_rerun"),
+				L10N.t("dialog.setup_workspace.step.workspace_setup_openpref"),
+				L10N.t("dialog.setup_workspace.step.workspace_setup_copyclipboard"), L10N.t("dialog.setup_workspace.step.workspace_setup_close") };
+		int action = JOptionPane.showOptionDialog(m, L10N.t("dialog.setup_workspace.step.workspace_setup_fail")
+						+ (s != null ? L10N.t("dialog.setup_workspace.step.workspace_setup_fail_additionalinfo") + s : "") + "<br><br>", L10N.t("dialog.setup_workspace.step.workspace_setup_fail_title"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 		if (action == 0) {
 			runSetup(m, false);

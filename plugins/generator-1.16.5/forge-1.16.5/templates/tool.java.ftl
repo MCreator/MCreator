@@ -280,7 +280,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
 			 <#list data.blocksAffected as restrictionBlock>
-                 if (blockstate.getBlock() == ${mappedBlockToBlockStateCode(restrictionBlock)}.getBlock())
+                 if (blockstate.getBlock() == ${mappedBlockToBlock(restrictionBlock)})
                  	return ${data.efficiency}f;
              </#list>
 			return 1;
