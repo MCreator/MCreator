@@ -76,7 +76,7 @@ public class ImageMakerTest {
 		Workspace workspace = Workspace
 				.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"), workspaceSettings);
 
-		mcreator = new MCreator(null, workspace);
+		mcreator = new MCreator(null, workspace, null);
 	}
 
 	@BeforeEach void printName(TestInfo testInfo) {

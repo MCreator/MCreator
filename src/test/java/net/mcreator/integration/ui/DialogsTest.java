@@ -83,7 +83,7 @@ public class DialogsTest {
 		Workspace workspace = Workspace
 				.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"), workspaceSettings);
 
-		mcreator = new MCreator(null, workspace);
+		mcreator = new MCreator(null, workspace, null);
 	}
 
 	@BeforeEach void printName(TestInfo testInfo) {
@@ -108,7 +108,7 @@ public class DialogsTest {
 	}
 
 	@Test public void testPreferencesDialog() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new PreferencesDialog(mcreator, null));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new PreferencesDialog(mcreator, null, null));
 	}
 
 	@Test public void testMCItemSelector() throws Throwable {
