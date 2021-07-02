@@ -28,6 +28,7 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
@@ -110,6 +111,22 @@ public class MCItem extends DataListEntry {
 				}
 			} else if (name.startsWith("TAG:")) {
 				return TAG_ICON;
+			} else if (name.startsWith("POTION:")) {
+				String potion = name.replace("POTION:","");
+				if (potion.startsWith("CUSTOM:")) {
+					if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
+							potion.replace("CUSTOM:", "") + ".png").isFile()) {
+						retval = new ImageIcon(
+								workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
+										+ potion.replace("CUSTOM:", "") + ".png");
+					}
+				}
+				else if (DataListLoader.loadDataMap("potiontypes").containsKey(potion)) {
+					int color = Integer.parseInt(DataListLoader.loadDataMap("potiontypes").get(potion).getTexture());
+					retval = new ImageIcon(MinecraftImageGenerator.Preview.generatePotionIcon(new Color(color)));
+				} else {
+					retval = new ImageIcon(MinecraftImageGenerator.Preview.generatePotionIcon(Color.BLACK));
+				}
 			} else {
 				retval = BlockItemIcons
 						.getIconForItem(DataListLoader.loadDataMap("blocksitems").get(name).getTexture());
