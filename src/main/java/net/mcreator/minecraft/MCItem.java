@@ -156,6 +156,18 @@ public class MCItem extends DataListEntry {
 
 	}
 
+	public static final class Potion extends MCItem {
+		public Potion(@Nonnull Workspace workspace, String name) {
+			super("POTION:" + name);
+			setType("potion");
+			icon = MCItem.getBlockIconBasedOnName(workspace, "POTION:" + name);
+		}
+
+		@Override public boolean isSupportedInWorkspace(Workspace workspace) {
+			return true;
+		}
+	}
+
 	public interface ListProvider {
 		List<MCItem> provide(Workspace workspace);
 	}

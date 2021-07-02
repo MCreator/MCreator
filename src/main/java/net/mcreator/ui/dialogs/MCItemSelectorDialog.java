@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -56,7 +57,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 
 	private ActionListener itemSelectedListener;
 
-	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags) {
+	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags, boolean supportPotions) {
 		super(mcreator);
 
 		this.mcreator = mcreator;
@@ -131,7 +132,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 				if (result == JOptionPane.OK_OPTION) {
 					if (tagName.getValidationStatus().getValidationResultType()
 							!= Validator.ValidationResultType.ERROR) {
-						String selectedItem = (String) tagName.getSelectedItem();
+						String selectedItem = tagName.getSelectedItem();
 						if (selectedItem != null) {
 							MCItem mcItem = new MCItem.Tag(mcreator.getWorkspace(), selectedItem);
 							model.addElement(mcItem);
@@ -146,6 +147,32 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 								.showMessageDialog(this, L10N.t("dialog.item_selector.error_invalid_tag_name_message"),
 										L10N.t("dialog.item_selector.error_invalid_tag_name_title"),
 										JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			});
+		}
+
+		if (supportPotions) {
+			JButton usePotions = L10N.button("dialog.item_selector.use_potion");
+			buttons.add(usePotions);
+
+			JComboBox<String> potionType = new JComboBox<>();
+			ElementUtil.loadAllPotionTypes(mcreator.getWorkspace()).forEach(e -> potionType.addItem(e.getName()));
+
+			usePotions.addActionListener(e -> {
+				int result = JOptionPane.showConfirmDialog(this,
+						PanelUtils.northAndCenterElement(L10N.label("dialog.item_selector.select_potion_type"), potionType),
+						L10N.t("dialog.item_selector.use_potion"), JOptionPane.OK_CANCEL_OPTION);
+				if (result == JOptionPane.OK_OPTION) {
+					String selectedItem = (String) potionType.getSelectedItem();
+					if (selectedItem != null) {
+						MCItem mcItem = new MCItem.Potion(mcreator.getWorkspace(), selectedItem);
+						model.addElement(mcItem);
+						list.setSelectedValue(mcItem, true);
+
+						setVisible(false);
+						if (itemSelectedListener != null)
+							itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
 					}
 				}
 			});
@@ -295,7 +322,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 	}
 
 	public static MCItem openSelectorDialog(MCreator parent, MCItem.ListProvider blocks) {
-		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, false);
+		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, false, false);
 		bsd.reloadElements();
 		JComponent mainComponent = bsd.mainComponent;
 		mainComponent.setPreferredSize(new Dimension(870, 380));
@@ -309,7 +336,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 	}
 
 	public static List<MCItem> openMultiSelectorDialog(MCreator parent, MCItem.ListProvider blocks) {
-		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, false);
+		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, false, false);
 		bsd.reloadElements();
 		JComponent mainComponent = bsd.mainComponent;
 		mainComponent.setPreferredSize(new Dimension(870, 380));
