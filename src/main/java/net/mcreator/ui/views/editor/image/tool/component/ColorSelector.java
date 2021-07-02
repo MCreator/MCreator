@@ -28,8 +28,8 @@ import java.awt.*;
 public class ColorSelector extends JPanel {
 
 	private Color foreground = Color.BLACK, background = Color.WHITE;
-	private final JButton foregroundColor = new JButton();
-	private final JButton backgroundColor = new JButton();
+	private final JButton foregroundColor = new JButton("255");
+	private final JButton backgroundColor = new JButton("255");
 
 	private static JDialog dialog = null;
 
@@ -112,7 +112,11 @@ public class ColorSelector extends JPanel {
 
 	private void updateColors() {
 		foregroundColor.setBackground(new Color(foreground.getRGB()));
+		foregroundColor.setForeground(JColor.getColorLuminance(foreground) > 128 ? Color.black : Color.white);
+		foregroundColor.setText(Integer.toString(foreground.getAlpha()));
 		backgroundColor.setBackground(new Color(background.getRGB()));
+		backgroundColor.setForeground(JColor.getColorLuminance(background) > 128 ? Color.black : Color.white);
+		backgroundColor.setText(Integer.toString(background.getAlpha()));
 	}
 
 	public Color getForegroundColor() {
