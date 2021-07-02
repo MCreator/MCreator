@@ -19,7 +19,9 @@
 package net.mcreator.minecraft;
 
 import net.mcreator.element.types.Armor;
+import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.BlockItemIcons;
+import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.EmptyIcon;
@@ -119,6 +121,9 @@ public class MCItem extends DataListEntry {
 						retval = new ImageIcon(
 								workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
 										+ potion.replace("CUSTOM:", "") + ".png");
+					} else {
+						retval = ImageMakerTexturesCache.CACHE
+								.get(new ResourcePointer("templates/textures/texturemaker/potion_bottle_overlay.png"));
 					}
 				}
 				else if (DataListLoader.loadDataMap("potiontypes").containsKey(potion)) {
