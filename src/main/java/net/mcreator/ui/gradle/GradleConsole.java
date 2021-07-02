@@ -307,10 +307,10 @@ public class GradleConsole extends JPanel {
 
 		long millis = System.currentTimeMillis();
 
-		if (PreferencesManager.PREFERENCES.gradle.offline && gradleSetupTaskRunning) {
+		if (PreferencesManager.GlobalPREFERENCES.gradle.offline && gradleSetupTaskRunning) {
 			JOptionPane.showMessageDialog(ref, L10N.t("dialog.gradle_console.offline_mode_message"),
 					L10N.t("dialog.gradle_console.offline_mode_title"), JOptionPane.WARNING_MESSAGE);
-			PreferencesManager.PREFERENCES.gradle.offline = false;
+			PreferencesManager.GlobalPREFERENCES.gradle.offline = false;
 		}
 
 		String[] commandTokens = command.split(" ");
@@ -320,7 +320,7 @@ public class GradleConsole extends JPanel {
 
 		BuildLauncher task = GradleUtils.getGradleTaskLauncher(ref.getWorkspace(), commands);
 
-		if (PreferencesManager.PREFERENCES.gradle.offline)
+		if (PreferencesManager.GlobalPREFERENCES.gradle.offline)
 			arguments.add("--offline");
 
 		task.addArguments(arguments);

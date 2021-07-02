@@ -22,40 +22,74 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 
 public class PreferencesManager {
 
 	private static final Logger LOG = LogManager.getLogger("Preferences Manager");
 
+	public static GlobalPreferencesData GlobalPREFERENCES = new GlobalPreferencesData();
 	public static PreferencesData PREFERENCES = new PreferencesData();
 
 	private static final Gson gson = new GsonBuilder().setPrettyPrinting().setLenient().create();
 	private static final File preferencesFile = UserFolderManager.getFileFromUserFolder("preferences");
 
-	public static void loadPreferences() {
+	private static File workspacePreferencesFile;
+
+	public static void loadGlobalPreferences() {
 		if (!UserFolderManager.getFileFromUserFolder("preferences").isFile()) {
-			storePreferences(new PreferencesData());
+			storeGlobalPreferences(new GlobalPreferencesData());
 			LOG.info("Preferences not created yet. Loading defaults.");
 		} else {
 			try {
-				PREFERENCES = gson.fromJson(FileIO.readFileToString(preferencesFile), PreferencesData.class);
+				GlobalPREFERENCES = gson.fromJson(FileIO.readFileToString(preferencesFile), GlobalPreferencesData.class);
+				if (GlobalPREFERENCES == null)
+					throw new NullPointerException("Preferences are null!");
+				LOG.debug("Loading global preferences from " + preferencesFile);
+			} catch (Exception e) {
+				LOG.error("Failed to load preferences. Reloading defaults!", e);
+				storeGlobalPreferences(new GlobalPreferencesData());
+			}
+		}
+	}
+
+	public static void loadWorkspacePreferences(@Nonnull File workspaceFile, @Nonnull Workspace workspace) {
+		File workspacePreferencesFile = new File(workspaceFile, "preferences");
+		setWorkspacePreferencesFile(workspacePreferencesFile);
+
+		if (!workspacePreferencesFile.isFile()) {
+			storeWorkspacePreferences(new PreferencesData());
+			LOG.info("Preferences not created yet. Loading defaults.");
+		} else {
+			try {
+				PREFERENCES = gson.fromJson(FileIO.readFileToString(workspacePreferencesFile), PreferencesData.class);
 				if (PREFERENCES == null)
 					throw new NullPointerException("Preferences are null!");
 				LOG.debug("Loading preferences from " + preferencesFile);
 			} catch (Exception e) {
 				LOG.error("Failed to load preferences. Reloading defaults!", e);
-				storePreferences(new PreferencesData());
+				storeWorkspacePreferences(new PreferencesData());
 			}
 		}
 	}
 
-	public static void storePreferences(PreferencesData data) {
-		PREFERENCES = data;
+	public static void setWorkspacePreferencesFile(@Nonnull File workspaceFile) {
+		PreferencesManager.workspacePreferencesFile = new File(workspaceFile, "preferences");
+	}
+
+	public static void storeGlobalPreferences(GlobalPreferencesData data) {
+		GlobalPREFERENCES = data;
 		FileIO.writeStringToFile(gson.toJson(data), preferencesFile);
+	}
+
+	public static void storeWorkspacePreferences(PreferencesData data) {
+		PREFERENCES = data;
+		FileIO.writeStringToFile(gson.toJson(data), workspacePreferencesFile.getParentFile());
 	}
 
 }

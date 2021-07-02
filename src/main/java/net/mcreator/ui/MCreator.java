@@ -85,7 +85,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	private final long windowUID;
 
-	public MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
+	public MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace, @Nonnull File workspaceFile) {
 		LOG.info("Opening MCreator workspace: " + workspace.getWorkspaceSettings().getModID());
 
 		this.windowUID = System.currentTimeMillis();
@@ -95,8 +95,11 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		WorkspaceVCS vcs = WorkspaceVCS.loadVCSWorkspace(this.workspace);
 		if (vcs != null) {
 			this.workspace.setVCS(vcs);
-			LOG.info("Loaded VCS for current workspace");
 		}
+
+		PreferencesManager pm = new PreferencesManager();
+		pm.loadWorkspacePreferences(workspaceFile.getParentFile(), workspace);
+		LOG.info("Loaded preferences for current workspace");
 
 		this.gradleConsole = new GradleConsole(this);
 		this.gradleConsole.addGradleStateListener(new GradleStateListener() {
@@ -274,7 +277,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 			// backup if new version and backups are enabled
 			if (workspace.getMCreatorVersion() < Launcher.version.versionlong
-					&& PreferencesManager.PREFERENCES.backups.backupOnVersionSwitch) {
+					&& PreferencesManager.GlobalPREFERENCES.backups.backupOnVersionSwitch) {
 				ShareableZIPManager.exportZIP("Workspace backup",
 						new File(workspace.getFolderManager().getWorkspaceCacheDir(),
 								"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
@@ -283,7 +286,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			// if we need to setup MCreator, we do so
 			if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
 				WorkspaceGeneratorSetupDialog
-						.runSetup(this, PreferencesManager.PREFERENCES.notifications.openWhatsNextPage);
+						.runSetup(this, PreferencesManager.GlobalPREFERENCES.notifications.openWhatsNextPage);
 			}
 
 			if (workspace.getMCreatorVersion()

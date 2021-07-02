@@ -85,7 +85,7 @@ public class BedrockUtils {
 								if (option != 2) {
 									if (option == 1) {
 										PreferencesManager.PREFERENCES.bedrock.silentReload = true;
-										PreferencesManager.storePreferences(PreferencesManager.PREFERENCES);
+										PreferencesManager.storeWorkspacePreferences(PreferencesManager.PREFERENCES);
 									}
 
 									WindowsProcessUtil.killProcess(MC_PROCESS);

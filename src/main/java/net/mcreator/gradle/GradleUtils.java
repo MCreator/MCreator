@@ -45,8 +45,8 @@ public class GradleUtils {
 
 	public static BuildLauncher getGradleTaskLauncher(Workspace workspace, String... tasks) {
 		BuildLauncher retval = getGradleProjectConnection(workspace).newBuild().forTasks(tasks)
-				.setJvmArguments("-Xms" + PreferencesManager.PREFERENCES.gradle.xms + "m",
-						"-Xmx" + PreferencesManager.PREFERENCES.gradle.xmx + "m");
+				.setJvmArguments("-Xms" + PreferencesManager.GlobalPREFERENCES.gradle.xms + "m",
+						"-Xmx" + PreferencesManager.GlobalPREFERENCES.gradle.xmx + "m");
 
 		String java_home = getJavaHome();
 		if (java_home != null) // make sure detected JAVA_HOME is not null

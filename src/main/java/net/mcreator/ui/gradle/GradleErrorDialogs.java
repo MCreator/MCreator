@@ -70,7 +70,7 @@ public class GradleErrorDialogs {
 	}
 
 	private static void showGradleCacheDataErrorDialog(MCreator whereToShow, int errorCode) {
-		if (PreferencesManager.PREFERENCES.gradle.offline) {
+		if (PreferencesManager.GlobalPREFERENCES.gradle.offline) {
 			showGradleCacheOutdatedDialogOfflineMode(whereToShow, errorCode);
 		} else {
 			String msg = L10N.t("gradle.errors.cache_corrupted");
@@ -93,7 +93,7 @@ public class GradleErrorDialogs {
 				.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"),
 						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 		if (option == 0) {
-			new PreferencesDialog(whereToShow, "Gradle settings");
+			new PreferencesDialog(whereToShow, "Gradle settings", true);
 		}
 	}
 
@@ -118,7 +118,7 @@ public class GradleErrorDialogs {
 				.showOptionDialog(whereToShow, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"),
 						JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 		if (option == 0) {
-			new PreferencesDialog(whereToShow, "Gradle settings");
+			new PreferencesDialog(whereToShow, "Gradle settings", true);
 		}
 	}
 

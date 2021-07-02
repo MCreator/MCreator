@@ -95,7 +95,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// reload data lists in a background thread
 		this.tabIn.setTabShownListener(tab -> {
-			if (PreferencesManager.PREFERENCES.ui.autoreloadTabs)
+			if (PreferencesManager.GlobalPREFERENCES.ui.autoreloadTabs)
 				reloadDataLists();
 		});
 
@@ -431,7 +431,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		afterGeneratableElementStored();
 
 		// build if selected and needed
-		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
+		if (PreferencesManager.GlobalPREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
 				.usesGeneratableElementJava(element))
 			mcreator.actionRegistry.buildWorkspace.doAction();
 

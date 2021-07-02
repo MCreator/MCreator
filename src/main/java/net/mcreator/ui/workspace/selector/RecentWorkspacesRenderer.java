@@ -48,8 +48,10 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 
 			if (isSelected) {
 				setIcon(ImageUtils.colorize(icon, (Color) UIManager.get("MCreatorLAF.MAIN_TINT"), false));
+				setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.gray), BorderFactory.createEmptyBorder(2, 0, 3, 2)));
 			} else {
 				setIcon(icon);
+				setBorder(BorderFactory.createEmptyBorder(2, 0, 3, 0));
 			}
 
 			setIconTextGap(10);

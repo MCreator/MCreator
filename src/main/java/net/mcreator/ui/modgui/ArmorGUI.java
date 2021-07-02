@@ -306,7 +306,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 								new JLabel(":"), helmetModelPart, L10N.label("elementgui.armor.texture"),
 								helmetModelTexture), PanelUtils
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), helmetSpecialInfo)));
-		helmetModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
+		helmetModelPanel.toggleVisibility(PreferencesManager.GlobalPREFERENCES.ui.expandSectionsByDefault);
 
 		JComponent helText = PanelUtils
 				.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0), enableHelmet);
@@ -333,7 +333,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 								armsModelPartL, L10N.label("elementgui.armor.part_arm_right"), armsModelPartR,
 								L10N.label("elementgui.armor.texture"), bodyModelTexture), PanelUtils
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), bodySpecialInfo)));
-		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
+		bodyModelPanel.toggleVisibility(PreferencesManager.GlobalPREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(bodText, PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.body_name"), bodyName), bodyModelPanel),
@@ -354,7 +354,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 								L10N.label("elementgui.armor.texture"), leggingsModelTexture), PanelUtils
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
 								leggingsSpecialInfo)));
-		leggingsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
+		leggingsModelPanel.toggleVisibility(PreferencesManager.GlobalPREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(legText, PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
@@ -374,7 +374,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 								new JLabel(": L"), bootsModelPartL, new JLabel("R"), bootsModelPartR,
 								L10N.label("elementgui.armor.texture"), bootsModelTexture), PanelUtils
 						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), bootsSpecialInfo)));
-		bootsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
+		bootsModelPanel.toggleVisibility(PreferencesManager.GlobalPREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(bootText, PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),

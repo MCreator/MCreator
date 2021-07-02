@@ -104,7 +104,7 @@ public class RunServerAction extends GradleAction {
 					actionRegistry.getMCreator().getGenerator().runResourceSetupTasks();
 					actionRegistry.getMCreator().getGenerator().generateBase();
 
-					if (PreferencesManager.PREFERENCES.gradle.passLangToMinecraft)
+					if (PreferencesManager.GlobalPREFERENCES.gradle.passLangToMinecraft)
 						MinecraftOptionsUtils
 								.setLangTo(actionRegistry.getMCreator().getWorkspace(), L10N.getLocaleString());
 

@@ -204,7 +204,7 @@ public class ActionRegistry {
 		this.mcreatorPublish = new VisitURIAction(this, L10N.t("action.publish_modification"),
 				MCreatorApplication.SERVER_DOMAIN + "/node/add/modification/");
 		this.preferences = new BasicAction(this, L10N.t("action.preferences"),
-				e -> new PreferencesDialog(mcreator, null)).setIcon(UIRES.get("settings"));
+				e -> new PreferencesDialog(mcreator, null, false)).setIcon(UIRES.get("settings"));
 		this.exitMCreator = new BasicAction(this, L10N.t("action.exit"),
 				e -> mcreator.getApplication().closeApplication());
 		this.aboutMCreator = new AboutAction(this);

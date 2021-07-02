@@ -96,7 +96,7 @@ public class StatusBar extends JPanel {
 		JLabel preferences = new JLabel(UIRES.get("settings"));
 		preferences.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				new PreferencesDialog(mcreator, null);
+				new PreferencesDialog(mcreator, null, true);
 			}
 		});
 		preferences.setCursor(new Cursor(Cursor.HAND_CURSOR));

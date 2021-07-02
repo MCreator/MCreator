@@ -79,12 +79,12 @@ public class Launcher {
 		LOG.info("Current JAVA_HOME for running instance: " + System.getProperty("java.home"));
 
 		// after we have libraries loaded, we load preferences
-		PreferencesManager.loadPreferences();
+		PreferencesManager.loadGlobalPreferences();
 
 		// set system properties from preferences
-		System.setProperty("awt.useSystemAAFontSettings", PreferencesManager.PREFERENCES.ui.textAntialiasingType);
-		System.setProperty("swing.aatext", Boolean.toString(PreferencesManager.PREFERENCES.ui.aatext));
-		System.setProperty("sun.java2d.opengl", Boolean.toString(PreferencesManager.PREFERENCES.ui.use2DAcceleration));
+		System.setProperty("awt.useSystemAAFontSettings", PreferencesManager.GlobalPREFERENCES.ui.textAntialiasingType);
+		System.setProperty("swing.aatext", Boolean.toString(PreferencesManager.GlobalPREFERENCES.ui.aatext));
+		System.setProperty("sun.java2d.opengl", Boolean.toString(PreferencesManager.GlobalPREFERENCES.ui.use2DAcceleration));
 		System.setProperty("sun.java2d.d3d", "false");
 		System.setProperty("prism.lcdtext", "false");
 

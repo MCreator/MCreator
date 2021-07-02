@@ -18,61 +18,15 @@
 
 package net.mcreator.preferences;
 
-import net.mcreator.io.OS;
-import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.MCreatorTheme;
-
-import java.awt.*;
 import java.io.File;
-import java.util.Locale;
 
 public class PreferencesData {
 
-	@PreferencesSection public UISettings ui = new UISettings();
-	@PreferencesSection public BackupsSettings backups = new BackupsSettings();
 	@PreferencesSection public BlocklySettings blockly = new BlocklySettings();
 	@PreferencesSection public IDESettings ide = new IDESettings();
-	@PreferencesSection public GradleSettings gradle = new GradleSettings();
 	@PreferencesSection public BedrockSettings bedrock = new BedrockSettings();
-	@PreferencesSection public NotificationSettings notifications = new NotificationSettings();
 
 	public HiddenPreferences hidden = new HiddenPreferences();
-
-	public static class UISettings {
-
-		@PreferencesEntry public Color interfaceAccentColor = MCreatorTheme.MAIN_TINT_DEFAULT;
-
-		@PreferencesEntry public Locale language = L10N.DEFAULT_LOCALE;
-
-		@PreferencesEntry public boolean aatext = true;
-
-		@PreferencesEntry(arrayData = { "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb", "lcd_vbgr" })
-		public String textAntialiasingType = "on";
-
-		@PreferencesEntry public boolean expandSectionsByDefault = false;
-		@PreferencesEntry public boolean use2DAcceleration = false;
-		@PreferencesEntry public boolean autoreloadTabs = true;
-		@PreferencesEntry public boolean discordRichPresenceEnable = true;
-
-	}
-
-	public static class NotificationSettings {
-
-		@PreferencesEntry public boolean openWhatsNextPage = true;
-		@PreferencesEntry public boolean checkAndNotifyForUpdates = true;
-		@PreferencesEntry public boolean checkAndNotifyForPatches = true;
-		@PreferencesEntry public boolean checkAndNotifyForPluginUpdates = false;
-
-	}
-
-	public static class BackupsSettings {
-
-		@PreferencesEntry(min = 10, max = 1800) public int workspaceAutosaveInterval = 30;
-		@PreferencesEntry(min = 3, max = 120) public int automatedBackupInterval = 5;
-		@PreferencesEntry(min = 2, max = 20) public int numberOfBackupsToStore = 10;
-		@PreferencesEntry public boolean backupOnVersionSwitch = true;
-
-	}
 
 	public static class BlocklySettings {
 
@@ -100,20 +54,6 @@ public class PreferencesData {
 		@PreferencesEntry public boolean lineNumbers = true;
 		@PreferencesEntry public boolean errorInfoEnable = true;
 
-	}
-
-	public static class GradleSettings {
-
-		@PreferencesEntry public boolean compileOnSave = true;
-		@PreferencesEntry public boolean passLangToMinecraft = true;
-
-		@PreferencesEntry(min = 128, meta = "max:maxram") public int xms =
-				OS.getBundledJVMBits() == OS.BIT64 ? 625 : 512;
-
-		@PreferencesEntry(min = 128, meta = "max:maxram") public int xmx =
-				OS.getBundledJVMBits() == OS.BIT64 ? 2048 : 1500;
-
-		@PreferencesEntry public boolean offline = false;
 	}
 
 	public static class BedrockSettings {

@@ -62,7 +62,7 @@ public class GeneratorsTest {
 		ConsolePane.DEBUG_CONTENTS_TO_LOG = true;
 
 		// reduce autosave interval for tests
-		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 2000;
+		PreferencesManager.GlobalPREFERENCES.backups.workspaceAutosaveInterval = 2000;
 	}
 
 	public @TestFactory Stream<DynamicTest> testGenerators() {
@@ -109,7 +109,7 @@ public class GeneratorsTest {
 
 					GradleDaemonUtils.stopAllDaemons(workspace);
 
-					new MCreator(null, workspace).getGradleConsole()
+					new MCreator(null, workspace, null).getGradleConsole()
 							.exec(workspace.getGeneratorConfiguration().getGradleTaskFor("setup_task"), taskResult -> {
 								if (taskResult.getStatusByMCreator() == GradleErrorCodes.STATUS_OK) {
 									workspace.getGenerator().reloadGradleCaches();

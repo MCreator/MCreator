@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2021, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +19,7 @@
 
 package net.mcreator.ui.dialogs.preferences;
 
-import net.mcreator.preferences.PreferencesData;
-import net.mcreator.preferences.PreferencesEntry;
-import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.preferences.PreferencesSection;
+import net.mcreator.preferences.*;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -42,54 +40,40 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
-public class PreferencesDialog extends MCreatorDialog {
+public class GlobalPreferencesDialog extends JSplitPane {
 
-	private static final Logger LOG = LogManager.getLogger("Preferences UI");
+	private static final Logger LOG = LogManager.getLogger("Global Preferences UI");
 
 	DefaultListModel<String> model = new DefaultListModel<>();
 	JPanel preferences = new JPanel();
-	private ThemesPanel themes;
 
 	private final JList<String> sections = new JList<>(model);
 	private final CardLayout preferencesLayout = new CardLayout();
 
-	public final JTabbedPane pane;
-	public final JSplitPane spne;
 	private final Map<PreferencesUnit, JComponent> entries = new HashMap<>();
 
-	public final JButton apply = L10N.button("action.common.apply");
+	private final JButton apply = L10N.button("action.common.apply");
 
 	private final Window parent;
 
-	public JButton ok = L10N.button("dialog.preferences.save");
-	public JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-
-	public JButton reset = L10N.button("dialog.preferences.restore_defaults");
-
-	public PreferencesDialog(Window parent, @Nullable String selectedTab, Boolean isWorkspace) {
-		super(parent);
-
+	public GlobalPreferencesDialog(Window parent, @Nullable String selectedTab, PreferencesDialog pd) {
 		this.parent = parent;
 
-		setModal(true);
-		setTitle(L10N.t("dialog.preferences.title_mcreator"));
 
-		pane = new JTabbedPane();
-		add("Center", pane);
 		sections.setBackground(getBackground());
 		sections.setFixedCellHeight(26);
 		sections.setBorder(new EmptyBorder(5, 10, 5, 0));
 
 		preferences.setLayout(preferencesLayout);
 
-		spne = new JSplitPane();
-		spne.setRightComponent(preferences);
-		spne.setLeftComponent(new JScrollPane(sections));
-		spne.setContinuousLayout(true);
-		spne.setUI(new BasicSplitPaneUI() {
+		setRightComponent(preferences);
+		setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		setLeftComponent(new JScrollPane(sections));
+		setContinuousLayout(true);
+		setUI(new BasicSplitPaneUI() {
 			@Override public BasicSplitPaneDivider createDefaultDivider() {
 				return new BasicSplitPaneDivider(this) {
 					@Override public void setBorder(Border b) {
@@ -103,37 +87,12 @@ public class PreferencesDialog extends MCreatorDialog {
 				};
 			}
 		});
-		spne.setContinuousLayout(true);
-		spne.setDividerLocation(0.3);
-		spne.setDividerSize(2);
-		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		setContinuousLayout(true);
+		setDividerLocation(0.3);
+		setDividerSize(2);
 
 		sections.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		ComponentUtils.deriveFont(sections, 13);
-
-
-		reset.addActionListener(actionEvent -> {
-			int option = JOptionPane.showConfirmDialog(null, L10N.t("dialog.preferences.restore_defaults_confirmation"),
-					L10N.t("dialog.preferences.restore_defaults"), JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE, null);
-			if (option == JOptionPane.YES_OPTION) {
-				PreferencesManager.PREFERENCES = new PreferencesData();
-				PreferencesManager.storeWorkspacePreferences(PreferencesManager.PREFERENCES);
-				setVisible(false);
-				new PreferencesDialog(parent, sections.getSelectedValue(),null);
-			}
-		});
-
-		JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		buttons.add(ok);
-		buttons.add(cancel);
-		buttons.add(apply);
-		apply.setEnabled(false);
-
-		JPanel buttonsleft = new JPanel();
-		buttonsleft.add(reset);
-
-		add("South", PanelUtils.westAndEastElement(buttonsleft, buttons));
 
 		sections.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		sections.addListSelectionListener(e -> preferencesLayout.show(preferences, sections.getSelectedValue()));
@@ -147,51 +106,33 @@ public class PreferencesDialog extends MCreatorDialog {
 			}
 		}
 
-		ok.addActionListener(event -> {
+		pd.ok.addActionListener(event -> {
 			storePreferences();
 
 			setVisible(false);
 		});
 
-		apply.addActionListener(event -> {
+		pd.apply.addActionListener(event -> {
 			storePreferences();
 			apply.setEnabled(false);
 		});
 
-		cancel.addActionListener(event -> setVisible(false));
+		pd.cancel.addActionListener(event -> setVisible(false));
 
-		if (isWorkspace) {
-			pane.add("Workspace", spne);
-		}
-		pane.add("Global", new GlobalPreferencesDialog(null, null, this));
-
-		pack();
-		setSize(Math.max(940, getBounds().width), 540);
-		setLocationRelativeTo(parent);
+		setPreferredSize(new Dimension(-1,-1));
 		setVisible(true);
 	}
+
 	private void loadSections() {
-		Field[] fields = PreferencesData.class.getFields();
+		Field[] fields = GlobalPreferencesData.class.getFields();
 		for (Field field : fields) {
-			PreferencesSection section = field.getAnnotation(PreferencesSection.class);
+			GlobalPreferencesSection section = field.getAnnotation(GlobalPreferencesSection.class);
 			if (section != null) {
 				createPreferencesPanel(field);
 			}
 		}
 		sections.setSelectedIndex(0);
 
-		new PluginsPanel(this);
-
-		themes = new ThemesPanel(this);
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ui_backgrounds"), "backgrounds", "png");
-
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_procedure_templates"), "templates/ptpl", "ptpl");
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ai_builder_templates"), "templates/aitpl",
-				"aitpl");
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_texture_templates"),
-				"templates/textures/texturemaker", "png");
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_armor_templates"), "templates/textures/armormaker",
-				"png");
 	}
 
 	private void createPreferencesPanel(Field sectionField) {
@@ -216,9 +157,9 @@ public class PreferencesDialog extends MCreatorDialog {
 
 		Field[] fields = sectionField.getType().getFields();
 		for (Field field : fields) {
-			PreferencesEntry entry = field.getAnnotation(PreferencesEntry.class);
+			GlobalPreferencesEntry entry = field.getAnnotation(GlobalPreferencesEntry.class);
 			try {
-				Object sectionInstance = sectionField.get(PreferencesManager.PREFERENCES); // load actual data
+				Object sectionInstance = sectionField.get(PreferencesManager.GlobalPREFERENCES); // load actual data
 				Object value = field.get(sectionInstance);
 				JComponent component = generateEntryComponent(field, sectionid, entry, value, sectionPanel, cons);
 				entries.put(new PreferencesUnit(sectionField, field), component);
@@ -230,7 +171,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void storePreferences() {
-		PreferencesData data = PreferencesManager.PREFERENCES;
+		GlobalPreferencesData data = PreferencesManager.GlobalPREFERENCES;
 		for (Map.Entry<PreferencesUnit, JComponent> entry : entries.entrySet()) {
 			PreferencesUnit unit = entry.getKey();
 			try {
@@ -243,12 +184,11 @@ public class PreferencesDialog extends MCreatorDialog {
 			}
 		}
 
-		data.hidden.uiTheme = themes.getSelectedTheme();
 
-		PreferencesManager.storeWorkspacePreferences(data);
+		PreferencesManager.storeGlobalPreferences(data);
 	}
 
-	private JComponent generateEntryComponent(Field actualField, String sectionid, PreferencesEntry entry, Object value,
+	private JComponent generateEntryComponent(Field actualField, String sectionid, GlobalPreferencesEntry entry, Object value,
 			JPanel placeInside, GridBagConstraints cons) {
 		String fieldName = actualField.getName();
 		String name = L10N.t("preferences." + sectionid + "." + fieldName);
@@ -400,3 +340,4 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 }
+

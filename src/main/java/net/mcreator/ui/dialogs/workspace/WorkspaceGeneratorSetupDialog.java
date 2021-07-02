@@ -148,7 +148,7 @@ public class WorkspaceGeneratorSetupDialog {
 		if (action == 0) {
 			runSetup(m, false);
 		} else if (action == 1) {
-			new PreferencesDialog(m, null);
+			new PreferencesDialog(m, null, true);
 			runSetup(m, false);
 		} else if (action == 2) {
 			StringSelection stringSelection = new StringSelection(m.getGradleConsole().getConsoleText());

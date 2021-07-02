@@ -182,7 +182,7 @@ public final class MCreatorApplication {
 				Desktop.getDesktop().setAboutHandler(aboutEvent -> AboutAction.showDialog(null));
 
 			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_PREFERENCES))
-				Desktop.getDesktop().setPreferencesHandler(preferencesEvent -> new PreferencesDialog(null, null));
+				Desktop.getDesktop().setPreferencesHandler(preferencesEvent -> new PreferencesDialog(null, null, null));
 
 			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_QUIT_HANDLER))
 				Desktop.getDesktop().setQuitHandler((e, response) -> MCreatorApplication.this.closeApplication());
@@ -252,7 +252,7 @@ public final class MCreatorApplication {
 				JOptionPane.showMessageDialog(workspaceSelector, L10N.t("dialog.workspace.open_failed_message"),
 						L10N.t("dialog.workspace.open_failed_title"), JOptionPane.ERROR_MESSAGE);
 			} else {
-				MCreator mcreator = new MCreator(this, workspace);
+				MCreator mcreator = new MCreator(this, workspace, workspaceFile);
 				if (!this.openMCreators.contains(mcreator)) {
 					this.workspaceSelector.setVisible(false);
 					this.openMCreators.add(mcreator);
@@ -320,7 +320,7 @@ public final class MCreatorApplication {
 		}
 
 		LOG.debug("Performing exit tasks");
-		PreferencesManager.storePreferences(PreferencesManager.PREFERENCES); // store any potential preferences changes
+		PreferencesManager.storeGlobalPreferences(PreferencesManager.GlobalPREFERENCES); // store any potential preferences changes
 		analytics.trackMCreatorClose(); // track app close in sync mode
 
 		discordClient.close(); // close discord client

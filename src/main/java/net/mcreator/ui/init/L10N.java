@@ -99,7 +99,7 @@ public class L10N {
 
 	public static Locale getLocale() {
 		if (selectedLocale == null)
-			selectedLocale = PreferencesManager.PREFERENCES.ui.language;
+			selectedLocale = PreferencesManager.GlobalPREFERENCES.ui.language;
 
 		return selectedLocale;
 	}

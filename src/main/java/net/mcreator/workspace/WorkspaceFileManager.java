@@ -68,7 +68,7 @@ public class WorkspaceFileManager implements Closeable {
 
 		// start autosave scheduler
 		lastSchedule = dataSaveExecutor
-				.schedule(new SaveTask(this), PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval,
+				.schedule(new SaveTask(this), PreferencesManager.GlobalPREFERENCES.backups.workspaceAutosaveInterval,
 						TimeUnit.SECONDS);
 	}
 
@@ -143,7 +143,7 @@ public class WorkspaceFileManager implements Closeable {
 	}
 
 	private void rotateWorkspaceFileBackup() {
-		int numberOfBackupsExcludingCurrent = PreferencesManager.PREFERENCES.backups.numberOfBackupsToStore - 1;
+		int numberOfBackupsExcludingCurrent = PreferencesManager.GlobalPREFERENCES.backups.numberOfBackupsToStore - 1;
 		File[] existingBackupsArray = folderManager.getWorkspaceBackupsCacheDir().listFiles();
 
 		if (existingBackupsArray != null && existingBackupsArray.length > 0) { // we already have some backups
@@ -152,7 +152,7 @@ public class WorkspaceFileManager implements Closeable {
 			Collections.reverse(existingBackups);
 			long lastBackupTime = existingBackups.get(0).lastModified();
 			if ((System.currentTimeMillis() - lastBackupTime) / (1000 * 60)
-					> PreferencesManager.PREFERENCES.backups.automatedBackupInterval) {  // check if we have surpassed backup interval
+					> PreferencesManager.GlobalPREFERENCES.backups.automatedBackupInterval) {  // check if we have surpassed backup interval
 				if (existingBackupsArray.length
 						> numberOfBackupsExcludingCurrent) // only delete old ones if we have more than threshold of backups
 					existingBackups.stream().skip(numberOfBackupsExcludingCurrent).forEach(File::delete);
@@ -193,7 +193,7 @@ public class WorkspaceFileManager implements Closeable {
 
 			// after we call save, we schedule a new call
 			fileManager.lastSchedule = fileManager.dataSaveExecutor.schedule(new SaveTask(fileManager),
-					PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval, TimeUnit.SECONDS);
+					PreferencesManager.GlobalPREFERENCES.backups.workspaceAutosaveInterval, TimeUnit.SECONDS);
 		}
 	}
 
