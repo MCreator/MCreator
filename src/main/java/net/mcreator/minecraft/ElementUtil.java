@@ -132,6 +132,12 @@ public class ElementUtil {
 		return retval;
 	}
 
+	public static List<DataListEntry> loadAllPotionTypes(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTION);
+		retval.addAll(DataListLoader.loadDataList("potiontypes"));
+		return retval;
+	}
+
 	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
 			if (modelement.getType() == ModElementType.GAMERULE)
