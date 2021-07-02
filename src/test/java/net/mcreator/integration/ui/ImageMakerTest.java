@@ -52,6 +52,8 @@ public class ImageMakerTest {
 
 	private static MCreator mcreator;
 
+	private static File workspaceFile;
+
 	@BeforeAll public static void initTest() throws IOException {
 		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
 		LOG = LogManager.getLogger("Image Maker Test");
@@ -76,7 +78,7 @@ public class ImageMakerTest {
 		Workspace workspace = Workspace
 				.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"), workspaceSettings);
 
-		mcreator = new MCreator(null, workspace, null);
+		mcreator = new MCreator(null, workspace, workspaceFile);
 	}
 
 	@BeforeEach void printName(TestInfo testInfo) {
