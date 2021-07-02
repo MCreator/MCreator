@@ -26,7 +26,7 @@
   "colour": 90,
   "output": "ActionResultType",
   "mcreator": {
-    "toolbox_id": "advanced",
+    "toolbox_id": "mcelements",
     "fields": [
       "type"
     ]
