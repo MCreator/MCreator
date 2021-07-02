@@ -96,9 +96,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		if (vcs != null) {
 			this.workspace.setVCS(vcs);
 		}
-
-		PreferencesManager pm = new PreferencesManager();
-		pm.loadWorkspacePreferences(workspaceFile.getParentFile(), workspace);
+		
+		PreferencesManager.loadWorkspacePreferences(workspaceFile.getParentFile(), workspace);
 		LOG.info("Loaded preferences for current workspace");
 
 		this.gradleConsole = new GradleConsole(this);
