@@ -118,11 +118,11 @@ public static class CustomPortalBlock extends NetherPortalBlock {
 	}
 
 	public static class Size ${mcc.getInnerClassBody("net.minecraft.block.NetherPortalBlock", "Size")
-					.replace("Blocks.OBSIDIAN", mappedBlockToBlockStateCode(data.portalFrame) + ".getBlock()")
+					.replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
 					.replace("Blocks.NETHER_PORTAL", "portal")
 					.replace("this.world.getBlockState(blockpos.down()).isPortalFrame(this.world, blockpos.down())",
-						"(this.world.getBlockState(blockpos.down()).getBlock() == " + mappedBlockToBlockStateCode(data.portalFrame) + ".getBlock())")
+						"(this.world.getBlockState(blockpos.down()).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")
 					.replace("this.world.getBlockState(framePos).isPortalFrame(this.world, framePos)",
-						"(this.world.getBlockState(framePos).getBlock() == " + mappedBlockToBlockStateCode(data.portalFrame) + ".getBlock())")}
+						"(this.world.getBlockState(framePos).getBlock() == " + mappedBlockToBlock(data.portalFrame) + ")")}
 
 }

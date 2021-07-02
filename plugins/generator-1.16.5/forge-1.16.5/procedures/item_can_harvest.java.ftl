@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-(${mappedMCItemToItemStackCode(input$item, 1)}.getItem().canHarvestBlock(${mappedBlockToBlockStateCode(input$block)}))
+(${mappedMCItemToItem(input$item)}.canHarvestBlock(${mappedBlockToBlockStateCode(input$block)}))

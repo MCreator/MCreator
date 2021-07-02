@@ -115,5 +115,5 @@ public static class CustomPortalSize ${mcc.getClassBody("net.minecraft.block.Por
 	.replace("blockstate.isIn(Blocks.NETHER_PORTAL)", "blockstate.getBlock() == portal")
 	.replace("state.isIn(BlockTags.FIRE) || state.isIn(Blocks.NETHER_PORTAL)", "state.getBlock() == portal")
 	.replace("Blocks.NETHER_PORTAL.getDefaultState()", "portal.getDefaultState()")
-	.replace("return state.isPortalFrame(blockReader, pos);", "return state.getBlock() ==" + mappedBlockToBlockStateCode(data.portalFrame) + ".getBlock();")}
+	.replace("return state.isPortalFrame(blockReader, pos);", "return state.getBlock() ==" + mappedBlockToBlock(data.portalFrame) + ";")}
 

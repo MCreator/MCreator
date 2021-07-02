@@ -430,7 +430,7 @@ import net.minecraft.util.SoundEvent;
 				return
 				<#if (data.canBePlacedOn?size > 0)>(
 					<#list data.canBePlacedOn as canBePlacedOn>
-						ground == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						ground == ${mappedBlockToBlock(canBePlacedOn)}
 						<#if canBePlacedOn?has_next>||</#if>
 					</#list>)
 				</#if>
@@ -461,7 +461,7 @@ import net.minecraft.util.SoundEvent;
 					return ground == this ||
 					<#if (data.canBePlacedOn?size > 0)>(
 						<#list data.canBePlacedOn as canBePlacedOn>
-						ground == ${mappedBlockToBlockStateCode(canBePlacedOn)}.getBlock()
+						ground == ${mappedBlockToBlock(canBePlacedOn)}
 						<#if canBePlacedOn?has_next>||</#if>
 					</#list>)</#if>
 					<#if (data.canBePlacedOn?size > 0) && hasProcedure(data.placingCondition)> && </#if>
