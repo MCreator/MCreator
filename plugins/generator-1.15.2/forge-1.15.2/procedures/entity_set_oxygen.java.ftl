@@ -1,1 +1,1 @@
-if(${input$entity} instanceof LivingEntity)((LivingEntity)${input$entity}).setAir((int)${input$air});
+((LivingEntity)${input$entity}).setAir((int)${input$air});
