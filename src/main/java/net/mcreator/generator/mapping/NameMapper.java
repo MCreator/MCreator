@@ -65,7 +65,7 @@ public class NameMapper {
 			return origName;
 		} else if (skip_prefixes instanceof List) {
 			for (Object skip_prefix : (List<?>) skip_prefixes) {
-				if (origName.startsWith((String) skip_prefix))
+				if (skip_prefix instanceof String && origName.startsWith((String) skip_prefix))
 					return origName;
 			}
 		}

@@ -203,7 +203,7 @@
                     <#if ge.rotationMode != 0 && ge.rotationMode != 5>
                         <#assign properties += [{"name": "facing", "value": "north"}] />
                     <#elseif ge.rotationMode == 5>
-                        <#assign properties += [{"name": "facing", "value": "south"}] />
+                        <#assign properties += [{"name": "axis", "value": "y"}] />
                     </#if>
                 </#if>
             </#if>
