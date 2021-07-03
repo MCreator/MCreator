@@ -11,7 +11,7 @@
   "previousStatement": null,
   "nextStatement": null,
   "extensions": [
-    "potion_list_provider"
+    "effect_list_provider"
   ],
   "mcreator": {
     "toolbox_id": "entitymanagement",
