@@ -640,8 +640,12 @@ import net.minecraft.util.SoundEvent;
 			int y = pos.getY();
 			int z = pos.getZ();
 			Direction direction = hit.getFace();
-			<@procedureOBJToCode data.onRightClicked/>
-			return ActionResultType.SUCCESS;
+			<#if hasReturnValue(data.onRightClicked)>
+				return <@procedureOBJToActionResultTypeCode data.onRightClicked/>;
+			<#else>
+				<@procedureOBJToCode data.onRightClicked/>
+				return ActionResultType.SUCCESS;
+			</#if>
 		}
         </#if>
 
