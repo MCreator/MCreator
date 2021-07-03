@@ -69,9 +69,9 @@ public class Potion extends GeneratableElement {
 					}
 				}
 			} else {
-				if (DataListLoader.loadDataMap("potions").containsKey(effect.getUnmappedValue())) {
+				if (DataListLoader.loadDataMap("effects").containsKey(effect.getUnmappedValue())) {
 					return Integer.parseInt(
-							DataListLoader.loadDataMap("potions").get(effect.getUnmappedValue()).getTexture());
+							DataListLoader.loadDataMap("effects").get(effect.getUnmappedValue()).getTexture());
 				}
 			}
 			return 0;

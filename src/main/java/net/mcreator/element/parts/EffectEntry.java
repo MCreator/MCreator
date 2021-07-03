@@ -29,7 +29,7 @@ import javax.annotation.Nonnull;
 public class EffectEntry extends MappableElement {
 
 	private EffectEntry() {
-		super(new NameMapper(null, "potions"));
+		super(new NameMapper(null, "effects"));
 	}
 
 	public EffectEntry(@Nonnull Workspace owner, String name) {
