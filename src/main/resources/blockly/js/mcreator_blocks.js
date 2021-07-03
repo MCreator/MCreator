@@ -510,7 +510,7 @@ Blockly.Extensions.register('effect_list_provider',
 Blockly.Extensions.register('potion_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("potion"))), 'potiontype');
+            arrayToBlocklyDropDownArray(javabridge.getListOf("potion"))), 'potionitem');
     });
 
 Blockly.Extensions.register('gamerulesboolean_list_provider',
