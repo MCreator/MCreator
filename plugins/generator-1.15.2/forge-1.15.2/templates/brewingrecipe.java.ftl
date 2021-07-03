@@ -50,7 +50,7 @@ public class ${name}BrewingRecipe extends ${JavaModName}Elements.ModElement {
 			<#if data.brewingInputStack?starts_with("POTION:")>
 			Item inputItem = input.getItem();
 			return (inputItem == Items.POTION || inputItem == Items.SPLASH_POTION || inputItem == Items.LINGERING_POTION)
-				&& PotionUtils.getPotionFromItem(input) == ${generator.map(data.brewingInputStack?replace("POTION:",""), "potiontypes")};
+				&& PotionUtils.getPotionFromItem(input) == ${generator.map(data.brewingInputStack?replace("POTION:",""), "potions")};
 			<#elseif data.brewingInputStack?starts_with("TAG:")>
 			return ItemTags.getCollection().getOrCreate(new ResourceLocation("${data.brewingInputStack?replace("TAG:","")}")).contains(input.getItem());
 			<#else>
@@ -76,7 +76,7 @@ public class ${name}BrewingRecipe extends ${JavaModName}Elements.ModElement {
 					new ItemStack(input.getItem())
 					<#else>
 					new ItemStack(Items.POTION)
-					</#if>, ${generator.map(data.brewingReturnStack?replace("POTION:",""), "potiontypes")});
+					</#if>, ${generator.map(data.brewingReturnStack?replace("POTION:",""), "potions")});
 				<#else>
 				return ${mappedMCItemToItemStackCode(data.brewingReturnStack, 1)};
 				</#if>

@@ -132,9 +132,9 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static List<DataListEntry> loadAllPotionTypes(Workspace workspace) {
+	public static List<DataListEntry> loadAllPotions(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTION);
-		retval.addAll(DataListLoader.loadDataList("potiontypes"));
+		retval.addAll(DataListLoader.loadDataList("potions"));
 		return retval;
 	}
 

@@ -126,8 +126,8 @@ public class MCItem extends DataListEntry {
 								.get(new ResourcePointer("templates/textures/texturemaker/potion_bottle_overlay.png"));
 					}
 				}
-				else if (DataListLoader.loadDataMap("potiontypes").containsKey(potion)) {
-					int color = Integer.parseInt(DataListLoader.loadDataMap("potiontypes").get(potion).getTexture());
+				else if (DataListLoader.loadDataMap("potions").containsKey(potion)) {
+					int color = Integer.parseInt(DataListLoader.loadDataMap("potions").get(potion).getTexture());
 					retval = new ImageIcon(MinecraftImageGenerator.Preview.generatePotionIcon(new Color(color)));
 				} else {
 					retval = new ImageIcon(MinecraftImageGenerator.Preview.generatePotionIcon(Color.BLACK));

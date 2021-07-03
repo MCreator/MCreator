@@ -157,7 +157,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 			buttons.add(usePotions);
 
 			JComboBox<String> potionType = new JComboBox<>();
-			ElementUtil.loadAllPotionTypes(mcreator.getWorkspace()).forEach(e -> potionType.addItem(e.getName()));
+			ElementUtil.loadAllPotions(mcreator.getWorkspace()).forEach(e -> potionType.addItem(e.getName()));
 
 			usePotions.addActionListener(e -> {
 				int result = JOptionPane.showConfirmDialog(this,
