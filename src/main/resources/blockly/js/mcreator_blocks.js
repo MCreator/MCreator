@@ -504,7 +504,7 @@ Blockly.Extensions.register('achievement_list_provider',
 Blockly.Extensions.register('effect_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("effect"))), 'potion');
+            arrayToBlocklyDropDownArray(javabridge.getListOf("effect"))), 'potion'); // field name is potion for legacy reasons
     });
 
 Blockly.Extensions.register('gamerulesboolean_list_provider',
