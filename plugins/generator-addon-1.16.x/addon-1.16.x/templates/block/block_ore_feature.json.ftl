@@ -16,10 +16,9 @@
 			     
 				"may_replace": [
 					{
-                            <#list data.blocksToReplace as block>
-                            "${mappedMCItemToIngameNameNoTags(block)}"<#if block?has_next>,</#if>
+                           "name":<#list data.blocksToReplace as block>
+                           "${mappedMCItemToIngameNameNoTags(block)}"<#if block?has_next>,</#if>
                             </#list>
-						}
 					}
 				]
 			}
