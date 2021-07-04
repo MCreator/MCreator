@@ -30,6 +30,9 @@
       "name": "foreach"
     }
   ],
+  "extensions": [
+    "is_custom_loop"
+  ],
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,
