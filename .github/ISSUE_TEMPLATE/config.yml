@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: "Feature request"
+    url: https://mcreator.net/forum/68
+    about: Suggest an idea for this project
   - name: "[Read before opening a new issue] Issue tracker rules and tips"
     url: https://mcreator.net/wiki/tips-reporting-bugs-and-issues
     about: Some issue tracker rules and general tips
