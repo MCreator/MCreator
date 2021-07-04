@@ -132,8 +132,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		bulletItemTexture = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 		onBulletHitsBlock = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_hits_block"), mcreator,
-				L10N.t("elementgui.ranged_item.event_bullet_hits_block"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/imediatesourceentity:entity"));
+				L10N.t("elementgui.ranged_item.event_bullet_hits_block"), Dependency
+				.fromString("x:number/y:number/z:number/world:world/entity:entity/imediatesourceentity:entity"));
 		onBulletHitsPlayer = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_hits_player"), mcreator,
 				L10N.t("elementgui.ranged_item.event_bullet_hits_player"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/imediatesourceentity:entity"));
@@ -141,8 +141,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				L10N.t("elementgui.ranged_item.event_bullet_hits_entity"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/imediatesourceentity:entity"));
 		onBulletFlyingTick = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_flying_tick"), mcreator,
-				L10N.t("elementgui.ranged_item.event_bullet_flying_tick"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/imediatesourceentity:entity"));
+				L10N.t("elementgui.ranged_item.event_bullet_flying_tick"), Dependency
+				.fromString("x:number/y:number/z:number/world:world/entity:entity/imediatesourceentity:entity"));
 		onRangedItemUsed = new ProcedureSelector(this.withEntry("rangeditem/when_used"), mcreator,
 				L10N.t("elementgui.ranged_item.event_on_use"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
@@ -187,8 +187,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		JPanel sbbp2 = new JPanel(new BorderLayout(0, 2));
 		sbbp2.setOpaque(false);
 
-		sbbp2.add("North", PanelUtils.centerInPanel(
-				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.ranged_item.texture"))));
+		sbbp2.add("North", PanelUtils
+				.centerInPanel(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.ranged_item.texture"))));
 
 		sbbp2.add("South", PanelUtils.westAndEastElement(HelpUtils
 				.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
@@ -335,12 +335,13 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		JPanel itemEvents = new JPanel(new GridLayout(1, 3, 10, 10));
 		itemEvents.setOpaque(false);
+		itemEvents.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		itemEvents.add(useCondition);
 		itemEvents.add(onRangedItemUsed);
 		itemEvents.add(onEntitySwing);
 
-		JPanel itemEventsWrap = new JPanel();
+		JPanel itemEventsWrap = new JPanel(new GridLayout());
 		itemEventsWrap.setOpaque(false);
 		itemEventsWrap.add(itemEvents);
 		itemEventsWrap.setBorder(BorderFactory.createTitledBorder(
@@ -350,13 +351,14 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		JPanel bulletEvents = new JPanel(new GridLayout(2, 2, 10, 10));
 		bulletEvents.setOpaque(false);
+		bulletEvents.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		bulletEvents.add(onBulletHitsBlock);
 		bulletEvents.add(onBulletHitsPlayer);
 		bulletEvents.add(onBulletHitsEntity);
 		bulletEvents.add(onBulletFlyingTick);
 
-		JPanel bulletEventsWrap = new JPanel();
+		JPanel bulletEventsWrap = new JPanel(new GridLayout());
 		bulletEventsWrap.setOpaque(false);
 		bulletEventsWrap.add(bulletEvents);
 		bulletEventsWrap.setBorder(BorderFactory.createTitledBorder(
@@ -366,7 +368,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		JPanel triggersPanel = new JPanel(new BorderLayout(0, 10));
 		triggersPanel.setOpaque(false);
-		triggersPanel.add("Center", PanelUtils.northAndCenterElement(itemEventsWrap, bulletEventsWrap));
+		triggersPanel.add("Center", PanelUtils.northAndCenterElement(itemEventsWrap, bulletEventsWrap, 10, 10));
 
 		pane3.setOpaque(false);
 		pane3.add("Center", PanelUtils.totalCenterInPanel(triggersPanel));
