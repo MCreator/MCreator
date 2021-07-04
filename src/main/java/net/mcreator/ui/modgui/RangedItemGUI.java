@@ -171,6 +171,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		JPanel pane1 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
+		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
 		texture.setOpaque(false);
@@ -186,9 +187,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		JPanel sbbp2 = new JPanel(new BorderLayout(0, 2));
 		sbbp2.setOpaque(false);
 
-		sbbp2.add("North", PanelUtils.westAndEastElement(PanelUtils
-						.centerInPanel(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.ranged_item.texture"))),
-				PanelUtils.join(useCondition, onRangedItemUsed, onEntitySwing)));
+		sbbp2.add("North", PanelUtils.centerInPanel(
+				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.ranged_item.texture"))));
 
 		sbbp2.add("South", PanelUtils.westAndEastElement(HelpUtils
 				.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
@@ -331,7 +331,45 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		pane2.setOpaque(false);
 
-		pane2.add("Center", PanelUtils.totalCenterInPanel(slpa));
+		pane2.add("Center", PanelUtils.totalCenterInPanel(selp2));
+
+		JPanel itemEvents = new JPanel(new GridLayout(1, 3, 10, 10));
+		itemEvents.setOpaque(false);
+
+		itemEvents.add(useCondition);
+		itemEvents.add(onRangedItemUsed);
+		itemEvents.add(onEntitySwing);
+
+		JPanel itemEventsWrap = new JPanel();
+		itemEventsWrap.setOpaque(false);
+		itemEventsWrap.add(itemEvents);
+		itemEventsWrap.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.ranged_item.item_events"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		JPanel bulletEvents = new JPanel(new GridLayout(2, 2, 10, 10));
+		bulletEvents.setOpaque(false);
+
+		bulletEvents.add(onBulletHitsBlock);
+		bulletEvents.add(onBulletHitsPlayer);
+		bulletEvents.add(onBulletHitsEntity);
+		bulletEvents.add(onBulletFlyingTick);
+
+		JPanel bulletEventsWrap = new JPanel();
+		bulletEventsWrap.setOpaque(false);
+		bulletEventsWrap.add(bulletEvents);
+		bulletEventsWrap.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.ranged_item.bullet_events"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		JPanel triggersPanel = new JPanel(new BorderLayout(0, 10));
+		triggersPanel.setOpaque(false);
+		triggersPanel.add("Center", PanelUtils.northAndCenterElement(itemEventsWrap, bulletEventsWrap));
+
+		pane3.setOpaque(false);
+		pane3.add("Center", PanelUtils.totalCenterInPanel(triggersPanel));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -362,6 +400,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		addPage(L10N.t("elementgui.ranged_item.page_ranged_item"), pane1);
 		addPage(L10N.t("elementgui.ranged_item.page_bullet"), pane2);
+		addPage(L10N.t("elementgui.common.page_triggers"), pane3);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
