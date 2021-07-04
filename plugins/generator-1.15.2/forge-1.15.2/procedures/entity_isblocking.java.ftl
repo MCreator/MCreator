@@ -1,1 +1,1 @@
-((${input$entity} instanceof PlayerEntity)?((PlayerEntity) ${input$entity}).isActiveItemStackBlocking():false)
+${input$entity}.isActiveItemStackBlocking()

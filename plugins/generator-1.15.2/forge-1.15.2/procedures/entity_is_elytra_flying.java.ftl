@@ -1,1 +1,1 @@
-((${input$entity} instanceof PlayerEntity)?((PlayerEntity) ${input$entity}).isElytraFlying():false)
+${input$entity}.isElytraFlying()
