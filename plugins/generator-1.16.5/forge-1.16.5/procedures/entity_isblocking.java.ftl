@@ -1,1 +1,1 @@
-${input$entity}.isActiveItemStackBlocking()
+((${input$entity} instanceof LivingEntity)?((LivingEntity) ${input$entity}).isActiveItemStackBlocking():false)
