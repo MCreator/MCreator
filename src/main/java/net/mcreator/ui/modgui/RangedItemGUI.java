@@ -133,16 +133,16 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		onBulletHitsBlock = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_hits_block"), mcreator,
 				L10N.t("elementgui.ranged_item.event_bullet_hits_block"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/imediatesourceentity:entity"));
 		onBulletHitsPlayer = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_hits_player"), mcreator,
-				L10N.t("elementgui.ranged_item.event_bullet_hits_player"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
+				L10N.t("elementgui.ranged_item.event_bullet_hits_player"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/imediatesourceentity:entity"));
 		onBulletHitsEntity = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_hits_entity"), mcreator,
-				L10N.t("elementgui.ranged_item.event_bullet_hits_entity"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
+				L10N.t("elementgui.ranged_item.event_bullet_hits_entity"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/imediatesourceentity:entity"));
 		onBulletFlyingTick = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_flying_tick"), mcreator,
 				L10N.t("elementgui.ranged_item.event_bullet_flying_tick"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/imediatesourceentity:entity"));
 		onRangedItemUsed = new ProcedureSelector(this.withEntry("rangeditem/when_used"), mcreator,
 				L10N.t("elementgui.ranged_item.event_on_use"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
@@ -318,7 +318,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		JPanel slpa = new JPanel(new BorderLayout(0, 10));
 		slpa.setOpaque(false);
 
-		JPanel eventsal = new JPanel(new GridLayout(1, 4, 10, 10));
+		JPanel eventsal = new JPanel(new GridLayout(2, 2, 10, 10));
 		eventsal.setOpaque(false);
 
 		eventsal.add(onBulletHitsBlock);
