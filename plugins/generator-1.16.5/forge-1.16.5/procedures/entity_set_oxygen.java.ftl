@@ -1,1 +1,1 @@
-((LivingEntity)${input$entity}).setAir((int)${input$air});
+${input$entity}.setAir((int)${input$air});
