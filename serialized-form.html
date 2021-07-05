@@ -729,6 +729,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>boolean loaded</pre>
 </li>
 <li class="blockList">
+<h4>mcreator</h4>
+<pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
+</li>
+<li class="blockList">
 <h4>runAfterLoaded</h4>
 <pre>java.util.List&lt;java.lang.Runnable&gt; runAfterLoaded</pre>
 </li>
@@ -3288,6 +3292,77 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>td</h4>
 <pre><a href="net/mcreator/ui/dialogs/BlockItemTextureSelector.html" title="class in net.mcreator.ui.dialogs">BlockItemTextureSelector</a> td</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</li>
+<li class="blockList">
+<section role="region">
+<h2 title="Package">Package&nbsp;net.mcreator.ui.minecraft.potions</h2>
+<ul class="blockList">
+<li class="blockList"><a id="net.mcreator.ui.minecraft.potions.JPotionList">
+<!--   -->
+</a>
+<h3>Class <a href="net/mcreator/ui/minecraft/potions/JPotionList.html" title="class in net.mcreator.ui.minecraft.potions">net.mcreator.ui.minecraft.potions.JPotionList</a> extends javax.swing.JPanel implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>add</h4>
+<pre>javax.swing.JButton add</pre>
+</li>
+<li class="blockList">
+<h4>entries</h4>
+<pre>javax.swing.JPanel entries</pre>
+</li>
+<li class="blockList">
+<h4>entryList</h4>
+<pre>java.util.List&lt;<a href="net/mcreator/ui/minecraft/potions/JPotionListEntry.html" title="class in net.mcreator.ui.minecraft.potions">JPotionListEntry</a>&gt; entryList</pre>
+</li>
+<li class="blockListLast">
+<h4>mcreator</h4>
+<pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="net.mcreator.ui.minecraft.potions.JPotionListEntry">
+<!--   -->
+</a>
+<h3>Class <a href="net/mcreator/ui/minecraft/potions/JPotionListEntry.html" title="class in net.mcreator.ui.minecraft.potions">net.mcreator.ui.minecraft.potions.JPotionListEntry</a> extends javax.swing.JPanel implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>ambient</h4>
+<pre>javax.swing.JCheckBox ambient</pre>
+</li>
+<li class="blockList">
+<h4>amplifier</h4>
+<pre>javax.swing.JSpinner amplifier</pre>
+</li>
+<li class="blockList">
+<h4>duration</h4>
+<pre>javax.swing.JSpinner duration</pre>
+</li>
+<li class="blockList">
+<h4>effect</h4>
+<pre>javax.swing.JComboBox&lt;java.lang.String&gt; effect</pre>
+</li>
+<li class="blockList">
+<h4>showParticles</h4>
+<pre>javax.swing.JCheckBox showParticles</pre>
+</li>
+<li class="blockListLast">
+<h4>workspace</h4>
+<pre><a href="net/mcreator/workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a> workspace</pre>
 </li>
 </ul>
 </li>
@@ -6240,10 +6315,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
-<li class="blockList"><a id="net.mcreator.ui.modgui.PotionGUI">
+<li class="blockList"><a id="net.mcreator.ui.modgui.PotionEffectGUI">
 <!--   -->
 </a>
-<h3>Class <a href="net/mcreator/ui/modgui/PotionGUI.html" title="class in net.mcreator.ui.modgui">net.mcreator.ui.modgui.PotionGUI</a> extends <a href="net/mcreator/ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="net/mcreator/element/types/Potion.html" title="class in net.mcreator.element.types">Potion</a>&gt; implements Serializable</h3>
+<h3>Class <a href="net/mcreator/ui/modgui/PotionEffectGUI.html" title="class in net.mcreator.ui.modgui">net.mcreator.ui.modgui.PotionEffectGUI</a> extends <a href="net/mcreator/ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="net/mcreator/element/types/PotionEffect.html" title="class in net.mcreator.element.types">PotionEffect</a>&gt; implements Serializable</h3>
 <ul class="blockList">
 <li class="blockList">
 <h3>Serialized Fields</h3>
@@ -6273,10 +6348,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>javax.swing.JCheckBox isInstant</pre>
 </li>
 <li class="blockList">
-<h4>name</h4>
-<pre><a href="net/mcreator/ui/validation/component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a> name</pre>
-</li>
-<li class="blockList">
 <h4>onActiveTick</h4>
 <pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onActiveTick</pre>
 </li>
@@ -6293,16 +6364,48 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre><a href="net/mcreator/ui/validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a> page1group</pre>
 </li>
 <li class="blockList">
-<h4>registerPotionType</h4>
-<pre>javax.swing.JCheckBox registerPotionType</pre>
-</li>
-<li class="blockList">
 <h4>renderStatusInHUD</h4>
 <pre>javax.swing.JCheckBox renderStatusInHUD</pre>
 </li>
 <li class="blockListLast">
 <h4>renderStatusInInventory</h4>
 <pre>javax.swing.JCheckBox renderStatusInInventory</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="net.mcreator.ui.modgui.PotionGUI">
+<!--   -->
+</a>
+<h3>Class <a href="net/mcreator/ui/modgui/PotionGUI.html" title="class in net.mcreator.ui.modgui">net.mcreator.ui.modgui.PotionGUI</a> extends <a href="net/mcreator/ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="net/mcreator/element/types/Potion.html" title="class in net.mcreator.element.types">Potion</a>&gt; implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>arrowName</h4>
+<pre><a href="net/mcreator/ui/validation/component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a> arrowName</pre>
+</li>
+<li class="blockList">
+<h4>effectList</h4>
+<pre><a href="net/mcreator/ui/minecraft/potions/JPotionList.html" title="class in net.mcreator.ui.minecraft.potions">JPotionList</a> effectList</pre>
+</li>
+<li class="blockList">
+<h4>lingeringName</h4>
+<pre><a href="net/mcreator/ui/validation/component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a> lingeringName</pre>
+</li>
+<li class="blockList">
+<h4>page1group</h4>
+<pre><a href="net/mcreator/ui/validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a> page1group</pre>
+</li>
+<li class="blockList">
+<h4>potionName</h4>
+<pre><a href="net/mcreator/ui/validation/component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a> potionName</pre>
+</li>
+<li class="blockListLast">
+<h4>splashName</h4>
+<pre><a href="net/mcreator/ui/validation/component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a> splashName</pre>
 </li>
 </ul>
 </li>
