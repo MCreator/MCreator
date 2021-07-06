@@ -1025,6 +1025,12 @@ public class MinecraftImageGenerator {
 			return out;
 		}
 
+		/**
+		 * <p>This method generates the potion bottle icon for potions.</p>
+		 *
+		 * @param color <p>Color of the potion</p>
+		 * @return <p>Returns generated image.</p>
+		 */
 		public static BufferedImage generatePotionIcon(Color color) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
@@ -1035,6 +1041,37 @@ public class MinecraftImageGenerator {
 			g2d.drawImage(ImageUtils.resize(ImageMakerTexturesCache.CACHE
 							.get(new ResourcePointer("templates/textures/texturemaker/potion_bottle_overlay.png")).getImage(),
 					32), null, 0, 0);
+			g2d.dispose();
+
+			return out;
+		}
+
+		/**
+		 * <p>This method generates the potion effect icons.</p>
+		 *
+		 * @param icon <p>Effect icon</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static BufferedImage generatePotionEffectIcon(Image icon) {
+			BufferedImage out = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+
+			g2d.setColor(new Color(50, 50, 50));
+			g2d.fillRect(2, 2, 24, 24);
+
+			g2d.drawLine(1, 3, 1, 24);
+			g2d.drawLine(26, 3, 26, 24);
+			g2d.drawLine(3, 1, 24, 1);
+			g2d.drawLine(3, 26, 24, 26);
+
+			g2d.setColor(Color.GRAY);
+			g2d.drawLine(2, 3, 2, 24);
+			g2d.drawLine(25, 3, 25, 24);
+			g2d.drawLine(3, 2, 24, 2);
+			g2d.drawLine(3, 25, 24, 25);
+
+			g2d.drawImage(ImageUtils.resize(icon, 20), null, 4, 4);
+
 			g2d.dispose();
 
 			return out;
@@ -1213,29 +1250,34 @@ public class MinecraftImageGenerator {
 				startColor = BlocklyBlockUtil.getBlockColorFromHUE(76);
 
 			if (procedurexml.contains("<block type=\"return_")) {
-				if (procedurexml.contains("<block type=\"return_logic\"><value name=\"return\">")) {
-					returnColor = new Color(0x607c99);
-				} else if (procedurexml.contains("<block type=\"return_number\"><value name=\"return\">")) {
-					returnColor = new Color(0x606999);
-				} else if (procedurexml.contains("<block type=\"return_text\"><value name=\"return\">")) {
-					returnColor = new Color(0x609986);
-				} else if (procedurexml.contains("<block type=\"return_itemstack\"><value name=\"return\">")) {
-					returnColor = BlocklyBlockUtil.getBlockColorFromHUE(350);
+				try {
+					String type = procedurexml.split("<block type=\"return_")[1].split("\"><value name=\"return\">")[0];
+					returnColor = Dependency.getColor(type);
+				} catch (Exception e) {
+					if (procedurexml.contains("<block type=\"return_logic\"><value name=\"return\">")) {
+						returnColor = Dependency.getColor("logic");
+					} else if (procedurexml.contains("<block type=\"return_number\"><value name=\"return\">")) {
+						returnColor = Dependency.getColor("number");
+					} else if (procedurexml.contains("<block type=\"return_text\"><value name=\"return\">")) {
+						returnColor = Dependency.getColor("text");
+					} else if (procedurexml.contains("<block type=\"return_itemstack\"><value name=\"return\">")) {
+						returnColor = Dependency.getColor("itemstack");
+					}
 				}
 			}
 
 			if (dependencies.contains(new Dependency("advancement", ""))) {
-				blockColor = new Color(0x68712E);
+				blockColor = Dependency.getColor("advancement");
 			} else if (procedurexml.contains("<block type=\"block_")) {
 				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(60);
 			} else if (dependencies.contains(new Dependency("itemstack", ""))) {
-				blockColor = new Color(0x996069);
+				blockColor = Dependency.getColor("itemstack");
 			} else if (dependencies.contains(new Dependency("entity", "")) || dependencies
 					.contains(new Dependency("sourceentity", "")) || dependencies
 					.contains(new Dependency("imediatesourceentity", ""))) {
-				blockColor = new Color(0x608a99);
+				blockColor = Dependency.getColor("entity");
 			} else if (dependencies.contains(new Dependency("world", ""))) {
-				blockColor = new Color(0x998160);
+				blockColor = Dependency.getColor("world");
 			}
 
 			if (startColor != null)

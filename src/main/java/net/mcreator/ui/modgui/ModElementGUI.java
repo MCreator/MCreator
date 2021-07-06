@@ -436,6 +436,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		if (this.tabIn != null && closeTab)
 			mcreator.mcreatorTabs.closeTab(tabIn);
+		else
+			mcreator.mcreatorTabs.getTabs().stream().filter(e -> e.getContent() == this)
+					.forEach(e -> e.setIcon(((ModElementGUI<?>) e.getContent()).getViewIcon()));
 
 		if (!editingMode && modElementCreatedListener
 				!= null) // only call this event if listener registered and we are not in editing mode

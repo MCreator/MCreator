@@ -168,8 +168,12 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			int y = pos.getY();
 			int z = pos.getZ();
 			ItemStack itemstack = context.getItem();
+			<#if hasReturnValue(data.onRightClickedOnBlock)>
+			return <@procedureOBJToActionResultTypeCode data.onRightClickedOnBlock/>;
+			<#else>
 			<@procedureOBJToCode data.onRightClickedOnBlock/>
 			return retval;
+			</#if>
 		}
 		</#if>
 
@@ -276,7 +280,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
 			 <#list data.blocksAffected as restrictionBlock>
-                 if (blockstate.getBlock() == ${mappedBlockToBlockStateCode(restrictionBlock)}.getBlock())
+                 if (blockstate.getBlock() == ${mappedBlockToBlock(restrictionBlock)})
                  	return ${data.efficiency}f;
              </#list>
 			return 1;

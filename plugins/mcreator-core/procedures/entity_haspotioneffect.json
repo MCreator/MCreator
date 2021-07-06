@@ -8,7 +8,7 @@
   ],
   "inputsInline": true,
   "extensions": [
-    "potion_list_provider"
+    "effect_list_provider"
   ],
   "output": "Boolean",
   "colour": "%{BKY_LOGIC_HUE}",

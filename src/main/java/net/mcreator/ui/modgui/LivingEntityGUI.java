@@ -287,8 +287,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.t("elementgui.living_entity.event_mob_is_hurt"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
 		onRightClickedOn = new ProcedureSelector(this.withEntry("entity/when_right_clicked"), mcreator,
-				L10N.t("elementgui.living_entity.event_mob_right_clicked"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack"));
+				L10N.t("elementgui.living_entity.event_mob_right_clicked"), VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE,
+				Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack"))
+				.makeReturnValueOptional();
 		whenThisMobKillsAnother = new ProcedureSelector(this.withEntry("entity/when_kills_another"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_kills_another"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));

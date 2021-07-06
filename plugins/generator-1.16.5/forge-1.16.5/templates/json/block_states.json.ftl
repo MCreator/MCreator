@@ -49,29 +49,17 @@
 <#elseif data.rotationMode?? && data.rotationMode == 5>
 {
   "variants": {
-    "facing=south": {
-      "model": "${modid}:block/${registryname}"
-    },
-    "facing=north": {
-      "model": "${modid}:block/${registryname}"
-    },
-    "facing=east": {
-      "model": "${modid}:block/${registryname}",
-      "x": 90
-    },
-    "facing=west": {
-      "model": "${modid}:block/${registryname}",
-      "x": 90
-    },
-    "facing=up": {
+    "axis=x": {
       "model": "${modid}:block/${registryname}",
       "x": 90,
       "y": 90
     },
-    "facing=down": {
+    "axis=y": {
+      "model": "${modid}:block/${registryname}"
+    },
+    "axis=z": {
       "model": "${modid}:block/${registryname}",
-      "x": 90,
-      "y": 90
+      "x": 90
     }
   }
 }
