@@ -56,6 +56,7 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 	public static ModElementType<?> PARTICLE;
 	public static ModElementType<?> PLANT;
 	public static ModElementType<?> POTION;
+	public static ModElementType<?> POTIONEFFECT;
 	public static ModElementType<?> PROCEDURE;
 	public static ModElementType<?> RANGEDITEM;
 	public static ModElementType<?> RECIPE;

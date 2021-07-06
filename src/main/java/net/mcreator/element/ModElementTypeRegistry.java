@@ -93,7 +93,8 @@ public class ModElementTypeRegistry {
 		ModElementType.POTION = register(
 				new ModElementType<>("potion", 'z', BaseType.POTION, RecipeType.NONE, PotionGUI::new, Potion.class));
 		ModElementType.POTIONEFFECT = register(
-				new ModElementType<>("potioneffect", null, BaseType.POTIONEFFECT, RecipeType.NONE, PotionEffectGUI::new, PotionEffect.class));
+				new ModElementType<>("potioneffect", '5', BaseType.POTIONEFFECT, RecipeType.NONE, PotionEffectGUI::new,
+						PotionEffect.class));
 		ModElementType.PROCEDURE = register(
 				new ModElementType<>("procedure", 'p', BaseType.PROCEDURE, RecipeType.NONE, ProcedureGUI::new,
 						Procedure.class));
