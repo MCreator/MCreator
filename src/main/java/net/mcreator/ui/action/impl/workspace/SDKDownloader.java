@@ -22,20 +22,18 @@ package net.mcreator.ui.action.impl.workspace;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.*;
+import java.io.File;
 import java.net.URL;
 
 public class SDKDownloader {
 
 	private static final Logger LOG = LogManager.getLogger("Setup JDK");
 
-	public static void downloadJDK(GeneratorConfiguration generatorConfiguration, Component component)
-			throws Exception {
+	public static void downloadJDK(GeneratorConfiguration generatorConfiguration) throws Exception {
 		String jdkVersion = generatorConfiguration.getJDKVersionOverride();
 		if (jdkVersion != null && !validateCustomJDK(generatorConfiguration)) {
 			LOG.info("Downloading JDK: " + jdkVersion);
@@ -46,26 +44,10 @@ public class SDKDownloader {
 			else
 				fileExtension = ".tar.gz";
 
-			InputStream inputStream = new BufferedInputStream(
+			FileUtils.copyURLToFile(
 					new URL("https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion + "/" + OS.getOSName()
-							+ "/x64/jdk/hotspot/normal/adoptopenjdk").openStream());
-			OutputStream output = new BufferedOutputStream(
-					new FileOutputStream(UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension)));
-
-			ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(component, "Downloading", inputStream);
-			pmis.getProgressMonitor().setMillisToPopup(1000);
-			pmis.getProgressMonitor().setNote("hello");
-
-			byte[] buffer = new byte[2048];
-			int nRead;
-
-			while ((nRead = pmis.read(buffer)) != -1) {
-				output.write(buffer, 0, nRead);
-			}
-
-			pmis.close();
-			output.flush();
-			output.close();
+							+ "/x64/jdk/hotspot/normal/adoptopenjdk"),
+					UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension));
 
 		}
 	}

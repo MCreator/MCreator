@@ -3,7 +3,6 @@ basefeatures: [model_json, model_java, model_obj]
 status: stable
 buildfileversion: 36.1.0
 subversion: 1.0.3
-jdk: jdk-16.0.1+9
 
 # gradle task definitions
 gradle:

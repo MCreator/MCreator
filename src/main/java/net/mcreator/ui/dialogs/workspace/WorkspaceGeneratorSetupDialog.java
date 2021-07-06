@@ -55,7 +55,7 @@ public class WorkspaceGeneratorSetupDialog {
 
 				// Download the custom JDK if needed
 				try {
-					SDKDownloader.downloadJDK(m.getGeneratorConfiguration(), dial);
+					SDKDownloader.downloadJDK(m.getGeneratorConfiguration());
 					p0.ok();
 					dial.refreshDisplay();
 				} catch (Exception e) {
