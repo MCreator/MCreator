@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-(${mappedBlockToBlockStateCode(input$a)}.getBlock()== ${mappedBlockToBlockStateCode(input$b)}.getBlock())
+(${mappedBlockToBlock(input$a)} == ${mappedBlockToBlock(input$b)})

@@ -27,7 +27,7 @@
     }
   ],
   "extensions": [
-    "potion_list_provider"
+    "effect_list_provider"
   ],
   "inputsInline": true,
   "previousStatement": null,

@@ -422,7 +422,7 @@ public class TestWorkspaceDataProvider {
 					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 			food.hasGlow = _true;
 			food.onRightClicked = new Procedure("procedure1");
-			food.onRightClickedOnBlock = new Procedure("procedure2");
+			food.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
 			food.onEaten = new Procedure("procedure3");
 			food.onEntityHitWith = new Procedure("procedure4");
 			food.onItemInInventoryTick = new Procedure("procedure5");
@@ -618,7 +618,7 @@ public class TestWorkspaceDataProvider {
 				livingEntity.whenMobFalls = new Procedure("procedure2");
 				livingEntity.whenMobDies = new Procedure("procedure3");
 				livingEntity.whenMobIsHurt = new Procedure("procedure4");
-				livingEntity.onRightClickedOn = new Procedure("procedure5");
+				livingEntity.onRightClickedOn = _true ? new Procedure("actionresulttype1") : new Procedure("procedure5");
 				livingEntity.whenThisMobKillsAnother = new Procedure("procedure6");
 				livingEntity.onMobTickUpdate = new Procedure("procedure7");
 				livingEntity.onPlayerCollidesWith = new Procedure("procedure8");
@@ -721,7 +721,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			dimension.fluidBlock = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			dimension.whenPortaTriggerlUsed = new Procedure("procedure1");
+			dimension.whenPortaTriggerlUsed = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure1");
 			dimension.onPortalTickUpdate = new Procedure("procedure3");
 			dimension.onPlayerEntersDimension = new Procedure("procedure4");
 			dimension.onPlayerLeavesDimension = new Procedure("procedure5");
@@ -933,7 +933,7 @@ public class TestWorkspaceDataProvider {
 			plant.onDestroyedByExplosion = new Procedure("procedure4");
 			plant.onStartToDestroy = new Procedure("procedure5");
 			plant.onEntityCollides = new Procedure("procedure6");
-			plant.onRightClicked = new Procedure("procedure7");
+			plant.onRightClicked = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure7");
 			plant.onBlockAdded = new Procedure("procedure8");
 			plant.onBlockPlacedBy = new Procedure("procedure9");
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
@@ -970,7 +970,7 @@ public class TestWorkspaceDataProvider {
 			item.immuneToFire = _true;
 			item.hasGlow = _true;
 			item.onRightClickedInAir = new Procedure("procedure1");
-			item.onRightClickedOnBlock = new Procedure("procedure2");
+			item.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
 			item.onCrafted = new Procedure("procedure3");
 			item.onEntityHitWith = new Procedure("procedure4");
 			item.onItemInInventoryTick = new Procedure("procedure5");
@@ -1040,20 +1040,46 @@ public class TestWorkspaceDataProvider {
 			return rangedItem;
 		case POTION:
 			Potion potion = new Potion(modElement);
-			potion.name = modElement.getName();
-			potion.effectName = modElement.getName() + " Effect Name";
-			potion.color = Color.magenta;
-			potion.icon = "test.png";
-			potion.isInstant = !_true;
-			potion.isBad = _true;
-			potion.isBenefitical = !_true;
-			potion.renderStatusInHUD = _true;
-			potion.renderStatusInInventory = _true;
-			potion.registerPotionType = _true;
-			potion.onStarted = new Procedure("procedure1");
-			potion.onActiveTick = new Procedure("procedure2");
-			potion.onExpired = new Procedure("procedure3");
+			potion.potionName = modElement.getName() + " Potion";
+			potion.splashName = modElement.getName() + " Splash";
+			potion.lingeringName = modElement.getName() + " Lingering";
+			potion.arrowName = modElement.getName() + " Arrow";
+			List<Potion.CustomEffectEntry> effects = new ArrayList<>();
+			if (!emptyLists) {
+				Potion.CustomEffectEntry entry1 = new Potion.CustomEffectEntry();
+				entry1.effect = new EffectEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllPotionEffects(modElement.getWorkspace())));
+				entry1.duration = 3600;
+				entry1.amplifier = 1;
+				entry1.ambient = !_true;
+				entry1.showParticles = !_true;
+				effects.add(entry1);
+
+				Potion.CustomEffectEntry entry2 = new Potion.CustomEffectEntry();
+				entry2.effect = new EffectEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllPotionEffects(modElement.getWorkspace())));
+				entry2.duration = 7200;
+				entry2.amplifier = 0;
+				entry2.ambient = _true;
+				entry2.showParticles = _true;
+				effects.add(entry2);
+			}
+			potion.effects = effects;
 			return potion;
+		case POTIONEFFECT:
+			PotionEffect potionEffect = new PotionEffect(modElement);
+			potionEffect.effectName = modElement.getName() + " Effect Name";
+			potionEffect.color = Color.magenta;
+			potionEffect.icon = "test.png";
+			potionEffect.isInstant = !_true;
+			potionEffect.isBad = _true;
+			potionEffect.isBenefitical = !_true;
+			potionEffect.renderStatusInHUD = _true;
+			potionEffect.renderStatusInInventory = _true;
+			potionEffect.onStarted = new Procedure("procedure1");
+			potionEffect.onActiveTick = new Procedure("procedure2");
+			potionEffect.onExpired = new Procedure("procedure3");
+			return potionEffect;
 		case BLOCK:
 			Block block = new Block(modElement);
 			block.name = modElement.getName();
@@ -1215,7 +1241,7 @@ public class TestWorkspaceDataProvider {
 				block.onStartToDestroy = new Procedure("procedure7");
 				block.onEntityCollides = new Procedure("procedure8");
 				block.onBlockPlayedBy = new Procedure("procedure9");
-				block.onRightClicked = new Procedure("procedure10");
+				block.onRightClicked = _true ? new Procedure("actionresulttype1") : new Procedure("procedure10");
 				block.onRedstoneOn = new Procedure("procedure11");
 				block.onRedstoneOff = new Procedure("procedure12");
 				block.onEntityWalksOn = new Procedure("procedure13");
@@ -1340,7 +1366,7 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			musicDisc.hasGlow = _true;
 			musicDisc.onRightClickedInAir = new Procedure("procedure1");
-			musicDisc.onRightClickedOnBlock = new Procedure("procedure2");
+			musicDisc.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
 			musicDisc.onCrafted = new Procedure("procedure3");
 			musicDisc.onEntityHitWith = new Procedure("procedure4");
 			musicDisc.onItemInInventoryTick = new Procedure("procedure5");
@@ -1492,7 +1518,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
 		}
 		tool.onRightClickedInAir = new Procedure("procedure1");
-		tool.onRightClickedOnBlock = new Procedure("procedure2");
+		tool.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
 		tool.onCrafted = new Procedure("procedure3");
 		tool.onBlockDestroyedWithTool = new Procedure("procedure4");
 		tool.onEntityHitWith = new Procedure("procedure5");

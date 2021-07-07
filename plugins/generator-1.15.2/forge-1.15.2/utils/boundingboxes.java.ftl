@@ -33,17 +33,14 @@
             </#if>
         }
     <#else>
-        switch ((Direction) state.get(FACING)) {
-            case SOUTH:
-            case NORTH:
+        switch ((Direction.Axis) state.get(AXIS)) {
+            case X:
+                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "x"/>
+            case Y:
             default:
-                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "north"/>
-            case EAST:
-            case WEST:
-                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "up"/>
-            case UP:
-            case DOWN:
-                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "log_up"/>
+                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "y"/>
+            case Z:
+                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "z"/>
         }
     </#if>
 </#macro>
@@ -57,10 +54,10 @@
         makeCuboidShape(${box.mz}, ${box.my}, ${16 - box.mx}, ${box.Mz}, ${box.My}, ${16 - box.Mx})
     <#elseif facing == "up">
         makeCuboidShape(${box.mx}, ${16 - box.mz}, ${box.my}, ${box.Mx}, ${16 - box.Mz}, ${box.My})
-    <#elseif facing == "down">
+    <#elseif facing == "down" || facing == "z">
         makeCuboidShape(${box.mx}, ${box.mz}, ${16 - box.my}, ${box.Mx}, ${box.Mz}, ${16 - box.My})
-    <#elseif facing == "log_up">
-        makeCuboidShape(${box.my}, ${16 - box.mx}, ${16 - box.mz}, ${box.My}, ${16 - box.Mx}, ${16 - box.Mz})
+    <#elseif facing == "x">
+        makeCuboidShape(${box.my}, ${box.mz}, ${box.mx}, ${box.My}, ${box.Mz}, ${box.Mx})
     <#else>
         makeCuboidShape(${box.mx}, ${box.my}, ${box.mz}, ${box.Mx}, ${box.My}, ${box.Mz})
     </#if>

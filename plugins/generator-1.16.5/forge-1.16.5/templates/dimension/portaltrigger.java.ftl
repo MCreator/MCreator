@@ -52,16 +52,25 @@ public class ${name}Item extends Item {
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
+			boolean success = false;
 
-			if (world.isAirBlock(pos) && <@procedureOBJToConditionCode data.portalMakeCondition/>)
+			if (world.isAirBlock(pos) && <@procedureOBJToConditionCode data.portalMakeCondition/>) {
 				${name}Dimension.portal.portalSpawn(world, pos);
+				itemstack.damageItem(1, entity, c -> c.sendBreakAnimation(context.getHand()));
+				success = true;
+			}
 
 			<#if hasProcedure(data.whenPortaTriggerlUsed)>
-				<@procedureOBJToCode data.whenPortaTriggerlUsed/>
+				<#if hasReturnValue(data.whenPortaTriggerlUsed)>
+					ActionResultType result = <@procedureOBJToActionResultTypeCode data.whenPortaTriggerlUsed/>;
+					return success ? ActionResultType.SUCCESS : result;
+				<#else>
+					<@procedureOBJToCode data.whenPortaTriggerlUsed/>
+					return ActionResultType.SUCCESS;
+				</#if>
+			<#else>
+				return success ? ActionResultType.SUCCESS : ActionResultType.FAIL;
 			</#if>
-
-			itemstack.damageItem(1, entity, c -> c.sendBreakAnimation(context.getHand()));
-			return ActionResultType.SUCCESS;
 		}
 	}
 }

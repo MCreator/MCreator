@@ -1,0 +1,64 @@
+- SPEED:
+  texture: 8171462
+- SLOWNESS:
+  texture: 5926017
+- HASTE:
+  texture: 14270531
+- MINING_FATIGUE:
+  texture: 4866583
+- STRENGTH:
+  texture: 9643043
+- INSTANT_HEALTH:
+  texture: 16262179
+- INSTANT_DAMAGE:
+  texture: 4393481
+- JUMP_BOOST:
+  texture: 2293580
+- NAUSEA:
+  texture: 5578058
+- REGENERATION:
+  texture: 13458603
+- RESISTANCE:
+  texture: 10044730
+- FIRE_RESISTANCE:
+  texture: 14981690
+- WATER_BREATHING:
+  texture: 3035801
+- INVISIBILITY:
+  texture: 8356754
+- BLINDNESS:
+  texture: 2039587
+- NIGHT_VISION:
+  texture: 2039713
+- HUNGER:
+  texture: 5797459
+- WEAKNESS:
+  texture: 4738376
+- POISON:
+  texture: 5149489
+- WITHER:
+  texture: 3484199
+- HEALTH_BOOST:
+  texture: 16284963
+- ABSORPTION:
+  texture: 2445989
+- SATURATION:
+  texture: 16262179
+- GLOWING:
+  texture: 9740385
+- LEVITATION:
+  texture: 13565951
+- LUCK:
+  texture: 3381504
+- UNLUCK:
+  texture: 12624973
+- SLOW_FALLING:
+  texture: 16773073
+- CONDUIT_POWER:
+  texture: 1950417
+- DOLPHINS_GRACE:
+  texture: 8954814
+- BAD_OMEN:
+  texture: 745784
+- HERO_OF_THE_VILLAGE:
+  texture: 4521796
