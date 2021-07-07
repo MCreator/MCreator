@@ -117,7 +117,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getCmdArgsBlockLoader()
-					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.EMPTY);
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.COMMAND);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(CommandGUI.this::regenerateArgs).start());
 			if (!isEditingMode()) {

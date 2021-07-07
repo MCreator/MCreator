@@ -155,6 +155,7 @@ public class ExternalBlockLoader {
 		toolbox.put("math", new StringBuilder());
 		toolbox.put("text", new StringBuilder());
 		toolbox.put("advanced", new StringBuilder());
+		toolbox.put("actions", new StringBuilder());
 
 		// Handle built-in categories
 		for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
@@ -237,7 +238,7 @@ public class ExternalBlockLoader {
 	}
 
 	public enum ToolboxType {
-		PROCEDURE, EMPTY
+		PROCEDURE, EMPTY, COMMAND
 	}
 
 }
