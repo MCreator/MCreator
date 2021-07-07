@@ -40,7 +40,7 @@ public class ${name}Command extends ${JavaModName}Elements.ModElement{
 	}
 
 	@Override public void serverLoad(FMLServerStartingEvent event) {
-		event.getCommandDispatcher().register(customCommand());
+		event.getServer().getCommandManager().getDispatcher().register(customCommand());
 	}
 
 	private LiteralArgumentBuilder<CommandSource> customCommand() {
