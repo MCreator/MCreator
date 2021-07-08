@@ -72,7 +72,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final VTextField name = new VTextField(28);
 
 	private final JComboBox<String> toolType = new JComboBox<>(
-			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Special", "MultiTool" });
+			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Fishing rod", "Special", "MultiTool" });
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
@@ -274,8 +274,27 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		blocksAffected.setEnabled(false);
 
 		toolType.addActionListener(event -> {
-			if (toolType.getSelectedItem() != null)
-				blocksAffected.setEnabled(toolType.getSelectedItem().equals("Special"));
+			if (toolType.getSelectedItem() != null) {
+				if (toolType.getSelectedItem().equals("Special")) {
+					blocksAffected.setEnabled(true);
+					repairItems.setEnabled(false);
+				} else if (toolType.getSelectedItem().equals("Fishing rod")) {
+					harvestLevel.setEnabled(false);
+					efficiency.setEnabled(false);
+					blocksAffected.setEnabled(false);
+					repairItems.setEnabled(false);
+					damageVsEntity.setEnabled(false);
+					attackSpeed.setEnabled(false);
+				} else {
+					harvestLevel.setEnabled(true);
+					efficiency.setEnabled(true);
+					blocksAffected.setEnabled(false);
+					repairItems.setEnabled(true);
+					damageVsEntity.setEnabled(true);
+					attackSpeed.setEnabled(true);
+				}
+			}
+
 		});
 
 		pane4.setOpaque(false);

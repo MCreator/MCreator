@@ -343,6 +343,23 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		}
 
 	}
+<#elseif data.toolType == "Fishing rod">
+    private static class ItemToolCustom extends FishingRodItem {
+
+		protected ItemToolCustom() {
+			super(new Item.Properties().group(${data.creativeTab}).maxDamage(${data.usageCount}));
+		}
+
+		@Override public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+			stack.damageItem(2, attacker, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+			return true;
+		}
+
+		@Override public int getItemEnchantability() {
+			return ${data.enchantability};
+		}
+
+	}
 </#if>
 
 }
