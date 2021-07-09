@@ -90,7 +90,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	private final JPanel returnType = new JPanel(new BorderLayout());
 	private final JLabel returnTypeLabel = new JLabel();
 
-	private final JPanel triggerInfoPanel = new JPanel(new BorderLayout());
+	private final JPanel triggerInfoPanel = new JPanel(new BorderLayout(2, 2));
 	private final JLabel cancelableTriggerLabel = new JLabel();
 	private final JLabel hasResultTriggerLabel = new JLabel();
 	private final JLabel sideTriggerLabel = new JLabel();

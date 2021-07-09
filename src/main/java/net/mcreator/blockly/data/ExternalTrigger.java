@@ -35,7 +35,7 @@ public class ExternalTrigger {
 
 	public boolean cancelable;
 	public boolean has_result;
-	public String side;
+	public String side = "both";
 
 	public String getID() {
 		return id;
