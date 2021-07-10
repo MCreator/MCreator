@@ -107,7 +107,7 @@ public class JColor extends JPanel {
 			String color = c.getRed() + "," + c.getGreen() + "," + c.getBlue();
 			fl1.setText(color);
 			fl1.setOpaque(true);
-			fl1.setBackground(c));
+			fl1.setBackground(c);
 			fl1.setForeground(getColorLuminance(c) > 128 ? Color.black : Color.white);
 		}
 
