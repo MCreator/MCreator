@@ -1,0 +1,2 @@
+This parameter determines how far away a slope can be to affect the spreading of this fluid. Instead of spreading evenly, 
+the fluid will try to reach the slope. With lower values, the fluid will usually cover larger areas if the ground is uneven.

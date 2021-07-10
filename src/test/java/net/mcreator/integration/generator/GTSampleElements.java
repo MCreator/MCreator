@@ -77,6 +77,33 @@ public class GTSampleElements {
 				assertTrue(workspace.getGenerator().generateElement(procedure));
 				workspace.getModElementManager().storeModElement(procedure);
 			}
+
+			for (int i = 1; i <= 2; i++) {
+				ModElement me = new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE)
+						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "ITEMSTACK");
+				workspace.addModElement(me);
+
+				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
+						"<block type=\"return_itemstack\"><value name=\"return\">"
+								+ "<block type=\"empty_itemstack\"></block></value></block>");
+				assertTrue(workspace.getGenerator().generateElement(procedure));
+				workspace.getModElementManager().storeModElement(procedure);
+			}
+
+			for (int i = 1; i <= 1; i++) {
+				ModElement me = new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE)
+						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "ACTIONRESULTTYPE");
+				workspace.addModElement(me);
+
+				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
+						"<block type=\"return_actionresulttype\"><value name=\"return\">"
+								+ "<block type=\"action_result_type\"><field name=\"type\">SUCCESS</field></block>"
+								+ "</value></block>");
+				assertTrue(workspace.getGenerator().generateElement(procedure));
+				workspace.getModElementManager().storeModElement(procedure);
+			}
 		}
 
 		// add sample recipes (used by test mod elements) if supported

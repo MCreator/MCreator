@@ -69,6 +69,8 @@ public enum ModElementType {
 
 	@SerializedName("potion") POTION(BaseType.POTION, RecipeType.NONE),
 
+	@SerializedName("potioneffect") POTIONEFFECT(BaseType.POTIONEFFECT, RecipeType.NONE),
+
 	@SerializedName("particle") PARTICLE(BaseType.PARTICLE, RecipeType.NONE),
 
 	@SerializedName("enchantment") ENCHANTMENT(BaseType.ENCHANTMENT, RecipeType.NONE),

@@ -69,8 +69,12 @@ public class BlocklyPanel extends JFXPanel {
 
 	private String currentXML = null;
 
+	private final MCreator mcreator;
+
 	public BlocklyPanel(MCreator mcreator) {
 		setOpaque(false);
+
+		this.mcreator = mcreator;
 
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> this.currentXML = (String) executeJavaScriptSynchronously(
 				"Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace, true))"));
@@ -262,4 +266,7 @@ public class BlocklyPanel extends JFXPanel {
 		return bridge;
 	}
 
+	public MCreator getMCreator() {
+		return mcreator;
+	}
 }

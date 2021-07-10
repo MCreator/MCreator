@@ -19,6 +19,7 @@
 package net.mcreator.ui.views.editor.image.tool.tools;
 
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
@@ -34,10 +35,11 @@ public class ColorPickerTool extends AbstractTool {
 	private final JCheckBox respectOpacity;
 
 	public ColorPickerTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager) {
-		super("Color picker", "A tool that sets foreground color to the pointed color (shift-click to set background color)",
-				UIRES.get("img_editor.picker"), canvas, colorSelector, versionManager);
+		super(L10N.t("dialog.image_maker.tools.types.colorpicker"),
+				L10N.t("dialog.image_maker.tools.types.colorpicker_description"), UIRES.get("img_editor.picker"),
+				canvas, colorSelector, versionManager);
 
-		respectOpacity = new JCheckBox("Pick opacity");
+    respectOpacity = new JCheckBox("Pick opacity");
 		respectOpacity.setSelected(true);
 		settingsPanel.add(respectOpacity);
 	}

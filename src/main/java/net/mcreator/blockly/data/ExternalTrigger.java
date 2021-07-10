@@ -34,8 +34,8 @@ public class ExternalTrigger {
 	@Nullable public List<Dependency> dependencies_provided;
 
 	public boolean cancelable;
-
 	public boolean has_result;
+	public String side = "both";
 
 	public String getID() {
 		return id;

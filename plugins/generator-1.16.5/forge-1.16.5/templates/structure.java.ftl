@@ -88,7 +88,7 @@ package ${package}.world.structure;
 								BlockState blockAt = world.getBlockState(new BlockPos(i, j, k));
 								boolean blockCriteria = false;
 								<#list data.restrictionBlocks as restrictionBlock>
-									if (blockAt.getBlock() == ${mappedBlockToBlockStateCode(restrictionBlock)}.getBlock())
+									if (blockAt.getBlock() == ${mappedBlockToBlock(restrictionBlock)})
 										blockCriteria = true;
 								</#list>
 								if (!blockCriteria)
@@ -109,7 +109,7 @@ package ${package}.world.structure;
 							int y = spawnTo.getY();
 							int z = spawnTo.getZ();
 
-							<#if hasCondition(data.generateCondition)>
+							<#if hasProcedure(data.generateCondition)>
 							if (!<@procedureOBJToConditionCode data.generateCondition/>)
 								continue;
 							</#if>

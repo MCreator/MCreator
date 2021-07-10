@@ -21,9 +21,14 @@
       "type": "entity"
     },
     {
+      "name": "blockstate",
+      "type": "blockstate"
+    },
+    {
       "name": "falldistance",
       "type": "number"
     }
   ],
-  "cancelable": "true"
+  "cancelable": "true",
+  "side": "server"
 }

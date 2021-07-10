@@ -35,6 +35,8 @@ import net.mcreator.element.converter.fv19.FluidBucketSelectedFixer;
 import net.mcreator.element.converter.fv20.FluidNameFixer;
 import net.mcreator.element.converter.fv21.BooleanGameRulesConverter;
 import net.mcreator.element.converter.fv21.ProcedureVariablesConverter;
+import net.mcreator.element.converter.fv22.BlockLightOpacityFixer;
+import net.mcreator.element.converter.fv23.PotionToEffectConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -56,11 +58,13 @@ public class ConverterRegistry {
 		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
 				new BiomeFrozenTopLayerConverter()));
 		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
-		put(ModElementType.BLOCK, Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer()));
+		put(ModElementType.BLOCK,
+				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer()));
 		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
 		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
 		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
+		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType modElementType) {

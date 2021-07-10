@@ -158,18 +158,23 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
       		BlockPos pos = context.getPos();
       		PlayerEntity entity = context.getPlayer();
       		Direction direction = context.getFace();
+      		BlockState blockstate = world.getBlockState(pos);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
 			ItemStack itemstack = context.getItem();
+			<#if hasReturnValue(data.onRightClickedOnBlock)>
+			return <@procedureOBJToActionResultTypeCode data.onRightClickedOnBlock/>;
+			<#else>
 			<@procedureOBJToCode data.onRightClickedOnBlock/>
 			return retval;
+			</#if>
 		}
 		</#if>
 
 		<#if hasProcedure(data.onBlockDestroyedWithTool)>
-		@Override public boolean onBlockDestroyed(ItemStack itemstack, World world, BlockState bl, BlockPos pos, LivingEntity entity){
-			boolean retval = super.onBlockDestroyed(itemstack,world,bl,pos,entity);
+		@Override public boolean onBlockDestroyed(ItemStack itemstack, World world, BlockState blockstate, BlockPos pos, LivingEntity entity){
+			boolean retval = super.onBlockDestroyed(itemstack,world,blockstate,pos,entity);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -238,7 +243,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		<#if data.hasGlow>
 		@Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
-		    <#if hasCondition(data.glowCondition)>
+		    <#if hasProcedure(data.glowCondition)>
 			PlayerEntity entity = Minecraft.getInstance().player;
 			World world = entity.world;
 			double x = entity.getPosX();
@@ -264,7 +269,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
 			 <#list data.blocksAffected as restrictionBlock>
-                 if (blockstate.getBlock() == ${mappedBlockToBlockStateCode(restrictionBlock)}.getBlock())
+                 if (blockstate.getBlock() == ${mappedBlockToBlock(restrictionBlock)})
                  	return ${data.efficiency}f;
              </#list>
 			return 1;

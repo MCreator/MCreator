@@ -19,6 +19,7 @@
 package net.mcreator.ui.views.editor.image.tool.tools;
 
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
@@ -37,15 +38,18 @@ public class ShapeTool extends AbstractModificationTool {
 	private Point firstPoint = null;
 
 	public ShapeTool(Canvas canvas, ColorSelector colorSelector, LayerPanel layerPanel, VersionManager versionManager) {
-		super("Shape", "Shape creation tool", UIRES.get("img_editor.shape"), canvas, colorSelector, versionManager);
+		super(L10N.t("dialog.image_maker.tools.types.shapetool"),
+				L10N.t("dialog.image_maker.tools.types.shapetool_description"), UIRES.get("img_editor.shape"), canvas,
+				colorSelector, versionManager);
 		setLayerPanel(layerPanel);
 
 		JComboBox<Shape> shapeBox = new JComboBox<>(Shape.values());
 		shapeBox.setSelectedIndex(0);
-		JTitledComponentWrapper titledShape = new JTitledComponentWrapper("Shape:", shapeBox);
+		JTitledComponentWrapper titledShape = new JTitledComponentWrapper(
+				L10N.t("dialog.image_maker.tools.types.shape"), shapeBox);
 		shapeBox.addActionListener(e -> shape = (Shape) shapeBox.getSelectedItem());
 
-		aliasing = new JCheckBox("Smooth edge");
+		aliasing = new JCheckBox(L10N.t("dialog.image_maker.tools.types.smooth_edge"));
 
 		settingsPanel.add(titledShape);
 		settingsPanel.add(aliasing);

@@ -161,8 +161,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.rotationMode == 1 || data.rotationMode == 3>
 		public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-		<#elseif data.rotationMode == 2 || data.rotationMode == 4 || data.rotationMode == 5>
+		<#elseif data.rotationMode == 2 || data.rotationMode == 4>
 		public static final DirectionProperty FACING = DirectionalBlock.FACING;
+		<#elseif data.rotationMode == 5>
+		public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
         </#if>
         <#if data.isWaterloggable>
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -238,7 +240,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
                                      <#elseif data.rotationMode == 2 || data.rotationMode == 4>
                                      .with(FACING, Direction.NORTH)
                                      <#elseif data.rotationMode == 5>
-                                     .with(FACING, Direction.SOUTH)
+                                     .with(AXIS, Direction.Axis.Y)
                                      </#if>
                                      <#if data.isWaterloggable>
                                      .with(WATERLOGGED, false)
@@ -311,9 +313,15 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-		<#if data.lightOpacity == 0>
+		<#if (!data.blockBase?? || data.blockBase == "Leaves") && data.lightOpacity == 0>
 		@Override public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
-			return true;
+			return <#if data.isWaterloggable>state.getFluidState().isEmpty()<#else>true</#if>;
+		}
+		</#if>
+
+		<#if !data.blockBase?? || data.blockBase == "Leaves" || data.lightOpacity != 0>
+		@Override public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
+			return ${data.lightOpacity};
 		}
 		</#if>
 
@@ -330,11 +338,17 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.rotationMode != 0>
 		@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		    <#if data.isWaterloggable>
-      		    builder.add(FACING, WATERLOGGED);
-      		<#else>
-      		    builder.add(FACING);
-      		</#if>
+			<#if data.isWaterloggable>
+				<#if data.rotationMode == 5>
+	  			builder.add(AXIS, WATERLOGGED);
+	  			<#else>
+	  			builder.add(FACING, WATERLOGGED);
+	  			</#if>
+	  		<#elseif data.rotationMode == 5>
+	  			builder.add(AXIS);
+	  		<#else>
+	  			builder.add(FACING);
+	  		</#if>
    		}
 
 			<#if data.rotationMode != 5>
@@ -348,10 +362,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
    			<#else>
 			@Override public BlockState rotate(BlockState state, Rotation rot) {
 				if(rot == Rotation.CLOCKWISE_90 || rot == Rotation.COUNTERCLOCKWISE_90) {
-					if((Direction) state.get(FACING) == Direction.WEST || (Direction) state.get(FACING) == Direction.EAST) {
-						return state.with(FACING, Direction.UP);
-					} else if((Direction) state.get(FACING) == Direction.UP || (Direction) state.get(FACING) == Direction.DOWN) {
-						return state.with(FACING, Direction.WEST);
+					if ((Direction.Axis) state.get(AXIS) == Direction.Axis.X) {
+						return state.with(AXIS, Direction.Axis.Z);
+					} else if ((Direction.Axis) state.get(AXIS) == Direction.Axis.Z) {
+						return state.with(AXIS, Direction.Axis.X);
 					}
 				}
 				return state;
@@ -364,13 +378,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		    Direction facing = context.getFace();
 		    </#if>
 		    <#if data.rotationMode == 5>
-            Direction facing = context.getFace();
-            if (facing == Direction.WEST || facing == Direction.EAST)
-                facing = Direction.UP;
-            else if (facing == Direction.NORTH || facing == Direction.SOUTH)
-                facing = Direction.EAST;
-            else
-                facing = Direction.SOUTH;
+		    Direction.Axis axis = context.getFace().getAxis();
             </#if>
             <#if data.isWaterloggable>
             boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
@@ -381,8 +389,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			        .with(FACING, context.getPlacementHorizontalFacing().getOpposite())
 			        <#elseif data.rotationMode == 2>
 			        .with(FACING, context.getNearestLookingDirection().getOpposite())
-                    <#elseif data.rotationMode == 4 || data.rotationMode == 5>
+                    <#elseif data.rotationMode == 4>
 			        .with(FACING, facing)
+                    <#elseif data.rotationMode == 5>
+                    .with(AXIS, axis)
 			        </#if>
 			        <#if data.isWaterloggable>
 			        .with(WATERLOGGED, flag)
@@ -403,8 +413,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
-		<#if hasCondition(data.placingCondition)>
-		@Override public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		<#if hasProcedure(data.placingCondition)>
+		@Override public boolean isValidPosition(BlockState blockstate, IWorldReader worldIn, BlockPos pos) {
 			if (worldIn instanceof IWorld) {
 				IWorld world = (IWorld) worldIn;
 				int x = pos.getX();
@@ -412,7 +422,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				int z = pos.getZ();
 				return <@procedureOBJToConditionCode data.placingCondition/>;
 			}
-			return super.isValidPosition(state, worldIn, pos);
+			return super.isValidPosition(blockstate, worldIn, pos);
 		}
 		</#if>
 
@@ -433,14 +443,14 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         }
 		</#if>
 
-		<#if data.isWaterloggable || hasCondition(data.placingCondition)>
+		<#if data.isWaterloggable || hasProcedure(data.placingCondition)>
 		@Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
 	        <#if data.isWaterloggable>
 			if (state.get(WATERLOGGED)) {
 				world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 			}
 			</#if>
-			return <#if hasCondition(data.placingCondition)>
+			return <#if hasProcedure(data.placingCondition)>
 			!state.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() :
 			</#if> super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 		}
@@ -463,7 +473,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			return true;
 		}
 
-		@Override public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		@Override public int getWeakPower(BlockState blockstate, IBlockReader blockAccess, BlockPos pos, Direction side) {
 			<#if hasProcedure(data.emittedRedstonePower)>
 				int x = pos.getX();
 				int y = pos.getY();
@@ -586,8 +596,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		</#if>
 
         <#if (hasProcedure(data.onTickUpdate) && !data.tickRandomly) || hasProcedure(data.onBlockAdded) >
-		@Override public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
-			super.onBlockAdded(state, world, pos, oldState, moving);
+		@Override public void onBlockAdded(BlockState blockstate, World world, BlockPos pos, BlockState oldState, boolean moving) {
+			super.onBlockAdded(blockstate, world, pos, oldState, moving);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -600,8 +610,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if hasProcedure(data.onRedstoneOn) || hasProcedure(data.onRedstoneOff) || hasProcedure(data.onNeighbourBlockChanges)>
 		@Override
-		public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
-			super.neighborChanged(state, world, pos, neighborBlock, fromPos, moving);
+		public void neighborChanged(BlockState blockstate, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
+			super.neighborChanged(blockstate, world, pos, neighborBlock, fromPos, moving);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -616,8 +626,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
         <#if hasProcedure(data.onTickUpdate)>
 		@Override public void <#if data.tickRandomly && (data.blockBase?has_content && data.blockBase == "Stairs")>randomTick<#else>tick</#if>
-				(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-			super.<#if data.tickRandomly && (data.blockBase?has_content && data.blockBase == "Stairs")>randomTick<#else>tick</#if>(state, world, pos, random);
+				(BlockState blockstate, ServerWorld world, BlockPos pos, Random random) {
+			super.<#if data.tickRandomly && (data.blockBase?has_content && data.blockBase == "Stairs")>randomTick<#else>tick</#if>(blockstate, world, pos, random);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -632,8 +642,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
         <#if hasProcedure(data.onRandomUpdateEvent) || data.spawnParticles>
 		@OnlyIn(Dist.CLIENT) @Override
-		public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-			super.animateTick(state, world, pos, random);
+		public void animateTick(BlockState blockstate, World world, BlockPos pos, Random random) {
+			super.animateTick(blockstate, world, pos, random);
 			PlayerEntity entity = Minecraft.getInstance().player;
 			int x = pos.getX();
 			int y = pos.getY();
@@ -648,8 +658,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
         <#if hasProcedure(data.onDestroyedByPlayer)>
 		@Override
-		public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity entity, boolean willHarvest, FluidState fluid) {
-			boolean retval = super.removedByPlayer(state, world, pos, entity, willHarvest, fluid);
+		public boolean removedByPlayer(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity, boolean willHarvest, FluidState fluid) {
+			boolean retval = super.removedByPlayer(blockstate, world, pos, entity, willHarvest, fluid);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -669,8 +679,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         </#if>
 
         <#if hasProcedure(data.onStartToDestroy)>
-		@Override public void onBlockClicked(BlockState state, World world, BlockPos pos, PlayerEntity entity) {
-			super.onBlockClicked(state, world, pos, entity);
+		@Override public void onBlockClicked(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity) {
+			super.onBlockClicked(blockstate, world, pos, entity);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -679,8 +689,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         </#if>
 
         <#if hasProcedure(data.onEntityCollides)>
-		@Override public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-			super.onEntityCollision(state, world, pos, entity);
+		@Override public void onEntityCollision(BlockState blockstate, World world, BlockPos pos, Entity entity) {
+			super.onEntityCollision(blockstate, world, pos, entity);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -694,14 +704,15 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
+			BlockState blockstate = world.getBlockState(pos);
 			<@procedureOBJToCode data.onEntityWalksOn/>
 		}
         </#if>
 
         <#if hasProcedure(data.onBlockPlayedBy)>
 		@Override
-		public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemstack) {
-			super.onBlockPlacedBy(world, pos, state, entity, itemstack);
+		public void onBlockPlacedBy(World world, BlockPos pos, BlockState blockstate, LivingEntity entity, ItemStack itemstack) {
+			super.onBlockPlacedBy(world, pos, blockstate, entity, itemstack);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -709,16 +720,16 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
-        <#if hasProcedure(data.onRightClicked) || data.openGUIOnRightClick>
+        <#if hasProcedure(data.onRightClicked) || data.shouldOpenGUIOnRightClick()>
 		@Override
-		public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
-			super.onBlockActivated(state, world, pos, entity, hand, hit);
+		public ActionResultType onBlockActivated(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
+			super.onBlockActivated(blockstate, world, pos, entity, hand, hit);
 
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
 
-			<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>" && data.openGUIOnRightClick && (data.guiBoundTo)?has_content>
+			<#if data.shouldOpenGUIOnRightClick()>
 				if(entity instanceof ServerPlayerEntity) {
 					NetworkHooks.openGui((ServerPlayerEntity) entity, new INamedContainerProvider() {
 						@Override public ITextComponent getDisplayName() {
@@ -733,10 +744,18 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 			<#if hasProcedure(data.onRightClicked)>
 				Direction direction = hit.getFace();
+				<#if hasReturnValue(data.onRightClicked)>
+				ActionResultType result = <@procedureOBJToActionResultTypeCode data.onRightClicked/>;
+				<#else>
 				<@procedureOBJToCode data.onRightClicked/>
+				</#if>
 			</#if>
 
+        	<#if data.shouldOpenGUIOnRightClick() || !hasReturnValue(data.onRightClicked)>
 			return ActionResultType.SUCCESS;
+			<#else>
+			return result;
+			</#if>
 		}
         </#if>
 
@@ -1015,7 +1034,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			boolean blockCriteria = false;
 
 			<#list data.blocksToReplace as replacementBlock>
-			if(blockAt.getBlock() == ${mappedBlockToBlockStateCode(replacementBlock)}.getBlock())
+			if(blockAt.getBlock() == ${mappedBlockToBlock(replacementBlock)})
 				blockCriteria = true;
 			</#list>
 
@@ -1058,7 +1077,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					if(!dimensionCriteria)
 						return false;
 
-					<#if hasCondition(data.generateCondition)>
+					<#if hasProcedure(data.generateCondition)>
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();

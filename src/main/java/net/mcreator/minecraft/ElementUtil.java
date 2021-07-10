@@ -127,8 +127,8 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTION);
-		retval.addAll(DataListLoader.loadDataList("potions"));
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTIONEFFECT);
+		retval.addAll(DataListLoader.loadDataList("effects"));
 		return retval;
 	}
 
@@ -224,6 +224,10 @@ public class ElementUtil {
 
 	public static String[] loadMapColors() {
 		return DataListLoader.loadDataList("mapcolors").stream().map(DataListEntry::getName).toArray(String[]::new);
+	}
+
+	public static String[] loadScreens() {
+		return DataListLoader.loadDataList("screens").stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
 	public static String[] loadAllDimensions(Workspace workspace) {
