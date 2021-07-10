@@ -46,7 +46,7 @@ public class JColor extends JPanel {
 
 	public JColor(Window window, boolean allowNullColor) {
 		setLayout(new BorderLayout(2, 0));
-		fl1.setText("255,255,255,255");
+		fl1.setText("255,255,255");
 		fl1.setBackground(Color.white);
 		bt1.setOpaque(false);
 
@@ -104,9 +104,10 @@ public class JColor extends JPanel {
 			fl1.setText("DEFAULT");
 			fl1.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 		} else {
-			fl1.setText(c.getRed() + "," + c.getGreen() + "," + c.getBlue() + "," + c.getAlpha());
+			String color = c.getRed() + "," + c.getGreen() + "," + c.getBlue();
+			fl1.setText(color);
 			fl1.setOpaque(true);
-			fl1.setBackground(new Color(c.getRGB()));
+			fl1.setBackground(c));
 			fl1.setForeground(getColorLuminance(c) > 128 ? Color.black : Color.white);
 		}
 
