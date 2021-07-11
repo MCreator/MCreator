@@ -618,7 +618,9 @@ public class TestWorkspaceDataProvider {
 				livingEntity.whenMobFalls = new Procedure("procedure2");
 				livingEntity.whenMobDies = new Procedure("procedure3");
 				livingEntity.whenMobIsHurt = new Procedure("procedure4");
-				livingEntity.onRightClickedOn = _true ? new Procedure("actionresulttype1") : new Procedure("procedure5");
+				livingEntity.onRightClickedOn = _true ?
+						new Procedure("actionresulttype1") :
+						new Procedure("procedure5");
 				livingEntity.whenThisMobKillsAnother = new Procedure("procedure6");
 				livingEntity.onMobTickUpdate = new Procedure("procedure7");
 				livingEntity.onPlayerCollidesWith = new Procedure("procedure8");
@@ -721,7 +723,9 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			dimension.fluidBlock = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			dimension.whenPortaTriggerlUsed = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure1");
+			dimension.whenPortaTriggerlUsed = emptyLists ?
+					new Procedure("actionresulttype1") :
+					new Procedure("procedure1");
 			dimension.onPortalTickUpdate = new Procedure("procedure3");
 			dimension.onPlayerEntersDimension = new Procedure("procedure4");
 			dimension.onPlayerLeavesDimension = new Procedure("procedure5");
@@ -1371,7 +1375,9 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			musicDisc.hasGlow = _true;
 			musicDisc.onRightClickedInAir = new Procedure("procedure1");
-			musicDisc.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
+			musicDisc.onRightClickedOnBlock = emptyLists ?
+					new Procedure("actionresulttype1") :
+					new Procedure("procedure2");
 			musicDisc.onCrafted = new Procedure("procedure3");
 			musicDisc.onEntityHitWith = new Procedure("procedure4");
 			musicDisc.onItemInInventoryTick = new Procedure("procedure5");

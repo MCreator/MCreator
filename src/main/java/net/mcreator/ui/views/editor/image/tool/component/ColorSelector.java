@@ -22,15 +22,17 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.views.editor.image.canvas.CanvasRenderer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class ColorSelector extends JPanel {
 
 	private Color foreground = Color.BLACK, background = Color.WHITE;
-	private final JButton foregroundColor = new JButton();
-	private final JButton backgroundColor = new JButton();
+	private final JButton foregroundColor = new JButton(generateTransparentPreview(foreground));
+	private final JButton backgroundColor = new JButton(generateTransparentPreview(background));
 
 	private static JDialog dialog = null;
 
@@ -39,17 +41,17 @@ public class ColorSelector extends JPanel {
 
 		foregroundColor.setToolTipText(L10N.t("dialog.image_maker.tools.component.colorselector_foreground"));
 		foregroundColor.setMargin(new Insets(0, 0, 0, 0));
-		foregroundColor.setBounds(new Rectangle(0, 0, 40, 30));
+		foregroundColor.setBounds(new Rectangle(0, 0, 42, 34));
 
 		backgroundColor.setToolTipText(L10N.t("dialog.image_maker.tools.component.colorselector_background"));
 		backgroundColor.setMargin(new Insets(0, 0, 0, 0));
-		backgroundColor.setBounds(new Rectangle(20, 20, 40, 30));
+		backgroundColor.setBounds(new Rectangle(21, 22, 42, 34));
 
 		JButton reset = new JButton();
 		reset.setToolTipText(L10N.t("dialog.image_maker.tools.component.colorselector_reset"));
 		reset.setIcon(UIRES.get("16px.reset"));
 		reset.setMargin(new Insets(0, 0, 0, 0));
-		reset.setBounds(new Rectangle(0, 34, 16, 16));
+		reset.setBounds(new Rectangle(1, 39, 16, 16));
 		reset.setOpaque(false);
 		reset.setBorder(BorderFactory.createEmptyBorder());
 
@@ -57,7 +59,7 @@ public class ColorSelector extends JPanel {
 		swap.setToolTipText(L10N.t("dialog.image_maker.tools.component.colorselector_swap"));
 		swap.setIcon(UIRES.get("16px.swap"));
 		swap.setMargin(new Insets(0, 0, 0, 0));
-		swap.setBounds(new Rectangle(44, 0, 16, 16));
+		swap.setBounds(new Rectangle(46, 1, 16, 16));
 		swap.setOpaque(false);
 		swap.setBorder(BorderFactory.createEmptyBorder());
 
@@ -112,16 +114,33 @@ public class ColorSelector extends JPanel {
 		add(swap);
 
 		setOpaque(false);
-		setPreferredSize(new Dimension(60, 50));
+		setPreferredSize(new Dimension(63, 56));
+	}
+
+	private ImageIcon generateTransparentPreview(Color color){
+		BufferedImage preview = new BufferedImage(40, 32, BufferedImage.TYPE_INT_RGB);
+		Graphics2D graphics2D = preview.createGraphics();
+
+		Paint solid = graphics2D.getPaint();
+
+		graphics2D.setPaint(CanvasRenderer.buildCheckerboardPattern());
+		graphics2D.fillRect(0, 0, 40, 40);
+
+		graphics2D.setPaint(solid);
+		graphics2D.setColor(color);
+		graphics2D.fillRect(0, 0, 40, 40);
+
+		graphics2D.dispose();
+		return new ImageIcon(preview);
 	}
 
 	private void updateColors() {
-		foregroundColor.setBackground(foreground);
-		backgroundColor.setBackground(background);
+		foregroundColor.setIcon(generateTransparentPreview(foreground));
+		backgroundColor.setIcon(generateTransparentPreview(background));
 	}
 
 	public Color getForegroundColor() {
-		return new Color(foreground.getRGB(), false);
+		return new Color(foreground.getRGB(), true);
 	}
 
 	public void setForegroundColor(Color foreground) {
@@ -130,7 +149,7 @@ public class ColorSelector extends JPanel {
 	}
 
 	public Color getBackgroundColor() {
-		return new Color(background.getRGB(), false);
+		return new Color(background.getRGB(), true);
 	}
 
 	public void setBackgroundColor(Color background) {
