@@ -376,12 +376,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			);
 		}
 
-		@Override
-		public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-			stack.damageItem(1, entityLiving, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-			return true;
-		}
-
 		@Override public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 			stack.damageItem(2, attacker, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
 			return true;
@@ -390,6 +384,17 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		@Override public int getItemEnchantability() {
 			return ${data.enchantability};
 		}
+
+		<#if data.repairItems?has_content>
+		    @Override
+            public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+                <#list data.repairItems as repairItem>
+                    if (repair.equals(${mappedMCItemToItemStackCode(repairItem,1)?replace(", 1", "")}))
+                        return true;
+                </#list>
+                return false;
+            }
+        </#if>
 
 	}
 </#if>

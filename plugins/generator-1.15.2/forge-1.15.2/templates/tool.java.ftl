@@ -359,6 +359,17 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			return ${data.enchantability};
 		}
 
+		<#if data.repairItems?has_content>
+		    @Override
+            public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+                <#list data.repairItems as repairItem>
+                    if (repair.equals(${mappedMCItemToItemStackCode(repairItem,1)?replace(", 1", "")}))
+                        return true;
+                </#list>
+                return false;
+            }
+        </#if>
+
 	}
 </#if>
 
