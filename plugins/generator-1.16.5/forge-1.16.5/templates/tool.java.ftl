@@ -388,14 +388,14 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 		<#if data.repairItems?has_content>
 		    @Override
             public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+                Item repairItem = repair.getItem();
+                return
                 <#list data.repairItems as repairItem>
-                    if (repair.equals(${mappedMCItemToItemStackCode(repairItem,1)?replace(", 1", "")}))
-                        return true;
-                </#list>
-                return false;
+                	repairItem == ${mappedMCItemToItem(repairItem)}
+                	<#if repairItem?has_next>||</#if>
+                </#list>;
             }
         </#if>
-
 	}
 </#if>
 
