@@ -273,29 +273,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		blocksAffected.setEnabled(false);
 
-		toolType.addActionListener(event -> {
-			if (toolType.getSelectedItem() != null) {
-				if (toolType.getSelectedItem().equals("Special")) {
-					blocksAffected.setEnabled(true);
-					repairItems.setEnabled(false);
-				} else if (toolType.getSelectedItem().equals("Fishing rod")) {
-					harvestLevel.setEnabled(false);
-					efficiency.setEnabled(false);
-					blocksAffected.setEnabled(false);
-					repairItems.setEnabled(false);
-					damageVsEntity.setEnabled(false);
-					attackSpeed.setEnabled(false);
-				} else {
-					harvestLevel.setEnabled(true);
-					efficiency.setEnabled(true);
-					blocksAffected.setEnabled(false);
-					repairItems.setEnabled(true);
-					damageVsEntity.setEnabled(true);
-					attackSpeed.setEnabled(true);
-				}
-			}
-
-		});
+		toolType.addActionListener(event -> updateFields());
 
 		pane4.setOpaque(false);
 
@@ -330,6 +308,37 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
+		}
+	}
+
+	private void updateFields() {
+		if (toolType.getSelectedItem() != null) {
+			if (toolType.getSelectedItem().equals("Special")) {
+				harvestLevel.setEnabled(false);
+				blocksAffected.setEnabled(true);
+				repairItems.setEnabled(false);
+			} else if (toolType.getSelectedItem().equals("Fishing rod")) {
+				harvestLevel.setEnabled(false);
+				efficiency.setEnabled(false);
+				blocksAffected.setEnabled(false);
+				damageVsEntity.setEnabled(false);
+				attackSpeed.setEnabled(false);
+			} else if (toolType.getSelectedItem().equals("MultiTool")) {
+				blocksAffected.setEnabled(false);
+			} else if (toolType.getSelectedItem().equals("Shears")) {
+				harvestLevel.setEnabled(false);
+				blocksAffected.setEnabled(false);
+				repairItems.setEnabled(false);
+				damageVsEntity.setEnabled(false);
+				attackSpeed.setEnabled(false);
+			} else {
+				harvestLevel.setEnabled(true);
+				efficiency.setEnabled(true);
+				blocksAffected.setEnabled(false);
+				repairItems.setEnabled(true);
+				damageVsEntity.setEnabled(true);
+				attackSpeed.setEnabled(true);
+			}
 		}
 	}
 
@@ -399,6 +408,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		blocksAffected.setListElements(tool.blocksAffected);
 
 		updateGlowElements();
+		updateFields();
 
 		if (toolType.getSelectedItem() != null)
 			blocksAffected.setEnabled(toolType.getSelectedItem().equals("Special"));
