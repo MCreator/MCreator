@@ -42,7 +42,7 @@ public class PreferencesData {
 
 		@PreferencesEntry public Color interfaceAccentColor = MCreatorTheme.MAIN_TINT_DEFAULT;
 
-		@PreferencesEntry(arrayData = {"All", "Current theme", "Personal", "None"})
+		@PreferencesEntry(arrayData = {"All", "Current theme", "Custom", "None"})
 		public String backgroundSelection = "All";
 
 		@PreferencesEntry public Locale language = L10N.DEFAULT_LOCALE;

@@ -25,9 +25,7 @@ import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.gradle.GradleTaskResult;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
-import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
@@ -36,6 +34,7 @@ import net.mcreator.ui.component.util.EDTUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
+import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.workspace.WorkspacePanel;
@@ -57,14 +56,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider {
 
@@ -174,14 +168,14 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		List<File> bgimages = new ArrayList<>();
 		switch (PreferencesManager.PREFERENCES.ui.backgroundSelection) {
 		case "All":
-			bgimages.addAll(loadThemeBackgrounds());
-			bgimages.addAll(loadUserBackgrounds());
+			bgimages.addAll(BackgroundLoader.loadThemeBackgrounds());
+			bgimages.addAll(BackgroundLoader.loadUserBackgrounds());
 			break;
 		case "Current theme":
-			bgimages = loadThemeBackgrounds();
+			bgimages = BackgroundLoader.loadThemeBackgrounds();
 			break;
-		case "Personal":
-			bgimages = loadUserBackgrounds();
+		case "Custom":
+			bgimages = BackgroundLoader.loadUserBackgrounds();
 			break;
 		default:
 			bgimages = Collections.emptyList();
@@ -275,32 +269,6 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		add("South", statusBar);
 		add("North", toolBar);
 		add("Center", splitPane);
-	}
-
-	private static List<File> loadUserBackgrounds() {
-		File[] bgfiles = UserFolderManager.getFileFromUserFolder("backgrounds").listFiles();
-		if (bgfiles != null) {
-			return Arrays.stream(bgfiles).filter(e -> e.getName().endsWith(".png")).collect(Collectors.toList());
-		}
-		return Collections.emptyList();
-	}
-
-	private static List<File> loadThemeBackgrounds() {
-		Set<String> bgFiles = PluginLoader.INSTANCE
-				.getResources("themes." + ThemeLoader.CURRENT_THEME.getID() + ".backgrounds",
-						Pattern.compile("^[^$].*\\.png"));
-
-		List<File> backgrounds = new ArrayList<>();
-		if (bgFiles != null && !bgFiles.isEmpty()) {
-			for (String name : bgFiles) {
-				try {
-					backgrounds.add(new File(PluginLoader.INSTANCE.getResource(name).toURI()));
-				} catch (URISyntaxException e) {
-					LOG.error("Can not use " + name, e.getMessage());
-				}
-			}
-		}
-		return backgrounds;
 	}
 
 	@Override public void setVisible(boolean b) {
