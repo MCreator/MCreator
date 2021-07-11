@@ -40,12 +40,12 @@ public class PreferencesData {
 
 	public static class UISettings {
 
+		@PreferencesEntry public Locale language = L10N.DEFAULT_LOCALE;
+
 		@PreferencesEntry public Color interfaceAccentColor = MCreatorTheme.MAIN_TINT_DEFAULT;
 
 		@PreferencesEntry(arrayData = {"All", "Current theme", "Custom", "None"})
-		public String backgroundSelection = "All";
-
-		@PreferencesEntry public Locale language = L10N.DEFAULT_LOCALE;
+		public String backgroundSource = "All";
 
 		@PreferencesEntry public boolean aatext = true;
 
