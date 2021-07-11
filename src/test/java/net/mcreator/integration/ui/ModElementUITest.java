@@ -132,7 +132,8 @@ public class ModElementUITest {
 
 		for (int i = 1; i <= 1; i++) {
 			workspace.addModElement(new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE)
-					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "ACTIONRESULTTYPE"));
+					.putMetadata("dependencies", new ArrayList<String>())
+					.putMetadata("return_type", "ACTIONRESULTTYPE"));
 		}
 
 		// reduce autosave interval for tests

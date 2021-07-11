@@ -93,7 +93,8 @@ public class GTSampleElements {
 
 			for (int i = 1; i <= 1; i++) {
 				ModElement me = new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE)
-						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "ACTIONRESULTTYPE");
+						.putMetadata("dependencies", new ArrayList<String>())
+						.putMetadata("return_type", "ACTIONRESULTTYPE");
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);

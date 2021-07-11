@@ -57,22 +57,22 @@ public class ${name} {
 		new ${name}();
 	}
 
-	@SubscribeEvent
-	public static void serverLoad(FMLServerStartingEvent event) {
-
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@SubscribeEvent
-	public static void clientLoad(FMLClientSetupEvent event) {
-
-    }
-
     @Mod.EventBusSubscriber
 	private static class ForgeBusEvents {
 
 		// Example Forge bus event registration
 		@SubscribeEvent public static void addFeatureToBiomes(BiomeLoadingEvent event) {
+
+		}
+
+		@SubscribeEvent
+		public static void serverLoad(FMLServerStartingEvent event) {
+
+		}
+
+		@OnlyIn(Dist.CLIENT)
+		@SubscribeEvent
+		public static void clientLoad(FMLClientSetupEvent event) {
 
 		}
 

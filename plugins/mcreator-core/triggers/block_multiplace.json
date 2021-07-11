@@ -41,5 +41,6 @@
       "type": "world"
     }
   ],
-  "cancelable": "true"
+  "cancelable": "true",
+  "side": "server"
 }

@@ -361,6 +361,9 @@ Blockly.defineBlocksWithJsonArray([
             "type": "input_statement",
             "name": "DO"
         }],
+        "extensions": [
+            "is_custom_loop"
+        ],
         "previousStatement": null,
         "nextStatement": null,
         "colour": "%{BKY_LOOPS_HUE}"
@@ -444,8 +447,11 @@ Blockly.defineBlocksWithJsonArray([
     },
 ]);
 
-// add custom loop to loop types
-Blockly.Constants.Loops.CONTROL_FLOW_IN_LOOP_CHECK_MIXIN.LOOP_TYPES.push('controls_while');
+// Extension to mark a procedure block as a custom loop
+Blockly.Extensions.register('is_custom_loop',
+    function () {
+        Blockly.Constants.Loops.CONTROL_FLOW_IN_LOOP_CHECK_MIXIN.LOOP_TYPES.push(this.type);
+    });
 
 Blockly.Extensions.register('biome_list_provider',
     function () {
