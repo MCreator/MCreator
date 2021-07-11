@@ -169,24 +169,20 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		UserFolderManager.getFileFromUserFolder("backgrounds").mkdirs();
 
 		JPanel mpan;
-		File[] bgfiles = UserFolderManager.getFileFromUserFolder("backgrounds").listFiles();
-		Set<String> bgFilesTheme = PluginLoader.INSTANCE
-				.getResources("themes." + ThemeLoader.CURRENT_THEME.getID() + ".backgrounds",
-						Pattern.compile("^[^$].*\\.png"));
+
+		// Load backgrounds depending on the background selection
 		List<File> bgimages = new ArrayList<>();
-		if (bgFilesTheme != null && !bgFilesTheme.isEmpty()) {
-			for (String name : bgFilesTheme) {
-				if (name.endsWith(".png")) {
-					try {
-						bgimages.add(new File(PluginLoader.INSTANCE.getResource(name).toURI()));
-					} catch (URISyntaxException e) {
-						LOG.error("Can not use " + name, e.getMessage());
-					}
-				}
-			}
-		}
-		if (bgfiles != null) {
-			bgimages.addAll(Arrays.stream(bgfiles).filter(e -> e.getName().endsWith(".png")).collect(Collectors.toList()));
+		switch (PreferencesManager.PREFERENCES.ui.backgroundSelection) {
+		case "Current theme":
+			bgimages = loadThemeBackgrounds();
+			break;
+		case "Personal":
+			bgimages = loadUserBackgrounds();
+			break;
+		default:
+			bgimages.addAll(loadThemeBackgrounds());
+			bgimages.addAll(loadUserBackgrounds());
+			break;
 		}
 
 		Image bgimage = null;
@@ -276,6 +272,32 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		add("South", statusBar);
 		add("North", toolBar);
 		add("Center", splitPane);
+	}
+
+	private static List<File> loadUserBackgrounds() {
+		File[] bgfiles = UserFolderManager.getFileFromUserFolder("backgrounds").listFiles();
+		if (bgfiles != null) {
+			return Arrays.stream(bgfiles).filter(e -> e.getName().endsWith(".png")).collect(Collectors.toList());
+		}
+		return Collections.emptyList();
+	}
+
+	private static List<File> loadThemeBackgrounds() {
+		Set<String> bgFiles = PluginLoader.INSTANCE
+				.getResources("themes." + ThemeLoader.CURRENT_THEME.getID() + ".backgrounds",
+						Pattern.compile("^[^$].*\\.png"));
+
+		List<File> backgrounds = new ArrayList<>();
+		if (bgFiles != null && !bgFiles.isEmpty()) {
+			for (String name : bgFiles) {
+				try {
+					backgrounds.add(new File(PluginLoader.INSTANCE.getResource(name).toURI()));
+				} catch (URISyntaxException e) {
+					LOG.error("Can not use " + name, e.getMessage());
+				}
+			}
+		}
+		return backgrounds;
 	}
 
 	@Override public void setVisible(boolean b) {
