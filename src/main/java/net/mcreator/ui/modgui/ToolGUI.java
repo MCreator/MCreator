@@ -214,18 +214,18 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		harvestLevel.setOpaque(false);
 		efficiency.setOpaque(false);
 
+		hasGlow.addActionListener(e -> updateGlowElements());
+
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"), L10N.label("elementgui.tool.type")));
+		selp.add(toolType);
+
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.common.creative_tab")));
 		selp.add(creativeTab);
-
-		hasGlow.addActionListener(e -> updateGlowElements());
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"), L10N.label("elementgui.tool.type")));
-		selp.add(toolType);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("tool/harvest_level"), L10N.label("elementgui.tool.harvest_level")));
@@ -313,9 +313,15 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	private void updateFields() {
 		if (toolType.getSelectedItem() != null) {
+			blocksAffected.setEnabled(true);
+			harvestLevel.setEnabled(true);
+			efficiency.setEnabled(true);
+			repairItems.setEnabled(true);
+			damageVsEntity.setEnabled(true);
+			attackSpeed.setEnabled(true);
+
 			if (toolType.getSelectedItem().equals("Special")) {
 				harvestLevel.setEnabled(false);
-				blocksAffected.setEnabled(true);
 				repairItems.setEnabled(false);
 			} else if (toolType.getSelectedItem().equals("Fishing rod")) {
 				harvestLevel.setEnabled(false);
@@ -323,8 +329,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				blocksAffected.setEnabled(false);
 				damageVsEntity.setEnabled(false);
 				attackSpeed.setEnabled(false);
-			} else if (toolType.getSelectedItem().equals("MultiTool")) {
-				blocksAffected.setEnabled(false);
 			} else if (toolType.getSelectedItem().equals("Shears")) {
 				harvestLevel.setEnabled(false);
 				blocksAffected.setEnabled(false);
@@ -332,12 +336,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				damageVsEntity.setEnabled(false);
 				attackSpeed.setEnabled(false);
 			} else {
-				harvestLevel.setEnabled(true);
-				efficiency.setEnabled(true);
 				blocksAffected.setEnabled(false);
-				repairItems.setEnabled(true);
-				damageVsEntity.setEnabled(true);
-				attackSpeed.setEnabled(true);
 			}
 		}
 	}
