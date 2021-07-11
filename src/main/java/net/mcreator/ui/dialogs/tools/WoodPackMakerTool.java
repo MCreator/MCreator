@@ -344,6 +344,26 @@ public class WoodPackMakerTool {
 		mcreator.getGenerator().generateElement(pressurePlateBlock);
 		mcreator.getModElementManager().storeModElement(pressurePlateBlock);
 
+		// we use Block GUI to get default values for the block element (kinda hacky!)
+		Block buttonBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
+				.getModElement(mcreator, new ModElement(workspace, name + "Button", ModElementType.BLOCK), false)
+				.getElementFromGUI();
+		buttonBlock.name = name + " Button";
+		buttonBlock.blockBase = "Button";
+		buttonBlock.material = new Material(workspace, "WOOD");
+		buttonBlock.texture = planksTextureName;
+		buttonBlock.soundOnStep = new StepSound(workspace, "WOOD");
+		buttonBlock.hardness = 2 * factor;
+		buttonBlock.resistance = 3 * factor;
+		buttonBlock.breakHarvestLevel = 0;
+		buttonBlock.flammability = (int) Math.round(5 * factor);
+
+		buttonBlock.getModElement().setParentFolder(folder);
+		mcreator.getModElementManager().storeModElementPicture(buttonBlock);
+		mcreator.getWorkspace().addModElement(buttonBlock.getModElement());
+		mcreator.getGenerator().generateElement(buttonBlock);
+		mcreator.getModElementManager().storeModElement(buttonBlock);
+
 		//Tag - Items
 		//Mainly used for recipes and loot tables
 		Tag woodItemTag = (Tag) ModElementTypeRegistry.REGISTRY.get(ModElementType.TAG)
@@ -478,6 +498,21 @@ public class WoodPackMakerTool {
 		mcreator.getWorkspace().addModElement(pressurePlateRecipe.getModElement());
 		mcreator.getGenerator().generateElement(pressurePlateRecipe);
 		mcreator.getModElementManager().storeModElement(pressurePlateRecipe);
+
+		Recipe buttonRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
+				.getModElement(mcreator, new ModElement(workspace, name + "ButtonRecipe", ModElementType.RECIPE),
+						false).getElementFromGUI();
+		buttonRecipe.recipeSlots[4] = new MItemBlock(workspace,
+				"CUSTOM:" + planksBlock.getModElement().getName());
+		buttonRecipe.recipeShapeless = true;
+		buttonRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Button");
+		buttonRecipe.recipeRetstackSize = 1;
+
+		buttonRecipe.getModElement().setParentFolder(folder);
+		mcreator.getModElementManager().storeModElementPicture(buttonRecipe);
+		mcreator.getWorkspace().addModElement(buttonRecipe.getModElement());
+		mcreator.getGenerator().generateElement(buttonRecipe);
+		mcreator.getModElementManager().storeModElement(buttonRecipe);
 
 		Recipe stickRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
 				.getModElement(mcreator, new ModElement(workspace, name + "StickRecipe", ModElementType.RECIPE), false)
