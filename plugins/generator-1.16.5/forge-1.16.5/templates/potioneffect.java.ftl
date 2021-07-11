@@ -118,7 +118,11 @@ package ${package}.potion;
 		</#if>
 
 		@Override public boolean isReady(int duration, int amplifier) {
+		    <#if hasProcedure(data.activeTickCondition)>
+		    return <@procedureOBJToConditionCode data.activeTickCondition/>;
+		    <#else>
     		return true;
+    		</#if>
     	}
 
 	}
