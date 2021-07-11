@@ -53,6 +53,8 @@ import java.util.stream.Collectors;
 	public String plantType;
 
 	public String staticPlantGenerationType;
+	public String suspiciousStewEffect;
+	public int suspiciousStewDuration;
 
 	public String growapableSpawnType;
 	public int growapableMaxHeight;
@@ -105,6 +107,7 @@ import java.util.stream.Collectors;
 	public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
+	public int patchSize;
 
 	public Procedure onBlockAdded;
 	public Procedure onNeighbourBlockChanges;
@@ -139,8 +142,12 @@ import java.util.stream.Collectors;
 		this.jumpFactor = 1.0;
 		this.speedFactor = 1.0;
 
+		this.suspiciousStewEffect = "SPEED";
+		this.suspiciousStewDuration = 5;
+
 		this.staticPlantGenerationType = "Flower";
 		this.doublePlantGenerationType = "Flower";
+		this.patchSize = 64;
 
 		this.specialInfo = new ArrayList<>();
 		this.boundingBoxes = new ArrayList<>();
