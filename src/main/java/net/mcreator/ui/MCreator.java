@@ -25,7 +25,9 @@ import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.gradle.GradleTaskResult;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
@@ -55,9 +57,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider {
@@ -164,9 +170,23 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		JPanel mpan;
 		File[] bgfiles = UserFolderManager.getFileFromUserFolder("backgrounds").listFiles();
+		Set<String> bgFilesTheme = PluginLoader.INSTANCE
+				.getResources("themes." + ThemeLoader.CURRENT_THEME.getID() + ".backgrounds",
+						Pattern.compile("^[^$].*\\.png"));
 		List<File> bgimages = new ArrayList<>();
+		if (bgFilesTheme != null && !bgFilesTheme.isEmpty()) {
+			for (String name : bgFilesTheme) {
+				if (name.endsWith(".png")) {
+					try {
+						bgimages.add(new File(PluginLoader.INSTANCE.getResource(name).toURI()));
+					} catch (URISyntaxException e) {
+						LOG.error("Can not use " + name, e.getMessage());
+					}
+				}
+			}
+		}
 		if (bgfiles != null) {
-			bgimages = Arrays.stream(bgfiles).filter(e -> e.getName().endsWith(".png")).collect(Collectors.toList());
+			bgimages.addAll(Arrays.stream(bgfiles).filter(e -> e.getName().endsWith(".png")).collect(Collectors.toList()));
 		}
 
 		Image bgimage = null;
