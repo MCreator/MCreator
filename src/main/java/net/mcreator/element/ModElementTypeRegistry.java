@@ -29,7 +29,7 @@ public class ModElementTypeRegistry {
 
 	public static List<ModElementType<?>> REGISTRY = new ArrayList<>();
 
-	static {
+	public static void registryModElements() {
 		ModElementType.ADVANCEMENT = register(
 				new ModElementType<>("achievement", 'h', BaseType.DATAPACK, RecipeType.NONE, AchievementGUI::new,
 						Achievement.class));
