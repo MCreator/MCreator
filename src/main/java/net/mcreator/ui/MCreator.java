@@ -173,6 +173,10 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		// Load backgrounds depending on the background selection
 		List<File> bgimages = new ArrayList<>();
 		switch (PreferencesManager.PREFERENCES.ui.backgroundSelection) {
+		case "All":
+			bgimages.addAll(loadThemeBackgrounds());
+			bgimages.addAll(loadUserBackgrounds());
+			break;
 		case "Current theme":
 			bgimages = loadThemeBackgrounds();
 			break;
@@ -180,8 +184,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			bgimages = loadUserBackgrounds();
 			break;
 		default:
-			bgimages.addAll(loadThemeBackgrounds());
-			bgimages.addAll(loadUserBackgrounds());
+			bgimages = Collections.emptyList();
 			break;
 		}
 
