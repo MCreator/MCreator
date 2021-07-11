@@ -150,6 +150,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	public static class CustomBlock extends
 			<#if data.hasGravity>
 				FallingBlock
+			<#elseif data.blockBase == "Button">
+			    <#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>
+                    WoodButtonBlock
+                <#else>
+                    StoneButtonBlock
+                </#if>
 			<#elseif data.blockBase?has_content>
 				${data.blockBase}Block
 			<#else>
