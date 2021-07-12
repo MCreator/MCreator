@@ -350,12 +350,12 @@ templates:
   - template: json/txblock/button.json.ftl
     condition: "blockBase %= Button"
     writer: json
-    name: "@MODASSETSROOT/models/block/@registryname_button.json"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/txblock/button_pressed.json.ftl
     deleteWhenConditionFalse: true
     condition: "blockBase %= Button"
     writer: json
-    name: "@MODASSETSROOT/models/block/@registryname_button_pressed.json"
+    name: "@MODASSETSROOT/models/block/@registryname_pressed.json"
   - template: json/txblock/button_inventory.json.ftl
     deleteWhenConditionFalse: true
     condition: "blockBase %= Button"
