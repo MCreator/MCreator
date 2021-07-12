@@ -376,11 +376,6 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			);
 		}
 
-		@Override public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-			stack.damageItem(2, attacker, i -> i.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-			return true;
-		}
-
 		@Override public int getItemEnchantability() {
 			return ${data.enchantability};
 		}
