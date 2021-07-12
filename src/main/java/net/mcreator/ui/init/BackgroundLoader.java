@@ -19,26 +19,17 @@
 
 package net.mcreator.ui.init;
 
-import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
-import net.mcreator.io.zip.ZipIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.themes.ThemeLoader;
-import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.net.URISyntaxException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class BackgroundLoader {
-	private static final Logger LOG = LogManager.getLogger("Background Loader");
 
 	public static List<Image> loadUserBackgrounds() {
 		File[] bgfiles = UserFolderManager.getFileFromUserFolder("backgrounds").listFiles();
