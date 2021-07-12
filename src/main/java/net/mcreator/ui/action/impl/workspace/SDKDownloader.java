@@ -22,6 +22,7 @@ package net.mcreator.ui.action.impl.workspace;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.io.zip.ZipIO;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,6 +50,13 @@ public class SDKDownloader {
 							+ "/x64/jdk/hotspot/normal/adoptopenjdk"),
 					UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension));
 
+			LOG.info("Extracting JDK: " + jdkVersion);
+			if (OS.getOS() == OS.WINDOWS) {
+				ZipIO.unzip(
+						UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension).getAbsolutePath(),
+						UserFolderManager.getFileFromUserFolder("jdks").getAbsolutePath());
+				UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension).delete();
+			}
 		}
 	}
 
