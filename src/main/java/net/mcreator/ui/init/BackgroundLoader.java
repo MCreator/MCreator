@@ -19,9 +19,12 @@
 
 package net.mcreator.ui.init;
 
+import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.io.zip.ZipIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.themes.ThemeLoader;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,23 +40,25 @@ import java.util.stream.Collectors;
 public class BackgroundLoader {
 	private static final Logger LOG = LogManager.getLogger("Background Loader");
 
-	public static List<File> loadUserBackgrounds() {
+	public static List<Image> loadUserBackgrounds() {
 		File[] bgfiles = UserFolderManager.getFileFromUserFolder("backgrounds").listFiles();
 		if (bgfiles != null) {
-			return Arrays.stream(bgfiles).filter(e -> e.getName().endsWith(".png")).collect(Collectors.toList());
+			List<Image> images = new ArrayList<>();
+			Arrays.stream(bgfiles).forEach(f -> images.add(Toolkit.getDefaultToolkit().createImage(f.getPath())));
+			return images;
 		}
 		return Collections.emptyList();
 	}
 
-	public static List<File> loadThemeBackgrounds() {
+	public static List<Image> loadThemeBackgrounds() {
 		Set<String> bgFiles = PluginLoader.INSTANCE
 				.getResources("themes." + ThemeLoader.CURRENT_THEME.getID() + ".backgrounds",
 						Pattern.compile("^[^$].*\\.png"));
 
-		List<File> backgrounds = new ArrayList<>();
+		List<Image> backgrounds = new ArrayList<>();
 		if (bgFiles != null && !bgFiles.isEmpty()) {
 			for (String name : bgFiles) {
-				backgrounds.add(new File(PluginLoader.INSTANCE.getResource(name).getPath()));
+				backgrounds.add(Toolkit.getDefaultToolkit().createImage(PluginLoader.INSTANCE.getResource(name)));
 			}
 		}
 		return backgrounds;

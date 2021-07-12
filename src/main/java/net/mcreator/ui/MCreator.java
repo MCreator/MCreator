@@ -165,7 +165,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		JPanel mpan;
 
 		// Load backgrounds depending on the background selection
-		List<File> bgimages = new ArrayList<>();
+		List<Image> bgimages = new ArrayList<>();
 		switch (PreferencesManager.PREFERENCES.ui.backgroundSource) {
 		case "All":
 			bgimages.addAll(BackgroundLoader.loadThemeBackgrounds());
@@ -184,17 +184,13 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		Image bgimage = null;
 		if (bgimages.size() > 0) {
-			try {
-				bgimage = ImageIO.read(ListUtils.getRandomItem(bgimages));
-				float avg = ImageUtils.getAverageLuminance(ImageUtils.toBufferedImage(bgimage));
-				if (avg > 0.15) {
-					avg = (float) Math.min(avg * 1.7, 0.85);
-					bgimage = ImageUtils.drawOver(new ImageIcon(bgimage), new ImageIcon(ImageUtils
-							.emptyImageWithSize(bgimage.getWidth(this), bgimage.getHeight(this),
-									new Color(0.12f, 0.12f, 0.12f, avg)))).getImage();
-				}
-			} catch (IOException e) {
-				LOG.warn("Failed to load background image", e);
+			bgimage = ListUtils.getRandomItem(bgimages);
+			float avg = ImageUtils.getAverageLuminance(ImageUtils.toBufferedImage(bgimage));
+			if (avg > 0.15) {
+				avg = (float) Math.min(avg * 1.7, 0.85);
+				bgimage = ImageUtils.drawOver(new ImageIcon(bgimage), new ImageIcon(ImageUtils
+						.emptyImageWithSize(bgimage.getWidth(this), bgimage.getHeight(this),
+								new Color(0.12f, 0.12f, 0.12f, avg)))).getImage();
 			}
 		}
 
