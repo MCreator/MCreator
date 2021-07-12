@@ -38,6 +38,8 @@ import java.util.List;
 	public String textureStill;
 	public String textureFlowing;
 
+	public String tintType;
+
 	public boolean canMultiply;
 	public int flowRate;
 	public int levelDecrease;
@@ -86,6 +88,8 @@ import java.util.List;
 	public Fluid(ModElement element) {
 		super(element);
 
+		this.tintType = "No tint";
+
 		this.rarity = "COMMON";
 		this.specialInfo = new ArrayList<>();
 
@@ -112,5 +116,17 @@ import java.util.List;
 
 	@Override public TabEntry getCreativeTab() {
 		return creativeTab;
+	}
+
+	public boolean isFluidTinted() {
+		return !"No tint".equals(tintType);
+	}
+
+	public boolean extendsFluidAttributes() {
+		return isFluidTinted();
+	}
+
+	public boolean extendsForgeFlowingFluid() {
+		return spawnParticles;
 	}
 }

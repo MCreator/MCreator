@@ -67,6 +67,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner slopeFindDistance = new JSpinner(new SpinnerNumberModel(4, 1, 16, 1));
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.common.enable");
 	private final DataListComboBox dripParticle = new DataListComboBox(mcreator);
+	private final JComboBox<String> tintType = new JComboBox<>(
+			new String[] { "No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog" });
 
 	private final JSpinner luminosity = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
 	private final JSpinner density = new JSpinner(new SpinnerNumberModel(1000, -100000, 100000, 1));
@@ -162,7 +164,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
 		destalx.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
 
-		JPanel destal = new JPanel(new GridLayout(8, 2, 5, 2));
+		JPanel destal = new JPanel(new GridLayout(9, 2, 5, 2));
 		destal.setOpaque(false);
 
 		canMultiply.setOpaque(false);
@@ -205,6 +207,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/drip_particle"),
 				L10N.label("elementgui.fluid.drip_particle")));
 		destal.add(dripParticle);
+
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/tint_type"), L10N.label("elementgui.fluid.tint_type")));
+		destal.add(tintType);
 
 		destal.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -460,6 +466,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		slopeFindDistance.setValue(fluid.slopeFindDistance);
 		spawnParticles.setSelected(fluid.spawnParticles);
 		dripParticle.setSelectedItem(fluid.dripParticle);
+		tintType.setSelectedItem(fluid.tintType);
 		luminosity.setValue(fluid.luminosity);
 		density.setValue(fluid.density);
 		viscosity.setValue(fluid.viscosity);
@@ -512,6 +519,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.slopeFindDistance = (int) slopeFindDistance.getValue();
 		fluid.spawnParticles = spawnParticles.isSelected();
 		fluid.dripParticle = new Particle(mcreator.getWorkspace(), dripParticle.getSelectedItem());
+		fluid.tintType = (String) tintType.getSelectedItem();
 		fluid.luminosity = (int) luminosity.getValue();
 		fluid.density = (int) density.getValue();
 		fluid.viscosity = (int) viscosity.getValue();
