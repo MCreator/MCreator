@@ -105,7 +105,7 @@ public class TestSetup {
 		EntityAnimationsLoader.init();
 
 		// register mod element types
-		ModElementTypeRegistry.registryModElements();
+		ModElementTypeRegistry.loadModElements();
 
 		// load generator configurations
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));

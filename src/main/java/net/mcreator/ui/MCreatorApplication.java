@@ -144,8 +144,7 @@ public final class MCreatorApplication {
 		EntityAnimationsLoader.init();
 
 		// register mod element types
-		// TODO: Move mod elements to the plugin system
-		ModElementTypeRegistry.registryModElements();
+		ModElementTypeRegistry.loadModElements();
 
 		splashScreen.setProgress(60, "Preloading resources");
 		TiledImageCache.loadAndTileImages();
