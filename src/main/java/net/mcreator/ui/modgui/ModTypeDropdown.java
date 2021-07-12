@@ -28,8 +28,9 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.*;
 import java.util.stream.Collectors;
 
 public class ModTypeDropdown extends JPopupMenu {
@@ -37,10 +38,8 @@ public class ModTypeDropdown extends JPopupMenu {
 	public ModTypeDropdown(MCreator mcreator) {
 		setBorder(BorderFactory.createEmptyBorder());
 
-		SortedSet<ModElementType<?>> setMET = new TreeSet<>(Comparator.comparing(ModElementType::getReadableName));
-		setMET.addAll(ModElementTypeLoader.REGISTRY);
-
-		List<ModElementType<?>> types = setMET.stream()
+		List<ModElementType<?>> types = ModElementTypeLoader.REGISTRY.stream()
+				.sorted(Comparator.comparing(ModElementType::getReadableName))
 				.filter(entry -> mcreator.getGeneratorStats().getModElementTypeCoverageInfo().get(entry)
 						!= GeneratorStats.CoverageStatus.NONE).collect(Collectors.toList());
 
