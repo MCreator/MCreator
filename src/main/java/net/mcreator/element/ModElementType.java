@@ -153,6 +153,14 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 		return this.getReadableName() + ": " + this.registryName;
 	}
 
+	@Override public boolean equals(Object element) {
+		return element instanceof ModElementType && registryName.equals(((ModElementType<?>) element).getRegistryName());
+	}
+
+	@Override public int hashCode() {
+		return registryName.hashCode();
+	}
+
 	public interface ModElementGUIProvider<GE extends GeneratableElement> {
 		ModElementGUI<GE> get(MCreator mcreator, ModElement modElement, boolean editingMode);
 	}

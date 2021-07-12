@@ -110,7 +110,7 @@ public abstract class GeneratableElement {
 				newType = "livingentity";
 				break;
 			}
-			ModElementType<?> modElementType = ModElementTypeRegistry.getModElementType(newType);
+			ModElementType<?> modElementType = ModElementTypeLoader.getModElementType(newType);
 
 			int importedFormatVersion = jsonDeserializationContext
 					.deserialize(jsonElement.getAsJsonObject().get("_fv"), Integer.class);

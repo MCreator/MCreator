@@ -404,8 +404,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			String workspace_string = FileIO.readFileToString(workspaceFile);
 			Workspace retval;
 			try {
-				workspace_string = workspace_string.replaceAll("\"type\": \"mob\",", "\"type\": \"livingentity\",")
-						.replaceAll("\"type\": \"gun\",", "\"type\": \"rangeditem\",");
 				retval = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
 			} catch (Exception jse) {
 				throw new CorruptedWorkspaceFileException(jse);

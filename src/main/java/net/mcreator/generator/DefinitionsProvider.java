@@ -21,7 +21,7 @@ package net.mcreator.generator;
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import org.apache.logging.log4j.LogManager;
@@ -35,10 +35,10 @@ class DefinitionsProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Definition Loader");
 
-	private final Map<String, Map<?, ?>> cache = new ConcurrentHashMap<>();
+	private final Map<ModElementType<?>, Map<?, ?>> cache = new ConcurrentHashMap<>();
 
 	DefinitionsProvider(String generatorName) {
-		for (ModElementType<?> type : ModElementTypeRegistry.REGISTRY) {
+		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
 					"/" + generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH)
 							+ ".definition.yaml");
@@ -48,8 +48,7 @@ class DefinitionsProvider {
 
 			YamlReader reader = new YamlReader(config);
 			try {
-				cache.put(type.getRegistryName(),
-						new ConcurrentHashMap<>((Map<?, ?>) reader.read())); // add definition to the cache
+				cache.put(type, new ConcurrentHashMap<>((Map<?, ?>) reader.read())); // add definition to the cache
 			} catch (YamlException e) {
 				LOG.error(e.getMessage(), e);
 				LOG.info("[" + generatorName + "] Error: " + e.getMessage());
@@ -58,7 +57,7 @@ class DefinitionsProvider {
 	}
 
 	Map<?, ?> getModElementDefinition(ModElementType<?> elementType) {
-		return cache.get(elementType.getRegistryName());
+		return cache.get(elementType);
 	}
 
 }
