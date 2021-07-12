@@ -50,15 +50,15 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.*;
+import java.util.Locale;
 
 public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider {
 
@@ -164,7 +164,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		JPanel mpan;
 
-		// Load backgrounds depending on the background selection
+		// Load backgrounds depending on the background source
 		List<Image> bgimages = new ArrayList<>();
 		switch (PreferencesManager.PREFERENCES.ui.backgroundSource) {
 		case "All":
@@ -176,9 +176,6 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			break;
 		case "Custom":
 			bgimages = BackgroundLoader.loadUserBackgrounds();
-			break;
-		default:
-			bgimages = Collections.emptyList();
 			break;
 		}
 
