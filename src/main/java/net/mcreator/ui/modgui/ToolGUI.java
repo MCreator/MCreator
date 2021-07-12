@@ -313,12 +313,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	private void updateFields() {
 		if (toolType.getSelectedItem() != null) {
-			blocksAffected.setEnabled(true);
 			harvestLevel.setEnabled(true);
 			efficiency.setEnabled(true);
-			repairItems.setEnabled(true);
 			damageVsEntity.setEnabled(true);
 			attackSpeed.setEnabled(true);
+			blocksAffected.setEnabled(true);
+			repairItems.setEnabled(true);
 
 			if (toolType.getSelectedItem().equals("Special")) {
 				harvestLevel.setEnabled(false);
@@ -326,15 +326,15 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			} else if (toolType.getSelectedItem().equals("Fishing rod")) {
 				harvestLevel.setEnabled(false);
 				efficiency.setEnabled(false);
-				blocksAffected.setEnabled(false);
 				damageVsEntity.setEnabled(false);
 				attackSpeed.setEnabled(false);
+				blocksAffected.setEnabled(false);
 			} else if (toolType.getSelectedItem().equals("Shears")) {
 				harvestLevel.setEnabled(false);
-				blocksAffected.setEnabled(false);
-				repairItems.setEnabled(false);
 				damageVsEntity.setEnabled(false);
 				attackSpeed.setEnabled(false);
+				blocksAffected.setEnabled(false);
+				repairItems.setEnabled(false);
 			} else {
 				blocksAffected.setEnabled(false);
 			}
