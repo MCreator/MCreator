@@ -280,7 +280,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	public ModElementType<?> getType() {
-		return ModElementTypeRegistry.getModElementType(type);
+		return ModElementTypeLoader.getModElementType(type);
 	}
 
 	public void setType(ModElementType<?> type) {

@@ -20,7 +20,7 @@ package net.mcreator.generator;
 
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.PluginLoader;
@@ -55,7 +55,7 @@ public class GeneratorStats {
 		List<?> partials = ((List<?>) generatorConfiguration.getRaw().get("partial_support"));
 		if (partials == null)
 			partials = new ArrayList<>();
-		for (ModElementType<?> type : ModElementTypeRegistry.REGISTRY) {
+		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 			if (generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type) != null) {
 				if (partials.contains(type.getRegistryName().toLowerCase(Locale.ENGLISH))) {
 					modElementTypeCoverageInfo.put(type, CoverageStatus.PARTIAL);

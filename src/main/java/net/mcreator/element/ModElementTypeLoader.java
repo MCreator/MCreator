@@ -25,7 +25,7 @@ import net.mcreator.ui.modgui.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModElementTypeRegistry {
+public class ModElementTypeLoader {
 
 	public static List<ModElementType<?>> REGISTRY = new ArrayList<>();
 

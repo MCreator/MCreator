@@ -39,7 +39,7 @@ package net.mcreator.integration.ui;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -171,7 +171,7 @@ public class ModElementUITest {
 
 	private void testModElementLoading(Random random)
 			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
-		for (ModElementType<?> modElementType : ModElementTypeRegistry.REGISTRY) {
+		for (ModElementType<?> modElementType : ModElementTypeLoader.REGISTRY) {
 
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider
 					.getModElementExamplesFor(workspace, modElementType, random);
