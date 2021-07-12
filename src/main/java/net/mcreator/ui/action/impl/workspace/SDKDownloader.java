@@ -56,6 +56,15 @@ public class SDKDownloader {
 						UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension).getAbsolutePath(),
 						UserFolderManager.getFileFromUserFolder("jdks").getAbsolutePath());
 				UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension).delete();
+			} else if (OS.getOS() == OS.MAC || OS.getOS() == OS.LINUX) {
+				ZipIO.unzip(UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + ".tar.gz").getAbsolutePath(),
+						UserFolderManager.getFileFromUserFolder("jdks").getAbsolutePath());
+				ZipIO.unzip(UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + ".tar").getAbsolutePath(),
+						UserFolderManager.getFileFromUserFolder("jdks").getAbsolutePath());
+
+				UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + ".tar.gz").delete();
+				UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + ".tar").delete();
+
 			}
 		}
 	}
