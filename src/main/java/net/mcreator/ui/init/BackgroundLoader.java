@@ -25,9 +25,12 @@ import net.mcreator.themes.ThemeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -50,11 +53,7 @@ public class BackgroundLoader {
 		List<File> backgrounds = new ArrayList<>();
 		if (bgFiles != null && !bgFiles.isEmpty()) {
 			for (String name : bgFiles) {
-				try {
-					backgrounds.add(new File(PluginLoader.INSTANCE.getResource(name).toURI()));
-				} catch (URISyntaxException e) {
-					LOG.error("Can not use " + name, e.getMessage());
-				}
+				backgrounds.add(new File(PluginLoader.INSTANCE.getResource(name).getPath()));
 			}
 		}
 		return backgrounds;
