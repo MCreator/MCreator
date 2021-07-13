@@ -46,6 +46,7 @@ import java.util.List;
 	public int slopeFindDistance;
 	public boolean spawnParticles;
 	public Particle dripParticle;
+	public double flowStrength;
 
 	public int luminosity;
 	public int density;
@@ -80,6 +81,8 @@ import java.util.List;
 	public Procedure onEntityCollides;
 	public Procedure onRandomUpdateEvent;
 	public Procedure onDestroyedByExplosion;
+	public Procedure canFlow;
+	public Procedure beforeReplacingBlock;
 
 	private Fluid() {
 		this(null);
@@ -96,6 +99,7 @@ import java.util.List;
 		this.flowRate = 5;
 		this.slopeFindDistance = 4;
 		this.levelDecrease = 1;
+		this.flowStrength = 1;
 
 		this.lightOpacity = 1;
 
@@ -127,6 +131,6 @@ import java.util.List;
 	}
 
 	public boolean extendsForgeFlowingFluid() {
-		return spawnParticles;
+		return spawnParticles || flowStrength != 1 || canFlow != null || beforeReplacingBlock != null;
 	}
 }

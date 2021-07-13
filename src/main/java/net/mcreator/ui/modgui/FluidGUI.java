@@ -67,6 +67,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner slopeFindDistance = new JSpinner(new SpinnerNumberModel(4, 1, 16, 1));
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.common.enable");
 	private final DataListComboBox dripParticle = new DataListComboBox(mcreator);
+	private final JSpinner flowStrength = new JSpinner(new SpinnerNumberModel(1, -25, 25, 0.1));
 	private final JComboBox<String> tintType = new JComboBox<>(
 			new String[] { "No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog" });
 
@@ -102,6 +103,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private ProcedureSelector onEntityCollides;
 	private ProcedureSelector onRandomUpdateEvent;
 	private ProcedureSelector onDestroyedByExplosion;
+	private ProcedureSelector canFlow;
+	private ProcedureSelector beforeReplacingBlock;
 
 	private ProcedureSelector generateCondition;
 
@@ -137,6 +140,12 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onDestroyedByExplosion = new ProcedureSelector(this.withEntry("block/when_destroyed_explosion"), mcreator,
 				L10N.t("elementgui.block.event_on_block_destroyed_by_explosion"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
+		canFlow = new ProcedureSelector(this.withEntry("fluid/can_flow"), mcreator,
+				L10N.t("elementgui.fluid.event_can_flow"), VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate/intostate:blockstate"));
+		beforeReplacingBlock = new ProcedureSelector(this.withEntry("fluid/before_replacing_block"), mcreator,
+				L10N.t("elementgui.fluid.event_before_replacing_block"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				"Additional generation condition", VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -164,7 +173,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
 		destalx.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
 
-		JPanel destal = new JPanel(new GridLayout(9, 2, 5, 2));
+		JPanel destal = new JPanel(new GridLayout(10, 2, 5, 2));
 		destal.setOpaque(false);
 
 		canMultiply.setOpaque(false);
@@ -172,6 +181,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		levelDecrease.setOpaque(false);
 		slopeFindDistance.setOpaque(false);
 		spawnParticles.setOpaque(false);
+		flowStrength.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(bucketName, 16);
@@ -211,6 +221,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destal.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("fluid/tint_type"), L10N.label("elementgui.fluid.tint_type")));
 		destal.add(tintType);
+
+		destal.add(HelpUtils
+				.wrapWithHelpButton(this.withEntry("fluid/flow_strength"), L10N.label("elementgui.fluid.flow_strength")));
+		destal.add(flowStrength);
 
 		destal.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -369,7 +383,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		JPanel events = new JPanel();
 		events.setLayout(new BoxLayout(events, BoxLayout.PAGE_AXIS));
-		JPanel events2 = new JPanel(new GridLayout(2, 3, 6, 8));
+		JPanel events2 = new JPanel(new GridLayout(3, 3, 6, 8));
 		events2.setOpaque(false);
 		events2.add(onBlockAdded);
 		events2.add(onNeighbourChanges);
@@ -377,6 +391,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		events2.add(onEntityCollides);
 		events2.add(onRandomUpdateEvent);
 		events2.add(onDestroyedByExplosion);
+		events2.add(canFlow);
+		events2.add(beforeReplacingBlock);
+		events2.add(new JLabel());
 		events.add(PanelUtils.join(events2));
 		events.setOpaque(false);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
@@ -438,6 +455,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onEntityCollides.refreshListKeepSelected();
 		onRandomUpdateEvent.refreshListKeepSelected();
 		onDestroyedByExplosion.refreshListKeepSelected();
+		canFlow.refreshListKeepSelected();
+		beforeReplacingBlock.refreshListKeepSelected();
 
 		generateCondition.refreshListKeepSelected();
 
@@ -467,6 +486,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		spawnParticles.setSelected(fluid.spawnParticles);
 		dripParticle.setSelectedItem(fluid.dripParticle);
 		tintType.setSelectedItem(fluid.tintType);
+		flowStrength.setValue(fluid.flowStrength);
 		luminosity.setValue(fluid.luminosity);
 		density.setValue(fluid.density);
 		viscosity.setValue(fluid.viscosity);
@@ -492,6 +512,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onEntityCollides.setSelectedProcedure(fluid.onEntityCollides);
 		onRandomUpdateEvent.setSelectedProcedure(fluid.onRandomUpdateEvent);
 		onDestroyedByExplosion.setSelectedProcedure(fluid.onDestroyedByExplosion);
+		canFlow.setSelectedProcedure(fluid.canFlow);
+		beforeReplacingBlock.setSelectedProcedure(fluid.beforeReplacingBlock);
 		fluidtype.setSelectedItem(fluid.type);
 		frequencyOnChunks.setValue(fluid.frequencyOnChunks);
 		generateCondition.setSelectedProcedure(fluid.generateCondition);
@@ -520,6 +542,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.spawnParticles = spawnParticles.isSelected();
 		fluid.dripParticle = new Particle(mcreator.getWorkspace(), dripParticle.getSelectedItem());
 		fluid.tintType = (String) tintType.getSelectedItem();
+		fluid.flowStrength = (double) flowStrength.getValue();
 		fluid.luminosity = (int) luminosity.getValue();
 		fluid.density = (int) density.getValue();
 		fluid.viscosity = (int) viscosity.getValue();
@@ -543,6 +566,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.onEntityCollides = onEntityCollides.getSelectedProcedure();
 		fluid.onRandomUpdateEvent = onRandomUpdateEvent.getSelectedProcedure();
 		fluid.onDestroyedByExplosion = onDestroyedByExplosion.getSelectedProcedure();
+		fluid.canFlow = canFlow.getSelectedProcedure();
+		fluid.beforeReplacingBlock = beforeReplacingBlock.getSelectedProcedure();
 		fluid.type = (String) fluidtype.getSelectedItem();
 		fluid.spawnWorldTypes = spawnWorldTypes.getListElements();
 		fluid.restrictionBiomes = restrictionBiomes.getListElements();

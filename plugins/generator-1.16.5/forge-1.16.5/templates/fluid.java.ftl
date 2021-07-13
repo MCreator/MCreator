@@ -244,6 +244,35 @@ import net.minecraft.block.material.Material;
 		}
 		</#if>
 
+		<#if data.flowStrength != 1>
+		@Override public Vector3d getFlow(IBlockReader world, BlockPos pos, FluidState fluidstate) {
+			return super.getFlow(world, pos, fluidstate).scale(${data.flowStrength});
+		}
+		</#if>
+
+		<#if hasProcedure(data.canFlow)>
+		@Override protected boolean canFlow(IBlockReader worldIn, BlockPos fromPos, BlockState blockstate, Direction direction, BlockPos toPos, BlockState intostate, FluidState toFluidState, Fluid fluidIn) {
+			boolean condition = true;
+			if (worldIn instanceof IWorld) {
+				int x = fromPos.getX();
+				int y = fromPos.getY();
+				int z = fromPos.getZ();
+				IWorld world = (IWorld) worldIn;
+				condition = <@procedureOBJToConditionCode data.canFlow/>;
+			}
+			return super.canFlow(worldIn, fromPos, blockstate, direction, toPos, intostate, toFluidState, fluidIn) && condition;
+		}
+		</#if>
+
+		<#if hasProcedure(data.beforeReplacingBlock)>
+        @Override protected void beforeReplacingBlock(IWorld world, BlockPos pos, BlockState blockstate) {
+        	int x = pos.getX();
+        	int y = pos.getY();
+        	int z = pos.getZ();
+        	<@procedureOBJToCode data.beforeReplacingBlock/>
+        }
+        </#if>
+
 		public static class Source extends CustomFlowingFluid {
 			public Source(Properties properties) {
 				super(properties);
