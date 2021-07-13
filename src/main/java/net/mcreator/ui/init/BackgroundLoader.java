@@ -35,7 +35,7 @@ public class BackgroundLoader {
 		File[] bgfiles = UserFolderManager.getFileFromUserFolder("backgrounds").listFiles();
 		if (bgfiles != null) {
 			List<Image> images = new ArrayList<>();
-			Arrays.stream(bgfiles).forEach(f -> images.add(Toolkit.getDefaultToolkit().createImage(f.getPath())));
+			Arrays.stream(bgfiles).forEach(f -> images.add(ImageIO.read(f)));
 			return images;
 		}
 		return Collections.emptyList();
