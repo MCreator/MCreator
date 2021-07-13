@@ -344,6 +344,9 @@ public class TestWorkspaceDataProvider {
 			fluid.spawnParticles = !_true;
 			fluid.dripParticle = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
+			fluid.tintType = getRandomString(random,
+					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
+			fluid.flowStrength = 2.3;
 			fluid.luminosity = 3;
 			fluid.density = 5;
 			fluid.viscosity = 10;
@@ -379,6 +382,8 @@ public class TestWorkspaceDataProvider {
 			fluid.onEntityCollides = new Procedure("procedure4");
 			fluid.onRandomUpdateEvent = new Procedure("procedure5");
 			fluid.onDestroyedByExplosion = new Procedure("procedure6");
+			fluid.canFlow = new Procedure("condition1");
+			fluid.beforeReplacingBlock = new Procedure("procedure7");
 			fluid.type = _true ? "WATER" : "LAVA";
 			fluid.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "End"));
 			fluid.restrictionBiomes = new ArrayList<>();
