@@ -22,26 +22,41 @@ package net.mcreator.ui.init;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.themes.ThemeLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.*;
 import java.util.regex.Pattern;
 
 public class BackgroundLoader {
 
+	private static final Logger LOG = LogManager.getLogger("Background Loader");
+
 	public static List<Image> loadUserBackgrounds() {
+		LOG.debug("Loading custom backgrounds...");
 		File[] bgfiles = UserFolderManager.getFileFromUserFolder("backgrounds").listFiles();
 		if (bgfiles != null) {
 			List<Image> images = new ArrayList<>();
-			Arrays.stream(bgfiles).forEach(f -> images.add(ImageIO.read(f)));
+			Arrays.stream(bgfiles).forEach(f -> {
+				try {
+					images.add(ImageIO.read(f));
+				} catch (IOException e) {
+					LOG.error("Can not load " + f.getName(), e.getMessage());
+					e.printStackTrace();
+				}
+			});
 			return images;
 		}
 		return Collections.emptyList();
 	}
 
 	public static List<Image> loadThemeBackgrounds() {
+		LOG.debug("Loading theme backgrounds...");
 		Set<String> bgFiles = PluginLoader.INSTANCE
 				.getResources("themes." + ThemeLoader.CURRENT_THEME.getID() + ".backgrounds",
 						Pattern.compile("^[^$].*\\.png"));
@@ -49,7 +64,11 @@ public class BackgroundLoader {
 		List<Image> backgrounds = new ArrayList<>();
 		if (bgFiles != null && !bgFiles.isEmpty()) {
 			for (String name : bgFiles) {
-				backgrounds.add(Toolkit.getDefaultToolkit().createImage(PluginLoader.INSTANCE.getResource(name)));
+				try {
+					backgrounds.add(Toolkit.getDefaultToolkit().createImage(PluginLoader.INSTANCE.getResource(name)));
+				} catch (Exception e) {
+					LOG.error("Can not load " + name, e.getMessage());
+				}
 			}
 		}
 		return backgrounds;
