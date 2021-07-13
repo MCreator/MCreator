@@ -478,7 +478,6 @@ public class TestWorkspaceDataProvider {
 			}
 			return overlay;
 		} else if (ModElementType.GUI.equals(modElement.getType())) {
-			ArrayList<GUIComponent> components;
 			GUI gui = new GUI(modElement);
 			gui.type = new int[] { 0, 0, 1, 1 }[valueIndex];
 			gui.width = new int[] { 600, 400, 352, 500 }[valueIndex];
@@ -492,7 +491,7 @@ public class TestWorkspaceDataProvider {
 				gui.onTick = new Procedure("procedure7");
 				gui.onClosed = new Procedure("procedure10");
 			}
-			components = new ArrayList<>();
+			ArrayList<GUIComponent> components = new ArrayList<>();
 			if (!emptyLists) {
 				components.add(new Label("text", 100, 150, "text", Color.red, new Procedure("condition2")));
 				components.add(new Label("text2", 100, 150, "text2", Color.white, new Procedure("condition1")));
