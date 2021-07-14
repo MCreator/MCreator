@@ -55,14 +55,12 @@ public class SDKDownloader {
 				ZipIO.unzip(
 						UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension).getAbsolutePath(),
 						UserFolderManager.getFileFromUserFolder("jdks").getAbsolutePath());
-				UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension).delete();
-			} else if (OS.getOS() == OS.MAC || OS.getOS() == OS.LINUX) {
-				ZipIO.untar(UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension).getAbsolutePath(),
+			} else {
+				ZipIO.extractTarGZ(
+						UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension).getAbsolutePath(),
 						UserFolderManager.getFileFromUserFolder("jdks").getAbsolutePath());
-
-				UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + ".tar.gz").delete();
-
 			}
+			UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension).delete();
 		}
 	}
 

@@ -23,6 +23,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarUtils;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -177,22 +178,23 @@ public class ZipIO {
 		}
 	}
 
-	public static void untar(String strTarFile, String dst) {
+	public static void extractTarGZ(String strTarFile, String dst) {
 		Path extractFolder = new File(dst).toPath();
-		try (TarArchiveInputStream tarArchiveInputStream = new TarArchiveInputStream(Files.newInputStream(new File(strTarFile).toPath()))) {
+		try (TarArchiveInputStream tarIS = new TarArchiveInputStream(
+				new GzipCompressorInputStream(new FileInputStream(strTarFile)))) {
 			TarArchiveEntry entry;
-			while ((entry = tarArchiveInputStream.getNextTarEntry()) != null) {
+			while ((entry = tarIS.getNextTarEntry()) != null) {
 				Path toPath = extractFolder.resolve(entry.getName());
 				if (entry.isDirectory()) {
 					toPath.toFile().mkdirs();
 				} else {
 					toPath.toFile().getParentFile().mkdirs();
-					Files.copy(tarArchiveInputStream, toPath, StandardCopyOption.REPLACE_EXISTING);
+					Files.copy(tarIS, toPath, StandardCopyOption.REPLACE_EXISTING);
 				}
 			}
 		} catch (IOException e) {
 			LOG.error(e.getMessage(), e);
-			LOG.info("Failed to extract zip file:" + e.getMessage());
+			LOG.info("Failed to extract tar file:" + e.getMessage());
 		}
 	}
 
