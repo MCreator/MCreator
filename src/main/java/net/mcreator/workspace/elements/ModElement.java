@@ -323,9 +323,10 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 			this.path = parent.getPath();
 	}
 
-	public static class ModElementDeserializer implements JsonDeserializer<JsonElement> {
+	public static class ModElementDeserializer implements JsonDeserializer<ModElement> {
+
 		@Override
-		public JsonElement deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context)
+		public ModElement deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
 			JsonObject json = jsonElement.getAsJsonObject();
 
@@ -338,7 +339,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 			json.addProperty("type", newType);
 
-			return json;
+			return new Gson().fromJson(json, ModElement.class);
 		}
 	}
 
