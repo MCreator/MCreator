@@ -72,7 +72,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final VTextField name = new VTextField(28);
 
 	private final JComboBox<String> toolType = new JComboBox<>(
-			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Special", "MultiTool" });
+			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Fishing rod", "Special", "MultiTool" });
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
@@ -214,18 +214,18 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		harvestLevel.setOpaque(false);
 		efficiency.setOpaque(false);
 
+		hasGlow.addActionListener(e -> updateGlowElements());
+
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"), L10N.label("elementgui.tool.type")));
+		selp.add(toolType);
+
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.common.creative_tab")));
 		selp.add(creativeTab);
-
-		hasGlow.addActionListener(e -> updateGlowElements());
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"), L10N.label("elementgui.tool.type")));
-		selp.add(toolType);
 
 		selp.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("tool/harvest_level"), L10N.label("elementgui.tool.harvest_level")));
@@ -273,10 +273,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		blocksAffected.setEnabled(false);
 
-		toolType.addActionListener(event -> {
-			if (toolType.getSelectedItem() != null)
-				blocksAffected.setEnabled(toolType.getSelectedItem().equals("Special"));
-		});
+		toolType.addActionListener(event -> updateFields());
 
 		pane4.setOpaque(false);
 
@@ -311,6 +308,36 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
+		}
+	}
+
+	private void updateFields() {
+		if (toolType.getSelectedItem() != null) {
+			harvestLevel.setEnabled(true);
+			efficiency.setEnabled(true);
+			damageVsEntity.setEnabled(true);
+			attackSpeed.setEnabled(true);
+			blocksAffected.setEnabled(true);
+			repairItems.setEnabled(true);
+
+			if (toolType.getSelectedItem().equals("Special")) {
+				harvestLevel.setEnabled(false);
+				repairItems.setEnabled(false);
+			} else if (toolType.getSelectedItem().equals("Fishing rod")) {
+				harvestLevel.setEnabled(false);
+				efficiency.setEnabled(false);
+				damageVsEntity.setEnabled(false);
+				attackSpeed.setEnabled(false);
+				blocksAffected.setEnabled(false);
+			} else if (toolType.getSelectedItem().equals("Shears")) {
+				harvestLevel.setEnabled(false);
+				damageVsEntity.setEnabled(false);
+				attackSpeed.setEnabled(false);
+				blocksAffected.setEnabled(false);
+				repairItems.setEnabled(false);
+			} else {
+				blocksAffected.setEnabled(false);
+			}
 		}
 	}
 
@@ -380,6 +407,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		blocksAffected.setListElements(tool.blocksAffected);
 
 		updateGlowElements();
+		updateFields();
 
 		if (toolType.getSelectedItem() != null)
 			blocksAffected.setEnabled(toolType.getSelectedItem().equals("Special"));
