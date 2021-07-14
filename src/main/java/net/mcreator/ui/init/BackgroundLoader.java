@@ -38,7 +38,6 @@ public class BackgroundLoader {
 	private static final Logger LOG = LogManager.getLogger("Background Loader");
 
 	public static List<Image> loadUserBackgrounds() {
-		LOG.debug("Loading custom backgrounds...");
 		File[] bgfiles = UserFolderManager.getFileFromUserFolder("backgrounds").listFiles();
 		if (bgfiles != null) {
 			List<Image> images = new ArrayList<>();
@@ -56,19 +55,16 @@ public class BackgroundLoader {
 	}
 
 	public static List<Image> loadThemeBackgrounds() {
-		LOG.debug("Loading theme backgrounds...");
 		Set<String> bgFiles = PluginLoader.INSTANCE
 				.getResources("themes." + ThemeLoader.CURRENT_THEME.getID() + ".backgrounds",
 						Pattern.compile("^[^$].*\\.png"));
 
 		List<Image> backgrounds = new ArrayList<>();
-		if (bgFiles != null && !bgFiles.isEmpty()) {
-			for (String name : bgFiles) {
-				try {
-					backgrounds.add(Toolkit.getDefaultToolkit().createImage(PluginLoader.INSTANCE.getResource(name)));
-				} catch (Exception e) {
-					LOG.error("Can not load " + name, e.getMessage());
-				}
+		for (String name : bgFiles) {
+			try {
+				backgrounds.add(Toolkit.getDefaultToolkit().createImage(PluginLoader.INSTANCE.getResource(name)));
+			} catch (Exception e) {
+				LOG.error("Can not load " + name, e.getMessage());
 			}
 		}
 		return backgrounds;
