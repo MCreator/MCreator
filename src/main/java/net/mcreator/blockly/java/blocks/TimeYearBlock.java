@@ -30,7 +30,7 @@ public class TimeYearBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] {"time_year"};
+		return new String[] { "time_year" };
 	}
 
 	@Override public BlockType getBlockType() {

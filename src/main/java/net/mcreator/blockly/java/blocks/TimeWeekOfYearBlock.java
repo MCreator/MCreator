@@ -24,13 +24,13 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import org.w3c.dom.Element;
 
-public class TimeHoursBlock implements IBlockGenerator {
+public class TimeWeekOfYearBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		master.append("Calendar.getInstance().get(Calendar.HOUR_OF_DAY)");
+		master.append("Calendar.getInstance().get(Calendar.WEEK_OF_YEAR)");
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "time_hours" };
+		return new String[] { "time_week_of_year" };
 	}
 
 	@Override public BlockType getBlockType() {

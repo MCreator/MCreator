@@ -486,6 +486,12 @@ Blockly.defineBlocksWithJsonArray([
         "message0": "Get the seconds",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
+    },
+    {
+        "type": "time_week_of_year",
+        "message0": "Get the week of the year",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
     }
 ]);
 

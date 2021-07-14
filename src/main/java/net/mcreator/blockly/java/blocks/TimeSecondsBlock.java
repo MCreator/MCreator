@@ -24,16 +24,13 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import org.w3c.dom.Element;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 public class TimeSecondsBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		master.append("Calendar.getInstance().get(Calendar.SECOND)");
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] {"time_seconds"};
+		return new String[] { "time_seconds" };
 	}
 
 	@Override public BlockType getBlockType() {

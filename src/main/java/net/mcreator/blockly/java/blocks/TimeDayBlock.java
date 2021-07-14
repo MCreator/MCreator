@@ -30,7 +30,7 @@ public class TimeDayBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] {"time_day"};
+		return new String[] { "time_day" };
 	}
 
 	@Override public BlockType getBlockType() {

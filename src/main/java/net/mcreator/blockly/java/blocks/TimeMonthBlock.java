@@ -30,7 +30,7 @@ public class TimeMonthBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] {"time_month"};
+		return new String[] { "time_month" };
 	}
 
 	@Override public BlockType getBlockType() {

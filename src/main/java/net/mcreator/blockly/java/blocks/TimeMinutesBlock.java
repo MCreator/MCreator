@@ -24,13 +24,15 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import org.w3c.dom.Element;
 
+import java.util.Calendar;
+
 public class TimeMinutesBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		master.append("Calendar.getInstance().get(Calendar.MINUTE)");
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] {"time_minutes"};
+		return new String[] { "time_minutes" };
 	}
 
 	@Override public BlockType getBlockType() {
