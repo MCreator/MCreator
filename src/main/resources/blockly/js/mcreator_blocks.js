@@ -445,6 +445,48 @@ Blockly.defineBlocksWithJsonArray([
         "output": "Direction",
         "colour": "20"
     },
+    {
+        "type": "time_to_string",
+        "message0": "Time to text",
+        "output": "String",
+        "colour": "%{BKY_TEXTS_HUE}"
+    },
+    {
+        "type": "time_day",
+        "message0": "Get the day",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    },
+    {
+        "type": "time_hours",
+        "message0": "Get the hours",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    },
+    {
+        "type": "time_month",
+        "message0": "Get the month",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    },
+    {
+        "type": "time_minutes",
+        "message0": "Get the minutes",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    },
+    {
+        "type": "time_year",
+        "message0": "Get the year",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    },
+    {
+        "type": "time_seconds",
+        "message0": "Get the seconds",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    }
 ]);
 
 // Extension to mark a procedure block as a custom loop

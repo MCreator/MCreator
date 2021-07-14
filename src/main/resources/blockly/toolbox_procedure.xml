@@ -66,6 +66,16 @@
         <block type="text_print"/>
         <custom-text/>
     </category>
+    <category name="${t:blockly.category.time}" colour="320">
+        <block type="time_to_string"/>
+        <block type="time_seconds"/>
+        <block type="time_minutes"/>
+        <block type="time_hours"/>
+        <block type="time_day"/>
+        <block type="time_month"/>
+        <block type="time_year"/>
+        <custom-time/>
+    </category>
     <sep/>
     <custom-apis/>
     <category name="${t:blockly.category.advanced}" colour="250">
