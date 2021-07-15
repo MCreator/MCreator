@@ -393,6 +393,42 @@
   type: block
   texture: EMERALD_ORE
 
+- Blocks.COPPER_ORE:
+  readable_name: "Copper Ore"
+  type: block
+
+- Blocks.DEEPSLATE_COAL_ORE:
+  readable_name: "Deepslate Coal Ore"
+  type: block
+
+- Blocks.DEEPSLATE_IRON_ORE:
+  readable_name: "Deepslate Iron Ore"
+  type: block
+
+- Blocks.DEEPSLATE_REDSTONE_ORE:
+  readable_name: "Deepslate Redstone Ore"
+  type: block
+
+- Blocks.DEEPSLATE_GOLD_ORE:
+  readable_name: "Deepslate Gold Ore"
+  type: block
+
+- Blocks.DEEPSLATE_LAPIS_ORE:
+  readable_name: "Deepslate Lapis Ore"
+  type: block
+
+- Blocks.DEEPSLATE_DIAMOND_ORE:
+  readable_name: "Deepslate Diamond Ore"
+  type: block
+
+- Blocks.DEEPSLATE_EMERALD_ORE:
+  readable_name: "Deepslate Emerald Ore"
+  type: block
+
+- Blocks.DEEPSLATE_COPPER_ORE:
+  readable_name: "Deepslate Copper Ore"
+  type: block
+
 - Blocks.QUARTZ_ORE:
   readable_name: "Nether Quartz Ore"
   type: block
@@ -2450,6 +2486,16 @@
   type: block
   texture: POTTED_WARPED_ROOTS
 
+- Blocks.POTTED_AZALEA_BUSH:
+  readable_name: "Potted Azalea Bush"
+  type: block
+  texture: POTTED_WARPED_ROOTS
+
+- Blocks.POTTED_FLOWERING_AZALEA_BUSH:
+  readable_name: "Potted Flowering Azalea Bush"
+  type: block
+  texture: POTTED_WARPED_ROOTS
+
 - Blocks.CARROTS:
   readable_name: "Carrots Plant Block"
   type: block
@@ -3954,6 +4000,11 @@
   type: block
   texture: POLISHED_BASALT
 
+- Blocks.SMOOTH_BASALT:
+  readable_name: "Smooth Basalt"
+  type: block
+  texture: BASALT
+
 - Blocks.WARPED_ROOTS:
   readable_name: "Warped Roots"
   type: block
@@ -4073,6 +4124,403 @@
   readable_name: "Polished Blackstone Wall"
   type: block
   texture: POLISHED_BLACKSTONE_WALL
+
+- Blocks.Candle:
+  readable_name: "Any Candle"
+  type: block
+  subtypes: true
+
+- Blocks.Candle#0:
+  readable_name: "White Candle"
+  type: block
+
+- Blocks.Candle#1:
+  readable_name: "Orange Candle"
+  type: block
+
+- Blocks.Candle#2:
+  readable_name: "Magenta Candle"
+  type: block
+
+- Blocks.Candle#3:
+  readable_name: "Light Blue Candle"
+  type: block
+
+- Blocks.Candle#4:
+  readable_name: "Yellow Candle"
+  type: block
+
+- Blocks.Candle#5:
+  readable_name: "Lime Candle"
+  type: block
+
+- Blocks.Candle#6:
+  readable_name: "Pink Candle"
+  type: block
+
+- Blocks.Candle#7:
+  readable_name: "Gray Candle"
+  type: block
+
+- Blocks.Candle#8:
+  readable_name: "Light Gray Candle"
+  type: block
+
+- Blocks.Candle#9:
+  readable_name: "Cyan Candle"
+  type: block
+
+- Blocks.Candle#10:
+  readable_name: "Purple Candle"
+  type: block
+
+- Blocks.Candle#11:
+  readable_name: "Blue Candle"
+  type: block
+
+- Blocks.Candle#12:
+  readable_name: "Brown Candle"
+  type: block
+
+- Blocks.Candle#13:
+  readable_name: "Green Candle"
+  type: block
+
+- Blocks.Candle#14:
+  readable_name: "Red Candle"
+  type: block
+
+- Blocks.Candle#15:
+  readable_name: "Black Candle"
+  type: block
+
+- Blocks.AMETHYST_BLOCK:
+  readable_name: "Amethyst Block"
+  type: block
+
+- Blocks.BUDDING_AMETHYST:
+  readable_name: "Budding Amethyst"
+  type: block
+
+- Blocks.AMETHYST_CLUSTER:
+  readable_name: "Amethyst Cluster"
+  type: block
+
+- Blocks.LARGE_AMETHYST_BUD:
+  readable_name: "Large Amethyst Bud"
+  type: block
+
+- Blocks.MEDIUM_AMETHYST_BUD:
+  readable_name: "Medium Amethyst Bud"
+  type: block
+
+- Blocks.SMALL_AMETHYST_BUD:
+  readable_name: "Small Amethyst Bud"
+  type: block
+
+- Blocks.TUFF:
+  readable_name: "Tuff"
+  type: block
+
+- Blocks.CALCITE:
+  readable_name: "Calcite"
+  type: block
+
+- Blocks.TINTED_GLASS:
+  readable_name: "Tinted Glass"
+  type: block
+
+- Blocks.POWDER_SNOW:
+  readable_name: "Powder Snow"
+  type: block
+
+- Blocks.SCULK_SENSOR:
+  readable_name: "Sculk Sensor"
+  type: block
+
+- Blocks.OXIDIZED_COPPER:
+  readable_name: "Oxidized Copper"
+  type: block
+
+- Blocks.WEATHERED_COPPER:
+  readable_name: "Weathered Copper"
+  type: block
+
+- Blocks.EXPOSED_COPPER:
+  readable_name: "Exposed Copper"
+  type: block
+
+- Blocks.COPPER_BLOCK:
+  readable_name: "Copper Block"
+  type: block
+
+- Blocks.OXIDIZED_CUT_COPPER:
+  readable_name: "Oxidized Cut Copper"
+  type: block
+
+- Blocks.WEATHERED_CUT_COPPER:
+  readable_name: "Weathered Cut Copper"
+  type: block
+
+- Blocks.EXPOSED_CUT_COPPER:
+  readable_name: "Exposed Cut Copper"
+  type: block
+
+- Blocks.CUT_COPPER:
+  readable_name: "Cut Copper"
+  type: block
+
+- Blocks.OXIDIZED_CUT_COPPER_STAIRS:
+  readable_name: "Oxidized Cut Copper Stairs"
+  type: block
+
+- Blocks.WEATHERED_CUT_COPPER_STAIRS:
+  readable_name: "Weathered Cut Copper Stairs"
+  type: block
+
+- Blocks.EXPOSED_CUT_COPPER_STAIRS:
+  readable_name: "Exposed Cut Copper Stairs"
+  type: block
+
+- Blocks.CUT_COPPER_STAIRS:
+  readable_name: "Cut Copper Stairs"
+  type: block
+
+- Blocks.OXIDIZED_CUT_COPPER_SLAB:
+  readable_name: "Oxidized Cut Copper Slab"
+  type: block
+
+- Blocks.WEATHERED_CUT_COPPER_SLAB:
+  readable_name: "Weathered Cut Copper Slab"
+  type: block
+
+- Blocks.EXPOSED_CUT_COPPER_SLAB:
+  readable_name: "Exposed Cut Copper Slab"
+  type: block
+
+- Blocks.CUT_COPPER_SLAB:
+  readable_name: "Cut Copper Slab"
+  type: block
+
+- Blocks.WAXED_OXIDIZED_COPPER:
+  readable_name: "Waxed Oxidized Copper"
+  type: block
+
+- Blocks.WAXED_WEATHERED_COPPER:
+  readable_name: "Waxed Weathered Copper"
+  type: block
+
+- Blocks.WAXED_EXPOSED_COPPER:
+  readable_name: "Waxed Exposed Copper"
+  type: block
+
+- Blocks.WAXED_COPPER_BLOCK:
+  readable_name: "Waxed Copper Block"
+  type: block
+
+- Blocks.WAXED_OXIDIZED_CUT_COPPER:
+  readable_name: "Waxed Oxidized Cut Copper"
+  type: block
+
+- Blocks.WAXED_WEATHERED_CUT_COPPER:
+  readable_name: "Waxed Weathered Cut Copper"
+  type: block
+
+- Blocks.WAXED_EXPOSED_CUT_COPPER:
+  readable_name: "Waxed Exposed Cut Copper"
+  type: block
+
+- Blocks.WAXED_CUT_COPPER:
+  readable_name: "Waxed Cut Copper"
+  type: block
+
+- Blocks.WAXED_OXIDIZED_CUT_COPPER_STAIRS:
+  readable_name: "Waxed Oxidized Cut Copper Stairs"
+  type: block
+
+- Blocks.WAXED_WEATHERED_CUT_COPPER_STAIRS:
+  readable_name: "Waxed Weathered Cut Copper Stairs"
+  type: block
+
+- Blocks.WAXED_EXPOSED_CUT_COPPER_STAIRS:
+  readable_name: "Waxed Exposed Cut Copper Stairs"
+  type: block
+
+- Blocks.WAXED_CUT_COPPER_STAIRS:
+  readable_name: "Waxed Cut Copper Stairs"
+  type: block
+
+- Blocks.WAXED_OXIDIZED_CUT_COPPER_SLAB:
+  readable_name: "Waxed Oxidized Cut Copper Slab"
+  type: block
+
+- Blocks.WAXED_WEATHERED_CUT_COPPER_SLAB:
+  readable_name: "Waxed Weathered Cut Copper Slab"
+  type: block
+
+- Blocks.WAXED_EXPOSED_CUT_COPPER_SLAB:
+  readable_name: "Waxed Exposed Cut Copper Slab"
+  type: block
+
+- Blocks.WAXED_CUT_COPPER_SLAB:
+  readable_name: "Waxed Cut Copper Slab"
+  type: block
+
+- Blocks.LIGHTNING_ROD:
+  readable_name: "Lightning Rod"
+  type: block
+
+- Blocks.POINTED_DRIPSTONE:
+  readable_name: "Pointed Dripstone"
+  type: block
+
+- Blocks.DRIPSTONE_BLOCK:
+  readable_name: "Dripstone Block"
+  type: block
+
+- Blocks.CAVE_VINES:
+  readable_name: "Cave Vines"
+  type: block
+
+- Blocks.CAVE_VINES:
+  readable_name: "Cave Vines Plant"
+  type: block
+
+- Blocks.SPORE_BLOSSOM:
+  readable_name: "Spore Blossom"
+  type: block
+
+- Blocks.AZALEA:
+  readable_name: "Azalea"
+  type: block
+
+- Blocks.FLOWERING_AZALEA:
+  readable_name: "Flowering Azalea"
+  type: block
+
+- Blocks.MOSS_CARPET:
+  readable_name: "Moss Carpet"
+  type: block
+
+- Blocks.MOSS_BLOCK:
+  readable_name: "Moss Block"
+  type: block
+
+- Blocks.BIG_DRIPLEAF:
+  readable_name: "Big Dripleaf"
+  type: block
+
+- Blocks.BIG_DRIPLEAF_STEM:
+  readable_name: "Big Dripleaf Stem"
+  type: block
+
+- Blocks.SMALL_DRIPLEAF:
+  readable_name: "Small Dripleaf"
+  type: block
+
+- Blocks.HANGING_ROOTS:
+  readable_name: "Hanging Roots"
+  type: block
+
+- Blocks.ROOTED_DIRT:
+  readable_name: "Rooted Dirt"
+  type: block
+
+- Blocks.DEEPSLATE:
+  readable_name: "Deepslate"
+  type: block
+
+- Blocks.COBBLED_DEEPSLATE:
+  readable_name: "Cobbled Deepslate"
+  type: block
+
+- Blocks.COBBLED_DEEPSLATE_STAIRS:
+  readable_name: "Cobbled Deepslate Stairs"
+  type: block
+
+- Blocks.COBBLED_DEEPSLATE_SLAB:
+  readable_name: "Cobbled Deepslate Slab"
+  type: block
+
+- Blocks.COBBLED_DEEPSLATE_WALL:
+  readable_name: "Cobbled Deepslate Wall"
+  type: block
+
+- Blocks.POLISHED_DEEPSLATE:
+  readable_name: "Polished Deepslate"
+  type: block
+
+- Blocks.POLISHED_DEEPSLATE_STAIRS:
+  readable_name: "Polished Deepslate Stairs"
+  type: block
+
+- Blocks.POLISHED_DEEPSLATE_SLAB:
+  readable_name: "Polished Deepslate Slab"
+  type: block
+
+- Blocks.POLISHED_DEEPSLATE_WALL:
+  readable_name: "Polished Deepslate Wall"
+  type: block
+
+- Blocks.DEEPSLATE_TILES:
+  readable_name: "Deepslate Tiles"
+  type: block
+
+- Blocks.DEEPSLATE_TILE_STAIRS:
+  readable_name: "Deepslate Tile Stairs"
+  type: block
+
+- Blocks.DEEPSLATE_TILE_SLAB:
+  readable_name: "Deepslate Tile Slab"
+  type: block
+
+- Blocks.DEEPSLATE_TILE_WALL:
+  readable_name: "Deepslate Tile Wall"
+  type: block
+
+- Blocks.DEEPSLATE_BRICKS:
+  readable_name: "Deepslate Bricks"
+  type: block
+
+- Blocks.DEEPSLATE_BRICKS_STAIRS:
+  readable_name: "Deepslate Bricks Stairs"
+  type: block
+
+- Blocks.DEEPSLATE_BRICKS_SLAB:
+  readable_name: "Deepslate Bricks Slab"
+  type: block
+
+- Blocks.DEEPSLATE_BRICKS_WALL:
+  readable_name: "Deepslate Bricks Wall"
+  type: block
+
+- Blocks.CHISELED_DEEPSLATE:
+  readable_name: "Chiseled Deepslate"
+  type: block
+
+- Blocks.CRACKED_DEEPSLATE_BRICKS:
+  readable_name: "Cracked Deepslate Bricks"
+  type: block
+
+- Blocks.CRACKED_DEEPSLATE_TILES:
+  readable_name: "Cracked Deepslate Tiles"
+  type: block
+
+- Blocks.INFESTED_DEEPSLATE:
+  readable_name: "Infested Deepslate"
+  type: block
+
+- Blocks.RAW_IRON_BLOCK:
+  readable_name: "Raw Iron Block"
+  type: block
+
+- Blocks.RAW_GOLD_BLOCK:
+  readable_name: "Raw Gold Block"
+  type: block
+
+- Blocks.RAW_Copper_BLOCK:
+  readable_name: "Raw Copper Block"
+  type: block
 
 - Items.DYE:
   readable_name: "Any Dye"
