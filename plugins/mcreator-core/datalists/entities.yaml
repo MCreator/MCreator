@@ -47,6 +47,7 @@
 - EntityIronGolem
 - EntityItem
 - EntityItemFrame
+- EntityGlowItemFrame
 - EntityLeashKnot
 - EntityLightningBolt
 - EntityLiving
@@ -93,6 +94,7 @@
 - EntitySpellcasterIllager
 - EntitySpider
 - EntitySquid
+- EntityGlowSquid
 - EntityStray
 - EntityTraderLlama
 - EntityTameable
@@ -123,3 +125,5 @@
 - EntityPiglinBrute
 - EntityStrider
 - EntityZoglin
+- EntityAxolotl
+- EntityMarker
