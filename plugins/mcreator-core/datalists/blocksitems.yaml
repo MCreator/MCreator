@@ -740,6 +740,14 @@
   type: block
   texture: LEAVES2#1
 
+- Blocks.AZALEA_LEAVES:
+  readable_name: "Azalea Leaves"
+  type: block
+
+- Blocks.FLOWERING_AZALEA_LEAVES:
+  readable_name: "Azalea Leaves"
+  type: block
+
 - Blocks.SPONGE:
   readable_name: "Any Sponge"
   type: block
@@ -2045,6 +2053,10 @@
   readable_name: "Vines"
   type: block
   texture: VINE
+
+- Blocks.GLOW_LICHEN:
+  readable_name: "Glow Lichen"
+  type: block
 
 - Blocks.WATERLILY:
   readable_name: "Lily Pad"
@@ -4518,7 +4530,7 @@
   readable_name: "Raw Gold Block"
   type: block
 
-- Blocks.RAW_Copper_BLOCK:
+- Blocks.RAW_COPPER_BLOCK:
   readable_name: "Raw Copper Block"
   type: block
 
@@ -5269,6 +5281,10 @@
   readable_name: "Item Frame"
   type: item
   texture: ITEM_FRAME
+
+- Items.GLOW_ITEM_FRAME:
+  readable_name: "Glow Item Frame"
+  type: item
 
 - Items.SIGN:
   readable_name: "Oak Sign"
