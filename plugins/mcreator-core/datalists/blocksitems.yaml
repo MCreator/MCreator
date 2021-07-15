@@ -4143,66 +4143,70 @@
   subtypes: true
 
 - Blocks.Candle#0:
-  readable_name: "White Candle"
+  readable_name: "Candle"
   type: block
 
 - Blocks.Candle#1:
-  readable_name: "Orange Candle"
+  readable_name: "White Candle"
   type: block
 
 - Blocks.Candle#2:
-  readable_name: "Magenta Candle"
+  readable_name: "Orange Candle"
   type: block
 
 - Blocks.Candle#3:
-  readable_name: "Light Blue Candle"
+  readable_name: "Magenta Candle"
   type: block
 
 - Blocks.Candle#4:
-  readable_name: "Yellow Candle"
+  readable_name: "Light Blue Candle"
   type: block
 
 - Blocks.Candle#5:
-  readable_name: "Lime Candle"
+  readable_name: "Yellow Candle"
   type: block
 
 - Blocks.Candle#6:
-  readable_name: "Pink Candle"
+  readable_name: "Lime Candle"
   type: block
 
 - Blocks.Candle#7:
-  readable_name: "Gray Candle"
+  readable_name: "Pink Candle"
   type: block
 
 - Blocks.Candle#8:
-  readable_name: "Light Gray Candle"
+  readable_name: "Gray Candle"
   type: block
 
 - Blocks.Candle#9:
-  readable_name: "Cyan Candle"
+  readable_name: "Light Gray Candle"
   type: block
 
 - Blocks.Candle#10:
-  readable_name: "Purple Candle"
+  readable_name: "Cyan Candle"
   type: block
 
 - Blocks.Candle#11:
-  readable_name: "Blue Candle"
+  readable_name: "Purple Candle"
   type: block
 
 - Blocks.Candle#12:
-  readable_name: "Brown Candle"
+  readable_name: "Blue Candle"
   type: block
 
 - Blocks.Candle#13:
-  readable_name: "Green Candle"
+  readable_name: "Brown Candle"
   type: block
 
 - Blocks.Candle#14:
-  readable_name: "Red Candle"
+  readable_name: "Green Candle"
   type: block
 
 - Blocks.Candle#15:
+  readable_name: "Red Candle"
+  type: block
+
+- Blocks.Candle#16:
   readable_name: "Black Candle"
   type: block
 
