@@ -4649,6 +4649,10 @@
   type: item
   texture: IRON_INGOT
 
+- Items.COPPER_INGOT:
+  readable_name: "Copper Ingot"
+  type: item
+
 - Items.IRON_NUGGET:
   readable_name: "Iron Nugget"
   type: item
@@ -5381,6 +5385,10 @@
   type: item
   texture: TROPICAL_FISH_BUCKET
 
+- Items.AXOLOTL_BUCKET:
+  readable_name: "Axolotl Bucket"
+  type: item
+
 - Items.LAVA_BUCKET:
   readable_name: "Lava Bucket"
   type: item
@@ -5390,6 +5398,10 @@
   readable_name: "Milk Bucket"
   type: item
   texture: MILK_BUCKET
+
+- Items.POWDER_SNOW_BUCKET:
+  readable_name: "Powder Snow Bucket"
+  type: item
 
 - Items.MINECART:
   readable_name: "Minecart"
@@ -6230,6 +6242,18 @@
   type: item
   texture: ZOGLIN_SPAWN_EGG
 
+- Items.AXOLOTL_SPAWN_EGG:
+  readable_name: "Axolotl Spawn Egg"
+  type: item
+
+- Items.GOAT_SPAWN_EGG:
+  readable_name: "Goat Spawn Egg"
+  type: item
+
+- Items.GLOW_SQUID_SPAWN_EGG:
+  readable_name: "Glow Squid Spawn Egg"
+  type: item
+
 - Items.EXPERIENCE_BOTTLE:
   readable_name: "Bottle o' Enchanting"
   type: item
@@ -6403,3 +6427,35 @@
   readable_name: "Honey Bottle"
   type: item
   texture: HONEY_BOTTLE
+
+- Items.GLOW_BERRIES:
+  readable_name: "Glow Berries"
+  type: item
+
+- Items.GLOW_INK_SAC:
+  readable_name: "Glow Ink Sac"
+  type: item
+
+- Items.AMETHYST_SHARD:
+  readable_name: "Amethyst Shard"
+  type: item
+
+- Items.BUNDLE:
+  readable_name: "Bundle"
+  type: item
+
+- Items.RAW_IRON:
+  readable_name: "Raw Iron"
+  type: item
+
+- Items.RAW_GOLD:
+  readable_name: "Raw GOld"
+  type: item
+
+- Items.RAW_COPPER:
+  readable_name: "Raw Copper"
+  type: item
+
+- Items.SPYGLASS:
+  readable_name: "Spyglass"
+  type: item
