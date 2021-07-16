@@ -325,6 +325,8 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	public static class ModElementDeserializer implements JsonDeserializer<ModElement> {
 
+		private final Gson gson = new Gson();
+
 		@Override
 		public ModElement deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
@@ -339,7 +341,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 			json.addProperty("type", newType);
 
-			return new Gson().fromJson(json, ModElement.class);
+			return gson.fromJson(json, ModElement.class);
 		}
 	}
 

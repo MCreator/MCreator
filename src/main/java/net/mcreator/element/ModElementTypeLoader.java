@@ -125,6 +125,7 @@ public class ModElementTypeLoader {
 				return me;
 			}
 		}
-		return null;
+
+		throw new RuntimeException("Mod element type " + modElementName + " is not a registered type");
 	}
 }
