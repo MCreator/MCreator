@@ -1,0 +1,1 @@
+Ce paramètre définit combien de points d'XP seront gagnés lors de la réalisation de cet échange.

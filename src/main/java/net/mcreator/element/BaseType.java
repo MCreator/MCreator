@@ -41,6 +41,7 @@ public enum BaseType {
 	DATAPACK,
 	ENCHANTMENT,
 	PARTICLE,
+	VILLAGERTRADE,
 	OTHER,
 
 	/* legacy base types */

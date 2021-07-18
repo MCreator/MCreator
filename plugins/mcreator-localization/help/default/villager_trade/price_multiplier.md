@@ -1,0 +1,1 @@
+This parameter defines how much can the price of the trade change.

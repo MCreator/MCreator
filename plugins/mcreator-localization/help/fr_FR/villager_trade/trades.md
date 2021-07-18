@@ -1,0 +1,1 @@
+Les échanges dans la liste ci-dessous seront appliqués à la profession de villageois indiquée.

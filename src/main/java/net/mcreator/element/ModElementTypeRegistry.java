@@ -62,6 +62,7 @@ public final class ModElementTypeRegistry {
 		put(ModElementType.PAINTING, new ModTypeRegistration<>(null, 30, PaintingGUI::new, Painting.class));
 		put(ModElementType.PARTICLE, new ModTypeRegistration<>(null, 31, ParticleGUI::new, Particle.class));
 		put(ModElementType.GAMERULE, new ModTypeRegistration<>(null, 32, GameRuleGUI::new, GameRule.class));
+		put(ModElementType.VILLAGERTRADE, new ModTypeRegistration<>(null, 34, VillagerTradeGUI::new, VillagerTrade.class));
 	}};
 
 	public static class ModTypeRegistration<GE extends GeneratableElement> {

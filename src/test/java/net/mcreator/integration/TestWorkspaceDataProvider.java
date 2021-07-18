@@ -1466,6 +1466,28 @@ public class TestWorkspaceDataProvider {
 			gamerule.defaultValueLogic = _true;
 			gamerule.defaultValueNumber = -45;
 			return gamerule;
+		case VILLAGERTRADE:
+			VillagerTrade villagerTrade = new VillagerTrade(modElement);
+			List<VillagerTrade.CustomTradeEntry> trades = new ArrayList<>();
+			if (!emptyLists) {
+				VillagerTrade.CustomTradeEntry entry1 = new VillagerTrade.CustomTradeEntry();
+				entry1.tradeEntry = new VillagerTradeEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllVIllagerProfessions(modElement.getWorkspace())));
+				entry1.maxTrades = 15;
+				entry1.xp = 10;
+				entry1.priceMultiplier = (float) 0.01;
+				trades.add(entry1);
+
+				VillagerTrade.CustomTradeEntry entry2 = new VillagerTrade.CustomTradeEntry();
+				entry2.tradeEntry = new VillagerTradeEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllVIllagerProfessions(modElement.getWorkspace())));
+				entry2.maxTrades = 10;
+				entry2.xp = 13;
+				entry2.priceMultiplier = (float) 0.05;
+				trades.add(entry2);
+			}
+			villagerTrade.tradeEntry = trades;
+			return villagerTrade;
 		default:
 			return null;
 		}
