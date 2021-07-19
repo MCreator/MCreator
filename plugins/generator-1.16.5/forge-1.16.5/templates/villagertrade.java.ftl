@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2021, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -31,15 +32,15 @@
 
 package ${package}.village;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public class ${name}Trade {
+import net.minecraft.entity.merchant.villager.VillagerTrades;
 
-    @ObjectHolder("${modid}:${registryname}")
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public class ${name}Trade {
 
     @SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
         Int2ObjectMap<List<VillagerTrades.ITrade>> trades = event.getTrades();
 
         <#list data.tradeEntries as tradeEntry>
-        if (event.getType == ${tradeEntry.tradeEntry}) {
+        if (event.getType() == ${tradeEntry.tradeEntry}) {
             trades.get(${tradeEntry.level}).add(new RandomTradeBuilder(${tradeEntry.maxTrades}, ${tradeEntry.xp}, ${tradeEntry.priceMultiplier}F)
                     .setPrice(${tradeEntry.price1}, ${tradeEntry.countPrice1}, ${tradeEntry.countPrice1})
                     <#if tradeEntry.price2 != "">
