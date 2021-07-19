@@ -140,7 +140,8 @@ public abstract class GeneratableElement {
 				}
 
 				return generatableElement[0];
-			} catch (IllegalArgumentException e) {
+			} catch (Exception e) {
+				LOG.warn("Failed to deserialize mod element " + lastModElement.getName(), e);
 				return null;
 			}
 		}
