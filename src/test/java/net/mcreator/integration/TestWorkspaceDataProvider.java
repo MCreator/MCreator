@@ -1480,8 +1480,9 @@ public class TestWorkspaceDataProvider {
 						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 				entry1.sale1 = new MItemBlock(modElement.getWorkspace(),
 						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-				entry1.sale2 = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+				entry1.countPrice1 = 3;
+				entry1.countPrice2 = 5;
+				entry1.countSale1 = 43;
 				entry1.maxTrades = 15;
 				entry1.xp = 10;
 				entry1.priceMultiplier = 0.01;
@@ -1497,14 +1498,15 @@ public class TestWorkspaceDataProvider {
 						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 				entry2.sale1 = new MItemBlock(modElement.getWorkspace(),
 						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-				entry2.sale2 = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+				entry2.countPrice1 = 39;
+				entry2.countPrice2 = 24;
+				entry2.countSale1 = 4;
 				entry2.maxTrades = 10;
 				entry2.xp = 13;
 				entry2.priceMultiplier = 0.05;
 				trades.add(entry2);
 			}
-			villagerTrade.tradeEntry = trades;
+			villagerTrade.tradeEntries = trades;
 			return villagerTrade;
 		default:
 			return null;

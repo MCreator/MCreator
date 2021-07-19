@@ -29,20 +29,22 @@ import java.util.List;
 
 public class VillagerTrade extends GeneratableElement {
 
-	public List<VillagerTrade.CustomTradeEntry> tradeEntry;
+	public List<VillagerTrade.CustomTradeEntry> tradeEntries;
 
 	public VillagerTrade(ModElement element) {
 		super(element);
-		tradeEntry = new ArrayList<>();
+		tradeEntries = new ArrayList<>();
 	}
 
 	public static class CustomTradeEntry {
 		public VillagerTradeEntry tradeEntry;
 		public int level;
 		public MItemBlock price1;
+		public int countPrice1;
 		public MItemBlock price2;
+		public int countPrice2;
 		public MItemBlock sale1;
-		public MItemBlock sale2;
+		public int countSale1;
 		public int maxTrades;
 		public int xp;
 		public double priceMultiplier;

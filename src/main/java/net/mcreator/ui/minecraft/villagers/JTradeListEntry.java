@@ -41,8 +41,10 @@ public class JTradeListEntry extends JPanel {
 	private final MCItemHolder price1;
 	private final MCItemHolder price2;
 	private final MCItemHolder sale1;
-	private final MCItemHolder sale2;
 	private final JSpinner level = new JSpinner(new SpinnerNumberModel(1, 1, 5, 1));
+	private final JSpinner countPrice1 = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
+	private final JSpinner countPrice2 = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
+	private final JSpinner countSale1 = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
 	private final JSpinner maxTrades = new JSpinner(new SpinnerNumberModel(10, 1, 72000, 1));
 	private final JSpinner xp = new JSpinner(new SpinnerNumberModel(5, 0, 72000, 1));
 	private final JSpinner priceMultiplier = new JSpinner(new SpinnerNumberModel(0.05, 0, 1, 1));
@@ -55,7 +57,6 @@ public class JTradeListEntry extends JPanel {
 		price1 = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		price2 = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		sale1 = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
-		sale2 = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 		this.workspace = mcreator.getWorkspace();
 
@@ -77,17 +78,25 @@ public class JTradeListEntry extends JPanel {
 				L10N.label("elementgui.villager_trade.price1")));
 		add(price1);
 
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("villager_trade/count_price1"),
+				L10N.label("elementgui.villager_trade.count_price_sale")));
+		add(countPrice1);
+
 		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("villager_trade/price2"),
 				L10N.label("elementgui.villager_trade.price2")));
 		add(price2);
+
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("villager_trade/count_price2"),
+				L10N.label("elementgui.villager_trade.count_price_sale")));
+		add(countPrice2);
 
 		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("villager_trade/sale1"),
 				L10N.label("elementgui.villager_trade.sale1")));
 		add(sale1);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("villager_trade/sale2"),
-				L10N.label("elementgui.villager_trade.sale2")));
-		add(sale2);
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("villager_trade/count_sale1"),
+				L10N.label("elementgui.villager_trade.count_price_sale")));
+		add(countSale1);
 
 		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("villager_trade/max_trades"),
 				L10N.label("elementgui.villager_trade.max_trades")));
@@ -120,9 +129,11 @@ public class JTradeListEntry extends JPanel {
 		entry.tradeEntry = new VillagerTradeEntry(workspace, (String) villager.getSelectedItem());
 		entry.level = (int) level.getValue();
 		entry.price1 = price1.getBlock();
+		entry.countPrice1 = (int) countPrice1.getValue();
 		entry.price2 = price2.getBlock();
+		entry.countPrice2 = (int) countPrice2.getValue();
 		entry.sale1 = sale1.getBlock();
-		entry.sale2 = sale2.getBlock();
+		entry.countSale1 = (int) countSale1.getValue();
 		entry.maxTrades = (int) maxTrades.getValue();
 		entry.xp = (int) xp.getValue();
 		entry.priceMultiplier = (double) priceMultiplier.getValue();
@@ -133,9 +144,11 @@ public class JTradeListEntry extends JPanel {
 		villager.setSelectedItem(e.tradeEntry.getUnmappedValue());
 		level.setValue(e.level);
 		price1.setBlock(e.price1);
+		countPrice1.setValue(e.countPrice1);
 		price2.setBlock(e.price2);
+		countPrice2.setValue(e.countPrice2);
 		sale1.setBlock(e.sale1);
-		sale2.setBlock(e.sale2);
+		countSale1.setValue(e.countSale1);
 		maxTrades.setValue(e.maxTrades);
 		xp.setValue(e.xp);
 		priceMultiplier.setValue(e.priceMultiplier);
