@@ -44,7 +44,7 @@ public class PreferencesData {
 
 		@PreferencesEntry public Color interfaceAccentColor = MCreatorTheme.MAIN_TINT_DEFAULT;
 
-		@PreferencesEntry(arrayData = {"All", "Current theme", "Custom", "None"})
+		@PreferencesEntry(arrayData = { "All", "Current theme", "Custom", "None" })
 		public String backgroundSource = "All";
 
 		@PreferencesEntry public boolean aatext = true;
