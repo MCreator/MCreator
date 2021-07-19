@@ -437,7 +437,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
-		<#if data.canProvidePower>
+		<#if data.canProvidePower && data.emittedRedstonePower??>
 		@Override public boolean canProvidePower(BlockState state) {
 			return true;
 		}
