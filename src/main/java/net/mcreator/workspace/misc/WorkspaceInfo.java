@@ -77,9 +77,13 @@ import java.util.stream.Collectors;
 	}
 
 	public List<ModElement> getElementsOfType(String typestring) {
-		ModElementType<?> type = ModElementTypeLoader.getModElementType(typestring);
-		return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
-				.collect(Collectors.toList());
+		try {
+			ModElementType<?> type = ModElementTypeLoader.getModElementType(typestring);
+			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
+					.collect(Collectors.toList());
+		} catch (IllegalArgumentException e) {
+			return Collections.emptyList();
+		}
 	}
 
 	public String getUUID(String offset) {

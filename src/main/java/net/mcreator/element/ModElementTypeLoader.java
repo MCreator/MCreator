@@ -119,13 +119,13 @@ public class ModElementTypeLoader {
 		return elementType;
 	}
 
-	public static ModElementType<?> getModElementType(String modElementName) {
+	public static ModElementType<?> getModElementType(String modElementName) throws IllegalArgumentException {
 		for (ModElementType<?> me : REGISTRY) {
 			if (me.getRegistryName().equals(modElementName)) {
 				return me;
 			}
 		}
 
-		throw new RuntimeException("Mod element type " + modElementName + " is not a registered type");
+		throw new IllegalArgumentException("Mod element type " + modElementName + " is not a registered type");
 	}
 }

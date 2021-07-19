@@ -110,31 +110,39 @@ public abstract class GeneratableElement {
 				newType = "livingentity";
 				break;
 			}
-			ModElementType<?> modElementType = ModElementTypeLoader.getModElementType(newType);
 
-			int importedFormatVersion = jsonDeserializationContext
-					.deserialize(jsonElement.getAsJsonObject().get("_fv"), Integer.class);
+			try {
+				ModElementType<?> modElementType = ModElementTypeLoader.getModElementType(newType);
 
-			final GeneratableElement[] generatableElement = {
-					gson.fromJson(jsonElement.getAsJsonObject().get("definition"),
-							modElementType.getModElementStorageClass()) };
+				int importedFormatVersion = jsonDeserializationContext
+						.deserialize(jsonElement.getAsJsonObject().get("_fv"), Integer.class);
 
-			generatableElement[0].setModElement(this.lastModElement); // set the mod element reference
-			passWorkspaceToFields(generatableElement[0], workspace);
+				final GeneratableElement[] generatableElement = {
+						gson.fromJson(jsonElement.getAsJsonObject().get("definition"),
+								modElementType.getModElementStorageClass()) };
 
-			if (importedFormatVersion != GeneratableElement.formatVersion) {
-				List<IConverter> converters = ConverterRegistry.getConvertersForModElementType(modElementType);
-				if (converters != null) {
-					converters.stream().filter(converter -> importedFormatVersion < converter.getVersionConvertingTo())
-							.sorted().forEach(converter -> {
-						LOG.debug("Converting mod element " + this.lastModElement.getName() + " (" + modElementType
-								+ ") from FV" + importedFormatVersion + " to FV" + converter.getVersionConvertingTo());
-						generatableElement[0] = converter.convert(this.workspace, generatableElement[0], jsonElement);
-					});
+				generatableElement[0].setModElement(this.lastModElement); // set the mod element reference
+				passWorkspaceToFields(generatableElement[0], workspace);
+
+				if (importedFormatVersion != GeneratableElement.formatVersion) {
+					List<IConverter> converters = ConverterRegistry.getConvertersForModElementType(modElementType);
+					if (converters != null) {
+						converters.stream()
+								.filter(converter -> importedFormatVersion < converter.getVersionConvertingTo())
+								.sorted().forEach(converter -> {
+							LOG.debug("Converting mod element " + this.lastModElement.getName() + " (" + modElementType
+									+ ") from FV" + importedFormatVersion + " to FV" + converter
+									.getVersionConvertingTo());
+							generatableElement[0] = converter
+									.convert(this.workspace, generatableElement[0], jsonElement);
+						});
+					}
 				}
-			}
 
-			return generatableElement[0];
+				return generatableElement[0];
+			} catch (IllegalArgumentException e) {
+				return null;
+			}
 		}
 
 		@Override
