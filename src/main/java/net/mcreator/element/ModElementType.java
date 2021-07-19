@@ -31,50 +31,20 @@ import javax.swing.*;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
-public class ModElementType<GE extends GeneratableElement> implements Comparable<ModElementType<?>> {
-	public static ModElementType<?> ADVANCEMENT;
-	public static ModElementType<?> ARMOR;
-	public static ModElementType<?> BIOME;
-	public static ModElementType<?> BLOCK;
-	public static ModElementType<?> COMMAND;
-	public static ModElementType<?> DIMENSION;
-	public static ModElementType<?> CODE;
-	public static ModElementType<?> ENCHANTMENT;
-	public static ModElementType<?> FLUID;
-	public static ModElementType<?> FOOD;
-	public static ModElementType<?> FUEL;
-	public static ModElementType<?> FUNCTION;
-	public static ModElementType<?> GAMERULE;
-	public static ModElementType<?> GUI;
-	public static ModElementType<?> ITEM;
-	public static ModElementType<?> KEYBIND;
-	public static ModElementType<?> LIVINGENTITY;
-	public static ModElementType<?> LOOTTABLE;
-	public static ModElementType<?> MUSICDISC;
-	public static ModElementType<?> OVERLAY;
-	public static ModElementType<?> PAINTING;
-	public static ModElementType<?> PARTICLE;
-	public static ModElementType<?> PLANT;
-	public static ModElementType<?> POTION;
-	public static ModElementType<?> POTIONEFFECT;
-	public static ModElementType<?> PROCEDURE;
-	public static ModElementType<?> RANGEDITEM;
-	public static ModElementType<?> RECIPE;
-	public static ModElementType<?> STRUCTURE;
-	public static ModElementType<?> TAB;
-	public static ModElementType<?> TAG;
-	public static ModElementType<?> TOOL;
+public class ModElementType<GE extends GeneratableElement> {
 
-	//Variables used for each mod element
-	private final BaseType baseType;
 	private final String registryName;
+	private final BaseType baseType;
+	private final RecipeType recipeType;
+
+	private final ModElementGUIProvider<GE> modElementGUIProvider;
+	private final Class<? extends GE> modElementStorageClass;
+
 	private final String readableName;
 	private final String description;
 	private final Character shortcut;
-	private final RecipeType recipeType;
-	private final ModElementGUIProvider<GE> modElementGUIProvider;
-	private final Class<? extends GE> modElementStorageClass;
 	private GeneratorStats.CoverageStatus status = GeneratorStats.CoverageStatus.FULL;
+
 	private boolean hasProcedureTriggers;
 
 	public ModElementType(String registryName, Character shortcut, BaseType baseType, RecipeType recipeType,
@@ -145,16 +115,13 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 		return hasProcedureTriggers;
 	}
 
-	@Override public int compareTo(ModElementType<?> o) {
-		return o.getStatus().ordinal() - status.ordinal();
-	}
-
 	@Override public String toString() {
-		return this.getReadableName() + ": " + this.registryName;
+		return this.registryName;
 	}
 
 	@Override public boolean equals(Object element) {
-		return element instanceof ModElementType && registryName.equals(((ModElementType<?>) element).getRegistryName());
+		return element instanceof ModElementType && registryName
+				.equals(((ModElementType<?>) element).getRegistryName());
 	}
 
 	@Override public int hashCode() {
@@ -164,5 +131,38 @@ public class ModElementType<GE extends GeneratableElement> implements Comparable
 	public interface ModElementGUIProvider<GE extends GeneratableElement> {
 		ModElementGUI<GE> get(MCreator mcreator, ModElement modElement, boolean editingMode);
 	}
+
+	public static ModElementType<?> ADVANCEMENT;
+	public static ModElementType<?> ARMOR;
+	public static ModElementType<?> BIOME;
+	public static ModElementType<?> BLOCK;
+	public static ModElementType<?> COMMAND;
+	public static ModElementType<?> DIMENSION;
+	public static ModElementType<?> CODE;
+	public static ModElementType<?> ENCHANTMENT;
+	public static ModElementType<?> FLUID;
+	public static ModElementType<?> FOOD;
+	public static ModElementType<?> FUEL;
+	public static ModElementType<?> FUNCTION;
+	public static ModElementType<?> GAMERULE;
+	public static ModElementType<?> GUI;
+	public static ModElementType<?> ITEM;
+	public static ModElementType<?> KEYBIND;
+	public static ModElementType<?> LIVINGENTITY;
+	public static ModElementType<?> LOOTTABLE;
+	public static ModElementType<?> MUSICDISC;
+	public static ModElementType<?> OVERLAY;
+	public static ModElementType<?> PAINTING;
+	public static ModElementType<?> PARTICLE;
+	public static ModElementType<?> PLANT;
+	public static ModElementType<?> POTION;
+	public static ModElementType<?> POTIONEFFECT;
+	public static ModElementType<?> PROCEDURE;
+	public static ModElementType<?> RANGEDITEM;
+	public static ModElementType<?> RECIPE;
+	public static ModElementType<?> STRUCTURE;
+	public static ModElementType<?> TAB;
+	public static ModElementType<?> TAG;
+	public static ModElementType<?> TOOL;
 
 }
