@@ -20,7 +20,6 @@ package net.mcreator.workspace;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.mcreator.element.GeneratableElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.elements.ModElement;
