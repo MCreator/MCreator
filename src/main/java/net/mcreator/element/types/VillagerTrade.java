@@ -20,6 +20,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.VillagerTradeEntry;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -38,6 +39,10 @@ public class VillagerTrade extends GeneratableElement {
 	public static class CustomTradeEntry {
 		public VillagerTradeEntry tradeEntry;
 		public int level;
+		public MItemBlock price1;
+		public MItemBlock price2;
+		public MItemBlock sale1;
+		public MItemBlock sale2;
 		public int maxTrades;
 		public int xp;
 		public double priceMultiplier;

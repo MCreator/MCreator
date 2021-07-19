@@ -1474,6 +1474,14 @@ public class TestWorkspaceDataProvider {
 				entry1.tradeEntry = new VillagerTradeEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllVIllagerProfessions(modElement.getWorkspace())));
 				entry1.level = 2;
+				entry1.price1 = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+				entry1.price2 = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+				entry1.sale1 = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+				entry1.sale2 = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 				entry1.maxTrades = 15;
 				entry1.xp = 10;
 				entry1.priceMultiplier = 0.01;
@@ -1483,6 +1491,14 @@ public class TestWorkspaceDataProvider {
 				entry2.tradeEntry = new VillagerTradeEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllVIllagerProfessions(modElement.getWorkspace())));
 				entry2.level = 5;
+				entry2.price1 = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+				entry2.price2 = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+				entry2.sale1 = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+				entry2.sale2 = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 				entry2.maxTrades = 10;
 				entry2.xp = 13;
 				entry2.priceMultiplier = 0.05;
