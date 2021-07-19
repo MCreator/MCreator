@@ -1473,17 +1473,19 @@ public class TestWorkspaceDataProvider {
 				VillagerTrade.CustomTradeEntry entry1 = new VillagerTrade.CustomTradeEntry();
 				entry1.tradeEntry = new VillagerTradeEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllVIllagerProfessions(modElement.getWorkspace())));
+				entry1.level = 2;
 				entry1.maxTrades = 15;
 				entry1.xp = 10;
-				entry1.priceMultiplier = (float) 0.01;
+				entry1.priceMultiplier = 0.01;
 				trades.add(entry1);
 
 				VillagerTrade.CustomTradeEntry entry2 = new VillagerTrade.CustomTradeEntry();
 				entry2.tradeEntry = new VillagerTradeEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllVIllagerProfessions(modElement.getWorkspace())));
+				entry2.level = 5;
 				entry2.maxTrades = 10;
 				entry2.xp = 13;
-				entry2.priceMultiplier = (float) 0.05;
+				entry2.priceMultiplier = 0.05;
 				trades.add(entry2);
 			}
 			villagerTrade.tradeEntry = trades;

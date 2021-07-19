@@ -37,12 +37,9 @@ public class VillagerTrade extends GeneratableElement {
 
 	public static class CustomTradeEntry {
 		public VillagerTradeEntry tradeEntry;
+		public int level;
 		public int maxTrades;
 		public int xp;
-		public float priceMultiplier;
-
-		public int getXp() {
-			return xp;
-		}
+		public double priceMultiplier;
 	}
 }

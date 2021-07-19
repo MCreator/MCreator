@@ -37,6 +37,7 @@ import java.util.List;
 public class JTradeListEntry extends JPanel {
 
 	private final JComboBox<String> villager = new JComboBox<>();
+	private final JSpinner level = new JSpinner(new SpinnerNumberModel(1, 1, 5, 1));
 	private final JSpinner maxTrades = new JSpinner(new SpinnerNumberModel(10, 1, 72000, 1));
 	private final JSpinner xp = new JSpinner(new SpinnerNumberModel(5, 0, 72000, 1));
 	private final JSpinner priceMultiplier = new JSpinner(new SpinnerNumberModel(0.05, 0, 1, 1));
@@ -57,6 +58,10 @@ public class JTradeListEntry extends JPanel {
 
 		add(L10N.label("elementgui.villager_trade.profession"));
 		add(villager);
+
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("villager_trade/level"),
+				L10N.label("elementgui.villager_trade.level")));
+		add(level);
 
 		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("villager_trade/max_trades"),
 				L10N.label("elementgui.villager_trade.max_trades")));
@@ -87,14 +92,16 @@ public class JTradeListEntry extends JPanel {
 	public VillagerTrade.CustomTradeEntry getEntry() {
 		VillagerTrade.CustomTradeEntry entry = new VillagerTrade.CustomTradeEntry();
 		entry.tradeEntry = new VillagerTradeEntry(workspace, (String) villager.getSelectedItem());
+		entry.level = (int) level.getValue();
 		entry.maxTrades = (int) maxTrades.getValue();
 		entry.xp = (int) xp.getValue();
-		entry.priceMultiplier = (float) priceMultiplier.getValue();
+		entry.priceMultiplier = (double) priceMultiplier.getValue();
 		return entry;
 	}
 
 	public void setEntry(VillagerTrade.CustomTradeEntry e) {
 		villager.setSelectedItem(e.tradeEntry.getUnmappedValue());
+		level.setValue(e.level);
 		maxTrades.setValue(e.maxTrades);
 		xp.setValue(e.xp);
 		priceMultiplier.setValue(e.priceMultiplier);
