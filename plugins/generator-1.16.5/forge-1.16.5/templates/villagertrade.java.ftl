@@ -29,6 +29,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "mcitems.ftl">
 
 package ${package}.village;
 
@@ -42,11 +43,11 @@ import net.minecraft.entity.merchant.villager.VillagerTrades;
         <#list data.tradeEntries as tradeEntry>
         if (event.getType() == ${tradeEntry.tradeEntry}) {
             trades.get(${tradeEntry.level}).add(new RandomTradeBuilder(${tradeEntry.maxTrades}, ${tradeEntry.xp}, ${tradeEntry.priceMultiplier}F)
-                    .setPrice(${tradeEntry.price1}, ${tradeEntry.countPrice1}, ${tradeEntry.countPrice1})
+                    .setPrice(${mappedMCItemToItem(tradeEntry.price1)}, ${tradeEntry.countPrice1}, ${tradeEntry.countPrice1})
                     <#if tradeEntry.price2 != "">
-                    .setPrice2(${tradeEntry.price2}, ${tradeEntry.countPrice2}, ${tradeEntry.countPrice2})
+                    .setPrice2(${mappedMCItemToItem(tradeEntry.price2)}, ${tradeEntry.countPrice2}, ${tradeEntry.countPrice2})
                     </#if>
-                    .setForSale(${tradeEntry.sale1}, ${tradeEntry.countSale1}, ${tradeEntry.countSale1})
+                    .setForSale(${mappedMCItemToItem(tradeEntry.sale1)}, ${tradeEntry.countSale1}, ${tradeEntry.countSale1})
                     .build()
             );
         }
