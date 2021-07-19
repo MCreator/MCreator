@@ -82,6 +82,7 @@ import java.util.stream.Collectors;
 			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
 					.collect(Collectors.toList());
 		} catch (IllegalArgumentException e) {
+			LOG.warn("Failed to list elements of non-existent type", e);
 			return Collections.emptyList();
 		}
 	}
