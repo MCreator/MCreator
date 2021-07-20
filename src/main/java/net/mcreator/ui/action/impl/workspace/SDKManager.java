@@ -30,11 +30,11 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.net.URL;
 
-public class SDKDownloader {
+public class SDKManager {
 
 	private static final Logger LOG = LogManager.getLogger("Setup JDK");
 
-	public static void downloadJDK(GeneratorConfiguration generatorConfiguration) throws Exception {
+	public static void downloadSDK(GeneratorConfiguration generatorConfiguration) throws Exception {
 		String jdkVersion = generatorConfiguration.getJDKVersionOverride();
 		if (jdkVersion != null && !validateCustomJDK(generatorConfiguration)) {
 			LOG.info("Downloading JDK: " + jdkVersion);
@@ -48,19 +48,17 @@ public class SDKDownloader {
 			FileUtils.copyURLToFile(
 					new URL("https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion + "/" + OS.getOSName()
 							+ "/x64/jdk/hotspot/normal/adoptopenjdk"),
-					UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension));
+					getJDKFolderForVersion(jdkVersion + fileExtension));
 
 			LOG.info("Extracting JDK: " + jdkVersion);
 			if (OS.getOS() == OS.WINDOWS) {
-				ZipIO.unzip(
-						UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension).getAbsolutePath(),
-						UserFolderManager.getFileFromUserFolder("jdks").getAbsolutePath());
+				ZipIO.unzip(getJDKFolderForVersion(jdkVersion + fileExtension).getAbsolutePath(),
+						getJDKFolderForVersion("").getAbsolutePath());
 			} else {
-				ZipIO.extractTarGZ(
-						UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension).getAbsolutePath(),
-						UserFolderManager.getFileFromUserFolder("jdks").getAbsolutePath());
+				ZipIO.extractTarGZ(getJDKFolderForVersion(jdkVersion + fileExtension).getAbsolutePath(),
+						getJDKFolderForVersion("").getAbsolutePath());
 			}
-			UserFolderManager.getStoredJDKFolderForVersion(jdkVersion + fileExtension).delete();
+			getJDKFolderForVersion(jdkVersion + fileExtension).delete();
 		}
 	}
 
@@ -68,10 +66,14 @@ public class SDKDownloader {
 		if (generatorConfiguration.getJDKVersionOverride() == null)
 			return true;
 
-		File jdkFolder = UserFolderManager.getStoredJDKFolderForVersion(generatorConfiguration.getJDKVersionOverride());
+		File jdkFolder = getJDKFolderForVersion(generatorConfiguration.getJDKVersionOverride());
 		return jdkFolder.isDirectory() && ((OS.getOS() == OS.WINDOWS && new File(jdkFolder, "bin/javac.exe").isFile())
 				|| (OS.getOS() == OS.MAC && new File(jdkFolder, "Contents/Home/bin/javac").isFile()) || (
 				OS.getOS() == OS.LINUX && new File(jdkFolder, "bin/javac").isFile()));
+	}
+
+	public static File getJDKFolderForVersion(String jdkVersion) {
+		return UserFolderManager.getFileFromUserFolder("/jdks/" + jdkVersion);
 	}
 
 }

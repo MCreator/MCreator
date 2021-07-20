@@ -20,11 +20,10 @@ package net.mcreator.gradle;
 
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.UserFolderManager;
 import net.mcreator.minecraft.api.ModAPI;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.action.impl.workspace.SDKDownloader;
+import net.mcreator.ui.action.impl.workspace.SDKManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -84,10 +83,9 @@ public class GradleUtils {
 		}
 
 		// if the generator has a JDK, we set JAVA_HOME to generator's JDK
-		if (generatorConfiguration.getJDKVersionOverride() != null)
-			if (SDKDownloader.validateCustomJDK(generatorConfiguration))
-				return UserFolderManager.getStoredJDKFolderForVersion(generatorConfiguration.getJDKVersionOverride())
-						.getAbsolutePath();
+		if (generatorConfiguration.getJDKVersionOverride() != null && SDKManager
+				.validateCustomJDK(generatorConfiguration))
+			return SDKManager.getJDKFolderForVersion(generatorConfiguration.getJDKVersionOverride()).getAbsolutePath();
 
 		// if we have bundled JDK, we set JAVA_HOME to bundled JDK
 		if (new File("./jdk/bin/javac.exe").isFile() || new File("./jdk/bin/javac").isFile())

@@ -23,7 +23,7 @@ import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.action.impl.workspace.SDKDownloader;
+import net.mcreator.ui.action.impl.workspace.SDKManager;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.init.L10N;
@@ -55,7 +55,7 @@ public class WorkspaceGeneratorSetupDialog {
 
 				// Download the custom JDK if needed
 				try {
-					SDKDownloader.downloadJDK(m.getGeneratorConfiguration());
+					SDKManager.downloadSDK(m.getGeneratorConfiguration());
 					p0.ok();
 					dial.refreshDisplay();
 				} catch (Exception e) {
