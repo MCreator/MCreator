@@ -21,8 +21,8 @@ package net.mcreator.ui.minecraft.villagers;
 
 import net.mcreator.element.parts.VillagerTradeEntry;
 import net.mcreator.element.types.VillagerTrade;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -38,7 +38,6 @@ import java.util.stream.Collectors;
 public class JVillagerTradeProfession extends JPanel {
 
 	private final JComboBox<String> villager = new JComboBox<>();
-	private final JSpinner level = new JSpinner(new SpinnerNumberModel(1, 1, 5, 1));
 
 	private final List<JVillagerTradeEntry> entryList = new ArrayList<>();
 
@@ -59,6 +58,8 @@ public class JVillagerTradeProfession extends JPanel {
 		parent.add(container);
 		professionList.add(this);
 
+		ElementUtil.loadAllVIllagerProfessions(workspace).forEach(e -> villager.addItem(e.getName()));
+
 		setBackground(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter());
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -66,11 +67,6 @@ public class JVillagerTradeProfession extends JPanel {
 
 		topbar.add(L10N.label("elementgui.villager_trade.profession"));
 		topbar.add(villager);
-
-		topbar.add(new JEmptyBox(15, 5));
-
-		topbar.add(L10N.label("elementgui.villager_trade.level"));
-		topbar.add(level);
 
 		topbar.add(Box.createHorizontalGlue());
 
@@ -116,7 +112,6 @@ public class JVillagerTradeProfession extends JPanel {
 	public VillagerTrade.CustomTradeEntry getTradeEntry() {
 		VillagerTrade.CustomTradeEntry entry = new VillagerTrade.CustomTradeEntry();
 		entry.tradeEntry = new VillagerTradeEntry(workspace, (String) villager.getSelectedItem());
-		entry.level = (int) level.getValue();
 		entry.entries = entryList.stream().map(JVillagerTradeEntry::getEntry).filter(Objects::nonNull)
 				.collect(Collectors.toList());
 		if (entry.entries.isEmpty())
@@ -126,7 +121,6 @@ public class JVillagerTradeProfession extends JPanel {
 
 	public void setTradeEntries(VillagerTrade.CustomTradeEntry tradeEntry) {
 		villager.setSelectedItem(tradeEntry.tradeEntry.getUnmappedValue());
-		level.setValue(tradeEntry.level);
 		if (tradeEntry.entries != null)
 			tradeEntry.entries.forEach(e -> new JVillagerTradeEntry(mcreator, entries, entryList).setEntry(e));
 	}

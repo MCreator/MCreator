@@ -39,7 +39,6 @@ public class VillagerTrade extends GeneratableElement {
 	public static class CustomTradeEntry {
 
 		public VillagerTradeEntry tradeEntry;
-		public int level;
 		public List<Entry> entries;
 
 		public static class Entry {
@@ -49,6 +48,7 @@ public class VillagerTrade extends GeneratableElement {
 			public int countPrice2;
 			public MItemBlock sale1;
 			public int countSale1;
+			public int level;
 			public int maxTrades;
 			public int xp;
 			public double priceMultiplier;
@@ -57,6 +57,7 @@ public class VillagerTrade extends GeneratableElement {
 				this.countPrice1 = 1;
 				this.countPrice2 = 1;
 				this.countSale1 = 1;
+				this.level = 1;
 				this.maxTrades = 10;
 				this.xp = 10;
 				this.priceMultiplier = 0.05;

@@ -1470,7 +1470,6 @@ public class TestWorkspaceDataProvider {
 					VillagerTrade.CustomTradeEntry trade = new VillagerTrade.CustomTradeEntry();
 					trade.tradeEntry = new VillagerTradeEntry(modElement.getWorkspace(),
 							getRandomDataListEntry(random, ElementUtil.loadAllVIllagerProfessions(modElement.getWorkspace())));
-					trade.level = new int[] { 1, 2, 3, 4, 5}[valueIndex];
 
 					int entries = random.nextInt(5) + 1;
 					for (int j = 0; j < entries; j++) {
@@ -1484,6 +1483,7 @@ public class TestWorkspaceDataProvider {
 						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
 						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
 						entry.countSale1 = new int[] { 8, 13, 23, 60 }[valueIndex];
+						entry.level = new int[] { 1, 2, 3, 4, 5 }[valueIndex];
 						entry.maxTrades = new int[] { 3, 10, 46, 27 }[valueIndex];
 						entry.xp = new int[] { 2, 5, 10, 15 }[valueIndex];
 						entry.priceMultiplier = new double[] { 0.01, 0.05, 0.1, 0.5 }[valueIndex];

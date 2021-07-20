@@ -42,14 +42,16 @@ import net.minecraft.entity.merchant.villager.VillagerTrades;
 
         <#list data.tradeEntries as tradeEntry>
         if (event.getType() == ${tradeEntry.tradeEntry}) {
-            trades.get(${tradeEntry.level}).add(new RandomTradeBuilder(${tradeEntry.maxTrades}, ${tradeEntry.xp}, ${tradeEntry.priceMultiplier}F)
-                    .setPrice(${mappedMCItemToItem(tradeEntry.price1)}, ${tradeEntry.countPrice1}, ${tradeEntry.countPrice1})
-                    <#if tradeEntry.price2 != "">
-                    .setPrice2(${mappedMCItemToItem(tradeEntry.price2)}, ${tradeEntry.countPrice2}, ${tradeEntry.countPrice2})
+            <#list tradeEntry.entries as entry>
+            trades.get(${entry.level}).add(new RandomTradeBuilder(${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}f)
+                    .setPrice(${mappedMCItemToItem(entry.price1)}, ${entry.countPrice1}, ${entry.countPrice1})
+                    <#if entry.price2 != "">
+                    .setPrice2(${mappedMCItemToItem(entry.price2)}, ${entry.countPrice2}, ${entry.countPrice2})
                     </#if>
-                    .setForSale(${mappedMCItemToItem(tradeEntry.sale1)}, ${tradeEntry.countSale1}, ${tradeEntry.countSale1})
+                    .setForSale(${mappedMCItemToItem(entry.sale1)}, ${entry.countSale1}, ${entry.countSale1})
                     .build()
             );
+            </#list>
         }
         </#list>
     }

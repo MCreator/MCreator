@@ -42,6 +42,7 @@ public class JVillagerTradeEntry extends JPanel {
 	private final JSpinner countPrice2 = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
 	private final JSpinner countSale1 = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
 
+	private final JSpinner level = new JSpinner(new SpinnerNumberModel(1, 1, 5, 1));
 	private final JSpinner maxTrades = new JSpinner(new SpinnerNumberModel(10, 1, 72000, 1));
 	private final JSpinner xp = new JSpinner(new SpinnerNumberModel(5, 0, 72000, 1));
 	private final JSpinner priceMultiplier = new JSpinner(new SpinnerNumberModel(0.05, 0, 1, 1));
@@ -75,7 +76,7 @@ public class JVillagerTradeEntry extends JPanel {
 		line1.add(L10N.label("elementgui.villager_trade.count_price_sale"));
 		line1.add(countPrice2);
 
-		line1.add(new JEmptyBox(15, 5 ));
+		line1.add(new JEmptyBox(15, 5));
 
 		line1.add(L10N.label("elementgui.villager_trade.sale1"));
 		line1.add(sale1);
@@ -94,6 +95,8 @@ public class JVillagerTradeEntry extends JPanel {
 		JPanel line2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		line2.setOpaque(false);
 
+		line2.add(L10N.label("elementgui.villager_trade.level"));
+		line2.add(level);
 		line2.add(L10N.label("elementgui.villager_trade.max_trades"));
 		line2.add(maxTrades);
 		line2.add(L10N.label("elementgui.villager_trade.xp"));
@@ -124,6 +127,7 @@ public class JVillagerTradeEntry extends JPanel {
 		entry.countPrice2 = (int) countPrice2.getValue();
 		entry.sale1 = sale1.getBlock();
 		entry.countSale1 = (int) countSale1.getValue();
+		entry.level = (int) level.getValue();
 		entry.maxTrades = (int) maxTrades.getValue();
 		entry.xp = (int) xp.getValue();
 		entry.priceMultiplier = (double) priceMultiplier.getValue();
@@ -137,6 +141,7 @@ public class JVillagerTradeEntry extends JPanel {
 		countPrice2.setValue(e.countPrice2);
 		sale1.setBlock(e.sale1);
 		countSale1.setValue(e.countSale1);
+		level.setValue(e.level);
 		maxTrades.setValue(e.maxTrades);
 		xp.setValue(e.xp);
 		priceMultiplier.setValue(e.priceMultiplier);
