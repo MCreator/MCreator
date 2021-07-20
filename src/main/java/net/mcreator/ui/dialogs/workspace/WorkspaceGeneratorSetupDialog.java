@@ -53,9 +53,9 @@ public class WorkspaceGeneratorSetupDialog {
 						L10N.t("dialog.setup_workspace.step.jdk"));
 				dial.addProgress(p0);
 
-				// Download the custom JDK if needed
 				try {
-					SDKManager.downloadSDK(m.getGeneratorConfiguration());
+					SDKManager.downloadSDK(m.getGeneratorConfiguration(), p0);
+
 					p0.ok();
 					dial.refreshDisplay();
 				} catch (Exception e) {

@@ -23,6 +23,7 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.zip.ZipIO;
+import net.mcreator.ui.dialogs.ProgressDialog;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,23 +35,25 @@ public class SDKManager {
 
 	private static final Logger LOG = LogManager.getLogger("Setup JDK");
 
-	public static void downloadSDK(GeneratorConfiguration generatorConfiguration) throws Exception {
+	public static void downloadSDK(GeneratorConfiguration generatorConfiguration,
+			ProgressDialog.ProgressUnit progressUnit) throws Exception {
 		String jdkVersion = generatorConfiguration.getJDKVersionOverride();
 		if (jdkVersion != null && !validateCustomJDK(generatorConfiguration)) {
-			LOG.info("Downloading JDK: " + jdkVersion);
+			String url = "https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion + "/" + OS.getOSName()
+					+ "/x64/jdk/hotspot/normal/adoptopenjdk";
 
-			String fileExtension;
-			if (OS.getOS() == OS.WINDOWS)
-				fileExtension = ".zip";
-			else
-				fileExtension = ".tar.gz";
+			LOG.info("Downloading JDK: " + jdkVersion + " from " + url);
 
-			FileUtils.copyURLToFile(
-					new URL("https://api.adoptopenjdk.net/v3/binary/version/" + jdkVersion + "/" + OS.getOSName()
-							+ "/x64/jdk/hotspot/normal/adoptopenjdk"),
-					getJDKFolderForVersion(jdkVersion + fileExtension));
+			String fileExtension = OS.getOS() == OS.WINDOWS ? ".zip" : ".tar.gz";
+
+			FileUtils.copyURLToFile(new URL(url), getJDKFolderForVersion(jdkVersion + fileExtension));
+
+			progressUnit.setPercent(90);
+			if (progressUnit.getProgressDialog() != null)
+				progressUnit.getProgressDialog().refreshDisplay();
 
 			LOG.info("Extracting JDK: " + jdkVersion);
+
 			if (OS.getOS() == OS.WINDOWS) {
 				ZipIO.unzip(getJDKFolderForVersion(jdkVersion + fileExtension).getAbsolutePath(),
 						getJDKFolderForVersion("").getAbsolutePath());
@@ -58,6 +61,11 @@ public class SDKManager {
 				ZipIO.extractTarGZ(getJDKFolderForVersion(jdkVersion + fileExtension).getAbsolutePath(),
 						getJDKFolderForVersion("").getAbsolutePath());
 			}
+
+			progressUnit.setPercent(95);
+			if (progressUnit.getProgressDialog() != null)
+				progressUnit.getProgressDialog().refreshDisplay();
+
 			getJDKFolderForVersion(jdkVersion + fileExtension).delete();
 		}
 	}
@@ -73,7 +81,7 @@ public class SDKManager {
 	}
 
 	public static File getJDKFolderForVersion(String jdkVersion) {
-		return UserFolderManager.getFileFromUserFolder("/jdks/" + jdkVersion);
+		return UserFolderManager.getFileFromUserFolder("/sdks/" + jdkVersion);
 	}
 
 }
