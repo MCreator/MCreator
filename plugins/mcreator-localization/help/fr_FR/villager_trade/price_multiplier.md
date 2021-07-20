@@ -1,1 +1,0 @@
-Ce paramètre défini la probabilité de changement de prix de l'échange.

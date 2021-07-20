@@ -1,1 +1,0 @@
-Ce paramètre définit combien de fois cet échance peut être effectué avant d'être bloqué par le villageois.

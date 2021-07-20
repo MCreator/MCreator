@@ -1,1 +1,0 @@
-The trades in the list below will be applied to the matching villager profession.

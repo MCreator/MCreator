@@ -1,1 +1,0 @@
-This parameter defines how much XP points you gain by doing this trade.

@@ -1,1 +1,0 @@
-This parameter defines how much times you can make this trade before the villager blocks it.
