@@ -42,7 +42,9 @@ public class JVillagerTradeEntry extends JPanel {
 	private final JSpinner countPrice2 = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
 	private final JSpinner countSale1 = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
 
-	private final JSpinner level = new JSpinner(new SpinnerNumberModel(1, 1, 5, 1));
+	private final JComboBox<String> level = new JComboBox<>(
+			new String[] { "Novice", "Apprentice", "Journeyman", "Expert", "Master" });
+
 	private final JSpinner maxTrades = new JSpinner(new SpinnerNumberModel(10, 1, 72000, 1));
 	private final JSpinner xp = new JSpinner(new SpinnerNumberModel(5, 0, 72000, 1));
 	private final JSpinner priceMultiplier = new JSpinner(new SpinnerNumberModel(0.05, 0, 1, 1));
@@ -127,7 +129,7 @@ public class JVillagerTradeEntry extends JPanel {
 		entry.countPrice2 = (int) countPrice2.getValue();
 		entry.sale1 = sale1.getBlock();
 		entry.countSale1 = (int) countSale1.getValue();
-		entry.level = (int) level.getValue();
+		entry.level = level.getSelectedIndex() + 1;
 		entry.maxTrades = (int) maxTrades.getValue();
 		entry.xp = (int) xp.getValue();
 		entry.priceMultiplier = (double) priceMultiplier.getValue();
@@ -141,7 +143,7 @@ public class JVillagerTradeEntry extends JPanel {
 		countPrice2.setValue(e.countPrice2);
 		sale1.setBlock(e.sale1);
 		countSale1.setValue(e.countSale1);
-		level.setValue(e.level);
+		level.setSelectedIndex(e.level - 1);
 		maxTrades.setValue(e.maxTrades);
 		xp.setValue(e.xp);
 		priceMultiplier.setValue(e.priceMultiplier);
