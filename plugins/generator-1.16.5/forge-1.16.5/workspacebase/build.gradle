@@ -26,6 +26,11 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
 
+            jvmArgs = [
+                    "--add-exports=java.base/sun.security.util=ALL-UNNAMED",
+                    "--add-opens=java.base/java.util.jar=ALL-UNNAMED"
+            ]
+
             mods {
                 examplemod {
                     source sourceSets.main
@@ -38,6 +43,11 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+
+            jvmArgs = [
+                    "--add-exports=java.base/sun.security.util=ALL-UNNAMED",
+                    "--add-opens=java.base/java.util.jar=ALL-UNNAMED"
+            ]
 
             mods {
                 examplemod {
