@@ -1465,11 +1465,12 @@ public class TestWorkspaceDataProvider {
 			villagerTrade.tradeEntries = new ArrayList<>();
 
 			if (!emptyLists) {
-				int trades = random.nextInt(5) + 1;
-				for (int i = 0; i < trades; i++) {
+				int tradeEntries = random.nextInt(5) + 1;
+				for (int i = 0; i < tradeEntries; i++) {
 					VillagerTrade.CustomTradeEntry trade = new VillagerTrade.CustomTradeEntry();
 					trade.tradeEntry = new VillagerTradeEntry(modElement.getWorkspace(),
 							getRandomDataListEntry(random, ElementUtil.loadAllVIllagerProfessions(modElement.getWorkspace())));
+					trade.entries = new ArrayList<>();
 
 					int entries = random.nextInt(5) + 1;
 					for (int j = 0; j < entries; j++) {
