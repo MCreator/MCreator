@@ -22,22 +22,25 @@ package net.mcreator.ui.modgui;
 import net.mcreator.element.types.VillagerTrade;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.villagers.JTradeList;
+import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.villagers.JVillagerTradeProfession;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 
-	private final JTradeList tradeList = new JTradeList(mcreator);
+	private final List<JVillagerTradeProfession> professionList = new ArrayList<>();
 
-	private final ValidationGroup page1group = new ValidationGroup();
+	private final JPanel professions = new JPanel(new GridLayout(0, 1, 5, 5));
 
 	public VillagerTradeGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -47,37 +50,68 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 
 	@Override protected void initGUI() {
 		JPanel pane = new JPanel(new BorderLayout());
-		JPanel mainEditor = new JPanel(new GridLayout());
-
 		pane.setOpaque(false);
-		mainEditor.setOpaque(false);
 
-		JComponent component = PanelUtils.northAndCenterElement(HelpUtils
-				.wrapWithHelpButton(this.withEntry("villager_trade/trades"),
-						L10N.label("elementgui.villager_trade.trades")), tradeList);
+		JPanel maineditor = new JPanel(new BorderLayout());
+		maineditor.setOpaque(false);
 
-		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		JToolBar bar = new JToolBar();
+		bar.setFloatable(false);
 
-		mainEditor.add(component);
-		pane.add(PanelUtils.centerInPanel(PanelUtils.join(FlowLayout.LEFT, mainEditor)));
+		JButton addTrade = L10N.button("elementgui.villager_trade.add_profession_trades");
+		addTrade.setIcon(UIRES.get("16px.add.gif"));
+		bar.add(addTrade);
+
+		maineditor.add("North", bar);
+
+		professions.setOpaque(false);
+
+		JScrollPane sp = new JScrollPane(PanelUtils.pullElementUp(professions)) {
+			@Override protected void paintComponent(Graphics g) {
+				Graphics2D g2d = (Graphics2D) g.create();
+				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+				g2d.dispose();
+				super.paintComponent(g);
+			}
+		};
+		sp.setOpaque(false);
+		sp.getViewport().setOpaque(false);
+		sp.getVerticalScrollBar().setUnitIncrement(11);
+		sp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		maineditor.add("Center", sp);
+
+		pane.add(maineditor);
 		addPage(pane);
 
+		addTrade.addActionListener(
+				e -> new JVillagerTradeProfession(mcreator, professions, professionList).addInitialEntry());
+
+		// Add first pool
+		if (!isEditingMode()) {
+			new JVillagerTradeProfession(mcreator, professions, professionList).addInitialEntry();
+		}
+	}
+
+	@Override public void reloadDataLists() {
+		super.reloadDataLists();
+		professionList.forEach(JVillagerTradeProfession::reloadDataLists);
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0) {
-			return new AggregatedValidationResult(page1group);
-		}
 		return new AggregatedValidationResult.PASS();
 	}
 
-	@Override protected void openInEditingMode(VillagerTrade villagerTrade) {
-		tradeList.setTrades(villagerTrade.tradeEntries);
+	@Override public void openInEditingMode(VillagerTrade villagerTrade) {
+		villagerTrade.tradeEntries
+				.forEach(e -> new JVillagerTradeProfession(mcreator, professions, professionList).setTradeEntries(e));
 	}
 
 	@Override public VillagerTrade getElementFromGUI() {
 		VillagerTrade villagerTrade = new VillagerTrade(modElement);
-		villagerTrade.tradeEntries = tradeList.getTrades();
+		villagerTrade.tradeEntries = professionList.stream().map(JVillagerTradeProfession::getTradeEntry)
+				.filter(Objects::nonNull).collect(Collectors.toList());
 		return villagerTrade;
 	}
 }

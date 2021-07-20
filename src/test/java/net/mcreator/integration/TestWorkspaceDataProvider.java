@@ -1462,45 +1462,37 @@ public class TestWorkspaceDataProvider {
 			return gamerule;
 		} else if (ModElementType.VILLAGERTRADE.equals(modElement.getType())) {
 			VillagerTrade villagerTrade = new VillagerTrade(modElement);
-			List<VillagerTrade.CustomTradeEntry> trades = new ArrayList<>();
-			if (!emptyLists) {
-				VillagerTrade.CustomTradeEntry entry1 = new VillagerTrade.CustomTradeEntry();
-				entry1.tradeEntry = new VillagerTradeEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllVIllagerProfessions(modElement.getWorkspace())));
-				entry1.level = 2;
-				entry1.price1 = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-				entry1.price2 = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-				entry1.sale1 = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-				entry1.countPrice1 = 3;
-				entry1.countPrice2 = 5;
-				entry1.countSale1 = 43;
-				entry1.maxTrades = 15;
-				entry1.xp = 10;
-				entry1.priceMultiplier = 0.01;
-				trades.add(entry1);
+			villagerTrade.tradeEntries = new ArrayList<>();
 
-				VillagerTrade.CustomTradeEntry entry2 = new VillagerTrade.CustomTradeEntry();
-				entry2.tradeEntry = new VillagerTradeEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllVIllagerProfessions(modElement.getWorkspace())));
-				entry2.level = 5;
-				entry2.price1 = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-				entry2.price2 = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-				entry2.sale1 = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-				entry2.countPrice1 = 39;
-				entry2.countPrice2 = 24;
-				entry2.countSale1 = 4;
-				entry2.maxTrades = 10;
-				entry2.xp = 13;
-				entry2.priceMultiplier = 0.05;
-				trades.add(entry2);
+			if (!emptyLists) {
+				int trades = random.nextInt(5) + 1;
+				for (int i = 0; i < trades; i++) {
+					VillagerTrade.CustomTradeEntry trade = new VillagerTrade.CustomTradeEntry();
+					trade.tradeEntry = new VillagerTradeEntry(modElement.getWorkspace(),
+							getRandomDataListEntry(random, ElementUtil.loadAllVIllagerProfessions(modElement.getWorkspace())));
+					trade.level = new int[] { 1, 2, 3, 4, 5}[valueIndex];
+
+					int entries = random.nextInt(5) + 1;
+					for (int j = 0; j < entries; j++) {
+						VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
+						entry.price1 = new MItemBlock(modElement.getWorkspace(),
+								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price2 = new MItemBlock(modElement.getWorkspace(),
+								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.sale1 = new MItemBlock(modElement.getWorkspace(),
+								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
+						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
+						entry.countSale1 = new int[] { 8, 13, 23, 60 }[valueIndex];
+						entry.maxTrades = new int[] { 3, 10, 46, 27 }[valueIndex];
+						entry.xp = new int[] { 2, 5, 10, 15 }[valueIndex];
+						entry.priceMultiplier = new double[] { 0.01, 0.05, 0.1, 0.5 }[valueIndex];
+
+						trade.entries.add(entry);
+					}
+					villagerTrade.tradeEntries.add(trade);
+				}
 			}
-			villagerTrade.tradeEntries = trades;
 			return villagerTrade;
 		}
 		return null;
