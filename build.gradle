@@ -120,6 +120,8 @@ test {
     testLogging.showStandardStreams = true
     testLogging.exceptionFormat = 'full'
     maxHeapSize = "1024m"
+
+    jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
 }
 
 javadoc {
@@ -128,6 +130,8 @@ javadoc {
 }
 
 task runMCreator(type: JavaExec, dependsOn: jar) {
+    jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
+
     classpath += sourceSets.main.runtimeClasspath
     main = "net.mcreator.Launcher"
 
