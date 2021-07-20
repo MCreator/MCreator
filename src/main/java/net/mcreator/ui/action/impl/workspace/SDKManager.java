@@ -30,6 +30,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SDKManager {
 
@@ -67,6 +71,13 @@ public class SDKManager {
 				progressUnit.getProgressDialog().refreshDisplay();
 
 			getJDKFolderForVersion(jdkVersion + fileExtension).delete();
+
+			if (OS.getOS() != OS.WINDOWS) {
+				Set<PosixFilePermission> perms = new HashSet<>();
+				perms.add(PosixFilePermission.OWNER_READ);
+				perms.add(PosixFilePermission.OWNER_WRITE);
+				Files.setPosixFilePermissions(getJDKFolderForVersion(jdkVersion).toPath(), perms);
+			}
 		}
 	}
 
