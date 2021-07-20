@@ -21,6 +21,7 @@ package net.mcreator.workspace.misc;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
@@ -76,9 +77,14 @@ import java.util.stream.Collectors;
 	}
 
 	public List<ModElement> getElementsOfType(String typestring) {
-		ModElementType type = ModElementType.valueOf(typestring);
-		return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
-				.collect(Collectors.toList());
+		try {
+			ModElementType<?> type = ModElementTypeLoader.getModElementType(typestring);
+			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
+					.collect(Collectors.toList());
+		} catch (IllegalArgumentException e) {
+			LOG.warn("Failed to list elements of non-existent type", e);
+			return Collections.emptyList();
+		}
 	}
 
 	public String getUUID(String offset) {

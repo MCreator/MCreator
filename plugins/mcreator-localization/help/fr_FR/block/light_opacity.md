@@ -1,2 +1,2 @@
-Cette propriété permet au bloc de laisser passer, ou non, la lumière. Mettre la valeur 126 le rend semi-transparent (uniquement dans certaines versions de Minecraft), 255 bloquera toute lumière (valeur par défaut),
-et 0 permettra à toute la lumière de passer.
+Cette propriété détermine de combien le niveau de lumière diminue en traversant ce bloc. Par exemple,
+une valeur de 15 permet au bloc de bloquer toute la lumière, tandis qu'une valeur de 0 rendra le bloc transparent.

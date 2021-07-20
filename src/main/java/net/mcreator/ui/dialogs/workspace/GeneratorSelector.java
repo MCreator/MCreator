@@ -107,7 +107,7 @@ public class GeneratorSelector {
 			genStats.add(new JEmptyBox(20, 20));
 
 			JPanel supportedModTypes = new JPanel(new GridLayout(-1, 5, 7, 2));
-			for (Map.Entry<ModElementType, GeneratorStats.CoverageStatus> typeCoverageInfo : stats
+			for (Map.Entry<ModElementType<?>, GeneratorStats.CoverageStatus> typeCoverageInfo : stats
 					.getModElementTypeCoverageInfo().entrySet()) {
 				addStatusLabel(typeCoverageInfo.getKey().getReadableName(), typeCoverageInfo.getValue(),
 						supportedModTypes);
@@ -136,7 +136,7 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "materials"), "materials", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "particles"), "particles", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "path_node_types"), "pathnodetypes", supportedElements, stats);
-			addStatsBar(L10N.t(covpfx + "potions"), "potions", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "effects"), "effects", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "sounds"), "sounds", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "sound_categories"), "soundcategories", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "step_sounds"), "stepsounds", supportedElements, stats);

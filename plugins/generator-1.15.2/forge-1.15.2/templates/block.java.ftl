@@ -140,8 +140,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.rotationMode == 1 || data.rotationMode == 3>
 		public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-		<#elseif data.rotationMode == 2 || data.rotationMode == 4 || data.rotationMode == 5>
+		<#elseif data.rotationMode == 2 || data.rotationMode == 4>
 		public static final DirectionProperty FACING = DirectionalBlock.FACING;
+		<#elseif data.rotationMode == 5>
+		public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
         </#if>
         <#if data.isWaterloggable>
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -212,7 +214,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
                                      <#elseif data.rotationMode == 2 || data.rotationMode == 4>
                                      .with(FACING, Direction.NORTH)
                                      <#elseif data.rotationMode == 5>
-                                     .with(FACING, Direction.SOUTH)
+                                     .with(AXIS, Direction.Axis.Y)
                                      </#if>
                                      <#if data.isWaterloggable>
                                      .with(WATERLOGGED, false)
@@ -277,9 +279,15 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-		<#if data.lightOpacity == 0>
+		<#if (!data.blockBase?? || data.blockBase == "Leaves") && data.lightOpacity == 0>
 		@Override public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
-			return true;
+			return <#if data.isWaterloggable>state.getFluidState().isEmpty()<#else>true</#if>;
+		}
+		</#if>
+
+		<#if !data.blockBase?? || data.blockBase == "Leaves" || data.lightOpacity != 0>
+		@Override public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
+			return ${data.lightOpacity};
 		}
 		</#if>
 
@@ -302,11 +310,17 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.rotationMode != 0>
 		@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		    <#if data.isWaterloggable>
-      		    builder.add(FACING, WATERLOGGED);
-      		<#else>
-      		    builder.add(FACING);
-      		</#if>
+		<#if data.isWaterloggable>
+			<#if data.rotationMode == 5>
+	  		builder.add(AXIS, WATERLOGGED);
+	  		<#else>
+	  		builder.add(FACING, WATERLOGGED);
+	  		</#if>
+	  	<#elseif data.rotationMode == 5>
+	  		builder.add(AXIS);
+	  	<#else>
+	  		builder.add(FACING);
+	  	</#if>
    		}
 
 			<#if data.rotationMode != 5>
@@ -320,10 +334,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
    			<#else>
 			@Override public BlockState rotate(BlockState state, Rotation rot) {
 				if(rot == Rotation.CLOCKWISE_90 || rot == Rotation.COUNTERCLOCKWISE_90) {
-					if((Direction) state.get(FACING) == Direction.WEST || (Direction) state.get(FACING) == Direction.EAST) {
-						return state.with(FACING, Direction.UP);
-					} else if((Direction) state.get(FACING) == Direction.UP || (Direction) state.get(FACING) == Direction.DOWN) {
-						return state.with(FACING, Direction.WEST);
+					if ((Direction.Axis) state.get(AXIS) == Direction.Axis.X) {
+						return state.with(AXIS, Direction.Axis.Z);
+					} else if ((Direction.Axis) state.get(AXIS) == Direction.Axis.Z) {
+						return state.with(AXIS, Direction.Axis.X);
 					}
 				}
 				return state;
@@ -336,13 +350,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		    Direction facing = context.getFace();
 		    </#if>
 		    <#if data.rotationMode == 5>
-            Direction facing = context.getFace();
-            if (facing == Direction.WEST || facing == Direction.EAST)
-                facing = Direction.UP;
-            else if (facing == Direction.NORTH || facing == Direction.SOUTH)
-                facing = Direction.EAST;
-            else
-                facing = Direction.SOUTH;
+            Direction.Axis axis = context.getFace().getAxis();
             </#if>
             <#if data.isWaterloggable>
             boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
@@ -353,8 +361,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			        .with(FACING, context.getPlacementHorizontalFacing().getOpposite())
 			        <#elseif data.rotationMode == 2>
 			        .with(FACING, context.getNearestLookingDirection().getOpposite())
-                    <#elseif data.rotationMode == 4 || data.rotationMode == 5>
+                    <#elseif data.rotationMode == 4>
 			        .with(FACING, facing)
+                    <#elseif data.rotationMode == 5>
+                    .with(AXIS, axis)
 			        </#if>
 			        <#if data.isWaterloggable>
 			        .with(WATERLOGGED, flag)
@@ -427,7 +437,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
-		<#if data.canProvidePower>
+		<#if data.canProvidePower && data.emittedRedstonePower??>
 		@Override public boolean canProvidePower(BlockState state) {
 			return true;
 		}
@@ -678,7 +688,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
-        <#if hasProcedure(data.onRightClicked) || data.openGUIOnRightClick>
+        <#if hasProcedure(data.onRightClicked) || data.shouldOpenGUIOnRightClick()>
 		@Override
 		public ActionResultType onBlockActivated(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
 			super.onBlockActivated(blockstate, world, pos, entity, hand, hit);
@@ -687,7 +697,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			int y = pos.getY();
 			int z = pos.getZ();
 
-			<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>" && data.openGUIOnRightClick && (data.guiBoundTo)?has_content>
+			<#if data.shouldOpenGUIOnRightClick()>
 				if(entity instanceof ServerPlayerEntity) {
 					NetworkHooks.openGui((ServerPlayerEntity) entity, new INamedContainerProvider() {
 						@Override public ITextComponent getDisplayName() {
@@ -702,10 +712,18 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 			<#if hasProcedure(data.onRightClicked)>
 				Direction direction = hit.getFace();
+				<#if hasReturnValue(data.onRightClicked)>
+				ActionResultType result = <@procedureOBJToActionResultTypeCode data.onRightClicked/>;
+				<#else>
 				<@procedureOBJToCode data.onRightClicked/>
+				</#if>
 			</#if>
 
+        	<#if data.shouldOpenGUIOnRightClick() || !hasReturnValue(data.onRightClicked)>
 			return ActionResultType.SUCCESS;
+			<#else>
+			return result;
+			</#if>
 		}
         </#if>
 
@@ -1020,7 +1038,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			}}.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("${registryname}", "${registryname}", blockAt -> {
 						boolean blockCriteria = false;
 					<#list data.blocksToReplace as replacementBlock>
-						if(blockAt.getBlock() == ${mappedBlockToBlockStateCode(replacementBlock)}.getBlock())
+						if(blockAt.getBlock() == ${mappedBlockToBlock(replacementBlock)})
 							blockCriteria = true;
 					</#list>
 						return blockCriteria;

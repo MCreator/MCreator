@@ -23,7 +23,6 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.types.GUI;
@@ -90,9 +89,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	private final JPanel returnType = new JPanel(new BorderLayout());
 	private final JLabel returnTypeLabel = new JLabel();
 
-	private final JPanel triggerInfoPanel = new JPanel(new BorderLayout());
+	private final JPanel triggerInfoPanel = new JPanel(new BorderLayout(2, 2));
 	private final JLabel cancelableTriggerLabel = new JLabel();
 	private final JLabel hasResultTriggerLabel = new JLabel();
+	private final JLabel sideTriggerLabel = new JLabel();
 
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 
@@ -125,9 +125,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			cancelableTriggerLabel.setText("");
 			hasResultTriggerLabel.setText("");
+			sideTriggerLabel.setText("");
 
 			cancelableTriggerLabel.setIcon(null);
 			hasResultTriggerLabel.setIcon(null);
+			sideTriggerLabel.setIcon(null);
 
 			if (isEditingMode() && dependenciesBeforeEdit == null) {
 				dependenciesBeforeEdit = new ArrayList<>(dependenciesArrayList);
@@ -198,6 +200,13 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					if (trigger.has_result) {
 						hasResultTriggerLabel.setText(L10N.t("elementgui.procedure.can_specify_result_trigger"));
 						hasResultTriggerLabel.setIcon(UIRES.get("info"));
+					}
+					if ("client".equals(trigger.side)) {
+						sideTriggerLabel.setText(L10N.t("elementgui.procedure.client_side_trigger"));
+						sideTriggerLabel.setIcon(UIRES.get("16px.client"));
+					} else if ("server".equals(trigger.side)) {
+						sideTriggerLabel.setText(L10N.t("elementgui.procedure.server_side_trigger"));
+						sideTriggerLabel.setIcon(UIRES.get("16px.server"));
 					}
 
 					if (!mcreator.getGeneratorStats().getGeneratorTriggers().contains(trigger.getID())) {
@@ -328,6 +337,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		triggerInfoPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 0));
 		triggerInfoPanel.add("North", cancelableTriggerLabel);
 		triggerInfoPanel.add("Center", hasResultTriggerLabel);
+		triggerInfoPanel.add("South", sideTriggerLabel);
 
 		JPanel localVarsPan = new JPanel(new BorderLayout());
 		localVarsPan.setOpaque(false);
@@ -608,8 +618,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						}
 						if (procedureUsedByGUI)
 							mcreator.getGenerator().generateElement(generatableElement);
-					} else if (generatableElement != null && ModElementTypeRegistry.REGISTRY.get(element.getType())
-							.hasProcedureTriggers()) {
+					} else if (generatableElement != null && element.getType().hasProcedureTriggers()) {
 						if (Procedure.isElementUsingProcedure(generatableElement, modElement.getName())) {
 							mcreator.getGenerator().generateElement(generatableElement);
 						}
