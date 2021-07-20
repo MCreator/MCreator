@@ -2,7 +2,7 @@
     "replace": false,
     "values": [
         <#assign elements = []>
-        <#list w.getElementsOfType("FLUID") as mod>
+        <#list w.getElementsOfType("fluid") as mod>
             <#if mod.getGeneratableElement().type.toString()?lower_case == var_type>
                 <#assign elements += ["${modid}:${mod.getRegistryName()?lower_case}"]>
                 <#assign elements += ["${modid}:${mod.getRegistryName()?lower_case}_flowing"]>

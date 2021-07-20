@@ -556,11 +556,10 @@ import java.util.stream.Collectors;
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
 				e -> togglefilter("f:err")));
 		filterPopup.addSeparator();
-		for (ModElementType type : Arrays.stream(ModElementType.values())
-				.sorted(Comparator.comparing(ModElementType::getReadableName)).collect(Collectors.toList())) {
+		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(),
 					e -> togglefilter("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
-					.setIcon(new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 16))));
+					.setIcon(new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 16))));
 		}
 		filter.addActionListener(e -> filterPopup.show(filter, 0, 26));
 
@@ -1046,14 +1045,16 @@ import java.util.stream.Collectors;
 	}
 
 	private void lockCode() {
-		Object[] options = { "Lock/unlock the code", "Cancel" };
+		Object[] options = { L10N.t("workspace.elements.lock_modelement_lock_unlock"),
+				UIManager.getString("OptionPane.cancelButtonText") };
 		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("workspace.elements.lock_modelement_message"),
 				L10N.t("workspace.elements.lock_modelement_confirm"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.WARNING_MESSAGE, null, options, options[1]);
 		if (n == 0) {
 			ProgressDialog dial = new ProgressDialog(mcreator, L10N.t("workspace.elements.lock_modelement_title"));
 			Thread t = new Thread(() -> {
-				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit("Locking/unlocking mod elements");
+				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
+						L10N.t("workspace.elements.lock_modelement_locking_unlocking"));
 				dial.addProgress(p0);
 
 				List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
@@ -1078,7 +1079,7 @@ import java.util.stream.Collectors;
 				// if we have new unlocked elements, we recreate their code
 				if (elementsThatGotUnlocked.size() > 0) {
 					ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
-							"Regenerating code of unlocked elements");
+							L10N.t("workspace.elements.lock_modelement_regeneration"));
 					dial.addProgress(p1);
 					int i = 0;
 					for (ModElement mod : elementsThatGotUnlocked) {
@@ -1094,7 +1095,8 @@ import java.util.stream.Collectors;
 					p1.ok();
 					dial.refreshDisplay();
 
-					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit("Rebuilding workspace");
+					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
+							L10N.t("workspace.elements.lock_modelement_rebuilding_workspace"));
 					dial.addProgress(p2);
 					mcreator.actionRegistry.buildWorkspace.doAction();
 					p2.ok();
@@ -1111,16 +1113,16 @@ import java.util.stream.Collectors;
 		if (list.getSelectedValue() instanceof ModElement) {
 			ModElement mu = (ModElement) list.getSelectedValue();
 			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
-				String modName = VOptionPane.showInputDialog(mcreator,
-						"<html><font style=\"font-size: 13px;\">Enter the name of the new mod element:</font><br><small>"
-								+ "This mod element will be the same as " + mu.getName()
-								+ ", but with this name.</font>", "Duplicate " + mu.getName(), mu.getElementIcon(),
-						new OptionPaneValidatior() {
-							@Override public Validator.ValidationResult validate(JComponent component) {
-								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component)
-										.validate();
-							}
-						}, "Duplicate", "Cancel");
+				String modName = VOptionPane
+						.showInputDialog(mcreator, L10N.t("workspace.elements.duplicate_message", mu.getName()),
+								L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
+								new OptionPaneValidatior() {
+									@Override public Validator.ValidationResult validate(JComponent component) {
+										return new ModElementNameValidator(mcreator.getWorkspace(),
+												(VTextField) component).validate();
+									}
+								}, L10N.t("workspace.elements.duplicate"),
+								UIManager.getString("OptionPane.cancelButtonText"));
 				if (modName != null && !modName.equals("")) {
 					modName = JavaConventions.convertToValidClassName(modName);
 
@@ -1183,8 +1185,7 @@ import java.util.stream.Collectors;
 			if (mu.isCodeLocked()) {
 				editCurrentlySelectedModElementAsCode(mu, component, x, y);
 			} else {
-				ModElementGUI<?> modeditor = ModElementTypeRegistry.REGISTRY.get(mu.getType())
-						.getModElement(mcreator, mu, true);
+				ModElementGUI<?> modeditor = mu.getType().getModElementGUI(mcreator, mu, true);
 				if (modeditor != null) {
 					modeditor.showView();
 				}
@@ -1193,9 +1194,7 @@ import java.util.stream.Collectors;
 			if (mu.isCodeLocked()) {
 				editCurrentlySelectedModElementAsCode(mu, component, x, y);
 			} else {
-				JOptionPane.showMessageDialog(null,
-						"<html>This mod does not have saved instance. If you want to make it editable,<br>you need to remake it.<br>"
-								+ "<small>You probably see this because you have updated MCreator and your mod was made before saving was possible.");
+				JOptionPane.showMessageDialog(null, L10N.t("workspace.elements.edit_modelement_nosavedinstance"));
 			}
 		}
 	}
@@ -1454,7 +1453,7 @@ import java.util.stream.Collectors;
 			filterItems.clear();
 			String searchInput = search.getText();
 
-			List<ModElementType> metfilters = new ArrayList<>();
+			List<ModElementType<?>> metfilters = new ArrayList<>();
 			List<String> filters = new ArrayList<>();
 			List<String> keyWords = new ArrayList<>();
 
@@ -1465,7 +1464,7 @@ import java.util.stream.Collectors;
 					pat = pat.replaceFirst("f:", "");
 					if (pat.equals("locked") || pat.equals("ok") || pat.equals("err"))
 						filters.add(pat);
-					for (ModElementType type : ModElementType.values()) {
+					for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 						if (pat.equals(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))) {
 							metfilters.add(type);
 						}
@@ -1527,7 +1526,7 @@ import java.util.stream.Collectors;
 						if (metfilters.size() == 0)
 							return true;
 
-						for (ModElementType type : metfilters)
+						for (ModElementType<?> type : metfilters)
 							if (item.getType() == type)
 								return true;
 						return false;

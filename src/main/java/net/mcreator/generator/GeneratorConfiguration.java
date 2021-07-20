@@ -224,11 +224,11 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return generatorVariableTypes;
 	}
 
-	@Nullable public List<String> getSupportedDefinitionFields(ModElementType type) {
+	@Nullable public List<String> getSupportedDefinitionFields(ModElementType<?> type) {
 		Map<?, ?> map = definitionsProvider.getModElementDefinition(type);
 
 		if (map == null) {
-			LOG.info("Failed to load element definition for mod element type " + type.name());
+			LOG.info("Failed to load element definition for mod element type " + type.getRegistryName());
 			return null;
 		}
 
@@ -239,11 +239,11 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return null;
 	}
 
-	@Nullable public List<String> getUnsupportedDefinitionFields(ModElementType type) {
+	@Nullable public List<String> getUnsupportedDefinitionFields(ModElementType<?> type) {
 		Map<?, ?> map = definitionsProvider.getModElementDefinition(type);
 
 		if (map == null) {
-			LOG.info("Failed to load element definition for mod element type " + type.name());
+			LOG.info("Failed to load element definition for mod element type " + type.getRegistryName());
 			return null;
 		}
 

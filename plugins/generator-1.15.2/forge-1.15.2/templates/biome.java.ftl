@@ -272,10 +272,10 @@ import net.minecraft.block.material.Material;
 				} else {
 					Block ground = world.getBlockState(position.add(0, -1, 0)).getBlock();
 					Block ground2 = world.getBlockState(position.add(0, -2, 0)).getBlock();
-					if (!((ground == ${mappedBlockToBlockStateCode(data.groundBlock)}.getBlock()
-							|| ground == ${mappedBlockToBlockStateCode(data.undergroundBlock)}.getBlock())
-							&& (ground2 == ${mappedBlockToBlockStateCode(data.groundBlock)}.getBlock()
-							|| ground2 == ${mappedBlockToBlockStateCode(data.undergroundBlock)}.getBlock())
+					if (!((ground == ${mappedBlockToBlock(data.groundBlock)}
+							|| ground == ${mappedBlockToBlock(data.undergroundBlock)})
+							&& (ground2 == ${mappedBlockToBlock(data.groundBlock)}
+							|| ground2 == ${mappedBlockToBlock(data.undergroundBlock)})
 						))
 						return false;
 
@@ -298,8 +298,8 @@ import net.minecraft.block.material.Material;
 										if (state.getBlock().isAir(state, world, blockpos)
 												|| state.getMaterial().blocksMovement()
 												|| state.isIn(BlockTags.LEAVES)
-												|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeVines)}.getBlock()
-												|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeBranch)}.getBlock()) {
+												|| state.getBlock() == ${mappedBlockToBlock(data.treeVines)}
+												|| state.getBlock() == ${mappedBlockToBlock(data.treeBranch)}) {
 											setTreeBlockState(changedBlocks, world,
 													blockpos, ${mappedBlockToBlockStateCode(data.treeBranch)}, bbox);
 										}
@@ -319,8 +319,8 @@ import net.minecraft.block.material.Material;
 							if (state.getBlock().isAir(state, world, genhPos)
 										|| state.getMaterial().blocksMovement()
 										|| state.isIn(BlockTags.LEAVES)
-										|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeVines)}.getBlock()
-										|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeBranch)}.getBlock()){
+										|| state.getBlock() == ${mappedBlockToBlock(data.treeVines)}
+										|| state.getBlock() == ${mappedBlockToBlock(data.treeBranch)}){
 
 								<#if (data.treeVines?has_content && !data.treeVines.isEmpty())>
 								if (genh > 0) {
@@ -349,7 +349,7 @@ import net.minecraft.block.material.Material;
 
 										state = world.getBlockState(bpos);
 										if (state.isIn(BlockTags.LEAVES)
-												|| state.getBlock() == ${mappedBlockToBlockStateCode(data.treeBranch)}.getBlock()) {
+												|| state.getBlock() == ${mappedBlockToBlock(data.treeBranch)}) {
 											BlockPos blockpos1 = bpos.south();
 											BlockPos blockpos2 = bpos.west();
 											BlockPos blockpos3 = bpos.east();
@@ -407,10 +407,10 @@ import net.minecraft.block.material.Material;
 
 		private boolean canGrowInto(Block blockType) {
         	return blockType.getDefaultState().getMaterial() == Material.AIR ||
-					blockType == ${mappedBlockToBlockStateCode(data.treeStem)}.getBlock() ||
-					blockType == ${mappedBlockToBlockStateCode(data.treeBranch)}.getBlock() ||
-					blockType == ${mappedBlockToBlockStateCode(data.groundBlock)}.getBlock() ||
-					blockType == ${mappedBlockToBlockStateCode(data.undergroundBlock)}.getBlock();
+					blockType == ${mappedBlockToBlock(data.treeStem)} ||
+					blockType == ${mappedBlockToBlock(data.treeBranch)} ||
+					blockType == ${mappedBlockToBlock(data.groundBlock)} ||
+					blockType == ${mappedBlockToBlock(data.undergroundBlock)};
 		}
 
 		private boolean isReplaceable(IWorld world, BlockPos pos) {

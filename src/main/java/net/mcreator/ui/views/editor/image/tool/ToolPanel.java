@@ -21,6 +21,7 @@ package net.mcreator.ui.views.editor.image.tool;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.canvas.CanvasRenderer;
@@ -47,7 +48,7 @@ public class ToolPanel extends JSplitPane {
 	private final JPanel toolProperties = new JPanel(new CardLayout());
 	private final JPanel toolGroups = new JPanel();
 
-	private PencilTool pt;
+	private PencilTool pencilTool;
 
 	private final ColorSelector cs;
 	private AbstractTool currentTool;
@@ -72,8 +73,7 @@ public class ToolPanel extends JSplitPane {
 		cs = new ColorSelector(frame);
 
 		toolGroups.setBorder(new EmptyBorder(3, 3, 3, 3));
-		BoxLayout boxLayout = new BoxLayout(toolGroups, BoxLayout.Y_AXIS);
-		toolGroups.setLayout(boxLayout);
+		toolGroups.setLayout(new BoxLayout(toolGroups, BoxLayout.Y_AXIS));
 
 		toolsAndColor.setOpaque(false);
 		toolProperties.setOpaque(false);
@@ -101,19 +101,18 @@ public class ToolPanel extends JSplitPane {
 	}
 
 	private void init() {
-		ToolGroup general = new ToolGroup("General");
-		ToolGroup drawing = new ToolGroup("Drawing");
-		ToolGroup filters = new ToolGroup("Filters");
-		ToolGroup constraints = new ToolGroup("Move and resize");
+		ToolGroup general = new ToolGroup(L10N.t("dialog.image_maker.tools.general"));
+		ToolGroup drawing = new ToolGroup(L10N.t("dialog.image_maker.tools.drawing"));
+		ToolGroup filters = new ToolGroup(L10N.t("dialog.image_maker.tools.filters"));
+		ToolGroup constraints = new ToolGroup(L10N.t("dialog.image_maker.tools.constraints"));
 
-		pt = new PencilTool(canvas, cs, layerPanel, versionManager);
-		JToggleButton pencil = register(pt, drawing);
+		pencilTool = new PencilTool(canvas, cs, layerPanel, versionManager);
+		register(pencilTool, drawing).setSelected(true);
 
-		addButton("Undo (Ctrl + Z)", "Undoes the last action", UIRES.get("img_editor.undo"), e -> versionManager.undo(),
-				general);
-		addButton("Redo (Ctrl + Y)", "Redoes the last action", UIRES.get("img_editor.redo"), e -> versionManager.redo(),
-				general);
-		register(new ResizeCanvasTool(canvas, cs, versionManager, frame), general);
+		addButton(L10N.t("dialog.image_maker.tools.undo"), L10N.t("dialog.image_maker.tools.undo_description"),
+				UIRES.get("img_editor.undo"), e -> versionManager.undo(), general);
+		addButton(L10N.t("dialog.image_maker.tools.redo"), L10N.t("dialog.image_maker.tools.redo_description"),
+				UIRES.get("img_editor.redo"), e -> versionManager.redo(), general);
 
 		register(new ShapeTool(canvas, cs, layerPanel, versionManager), drawing);
 		register(new EraserTool(canvas, cs, layerPanel, versionManager), drawing);
@@ -127,8 +126,7 @@ public class ToolPanel extends JSplitPane {
 
 		register(new MoveTool(canvas, cs, versionManager), constraints);
 		register(new ResizeTool(canvas, cs, versionManager, frame), constraints);
-
-		pencil.setSelected(true);
+		register(new ResizeCanvasTool(canvas, cs, versionManager, frame), constraints);
 
 		toolGroups.add(general);
 		toolGroups.add(drawing);
@@ -212,6 +210,6 @@ public class ToolPanel extends JSplitPane {
 	}
 
 	public void initTools() {
-		setTool(pt);
+		setTool(pencilTool);
 	}
 }

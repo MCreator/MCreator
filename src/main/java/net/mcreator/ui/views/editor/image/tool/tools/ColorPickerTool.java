@@ -19,27 +19,70 @@
 package net.mcreator.ui.views.editor.image.tool.tools;
 
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
+import net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class ColorPickerTool extends AbstractTool {
 
+	private final JCheckBox respectOpacity;
+
 	public ColorPickerTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager) {
-		super("Color picker", "A tool that sets current foreground color to the color under the cursor",
-				UIRES.get("img_editor.picker"), canvas, colorSelector, versionManager);
-		noSettings(true);
+		super(L10N.t("dialog.image_maker.tools.types.colorpicker"),
+				L10N.t("dialog.image_maker.tools.types.colorpicker_description"), UIRES.get("img_editor.picker"),
+				canvas, colorSelector, versionManager);
+
+		respectOpacity = new JCheckBox("Pick opacity");
+		respectOpacity.setSelected(true);
+		settingsPanel.add(respectOpacity);
 	}
 
-	@Override public boolean process(ZoomedMouseEvent mouseEvent) {
-		if (layer.in(mouseEvent.getX(), mouseEvent.getY())) {
-			Color c = new Color(layer.getRGB(mouseEvent.getX() - layer.getX(), mouseEvent.getY() - layer.getY()));
-			colorSelector.setForegroundColor(c);
+	@Override public boolean process(ZoomedMouseEvent e) {
+		mouseMoved(e);
+		if (layer.in(e.getX(), e.getY())) {
+			Color c = new Color(layer.getRGB(e.getX() - layer.getX(), e.getY() - layer.getY()), true);
+			if (e.isShiftDown()) {
+				colorSelector.setBackgroundColor(new Color(c.getRed(), c.getGreen(), c.getBlue(),
+						respectOpacity.isSelected() ? c.getAlpha() : colorSelector.getBackgroundColor().getAlpha()));
+			} else {
+				colorSelector.setForegroundColor(new Color(c.getRed(), c.getGreen(), c.getBlue(),
+						respectOpacity.isSelected() ? c.getAlpha() : colorSelector.getForegroundColor().getAlpha()));
+			}
 			return true;
 		}
 		return false;
+	}
+
+	@Override public void mouseEntered(MouseEvent e) {
+		canvas.enablePreview(true);
+		super.mouseEntered(e);
+	}
+
+	@Override public void mouseExited(MouseEvent e) {
+		canvas.enablePreview(false);
+		canvas.getCanvasRenderer().repaint();
+		super.mouseExited(e);
+	}
+
+	@Override public void toolEnabled(ToolActivationEvent e) {
+		canvas.enablePreview(true);
+		super.toolEnabled(e);
+	}
+
+	@Override public void toolDisabled(ToolActivationEvent e) {
+		canvas.enablePreview(false);
+		canvas.getCanvasRenderer().repaint();
+		super.toolDisabled(e);
+	}
+
+	@Override public void mouseMoved(MouseEvent e) {
+		canvas.updateCustomPreview(e, Shape.SQUARE, 1);
 	}
 }

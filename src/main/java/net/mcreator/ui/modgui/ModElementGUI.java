@@ -30,7 +30,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -87,7 +86,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0 && modIcon.getIconHeight() > 0
 				&& modIcon != MCItem.DEFAULT_ICON)
 			return modIcon;
-		return TiledImageCache.getModTypeIcon(modElement.getType());
+		return modElement.getType().getIcon();
 	}
 
 	@Override public ViewBase showView() {
@@ -437,6 +436,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		if (this.tabIn != null && closeTab)
 			mcreator.mcreatorTabs.closeTab(tabIn);
+		else
+			mcreator.mcreatorTabs.getTabs().stream().filter(e -> e.getContent() == this)
+					.forEach(e -> e.setIcon(((ModElementGUI<?>) e.getContent()).getViewIcon()));
 
 		if (!editingMode && modElementCreatedListener
 				!= null) // only call this event if listener registered and we are not in editing mode

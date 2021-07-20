@@ -19,6 +19,7 @@
 package net.mcreator.ui.views.editor.image.tool.tools;
 
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
@@ -32,27 +33,22 @@ import java.awt.image.BufferedImage;
 public class FloodFillTool extends AbstractModificationTool {
 
 	private int threshold = 30;
-	private double opacity = 1;
 
 	public FloodFillTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager) {
-		super("Flood fill", "A tool for filling in larger areas", UIRES.get("img_editor.bucket"), canvas, colorSelector,
-				versionManager);
+		super(L10N.t("dialog.image_maker.tools.types.floodfill"),
+				L10N.t("dialog.image_maker.tools.types.floodfill_description"), UIRES.get("img_editor.bucket"), canvas,
+				colorSelector, versionManager);
 
-		JSlidingSpinner opacitySlider = new JSlidingSpinner("Opacity:");
-		opacitySlider.addChangeListener(e -> opacity = opacitySlider.getValue() / 100.0);
+		JSlidingSpinner thresholdSlider = new JSlidingSpinner(L10N.t("dialog.image_maker.tools.types.threshold"),
+				threshold, 0, 255, 1);
+		thresholdSlider.addChangeListener(e -> threshold = (int) Math.round(thresholdSlider.getValue()));
 
-		JSlidingSpinner thresholdSlider = new JSlidingSpinner("Threshold:", threshold, 0, 255, 1);
-		thresholdSlider.addChangeListener(e -> {
-			threshold = (int) Math.round(thresholdSlider.getValue());
-		});
-
-		settingsPanel.add(opacitySlider);
 		settingsPanel.add(thresholdSlider);
 	}
 
 	@Override public boolean process(ZoomedMouseEvent e) {
 		if (layer.in(e.getX(), e.getY())) {
-			layer.setOverlayOpacity(opacity);
+			layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
 			fillArea(layer.getRaster(), layer.getOverlay(), e.getX() - layer.getX(), e.getY() - layer.getY(),
 					colorSelector.getForegroundColor());
 			return true;

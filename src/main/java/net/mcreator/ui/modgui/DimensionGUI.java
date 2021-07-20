@@ -114,7 +114,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	@Override protected void initGUI() {
 		whenPortaTriggerlUsed = new ProcedureSelector(this.withEntry("dimension/when_portal_used"), mcreator,
 				L10N.t("elementgui.dimension.event_portal_trigger_used"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+				VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"))
+				.makeReturnValueOptional();
 		onPortalTickUpdate = new ProcedureSelector(this.withEntry("dimension/on_portal_tick_update"), mcreator,
 				L10N.t("elementgui.dimension.event_portal_tick_update"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));

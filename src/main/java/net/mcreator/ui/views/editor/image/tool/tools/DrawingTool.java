@@ -19,6 +19,7 @@
 package net.mcreator.ui.views.editor.image.tool.tools;
 
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
@@ -35,7 +36,6 @@ import java.awt.geom.Point2D;
 
 public class DrawingTool extends AbstractModificationTool {
 
-	private double opacity = 1;
 	private int size = 1;
 	private Shape shape = Shape.SQUARE;
 
@@ -50,24 +50,21 @@ public class DrawingTool extends AbstractModificationTool {
 			String description, ImageIcon icon, VersionManager versionManager) {
 		super(name, description, icon, canvas, colorSelector, versionManager);
 		setLayerPanel(layerPanel);
-		JSlidingSpinner opacitySlider = new JSlidingSpinner("Opacity:");
-		opacitySlider.addChangeListener(e -> opacity = opacitySlider.getValue() / 100.0);
 
 		JComboBox<Shape> shapeBox = new JComboBox<>(Shape.values());
 		shapeBox.setSelectedIndex(0);
-		JTitledComponentWrapper titledShape = new JTitledComponentWrapper("Shape:", shapeBox);
-		shapeBox.addActionListener(e -> {
-			shape = (Shape) shapeBox.getSelectedItem();
-		});
+		JTitledComponentWrapper titledShape = new JTitledComponentWrapper(
+				L10N.t("dialog.image_maker.tools.types.shape"), shapeBox);
+		shapeBox.addActionListener(e -> shape = (Shape) shapeBox.getSelectedItem());
 
-		JSlidingSpinner sizeSlider = new JSlidingSpinner("Size:", 1, 1, 100, 1);
+		JSlidingSpinner sizeSlider = new JSlidingSpinner(L10N.t("dialog.image_maker.tools.types.drawing_size"), 1, 1,
+				100, 1);
 		sizeSlider.addChangeListener(e -> size = (int) Math.round(sizeSlider.getValue()));
 
-		aliasing = new JCheckBox("Smooth edge");
-		connect = new JCheckBox("Connect points");
+		aliasing = new JCheckBox(L10N.t("dialog.image_maker.tools.types.smooth_edge"));
+		connect = new JCheckBox(L10N.t("dialog.image_maker.tools.types.drawing_connect_points"));
 		connect.setSelected(true);
 
-		settingsPanel.add(opacitySlider);
 		settingsPanel.add(titledShape);
 		settingsPanel.add(sizeSlider);
 		settingsPanel.add(aliasing);
@@ -75,7 +72,7 @@ public class DrawingTool extends AbstractModificationTool {
 	}
 
 	@Override public boolean process(ZoomedMouseEvent e) {
-		layer.setOverlayOpacity(opacity);
+		layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
 		canvas.updateCustomPreview(e, shape, size);
 		if (layer.in(e.getX(), e.getY())) {
 			int sx = e.getX() - layer.getX(), sy = e.getY() - layer.getY();

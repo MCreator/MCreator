@@ -3,16 +3,11 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/potion/@NAMEPotion.java"
 
 localizationkeys:
-  - key: effect.@registryname
-    mapto: effectName
   - key: item.minecraft.potion.effect.@registryname
-    mapto: name
+    mapto: potionName
   - key: item.minecraft.splash_potion.effect.@registryname
-    mapto: name
-    prefix: "Splash "
-  - key: item.minecraft.tipped_arrow.effect.@registryname
-    mapto: name
-    prefix: "Arrow of "
+    mapto: splashName
   - key: item.minecraft.lingering_potion.effect.@registryname
-    mapto: name
-    prefix: "Lingering "
+    mapto: lingeringName
+  - key: item.minecraft.tipped_arrow.effect.@registryname
+    mapto: arrowName

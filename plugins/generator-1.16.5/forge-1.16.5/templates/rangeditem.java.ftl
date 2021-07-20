@@ -206,6 +206,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			double y = this.getPosY();
 			double z = this.getPosZ();
 			World world = this.world;
+			Entity imediatesourceentity = this;
 			<@procedureOBJToCode data.onBulletHitsPlayer/>
 		}
         </#if>
@@ -219,6 +220,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 				double y = this.getPosY();
 				double z = this.getPosZ();
 				World world = this.world;
+				Entity imediatesourceentity = this;
 				<@procedureOBJToCode data.onBulletHitsEntity/>
 			</#if>
 		}
@@ -230,6 +232,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			double z = this.getPosZ();
 			World world = this.world;
 			Entity entity = this.func_234616_v_();
+			Entity imediatesourceentity = this;
 			<@procedureOBJToCode data.onBulletFlyingTick/>
 			if (this.inGround) {
 			    <@procedureOBJToCode data.onBulletHitsBlock/>

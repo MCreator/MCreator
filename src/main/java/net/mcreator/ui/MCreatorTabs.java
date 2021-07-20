@@ -253,6 +253,10 @@ public class MCreatorTabs {
 		toClose.forEach(this::closeTab);
 	}
 
+	public List<Tab> getTabs() {
+		return tabs;
+	}
+
 	public Tab getCurrentTab() {
 		return current;
 	}

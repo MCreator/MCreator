@@ -83,7 +83,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllAchievements(Workspace workspace) {
-		List<DataListEntry> achievements = getCustomElementsOfType(workspace, ModElementType.ACHIEVEMENT);
+		List<DataListEntry> achievements = getCustomElementsOfType(workspace, ModElementType.ADVANCEMENT);
 		achievements.addAll(DataListLoader.loadDataList("achievements"));
 		return achievements;
 	}
@@ -127,8 +127,8 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTION);
-		retval.addAll(DataListLoader.loadDataList("potions"));
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTIONEFFECT);
+		retval.addAll(DataListLoader.loadDataList("effects"));
 		return retval;
 	}
 
@@ -264,7 +264,7 @@ public class ElementUtil {
 				.collect(Collectors.toList());
 	}
 
-	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, ModElementType type) {
+	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, ModElementType<?> type) {
 		return workspace.getModElements().stream().filter(mu -> mu.getType() == type).map(DataListEntry.Custom::new)
 				.collect(Collectors.toList());
 	}
