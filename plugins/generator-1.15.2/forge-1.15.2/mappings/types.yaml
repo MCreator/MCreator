@@ -10,3 +10,4 @@ entity: Entity
 map: HashMap
 advancement: Advancement
 dimensiontype: int
+actionresulttype: ActionResultType

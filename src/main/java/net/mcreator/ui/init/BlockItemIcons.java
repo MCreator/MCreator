@@ -72,6 +72,7 @@ public class BlockItemIcons {
 		put("Spade", 				"IRON_SHOVEL");
 		put("Hoe", 					"IRON_HOE");
 		put("Shears", 				"SHEARS");
+		put("Fishing rod",			"FISHING_ROD");
 
 		//NewBlockGUI
 		put("pickaxe", 				"IRON_PICKAXE");

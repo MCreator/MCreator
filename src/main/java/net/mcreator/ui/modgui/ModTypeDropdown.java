@@ -19,18 +19,18 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.NewModElementDialog;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.*;
 import java.util.stream.Collectors;
 
 public class ModTypeDropdown extends JPopupMenu {
@@ -38,17 +38,13 @@ public class ModTypeDropdown extends JPopupMenu {
 	public ModTypeDropdown(MCreator mcreator) {
 		setBorder(BorderFactory.createEmptyBorder());
 
-		SortedMap<ModElementType, ModElementTypeRegistry.ModTypeRegistration<?>> map = new TreeMap<>(
-				Comparator.comparing(ModElementType::getReadableName));
-		map.putAll(ModElementTypeRegistry.REGISTRY);
-
-		List<Map.Entry<ModElementType, ModElementTypeRegistry.ModTypeRegistration<?>>> types = map.entrySet().stream()
-				.filter(entry -> mcreator.getGeneratorStats().getModElementTypeCoverageInfo().get(entry.getKey())
+		List<ModElementType<?>> types = ModElementTypeLoader.REGISTRY.stream()
+				.sorted(Comparator.comparing(ModElementType::getReadableName))
+				.filter(entry -> mcreator.getGeneratorStats().getModElementTypeCoverageInfo().get(entry)
 						!= GeneratorStats.CoverageStatus.NONE).collect(Collectors.toList());
 
 		if (types.size() > 14) {
-			List<Map.Entry<ModElementType, ModElementTypeRegistry.ModTypeRegistration<?>>> typestmp = new ArrayList<>(
-					types);
+			List<ModElementType<?>> typestmp = new ArrayList<>(types);
 
 			int i = 0;
 			for (; i < Math.ceil(types.size() / 2d); i++)
@@ -59,9 +55,7 @@ public class ModTypeDropdown extends JPopupMenu {
 			types = typestmp;
 		}
 
-		types.forEach(entry -> {
-			ModElementType type = entry.getKey();
-			ModElementTypeRegistry.ModTypeRegistration<?> registration = entry.getValue();
+		types.forEach(type -> {
 			JMenuItem modTypeButton = new JMenuItem(" " + type.getReadableName() + " ");
 
 			modTypeButton.setToolTipText(type.getDescription());
@@ -72,11 +66,10 @@ public class ModTypeDropdown extends JPopupMenu {
 
 			ComponentUtils.deriveFont(modTypeButton, 12);
 
-			if (registration.getShortcut() != null)
-				modTypeButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(registration.getShortcut()));
+			if (type.getShortcut() != null)
+				modTypeButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(type.getShortcut()));
 
-			modTypeButton.setIcon(
-					new ImageIcon(ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(type).getImage(), 32, 32)));
+			modTypeButton.setIcon(new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 32, 32)));
 
 			add(modTypeButton);
 		});

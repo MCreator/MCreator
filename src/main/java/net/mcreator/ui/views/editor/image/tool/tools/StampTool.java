@@ -46,7 +46,6 @@ import java.util.List;
 public class StampTool extends AbstractModificationTool {
 
 	private double saturation = 1;
-	private double opacity = 1;
 
 	private Point prevPoint = null;
 
@@ -92,9 +91,6 @@ public class StampTool extends AbstractModificationTool {
 			height.setValue(icon.getIconHeight());
 		});
 
-		JSlidingSpinner opacitySlider = new JSlidingSpinner(L10N.t("dialog.image_maker.tools.types.opacity"));
-		opacitySlider.addChangeListener(e -> opacity = opacitySlider.getValue() / 100.0);
-
 		JSlidingSpinner saturationSlider = new JSlidingSpinner(L10N.t("dialog.image_maker.tools.types.saturation"));
 		saturationSlider.addChangeListener(e -> saturation = saturationSlider.getValue() / 100.0);
 
@@ -108,7 +104,6 @@ public class StampTool extends AbstractModificationTool {
 		connect = L10N.checkbox("dialog.imageeditor.stamp_tool_connect_points");
 		connect.setSelected(true);
 
-		settingsPanel.add(opacitySlider);
 		settingsPanel.add(PanelUtils.westAndCenterElement(L10N.label("dialog.imageeditor.stamp_tool_base_texture"),
 				PanelUtils.centerInPanel(templateChooserButton)));
 		settingsPanel.add(width);
@@ -121,7 +116,7 @@ public class StampTool extends AbstractModificationTool {
 	}
 
 	@Override public boolean process(ZoomedMouseEvent e) {
-		layer.setOverlayOpacity(opacity);
+		layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
 		if (layer.in(e.getX(), e.getY())) {
 			int sx = e.getX() - layer.getX(), sy = e.getY() - layer.getY();
 			Graphics2D graphics2D = layer.getOverlay().createGraphics();
