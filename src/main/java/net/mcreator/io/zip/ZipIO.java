@@ -18,12 +18,11 @@
 
 package net.mcreator.io.zip;
 
-import org.apache.commons.compress.archivers.ArchiveEntry;
+import net.mcreator.io.FileIO;
+import net.mcreator.io.OS;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
-import org.apache.commons.compress.archivers.tar.TarUtils;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
-import org.apache.commons.compress.utils.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,7 +49,7 @@ public class ZipIO {
 				action.process(zipEntry);
 			}
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+			LOG.error("Failed to iterate zip", e);
 		}
 	}
 
@@ -62,7 +61,7 @@ public class ZipIO {
 				sb.append(line).append("\n");
 			}
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+			LOG.error("Failed to convert zip entry to string", e);
 		}
 		return sb.toString();
 	}
@@ -80,7 +79,7 @@ public class ZipIO {
 				}
 			}
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+			LOG.error("Failed to read code in zip", e);
 		}
 		return null;
 	}
@@ -173,8 +172,7 @@ public class ZipIO {
 				}
 			}
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
-			LOG.info("Failed to extract zip file:" + e.getMessage());
+			LOG.error("Failed to extract zip file", e);
 		}
 	}
 
@@ -185,16 +183,19 @@ public class ZipIO {
 			TarArchiveEntry entry;
 			while ((entry = tarIS.getNextTarEntry()) != null) {
 				Path toPath = extractFolder.resolve(entry.getName());
+
 				if (entry.isDirectory()) {
 					toPath.toFile().mkdirs();
 				} else {
 					toPath.toFile().getParentFile().mkdirs();
 					Files.copy(tarIS, toPath, StandardCopyOption.REPLACE_EXISTING);
 				}
+
+				if (OS.getOS() != OS.WINDOWS)
+					Files.setPosixFilePermissions(toPath, FileIO.filePermissionFromInt(entry.getMode()));
 			}
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
-			LOG.info("Failed to extract tar file:" + e.getMessage());
+			LOG.error("Failed to extract tar file", e);
 		}
 	}
 
