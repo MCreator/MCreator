@@ -46,7 +46,7 @@ public class SDKManager {
 
 			String fileExtension = OS.getOS() == OS.WINDOWS ? ".zip" : ".tar.gz";
 
-			FileUtils.copyURLToFile(new URL(url), getJDKFolderForVersion(jdkVersion + fileExtension));
+			FileUtils.copyURLToFile(new URL(url), getSDKRootForVersion(jdkVersion + fileExtension));
 
 			progressUnit.setPercent(90);
 			if (progressUnit.getProgressDialog() != null)
@@ -55,18 +55,18 @@ public class SDKManager {
 			LOG.info("Extracting JDK: " + jdkVersion);
 
 			if (OS.getOS() == OS.WINDOWS) {
-				ZipIO.unzip(getJDKFolderForVersion(jdkVersion + fileExtension).getAbsolutePath(),
-						getJDKFolderForVersion("").getAbsolutePath());
+				ZipIO.unzip(getSDKRootForVersion(jdkVersion + fileExtension).getAbsolutePath(),
+						getSDKRootForVersion("").getAbsolutePath());
 			} else {
-				ZipIO.extractTarGZ(getJDKFolderForVersion(jdkVersion + fileExtension).getAbsolutePath(),
-						getJDKFolderForVersion("").getAbsolutePath());
+				ZipIO.extractTarGZ(getSDKRootForVersion(jdkVersion + fileExtension).getAbsolutePath(),
+						getSDKRootForVersion("").getAbsolutePath());
 			}
 
 			progressUnit.setPercent(95);
 			if (progressUnit.getProgressDialog() != null)
 				progressUnit.getProgressDialog().refreshDisplay();
 
-			getJDKFolderForVersion(jdkVersion + fileExtension).delete();
+			getSDKRootForVersion(jdkVersion + fileExtension).delete();
 		}
 	}
 
@@ -74,13 +74,22 @@ public class SDKManager {
 		if (generatorConfiguration.getJDKVersionOverride() == null)
 			return true;
 
-		File jdkFolder = getJDKFolderForVersion(generatorConfiguration.getJDKVersionOverride());
-		return jdkFolder.isDirectory() && ((OS.getOS() == OS.WINDOWS && new File(jdkFolder, "bin/javac.exe").isFile())
-				|| (OS.getOS() == OS.MAC && new File(jdkFolder, "Contents/Home/bin/javac").isFile()) || (
-				OS.getOS() == OS.LINUX && new File(jdkFolder, "bin/javac").isFile()));
+		return getJavaHomeForVersion(generatorConfiguration.getJDKVersionOverride()).isDirectory() && (
+				(OS.getOS() == OS.WINDOWS && new File(
+						getJavaHomeForVersion(generatorConfiguration.getJDKVersionOverride()), "bin/javac.exe")
+						.isFile()) || (OS.getOS() != OS.WINDOWS && new File(
+						getJavaHomeForVersion(generatorConfiguration.getJDKVersionOverride()), "bin/javac").isFile()));
 	}
 
-	public static File getJDKFolderForVersion(String jdkVersion) {
+	public static File getJavaHomeForVersion(String jdkVersion) {
+		if (OS.getOS() == OS.MAC) {
+			return new File(getSDKRootForVersion(jdkVersion), "Contents/Home");
+		} else {
+			return getSDKRootForVersion(jdkVersion);
+		}
+	}
+
+	private static File getSDKRootForVersion(String jdkVersion) {
 		return UserFolderManager.getFileFromUserFolder("/sdks/" + jdkVersion);
 	}
 

@@ -35,7 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.PosixFilePermissions;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -274,36 +274,24 @@ public final class FileIO {
 		}
 	}
 
-	public static Set<PosixFilePermission> filePermissionFromInt(int perms) {
-		final char[] ds = Integer.toString(perms).toCharArray();
-		final char[] ss = { '-', '-', '-', '-', '-', '-', '-', '-', '-' };
-		for (int i = ds.length - 1; i >= 0; i--) {
-			int n = ds[i] - '0';
-			if (i == ds.length - 1) {
-				if ((n & 1) != 0)
-					ss[8] = 'x';
-				if ((n & 2) != 0)
-					ss[7] = 'w';
-				if ((n & 4) != 0)
-					ss[6] = 'r';
-			} else if (i == ds.length - 2) {
-				if ((n & 1) != 0)
-					ss[5] = 'x';
-				if ((n & 2) != 0)
-					ss[4] = 'w';
-				if ((n & 4) != 0)
-					ss[3] = 'r';
-			} else if (i == ds.length - 3) {
-				if ((n & 1) != 0)
-					ss[2] = 'x';
-				if ((n & 2) != 0)
-					ss[1] = 'w';
-				if ((n & 4) != 0)
-					ss[0] = 'r';
-			}
+	public static Set<PosixFilePermission> permissionsFromMode(int mode) {
+		Set<PosixFilePermission> permissions = EnumSet.noneOf(PosixFilePermission.class);
+		addPermissions(permissions, "OTHERS", mode);
+		addPermissions(permissions, "GROUP", mode >> 3);
+		addPermissions(permissions, "OWNER", mode >> 6);
+		return permissions;
+	}
+
+	private static void addPermissions(Set<PosixFilePermission> permissions, String prefix, long mode) {
+		if ((mode & 1) == 1) {
+			permissions.add(PosixFilePermission.valueOf(prefix + "_EXECUTE"));
 		}
-		String sperms = new String(ss);
-		return PosixFilePermissions.fromString(sperms);
+		if ((mode & 2) == 2) {
+			permissions.add(PosixFilePermission.valueOf(prefix + "_WRITE"));
+		}
+		if ((mode & 4) == 4) {
+			permissions.add(PosixFilePermission.valueOf(prefix + "_READ"));
+		}
 	}
 
 }

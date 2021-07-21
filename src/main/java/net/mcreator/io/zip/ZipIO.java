@@ -176,6 +176,14 @@ public class ZipIO {
 		}
 	}
 
+	public static boolean checkIfZip(File zipfile) {
+		try (RandomAccessFile raf = new RandomAccessFile(zipfile, "r")) {
+			return raf.readInt() == 0x504B0304;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
 	public static void extractTarGZ(String strTarFile, String dst) {
 		Path extractFolder = new File(dst).toPath();
 		try (TarArchiveInputStream tarIS = new TarArchiveInputStream(
@@ -189,21 +197,18 @@ public class ZipIO {
 				} else {
 					toPath.toFile().getParentFile().mkdirs();
 					Files.copy(tarIS, toPath, StandardCopyOption.REPLACE_EXISTING);
-				}
 
-				if (OS.getOS() != OS.WINDOWS)
-					Files.setPosixFilePermissions(toPath, FileIO.filePermissionFromInt(entry.getMode()));
+					if (OS.getOS() != OS.WINDOWS) {
+						try {
+							Files.setPosixFilePermissions(toPath, FileIO.permissionsFromMode(entry.getMode()));
+						} catch (Exception e) {
+							LOG.debug("Failed to set permission for path " + toPath + ", reason: " + e.getMessage());
+						}
+					}
+				}
 			}
 		} catch (IOException e) {
 			LOG.error("Failed to extract tar file", e);
-		}
-	}
-
-	public static boolean checkIfZip(File zipfile) {
-		try (RandomAccessFile raf = new RandomAccessFile(zipfile, "r")) {
-			return raf.readInt() == 0x504B0304;
-		} catch (IOException e) {
-			return false;
 		}
 	}
 

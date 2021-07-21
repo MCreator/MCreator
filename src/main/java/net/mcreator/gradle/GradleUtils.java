@@ -85,7 +85,7 @@ public class GradleUtils {
 		// if the generator has a JDK, we set JAVA_HOME to generator's JDK
 		if (generatorConfiguration.getJDKVersionOverride() != null && SDKManager
 				.validateCustomJDK(generatorConfiguration))
-			return SDKManager.getJDKFolderForVersion(generatorConfiguration.getJDKVersionOverride()).getAbsolutePath();
+			return SDKManager.getJavaHomeForVersion(generatorConfiguration.getJDKVersionOverride()).getAbsolutePath();
 
 		// if we have bundled JDK, we set JAVA_HOME to bundled JDK
 		if (new File("./jdk/bin/javac.exe").isFile() || new File("./jdk/bin/javac").isFile())
