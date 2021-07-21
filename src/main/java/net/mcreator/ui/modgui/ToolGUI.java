@@ -72,7 +72,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final VTextField name = new VTextField(28);
 
 	private final JComboBox<String> toolType = new JComboBox<>(
-			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Fishing rod", "Special", "MultiTool" });
+			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Fishing rod", "Special",
+					"MultiTool" });
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
