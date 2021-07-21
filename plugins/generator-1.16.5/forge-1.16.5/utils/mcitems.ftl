@@ -121,15 +121,15 @@
             <#assign ge = ge.getGeneratableElement() />
 
             <#assign properties = []>
-            <#if ge.getModElement().getType().name() == "FLUID">
+            <#if ge.getModElement().getType().getRegistryName() == "fluid">
                 <#assign properties += [{"name": "level", "value": 0}] />
-            <#elseif ge.getModElement().getType().name() == "PLANT">
+            <#elseif ge.getModElement().getType().getRegistryName() == "plant">
                 <#if ge.plantType == "growapable">
                     <#assign properties += [{"name": "age", "value": 0}] />
                 <#elseif ge.plantType == "double">
                     <#assign properties += [{"name": "half", "value": "lower"}] />
                 </#if>
-            <#elseif ge.getModElement().getType().name() == "BLOCK">
+            <#elseif ge.getModElement().getType().getRegistryName() == "block">
                 <#if ge.blockBase?has_content && ge.blockBase == "Stairs">
                     <#assign properties += [
                     {"name": "facing", "value": "north"},
@@ -203,7 +203,7 @@
                     <#if ge.rotationMode != 0 && ge.rotationMode != 5>
                         <#assign properties += [{"name": "facing", "value": "north"}] />
                     <#elseif ge.rotationMode == 5>
-                        <#assign properties += [{"name": "facing", "value": "south"}] />
+                        <#assign properties += [{"name": "axis", "value": "y"}] />
                     </#if>
                 </#if>
             </#if>

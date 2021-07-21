@@ -21,6 +21,7 @@ package net.mcreator.ui;
 import javafx.application.Platform;
 import net.mcreator.Launcher;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
@@ -141,6 +142,9 @@ public final class MCreatorApplication {
 
 		// load entity animations for the Java Model animation editor
 		EntityAnimationsLoader.init();
+
+		// register mod element types
+		ModElementTypeLoader.loadModElements();
 
 		splashScreen.setProgress(60, "Preloading resources");
 		TiledImageCache.loadAndTileImages();

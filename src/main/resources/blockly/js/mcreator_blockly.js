@@ -89,29 +89,3 @@ function jsonToBlocklyDropDownArray(json) {
     });
     return retval;
 }
-
-function getBlocklyWorkspaceSVG() {
-    var scaleFactor = 1;
-
-    var cp = Blockly.mainWorkspace.svgBlockCanvas_.cloneNode(true);
-    cp.removeAttribute("width");
-    cp.removeAttribute("height");
-    cp.removeAttribute("transform");
-
-    var styleElem = document.createElementNS("http://www.w3.org/2000/svg", "style");
-    styleElem.textContent = Blockly.Css.CONTENT.join('') + getallcss();
-    cp.insertBefore(styleElem, cp.firstChild);
-
-    var bbox = Blockly.mainWorkspace.svgBlockCanvas_.getBBox();
-    var xml = new XMLSerializer().serializeToString(cp);
-    xml = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' + bbox.width + '" height="' + bbox.height +
-        '" viewBox="' + bbox.x + ' ' + bbox.y + ' ' + bbox.width + ' ' + bbox.height + '"><rect width="100%" height="100%" fill="white"></rect>' + xml + '</svg>';
-    return xml;
-}
-
-function getallcss() {
-    var css = "", styletags = document.getElementsByTagName("style");
-    for (var i = 0; i < styletags.length; i++)
-        css += styletags[i].innerHTML;
-    return css;
-}

@@ -49,9 +49,9 @@ import java.util.*;
 
 public class ConverterRegistry {
 
-	private static final Map<ModElementType, List<IConverter>> converters = new HashMap<>() {{
+	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
-		put(ModElementType.ACHIEVEMENT, Collections.singletonList(new AchievementFixer()));
+		put(ModElementType.ADVANCEMENT, Collections.singletonList(new AchievementFixer()));
 		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
 		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
@@ -68,7 +68,7 @@ public class ConverterRegistry {
 		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
 	}};
 
-	public static List<IConverter> getConvertersForModElementType(ModElementType modElementType) {
+	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {
 		return converters.get(modElementType);
 	}
 

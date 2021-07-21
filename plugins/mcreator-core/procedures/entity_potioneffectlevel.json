@@ -8,7 +8,7 @@
   ],
   "inputsInline": true,
   "extensions": [
-    "potion_list_provider"
+    "effect_list_provider"
   ],
   "output": "Number",
   "colour": "%{BKY_MATH_HUE}",

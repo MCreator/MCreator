@@ -34,6 +34,7 @@ import net.mcreator.ui.component.util.EDTUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
+import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.workspace.WorkspacePanel;
@@ -49,16 +50,15 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Locale;
 
 public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider {
 
@@ -163,25 +163,31 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		UserFolderManager.getFileFromUserFolder("backgrounds").mkdirs();
 
 		JPanel mpan;
-		File[] bgfiles = UserFolderManager.getFileFromUserFolder("backgrounds").listFiles();
-		List<File> bgimages = new ArrayList<>();
-		if (bgfiles != null) {
-			bgimages = Arrays.stream(bgfiles).filter(e -> e.getName().endsWith(".png")).collect(Collectors.toList());
+
+		// Load backgrounds depending on the background source
+		List<Image> bgimages = new ArrayList<>();
+		switch (PreferencesManager.PREFERENCES.ui.backgroundSource) {
+		case "All":
+			bgimages.addAll(BackgroundLoader.loadThemeBackgrounds());
+			bgimages.addAll(BackgroundLoader.loadUserBackgrounds());
+			break;
+		case "Current theme":
+			bgimages = BackgroundLoader.loadThemeBackgrounds();
+			break;
+		case "Custom":
+			bgimages = BackgroundLoader.loadUserBackgrounds();
+			break;
 		}
 
 		Image bgimage = null;
 		if (bgimages.size() > 0) {
-			try {
-				bgimage = ImageIO.read(ListUtils.getRandomItem(bgimages));
-				float avg = ImageUtils.getAverageLuminance(ImageUtils.toBufferedImage(bgimage));
-				if (avg > 0.15) {
-					avg = (float) Math.min(avg * 1.7, 0.85);
-					bgimage = ImageUtils.drawOver(new ImageIcon(bgimage), new ImageIcon(ImageUtils
-							.emptyImageWithSize(bgimage.getWidth(this), bgimage.getHeight(this),
-									new Color(0.12f, 0.12f, 0.12f, avg)))).getImage();
-				}
-			} catch (IOException e) {
-				LOG.warn("Failed to load background image", e);
+			bgimage = ListUtils.getRandomItem(bgimages);
+			float avg = ImageUtils.getAverageLuminance(ImageUtils.toBufferedImage(bgimage));
+			if (avg > 0.15) {
+				avg = (float) Math.min(avg * 1.7, 0.85);
+				bgimage = ImageUtils.drawOver(new ImageIcon(bgimage), new ImageIcon(ImageUtils
+						.emptyImageWithSize(bgimage.getWidth(this), bgimage.getHeight(this),
+								new Color(0.12f, 0.12f, 0.12f, avg)))).getImage();
 			}
 		}
 

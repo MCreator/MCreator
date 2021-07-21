@@ -179,7 +179,7 @@ public class BlocklyJavascriptBridge {
 		case "achievement":
 			return ElementUtil.loadAllAchievements(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
-		case "potion":
+		case "effect":
 			return ElementUtil.loadAllPotionEffects(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "gamerulesboolean":

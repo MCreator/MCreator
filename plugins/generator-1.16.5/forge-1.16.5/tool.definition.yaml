@@ -5,6 +5,12 @@ templates:
     writer: json
     condition: "renderType #= 0"
     name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/handheld_rod.json.ftl
+    writer: json
+    condition:
+      - "renderType #= 0"
+      - "toolType %= Fishing rod"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/item_cmodel.json.ftl
     writer: json
     condition: "renderType #= 1"
