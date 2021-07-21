@@ -45,11 +45,11 @@ public class RecolorDialog extends MCreatorDialog {
 
 		JPanel colorSettings = new JPanel();
 		colorSettings.setLayout(new BoxLayout(colorSettings, BoxLayout.X_AXIS));
-		JColor colorChoser = new JColor(window);
-		colorChoser.setColor(colorSelector.getForegroundColor());
+		JColor colorChooser = new JColor(window);
+		colorChooser.setColor(colorSelector.getForegroundColor());
 		colorSettings.add(L10N.label("dialog.imageeditor.color"));
 		colorSettings.add(Box.createRigidArea(new Dimension(25, 0)));
-		colorSettings.add(colorChoser);
+		colorSettings.add(colorChooser);
 
 		JCheckBox lock = L10N.checkbox("dialog.imageeditor.saturation_brightness_lock");
 
@@ -69,7 +69,7 @@ public class RecolorDialog extends MCreatorDialog {
 			g2d.setBackground(new Color(0, 0, 0, 0));
 			g2d.clearRect(0, 0, getWidth(), getHeight());
 			g2d.drawImage(ImageUtils.toBufferedImage(
-					ImageUtils.colorize(new ImageIcon(bim), colorChoser.getColor(), !lock.isSelected()).getImage()),
+					ImageUtils.colorize(new ImageIcon(bim), colorChooser.getColor(), !lock.isSelected()).getImage()),
 					null, 0, 0);
 			g2d.dispose();
 			layer.mergeOverlay();

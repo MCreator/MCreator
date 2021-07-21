@@ -29,5 +29,6 @@
       "type": "blockstate"
     }
   ],
-  "cancelable": "true"
+  "cancelable": "true",
+  "side": "server"
 }

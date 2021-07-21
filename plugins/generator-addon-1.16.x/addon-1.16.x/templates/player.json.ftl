@@ -1,14 +1,14 @@
 <#-- @formatter:off -->
 <#assign itemDamageValues = []>
 
-<#list w.getElementsOfType("ITEM") as mod>
+<#list w.getElementsOfType("item") as mod>
   <#assign ge = mod.getGeneratableElement()>
   <#if ge.enableMeleeDamage>
     <#assign itemDamageValues += [ ["${modid}:${mod.getRegistryName()}", ge.damageVsEntity] ]>
   </#if>
 </#list>
 
-<#list w.getElementsOfType("TOOL") as mod>
+<#list w.getElementsOfType("tool") as mod>
   <#assign ge = mod.getGeneratableElement()>
   <#assign itemDamageValues += [ ["${modid}:${mod.getRegistryName()}", ge.damageVsEntity] ]>
 </#list>

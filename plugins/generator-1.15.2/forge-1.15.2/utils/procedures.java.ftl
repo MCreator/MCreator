@@ -74,7 +74,7 @@
     <#if hasProcedure(object)>
         <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
     <#else>
-        ActionResultType.PASS;
+        ActionResultType.PASS
     </#if>
 </#macro>
 

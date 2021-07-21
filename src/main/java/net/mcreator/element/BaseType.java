@@ -22,26 +22,26 @@ package net.mcreator.element;
 // @formatter:off
 public enum BaseType {
 
-	BLOCK,
-	ITEM,
 	ARMOR,
 	BIOME,
+	BLOCK,
 	COMMAND,
-	FUEL,
-	ENTITY,
-	TAB,
+	DATAPACK,
 	DIMENSION,
-	STRUCTURE,
+	ENCHANTMENT,
+	ENTITY,
+	FUEL,
 	GUI,
+	ITEM,
 	KEYBIND,
-	PROCEDURE,
+	OTHER,
 	OVERLAY,
+	PARTICLE,
+	PROCEDURE,
 	POTION,
 	POTIONEFFECT,
-	DATAPACK,
-	ENCHANTMENT,
-	PARTICLE,
-	OTHER,
+	STRUCTURE,
+	TAB,
 
 	/* legacy base types */
 	ACHIEVEMENT

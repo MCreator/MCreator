@@ -21,6 +21,7 @@ package net.mcreator.ui.views.editor.image.action;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 
 import javax.swing.*;
@@ -34,6 +35,7 @@ public class ImageEditorRedoAction extends BasicAction {
 				codeEditorView.getVersionManager().redo();
 			}
 		});
+		setIcon(UIRES.get("img_editor.redo"));
 		setTooltip(L10N.t("action.image_editor.redo.tooltip"));
 		actionRegistry.getMCreator().mcreatorTabs
 				.addTabShownListener(tab -> setEnabled(tab.getContent() instanceof ImageMakerView));

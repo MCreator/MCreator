@@ -115,7 +115,6 @@ public class MainMenuBar extends JMenuBar {
 		imageEditor.setMnemonic('I');
 		imageEditor.add(mcreator.actionRegistry.imageEditorUndo);
 		imageEditor.add(mcreator.actionRegistry.imageEditorRedo);
-		imageEditor.add(mcreator.actionRegistry.imageEditorResizeCanvas);
 		imageEditor.addSeparator();
 		imageEditor.add(mcreator.actionRegistry.imageEditorSave);
 		imageEditor.add(mcreator.actionRegistry.imageEditorSaveAs);
@@ -133,6 +132,7 @@ public class MainMenuBar extends JMenuBar {
 		imageEditor.addSeparator();
 		imageEditor.add(mcreator.actionRegistry.imageEditorMoveLayer);
 		imageEditor.add(mcreator.actionRegistry.imageEditorResizeLayer);
+		imageEditor.add(mcreator.actionRegistry.imageEditorResizeCanvas);
 		add(imageEditor);
 
 		JMenu workspace = L10N.menu("menubar.workspace");

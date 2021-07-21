@@ -111,7 +111,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
 				L10N.t("elementgui.common.event_right_clicked_block"), VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE,
 				Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction/blockstate:blockstate"))
+						"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction/blockstate:blockstate"))
 				.makeReturnValueOptional();
 		onEaten = new ProcedureSelector(this.withEntry("food/when_eaten"), mcreator,
 				L10N.t("elementgui.food.event_on_eaten"),
