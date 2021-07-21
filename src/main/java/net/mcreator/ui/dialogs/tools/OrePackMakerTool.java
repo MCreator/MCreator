@@ -19,7 +19,6 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Material;
 import net.mcreator.element.parts.StepSound;
@@ -173,8 +172,8 @@ public class OrePackMakerTool {
 			oreItemName = name + "Ingot";
 		}
 
-		Item oreItem = (Item) ModElementTypeRegistry.REGISTRY.get(ModElementType.ITEM)
-				.getModElement(mcreator, new ModElement(workspace, oreItemName, ModElementType.ITEM), false)
+		Item oreItem = (Item) ModElementType.ITEM
+				.getModElementGUI(mcreator, new ModElement(workspace, oreItemName, ModElementType.ITEM), false)
 				.getElementFromGUI();
 		oreItem.name = name;
 		oreItem.texture = gemTextureName;
@@ -186,8 +185,8 @@ public class OrePackMakerTool {
 		mcreator.getModElementManager().storeModElement(oreItem);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
-		Block oreBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
-				.getModElement(mcreator, new ModElement(workspace, name + "Ore", ModElementType.BLOCK), false)
+		Block oreBlock = (Block) ModElementType.BLOCK
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "Ore", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		oreBlock.name = name + " Ore";
 		oreBlock.material = new Material(workspace, "ROCK");
@@ -216,8 +215,8 @@ public class OrePackMakerTool {
 		mcreator.getModElementManager().storeModElement(oreBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
-		Block oreBlockBlock = (Block) ModElementTypeRegistry.REGISTRY.get(ModElementType.BLOCK)
-				.getModElement(mcreator, new ModElement(workspace, name + "Block", ModElementType.BLOCK), false)
+		Block oreBlockBlock = (Block) ModElementType.BLOCK
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "Block", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		oreBlockBlock.name = "Block of " + name;
 		oreBlockBlock.customModelName = "Single texture";
@@ -236,8 +235,8 @@ public class OrePackMakerTool {
 		mcreator.getGenerator().generateElement(oreBlockBlock);
 		mcreator.getModElementManager().storeModElement(oreBlockBlock);
 
-		Recipe itemToBlockRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "OreBlockRecipe", ModElementType.RECIPE),
+		Recipe itemToBlockRecipe = (Recipe) ModElementType.RECIPE
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "OreBlockRecipe", ModElementType.RECIPE),
 						false).getElementFromGUI();
 		itemToBlockRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		itemToBlockRecipe.recipeSlots[1] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
@@ -256,8 +255,8 @@ public class OrePackMakerTool {
 		mcreator.getGenerator().generateElement(itemToBlockRecipe);
 		mcreator.getModElementManager().storeModElement(itemToBlockRecipe);
 
-		Recipe blockToItemRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "BlockOreRecipe", ModElementType.RECIPE),
+		Recipe blockToItemRecipe = (Recipe) ModElementType.RECIPE
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "BlockOreRecipe", ModElementType.RECIPE),
 						false).getElementFromGUI();
 		blockToItemRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + name + "Block");
 		blockToItemRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
@@ -270,9 +269,9 @@ public class OrePackMakerTool {
 		mcreator.getGenerator().generateElement(blockToItemRecipe);
 		mcreator.getModElementManager().storeModElement(blockToItemRecipe);
 
-		Recipe oreSmeltingRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "OreSmelting", ModElementType.RECIPE), false)
-				.getElementFromGUI();
+		Recipe oreSmeltingRecipe = (Recipe) ModElementType.RECIPE
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "OreSmelting", ModElementType.RECIPE),
+						false).getElementFromGUI();
 		oreSmeltingRecipe.recipeType = "Smelting";
 		oreSmeltingRecipe.smeltingInputStack = new MItemBlock(workspace, "CUSTOM:" + name + "Ore");
 		oreSmeltingRecipe.smeltingReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);

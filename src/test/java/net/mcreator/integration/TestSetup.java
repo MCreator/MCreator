@@ -20,6 +20,7 @@ package net.mcreator.integration;
 
 import net.mcreator.Launcher;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.minecraft.DataListLoader;
@@ -102,6 +103,9 @@ public class TestSetup {
 
 		// load entity animations for the Java Model animation editor
 		EntityAnimationsLoader.init();
+
+		// register mod element types
+		ModElementTypeLoader.loadModElements();
 
 		// load generator configurations
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));

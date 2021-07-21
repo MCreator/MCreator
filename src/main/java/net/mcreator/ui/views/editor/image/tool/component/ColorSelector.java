@@ -117,7 +117,7 @@ public class ColorSelector extends JPanel {
 		setPreferredSize(new Dimension(63, 56));
 	}
 
-	private ImageIcon generateTransparentPreview(Color color){
+	private ImageIcon generateTransparentPreview(Color color) {
 		BufferedImage preview = new BufferedImage(40, 32, BufferedImage.TYPE_INT_RGB);
 		Graphics2D graphics2D = preview.createGraphics();
 

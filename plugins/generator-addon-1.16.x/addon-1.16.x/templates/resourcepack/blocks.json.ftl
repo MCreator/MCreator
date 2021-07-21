@@ -1,7 +1,7 @@
 {
   "format_version": [1, 1, 0]
 
-  <#list w.getElementsOfType("BLOCK") as mod>
+  <#list w.getElementsOfType("block") as mod>
     <#assign ge = mod.getGeneratableElement()>
     ,"${modid}:${mod.getRegistryName()}": {
         "textures": {
