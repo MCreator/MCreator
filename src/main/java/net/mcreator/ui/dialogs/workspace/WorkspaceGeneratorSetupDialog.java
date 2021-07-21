@@ -23,6 +23,7 @@ import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.action.impl.workspace.SDKManager;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.init.L10N;
@@ -46,6 +47,23 @@ public class WorkspaceGeneratorSetupDialog {
 		AtomicBoolean setupOk = new AtomicBoolean(true);
 
 		Thread t = new Thread(() -> {
+
+			if (m.getGeneratorConfiguration().getJDKVersionOverride() != null) {
+				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
+						L10N.t("dialog.setup_workspace.step.jdk"));
+				dial.addProgress(p0);
+
+				try {
+					SDKManager.downloadSDK(m.getGeneratorConfiguration(), p0);
+
+					p0.ok();
+					dial.refreshDisplay();
+				} catch (Exception e) {
+					p0.err();
+					showSetupFailedMessage(dial, m, "Failed to setup JDK. Reason: " + e.getMessage());
+				}
+			}
+
 			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.setup_workspace.step.gradle_files"));
 			dial.addProgress(p1);

@@ -158,6 +158,10 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 			return null;
 	}
 
+	@Nullable public String getJDKVersionOverride() {
+		return (String) generatorConfig.get("jdk");
+	}
+
 	@Nullable public List<?> getResourceSetupTasks() {
 		return (List<?>) generatorConfig.get("resources_setup_tasks");
 	}
