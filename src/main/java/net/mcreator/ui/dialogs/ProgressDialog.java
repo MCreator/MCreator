@@ -114,6 +114,7 @@ public class ProgressDialog extends MCreatorDialog {
 			}
 
 			unit1a.mcreator = this.mcreator;
+			unit1a.progressDialog = this;
 
 			lModel.addElement(unit1a);
 			progress.updateUI();
@@ -198,12 +199,17 @@ public class ProgressDialog extends MCreatorDialog {
 		private int percent;
 		boolean inf = false;
 
+		@Nullable private ProgressDialog progressDialog;
 		@Nullable private MCreator mcreator;
 
 		public ProgressUnit(String name) {
 			this.name = name;
 			status = Status.LOADING;
 			pv = System.currentTimeMillis();
+		}
+
+		@Nullable public ProgressDialog getProgressDialog() {
+			return progressDialog;
 		}
 
 		public void ok() {

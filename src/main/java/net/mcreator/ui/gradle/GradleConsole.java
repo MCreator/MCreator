@@ -290,7 +290,7 @@ public class GradleConsole extends JPanel {
 
 		append("Executing Gradle task: " + command, new Color(0xBBD9D0));
 
-		String java_home = GradleUtils.getJavaHome();
+		String java_home = GradleUtils.getJavaHome(ref.getGeneratorConfiguration());
 
 		if (ref.getApplication() != null) {
 			String deviceInfo = "Build info: MCreator " + Launcher.version.getFullString() + ", " + ref.getWorkspace()
