@@ -7,11 +7,15 @@
         "identifier": "${modid}:${modid}_${registryname}_ore_feature"
       },
       "count": ${data.frequencyOnChunk},
-      "places_block": "${modid}:${registryname}",
-      "may_replace": [
-        <#list data.blocksToReplace as block>
-        "${mappedMCItemToIngameNameNoTags(block)}"<#if block?has_next>,</#if>
-        </#list>
+      "replace_rules": [
+        {
+          "places_block": "${modid}:${registryname}",
+          "may_replace": [
+            <#list data.blocksToReplace as block>
+            "${mappedMCItemToIngameNameNoTags(block)}"<#if block?has_next>,</#if>
+            </#list>
+          ]
+        }
       ]
     }
 }
