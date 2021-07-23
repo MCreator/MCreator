@@ -3,6 +3,7 @@ name: Crowdin Action
 on:
   push:
     branches: [ master ]
+  workflow_dispatch: {}
 
 jobs:
   synchronize-with-crowdin:
@@ -17,11 +18,6 @@ jobs:
       uses: crowdin/github-action@1.2.0
       with:
         upload_translations: true
-        
-        download_translations: true
-        commit_message: '[skip ci] New Crowdin translations by Github Action'
-        
-        create_pull_request: false
         
         source: /plugins/mcreator-localization/lang/texts.properties
         translation: >-
