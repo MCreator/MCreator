@@ -1,4 +1,4 @@
-name: Crowdin Action
+name: Crowdin push new translation keys
 
 on:
   push:
@@ -8,17 +8,15 @@ on:
 jobs:
   synchronize-with-crowdin:
     runs-on: ubuntu-latest
-
     steps:
-
     - name: Checkout
       uses: actions/checkout@v2
-
     - name: crowdin action
       uses: crowdin/github-action@1.2.0
       with:
         upload_translations: true
-        
+        project_id_env: CROWDIN_PROJECT_ID
+        api_token_env: CROWDIN_PERSONAL_TOKEN
         source: /plugins/mcreator-localization/lang/texts.properties
         translation: >-
           /plugins/mcreator-localization/lang/texts_%locale_with_underscore%.properties
