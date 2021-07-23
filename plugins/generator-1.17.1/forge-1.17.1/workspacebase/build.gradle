@@ -14,10 +14,10 @@ version = '1.0'
 group = 'com.yourname.modid'
 archivesBaseName = 'modid'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 minecraft {
-    mappings channel: 'snapshot', version: '20201028-1.16.3'
+    mappings channel: 'official', version: '1.17.1'
 
     runs {
         client {
@@ -25,11 +25,6 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-
-            jvmArgs = [
-                    "--add-exports=java.base/sun.security.util=ALL-UNNAMED",
-                    "--add-opens=java.base/java.util.jar=ALL-UNNAMED"
-            ]
 
             mods {
                 examplemod {
@@ -44,11 +39,6 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
 
-            jvmArgs = [
-                    "--add-exports=java.base/sun.security.util=ALL-UNNAMED",
-                    "--add-opens=java.base/java.util.jar=ALL-UNNAMED"
-            ]
-
             mods {
                 examplemod {
                     source sourceSets.main
@@ -59,7 +49,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-${generator.getGeneratorBuildFileVersion()}'
+    minecraft 'net.minecraftforge:forge:1.17.1-${generator.getGeneratorBuildFileVersion()}'
 }
 
 apply from: 'mcreator.gradle'
