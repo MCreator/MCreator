@@ -119,13 +119,20 @@ public class ModElementTypeLoader {
 		return elementType;
 	}
 
-	public static ModElementType<?> getModElementType(String modElementName) throws IllegalArgumentException {
+	public static ModElementType<?> getModElementType(String typeName) throws IllegalArgumentException {
+		// legacy support in case name was not converted up to this point
+		if (typeName.equals("gun")) {
+			typeName = "rangeditem";
+		} else if (typeName.equals("mob")) {
+			typeName = "livingentity";
+		}
+
 		for (ModElementType<?> me : REGISTRY) {
-			if (me.getRegistryName().equals(modElementName)) {
+			if (me.getRegistryName().equals(typeName)) {
 				return me;
 			}
 		}
 
-		throw new IllegalArgumentException("Mod element type " + modElementName + " is not a registered type");
+		throw new IllegalArgumentException("Mod element type " + typeName + " is not a registered type");
 	}
 }
