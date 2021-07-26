@@ -26,8 +26,8 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":9,"i5":9};
-var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -87,15 +87,15 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#enum.constant.summary">Enum Constants</a>&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#enum.constant.detail">Enum Constants</a>&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
@@ -115,177 +115,250 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <main role="main">
 <div class="header">
 <div class="subTitle"><span class="packageLabelInType">Package</span>&nbsp;<a href="package-summary.html">net.mcreator.element</a></div>
-<h2 title="Enum ModElementType" class="title">Enum ModElementType</h2>
+<h2 title="Class ModElementType" class="title">Class ModElementType&lt;GE extends <a href="GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;</h2>
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>java.lang.Enum&lt;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a>&gt;</li>
-<li>
-<ul class="inheritance">
-<li>net.mcreator.element.ModElementType</li>
-</ul>
-</li>
+<li>net.mcreator.element.ModElementType&lt;GE&gt;</li>
 </ul>
 </li>
 </ul>
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
-<dl>
-<dt>All Implemented Interfaces:</dt>
-<dd><code>java.io.Serializable</code>, <code>java.lang.Comparable&lt;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a>&gt;</code></dd>
-</dl>
 <hr>
-<pre>public enum <span class="typeNameLabel">ModElementType</span>
-extends java.lang.Enum&lt;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a>&gt;</pre>
+<pre>public class <span class="typeNameLabel">ModElementType&lt;GE extends <a href="GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;</span>
+extends java.lang.Object</pre>
 </li>
 </ul>
 </div>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
-<!-- =========== ENUM CONSTANT SUMMARY =========== -->
+<!-- ======== NESTED CLASS SUMMARY ======== -->
 <section role="region">
 <ul class="blockList">
-<li class="blockList"><a id="enum.constant.summary">
+<li class="blockList"><a id="nested.class.summary">
 <!--   -->
 </a>
-<h3>Enum Constant Summary</h3>
+<h3>Nested Class Summary</h3>
 <table class="memberSummary">
-<caption><span>Enum Constants</span><span class="tabEnd">&nbsp;</span></caption>
+<caption><span>Nested Classes</span><span class="tabEnd">&nbsp;</span></caption>
 <tr>
-<th class="colFirst" scope="col">Enum Constant</th>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colSecond" scope="col">Class</th>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#ACHIEVEMENT">ACHIEVEMENT</a></span></code></th>
+<td class="colFirst"><code>static interface&nbsp;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="ModElementType.ModElementGUIProvider.html" title="interface in net.mcreator.element">ModElementType.ModElementGUIProvider</a>&lt;<a href="ModElementType.ModElementGUIProvider.html" title="type parameter in ModElementType.ModElementGUIProvider">GE</a> extends <a href="GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;</span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
+</section>
+<!-- =========== FIELD SUMMARY =========== -->
+<section role="region">
+<ul class="blockList">
+<li class="blockList"><a id="field.summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<table class="memberSummary">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colSecond" scope="col">Field</th>
+<th class="colLast" scope="col">Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ADVANCEMENT">ADVANCEMENT</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#ARMOR">ARMOR</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ARMOR">ARMOR</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#BIOME">BIOME</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#BIOME">BIOME</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#BLOCK">BLOCK</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#BLOCK">BLOCK</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#CODE">CODE</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#CODE">CODE</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#COMMAND">COMMAND</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#COMMAND">COMMAND</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#DIMENSION">DIMENSION</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#DIMENSION">DIMENSION</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#ENCHANTMENT">ENCHANTMENT</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ENCHANTMENT">ENCHANTMENT</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#FLUID">FLUID</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#FLUID">FLUID</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#FOOD">FOOD</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#FOOD">FOOD</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#FUEL">FUEL</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#FUEL">FUEL</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#FUNCTION">FUNCTION</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#FUNCTION">FUNCTION</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#GAMERULE">GAMERULE</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#GAMERULE">GAMERULE</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#GUI">GUI</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#GUI">GUI</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#ITEM">ITEM</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ITEM">ITEM</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#KEYBIND">KEYBIND</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#KEYBIND">KEYBIND</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#LIVINGENTITY">LIVINGENTITY</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#LIVINGENTITY">LIVINGENTITY</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#LOOTTABLE">LOOTTABLE</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#LOOTTABLE">LOOTTABLE</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#MUSICDISC">MUSICDISC</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#MUSICDISC">MUSICDISC</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#OVERLAY">OVERLAY</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#OVERLAY">OVERLAY</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#PAINTING">PAINTING</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#PAINTING">PAINTING</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#PARTICLE">PARTICLE</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#PARTICLE">PARTICLE</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#PLANT">PLANT</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#PLANT">PLANT</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#POTION">POTION</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#POTION">POTION</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#POTIONEFFECT">POTIONEFFECT</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#POTIONEFFECT">POTIONEFFECT</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#PROCEDURE">PROCEDURE</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#PROCEDURE">PROCEDURE</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#RANGEDITEM">RANGEDITEM</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#RANGEDITEM">RANGEDITEM</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#RECIPE">RECIPE</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#RECIPE">RECIPE</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#STRUCTURE">STRUCTURE</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#STRUCTURE">STRUCTURE</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#TAB">TAB</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#TAB">TAB</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#TAG">TAG</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#TAG">TAG</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<th class="colFirst" scope="row"><code><span class="memberNameLink"><a href="#TOOL">TOOL</a></span></code></th>
+<td class="colFirst"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#TOOL">TOOL</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
+</section>
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<section role="region">
+<ul class="blockList">
+<li class="blockList"><a id="constructor.summary">
+<!--   -->
+</a>
+<h3>Constructor Summary</h3>
+<table class="memberSummary">
+<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Constructor</th>
+<th class="colLast" scope="col">Description</th>
+</tr>
+<tr class="altColor">
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.Character,net.mcreator.element.BaseType,net.mcreator.element.RecipeType,net.mcreator.element.ModElementType.ModElementGUIProvider,java.lang.Class)">ModElementType</a></span>&#8203;(java.lang.String&nbsp;registryName,
+              java.lang.Character&nbsp;shortcut,
+              <a href="BaseType.html" title="enum in net.mcreator.element">BaseType</a>&nbsp;baseType,
+              <a href="RecipeType.html" title="enum in net.mcreator.element">RecipeType</a>&nbsp;recipeType,
+              <a href="ModElementType.ModElementGUIProvider.html" title="interface in net.mcreator.element">ModElementType.ModElementGUIProvider</a>&lt;<a href="ModElementType.html" title="type parameter in ModElementType">GE</a>&gt;&nbsp;modElementGUIProvider,
+              java.lang.Class&lt;? extends <a href="ModElementType.html" title="type parameter in ModElementType">GE</a>&gt;&nbsp;modElementStorageClass)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -300,61 +373,96 @@ extends java.lang.Enum&lt;<a href="ModElementType.html" title="enum in net.mcrea
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t1" class="tableTab"><span><a href="javascript:show(1);">Static Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colSecond" scope="col">Method</th>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(java.lang.Object&nbsp;element)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="BaseType.html" title="enum in net.mcreator.element">BaseType</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getBaseType()">getBaseType</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDescription()">getDescription</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>javax.swing.ImageIcon</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIcon()">getIcon</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code><a href="../ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="ModElementType.html" title="type parameter in ModElementType">GE</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getModElementGUI(net.mcreator.ui.MCreator,net.mcreator.workspace.elements.ModElement,boolean)">getModElementGUI</a></span>&#8203;(<a href="../ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+                <a href="../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;modElement,
+                boolean&nbsp;editingMode)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>java.lang.Class&lt;? extends <a href="GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getModElementStorageClass()">getModElementStorageClass</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getReadableName()">getReadableName</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="RecipeType.html" title="enum in net.mcreator.element">RecipeType</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRecipeType()">getRecipeType</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>static <a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#valueOf(java.lang.String)">valueOf</a></span>&#8203;(java.lang.String&nbsp;name)</code></th>
-<td class="colLast">
-<div class="block">Returns the enum constant of this type with the specified name.</div>
-</td>
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRegistryName()">getRegistryName</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code>static <a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a>[]</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#values()">values</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Returns an array containing the constants of this enum type, in
-the order they are declared.</div>
-</td>
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>java.lang.Character</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getShortcut()">getShortcut</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i10" class="altColor">
+<td class="colFirst"><code><a href="../generator/GeneratorStats.CoverageStatus.html" title="enum in net.mcreator.generator">GeneratorStats.CoverageStatus</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getStatus()">getStatus</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i11" class="rowColor">
+<td class="colFirst"><code>int</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i12" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasProcedureTriggers()">hasProcedureTriggers</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i13" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setStatus(net.mcreator.generator.GeneratorStats.CoverageStatus)">setStatus</a></span>&#8203;(<a href="../generator/GeneratorStats.CoverageStatus.html" title="enum in net.mcreator.generator">GeneratorStats.CoverageStatus</a>&nbsp;status)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i14" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
 </tr>
 </table>
-<ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.java.lang.Enum">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;java.lang.Enum</h3>
-<code>clone, compareTo, equals, finalize, getDeclaringClass, hashCode, name, ordinal, toString, valueOf</code></li>
-</ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;java.lang.Object</h3>
-<code>getClass, notify, notifyAll, wait, wait, wait</code></li>
+<code>clone, finalize, getClass, notify, notifyAll, wait, wait, wait</code></li>
 </ul>
 </li>
 </ul>
@@ -365,31 +473,20 @@ the order they are declared.</div>
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
-<!-- ============ ENUM CONSTANT DETAIL =========== -->
+<!-- ============ FIELD DETAIL =========== -->
 <section role="region">
 <ul class="blockList">
-<li class="blockList"><a id="enum.constant.detail">
+<li class="blockList"><a id="field.detail">
 <!--   -->
 </a>
-<h3>Enum Constant Detail</h3>
-<a id="BLOCK">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>BLOCK</h4>
-<pre>@SerializedName("block")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> BLOCK</pre>
-</li>
-</ul>
-<a id="ITEM">
+<h3>Field Detail</h3>
+<a id="ADVANCEMENT">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>ITEM</h4>
-<pre>@SerializedName("item")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> ITEM</pre>
+<h4>ADVANCEMENT</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; ADVANCEMENT</pre>
 </li>
 </ul>
 <a id="ARMOR">
@@ -398,8 +495,7 @@ public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreat
 <ul class="blockList">
 <li class="blockList">
 <h4>ARMOR</h4>
-<pre>@SerializedName("armor")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> ARMOR</pre>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; ARMOR</pre>
 </li>
 </ul>
 <a id="BIOME">
@@ -408,18 +504,16 @@ public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreat
 <ul class="blockList">
 <li class="blockList">
 <h4>BIOME</h4>
-<pre>@SerializedName("biome")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> BIOME</pre>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; BIOME</pre>
 </li>
 </ul>
-<a id="FLUID">
+<a id="BLOCK">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>FLUID</h4>
-<pre>@SerializedName("fluid")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> FLUID</pre>
+<h4>BLOCK</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; BLOCK</pre>
 </li>
 </ul>
 <a id="COMMAND">
@@ -428,88 +522,7 @@ public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreat
 <ul class="blockList">
 <li class="blockList">
 <h4>COMMAND</h4>
-<pre>@SerializedName("command")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> COMMAND</pre>
-</li>
-</ul>
-<a id="FUEL">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>FUEL</h4>
-<pre>@SerializedName("fuel")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> FUEL</pre>
-</li>
-</ul>
-<a id="LIVINGENTITY">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>LIVINGENTITY</h4>
-<pre>@SerializedName("mob")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> LIVINGENTITY</pre>
-</li>
-</ul>
-<a id="FOOD">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>FOOD</h4>
-<pre>@SerializedName("food")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> FOOD</pre>
-</li>
-</ul>
-<a id="TOOL">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>TOOL</h4>
-<pre>@SerializedName("tool")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> TOOL</pre>
-</li>
-</ul>
-<a id="ACHIEVEMENT">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>ACHIEVEMENT</h4>
-<pre>@SerializedName("achievement")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> ACHIEVEMENT</pre>
-</li>
-</ul>
-<a id="TAB">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>TAB</h4>
-<pre>@SerializedName("tab")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> TAB</pre>
-</li>
-</ul>
-<a id="RECIPE">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>RECIPE</h4>
-<pre>@SerializedName("recipe")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> RECIPE</pre>
-</li>
-</ul>
-<a id="PLANT">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>PLANT</h4>
-<pre>@SerializedName("plant")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> PLANT</pre>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; COMMAND</pre>
 </li>
 </ul>
 <a id="DIMENSION">
@@ -518,108 +531,7 @@ public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreat
 <ul class="blockList">
 <li class="blockList">
 <h4>DIMENSION</h4>
-<pre>@SerializedName("dimension")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> DIMENSION</pre>
-</li>
-</ul>
-<a id="RANGEDITEM">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>RANGEDITEM</h4>
-<pre>@SerializedName("gun")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> RANGEDITEM</pre>
-</li>
-</ul>
-<a id="STRUCTURE">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>STRUCTURE</h4>
-<pre>@SerializedName("structure")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> STRUCTURE</pre>
-</li>
-</ul>
-<a id="GUI">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>GUI</h4>
-<pre>@SerializedName("gui")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> GUI</pre>
-</li>
-</ul>
-<a id="KEYBIND">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>KEYBIND</h4>
-<pre>@SerializedName("keybind")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> KEYBIND</pre>
-</li>
-</ul>
-<a id="OVERLAY">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>OVERLAY</h4>
-<pre>@SerializedName("overlay")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> OVERLAY</pre>
-</li>
-</ul>
-<a id="PROCEDURE">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>PROCEDURE</h4>
-<pre>@SerializedName("procedure")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> PROCEDURE</pre>
-</li>
-</ul>
-<a id="POTION">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>POTION</h4>
-<pre>@SerializedName("potion")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> POTION</pre>
-</li>
-</ul>
-<a id="POTIONEFFECT">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>POTIONEFFECT</h4>
-<pre>@SerializedName("potioneffect")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> POTIONEFFECT</pre>
-</li>
-</ul>
-<a id="PARTICLE">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>PARTICLE</h4>
-<pre>@SerializedName("particle")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> PARTICLE</pre>
-</li>
-</ul>
-<a id="ENCHANTMENT">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>ENCHANTMENT</h4>
-<pre>@SerializedName("enchantment")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> ENCHANTMENT</pre>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; DIMENSION</pre>
 </li>
 </ul>
 <a id="CODE">
@@ -628,38 +540,43 @@ public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreat
 <ul class="blockList">
 <li class="blockList">
 <h4>CODE</h4>
-<pre>@SerializedName("code")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> CODE</pre>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; CODE</pre>
 </li>
 </ul>
-<a id="TAG">
+<a id="ENCHANTMENT">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>TAG</h4>
-<pre>@SerializedName("tag")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> TAG</pre>
+<h4>ENCHANTMENT</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; ENCHANTMENT</pre>
 </li>
 </ul>
-<a id="MUSICDISC">
+<a id="FLUID">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>MUSICDISC</h4>
-<pre>@SerializedName("musicdisc")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> MUSICDISC</pre>
+<h4>FLUID</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; FLUID</pre>
 </li>
 </ul>
-<a id="LOOTTABLE">
+<a id="FOOD">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>LOOTTABLE</h4>
-<pre>@SerializedName("loottable")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> LOOTTABLE</pre>
+<h4>FOOD</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; FOOD</pre>
+</li>
+</ul>
+<a id="FUEL">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>FUEL</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; FUEL</pre>
 </li>
 </ul>
 <a id="FUNCTION">
@@ -668,8 +585,79 @@ public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreat
 <ul class="blockList">
 <li class="blockList">
 <h4>FUNCTION</h4>
-<pre>@SerializedName("function")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> FUNCTION</pre>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; FUNCTION</pre>
+</li>
+</ul>
+<a id="GAMERULE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>GAMERULE</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; GAMERULE</pre>
+</li>
+</ul>
+<a id="GUI">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>GUI</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; GUI</pre>
+</li>
+</ul>
+<a id="ITEM">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>ITEM</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; ITEM</pre>
+</li>
+</ul>
+<a id="KEYBIND">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>KEYBIND</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; KEYBIND</pre>
+</li>
+</ul>
+<a id="LIVINGENTITY">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>LIVINGENTITY</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; LIVINGENTITY</pre>
+</li>
+</ul>
+<a id="LOOTTABLE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>LOOTTABLE</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; LOOTTABLE</pre>
+</li>
+</ul>
+<a id="MUSICDISC">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>MUSICDISC</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; MUSICDISC</pre>
+</li>
+</ul>
+<a id="OVERLAY">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>OVERLAY</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; OVERLAY</pre>
 </li>
 </ul>
 <a id="PAINTING">
@@ -678,18 +666,130 @@ public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreat
 <ul class="blockList">
 <li class="blockList">
 <h4>PAINTING</h4>
-<pre>@SerializedName("painting")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> PAINTING</pre>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; PAINTING</pre>
 </li>
 </ul>
-<a id="GAMERULE">
+<a id="PARTICLE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>PARTICLE</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; PARTICLE</pre>
+</li>
+</ul>
+<a id="PLANT">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>PLANT</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; PLANT</pre>
+</li>
+</ul>
+<a id="POTION">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>POTION</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; POTION</pre>
+</li>
+</ul>
+<a id="POTIONEFFECT">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>POTIONEFFECT</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; POTIONEFFECT</pre>
+</li>
+</ul>
+<a id="PROCEDURE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>PROCEDURE</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; PROCEDURE</pre>
+</li>
+</ul>
+<a id="RANGEDITEM">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>RANGEDITEM</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; RANGEDITEM</pre>
+</li>
+</ul>
+<a id="RECIPE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>RECIPE</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; RECIPE</pre>
+</li>
+</ul>
+<a id="STRUCTURE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>STRUCTURE</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; STRUCTURE</pre>
+</li>
+</ul>
+<a id="TAB">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>TAB</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; TAB</pre>
+</li>
+</ul>
+<a id="TAG">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>TAG</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; TAG</pre>
+</li>
+</ul>
+<a id="TOOL">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>GAMERULE</h4>
-<pre>@SerializedName("gamerule")
-public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a> GAMERULE</pre>
+<h4>TOOL</h4>
+<pre>public static&nbsp;<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt; TOOL</pre>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<section role="region">
+<ul class="blockList">
+<li class="blockList"><a id="constructor.detail">
+<!--   -->
+</a>
+<h3>Constructor Detail</h3>
+<a id="&lt;init&gt;(java.lang.String,java.lang.Character,net.mcreator.element.BaseType,net.mcreator.element.RecipeType,net.mcreator.element.ModElementType.ModElementGUIProvider,java.lang.Class)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>ModElementType</h4>
+<pre>public&nbsp;ModElementType&#8203;(java.lang.String&nbsp;registryName,
+                      java.lang.Character&nbsp;shortcut,
+                      <a href="BaseType.html" title="enum in net.mcreator.element">BaseType</a>&nbsp;baseType,
+                      <a href="RecipeType.html" title="enum in net.mcreator.element">RecipeType</a>&nbsp;recipeType,
+                      <a href="ModElementType.ModElementGUIProvider.html" title="interface in net.mcreator.element">ModElementType.ModElementGUIProvider</a>&lt;<a href="ModElementType.html" title="type parameter in ModElementType">GE</a>&gt;&nbsp;modElementGUIProvider,
+                      java.lang.Class&lt;? extends <a href="ModElementType.html" title="type parameter in ModElementType">GE</a>&gt;&nbsp;modElementStorageClass)</pre>
 </li>
 </ul>
 </li>
@@ -702,46 +802,40 @@ public static final&nbsp;<a href="ModElementType.html" title="enum in net.mcreat
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="values()">
+<a id="getRegistryName()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>values</h4>
-<pre class="methodSignature">public static&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a>[]&nbsp;values()</pre>
-<div class="block">Returns an array containing the constants of this enum type, in
-the order they are declared. This method may be used to iterate
-over the constants as follows:
-<pre>
-for (ModElementType c : ModElementType.values())
-&nbsp;   System.out.println(c);
-</pre></div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>an array containing the constants of this enum type, in the order they are declared</dd>
-</dl>
+<h4>getRegistryName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getRegistryName()</pre>
 </li>
 </ul>
-<a id="valueOf(java.lang.String)">
+<a id="getShortcut()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>valueOf</h4>
-<pre class="methodSignature">public static&nbsp;<a href="ModElementType.html" title="enum in net.mcreator.element">ModElementType</a>&nbsp;valueOf&#8203;(java.lang.String&nbsp;name)</pre>
-<div class="block">Returns the enum constant of this type with the specified name.
-The string must match <i>exactly</i> an identifier used to declare an
-enum constant in this type.  (Extraneous whitespace characters are 
-not permitted.)</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>name</code> - the name of the enum constant to be returned.</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>the enum constant with the specified name</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>java.lang.IllegalArgumentException</code> - if this enum type has no constant with the specified name</dd>
-<dd><code>java.lang.NullPointerException</code> - if the argument is null</dd>
-</dl>
+<h4>getShortcut</h4>
+<pre class="methodSignature">public&nbsp;java.lang.Character&nbsp;getShortcut()</pre>
+</li>
+</ul>
+<a id="getRecipeType()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getRecipeType</h4>
+<pre class="methodSignature">public&nbsp;<a href="RecipeType.html" title="enum in net.mcreator.element">RecipeType</a>&nbsp;getRecipeType()</pre>
+</li>
+</ul>
+<a id="getBaseType()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getBaseType</h4>
+<pre class="methodSignature">public&nbsp;<a href="BaseType.html" title="enum in net.mcreator.element">BaseType</a>&nbsp;getBaseType()</pre>
 </li>
 </ul>
 <a id="getReadableName()">
@@ -762,22 +856,99 @@ not permitted.)</div>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDescription()</pre>
 </li>
 </ul>
-<a id="getRecipeType()">
+<a id="getIcon()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getRecipeType</h4>
-<pre class="methodSignature">public&nbsp;<a href="RecipeType.html" title="enum in net.mcreator.element">RecipeType</a>&nbsp;getRecipeType()</pre>
+<h4>getIcon</h4>
+<pre class="methodSignature">public&nbsp;javax.swing.ImageIcon&nbsp;getIcon()</pre>
 </li>
 </ul>
-<a id="getBaseType()">
+<a id="getModElementGUI(net.mcreator.ui.MCreator,net.mcreator.workspace.elements.ModElement,boolean)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getModElementGUI</h4>
+<pre class="methodSignature">public&nbsp;<a href="../ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="ModElementType.html" title="type parameter in ModElementType">GE</a>&gt;&nbsp;getModElementGUI&#8203;(<a href="../ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+                                          <a href="../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;modElement,
+                                          boolean&nbsp;editingMode)</pre>
+</li>
+</ul>
+<a id="getModElementStorageClass()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getModElementStorageClass</h4>
+<pre class="methodSignature">public&nbsp;java.lang.Class&lt;? extends <a href="GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&nbsp;getModElementStorageClass()</pre>
+</li>
+</ul>
+<a id="getStatus()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getStatus</h4>
+<pre class="methodSignature">public&nbsp;<a href="../generator/GeneratorStats.CoverageStatus.html" title="enum in net.mcreator.generator">GeneratorStats.CoverageStatus</a>&nbsp;getStatus()</pre>
+</li>
+</ul>
+<a id="setStatus(net.mcreator.generator.GeneratorStats.CoverageStatus)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setStatus</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setStatus&#8203;(<a href="../generator/GeneratorStats.CoverageStatus.html" title="enum in net.mcreator.generator">GeneratorStats.CoverageStatus</a>&nbsp;status)</pre>
+</li>
+</ul>
+<a id="hasProcedureTriggers()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>hasProcedureTriggers</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;hasProcedureTriggers()</pre>
+</li>
+</ul>
+<a id="toString()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>toString</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;toString()</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code>toString</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
+</dl>
+</li>
+</ul>
+<a id="equals(java.lang.Object)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>equals</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;equals&#8203;(java.lang.Object&nbsp;element)</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code>equals</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
+</dl>
+</li>
+</ul>
+<a id="hashCode()">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>getBaseType</h4>
-<pre class="methodSignature">public&nbsp;<a href="BaseType.html" title="enum in net.mcreator.element">BaseType</a>&nbsp;getBaseType()</pre>
+<h4>hashCode</h4>
+<pre class="methodSignature">public&nbsp;int&nbsp;hashCode()</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code>hashCode</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
+</dl>
 </li>
 </ul>
 </li>
@@ -831,15 +1002,15 @@ not permitted.)</div>
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#enum.constant.summary">Enum Constants</a>&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#enum.constant.detail">Enum Constants</a>&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
