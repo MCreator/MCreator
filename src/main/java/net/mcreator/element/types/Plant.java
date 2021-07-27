@@ -142,8 +142,8 @@ import java.util.stream.Collectors;
 		this.jumpFactor = 1.0;
 		this.speedFactor = 1.0;
 
-		this.suspiciousStewEffect = "SPEED";
-		this.suspiciousStewDuration = 5;
+		this.suspiciousStewEffect = "SATURATION";
+		this.suspiciousStewDuration = 0;
 
 		this.staticPlantGenerationType = "Flower";
 		this.doublePlantGenerationType = "Flower";
