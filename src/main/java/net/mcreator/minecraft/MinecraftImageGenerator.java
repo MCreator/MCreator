@@ -1163,7 +1163,7 @@ public class MinecraftImageGenerator {
 		/**
 		 * This method generates mob images.
 		 *
-		 * @param mobModelTexture   Mob model full texture.
+		 * @param mobModelTexture   LivingEntity model full texture.
 		 * @param spawnEggBaseColor Spawn egg's base (egg) color.
 		 * @param spawnEggDotColor  Spawn egg's detail (dot) color.
 		 * @param hasSpawnEgg       Toggle spawn egg rendering.
@@ -1231,7 +1231,7 @@ public class MinecraftImageGenerator {
 		/**
 		 * This method generates procedure images.
 		 *
-		 * @param procedurexml Mob model full texture.
+		 * @param procedurexml LivingEntity model full texture.
 		 * @param dependencies Spawn egg's base (egg) color.
 		 * @return Returns generated image.
 		 */

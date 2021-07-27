@@ -25,5 +25,6 @@
       "type": "itemstack"
     }
   ],
-  "cancelable": "true"
+  "cancelable": "true",
+  "side": "server"
 }

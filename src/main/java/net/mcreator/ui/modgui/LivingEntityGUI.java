@@ -287,8 +287,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.t("elementgui.living_entity.event_mob_is_hurt"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
 		onRightClickedOn = new ProcedureSelector(this.withEntry("entity/when_right_clicked"), mcreator,
-				L10N.t("elementgui.living_entity.event_mob_right_clicked"), VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE,
-				Dependency.fromString(
+				L10N.t("elementgui.living_entity.event_mob_right_clicked"),
+				VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack"))
 				.makeReturnValueOptional();
 		whenThisMobKillsAnother = new ProcedureSelector(this.withEntry("entity/when_kills_another"), mcreator,
@@ -878,7 +878,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		} else if (page == 5) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-						.map(compileNote -> "Mob AI builder: " + compileNote.getMessage())
+						.map(compileNote -> "Living entity AI builder: " + compileNote.getMessage())
 						.collect(Collectors.toList()));
 		} else if (page == 6) {
 			if ((int) minNumberOfMobsPerGroup.getValue() > (int) maxNumberOfMobsPerGroup.getValue()) {
