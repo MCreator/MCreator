@@ -52,6 +52,20 @@ public class ElementUtil {
 	 * Loads all mod elements and all Minecraft elements (blocks and items) without elements
 	 * that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
 	 * so only oak wood, birch wood, ... are loaded, without wildcard wood element
+	 * This list also provides potions from both Minecraft elements and mod elements
+	 *
+	 * @return All Blocks and Items and Potions from both Minecraft and custom elements with or without metadata
+	 */
+	public static List<MCItem> loadBlocksAndItemsAndPotions(Workspace workspace) {
+		List<MCItem> elements = loadBlocksAndItems(workspace);
+		loadAllPotions(workspace).forEach(potion -> elements.add(new MCItem.Potion(workspace, potion.getName())));
+		return elements;
+	}
+
+	/**
+	 * Loads all mod elements and all Minecraft elements (blocks and items) without elements
+	 * that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
+	 * so only oak wood, birch wood, ... are loaded, without wildcard wood element
 	 *
 	 * @return All Blocks and Items from both Minecraft and custom elements with or without metadata
 	 */
