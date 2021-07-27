@@ -162,7 +162,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 		JPanel events = new JPanel();
 		events.setLayout(new BoxLayout(events, BoxLayout.PAGE_AXIS));
-		JPanel events2 = new JPanel(new GridLayout(2, 2, 20, 8));
+		JPanel events2 = new JPanel(new GridLayout(2, 2, 8, 8));
 		events2.setOpaque(false);
 		events2.add(onStarted);
 		events2.add(onExpired);
