@@ -43,7 +43,7 @@ public class ModElementTypeLoader {
 				new ModElementType<>("command", 'c', BaseType.COMMAND, RecipeType.NONE, CommandGUI::new,
 						Command.class));
 		ModElementType.DIMENSION = register(
-				new ModElementType<>("dimension", 'd', BaseType.DATAPACK, RecipeType.ITEM, DimensionGUI::new,
+				new ModElementType<>("dimension", 'd', BaseType.DIMENSION, RecipeType.ITEM, DimensionGUI::new,
 						Dimension.class));
 		ModElementType.CODE = register(
 				new ModElementType<>("code", null, BaseType.OTHER, RecipeType.NONE, CustomElementGUI::new,
