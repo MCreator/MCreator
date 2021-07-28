@@ -58,7 +58,7 @@ public class ElementUtil {
 	 */
 	public static List<MCItem> loadBlocksAndItemsAndPotions(Workspace workspace) {
 		List<MCItem> elements = loadBlocksAndItems(workspace);
-		loadAllPotions(workspace).forEach(potion -> elements.add(new MCItem.Potion(workspace, potion.getName())));
+		loadAllPotions(workspace).forEach(potion -> elements.add(new MCItem.Potion(workspace, potion)));
 		return elements;
 	}
 

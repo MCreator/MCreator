@@ -179,10 +179,10 @@ public class MCItem extends DataListEntry {
 	}
 
 	public static final class Potion extends MCItem {
-		public Potion(@Nonnull Workspace workspace, String name) {
-			super("POTION:" + name);
+		public Potion(@Nonnull Workspace workspace, DataListEntry potion) {
+			super("POTION:" + potion.getName());
 			setType("potion");
-			icon = MCItem.getBlockIconBasedOnName(workspace, "POTION:" + name);
+			icon = MCItem.getBlockIconBasedOnName(workspace, "POTION:" + potion.getName());
 		}
 
 		@Override public boolean isSupportedInWorkspace(Workspace workspace) {
