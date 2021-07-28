@@ -21,7 +21,6 @@ package net.mcreator.ui.procedure;
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
@@ -192,8 +191,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
 							ModElementType.PROCEDURE);
-					ModElementGUI<?> newGUI = ModElementTypeRegistry.REGISTRY.get(ModElementType.PROCEDURE)
-							.getModElement(mcreator, element, false);
+					ModElementGUI<?> newGUI = ModElementType.PROCEDURE.getModElementGUI(mcreator, element, false);
 					if (newGUI != null) {
 						newGUI.showView();
 						newGUI.setModElementCreatedListener(generatableElement -> {
@@ -216,9 +214,8 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 				if (getSelectedProcedure() != null) {
 					ModElement selectedProcedureAsModElement = mcreator.getWorkspace()
 							.getModElementByName(getSelectedProcedure().getName());
-					ModElementGUI<?> modeditor = ModElementTypeRegistry.REGISTRY
-							.get(selectedProcedureAsModElement.getType())
-							.getModElement(mcreator, selectedProcedureAsModElement, true);
+					ModElementGUI<?> modeditor = selectedProcedureAsModElement.getType()
+							.getModElementGUI(mcreator, selectedProcedureAsModElement, true);
 					if (modeditor != null)
 						modeditor.showView();
 				}

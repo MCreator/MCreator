@@ -171,7 +171,6 @@ public class ActionRegistry {
 	public final BasicAction imageEditorRedo;
 	public final BasicAction imageEditorSave;
 	public final BasicAction imageEditorSaveAs;
-	public final BasicAction imageEditorResizeCanvas;
 	public final BasicAction imageEditorPencil;
 	public final BasicAction imageEditorShape;
 	public final BasicAction imageEditorEraser;
@@ -183,6 +182,7 @@ public class ActionRegistry {
 	public final BasicAction imageEditorHSVNoise;
 	public final BasicAction imageEditorMoveLayer;
 	public final BasicAction imageEditorResizeLayer;
+	public final BasicAction imageEditorResizeCanvas;
 
 	public ActionRegistry(MCreator mcreator) {
 		this.mcreator = mcreator;
@@ -313,7 +313,6 @@ public class ActionRegistry {
 		this.imageEditorRedo = new ImageEditorRedoAction(this);
 		this.imageEditorSave = new ImageEditorSaveAction(this);
 		this.imageEditorSaveAs = new ImageEditorSaveAsAction(this);
-		this.imageEditorResizeCanvas = new ResizeCanvasToolAction(this);
 		this.imageEditorPencil = new PencilToolAction(this);
 		this.imageEditorShape = new ShapeToolAction(this);
 		this.imageEditorEraser = new EraserToolAction(this);
@@ -325,6 +324,7 @@ public class ActionRegistry {
 		this.imageEditorHSVNoise = new HSVNoiseToolAction(this);
 		this.imageEditorMoveLayer = new MoveToolAction(this);
 		this.imageEditorResizeLayer = new ResizeToolAction(this);
+		this.imageEditorResizeCanvas = new ResizeCanvasToolAction(this);
 
 		this.acceleratorMap = new AcceleratorMap(this);
 		this.acceleratorMap.registerAll();

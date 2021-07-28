@@ -107,7 +107,7 @@ public class GeneratorSelector {
 			genStats.add(new JEmptyBox(20, 20));
 
 			JPanel supportedModTypes = new JPanel(new GridLayout(-1, 5, 7, 2));
-			for (Map.Entry<ModElementType, GeneratorStats.CoverageStatus> typeCoverageInfo : stats
+			for (Map.Entry<ModElementType<?>, GeneratorStats.CoverageStatus> typeCoverageInfo : stats
 					.getModElementTypeCoverageInfo().entrySet()) {
 				addStatusLabel(typeCoverageInfo.getKey().getReadableName(), typeCoverageInfo.getValue(),
 						supportedModTypes);
