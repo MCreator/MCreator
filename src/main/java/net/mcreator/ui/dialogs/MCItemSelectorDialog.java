@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -168,20 +169,30 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		ComponentUtils.deriveFont(jtf, 15);
 		ComponentUtils.deriveFont(filterField, 15);
 
+		JComponent top;
 		JButton all = L10N.button("dialog.item_selector.all");
 		all.addActionListener(event -> filterField.setText(""));
 		JButton blocks = L10N.button("dialog.item_selector.blocks");
 		blocks.addActionListener(event -> filterField.setText("block"));
 		JButton items = L10N.button("dialog.item_selector.items");
 		items.addActionListener(event -> filterField.setText("item"));
-		JButton potions = L10N.button("dialog.item_selector.potions");
-		potions.addActionListener(event -> filterField.setText("potion:"));
 		JButton mods = L10N.button("dialog.item_selector.custom_elements");
 		mods.addActionListener(event -> filterField.setText("custom"));
 
-		JComponent top = PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.item_selector.name"), jtf,
-				L10N.label("dialog.item_selector.display_filter"), filterField, new JLabel(""), all, blocks, items,
-				potions, mods);
+		boolean hasPotions = blocksConsumer.provide(mcreator.getWorkspace()).equals(
+				ElementUtil.loadBlocksAndItemsAndPotions(mcreator.getWorkspace()));
+
+		if (hasPotions) {
+			JButton potions = L10N.button("dialog.item_selector.potions");
+			potions.addActionListener(event -> filterField.setText("potion:"));
+			top = PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.item_selector.name"), jtf,
+					L10N.label("dialog.item_selector.display_filter"), filterField, new JLabel(""), all, blocks, items,
+					potions, mods);
+		} else {
+			top = PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.item_selector.name"), jtf,
+					L10N.label("dialog.item_selector.display_filter"), filterField, new JLabel(""), all, blocks, items,
+					mods);
+		}
 
 		top.setBorder(BorderFactory.createEmptyBorder(0, 0, 7, 0));
 
@@ -192,7 +203,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 
 		add("Center", mainComponent);
 
-		setSize(970, 425);
+		setSize(hasPotions ? 970 : 900, 425);
 
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
