@@ -63,6 +63,7 @@ import java.util.List;
 	public int luminance;
 	public int lightOpacity;
 	public boolean emissiveRendering;
+	public int tickRate;
 	public int flammability;
 	public int fireSpreadSpeed;
 	public String colorOnMap;
@@ -94,6 +95,7 @@ import java.util.List;
 		this.levelDecrease = 1;
 
 		this.lightOpacity = 1;
+		this.tickRate = 10;
 
 		this.temperature = 300;
 
