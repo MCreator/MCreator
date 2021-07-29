@@ -104,7 +104,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private ProcedureSelector onEntityCollides;
 	private ProcedureSelector onRandomUpdateEvent;
 	private ProcedureSelector onDestroyedByExplosion;
-	private ProcedureSelector canFlow;
+	private ProcedureSelector flowCondition;
 	private ProcedureSelector beforeReplacingBlock;
 
 	private ProcedureSelector generateCondition;
@@ -141,9 +141,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onDestroyedByExplosion = new ProcedureSelector(this.withEntry("block/when_destroyed_explosion"), mcreator,
 				L10N.t("elementgui.block.event_on_block_destroyed_by_explosion"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
-		canFlow = new ProcedureSelector(this.withEntry("fluid/can_flow"), mcreator,
-				L10N.t("elementgui.fluid.event_can_flow"), VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate/intostate:blockstate")).makeInline();
+		flowCondition = new ProcedureSelector(this.withEntry("fluid/flow_condition"), mcreator,
+				L10N.t("elementgui.fluid.event_flow_condition"), VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate/intostate:blockstate"))
+				.setDefaultName(L10N.t("condition.common.no_additional")).makeInline();
 		beforeReplacingBlock = new ProcedureSelector(this.withEntry("fluid/before_replacing_block"), mcreator,
 				L10N.t("elementgui.fluid.event_before_replacing_block"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
@@ -280,7 +281,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JComponent destala = PanelUtils.northAndCenterElement(destal,
-				PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), canFlow), 0, 2);
+				PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), flowCondition), 0, 2);
 
 		destala.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -464,7 +465,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onEntityCollides.refreshListKeepSelected();
 		onRandomUpdateEvent.refreshListKeepSelected();
 		onDestroyedByExplosion.refreshListKeepSelected();
-		canFlow.refreshListKeepSelected();
+		flowCondition.refreshListKeepSelected();
 		beforeReplacingBlock.refreshListKeepSelected();
 
 		generateCondition.refreshListKeepSelected();
@@ -522,7 +523,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onEntityCollides.setSelectedProcedure(fluid.onEntityCollides);
 		onRandomUpdateEvent.setSelectedProcedure(fluid.onRandomUpdateEvent);
 		onDestroyedByExplosion.setSelectedProcedure(fluid.onDestroyedByExplosion);
-		canFlow.setSelectedProcedure(fluid.canFlow);
+		flowCondition.setSelectedProcedure(fluid.flowCondition);
 		beforeReplacingBlock.setSelectedProcedure(fluid.beforeReplacingBlock);
 		fluidtype.setSelectedItem(fluid.type);
 		frequencyOnChunks.setValue(fluid.frequencyOnChunks);
@@ -577,7 +578,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.onEntityCollides = onEntityCollides.getSelectedProcedure();
 		fluid.onRandomUpdateEvent = onRandomUpdateEvent.getSelectedProcedure();
 		fluid.onDestroyedByExplosion = onDestroyedByExplosion.getSelectedProcedure();
-		fluid.canFlow = canFlow.getSelectedProcedure();
+		fluid.flowCondition = flowCondition.getSelectedProcedure();
 		fluid.beforeReplacingBlock = beforeReplacingBlock.getSelectedProcedure();
 		fluid.type = (String) fluidtype.getSelectedItem();
 		fluid.spawnWorldTypes = spawnWorldTypes.getListElements();

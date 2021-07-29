@@ -82,7 +82,7 @@ import java.util.List;
 	public Procedure onEntityCollides;
 	public Procedure onRandomUpdateEvent;
 	public Procedure onDestroyedByExplosion;
-	public Procedure canFlow;
+	public Procedure flowCondition;
 	public Procedure beforeReplacingBlock;
 
 	private Fluid() {
@@ -133,6 +133,6 @@ import java.util.List;
 	}
 
 	public boolean extendsForgeFlowingFluid() {
-		return spawnParticles || flowStrength != 1 || canFlow != null || beforeReplacingBlock != null;
+		return spawnParticles || flowStrength != 1 || flowCondition != null || beforeReplacingBlock != null;
 	}
 }
