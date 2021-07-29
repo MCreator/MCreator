@@ -67,7 +67,7 @@
         <custom-text/>
     </category>
     <category name="${t:blockly.category.time}" colour="320">
-        <block type="time_to_string"/>
+        <block type="time_as_string"/>
         <block type="time_seconds"/>
         <block type="time_minutes"/>
         <block type="time_hours"/>

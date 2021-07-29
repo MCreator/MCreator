@@ -446,44 +446,44 @@ Blockly.defineBlocksWithJsonArray([
         "colour": "20"
     },
     {
-        "type": "time_to_string",
-        "message0": "Time to text",
+        "type": "time_as_string",
+        "message0": "Time as a String",
         "output": "String",
         "colour": "%{BKY_TEXTS_HUE}"
     },
     {
         "type": "time_day",
-        "message0": "Get the day",
+        "message0": "Day of this week as a number",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },
     {
         "type": "time_hours",
-        "message0": "Get the hours",
+        "message0": "Hours as a number",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },
     {
         "type": "time_month",
-        "message0": "Get the month",
+        "message0": "Month as a number",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },
     {
         "type": "time_minutes",
-        "message0": "Get the minutes",
+        "message0": "Minutes as a number",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },
     {
         "type": "time_year",
-        "message0": "Get the year",
+        "message0": "Year as a number",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },
     {
         "type": "time_seconds",
-        "message0": "Get the seconds",
+        "message0": "Seconds as a number",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },

@@ -57,7 +57,7 @@ public abstract class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new TextLengthBlock());
 		blockGenerators.add(new CustomDependencyBlock());
 		blockGenerators.add(new JavaCodeOutputBlock());
-		blockGenerators.add(new TimeToStringBlock());
+		blockGenerators.add(new TimeAsStringBlock());
 		blockGenerators.add(new TimeSecondsBlock());
 		blockGenerators.add(new TimeMinutesBlock());
 		blockGenerators.add(new TimeHoursBlock());

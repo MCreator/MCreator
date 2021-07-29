@@ -24,14 +24,14 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import org.w3c.dom.Element;
 
-public class TimeToStringBlock implements IBlockGenerator {
+public class TimeAsStringBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		master.append("Calendar.getInstance().getTime().toString()");
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "time_to_string" };
+		return new String[] { "time_as_string" };
 	}
 
 	@Override public BlockType getBlockType() {
