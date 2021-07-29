@@ -34,6 +34,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
 import net.mcreator.util.MCreatorVersionNumber;
+import net.mcreator.util.TerribleModuleHacks;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -54,7 +55,8 @@ public class TestSetup {
 		if (already)
 			return;
 
-		Launcher.openModuleExports();
+		TerribleModuleHacks.openAllUnnamed();
+		TerribleModuleHacks.openMCreatorRequirements();
 
 		WebConsoleListener.registerLogger(LOG);
 

@@ -22,6 +22,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Material;
 import net.mcreator.element.parts.StepSound;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.element.types.Tag;
@@ -160,8 +161,8 @@ public class WoodPackMakerTool {
 		woodBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		woodBlock.destroyTool = "axe";
 		woodBlock.breakHarvestLevel = 0;
-		woodBlock.plantsGrowOn = true;
 		woodBlock.flammability = (int) Math.round(5 * factor);
+		woodBlock.rotationMode = 5; // log rotation
 
 		woodBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(woodBlock);
@@ -188,8 +189,8 @@ public class WoodPackMakerTool {
 		logBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		logBlock.destroyTool = "axe";
 		logBlock.breakHarvestLevel = 0;
-		logBlock.plantsGrowOn = true;
 		logBlock.flammability = (int) Math.round(5 * factor);
+		logBlock.rotationMode = 5; // log rotation
 
 		logBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(logBlock);
@@ -232,6 +233,8 @@ public class WoodPackMakerTool {
 		leavesBlock.resistance = 0.2 * factor;
 		leavesBlock.breakHarvestLevel = 0;
 		leavesBlock.flammability = (int) Math.round(30 * factor);
+		leavesBlock.lightOpacity = 1;
+		leavesBlock.creativeTab = new TabEntry(workspace, "DECORATIONS");
 
 		leavesBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(leavesBlock);
@@ -254,6 +257,7 @@ public class WoodPackMakerTool {
 		stairsBlock.resistance = 2 * factor;
 		stairsBlock.breakHarvestLevel = 0;
 		stairsBlock.flammability = (int) Math.round(5 * factor);
+		stairsBlock.lightOpacity = 0;
 
 		stairsBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(stairsBlock);
@@ -276,6 +280,7 @@ public class WoodPackMakerTool {
 		slabBlock.resistance = 3 * factor;
 		slabBlock.breakHarvestLevel = 0;
 		slabBlock.flammability = (int) Math.round(5 * factor);
+		slabBlock.lightOpacity = 0;
 
 		slabBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(slabBlock);
@@ -296,6 +301,8 @@ public class WoodPackMakerTool {
 		fenceBlock.resistance = 3 * factor;
 		fenceBlock.breakHarvestLevel = 0;
 		fenceBlock.flammability = (int) Math.round(5 * factor);
+		fenceBlock.lightOpacity = 0;
+		fenceBlock.creativeTab = new TabEntry(workspace, "DECORATIONS");
 
 		fenceBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(fenceBlock);
@@ -316,6 +323,8 @@ public class WoodPackMakerTool {
 		fenceGateBlock.resistance = 3 * factor;
 		fenceGateBlock.breakHarvestLevel = 0;
 		fenceGateBlock.flammability = (int) Math.round(5 * factor);
+		fenceGateBlock.lightOpacity = 0;
+		fenceGateBlock.creativeTab = new TabEntry(workspace, "REDSTONE");
 
 		fenceGateBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(fenceGateBlock);
@@ -336,6 +345,8 @@ public class WoodPackMakerTool {
 		pressurePlateBlock.resistance = 3 * factor;
 		pressurePlateBlock.breakHarvestLevel = 0;
 		pressurePlateBlock.flammability = (int) Math.round(5 * factor);
+		pressurePlateBlock.lightOpacity = 0;
+		pressurePlateBlock.creativeTab = new TabEntry(workspace, "REDSTONE");
 
 		pressurePlateBlock.getModElement().setParentFolder(folder);
 		mcreator.getModElementManager().storeModElementPicture(pressurePlateBlock);
