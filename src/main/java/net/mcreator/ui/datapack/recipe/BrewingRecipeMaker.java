@@ -43,9 +43,9 @@ public class BrewingRecipeMaker extends JPanel {
 		ip.fitToImage();
 		ip.setLayout(null);
 
-		cb1 = new MCItemHolder(mcreator, itemsWithTagsAndPotions, true);
+		cb1 = new MCItemHolder(mcreator, itemsWithTagsAndPotions, true, true);
 		cb2 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb3 = new MCItemHolder(mcreator, itemsWithPotions, false);
+		cb3 = new MCItemHolder(mcreator, itemsWithPotions, false, true);
 
 		JButton export = new JButton(UIRES.get("18px.export"));
 

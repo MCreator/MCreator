@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.dialogs;
 
-import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -58,6 +57,10 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 	private ActionListener itemSelectedListener;
 
 	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags) {
+		this(mcreator, blocksConsumer, supportTags, false);
+	}
+
+	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags, boolean hasPotions) {
 		super(mcreator);
 
 		this.mcreator = mcreator;
@@ -178,10 +181,6 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		items.addActionListener(event -> filterField.setText("item"));
 		JButton mods = L10N.button("dialog.item_selector.custom_elements");
 		mods.addActionListener(event -> filterField.setText("custom"));
-
-		List<MCItem> itemsList = blocksConsumer.provide(mcreator.getWorkspace());
-		boolean hasPotions = itemsList.equals(ElementUtil.loadBlocksAndItemsAndPotions(mcreator.getWorkspace())) ||
-				itemsList.equals(ElementUtil.loadBlocksAndItemsAndTagsAndPotions(mcreator.getWorkspace()));
 
 		if (hasPotions) {
 			JButton potions = L10N.button("dialog.item_selector.potions");
