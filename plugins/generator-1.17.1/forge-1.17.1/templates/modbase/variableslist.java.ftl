@@ -5,7 +5,9 @@ import ${package}.${JavaModName};
 
 public class ${JavaModName}Variables {
 
-	// TODO
+	public ${JavaModName}Variables(${JavaModName}Elements elements) {
+
+	}
 
 }
 <#-- @formatter:on -->
