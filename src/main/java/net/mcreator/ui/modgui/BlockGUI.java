@@ -777,7 +777,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		soundProperties.add(fallSound);
 
 		advancedProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/tick_rate"), L10N.label("elementgui.block.tick_rate")));
+				.wrapWithHelpButton(this.withEntry("block/tick_rate"), L10N.label("elementgui.common.tick_rate")));
 		advancedProperties.add(tickRate);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_randomly"),
