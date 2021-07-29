@@ -67,7 +67,7 @@ public class ${JavaModName} {
 		event.getRegistry().registerAll(elements.getEnchantments().stream().map(Supplier::get).toArray(Enchantment[]::new));
 	}
 
-	@SubscribeEvent public void registerSounds(RegistryEvent.Register<net.minecraft.util.SoundEvent> event) {
+	@SubscribeEvent public void registerSounds(RegistryEvent.Register<net.minecraft.sounds.SoundEvent> event) {
 		elements.registerSounds(event);
 	}
 

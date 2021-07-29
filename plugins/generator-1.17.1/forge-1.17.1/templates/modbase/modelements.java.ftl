@@ -22,19 +22,19 @@ public class ${JavaModName}Elements {
 	public final List<Supplier<EntityType<?>>> entities = new ArrayList<>();
 	public final List<Supplier<Enchantment>> enchantments = new ArrayList<>();
 
-	public static Map<ResourceLocation, net.minecraft.util.SoundEvent> sounds = new HashMap<>();
+	public static Map<ResourceLocation, net.minecraft.sounds.SoundEvent> sounds = new HashMap<>();
 
 	public ${JavaModName}Elements () {
 		<#list sounds as sound>
-		sounds.put(new ResourceLocation("${modid}" ,"${sound}"), new net.minecraft.util.SoundEvent(new ResourceLocation("${modid}" ,"${sound}")));
+		sounds.put(new ResourceLocation("${modid}" ,"${sound}"), new net.minecraft.sounds.SoundEvent(new ResourceLocation("${modid}" ,"${sound}")));
 		</#list>
 
 		try {
 			ModFileScanData modFileInfo = ModList.get().getModFileById("${modid}").getFile().getScanResult();
 			Set<ModFileScanData.AnnotationData> annotations = modFileInfo.getAnnotations();
 			for (ModFileScanData.AnnotationData annotationData : annotations) {
-				if (annotationData.getAnnotationType().	getClassName().equals(ModElement.Tag.class.getName())) {
-					Class<?> clazz = Class.forName(annotationData.getClassType().getClassName());
+				if (annotationData.annotationType().getClassName().equals(ModElement.Tag.class.getName())) {
+					Class<?> clazz = Class.forName(annotationData.clazz().getClassName());
 					if(clazz.getSuperclass() == ${JavaModName}Elements.ModElement.class)
 						elements.add((${JavaModName}Elements.ModElement) clazz.getConstructor(this.getClass()).newInstance(this));
 					}
@@ -51,14 +51,14 @@ public class ${JavaModName}Elements {
 		</#if>
 	}
 
-	public void registerSounds(RegistryEvent.Register<net.minecraft.util.SoundEvent> event) {
-		for (Map.Entry<ResourceLocation, net.minecraft.util.SoundEvent> sound : sounds.entrySet())
+	public void registerSounds(RegistryEvent.Register<net.minecraft.sounds.SoundEvent> event) {
+		for (Map.Entry<ResourceLocation, net.minecraft.sounds.SoundEvent> sound : sounds.entrySet())
 			event.getRegistry().register(sound.getValue().setRegistryName(sound.getKey()));
 	}
 
 	private int messageID = 0;
 
-	public <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, PacketBuffer> encoder, Function<PacketBuffer, T> decoder,
+	public <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
 			BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
 		${JavaModName}.PACKET_HANDLER.registerMessage(messageID, messageType, encoder, decoder, messageConsumer);
 		messageID++;
