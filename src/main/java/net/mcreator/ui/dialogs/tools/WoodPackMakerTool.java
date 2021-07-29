@@ -356,7 +356,7 @@ public class WoodPackMakerTool {
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block buttonBlock = (Block) ModElementType.BLOCK
-				.getModElement(mcreator, new ModElement(workspace, name + "Button", ModElementType.BLOCK), false)
+				.getModElementGUI(mcreator, new ModElement(workspace, name + "Button", ModElementType.BLOCK), false)
 				.getElementFromGUI();
 		buttonBlock.name = name + " Button";
 		buttonBlock.blockBase = "Button";
