@@ -179,8 +179,9 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		JButton mods = L10N.button("dialog.item_selector.custom_elements");
 		mods.addActionListener(event -> filterField.setText("custom"));
 
-		boolean hasPotions = blocksConsumer.provide(mcreator.getWorkspace()).equals(
-				ElementUtil.loadBlocksAndItemsAndPotions(mcreator.getWorkspace()));
+		List<MCItem> itemsList = blocksConsumer.provide(mcreator.getWorkspace());
+		boolean hasPotions = itemsList.equals(ElementUtil.loadBlocksAndItemsAndPotions(mcreator.getWorkspace())) ||
+				itemsList.equals(ElementUtil.loadBlocksAndItemsAndTagsAndPotions(mcreator.getWorkspace()));
 
 		if (hasPotions) {
 			JButton potions = L10N.button("dialog.item_selector.potions");
