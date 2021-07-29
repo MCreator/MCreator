@@ -33,7 +33,7 @@
   "mcreator": {
     "toolbox_id": "blockactions",
     "toolbox_init": [
-      "<value name=\"property\"><block type=\"text\"><field name=\"TEXT\">half</field></block></value>",
+      "<value name=\"property\"><block type=\"blockstate_properties_enum\"><field name=\"blockstatesenum\">DOUBLE_BLOCK_HALF</field></block></value>",
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
       "<value name=\"z\"><block type=\"coord_z\"></block></value>",
