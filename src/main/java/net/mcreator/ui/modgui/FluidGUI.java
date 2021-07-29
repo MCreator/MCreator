@@ -93,6 +93,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 1, 9999999, 1));
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JComboBox<String> colorOnMap = new JComboBox<>();
@@ -292,13 +293,14 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		JPanel blockProperties = new JPanel(new GridLayout(7, 2, 20, 2));
+		JPanel blockProperties = new JPanel(new GridLayout(8, 2, 20, 2));
 		blockProperties.setOpaque(false);
 
 		resistance.setOpaque(false);
 		luminance.setOpaque(false);
 		lightOpacity.setOpaque(false);
 		emissiveRendering.setOpaque(false);
+		tickRate.setOpaque(false);
 		flammability.setOpaque(false);
 		fireSpreadSpeed.setOpaque(false);
 
@@ -313,6 +315,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/light_opacity"),
 				L10N.label("elementgui.common.light_opacity")));
 		blockProperties.add(lightOpacity);
+
+		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_rate"),
+				L10N.label("elementgui.common.tick_rate")));
+		blockProperties.add(tickRate);
 
 		blockProperties.add(HelpUtils
 				.wrapWithHelpButton(this.withEntry("block/flammability"), L10N.label("elementgui.block.flammability")));
@@ -502,6 +508,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		luminance.setValue(fluid.luminance);
 		lightOpacity.setValue(fluid.lightOpacity);
 		emissiveRendering.setSelected(fluid.emissiveRendering);
+		tickRate.setValue(fluid.tickRate);
 		flammability.setValue(fluid.flammability);
 		fireSpreadSpeed.setValue(fluid.fireSpreadSpeed);
 		colorOnMap.setSelectedItem(fluid.colorOnMap);
@@ -557,6 +564,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.luminance = (int) luminance.getValue();
 		fluid.lightOpacity = (int) lightOpacity.getValue();
 		fluid.emissiveRendering = emissiveRendering.isSelected();
+		fluid.tickRate = (int) tickRate.getValue();
 		fluid.flammability = (int) flammability.getValue();
 		fluid.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 		fluid.colorOnMap = (String) colorOnMap.getSelectedItem();
