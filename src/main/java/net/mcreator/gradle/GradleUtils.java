@@ -18,12 +18,10 @@
 
 package net.mcreator.gradle;
 
-import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.api.ModAPI;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.action.impl.workspace.SDKManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -32,7 +30,7 @@ import org.gradle.tooling.BuildLauncher;
 import org.gradle.tooling.ProjectConnection;
 
 import java.io.File;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +48,7 @@ public class GradleUtils {
 				.setJvmArguments("-Xms" + PreferencesManager.PREFERENCES.gradle.xms + "m",
 						"-Xmx" + PreferencesManager.PREFERENCES.gradle.xmx + "m");
 
-		String java_home = getJavaHome(workspace.getGeneratorConfiguration());
+		String java_home = getJavaHome();
 		if (java_home != null) // make sure detected JAVA_HOME is not null
 			retval = retval.setJavaHome(new File(java_home));
 
@@ -65,27 +63,24 @@ public class GradleUtils {
 		// use custom set of environment variables to prevent system overrides
 		retval.setEnvironmentVariables(environment);
 
-		retval.withArguments(Collections.emptyList());
+		if (java_home != null)
+			retval.withArguments(Arrays.asList("-Porg.gradle.java.installations.auto-detect=false",
+					"-Porg.gradle.java.installations.paths=" + java_home.replace('\\', '/')));
 
 		return retval;
 	}
 
-	public static String getJavaHome(GeneratorConfiguration generatorConfiguration) {
+	public static String getJavaHome() {
 		// check if JAVA_HOME was overwritten in preferences and return this one in such case
 		if (PreferencesManager.PREFERENCES.hidden.java_home != null && PreferencesManager.PREFERENCES.hidden.java_home
 				.isFile()) {
-			LOG.warn("Using java home override specified by users. Things may get bad!");
+			LOG.warn("Using java home override specified by users!");
 			String path = PreferencesManager.PREFERENCES.hidden.java_home.toString().replace("\\", "/");
 			if (new File(path).exists() && path.contains("/bin/java"))
 				return path.split("/bin/java")[0];
 			else
 				LOG.error("Java home override from preferences is not valid!");
 		}
-
-		// if the generator has a JDK, we set JAVA_HOME to generator's JDK
-		if (generatorConfiguration.getJDKVersionOverride() != null && SDKManager
-				.validateCustomJDK(generatorConfiguration))
-			return SDKManager.getJavaHomeForVersion(generatorConfiguration.getJDKVersionOverride()).getAbsolutePath();
 
 		// if we have bundled JDK, we set JAVA_HOME to bundled JDK
 		if (new File("./jdk/bin/javac.exe").isFile() || new File("./jdk/bin/javac").isFile())

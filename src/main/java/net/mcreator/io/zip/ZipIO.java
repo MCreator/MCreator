@@ -18,11 +18,6 @@
 
 package net.mcreator.io.zip;
 
-import net.mcreator.io.FileIO;
-import net.mcreator.io.OS;
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,7 +44,7 @@ public class ZipIO {
 				action.process(zipEntry);
 			}
 		} catch (IOException e) {
-			LOG.error("Failed to iterate zip", e);
+			LOG.error(e.getMessage(), e);
 		}
 	}
 
@@ -61,7 +56,7 @@ public class ZipIO {
 				sb.append(line).append("\n");
 			}
 		} catch (IOException e) {
-			LOG.error("Failed to convert zip entry to string", e);
+			LOG.error(e.getMessage(), e);
 		}
 		return sb.toString();
 	}
@@ -79,7 +74,7 @@ public class ZipIO {
 				}
 			}
 		} catch (IOException e) {
-			LOG.error("Failed to read code in zip", e);
+			LOG.error(e.getMessage(), e);
 		}
 		return null;
 	}
@@ -172,7 +167,8 @@ public class ZipIO {
 				}
 			}
 		} catch (IOException e) {
-			LOG.error("Failed to extract zip file", e);
+			LOG.error(e.getMessage(), e);
+			LOG.info("Failed to extract zip file:" + e.getMessage());
 		}
 	}
 
@@ -181,34 +177,6 @@ public class ZipIO {
 			return raf.readInt() == 0x504B0304;
 		} catch (IOException e) {
 			return false;
-		}
-	}
-
-	public static void extractTarGZ(String strTarFile, String dst) {
-		Path extractFolder = new File(dst).toPath();
-		try (TarArchiveInputStream tarIS = new TarArchiveInputStream(
-				new GzipCompressorInputStream(new FileInputStream(strTarFile)))) {
-			TarArchiveEntry entry;
-			while ((entry = tarIS.getNextTarEntry()) != null) {
-				Path toPath = extractFolder.resolve(entry.getName());
-
-				if (entry.isDirectory()) {
-					toPath.toFile().mkdirs();
-				} else {
-					toPath.toFile().getParentFile().mkdirs();
-					Files.copy(tarIS, toPath, StandardCopyOption.REPLACE_EXISTING);
-
-					if (OS.getOS() != OS.WINDOWS) {
-						try {
-							Files.setPosixFilePermissions(toPath, FileIO.permissionsFromMode(entry.getMode()));
-						} catch (Exception e) {
-							LOG.debug("Failed to set permission for path " + toPath + ", reason: " + e.getMessage());
-						}
-					}
-				}
-			}
-		} catch (IOException e) {
-			LOG.error("Failed to extract tar file", e);
 		}
 	}
 

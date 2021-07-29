@@ -76,12 +76,6 @@ public class GeneratorSelector {
 					L10N.label("dialog.generator_selector.generator_status", stats.getStatus().getName()),
 					new JLabel()));
 
-			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.generator_jdk",
-					(generatorConfiguration.getJDKVersionOverride() != null) ?
-							generatorConfiguration.getJDKVersionOverride() :
-							L10N.t("dialog.generator_selector.generator_jdk.built_in",
-									System.getProperty("java.version"))), new JLabel()));
-
 			genStats.add(new JEmptyBox(15, 15));
 
 			JPanel baseCoverageInfo = new JPanel(new GridLayout(-1, 5, 7, 2));

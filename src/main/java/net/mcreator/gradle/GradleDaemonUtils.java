@@ -41,7 +41,7 @@ public class GradleDaemonUtils {
 
 		environment.put("GRADLE_USER_HOME", UserFolderManager.getGradleHome().getAbsolutePath());
 
-		String java_home = GradleUtils.getJavaHome(workspace.getGeneratorConfiguration());
+		String java_home = GradleUtils.getJavaHome();
 		if (java_home != null) // make sure detected JAVA_HOME is not null
 			environment.put("JAVA_HOME", java_home);
 
@@ -53,7 +53,7 @@ public class GradleDaemonUtils {
 		PrintWriter stdin = new PrintWriter(process.getOutputStream());
 
 		Map<String, String> gradleParamteres = new HashMap<>();
-		String java_home = GradleUtils.getJavaHome(workspace.getGeneratorConfiguration());
+		String java_home = GradleUtils.getJavaHome();
 		if (java_home != null)
 			gradleParamteres.put("org.gradle.java.home", "\"" + java_home.replace('\\', '/') + "\"");
 

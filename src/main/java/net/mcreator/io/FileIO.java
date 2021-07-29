@@ -34,11 +34,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.attribute.PosixFilePermission;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public final class FileIO {
 
@@ -271,26 +268,6 @@ public final class FileIO {
 			return FileUtils.listFiles(root, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).toArray(new File[0]);
 		} else {
 			return new File[] {};
-		}
-	}
-
-	public static Set<PosixFilePermission> permissionsFromMode(int mode) {
-		Set<PosixFilePermission> permissions = EnumSet.noneOf(PosixFilePermission.class);
-		addPermissions(permissions, "OTHERS", mode);
-		addPermissions(permissions, "GROUP", mode >> 3);
-		addPermissions(permissions, "OWNER", mode >> 6);
-		return permissions;
-	}
-
-	private static void addPermissions(Set<PosixFilePermission> permissions, String prefix, long mode) {
-		if ((mode & 1) == 1) {
-			permissions.add(PosixFilePermission.valueOf(prefix + "_EXECUTE"));
-		}
-		if ((mode & 2) == 2) {
-			permissions.add(PosixFilePermission.valueOf(prefix + "_WRITE"));
-		}
-		if ((mode & 4) == 4) {
-			permissions.add(PosixFilePermission.valueOf(prefix + "_READ"));
 		}
 	}
 
