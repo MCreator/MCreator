@@ -253,7 +253,7 @@ import net.minecraft.block.material.Material;
 		}
 		</#if>
 
-		<#if hasProcedure(data.canFlow)>
+		<#if hasProcedure(data.flowCondition)>
 		@Override protected boolean canFlow(IBlockReader worldIn, BlockPos fromPos, BlockState blockstate, Direction direction, BlockPos toPos, BlockState intostate, FluidState toFluidState, Fluid fluidIn) {
 			boolean condition = true;
 			if (worldIn instanceof IWorld) {
@@ -261,7 +261,7 @@ import net.minecraft.block.material.Material;
 				int y = fromPos.getY();
 				int z = fromPos.getZ();
 				IWorld world = (IWorld) worldIn;
-				condition = <@procedureOBJToConditionCode data.canFlow/>;
+				condition = <@procedureOBJToConditionCode data.flowCondition/>;
 			}
 			return super.canFlow(worldIn, fromPos, blockstate, direction, toPos, intostate, toFluidState, fluidIn) && condition;
 		}
