@@ -26,8 +26,6 @@ item_textures_dir: "@MODASSETSROOT/textures/items"
 armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 
 base_templates:
-  - template: modbase/modelements.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModNameElements.java"
   - template: modbase/mod.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModName.java"
     canLock: true
@@ -55,6 +53,11 @@ base_templates:
     deleteWhenConditionFalse: true
     variables: "type=lava"
     name: "@RESROOT/data/minecraft/tags/fluids/lava.json"
+  - template: modbase/tabs.java.ftl
+    writer: java
+    condition: hasCreativeTabs()
+    deleteWhenConditionFalse: true
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/CreativeModeTabs.java"
 
 language_file:
   format: json

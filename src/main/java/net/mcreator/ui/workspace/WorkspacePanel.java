@@ -1239,7 +1239,7 @@ import java.util.stream.Collectors;
 						if (re instanceof ModElement) {
 							if (!buildNeeded.get()) {
 								GeneratableElement ge = ((ModElement) re).getGeneratableElement();
-								if (ge != null && mcreator.getModElementManager().usesGeneratableElementJava(ge))
+								if (ge != null && mcreator.getModElementManager().requiresElementGradleBuild(ge))
 									buildNeeded.set(true);
 							}
 

@@ -31,13 +31,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-class DefinitionsProvider {
+public class DefinitionsProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Definition Loader");
 
 	private final Map<ModElementType<?>, Map<?, ?>> cache = new ConcurrentHashMap<>();
 
-	DefinitionsProvider(String generatorName) {
+	public DefinitionsProvider(String generatorName) {
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
 					"/" + generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH)
@@ -56,7 +56,7 @@ class DefinitionsProvider {
 		}
 	}
 
-	Map<?, ?> getModElementDefinition(ModElementType<?> elementType) {
+	public Map<?, ?> getModElementDefinition(ModElementType<?> elementType) {
 		return cache.get(elementType);
 	}
 
