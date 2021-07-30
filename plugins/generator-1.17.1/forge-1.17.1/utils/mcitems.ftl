@@ -2,7 +2,7 @@
     <#if mappedBlock?starts_with("/*@BlockState*/")>
         <#return mappedBlock?replace("/*@BlockState*/","")>
     <#else>
-        <#return mappedBlockToBlock(mappedBlock) + ".getDefaultState()">
+        <#return mappedBlockToBlock(mappedBlock) + ".defaultBlockState()">
     </#if>
 </#function>
 
