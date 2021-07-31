@@ -845,6 +845,10 @@ public class TestWorkspaceDataProvider {
 			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getAllPlantTypes());
 			plant.staticPlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
+			plant.suspiciousStewEffect = getRandomString(random, ElementUtil.
+					loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
+					.filter(e -> !e.contains("CUSTOM:")).collect(Collectors.toList()));
+			plant.suspiciousStewDuration = 24;
 			plant.growapableMaxHeight = 5;
 			plant.customBoundingBox = !_true;
 			plant.disableOffset = !_true;
@@ -902,6 +906,7 @@ public class TestWorkspaceDataProvider {
 			plant.dropAmount = 4;
 			plant.useLootTableForDrops = !_true;
 			plant.frequencyOnChunks = 13;
+			plant.patchSize = 46;
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
 			plant.speedFactor = 34.632;
