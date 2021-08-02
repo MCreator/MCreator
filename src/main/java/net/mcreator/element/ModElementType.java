@@ -120,8 +120,8 @@ public class ModElementType<GE extends GeneratableElement> {
 	}
 
 	@Override public boolean equals(Object element) {
-		return element instanceof ModElementType && registryName
-				.equals(((ModElementType<?>) element).getRegistryName());
+		return element instanceof ModElementType && registryName.equals(
+				((ModElementType<?>) element).getRegistryName());
 	}
 
 	@Override public int hashCode() {

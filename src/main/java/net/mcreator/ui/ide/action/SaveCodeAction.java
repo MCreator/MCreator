@@ -37,8 +37,8 @@ public class SaveCodeAction extends BasicAction {
 					codeEditorView.disableJumpToMode();
 					codeEditorView.saveCode();
 					if (codeEditorView.mouseEvent != null)
-						new FocusableTip(codeEditorView.te, null)
-								.toolTipRequested(codeEditorView.mouseEvent, L10N.t("action.ide.save.result"));
+						new FocusableTip(codeEditorView.te, null).toolTipRequested(codeEditorView.mouseEvent,
+								L10N.t("action.ide.save.result"));
 				}
 			}
 		});

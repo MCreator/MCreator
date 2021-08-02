@@ -70,8 +70,8 @@ public class TabGUI extends ModElementGUI<Tab> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tab/icon"), L10N.label("elementgui.tab.icon")));
 		selp.add(PanelUtils.join(FlowLayout.LEFT, icon));
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("tab/search_bar"), L10N.label("elementgui.tab.search_bar")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tab/search_bar"),
+				L10N.label("elementgui.tab.search_bar")));
 		selp.add(showSearch);
 
 		showSearch.setOpaque(false);

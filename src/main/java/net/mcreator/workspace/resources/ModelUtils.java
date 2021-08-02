@@ -52,8 +52,8 @@ public class ModelUtils {
 
 	public static void copyOBJorMTLApplyTextureMapping(File objFrom, File objTo, Model model, String prefix) {
 		if (FilenameUtils.getExtension(objFrom.getName()).equalsIgnoreCase("mtl")) {
-			Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel
-					.getTextureMappingsForModel(model);
+			Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(
+					model);
 
 			if (textureMappingMap != null && textureMappingMap.containsKey("default")) {
 				Map<String, String> textureMap = textureMappingMap.get("default").getTextureMap();

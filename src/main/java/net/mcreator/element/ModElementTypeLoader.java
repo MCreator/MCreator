@@ -43,7 +43,7 @@ public class ModElementTypeLoader {
 				new ModElementType<>("command", 'c', BaseType.COMMAND, RecipeType.NONE, CommandGUI::new,
 						Command.class));
 		ModElementType.DIMENSION = register(
-				new ModElementType<>("dimension", 'd', BaseType.DATAPACK, RecipeType.ITEM, DimensionGUI::new,
+				new ModElementType<>("dimension", 'd', BaseType.DIMENSION, RecipeType.ITEM, DimensionGUI::new,
 						Dimension.class));
 		ModElementType.CODE = register(
 				new ModElementType<>("code", null, BaseType.OTHER, RecipeType.NONE, CustomElementGUI::new,
@@ -56,12 +56,12 @@ public class ModElementTypeLoader {
 		ModElementType.FOOD = register(
 				new ModElementType<>("food", 'f', BaseType.ITEM, RecipeType.ITEM, FoodGUI::new, Food.class));
 		ModElementType.FUEL = register(
-				new ModElementType<>("fuel", '1', BaseType.FUEL, RecipeType.NONE, FuelGUI::new, Fuel.class));
+				new ModElementType<>("fuel", null, BaseType.FUEL, RecipeType.NONE, FuelGUI::new, Fuel.class));
 		ModElementType.FUNCTION = register(
-				new ModElementType<>("function", '2', BaseType.DATAPACK, RecipeType.NONE, FunctionGUI::new,
+				new ModElementType<>("function", null, BaseType.DATAPACK, RecipeType.NONE, FunctionGUI::new,
 						Function.class));
 		ModElementType.GAMERULE = register(
-				new ModElementType<>("gamerule", '3', BaseType.OTHER, RecipeType.NONE, GameRuleGUI::new,
+				new ModElementType<>("gamerule", null, BaseType.OTHER, RecipeType.NONE, GameRuleGUI::new,
 						GameRule.class));
 		ModElementType.GUI = register(
 				new ModElementType<>("gui", 'g', BaseType.GUI, RecipeType.NONE, CustomGUIGUI::new, GUI.class));
@@ -83,7 +83,7 @@ public class ModElementTypeLoader {
 				new ModElementType<>("overlay", 'v', BaseType.OVERLAY, RecipeType.NONE, OverlayGUI::new,
 						Overlay.class));
 		ModElementType.PAINTING = register(
-				new ModElementType<>("painting", '4', BaseType.OTHER, RecipeType.NONE, PaintingGUI::new,
+				new ModElementType<>("painting", null, BaseType.OTHER, RecipeType.NONE, PaintingGUI::new,
 						Painting.class));
 		ModElementType.PARTICLE = register(
 				new ModElementType<>("particle", 'y', BaseType.PARTICLE, RecipeType.NONE, ParticleGUI::new,
@@ -93,7 +93,7 @@ public class ModElementTypeLoader {
 		ModElementType.POTION = register(
 				new ModElementType<>("potion", 'z', BaseType.POTION, RecipeType.NONE, PotionGUI::new, Potion.class));
 		ModElementType.POTIONEFFECT = register(
-				new ModElementType<>("potioneffect", '5', BaseType.POTIONEFFECT, RecipeType.NONE, PotionEffectGUI::new,
+				new ModElementType<>("potioneffect", null, BaseType.POTIONEFFECT, RecipeType.NONE, PotionEffectGUI::new,
 						PotionEffect.class));
 		ModElementType.PROCEDURE = register(
 				new ModElementType<>("procedure", 'p', BaseType.PROCEDURE, RecipeType.NONE, ProcedureGUI::new,
@@ -121,13 +121,20 @@ public class ModElementTypeLoader {
 		return elementType;
 	}
 
-	public static ModElementType<?> getModElementType(String modElementName) throws IllegalArgumentException {
+	public static ModElementType<?> getModElementType(String typeName) throws IllegalArgumentException {
+		// legacy support in case name was not converted up to this point
+		if (typeName.equals("gun")) {
+			typeName = "rangeditem";
+		} else if (typeName.equals("mob")) {
+			typeName = "livingentity";
+		}
+
 		for (ModElementType<?> me : REGISTRY) {
-			if (me.getRegistryName().equals(modElementName)) {
+			if (me.getRegistryName().equals(typeName)) {
 				return me;
 			}
 		}
 
-		throw new IllegalArgumentException("Mod element type " + modElementName + " is not a registered type");
+		throw new IllegalArgumentException("Mod element type " + typeName + " is not a registered type");
 	}
 }

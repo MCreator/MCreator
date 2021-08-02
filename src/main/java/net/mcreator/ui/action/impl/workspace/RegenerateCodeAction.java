@@ -84,8 +84,8 @@ public class RegenerateCodeAction extends GradleAction {
 							&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
 							.equals("true")) // can this file be locked
 						// are mod base file locked
-						toBePreserved.add(generatorTemplate
-								.getFile()); // we add locked base mod files on the to be preserved list
+						toBePreserved.add(
+								generatorTemplate.getFile()); // we add locked base mod files on the to be preserved list
 				});
 			}
 
@@ -161,8 +161,8 @@ public class RegenerateCodeAction extends GradleAction {
 							.generateElement(generatableElement, false);
 
 					if (!mod.isCodeLocked()) {
-						filesToReformat.addAll(generatedFiles.stream().map(GeneratorFile::getFile)
-								.collect(Collectors.toSet()));
+						filesToReformat.addAll(
+								generatedFiles.stream().map(GeneratorFile::getFile).collect(Collectors.toSet()));
 					}
 
 					// save custom mod element picture if it has one

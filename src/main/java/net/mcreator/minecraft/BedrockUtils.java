@@ -103,9 +103,9 @@ public class BedrockUtils {
 					}
 				});
 			} else {
-				JOptionPane
-						.showMessageDialog(mcreator, "It seems you do not have Bedrock Edition installed from store.",
-								"Run client not supported", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(mcreator,
+						"It seems you do not have Bedrock Edition installed from store.", "Run client not supported",
+						JOptionPane.WARNING_MESSAGE);
 			}
 		} else {
 			JOptionPane.showMessageDialog(mcreator, "Bedrock Edition is only supported on Windows 10 at the moment",

@@ -1,0 +1,2 @@
+This parameter determines the duration of the effect of the suspicious stew crafted with this plant. It's measured in ticks 
+for instant effects (such as saturation), and in seconds for the other ones.

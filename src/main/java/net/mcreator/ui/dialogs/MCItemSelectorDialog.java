@@ -142,10 +142,9 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 								itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
 						}
 					} else {
-						JOptionPane
-								.showMessageDialog(this, L10N.t("dialog.item_selector.error_invalid_tag_name_message"),
-										L10N.t("dialog.item_selector.error_invalid_tag_name_title"),
-										JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(this,
+								L10N.t("dialog.item_selector.error_invalid_tag_name_message"),
+								L10N.t("dialog.item_selector.error_invalid_tag_name_title"), JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			});
@@ -269,11 +268,12 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 			filterItems.clear();
 			String term = filterField.getText();
 			filterItems.addAll(items.stream().filter(item ->
-					item.getName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)) || item
-							.getReadableName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH))
-							|| item.getDescription().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH)) || item.getType().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH))).collect(Collectors.toList()));
+							item.getName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH))
+									|| item.getReadableName().toLowerCase(Locale.ENGLISH)
+									.contains(term.toLowerCase(Locale.ENGLISH)) || item.getDescription()
+									.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)) || item.getType()
+									.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)))
+					.collect(Collectors.toList()));
 			fireContentsChanged(this, 0, getSize());
 		}
 	}

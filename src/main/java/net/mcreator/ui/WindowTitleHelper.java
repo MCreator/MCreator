@@ -31,16 +31,16 @@ public class WindowTitleHelper {
 		if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
 				.getContent() instanceof ModElementGUI) {
 			appendix = "- " + ((ModElementGUI) mcreator.mcreatorTabs.getCurrentTab().getContent()).getModElement()
-					.getName() + " (" + ((ModElementGUI) mcreator.mcreatorTabs.getCurrentTab().getContent())
-					.getModElement().getType().getReadableName() + ")";
+					.getName() + " (" + ((ModElementGUI) mcreator.mcreatorTabs.getCurrentTab()
+					.getContent()).getModElement().getType().getReadableName() + ")";
 		} else if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
 				.getContent() instanceof CodeEditorView) {
 			try {
 				appendix = "- " + mcreator.getWorkspaceFolder().toPath().relativize(
 						((CodeEditorView) mcreator.mcreatorTabs.getCurrentTab().getContent()).fileWorkingOn.toPath());
 			} catch (Exception e) {
-				appendix = "- " + ((CodeEditorView) mcreator.mcreatorTabs.getCurrentTab().getContent()).fileWorkingOn
-						.toPath();
+				appendix = "- " + ((CodeEditorView) mcreator.mcreatorTabs.getCurrentTab()
+						.getContent()).fileWorkingOn.toPath();
 			}
 		}
 		String workspaceBaseName = mcreator.getWorkspaceSettings().getModName();
