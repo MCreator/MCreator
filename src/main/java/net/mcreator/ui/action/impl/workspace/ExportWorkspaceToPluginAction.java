@@ -37,10 +37,8 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ExportWorkspaceToPluginAction extends BasicAction {
 	private static final Logger LOG = LogManager.getLogger("Workspace to Plugin");
@@ -54,14 +52,14 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 	private static void exportWorkspaceToPlugin(MCreator mcreator, Workspace workspace) {
 		LOG.debug("Exporting " + workspace.getWorkspaceSettings().getModName() + " to a MCreator plugin");
 		String modid = workspace.getWorkspaceSettings().getModID();
-		//File exportFile = FileDialogs.getSaveDialog(mcreator, new String[] { ".zip" });
+		String modName = workspace.getWorkspaceSettings().getModName().replace(" ", "");
 
 		ProgressDialog dial = new ProgressDialog(mcreator, L10N.t("dialog.workspace.export_workspace_plugin.title"));
 
 		Thread thread = new Thread(() -> {
-			List<String> supportedMETs = new ArrayList<>() {{
-				add(ModElementType.ADVANCEMENT.getRegistryName());
-				add(ModElementType.ENCHANTMENT.getRegistryName());
+			Map<String[], String> supportedMETs = new HashMap<>() {{
+				put(new String[] { ModElementType.ADVANCEMENT.getRegistryName() }, "achievements");
+				put(new String[] { ModElementType.ENCHANTMENT.getRegistryName() }, "enchantments");
 			}};
 
 			String path =
@@ -69,19 +67,12 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 			new File(path).mkdirs();
 
 			LOG.debug("Generating files...");
-			for (String type : supportedMETs) {
+			for (String[] type : supportedMETs.keySet()) {
 				ProgressDialog.ProgressUnit p = new ProgressDialog.ProgressUnit(
-						L10N.t("dialog.workspace.export_workspace_plugin.progress." + type));
+						L10N.t("dialog.workspace.export_workspace_plugin.progress." + supportedMETs.get(type)));
 				dial.addProgress(p);
-				String fileName = null;
 
-				if (ModElementType.ADVANCEMENT.getRegistryName().equals(type)) {
-					fileName = "achievements";
-				} else if (ModElementType.ENCHANTMENT.getRegistryName().equals(type)) {
-					fileName = "enchantments";
-				}
-
-				File dataListFile = new File(path + File.separator + "datalists", fileName + ".yaml");
+				File dataListFile = new File(path + File.separator + "datalists", supportedMETs.get(type) + ".yaml");
 
 				try {
 					//Finish creating missing folders and files
@@ -90,6 +81,7 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 					if (!dataListFile.exists()) {
 						dataListFile.createNewFile();
 					}
+
 					// We create a folder for each Forge generator loaded in the cache
 					List<String> supportedForgeVersions = new ArrayList<>();
 					for (GeneratorConfiguration genConfig : Generator.GENERATOR_CACHE.values()) {
@@ -97,28 +89,30 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 								genConfig.getGeneratorMinecraftVersion())) {
 							File mappingFile = new File(
 									path + File.separator + genConfig.getGeneratorName() + File.separator + "mappings",
-									fileName + ".yaml");
+									supportedMETs.get(type) + ".yaml");
 							supportedForgeVersions.add(
 									genConfig.getGeneratorName()); // We add the generator into a list, so we don't need to check again into the cache.
 							if (!mappingFile.getParentFile().exists())
 								mappingFile.getParentFile().mkdirs();
-
 						}
 					}
 
 					// Data list and mapping files
 					List<Object> dlValues = new ArrayList<>(); // This list will contain the data list file's values.
-					Map<Object, Object> mappingValues = new HashMap<>(); // This list will contain the mapping files' values.
+					Map<String, Object> mappingValues = new HashMap<>(); // This list will contain the mapping files' values.
 					for (ModElement me : workspace.getModElements()) {
-						if (me.getType().getRegistryName().equals(type)) {
+						if (Arrays.stream(type).collect(Collectors.toList()).contains(me.getType().getRegistryName())) {
 							// Create the data list and mapping values
 							if (me.getType().equals(ModElementType.ADVANCEMENT)) {
 								dlValues.add(modid + "/" + me.getRegistryName());
 								mappingValues.put(modid + "/" + me.getRegistryName(),
 										modid + ":" + me.getRegistryName());
+
 							} else if (me.getType().equals(ModElementType.ENCHANTMENT)) {
-								dlValues.add(modid + ":" + me.getName());
-								mappingValues.put(modid + ":" + me.getName(), me.getName() + ".enchantment");
+								dlValues.add(modName + "." + me.getName());
+								mappingValues.put(modName + "." + me.getName(),
+										workspace.getWorkspaceSettings().getModElementsPackage() + ".enchantment."
+												+ me.getName() + "Enchantment.enchantment");
 							}
 						}
 					}
@@ -131,13 +125,13 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 					// Mapping files creation
 					for (String generatorName : supportedForgeVersions) {
 						File mappingFile = new File(path + File.separator + generatorName + File.separator + "mappings",
-								fileName + ".yaml");
+								supportedMETs.get(type) + ".yaml");
 						YamlWriter writerGenerator = new YamlWriter(new FileWriter(mappingFile));
 						writerGenerator.write(mappingValues);
 						writerGenerator.close();
 					}
 				} catch (IOException e) {
-					LOG.error("Could not create " + fileName, e);
+					LOG.error("Could not create " + supportedMETs.get(type), e);
 					p.err();
 					dial.refreshDisplay();
 				}
