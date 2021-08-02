@@ -80,8 +80,8 @@ public class MCItem extends DataListEntry {
 				if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
 						name.replace("CUSTOM:", "") + ".png").isFile()) {
 					retval = new ImageIcon(
-							workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/" + name
-									.replace("CUSTOM:", "") + ".png");
+							workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
+									+ name.replace("CUSTOM:", "") + ".png");
 				} else if (name.endsWith(".helmet")) {
 					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
 							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".helmet", ""))
@@ -111,8 +111,8 @@ public class MCItem extends DataListEntry {
 			} else if (name.startsWith("TAG:")) {
 				return TAG_ICON;
 			} else {
-				retval = BlockItemIcons
-						.getIconForItem(DataListLoader.loadDataMap("blocksitems").get(name).getTexture());
+				retval = BlockItemIcons.getIconForItem(
+						DataListLoader.loadDataMap("blocksitems").get(name).getTexture());
 			}
 
 			if (retval != null && retval.getImage() != null) {

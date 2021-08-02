@@ -50,10 +50,10 @@ class DeclarationChecker {
 			TypeDeclaration classNameInWhichWeAre, CompilationUnit compilationUnit, JarManager jarManager) {
 		if ("super".equals(clickedWord) && classNameInWhichWeAre instanceof NormalClassDeclaration) {
 			Type superClassName = ((NormalClassDeclaration) classNameInWhichWeAre).getExtendedType();
-			String fqdnSuperClassName = ClassFinder
-					.tryToFQDNClass(superClassName.getName(true, false), compilationUnit);
-			DeclarationFinder.InClassPosition position = ClassFinder
-					.fqdnToInClassPosition(workspace, fqdnSuperClassName, compilationUnit.getPackageName(), jarManager);
+			String fqdnSuperClassName = ClassFinder.tryToFQDNClass(superClassName.getName(true, false),
+					compilationUnit);
+			DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(workspace,
+					fqdnSuperClassName, compilationUnit.getPackageName(), jarManager);
 			if (position != null) {
 				String codeFromParent = FileIO.readFileToString(position.classFileNode);
 				int startPos = codeFromParent.indexOf("class " + superClassName.getName(false, false));
@@ -74,17 +74,16 @@ class DeclarationChecker {
 			if (path.length > 0) {
 				String last = path[path.length - 1];
 				if (last.equals(clickedWord)) {
-					DeclarationFinder.InClassPosition position = ClassFinder
-							.fqdnToInClassPosition(workspace, singleImport.getName(), compilationUnit.getPackageName(),
-									jarManager);
+					DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(workspace,
+							singleImport.getName(), compilationUnit.getPackageName(), jarManager);
 					return inClassPositionCarretFix(position, clickedWord);
 				}
 			}
 		}
 
 		// if it is not in the imports, it could be from the same package
-		DeclarationFinder.InClassPosition position = ClassFinder
-				.fqdnToInClassPosition(workspace, clickedWord, compilationUnit.getPackageName(), jarManager);
+		DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(workspace, clickedWord,
+				compilationUnit.getPackageName(), jarManager);
 		return inClassPositionCarretFix(position, clickedWord);
 	}
 

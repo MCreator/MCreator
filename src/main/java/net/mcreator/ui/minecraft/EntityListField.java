@@ -43,10 +43,10 @@ public class EntityListField extends JItemListField<EntityEntry> {
 		JList<String> vlist = new JList<>(
 				ElementUtil.loadAllEntities(mcreator.getWorkspace()).stream().map(DataListEntry::getName)
 						.toArray(String[]::new));
-		int option = JOptionPane.showOptionDialog(mcreator, PanelUtils
-						.northAndCenterElement(L10N.label("dialog.list_field.entity_message"), new JScrollPane(vlist)),
-				L10N.t("dialog.list_field.entity_title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
-				null, null);
+		int option = JOptionPane.showOptionDialog(mcreator,
+				PanelUtils.northAndCenterElement(L10N.label("dialog.list_field.entity_message"),
+						new JScrollPane(vlist)), L10N.t("dialog.list_field.entity_title"), JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE, null, null, null);
 
 		if (option == JOptionPane.OK_OPTION && vlist.getSelectedValue() != null) {
 			return vlist.getSelectedValuesList().stream().map(e -> new EntityEntry(mcreator.getWorkspace(), e))

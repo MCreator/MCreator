@@ -78,15 +78,14 @@ public class NewVariableDialog {
 
 		inp.add("Center", data);
 
-		int option = JOptionPane
-				.showConfirmDialog(mcreator, inp, L10N.t("dialog.variables.new_title"), JOptionPane.OK_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null);
+		int option = JOptionPane.showConfirmDialog(mcreator, inp, L10N.t("dialog.variables.new_title"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION
 				&& textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
 				&& type.getSelectedItem() != null) {
 			VariableElement element = new VariableElement();
-			VariableType variable = VariableTypeLoader.INSTANCE
-					.fromName(((VariableType) type.getSelectedItem()).getName());
+			VariableType variable = VariableTypeLoader.INSTANCE.fromName(
+					((VariableType) type.getSelectedItem()).getName());
 			if (variable != null) {
 				element.setName(Transliteration.transliterateString(textField.getText()));
 				element.setType((VariableType) type.getSelectedItem());

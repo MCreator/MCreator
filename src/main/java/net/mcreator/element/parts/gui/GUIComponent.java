@@ -49,8 +49,8 @@ import java.util.stream.Collectors;
 		put("checkbox", Checkbox.class);
 	}};
 
-	private static transient final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings
-			.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+	private static transient final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings.entrySet()
+			.stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
 
 	GUIComponent() {
 		uuid = UUID.randomUUID();
@@ -105,8 +105,8 @@ import java.util.stream.Collectors;
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
 			String elementType = jsonElement.getAsJsonObject().get("type").getAsString();
 
-			GUIComponent component = jsonDeserializationContext
-					.deserialize(jsonElement.getAsJsonObject().get("data"), typeMappings.get(elementType));
+			GUIComponent component = jsonDeserializationContext.deserialize(jsonElement.getAsJsonObject().get("data"),
+					typeMappings.get(elementType));
 			component.uuid = UUID.randomUUID(); // init UUID for deserialized component
 			return component;
 		}

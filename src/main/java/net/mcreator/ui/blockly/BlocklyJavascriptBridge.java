@@ -75,8 +75,8 @@ public class BlocklyJavascriptBridge {
 		ImageIcon base = new ImageIcon(ImageUtils.resize(MinecraftImageGenerator.generateItemSlot(), 36, 36));
 		ImageIcon image;
 		if (name != null && !name.equals("") && !name.equals("null"))
-			image = ImageUtils
-					.drawOver(base, MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), name), 2, 2, 32, 32);
+			image = ImageUtils.drawOver(base, MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), name), 2, 2, 32,
+					32);
 		else
 			image = base;
 
@@ -234,8 +234,8 @@ public class BlocklyJavascriptBridge {
 					VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
 							VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
 							null;
-					return returnTypeCurrent == VariableTypeLoader.INSTANCE
-							.fromName(StringUtils.removeStart(type, "procedure_retval_"));
+					return returnTypeCurrent == VariableTypeLoader.INSTANCE.fromName(
+							StringUtils.removeStart(type, "procedure_retval_"));
 				}
 				return false;
 			}).map(ModElement::getName).collect(Collectors.toList());

@@ -33,8 +33,8 @@ class ConditionalComboBoxRenderer implements ListCellRenderer<CBoxEntry> {
 	@Override
 	public Component getListCellRendererComponent(JList list, CBoxEntry value, int index, boolean isSelected,
 			boolean cellHasFocus) {
-		JLabel component = (JLabel) renderer
-				.getListCellRendererComponent(list, value.string, index, isSelected, cellHasFocus);
+		JLabel component = (JLabel) renderer.getListCellRendererComponent(list, value.string, index, isSelected,
+				cellHasFocus);
 
 		if (!value.correctDependencies) {
 			component.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
