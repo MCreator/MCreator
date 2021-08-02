@@ -33,6 +33,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.jgit.util.StringUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -60,6 +61,7 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 			Map<String[], String> supportedMETs = new HashMap<>() {{
 				put(new String[] { ModElementType.ADVANCEMENT.getRegistryName() }, "achievements");
 				put(new String[] { ModElementType.ENCHANTMENT.getRegistryName() }, "enchantments");
+				put(new String[] { ModElementType.PARTICLE.getRegistryName() }, "particles");
 			}};
 
 			String path =
@@ -108,11 +110,13 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 								mappingValues.put(modid + "/" + me.getRegistryName(),
 										modid + ":" + me.getRegistryName());
 
-							} else if (me.getType().equals(ModElementType.ENCHANTMENT)) {
+							} else if (me.getType().equals(ModElementType.ENCHANTMENT) || me.getType()
+									.equals(ModElementType.PARTICLE)) {
 								dlValues.add(modName + "." + me.getName());
 								mappingValues.put(modName + "." + me.getName(),
-										workspace.getWorkspaceSettings().getModElementsPackage() + ".enchantment."
-												+ me.getName() + "Enchantment.enchantment");
+										workspace.getWorkspaceSettings().getModElementsPackage() + "." + me.getType()
+												.getRegistryName() + "." + me.getName() + StringUtils.capitalize(
+												me.getType().getRegistryName()) + "." + me.getType().getRegistryName());
 							}
 						}
 					}
