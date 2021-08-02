@@ -1083,6 +1083,7 @@ public class TestWorkspaceDataProvider {
 			potionEffect.onStarted = new Procedure("procedure1");
 			potionEffect.onActiveTick = new Procedure("procedure2");
 			potionEffect.onExpired = new Procedure("procedure3");
+			potionEffect.activeTickCondition = new Procedure("condition1");
 			return potionEffect;
 		} else if (ModElementType.BLOCK.equals(modElement.getType())) {
 			Block block = new Block(modElement);
