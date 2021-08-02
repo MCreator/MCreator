@@ -61,6 +61,7 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 		Thread thread = new Thread(() -> {
 			List<String> supportedMETs = new ArrayList<>() {{
 				add(ModElementType.ADVANCEMENT.getRegistryName());
+				add(ModElementType.ENCHANTMENT.getRegistryName());
 			}};
 
 			String path =
@@ -76,6 +77,8 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 
 				if (ModElementType.ADVANCEMENT.getRegistryName().equals(type)) {
 					fileName = "achievements";
+				} else if (ModElementType.ENCHANTMENT.getRegistryName().equals(type)) {
+					fileName = "enchantments";
 				}
 
 				File dataListFile = new File(path + File.separator + "datalists", fileName + ".yaml");
@@ -88,42 +91,50 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 						dataListFile.createNewFile();
 					}
 					// We create a folder for each Forge generator loaded in the cache
+					List<String> supportedForgeVersions = new ArrayList<>();
 					for (GeneratorConfiguration genConfig : Generator.GENERATOR_CACHE.values()) {
 						if (genConfig.getGeneratorFlavor() == GeneratorFlavor.FORGE && checkMCVersion(
 								genConfig.getGeneratorMinecraftVersion())) {
 							File mappingFile = new File(
 									path + File.separator + genConfig.getGeneratorName() + File.separator + "mappings",
 									fileName + ".yaml");
+							supportedForgeVersions.add(
+									genConfig.getGeneratorName()); // We add the generator into a list, so we don't need to check again into the cache.
 							if (!mappingFile.getParentFile().exists())
 								mappingFile.getParentFile().mkdirs();
 
 						}
 					}
 
-					// Data list file
+					// Data list and mapping files
 					List<Object> dlValues = new ArrayList<>(); // This list will contain the data list file's values.
 					Map<Object, Object> mappingValues = new HashMap<>(); // This list will contain the mapping files' values.
 					for (ModElement me : workspace.getModElements()) {
-						if (me.getType().equals(ModElementType.ADVANCEMENT)) {
-							dlValues.add(modid + "/" + me.getRegistryName());
-							mappingValues.put(modid + "/" + me.getRegistryName(), modid + ":" + me.getRegistryName());
+						if (me.getType().getRegistryName().equals(type)) {
+							// Create the data list and mapping values
+							if (me.getType().equals(ModElementType.ADVANCEMENT)) {
+								dlValues.add(modid + "/" + me.getRegistryName());
+								mappingValues.put(modid + "/" + me.getRegistryName(),
+										modid + ":" + me.getRegistryName());
+							} else if (me.getType().equals(ModElementType.ENCHANTMENT)) {
+								dlValues.add(modid + ":" + me.getName());
+								mappingValues.put(modid + ":" + me.getName(), me.getName() + ".enchantment");
+							}
 						}
 					}
 
+					// Data list file creation
 					YamlWriter writerDL = new YamlWriter(new FileWriter(dataListFile));
 					writerDL.write(dlValues);
 					writerDL.close();
 
-					for (GeneratorConfiguration genConfig : Generator.GENERATOR_CACHE.values()) {
-						if (genConfig.getGeneratorFlavor() == GeneratorFlavor.FORGE && checkMCVersion(
-								genConfig.getGeneratorMinecraftVersion())) {
-							File mappingFile = new File(
-									path + File.separator + genConfig.getGeneratorName() + File.separator + "mappings",
-									fileName + ".yaml");
-							YamlWriter writerGenerator = new YamlWriter(new FileWriter(mappingFile));
-							writerGenerator.write(mappingValues);
-							writerGenerator.close();
-						}
+					// Mapping files creation
+					for (String generatorName : supportedForgeVersions) {
+						File mappingFile = new File(path + File.separator + generatorName + File.separator + "mappings",
+								fileName + ".yaml");
+						YamlWriter writerGenerator = new YamlWriter(new FileWriter(mappingFile));
+						writerGenerator.write(mappingValues);
+						writerGenerator.close();
 					}
 				} catch (IOException e) {
 					LOG.error("Could not create " + fileName, e);
@@ -144,7 +155,7 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 		List<String> versionsToSKip = new ArrayList<>() {{
 			add("1.12.2");
 			add("1.14.4");
-		}};  // We skip these versions as we don't know if they can support every mod element
+		}};  // We skip these versions as they are no longer supported, so they have missing mod elements.
 		return !versionsToSKip.contains(mcVersion);
 	}
 }
