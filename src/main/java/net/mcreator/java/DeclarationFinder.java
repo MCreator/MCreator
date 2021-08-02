@@ -106,8 +106,8 @@ public class DeclarationFinder {
 				if (pos != null)
 					return pos;
 
-				pos = DeclarationChecker
-						.checkForClassDeclaration(workspace, clickedWord, parser.getCompilationUnit(), jarManager);
+				pos = DeclarationChecker.checkForClassDeclaration(workspace, clickedWord, parser.getCompilationUnit(),
+						jarManager);
 				if (pos != null)
 					return pos;
 			} else if (caret < start) {

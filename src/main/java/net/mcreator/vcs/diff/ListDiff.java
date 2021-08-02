@@ -35,8 +35,8 @@ public class ListDiff {
 		for (T elemetInOldList : oldList) {
 			// check for changes
 			for (T elementInNewList : newList)
-				if (elementInNewList
-						.equals(elemetInOldList)) // if they are the same by means of equals, we check if they changed
+				if (elementInNewList.equals(
+						elemetInOldList)) // if they are the same by means of equals, we check if they changed
 					if (!GSONCompare.deepEquals(elemetInOldList, elementInNewList))
 						changed.add(elemetInOldList);
 

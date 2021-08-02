@@ -48,8 +48,8 @@ class JavaMemberExtractor {
 					currentState = ParseState.INSIDE_BLOCK_COMMENT;
 				else if (c == '"')
 					currentState = ParseState.INSIDE_STRING;
-				else if (currentState == ParseState.IDLE && Character.isJavaIdentifierStart(c) && !Character
-						.isJavaIdentifierPart(prevChar) && prevChar != '.') {
+				else if (currentState == ParseState.IDLE && Character.isJavaIdentifierStart(c)
+						&& !Character.isJavaIdentifierPart(prevChar) && prevChar != '.') {
 					currentState = ParseState.INSIDE_MEMBERNAME;
 					memberName.append(c);
 				} else if (currentState == ParseState.INSIDE_MEMBERNAME && Character.isJavaIdentifierPart(c))

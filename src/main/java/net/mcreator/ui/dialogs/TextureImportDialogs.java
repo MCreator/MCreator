@@ -110,12 +110,12 @@ public class TextureImportDialogs {
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 		if (ret == JOptionPane.OK_OPTION)
 			if (f1 == null || f2 == null) {
-				JOptionPane
-						.showMessageDialog(fra, L10N.t("dialog.textures_import.error_both_texture_files_not_selected"),
-								null, JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(fra,
+						L10N.t("dialog.textures_import.error_both_texture_files_not_selected"), null,
+						JOptionPane.ERROR_MESSAGE);
 			} else {
-				String namec = RegistryNameFixer
-						.fix(FilenameUtils.removeExtension(f1.getName().replace("layer_1", "")));
+				String namec = RegistryNameFixer.fix(
+						FilenameUtils.removeExtension(f1.getName().replace("layer_1", "")));
 				File[] armor = fra.getFolderManager().getArmorTextureFilesForName(namec);
 				FileIO.copyFile(f1, armor[0]);
 				FileIO.copyFile(f2, armor[1]);
@@ -138,10 +138,9 @@ public class TextureImportDialogs {
 				file = fr.getFolderManager().getItemTextureFile(namec);
 			}
 			if (file.isFile()) {
-				String name = JOptionPane
-						.showInputDialog(fr, L10N.t("dialog.textures_import.error_texture_already_exists", namec),
-								L10N.t("dialog.textures_import.error_texture_import_title"),
-								JOptionPane.WARNING_MESSAGE);
+				String name = JOptionPane.showInputDialog(fr,
+						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
+						L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.WARNING_MESSAGE);
 				if (name != null) {
 					namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(name));
 					if (type == BlockItemTextureSelector.TextureType.BLOCK) {
@@ -169,10 +168,9 @@ public class TextureImportDialogs {
 			String namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(hoh.getName()));
 			File file = fr.getFolderManager().getOtherTextureFile(namec);
 			if (file.isFile()) {
-				String name = JOptionPane
-						.showInputDialog(fr, L10N.t("dialog.textures_import.error_texture_already_exists", namec),
-								L10N.t("dialog.textures_import.error_texture_import_title"),
-								JOptionPane.WARNING_MESSAGE);
+				String name = JOptionPane.showInputDialog(fr,
+						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
+						L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.WARNING_MESSAGE);
 				if (name != null) {
 					namec = RegistryNameFixer.fix(FilenameUtils.removeExtension(name));
 					file = fr.getFolderManager().getOtherTextureFile(namec);

@@ -75,8 +75,8 @@ public class SpigotWorkspacePanel extends AbstractWorkspacePanel {
 		Generator.GENERATOR_CACHE.values().stream().filter(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.SPIGOT)
 				.forEach(workspaceDialogPanel.generator::addItem);
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration
-				.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(), GeneratorFlavor.SPIGOT);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.SPIGOT);
 		workspaceDialogPanel.generator.setSelectedItem(generatorConfiguration);
 	}
 }

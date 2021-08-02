@@ -49,13 +49,13 @@ public class BranchSwitchAction {
 		if (n == 0) {
 			Git git = workspaceVCS.getGit();
 
-			CredentialsProvider credentialsProvider = workspaceVCS
-					.getCredentialsProvider(mcreator.getWorkspaceFolder(), mcreator);
+			CredentialsProvider credentialsProvider = workspaceVCS.getCredentialsProvider(mcreator.getWorkspaceFolder(),
+					mcreator);
 
 			try {
 				Workspace localWorkspace = mcreator.getWorkspace();
-				WorkspaceSettings preSwitchSettings = GSONClone
-						.deepClone(localWorkspace.getWorkspaceSettings(), WorkspaceSettings.class);
+				WorkspaceSettings preSwitchSettings = GSONClone.deepClone(localWorkspace.getWorkspaceSettings(),
+						WorkspaceSettings.class);
 
 				try { // first try to fetch remote changes
 					git.fetch().setRemote("origin").setCredentialsProvider(credentialsProvider).call();
@@ -64,8 +64,8 @@ public class BranchSwitchAction {
 
 				git.reset().setMode(ResetCommand.ResetType.HARD).call();
 				git.checkout().setCreateBranch(
-						!git.branchList().call().stream().map(Ref::getName).collect(Collectors.toList())
-								.contains("refs/heads/" + FilenameUtils.getName(branchToSwitchTo)))
+								!git.branchList().call().stream().map(Ref::getName).collect(Collectors.toList())
+										.contains("refs/heads/" + FilenameUtils.getName(branchToSwitchTo)))
 						.setName(FilenameUtils.getName(branchToSwitchTo)).call();
 
 				// possible refactor after sync start

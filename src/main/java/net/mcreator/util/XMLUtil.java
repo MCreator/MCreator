@@ -38,8 +38,8 @@ public class XMLUtil {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
-				if (names == null || (names.length == 1 && names[0].equals(node.getNodeName())) || ArrayUtils
-						.contains(names, node.getNodeName()))
+				if (names == null || (names.length == 1 && names[0].equals(node.getNodeName())) || ArrayUtils.contains(
+						names, node.getNodeName()))
 					elements.add((Element) node);
 			}
 		}

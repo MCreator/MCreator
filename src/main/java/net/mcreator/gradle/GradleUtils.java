@@ -72,8 +72,8 @@ public class GradleUtils {
 
 	public static String getJavaHome() {
 		// check if JAVA_HOME was overwritten in preferences and return this one in such case
-		if (PreferencesManager.PREFERENCES.hidden.java_home != null && PreferencesManager.PREFERENCES.hidden.java_home
-				.isFile()) {
+		if (PreferencesManager.PREFERENCES.hidden.java_home != null
+				&& PreferencesManager.PREFERENCES.hidden.java_home.isFile()) {
 			LOG.warn("Using java home override specified by users!");
 			String path = PreferencesManager.PREFERENCES.hidden.java_home.toString().replace("\\", "/");
 			if (new File(path).exists() && path.contains("/bin/java"))
@@ -105,8 +105,8 @@ public class GradleUtils {
 			if (workspace.getWorkspaceSettings() != null
 					&& workspace.getWorkspaceSettings().getMCreatorDependencies() != null) {
 				for (String dep : workspace.getWorkspaceSettings().getMCreatorDependencies()) {
-					ModAPI.Implementation implementation = ModAPIManager
-							.getModAPIForNameAndGenerator(dep, workspace.getGenerator().getGeneratorName());
+					ModAPI.Implementation implementation = ModAPIManager.getModAPIForNameAndGenerator(dep,
+							workspace.getGenerator().getGeneratorName());
 					if (implementation != null) {
 						mcreatorGradleConfBuilder.append(implementation.gradle).append("\n\n");
 					}

@@ -38,8 +38,8 @@ public class NewJsonFileAction extends BasicAction {
 			if (fileName != null) {
 				fileName = RegistryNameFixer.fix(fileName);
 				if (actionRegistry.getMCreator().getProjectBrowser().tree.getLastSelectedPathComponent() != null) {
-					Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator().getProjectBrowser().tree
-							.getLastSelectedPathComponent()).getUserObject();
+					Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator()
+							.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject();
 					if (selection instanceof File) {
 						File filesel = ((File) selection);
 						if (filesel.isDirectory()) {

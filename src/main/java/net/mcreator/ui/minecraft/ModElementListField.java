@@ -46,8 +46,8 @@ public class ModElementListField extends JItemListField<String> {
 						.map(ModElement::getName).toArray(String[]::new));
 
 		int option = JOptionPane.showOptionDialog(frame, PanelUtils.northAndCenterElement(
-				L10N.label("dialog.list_field.mod_element_message", type.getReadableName().toLowerCase(Locale.ENGLISH)),
-				new JScrollPane(vlist)), L10N.t("dialog.list_field.mod_element_title"), JOptionPane.OK_CANCEL_OPTION,
+						L10N.label("dialog.list_field.mod_element_message", type.getReadableName().toLowerCase(Locale.ENGLISH)),
+						new JScrollPane(vlist)), L10N.t("dialog.list_field.mod_element_title"), JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, null, null);
 
 		if (option == JOptionPane.OK_OPTION && vlist.getSelectedValue() != null) {

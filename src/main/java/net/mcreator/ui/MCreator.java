@@ -185,8 +185,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			float avg = ImageUtils.getAverageLuminance(ImageUtils.toBufferedImage(bgimage));
 			if (avg > 0.15) {
 				avg = (float) Math.min(avg * 1.7, 0.85);
-				bgimage = ImageUtils.drawOver(new ImageIcon(bgimage), new ImageIcon(ImageUtils
-						.emptyImageWithSize(bgimage.getWidth(this), bgimage.getHeight(this),
+				bgimage = ImageUtils.drawOver(new ImageIcon(bgimage), new ImageIcon(
+						ImageUtils.emptyImageWithSize(bgimage.getWidth(this), bgimage.getHeight(this),
 								new Color(0.12f, 0.12f, 0.12f, avg)))).getImage();
 			}
 		}
@@ -288,8 +288,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 			// if we need to setup MCreator, we do so
 			if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
-				WorkspaceGeneratorSetupDialog
-						.runSetup(this, PreferencesManager.PREFERENCES.notifications.openWhatsNextPage);
+				WorkspaceGeneratorSetupDialog.runSetup(this,
+						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage);
 			}
 
 			if (workspace.getMCreatorVersion()
@@ -334,10 +334,10 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				return false;
 			}
 
-			int reply = JOptionPane
-					.showConfirmDialog(this, L10N.t("action.gradle.close_mcreator_while_running_message"),
-							L10N.t("action.gradle.close_mcreator_while_running_title"), JOptionPane.YES_NO_OPTION,
-							JOptionPane.WARNING_MESSAGE, null);
+			int reply = JOptionPane.showConfirmDialog(this,
+					L10N.t("action.gradle.close_mcreator_while_running_message"),
+					L10N.t("action.gradle.close_mcreator_while_running_title"), JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE, null);
 			if (reply == JOptionPane.YES_OPTION) {
 				safetoexit = true;
 				gradleConsole.cancelTask();
@@ -348,8 +348,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			LOG.info("Closing MCreator window ...");
 			PreferencesManager.PREFERENCES.hidden.fullScreen = getExtendedState() == MAXIMIZED_BOTH;
 			if (splitPane != null)
-				PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos = splitPane
-						.getDividerLocation(); // this one could be stored per workspace in the future
+				PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos = splitPane.getDividerLocation(); // this one could be stored per workspace in the future
 
 			workspace.close();
 

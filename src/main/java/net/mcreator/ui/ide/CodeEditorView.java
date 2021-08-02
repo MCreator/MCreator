@@ -345,7 +345,7 @@ public class CodeEditorView extends ViewBase {
 
 		if (!readOnly)
 			KeyStrokes.registerKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_M,
-					Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK, false), te,
+							Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK, false), te,
 					new AbstractAction() {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
@@ -429,8 +429,9 @@ public class CodeEditorView extends ViewBase {
 					if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
 						te.setCursor(new Cursor(Cursor.HAND_CURSOR));
 						jumpToMode = true;
-					} else if (smartAutocomplete && !completitionInAction && jls.isAutoActivationEnabled() && Character
-							.isLetterOrDigit(keyEvent.getKeyChar()) && jcp.getAlreadyEnteredText(te).length() > 1) {
+					} else if (smartAutocomplete && !completitionInAction && jls.isAutoActivationEnabled()
+							&& Character.isLetterOrDigit(keyEvent.getKeyChar())
+							&& jcp.getAlreadyEnteredText(te).length() > 1) {
 						if (!completitionInAction) {
 							new Thread(() -> {
 								if (ac != null) {
@@ -474,21 +475,20 @@ public class CodeEditorView extends ViewBase {
 				@Override public void mouseClicked(MouseEvent mouseEvent) {
 					CodeEditorView.this.mouseEvent = mouseEvent;
 					if (jumpToMode && ac != null) {
-						DeclarationFinder.InClassPosition position = DeclarationFinder
-								.getDeclarationOnPos(mcreator.getWorkspace(), parser, te, jls.getJarManager());
+						DeclarationFinder.InClassPosition position = DeclarationFinder.getDeclarationOnPos(
+								mcreator.getWorkspace(), parser, te, jls.getJarManager());
 						if (position != null) {
 							if (position.classFileNode == null) {
 								te.setCaretPosition(position.carret);
 								SwingUtilities.invokeLater(() -> centerLineInScrollPane());
 							} else {
-								ProjectFileOpener
-										.openFileSpecific(mcreator, position.classFileNode, position.openInReadOnly,
-												position.carret, position.virtualFile);
+								ProjectFileOpener.openFileSpecific(mcreator, position.classFileNode,
+										position.openInReadOnly, position.carret, position.virtualFile);
 							}
 							disableJumpToMode();
 						} else {
-							new FocusableTip(te, null)
-									.toolTipRequested(mouseEvent, L10N.t("ide.errors.failed_find_declaration"));
+							new FocusableTip(te, null).toolTipRequested(mouseEvent,
+									L10N.t("ide.errors.failed_find_declaration"));
 						}
 					}
 					jumpToMode = false;
@@ -516,8 +516,8 @@ public class CodeEditorView extends ViewBase {
 			JavaScriptLanguageSupport javaScriptLanguageSupport = new JavaScriptLanguageSupport();
 
 			javaScriptLanguageSupport.setAutoCompleteEnabled(PreferencesManager.PREFERENCES.ide.autocomplete);
-			javaScriptLanguageSupport
-					.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.equals("Manual"));
+			javaScriptLanguageSupport.setAutoActivationEnabled(
+					!PreferencesManager.PREFERENCES.ide.autocompleteMode.equals("Manual"));
 			javaScriptLanguageSupport.setParameterAssistanceEnabled(true);
 			javaScriptLanguageSupport.setShowDescWindow(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow);
 
@@ -678,7 +678,7 @@ public class CodeEditorView extends ViewBase {
 				Object[] options = { L10N.t("ide.action.close_and_save"), L10N.t("common.close"),
 						UIManager.getString("OptionPane.cancelButtonText") };
 				int res = JOptionPane.showOptionDialog(mcreator, L10N.t("ide.warnings.file_not_saved",
-						((CodeEditorView) tab.getContent()).fileWorkingOn.getName()), L10N.t("common.warning"),
+								((CodeEditorView) tab.getContent()).fileWorkingOn.getName()), L10N.t("common.warning"),
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 				if (res == 0) {
 					((CodeEditorView) tab.getContent()).saveCode();
@@ -720,9 +720,9 @@ public class CodeEditorView extends ViewBase {
 	}
 
 	public static boolean isFileSupported(String fileName) {
-		return Arrays
-				.asList("java", "info", "txt", "json", "mcmeta", "lang", "gradle", "ini", "conf", "xml", "properties",
-						"mcfunction", "toml", "js", "yaml", "yml", "md").contains(FilenameUtils.getExtension(fileName));
+		return Arrays.asList("java", "info", "txt", "json", "mcmeta", "lang", "gradle", "ini", "conf", "xml",
+						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md")
+				.contains(FilenameUtils.getExtension(fileName));
 	}
 
 	public void jumpToLine(int linenum) {

@@ -60,20 +60,20 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		JPanel northPanel = new JPanel(new GridLayout(4, 2, 0, 2));
 		northPanel.setOpaque(false);
 
-		northPanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/potion_name"), L10N.label("elementgui.potion.potion_name")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/potion_name"),
+				L10N.label("elementgui.potion.potion_name")));
 		northPanel.add(potionName);
 
-		northPanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/splash_name"), L10N.label("elementgui.potion.splash_name")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/splash_name"),
+				L10N.label("elementgui.potion.splash_name")));
 		northPanel.add(splashName);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/lingering_name"),
 				L10N.label("elementgui.potion.lingering_name")));
 		northPanel.add(lingeringName);
 
-		northPanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potion/arrow_name"), L10N.label("elementgui.potion.arrow_name")));
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("potion/arrow_name"),
+				L10N.label("elementgui.potion.arrow_name")));
 		northPanel.add(arrowName);
 
 		ComponentUtils.deriveFont(potionName, 16);
