@@ -48,8 +48,8 @@ public class GeneratorStats {
 	private Set<String> generatorAITasks;
 
 	GeneratorStats(GeneratorConfiguration generatorConfiguration) {
-		this.status = Status
-				.valueOf(generatorConfiguration.getRaw().get("status").toString().toUpperCase(Locale.ENGLISH));
+		this.status = Status.valueOf(
+				generatorConfiguration.getRaw().get("status").toString().toUpperCase(Locale.ENGLISH));
 
 		// determine supported mod element types
 		List<?> partials = ((List<?>) generatorConfiguration.getRaw().get("partial_support"));
@@ -91,27 +91,27 @@ public class GeneratorStats {
 
 		// lazy load actual values
 		new Thread(() -> {
-			generatorProcedures = PluginLoader.INSTANCE
-					.getResources(generatorConfiguration.getGeneratorName() + ".procedures", ftlFile).stream()
+			generatorProcedures = PluginLoader.INSTANCE.getResources(
+							generatorConfiguration.getGeneratorName() + ".procedures", ftlFile).stream()
 					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
 			coverageInfo.put("procedures", Math.min((((double) generatorProcedures.size()) / (
 					BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks().size() + 4)) * 100, 100));
 
-			generatorTriggers = PluginLoader.INSTANCE
-					.getResources(generatorConfiguration.getGeneratorName() + ".triggers", ftlFile).stream()
+			generatorTriggers = PluginLoader.INSTANCE.getResources(
+							generatorConfiguration.getGeneratorName() + ".triggers", ftlFile).stream()
 					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
 			coverageInfo.put("triggers", Math.min(
 					(((double) generatorTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader()
 							.getExternalTrigers().size()) * 100, 100));
 
-			jsonTriggers = PluginLoader.INSTANCE
-					.getResources(generatorConfiguration.getGeneratorName() + ".jsontriggers", ftlFile).stream()
+			jsonTriggers = PluginLoader.INSTANCE.getResources(
+							generatorConfiguration.getGeneratorName() + ".jsontriggers", ftlFile).stream()
 					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
 			coverageInfo.put("jsontriggers", Math.min((((double) jsonTriggers.size()) / (
 					BlocklyLoader.INSTANCE.getJSONTriggerLoader().getDefinedBlocks().size() + 1)) * 100, 100));
 
-			generatorAITasks = PluginLoader.INSTANCE
-					.getResources(generatorConfiguration.getGeneratorName() + ".aitasks", ftlFile).stream()
+			generatorAITasks = PluginLoader.INSTANCE.getResources(
+							generatorConfiguration.getGeneratorName() + ".aitasks", ftlFile).stream()
 					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
 			coverageInfo.put("aitasks", Math.min(
 					(((double) generatorAITasks.size()) / BlocklyLoader.INSTANCE.getAITaskBlockLoader()

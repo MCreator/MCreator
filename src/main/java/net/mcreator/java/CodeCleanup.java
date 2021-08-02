@@ -70,8 +70,8 @@ public class CodeCleanup {
 	public String reformatTheCodeAndOrganiseImports(@Nullable Workspace workspace, String code,
 			boolean skipModClassReloading) {
 		try {
-			return Roaster
-					.format(formatPorperties, importFormat.arrangeImports(workspace, code, skipModClassReloading));
+			return Roaster.format(formatPorperties,
+					importFormat.arrangeImports(workspace, code, skipModClassReloading));
 		} catch (Exception e) {
 			LOG.error("Failed to format code and organize imports", e);
 			return code;

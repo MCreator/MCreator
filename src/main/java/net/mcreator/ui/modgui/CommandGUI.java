@@ -68,8 +68,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		JPanel enderpanel = new JPanel(new GridLayout(2, 2, 10, 2));
 
-		enderpanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("command/name"), L10N.label("elementgui.command.name")));
+		enderpanel.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("command/name"), L10N.label("elementgui.command.name")));
 		enderpanel.add(commandName);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("command/permission_level"),
@@ -94,8 +94,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(merge)));
 
-		commandName
-				.setValidator(new TextFieldValidator(commandName, L10N.t("elementgui.command.warning.empty_string")));
+		commandName.setValidator(
+				new TextFieldValidator(commandName, L10N.t("elementgui.command.warning.empty_string")));
 		commandName.enableRealtimeValidation();
 
 		page1group.addValidationElement(commandName);

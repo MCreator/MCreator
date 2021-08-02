@@ -246,9 +246,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			toolBar.setOpaque(false);
 			toolBar.add(saveOnly);
 			toolBar.add(save);
-			add("North", PanelUtils
-					.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true, false,
-							false));
+			add("North",
+					PanelUtils.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true,
+							false, false));
 
 			if (wrapInScrollpane) {
 				JScrollPane splitScroll = new JScrollPane(split);
@@ -294,9 +294,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			toolBar.add(saveOnly);
 			toolBar.add(save);
 
-			add("North", PanelUtils
-					.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true, false,
-							false));
+			add("North",
+					PanelUtils.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true,
+							false, false));
 
 			if (wrapInScrollpane) {
 				JScrollPane splitScroll = new JScrollPane(new ArrayList<>(pages.values()).get(0));

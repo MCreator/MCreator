@@ -251,8 +251,8 @@ public final class MCreatorApplication {
 		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		try {
 			Workspace workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
-			if (workspace.getMCreatorVersion() > Launcher.version.versionlong && !MCreatorVersionNumber
-					.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
+			if (workspace.getMCreatorVersion() > Launcher.version.versionlong
+					&& !MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
 				JOptionPane.showMessageDialog(workspaceSelector, L10N.t("dialog.workspace.open_failed_message"),
 						L10N.t("dialog.workspace.open_failed_title"), JOptionPane.ERROR_MESSAGE);
 			} else {
@@ -272,8 +272,8 @@ public final class MCreatorApplication {
 						}
 					}
 				}
-				this.workspaceSelector
-						.addOrUpdateRecentWorkspace(new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile));
+				this.workspaceSelector.addOrUpdateRecentWorkspace(
+						new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile));
 			}
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
 			LOG.fatal("Failed to open workspace!", corruptedWorkspaceFile);
@@ -284,10 +284,10 @@ public final class MCreatorApplication {
 				if (files != null) {
 					String[] backups = Arrays.stream(files).filter(e -> e.contains(".mcreator-backup"))
 							.sorted(Collections.reverseOrder()).toArray(String[]::new);
-					String selected = (String) JOptionPane
-							.showInputDialog(this.workspaceSelector, L10N.t("dialog.workspace.got_corrupted_message"),
-									L10N.t("dialog.workspace.got_corrupted_title"), JOptionPane.QUESTION_MESSAGE, null,
-									backups, "");
+					String selected = (String) JOptionPane.showInputDialog(this.workspaceSelector,
+							L10N.t("dialog.workspace.got_corrupted_message"),
+							L10N.t("dialog.workspace.got_corrupted_title"), JOptionPane.QUESTION_MESSAGE, null, backups,
+							"");
 					if (selected != null) {
 						File backup = new File(backupsDir, selected);
 						FileIO.copyFile(backup, workspaceFile);
