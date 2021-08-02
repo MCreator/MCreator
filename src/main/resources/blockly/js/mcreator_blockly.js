@@ -81,7 +81,7 @@ function arrayToBlocklyDropDownArray(arrorig) {
     return retval;
 }
 
-function arrayToBlocklyDropDownArrayWithReadableNames(readablenames, arrorig) {
+function arrayToBlocklyDropDownArrayWithReadableNames(arrorig, readablenames) {
     var retval = [];
     var length = arrorig.length;
     var nameslength = readablenames.length;
