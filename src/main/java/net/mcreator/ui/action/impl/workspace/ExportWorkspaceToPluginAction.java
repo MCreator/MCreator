@@ -22,8 +22,7 @@ package net.mcreator.ui.action.impl.workspace;
 import com.esotericsoftware.yamlbeans.YamlConfig;
 import com.esotericsoftware.yamlbeans.YamlWriter;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.types.Block;
-import net.mcreator.element.types.Plant;
+import net.mcreator.element.types.*;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -118,6 +117,14 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 										readableName = ((Block) me.getGeneratableElement()).name;
 									else if (me.getType().equals(ModElementType.PLANT))
 										readableName = ((Plant) me.getGeneratableElement()).name;
+									else if (me.getType().equals(ModElementType.ITEM))
+										readableName = ((Item) me.getGeneratableElement()).name;
+									else if (me.getType().equals(ModElementType.FOOD))
+										readableName = ((Food) me.getGeneratableElement()).name;
+									else if (me.getType().equals(ModElementType.RANGEDITEM))
+										readableName = ((RangedItem) me.getGeneratableElement()).name;
+									else if (me.getType().equals(ModElementType.TOOL))
+										readableName = ((Tool) me.getGeneratableElement()).name;
 								}
 								map.put("readable_name", readableName);
 
