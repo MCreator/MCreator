@@ -19,8 +19,11 @@
 
 package net.mcreator.ui.action.impl.workspace;
 
+import com.esotericsoftware.yamlbeans.YamlConfig;
 import com.esotericsoftware.yamlbeans.YamlWriter;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.Block;
+import net.mcreator.element.types.Plant;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -94,43 +97,66 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 						if (Arrays.stream(type).collect(Collectors.toList()).contains(me.getType().getRegistryName())) {
 							// Create the data list and mapping values
 							if (me.getType().equals(ModElementType.ADVANCEMENT)) {
-								dlValues.add(modid + "/" + me.getRegistryName());
-								mappingValues.put(modid + "/" + me.getRegistryName(),
-										modid + ":" + me.getRegistryName());
-
-							} else if (me.getType().equals(ModElementType.BLOCK) || me.getType()
-									.equals(ModElementType.PLANT)) {
-								/*
 								Map<String, String> map = new HashMap<>();
-								map.put()
-
-								 */
-							} else if (me.getType().equals(ModElementType.ENCHANTMENT) || me.getType()
-									.equals(ModElementType.PARTICLE)) {
-								dlValues.add(modName + "." + me.getName());
-								mappingValues.put(modName + "." + me.getName(),
-										modPackage + me.getType().getRegistryName() + "." + me.getName()
-												+ StringUtils.capitalize(me.getType().getRegistryName()) + "."
-												+ me.getType().getRegistryName());
-
-							} else if (me.getType().equals(ModElementType.TAB)) {
-								// Data list
-								Map<String, String> map = new HashMap<>();
-								map.put(modName + "." + me.getName(), null);
+								map.put(modid + "/" + me.getRegistryName(), null);
 								map.put("texture", me.getName());
 								dlValues.add(map);
 
-								// Copy tab's icon
-								FileIO.copyFile(new File(workspace.getWorkspaceFolder(),
-										".mcreator" + File.separator + "modElementThumbnails" + File.separator
-												+ me.getName() + ".png"), new File(path,
-										"datalists" + File.separator + "icons" + File.separator + me.getName()
-												+ ".png"));
+								mappingValues.put(modid + "/" + me.getRegistryName(),
+										modid + ":" + me.getRegistryName());
+
+								copyModElementIcon(workspace, me.getName(), path);
+							} else if (me.getType().equals(ModElementType.BLOCK) || me.getType()
+									.equals(ModElementType.PLANT)) {
+								Map<String, String> map = new HashMap<>();
+								map.put(modName + "." + me.getName(), null);
+
+								String readableName = me.getName();
+								if (me.getGeneratableElement() != null) {
+									if (me.getType().equals(ModElementType.BLOCK))
+										readableName = ((Block) me.getGeneratableElement()).name;
+									else if (me.getType().equals(ModElementType.PLANT))
+										readableName = ((Plant) me.getGeneratableElement()).name;
+								}
+								map.put("readable_name", "\"" + readableName + "\"");
+
+								map.put("type", "block");
+								map.put("texture", me.getName());
+								dlValues.add(map);
 
 								// Mappings
-								mappingValues.put(modName + "." + me.getName(),
-										modPackage + "itemgroup." + me.getName() + "ItemGroup.tab");
+								List<String> values = new ArrayList<>();
+								values.add(modPackage + "block." + me.getName() + StringUtils.capitalize(
+										me.getType().getRegistryName()) + ".block");
+								values.add(modid + ":" + me.getRegistryName());
+								mappingValues.put(modName + "." + me.getName(), values);
 
+								copyModElementIcon(workspace, me.getName(), path);
+							} else if (me.getType().equals(ModElementType.ENCHANTMENT) || me.getType()
+									.equals(ModElementType.PARTICLE) || me.getType().equals(ModElementType.TAB)) {
+								// Custom enchantments don't have a custom icon, so no need to add a texture
+								if (me.getType().equals(ModElementType.ENCHANTMENT)) {
+									dlValues.add(modName + "." + me.getName());
+								} else {
+									Map<String, String> map = new HashMap<>();
+									map.put(modName + "." + me.getName(), null);
+									map.put("texture", me.getName());
+									dlValues.add(map);
+								}
+
+								// Mappings
+								if (me.getType().equals(ModElementType.TAB)) {
+									mappingValues.put(modName + "." + me.getName(),
+											modPackage + "itemgroup." + me.getName() + "ItemGroup.tab");
+								} else {
+									mappingValues.put(modName + "." + me.getName(),
+											modPackage + me.getType().getRegistryName() + "." + me.getName()
+													+ StringUtils.capitalize(me.getType().getRegistryName()) + "."
+													+ me.getType().getRegistryName());
+								}
+
+								if (!me.getType().equals(ModElementType.ENCHANTMENT))
+									copyModElementIcon(workspace, me.getName(), path);
 							}
 						}
 					}
@@ -141,7 +167,6 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 					writerDL.close();
 
 					// Mapping files creation
-					List<String> supportedForgeVersions = new ArrayList<>();
 					for (GeneratorConfiguration genConfig : Generator.GENERATOR_CACHE.values()) {
 						if (genConfig.getGeneratorFlavor() == GeneratorFlavor.FORGE && checkMCVersion(
 								genConfig.getGeneratorMinecraftVersion())) {
@@ -149,7 +174,8 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 									path + File.separator + genConfig.getGeneratorName() + File.separator + "mappings",
 									supportedMETs.get(type) + ".yaml");
 							mappingFile.getParentFile().mkdirs();
-							YamlWriter writerGenerator = new YamlWriter(new FileWriter(mappingFile));
+							YamlConfig config = new YamlConfig();
+							YamlWriter writerGenerator = new YamlWriter(new FileWriter(mappingFile), config);
 							writerGenerator.write(mappingValues);
 							writerGenerator.close();
 						}
@@ -175,5 +201,11 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 			add("1.14.4");
 		}};  // We skip these versions as they are no longer supported, so they have missing mod elements.
 		return !versionsToSKip.contains(mcVersion);
+	}
+
+	private static void copyModElementIcon(Workspace workspace, String modElementName, String path) {
+		FileIO.copyFile(new File(workspace.getWorkspaceFolder(),
+						".mcreator" + File.separator + "modElementThumbnails" + File.separator + modElementName + ".png"),
+				new File(path, "datalists" + File.separator + "icons" + File.separator + modElementName + ".png"));
 	}
 }
