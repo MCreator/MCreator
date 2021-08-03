@@ -85,6 +85,11 @@ import java.util.Set;
 	public String bootsModelPartR;
 	public String bootsModelTexture;
 
+	public boolean helmetImmuneToFire;
+	public boolean chestplateImmuneToFire;
+	public boolean leggingsImmuneToFire;
+	public boolean bootsImmuneToFire;
+
 	public int maxDamage;
 	public int damageValueHelmet;
 	public int damageValueBody;

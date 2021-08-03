@@ -796,6 +796,10 @@ public class TestWorkspaceDataProvider {
 				armor.leggingsSpecialInfo = new ArrayList<>();
 				armor.bootsSpecialInfo = new ArrayList<>();
 			}
+			armor.helmetImmuneToFire = !_true;
+			armor.chestplateImmuneToFire = !_true;
+			armor.leggingsImmuneToFire = !_true;
+			armor.bootsImmuneToFire = !_true;
 			armor.equipSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			armor.onHelmetTick = new Procedure("procedure1");
