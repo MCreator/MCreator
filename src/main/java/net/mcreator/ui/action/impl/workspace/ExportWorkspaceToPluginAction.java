@@ -88,7 +88,6 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 				File dataListFile = new File(path + File.separator + "datalists", supportedMETs.get(type) + ".yaml");
 
 				try {
-
 					// Data list and mapping files
 					List<Object> dlValues = new ArrayList<>(); // This list will contain the data list file's values.
 					Map<String, Object> mappingValues = new HashMap<>(); // This list will contain the mapping files' values.
@@ -107,7 +106,9 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 
 								copyModElementIcon(workspace, me.getName(), path);
 							} else if (me.getType().equals(ModElementType.BLOCK) || me.getType()
-									.equals(ModElementType.PLANT)) {
+									.equals(ModElementType.PLANT) || me.getType().equals(ModElementType.ITEM)
+									|| me.getType().equals(ModElementType.FOOD) || me.getType()
+									.equals(ModElementType.RANGEDITEM) || me.getType().equals(ModElementType.TOOL)) {
 								Map<String, String> map = new HashMap<>();
 								map.put(modName + "." + me.getName(), null);
 
@@ -118,16 +119,25 @@ public class ExportWorkspaceToPluginAction extends BasicAction {
 									else if (me.getType().equals(ModElementType.PLANT))
 										readableName = ((Plant) me.getGeneratableElement()).name;
 								}
-								map.put("readable_name", "\"" + readableName + "\"");
+								map.put("readable_name", readableName);
 
-								map.put("type", "block");
+								if (me.getType().equals(ModElementType.BLOCK) || me.getType()
+										.equals(ModElementType.PLANT))
+									map.put("type", "block");
+								else
+									map.put("type", "item");
 								map.put("texture", me.getName());
 								dlValues.add(map);
 
 								// Mappings
 								List<String> values = new ArrayList<>();
-								values.add(modPackage + "block." + me.getName() + StringUtils.capitalize(
-										me.getType().getRegistryName()) + ".block");
+								if (me.getType().equals(ModElementType.BLOCK) || me.getType()
+										.equals(ModElementType.PLANT))
+									values.add(modPackage + "block." + me.getName() + StringUtils.capitalize(
+											me.getType().getRegistryName()) + ".block");
+								else
+									values.add(modPackage + "item." + me.getName() + StringUtils.capitalize(
+											me.getType().getRegistryName()) + ".block");
 								values.add(modid + ":" + me.getRegistryName());
 								mappingValues.put(modName + "." + me.getName(), values);
 
