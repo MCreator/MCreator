@@ -41,6 +41,8 @@ public class Enchantment extends GeneratableElement {
 	public boolean isTreasureEnchantment;
 	public boolean isCurse;
 	public boolean isAllowedOnBooks;
+	public boolean canGenerateInLoots;
+	public boolean canVillagerTrade;
 
 	public Enchantment(ModElement element) {
 		super(element);
