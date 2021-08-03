@@ -317,8 +317,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 								helmetModelTexture),
 						PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
 								helmetSpecialInfo),
-								PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.item.is_immune_to_fire"),
-										helmetImmuneToFire))));
+								PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+												L10N.label("elementgui.item.is_immune_to_fire")), helmetImmuneToFire))));
 		helmetModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
@@ -347,8 +347,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 								L10N.label("elementgui.armor.texture"), bodyModelTexture),
 						PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
 										bodySpecialInfo),
-								PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.item.is_immune_to_fire"),
-										chestplateImmuneToFire))));
+								PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+												L10N.label("elementgui.item.is_immune_to_fire")), chestplateImmuneToFire))));
 		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(bodText, PanelUtils.centerAndSouthElement(
@@ -370,8 +370,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 								L10N.label("elementgui.armor.texture"), leggingsModelTexture),
 						PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
 										leggingsSpecialInfo),
-								PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.item.is_immune_to_fire"),
-										leggingsImmuneToFire))));
+								PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+												L10N.label("elementgui.item.is_immune_to_fire")), leggingsImmuneToFire))));
 		leggingsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(legText, PanelUtils.centerAndSouthElement(
@@ -393,8 +393,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 								L10N.label("elementgui.armor.texture"), bootsModelTexture),
 						PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
 										bootsSpecialInfo),
-								PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.item.is_immune_to_fire"),
-										bootsImmuneToFire))));
+								PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+												L10N.label("elementgui.item.is_immune_to_fire")), bootsImmuneToFire))));
 		bootsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(bootText, PanelUtils.centerAndSouthElement(
