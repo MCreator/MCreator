@@ -1402,6 +1402,8 @@ public class TestWorkspaceDataProvider {
 			enchantment.isTreasureEnchantment = _true;
 			enchantment.isAllowedOnBooks = !_true;
 			enchantment.isCurse = _true;
+			enchantment.canGenerateInLoots = !_true;
+			enchantment.canVillagerTrade = _true;
 			enchantment.compatibleItems = new ArrayList<>();
 			if (!emptyLists) {
 				enchantment.compatibleItems.add(new MItemBlock(modElement.getWorkspace(),
