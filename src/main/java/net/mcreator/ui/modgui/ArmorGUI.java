@@ -315,7 +315,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), helmetModel,
 								new JLabel(":"), helmetModelPart, L10N.label("elementgui.armor.texture"),
 								helmetModelTexture),
-						PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+						PanelUtils.westAndEastElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
 								helmetSpecialInfo),
 								PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 												L10N.label("elementgui.item.is_immune_to_fire")), helmetImmuneToFire))));
@@ -345,7 +345,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 								new JLabel(":"), bodyModelPart, L10N.label("elementgui.armor.part_arm_left"),
 								armsModelPartL, L10N.label("elementgui.armor.part_arm_right"), armsModelPartR,
 								L10N.label("elementgui.armor.texture"), bodyModelTexture),
-						PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+						PanelUtils.westAndEastElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
 										bodySpecialInfo),
 								PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 												L10N.label("elementgui.item.is_immune_to_fire")), bodyImmuneToFire))));
@@ -368,7 +368,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), leggingsModel,
 								new JLabel(": L"), leggingsModelPartL, new JLabel("R"), leggingsModelPartR,
 								L10N.label("elementgui.armor.texture"), leggingsModelTexture),
-						PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+						PanelUtils.westAndEastElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
 										leggingsSpecialInfo),
 								PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 												L10N.label("elementgui.item.is_immune_to_fire")), leggingsImmuneToFire))));
@@ -391,7 +391,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bootsModel,
 								new JLabel(": L"), bootsModelPartL, new JLabel("R"), bootsModelPartR,
 								L10N.label("elementgui.armor.texture"), bootsModelTexture),
-						PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+						PanelUtils.westAndEastElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
 										bootsSpecialInfo),
 								PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 												L10N.label("elementgui.item.is_immune_to_fire")), bootsImmuneToFire))));
