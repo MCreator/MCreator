@@ -46,26 +46,24 @@ public class RSyntaxTextAreaStyler {
 		try {
 			Theme theme;
 
-			if (PluginLoader.INSTANCE
-					.getResourceAsStream("themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml")
-					!= null) {
+			if (PluginLoader.INSTANCE.getResourceAsStream(
+					"themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml") != null) {
 				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
 						"themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml");
 				themeXML = themeXML.replace("${mainTint}",
 						Integer.toHexString(((Color) UIManager.get("MCreatorLAF.MAIN_TINT")).getRGB()).substring(2));
 				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));
 			} else {
-				String themeXML = FileIO
-						.readResourceToString(PluginLoader.INSTANCE, "themes/default_dark/styles/code_editor.xml");
+				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
+						"themes/default_dark/styles/code_editor.xml");
 				themeXML = themeXML.replace("${mainTint}",
 						Integer.toHexString(((Color) UIManager.get("MCreatorLAF.MAIN_TINT")).getRGB()).substring(2));
 				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));
 			}
 
 			if (!PreferencesManager.PREFERENCES.ide.editorTheme.equals("MCreator")) {
-				theme = Theme.load(te.getClass().getResourceAsStream(
-						"/org/fife/ui/rsyntaxtextarea/themes/" + PreferencesManager.PREFERENCES.ide.editorTheme
-								.toLowerCase(Locale.ENGLISH) + ".xml"));
+				theme = Theme.load(te.getClass().getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/"
+						+ PreferencesManager.PREFERENCES.ide.editorTheme.toLowerCase(Locale.ENGLISH) + ".xml"));
 			}
 
 			theme.matchedBracketBG = (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT");
@@ -84,8 +82,8 @@ public class RSyntaxTextAreaStyler {
 		te.revalidate();
 
 		sp.addMouseWheelListener(mouseWheelEvent -> {
-			if ((mouseWheelEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK && te
-					.hasFocus()) {
+			if ((mouseWheelEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK
+					&& te.hasFocus()) {
 				float current = te.getFont().getSize();
 
 				current -= mouseWheelEvent.getWheelRotation();

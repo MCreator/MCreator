@@ -55,8 +55,8 @@ public class GeneratorGradleCache {
 		public ClasspathEntry(String lib, @Nullable String src) {
 			this.lib = lib.replace(UserFolderManager.getGradleHome().getAbsolutePath(), "<user.home.mcreator.gradle>");
 			if (src != null)
-				this.src = src
-						.replace(UserFolderManager.getGradleHome().getAbsolutePath(), "<user.home.mcreator.gradle>");
+				this.src = src.replace(UserFolderManager.getGradleHome().getAbsolutePath(),
+						"<user.home.mcreator.gradle>");
 		}
 
 		public String getLib() {

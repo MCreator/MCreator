@@ -120,8 +120,8 @@ public class ModElementManager {
 
 	public boolean usesGeneratableElementJava(GeneratableElement generatableElement) {
 		Generator generator = workspace.getGenerator();
-		List<GeneratorTemplate> templates = generator
-				.getModElementGeneratorTemplatesList(generatableElement.getModElement());
+		List<GeneratorTemplate> templates = generator.getModElementGeneratorTemplatesList(
+				generatableElement.getModElement());
 		if (templates != null)
 			for (GeneratorTemplate template : templates) {
 				String writer = (String) ((Map<?, ?>) template.getTemplateData()).get("writer");

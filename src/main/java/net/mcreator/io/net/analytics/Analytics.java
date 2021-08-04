@@ -33,9 +33,8 @@ public class Analytics {
 	public Analytics(DeviceInfo deviceInfo) {
 		this.deviceInfo = deviceInfo;
 		ga = new GoogleAnalytics();
-		ga.setUserAgent(
-				"MCreator " + Launcher.version.getFullString() + " / " + deviceInfo.getOsName() + " / " + deviceInfo
-						.getJvmVersion());
+		ga.setUserAgent("MCreator " + Launcher.version.getFullString() + " / " + deviceInfo.getOsName() + " / "
+				+ deviceInfo.getJvmVersion());
 		ga.setClientUUID(UUID.randomUUID().toString());
 	}
 

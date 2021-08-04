@@ -72,8 +72,8 @@ public class AddonWorkspacePanel extends AbstractWorkspacePanel {
 		Generator.GENERATOR_CACHE.values().stream().filter(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.ADDON)
 				.forEach(workspaceDialogPanel.generator::addItem);
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration
-				.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(), GeneratorFlavor.ADDON);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.ADDON);
 		workspaceDialogPanel.generator.setSelectedItem(generatorConfiguration);
 	}
 }

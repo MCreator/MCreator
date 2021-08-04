@@ -33,12 +33,12 @@ public class VCSInfoSettingsAction extends VCSAction {
 			VCSInfo vcsInfo = actionRegistry.getMCreator().getWorkspace().getVCS().getInfo();
 			VCSInfo newInfo;
 			if (vcsInfo != null) {
-				newInfo = VCSSetupDialogs
-						.getVCSInfoDialog(actionRegistry.getMCreator(), L10N.t("dialog.vcs.settings.help.message"),
-								vcsInfo.getRemote(), vcsInfo.getUsername(), vcsInfo.isPromptForPassword(), false);
+				newInfo = VCSSetupDialogs.getVCSInfoDialog(actionRegistry.getMCreator(),
+						L10N.t("dialog.vcs.settings.help.message"), vcsInfo.getRemote(), vcsInfo.getUsername(),
+						vcsInfo.isPromptForPassword(), false);
 			} else {
-				newInfo = VCSSetupDialogs
-						.getVCSInfoDialog(actionRegistry.getMCreator(), L10N.t("dialog.vcs.settings.help.message"));
+				newInfo = VCSSetupDialogs.getVCSInfoDialog(actionRegistry.getMCreator(),
+						L10N.t("dialog.vcs.settings.help.message"));
 			}
 
 			if (newInfo != null) {
