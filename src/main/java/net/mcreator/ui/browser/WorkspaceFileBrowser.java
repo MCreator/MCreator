@@ -186,8 +186,8 @@ public class WorkspaceFileBrowser extends JPanel {
 
 		JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		topBar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		topBar.add(ComponentUtils
-				.setForeground(ComponentUtils.deriveFont(L10N.label("workspace_file_browser.title"), 10f),
+		topBar.add(
+				ComponentUtils.setForeground(ComponentUtils.deriveFont(L10N.label("workspace_file_browser.title"), 10f),
 						(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")));
 
 		topBar.setBorder(BorderFactory.createCompoundBorder(
@@ -236,8 +236,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				if (mouseEvent.getClickCount() == 2) {
 					if (tree.getLastSelectedPathComponent() != null) {
-						Object selection = ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent())
-								.getUserObject();
+						Object selection = ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent()).getUserObject();
 						FileOpener.openFile(mcreator, selection);
 					}
 				}

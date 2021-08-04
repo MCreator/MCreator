@@ -81,15 +81,13 @@ public class TextureMappingDialog {
 			pane.addChangeListener(e -> {
 				if (pane.getSelectedIndex() == 0) { // new texture mapping
 					pane.setSelectedIndex(1);
-					String mapping = VOptionPane
-							.showInputDialog(mcreator, L10N.t("dialog.textures_mapping.enter_name_message"),
-									L10N.t("dialog.textures_mapping.enter_name_title"), null,
-									new OptionPaneValidatior() {
-										@Override public Validator.ValidationResult validate(JComponent component) {
-											return new JavaMemeberNameValidator((VTextField) component, false)
-													.validate();
-										}
-									});
+					String mapping = VOptionPane.showInputDialog(mcreator,
+							L10N.t("dialog.textures_mapping.enter_name_message"),
+							L10N.t("dialog.textures_mapping.enter_name_title"), null, new OptionPaneValidatior() {
+								@Override public Validator.ValidationResult validate(JComponent component) {
+									return new JavaMemeberNameValidator((VTextField) component, false).validate();
+								}
+							});
 					if (mapping != null) {
 						mapping = Transliteration.transliterateString(mapping.toLowerCase(Locale.ENGLISH));
 						Map<String, String> textureMap = new HashMap<>();

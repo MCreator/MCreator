@@ -51,8 +51,8 @@ public class WorkspaceGeneratorSetup {
 		workspace.getGenerator().close(); // close gradle connection
 
 		// delete generator base files
-		Set<String> fileNames = PluginLoader.INSTANCE
-				.getResourcesInPackage(workspace.getGenerator().getGeneratorName() + ".workspacebase");
+		Set<String> fileNames = PluginLoader.INSTANCE.getResourcesInPackage(
+				workspace.getGenerator().getGeneratorName() + ".workspacebase");
 		for (String file : fileNames) {
 			File generatorFile = new File(workspace.getWorkspaceFolder(),
 					file.replace(workspace.getGenerator().getGeneratorName() + "/workspacebase", ""));
@@ -118,8 +118,8 @@ public class WorkspaceGeneratorSetup {
 		DefaultFreemarkerConfiguration configuration = new DefaultFreemarkerConfiguration();
 		Map<String, Object> dataModel = new BaseDataModelProvider(workspace.getGenerator()).provide();
 
-		Set<String> fileNames = PluginLoader.INSTANCE
-				.getResourcesInPackage(workspace.getGenerator().getGeneratorName() + ".workspacebase");
+		Set<String> fileNames = PluginLoader.INSTANCE.getResourcesInPackage(
+				workspace.getGenerator().getGeneratorName() + ".workspacebase");
 		for (String file : fileNames) {
 			try {
 				InputStream stream = PluginLoader.INSTANCE.getResourceAsStream(file);

@@ -29,8 +29,8 @@ public class RegistryNameFixer {
 	private static final Pattern registryNamePattern = Pattern.compile("[^a-z0-9/._-]+");
 
 	public static String fix(String original) {
-		return registryNamePattern
-				.matcher(Transliteration.transliterateString(original).toLowerCase(Locale.ENGLISH).replace(" ", "_"))
+		return registryNamePattern.matcher(
+						Transliteration.transliterateString(original).toLowerCase(Locale.ENGLISH).replace(" ", "_"))
 				.replaceAll("");
 	}
 

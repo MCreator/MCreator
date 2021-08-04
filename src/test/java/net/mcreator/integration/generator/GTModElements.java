@@ -57,8 +57,8 @@ public class GTModElements {
 					== GeneratorStats.CoverageStatus.NONE)
 				continue;
 
-			List<GeneratableElement> modElementExamples = TestWorkspaceDataProvider
-					.getModElementExamplesFor(workspace, modElementType, random);
+			List<GeneratableElement> modElementExamples = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
+					modElementType, random);
 
 			LOG.info("[" + generatorName + "] Testing mod element type generation " + modElementType.getReadableName()
 					+ " with " + modElementExamples.size() + " variants");

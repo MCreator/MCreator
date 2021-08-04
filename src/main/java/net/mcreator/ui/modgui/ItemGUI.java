@@ -131,20 +131,19 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
 				L10N.t("elementgui.common.event_right_clicked_block"), VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE,
 				Dependency.fromString(
-						"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction/blockstate:blockstate"))
-				.makeReturnValueOptional();
+						"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction/blockstate:blockstate")).makeReturnValueOptional();
 		onEntityHitWith = new ProcedureSelector(this.withEntry("item/when_entity_hit"), mcreator,
 				L10N.t("elementgui.item.event_entity_hit"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack"));
 		onItemInInventoryTick = new ProcedureSelector(this.withEntry("item/inventory_tick"), mcreator,
-				L10N.t("elementgui.item.event_inventory_tick"), Dependency
-				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
+				L10N.t("elementgui.item.event_inventory_tick"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
 		onItemInUseTick = new ProcedureSelector(this.withEntry("item/hand_tick"), mcreator,
-				L10N.t("elementgui.item.event_hand_tick"), Dependency
-				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
+				L10N.t("elementgui.item.event_hand_tick"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
 		onStoppedUsing = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
-				L10N.t("elementgui.item.event_stopped_using"), Dependency
-				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
+				L10N.t("elementgui.item.event_stopped_using"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.item.event_entity_swings"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
@@ -153,19 +152,17 @@ public class ItemGUI extends ModElementGUI<Item> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"))
-				.makeInline();
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 		dispenseSuccessCondition = new ProcedureSelector(this.withEntry("item/dispense_success_condition"), mcreator,
 				L10N.t("elementgui.item.dispense_success_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction"))
-				.makeInline();
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction")).makeInline();
 		dispenseResultItemstack = new ProcedureSelector(this.withEntry("item/dispense_result_itemstack"), mcreator,
 				L10N.t("elementgui.item.dispense_result_itemstack"), VariableTypeLoader.BuiltInTypes.ITEMSTACK,
 				Dependency.fromString(
-						"x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:boolean"))
-				.setDefaultName(L10N.t("elementgui.item.dispense_result_itemstack.default")).makeInline()
-				.makeReturnValueOptional();
+						"x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:boolean")).setDefaultName(
+				L10N.t("elementgui.item.dispense_result_itemstack.default")).makeInline().makeReturnValueOptional();
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -194,14 +191,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 		destal2.setOpaque(false);
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
 		destal3.setOpaque(false);
-		destal3.add("West", PanelUtils
-				.totalCenterInPanel(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))));
+		destal3.add("West", PanelUtils.totalCenterInPanel(
+				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))));
 		destal2.add("North", destal3);
 
 		JPanel destal = new JPanel(new GridLayout(1, 2, 15, 15));
 		destal.setOpaque(false);
-		JComponent destal1 = PanelUtils.join(FlowLayout.LEFT, HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+		JComponent destal1 = PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
 						L10N.label("elementgui.item.glowing_effect")), hasGlow, glowCondition);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
@@ -223,8 +220,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
 
 		rent.setOpaque(false);
-		rent.add(PanelUtils.join(HelpUtils
-						.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
+		rent.add(PanelUtils.join(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
 				PanelUtils.join(renderType)));
 
 		renderType.setPreferredSize(new Dimension(350, 42));
@@ -250,8 +247,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		ComponentUtils.deriveFont(name, 16);
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				L10N.label("elementgui.common.name_in_gui")));
 		subpane2.add(name);
 
 		subpane2.add(
@@ -262,16 +259,16 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.common.creative_tab")));
 		subpane2.add(creativeTab);
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/stack_size"), L10N.label("elementgui.common.max_stack_size")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
+				L10N.label("elementgui.common.max_stack_size")));
 		subpane2.add(stackSize);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
 				L10N.label("elementgui.common.enchantability")));
 		subpane2.add(enchantability);
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/destroy_speed"), L10N.label("elementgui.item.destroy_speed")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/destroy_speed"),
+				L10N.label("elementgui.item.destroy_speed")));
 		subpane2.add(toolType);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
@@ -303,8 +300,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.recipe_remainder")));
 		subpane2.add(PanelUtils.centerInPanel(recipeRemainder));
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/use_duration"), L10N.label("elementgui.item.use_duration")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/use_duration"),
+				L10N.label("elementgui.item.use_duration")));
 		subpane2.add(useDuration);
 
 		enchantability.setOpaque(false);
@@ -322,18 +319,18 @@ public class ItemGUI extends ModElementGUI<Item> {
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		subpane2.setOpaque(false);
 
-		JComponent canDispense = PanelUtils.gridElements(1, 2, 0, 5, HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/has_dispense_behavior"),
+		JComponent canDispense = PanelUtils.gridElements(1, 2, 0, 5,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/has_dispense_behavior"),
 						L10N.label("elementgui.item.has_dispense_behavior")), hasDispenseBehavior);
-		JComponent dispenseProcedures = PanelUtils
-				.gridElements(2, 1, 0, 2, dispenseSuccessCondition, dispenseResultItemstack);
+		JComponent dispenseProcedures = PanelUtils.gridElements(2, 1, 0, 2, dispenseSuccessCondition,
+				dispenseResultItemstack);
 
 		hasDispenseBehavior.setOpaque(false);
 		hasDispenseBehavior.setSelected(false);
 		hasDispenseBehavior.addActionListener(e -> updateDispenseElements());
 
-		JComponent dispenseProperties = PanelUtils
-				.northAndCenterElement(canDispense, PanelUtils.centerInPanel(dispenseProcedures));
+		JComponent dispenseProperties = PanelUtils.northAndCenterElement(canDispense,
+				PanelUtils.centerInPanel(dispenseProcedures));
 
 		dispenseProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -367,8 +364,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		inventoryProperties.setOpaque(false);
 
-		inventoryProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/bind_gui"), L10N.label("elementgui.item.bind_gui")));
+		inventoryProperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"), L10N.label("elementgui.item.bind_gui")));
 		inventoryProperties.add(guiBoundTo);
 
 		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_size"),

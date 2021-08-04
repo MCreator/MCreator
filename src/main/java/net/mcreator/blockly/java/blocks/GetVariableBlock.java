@@ -73,8 +73,8 @@ public class GetVariableBlock implements IBlockGenerator {
 							"This editor does not support local variables!"));
 					return;
 				} else if (scope.equalsIgnoreCase("local")) {
-					List<StatementInput> statementInputList = master
-							.getStatementInputsMatching(statementInput -> statementInput.disable_local_variables);
+					List<StatementInput> statementInputList = master.getStatementInputsMatching(
+							statementInput -> statementInput.disable_local_variables);
 					if (!statementInputList.isEmpty()) {
 						for (StatementInput statementInput : statementInputList) {
 							master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
@@ -92,8 +92,8 @@ public class GetVariableBlock implements IBlockGenerator {
 					}
 				}
 
-				Object getterTemplate = typeObject
-						.getScopeDefinition(master.getWorkspace(), scope.toUpperCase(Locale.ENGLISH)).get("get");
+				Object getterTemplate = typeObject.getScopeDefinition(master.getWorkspace(),
+						scope.toUpperCase(Locale.ENGLISH)).get("get");
 				if (getterTemplate == null) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							"Current generator does not support getting variables of type " + type + " in " + scope

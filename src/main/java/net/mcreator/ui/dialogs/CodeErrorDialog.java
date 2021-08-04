@@ -112,9 +112,8 @@ public class CodeErrorDialog {
 
 		Object[] options = { L10N.t("dialog.code_error.show_in_workspace"), L10N.t("dialog.code_error.show_build_log"),
 				L10N.t("gradle.errors.do_nothing"), L10N.t("action.support") };
-		int n = JOptionPane
-				.showOptionDialog(mcreator, list, L10N.t("dialog.code_error.title"), JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+		int n = JOptionPane.showOptionDialog(mcreator, list, L10N.t("dialog.code_error.title"),
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 		if (n == 0) {
 			mcreator.mcreatorTabs.showTab(mcreator.workspaceTab);
 			mcreator.mv.search.setText("f:err");

@@ -39,8 +39,8 @@ public class GeneratorVariableTypes {
 	private final Map<VariableType, Map<?, ?>> variableTypesCache = new ConcurrentHashMap<>();
 
 	GeneratorVariableTypes(GeneratorConfiguration generatorConfiguration) {
-		Set<String> fileNames = PluginLoader.INSTANCE
-				.getResources(generatorConfiguration.getGeneratorName() + ".variables", Pattern.compile(".*\\.yaml"));
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources(
+				generatorConfiguration.getGeneratorName() + ".variables", Pattern.compile(".*\\.yaml"));
 
 		for (String res : fileNames) {
 			String variableTypeName = res.split("variables/")[1].replace(".yaml", "");

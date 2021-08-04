@@ -68,10 +68,9 @@ public class FileDialogs {
 					return;
 				} else if (selectedFile != null && selectedFile.isDirectory() && selectedFile.list() != null
 						&& Objects.requireNonNull(selectedFile.list()).length > 0) {
-					JOptionPane
-							.showMessageDialog(this, L10N.t("dialog.file.error_save_inside_folder_not_empty_message"),
-									L10N.t("dialog.file.error_save_inside_folder_not_empty_title"),
-									JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this,
+							L10N.t("dialog.file.error_save_inside_folder_not_empty_message"),
+							L10N.t("dialog.file.error_save_inside_folder_not_empty_title"), JOptionPane.ERROR_MESSAGE);
 					return;
 				} else if (selectedFile != null && selectedFile.isDirectory() && !selectedFile.getAbsolutePath()
 						.matches("[a-zA-Z0-9_/+\\-\\\\:()\\[\\].,@$=`' ]+")) {
@@ -81,9 +80,9 @@ public class FileDialogs {
 					return;
 				} else if (selectedFile != null && (selectedFile.getName().contains(" ") || selectedFile.getName()
 						.contains(":") || selectedFile.getName().contains("\\") || selectedFile.getName().contains("/")
-						|| selectedFile.getName().contains("|") || selectedFile.getName().contains("\"") || selectedFile
-						.getName().contains("?") || selectedFile.getName().contains("*") || selectedFile.getName()
-						.contains(">"))) {
+						|| selectedFile.getName().contains("|") || selectedFile.getName().contains("\"")
+						|| selectedFile.getName().contains("?") || selectedFile.getName().contains("*")
+						|| selectedFile.getName().contains(">"))) {
 					JOptionPane.showMessageDialog(this, L10N.t("dialog.file.error_invalid_name"),
 							L10N.t("dialog.file.error_invalid_name_title"), JOptionPane.ERROR_MESSAGE);
 					return;
@@ -98,8 +97,8 @@ public class FileDialogs {
 								L10N.t("dialog.file.error_directory_doesnt_exist_title"), JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-				} else if (selectedFile != null && (!Files.isWritable(selectedFile.getParentFile().toPath()) || !Files
-						.isReadable(selectedFile.getParentFile().toPath()))) {
+				} else if (selectedFile != null && (!Files.isWritable(selectedFile.getParentFile().toPath())
+						|| !Files.isReadable(selectedFile.getParentFile().toPath()))) {
 					JOptionPane.showMessageDialog(this, L10N.t("dialog.file.error_no_access"),
 							L10N.t("dialog.file.error_no_access_title"), JOptionPane.ERROR_MESSAGE);
 					return;
@@ -231,8 +230,8 @@ public class FileDialogs {
 				}
 
 				@Override public String getDescription() {
-					return finalExtension.toUpperCase(Locale.ENGLISH) + " files (*." + finalExtension
-							.toLowerCase(Locale.ENGLISH) + ")";
+					return finalExtension.toUpperCase(Locale.ENGLISH) + " files (*." + finalExtension.toLowerCase(
+							Locale.ENGLISH) + ")";
 				}
 			};
 			idx++;

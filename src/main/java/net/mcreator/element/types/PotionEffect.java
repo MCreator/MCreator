@@ -44,6 +44,7 @@ public class PotionEffect extends GeneratableElement {
 	public Procedure onStarted;
 	public Procedure onActiveTick;
 	public Procedure onExpired;
+	public Procedure activeTickCondition;
 
 	public PotionEffect(ModElement element) {
 		super(element);

@@ -136,8 +136,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 			String type = block.getAttribute("type");
 			boolean generated = false;
 			for (IBlockGenerator generator : blockGenerators) {
-				if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays
-						.asList(generator.getSupportedBlocks()).contains(type)) {
+				if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays.asList(
+						generator.getSupportedBlocks()).contains(type)) {
 					int compile_notes_num = compile_notes.size();
 					generator.generateBlock(this, block);
 					if (compile_notes_num == compile_notes.size()) // no errors in generation
@@ -164,8 +164,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 		boolean generated = false;
 		for (IBlockGenerator generator : blockGenerators) {
-			if (generator.getBlockType() == IBlockGenerator.BlockType.OUTPUT && Arrays
-					.asList(generator.getSupportedBlocks()).contains(type)) {
+			if (generator.getBlockType() == IBlockGenerator.BlockType.OUTPUT && Arrays.asList(
+					generator.getSupportedBlocks()).contains(type)) {
 				generator.generateBlock(this, block);
 
 				generated = true;
