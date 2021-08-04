@@ -99,7 +99,7 @@ public class ${name}Enchantment extends ${JavaModName}Elements.ModElement{
 		}
 
 		@Override public boolean canGenerateInLoot() {
-			return ${data.canGenerateInLoots};
+			return ${data.canGenerateInLootTables};
 		}
 
 		@Override public boolean canVillagerTrade() {
