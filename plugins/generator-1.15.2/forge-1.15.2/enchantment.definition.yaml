@@ -5,3 +5,5 @@ templates:
 localizationkeys:
   - key: enchantment.@modid.@registryname
     mapto: name
+
+field_exclusions: [canGenerateInLoots, canVillagerTrade]
