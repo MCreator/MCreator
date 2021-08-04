@@ -130,8 +130,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 				L10N.label("elementgui.enchantment.allowed_on_books")));
 		selp.add(isAllowedOnBooks);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/generate_in_loots"),
-				L10N.label("elementgui.enchantment.can_generate_in_loots")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/generate_in_loot_tables"),
+				L10N.label("elementgui.enchantment.can_generate_in_loot_tables")));
 		selp.add(canGenerateInLootTables);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/villager_trade"),
