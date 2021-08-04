@@ -366,6 +366,7 @@ public class WoodPackMakerTool {
 		buttonBlock.hardness = 2 * factor;
 		buttonBlock.resistance = 3 * factor;
 		buttonBlock.breakHarvestLevel = 0;
+		buttonBlock.lightOpacity = 0;
 		buttonBlock.flammability = (int) Math.round(5 * factor);
 
 		buttonBlock.getModElement().setParentFolder(folder);

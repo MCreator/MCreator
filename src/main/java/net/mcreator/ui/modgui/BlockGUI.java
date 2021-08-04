@@ -390,6 +390,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 				if (!isEditingMode()) {
 					lightOpacity.setValue(0);
+					lightOpacity.setEnabled(false);
 					if (blockBase.getSelectedItem().equals("Wall") || blockBase.getSelectedItem().equals("Fence")
 							|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem()
 							.equals("Door") || blockBase.getSelectedItem().equals("FenceGate") || blockBase
@@ -1517,6 +1518,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.fluidCapacity = (int) fluidCapacity.getValue();
 		block.isNotColidable = isNotColidable.isSelected();
 		block.canRedstoneConnect = canRedstoneConnect.isSelected();
+		block.lightOpacity = (int) lightOpacity.getValue();
 		block.lightOpacity = (int) lightOpacity.getValue();
 		block.material = new Material(mcreator.getWorkspace(), material.getSelectedItem());
 		block.tickRate = (int) tickRate.getValue();
