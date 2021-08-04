@@ -66,7 +66,7 @@ public class WorkspaceGeneratorSetupDialog {
 				try {
 					GradleDaemonUtils.stopAllDaemons(m.getWorkspace());
 					p20.ok();
-				} catch (IOException | TimeoutException | InterruptedException e) {
+				} catch (IOException | InterruptedException e) {
 					LOG.warn("Failed to stop Gradle daemons", e);
 					p20.warn();
 				}
