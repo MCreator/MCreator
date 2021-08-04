@@ -35,3 +35,5 @@ localizationkeys:
     mapto: leggingsName
   - key: item.@modid.@registryname_boots
     mapto: bootsName
+
+field_exclusions: [helmetImmuneToFire, chestplateImmuneToFire, leggingsImmuneToFire, bootsImmuneToFire]
