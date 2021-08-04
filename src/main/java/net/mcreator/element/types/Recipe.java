@@ -96,39 +96,33 @@ import java.util.Arrays;
 	@Override public BufferedImage generateModElementPicture() {
 		BufferedImage mod = null;
 		if ("Crafting".equals(recipeType) && !recipeReturnStack.isEmpty()) {
-			mod = MinecraftImageGenerator.Preview
-					.generateRecipePreviewPicture(getModElement().getWorkspace(), recipeSlots, recipeReturnStack);
+			mod = MinecraftImageGenerator.Preview.generateRecipePreviewPicture(getModElement().getWorkspace(),
+					recipeSlots, recipeReturnStack);
 		} else if ("Smelting".equals(recipeType) && !smeltingInputStack.isEmpty() && !smeltingReturnStack.isEmpty()) {
 			mod = MinecraftImageGenerator.Preview.generateRecipePreviewPicture(getModElement().getWorkspace(),
 					new MItemBlock[] { smeltingInputStack }, smeltingReturnStack);
 		} else if ("Blasting".equals(recipeType) && !blastingInputStack.isEmpty() && !blastingReturnStack.isEmpty()) {
-			mod = MinecraftImageGenerator.Preview
-					.generateBlastingPreviewPicture(getModElement().getWorkspace(), blastingInputStack,
-							blastingReturnStack);
+			mod = MinecraftImageGenerator.Preview.generateBlastingPreviewPicture(getModElement().getWorkspace(),
+					blastingInputStack, blastingReturnStack);
 		} else if ("Smoking".equals(recipeType) && !smokingInputStack.isEmpty() && !smokingReturnStack.isEmpty()) {
-			mod = MinecraftImageGenerator.Preview
-					.generateSmokingPreviewPicture(getModElement().getWorkspace(), smokingInputStack,
-							smokingReturnStack);
-		} else if ("Stone cutting".equals(recipeType) && !stoneCuttingInputStack.isEmpty() && !stoneCuttingReturnStack
-				.isEmpty()) {
-			mod = MinecraftImageGenerator.Preview
-					.generateStoneCuttingPreviewPicture(getModElement().getWorkspace(), stoneCuttingInputStack,
-							stoneCuttingReturnStack);
+			mod = MinecraftImageGenerator.Preview.generateSmokingPreviewPicture(getModElement().getWorkspace(),
+					smokingInputStack, smokingReturnStack);
+		} else if ("Stone cutting".equals(recipeType) && !stoneCuttingInputStack.isEmpty()
+				&& !stoneCuttingReturnStack.isEmpty()) {
+			mod = MinecraftImageGenerator.Preview.generateStoneCuttingPreviewPicture(getModElement().getWorkspace(),
+					stoneCuttingInputStack, stoneCuttingReturnStack);
 		} else if ("Campfire cooking".equals(recipeType) && !campfireCookingInputStack.isEmpty()
 				&& !campfireCookingReturnStack.isEmpty()) {
-			mod = MinecraftImageGenerator.Preview
-					.generateCampfirePreviewPicture(getModElement().getWorkspace(), campfireCookingInputStack,
-							campfireCookingReturnStack);
-		} else if ("Smithing".equals(recipeType) && !smithingInputStack.isEmpty() && !smithingInputAdditionStack
-				.isEmpty() && !smithingReturnStack.isEmpty()) {
-			mod = MinecraftImageGenerator.Preview
-					.generateSmithingPreviewPicture(getModElement().getWorkspace(), smithingInputStack,
-							smithingInputAdditionStack, smithingReturnStack);
+			mod = MinecraftImageGenerator.Preview.generateCampfirePreviewPicture(getModElement().getWorkspace(),
+					campfireCookingInputStack, campfireCookingReturnStack);
+		} else if ("Smithing".equals(recipeType) && !smithingInputStack.isEmpty()
+				&& !smithingInputAdditionStack.isEmpty() && !smithingReturnStack.isEmpty()) {
+			mod = MinecraftImageGenerator.Preview.generateSmithingPreviewPicture(getModElement().getWorkspace(),
+					smithingInputStack, smithingInputAdditionStack, smithingReturnStack);
 		} else if ("Brewing".equals(recipeType) && !brewingInputStack.isEmpty() && !brewingIngredientStack.isEmpty()
 				&& !brewingReturnStack.isEmpty()) {
-			mod = MinecraftImageGenerator.Preview
-					.generateBrewingPreviewPicture(getModElement().getWorkspace(), brewingInputStack,
-							brewingIngredientStack, brewingReturnStack);
+			mod = MinecraftImageGenerator.Preview.generateBrewingPreviewPicture(getModElement().getWorkspace(),
+					brewingInputStack, brewingIngredientStack, brewingReturnStack);
 		}
 		return mod;
 	}

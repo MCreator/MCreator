@@ -33,8 +33,8 @@ public class GTBuild {
 
 		StringBuilder sb = new StringBuilder();
 
-		buildLauncher
-				.setStandardError(new OutputStreamEventHandler(line -> sb.append(line).append(System.lineSeparator())));
+		buildLauncher.setStandardError(
+				new OutputStreamEventHandler(line -> sb.append(line).append(System.lineSeparator())));
 		buildLauncher.setStandardOutput(
 				new OutputStreamEventHandler(line -> sb.append(line).append(System.lineSeparator())));
 

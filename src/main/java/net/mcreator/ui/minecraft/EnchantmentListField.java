@@ -43,10 +43,10 @@ public class EnchantmentListField extends JItemListField<Enchantment> {
 		JList<String> vlist = new JList<>(
 				ElementUtil.loadAllEnchantments(mcreator.getWorkspace()).stream().map(DataListEntry::getName)
 						.toArray(String[]::new));
-		int option = JOptionPane.showOptionDialog(mcreator, PanelUtils
-						.northAndCenterElement(L10N.label("dialog.list_field.enchantment_message"), new JScrollPane(vlist)),
-				L10N.t("dialog.list_field.enchantment_title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
-				null, null, null);
+		int option = JOptionPane.showOptionDialog(mcreator,
+				PanelUtils.northAndCenterElement(L10N.label("dialog.list_field.enchantment_message"),
+						new JScrollPane(vlist)), L10N.t("dialog.list_field.enchantment_title"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 
 		if (option == JOptionPane.OK_OPTION && vlist.getSelectedValue() != null) {
 			return vlist.getSelectedValuesList().stream().map(e -> new Enchantment(mcreator.getWorkspace(), e))

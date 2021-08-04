@@ -63,8 +63,8 @@ class AutocompleteStyle {
 					if (com instanceof JScrollPane) {
 						JScrollPane pane = (JScrollPane) com;
 						pane.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-						pane.setBorder(BorderFactory
-								.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+						pane.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0,
+								(Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 						pane.getVerticalScrollBar()
 								.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
 										(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"),
@@ -93,8 +93,8 @@ class AutocompleteStyle {
 
 				descWindow.setOpacity(0.85f);
 				descWindow.setSize(390, 220);
-				((JPanel) descWindow.getContentPane())
-						.setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
+				((JPanel) descWindow.getContentPane()).setBorder(
+						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
 
 			} catch (ClassNotFoundException | SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
 				LOG.error(e1.getMessage(), e1);

@@ -49,14 +49,14 @@ public class HelpLoader {
 	private static HtmlRenderer renderer;
 
 	public static void preloadCache() {
-		PluginLoader.INSTANCE.getResources("help.default", Pattern.compile("^[^$].*\\.md")).forEach(e -> DEFAULT_CACHE
-				.put(FilenameUtils.removeExtension(e.replaceFirst("help/default/", "")),
+		PluginLoader.INSTANCE.getResources("help.default", Pattern.compile("^[^$].*\\.md")).forEach(
+				e -> DEFAULT_CACHE.put(FilenameUtils.removeExtension(e.replaceFirst("help/default/", "")),
 						FileIO.readResourceToString(PluginLoader.INSTANCE, e, StandardCharsets.UTF_8)));
 
 		PluginLoader.INSTANCE.getResources("help." + L10N.getLocaleString(), Pattern.compile("^[^$].*\\.md")).forEach(
-				e -> LOCALIZED_CACHE
-						.put(FilenameUtils.removeExtension(e.replaceFirst("help/" + L10N.getLocaleString() + "/", "")),
-								FileIO.readResourceToString(PluginLoader.INSTANCE, e, StandardCharsets.UTF_8)));
+				e -> LOCALIZED_CACHE.put(
+						FilenameUtils.removeExtension(e.replaceFirst("help/" + L10N.getLocaleString() + "/", "")),
+						FileIO.readResourceToString(PluginLoader.INSTANCE, e, StandardCharsets.UTF_8)));
 
 		List<Extension> extensionList = Arrays.asList(TablesExtension.create(), AutolinkExtension.create());
 		parser = Parser.builder().extensions(extensionList).build();

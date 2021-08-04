@@ -34,8 +34,8 @@ public class NewPackageAction extends BasicAction {
 					L10N.t("workspace_file_browser.new_package.package_name"),
 					L10N.t("workspace_file_browser.new_package.package_name.title"), JOptionPane.QUESTION_MESSAGE);
 			if (packagein != null) {
-				new File(actionRegistry.getMCreator().getGenerator().getSourceRoot(), packagein.replace(".", "/"))
-						.mkdirs();
+				new File(actionRegistry.getMCreator().getGenerator().getSourceRoot(),
+						packagein.replace(".", "/")).mkdirs();
 				actionRegistry.getMCreator().getProjectBrowser().reloadTree();
 			}
 		});

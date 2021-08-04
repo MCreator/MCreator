@@ -289,8 +289,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		onRightClickedOn = new ProcedureSelector(this.withEntry("entity/when_right_clicked"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_right_clicked"),
 				VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack"))
-				.makeReturnValueOptional();
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack")).makeReturnValueOptional();
 		whenThisMobKillsAnother = new ProcedureSelector(this.withEntry("entity/when_kills_another"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_kills_another"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
@@ -310,8 +309,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeInline();
 		spawningCondition = new ProcedureSelector(this.withEntry("entity/condition_natural_spawning"), mcreator,
 				L10N.t("elementgui.living_entity.condition_natural_spawn"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("condition.common.use_vanilla")).makeInline();
+				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
+				L10N.t("condition.common.use_vanilla")).makeInline();
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
@@ -377,8 +376,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.label("elementgui.living_entity.behaviour")));
 		subpane1.add(mobBehaviourType);
 
-		subpane1.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("entity/drop"), L10N.label("elementgui.living_entity.mob_drop")));
+		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/drop"),
+				L10N.label("elementgui.living_entity.mob_drop")));
 		subpane1.add(PanelUtils.totalCenterInPanel(mobDrop));
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/creature_type"),
@@ -386,9 +385,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		subpane1.add(mobCreatureType);
 
 		subpane1.add(L10N.label("elementgui.living_entity.health_xp_amount"));
-		subpane1.add(PanelUtils
-				.join(FlowLayout.LEFT, 0, 0, HelpUtils.wrapWithHelpButton(this.withEntry("entity/health"), health),
-						HelpUtils.wrapWithHelpButton(this.withEntry("entity/xp_amount"), xpAmount)));
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/health"), health),
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/xp_amount"), xpAmount)));
 
 		subpane1.add(L10N.label("elementgui.living_entity.movement_speed_tracking_range"));
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
@@ -407,12 +406,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"),
 				L10N.label("elementgui.living_entity.equipment")));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, PanelUtils.totalCenterInPanel(PanelUtils
-				.join(FlowLayout.LEFT, 2, 0, equipmentMainHand, equipmentOffHand, equipmentHelmet, equipmentBody,
-						equipmentLeggings, equipmentBoots))));
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, PanelUtils.totalCenterInPanel(
+				PanelUtils.join(FlowLayout.LEFT, 2, 0, equipmentMainHand, equipmentOffHand, equipmentHelmet,
+						equipmentBody, equipmentLeggings, equipmentBoots))));
 
-		subpane1.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("entity/ridable"), L10N.label("elementgui.living_entity.ridable")));
+		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/ridable"),
+				L10N.label("elementgui.living_entity.ridable")));
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, ridable, canControlForward, canControlStrafe));
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/water_entity"),
@@ -439,8 +438,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		subpanel2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/immunity"),
 				L10N.label("elementgui.living_entity.is_immune_to")));
-		subpanel2.add(PanelUtils
-				.gridElements(4, 4, 0, 0, immuneToFire, immuneToArrows, immuneToFallDamage, immuneToCactus,
+		subpanel2.add(
+				PanelUtils.gridElements(4, 4, 0, 0, immuneToFire, immuneToArrows, immuneToFallDamage, immuneToCactus,
 						immuneToDrowning, immuneToLightning, immuneToPotions, immuneToPlayer, immuneToExplosion,
 						immuneToAnvil, immuneToTrident, immuneToDragonBreath, immuneToWither));
 
@@ -450,8 +449,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		spo2.setOpaque(false);
 
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("entity/name"), L10N.label("elementgui.living_entity.name")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/name"),
+				L10N.label("elementgui.living_entity.name")));
 		spo2.add(mobName);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/model"),
@@ -471,8 +470,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> mobModelGlowTexture.addItem(el.getName()));
 		});
 
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("entity/texture"), L10N.label("elementgui.living_entity.texture")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/texture"),
+				L10N.label("elementgui.living_entity.texture")));
 		spo2.add(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"),
@@ -557,12 +556,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.label("elementgui.living_entity.mob_boss")));
 		spo2.add(PanelUtils.join(isBoss, bossBarColor, bossBarType));
 
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("entity/label"), L10N.label("elementgui.living_entity.label")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/label"),
+				L10N.label("elementgui.living_entity.label")));
 		spo2.add(mobLabel);
 
-		spo2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("entity/sound"), L10N.label("elementgui.living_entity.sound")));
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/sound"),
+				L10N.label("elementgui.living_entity.sound")));
 		spo2.add(livingSound);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/step_sound"),
@@ -585,23 +584,23 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		JPanel aitop = new JPanel(new GridLayout(2, 2, 10, 10));
 		aitop.setOpaque(false);
-		aitop.add(PanelUtils
-				.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("entity/enable_ai"), hasAI)));
+		aitop.add(PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/enable_ai"), hasAI)));
 
-		aitop.add(PanelUtils.join(FlowLayout.LEFT, new JEmptyBox(20, 5), HelpUtils
-						.wrapWithHelpButton(this.withEntry("entity/base"), L10N.label("elementgui.living_entity.mob_base")),
-				aiBase));
+		aitop.add(PanelUtils.join(FlowLayout.LEFT, new JEmptyBox(20, 5),
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/base"),
+						L10N.label("elementgui.living_entity.mob_base")), aiBase));
 
-		aitop.add(PanelUtils
-				.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("entity/breedable"), breedable),
-						breedTriggerItems, tameable));
+		aitop.add(PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/breedable"), breedable), breedTriggerItems,
+				tameable));
 
 		breedTriggerItems.setPreferredSize(new Dimension(300, 32));
 		aiBase.setPreferredSize(new Dimension(250, 32));
 
-		aitop.add(PanelUtils
-				.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("entity/do_ranged_attacks"), ranged),
-						L10N.label("elementgui.living_entity.do_ranged_attacks"), rangedItemType, rangedAttackItem));
+		aitop.add(PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/do_ranged_attacks"), ranged),
+				L10N.label("elementgui.living_entity.do_ranged_attacks"), rangedItemType, rangedAttackItem));
 
 		rangedAttackItem.setEnabled(false);
 
@@ -770,8 +769,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		selp.setOpaque(false);
 
-		JComponent selpcont = PanelUtils.northAndCenterElement(selp, PanelUtils
-				.gridElements(1, 2, 5, 5, L10N.label("elementgui.living_entity.spawn_general_condition"),
+		JComponent selpcont = PanelUtils.northAndCenterElement(selp,
+				PanelUtils.gridElements(1, 2, 5, 5, L10N.label("elementgui.living_entity.spawn_general_condition"),
 						PanelUtils.westAndCenterElement(new JEmptyBox(12, 5), spawningCondition)), 5, 5);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(selpcont));

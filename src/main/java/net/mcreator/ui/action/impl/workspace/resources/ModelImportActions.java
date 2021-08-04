@@ -84,8 +84,8 @@ public class ModelImportActions {
 				.replace("RendererModel ", "ModelRenderer ").replace("RendererModel(", "ModelRenderer(")
 				.replace("ModelRenderer ;", "");
 
-		if (origCode.contains("software.bernie.geckolib.animation.model.AnimatedEntityModel") && !mcreator
-				.getWorkspaceSettings().getMCreatorDependencies().contains("geckolib")) {
+		if (origCode.contains("software.bernie.geckolib.animation.model.AnimatedEntityModel")
+				&& !mcreator.getWorkspaceSettings().getMCreatorDependencies().contains("geckolib")) {
 			JOptionPane.showMessageDialog(mcreator,
 					L10N.t("dialog.workspace.resources.import_java_model.geckolib_needed.message"),
 					L10N.t("dialog.workspace.resources.import_java_model.geckolib_needed.title"),
@@ -103,8 +103,8 @@ public class ModelImportActions {
 			classJavaSource = (JavaClassSource) Roaster.parse(origCode);
 			classJavaSource.toString();
 
-			String className = origCode.split("(?= class\\s+" + classJavaSource.getName() + ")")[1]
-					.replaceAll("class\\s+", "").split("( extends )|(<\\w+? extends)")[0].trim();
+			String className = origCode.split("(?= class\\s+" + classJavaSource.getName() + ")")[1].replaceAll(
+					"class\\s+", "").split("( extends )|(<\\w+? extends)")[0].trim();
 
 			if (!JavaConventions.isValidJavaIdentifier(className)) {
 				JOptionPane.showMessageDialog(null,
@@ -130,8 +130,8 @@ public class ModelImportActions {
 		if (!classJavaSource.getName().startsWith("Model"))
 			classJavaSource.setName("Model" + classJavaSource.getName());
 
-		String finalModelCode = JavaModelAnimationEditorDialog
-				.openAnimationEditorDialog(mcreator, classJavaSource.toString());
+		String finalModelCode = JavaModelAnimationEditorDialog.openAnimationEditorDialog(mcreator,
+				classJavaSource.toString());
 
 		if (finalModelCode == null)
 			finalModelCode = classJavaSource.toString();
@@ -145,7 +145,7 @@ public class ModelImportActions {
 			return;
 		}
 		FileIO.writeStringToFile(finalModelCode.replace("setRotationAngles(f, f1, f2, f3, f4, f5);",
-				"setRotationAngles(f, f1, f2, f3, f4, f5, entity);"),
+						"setRotationAngles(f, f1, f2, f3, f4, f5, entity);"),
 				new File(mcreator.getFolderManager().getModelsDir(), classJavaSource.getName() + ".java"));
 		mcreator.mv.resourcesPan.workspacePanelModels.reloadElements();
 		if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
@@ -251,8 +251,8 @@ public class ModelImportActions {
 
 	private static void newTextureMapDialog(MCreator mcreator, HashSet<String> txs, File modelFile,
 			boolean supportMultiple) {
-		Map<String, TexturedModel.TextureMapping> textureMappingMap = new TextureMappingDialog(null)
-				.openMappingDialog(mcreator, txs, supportMultiple);
+		Map<String, TexturedModel.TextureMapping> textureMappingMap = new TextureMappingDialog(null).openMappingDialog(
+				mcreator, txs, supportMultiple);
 		if (textureMappingMap != null) {
 			String data = TexturedModel.getJSONForTextureMapping(textureMappingMap);
 			FileIO.writeStringToFile(data, new File(mcreator.getFolderManager().getModelsDir(),

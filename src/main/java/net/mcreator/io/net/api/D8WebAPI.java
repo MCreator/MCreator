@@ -112,8 +112,8 @@ public class D8WebAPI implements IWebAPI {
 									.item(0).getChildNodes().item(0).getNodeValue().split("mcreator\\.net/")[1];
 					motw[2] = ((Element) node).getElementsByTagName("pubDate").item(0).getChildNodes().item(0)
 							.getNodeValue();
-					motw[3] = MCreatorApplication.SERVER_DOMAIN + "/user/" + ((Element) node)
-							.getElementsByTagName("dc:creator").item(0).getChildNodes().item(0).getNodeValue();
+					motw[3] = MCreatorApplication.SERVER_DOMAIN + "/user/" + ((Element) node).getElementsByTagName(
+							"dc:creator").item(0).getChildNodes().item(0).getNodeValue();
 					motw[4] = ((Element) node).getElementsByTagName("description").item(1).getChildNodes().item(0)
 							.getNodeValue().split("src=\"")[1].split("\" width")[0];
 				}
