@@ -797,7 +797,7 @@ public class TestWorkspaceDataProvider {
 				armor.bootsSpecialInfo = new ArrayList<>();
 			}
 			armor.helmetImmuneToFire = _true;
-			armor.chestplateImmuneToFire = !_true;
+			armor.bodyImmuneToFire = !_true;
 			armor.leggingsImmuneToFire = _true;
 			armor.bootsImmuneToFire = !_true;
 			armor.equipSound = new Sound(modElement.getWorkspace(),

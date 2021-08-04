@@ -86,7 +86,7 @@ import java.util.Set;
 	public String bootsModelTexture;
 
 	public boolean helmetImmuneToFire;
-	public boolean chestplateImmuneToFire;
+	public boolean bodyImmuneToFire;
 	public boolean leggingsImmuneToFire;
 	public boolean bootsImmuneToFire;
 

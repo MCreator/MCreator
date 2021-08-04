@@ -143,7 +143,7 @@ package ${package}.item;
 
         <#if data.enableBody>
         elements.items.add(() ->
-			new ArmorItem(armormaterial, EquipmentSlotType.CHEST, new Item.Properties().group(${data.creativeTab})<#if data.chestplateImmuneToFire>.isImmuneToFire()</#if>) {
+			new ArmorItem(armormaterial, EquipmentSlotType.CHEST, new Item.Properties().group(${data.creativeTab})<#if data.bodyImmuneToFire>.isImmuneToFire()</#if>) {
 				<#if data.bodyModelName != "Default">
 				@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
 					BipedModel armorModel = new BipedModel(1);

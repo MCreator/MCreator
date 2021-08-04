@@ -135,7 +135,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final VComboBox<String> bootsModelTexture = new SearchableComboBox<>();
 
 	private final JCheckBox helmetImmuneToFire = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox chestplateImmuneToFire = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox bodyImmuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox leggingsImmuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox bootsImmuneToFire = L10N.checkbox("elementgui.common.enable");
 
@@ -306,7 +306,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enableBoots.setOpaque(false);
 
 		helmetImmuneToFire.setOpaque(false);
-		chestplateImmuneToFire.setOpaque(false);
+		bodyImmuneToFire.setOpaque(false);
 		leggingsImmuneToFire.setOpaque(false);
 		bootsImmuneToFire.setOpaque(false);
 
@@ -348,7 +348,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
 										bodySpecialInfo),
 								PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
-												L10N.label("elementgui.item.is_immune_to_fire")), chestplateImmuneToFire))));
+												L10N.label("elementgui.item.is_immune_to_fire")), bodyImmuneToFire))));
 		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(bodText, PanelUtils.centerAndSouthElement(
@@ -864,7 +864,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				bootsModel.getSelectedItem() != defaultModel || !bootsSpecialInfo.getText().isEmpty());
 
 		helmetImmuneToFire.setSelected(armor.helmetImmuneToFire);
-		chestplateImmuneToFire.setSelected(armor.chestplateImmuneToFire);
+		bodyImmuneToFire.setSelected(armor.bodyImmuneToFire);
 		leggingsImmuneToFire.setSelected(armor.leggingsImmuneToFire);
 		bootsImmuneToFire.setSelected(armor.bootsImmuneToFire);
 
@@ -922,7 +922,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.leggingsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(leggingsSpecialInfo.getText());
 		armor.bootsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(bootsSpecialInfo.getText());
 		armor.helmetImmuneToFire = helmetImmuneToFire.isSelected();
-		armor.chestplateImmuneToFire = chestplateImmuneToFire.isSelected();
+		armor.bodyImmuneToFire = bodyImmuneToFire.isSelected();
 		armor.leggingsImmuneToFire = leggingsImmuneToFire.isSelected();
 		armor.bootsImmuneToFire = bootsImmuneToFire.isSelected();
 		return armor;
