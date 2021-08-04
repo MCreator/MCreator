@@ -41,15 +41,14 @@ public class ExternalTriggerLoader {
 
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(resourceFolder, Pattern.compile("^[^$].*\\.json"));
 		for (String externalTriggerName : fileNames) {
-			ExternalTrigger externalTrigger = gson
-					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, externalTriggerName),
-							ExternalTrigger.class);
+			ExternalTrigger externalTrigger = gson.fromJson(
+					FileIO.readResourceToString(PluginLoader.INSTANCE, externalTriggerName), ExternalTrigger.class);
 			externalTrigger.id = FilenameUtils.getBaseName(externalTriggerName);
 			externalTriggers.add(externalTrigger);
 		}
 
-		externalTriggers
-				.sort(Comparator.comparing(ExternalTrigger::getGroupEstimate).thenComparing(ExternalTrigger::getName));
+		externalTriggers.sort(
+				Comparator.comparing(ExternalTrigger::getGroupEstimate).thenComparing(ExternalTrigger::getName));
 	}
 
 	public List<ExternalTrigger> getExternalTrigers() {

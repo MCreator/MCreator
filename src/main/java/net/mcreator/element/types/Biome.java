@@ -139,9 +139,8 @@ import java.util.List;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview
-				.generateBiomePreviewPicture(getModElement().getWorkspace(), airColor, grassColor, waterColor,
-						groundBlock, undergroundBlock, treesPerChunk, treeType, treeStem, treeBranch);
+		return MinecraftImageGenerator.Preview.generateBiomePreviewPicture(getModElement().getWorkspace(), airColor,
+				grassColor, waterColor, groundBlock, undergroundBlock, treesPerChunk, treeType, treeStem, treeBranch);
 	}
 
 }

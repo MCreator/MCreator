@@ -272,8 +272,8 @@ public class AnimationMakerView extends ViewBase {
 						dial.addProgress(p2);
 						for (int i = 0; i < frameCount; i++) {
 							int finalI = i;
-							SwingUtilities
-									.invokeLater(() -> timelinevector.addElement(new AnimationFrame(frames[finalI])));
+							SwingUtilities.invokeLater(
+									() -> timelinevector.addElement(new AnimationFrame(frames[finalI])));
 							p2.setPercent((int) (((float) i / (float) frameCount) * 100.0f));
 						}
 						p2.ok();
@@ -360,10 +360,10 @@ public class AnimationMakerView extends ViewBase {
 			} else {
 				Object[] possibilities = { "4 x 4", "8 x 8", "16 x 16", "32 x 32", "64 x 64", "128 x 128", "256 x 256",
 						"512 x 512" };
-				String s = (String) JOptionPane
-						.showInputDialog(mcreator, L10N.t("dialog.animation_maker.animation_size"),
-								L10N.t("dialog.animation_maker.size_selection"), JOptionPane.PLAIN_MESSAGE, null,
-								possibilities, "16 x 16");
+				String s = (String) JOptionPane.showInputDialog(mcreator,
+						L10N.t("dialog.animation_maker.animation_size"),
+						L10N.t("dialog.animation_maker.size_selection"), JOptionPane.PLAIN_MESSAGE, null, possibilities,
+						"16 x 16");
 				int sizetwocubes = 16;
 				if (s != null) {
 					switch (s) {
@@ -428,8 +428,8 @@ public class AnimationMakerView extends ViewBase {
 			try {
 				width = ImageIO.read(templatesSorted.get(types.getSelectedIndex()).getStream()).getWidth();
 				preview.setIcon(new ImageIcon(ImageUtils.resize(ImageUtils.colorize(
-						new TiledImageUtils(templatesSorted.get(types.getSelectedIndex()).getStream(), width, width)
-								.getIcon(1, 1), colors.getColor(), !cbox.isSelected()).getImage(), 128)));
+						new TiledImageUtils(templatesSorted.get(types.getSelectedIndex()).getStream(), width,
+								width).getIcon(1, 1), colors.getColor(), !cbox.isSelected()).getImage(), 128)));
 			} catch (InvalidTileSizeException | IOException e) {
 				LOG.error(e.getMessage(), e);
 			}
@@ -456,9 +456,9 @@ public class AnimationMakerView extends ViewBase {
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" },
 				"Add") == 0) {
 			try {
-				BufferedImage imge = TiledImageUtils
-						.convert(ImageIO.read(templatesSorted.get(types.getSelectedIndex()).getStream()),
-								BufferedImage.TYPE_INT_ARGB);
+				BufferedImage imge = TiledImageUtils.convert(
+						ImageIO.read(templatesSorted.get(types.getSelectedIndex()).getStream()),
+						BufferedImage.TYPE_INT_ARGB);
 				addFramesFromBufferedImage(imge, true, !cbox.isSelected(), colors.getColor());
 			} catch (IOException e) {
 				LOG.error(e.getMessage(), e);
@@ -479,8 +479,8 @@ public class AnimationMakerView extends ViewBase {
 		JLabel lab5 = L10N.label("dialog.animation_maker.colorize");
 
 		JLabel preview = new JLabel(new ImageIcon(new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB)));
-		preview.setBorder(BorderFactory
-				.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), "Preview", 0, 0,
+		preview.setBorder(
+				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), "Preview", 0, 0,
 						getFont().deriveFont(12.0f), Color.gray));
 
 		JButton selectFile = new JButton("...");
@@ -499,9 +499,9 @@ public class AnimationMakerView extends ViewBase {
 					selectFile.setText(StringUtils.abbreviateString(f.get().getName(), 25));
 					tilImgUtl.set(new TiledImageUtils(imge, x, x));
 					if (cbox2.isSelected())
-						preview.setIcon(new ImageIcon(ImageUtils.resize(ImageUtils
-								.colorize(tilImgUtl.get().getIcon(1, 1), colors.getColor(), !cbox.isSelected())
-								.getImage(), 128)));
+						preview.setIcon(new ImageIcon(ImageUtils.resize(
+								ImageUtils.colorize(tilImgUtl.get().getIcon(1, 1), colors.getColor(),
+										!cbox.isSelected()).getImage(), 128)));
 					else
 						preview.setIcon(
 								new ImageIcon(ImageUtils.resize(tilImgUtl.get().getIcon(1, 1).getImage(), 128)));
@@ -514,9 +514,9 @@ public class AnimationMakerView extends ViewBase {
 		ActionListener al = e -> {
 			if (f.get() != null && tilImgUtl.get() != null)
 				if (cbox2.isSelected())
-					preview.setIcon(new ImageIcon(ImageUtils.resize(ImageUtils
-									.colorize(tilImgUtl.get().getIcon(1, 1), colors.getColor(), !cbox.isSelected()).getImage(),
-							128)));
+					preview.setIcon(new ImageIcon(ImageUtils.resize(
+							ImageUtils.colorize(tilImgUtl.get().getIcon(1, 1), colors.getColor(), !cbox.isSelected())
+									.getImage(), 128)));
 				else
 					preview.setIcon(new ImageIcon(ImageUtils.resize(tilImgUtl.get().getIcon(1, 1).getImage(), 128)));
 		};

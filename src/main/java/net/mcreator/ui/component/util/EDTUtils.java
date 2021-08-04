@@ -27,8 +27,8 @@ import javax.swing.*;
 public class EDTUtils {
 
 	public static void requestNonBlockingUIRefresh() {
-		if (SwingUtilities.isEventDispatchThread() && !Platform
-				.isFxApplicationThread()) { // we can only run this on EDT
+		if (SwingUtilities.isEventDispatchThread()
+				&& !Platform.isFxApplicationThread()) { // we can only run this on EDT
 			Worker.post(new Job() {
 				@Override public Object run() {
 					try {

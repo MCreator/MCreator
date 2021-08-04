@@ -300,19 +300,20 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enableLeggings.setOpaque(false);
 		enableBoots.setOpaque(false);
 
-		helmetModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"), PanelUtils
-				.northAndCenterElement(PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), helmetModel,
+		helmetModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"),
+				PanelUtils.northAndCenterElement(
+						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), helmetModel,
 								new JLabel(":"), helmetModelPart, L10N.label("elementgui.armor.texture"),
-								helmetModelTexture), PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), helmetSpecialInfo)));
+								helmetModelTexture),
+						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+								helmetSpecialInfo)));
 		helmetModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
-		JComponent helText = PanelUtils
-				.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0), enableHelmet);
-		helText.setBorder(BorderFactory
-				.createCompoundBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-						BorderFactory.createEmptyBorder(15, 12, 0, 12)));
+		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
+				enableHelmet);
+		helText.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
+				BorderFactory.createEmptyBorder(15, 12, 0, 12)));
 
 		destal.add(PanelUtils.westAndCenterElement(helText, PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.helmet_name"), helmetName),
@@ -320,39 +321,40 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		destal.add(new JEmptyBox(10, 10));
 
-		JComponent bodText = PanelUtils
-				.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureBody, 0, 0), enableBody);
-		bodText.setBorder(BorderFactory
-				.createCompoundBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-						BorderFactory.createEmptyBorder(15, 17, 0, 17)));
+		JComponent bodText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureBody, 0, 0),
+				enableBody);
+		bodText.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
+				BorderFactory.createEmptyBorder(15, 17, 0, 17)));
 
-		bodyModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_body"), PanelUtils
-				.northAndCenterElement(PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bodyModel,
+		bodyModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_body"),
+				PanelUtils.northAndCenterElement(
+						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bodyModel,
 								new JLabel(":"), bodyModelPart, L10N.label("elementgui.armor.part_arm_left"),
 								armsModelPartL, L10N.label("elementgui.armor.part_arm_right"), armsModelPartR,
-								L10N.label("elementgui.armor.texture"), bodyModelTexture), PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), bodySpecialInfo)));
+								L10N.label("elementgui.armor.texture"), bodyModelTexture),
+						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+								bodySpecialInfo)));
 		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(bodText, PanelUtils.centerAndSouthElement(
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.body_name"), bodyName), bodyModelPanel),
+						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.body_name"), bodyName), bodyModelPanel),
 				5, 0));
 
 		destal.add(new JEmptyBox(10, 10));
 
-		JComponent legText = PanelUtils
-				.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureLeggings, 0, 0), enableLeggings);
-		legText.setBorder(BorderFactory
-				.createCompoundBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-						BorderFactory.createEmptyBorder(15, 8, 0, 8)));
+		JComponent legText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureLeggings, 0, 0),
+				enableLeggings);
+		legText.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
+				BorderFactory.createEmptyBorder(15, 8, 0, 8)));
 
-		leggingsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"), PanelUtils
-				.northAndCenterElement(PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), leggingsModel,
+		leggingsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"),
+				PanelUtils.northAndCenterElement(
+						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), leggingsModel,
 								new JLabel(": L"), leggingsModelPartL, new JLabel("R"), leggingsModelPartR,
-								L10N.label("elementgui.armor.texture"), leggingsModelTexture), PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+								L10N.label("elementgui.armor.texture"), leggingsModelTexture),
+						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
 								leggingsSpecialInfo)));
 		leggingsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
@@ -362,18 +364,19 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		destal.add(new JEmptyBox(10, 10));
 
-		JComponent bootText = PanelUtils
-				.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureBoots, 0, 0), enableBoots);
-		bootText.setBorder(BorderFactory
-				.createCompoundBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-						BorderFactory.createEmptyBorder(15, 16, 0, 15)));
+		JComponent bootText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureBoots, 0, 0),
+				enableBoots);
+		bootText.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
+				BorderFactory.createEmptyBorder(15, 16, 0, 15)));
 
-		bootsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"), PanelUtils
-				.northAndCenterElement(PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bootsModel,
+		bootsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"),
+				PanelUtils.northAndCenterElement(
+						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bootsModel,
 								new JLabel(": L"), bootsModelPartL, new JLabel("R"), bootsModelPartR,
-								L10N.label("elementgui.armor.texture"), bootsModelTexture), PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), bootsSpecialInfo)));
+								L10N.label("elementgui.armor.texture"), bootsModelTexture),
+						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+								bootsSpecialInfo)));
 		bootsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(bootText, PanelUtils.centerAndSouthElement(
@@ -438,8 +441,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.common.creative_tab")));
 		enderpanel.add(creativeTab);
 
-		enderpanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("armor/equip_sound"), L10N.label("elementgui.armor.equip_sound")));
+		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/equip_sound"),
+				L10N.label("elementgui.armor.equip_sound")));
 		enderpanel.add(equipSound);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/max_damage_absorbed"),
@@ -448,15 +451,15 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/damage_values"),
 				L10N.label("elementgui.armor.damage_values")));
-		enderpanel.add(PanelUtils
-				.gridElements(1, 4, damageValueHelmet, damageValueBody, damageValueLeggings, damageValueBoots));
+		enderpanel.add(PanelUtils.gridElements(1, 4, damageValueHelmet, damageValueBody, damageValueLeggings,
+				damageValueBoots));
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/enchantability"),
 				L10N.label("elementgui.common.enchantability")));
 		enderpanel.add(enchantability);
 
-		enderpanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("armor/toughness"), L10N.label("elementgui.armor.toughness")));
+		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/toughness"),
+				L10N.label("elementgui.armor.toughness")));
 		enderpanel.add(toughness);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/knockback_resistance"),
@@ -521,8 +524,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			if (model != null && model != defaultModel) {
 				helmetModelPart.removeAllItems();
 				try {
-					ComboBoxUtil.updateComboBoxContents(helmetModelPart, new ArrayList<>(JavaModelAnimationEditorDialog
-							.getModelParts((JavaClassSource) Roaster.parse(model.getFile()))));
+					ComboBoxUtil.updateComboBoxContents(helmetModelPart, new ArrayList<>(
+							JavaModelAnimationEditorDialog.getModelParts(
+									(JavaClassSource) Roaster.parse(model.getFile()))));
 					return;
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
@@ -543,12 +547,15 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 					leggingsModelPartL.addItem("");
 					leggingsModelPartR.addItem("");
 
-					ComboBoxUtil.updateComboBoxContents(bodyModelPart, new ArrayList<>(JavaModelAnimationEditorDialog
-							.getModelParts((JavaClassSource) Roaster.parse(model.getFile()))));
-					ComboBoxUtil.updateComboBoxContents(armsModelPartL, new ArrayList<>(JavaModelAnimationEditorDialog
-							.getModelParts((JavaClassSource) Roaster.parse(model.getFile()))));
-					ComboBoxUtil.updateComboBoxContents(armsModelPartR, new ArrayList<>(JavaModelAnimationEditorDialog
-							.getModelParts((JavaClassSource) Roaster.parse(model.getFile()))));
+					ComboBoxUtil.updateComboBoxContents(bodyModelPart, new ArrayList<>(
+							JavaModelAnimationEditorDialog.getModelParts(
+									(JavaClassSource) Roaster.parse(model.getFile()))));
+					ComboBoxUtil.updateComboBoxContents(armsModelPartL, new ArrayList<>(
+							JavaModelAnimationEditorDialog.getModelParts(
+									(JavaClassSource) Roaster.parse(model.getFile()))));
+					ComboBoxUtil.updateComboBoxContents(armsModelPartR, new ArrayList<>(
+							JavaModelAnimationEditorDialog.getModelParts(
+									(JavaClassSource) Roaster.parse(model.getFile()))));
 
 					return;
 				} catch (Exception e) {
@@ -570,11 +577,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				leggingsModelPartR.removeAllItems();
 				try {
 					ComboBoxUtil.updateComboBoxContents(leggingsModelPartL, new ArrayList<>(
-							JavaModelAnimationEditorDialog
-									.getModelParts((JavaClassSource) Roaster.parse(model.getFile()))));
+							JavaModelAnimationEditorDialog.getModelParts(
+									(JavaClassSource) Roaster.parse(model.getFile()))));
 					ComboBoxUtil.updateComboBoxContents(leggingsModelPartR, new ArrayList<>(
-							JavaModelAnimationEditorDialog
-									.getModelParts((JavaClassSource) Roaster.parse(model.getFile()))));
+							JavaModelAnimationEditorDialog.getModelParts(
+									(JavaClassSource) Roaster.parse(model.getFile()))));
 					return;
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
@@ -592,10 +599,12 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				bootsModelPartL.removeAllItems();
 				bootsModelPartR.removeAllItems();
 				try {
-					ComboBoxUtil.updateComboBoxContents(bootsModelPartL, new ArrayList<>(JavaModelAnimationEditorDialog
-							.getModelParts((JavaClassSource) Roaster.parse(model.getFile()))));
-					ComboBoxUtil.updateComboBoxContents(bootsModelPartR, new ArrayList<>(JavaModelAnimationEditorDialog
-							.getModelParts((JavaClassSource) Roaster.parse(model.getFile()))));
+					ComboBoxUtil.updateComboBoxContents(bootsModelPartL, new ArrayList<>(
+							JavaModelAnimationEditorDialog.getModelParts(
+									(JavaClassSource) Roaster.parse(model.getFile()))));
+					ComboBoxUtil.updateComboBoxContents(bootsModelPartR, new ArrayList<>(
+							JavaModelAnimationEditorDialog.getModelParts(
+									(JavaClassSource) Roaster.parse(model.getFile()))));
 					return;
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
@@ -738,10 +747,12 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		File[] armorTextures = mcreator.getFolderManager()
 				.getArmorTextureFilesForName(armorTextureFile.getSelectedItem());
 		if (armorTextures[0].isFile() && armorTextures[1].isFile()) {
-			ImageIcon bg1 = new ImageIcon(ImageUtils
-					.resize(new ImageIcon(armorTextures[0].getAbsolutePath()).getImage(), 64 * fact, 32 * fact));
-			ImageIcon bg2 = new ImageIcon(ImageUtils
-					.resize(new ImageIcon(armorTextures[1].getAbsolutePath()).getImage(), 64 * fact, 32 * fact));
+			ImageIcon bg1 = new ImageIcon(
+					ImageUtils.resize(new ImageIcon(armorTextures[0].getAbsolutePath()).getImage(), 64 * fact,
+							32 * fact));
+			ImageIcon bg2 = new ImageIcon(
+					ImageUtils.resize(new ImageIcon(armorTextures[1].getAbsolutePath()).getImage(), 64 * fact,
+							32 * fact));
 			ImageIcon front1 = new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame1());
 			ImageIcon front2 = new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame2());
 			clo1.setIcon(ImageUtils.drawOver(bg1, front1));
@@ -827,8 +838,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		helmetModelPanel.toggleVisibility(
 				helmetModel.getSelectedItem() != defaultModel || !helmetSpecialInfo.getText().isEmpty());
-		bodyModelPanel
-				.toggleVisibility(bodyModel.getSelectedItem() != defaultModel || !bodySpecialInfo.getText().isEmpty());
+		bodyModelPanel.toggleVisibility(
+				bodyModel.getSelectedItem() != defaultModel || !bodySpecialInfo.getText().isEmpty());
 		leggingsModelPanel.toggleVisibility(
 				leggingsModel.getSelectedItem() != defaultModel || !leggingsSpecialInfo.getText().isEmpty());
 		bootsModelPanel.toggleVisibility(

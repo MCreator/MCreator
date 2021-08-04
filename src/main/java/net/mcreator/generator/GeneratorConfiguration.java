@@ -167,8 +167,8 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 	}
 
 	@Override public boolean equals(Object o) {
-		return o instanceof GeneratorConfiguration && ((GeneratorConfiguration) o).generatorName
-				.equals(this.generatorName);
+		return o instanceof GeneratorConfiguration && ((GeneratorConfiguration) o).generatorName.equals(
+				this.generatorName);
 	}
 
 	@Override public int hashCode() {

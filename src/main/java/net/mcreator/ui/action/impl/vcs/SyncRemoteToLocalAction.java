@@ -72,8 +72,8 @@ public class SyncRemoteToLocalAction extends VCSAction {
 				// check if we fetched anything
 				if (git.getRepository().findRef(Constants.FETCH_HEAD) == null
 						|| git.getRepository().findRef(Constants.FETCH_HEAD).getObjectId() == null) {
-					actionRegistry.getMCreator().statusBar
-							.setPersistentMessage(L10N.t("statusbar.vcs.pull.no_commits"));
+					actionRegistry.getMCreator().statusBar.setPersistentMessage(
+							L10N.t("statusbar.vcs.pull.no_commits"));
 					actionRegistry.getMCreator().setCursor(Cursor.getDefaultCursor());
 					return;
 				}
@@ -108,8 +108,8 @@ public class SyncRemoteToLocalAction extends VCSAction {
 				// we can pull from remote only if custom merge handler was not required and no user interaction was required
 				if (!syncResult.wasCustomMergeHandlerRequired() && !syncResult.wasUserActionRequired()) {
 					Workspace localWorkspace = actionRegistry.getMCreator().getWorkspace();
-					WorkspaceSettings preMergeSettings = GSONClone
-							.deepClone(localWorkspace.getWorkspaceSettings(), WorkspaceSettings.class);
+					WorkspaceSettings preMergeSettings = GSONClone.deepClone(localWorkspace.getWorkspaceSettings(),
+							WorkspaceSettings.class);
 
 					// pull changes from remote before unstashing
 					git.pull().setRemote("origin").setCredentialsProvider(credentialsProvider).call();
@@ -126,20 +126,21 @@ public class SyncRemoteToLocalAction extends VCSAction {
 							.equals(preMergeSettings.getCurrentGenerator())) {
 						LOG.debug("Switching local workspace generator to " + localWorkspace.getWorkspaceSettings()
 								.getCurrentGenerator());
-						WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(localWorkspace, Generator.GENERATOR_CACHE
-								.get(localWorkspace.getWorkspaceSettings().getCurrentGenerator()));
+						WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(localWorkspace,
+								Generator.GENERATOR_CACHE.get(
+										localWorkspace.getWorkspaceSettings().getCurrentGenerator()));
 						localWorkspace.switchGenerator(localWorkspace.getWorkspaceSettings().getCurrentGenerator());
 						WorkspaceGeneratorSetupDialog.runSetup(actionRegistry.getMCreator(), false);
 					}
 					WorkspaceSettingsChange workspaceSettingsChange = new WorkspaceSettingsChange(preMergeSettings,
 							localWorkspace.getWorkspaceSettings());
 					if (workspaceSettingsChange.refactorNeeded())
-						WorkspaceSettingsAction
-								.refactorWorkspace(actionRegistry.getMCreator(), workspaceSettingsChange);
+						WorkspaceSettingsAction.refactorWorkspace(actionRegistry.getMCreator(),
+								workspaceSettingsChange);
 					// possible refactor after sync end
 
-					actionRegistry.getMCreator().statusBar
-							.setPersistentMessage(L10N.t("statusbar.vcs.pull.changes_synced"));
+					actionRegistry.getMCreator().statusBar.setPersistentMessage(
+							L10N.t("statusbar.vcs.pull.changes_synced"));
 					actionRegistry.getMCreator().mv.updateMods();
 				} else {
 					// unstash the stash as we will not be using it
@@ -149,8 +150,8 @@ public class SyncRemoteToLocalAction extends VCSAction {
 					JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
 							L10N.t("dialog.vcs.error.local_changes_not_synced.message"),
 							L10N.t("dialog.vcs.error.local_changes_not_synced.title"), JOptionPane.WARNING_MESSAGE);
-					actionRegistry.getMCreator().statusBar
-							.setPersistentMessage(L10N.t("statusbar.vcs.pull.local_changes_not_synced"));
+					actionRegistry.getMCreator().statusBar.setPersistentMessage(
+							L10N.t("statusbar.vcs.pull.local_changes_not_synced"));
 				}
 			} catch (Exception ex) {
 				LOG.error("Sync from remote failed", ex);

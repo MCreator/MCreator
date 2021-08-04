@@ -241,10 +241,10 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 				g.drawRect(W / 2 - gw / 2, H / 2 - gh / 2, gw, gh);
 			}
 		} else {
-			if (wysiwygEditor.overlayBaseTexture.getSelectedItem() != null && !wysiwygEditor.overlayBaseTexture
-					.getSelectedItem().equals("")) {
+			if (wysiwygEditor.overlayBaseTexture.getSelectedItem() != null
+					&& !wysiwygEditor.overlayBaseTexture.getSelectedItem().equals("")) {
 				g.drawImage(new ImageIcon(wysiwygEditor.mcreator.getFolderManager().getOtherTextureFile(
-						FilenameUtils.removeExtension(wysiwygEditor.overlayBaseTexture.getSelectedItem()))
+								FilenameUtils.removeExtension(wysiwygEditor.overlayBaseTexture.getSelectedItem()))
 						.getAbsolutePath()).getImage(), 0, 0, W, H, this);
 			}
 		}
@@ -438,10 +438,10 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		guiComponentList.sort(Collections.reverseOrder());
 
 		for (GUIComponent component : guiComponentList) {
-			if (ex >= component.getX() && ex <= component.getX() + component
-					.getWidth(wysiwygEditor.mcreator.getWorkspace())) {
-				if (ey >= component.getY() && ey <= component.getY() + component
-						.getHeight(wysiwygEditor.mcreator.getWorkspace())) {
+			if (ex >= component.getX() && ex <= component.getX() + component.getWidth(
+					wysiwygEditor.mcreator.getWorkspace())) {
+				if (ey >= component.getY() && ey <= component.getY() + component.getHeight(
+						wysiwygEditor.mcreator.getWorkspace())) {
 					return component;
 				}
 			}

@@ -92,9 +92,9 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));
 		} else if (type == ModElementType.COMMAND || type == ModElementType.FUNCTION || type == ModElementType.PAINTING
 				|| type == ModElementType.KEYBIND) {
-			generatableElements
-					.add(getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), random,
-							true, true, 0));
+			generatableElements.add(
+					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), random, true,
+							true, 0));
 		} else {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));
@@ -361,8 +361,8 @@ public class TestWorkspaceDataProvider {
 			fluid.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			fluid.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				fluid.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				fluid.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+						"info 1, info 2, test \\, is this, another one");
 			} else {
 				fluid.specialInfo = new ArrayList<>();
 			}
@@ -402,8 +402,8 @@ public class TestWorkspaceDataProvider {
 			food.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			food.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				food.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				food.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+						"info 1, info 2, test \\, is this, another one");
 			} else {
 				food.specialInfo = new ArrayList<>();
 			}
@@ -508,13 +508,13 @@ public class TestWorkspaceDataProvider {
 				components.add(new InputSlot(0, "slot1", 20, 30, Color.red, _true, _true, new Procedure("procedure3"),
 						new Procedure("procedure1"), new Procedure("procedure2"),
 						new MItemBlock(modElement.getWorkspace(), "")));
-				components
-						.add(new InputSlot(4, "slot2", 20, 30, Color.white, !_true, !_true, new Procedure("procedure4"),
-								null, null, new MItemBlock(modElement.getWorkspace(),
-								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-										.getName())));
-				components.add(new OutputSlot(5, "slot out", 10, 20, Color.black, !_true, _true,
-						new Procedure("procedure1"), new Procedure("procedure2"), new Procedure("procedure3")));
+				components.add(
+						new InputSlot(4, "slot2", 20, 30, Color.white, !_true, !_true, new Procedure("procedure4"),
+								null, null, new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName())));
+				components.add(
+						new OutputSlot(5, "slot out", 10, 20, Color.black, !_true, _true, new Procedure("procedure1"),
+								new Procedure("procedure2"), new Procedure("procedure3")));
 				components.add(new OutputSlot(6, "sot", 243, 563, Color.black, _true, _true, null, null, null));
 				components.add(new TextField("text1", 0, 10, 100, 20, "Input value ..."));
 				components.add(new TextField("text2", 55, 231, 90, 20, ""));
@@ -625,8 +625,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.aiBase = "(none)";
 			if (!emptyLists) {
 				Set<String> aiTasks = modElement.getGeneratorStats().getGeneratorAITasks();
-				if (aiTasks.contains("wander") && aiTasks.contains("look_around") && aiTasks
-						.contains("panic_when_attacked") && aiTasks.contains("attack_action")) {
+				if (aiTasks.contains("wander") && aiTasks.contains("look_around") && aiTasks.contains(
+						"panic_when_attacked") && aiTasks.contains("attack_action")) {
 					livingEntity.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\">"
 							+ "<next><block type=\"wander\"><field name=\"speed\">1</field>"
 							+ "<next><block type=\"look_around\"><next><block type=\"swim_in_water\">"
@@ -782,14 +782,14 @@ public class TestWorkspaceDataProvider {
 			armor.textureBoots = "test4";
 			armor.bootsModelTexture = emptyLists ? "From armor" : "test.png";
 			if (!emptyLists) {
-				armor.helmetSpecialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
-				armor.bodySpecialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
-				armor.leggingsSpecialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
-				armor.bootsSpecialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				armor.helmetSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+						"info 1, info 2, test \\, is this, another one");
+				armor.bodySpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+						"info 1, info 2, test \\, is this, another one");
+				armor.leggingsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+						"info 1, info 2, test \\, is this, another one");
+				armor.bootsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+						"info 1, info 2, test \\, is this, another one");
 			} else {
 				armor.helmetSpecialInfo = new ArrayList<>();
 				armor.bodySpecialInfo = new ArrayList<>();
@@ -845,9 +845,9 @@ public class TestWorkspaceDataProvider {
 			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getAllPlantTypes());
 			plant.staticPlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
-			plant.suspiciousStewEffect = getRandomString(random, ElementUtil.
-					loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-					.filter(e -> !e.contains("CUSTOM:")).collect(Collectors.toList()));
+			plant.suspiciousStewEffect = getRandomString(random,
+					ElementUtil.loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
+							.filter(e -> !e.contains("CUSTOM:")).collect(Collectors.toList()));
 			plant.suspiciousStewDuration = 24;
 			plant.growapableMaxHeight = 5;
 			plant.customBoundingBox = !_true;
@@ -877,8 +877,8 @@ public class TestWorkspaceDataProvider {
 			plant.hasTileEntity = !_true;
 			plant.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				plant.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+						"info 1, info 2, test \\, is this, another one");
 			} else {
 				plant.specialInfo = new ArrayList<>();
 			}
@@ -990,8 +990,8 @@ public class TestWorkspaceDataProvider {
 					null :
 					(emptyLists ? new Procedure("itemstack1") : new Procedure("procedure11"));
 			if (!emptyLists) {
-				item.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+						"info 1, info 2, test \\, is this, another one");
 			} else {
 				item.specialInfo = new ArrayList<>();
 			}
@@ -1008,8 +1008,8 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			rangedItem.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				rangedItem.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				rangedItem.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+						"info 1, info 2, test \\, is this, another one");
 			} else {
 				rangedItem.specialInfo = new ArrayList<>();
 			}
@@ -1264,8 +1264,8 @@ public class TestWorkspaceDataProvider {
 			block.textureBack = "test6";
 			block.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
-				block.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				block.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+						"info 1, info 2, test \\, is this, another one");
 			} else {
 				block.specialInfo = new ArrayList<>();
 			}
@@ -1345,9 +1345,8 @@ public class TestWorkspaceDataProvider {
 						entry.minEnchantmentLevel = new int[] { 2, 5, 1, 6 }[valueIndex];
 						entry.maxEnchantmentLevel = new int[] { 3, 9, 5, 6 }[valueIndex];
 
-						entry.item = new MItemBlock(modElement.getWorkspace(),
-								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace()))
-										.getName());
+						entry.item = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 
 						pool.entries.add(entry);
 					}
@@ -1383,8 +1382,8 @@ public class TestWorkspaceDataProvider {
 			musicDisc.music = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			if (!emptyLists) {
-				musicDisc.specialInfo = StringUtils
-						.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+				musicDisc.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+						"info 1, info 2, test \\, is this, another one");
 			} else {
 				musicDisc.specialInfo = new ArrayList<>();
 			}
@@ -1414,20 +1413,20 @@ public class TestWorkspaceDataProvider {
 			}
 			enchantment.compatibleEnchantments = new ArrayList<>();
 			if (!emptyLists) {
-				enchantment.compatibleEnchantments
-						.add(new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
+				enchantment.compatibleEnchantments.add(
+						new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
 								getRandomDataListEntry(random,
 										ElementUtil.loadAllEnchantments(modElement.getWorkspace()))));
-				enchantment.compatibleEnchantments
-						.add(new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
+				enchantment.compatibleEnchantments.add(
+						new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
 								getRandomDataListEntry(random,
 										ElementUtil.loadAllEnchantments(modElement.getWorkspace()))));
-				enchantment.compatibleEnchantments
-						.add(new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
+				enchantment.compatibleEnchantments.add(
+						new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
 								getRandomDataListEntry(random,
 										ElementUtil.loadAllEnchantments(modElement.getWorkspace()))));
-				enchantment.compatibleEnchantments
-						.add(new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
+				enchantment.compatibleEnchantments.add(
+						new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
 								getRandomDataListEntry(random,
 										ElementUtil.loadAllEnchantments(modElement.getWorkspace()))));
 			}
@@ -1491,8 +1490,8 @@ public class TestWorkspaceDataProvider {
 		tool.hasGlow = _true;
 		tool.specialInfo = new ArrayList<>();
 		if (!emptyLists) {
-			tool.specialInfo = StringUtils
-					.splitCommaSeparatedStringListWithEscapes("info 1, info 2, test \\, is this, another one");
+			tool.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+					"info 1, info 2, test \\, is this, another one");
 		} else {
 			tool.specialInfo = new ArrayList<>();
 		}
@@ -1548,102 +1547,84 @@ public class TestWorkspaceDataProvider {
 
 			Arrays.fill(recipeSlots, new MItemBlock(modElement.getWorkspace(), ""));
 
-			recipeSlots[0] = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-							.getName());
+			recipeSlots[0] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 
 			if (random.nextBoolean())
-				recipeSlots[3] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-								.getName());
+				recipeSlots[3] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			if (random.nextBoolean())
-				recipeSlots[6] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-								.getName());
+				recipeSlots[6] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			if (random.nextBoolean())
-				recipeSlots[1] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-								.getName());
+				recipeSlots[1] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			if (random.nextBoolean())
-				recipeSlots[4] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-								.getName());
+				recipeSlots[4] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			if (random.nextBoolean())
-				recipeSlots[7] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-								.getName());
+				recipeSlots[7] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			if (random.nextBoolean())
-				recipeSlots[2] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-								.getName());
+				recipeSlots[2] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			if (random.nextBoolean())
-				recipeSlots[5] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-								.getName());
+				recipeSlots[5] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			if (random.nextBoolean())
-				recipeSlots[8] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-								.getName());
+				recipeSlots[8] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			recipe.recipeRetstackSize = 11;
 			recipe.recipeShapeless = _true;
 			recipe.recipeReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			recipe.recipeSlots = recipeSlots;
 		} else if ("Smelting".equals(recipe.recipeType)) {
-			recipe.smeltingInputStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-							.getName());
+			recipe.smeltingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			recipe.smeltingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			recipe.xpReward = 1.234;
 			recipe.cookingTime = 123;
 		} else if ("Smoking".equals(recipe.recipeType)) {
-			recipe.smokingInputStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-							.getName());
+			recipe.smokingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			recipe.smokingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			recipe.xpReward = 12.34;
 			recipe.cookingTime = 42;
 		} else if ("Blasting".equals(recipe.recipeType)) {
-			recipe.blastingInputStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-							.getName());
+			recipe.blastingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			recipe.blastingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			recipe.xpReward = 21.234;
 			recipe.cookingTime = 1000;
 		} else if ("Stone cutting".equals(recipe.recipeType)) {
-			recipe.stoneCuttingInputStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-							.getName());
+			recipe.stoneCuttingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			recipe.stoneCuttingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			recipe.recipeRetstackSize = 32;
 		} else if ("Campfire cooking".equals(recipe.recipeType)) {
-			recipe.campfireCookingInputStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-							.getName());
+			recipe.campfireCookingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			recipe.campfireCookingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			recipe.xpReward = 21.234;
 			recipe.cookingTime = 2983;
 		} else if ("Smithing".equals(recipe.recipeType)) {
-			recipe.smithingInputStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-							.getName());
-			recipe.smithingInputAdditionStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-							.getName());
+			recipe.smithingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+			recipe.smithingInputAdditionStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			recipe.smithingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 		} else if ("Brewing".equals(recipe.recipeType)) {
-			recipe.brewingInputStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-							.getName());
-			recipe.brewingIngredientStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()))
-							.getName());
+			recipe.brewingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+			recipe.brewingIngredientStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			recipe.brewingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 		} else {

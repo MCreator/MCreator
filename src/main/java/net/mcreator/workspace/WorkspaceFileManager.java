@@ -69,9 +69,8 @@ public class WorkspaceFileManager implements Closeable {
 		this.modElementManager = new ModElementManager(workspace);
 
 		// start autosave scheduler
-		lastSchedule = dataSaveExecutor
-				.schedule(new SaveTask(this), PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval,
-						TimeUnit.SECONDS);
+		lastSchedule = dataSaveExecutor.schedule(new SaveTask(this),
+				PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval, TimeUnit.SECONDS);
 	}
 
 	public File getWorkspaceFile() {
