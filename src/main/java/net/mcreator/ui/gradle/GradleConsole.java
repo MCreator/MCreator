@@ -108,13 +108,13 @@ public class GradleConsole extends JPanel {
 					try {
 						ProjectJarManager jarManager = ref.getGenerator().getProjectJarManager();
 						if (jarManager != null) {
-							DeclarationFinder.InClassPosition position = ClassFinder
-									.fqdnToInClassPosition(ref.getWorkspace(), fileurl, "mod.mcreator", jarManager);
+							DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(
+									ref.getWorkspace(), fileurl, "mod.mcreator", jarManager);
 
 							if (position != null) {
-								CodeEditorView codeEditorView = ProjectFileOpener
-										.openFileSpecific(ref, position.classFileNode, position.openInReadOnly,
-												position.carret, position.virtualFile);
+								CodeEditorView codeEditorView = ProjectFileOpener.openFileSpecific(ref,
+										position.classFileNode, position.openInReadOnly, position.carret,
+										position.virtualFile);
 								if (codeEditorView != null)
 									codeEditorView.jumpToLine(linenum);
 							}
@@ -448,8 +448,8 @@ public class GradleConsole extends JPanel {
 
 								return;
 							}
-						} else if (workspaceReportedFailingGradleDependencies || GradleErrorDecoder
-								.isErrorCausedByCorruptedCaches(taskErr.toString() + taskOut)) {
+						} else if (workspaceReportedFailingGradleDependencies
+								|| GradleErrorDecoder.isErrorCausedByCorruptedCaches(taskErr.toString() + taskOut)) {
 							Object[] options = { "Clear Gradle caches", "Clear entire Gradle folder",
 									"<html><font color=gray>Do nothing" };
 							int reply = JOptionPane.showOptionDialog(ref,
@@ -505,8 +505,8 @@ public class GradleConsole extends JPanel {
 					int resultcode = 0;
 
 					if (!errorhandled)
-						resultcode = GradleErrorDecoder
-								.processErrorAndShowMessage(taskOut.toString(), taskErr.toString(), ref);
+						resultcode = GradleErrorDecoder.processErrorAndShowMessage(taskOut.toString(),
+								taskErr.toString(), ref);
 
 					if (resultcode == GradleErrorCodes.STATUS_OK)
 						resultcode = GradleErrorCodes.GRADLE_BUILD_FAILED;
@@ -543,8 +543,8 @@ public class GradleConsole extends JPanel {
 				if (taskSpecificListener != null)
 					taskSpecificListener.onTaskFinished(new GradleTaskResult("", mcreatorGradleStatus));
 
-				stateListeners
-						.forEach(listener -> listener.taskFinished(new GradleTaskResult("", mcreatorGradleStatus)));
+				stateListeners.forEach(
+						listener -> listener.taskFinished(new GradleTaskResult("", mcreatorGradleStatus)));
 
 				// reload mods view to display errors
 				ref.mv.updateMods();
@@ -632,8 +632,8 @@ public class GradleConsole extends JPanel {
 						c2 = new Color(0x7CD48B);
 					else if (bracketText.contains("main/"))
 						c2 = new Color(0xAAB490);
-					else if (bracketText.contains("LaunchWrapper]") || bracketText.contains("FML]") || bracketText
-							.contains("modloading-worker"))
+					else if (bracketText.contains("LaunchWrapper]") || bracketText.contains("FML]")
+							|| bracketText.contains("modloading-worker"))
 						c2 = new Color(0xB5D7C3);
 
 					// handle log levels

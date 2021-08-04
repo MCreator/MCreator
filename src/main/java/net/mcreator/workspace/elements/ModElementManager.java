@@ -121,6 +121,8 @@ public class ModElementManager {
 
 	public boolean requiresElementGradleBuild(GeneratableElement generatableElement) {
 		Generator generator = workspace.getGenerator();
+		List<GeneratorTemplate> templates = generator.getModElementGeneratorTemplatesList(
+				generatableElement.getModElement());
 
 		Map<?, ?> map = workspace.getGeneratorConfiguration().getDefinitionsProvider()
 				.getModElementDefinition(generatableElement.getModElement().getType());

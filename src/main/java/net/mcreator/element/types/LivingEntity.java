@@ -182,9 +182,8 @@ import java.util.Locale;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview
-				.generateMobPreviewPicture(getModElement().getWorkspace(), mobModelTexture, spawnEggBaseColor,
-						spawnEggDotColor, hasSpawnEgg);
+		return MinecraftImageGenerator.Preview.generateMobPreviewPicture(getModElement().getWorkspace(),
+				mobModelTexture, spawnEggBaseColor, spawnEggDotColor, hasSpawnEgg);
 	}
 
 	public boolean hasDrop() {

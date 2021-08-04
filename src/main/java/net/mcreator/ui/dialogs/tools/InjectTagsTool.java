@@ -111,8 +111,8 @@ public class InjectTagsTool {
 
 		JCheckBox box = new JCheckBox(
 				"<html><kbd>" + namespace + ":" + name + (existing ? (" -> " + getNameForTag(name, type)) : "")
-						+ "</kbd><small><br>" + L10N
-						.t("dialog.tools.inject_tags.tag." + type.toLowerCase(Locale.ENGLISH) + "." + namespace + "."
+						+ "</kbd><small><br>" + L10N.t(
+						"dialog.tools.inject_tags.tag." + type.toLowerCase(Locale.ENGLISH) + "." + namespace + "."
 								+ name));
 		box.setSelected(checked);
 

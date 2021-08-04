@@ -46,8 +46,8 @@ public class UIRES {
 
 		// we also load default textures in non-default theme does not specify all textures
 		if (!PreferencesManager.PREFERENCES.hidden.uiTheme.equals("default_dark")) {
-			new Reflections("themes.default_dark.images", new ResourcesScanner(), PluginLoader.INSTANCE)
-					.getResources(imagePattern).parallelStream()
+			new Reflections("themes.default_dark.images", new ResourcesScanner(), PluginLoader.INSTANCE).getResources(
+							imagePattern).parallelStream()
 					.forEach(element -> getImageFromResourceID(element.replace("/", ".")));
 		}
 

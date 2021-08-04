@@ -81,8 +81,8 @@ public class PluginLoader extends URLClassLoader {
 			}
 
 			try {
-				LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile() + ", weight: " + plugin
-						.getWeight());
+				LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile() + ", weight: "
+						+ plugin.getWeight());
 				if (plugin.getFile().isDirectory()) {
 					addURL(plugin.getFile().toURI().toURL());
 				} else {

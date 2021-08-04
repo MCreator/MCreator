@@ -105,17 +105,17 @@ public class SyncLocalWithRemoteAction extends VCSAction {
 							ObjectId fetchHead = git.getRepository().findRef(Constants.FETCH_HEAD).getObjectId();
 
 							String mergeMessage = new MergeMessageFormatter().format(Collections.singletonList(
-									new ObjectIdRef.Unpeeled(Ref.Storage.LOOSE, fetchHead.getName(), fetchHead.copy())),
+											new ObjectIdRef.Unpeeled(Ref.Storage.LOOSE, fetchHead.getName(), fetchHead.copy())),
 									new ObjectIdRef.Unpeeled(Ref.Storage.LOOSE, head.getName(), head.copy()));
 
 							try {
 								Workspace localWorkspace = actionRegistry.getMCreator().getWorkspace();
-								WorkspaceSettings preMergeSettings = GSONClone
-										.deepClone(localWorkspace.getWorkspaceSettings(), WorkspaceSettings.class);
+								WorkspaceSettings preMergeSettings = GSONClone.deepClone(
+										localWorkspace.getWorkspaceSettings(), WorkspaceSettings.class);
 
 								// if custom merge handler was required
-								needsWorkspaceBuildAfter = SyncTwoRefsWithMerge
-										.sync(git, head, fetchHead, mergeHandler, () -> {
+								needsWorkspaceBuildAfter = SyncTwoRefsWithMerge.sync(git, head, fetchHead, mergeHandler,
+										() -> {
 											// fix in case if merge was not commited yet
 											if (git.getRepository().getRepositoryState()
 													== RepositoryState.MERGING_RESOLVED) {
@@ -133,12 +133,12 @@ public class SyncLocalWithRemoteAction extends VCSAction {
 								actionRegistry.getMCreator().getWorkspace().reloadFromFS();
 								if (!localWorkspace.getWorkspaceSettings().getCurrentGenerator()
 										.equals(preMergeSettings.getCurrentGenerator())) {
-									LOG.debug("Switching local workspace generator to " + localWorkspace
-											.getWorkspaceSettings().getCurrentGenerator());
+									LOG.debug("Switching local workspace generator to "
+											+ localWorkspace.getWorkspaceSettings().getCurrentGenerator());
 
 									WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(localWorkspace,
-											Generator.GENERATOR_CACHE
-													.get(localWorkspace.getWorkspaceSettings().getCurrentGenerator()));
+											Generator.GENERATOR_CACHE.get(
+													localWorkspace.getWorkspaceSettings().getCurrentGenerator()));
 									localWorkspace.switchGenerator(
 											localWorkspace.getWorkspaceSettings().getCurrentGenerator());
 									WorkspaceGeneratorSetupDialog.runSetup(actionRegistry.getMCreator(), false);
@@ -146,8 +146,8 @@ public class SyncLocalWithRemoteAction extends VCSAction {
 								WorkspaceSettingsChange workspaceSettingsChange = new WorkspaceSettingsChange(
 										preMergeSettings, localWorkspace.getWorkspaceSettings());
 								if (workspaceSettingsChange.refactorNeeded())
-									WorkspaceSettingsAction
-											.refactorWorkspace(actionRegistry.getMCreator(), workspaceSettingsChange);
+									WorkspaceSettingsAction.refactorWorkspace(actionRegistry.getMCreator(),
+											workspaceSettingsChange);
 								// possible refactor after sync end
 
 								// we might need to make another commit to commit the merge changes
@@ -181,8 +181,8 @@ public class SyncLocalWithRemoteAction extends VCSAction {
 
 			// push local changes to remote in all cases
 			try {
-				BranchTrackingStatus trackingStatus = BranchTrackingStatus
-						.of(git.getRepository(), git.getRepository().getFullBranch());
+				BranchTrackingStatus trackingStatus = BranchTrackingStatus.of(git.getRepository(),
+						git.getRepository().getFullBranch());
 
 				PushCommand pushCommand = git.push();
 				pushCommand.setCredentialsProvider(credentialsProvider);

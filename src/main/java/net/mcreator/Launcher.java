@@ -124,4 +124,22 @@ public class Launcher {
 		MCreatorApplication.createApplication(arguments);
 	}
 
+	public static void openModuleExports() {
+		// Foxtrot core
+		ModuleLayer.boot().findModule("java.desktop")
+				.ifPresent(module -> module.addOpens("java.awt", foxtrot.pumps.ConditionalEventPump.class.getModule()));
+
+		// MCreator theme
+		ModuleLayer.boot().findModule("java.desktop").ifPresent(
+				module -> module.addOpens("sun.awt", net.mcreator.ui.laf.MCreatorLookAndFeel.class.getModule()));
+		ModuleLayer.boot().findModule("java.desktop").ifPresent(module -> module.addOpens("javax.swing.text.html",
+				net.mcreator.ui.laf.MCreatorLookAndFeel.class.getModule()));
+
+		// Blockly panel transparency
+		ModuleLayer.boot().findModule("javafx.web").ifPresent(module -> module.addOpens("com.sun.javafx.webkit",
+				net.mcreator.ui.blockly.BlocklyPanel.class.getModule()));
+		ModuleLayer.boot().findModule("javafx.web").ifPresent(
+				module -> module.addOpens("com.sun.webkit", net.mcreator.ui.blockly.BlocklyPanel.class.getModule()));
+	}
+
 }

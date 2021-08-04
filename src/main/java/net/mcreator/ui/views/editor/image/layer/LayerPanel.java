@@ -171,8 +171,8 @@ public class LayerPanel extends JPanel {
 		layerList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				Rectangle r = layerList.getCellBounds(0, layerList.getLastVisibleIndex());
-				if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2 && r != null && r
-						.contains(e.getPoint()))
+				if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2 && r != null && r.contains(
+						e.getPoint()))
 					promptRename();
 			}
 		});
@@ -186,10 +186,10 @@ public class LayerPanel extends JPanel {
 	private void promptRename() {
 		Layer current = selected();
 		Rename rename = new Rename(canvas, current);
-		String newName = (String) JOptionPane
-				.showInputDialog(f, L10N.t("dialog.imageeditor.layer_panel_enter_new_name"),
-						L10N.t("dialog.imageeditor.layer_panel_rename_layer"), JOptionPane.PLAIN_MESSAGE, null, null,
-						current.toString());
+		String newName = (String) JOptionPane.showInputDialog(f,
+				L10N.t("dialog.imageeditor.layer_panel_enter_new_name"),
+				L10N.t("dialog.imageeditor.layer_panel_rename_layer"), JOptionPane.PLAIN_MESSAGE, null, null,
+				current.toString());
 		if (newName != null) {
 			current.setName(newName);
 			rename.setAfter(current);

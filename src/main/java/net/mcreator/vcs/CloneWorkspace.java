@@ -29,7 +29,7 @@ public class CloneWorkspace {
 
 	public static void cloneWorkspace(Window parent, VCSInfo vcsInfo, File folderInto) throws GitAPIException {
 		Git.cloneRepository().setURI(vcsInfo.getRemote()).setDirectory(folderInto).setCredentialsProvider(
-				new UsernamePasswordCredentialsProvider(vcsInfo.getUsername(), vcsInfo.getPassword(folderInto, parent)))
+						new UsernamePasswordCredentialsProvider(vcsInfo.getUsername(), vcsInfo.getPassword(folderInto, parent)))
 				.call();
 		VCSInfo.saveToFile(vcsInfo, new File(folderInto, "/.mcreator/vcsInfo"));
 	}

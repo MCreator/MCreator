@@ -122,9 +122,9 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		add("North", bar);
 
 		add.addActionListener(e -> {
-			String key = JOptionPane
-					.showInputDialog(workspacePanel.getMcreator(), L10N.t("workspace.localization.key_name_message"),
-							L10N.t("workspace.localization.key_name_title"), JOptionPane.QUESTION_MESSAGE);
+			String key = JOptionPane.showInputDialog(workspacePanel.getMcreator(),
+					L10N.t("workspace.localization.key_name_message"), L10N.t("workspace.localization.key_name_title"),
+					JOptionPane.QUESTION_MESSAGE);
 			if (key != null && !key.equals("")) {
 				workspacePanel.getMcreator().getWorkspace().setLocalization(key, "");
 				reloadElements();
@@ -362,17 +362,15 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		sortedLocales.sort(String::compareToIgnoreCase);
 
 		String[] options = sortedLocales.toArray(new String[0]);
-		String new_locale_id = (String) JOptionPane
-				.showInputDialog(workspacePanel.getMcreator(), L10N.t("workspace.localization.language_choose"),
-						L10N.t("workspace.localization.add_localization"), JOptionPane.QUESTION_MESSAGE, null, options,
-						options[0]);
+		String new_locale_id = (String) JOptionPane.showInputDialog(workspacePanel.getMcreator(),
+				L10N.t("workspace.localization.language_choose"), L10N.t("workspace.localization.add_localization"),
+				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (new_locale_id != null) {
 			String locale = new_locale_id.split(":")[1].trim();
 
-			String based_from_id = (String) JOptionPane
-					.showInputDialog(workspacePanel.getMcreator(), L10N.t("workspace.localization.language_copy"),
-							L10N.t("workspace.localization.add_localization"), JOptionPane.QUESTION_MESSAGE, null,
-							language_map.keySet().toArray(), "en_us");
+			String based_from_id = (String) JOptionPane.showInputDialog(workspacePanel.getMcreator(),
+					L10N.t("workspace.localization.language_copy"), L10N.t("workspace.localization.add_localization"),
+					JOptionPane.QUESTION_MESSAGE, null, language_map.keySet().toArray(), "en_us");
 			if (based_from_id != null) {
 				ConcurrentHashMap<String, String> en_us = language_map.get(based_from_id);
 				workspacePanel.getMcreator().getWorkspace().addLanguage(locale, en_us);

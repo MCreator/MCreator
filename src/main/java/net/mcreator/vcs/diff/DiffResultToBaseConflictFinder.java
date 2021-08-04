@@ -41,8 +41,8 @@ public class DiffResultToBaseConflictFinder {
 							&& local.getChangeType() == DiffEntry.ChangeType.DELETE)
 						continue; // if both actions are delete, this is actually not a conflict
 
-					mergeHandlesSet
-							.add(new MergeHandle<>(local.getAffected(), remote.getAffected(), local.getChangeType(),
+					mergeHandlesSet.add(
+							new MergeHandle<>(local.getAffected(), remote.getAffected(), local.getChangeType(),
 									remote.getChangeType()));
 				}
 			}

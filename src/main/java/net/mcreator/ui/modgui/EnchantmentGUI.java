@@ -90,16 +90,16 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		JPanel selp = new JPanel(new GridLayout(11, 2, 100, 2));
 		selp.setOpaque(false);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("enchantment/name"), L10N.label("elementgui.enchantment.name")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/name"),
+				L10N.label("elementgui.enchantment.name")));
 		selp.add(name);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("enchantment/type"), L10N.label("elementgui.enchantment.type")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/type"),
+				L10N.label("elementgui.enchantment.type")));
 		selp.add(type);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("enchantment/rarity"), L10N.label("elementgui.enchantment.rarity")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/rarity"),
+				L10N.label("elementgui.enchantment.rarity")));
 		selp.add(rarity);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/min_level"),
@@ -118,8 +118,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 				L10N.label("elementgui.enchantment.treasure_enchantment")));
 		selp.add(isTreasureEnchantment);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("enchantment/curse"), L10N.label("elementgui.enchantment.curse")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/curse"),
+				L10N.label("elementgui.enchantment.curse")));
 		selp.add(isCurse);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/allowed_on_books"),

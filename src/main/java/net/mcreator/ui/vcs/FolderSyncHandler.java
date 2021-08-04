@@ -32,13 +32,13 @@ public class FolderSyncHandler {
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public static boolean mergeFoldersRecursively(FolderElement local, FolderElement remote, FolderElement base,
 			boolean dryRun) {
-		DiffResult<FolderElement> folderElementListDiffLocalToBase = ListDiff
-				.getListDiff(base.getDirectFolderChildren(), local.getDirectFolderChildren());
-		DiffResult<FolderElement> folderElementListDiffRemoteToBase = ListDiff
-				.getListDiff(base.getDirectFolderChildren(), remote.getDirectFolderChildren());
+		DiffResult<FolderElement> folderElementListDiffLocalToBase = ListDiff.getListDiff(
+				base.getDirectFolderChildren(), local.getDirectFolderChildren());
+		DiffResult<FolderElement> folderElementListDiffRemoteToBase = ListDiff.getListDiff(
+				base.getDirectFolderChildren(), remote.getDirectFolderChildren());
 
-		Set<MergeHandle<FolderElement>> conflictingFolderElements = DiffResultToBaseConflictFinder
-				.findConflicts(folderElementListDiffLocalToBase, folderElementListDiffRemoteToBase);
+		Set<MergeHandle<FolderElement>> conflictingFolderElements = DiffResultToBaseConflictFinder.findConflicts(
+				folderElementListDiffLocalToBase, folderElementListDiffRemoteToBase);
 
 		if (!conflictingFolderElements.isEmpty())
 			return false;

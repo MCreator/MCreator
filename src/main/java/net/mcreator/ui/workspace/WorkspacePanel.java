@@ -334,14 +334,14 @@ import java.util.stream.Collectors;
 
 		modElementsBar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton addFolder = new JButton(new ImageIcon(ImageUtils
-				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.newFolder.gif").getImage()),
+		JButton addFolder = new JButton(new ImageIcon(
+				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.newFolder.gif").getImage()),
 						new Rectangle(1, 1, 16, 16))));
-		upFolder = new JButton(new ImageIcon(ImageUtils
-				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.upFolder.gif").getImage()),
+		upFolder = new JButton(new ImageIcon(
+				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.upFolder.gif").getImage()),
 						new Rectangle(1, 1, 16, 16))));
-		renameFolder = new JButton(new ImageIcon(ImageUtils
-				.crop(ImageUtils.toBufferedImage(UIRES.get("laf.renameFolder.gif").getImage()),
+		renameFolder = new JButton(new ImageIcon(
+				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.renameFolder.gif").getImage()),
 						new Rectangle(1, 1, 16, 16))));
 
 		addFolder.setContentAreaFilled(false);
@@ -551,15 +551,15 @@ import java.util.stream.Collectors;
 		JScrollablePopupMenu filterPopup = new JScrollablePopupMenu();
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
 		filterPopup.addSeparator();
-		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"),
-				e -> togglefilter("f:locked")));
+		filterPopup.add(
+				new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"), e -> togglefilter("f:locked")));
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
 				e -> togglefilter("f:err")));
 		filterPopup.addSeparator();
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
-			filterPopup.add(new UnregisteredAction(type.getReadableName(),
-					e -> togglefilter("f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH)))
-					.setIcon(new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 16))));
+			filterPopup.add(new UnregisteredAction(type.getReadableName(), e -> togglefilter(
+					"f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))).setIcon(
+					new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 16))));
 		}
 		filter.addActionListener(e -> filterPopup.show(filter, 0, 26));
 
@@ -1113,16 +1113,15 @@ import java.util.stream.Collectors;
 		if (list.getSelectedValue() instanceof ModElement) {
 			ModElement mu = (ModElement) list.getSelectedValue();
 			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
-				String modName = VOptionPane
-						.showInputDialog(mcreator, L10N.t("workspace.elements.duplicate_message", mu.getName()),
-								L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
-								new OptionPaneValidatior() {
-									@Override public Validator.ValidationResult validate(JComponent component) {
-										return new ModElementNameValidator(mcreator.getWorkspace(),
-												(VTextField) component).validate();
-									}
-								}, L10N.t("workspace.elements.duplicate"),
-								UIManager.getString("OptionPane.cancelButtonText"));
+				String modName = VOptionPane.showInputDialog(mcreator,
+						L10N.t("workspace.elements.duplicate_message", mu.getName()),
+						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
+						new OptionPaneValidatior() {
+							@Override public Validator.ValidationResult validate(JComponent component) {
+								return new ModElementNameValidator(mcreator.getWorkspace(),
+										(VTextField) component).validate();
+							}
+						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"));
 				if (modName != null && !modName.equals("")) {
 					modName = JavaConventions.convertToValidClassName(modName);
 
@@ -1135,8 +1134,8 @@ import java.util.stream.Collectors;
 										.generatableElementToJSON(generatableElementOriginal), duplicateModElement);
 
 						if (generatableElementDuplicate instanceof NamespacedGeneratableElement) {
-							((NamespacedGeneratableElement) generatableElementDuplicate).name = RegistryNameFixer
-									.fromCamelCase(modName);
+							((NamespacedGeneratableElement) generatableElementDuplicate).name = RegistryNameFixer.fromCamelCase(
+									modName);
 						}
 
 						mcreator.getGenerator().generateElement(generatableElementDuplicate);
@@ -1342,8 +1341,8 @@ import java.util.stream.Collectors;
 			}
 
 			if (mcreator.getWorkspace().getModElements().stream()
-					.anyMatch(el -> currentFolder.equals(el.getFolderPath())) || !currentFolder
-					.getDirectFolderChildren().isEmpty()) {
+					.anyMatch(el -> currentFolder.equals(el.getFolderPath()))
+					|| !currentFolder.getDirectFolderChildren().isEmpty()) {
 				mainpcl.show(mainp, "sp");
 
 				// reload list model partially in the background
@@ -1492,8 +1491,8 @@ import java.util.stream.Collectors;
 					}).collect(Collectors.toList()));
 
 			List<ModElement> modElements = items.stream().filter(e -> e instanceof ModElement).map(e -> (ModElement) e)
-					.filter(item -> currentFolder.equals(item.getFolderPath()) || (flattenFolders && currentFolder
-							.getRecursiveFolderChildren().stream()
+					.filter(item -> currentFolder.equals(item.getFolderPath()) || (flattenFolders
+							&& currentFolder.getRecursiveFolderChildren().stream()
 							.anyMatch(folder -> folder.equals(item.getFolderPath())))).filter(item -> {
 						if (keyWords.size() == 0)
 							return true;

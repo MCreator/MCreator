@@ -55,10 +55,9 @@ public class SetupVCSAction extends VCSAction {
 							.forEach(action -> ((VCSAction) action).vcsStateChanged());
 					mcreator.statusBar.reloadVCSStatus();
 				} catch (WorkspaceNotEmptyException e) {
-					JOptionPane
-							.showMessageDialog(mcreator, L10N.t("dialog.vcs.setup.workspace_folder_not_empty.message"),
-									L10N.t("dialog.vcs.setup.workspace_folder_not_empty.title"),
-									JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(mcreator,
+							L10N.t("dialog.vcs.setup.workspace_folder_not_empty.message"),
+							L10N.t("dialog.vcs.setup.workspace_folder_not_empty.title"), JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
 				return true;
