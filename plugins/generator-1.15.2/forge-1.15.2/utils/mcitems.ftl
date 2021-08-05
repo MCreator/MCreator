@@ -1,6 +1,10 @@
 <#function mappedBlockToBlockStateCode mappedBlock>
     <#if mappedBlock?starts_with("/*@BlockState*/")>
         <#return mappedBlock?replace("/*@BlockState*/","")>
+    <#elseif mappedBlock?contains("/*@?*/")>
+        <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
+        <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedBlockToBlockStateCode(outputs?keep_before("/*@:*/"))
+            + ":" + mappedBlockToBlockStateCode(outputs?keep_after("/*@:*/")) + ")">
     <#else>
         <#return mappedBlockToBlock(mappedBlock) + ".getDefaultState()">
     </#if>
@@ -9,6 +13,10 @@
 <#function mappedBlockToBlock mappedBlock>
     <#if mappedBlock?starts_with("/*@BlockState*/")>
         <#return mappedBlock?replace("/*@BlockState*/","") + ".getBlock()">
+    <#elseif mappedBlock?contains("/*@?*/")>
+        <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
+        <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedBlockToBlock(outputs?keep_before("/*@:*/"))
+            + ":" + mappedBlockToBlock(outputs?keep_after("/*@:*/")) + ")">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#if !mappedBlock?contains(".")>
             <#return mappedElementToClassName(mappedBlock) + ".block">
@@ -23,6 +31,10 @@
 <#function mappedMCItemToItemStackCode mappedBlock amount>
     <#if mappedBlock?starts_with("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "")>
+    <#elseif mappedBlock?contains("/*@?*/")>
+        <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
+        <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedMCItemToItemStackCode(outputs?keep_before("/*@:*/"), amount)
+            + ":" + mappedMCItemToItemStackCode(outputs?keep_after("/*@:*/"), amount) + ")">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#if !mappedBlock?contains(".")>
             <#return "new ItemStack("+ mappedElementToClassName(mappedBlock) + ".block"
@@ -39,6 +51,10 @@
 <#function mappedMCItemToItem mappedBlock>
     <#if mappedBlock?starts_with("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "") + ".getItem()">
+    <#elseif mappedBlock?contains("/*@?*/")>
+        <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
+        <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedMCItemToItem(outputs?keep_before("/*@:*/"))
+            + ":" + mappedMCItemToItem(outputs?keep_after("/*@:*/")) + ")">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#if !mappedBlock?contains(".")>
             <#return mappedElementToClassName(mappedBlock) + ".block"
