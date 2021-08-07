@@ -48,7 +48,7 @@ public class GradleDaemonUtils {
 		return processBuilder.start();
 	}
 
-	public static void stopAllDaemons(Workspace workspace) throws IOException, InterruptedException, TimeoutException {
+	public static void stopAllDaemons(Workspace workspace) throws IOException, InterruptedException {
 		Process process = getGradleCompatibleBashProcess(workspace);
 		PrintWriter stdin = new PrintWriter(process.getOutputStream());
 
@@ -71,8 +71,7 @@ public class GradleDaemonUtils {
 
 		stdin.close();
 
-		if (!process.waitFor(30, TimeUnit.SECONDS))
-			throw new TimeoutException("Timeout waiting for the gradle daemons to stop");
+		process.waitFor(30, TimeUnit.SECONDS);
 	}
 
 }
