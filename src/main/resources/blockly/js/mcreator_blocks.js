@@ -534,21 +534,24 @@ Blockly.Extensions.register('gamerulesnumber_list_provider',
     });
 
 Blockly.Extensions.register('blockstate_boolean_list_provider',
-    function() {
+    function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("blockstatesboolean"))), 'blockstatesboolean');
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("blockstatesboolean"),
+            javabridge.getReadableListOf("blockstatesboolean"))), 'blockstatesboolean');
     });
 
 Blockly.Extensions.register('blockstate_integer_list_provider',
-    function() {
+    function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("blockstatesinteger"))), 'blockstatesinteger');
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("blockstatesinteger"),
+            javabridge.getReadableListOf("blockstatesinteger"))), 'blockstatesinteger');
     });
 
 Blockly.Extensions.register('blockstate_enum_list_provider',
-    function() {
+    function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("blockstatesenum"))), 'blockstatesenum');
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("blockstatesenum"),
+            javabridge.getReadableListOf("blockstatesenum"))), 'blockstatesenum');
     });
 
 Blockly.Extensions.register('enhancement_list_provider',

@@ -270,6 +270,15 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName).toArray(String[]::new);
 		case "biome":
 			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName).toArray(String[]::new);
+		case "blockstatesboolean":
+			return ElementUtil.loadBooleanBlockStateProperties().stream().map(DataListEntry::getReadableName)
+					.toArray(String[]::new);
+		case "blockstatesinteger":
+			return ElementUtil.loadIntegerBlockStateProperties().stream().map(DataListEntry::getReadableName)
+					.toArray(String[]::new);
+		case "blockstatesenum":
+			return ElementUtil.loadEnumBlockStateProperties().stream().map(DataListEntry::getReadableName)
+					.toArray(String[]::new);
 		default:
 			return getListOfForWorkspace(workspace, type);
 		}
