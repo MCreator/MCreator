@@ -1,184 +1,207 @@
 - WATERLOGGED:
+  readable_name: "waterlogged"
   type: boolean
 - UP:
+  readable_name: "up"
   type: boolean
 - DOWN:
+  readable_name: "down"
   type: boolean
 - NORTH:
+  readable_name: "north"
   type: boolean
 - EAST:
+  readable_name: "east"
   type: boolean
 - SOUTH:
+  readable_name: "south"
   type: boolean
 - WEST:
+  readable_name: "west"
   type: boolean
 - POWERED:
+  readable_name: "powered"
   type: boolean
 - ATTACHED:
+  readable_name: "attached"
   type: boolean
 - BOTTOM:
+  readable_name: "bottom"
   type: boolean
 - CONDITIONAL:
+  readable_name: "conditional"
   type: boolean
 - DISARMED:
+  readable_name: "disarmed"
   type: boolean
 - DRAG:
+  readable_name: "drag"
   type: boolean
 - ENABLED:
+  readable_name: "enabled"
   type: boolean
 - EXTENDED:
+  readable_name: "extended"
   type: boolean
 - EYE:
+  readable_name: "eye"
   type: boolean
 - FALLING:
+  readable_name: "falling"
   type: boolean
 - HANGING:
+  readable_name: "hanging"
   type: boolean
 - HAS_BOTTLE_0:
+  readable_name: "has_bottle_0"
   type: boolean
 - HAS_BOTTLE_1:
+  readable_name: "has_bottle_1"
   type: boolean
 - HAS_BOTTLE_2:
+  readable_name: "has_bottle_2"
   type: boolean
 - HAS_RECORD:
+  readable_name: "has_record"
   type: boolean
 - HAS_BOOK:
+  readable_name: "has_book"
   type: boolean
 - INVERTED:
+  readable_name: "inverted"
   type: boolean
 - IN_WALL:
+  readable_name: "in_wall"
   type: boolean
 - LIT:
+  readable_name: "lit"
   type: boolean
 - LOCKED:
+  readable_name: "locked"
   type: boolean
 - OCCUPIED:
+  readable_name: "occupied"
   type: boolean
 - OPEN:
+  readable_name: "open"
   type: boolean
 - PERSISTENT:
+  readable_name: "persistent"
   type: boolean
 - SHORT:
+  readable_name: "short"
   type: boolean
 - SIGNAL_FIRE:
+  readable_name: "signal_fire"
   type: boolean
 - SNOWY:
+  readable_name: "snowy"
   type: boolean
 - TRIGGERED:
+  readable_name: "triggered"
   type: boolean
 - UNSTABLE:
+  readable_name: "unstable"
   type: boolean
 - VINE_END:
+  readable_name: "vine_end"
   type: boolean
-- AGE_0_1:
+- AGE:
+  readable_name: "age"
   type: integer
-- AGE_0_2:
+- LEVEL:
+  readable_name: "level"
   type: integer
-- AGE_0_3:
+- ROTATION:
+  readable_name: "rotation"
   type: integer
-- AGE_0_5:
+- BITES:
+  readable_name: "bites"
   type: integer
-- AGE_0_7:
+- DELAY:
+  readable_name: "delay"
   type: integer
-- AGE_0_15:
+- DISTANCE:
+  readable_name: "distance"
   type: integer
-- AGE_0_25:
+- EGGS:
+  readable_name: "eggs"
   type: integer
-- LEVEL_0_3:
+- HATCH:
+  readable_name: "hatch"
   type: integer
-- LEVEL_0_8:
-  type: integer
-- LEVEL_0_15:
-  type: integer
-- LEVEL_1_8:
-  type: integer
-- ROTATION_0_15:
-  type: integer
-- BITES_0_6:
-  type: integer
-- DELAY_1_4:
-  type: integer
-- DISTANCE_0_7:
-  type: integer
-- DISTANCE_1_7:
-  type: integer
-- EGGS_1_4:
-  type: integer
-- HATCH_0_2:
-  type: integer
-- LAYERS_1_8:
+- LAYERS:
+  readable_name: "layers"
   type: integer
 - HONEY_LEVEL:
+  readable_name: "honey_level"
   type: integer
-- MOISTURE_0_7:
+- MOISTURE:
+  readable_name: "moisture"
   type: integer
-- NOTE_0_24:
+- NOTE:
+  readable_name: "note"
   type: integer
-- PICKLES_1_4:
+- PICKLES:
+  readable_name: "pickles"
   type: integer
-- POWER_0_15:
+- POWER:
+  readable_name: "power"
   type: integer
-- STAGE_0_1:
+- STAGE:
+  readable_name: "stage"
   type: integer
 - CHARGES:
+  readable_name: "charges"
   type: integer
 - AXIS:
-  type: enum
-- HORIZONTAL_AXIS:
-  type: enum
-- DOUBLE_BLOCK_HALF:
+  readable_name: "axis"
   type: enum
 - HALF:
+  readable_name: "half"
   type: enum
-- SLAB_TYPE:
+- TYPE:
+  readable_name: "type"
   type: enum
-- STAIRS_SHAPE:
+- SHAPE:
+  readable_name: "shape"
   type: enum
 - ORIENTATION:
+  readable_name: "orientation"
   type: enum
 - FACE:
+  readable_name: "face"
   type: enum
-- BELL_ATTACHMENT:
+- ATTACHMENT:
+  readable_name: "attachment"
   type: enum
-- WALL_HEIGHT_EAST:
+- NORTH_ENUM:
+  readable_name: "north"
   type: enum
-- WALL_HEIGHT_NORTH:
+- EAST_ENUM:
+  readable_name: "east"
   type: enum
-- WALL_HEIGHT_SOUTH:
+- SOUTH_ENUM:
+  readable_name: "south"
   type: enum
-- WALL_HEIGHT_WEST:
+- WEST_ENUM:
+  readable_name: "west"
   type: enum
-- REDSTONE_EAST:
+- PART:
+  readable_name: "part"
   type: enum
-- REDSTONE_NORTH:
+- MODE:
+  readable_name: "mode"
   type: enum
-- REDSTONE_SOUTH:
+- HINGE:
+  readable_name: "hinge"
   type: enum
-- REDSTONE_WEST:
+- INSTRUMENT:
+  readable_name: "instrument"
   type: enum
-- RAIL_SHAPE:
-  type: enum
-- RAIL_SHAPE_STRAIGHT:
-  type: enum
-- BED_PART:
-  type: enum
-- CHEST_TYPE:
-  type: enum
-- COMPARATOR_MODE:
-  type: enum
-- DOOR_HINGE:
-  type: enum
-- NOTE_BLOCK_INSTRUMENT:
-  type: enum
-- PISTON_TYPE:
-  type: enum
-- STRUCTURE_BLOCK_MODE:
-  type: enum
-- BAMBOO_LEAVES:
+- LEAVES:
+  readable_name: "leaves"
   type: enum
 - FACING:
-  type: enum
-- FACING_EXCEPT_UP:
-  type: enum
-- HORIZONTAL_FACING:
+  readable_name: "facing"
   type: enum

@@ -29,7 +29,7 @@
     "toolbox_id": "blockdata",
     "toolbox_init": [
       "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
-      "<value name=\"property\"><block type=\"blockstate_properties_enum\"><field name=\"blockstatesenum\">DOUBLE_BLOCK_HALF</field></block></value>",
+      "<value name=\"property\"><block type=\"blockstate_properties_enum\"><field name=\"blockstatesenum\">HALF</field></block></value>",
       "<value name=\"value\"><block type=\"text\"><field name=\"TEXT\">upper</field></block></value>"
     ],
     "inputs": [
