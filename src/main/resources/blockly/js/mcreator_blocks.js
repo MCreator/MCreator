@@ -502,7 +502,8 @@ Blockly.Extensions.registerMutator('mark_attached_to_block_item',
 Blockly.Extensions.register('biome_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("biome"))), 'biome');
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("biome"),
+            javabridge.getReadableListOf("biome"))), 'biome');
     });
 
 Blockly.Extensions.register('biome_dictionary_list_provider',
@@ -514,7 +515,8 @@ Blockly.Extensions.register('biome_dictionary_list_provider',
 Blockly.Extensions.register('entity_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("entity"))), 'entity');
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("entity"),
+            javabridge.getReadableListOf("entity"))), 'entity');
     });
 
 Blockly.Extensions.register('gui_list_provider',
