@@ -250,6 +250,22 @@ public class BlocklyJavascriptBridge {
 		return retval.toArray(new String[0]);
 	}
 
+	@SuppressWarnings("unused") public String[] getReadableListOf(String type) {
+		return getReadableListOfForWorkspace(mcreator.getWorkspace(), type);
+	}
+
+	@SuppressWarnings("unused") public static String[] getReadableListOfForWorkspace(Workspace workspace, String type) {
+		List<String> retval;
+		switch (type) {
+		case "entity":
+			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName).toArray(String[]::new);
+		case "biome":
+			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName).toArray(String[]::new);
+		default:
+			return getListOfForWorkspace(workspace, type);
+		}
+	}
+
 	public void setJavaScriptEventListener(JavaScriptEventListener listener) {
 		this.listener = listener;
 	}
