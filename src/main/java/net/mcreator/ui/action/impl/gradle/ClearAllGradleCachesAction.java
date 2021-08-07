@@ -59,8 +59,8 @@ public class ClearAllGradleCachesAction extends GradleAction {
 			try {
 				GradleDaemonUtils.stopAllDaemons(mcreator.getWorkspace());
 				p1.ok();
-			} catch (IOException | TimeoutException | InterruptedException e) {
-				p1.err();
+			} catch (IOException | InterruptedException e) {
+				p1.warn();
 			}
 			progressDialog.refreshDisplay();
 
