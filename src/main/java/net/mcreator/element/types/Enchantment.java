@@ -44,6 +44,10 @@ public class Enchantment extends GeneratableElement {
 	public boolean canGenerateInLootTables;
 	public boolean canVillagerTrade;
 
+	private Biome() {
+		this(null);
+	}
+
 	public Enchantment(ModElement element) {
 		super(element);
 
