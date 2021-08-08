@@ -88,6 +88,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		canVillagerTrade.setOpaque(false);
 
 		isAllowedOnBooks.setSelected(true);
+		canGenerateInLootTables.setSelected(true);
+		canVillagerTrade.setSelected(true);
 
 		ComponentUtils.deriveFont(name, 16);
 
