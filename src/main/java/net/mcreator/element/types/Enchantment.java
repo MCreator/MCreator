@@ -46,6 +46,9 @@ public class Enchantment extends GeneratableElement {
 
 	public Enchantment(ModElement element) {
 		super(element);
+
+		this.canGenerateInLootTables = true;
+		this.canVillagerTrade = true;
 	}
 
 }
