@@ -51,6 +51,7 @@ public class GetVariableBlock implements IBlockGenerator {
 		VariableType typeObject = VariableTypeLoader.INSTANCE.fromName(type);
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
+		Element entityInput = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (variable != null) {
 			String[] varfield = variable.getTextContent().split(":");
 			if (varfield.length == 2) {
@@ -87,8 +88,10 @@ public class GetVariableBlock implements IBlockGenerator {
 					scope = master.getWorkspace().getVariableElementByName(name).getScope().name();
 					if (scope.equals("GLOBAL_MAP") || scope.equals("GLOBAL_WORLD")) {
 						master.addDependency(new Dependency("world", "world"));
-					} else if (scope.equals("PLAYER_LIFETIME") || scope.equals("PLAYER_PERSISTENT")) {
-						master.addDependency(new Dependency("entity", "entity"));
+					} else if (entityInput == null && (scope.equals("PLAYER_LIFETIME") || scope.equals("PLAYER_PERSISTENT"))) {
+						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								"Get variable block for NBT variable is missing entity input."));
+						return;
 					}
 				}
 
@@ -106,6 +109,8 @@ public class GetVariableBlock implements IBlockGenerator {
 					dataModel.put("name", name);
 					dataModel.put("type", type);
 					dataModel.put("scope", scope.toUpperCase(Locale.ENGLISH));
+					if (entityInput != null)
+						dataModel.put("entity", BlocklyToCode.directProcessOutputBlock(master, entityInput));
 
 					String code = master.getTemplateGenerator()
 							.generateFromString(getterTemplate.toString(), dataModel);
