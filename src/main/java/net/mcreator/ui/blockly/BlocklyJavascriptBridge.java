@@ -266,11 +266,11 @@ public class BlocklyJavascriptBridge {
 		}
 	}
 
-	@SuppressWarnings("unused") public boolean isVariableNBT(String field) {
-		return isVariableNBTForWorkspace(mcreator.getWorkspace(), field);
+	@SuppressWarnings("unused") public boolean isPlayerVariable(String field) {
+		return isPlayerVariableForWorkspace(mcreator.getWorkspace(), field);
 	}
 
-	@SuppressWarnings("unused") public static boolean isVariableNBTForWorkspace(Workspace workspace, String field) {
+	@SuppressWarnings("unused") public static boolean isPlayerVariableForWorkspace(Workspace workspace, String field) {
 		if (field == null)
 			return false;
 		String[] name = field.split(":");

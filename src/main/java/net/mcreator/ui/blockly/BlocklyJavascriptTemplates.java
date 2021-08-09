@@ -29,8 +29,8 @@ public class BlocklyJavascriptTemplates {
 				+ "this.getInput(\"var\").appendField(new Blockly.FieldDropdown(getVariablesOfType(\""
 				+ variableType.getBlocklyVariableType() + "\")), 'VAR');"
 				+ "this.getField('VAR').setValidator(function (variable) {"
-				+ "var isVarNBT = javabridge.isVariableNBT(variable);"
-				+ "this.getSourceBlock().updateShape_(isVarNBT);" + "});"
+				+ "var isPlayerVar = javabridge.isPlayerVariable(variable);"
+				+ "this.getSourceBlock().updateShape_(isPlayerVar);" + "});"
 				+ "});";
 	}
 

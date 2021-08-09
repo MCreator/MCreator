@@ -453,25 +453,25 @@ Blockly.Extensions.register('is_custom_loop',
         Blockly.Constants.Loops.CONTROL_FLOW_IN_LOOP_CHECK_MIXIN.LOOP_TYPES.push(this.type);
     });
 
-// Mutator to add/remove entity input from get/set variable blocks: the input will appear only if the variable is a NBT one
+// Mutator to add/remove entity input from get/set variable blocks for player variables
 Blockly.Extensions.registerMutator('variable_entity_input',
     {
         mutationToDom: function() {
             var container = document.createElement('mutation');
-            var isVarNBT = javabridge.isVariableNBT(this.getFieldValue('VAR'));
-            container.setAttribute('is_var_nbt', isVarNBT);
+            var isPlayerVar = javabridge.isPlayerVariable(this.getFieldValue('VAR'));
+            container.setAttribute('is_player_var', isPlayerVar);
             return container;
         },
 
         domToMutation: function(xmlElement) {
-            var isVarNBT = (xmlElement.getAttribute('is_var_nbt') == 'true');
-            this.updateShape_(isVarNBT);
+            var isPlayerVar = (xmlElement.getAttribute('is_player_var') == 'true');
+            this.updateShape_(isPlayerVar);
         },
 
         // Helper function to add an 'entity' input to the block
-        updateShape_: function(isNBT) {
+        updateShape_: function(isPlayerVar) {
             var entityInput = this.getInput('entity');
-            if (isNBT) {
+            if (isPlayerVar) {
                 if (!entityInput) {
                     this.appendValueInput('entity').setCheck('Entity')
                     .appendField(javabridge.t("blockly.block.var_for_entity"));
