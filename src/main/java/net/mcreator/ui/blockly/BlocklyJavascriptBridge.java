@@ -266,6 +266,21 @@ public class BlocklyJavascriptBridge {
 		}
 	}
 
+	@SuppressWarnings("unused") public boolean isVariableNBT(String field) {
+		return isVariableNBTForWorkspace(mcreator.getWorkspace(), field);
+	}
+
+	@SuppressWarnings("unused") public static boolean isVariableNBTForWorkspace(Workspace workspace, String field) {
+		if (field == null)
+			return false;
+		String[] name = field.split(":");
+		if (name.length == 2) {
+			String scope = workspace.getVariableElementByName(name[1]).getScope().name();
+			return scope.equals("PLAYER_LIFETIME") || scope.equals("PLAYER_PERSISTENT");
+		}
+		return false;
+	}
+
 	public void setJavaScriptEventListener(JavaScriptEventListener listener) {
 		this.listener = listener;
 	}
