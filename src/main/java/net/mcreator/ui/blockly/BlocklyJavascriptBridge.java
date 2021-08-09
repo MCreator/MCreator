@@ -274,7 +274,7 @@ public class BlocklyJavascriptBridge {
 		if (field == null)
 			return false;
 		String[] name = field.split(":");
-		if (name.length == 2) {
+		if (name.length == 2 && name[0].equals("global")) {
 			String scope = workspace.getVariableElementByName(name[1]).getScope().name();
 			return scope.equals("PLAYER_LIFETIME") || scope.equals("PLAYER_PERSISTENT");
 		}
