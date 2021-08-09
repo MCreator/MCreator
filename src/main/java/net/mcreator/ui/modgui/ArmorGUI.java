@@ -134,6 +134,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final VComboBox<String> leggingsModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> bootsModelTexture = new SearchableComboBox<>();
 
+	private final JCheckBox helmetImmuneToFire = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox bodyImmuneToFire = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox leggingsImmuneToFire = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox bootsImmuneToFire = L10N.checkbox("elementgui.common.enable");
+
 	private final JLabel clo1 = new JLabel();
 	private final JLabel clo2 = new JLabel();
 
@@ -300,13 +305,21 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enableLeggings.setOpaque(false);
 		enableBoots.setOpaque(false);
 
+		helmetImmuneToFire.setOpaque(false);
+		bodyImmuneToFire.setOpaque(false);
+		leggingsImmuneToFire.setOpaque(false);
+		bootsImmuneToFire.setOpaque(false);
+
 		helmetModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"),
 				PanelUtils.northAndCenterElement(
 						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), helmetModel,
 								new JLabel(":"), helmetModelPart, L10N.label("elementgui.armor.texture"),
-								helmetModelTexture),
-						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
-								helmetSpecialInfo)));
+								helmetModelTexture), PanelUtils.join(FlowLayout.LEFT,
+								PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+										helmetSpecialInfo), PanelUtils.join(FlowLayout.LEFT,
+										HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+												L10N.label("elementgui.item.is_immune_to_fire")),
+										helmetImmuneToFire))));
 		helmetModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
@@ -315,7 +328,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
 				BorderFactory.createEmptyBorder(15, 12, 0, 12)));
 
-		destal.add(PanelUtils.westAndCenterElement(helText, PanelUtils.centerAndSouthElement(
+		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(helText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.helmet_name"), helmetName),
 				helmetModelPanel), 5, 0));
 
@@ -333,11 +346,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 								new JLabel(":"), bodyModelPart, L10N.label("elementgui.armor.part_arm_left"),
 								armsModelPartL, L10N.label("elementgui.armor.part_arm_right"), armsModelPartR,
 								L10N.label("elementgui.armor.texture"), bodyModelTexture),
-						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
-								bodySpecialInfo)));
+						PanelUtils.join(FlowLayout.LEFT,
+								PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+										bodySpecialInfo), PanelUtils.join(FlowLayout.LEFT,
+										HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+												L10N.label("elementgui.item.is_immune_to_fire")), bodyImmuneToFire))));
 		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
-		destal.add(PanelUtils.westAndCenterElement(bodText, PanelUtils.centerAndSouthElement(
+		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bodText), PanelUtils.centerAndSouthElement(
 						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.body_name"), bodyName), bodyModelPanel),
 				5, 0));
 
@@ -354,11 +370,15 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), leggingsModel,
 								new JLabel(": L"), leggingsModelPartL, new JLabel("R"), leggingsModelPartR,
 								L10N.label("elementgui.armor.texture"), leggingsModelTexture),
-						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
-								leggingsSpecialInfo)));
+						PanelUtils.join(FlowLayout.LEFT,
+								PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+										leggingsSpecialInfo), PanelUtils.join(FlowLayout.LEFT,
+										HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+												L10N.label("elementgui.item.is_immune_to_fire")),
+										leggingsImmuneToFire))));
 		leggingsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
-		destal.add(PanelUtils.westAndCenterElement(legText, PanelUtils.centerAndSouthElement(
+		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(legText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
 				leggingsModelPanel), 5, 0));
 
@@ -375,11 +395,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bootsModel,
 								new JLabel(": L"), bootsModelPartL, new JLabel("R"), bootsModelPartR,
 								L10N.label("elementgui.armor.texture"), bootsModelTexture),
-						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
-								bootsSpecialInfo)));
+						PanelUtils.join(FlowLayout.LEFT,
+								PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+										bootsSpecialInfo), PanelUtils.join(FlowLayout.LEFT,
+										HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+												L10N.label("elementgui.item.is_immune_to_fire")), bootsImmuneToFire))));
 		bootsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
-		destal.add(PanelUtils.westAndCenterElement(bootText, PanelUtils.centerAndSouthElement(
+		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bootText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),
 				bootsModelPanel), 5, 0));
 
@@ -845,6 +868,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsModelPanel.toggleVisibility(
 				bootsModel.getSelectedItem() != defaultModel || !bootsSpecialInfo.getText().isEmpty());
 
+		helmetImmuneToFire.setSelected(armor.helmetImmuneToFire);
+		bodyImmuneToFire.setSelected(armor.bodyImmuneToFire);
+		leggingsImmuneToFire.setSelected(armor.leggingsImmuneToFire);
+		bootsImmuneToFire.setSelected(armor.bootsImmuneToFire);
+
 		updateArmorTexturePreview();
 	}
 
@@ -898,6 +926,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.bodySpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(bodySpecialInfo.getText());
 		armor.leggingsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(leggingsSpecialInfo.getText());
 		armor.bootsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(bootsSpecialInfo.getText());
+		armor.helmetImmuneToFire = helmetImmuneToFire.isSelected();
+		armor.bodyImmuneToFire = bodyImmuneToFire.isSelected();
+		armor.leggingsImmuneToFire = leggingsImmuneToFire.isSelected();
+		armor.bootsImmuneToFire = bootsImmuneToFire.isSelected();
 		return armor;
 	}
 
