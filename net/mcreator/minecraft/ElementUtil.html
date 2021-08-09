@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9,"i7":9,"i8":9,"i9":9,"i10":9,"i11":9,"i12":9,"i13":9,"i14":9,"i15":9,"i16":9,"i17":9,"i18":9,"i19":9,"i20":9,"i21":9,"i22":9,"i23":9,"i24":9,"i25":9,"i26":9,"i27":9,"i28":9};
+var data = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9,"i7":9,"i8":9,"i9":9,"i10":9,"i11":9,"i12":9,"i13":9,"i14":9,"i15":9,"i16":9,"i17":9,"i18":9,"i19":9,"i20":9,"i21":9,"i22":9,"i23":9,"i24":9,"i25":9,"i26":9,"i27":9,"i28":9,"i29":9,"i30":9,"i31":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -250,20 +250,25 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>static java.util.List&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadAllTabs(net.mcreator.workspace.Workspace)">loadAllTabs</a></span>&#8203;(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadAllPotions(net.mcreator.workspace.Workspace)">loadAllPotions</a></span>&#8203;(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i16" class="altColor">
+<td class="colFirst"><code>static java.util.List&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadAllTabs(net.mcreator.workspace.Workspace)">loadAllTabs</a></span>&#8203;(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>static java.util.ArrayList&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadBasicGUI(net.mcreator.workspace.Workspace)">loadBasicGUI</a></span>&#8203;(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>static java.lang.String[]</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadBiomeDictionaryTypes()">loadBiomeDictionaryTypes</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>static java.util.List&lt;<a href="MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadBlocks(net.mcreator.workspace.Workspace)">loadBlocks</a></span>&#8203;(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></th>
 <td class="colLast">
@@ -272,7 +277,7 @@ extends java.lang.Object</pre>
  so only oak wood, birch wood, ...</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>static java.util.List&lt;<a href="MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadBlocksAndItems(net.mcreator.workspace.Workspace)">loadBlocksAndItems</a></span>&#8203;(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></th>
 <td class="colLast">
@@ -281,7 +286,16 @@ extends java.lang.Object</pre>
  so only oak wood, birch wood, ...</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
+<td class="colFirst"><code>static java.util.List&lt;<a href="MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadBlocksAndItemsAndPotions(net.mcreator.workspace.Workspace)">loadBlocksAndItemsAndPotions</a></span>&#8203;(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></th>
+<td class="colLast">
+<div class="block">Loads all mod elements and all Minecraft elements (blocks and items) without elements
+ that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
+ so only oak wood, birch wood, ...</div>
+</td>
+</tr>
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>static java.util.List&lt;<a href="MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadBlocksAndItemsAndTags(net.mcreator.workspace.Workspace)">loadBlocksAndItemsAndTags</a></span>&#8203;(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></th>
 <td class="colLast">
@@ -289,42 +303,51 @@ extends java.lang.Object</pre>
  that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i23" class="rowColor">
+<td class="colFirst"><code>static java.util.List&lt;<a href="MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadBlocksAndItemsAndTagsAndPotions(net.mcreator.workspace.Workspace)">loadBlocksAndItemsAndTagsAndPotions</a></span>&#8203;(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></th>
+<td class="colLast">
+<div class="block">Loads all mod elements and all Minecraft elements (blocks and items), including elements
+ that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
+ This list also provides potions from both Minecraft elements and mod elements</div>
+</td>
+</tr>
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>static java.lang.String[]</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadDefaultFeatures()">loadDefaultFeatures</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>static java.lang.String[]</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadDirections()">loadDirections</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>static java.util.List&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadEnchantmentTypes()">loadEnchantmentTypes</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>static java.lang.String[]</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadMapColors()">loadMapColors</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>static java.util.List&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadMaterials()">loadMaterials</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>static java.lang.String[]</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadPathNodeTypes()">loadPathNodeTypes</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>static java.lang.String[]</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadScreens()">loadScreens</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code>static java.util.List&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadStepSounds()">loadStepSounds</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
@@ -384,6 +407,39 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>All Blocks and Items from both Minecraft and custom elements with or without metadata</dd>
+</dl>
+</li>
+</ul>
+<a id="loadBlocksAndItemsAndTagsAndPotions(net.mcreator.workspace.Workspace)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>loadBlocksAndItemsAndTagsAndPotions</h4>
+<pre class="methodSignature">public static&nbsp;java.util.List&lt;<a href="MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;&nbsp;loadBlocksAndItemsAndTagsAndPotions&#8203;(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</pre>
+<div class="block">Loads all mod elements and all Minecraft elements (blocks and items), including elements
+ that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
+ This list also provides potions from both Minecraft elements and mod elements</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>All Blocks and Items and Potions from both Minecraft and custom elements with or without metadata</dd>
+</dl>
+</li>
+</ul>
+<a id="loadBlocksAndItemsAndPotions(net.mcreator.workspace.Workspace)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>loadBlocksAndItemsAndPotions</h4>
+<pre class="methodSignature">public static&nbsp;java.util.List&lt;<a href="MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;&nbsp;loadBlocksAndItemsAndPotions&#8203;(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</pre>
+<div class="block">Loads all mod elements and all Minecraft elements (blocks and items) without elements
+ that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
+ so only oak wood, birch wood, ... are loaded, without wildcard wood element
+ This list also provides potions from both Minecraft elements and mod elements</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>All Blocks and Items and Potions from both Minecraft and custom elements with or without metadata</dd>
 </dl>
 </li>
 </ul>
@@ -498,6 +554,15 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>loadAllPotionEffects</h4>
 <pre class="methodSignature">public static&nbsp;java.util.List&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;&nbsp;loadAllPotionEffects&#8203;(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</pre>
+</li>
+</ul>
+<a id="loadAllPotions(net.mcreator.workspace.Workspace)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>loadAllPotions</h4>
+<pre class="methodSignature">public static&nbsp;java.util.List&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;&nbsp;loadAllPotions&#8203;(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</pre>
 </li>
 </ul>
 <a id="getAllBooleanGameRules(net.mcreator.workspace.Workspace)">
