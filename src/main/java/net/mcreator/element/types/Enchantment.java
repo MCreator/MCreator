@@ -24,7 +24,7 @@ import net.mcreator.workspace.elements.ModElement;
 
 import java.util.List;
 
-public class Enchantment extends GeneratableElement {
+@SuppressWarnings("unused") public class Enchantment extends GeneratableElement {
 
 	public String name;
 	public String type;
