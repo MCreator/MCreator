@@ -1,0 +1,10 @@
+{
+  "name": "Matrix",
+  "colorScheme": {
+    "secondAltBackgroundColor": "0x161b23",
+    "backgroundColor": "0x11161d",
+    "altBackgroundColor": "0x1a202a",
+    "altForegroundColor": "0x00a54e",
+    "foregroundColor": "0x00a54e"
+  }
+}

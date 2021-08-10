@@ -171,8 +171,8 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 		if (outline != null) {
 			double zoom = jZoomPane.getZoomport().getZoom();
 			int x = (int) Math.round(outline.getX() * zoom), y = (int) Math.round(outline.getY() * zoom);
-			int width = (int) Math.round(outline.getWidth() * zoom), height = (int) Math
-					.round(outline.getHeight() * zoom);
+			int width = (int) Math.round(outline.getWidth() * zoom), height = (int) Math.round(
+					outline.getHeight() * zoom);
 			drawOutline((Graphics2D) g, x, y, width, height);
 		}
 	}

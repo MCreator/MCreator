@@ -54,8 +54,8 @@ public class UTF8Control extends ResourceBundle.Control {
 				URLConnection connection = url.openConnection();
 				connection.setUseCaches(!reload);
 				try (InputStream stream = connection.getInputStream()) {
-					resourceBundles
-							.add(new PropertyResourceBundle(new InputStreamReader(stream, StandardCharsets.UTF_8)));
+					resourceBundles.add(
+							new PropertyResourceBundle(new InputStreamReader(stream, StandardCharsets.UTF_8)));
 				}
 			} catch (IOException e) {
 				LOG.warn("Failed to load localization", e);

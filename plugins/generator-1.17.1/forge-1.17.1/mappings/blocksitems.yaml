@@ -1,0 +1,11 @@
+_mcreator_prefix: "CUSTOM:"
+_bypass_prefix: "TAG:"
+_default:
+  - Blocks.AIR
+  - "air"
+Blocks.AIR:
+  - Blocks.AIR
+  - "air"
+Blocks.STONE:
+  - Blocks.STONE
+  - "#forge:stone"

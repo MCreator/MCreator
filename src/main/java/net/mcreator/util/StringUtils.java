@@ -29,8 +29,8 @@ import java.util.regex.Pattern;
 
 public class StringUtils {
 
-	private static final Pattern namePartsSplitter = Pattern
-			.compile("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])|(_)|(?=\\d)");
+	private static final Pattern namePartsSplitter = Pattern.compile(
+			"(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])|(_)|(?=\\d)");
 	private static final Pattern underscoreReducer = Pattern.compile("(?<=\\d)_(?=\\d)");
 	private static final Pattern nonescapedCommaSplitter = Pattern.compile("(?<!\\\\),");
 

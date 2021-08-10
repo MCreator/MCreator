@@ -60,7 +60,7 @@ public class DesaturateDialog extends MCreatorDialog {
 			g2d.setBackground(new Color(0, 0, 0, 0));
 			g2d.clearRect(0, 0, getWidth(), getHeight());
 			g2d.drawImage(ImageUtils.toBufferedImage(
-					ImageUtils.changeSaturation(new ImageIcon(bim), (float) spinner.getValue() / 100).getImage()), null,
+							ImageUtils.changeSaturation(new ImageIcon(bim), (float) spinner.getValue() / 100).getImage()), null,
 					0, 0);
 			g2d.dispose();
 			layer.mergeOverlay();

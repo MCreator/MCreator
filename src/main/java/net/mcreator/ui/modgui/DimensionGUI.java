@@ -73,8 +73,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JCheckBox doesWaterVaporize = L10N.checkbox("elementgui.dimension.does_water_vaporize");
 
 	private final JCheckBox hasSkyLight = L10N.checkbox("elementgui.dimension.has_sky_light");
-	private final JCheckBox imitateOverworldBehaviour = L10N
-			.checkbox("elementgui.dimension.imitate_overworld_behaviour");
+	private final JCheckBox imitateOverworldBehaviour = L10N.checkbox(
+			"elementgui.dimension.imitate_overworld_behaviour");
 
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
 
@@ -114,9 +114,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	@Override protected void initGUI() {
 		whenPortaTriggerlUsed = new ProcedureSelector(this.withEntry("dimension/when_portal_used"), mcreator,
 				L10N.t("elementgui.dimension.event_portal_trigger_used"),
-				VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"))
-				.makeReturnValueOptional();
+				VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeReturnValueOptional();
 		onPortalTickUpdate = new ProcedureSelector(this.withEntry("dimension/on_portal_tick_update"), mcreator,
 				L10N.t("elementgui.dimension.event_portal_tick_update"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
@@ -129,8 +128,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		portalMakeCondition = new ProcedureSelector(this.withEntry("dimension/condition_portal_make"), mcreator,
 				L10N.t("elementgui.dimension.event_can_make_portal"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"))
-				.makeInline();
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 		portalUseCondition = new ProcedureSelector(this.withEntry("dimension/condition_portal_use"), mcreator,
 				L10N.t("elementgui.dimension.event_can_travel_through_portal"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeInline();
@@ -173,8 +172,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.fluid_block"), new Color(0xB8E700)));
 		proper2.add(PanelUtils.join(fluidBlock));
 
-		proper2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("dimension/biomes"), L10N.label("elementgui.dimension.biomes_in")));
+		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/biomes"),
+				L10N.label("elementgui.dimension.biomes_in")));
 		proper2.add(biomesInDimension);
 
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fog_color"),

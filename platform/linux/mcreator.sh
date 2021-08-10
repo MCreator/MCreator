@@ -28,4 +28,4 @@ fi
 export CLASSPATH='./lib/mcreator.jar:./lib/*'
 
 # launch MCreator with bundled java
-./jdk/bin/java net.mcreator.Launcher "$1"
+./jdk/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED net.mcreator.Launcher "$1"

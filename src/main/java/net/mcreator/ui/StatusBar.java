@@ -129,8 +129,8 @@ public class StatusBar extends JPanel {
 
 		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		setPreferredSize(new Dimension(22, 22));
-		setBorder(BorderFactory
-				.createMatteBorder(1, 0, 0, 0, ((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker()));
+		setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0,
+				((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker()));
 
 		addToolTipReader();
 

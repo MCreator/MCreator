@@ -136,9 +136,9 @@ public class NewLayerDialog extends MCreatorDialog {
 		properties.add(L10N.label("dialog.imageeditor.new_layer_fill_with"));
 		properties.add(layerType);
 
-		specialSettings
-				.add(PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor.new_layer_fills_transparency")),
-						layerTypes[0]);
+		specialSettings.add(
+				PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor.new_layer_fills_transparency")),
+				layerTypes[0]);
 		specialSettings.add(colorSettings, layerTypes[1]);
 		specialSettings.add(templateSettings, layerTypes[2]);
 

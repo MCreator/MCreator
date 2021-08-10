@@ -37,8 +37,8 @@ public class ShowFindAction extends BasicAction {
 				codeEditorView.disableJumpToMode();
 			}
 		});
-		actionRegistry.getMCreator().mcreatorTabs
-				.addTabShownListener(tab -> setEnabled(tab.getContent() instanceof CodeEditorView));
+		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
+				tab -> setEnabled(tab.getContent() instanceof CodeEditorView));
 	}
 
 }

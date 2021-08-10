@@ -77,9 +77,8 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 
 				label_details.setText(
 						"<html><div width=210 height=42 style=\"overflow: hidden;\"><small" + (isSelected ?
-								(" color=#" + Integer
-										.toHexString(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).getRGB())
-										.substring(2)) :
+								(" color=#" + Integer.toHexString(
+										((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).getRGB()).substring(2)) :
 								"") + ">" + ma.getType().getDescription());
 
 				if (!ma.doesCompile()) {
@@ -115,18 +114,15 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 						&& modIcon.getIconHeight() > 0 && modIcon != MCItem.DEFAULT_ICON) {
 					if (dva != null) {
 						icon.setIcon(ImageUtils.drawOver(
-								ImageUtils.drawOver(TiledImageCache.getModTypeIcon(null), modIcon, 18, 18, 28, 28),
-								dva));
+								ImageUtils.drawOver(UIRES.get("mod_types.empty"), modIcon, 18, 18, 28, 28), dva));
 					} else {
-						icon.setIcon(
-								ImageUtils.drawOver(TiledImageCache.getModTypeIcon(null), modIcon, 18, 18, 28, 28));
+						icon.setIcon(ImageUtils.drawOver(UIRES.get("mod_types.empty"), modIcon, 18, 18, 28, 28));
 					}
 				} else {
 					if (dva != null) {
-						icon.setIcon(ImageUtils
-								.drawOver(TiledImageCache.getModTypeIcon(((ModElement) element).getType()), dva));
+						icon.setIcon(ImageUtils.drawOver(((ModElement) element).getType().getIcon(), dva));
 					} else {
-						icon.setIcon(TiledImageCache.getModTypeIcon(((ModElement) element).getType()));
+						icon.setIcon(((ModElement) element).getType().getIcon());
 					}
 				}
 			}

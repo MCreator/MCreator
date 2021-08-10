@@ -192,8 +192,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnPillagerOutpost.setSelected(false);
 		spawnPillagerOutpost.setOpaque(false);
 
-		sbbp2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/village"), L10N.label("elementgui.biome.generate_village")));
+		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/village"),
+				L10N.label("elementgui.biome.generate_village")));
 		sbbp2.add(villageType);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_woodland_mansions"),
@@ -252,36 +252,36 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnBiome.setSelected(true);
 		spawnBiome.setOpaque(false);
 
-		spawnproperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/weight"), L10N.label("elementgui.biome.weight")));
+		spawnproperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("biome/weight"), L10N.label("elementgui.biome.weight")));
 		spawnproperties.add(biomeWeight);
 
-		spawnproperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/temperature"), L10N.label("elementgui.biome.temperature")));
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/temperature"),
+				L10N.label("elementgui.biome.temperature")));
 		spawnproperties.add(temperature);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/raining_possibility"),
 				L10N.label("elementgui.biome.raining_possibility")));
 		spawnproperties.add(rainingPossibility);
 
-		spawnproperties
-				.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/type"), L10N.label("elementgui.biome.type")));
+		spawnproperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("biome/type"), L10N.label("elementgui.biome.type")));
 		spawnproperties.add(biomeType);
 
-		spawnproperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/category"), L10N.label("elementgui.biome.category")));
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/category"),
+				L10N.label("elementgui.biome.category")));
 		spawnproperties.add(biomeCategory);
 
-		spawnproperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/parent"), L10N.label("elementgui.biome.parent")));
+		spawnproperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("biome/parent"), L10N.label("elementgui.biome.parent")));
 		spawnproperties.add(parent);
 
-		spawnproperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/dictionary"), L10N.label("elementgui.biome.dictionnary")));
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/dictionary"),
+				L10N.label("elementgui.biome.dictionnary")));
 		spawnproperties.add(biomeDictionaryTypes);
 
-		spawnproperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/base_height"), L10N.label("elementgui.biome.height")));
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/base_height"),
+				L10N.label("elementgui.biome.height")));
 		spawnproperties.add(baseHeight);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/height_variation"),
@@ -375,29 +375,28 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/name"), L10N.label("elementgui.biome.name")));
 		sbbp4.add(name);
 
-		sbbp4n.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/ground_block"), L10N.label("elementgui.biome.ground_block"),
-						new Color(206, 109, 109).brighter()));
+		sbbp4n.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ground_block"),
+				L10N.label("elementgui.biome.ground_block"), new Color(206, 109, 109).brighter()));
 		sbbp4n.add(PanelUtils.join(groundBlock));
 
 		sbbp4n.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/underground_block"),
 				L10N.label("elementgui.biome.undeground_block"), new Color(179, 94, 26).brighter()));
 		sbbp4n.add(PanelUtils.join(undergroundBlock));
 
-		sbbp4.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/air_color"), L10N.label("elementgui.biome.air_color")));
+		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/air_color"),
+				L10N.label("elementgui.biome.air_color")));
 		sbbp4.add(airColor);
 
-		sbbp4.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/grass_color"), L10N.label("elementgui.biome.grass_color")));
+		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/grass_color"),
+				L10N.label("elementgui.biome.grass_color")));
 		sbbp4.add(grassColor);
 
 		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/foliage_color"),
 				L10N.label("elementgui.biome.foliage_color")));
 		sbbp4.add(foliageColor);
 
-		sbbp4.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/water_color"), L10N.label("elementgui.biome.water_color")));
+		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/water_color"),
+				L10N.label("elementgui.biome.water_color")));
 		sbbp4.add(waterColor);
 
 		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/water_fog_color"),
@@ -417,24 +416,20 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.max_water_depth")));
 		sbbp5.add(maxWaterDepth);
 
-		sbbp5.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/stem_block"), L10N.label("elementgui.biome.stem_block"),
-						new Color(49, 148, 53)));
+		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/stem_block"),
+				L10N.label("elementgui.biome.stem_block"), new Color(49, 148, 53)));
 		sbbp5.add(PanelUtils.join(treeStem));
 
-		sbbp5.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/branch_block"), L10N.label("elementgui.biome.branch_block"),
-						new Color(196, 104, 205)));
+		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/branch_block"),
+				L10N.label("elementgui.biome.branch_block"), new Color(196, 104, 205)));
 		sbbp5.add(PanelUtils.join(treeBranch));
 
-		sbbp5.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/vines_block"), L10N.label("elementgui.biome.vines_block"),
-						new Color(148, 248, 252)));
+		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/vines_block"),
+				L10N.label("elementgui.biome.vines_block"), new Color(148, 248, 252)));
 		sbbp5.add(PanelUtils.join(treeVines));
 
-		sbbp5.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/fruits_block"), L10N.label("elementgui.biome.fruits_block"),
-						new Color(255, 255, 0)));
+		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/fruits_block"),
+				L10N.label("elementgui.biome.fruits_block"), new Color(255, 255, 0)));
 		sbbp5.add(PanelUtils.join(treeFruits));
 
 		customTrees.addActionListener(event -> updateBiomeTreesForm());
@@ -463,8 +458,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		JPanel pane1 = new JPanel(new GridLayout());
 
-		JComponent component = PanelUtils.northAndCenterElement(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/spawn_entities"),
+		JComponent component = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("biome/spawn_entities"),
 						L10N.label("elementgui.biome.spawn_entities")), spawnEntries);
 
 		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -488,8 +483,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.additions_sound")));
 		sounds.add(additionsSound);
 
-		sounds.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("biome/mood_sound"), L10N.label("elementgui.biome.mood_sound")));
+		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mood_sound"),
+				L10N.label("elementgui.biome.mood_sound")));
 		sounds.add(moodSound);
 
 		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mood_sound_delay"),
@@ -528,8 +523,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnParticle.addActionListener(event -> updateParticleParameters());
 
 		effectsPane.setOpaque(false);
-		effectsPane.add("Center", PanelUtils
-				.totalCenterInPanel(PanelUtils.westAndEastElement(sounds, PanelUtils.pullElementUp(particles))));
+		effectsPane.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.westAndEastElement(sounds, PanelUtils.pullElementUp(particles))));
 
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(groundBlock);

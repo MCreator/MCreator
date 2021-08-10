@@ -46,8 +46,8 @@ public class MCreatorVersionNumber {
 		major = properties.getProperty("mcreator");
 
 		String snapshotText = FileIO.readResourceToString("/snapshot.conf");
-		build = StringUtils.repeat('9', buildFormat
-				.length()); // by default use the largest to prevent regenerating workspace and updating during development
+		build = StringUtils.repeat('9',
+				buildFormat.length()); // by default use the largest to prevent regenerating workspace and updating during development
 
 		try {
 			Enumeration<URL> resources = Launcher.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
@@ -90,8 +90,8 @@ public class MCreatorVersionNumber {
 	}
 
 	public static boolean isBuildNumberDevelopment(long full) {
-		return full % (long) Math.pow(10, buildFormat.length()) == Integer
-				.parseInt(StringUtils.repeat('9', buildFormat.length()));
+		return full % (long) Math.pow(10, buildFormat.length()) == Integer.parseInt(
+				StringUtils.repeat('9', buildFormat.length()));
 	}
 
 	public static long majorStringToLong(String major) {
