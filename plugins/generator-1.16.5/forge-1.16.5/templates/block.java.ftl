@@ -745,6 +745,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			</#if>
 
 			<#if hasProcedure(data.onRightClicked)>
+				double hitX = hit.getHitVec().x;
+				double hitY = hit.getHitVec().y;
+				double hitZ = hit.getHitVec().z;
 				Direction direction = hit.getFace();
 				<#if hasReturnValue(data.onRightClicked)>
 				ActionResultType result = <@procedureOBJToActionResultTypeCode data.onRightClicked/>;
