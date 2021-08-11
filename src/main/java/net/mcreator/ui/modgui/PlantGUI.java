@@ -627,7 +627,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		pane5.add("Center", PanelUtils.totalCenterInPanel(plocb));
 		pane5.setOpaque(false);
 
-		JPanel events2 = new JPanel(new GridLayout(4, 3, 5, 5));
+		JPanel events2 = new JPanel(new GridLayout(3, 4, 5, 5));
 		events2.setOpaque(false);
 		events2.add(onRightClicked);
 		events2.add(onBlockAdded);

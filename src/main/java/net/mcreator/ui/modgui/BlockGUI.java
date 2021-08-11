@@ -869,7 +869,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				PanelUtils.westAndEastElement(selp, PanelUtils.centerAndSouthElement(selp3, soundProperties))));
 		pane3.setOpaque(false);
 
-		JPanel events2 = new JPanel(new GridLayout(5, 3, 5, 5));
+		JPanel events2 = new JPanel(new GridLayout(4, 5, 5, 5));
 		events2.setOpaque(false);
 
 		events2.add(onRightClicked);
