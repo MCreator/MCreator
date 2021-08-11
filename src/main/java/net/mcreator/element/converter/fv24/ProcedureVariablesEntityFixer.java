@@ -75,12 +75,15 @@ public class ProcedureVariablesEntityFixer implements IConverter {
 				// Check if the selected variable needs the entity input
 				Element variable = XMLUtil.getFirstChildrenWithName(element, "field");
 				if (variable != null && BlocklyVariables.isPlayerVariableForWorkspace(workspace, variable.getTextContent())) {
+					Element mutationXML = doc.createElement("mutation");
+					mutationXML.setAttribute("is_player_var", "true");
 					Element value = doc.createElement("value");
 					value.setAttribute("name", "entity");
 					Element deps_block = doc.createElement("block");
 					deps_block.setAttribute("type", "entity_from_deps");
 					value.appendChild(deps_block);
 					element.appendChild(value);
+					element.appendChild(mutationXML);
 				}
 			}
 		}
