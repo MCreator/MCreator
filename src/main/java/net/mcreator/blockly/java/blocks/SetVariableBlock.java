@@ -99,7 +99,7 @@ public class SetVariableBlock implements IBlockGenerator {
 						master.addDependency(new Dependency("world", "world"));
 					} else if (entityInput == null && (scope.equals("PLAYER_LIFETIME") || scope.equals("PLAYER_PERSISTENT"))) {
 						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-								"Set variable block for NBT variable is missing entity input."));
+								"Set variable block for player variable is missing entity input."));
 						return;
 					}
 				}
