@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
+<#include "../mcitems.ftl">
 {
   "type": "minecraft:smithing",
   "base": {
