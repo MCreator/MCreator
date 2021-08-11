@@ -20,6 +20,7 @@ package net.mcreator.ui.blockly;
 
 import com.google.gson.Gson;
 import net.mcreator.blockly.data.ExternalTrigger;
+import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.io.OS;
@@ -267,18 +268,7 @@ public class BlocklyJavascriptBridge {
 	}
 
 	@SuppressWarnings("unused") public boolean isPlayerVariable(String field) {
-		return isPlayerVariableForWorkspace(mcreator.getWorkspace(), field);
-	}
-
-	@SuppressWarnings("unused") public static boolean isPlayerVariableForWorkspace(Workspace workspace, String field) {
-		if (field == null)
-			return false;
-		String[] name = field.split(":");
-		if (name.length == 2 && name[0].equals("global")) {
-			String scope = workspace.getVariableElementByName(name[1]).getScope().name();
-			return scope.equals("PLAYER_LIFETIME") || scope.equals("PLAYER_PERSISTENT");
-		}
-		return false;
+		return BlocklyVariables.isPlayerVariableForWorkspace(mcreator.getWorkspace(), field);
 	}
 
 	public void setJavaScriptEventListener(JavaScriptEventListener listener) {

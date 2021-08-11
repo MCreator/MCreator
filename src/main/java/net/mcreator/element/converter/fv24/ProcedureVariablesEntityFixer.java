@@ -20,6 +20,7 @@
 package net.mcreator.element.converter.fv24;
 
 import com.google.gson.JsonElement;
+import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Procedure;
@@ -73,7 +74,7 @@ public class ProcedureVariablesEntityFixer implements IConverter {
 			if (type != null && (type.startsWith("variables_get_") || type.startsWith("variables_set_"))) {
 				// Check if the selected variable needs the entity input
 				Element variable = XMLUtil.getFirstChildrenWithName(element, "field");
-				if (variable != null && BlocklyJavascriptBridge.isPlayerVariableForWorkspace(workspace, variable.getTextContent())) {
+				if (variable != null && BlocklyVariables.isPlayerVariableForWorkspace(workspace, variable.getTextContent())) {
 					Element value = doc.createElement("value");
 					value.setAttribute("name", "entity");
 					Element deps_block = doc.createElement("block");
