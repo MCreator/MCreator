@@ -456,7 +456,8 @@ Blockly.Extensions.register('is_custom_loop',
 Blockly.Extensions.register('biome_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("biome"))), 'biome');
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("biome"),
+            javabridge.getReadableListOf("biome"))), 'biome');
     });
 
 Blockly.Extensions.register('biome_dictionary_list_provider',
@@ -468,7 +469,8 @@ Blockly.Extensions.register('biome_dictionary_list_provider',
 Blockly.Extensions.register('entity_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("entity"))), 'entity');
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("entity"),
+            javabridge.getReadableListOf("entity"))), 'entity');
     });
 
 Blockly.Extensions.register('gui_list_provider',
@@ -511,6 +513,12 @@ Blockly.Extensions.register('effect_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("effect"))), 'potion'); // field name is potion for legacy reasons
+    });
+
+Blockly.Extensions.register('potion_list_provider',
+    function () {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArray(javabridge.getListOf("potion"))), 'potionitem');
     });
 
 Blockly.Extensions.register('gamerulesboolean_list_provider',
