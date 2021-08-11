@@ -58,7 +58,7 @@ public class JVillagerTradeProfession extends JPanel {
 		parent.add(container);
 		professionList.add(this);
 
-		ElementUtil.loadAllVIllagerProfessions(workspace).forEach(e -> villager.addItem(e.getName()));
+		ElementUtil.loadAllVillagerProfessions(workspace).forEach(e -> villager.addItem(e.getName()));
 
 		setBackground(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter());
 
