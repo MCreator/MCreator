@@ -70,8 +70,8 @@ public class DialogsTest {
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration
-				.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
 
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
@@ -80,8 +80,8 @@ public class DialogsTest {
 		WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
 		workspaceSettings.setModName("Test mod");
 		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
-		Workspace workspace = Workspace
-				.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"), workspaceSettings);
+		Workspace workspace = Workspace.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"),
+				workspaceSettings);
 
 		mcreator = new MCreator(null, workspace);
 	}
@@ -99,8 +99,9 @@ public class DialogsTest {
 	}
 
 	@Test public void testGeneratorSelectorDialog() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> GeneratorSelector
-				.getGeneratorSelector(mcreator, mcreator.getGeneratorConfiguration(), GeneratorFlavor.FORGE));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> GeneratorSelector.getGeneratorSelector(mcreator, mcreator.getGeneratorConfiguration(),
+						GeneratorFlavor.FORGE));
 	}
 
 	@Test public void testAboutDialog() throws Throwable {
@@ -122,10 +123,10 @@ public class DialogsTest {
 
 	@Test public void testTextureDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importArmor(mcreator));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs
-				.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs
-				.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
+				BlockItemTextureSelector.TextureType.BLOCK));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
+				BlockItemTextureSelector.TextureType.ITEM));
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importOtherTextures(mcreator));
 	}
 
@@ -135,12 +136,12 @@ public class DialogsTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> InjectTagsTool.getAction(mcreator.actionRegistry).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> MaterialPackMakerTool.getAction(mcreator.actionRegistry).doAction());
-		UITestUtil
-				.waitUntilWindowIsOpen(mcreator, () -> OrePackMakerTool.getAction(mcreator.actionRegistry).doAction());
-		UITestUtil
-				.waitUntilWindowIsOpen(mcreator, () -> ToolPackMakerTool.getAction(mcreator.actionRegistry).doAction());
-		UITestUtil
-				.waitUntilWindowIsOpen(mcreator, () -> WoodPackMakerTool.getAction(mcreator.actionRegistry).doAction());
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> OrePackMakerTool.getAction(mcreator.actionRegistry).doAction());
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> ToolPackMakerTool.getAction(mcreator.actionRegistry).doAction());
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> WoodPackMakerTool.getAction(mcreator.actionRegistry).doAction());
 	}
 
 	@Test public void testWYSIWYGDialogs() throws Throwable {
@@ -159,8 +160,8 @@ public class DialogsTest {
 	}
 
 	@Test public void testFileDialogs() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> FileDialogs
-				.getWorkspaceDirectorySelectDialog(mcreator, new File(System.getProperty("user.home"))));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> FileDialogs.getWorkspaceDirectorySelectDialog(mcreator,
+				new File(System.getProperty("user.home"))));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> FileDialogs.getMultiOpenDialog(mcreator, new String[] { ".png" }));
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> FileDialogs.getOpenDialog(mcreator, new String[] { ".png" }));
@@ -180,11 +181,11 @@ public class DialogsTest {
 
 	@Test public void testBlockItemTextureSelector() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK)
-						.setVisible(true));
+				() -> new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK).setVisible(
+						true));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM)
-						.setVisible(true));
+				() -> new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM).setVisible(
+						true));
 	}
 
 }

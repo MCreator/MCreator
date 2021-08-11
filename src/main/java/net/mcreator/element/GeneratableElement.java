@@ -101,31 +101,49 @@ public abstract class GeneratableElement {
 		@Override
 		public GeneratableElement deserialize(JsonElement jsonElement, Type type,
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-			ModElementType modElementType = jsonDeserializationContext
-					.deserialize(jsonElement.getAsJsonObject().get("_type"), ModElementType.class);
-			int importedFormatVersion = jsonDeserializationContext
-					.deserialize(jsonElement.getAsJsonObject().get("_fv"), Integer.class);
-
-			final GeneratableElement[] generatableElement = {
-					gson.fromJson(jsonElement.getAsJsonObject().get("definition"),
-							ModElementTypeRegistry.REGISTRY.get(modElementType).getModElementStorageClass()) };
-
-			generatableElement[0].setModElement(this.lastModElement); // set the mod element reference
-			passWorkspaceToFields(generatableElement[0], workspace);
-
-			if (importedFormatVersion != GeneratableElement.formatVersion) {
-				List<IConverter> converters = ConverterRegistry.getConvertersForModElementType(modElementType);
-				if (converters != null) {
-					converters.stream().filter(converter -> importedFormatVersion < converter.getVersionConvertingTo())
-							.sorted().forEach(converter -> {
-						LOG.debug("Converting mod element " + this.lastModElement.getName() + " (" + modElementType
-								+ ") from FV" + importedFormatVersion + " to FV" + converter.getVersionConvertingTo());
-						generatableElement[0] = converter.convert(this.workspace, generatableElement[0], jsonElement);
-					});
-				}
+			String newType = jsonElement.getAsJsonObject().get("_type").getAsString();
+			switch (newType) {
+			case "gun":
+				newType = "rangeditem";
+				break;
+			case "mob":
+				newType = "livingentity";
+				break;
 			}
 
-			return generatableElement[0];
+			try {
+				ModElementType<?> modElementType = ModElementTypeLoader.getModElementType(newType);
+
+				int importedFormatVersion = jsonDeserializationContext.deserialize(
+						jsonElement.getAsJsonObject().get("_fv"), Integer.class);
+
+				final GeneratableElement[] generatableElement = {
+						gson.fromJson(jsonElement.getAsJsonObject().get("definition"),
+								modElementType.getModElementStorageClass()) };
+
+				generatableElement[0].setModElement(this.lastModElement); // set the mod element reference
+				passWorkspaceToFields(generatableElement[0], workspace);
+
+				if (importedFormatVersion != GeneratableElement.formatVersion) {
+					List<IConverter> converters = ConverterRegistry.getConvertersForModElementType(modElementType);
+					if (converters != null) {
+						converters.stream()
+								.filter(converter -> importedFormatVersion < converter.getVersionConvertingTo())
+								.sorted().forEach(converter -> {
+									LOG.debug("Converting mod element " + this.lastModElement.getName() + " (" + modElementType
+											+ ") from FV" + importedFormatVersion + " to FV"
+											+ converter.getVersionConvertingTo());
+									generatableElement[0] = converter.convert(this.workspace, generatableElement[0],
+											jsonElement);
+								});
+					}
+				}
+
+				return generatableElement[0];
+			} catch (Exception e) {
+				LOG.warn("Failed to deserialize mod element " + lastModElement.getName(), e);
+				return null;
+			}
 		}
 
 		@Override
@@ -133,7 +151,7 @@ public abstract class GeneratableElement {
 				JsonSerializationContext jsonSerializationContext) {
 			JsonObject root = new JsonObject();
 			root.add("_fv", new JsonPrimitive(GeneratableElement.formatVersion));
-			root.add("_type", gson.toJsonTree(modElement.getModElement().getType()));
+			root.add("_type", gson.toJsonTree(modElement.getModElement().getType().getRegistryName()));
 			root.add("definition", gson.toJsonTree(modElement));
 			return root;
 		}

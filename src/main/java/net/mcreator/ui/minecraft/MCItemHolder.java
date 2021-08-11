@@ -48,12 +48,16 @@ public class MCItemHolder extends JButton implements IValidable {
 	private final MCreator mcreator;
 
 	public MCItemHolder(MCreator mcreator, MCItem.ListProvider blocksConsumer) {
-		this(mcreator, blocksConsumer, false);
+		this(mcreator, blocksConsumer, false, false);
 	}
 
 	public MCItemHolder(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags) {
+		this(mcreator, blocksConsumer, supportTags, false);
+	}
+
+	public MCItemHolder(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags, boolean hasPotions) {
 		this.mcreator = mcreator;
-		bs = new MCItemSelectorDialog(mcreator, blocksConsumer, supportTags);
+		bs = new MCItemSelectorDialog(mcreator, blocksConsumer, supportTags, hasPotions);
 		bs.setItemSelectedListener(e -> {
 			MCItem bsa = bs.getSelectedMCItem();
 			if (bsa != null) {

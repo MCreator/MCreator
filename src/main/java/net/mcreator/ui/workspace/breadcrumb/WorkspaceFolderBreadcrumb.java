@@ -107,9 +107,8 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 						for (IElement file : files) {
 							JMenuItem menuItem = new JMenuItem("<html>&nbsp;" + file.getName());
 							if (file instanceof ModElement)
-								menuItem.setIcon(new ImageIcon(ImageUtils
-										.resizeAA(ModElementManager.getModElementIcon((ModElement) file).getImage(),
-												16)));
+								menuItem.setIcon(new ImageIcon(ImageUtils.resizeAA(
+										ModElementManager.getModElementIcon((ModElement) file).getImage(), 16)));
 							else if (file instanceof FolderElement)
 								menuItem.setIcon(UIRES.get("laf.directory.gif"));
 

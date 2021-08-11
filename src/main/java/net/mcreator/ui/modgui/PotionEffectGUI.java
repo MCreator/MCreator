@@ -42,6 +42,7 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -70,6 +71,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	private ProcedureSelector onActiveTick;
 	private ProcedureSelector onExpired;
 
+	private ProcedureSelector activeTickCondition;
+
 	public PotionEffectGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -86,6 +89,9 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		onExpired = new ProcedureSelector(this.withEntry("potioneffect/when_potion_expires"), mcreator,
 				L10N.t("elementgui.potioneffect.event_potion_expires"),
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
+		activeTickCondition = new ProcedureSelector(this.withEntry("potioneffect/active_tick_condition"), mcreator,
+				L10N.t("elementgui.potioneffect.event_tick_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("duration:number/amplifier:number"));
 
 		renderStatusInInventory.setSelected(true);
 		renderStatusInHUD.setSelected(true);
@@ -121,16 +127,16 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> icon.addItem(el.getName()));
 		});
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potioneffect/icon"), L10N.label("elementgui.potioneffect.icon")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/icon"),
+				L10N.label("elementgui.potioneffect.icon")));
 		selp.add(PanelUtils.centerAndEastElement(icon, importicontexture));
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/instant"),
 				L10N.label("elementgui.potioneffect.instant")));
 		selp.add(isInstant);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potioneffect/bad"), L10N.label("elementgui.potioneffect.bad")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/bad"),
+				L10N.label("elementgui.potioneffect.bad")));
 		selp.add(isBad);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/benefitical"),
@@ -145,8 +151,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 				L10N.label("elementgui.potioneffect.render_status_hud")));
 		selp.add(renderStatusInHUD);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("potioneffect/color"), L10N.label("elementgui.potioneffect.color")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/color"),
+				L10N.label("elementgui.potioneffect.color")));
 		selp.add(color);
 
 		selp.setOpaque(false);
@@ -156,11 +162,12 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 		JPanel events = new JPanel();
 		events.setLayout(new BoxLayout(events, BoxLayout.PAGE_AXIS));
-		JPanel events2 = new JPanel(new GridLayout(1, 3, 8, 8));
+		JPanel events2 = new JPanel(new GridLayout(2, 2, 8, 8));
 		events2.setOpaque(false);
 		events2.add(onStarted);
-		events2.add(onActiveTick);
 		events2.add(onExpired);
+		events2.add(activeTickCondition);
+		events2.add(onActiveTick);
 		events.add(PanelUtils.join(events2));
 		events.setOpaque(false);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
@@ -191,6 +198,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		onStarted.refreshListKeepSelected();
 		onActiveTick.refreshListKeepSelected();
 		onExpired.refreshListKeepSelected();
+		activeTickCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(icon, ListUtils.merge(Collections.singleton(""),
 				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
@@ -216,6 +224,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		onStarted.setSelectedProcedure(potion.onStarted);
 		onActiveTick.setSelectedProcedure(potion.onActiveTick);
 		onExpired.setSelectedProcedure(potion.onExpired);
+		activeTickCondition.setSelectedProcedure(potion.activeTickCondition);
 	}
 
 	@Override public PotionEffect getElementFromGUI() {
@@ -231,6 +240,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		potion.onStarted = onStarted.getSelectedProcedure();
 		potion.onActiveTick = onActiveTick.getSelectedProcedure();
 		potion.onExpired = onExpired.getSelectedProcedure();
+		potion.activeTickCondition = activeTickCondition.getSelectedProcedure();
 		return potion;
 	}
 

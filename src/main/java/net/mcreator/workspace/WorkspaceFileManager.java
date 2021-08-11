@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.mcreator.io.FileIO;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.ModElementManager;
 import net.mcreator.workspace.elements.SoundElement;
 import org.apache.logging.log4j.LogManager;
@@ -45,7 +46,8 @@ public class WorkspaceFileManager implements Closeable {
 	private final Logger LOG;
 
 	public static final Gson gson = new GsonBuilder().setLenient().setPrettyPrinting()
-			.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer()).create();
+			.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer())
+			.registerTypeAdapter(ModElement.class, new ModElement.ModElementDeserializer()).create();
 
 	private DataSavedListener dataSavedListener;
 
@@ -67,9 +69,8 @@ public class WorkspaceFileManager implements Closeable {
 		this.modElementManager = new ModElementManager(workspace);
 
 		// start autosave scheduler
-		lastSchedule = dataSaveExecutor
-				.schedule(new SaveTask(this), PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval,
-						TimeUnit.SECONDS);
+		lastSchedule = dataSaveExecutor.schedule(new SaveTask(this),
+				PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval, TimeUnit.SECONDS);
 	}
 
 	public File getWorkspaceFile() {

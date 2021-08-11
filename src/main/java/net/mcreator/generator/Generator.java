@@ -57,8 +57,8 @@ import java.util.stream.Collectors;
 
 public class Generator implements IGenerator, Closeable {
 
-	public static final Map<String, GeneratorConfiguration> GENERATOR_CACHE = Collections
-			.synchronizedMap(new LinkedHashMap<>());
+	public static final Map<String, GeneratorConfiguration> GENERATOR_CACHE = Collections.synchronizedMap(
+			new LinkedHashMap<>());
 
 	protected final Logger LOG;
 	private final String generatorName;
@@ -174,8 +174,8 @@ public class Generator implements IGenerator, Closeable {
 						if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
 							return null; // if they are, we skip this file
 
-					String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData())
-							.get("template");
+					String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get(
+							"template");
 
 					Map<String, Object> dataModel = new HashMap<>();
 
@@ -195,8 +195,8 @@ public class Generator implements IGenerator, Closeable {
 		generateFiles(generatorFiles, formatAndOrganiseImports);
 
 		// generate lang files
-		LanguageFilesGenerator
-				.generateLanguageFiles(this, workspace, generatorConfiguration.getLanguageFileSpecification());
+		LanguageFilesGenerator.generateLanguageFiles(this, workspace,
+				generatorConfiguration.getLanguageFileSpecification());
 
 		return success.get();
 	}
@@ -229,7 +229,7 @@ public class Generator implements IGenerator, Closeable {
 				.getModElementDefinition(element.getModElement().getType()); // config map
 		if (map == null) {
 			LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
-					.name());
+					.getRegistryName());
 			return Collections.emptyList();
 		}
 
@@ -313,7 +313,7 @@ public class Generator implements IGenerator, Closeable {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(element.getType());
 
 		if (map == null) {
-			LOG.warn("Failed to load element definition for mod element type " + element.getType().name());
+			LOG.warn("Failed to load element definition for mod element type " + element.getType().getRegistryName());
 			return;
 		}
 
@@ -366,7 +366,7 @@ public class Generator implements IGenerator, Closeable {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(element.getType());
 
 		if (map == null) {
-			LOG.info("Failed to load element definition for mod element type " + element.getType().name());
+			LOG.info("Failed to load element definition for mod element type " + element.getType().getRegistryName());
 			return null;
 		}
 
@@ -388,8 +388,8 @@ public class Generator implements IGenerator, Closeable {
 					}
 				}
 
-				String name = GeneratorTokens.replaceVariableTokens(generatableElement, GeneratorTokens
-						.replaceTokens(workspace, rawname.replace("@NAME", element.getName())
+				String name = GeneratorTokens.replaceVariableTokens(generatableElement,
+						GeneratorTokens.replaceTokens(workspace, rawname.replace("@NAME", element.getName())
 								.replace("@registryname", element.getRegistryName())));
 
 				if (TemplateConditionParser.shoudSkipTemplateBasedOnCondition(conditionRaw, generatableElement)) {
@@ -554,15 +554,14 @@ public class Generator implements IGenerator, Closeable {
 										.forEach(f -> FileIO.copyFile(f, new File(to, f.getName())));
 						break;
 					case "OBJ_inlinetextures":
-						String prefix = GeneratorTokens
-								.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("prefix"));
+						String prefix = GeneratorTokens.replaceTokens(workspace,
+								(String) ((Map<?, ?>) task).get("prefix"));
 						for (Model model : modelList)
 							if (model.getType() == Model.Type.OBJ) {
 								Arrays.stream(model.getFiles())
 										.limit(2) // we only copy fist two elements, we skip last one which is texture mapping if it exists
-										.forEach(f -> ModelUtils
-												.copyOBJorMTLApplyTextureMapping(f, new File(to, f.getName()), model,
-														prefix));
+										.forEach(f -> ModelUtils.copyOBJorMTLApplyTextureMapping(f,
+												new File(to, f.getName()), model, prefix));
 							}
 						break;
 					case "JSON":

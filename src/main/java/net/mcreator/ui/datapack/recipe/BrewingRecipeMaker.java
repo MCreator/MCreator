@@ -36,15 +36,16 @@ public class BrewingRecipeMaker extends JPanel {
 	public MCItemHolder cb2;
 	public MCItemHolder cb3;
 
-	public BrewingRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
+	public BrewingRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTagsAndPotions,
+			MCItem.ListProvider itemsWithTags, MCItem.ListProvider itemsWithPotions) {
 		ImagePanel ip = new ImagePanel(UIRES.get("recipe.brewing").getImage());
 
 		ip.fitToImage();
 		ip.setLayout(null);
 
-		cb1 = new MCItemHolder(mcreator, itemsWithTags, true);
+		cb1 = new MCItemHolder(mcreator, itemsWithTagsAndPotions, true, true);
 		cb2 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb3 = new MCItemHolder(mcreator, itemsWithTags, true);
+		cb3 = new MCItemHolder(mcreator, itemsWithPotions, false, true);
 
 		JButton export = new JButton(UIRES.get("18px.export"));
 

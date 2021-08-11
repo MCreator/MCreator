@@ -57,8 +57,8 @@ import java.util.List;
 		GeneratableElement generatableElement = workspace.getModElementByName(name).getGeneratableElement();
 		if (generatableElement instanceof net.mcreator.element.types.Procedure) {
 			try {
-				return ((net.mcreator.element.types.Procedure) generatableElement)
-						.getBlocklyToProcedure(new HashMap<>()).getReturnType() != null;
+				return ((net.mcreator.element.types.Procedure) generatableElement).getBlocklyToProcedure(
+						new HashMap<>()).getReturnType() != null;
 			} catch (Exception ignored) {
 			}
 		}

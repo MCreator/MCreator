@@ -116,10 +116,11 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 			} else if (!workspaceFolder.getText().matches("[a-zA-Z0-9_/+\\-\\\\:()\\[\\].,@$=`' ]+")) {
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("dialog.new_workspace.letters_valid"));
-			} else if (selectedFile.getName().contains(" ") || selectedFile.getName().contains(":") || selectedFile
-					.getName().contains("\\") || selectedFile.getName().contains("/") || selectedFile.getName()
-					.contains("|") || selectedFile.getName().contains("\"") || selectedFile.getName().contains("?")
-					|| selectedFile.getName().contains("*") || selectedFile.getName().contains(">")) {
+			} else if (selectedFile.getName().contains(" ") || selectedFile.getName().contains(":")
+					|| selectedFile.getName().contains("\\") || selectedFile.getName().contains("/")
+					|| selectedFile.getName().contains("|") || selectedFile.getName().contains("\"")
+					|| selectedFile.getName().contains("?") || selectedFile.getName().contains("*")
+					|| selectedFile.getName().contains(">")) {
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("dialog.new_workspace.valid_characters"));
 			} else if (!selectedFile.getParentFile().isDirectory()) {
@@ -132,8 +133,8 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 							L10N.t("dialog.file.error_directory_doesnt_exist"));
 				}
-			} else if (!Files.isWritable(selectedFile.getParentFile().toPath()) || !Files
-					.isReadable(selectedFile.getParentFile().toPath())) {
+			} else if (!Files.isWritable(selectedFile.getParentFile().toPath()) || !Files.isReadable(
+					selectedFile.getParentFile().toPath())) {
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("dialog.new_workspace.file_permission_problem"));
 			}

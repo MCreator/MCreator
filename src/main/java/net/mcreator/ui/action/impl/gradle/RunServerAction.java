@@ -41,8 +41,8 @@ public class RunServerAction extends GradleAction {
 			if (!new File(actionRegistry.getMCreator().getWorkspaceFolder(), "run/eula.txt").isFile())
 				eula = "eula=false";
 			else
-				eula = FileIO
-						.readFileToString(new File(actionRegistry.getMCreator().getWorkspaceFolder(), "run/eula.txt"));
+				eula = FileIO.readFileToString(
+						new File(actionRegistry.getMCreator().getWorkspaceFolder(), "run/eula.txt"));
 			if (eula.contains("eula=false") || !new File(actionRegistry.getMCreator().getWorkspaceFolder(),
 					"run/eula.txt").isFile()) {
 				JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
@@ -52,11 +52,10 @@ public class RunServerAction extends GradleAction {
 
 				Object[] options = { L10N.t("dialog.run_server_and_client.agree"),
 						L10N.t("dialog.run_server_and_client.disagree") };
-				int n = JOptionPane
-						.showOptionDialog(null, L10N.t("dialog.run_server_and_client.eula_confirmation.message"),
-								L10N.t("dialog.run_server_and_client.eula_confirmation.title"),
-								JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
-								options[0]);
+				int n = JOptionPane.showOptionDialog(null,
+						L10N.t("dialog.run_server_and_client.eula_confirmation.message"),
+						L10N.t("dialog.run_server_and_client.eula_confirmation.title"),
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 				if (n == 0) {
 					Properties por = new Properties();
 					try {
@@ -105,8 +104,8 @@ public class RunServerAction extends GradleAction {
 					actionRegistry.getMCreator().getGenerator().generateBase();
 
 					if (PreferencesManager.PREFERENCES.gradle.passLangToMinecraft)
-						MinecraftOptionsUtils
-								.setLangTo(actionRegistry.getMCreator().getWorkspace(), L10N.getLocaleString());
+						MinecraftOptionsUtils.setLangTo(actionRegistry.getMCreator().getWorkspace(),
+								L10N.getLocaleString());
 
 					actionRegistry.getMCreator().getGradleConsole()
 							.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
@@ -125,7 +124,7 @@ public class RunServerAction extends GradleAction {
 	}
 
 	@Override public boolean isEnabled() {
-		return actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_server") != null && super
-				.isEnabled();
+		return actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_server") != null
+				&& super.isEnabled();
 	}
 }
