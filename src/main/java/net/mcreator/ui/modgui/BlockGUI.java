@@ -241,7 +241,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JComboBox<String> blockBase = new JComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
-					"Door", "FenceGate", "EndRod", "PressurePlate" });
+					"Door", "FenceGate", "EndRod", "PressurePlate", "Button" });
 
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -393,7 +393,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 							|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem()
 							.equals("Door") || blockBase.getSelectedItem().equals("FenceGate")
 							|| blockBase.getSelectedItem().equals("EndRod") || blockBase.getSelectedItem()
-							.equals("PressurePlate")) {
+							.equals("PressurePlate") || blockBase.getSelectedItem().equals("Button")) {
 						hasTransparency.setSelected(true);
 					}
 				}

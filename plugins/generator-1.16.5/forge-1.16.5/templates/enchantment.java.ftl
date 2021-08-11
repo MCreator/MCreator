@@ -98,6 +98,14 @@ public class ${name}Enchantment extends ${JavaModName}Elements.ModElement{
 			return ${data.isAllowedOnBooks};
 		}
 
+		@Override public boolean canGenerateInLoot() {
+			return ${data.canGenerateInLootTables};
+		}
+
+		@Override public boolean canVillagerTrade() {
+			return ${data.canVillagerTrade};
+		}
+
 	}
 
 }
