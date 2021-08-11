@@ -129,9 +129,7 @@ public class ModElementManager {
 
 		if (map.containsKey("triggersbuild") && map.get("triggersbuild").toString().equals("true"))
 			return true;
-
-		List<GeneratorTemplate> templates = generator.getModElementGeneratorTemplatesList(
-				generatableElement.getModElement());
+		
 		if (templates != null)
 			for (GeneratorTemplate template : templates) {
 				String writer = (String) ((Map<?, ?>) template.getTemplateData()).get("writer");
