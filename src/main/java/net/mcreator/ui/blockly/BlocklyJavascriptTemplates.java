@@ -30,7 +30,7 @@ public class BlocklyJavascriptTemplates {
 				+ variableType.getBlocklyVariableType() + "\")), 'VAR');"
 				+ "this.getField('VAR').setValidator(function (variable) {"
 				+ "var isPlayerVar = javabridge.isPlayerVariable(variable);"
-				+ "this.getSourceBlock().updateShape_(isPlayerVar);" + "});"
+				+ "this.getSourceBlock().updateShape_(isPlayerVar, true);" + "});"
 				+ "});";
 	}
 

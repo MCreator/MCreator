@@ -465,16 +465,22 @@ Blockly.Extensions.registerMutator('variable_entity_input',
 
         domToMutation: function(xmlElement) {
             var isPlayerVar = (xmlElement.getAttribute('is_player_var') == 'true');
-            this.updateShape_(isPlayerVar);
+            this.updateShape_(isPlayerVar, false); // false to prevent duplicated entity blocks when opening the procedure
         },
 
         // Helper function to add an 'entity' input to the block
-        updateShape_: function(isPlayerVar) {
+        updateShape_: function(isPlayerVar, addEntityBlock) {
             var entityInput = this.getInput('entity');
             if (isPlayerVar) {
                 if (!entityInput) {
-                    this.appendValueInput('entity').setCheck('Entity')
-                    .appendField(javabridge.t("blockly.block.var_for_entity"));
+                    var connection = this.appendValueInput('entity').setCheck('Entity')
+                    .appendField(javabridge.t("blockly.block.var_for_entity")).connection;
+                    if (addEntityBlock) {
+                        var blockXML = Blockly.utils.xml.createElement('block');
+                        blockXML.setAttribute('type', 'entity_from_deps');
+                        var entityBlock = Blockly.Xml.domToBlock(blockXML, this.workspace);
+                        connection.connect(entityBlock.outputConnection)
+                    }
                 }
             } else if (entityInput) {
                 this.removeInput('entity');
