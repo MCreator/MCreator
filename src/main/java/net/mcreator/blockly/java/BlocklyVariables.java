@@ -67,8 +67,8 @@ public class BlocklyVariables {
 			return false;
 		String[] name = field.split(":");
 		if (name.length == 2 && name[0].equals("global")) {
-			String scope = workspace.getVariableElementByName(name[1]).getScope().name();
-			return scope.equals("PLAYER_LIFETIME") || scope.equals("PLAYER_PERSISTENT");
+			VariableType.Scope scope = workspace.getVariableElementByName(name[1]).getScope();
+			return scope == VariableType.Scope.PLAYER_LIFETIME || scope == VariableType.Scope.PLAYER_PERSISTENT;
 		}
 		return false;
 	}
