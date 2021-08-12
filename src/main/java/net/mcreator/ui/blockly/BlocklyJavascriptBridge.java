@@ -20,6 +20,7 @@ package net.mcreator.ui.blockly;
 
 import com.google.gson.Gson;
 import net.mcreator.blockly.data.ExternalTrigger;
+import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.io.OS;
@@ -248,6 +249,26 @@ public class BlocklyJavascriptBridge {
 			return new String[] { "" };
 
 		return retval.toArray(new String[0]);
+	}
+
+	@SuppressWarnings("unused") public String[] getReadableListOf(String type) {
+		return getReadableListOfForWorkspace(mcreator.getWorkspace(), type);
+	}
+
+	@SuppressWarnings("unused") public static String[] getReadableListOfForWorkspace(Workspace workspace, String type) {
+		List<String> retval;
+		switch (type) {
+		case "entity":
+			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName).toArray(String[]::new);
+		case "biome":
+			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName).toArray(String[]::new);
+		default:
+			return getListOfForWorkspace(workspace, type);
+		}
+	}
+
+	@SuppressWarnings("unused") public boolean isPlayerVariable(String field) {
+		return BlocklyVariables.isPlayerVariableForWorkspace(mcreator.getWorkspace(), field);
 	}
 
 	public void setJavaScriptEventListener(JavaScriptEventListener listener) {

@@ -344,6 +344,9 @@ public class TestWorkspaceDataProvider {
 			fluid.spawnParticles = !_true;
 			fluid.dripParticle = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
+			fluid.tintType = getRandomString(random,
+					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
+			fluid.flowStrength = 2.3;
 			fluid.luminosity = 3;
 			fluid.density = 5;
 			fluid.viscosity = 10;
@@ -380,6 +383,8 @@ public class TestWorkspaceDataProvider {
 			fluid.onEntityCollides = new Procedure("procedure4");
 			fluid.onRandomUpdateEvent = new Procedure("procedure5");
 			fluid.onDestroyedByExplosion = new Procedure("procedure6");
+			fluid.flowCondition = new Procedure("condition1");
+			fluid.beforeReplacingBlock = new Procedure("procedure7");
 			fluid.type = _true ? "WATER" : "LAVA";
 			fluid.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "End"));
 			fluid.restrictionBiomes = new ArrayList<>();
@@ -796,6 +801,10 @@ public class TestWorkspaceDataProvider {
 				armor.leggingsSpecialInfo = new ArrayList<>();
 				armor.bootsSpecialInfo = new ArrayList<>();
 			}
+			armor.helmetImmuneToFire = _true;
+			armor.bodyImmuneToFire = !_true;
+			armor.leggingsImmuneToFire = _true;
+			armor.bootsImmuneToFire = !_true;
 			armor.equipSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			armor.onHelmetTick = new Procedure("procedure1");
@@ -1402,6 +1411,8 @@ public class TestWorkspaceDataProvider {
 			enchantment.isTreasureEnchantment = _true;
 			enchantment.isAllowedOnBooks = !_true;
 			enchantment.isCurse = _true;
+			enchantment.canGenerateInLootTables = !_true;
+			enchantment.canVillagerTrade = _true;
 			enchantment.compatibleItems = new ArrayList<>();
 			if (!emptyLists) {
 				enchantment.compatibleItems.add(new MItemBlock(modElement.getWorkspace(),

@@ -1,0 +1,1 @@
+Cette procédure est exécutée avant que le fluide remplace un bloc autre que l'air (par exemple les hautes herbes).

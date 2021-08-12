@@ -20,6 +20,7 @@ package net.mcreator.blockly.java;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.util.XMLUtil;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -59,6 +60,17 @@ public class BlocklyVariables {
 		}
 
 		return varlist;
+	}
+
+	public static boolean isPlayerVariableForWorkspace(Workspace workspace, String field) {
+		if (field == null)
+			return false;
+		String[] name = field.split(":");
+		if (name.length == 2 && name[0].equals("global")) {
+			VariableType.Scope scope = workspace.getVariableElementByName(name[1]).getScope();
+			return scope == VariableType.Scope.PLAYER_LIFETIME || scope == VariableType.Scope.PLAYER_PERSISTENT;
+		}
+		return false;
 	}
 
 }
