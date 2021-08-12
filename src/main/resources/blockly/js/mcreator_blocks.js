@@ -460,12 +460,15 @@ Blockly.Extensions.registerMutator('variable_entity_input',
             var container = document.createElement('mutation');
             var isPlayerVar = javabridge.isPlayerVariable(this.getFieldValue('VAR'));
             container.setAttribute('is_player_var', isPlayerVar);
+            var hasEntity = (this.getInputTargetBlock('entity') != null);
+            container.setAttribute('has_entity', hasEntity);
             return container;
         },
 
         domToMutation: function(xmlElement) {
             var isPlayerVar = (xmlElement.getAttribute('is_player_var') == 'true');
-            this.updateShape_(isPlayerVar, false); // false to prevent duplicated entity blocks when opening the procedure
+            var hasEntity = (xmlElement.getAttribute('has_entity') == 'true');
+            this.updateShape_(isPlayerVar, !hasEntity); // don't create another block if it already has one
         },
 
         // Helper function to add an 'entity' input to the block

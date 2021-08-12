@@ -77,6 +77,7 @@ public class ProcedureVariablesEntityFixer implements IConverter {
 				if (variable != null && BlocklyVariables.isPlayerVariableForWorkspace(workspace, variable.getTextContent())) {
 					Element mutationXML = doc.createElement("mutation");
 					mutationXML.setAttribute("is_player_var", "true");
+					mutationXML.setAttribute("has_entity", "true"); // The converter also adds the entity block
 					Element value = doc.createElement("value");
 					value.setAttribute("name", "entity");
 					Element deps_block = doc.createElement("block");
