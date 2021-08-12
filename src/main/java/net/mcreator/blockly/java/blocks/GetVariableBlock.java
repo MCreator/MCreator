@@ -104,13 +104,17 @@ public class GetVariableBlock implements IBlockGenerator {
 					return;
 				}
 
+				String entitycode = null;
+				if (entityInput != null)
+					entitycode = BlocklyToCode.directProcessOutputBlock(master, entityInput);
+
 				if (master.getTemplateGenerator() != null) {
 					Map<String, Object> dataModel = new HashMap<>();
 					dataModel.put("name", name);
 					dataModel.put("type", type);
 					dataModel.put("scope", scope.toUpperCase(Locale.ENGLISH));
-					if (entityInput != null)
-						dataModel.put("entity", BlocklyToCode.directProcessOutputBlock(master, entityInput));
+					if (entitycode != null)
+						dataModel.put("entity", entitycode);
 
 					String code = master.getTemplateGenerator()
 							.generateFromString(getterTemplate.toString(), dataModel);

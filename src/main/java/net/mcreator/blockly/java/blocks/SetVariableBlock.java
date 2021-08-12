@@ -115,6 +115,10 @@ public class SetVariableBlock implements IBlockGenerator {
 
 				String valuecode = BlocklyToCode.directProcessOutputBlock(master, value);
 
+				String entitycode = null;
+				if (entityInput != null)
+					entitycode = BlocklyToCode.directProcessOutputBlock(master, entityInput);
+
 				if (master.getTemplateGenerator() != null) {
 					Map<String, Object> dataModel = new HashMap<>();
 					dataModel.put("name", name);
@@ -122,8 +126,10 @@ public class SetVariableBlock implements IBlockGenerator {
 					dataModel.put("type", type);
 					dataModel.put("javaType", javaType);
 					dataModel.put("value", valuecode);
-					if (entityInput != null)
-						dataModel.put("entity", BlocklyToCode.directProcessOutputBlock(master, entityInput));
+
+					if (entitycode != null)
+						dataModel.put("entity", entitycode);
+
 					String code = master.getTemplateGenerator()
 							.generateFromString(setterTemplate.toString(), dataModel);
 					master.append(code);
