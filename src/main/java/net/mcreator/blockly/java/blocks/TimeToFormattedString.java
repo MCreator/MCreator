@@ -19,23 +19,34 @@
 
 package net.mcreator.blockly.java.blocks;
 
+import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
+import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.List;
 
-public class TimeAsStringBlock implements IBlockGenerator {
-
+public class TimeToFormattedString implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		master.append("Calendar.getInstance().getTime().toString()");
+		List<Element> elements = XMLUtil.getDirectChildren(block);
+		Element format = null;
+		for (Element element : elements)
+			if (element.getNodeName().equals("value"))
+				if (element.getAttribute("name").equals("format"))
+					format = element;
+		if (format != null) {
+			master.append("new java.text.SimpleDateFormat(\"" + format.getTextContent() + "\").format(Calendar.getInstance().getTime())");
+		} else {
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.compile_notes.errors.time_to_formatted_string")));
+		}
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "time_as_string" };
+		return new String[] { "time_to_formatted_string" };
 	}
 
 	@Override public BlockType getBlockType() {

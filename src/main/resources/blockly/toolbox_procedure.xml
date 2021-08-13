@@ -68,6 +68,13 @@
     </category>
     <category name="${t:blockly.category.time}" colour="320">
         <block type="time_as_string"/>
+        <block type="time_to_formatted_string">
+            <value name="format">
+                <block type="text">
+                    <field name="TEXT">yyyy-MM-dd</field>
+                </block>
+            </value>
+        </block>
         <block type="time_seconds"/>
         <block type="time_minutes"/>
         <block type="time_hours"/>

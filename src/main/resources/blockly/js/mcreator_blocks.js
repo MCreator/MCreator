@@ -174,6 +174,18 @@ Blockly.Blocks['text_format_number'] = {
     }
 };
 
+Blockly.Blocks['time_to_formatted_string'] = {
+    init: function () {
+        this.appendValueInput('format').setCheck('String')
+            .appendField(javabridge.t("blockly.block.time_to_formatted_string"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'String');
+        this.setColour(Blockly.Constants.Text.HUE);
+    }
+};
+
 Blockly.defineBlocksWithJsonArray([
     {
         "type": "logic_binary_ops",
