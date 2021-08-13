@@ -44,15 +44,13 @@ public class ModAPI {
 		@Nullable public final List<String> update_files;
 		public final ModAPI parent;
 		public final boolean requiredWhenEnabled;
-		public final String modPackage;
 
 		public Implementation(ModAPI parent, String gradle, @Nullable List<String> update_files,
-				boolean requiredWhenEnabled, String modPackage) {
+				boolean requiredWhenEnabled) {
 			this.gradle = gradle;
 			this.update_files = update_files;
 			this.parent = parent;
 			this.requiredWhenEnabled = requiredWhenEnabled;
-			this.modPackage = modPackage;
 		}
 
 	}

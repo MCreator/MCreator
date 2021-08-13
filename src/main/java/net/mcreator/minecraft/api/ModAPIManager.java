@@ -69,7 +69,7 @@ public class ModAPIManager {
 
 						ModAPI.Implementation implementation = new ModAPI.Implementation(modAPI, gradle,
 								updateFiles.stream().map(Object::toString).collect(Collectors.toList()),
-								requiredWhenEnabled, (String) impldef.get("mod_package"));
+								requiredWhenEnabled);
 						implementations.put(key, implementation);
 					}
 				}
