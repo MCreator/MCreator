@@ -27,6 +27,7 @@
 
 package net.mcreator.java;
 
+import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.workspace.Workspace;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.Import;
@@ -34,6 +35,7 @@ import org.jboss.forge.roaster.model.source.JavaSource;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 class ImportFormat {
@@ -172,8 +174,16 @@ class ImportFormat {
 					// if class with multiple packages is not included in one of the default packages, we do not import it
 					if (!_import.startsWith("net.minecraft") && !_import.startsWith("java.util") && !_import
 							.startsWith("java.io") && !_import.startsWith("org.lwjgl") && !_import
-							.startsWith("java.lang") && !_import.startsWith("org.bukkit")) {
-						importsToRemove.add(_import);
+							.startsWith("java.lang") && !_import.startsWith("org.bukkit") && !_import.startsWith("net.fabricmc")) {
+						AtomicBoolean startsWith = new AtomicBoolean(false);
+						ModAPIManager.getModAPIsForGenerator(workspace.getGenerator().getGeneratorName())
+								.forEach(api -> {
+									if (api.parent.implementations.get(workspace.getGenerator().getGeneratorName()).modPackage != null)
+										startsWith.set(_import.startsWith(api.parent.implementations.get(
+												workspace.getGenerator().getGeneratorName()).modPackage));
+								});
+						if (!startsWith.get())
+							importsToRemove.add(_import);
 						continue outer;
 					}
 				}
