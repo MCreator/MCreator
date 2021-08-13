@@ -30,7 +30,7 @@ import org.gradle.tooling.BuildLauncher;
 import org.gradle.tooling.ProjectConnection;
 
 import java.io.File;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,16 +63,18 @@ public class GradleUtils {
 		// use custom set of environment variables to prevent system overrides
 		retval.setEnvironmentVariables(environment);
 
-		retval.withArguments(Collections.emptyList());
+		if (java_home != null)
+			retval.withArguments(Arrays.asList("-Porg.gradle.java.installations.auto-detect=false",
+					"-Porg.gradle.java.installations.paths=" + java_home.replace('\\', '/')));
 
 		return retval;
 	}
 
 	public static String getJavaHome() {
 		// check if JAVA_HOME was overwritten in preferences and return this one in such case
-		if (PreferencesManager.PREFERENCES.hidden.java_home != null && PreferencesManager.PREFERENCES.hidden.java_home
-				.isFile()) {
-			LOG.warn("Using java home override specified by users. Things may get bad!");
+		if (PreferencesManager.PREFERENCES.hidden.java_home != null
+				&& PreferencesManager.PREFERENCES.hidden.java_home.isFile()) {
+			LOG.warn("Using java home override specified by users!");
 			String path = PreferencesManager.PREFERENCES.hidden.java_home.toString().replace("\\", "/");
 			if (new File(path).exists() && path.contains("/bin/java"))
 				return path.split("/bin/java")[0];
@@ -103,8 +105,8 @@ public class GradleUtils {
 			if (workspace.getWorkspaceSettings() != null
 					&& workspace.getWorkspaceSettings().getMCreatorDependencies() != null) {
 				for (String dep : workspace.getWorkspaceSettings().getMCreatorDependencies()) {
-					ModAPI.Implementation implementation = ModAPIManager
-							.getModAPIForNameAndGenerator(dep, workspace.getGenerator().getGeneratorName());
+					ModAPI.Implementation implementation = ModAPIManager.getModAPIForNameAndGenerator(dep,
+							workspace.getGenerator().getGeneratorName());
 					if (implementation != null) {
 						mcreatorGradleConfBuilder.append(implementation.gradle).append("\n\n");
 					}

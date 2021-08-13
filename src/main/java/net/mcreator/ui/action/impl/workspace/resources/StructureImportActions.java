@@ -101,8 +101,8 @@ public class StructureImportActions {
 				}
 				actionRegistry.getMCreator().mv.resourcesPan.workspacePanelStructures.reloadElements();
 				if (actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
-					((ModElementGUI) actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent())
-							.reloadDataLists();
+					((ModElementGUI) actionRegistry.getMCreator().mcreatorTabs.getCurrentTab()
+							.getContent()).reloadDataLists();
 			});
 		}
 

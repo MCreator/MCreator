@@ -63,8 +63,8 @@ import java.util.Map;
 	public String file(@Nonnull String file) {
 		try {
 			if (!CACHE.containsKey(file)) { // cache miss, add to cache
-				InputStream stream = PluginLoader.INSTANCE
-						.getResourceAsStream(generator.getGeneratorName() + "/" + file);
+				InputStream stream = PluginLoader.INSTANCE.getResourceAsStream(
+						generator.getGeneratorName() + "/" + file);
 				if (stream != null) {
 					String contents = IOUtils.toString(stream, StandardCharsets.UTF_8);
 					CACHE.put(file, contents);

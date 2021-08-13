@@ -92,8 +92,8 @@ public class ModElementUITest {
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration
-				.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
 
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
@@ -102,8 +102,8 @@ public class ModElementUITest {
 		WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
 		workspaceSettings.setModName("Test mod");
 		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
-		workspace = Workspace
-				.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"), workspaceSettings);
+		workspace = Workspace.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"),
+				workspaceSettings);
 
 		mcreator = new MCreator(null, workspace);
 
@@ -111,29 +111,33 @@ public class ModElementUITest {
 
 		// generate some "dummy" procedures for dropdowns to work
 		for (int i = 1; i <= 13; i++) {
-			workspace.addModElement(new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE)
-					.putMetadata("dependencies", new ArrayList<String>()));
+			workspace.addModElement(
+					new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
+							new ArrayList<String>()));
 		}
 
 		for (int i = 1; i <= 4; i++) {
-			workspace.addModElement(new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE)
-					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
+			workspace.addModElement(
+					new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
+							new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
 		}
 
 		for (int i = 1; i <= 1; i++) {
-			workspace.addModElement(new ModElement(workspace, "number" + i, ModElementType.PROCEDURE)
-					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "NUMBER"));
+			workspace.addModElement(
+					new ModElement(workspace, "number" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
+							new ArrayList<String>()).putMetadata("return_type", "NUMBER"));
 		}
 
 		for (int i = 1; i <= 2; i++) {
-			workspace.addModElement(new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE)
-					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "ITEMSTACK"));
+			workspace.addModElement(
+					new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
+							new ArrayList<String>()).putMetadata("return_type", "ITEMSTACK"));
 		}
 
 		for (int i = 1; i <= 1; i++) {
-			workspace.addModElement(new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE)
-					.putMetadata("dependencies", new ArrayList<String>())
-					.putMetadata("return_type", "ACTIONRESULTTYPE"));
+			workspace.addModElement(
+					new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE).putMetadata(
+							"dependencies", new ArrayList<String>()).putMetadata("return_type", "ACTIONRESULTTYPE"));
 		}
 
 		// reduce autosave interval for tests
@@ -174,11 +178,11 @@ public class ModElementUITest {
 			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
 		for (ModElementType<?> modElementType : ModElementTypeLoader.REGISTRY) {
 
-			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider
-					.getModElementExamplesFor(workspace, modElementType, random);
+			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
+					modElementType, random);
 
-			LOG.info("Testing mod element type UI " + modElementType.getReadableName() + " with " + generatableElements
-					.size() + " variants");
+			LOG.info("Testing mod element type UI " + modElementType.getReadableName() + " with "
+					+ generatableElements.size() + " variants");
 
 			for (GeneratableElement generatableElementOrig : generatableElements) {
 				ModElement modElement = generatableElementOrig.getModElement();

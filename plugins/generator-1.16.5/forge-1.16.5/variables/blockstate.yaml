@@ -31,15 +31,15 @@ scopes:
     read: instance.${var.getName()} = NBTUtil.readBlockState(nbt.getCompound("${var.getName()}"));
     write: nbt.put("${var.getName()}", NBTUtil.writeBlockState(instance.${var.getName()}));
     get: |
-      /*@BlockState*/((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+      /*@BlockState*/((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
     set: |
       <#include "mcitems.ftl">
       {
         BlockState _setval = ${mappedBlockToBlockStateCode(value)};
-        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+        ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
           capability.${name} = _setval;
-          capability.syncPlayerVariables(entity);
+          capability.syncPlayerVariables(${entity});
         });
       }
   player_persistent:
@@ -47,14 +47,14 @@ scopes:
     read: instance.${var.getName()} = NBTUtil.readBlockState(nbt.getCompound("${var.getName()}"));
     write: nbt.put("${var.getName()}", NBTUtil.writeBlockState(instance.${var.getName()}));
     get: |
-      /*@BlockState*/((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+      /*@BlockState*/((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
     set: |
       <#include "mcitems.ftl">
       {
         BlockState _setval = ${mappedBlockToBlockStateCode(value)};
-        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+        ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
           capability.${name} = _setval;
-          capability.syncPlayerVariables(entity);
+          capability.syncPlayerVariables(${entity});
         });
       }

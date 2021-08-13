@@ -77,9 +77,8 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 
 				label_details.setText(
 						"<html><div width=210 height=42 style=\"overflow: hidden;\"><small" + (isSelected ?
-								(" color=#" + Integer
-										.toHexString(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).getRGB())
-										.substring(2)) :
+								(" color=#" + Integer.toHexString(
+										((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).getRGB()).substring(2)) :
 								"") + ">" + ma.getType().getDescription());
 
 				if (!ma.doesCompile()) {
@@ -114,9 +113,8 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 				if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0
 						&& modIcon.getIconHeight() > 0 && modIcon != MCItem.DEFAULT_ICON) {
 					if (dva != null) {
-						icon.setIcon(ImageUtils
-								.drawOver(ImageUtils.drawOver(UIRES.get("mod_types.empty"), modIcon, 18, 18, 28, 28),
-										dva));
+						icon.setIcon(ImageUtils.drawOver(
+								ImageUtils.drawOver(UIRES.get("mod_types.empty"), modIcon, 18, 18, 28, 28), dva));
 					} else {
 						icon.setIcon(ImageUtils.drawOver(UIRES.get("mod_types.empty"), modIcon, 18, 18, 28, 28));
 					}

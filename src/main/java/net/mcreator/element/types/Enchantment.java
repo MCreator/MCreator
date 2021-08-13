@@ -24,7 +24,7 @@ import net.mcreator.workspace.elements.ModElement;
 
 import java.util.List;
 
-public class Enchantment extends GeneratableElement {
+@SuppressWarnings("unused") public class Enchantment extends GeneratableElement {
 
 	public String name;
 	public String type;
@@ -41,9 +41,18 @@ public class Enchantment extends GeneratableElement {
 	public boolean isTreasureEnchantment;
 	public boolean isCurse;
 	public boolean isAllowedOnBooks;
+	public boolean canGenerateInLootTables;
+	public boolean canVillagerTrade;
+
+	private Enchantment() {
+		this(null);
+	}
 
 	public Enchantment(ModElement element) {
 		super(element);
+
+		canGenerateInLootTables = true;
+		canVillagerTrade = true;
 	}
 
 }

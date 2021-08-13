@@ -42,8 +42,8 @@ public class MappingLoader {
 	private final Map<String, Map<?, ?>> mappings = new ConcurrentHashMap<>();
 
 	@SuppressWarnings({ "unchecked", "rawtypes" }) public MappingLoader(GeneratorConfiguration generatorConfiguration) {
-		Set<String> fileNames = PluginLoader.INSTANCE
-				.getResources(generatorConfiguration.getGeneratorName() + ".mappings", Pattern.compile(".*\\.yaml"));
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources(
+				generatorConfiguration.getGeneratorName() + ".mappings", Pattern.compile(".*\\.yaml"));
 
 		for (String res : fileNames) {
 			String mappingName = res.split("mappings/")[1].replace(".yaml", "");

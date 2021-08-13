@@ -60,8 +60,9 @@ public class ModAPIManager {
 						Map<?, ?> impldef = (Map<?, ?>) apiconfiguration.get(keyraw);
 						String gradle = (String) impldef.get("gradle");
 						List<?> updateFiles = (List<?>) impldef.get("update_files");
-						boolean requiredWhenEnabled = impldef.get("required_when_enabled") != null && Boolean
-								.parseBoolean(impldef.get("required_when_enabled").toString());
+						boolean requiredWhenEnabled =
+								impldef.get("required_when_enabled") != null && Boolean.parseBoolean(
+										impldef.get("required_when_enabled").toString());
 
 						if (updateFiles == null)
 							updateFiles = Collections.emptyList();

@@ -257,7 +257,7 @@ import net.minecraft.util.SoundEvent;
 
       		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, feature
 					.withConfiguration((new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(block.getDefaultState()), new <#if data.plantType == "double">DoublePlant<#else>Simple</#if>BlockPlacer()))
-					.tries(64)
+					.tries(${data.patchSize})
 						<#if data.plantType == "double" && data.doublePlantGenerationType == "Flower">.func_227317_b_()</#if>.build()).withPlacement(
 						<#if (data.plantType == "normal" && data.staticPlantGenerationType == "Grass") || (data.plantType == "double" && data.doublePlantGenerationType == "Grass")>
 						Placement.NOISE_HEIGHTMAP_32.configure(new NoiseDependant(-0.8, 0, ${data.frequencyOnChunks}))
@@ -272,7 +272,7 @@ import net.minecraft.util.SoundEvent;
 	public static class BlockCustomFlower extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block {
 
 		public BlockCustomFlower() {
-			super(<#if data.plantType == "normal">Effects.SATURATION, 0,</#if>
+			super(<#if data.plantType == "normal">${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},</#if>
 					<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 					Block.Properties.create(Material.PLANTS, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
 					<#else>
@@ -601,6 +601,9 @@ import net.minecraft.util.SoundEvent;
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
+			double hitX = hit.getHitVec().x;
+			double hitY = hit.getHitVec().y;
+			double hitZ = hit.getHitVec().z;
 			Direction direction = hit.getFace();
 			<#if hasReturnValue(data.onRightClicked)>
 			return <@procedureOBJToActionResultTypeCode data.onRightClicked/>;

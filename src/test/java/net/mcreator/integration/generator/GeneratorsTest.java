@@ -93,8 +93,8 @@ public class GeneratorsTest {
 				workspaceSettings.setModPicture("example");
 				workspaceSettings.setModName("Test mod");
 				workspaceSettings.setCurrentGenerator(generator);
-				Workspace workspace = Workspace
-						.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"), workspaceSettings);
+				Workspace workspace = Workspace.createWorkspace(
+						new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"), workspaceSettings);
 
 				LOG.info("[" + generator + "] ----- Test workspace folder: " + workspace.getFolderManager()
 						.getWorkspaceFolder());

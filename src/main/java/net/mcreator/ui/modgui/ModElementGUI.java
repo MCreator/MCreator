@@ -246,9 +246,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			toolBar.setOpaque(false);
 			toolBar.add(saveOnly);
 			toolBar.add(save);
-			add("North", PanelUtils
-					.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true, false,
-							false));
+			add("North",
+					PanelUtils.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true,
+							false, false));
 
 			if (wrapInScrollpane) {
 				JScrollPane splitScroll = new JScrollPane(split);
@@ -294,9 +294,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			toolBar.add(saveOnly);
 			toolBar.add(save);
 
-			add("North", PanelUtils
-					.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true, false,
-							false));
+			add("North",
+					PanelUtils.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true,
+							false, false));
 
 			if (wrapInScrollpane) {
 				JScrollPane splitScroll = new JScrollPane(new ArrayList<>(pages.values()).get(0));
@@ -359,23 +359,18 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			Field[] fields = getClass().getDeclaredFields();
 			for (Field field : fields) {
 				if (Component.class.isAssignableFrom(field.getType())) {
-					if (!exclusions.contains(field.getName())) {
-						if (exclusions.contains(field.getName())) {
-							try {
-								field.setAccessible(true);
-								Component obj = (Component) field.get(this);
+					if (exclusions.contains(field.getName())) {
+						try {
+							field.setAccessible(true);
+							Component obj = (Component) field.get(this);
 
-								Container parent = obj.getParent();
-								int index = Arrays.asList(parent.getComponents()).indexOf(obj);
-								parent.remove(index);
-								parent.add(new UnsupportedComponent(obj), index);
-							} catch (IllegalAccessException e) {
-								LOG.warn("Failed to access field", e);
-							}
+							Container parent = obj.getParent();
+							int index = Arrays.asList(parent.getComponents()).indexOf(obj);
+							parent.remove(index);
+							parent.add(new UnsupportedComponent(obj), index);
+						} catch (IllegalAccessException e) {
+							LOG.warn("Failed to access field", e);
 						}
-					} else {
-						LOG.warn(field.getName()
-								+ " can not be used in both inclusions and exclusions fields at the same time. The field will be enabled.");
 					}
 				}
 			}

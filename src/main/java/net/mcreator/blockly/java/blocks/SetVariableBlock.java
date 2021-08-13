@@ -53,7 +53,14 @@ public class SetVariableBlock implements IBlockGenerator {
 		String javaType = new Dependency("", typeObject.getName()).getType(master.getWorkspace());
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
-		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
+		List<Element> inputs = XMLUtil.getChildrenWithName(block, "value");
+		Element value = null, entityInput = null;
+		for (Element input : inputs) {
+			if (input.getAttribute("name").equals("VAL"))
+				value = input;
+			else if (input.getAttribute("name").equals("entity"))
+				entityInput = input;
+		}
 		if (variable != null && value != null && variable.getTextContent() != null) {
 			String[] varfield = variable.getTextContent().split(":");
 			if (varfield.length == 2) {
@@ -76,8 +83,8 @@ public class SetVariableBlock implements IBlockGenerator {
 							"This editor does not support local variables! Skipping this block"));
 					return;
 				} else if (scope.equalsIgnoreCase("local")) {
-					List<StatementInput> statementInputList = master
-							.getStatementInputsMatching(statementInput -> statementInput.disable_local_variables);
+					List<StatementInput> statementInputList = master.getStatementInputsMatching(
+							statementInput -> statementInput.disable_local_variables);
 					if (!statementInputList.isEmpty()) {
 						for (StatementInput statementInput : statementInputList) {
 							master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
@@ -90,13 +97,15 @@ public class SetVariableBlock implements IBlockGenerator {
 					scope = master.getWorkspace().getVariableElementByName(name).getScope().name();
 					if (scope.equals("GLOBAL_MAP") || scope.equals("GLOBAL_WORLD")) {
 						master.addDependency(new Dependency("world", "world"));
-					} else if (scope.equals("PLAYER_LIFETIME") || scope.equals("PLAYER_PERSISTENT")) {
-						master.addDependency(new Dependency("entity", "entity"));
+					} else if (entityInput == null && (scope.equals("PLAYER_LIFETIME") || scope.equals("PLAYER_PERSISTENT"))) {
+						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								"Set variable block for player variable is missing entity input."));
+						return;
 					}
 				}
 
-				Object setterTemplate = typeObject
-						.getScopeDefinition(master.getWorkspace(), scope.toUpperCase(Locale.ENGLISH)).get("set");
+				Object setterTemplate = typeObject.getScopeDefinition(master.getWorkspace(),
+						scope.toUpperCase(Locale.ENGLISH)).get("set");
 				if (setterTemplate == null) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							"Current generator does not support setting variables of type " + type + " in " + scope
@@ -106,6 +115,10 @@ public class SetVariableBlock implements IBlockGenerator {
 
 				String valuecode = BlocklyToCode.directProcessOutputBlock(master, value);
 
+				String entitycode = null;
+				if (entityInput != null)
+					entitycode = BlocklyToCode.directProcessOutputBlock(master, entityInput);
+
 				if (master.getTemplateGenerator() != null) {
 					Map<String, Object> dataModel = new HashMap<>();
 					dataModel.put("name", name);
@@ -113,6 +126,10 @@ public class SetVariableBlock implements IBlockGenerator {
 					dataModel.put("type", type);
 					dataModel.put("javaType", javaType);
 					dataModel.put("value", valuecode);
+
+					if (entitycode != null)
+						dataModel.put("entity", entitycode);
+
 					String code = master.getTemplateGenerator()
 							.generateFromString(setterTemplate.toString(), dataModel);
 					master.append(code);

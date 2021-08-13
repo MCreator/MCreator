@@ -35,7 +35,7 @@ public class ImageEditorSaveAsAction extends BasicAction {
 			}
 		});
 		setTooltip(L10N.t("action.image_editor.save_as.tooltip"));
-		actionRegistry.getMCreator().mcreatorTabs
-				.addTabShownListener(tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
+		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
+				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
 	}
 }

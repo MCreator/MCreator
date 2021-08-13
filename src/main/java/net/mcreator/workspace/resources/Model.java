@@ -135,8 +135,8 @@ public class Model {
 		for (File f : candidates != null ? candidates : new File[0]) {
 			Model m = new Model(f);
 			if (m.getType() != null) {
-				Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel
-						.getTextureMappingsForModel(m);
+				Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(
+						m);
 				if (textureMappingMap != null) {
 					// we add all variations of texturemappings for model
 					for (Map.Entry<String, TexturedModel.TextureMapping> entry : textureMappingMap.entrySet()) {

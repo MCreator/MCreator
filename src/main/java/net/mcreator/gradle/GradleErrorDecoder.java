@@ -56,15 +56,15 @@ public class GradleErrorDecoder {
 
 		//Check if cache files are corrupt
 		if ((err.contains("java.io.FileNotFoundException: ") && err.contains("McpMappings.json (")) || (
-				err.contains("Could not open proj remapped class cache for ") && err
-						.contains("java.io.FileNotFoundException: "))) {
+				err.contains("Could not open proj remapped class cache for ") && err.contains(
+						"java.io.FileNotFoundException: "))) {
 			return GradleErrorDialogs.showErrorDialog(GradleErrorCodes.GRADLE_CACHEDATA_ERROR, whereToShow);
 		}
 
 		//Check if cache files are outdated
 		if ((err.contains("No cached version of ") && err.contains(" available for offline mode.")) || (
-				err.contains(" not found! Maybe you are running in offline mode?") && err
-						.contains("java.io.FileNotFoundException"))) {
+				err.contains(" not found! Maybe you are running in offline mode?") && err.contains(
+						"java.io.FileNotFoundException"))) {
 			if (PreferencesManager.PREFERENCES.gradle.offline)
 				return GradleErrorDialogs.showErrorDialog(GradleErrorCodes.GRADLE_CACHEDATA_OUTDATED, whereToShow);
 			else
@@ -72,11 +72,11 @@ public class GradleErrorDecoder {
 		}
 
 		//Check if JVM ran out of RAM
-		if (err.contains("java.lang.OutOfMemoryError: Java heap space") || out
-				.contains("java.lang.OutOfMemoryError: Java heap space") || err
-				.contains("Could not reserve enough space for") || out.contains("Could not reserve enough space for")
-				|| err.contains("GC overhead limit exceeded") || (err.contains("Execution failed for task") && out
-				.contains("Daemon stopping because JVM tenured space is exhausted"))) {
+		if (err.contains("java.lang.OutOfMemoryError: Java heap space") || out.contains(
+				"java.lang.OutOfMemoryError: Java heap space") || err.contains("Could not reserve enough space for")
+				|| out.contains("Could not reserve enough space for") || err.contains("GC overhead limit exceeded") || (
+				err.contains("Execution failed for task") && out.contains(
+						"Daemon stopping because JVM tenured space is exhausted"))) {
 			return GradleErrorDialogs.showErrorDialog(GradleErrorCodes.JAVA_JVM_HEAP_SPACE, whereToShow);
 		}
 
@@ -86,16 +86,16 @@ public class GradleErrorDecoder {
 		}
 
 		//Check if XMS parameter was set to a wrong value
-		if (err.contains("Invalid initial heap size:") || err
-				.contains("Initial heap size set to a larger value than the maximum heap size")) {
+		if (err.contains("Invalid initial heap size:") || err.contains(
+				"Initial heap size set to a larger value than the maximum heap size")) {
 			return GradleErrorDialogs.showErrorDialog(GradleErrorCodes.JAVA_XMS_INVALID_VALUE, whereToShow);
 		}
 
 		//check if the error was caused by JVM crash and no other errors are present
-		if ((out.contains("The crash happened outside the Java Virtual Machine in native code") || err
-				.contains("The crash happened outside the Java Virtual Machine in native code")) && (
-				out.contains("A fatal error has been detected by the Java Runtime Environment") || err
-						.contains("A fatal error has been detected by the Java Runtime Environment"))) {
+		if ((out.contains("The crash happened outside the Java Virtual Machine in native code") || err.contains(
+				"The crash happened outside the Java Virtual Machine in native code")) && (
+				out.contains("A fatal error has been detected by the Java Runtime Environment") || err.contains(
+						"A fatal error has been detected by the Java Runtime Environment"))) {
 
 			return GradleErrorDialogs.showErrorDialog(GradleErrorCodes.JAVA_JVM_CRASH_ERROR, whereToShow);
 
@@ -118,8 +118,8 @@ public class GradleErrorDecoder {
 	public static boolean isErrorCausedByCorruptedCaches(String errortext) {
 		// normalize spaces
 		errortext = errortext.replace('\u00a0', ' ');
-		if (!errortext.contains("Could not GET ") && !errortext.contains("Could not HEAD ") && !errortext
-				.contains("Network is unreachable:")) { // eliminate networking problems first
+		if (!errortext.contains("Could not GET ") && !errortext.contains("Could not HEAD ") && !errortext.contains(
+				"Network is unreachable:")) { // eliminate networking problems first
 			if (errortext.contains("java.util.zip.ZipException: error in opening zip file")) {
 				return true;
 			}
