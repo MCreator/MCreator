@@ -384,8 +384,8 @@ public class ImageUtils {
 		ColorModel cm = bi.getColorModel();
 		boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
 		WritableRaster raster = bi.copyData(null);
-		return new BufferedImage(cm, raster, isAlphaPremultiplied, null)
-				.getSubimage(0, 0, bi.getWidth(), bi.getHeight());
+		return new BufferedImage(cm, raster, isAlphaPremultiplied, null).getSubimage(0, 0, bi.getWidth(),
+				bi.getHeight());
 	}
 
 	public static BufferedImage noiseHSV(BufferedImage image, float hfactor, float sfactor, float vfactor, long seed) {
@@ -502,9 +502,9 @@ public class ImageUtils {
 		Point2D f1 = new Point2D.Double(16 - xTot, xTot / 2d), f2 = new Point2D.Double(16 - xTot,
 				16 + xTot / 2d), f3 = new Point2D.Double(32 - xTot, 24 + xTot / 2d), f4 = new Point2D.Double(32 - xTot,
 				8 + xTot / 2d);
-		g2d.drawImage(ImageTransformUtil
-				.computeImage(eraseExceptRect(resizeAndCrop(front, 32), 2 * zOff, 32 - 2 * yTot, 2 * z, 2 * y), f1, f2,
-						f3, f4), null, null);
+		g2d.drawImage(ImageTransformUtil.computeImage(
+						eraseExceptRect(resizeAndCrop(front, 32), 2 * zOff, 32 - 2 * yTot, 2 * z, 2 * y), f1, f2, f3, f4), null,
+				null);
 
 		// Side face
 		Point2D r1 = new Point2D.Double(zTot, 8 + zTot / 2d), r2 = new Point2D.Double(zTot,

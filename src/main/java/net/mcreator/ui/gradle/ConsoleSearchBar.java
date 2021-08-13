@@ -119,8 +119,8 @@ public class ConsoleSearchBar extends JToolBar {
 			int max = -1;
 			while (pos + findLength <= doc.getLength()) {
 				String match = doc.getText(pos, findLength);
-				if ((match.equals(searchFor) && cb3.isSelected()) || (match.equalsIgnoreCase(searchFor) && !cb3
-						.isSelected())) {
+				if ((match.equals(searchFor) && cb3.isSelected()) || (match.equalsIgnoreCase(searchFor)
+						&& !cb3.isSelected())) {
 					max++;
 					if (max == index) {
 						pan.setSelectionStart(pos);

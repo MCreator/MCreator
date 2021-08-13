@@ -241,12 +241,12 @@ public class MinecraftImageGenerator {
 			graphics2D.drawLine(27, oSlotOffsetY, 27, 9 + oSlotOffsetY);
 
 			//elements
-			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, input.getUnmappedValue()).getImage())),
-					8), 1, 1 + slotOffsetY, null);
-			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, result.getUnmappedValue()).getImage())),
-					8), 19, 1 + oSlotOffsetY, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+							MCItem.getBlockIconBasedOnName(workspace, input.getUnmappedValue()).getImage())), 8), 1,
+					1 + slotOffsetY, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+							MCItem.getBlockIconBasedOnName(workspace, result.getUnmappedValue()).getImage())), 8), 19,
+					1 + oSlotOffsetY, null);
 		}
 
 		private static void drawThreeSlotRecipe(Graphics2D graphics2D, Workspace workspace, MItemBlock input0,
@@ -273,15 +273,15 @@ public class MinecraftImageGenerator {
 			graphics2D.drawLine(27, oSlotOffsetY, 27, 9 + oSlotOffsetY);
 
 			//elements
-			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, input0.getUnmappedValue()).getImage())),
-					8), 1, 1 + slotOffsetY - 9, null);
-			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, input1.getUnmappedValue()).getImage())),
-					8), 1, 1 + slotOffsetY + 9, null);
-			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, result.getUnmappedValue()).getImage())),
-					8), 19, 1 + oSlotOffsetY, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+							MCItem.getBlockIconBasedOnName(workspace, input0.getUnmappedValue()).getImage())), 8), 1,
+					1 + slotOffsetY - 9, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+							MCItem.getBlockIconBasedOnName(workspace, input1.getUnmappedValue()).getImage())), 8), 1,
+					1 + slotOffsetY + 9, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+							MCItem.getBlockIconBasedOnName(workspace, result.getUnmappedValue()).getImage())), 8), 19,
+					1 + oSlotOffsetY, null);
 		}
 
 		/**
@@ -512,7 +512,7 @@ public class MinecraftImageGenerator {
 					if (recipe[i] != null) {
 						int x = (i % 3) * 9 + 1, y = (i / 3) * 9 + 1;
 						graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
-								MCItem.getBlockIconBasedOnName(workspace, recipe[i].getUnmappedValue()).getImage())),
+										MCItem.getBlockIconBasedOnName(workspace, recipe[i].getUnmappedValue()).getImage())),
 								8), x, y, null);
 					}
 			}
@@ -537,7 +537,7 @@ public class MinecraftImageGenerator {
 			graphics2D.fillRect(0, 8, 28, 12);
 
 			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
-					MCItem.getBlockIconBasedOnName(workspace, achievementIcon.getUnmappedValue()).getImage())), 8), 2,
+							MCItem.getBlockIconBasedOnName(workspace, achievementIcon.getUnmappedValue()).getImage())), 8), 2,
 					10, null);
 
 			graphics2D.setFont(new Font(null, Font.PLAIN, 9));
@@ -599,8 +599,8 @@ public class MinecraftImageGenerator {
 			graphics2D.drawLine(1, 27, 26, 27);
 
 			FontMetrics fontMetrics = graphics2D.getFontMetrics();
-			graphics2D
-					.drawString(text, (28 - fontMetrics.stringWidth(text)) / 2, (28 - fontMetrics.getHeight()) / 2 + 9);
+			graphics2D.drawString(text, (28 - fontMetrics.stringWidth(text)) / 2,
+					(28 - fontMetrics.getHeight()) / 2 + 9);
 
 			graphics2D.dispose();
 			return icon;
@@ -625,9 +625,9 @@ public class MinecraftImageGenerator {
 
 			int s = 16;
 
-			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, item.getUnmappedValue()).getImage())),
-					(28 - s) / 2, (28 - s) / 2 + 1, s, s, null);
+			graphics2D.drawImage(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+							MCItem.getBlockIconBasedOnName(workspace, item.getUnmappedValue()).getImage())), (28 - s) / 2,
+					(28 - s) / 2 + 1, s, s, null);
 
 			graphics2D.dispose();
 			return icon;
@@ -651,9 +651,9 @@ public class MinecraftImageGenerator {
 			graphics2D.setColor(new Color(255, 255, 255, 180));
 
 			//get avg color of the portal frame
-			graphics2D.setColor(ImageUtils.getAverageColor(ImageUtils.toBufferedImage(ImageUtils
-					.changeSaturation(MCItem.getBlockIconBasedOnName(workspace, portalFrameTexture.getUnmappedValue()),
-							0.3f).getImage())));
+			graphics2D.setColor(ImageUtils.getAverageColor(ImageUtils.toBufferedImage(ImageUtils.changeSaturation(
+							MCItem.getBlockIconBasedOnName(workspace, portalFrameTexture.getUnmappedValue()), 0.3f)
+					.getImage())));
 
 			graphics2D.fillRect(3, 0, 5, 28);
 			graphics2D.fillRect(20, 0, 5, 28);
@@ -661,9 +661,8 @@ public class MinecraftImageGenerator {
 			graphics2D.fillRect(8, 23, 12, 5);
 
 			try {
-				Image tex = ImageUtils
-						.changeSaturation(new ImageIcon(ImageUtils.autoCropTile(ImageIO.read(portalTexture))), 0.1f)
-						.getImage();
+				Image tex = ImageUtils.changeSaturation(
+						new ImageIcon(ImageUtils.autoCropTile(ImageIO.read(portalTexture))), 0.1f).getImage();
 				graphics2D.drawImage(tex, 8, 5, 6, 6, null);
 				graphics2D.drawImage(tex, 14, 5, 6, 6, null);
 				graphics2D.drawImage(tex, 8, 11, 6, 6, null);
@@ -709,9 +708,8 @@ public class MinecraftImageGenerator {
 			graphics2D.drawLine(16, 12 + zamik, 16, 11 + zamik);
 			graphics2D.drawLine(17, 10 + zamik, 17, 10 + zamik);
 
-			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils
-							.toBufferedImage(MCItem.getBlockIconBasedOnName(workspace, fuel.getUnmappedValue()).getImage())),
-					10), 9, 15, null);
+			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+					MCItem.getBlockIconBasedOnName(workspace, fuel.getUnmappedValue()).getImage())), 10), 9, 15, null);
 
 			graphics2D.dispose();
 			return icon;
@@ -798,9 +796,9 @@ public class MinecraftImageGenerator {
 					new Point2D.Double(t3f4r1.getX(), t3f4r1.getY() - 0.6)), null, null);
 			g2d.drawImage(ImageTransformUtil.computeImage(ImageUtils.resizeAndCrop(left, 32), t2f1, f2, f3r2, t3f4r1),
 					null, null);
-			g2d.drawImage(ImageTransformUtil
-							.computeImage(ImageUtils.darken(ImageUtils.resizeAndCrop(front, 32)), t3f4r1, f3r2, r3, t4r4), null,
-					null);
+			g2d.drawImage(
+					ImageTransformUtil.computeImage(ImageUtils.darken(ImageUtils.resizeAndCrop(front, 32)), t3f4r1,
+							f3r2, r3, t4r4), null, null);
 			g2d.dispose();
 			return out;
 		}
@@ -821,11 +819,12 @@ public class MinecraftImageGenerator {
 					24.5), f3r2 = new Point2D.Double(16, 31), f4r1 = new Point2D.Double(16,
 					14.6), r3 = new Point2D.Double(30, 24.5), r4 = new Point2D.Double(30, 7.6);
 
-			g2d.drawImage(ImageTransformUtil
-					.computeImage(ImageUtils.brighten(ImageUtils.resizeAndCrop(top, 32)), t4, t1, t2, t3), null, null);
-			g2d.drawImage(ImageTransformUtil
-					.computeImage(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 0, 0, 32, 16), f1, f2, f3r2,
-							f4r1), null, null);
+			g2d.drawImage(
+					ImageTransformUtil.computeImage(ImageUtils.brighten(ImageUtils.resizeAndCrop(top, 32)), t4, t1, t2,
+							t3), null, null);
+			g2d.drawImage(ImageTransformUtil.computeImage(
+							ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 0, 0, 32, 16), f1, f2, f3r2, f4r1), null,
+					null);
 			g2d.drawImage(ImageTransformUtil.computeImage(
 					ImageUtils.darken(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 0, 0, 32, 16)), f4r1,
 					f3r2, r3, r4), null, null);
@@ -848,12 +847,12 @@ public class MinecraftImageGenerator {
 					37), f3r2 = new Point2D.Double(16, 44), f4r1 = new Point2D.Double(16, 28), r3 = new Point2D.Double(
 					30, 37), r4 = new Point2D.Double(30, 20.6);
 
-			g2d.drawImage(ImageTransformUtil
-							.computeImage(ImageUtils.brighten(ImageUtils.resizeAndCrop(texture, 32)), t1, t4, t3, t2), null,
-					null);
-			g2d.drawImage(ImageTransformUtil
-					.computeImage(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(texture, 32), 0, 6, 32, 26), f1, f2,
-							f3r2, f4r1), null, null);
+			g2d.drawImage(
+					ImageTransformUtil.computeImage(ImageUtils.brighten(ImageUtils.resizeAndCrop(texture, 32)), t1, t4,
+							t3, t2), null, null);
+			g2d.drawImage(ImageTransformUtil.computeImage(
+							ImageUtils.eraseRect(ImageUtils.resizeAndCrop(texture, 32), 0, 6, 32, 26), f1, f2, f3r2, f4r1),
+					null, null);
 			g2d.drawImage(ImageTransformUtil.computeImage(
 					ImageUtils.darken(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(texture, 32), 0, 6, 32, 26)), f4r1,
 					f3r2, r3, r4), null, null);
@@ -887,9 +886,9 @@ public class MinecraftImageGenerator {
 					ImageUtils.brighten(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(top, 32), 0, 0, 16, 32)), t3f4r1,
 					t4r4, t1, t2f1), null, null);
 			// Left side
-			g2d.drawImage(ImageTransformUtil
-					.computeImage(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 16, 0, 16, 16), t2f1, f2,
-							f3r2, t3f4r1), null, null);
+			g2d.drawImage(ImageTransformUtil.computeImage(
+							ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 16, 0, 16, 16), t2f1, f2, f3r2, t3f4r1),
+					null, null);
 			// Front face of upper step
 			g2d.drawImage(ImageTransformUtil.computeImage(
 					ImageUtils.darken(ImageUtils.eraseRect(ImageUtils.resizeAndCrop(side, 32), 0, 16, 32, 16)),
@@ -1001,9 +1000,8 @@ public class MinecraftImageGenerator {
 					null, null);
 			// rod
 			g2d.translate(4, -9);
-			g2d.drawImage(ImageUtils
-					.generateCuboidImage(ImageUtils.rotate(texture, 90), texture, ImageUtils.translate(texture, 2, 0),
-							2, 15, 2, 12, 0, 0), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(ImageUtils.rotate(texture, 90), texture,
+					ImageUtils.translate(texture, 2, 0), 2, 15, 2, 12, 0, 0), null, null);
 
 			g2d.dispose();
 			return out;
@@ -1026,6 +1024,23 @@ public class MinecraftImageGenerator {
 		}
 
 		/**
+		 * <p>This method generates the block icon for button.</p>
+		 *
+		 * @param texture <p>Block texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static Image generateButtonIcon(Image texture) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			g2d.scale(1, 1.15);
+			g2d.translate(0, -8);
+
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 6, 4, 4, 5, 0, 6), null, null);
+			g2d.dispose();
+			return out;
+		}
+
+		/**
 		 * <p>This method generates the potion bottle icon for potions.</p>
 		 *
 		 * @param color <p>Color of the potion</p>
@@ -1035,12 +1050,12 @@ public class MinecraftImageGenerator {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
 
-			g2d.drawImage(ImageUtils.resize(ImageUtils.colorize(ImageMakerTexturesCache.CACHE
-					.get(new ResourcePointer("templates/textures/texturemaker/potion_fluid_bright.png")), color, true)
+			g2d.drawImage(ImageUtils.resize(ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
+							new ResourcePointer("templates/textures/texturemaker/potion_fluid_bright.png")), color, true)
 					.getImage(), 32), null, 0, 0);
-			g2d.drawImage(ImageUtils.resize(ImageMakerTexturesCache.CACHE
-							.get(new ResourcePointer("templates/textures/texturemaker/potion_bottle_overlay.png")).getImage(),
-					32), null, 0, 0);
+			g2d.drawImage(ImageUtils.resize(ImageMakerTexturesCache.CACHE.get(
+							new ResourcePointer("templates/textures/texturemaker/potion_bottle_overlay.png")).getImage(), 32),
+					null, 0, 0);
 			g2d.dispose();
 
 			return out;
@@ -1142,7 +1157,7 @@ public class MinecraftImageGenerator {
 					stem = (ImageUtils.getAverageColor(ImageUtils.toBufferedImage(
 							MCItem.getBlockIconBasedOnName(workspace, treeStem.getUnmappedValue()).getImage())));
 					leaves = new Color((ImageUtils.getAverageColor(ImageUtils.toBufferedImage(
-							MCItem.getBlockIconBasedOnName(workspace, treeBranch.getUnmappedValue()).getImage()))
+									MCItem.getBlockIconBasedOnName(workspace, treeBranch.getUnmappedValue()).getImage()))
 							.getRGB() & 0x00ffffff) | 0xEE000000, false);
 				} else {
 					stem = new Color(95, 69, 32);
@@ -1163,7 +1178,7 @@ public class MinecraftImageGenerator {
 		/**
 		 * This method generates mob images.
 		 *
-		 * @param mobModelTexture   Mob model full texture.
+		 * @param mobModelTexture   LivingEntity model full texture.
 		 * @param spawnEggBaseColor Spawn egg's base (egg) color.
 		 * @param spawnEggDotColor  Spawn egg's detail (dot) color.
 		 * @param hasSpawnEgg       Toggle spawn egg rendering.
@@ -1231,7 +1246,7 @@ public class MinecraftImageGenerator {
 		/**
 		 * This method generates procedure images.
 		 *
-		 * @param procedurexml Mob model full texture.
+		 * @param procedurexml LivingEntity model full texture.
 		 * @param dependencies Spawn egg's base (egg) color.
 		 * @return Returns generated image.
 		 */
@@ -1272,9 +1287,9 @@ public class MinecraftImageGenerator {
 				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(60);
 			} else if (dependencies.contains(new Dependency("itemstack", ""))) {
 				blockColor = Dependency.getColor("itemstack");
-			} else if (dependencies.contains(new Dependency("entity", "")) || dependencies
-					.contains(new Dependency("sourceentity", "")) || dependencies
-					.contains(new Dependency("imediatesourceentity", ""))) {
+			} else if (dependencies.contains(new Dependency("entity", "")) || dependencies.contains(
+					new Dependency("sourceentity", "")) || dependencies.contains(
+					new Dependency("imediatesourceentity", ""))) {
 				blockColor = Dependency.getColor("entity");
 			} else if (dependencies.contains(new Dependency("world", ""))) {
 				blockColor = Dependency.getColor("world");

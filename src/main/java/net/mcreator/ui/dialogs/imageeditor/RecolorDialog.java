@@ -69,7 +69,7 @@ public class RecolorDialog extends MCreatorDialog {
 			g2d.setBackground(new Color(0, 0, 0, 0));
 			g2d.clearRect(0, 0, getWidth(), getHeight());
 			g2d.drawImage(ImageUtils.toBufferedImage(
-					ImageUtils.colorize(new ImageIcon(bim), colorChooser.getColor(), !lock.isSelected()).getImage()),
+							ImageUtils.colorize(new ImageIcon(bim), colorChooser.getColor(), !lock.isSelected()).getImage()),
 					null, 0, 0);
 			g2d.dispose();
 			layer.mergeOverlay();

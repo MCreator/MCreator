@@ -28,7 +28,6 @@ import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -121,8 +120,8 @@ public class ModElementManager {
 
 	public boolean usesGeneratableElementJava(GeneratableElement generatableElement) {
 		Generator generator = workspace.getGenerator();
-		List<GeneratorTemplate> templates = generator
-				.getModElementGeneratorTemplatesList(generatableElement.getModElement());
+		List<GeneratorTemplate> templates = generator.getModElementGeneratorTemplatesList(
+				generatableElement.getModElement());
 		if (templates != null)
 			for (GeneratorTemplate template : templates) {
 				String writer = (String) ((Map<?, ?>) template.getTemplateData()).get("writer");
@@ -154,7 +153,7 @@ public class ModElementManager {
 	public static ImageIcon getModElementIcon(ModElement element) {
 		ImageIcon icon = element.getElementIcon();
 		if (icon == null || icon.getImage() == null || icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0)
-			icon = TiledImageCache.getModTypeIcon(element.getType());
+			icon = element.getType().getIcon();
 		return icon;
 	}
 

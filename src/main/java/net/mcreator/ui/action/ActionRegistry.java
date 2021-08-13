@@ -236,23 +236,21 @@ public class ActionRegistry {
 		this.createAnimatedTexture = new TextureAction(this, L10N.t("action.create_animated_texture"),
 				actionEvent -> new AnimationMakerView(mcreator).showView()).setIcon(UIRES.get("16px.newanimation"));
 		this.importBlockTexture = new TextureAction(this, L10N.t("action.import_block_texture"),
-				actionEvent -> TextureImportDialogs
-						.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.BLOCK))
-				.setIcon(UIRES.get("16px.importblock"));
+				actionEvent -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
+						BlockItemTextureSelector.TextureType.BLOCK)).setIcon(UIRES.get("16px.importblock"));
 		this.importItemTexture = new TextureAction(this, L10N.t("action.import_item_texture"),
-				actionEvent -> TextureImportDialogs
-						.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.ITEM))
-				.setIcon(UIRES.get("16px.importitem"));
+				actionEvent -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
+						BlockItemTextureSelector.TextureType.ITEM)).setIcon(UIRES.get("16px.importitem"));
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
 			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
 		});
 		this.importOtherTexture = new TextureAction(this, L10N.t("action.import_other_texture"),
-				actionEvent -> TextureImportDialogs.importOtherTextures(mcreator))
-				.setIcon(UIRES.get("16px.importtexture"));
+				actionEvent -> TextureImportDialogs.importOtherTextures(mcreator)).setIcon(
+				UIRES.get("16px.importtexture"));
 		this.importSound = new ImportSoundAction(this);
-		this.importStructure = new StructureImportActions.ImportStructure(this)
-				.setIcon(UIRES.get("16px.importstructure"));
+		this.importStructure = new StructureImportActions.ImportStructure(this).setIcon(
+				UIRES.get("16px.importstructure"));
 		this.importStructureFromMinecraft = new StructureImportActions.ImportStructureFromMinecraft(this);
 		this.importJavaModel = new ModelImportActions.JAVA(this).setIcon(UIRES.get("16px.importjavamodel"));
 		this.importJSONModel = new ModelImportActions.JSON(this).setIcon(UIRES.get("16px.importjsonmodel"));
@@ -303,8 +301,8 @@ public class ActionRegistry {
 				MCreatorApplication.SERVER_DOMAIN + "/support/knowledgebase");
 		this.setCreativeTabItemOrder = new EditTabOrderAction(this);
 		this.injectDefaultTags = InjectTagsTool.getAction(this);
-		this.donate = new VisitURIAction(this, L10N.t("action.donate"), MCreatorApplication.SERVER_DOMAIN + "/donate")
-				.setIcon(UIRES.get("donate"));
+		this.donate = new VisitURIAction(this, L10N.t("action.donate"),
+				MCreatorApplication.SERVER_DOMAIN + "/donate").setIcon(UIRES.get("donate"));
 		this.openJavaEditionFolder = new MinecraftFolderActions.OpenJavaEditionFolder(this);
 		this.openBedrockEditionFolder = new MinecraftFolderActions.OpenBedrockEditionFolder(this);
 

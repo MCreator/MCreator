@@ -63,8 +63,8 @@ public class ImageMakerTest {
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration
-				.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
 
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
@@ -73,8 +73,8 @@ public class ImageMakerTest {
 		WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
 		workspaceSettings.setModName("Test mod");
 		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
-		Workspace workspace = Workspace
-				.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"), workspaceSettings);
+		Workspace workspace = Workspace.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"),
+				workspaceSettings);
 
 		mcreator = new MCreator(null, workspace);
 	}

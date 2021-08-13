@@ -31,15 +31,15 @@ scopes:
     read: instance.${var.getName()} = ItemStack.read(nbt.getCompound("${var.getName()}"));
     write: nbt.put("${var.getName()}", instance.${var.getName()}.write(new CompoundNBT()));
     get: |
-      /*@ItemStack*/((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+      /*@ItemStack*/((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
     set: |
       <#include "mcitems.ftl">
       {
         ItemStack _setval = ${mappedMCItemToItemStackCode(value, 1)};
-        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+        ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
           capability.${name} = _setval;
-          capability.syncPlayerVariables(entity);
+          capability.syncPlayerVariables(${entity});
         });
       }
   player_persistent:
@@ -47,14 +47,14 @@ scopes:
     read: instance.${var.getName()} = ItemStack.read(nbt.getCompound("${var.getName()}"));
     write: nbt.put("${var.getName()}", instance.${var.getName()}.write(new CompoundNBT()));
     get: |
-      /*@ItemStack*/((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+      /*@ItemStack*/((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
     set: |
       <#include "mcitems.ftl">
       {
         ItemStack _setval = ${mappedMCItemToItemStackCode(value, 1)};
-        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+        ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
           capability.${name} = _setval;
-          capability.syncPlayerVariables(entity);
+          capability.syncPlayerVariables(${entity});
         });
       }

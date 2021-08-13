@@ -51,6 +51,7 @@ public class GetVariableBlock implements IBlockGenerator {
 		VariableType typeObject = VariableTypeLoader.INSTANCE.fromName(type);
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
+		Element entityInput = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (variable != null) {
 			String[] varfield = variable.getTextContent().split(":");
 			if (varfield.length == 2) {
@@ -73,8 +74,8 @@ public class GetVariableBlock implements IBlockGenerator {
 							"This editor does not support local variables!"));
 					return;
 				} else if (scope.equalsIgnoreCase("local")) {
-					List<StatementInput> statementInputList = master
-							.getStatementInputsMatching(statementInput -> statementInput.disable_local_variables);
+					List<StatementInput> statementInputList = master.getStatementInputsMatching(
+							statementInput -> statementInput.disable_local_variables);
 					if (!statementInputList.isEmpty()) {
 						for (StatementInput statementInput : statementInputList) {
 							master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
@@ -87,13 +88,15 @@ public class GetVariableBlock implements IBlockGenerator {
 					scope = master.getWorkspace().getVariableElementByName(name).getScope().name();
 					if (scope.equals("GLOBAL_MAP") || scope.equals("GLOBAL_WORLD")) {
 						master.addDependency(new Dependency("world", "world"));
-					} else if (scope.equals("PLAYER_LIFETIME") || scope.equals("PLAYER_PERSISTENT")) {
-						master.addDependency(new Dependency("entity", "entity"));
+					} else if (entityInput == null && (scope.equals("PLAYER_LIFETIME") || scope.equals("PLAYER_PERSISTENT"))) {
+						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								"Get variable block for player variable is missing entity input."));
+						return;
 					}
 				}
 
-				Object getterTemplate = typeObject
-						.getScopeDefinition(master.getWorkspace(), scope.toUpperCase(Locale.ENGLISH)).get("get");
+				Object getterTemplate = typeObject.getScopeDefinition(master.getWorkspace(),
+						scope.toUpperCase(Locale.ENGLISH)).get("get");
 				if (getterTemplate == null) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							"Current generator does not support getting variables of type " + type + " in " + scope
@@ -101,11 +104,17 @@ public class GetVariableBlock implements IBlockGenerator {
 					return;
 				}
 
+				String entitycode = null;
+				if (entityInput != null)
+					entitycode = BlocklyToCode.directProcessOutputBlock(master, entityInput);
+
 				if (master.getTemplateGenerator() != null) {
 					Map<String, Object> dataModel = new HashMap<>();
 					dataModel.put("name", name);
 					dataModel.put("type", type);
 					dataModel.put("scope", scope.toUpperCase(Locale.ENGLISH));
+					if (entitycode != null)
+						dataModel.put("entity", entitycode);
 
 					String code = master.getTemplateGenerator()
 							.generateFromString(getterTemplate.toString(), dataModel);

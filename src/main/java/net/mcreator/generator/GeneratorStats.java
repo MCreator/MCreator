@@ -20,6 +20,7 @@ package net.mcreator.generator;
 
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.PluginLoader;
@@ -34,8 +35,8 @@ public class GeneratorStats {
 
 	private static final Pattern ftlFile = Pattern.compile(".*\\.ftl");
 
-	private final Map<ModElementType, CoverageStatus> modElementTypeCoverageInfo = new TreeMap<>(
-			Comparator.comparing(Enum::name));
+	private final Map<ModElementType<?>, CoverageStatus> modElementTypeCoverageInfo = new TreeMap<>(
+			Comparator.comparing(ModElementType::getRegistryName));
 	private final Map<String, Double> coverageInfo = new HashMap<>();
 	private final Map<String, CoverageStatus> baseCoverageInfo = new HashMap<>();
 
@@ -47,16 +48,16 @@ public class GeneratorStats {
 	private Set<String> generatorAITasks;
 
 	GeneratorStats(GeneratorConfiguration generatorConfiguration) {
-		this.status = Status
-				.valueOf(generatorConfiguration.getRaw().get("status").toString().toUpperCase(Locale.ENGLISH));
+		this.status = Status.valueOf(
+				generatorConfiguration.getRaw().get("status").toString().toUpperCase(Locale.ENGLISH));
 
 		// determine supported mod element types
 		List<?> partials = ((List<?>) generatorConfiguration.getRaw().get("partial_support"));
 		if (partials == null)
 			partials = new ArrayList<>();
-		for (ModElementType type : ModElementType.values()) {
+		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 			if (generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type) != null) {
-				if (partials.contains(type.name().toLowerCase(Locale.ENGLISH))) {
+				if (partials.contains(type.getRegistryName().toLowerCase(Locale.ENGLISH))) {
 					modElementTypeCoverageInfo.put(type, CoverageStatus.PARTIAL);
 				} else {
 					modElementTypeCoverageInfo.put(type, CoverageStatus.FULL);
@@ -68,7 +69,7 @@ public class GeneratorStats {
 
 		Map<String, LinkedHashMap<String, DataListEntry>> datalistchache = DataListLoader.getCache();
 
-		// caclulate percentage of mappings/element lists supported
+		// calculate percentage of mappings/element lists supported
 		for (Map.Entry<String, LinkedHashMap<String, DataListEntry>> list : datalistchache.entrySet()) {
 			int elementsCount = list.getValue().size();
 			int supportedElementsCount = 0;
@@ -90,27 +91,27 @@ public class GeneratorStats {
 
 		// lazy load actual values
 		new Thread(() -> {
-			generatorProcedures = PluginLoader.INSTANCE
-					.getResources(generatorConfiguration.getGeneratorName() + ".procedures", ftlFile).stream()
+			generatorProcedures = PluginLoader.INSTANCE.getResources(
+							generatorConfiguration.getGeneratorName() + ".procedures", ftlFile).stream()
 					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
 			coverageInfo.put("procedures", Math.min((((double) generatorProcedures.size()) / (
 					BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks().size() + 4)) * 100, 100));
 
-			generatorTriggers = PluginLoader.INSTANCE
-					.getResources(generatorConfiguration.getGeneratorName() + ".triggers", ftlFile).stream()
+			generatorTriggers = PluginLoader.INSTANCE.getResources(
+							generatorConfiguration.getGeneratorName() + ".triggers", ftlFile).stream()
 					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
 			coverageInfo.put("triggers", Math.min(
 					(((double) generatorTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader()
 							.getExternalTrigers().size()) * 100, 100));
 
-			jsonTriggers = PluginLoader.INSTANCE
-					.getResources(generatorConfiguration.getGeneratorName() + ".jsontriggers", ftlFile).stream()
+			jsonTriggers = PluginLoader.INSTANCE.getResources(
+							generatorConfiguration.getGeneratorName() + ".jsontriggers", ftlFile).stream()
 					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
 			coverageInfo.put("jsontriggers", Math.min((((double) jsonTriggers.size()) / (
 					BlocklyLoader.INSTANCE.getJSONTriggerLoader().getDefinedBlocks().size() + 1)) * 100, 100));
 
-			generatorAITasks = PluginLoader.INSTANCE
-					.getResources(generatorConfiguration.getGeneratorName() + ".aitasks", ftlFile).stream()
+			generatorAITasks = PluginLoader.INSTANCE.getResources(
+							generatorConfiguration.getGeneratorName() + ".aitasks", ftlFile).stream()
 					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
 			coverageInfo.put("aitasks", Math.min(
 					(((double) generatorAITasks.size()) / BlocklyLoader.INSTANCE.getAITaskBlockLoader()
@@ -160,7 +161,7 @@ public class GeneratorStats {
 				(features.contains(feature) ? CoverageStatus.FULL : CoverageStatus.NONE);
 	}
 
-	public Map<ModElementType, CoverageStatus> getModElementTypeCoverageInfo() {
+	public Map<ModElementType<?>, CoverageStatus> getModElementTypeCoverageInfo() {
 		return modElementTypeCoverageInfo;
 	}
 

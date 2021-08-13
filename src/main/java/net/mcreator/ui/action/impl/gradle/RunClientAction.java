@@ -41,13 +41,13 @@ public class RunClientAction extends GradleAction {
 				actionRegistry.getMCreator().getGenerator().generateBase();
 
 				if (PreferencesManager.PREFERENCES.gradle.passLangToMinecraft)
-					MinecraftOptionsUtils
-							.setLangTo(actionRegistry.getMCreator().getWorkspace(), L10N.getLocaleString());
+					MinecraftOptionsUtils.setLangTo(actionRegistry.getMCreator().getWorkspace(),
+							L10N.getLocaleString());
 
 				if (actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client")
 						.equals("@bedrock_run_client")) {
-					BedrockUtils
-							.reinstallAddon(actionRegistry.getMCreator(), actionRegistry.getMCreator().getWorkspace());
+					BedrockUtils.reinstallAddon(actionRegistry.getMCreator(),
+							actionRegistry.getMCreator().getWorkspace());
 				} else {
 					SwingUtilities.invokeLater(() -> actionRegistry.getMCreator().getGradleConsole()
 							.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
@@ -61,8 +61,8 @@ public class RunClientAction extends GradleAction {
 	}
 
 	@Override public boolean isEnabled() {
-		return actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null && super
-				.isEnabled();
+		return actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null
+				&& super.isEnabled();
 	}
 
 }

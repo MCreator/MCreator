@@ -76,9 +76,10 @@ public class JavaMemeberNameValidator implements Validator {
 	}
 
 	private static final Set<String> common_names = new HashSet<>(
-			Arrays.asList("Axe", "Pickaxe", "Spade", "Hoe", "Shovel", "Sword", "Shears", "FishingRod", "Compass", "Clock",
-					"Shield", "Overworld", "Nether", "World", "Living", "Mob", "Monster", "Animal", "End", "Stairs",
-					"Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door", "FenceGate", "Creature", "Item",
-					"Block", "BoneMeal", "Diamond", "Ore", "Gem", "Gold", "Iron", "Stack", "Emerald", "Entity", "Surface"));
+			Arrays.asList("Axe", "Pickaxe", "Spade", "Hoe", "Shovel", "Sword", "Shears", "FishingRod", "Compass",
+					"Clock", "Shield", "Overworld", "Nether", "World", "Living", "Mob", "Monster", "Animal", "End",
+					"Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door", "FenceGate", "Creature",
+					"Item", "Block", "BoneMeal", "Diamond", "Ore", "Gem", "Gold", "Iron", "Stack", "Emerald", "Entity",
+					"Surface", "WoodButton", "StoneButton"));
 
 }

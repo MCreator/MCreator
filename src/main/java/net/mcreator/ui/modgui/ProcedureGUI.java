@@ -23,7 +23,6 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.types.GUI;
@@ -177,8 +176,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					StringBuilder missingdeps = new StringBuilder();
 					boolean warn = false;
 					for (Dependency dependency : dependenciesArrayList) {
-						if (trigger.dependencies_provided != null && !trigger.dependencies_provided
-								.contains(dependency)) {
+						if (trigger.dependencies_provided != null && !trigger.dependencies_provided.contains(
+								dependency)) {
 							warn = true;
 							missingdeps.append(" ").append(dependency.getName());
 						}
@@ -381,8 +380,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		bar.add(remvar);
 
 		addvar.addActionListener(e -> {
-			VariableElement element = NewVariableDialog
-					.showNewVariableDialog(mcreator, false, new OptionPaneValidatior() {
+			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
+					new OptionPaneValidatior() {
 						@Override public Validator.ValidationResult validate(JComponent component) {
 							Validator validator = new JavaMemeberNameValidator((VTextField) component, false);
 							String textname = Transliteration.transliterateString(((VTextField) component).getText());
@@ -532,8 +531,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		scrollPaneExtDeps.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneExtDeps.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
-		triggerDepsPan.add("Center", PanelUtils.northAndCenterElement(triggerInfoPanel, PanelUtils
-				.northAndCenterElement(
+		triggerDepsPan.add("Center", PanelUtils.northAndCenterElement(triggerInfoPanel,
+				PanelUtils.northAndCenterElement(
 						ComponentUtils.deriveFont(L10N.label("elementgui.procedure.provided_dependencies"), 13),
 						scrollPaneExtDeps, 0, 1), 0, 4));
 		triggerDepsPan.setPreferredSize(new Dimension(150, 0));
@@ -566,8 +565,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			}
 			blocklyPanel.getJSBridge().setJavaScriptEventListener(() -> new Thread(this::regenerateProcedure).start());
 			if (!isEditingMode()) {
-				blocklyPanel
-						.setXML("<xml><block type=\"event_trigger\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>");
+				blocklyPanel.setXML(
+						"<xml><block type=\"event_trigger\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>");
 			}
 		});
 
@@ -599,8 +598,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		super.afterGeneratableElementStored();
 
 		// check if dependency list has changed
-		boolean dependenciesChanged = dependenciesBeforeEdit != null && !new HashSet<>(dependenciesBeforeEdit)
-				.equals(new HashSet<>(dependenciesArrayList));
+		boolean dependenciesChanged = dependenciesBeforeEdit != null && !new HashSet<>(dependenciesBeforeEdit).equals(
+				new HashSet<>(dependenciesArrayList));
 
 		// this procedure could be in use and new dependencies were added
 		if (isEditingMode() && dependenciesChanged) {
@@ -619,8 +618,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						}
 						if (procedureUsedByGUI)
 							mcreator.getGenerator().generateElement(generatableElement);
-					} else if (generatableElement != null && ModElementTypeRegistry.REGISTRY.get(element.getType())
-							.hasProcedureTriggers()) {
+					} else if (generatableElement != null && element.getType().hasProcedureTriggers()) {
 						if (Procedure.isElementUsingProcedure(generatableElement, modElement.getName())) {
 							mcreator.getGenerator().generateElement(generatableElement);
 						}

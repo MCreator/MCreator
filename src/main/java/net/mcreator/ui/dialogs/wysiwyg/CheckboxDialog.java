@@ -75,8 +75,8 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 				IHelpContext.NONE.withEntry("gui/checkbox_procedure_value"), editor.mcreator,
 				L10N.t("dialog.gui.checkbox_procedure_value"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"))
-				.setDefaultName(L10N.t("condition.common.false"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
+				L10N.t("condition.common.false"));
 		isCheckedProcedure.refreshList();
 		options.add(PanelUtils.join(isCheckedProcedure));
 

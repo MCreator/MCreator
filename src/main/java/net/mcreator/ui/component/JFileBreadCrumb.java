@@ -84,9 +84,8 @@ public class JFileBreadCrumb extends JPanel {
 		MouseAdapter adapter = null;
 
 		for (File filePathPart : path) {
-			JLabel entry = new JLabel(
-					((idx == path.size() - 1 && !filePathPart.isDirectory()) ? "<html><b>" : "") + filePathPart
-							.getName());
+			JLabel entry = new JLabel(((idx == path.size() - 1 && !filePathPart.isDirectory()) ? "<html><b>" : "")
+					+ filePathPart.getName());
 
 			if (filePathPart.isFile())
 				entry.setIcon(FileIcons.getIconForFile(filePathPart));

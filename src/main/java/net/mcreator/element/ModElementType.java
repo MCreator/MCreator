@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2021, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,88 +19,68 @@
 
 package net.mcreator.element;
 
-import com.google.gson.annotations.SerializedName;
+import net.mcreator.element.types.Procedure;
+import net.mcreator.generator.GeneratorStats;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.workspace.elements.ModElement;
 
+import javax.swing.*;
+import java.lang.reflect.Field;
 import java.util.Locale;
 
-public enum ModElementType {
+public class ModElementType<GE extends GeneratableElement> {
 
-	@SerializedName("block") BLOCK(BaseType.BLOCK, RecipeType.BLOCK),
-
-	@SerializedName("item") ITEM(BaseType.ITEM, RecipeType.ITEM),
-
-	@SerializedName("armor") ARMOR(BaseType.ARMOR, RecipeType.ARMOR),
-
-	@SerializedName("biome") BIOME(BaseType.BIOME, RecipeType.NONE),
-
-	@SerializedName("fluid") FLUID(BaseType.BLOCK, RecipeType.BUCKET),
-
-	@SerializedName("command") COMMAND(BaseType.COMMAND, RecipeType.NONE),
-
-	@SerializedName("fuel") FUEL(BaseType.FUEL, RecipeType.NONE),
-
-	@SerializedName("mob") LIVINGENTITY(BaseType.ENTITY, RecipeType.NONE),
-
-	@SerializedName("food") FOOD(BaseType.ITEM, RecipeType.ITEM),
-
-	@SerializedName("tool") TOOL(BaseType.ITEM, RecipeType.ITEM),
-
-	@SerializedName("achievement") ACHIEVEMENT(BaseType.DATAPACK, RecipeType.NONE),
-
-	@SerializedName("tab") TAB(BaseType.TAB, RecipeType.NONE),
-
-	@SerializedName("recipe") RECIPE(BaseType.DATAPACK, RecipeType.NONE),
-
-	@SerializedName("plant") PLANT(BaseType.BLOCK, RecipeType.BLOCK),
-
-	@SerializedName("dimension") DIMENSION(BaseType.DIMENSION, RecipeType.ITEM),
-
-	@SerializedName("gun") RANGEDITEM(BaseType.ITEM, RecipeType.ITEM),
-
-	@SerializedName("structure") STRUCTURE(BaseType.STRUCTURE, RecipeType.NONE),
-
-	@SerializedName("gui") GUI(BaseType.GUI, RecipeType.NONE),
-
-	@SerializedName("keybind") KEYBIND(BaseType.KEYBIND, RecipeType.NONE),
-
-	@SerializedName("overlay") OVERLAY(BaseType.OVERLAY, RecipeType.NONE),
-
-	@SerializedName("procedure") PROCEDURE(BaseType.PROCEDURE, RecipeType.NONE),
-
-	@SerializedName("potion") POTION(BaseType.POTION, RecipeType.NONE),
-
-	@SerializedName("potioneffect") POTIONEFFECT(BaseType.POTIONEFFECT, RecipeType.NONE),
-
-	@SerializedName("particle") PARTICLE(BaseType.PARTICLE, RecipeType.NONE),
-
-	@SerializedName("enchantment") ENCHANTMENT(BaseType.ENCHANTMENT, RecipeType.NONE),
-
-	@SerializedName("code") CODE(BaseType.OTHER, RecipeType.NONE),
-
-	@SerializedName("tag") TAG(BaseType.DATAPACK, RecipeType.NONE),
-
-	@SerializedName("musicdisc") MUSICDISC(BaseType.OTHER, RecipeType.ITEM),
-
-	@SerializedName("loottable") LOOTTABLE(BaseType.DATAPACK, RecipeType.NONE),
-
-	@SerializedName("function") FUNCTION(BaseType.DATAPACK, RecipeType.NONE),
-
-	@SerializedName("painting") PAINTING(BaseType.OTHER, RecipeType.NONE),
-
-	@SerializedName("gamerule") GAMERULE(BaseType.OTHER, RecipeType.NONE);
-
+	private final String registryName;
 	private final BaseType baseType;
-	private final String description;
+	private final RecipeType recipeType;
+
+	private final ModElementGUIProvider<GE> modElementGUIProvider;
+	private final Class<? extends GE> modElementStorageClass;
+
 	private final String readableName;
-	private final RecipeType recipeElementType;
+	private final String description;
+	private final Character shortcut;
+	private GeneratorStats.CoverageStatus status = GeneratorStats.CoverageStatus.FULL;
 
-	ModElementType(BaseType baseType, RecipeType recipeElementType) {
+	private boolean hasProcedureTriggers;
+
+	public ModElementType(String registryName, Character shortcut, BaseType baseType, RecipeType recipeType,
+			ModElementGUIProvider<GE> modElementGUIProvider, Class<? extends GE> modElementStorageClass) {
 		this.baseType = baseType;
-		this.recipeElementType = recipeElementType;
+		this.recipeType = recipeType;
+		this.registryName = registryName;
+		this.shortcut = shortcut;
 
-		this.readableName = L10N.t("modelement." + name().toLowerCase(Locale.ENGLISH));
-		this.description = L10N.t("modelement." + name().toLowerCase(Locale.ENGLISH) + ".description");
+		this.modElementGUIProvider = modElementGUIProvider;
+		this.modElementStorageClass = modElementStorageClass;
+
+		this.readableName = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH));
+		this.description = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH) + ".description");
+
+		for (Field field : modElementStorageClass.getFields())
+			if (field.getType().isAssignableFrom(Procedure.class)) {
+				hasProcedureTriggers = true;
+				break;
+			}
+	}
+
+	public String getRegistryName() {
+		return registryName;
+	}
+
+	public Character getShortcut() {
+		return shortcut;
+	}
+
+	public RecipeType getRecipeType() {
+		return recipeType;
+	}
+
+	public BaseType getBaseType() {
+		return baseType;
 	}
 
 	public String getReadableName() {
@@ -110,12 +91,78 @@ public enum ModElementType {
 		return description;
 	}
 
-	public RecipeType getRecipeType() {
-		return recipeElementType;
+	public ImageIcon getIcon() {
+		return UIRES.get("mod_types." + registryName);
 	}
 
-	public BaseType getBaseType() {
-		return baseType;
+	public ModElementGUI<GE> getModElementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
+		return modElementGUIProvider.get(mcreator, modElement, editingMode);
 	}
+
+	public Class<? extends GeneratableElement> getModElementStorageClass() {
+		return modElementStorageClass;
+	}
+
+	public GeneratorStats.CoverageStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(GeneratorStats.CoverageStatus status) {
+		this.status = status;
+	}
+
+	public boolean hasProcedureTriggers() {
+		return hasProcedureTriggers;
+	}
+
+	@Override public String toString() {
+		return this.registryName;
+	}
+
+	@Override public boolean equals(Object element) {
+		return element instanceof ModElementType && registryName.equals(
+				((ModElementType<?>) element).getRegistryName());
+	}
+
+	@Override public int hashCode() {
+		return registryName.hashCode();
+	}
+
+	public interface ModElementGUIProvider<GE extends GeneratableElement> {
+		ModElementGUI<GE> get(MCreator mcreator, ModElement modElement, boolean editingMode);
+	}
+
+	public static ModElementType<?> ADVANCEMENT;
+	public static ModElementType<?> ARMOR;
+	public static ModElementType<?> BIOME;
+	public static ModElementType<?> BLOCK;
+	public static ModElementType<?> COMMAND;
+	public static ModElementType<?> DIMENSION;
+	public static ModElementType<?> CODE;
+	public static ModElementType<?> ENCHANTMENT;
+	public static ModElementType<?> FLUID;
+	public static ModElementType<?> FOOD;
+	public static ModElementType<?> FUEL;
+	public static ModElementType<?> FUNCTION;
+	public static ModElementType<?> GAMERULE;
+	public static ModElementType<?> GUI;
+	public static ModElementType<?> ITEM;
+	public static ModElementType<?> KEYBIND;
+	public static ModElementType<?> LIVINGENTITY;
+	public static ModElementType<?> LOOTTABLE;
+	public static ModElementType<?> MUSICDISC;
+	public static ModElementType<?> OVERLAY;
+	public static ModElementType<?> PAINTING;
+	public static ModElementType<?> PARTICLE;
+	public static ModElementType<?> PLANT;
+	public static ModElementType<?> POTION;
+	public static ModElementType<?> POTIONEFFECT;
+	public static ModElementType<?> PROCEDURE;
+	public static ModElementType<?> RANGEDITEM;
+	public static ModElementType<?> RECIPE;
+	public static ModElementType<?> STRUCTURE;
+	public static ModElementType<?> TAB;
+	public static ModElementType<?> TAG;
+	public static ModElementType<?> TOOL;
 
 }

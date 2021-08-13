@@ -65,31 +65,31 @@ public class ColorSelector extends JPanel {
 
 		foregroundColor.addActionListener(e -> {
 			JColor.colorChooser.setColor(foreground);
-			dialog = JColorChooser
-					.createDialog(f, L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), true,
-							JColor.colorChooser, event -> {
-								Color c = JColor.colorChooser.getColor();
-								if (c != null) {
-									foreground = c;
-									updateColors();
-								}
-								dialog.setVisible(false);
-							}, event -> dialog.setVisible(false));
+			dialog = JColorChooser.createDialog(f,
+					L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), true,
+					JColor.colorChooser, event -> {
+						Color c = JColor.colorChooser.getColor();
+						if (c != null) {
+							foreground = c;
+							updateColors();
+						}
+						dialog.setVisible(false);
+					}, event -> dialog.setVisible(false));
 			dialog.setVisible(true);
 		});
 
 		backgroundColor.addActionListener(e -> {
 			JColor.colorChooser.setColor(background);
-			dialog = JColorChooser
-					.createDialog(f, L10N.t("dialog.image_maker.tools.component.colorselector_select_background"), true,
-							JColor.colorChooser, event -> {
-								Color c = JColor.colorChooser.getColor();
-								if (c != null) {
-									background = c;
-									updateColors();
-								}
-								dialog.setVisible(false);
-							}, event -> dialog.setVisible(false));
+			dialog = JColorChooser.createDialog(f,
+					L10N.t("dialog.image_maker.tools.component.colorselector_select_background"), true,
+					JColor.colorChooser, event -> {
+						Color c = JColor.colorChooser.getColor();
+						if (c != null) {
+							background = c;
+							updateColors();
+						}
+						dialog.setVisible(false);
+					}, event -> dialog.setVisible(false));
 			dialog.setVisible(true);
 		});
 
@@ -117,7 +117,7 @@ public class ColorSelector extends JPanel {
 		setPreferredSize(new Dimension(63, 56));
 	}
 
-	private ImageIcon generateTransparentPreview(Color color){
+	private ImageIcon generateTransparentPreview(Color color) {
 		BufferedImage preview = new BufferedImage(40, 32, BufferedImage.TYPE_INT_RGB);
 		Graphics2D graphics2D = preview.createGraphics();
 

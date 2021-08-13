@@ -49,6 +49,33 @@ public class ElementUtil {
 	}
 
 	/**
+	 * Loads all mod elements and all Minecraft elements (blocks and items), including elements
+	 * that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
+	 * This list also provides potions from both Minecraft elements and mod elements
+	 *
+	 * @return All Blocks and Items and Potions from both Minecraft and custom elements with or without metadata
+	 */
+	public static List<MCItem> loadBlocksAndItemsAndTagsAndPotions(Workspace workspace) {
+		List<MCItem> elements = loadBlocksAndItemsAndTags(workspace);
+		loadAllPotions(workspace).forEach(potion -> elements.add(new MCItem.Potion(workspace, potion)));
+		return elements;
+	}
+
+	/**
+	 * Loads all mod elements and all Minecraft elements (blocks and items) without elements
+	 * that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
+	 * so only oak wood, birch wood, ... are loaded, without wildcard wood element
+	 * This list also provides potions from both Minecraft elements and mod elements
+	 *
+	 * @return All Blocks and Items and Potions from both Minecraft and custom elements with or without metadata
+	 */
+	public static List<MCItem> loadBlocksAndItemsAndPotions(Workspace workspace) {
+		List<MCItem> elements = loadBlocksAndItems(workspace);
+		loadAllPotions(workspace).forEach(potion -> elements.add(new MCItem.Potion(workspace, potion)));
+		return elements;
+	}
+
+	/**
 	 * Loads all mod elements and all Minecraft elements (blocks and items) without elements
 	 * that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
 	 * so only oak wood, birch wood, ... are loaded, without wildcard wood element
@@ -83,7 +110,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllAchievements(Workspace workspace) {
-		List<DataListEntry> achievements = getCustomElementsOfType(workspace, ModElementType.ACHIEVEMENT);
+		List<DataListEntry> achievements = getCustomElementsOfType(workspace, ModElementType.ADVANCEMENT);
 		achievements.addAll(DataListLoader.loadDataList("achievements"));
 		return achievements;
 	}
@@ -129,6 +156,12 @@ public class ElementUtil {
 	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTIONEFFECT);
 		retval.addAll(DataListLoader.loadDataList("effects"));
+		return retval;
+	}
+
+	public static List<DataListEntry> loadAllPotions(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTION);
+		retval.addAll(DataListLoader.loadDataList("potions"));
 		return retval;
 	}
 
@@ -264,7 +297,7 @@ public class ElementUtil {
 				.collect(Collectors.toList());
 	}
 
-	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, ModElementType type) {
+	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, ModElementType<?> type) {
 		return workspace.getModElements().stream().filter(mu -> mu.getType() == type).map(DataListEntry.Custom::new)
 				.collect(Collectors.toList());
 	}

@@ -18,8 +18,6 @@
 
 package net.mcreator.ui.init;
 
-import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
@@ -32,8 +30,6 @@ import java.awt.*;
 public class TiledImageCache {
 
 	private static final Logger LOG = LogManager.getLogger("TImage Chache");
-
-	private static TiledImageUtils modTypes;
 
 	public static ImageIcon plantGrowingYes;
 	public static ImageIcon plantGrowingNo;
@@ -65,7 +61,6 @@ public class TiledImageCache {
 			TiledImageUtils modTabTile = new TiledImageUtils(UIRES.get("taboverlaytile"), 64, 64);
 			TiledImageUtils workspaceIcons = new TiledImageUtils(UIRES.get("wrktile"), 45, 45);
 			TiledImageUtils bucketIcons = new TiledImageUtils(UIRES.get("fluidbucket"), 32, 32);
-			modTypes = new TiledImageUtils(UIRES.get("modtypes"), 64, 64);
 
 			plantGrowingYes = plantGrowthTile.getIcon(1, 1);
 			plantGrowingNo = plantGrowthTile.getIcon(2, 1);
@@ -79,8 +74,8 @@ public class TiledImageCache {
 			modTabBlue = modTabTile.getIcon(3, 1);
 			modTabPurple = modTabTile.getIcon(4, 1);
 
-			workspaceAdd = ImageUtils
-					.colorize(workspaceIcons.getIcon(1, 1), (Color) UIManager.get("MCreatorLAF.MAIN_TINT"), false);
+			workspaceAdd = ImageUtils.colorize(workspaceIcons.getIcon(1, 1),
+					(Color) UIManager.get("MCreatorLAF.MAIN_TINT"), false);
 			workspaceCode = workspaceIcons.getIcon(2, 1);
 			workspaceDelete = workspaceIcons.getIcon(3, 1);
 			workspaceDeleteAll = workspaceIcons.getIcon(4, 1);
@@ -95,18 +90,6 @@ public class TiledImageCache {
 		} catch (InvalidTileSizeException e) {
 			LOG.error(e.getMessage(), e);
 		}
-	}
-
-	public static ImageIcon getModTypeIcon(ModElementType modType) {
-		if (modType == null)
-			return modTypes.getIcon(1, 1);
-
-		ModElementTypeRegistry.ModTypeRegistration<?> modRegistration = ModElementTypeRegistry.REGISTRY.get(modType);
-		if (modRegistration != null) {
-			return modTypes.getIcon(modRegistration.getIconID(), 1);
-		}
-
-		return modTypes.getIcon(1, 1);
 	}
 
 }

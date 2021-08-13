@@ -127,8 +127,8 @@ public class WorkspaceVCS {
 		if (!isVCSInitialized(workspace))
 			return null;
 
-		VCSInfo vcsInfo = VCSInfo
-				.loadFromFile(new File(workspace.getFolderManager().getWorkspaceCacheDir(), "vcsInfo"));
+		VCSInfo vcsInfo = VCSInfo.loadFromFile(
+				new File(workspace.getFolderManager().getWorkspaceCacheDir(), "vcsInfo"));
 		if (vcsInfo != null)
 			return new WorkspaceVCS(workspace, vcsInfo);
 		return null;

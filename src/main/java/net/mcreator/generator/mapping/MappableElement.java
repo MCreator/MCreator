@@ -58,8 +58,8 @@ public abstract class MappableElement {
 	public String getMappedValueOrFallbackToUnmapped() {
 		try {
 			String retval = mapper.getMapping(value);
-			if (retval.contains("@") || retval
-					.contains(NameMapper.UNKNOWN_ELEMENT)) // we failed to map some of the values
+			if (retval.contains("@") || retval.contains(
+					NameMapper.UNKNOWN_ELEMENT)) // we failed to map some of the values
 				return value;
 			else
 				return retval;

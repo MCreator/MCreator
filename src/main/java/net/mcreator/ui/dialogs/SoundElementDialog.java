@@ -84,11 +84,10 @@ public class SoundElementDialog {
 			subtitle.setText(element.getSubtitle());
 		}
 
-		int option = JOptionPane
-				.showOptionDialog(mcreator, ui, L10N.t("dialog.sounds.edit"), JOptionPane.DEFAULT_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null,
-						element != null ? new String[] { "Save changes" } : new String[] { "Add sound", "Cancel" },
-						element != null ? "Save changes" : "Add sound");
+		int option = JOptionPane.showOptionDialog(mcreator, ui, L10N.t("dialog.sounds.edit"),
+				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+				element != null ? new String[] { "Save changes" } : new String[] { "Add sound", "Cancel" },
+				element != null ? "Save changes" : "Add sound");
 
 		if (option == 0) {
 			if (soundName.getValidationStatus().getValidationResultType() == Validator.ValidationResultType.ERROR) {

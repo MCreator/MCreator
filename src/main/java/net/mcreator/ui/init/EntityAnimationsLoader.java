@@ -41,8 +41,8 @@ public class EntityAnimationsLoader {
 	public static void init() {
 		LOG.debug("Loading entity animations");
 
-		Set<String> fileNames = PluginLoader.INSTANCE
-				.getResources("templates.animations", Pattern.compile("^[^$].*\\.json"));
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources("templates.animations",
+				Pattern.compile("^[^$].*\\.json"));
 
 		// We add "No animation" directly as it does not contain animations
 		entityAnimations.put("No animation", new String[] {});
@@ -50,8 +50,8 @@ public class EntityAnimationsLoader {
 		final Gson gson = new Gson();
 
 		for (String file : fileNames) {
-			String[] animationCodes = gson
-					.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), String[].class);
+			String[] animationCodes = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file),
+					String[].class);
 			entityAnimations.put(FileUtils.removeExtension(file.replace("templates/animations/", "")), animationCodes);
 		}
 	}
