@@ -217,13 +217,15 @@ import java.util.stream.Collectors;
 
 		list.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				list.setSelectedIndex(list.locationToIndex(e.getPoint()));
 				IElement selected = list.getSelectedValue();
 
 				if (e.isConsumed())
 					return;
 
 				if (e.getButton() == MouseEvent.BUTTON3) {
+					list.setSelectedIndex(list.locationToIndex(e.getPoint()));
+					selected = list.getSelectedValue();
+
 					if (selected instanceof FolderElement) {
 						duplicateElement.setEnabled(false);
 						codeElement.setEnabled(false);
