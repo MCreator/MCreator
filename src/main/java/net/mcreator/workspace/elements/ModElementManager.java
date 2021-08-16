@@ -102,7 +102,8 @@ public class ModElementManager {
 			this.gsonAdapter.setLastModElement(modElement);
 			return gson.fromJson(json, GeneratableElement.class);
 		} catch (JsonSyntaxException e) {
-			LOG.warn("Failed to load generatable element from JSON. This can lead to errors further down the road!", e);
+			LOG.warn("Failed to load generatable element from JSON. This can lead to errors further down the road!" ,
+					e);
 			return null;
 		}
 	}
@@ -118,10 +119,17 @@ public class ModElementManager {
 		return new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").isFile();
 	}
 
-	public boolean usesGeneratableElementJava(GeneratableElement generatableElement) {
+	public boolean requiresElementGradleBuild(GeneratableElement generatableElement) {
 		Generator generator = workspace.getGenerator();
 		List<GeneratorTemplate> templates = generator.getModElementGeneratorTemplatesList(
 				generatableElement.getModElement());
+
+		Map<?, ?> map = workspace.getGeneratorConfiguration().getDefinitionsProvider()
+				.getModElementDefinition(generatableElement.getModElement().getType());
+
+		if (map.containsKey("triggersbuild") && map.get("triggersbuild").toString().equals("true"))
+			return true;
+
 		if (templates != null)
 			for (GeneratorTemplate template : templates) {
 				String writer = (String) ((Map<?, ?>) template.getTemplateData()).get("writer");

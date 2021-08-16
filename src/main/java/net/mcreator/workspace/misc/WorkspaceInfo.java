@@ -56,13 +56,6 @@ import java.util.stream.Collectors;
 		return workspace.getVariableElements().stream().anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
 	}
 
-	public boolean hasFluids() {
-		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.FLUID)
-				return true;
-		return false;
-	}
-
 	public Map<String, String> getItemTextureMap() {
 		Map<String, String> textureMap = new HashMap<>();
 		for (ModElement element : workspace.getModElements()) {
@@ -115,6 +108,20 @@ import java.util.stream.Collectors;
 			}
 		}
 		return retval;
+	}
+
+	public boolean hasFluids() {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.FLUID)
+				return true;
+		return false;
+	}
+
+	public boolean hasCreativeTabs() {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.TAB)
+				return true;
+		return false;
 	}
 
 	public Workspace getWorkspace() {

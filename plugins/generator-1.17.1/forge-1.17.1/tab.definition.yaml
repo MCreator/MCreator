@@ -1,0 +1,5 @@
+localizationkeys:
+  - key: itemGroup.tab@registryname
+    mapto: name
+
+triggersbuild: true
