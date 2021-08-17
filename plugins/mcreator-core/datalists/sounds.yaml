@@ -117,6 +117,10 @@
 - block.tripwire.detach
 - block.water.ambient
 - block.waterlily.place
+- block.vine.break
+- block.vine.fall
+- block.vine.hit
+- block.vine.place
 - block.vine.step
 - block.wood.break
 - block.wood.fall
@@ -314,6 +318,7 @@
 - entity.magmacube.jump
 - entity.magmacube.squish
 - entity.minecart.inside
+- entity.minecart.inside.underwater
 - entity.minecart.riding
 - entity.mooshroom.shear
 - entity.mule.ambient
@@ -421,6 +426,7 @@
 - entity.silverfish.hurt
 - entity.silverfish.step
 - entity.skeleton.ambient
+- entity.skeleton.converted_to_stray
 - entity.skeleton.death
 - entity.skeleton.hurt
 - entity.skeleton.shoot
@@ -580,6 +586,7 @@
 - ambient.underwater.loop.additions.ultra_rare
 - item.armor.equip_turtle
 - item.axe.strip
+- item.axe.scrape
 - block.bamboo.break
 - block.bamboo.fall
 - block.bamboo.hit
@@ -1032,8 +1039,14 @@
 - block.big_dripleaf.hit
 - block.big_dripleaf.place
 - block.big_dripleaf.step
+- block.small_dripleaf.break
+- block.small_dripleaf.fall
+- block.small_dripleaf.hit
+- block.small_dripleaf.place
+- block.small_dripleaf.step
 - item.bucket.empty_powder_snow
-- item.bucket.fill_axolot
+- item.bucket.fill_axolotl
+- item.bucket.empty_axolotl
 - item.bucket.fill_powder_snow
 - block.cake.add_candle
 - block.calcite.break
@@ -1041,6 +1054,7 @@
 - block.calcite.hit
 - block.calcite.place
 - block.calcite.step
+- block.candle.ambient
 - block.candle.break
 - block.candle.extinguish
 - block.candle.fall
@@ -1100,12 +1114,13 @@
 - block.roots.hit
 - block.roots.place
 - block.roots.step
+- item.ink_sac.use
 - item.glow_ink_sac.use
 - entity.glow_item_frame.add_item
 - entity.glow_item_frame.break
 - entity.glow_item_frame.place
 - entity.glow_item_frame.remove_item
-- entity.glow_item_frame.place_item
+- entity.glow_item_frame.rotate_item
 - entity.glow_squid.ambient
 - entity.glow_squid.death
 - entity.glow_squid.hurt
@@ -1182,3 +1197,5 @@
 - block.tuff.hit
 - block.tuff.place
 - block.tuff.step
+- item.bone_meal.use
+- item.dye.use
