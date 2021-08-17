@@ -66,3 +66,5 @@
   type: logic
 - PLAYERS_SLEEPING_PERCENTAGE:
   type: number
+- FREEZE_DAMAGE:
+  type: logic
