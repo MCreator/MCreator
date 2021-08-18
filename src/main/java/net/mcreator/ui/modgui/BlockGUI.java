@@ -241,7 +241,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JComboBox<String> blockBase = new JComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
-					"Door", "FenceGate", "EndRod", "PressurePlate" });
+					"Door", "FenceGate", "EndRod", "PressurePlate", "Button" });
 
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -268,7 +268,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.block.event_on_block_added"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/blockstate:blockstate/oldState:blockstate/moving:logic"));
 		onNeighbourBlockChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
 				L10N.t("elementgui.common.event_on_neighbour_block_changes"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
@@ -299,7 +300,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRightClicked = new ProcedureSelector(this.withEntry("block/when_right_clicked"), mcreator,
 				L10N.t("elementgui.block.event_on_right_clicked"), VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE,
 				Dependency.fromString(
-						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate")).makeReturnValueOptional();
+						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number")).makeReturnValueOptional();
 		onRedstoneOn = new ProcedureSelector(this.withEntry("block/on_redstone_on"), mcreator,
 				L10N.t("elementgui.block.event_on_redstone_on"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
@@ -393,7 +394,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 							|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem()
 							.equals("Door") || blockBase.getSelectedItem().equals("FenceGate")
 							|| blockBase.getSelectedItem().equals("EndRod") || blockBase.getSelectedItem()
-							.equals("PressurePlate")) {
+							.equals("PressurePlate") || blockBase.getSelectedItem().equals("Button")) {
 						hasTransparency.setSelected(true);
 					}
 				}
