@@ -579,13 +579,15 @@ Blockly.Extensions.register('enhancement_list_provider',
 
 Blockly.Extensions.register('sound_list_provider',
     function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+        this.appendDummyInput().appendField(javabridge.t("blockly.extension.sound_list"))
+            .appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("sound"))), 'sound');
     });
 
 Blockly.Extensions.register('sound_category_list_provider',
     function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+        this.appendDummyInput().appendField(javabridge.t("blockly.extension.sound_category_list"))
+            .appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("soundcategory"))), 'soundcategory');
     });
 
