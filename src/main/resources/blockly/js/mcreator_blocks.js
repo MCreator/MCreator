@@ -495,7 +495,7 @@ Blockly.Extensions.register('biome_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("biome"),
-            javabridge.getReadableListOf("biome"))), 'biome');
+            javabridge.getReadableListOf("biome"), true)), 'biome');
     });
 
 Blockly.Extensions.register('biome_dictionary_list_provider',
@@ -508,7 +508,7 @@ Blockly.Extensions.register('entity_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("entity"),
-            javabridge.getReadableListOf("entity"))), 'entity');
+            javabridge.getReadableListOf("entity"), true)), 'entity');
     });
 
 Blockly.Extensions.register('gui_list_provider',
@@ -581,7 +581,7 @@ Blockly.Extensions.register('sound_list_provider',
     function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.extension.sound_list"))
             .appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("sound"))), 'sound');
+            arrayToBlocklyDropDownArray(javabridge.getListOf("sound"), true)), 'sound');
     });
 
 Blockly.Extensions.register('sound_category_list_provider',
