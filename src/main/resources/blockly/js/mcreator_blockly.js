@@ -73,22 +73,22 @@ function getSerializedLocalVariables() {
     return retval;
 }
 
-function arrayToBlocklyDropDownArray(arrorig, sorted) {
+function arrayToBlocklyDropDownArray(arrorig) {
     var retval = [];
     arrorig.forEach(function (element) {
         retval.push(["" + element, "" + element]);
     });
-    return sorted ? retval.sort(compareElements) : retval;
+    return retval;
 }
 
-function arrayToBlocklyDropDownArrayWithReadableNames(arrorig, readablenames, sorted) {
+function arrayToBlocklyDropDownArrayWithReadableNames(arrorig, readablenames) {
     var retval = [];
     var length = arrorig.length;
     var nameslength = readablenames.length;
     for (var i = 0; i < length; i++) {
         retval.push(["" + (i < nameslength ? readablenames[i] : arrorig[i]), "" + arrorig[i]]);
     }
-    return sorted ? retval.sort(compareElements) : retval;
+    return retval;
 }
 
 function jsonToBlocklyDropDownArray(json) {
@@ -98,17 +98,4 @@ function jsonToBlocklyDropDownArray(json) {
         retval.push(["" + map[key], "" + key]);
     });
     return retval;
-}
-
-function compareElements(first, second) {
-    // We compare the readable names of the elements
-    var a = first[0];
-    var b = second[0];
-    // Custom values should be at the top of the list
-    if (a.startsWith('CUSTOM:') && !b.startsWith('CUSTOM:'))
-        return -1;
-    else if (!a.startsWith('CUSTOM:') && b.startsWith('CUSTOM:'))
-        return 1;
-    else
-        return (a < b) ? -1 : ((a > b) ? 1 : 0);
 }
