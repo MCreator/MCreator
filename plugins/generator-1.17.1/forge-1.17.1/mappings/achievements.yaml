@@ -1,0 +1,11 @@
+_default: none
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template: "@modid:@registryname"
+"No parent: root": none
+story/root: minecraft:story/root
+story/mine_stone: minecraft:story/mine_stone
+story/upgrade_tools: minecraft:story/upgrade_tools
+story/smelt_iron: minecraft:story/smelt_iron
+story/obtain_armor: minecraft:story/obtain_armor
+story/lava_bucket: minecraft:story/lava_bucket
+story/iron_tools: minecraft:story/iron_tools
