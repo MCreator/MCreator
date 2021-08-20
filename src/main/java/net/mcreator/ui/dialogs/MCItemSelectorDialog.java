@@ -60,7 +60,8 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		this(mcreator, blocksConsumer, supportTags, false);
 	}
 
-	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags, boolean hasPotions) {
+	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags,
+			boolean hasPotions) {
 		super(mcreator);
 
 		this.mcreator = mcreator;

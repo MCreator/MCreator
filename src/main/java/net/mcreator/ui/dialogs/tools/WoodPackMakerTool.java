@@ -346,9 +346,8 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(pressurePlateBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
-		Block buttonBlock = (Block) ModElementType.BLOCK
-				.getModElementGUI(mcreator, new ModElement(workspace, name + "Button", ModElementType.BLOCK), false)
-				.getElementFromGUI();
+		Block buttonBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "Button", ModElementType.BLOCK), false).getElementFromGUI();
 		buttonBlock.name = name + " Button";
 		buttonBlock.blockBase = "Button";
 		buttonBlock.material = new Material(workspace, "WOOD");
@@ -495,10 +494,8 @@ public class WoodPackMakerTool {
 		mcreator.getModElementManager().storeModElement(pressurePlateRecipe);
 
 		Recipe buttonRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
-				new ModElement(workspace, name + "ButtonRecipe", ModElementType.RECIPE),
-				false).getElementFromGUI();
-		buttonRecipe.recipeSlots[4] = new MItemBlock(workspace,
-				"CUSTOM:" + planksBlock.getModElement().getName());
+				new ModElement(workspace, name + "ButtonRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		buttonRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		buttonRecipe.recipeShapeless = true;
 		buttonRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Button");
 		buttonRecipe.recipeRetstackSize = 1;
