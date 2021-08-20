@@ -112,7 +112,7 @@ public class ProcedureTemplateIO {
 		Set<VariableElement> retval = new HashSet<>();
 		for (VariableType elementType : VariableTypeLoader.INSTANCE.getAllVariableTypes()) {
 			Matcher m = Pattern.compile("<block type=\"(?:variables_set_" + elementType.getName() + "|variables_get_"
-					+ elementType.getName() + ")\"><field name=\"VAR\">local:(.*?)</field>").matcher(xml);
+					+ elementType.getName() + ")\">(?:<mutation.*\"/>)?<field name=\"VAR\">local:(.*?)</field>").matcher(xml);
 			try {
 				while (m.find()) {
 					VariableElement element = new VariableElement();

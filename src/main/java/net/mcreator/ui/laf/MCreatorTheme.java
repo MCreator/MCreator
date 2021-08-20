@@ -44,7 +44,7 @@ public class MCreatorTheme extends OceanTheme {
 
 	private static final Logger LOG = LogManager.getLogger("Theme");
 
-	private static final List<String> SYSTEM_FONT_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
+	public static final List<String> SYSTEM_FONT_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
 
 	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
 	private Color MAIN_TINT;

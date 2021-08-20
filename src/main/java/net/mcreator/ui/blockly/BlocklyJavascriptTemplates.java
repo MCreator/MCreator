@@ -27,7 +27,11 @@ public class BlocklyJavascriptTemplates {
 	public static String variableListExtension(VariableType variableType) {
 		return "Blockly.Extensions.register('" + variableType.getName() + "_variables',function () {"
 				+ "this.getInput(\"var\").appendField(new Blockly.FieldDropdown(getVariablesOfType(\""
-				+ variableType.getBlocklyVariableType() + "\")), 'VAR');" + "});";
+				+ variableType.getBlocklyVariableType() + "\")), 'VAR');"
+				+ "this.getField('VAR').setValidator(function (variable) {"
+				+ "var isPlayerVar = javabridge.isPlayerVariable(variable);"
+				+ "this.getSourceBlock().updateShape_(isPlayerVar, true);" + "});"
+				+ "});";
 	}
 
 	public static String procedureListExtensions(VariableType variableType) {
@@ -41,7 +45,8 @@ public class BlocklyJavascriptTemplates {
 				+ "\",\"message0\":\"" + L10N.t("blockly.block.get_var")
 				+ " %1\",\"args0\":[{\"type\": \"input_dummy\",\"name\": \"var\"" + "}]," + "\"extensions\": [\""
 				+ variableType.getName() + "_variables\"],\"inputsInline\": true,\"output\": \""
-				+ variableType.getBlocklyVariableType() + "\",\"colour\":" + variableType.getColor() + "}]);";
+				+ variableType.getBlocklyVariableType() + "\",\"colour\":" + variableType.getColor()
+				+ ",\"mutator\": \"variable_entity_input\"}]);";
 	}
 
 	public static String setVariableBlock(VariableType variableType) {
@@ -51,7 +56,7 @@ public class BlocklyJavascriptTemplates {
 				+ "\"check\":\"" + variableType.getBlocklyVariableType() + "\"}],\"extensions\":[\""
 				+ variableType.getName()
 				+ "_variables\"],\"inputsInline\":true,\"previousStatement\": null,\"nextStatement\": null,\"colour\":"
-				+ variableType.getColor() + "}]);";
+				+ variableType.getColor() + ",\"mutator\": \"variable_entity_input\"}]);";
 	}
 
 	public static String customDependencyBlock(VariableType variableType) {
