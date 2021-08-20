@@ -27,6 +27,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -124,7 +125,7 @@ public class ElementUtil {
 	public static List<DataListEntry> loadAllBiomes(Workspace workspace) {
 		List<DataListEntry> biomes = getCustomElementsOfType(workspace, BaseType.BIOME);
 		biomes.addAll(DataListLoader.loadDataList("biomes"));
-		biomes.sort(ElementUtil::compareEntries);
+		Collections.sort(biomes);
 		return biomes;
 	}
 
@@ -145,7 +146,7 @@ public class ElementUtil {
 	public static List<DataListEntry> loadAllEntities(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENTITY);
 		retval.addAll(DataListLoader.loadDataList("entities"));
-		retval.sort(ElementUtil::compareEntries);
+		Collections.sort(retval);
 		return retval;
 	}
 
@@ -216,8 +217,8 @@ public class ElementUtil {
 			retval.add("CUSTOM:" + soundElement.getName());
 		}
 
-		retval.addAll(DataListLoader.loadDataList("sounds").stream().map(DataListEntry::getName)
-				.sorted(String::compareTo).collect(Collectors.toList()));
+		retval.addAll(DataListLoader.loadDataList("sounds").stream().sorted()
+				.map(DataListEntry::getName).collect(Collectors.toList()));
 
 		return retval.toArray(new String[0]);
 	}
@@ -279,7 +280,7 @@ public class ElementUtil {
 	}
 
 	public static String[] loadDirections() {
-		return new String[] { "DOWN", "UP", "NORTH", "SOUTH", "WEST", "EAST" };
+		return new String[] { "DOWN" , "UP" , "NORTH" , "SOUTH" , "WEST" , "EAST" };
 	}
 
 	public static ArrayList<String> loadBasicGUI(Workspace workspace) {
@@ -307,16 +308,6 @@ public class ElementUtil {
 	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, BaseType type) {
 		return workspace.getModElements().stream().filter(mu -> mu.getType().getBaseType() == type)
 				.map(DataListEntry.Custom::new).collect(Collectors.toList());
-	}
-
-	public static int compareEntries(DataListEntry first, DataListEntry second) {
-		String a = first.getReadableName();
-		String b = second.getReadableName();
-		if (a.startsWith("CUSTOM:") && !b.startsWith("CUSTOM:"))
-			return -1;
-		else if (!a.startsWith("CUSTOM:") && b.startsWith("CUSTOM:"))
-			return 1;
-		return a.compareToIgnoreCase(b);
 	}
 
 }
