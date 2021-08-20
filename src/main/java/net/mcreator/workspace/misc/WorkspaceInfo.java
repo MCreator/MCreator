@@ -22,6 +22,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.types.Recipe;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
@@ -75,7 +76,22 @@ import java.util.stream.Collectors;
 			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
 					.collect(Collectors.toList());
 		} catch (IllegalArgumentException e) {
-			LOG.warn("Failed to list elements of non-existent type", e);
+			LOG.warn("Failed to list elements of non-existent type" , e);
+			return Collections.emptyList();
+		}
+	}
+
+	public List<ModElement> getRecipesOfType(String typestring) {
+		try {
+			return workspace.getModElements().parallelStream().filter(e -> e.getType() == ModElementType.RECIPE)
+					.filter(e -> {
+						GeneratableElement ge = e.getGeneratableElement();
+						if (ge instanceof Recipe)
+							return ((Recipe) ge).recipeType.equals(typestring);
+						return false;
+					}).collect(Collectors.toList());
+		} catch (IllegalArgumentException e) {
+			LOG.warn("Failed to list elements of non-existent type" , e);
 			return Collections.emptyList();
 		}
 	}
@@ -101,7 +117,7 @@ import java.util.stream.Collectors;
 					retval.add(t);
 				} else {
 					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
-							.replaceFirst("CUSTOM:", ""));
+							.replaceFirst("CUSTOM:" , ""));
 				}
 			} else {
 				retval.add(t);
@@ -121,6 +137,17 @@ import java.util.stream.Collectors;
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.TAB)
 				return true;
+		return false;
+	}
+
+	public boolean hasBrewingRecipes() {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.RECIPE) {
+				GeneratableElement ge = element.getGeneratableElement();
+				if (ge instanceof Recipe)
+					if (((Recipe) ge).recipeType.equals("Brewing"))
+						return true;
+			}
 		return false;
 	}
 

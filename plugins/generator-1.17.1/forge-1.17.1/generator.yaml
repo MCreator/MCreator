@@ -58,6 +58,11 @@ base_templates:
     condition: hasCreativeTabs()
     deleteWhenConditionFalse: true
     name: "@SRCROOT/@BASEPACKAGEPATH/init/CreativeModeTabs.java"
+  - template: modbase/brewingrecipes.java.ftl
+    writer: java
+    condition: hasBrewingRecipes()
+    deleteWhenConditionFalse: true
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/BrewingRecipes.java"
 
 language_file:
   format: json

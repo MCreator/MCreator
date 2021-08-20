@@ -26,6 +26,10 @@ public class ${JavaModName} {
 		<#if w.hasCreativeTabs()>
 		CreativeModeTabs.load();
 		</#if>
+
+		<#if w.hasBrewingRecipes()>
+		BrewingRecipes.load();
+		</#if>
 	}
 
 	private void init(FMLCommonSetupEvent event) {
