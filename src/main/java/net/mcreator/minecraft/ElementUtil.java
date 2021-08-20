@@ -27,7 +27,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -218,11 +217,9 @@ public class ElementUtil {
 		}
 
 		retval.addAll(DataListLoader.loadDataList("sounds").stream().map(DataListEntry::getName)
-				.collect(Collectors.toList()));
+				.sorted(String::compareTo).collect(Collectors.toList()));
 
-		String[] sounds = retval.toArray(String[]::new);
-		Arrays.sort(sounds);
-		return sounds;
+		return retval.toArray(new String[0]);
 	}
 
 	public static String[] getAllSoundCategories() {
