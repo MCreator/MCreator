@@ -2,4 +2,7 @@ localizationkeys:
   - key: itemGroup.tab@registryname
     mapto: name
 
-triggersbuild: true
+global_templates:
+  - template: elementinits/tabs.java.ftl
+    writer: java
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/CreativeModeTabs.java"

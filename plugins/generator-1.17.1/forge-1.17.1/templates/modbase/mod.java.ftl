@@ -30,7 +30,7 @@ public class ${JavaModName} {
 	public ${JavaModName}() {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
 
-		<#if w.hasCreativeTabs()>CreativeModeTabs.load();</#if>
+		<#if w.hasElementsOfType("tab")>CreativeModeTabs.load();</#if>
 	}
 
 	private void init(FMLCommonSetupEvent event) {

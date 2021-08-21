@@ -41,33 +41,6 @@ base_templates:
   - template: modbase/mods.toml.ftl
     writer: file
     name: "@RESROOT/META-INF/mods.toml"
-  - template: json/fluidtag.json.ftl
-    writer: json
-    condition: hasFluids()
-    deleteWhenConditionFalse: true
-    variables: "type=water"
-    name: "@RESROOT/data/minecraft/tags/fluids/water.json"
-  - template: json/fluidtag.json.ftl
-    writer: json
-    condition: hasFluids()
-    deleteWhenConditionFalse: true
-    variables: "type=lava"
-    name: "@RESROOT/data/minecraft/tags/fluids/lava.json"
-  - template: elementinits/tabs.java.ftl
-    writer: java
-    condition: hasCreativeTabs()
-    deleteWhenConditionFalse: true
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/CreativeModeTabs.java"
-  - template: elementinits/brewingrecipes.java.ftl
-    writer: java
-    condition: hasBrewingRecipes()
-    deleteWhenConditionFalse: true
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/BrewingRecipes.java"
-  - template: elementinits/fuels.java.ftl
-    writer: java
-    condition: hasFuels()
-    deleteWhenConditionFalse: true
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/FuelRegistry.java"
 
 language_file:
   format: json
