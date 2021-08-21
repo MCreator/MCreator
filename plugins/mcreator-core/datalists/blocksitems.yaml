@@ -2078,6 +2078,18 @@
   type: block
   texture: CAULDRON
 
+- Blocks.WATER_CAULDRON:
+  readable_name: "Water Cauldron"
+  type: block
+
+- Blocks.LAVA_CAULDRON:
+  readable_name: "Lava Cauldron"
+  type: block
+
+- Blocks.POWDER_SNOW_CAULDRON:
+  readable_name: "Powder Snow Cauldron"
+  type: block
+
 - Blocks.END_PORTAL:
   readable_name: "End Portal Block"
   type: block
@@ -2198,6 +2210,10 @@
   readable_name: "Chiseled Stone Brick Monster Egg"
   type: block
   texture: MONSTER_EGG#5
+
+- Blocks.INFESTED_DEEPSLATE#6:
+  readable_name: "Infested Deepslate"
+  type: block
 
 - Blocks.WOODEN_SLAB:
   readable_name: "Any Wooden Slab"
@@ -4210,6 +4226,79 @@
   readable_name: "Black Candle"
   type: block
 
+- Blocks.Candle:
+  readable_name: "Any Candle Cake"
+  type: block
+  subtypes: true
+
+- Blocks.Candle_CAKE#0:
+  readable_name: "Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#1:
+  readable_name: "White Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#2:
+  readable_name: "Orange Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#3:
+  readable_name: "Magenta Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#4:
+  readable_name: "Light Blue Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#5:
+  readable_name: "Yellow Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#6:
+  readable_name: "Lime Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#7:
+  readable_name: "Pink Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#8:
+  readable_name: "Gray Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#9:
+  readable_name: "Light Gray Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#10:
+  readable_name: "Cyan Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#11:
+  readable_name: "Purple Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#12:
+  readable_name: "Blue Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#13:
+  readable_name: "Brown Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#14:
+  readable_name: "Green Candle Cake"
+  type: block
+
+- Blocks.Candle_CAKE#15:
+  readable_name: "Red Candle Cake"
+  type: block
+
+- Blocks.Candl_CAKEe#16:
+  readable_name: "Black Candle Cake"
+  type: block
+
 - Blocks.AMETHYST_BLOCK:
   readable_name: "Amethyst Block"
   type: block
@@ -4520,10 +4609,6 @@
 
 - Blocks.CRACKED_DEEPSLATE_TILES:
   readable_name: "Cracked Deepslate Tiles"
-  type: block
-
-- Blocks.INFESTED_DEEPSLATE:
-  readable_name: "Infested Deepslate"
   type: block
 
 - Blocks.RAW_IRON_BLOCK:
