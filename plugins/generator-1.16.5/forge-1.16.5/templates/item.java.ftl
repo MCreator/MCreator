@@ -73,9 +73,9 @@ package ${package}.item;
 					int z = blockSource.getBlockPos().getZ();
 
 					this.setSuccessful(<@procedureOBJToConditionCode data.dispenseSuccessCondition/>);
+					boolean success = this.isSuccessful();
 
 					<#if hasProcedure(data.dispenseResultItemstack)>
-						boolean success = this.isSuccessful();
 						<#if hasReturnValue(data.dispenseResultItemstack)>
 							return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
 						<#else>
