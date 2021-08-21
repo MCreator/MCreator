@@ -140,6 +140,13 @@ import java.util.stream.Collectors;
 		return false;
 	}
 
+	public boolean hasFuels() {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.FUEL)
+				return true;
+		return false;
+	}
+
 	public boolean hasBrewingRecipes() {
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.RECIPE) {
