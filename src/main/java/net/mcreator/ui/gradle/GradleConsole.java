@@ -363,8 +363,7 @@ public class GradleConsole extends JPanel {
 							new Color(173, 173, 173));
 					append("Use and modification of this document or the source code (in any form) of Minecraft: Java Edition is governed by the Minecraft End User License Agreement available",
 							new Color(173, 173, 173));
-					append("at https://account.mojang.com/documents/minecraft_eula.",
-							new Color(173, 173, 173));
+					append("at https://account.mojang.com/documents/minecraft_eula.", new Color(173, 173, 173));
 					append(" ");
 					return;
 				}

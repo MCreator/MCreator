@@ -88,7 +88,8 @@ public class GetVariableBlock implements IBlockGenerator {
 					scope = master.getWorkspace().getVariableElementByName(name).getScope().name();
 					if (scope.equals("GLOBAL_MAP") || scope.equals("GLOBAL_WORLD")) {
 						master.addDependency(new Dependency("world", "world"));
-					} else if (entityInput == null && (scope.equals("PLAYER_LIFETIME") || scope.equals("PLAYER_PERSISTENT"))) {
+					} else if (entityInput == null && (scope.equals("PLAYER_LIFETIME") || scope.equals(
+							"PLAYER_PERSISTENT"))) {
 						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 								"Get variable block for player variable is missing entity input."));
 						return;

@@ -22,6 +22,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.types.Recipe;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
@@ -69,17 +70,6 @@ import java.util.stream.Collectors;
 		return textureMap;
 	}
 
-	public List<ModElement> getElementsOfType(String typestring) {
-		try {
-			ModElementType<?> type = ModElementTypeLoader.getModElementType(typestring);
-			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
-					.collect(Collectors.toList());
-		} catch (IllegalArgumentException e) {
-			LOG.warn("Failed to list elements of non-existent type", e);
-			return Collections.emptyList();
-		}
-	}
-
 	public String getUUID(String offset) {
 		return UUID.nameUUIDFromBytes(
 				(offset + workspace.getWorkspaceSettings().getModID()).getBytes(StandardCharsets.UTF_8)).toString();
@@ -110,17 +100,52 @@ import java.util.stream.Collectors;
 		return retval;
 	}
 
-	public boolean hasFluids() {
-		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.FLUID)
-				return true;
-		return false;
+	public List<ModElement> getElementsOfType(String typestring) {
+		try {
+			ModElementType<?> type = ModElementTypeLoader.getModElementType(typestring);
+			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
+					.collect(Collectors.toList());
+		} catch (IllegalArgumentException e) {
+			LOG.warn("Failed to list elements of non-existent type", e);
+			return Collections.emptyList();
+		}
 	}
 
-	public boolean hasCreativeTabs() {
+	public List<ModElement> getRecipesOfType(String typestring) {
+		try {
+			return workspace.getModElements().parallelStream().filter(e -> e.getType() == ModElementType.RECIPE)
+					.filter(e -> {
+						GeneratableElement ge = e.getGeneratableElement();
+						if (ge instanceof Recipe)
+							return ((Recipe) ge).recipeType.equals(typestring);
+						return false;
+					}).collect(Collectors.toList());
+		} catch (IllegalArgumentException e) {
+			LOG.warn("Failed to list elements of non-existent type", e);
+			return Collections.emptyList();
+		}
+	}
+
+	public boolean hasElementsOfType(ModElementType<?> type) {
+		try {
+			return workspace.getModElements().parallelStream().anyMatch(e -> e.getType() == type);
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
+	}
+
+	public boolean hasElementsOfType(String typestring) {
+		return hasElementsOfType(ModElementTypeLoader.getModElementType(typestring));
+	}
+
+	public boolean hasBrewingRecipes() {
 		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.TAB)
-				return true;
+			if (element.getType() == ModElementType.RECIPE) {
+				GeneratableElement ge = element.getGeneratableElement();
+				if (ge instanceof Recipe)
+					if (((Recipe) ge).recipeType.equals("Brewing"))
+						return true;
+			}
 		return false;
 	}
 
