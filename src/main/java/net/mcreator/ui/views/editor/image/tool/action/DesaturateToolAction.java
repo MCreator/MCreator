@@ -19,12 +19,14 @@
 package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.tool.tools.DesaturateTool;
 
 public class DesaturateToolAction extends ToolChangeAction {
 	public DesaturateToolAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Desaturate", "A tool for desaturating layers", DesaturateTool.class);
+		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.desaturate"),
+				L10N.t("dialog.image_maker.tools.types.desaturate_description"), DesaturateTool.class);
 		setIcon(UIRES.get("img_editor.desaturate"));
 	}
 }

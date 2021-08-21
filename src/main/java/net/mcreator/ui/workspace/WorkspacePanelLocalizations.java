@@ -35,18 +35,14 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
+import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -122,9 +118,9 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		add("North", bar);
 
 		add.addActionListener(e -> {
-			String key = JOptionPane
-					.showInputDialog(workspacePanel.getMcreator(), L10N.t("workspace.localization.key_name_message"),
-							L10N.t("workspace.localization.key_name_title"), JOptionPane.QUESTION_MESSAGE);
+			String key = JOptionPane.showInputDialog(workspacePanel.getMcreator(),
+					L10N.t("workspace.localization.key_name_message"), L10N.t("workspace.localization.key_name_title"),
+					JOptionPane.QUESTION_MESSAGE);
 			if (key != null && !key.equals("")) {
 				workspacePanel.getMcreator().getWorkspace().setLocalization(key, "");
 				reloadElements();
@@ -133,20 +129,19 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 	}
 
 	@Override public void reloadElements() {
-		for (ActionListener al : del.getActionListeners())
+		for (var al : del.getActionListeners())
 			del.removeActionListener(al);
 
-		for (ActionListener al : imp.getActionListeners())
+		for (var al : imp.getActionListeners())
 			imp.removeActionListener(al);
 
-		for (ActionListener al : exp.getActionListeners())
+		for (var al : exp.getActionListeners())
 			exp.removeActionListener(al);
 
 		pane.removeAll();
 		sorters = new ArrayList<>();
 
-		for (Map.Entry<String, ConcurrentHashMap<String, String>> entry : workspacePanel.getMcreator().getWorkspace()
-				.getLanguageMap().entrySet()) {
+		for (var entry : workspacePanel.getMcreator().getWorkspace().getLanguageMap().entrySet()) {
 			ConcurrentHashMap<String, String> entries = entry.getValue();
 
 			JTable elements = new JTable(new DefaultTableModel(
@@ -154,6 +149,36 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 							"Localized text for " + entry.getKey() + (entry.getKey().equals("en_us") ?
 									" - values in en_us might get overwritten!" :
 									" - mappings can be edited here") }, 0));
+
+			final Font textFont = new Font("Sans-Serif", Font.PLAIN, 13);
+			elements.setFont(textFont);
+			elements.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+				@Override
+				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+						boolean hasFocus, int row, int column) {
+					var c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+					c.setFont(textFont);
+					return c;
+				}
+			});
+			elements.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()) {
+				final JComponent component = new JTextField();
+
+				{
+					component.setFont(textFont);
+				}
+
+				@Override
+				public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
+						int rowIndex, int vColIndex) {
+					((JTextField) component).setText((String) value);
+					return component;
+				}
+
+				@Override public Object getCellEditorValue() {
+					return ((JTextField) component).getText();
+				}
+			});
 
 			TableRowSorter<TableModel> sorter = new TableRowSorter<>(elements.getModel());
 			elements.setRowSorter(sorter);
@@ -212,9 +237,8 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			button.setMargin(new Insets(0, 0, 0, 0));
 			button.addActionListener(e -> {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-						L10N.t("workspace.localization.confirm_delete_map"),
-						L10N.t("workspace.localization.confirmation"), JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null);
+						L10N.t("workspace.localization.confirm_delete_map"), L10N.t("common.confirmation"),
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 				if (n == 0) {
 					workspacePanel.getMcreator().getWorkspace().removeLocalizationLanguage(entry.getKey());
 					reloadElements();
@@ -226,7 +250,8 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			JLabel label = new JLabel(" " + entry.getKey() + " ");
 			ComponentUtils.deriveFont(label, 12);
 			try {
-				BufferedImage image = ImageIO.read(getClass().getResourceAsStream(flagpath));
+				@SuppressWarnings("ConstantConditions") BufferedImage image = ImageIO.read(
+						getClass().getResourceAsStream(flagpath));
 				label.setIcon(new ImageIcon(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11))));
 			} catch (Exception ignored) { // flag not found, ignore
 			}
@@ -243,9 +268,8 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 				String key = (String) elements.getValueAt(elements.getSelectedRow(), 0);
 				if (key != null) {
 					int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-							L10N.t("workspace.localization.confirm_delete_entry"),
-							L10N.t("workspace.localization.confirmation"), JOptionPane.YES_NO_OPTION,
-							JOptionPane.QUESTION_MESSAGE);
+							L10N.t("workspace.localization.confirm_delete_entry"), L10N.t("common.confirmation"),
+							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (n == 0) {
 						Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
 								.forEach(workspacePanel.getMcreator().getWorkspace()::removeLocalizationEntryByKey);
@@ -274,7 +298,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 					Writer outputWriter = new OutputStreamWriter(csvResult);
 
 					CsvWriter writer = new CsvWriter(outputWriter, new CsvWriterSettings());
-					writer.writeHeaders("Translation key (DON'T EDIT!!!)",
+					writer.writeHeaders("Translation key (DON'T EDIT)",
 							"TRANSLATION IN " + entry.getKey() + " - EDIT THIS COLUMN",
 							"English text (DON'T EDIT - reference only)");
 					for (Map.Entry<String, String> langs : workspacePanel.getMcreator().getWorkspace().getLanguageMap()
@@ -282,7 +306,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 						writer.writeRow(langs.getKey(), langs.getValue(), en_us.get(langs.getKey()));
 					writer.close();
 
-					FileIO.writeStringToFile("SEP=,\n" + csvResult.toString(), expFile);
+					FileIO.writeUTF8toFile("SEP=,\n" + csvResult.toString(StandardCharsets.UTF_8), expFile);
 				}
 			});
 
@@ -304,7 +328,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 					CsvParserSettings settings = new CsvParserSettings();
 					settings.setDelimiterDetectionEnabled(true);
 					CsvParser parser = new CsvParser(settings);
-					List<String[]> rows = parser.parseAll(impFile, Charset.defaultCharset());
+					List<String[]> rows = parser.parseAll(impFile, StandardCharsets.UTF_8);
 
 					ConcurrentHashMap<String, String> keyValueMap = new ConcurrentHashMap<>();
 					for (String[] row : rows) {
@@ -364,17 +388,15 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		sortedLocales.sort(String::compareToIgnoreCase);
 
 		String[] options = sortedLocales.toArray(new String[0]);
-		String new_locale_id = (String) JOptionPane
-				.showInputDialog(workspacePanel.getMcreator(), L10N.t("workspace.localization.language_choose"),
-						L10N.t("workspace.localization.add_localization"), JOptionPane.QUESTION_MESSAGE, null, options,
-						options[0]);
+		String new_locale_id = (String) JOptionPane.showInputDialog(workspacePanel.getMcreator(),
+				L10N.t("workspace.localization.language_choose"), L10N.t("workspace.localization.add_localization"),
+				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (new_locale_id != null) {
 			String locale = new_locale_id.split(":")[1].trim();
 
-			String based_from_id = (String) JOptionPane
-					.showInputDialog(workspacePanel.getMcreator(), L10N.t("workspace.localization.language_copy"),
-							L10N.t("workspace.localization.add_localization"), JOptionPane.QUESTION_MESSAGE, null,
-							language_map.keySet().toArray(), "en_us");
+			String based_from_id = (String) JOptionPane.showInputDialog(workspacePanel.getMcreator(),
+					L10N.t("workspace.localization.language_copy"), L10N.t("workspace.localization.add_localization"),
+					JOptionPane.QUESTION_MESSAGE, null, language_map.keySet().toArray(), "en_us");
 			if (based_from_id != null) {
 				ConcurrentHashMap<String, String> en_us = language_map.get(based_from_id);
 				workspacePanel.getMcreator().getWorkspace().addLanguage(locale, en_us);

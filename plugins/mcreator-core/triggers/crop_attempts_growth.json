@@ -5,6 +5,10 @@
       "type": "world"
     },
     {
+      "name": "blockstate",
+      "type": "blockstate"
+    },
+    {
       "name": "x",
       "type": "number"
     },
@@ -17,5 +21,6 @@
       "type": "number"
     }
   ],
-  "has_result": "true"
+  "has_result": "true",
+  "side": "server"
 }

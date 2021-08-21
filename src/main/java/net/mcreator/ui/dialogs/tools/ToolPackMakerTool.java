@@ -19,7 +19,6 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Recipe;
@@ -80,13 +79,12 @@ public class ToolPackMakerTool {
 		base.setBlockSelectedListener(e -> {
 			try {
 				if (base.getBlock() != null) {
-					color.setColor(ImageUtils
-							.getAverageColor(ImageUtils.toBufferedImage(((ImageIcon) base.getIcon()).getImage()))
-							.brighter().brighter().brighter());
+					color.setColor(ImageUtils.getAverageColor(
+									ImageUtils.toBufferedImage(((ImageIcon) base.getIcon()).getImage())).brighter().brighter()
+							.brighter());
 					if (base.getBlock().getUnmappedValue().startsWith("CUSTOM:")) {
-						name.setText(StringUtils
-								.machineToReadableName(base.getBlock().getUnmappedValue().replace("CUSTOM:", ""))
-								.split(" ")[0]);
+						name.setText(StringUtils.machineToReadableName(
+								base.getBlock().getUnmappedValue().replace("CUSTOM:", "")).split(" ")[0]);
 					}
 				}
 			} catch (Exception ignored) {
@@ -106,7 +104,7 @@ public class ToolPackMakerTool {
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.tool_pack_create");
-		JButton canecel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton canecel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		canecel.addActionListener(e -> dialog.setVisible(false));
 		dialog.add("South", PanelUtils.join(ok, canecel));
 
@@ -134,17 +132,17 @@ public class ToolPackMakerTool {
 			folder = mcreator.mv.currentFolder;
 
 		// first we generate pickaxe texture
-		ImageIcon pickaxe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE
-				.get(new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")), ImageUtils.colorize(
-				ImageMakerTexturesCache.CACHE
-						.get(new ResourcePointer("templates/textures/texturemaker/tool_pickaxe.png")), color, true));
+		ImageIcon pickaxe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
+				new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")), ImageUtils.colorize(
+				ImageMakerTexturesCache.CACHE.get(
+						new ResourcePointer("templates/textures/texturemaker/tool_pickaxe.png")), color, true));
 		String pickaxeTextureName = (name + "_pickaxe").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(pickaxe.getImage()),
 				mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(pickaxeTextureName)));
 
 		// then we generate axe texture
-		ImageIcon axe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE
-				.get(new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")), ImageUtils.colorize(
+		ImageIcon axe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
+				new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")), ImageUtils.colorize(
 				ImageMakerTexturesCache.CACHE.get(new ResourcePointer("templates/textures/texturemaker/tool_axe.png")),
 				color, true));
 		String axeTextureName = (name + "_axe").toLowerCase(Locale.ENGLISH);
@@ -152,28 +150,28 @@ public class ToolPackMakerTool {
 				mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(axeTextureName)));
 
 		// then we generate sword texture
-		ImageIcon sword = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE
-				.get(new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")), ImageUtils.colorize(
-				ImageMakerTexturesCache.CACHE
-						.get(new ResourcePointer("templates/textures/texturemaker/tool_sword.png")), color, true));
+		ImageIcon sword = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
+				new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")), ImageUtils.colorize(
+				ImageMakerTexturesCache.CACHE.get(
+						new ResourcePointer("templates/textures/texturemaker/tool_sword.png")), color, true));
 		String swordTextureName = (name + "_sword").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(sword.getImage()),
 				mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(swordTextureName)));
 
 		// then we generate sword texture
-		ImageIcon shovel = ImageUtils.drawOver(ImageUtils.drawOver(ImageMakerTexturesCache.CACHE
-						.get(new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")),
-				ImageMakerTexturesCache.CACHE
-						.get(new ResourcePointer("templates/textures/texturemaker/tool_shovel_grip.png"))), ImageUtils
-				.colorize(ImageMakerTexturesCache.CACHE
-						.get(new ResourcePointer("templates/textures/texturemaker/tool_shovel_top.png")), color, true));
+		ImageIcon shovel = ImageUtils.drawOver(ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
+								new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")),
+						ImageMakerTexturesCache.CACHE.get(
+								new ResourcePointer("templates/textures/texturemaker/tool_shovel_grip.png"))),
+				ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
+						new ResourcePointer("templates/textures/texturemaker/tool_shovel_top.png")), color, true));
 		String shovelTextureName = (name + "_shovel").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(shovel.getImage()),
 				mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(shovelTextureName)));
 
 		// then we generate hoe texture
-		ImageIcon hoe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE
-				.get(new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")), ImageUtils.colorize(
+		ImageIcon hoe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
+				new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")), ImageUtils.colorize(
 				ImageMakerTexturesCache.CACHE.get(new ResourcePointer("templates/textures/texturemaker/tool_hoe.png")),
 				color, true));
 		String hoeTextureName = (name + "_hoe").toLowerCase(Locale.ENGLISH);
@@ -181,9 +179,8 @@ public class ToolPackMakerTool {
 				mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(hoeTextureName)));
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
-		Tool pickaxeTool = (Tool) ModElementTypeRegistry.REGISTRY.get(ModElementType.TOOL)
-				.getModElement(mcreator, new ModElement(workspace, name + "Pickaxe", ModElementType.TOOL), false)
-				.getElementFromGUI();
+		Tool pickaxeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "Pickaxe", ModElementType.TOOL), false).getElementFromGUI();
 		pickaxeTool.name = name + " Pickaxe";
 		pickaxeTool.texture = pickaxeTextureName;
 		pickaxeTool.toolType = "Pickaxe";
@@ -191,9 +188,8 @@ public class ToolPackMakerTool {
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, pickaxeTool, folder);
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
-		Tool axeTool = (Tool) ModElementTypeRegistry.REGISTRY.get(ModElementType.TOOL)
-				.getModElement(mcreator, new ModElement(workspace, name + "Axe", ModElementType.TOOL), false)
-				.getElementFromGUI();
+		Tool axeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "Axe", ModElementType.TOOL), false).getElementFromGUI();
 		axeTool.name = name + " Axe";
 		axeTool.texture = axeTextureName;
 		axeTool.toolType = "Axe";
@@ -202,9 +198,8 @@ public class ToolPackMakerTool {
 		axeTool.damageVsEntity = (double) Math.round(9.0f * factor);
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
-		Tool swordTool = (Tool) ModElementTypeRegistry.REGISTRY.get(ModElementType.TOOL)
-				.getModElement(mcreator, new ModElement(workspace, name + "Sword", ModElementType.TOOL), false)
-				.getElementFromGUI();
+		Tool swordTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "Sword", ModElementType.TOOL), false).getElementFromGUI();
 		swordTool.name = name + " Sword";
 		swordTool.texture = swordTextureName;
 		swordTool.toolType = "Sword";
@@ -214,9 +209,8 @@ public class ToolPackMakerTool {
 		swordTool.damageVsEntity = (double) Math.round(6.0f * factor);
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
-		Tool shovelTool = (Tool) ModElementTypeRegistry.REGISTRY.get(ModElementType.TOOL)
-				.getModElement(mcreator, new ModElement(workspace, name + "Shovel", ModElementType.TOOL), false)
-				.getElementFromGUI();
+		Tool shovelTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "Shovel", ModElementType.TOOL), false).getElementFromGUI();
 		shovelTool.name = name + " Shovel";
 		shovelTool.texture = shovelTextureName;
 		shovelTool.toolType = "Spade";
@@ -224,18 +218,16 @@ public class ToolPackMakerTool {
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, shovelTool, folder);
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
-		Tool hoeTool = (Tool) ModElementTypeRegistry.REGISTRY.get(ModElementType.TOOL)
-				.getModElement(mcreator, new ModElement(workspace, name + "Hoe", ModElementType.TOOL), false)
-				.getElementFromGUI();
+		Tool hoeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "Hoe", ModElementType.TOOL), false).getElementFromGUI();
 		hoeTool.name = name + " Hoe";
 		hoeTool.texture = hoeTextureName;
 		hoeTool.toolType = "Hoe";
 		hoeTool.repairItems = Collections.singletonList(base);
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, hoeTool, folder);
 
-		Recipe pickaxeRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "PickaxeRecipe", ModElementType.RECIPE),
-						false).getElementFromGUI();
+		Recipe pickaxeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "PickaxeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		pickaxeRecipe.recipeSlots[0] = base;
 		pickaxeRecipe.recipeSlots[1] = base;
 		pickaxeRecipe.recipeSlots[2] = base;
@@ -249,9 +241,8 @@ public class ToolPackMakerTool {
 		mcreator.getGenerator().generateElement(pickaxeRecipe);
 		mcreator.getModElementManager().storeModElement(pickaxeRecipe);
 
-		Recipe axeRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "AxeRecipe", ModElementType.RECIPE), false)
-				.getElementFromGUI();
+		Recipe axeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "AxeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		axeRecipe.recipeSlots[0] = base;
 		axeRecipe.recipeSlots[1] = base;
 		axeRecipe.recipeSlots[3] = base;
@@ -265,9 +256,8 @@ public class ToolPackMakerTool {
 		mcreator.getGenerator().generateElement(axeRecipe);
 		mcreator.getModElementManager().storeModElement(axeRecipe);
 
-		Recipe swordRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "SwordRecipe", ModElementType.RECIPE), false)
-				.getElementFromGUI();
+		Recipe swordRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "SwordRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		swordRecipe.recipeSlots[1] = base;
 		swordRecipe.recipeSlots[4] = base;
 		swordRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
@@ -279,9 +269,8 @@ public class ToolPackMakerTool {
 		mcreator.getGenerator().generateElement(swordRecipe);
 		mcreator.getModElementManager().storeModElement(swordRecipe);
 
-		Recipe shovelRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "ShovelRecipe", ModElementType.RECIPE), false)
-				.getElementFromGUI();
+		Recipe shovelRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "ShovelRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		shovelRecipe.recipeSlots[1] = base;
 		shovelRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		shovelRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
@@ -293,9 +282,8 @@ public class ToolPackMakerTool {
 		mcreator.getGenerator().generateElement(shovelRecipe);
 		mcreator.getModElementManager().storeModElement(shovelRecipe);
 
-		Recipe hoeRecipe = (Recipe) ModElementTypeRegistry.REGISTRY.get(ModElementType.RECIPE)
-				.getModElement(mcreator, new ModElement(workspace, name + "HoeRecipe", ModElementType.RECIPE), false)
-				.getElementFromGUI();
+		Recipe hoeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "HoeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		hoeRecipe.recipeSlots[0] = base;
 		hoeRecipe.recipeSlots[1] = base;
 		hoeRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");

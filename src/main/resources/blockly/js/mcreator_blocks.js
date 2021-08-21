@@ -61,46 +61,6 @@ Blockly.Blocks['call_procedure_at'] = {
     }
 };
 
-Blockly.Blocks['procedure_retval_logic'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.procedure_retval"))
-            .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure_retval_logic"))), 'procedure');
-        this.setOutput(true, 'Boolean');
-        this.setColour(Blockly.Constants.Logic.HUE);
-    }
-};
-
-Blockly.Blocks['procedure_retval_number'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.procedure_retval"))
-            .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure_retval_number"))), 'procedure');
-        this.setOutput(true, 'Number');
-        this.setColour(Blockly.Constants.Math.HUE);
-    }
-};
-
-Blockly.Blocks['procedure_retval_string'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.procedure_retval"))
-            .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure_retval_string"))), 'procedure');
-        this.setOutput(true, 'String');
-        this.setColour(Blockly.Constants.Text.HUE);
-    }
-};
-
-Blockly.Blocks['procedure_retval_itemstack'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.procedure_retval"))
-            .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure_retval_itemstack"))), 'procedure');
-        this.setOutput(true, 'MCItem');
-        this.setColour(350);
-    }
-};
-
 Blockly.Blocks['aitasks_container'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.aitasks_container"));
@@ -130,142 +90,6 @@ Blockly.Blocks['condition_input'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setTooltip(javabridge.t("blockly.block.condition_input.tooltip"));
-    }
-};
-
-Blockly.Blocks['variables_set_logic'] = {
-    init: function () {
-        this.appendValueInput('VAL').setCheck('Boolean').setAlign(Blockly.ALIGN_RIGHT)
-            .appendField(javabridge.t("blockly.block.set_var"))
-            .appendField(new Blockly.FieldDropdown(getVariablesOfType("Boolean")), 'VAR')
-            .appendField(javabridge.t("blockly.block.set_to"));
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour(Blockly.Constants.Logic.HUE);
-    }
-};
-
-Blockly.Blocks['variables_get_logic'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.get_var"))
-            .appendField(new Blockly.FieldDropdown(getVariablesOfType("Boolean")), 'VAR');
-        this.setOutput(true, 'Boolean');
-        this.setPreviousStatement(false);
-        this.setNextStatement(false);
-        this.setColour(Blockly.Constants.Logic.HUE);
-    }
-};
-
-Blockly.Blocks['variables_set_number'] = {
-    init: function () {
-        this.appendValueInput('VAL').setCheck('Number').setAlign(Blockly.ALIGN_RIGHT)
-            .appendField(javabridge.t("blockly.block.set_var"))
-            .appendField(new Blockly.FieldDropdown(getVariablesOfType("Number")), 'VAR')
-            .appendField(javabridge.t("blockly.block.set_to"));
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour(Blockly.Constants.Math.HUE);
-    }
-};
-
-Blockly.Blocks['variables_get_number'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.get_var"))
-            .appendField(new Blockly.FieldDropdown(getVariablesOfType("Number")), 'VAR');
-        this.setOutput(true, 'Number');
-        this.setPreviousStatement(false);
-        this.setNextStatement(false);
-        this.setColour(Blockly.Constants.Math.HUE);
-    }
-};
-
-Blockly.Blocks['variables_set_text'] = {
-    init: function () {
-        this.appendValueInput('VAL').setCheck('String').setAlign(Blockly.ALIGN_RIGHT)
-            .appendField(javabridge.t("blockly.block.set_var"))
-            .appendField(new Blockly.FieldDropdown(getVariablesOfType("String")), 'VAR')
-            .appendField(javabridge.t("blockly.block.set_to"));
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour(Blockly.Constants.Text.HUE);
-    }
-};
-
-Blockly.Blocks['variables_get_text'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.get_var"))
-            .appendField(new Blockly.FieldDropdown(getVariablesOfType("String")), 'VAR');
-        this.setOutput(true, 'String');
-        this.setPreviousStatement(false);
-        this.setNextStatement(false);
-        this.setColour(Blockly.Constants.Text.HUE);
-    }
-};
-
-Blockly.Blocks['variables_set_itemstack'] = {
-    init: function () {
-        this.appendValueInput('VAL').setCheck('MCItem').setAlign(Blockly.ALIGN_RIGHT)
-            .appendField(javabridge.t("blockly.block.set_var"))
-            .appendField(new Blockly.FieldDropdown(getVariablesOfType("MCItem")), 'VAR')
-            .appendField(javabridge.t("blockly.block.set_to"));
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour(350);
-    }
-};
-
-Blockly.Blocks['variables_get_itemstack'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.get_var"))
-            .appendField(new Blockly.FieldDropdown(getVariablesOfType("MCItem")), 'VAR');
-        this.setOutput(true, 'MCItem');
-        this.setPreviousStatement(false);
-        this.setNextStatement(false);
-        this.setColour(350);
-    }
-};
-
-Blockly.Blocks['custom_dependency_logic'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.custom_dependency_logic"))
-            .appendField(new Blockly.FieldTextInput("dependencyName"), 'NAME');
-        this.setColour(Blockly.Constants.Logic.HUE);
-        this.setOutput(true, 'Boolean');
-    }
-};
-
-Blockly.Blocks['custom_dependency_number'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.custom_dependency_number"))
-            .appendField(new Blockly.FieldTextInput("dependencyName"), 'NAME');
-        this.setColour(Blockly.Constants.Math.HUE);
-        this.setOutput(true, 'Number');
-    }
-};
-
-Blockly.Blocks['custom_dependency_text'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.custom_dependency_text"))
-            .appendField(new Blockly.FieldTextInput("dependencyName"), 'NAME');
-        this.setColour(Blockly.Constants.Text.HUE);
-        this.setOutput(true, 'String');
-    }
-};
-
-Blockly.Blocks['custom_dependency_itemstack'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.custom_dependency_itemstack"))
-            .appendField(new Blockly.FieldTextInput("dependencyName"), 'NAME');
-        this.setColour(350);
-        this.setOutput(true, 'MCItem');
     }
 };
 
@@ -347,42 +171,6 @@ Blockly.Blocks['text_format_number'] = {
         this.setNextStatement(false);
         this.setOutput(true, 'String');
         this.setColour(Blockly.Constants.Text.HUE);
-    }
-};
-
-Blockly.Blocks['return_number'] = {
-    init: function () {
-        this.appendValueInput('return').setCheck('Number').appendField(javabridge.t("blockly.block.return"));
-        this.setPreviousStatement(true);
-        this.setNextStatement(false);
-        this.setColour(Blockly.Constants.Math.HUE);
-    }
-};
-
-Blockly.Blocks['return_logic'] = {
-    init: function () {
-        this.appendValueInput('return').setCheck('Boolean').appendField(javabridge.t("blockly.block.return"));
-        this.setPreviousStatement(true);
-        this.setNextStatement(false);
-        this.setColour(Blockly.Constants.Logic.HUE);
-    }
-};
-
-Blockly.Blocks['return_text'] = {
-    init: function () {
-        this.appendValueInput('return').setCheck('String').appendField(javabridge.t("blockly.block.return"));
-        this.setPreviousStatement(true);
-        this.setNextStatement(false);
-        this.setColour(Blockly.Constants.Text.HUE);
-    }
-};
-
-Blockly.Blocks['return_itemstack'] = {
-    init: function () {
-        this.appendValueInput('return').setCheck('MCItem').appendField(javabridge.t("blockly.block.return"));
-        this.setPreviousStatement(true);
-        this.setNextStatement(false);
-        this.setColour(350);
     }
 };
 
@@ -573,6 +361,9 @@ Blockly.defineBlocksWithJsonArray([
             "type": "input_statement",
             "name": "DO"
         }],
+        "extensions": [
+            "is_custom_loop"
+        ],
         "previousStatement": null,
         "nextStatement": null,
         "colour": "%{BKY_LOOPS_HUE}"
@@ -656,13 +447,55 @@ Blockly.defineBlocksWithJsonArray([
     },
 ]);
 
-// add custom loop to loop types
-Blockly.Constants.Loops.CONTROL_FLOW_IN_LOOP_CHECK_MIXIN.LOOP_TYPES.push('controls_while');
+// Extension to mark a procedure block as a custom loop
+Blockly.Extensions.register('is_custom_loop',
+    function () {
+        Blockly.Constants.Loops.CONTROL_FLOW_IN_LOOP_CHECK_MIXIN.LOOP_TYPES.push(this.type);
+    });
+
+// Mutator to add/remove entity input from get/set variable blocks for player variables
+Blockly.Extensions.registerMutator('variable_entity_input',
+    {
+        mutationToDom: function () {
+            var container = document.createElement('mutation');
+            var isPlayerVar = javabridge.isPlayerVariable(this.getFieldValue('VAR'));
+            container.setAttribute('is_player_var', isPlayerVar);
+            var hasEntity = (this.getInputTargetBlock('entity') != null);
+            container.setAttribute('has_entity', hasEntity);
+            return container;
+        },
+
+        domToMutation: function (xmlElement) {
+            var isPlayerVar = (xmlElement.getAttribute('is_player_var') == 'true');
+            var hasEntity = (xmlElement.getAttribute('has_entity') == 'true');
+            this.updateShape_(isPlayerVar, !hasEntity); // don't create another block if it already has one
+        },
+
+        // Helper function to add an 'entity' input to the block
+        updateShape_: function (isPlayerVar, addEntityBlock) {
+            var entityInput = this.getInput('entity');
+            if (isPlayerVar) {
+                if (!entityInput) {
+                    var connection = this.appendValueInput('entity').setCheck('Entity')
+                        .appendField(javabridge.t("blockly.block.var_for_entity")).connection;
+                    if (addEntityBlock) {
+                        var blockXML = Blockly.utils.xml.createElement('block');
+                        blockXML.setAttribute('type', 'entity_from_deps');
+                        var entityBlock = Blockly.Xml.domToBlock(blockXML, this.workspace);
+                        connection.connect(entityBlock.outputConnection)
+                    }
+                }
+            } else if (entityInput) {
+                this.removeInput('entity');
+            }
+        }
+    });
 
 Blockly.Extensions.register('biome_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("biome"))), 'biome');
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("biome"),
+                javabridge.getReadableListOf("biome"))), 'biome');
     });
 
 Blockly.Extensions.register('biome_dictionary_list_provider',
@@ -674,7 +507,8 @@ Blockly.Extensions.register('biome_dictionary_list_provider',
 Blockly.Extensions.register('entity_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("entity"))), 'entity');
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("entity"),
+                javabridge.getReadableListOf("entity"))), 'entity');
     });
 
 Blockly.Extensions.register('gui_list_provider',
@@ -713,10 +547,16 @@ Blockly.Extensions.register('achievement_list_provider',
             arrayToBlocklyDropDownArray(javabridge.getListOf("achievement"))), 'achievement');
     });
 
+Blockly.Extensions.register('effect_list_provider',
+    function () {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArray(javabridge.getListOf("effect"))), 'potion'); // field name is potion for legacy reasons
+    });
+
 Blockly.Extensions.register('potion_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("potion"))), 'potion');
+            arrayToBlocklyDropDownArray(javabridge.getListOf("potion"))), 'potionitem');
     });
 
 Blockly.Extensions.register('gamerulesboolean_list_provider',
@@ -739,8 +579,16 @@ Blockly.Extensions.register('enhancement_list_provider',
 
 Blockly.Extensions.register('sound_list_provider',
     function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("sound"))), 'sound');
+        this.appendDummyInput().appendField(javabridge.t("blockly.extension.sound_list"))
+            .appendField(new Blockly.FieldDropdown(
+                arrayToBlocklyDropDownArray(javabridge.getListOf("sound"))), 'sound');
+    });
+
+Blockly.Extensions.register('sound_category_list_provider',
+    function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.extension.sound_category_list"))
+            .appendField(new Blockly.FieldDropdown(
+                arrayToBlocklyDropDownArray(javabridge.getListOf("soundcategory"))), 'soundcategory');
     });
 
 Blockly.Extensions.register('particle_list_provider',

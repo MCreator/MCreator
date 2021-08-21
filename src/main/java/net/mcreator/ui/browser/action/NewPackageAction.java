@@ -20,6 +20,7 @@ package net.mcreator.ui.browser.action;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
@@ -28,15 +29,13 @@ import java.io.File;
 public class NewPackageAction extends BasicAction {
 
 	public NewPackageAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Package", actionEvent -> {
+		super(actionRegistry, L10N.t("action.browser.new_package"), actionEvent -> {
 			String packagein = JOptionPane.showInputDialog(actionRegistry.getMCreator(),
-					"<html><b>Enter the package name:</b>"
-							+ "<br>Make sure your package name is valid (eg. my.custom.package)<br>"
-							+ "All package names start from default package declaration!", "Package name",
-					JOptionPane.QUESTION_MESSAGE);
+					L10N.t("workspace_file_browser.new_package.package_name"),
+					L10N.t("workspace_file_browser.new_package.package_name.title"), JOptionPane.QUESTION_MESSAGE);
 			if (packagein != null) {
-				new File(actionRegistry.getMCreator().getGenerator().getSourceRoot(), packagein.replace(".", "/"))
-						.mkdirs();
+				new File(actionRegistry.getMCreator().getGenerator().getSourceRoot(),
+						packagein.replace(".", "/")).mkdirs();
 				actionRegistry.getMCreator().getProjectBrowser().reloadTree();
 			}
 		});

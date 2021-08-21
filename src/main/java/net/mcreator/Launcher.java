@@ -74,8 +74,8 @@ public class Launcher {
 		LOG.info("Starting MCreator " + version);
 
 		// print version of Java
-		LOG.info("Java version: " + System.getProperty("java.version") + ", specification: " + System
-				.getProperty("java.specification.version") + ", VM name: " + System.getProperty("java.vm.name"));
+		LOG.info("Java version: " + System.getProperty("java.version") + ", VM: " + System.getProperty("java.vm.name")
+				+ ", vendor: " + System.getProperty("java.vendor"));
 		LOG.info("Current JAVA_HOME for running instance: " + System.getProperty("java.home"));
 
 		// after we have libraries loaded, we load preferences
@@ -130,12 +130,12 @@ public class Launcher {
 		// MCreator theme
 		ModuleLayer.boot().findModule("java.desktop").ifPresent(
 				module -> module.addOpens("sun.awt", net.mcreator.ui.laf.MCreatorLookAndFeel.class.getModule()));
-		ModuleLayer.boot().findModule("java.desktop").ifPresent(module -> module
-				.addOpens("javax.swing.text.html", net.mcreator.ui.laf.MCreatorLookAndFeel.class.getModule()));
+		ModuleLayer.boot().findModule("java.desktop").ifPresent(module -> module.addOpens("javax.swing.text.html",
+				net.mcreator.ui.laf.MCreatorLookAndFeel.class.getModule()));
 
 		// Blockly panel transparency
-		ModuleLayer.boot().findModule("javafx.web").ifPresent(module -> module
-				.addOpens("com.sun.javafx.webkit", net.mcreator.ui.blockly.BlocklyPanel.class.getModule()));
+		ModuleLayer.boot().findModule("javafx.web").ifPresent(module -> module.addOpens("com.sun.javafx.webkit",
+				net.mcreator.ui.blockly.BlocklyPanel.class.getModule()));
 		ModuleLayer.boot().findModule("javafx.web").ifPresent(
 				module -> module.addOpens("com.sun.webkit", net.mcreator.ui.blockly.BlocklyPanel.class.getModule()));
 	}

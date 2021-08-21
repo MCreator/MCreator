@@ -89,8 +89,8 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 			setVisible(false);
 		});
 
-		help.addActionListener(actionEvent -> DesktopUtils
-				.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/create-new-workspace-window"));
+		help.addActionListener(actionEvent -> DesktopUtils.browseSafe(
+				MCreatorApplication.SERVER_DOMAIN + "/wiki/create-new-workspace-window"));
 
 		workspacePanels.add("forge", PanelUtils.pullElementUp(forgeWorkspacePanel));
 		workspacePanels.add("fabric", PanelUtils.pullElementUp(fabricWorkspacePanel));
@@ -232,10 +232,10 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		button.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				super.mouseReleased(e);
-				int option = JOptionPane
-						.showConfirmDialog(null, L10N.t("dialog.new_workspace.dialog_plugin_needed.text"),
-								L10N.t("dialog.new_workspace.dialog_plugin_needed.title"), JOptionPane.YES_NO_OPTION,
-								JOptionPane.INFORMATION_MESSAGE, null);
+				int option = JOptionPane.showConfirmDialog(null,
+						L10N.t("dialog.new_workspace.dialog_plugin_needed.text"),
+						L10N.t("dialog.new_workspace.dialog_plugin_needed.title"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.INFORMATION_MESSAGE, null);
 				if (option == JOptionPane.YES_OPTION) {
 					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins");
 				}
@@ -260,9 +260,8 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		}
 		stringBuilder.append("</ul>");
 		stringBuilder.append(L10N.t("dialog.workspace_settings.dialog.error"));
-		JOptionPane
-				.showMessageDialog(w, stringBuilder.toString(), L10N.t("dialog.workspace_settings.dialog.error.title"),
-						JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(w, stringBuilder.toString(),
+				L10N.t("dialog.workspace_settings.dialog.error.title"), JOptionPane.ERROR_MESSAGE);
 	}
 
 	public File getWorkspaceFile() {

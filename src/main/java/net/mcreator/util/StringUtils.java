@@ -29,7 +29,10 @@ import java.util.regex.Pattern;
 
 public class StringUtils {
 
-	private static final String NAME_PARTS_SPLITTER_REGEX = "(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])|(_)|(?=\\d)";
+	private static final Pattern namePartsSplitter = Pattern.compile(
+			"(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])|(_)|(?=\\d)");
+	private static final Pattern underscoreReducer = Pattern.compile("(?<=\\d)_(?=\\d)");
+	private static final Pattern nonescapedCommaSplitter = Pattern.compile("(?<!\\\\),");
 
 	public static String abbreviateString(String input, int maxLength) {
 		return abbreviateString(input, maxLength, true);
@@ -68,18 +71,18 @@ public class StringUtils {
 	}
 
 	public static String camelToSnake(String original) {
-		return String.join("_", original.split(NAME_PARTS_SPLITTER_REGEX)).replaceAll("(?<=\\d)_(?=\\d)", "");
+		return underscoreReducer.matcher(String.join("_", namePartsSplitter.split(original))).replaceAll("");
 	}
 
 	public static String machineToReadableName(@Nonnull String input) {
-		String merged = String.join(" ", input.split(NAME_PARTS_SPLITTER_REGEX));
+		String merged = String.join(" ", namePartsSplitter.split(input));
 		return WordUtils.capitalize(org.apache.commons.lang3.StringUtils.normalizeSpace(merged));
 	}
 
 	public static List<String> splitCommaSeparatedStringListWithEscapes(String specialInfoString) {
 		List<String> retval = new ArrayList<>();
 		if (!specialInfoString.equals("")) {
-			String[] info = specialInfoString.split("(?<!\\\\),");
+			String[] info = nonescapedCommaSplitter.split(specialInfoString);
 			for (String infoelement : info) {
 				String data = infoelement.trim().replace("\\,", ",");
 				if (!data.trim().equals(""))

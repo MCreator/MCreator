@@ -93,12 +93,17 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			BlockPos pos = context.getPos();
 			PlayerEntity entity = context.getPlayer();
 			Direction direction = context.getFace();
+			BlockState blockstate = world.getBlockState(pos);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
 			ItemStack itemstack = context.getItem();
+			<#if hasReturnValue(data.onRightClickedOnBlock)>
+			return <@procedureOBJToActionResultTypeCode data.onRightClickedOnBlock/>;
+			<#else>
 			<@procedureOBJToCode data.onRightClickedOnBlock/>
 			return retval;
+			</#if>
 		}
 		</#if>
 

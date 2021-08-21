@@ -63,7 +63,7 @@ public class MainMenuBar extends JMenuBar {
 
 		add(logo);
 
-		JMenu file = new JMenu(L10N.t("menubar.file"));
+		JMenu file = L10N.menu("menubar.file");
 		file.setMnemonic('F');
 		file.add(mcreator.actionRegistry.newWorkspace);
 		file.addSeparator();
@@ -115,7 +115,6 @@ public class MainMenuBar extends JMenuBar {
 		imageEditor.setMnemonic('I');
 		imageEditor.add(mcreator.actionRegistry.imageEditorUndo);
 		imageEditor.add(mcreator.actionRegistry.imageEditorRedo);
-		imageEditor.add(mcreator.actionRegistry.imageEditorResizeCanvas);
 		imageEditor.addSeparator();
 		imageEditor.add(mcreator.actionRegistry.imageEditorSave);
 		imageEditor.add(mcreator.actionRegistry.imageEditorSaveAs);
@@ -133,9 +132,10 @@ public class MainMenuBar extends JMenuBar {
 		imageEditor.addSeparator();
 		imageEditor.add(mcreator.actionRegistry.imageEditorMoveLayer);
 		imageEditor.add(mcreator.actionRegistry.imageEditorResizeLayer);
+		imageEditor.add(mcreator.actionRegistry.imageEditorResizeCanvas);
 		add(imageEditor);
 
-		JMenu workspace = new JMenu(L10N.t("menubar.workspace"));
+		JMenu workspace = L10N.menu("menubar.workspace");
 		workspace.setMnemonic('S');
 
 		workspace.addSeparator();
@@ -151,7 +151,7 @@ public class MainMenuBar extends JMenuBar {
 
 		add(workspace);
 
-		JMenu resources = new JMenu(L10N.t("menubar.resources"));
+		JMenu resources = L10N.menu("menubar.resources");
 		resources.setMnemonic('R');
 		resources.add(mcreator.actionRegistry.importBlockTexture);
 		resources.add(mcreator.actionRegistry.importItemTexture);
@@ -168,7 +168,7 @@ public class MainMenuBar extends JMenuBar {
 		resources.add(mcreator.actionRegistry.importOBJModel);
 		add(resources);
 
-		JMenu build = new JMenu(L10N.t("menubar.build_and_run"));
+		JMenu build = L10N.menu("menubar.build_and_run");
 		build.setMnemonic('B');
 		build.add(mcreator.actionRegistry.buildWorkspace);
 		build.add(mcreator.actionRegistry.buildGradleOnly);
@@ -187,7 +187,7 @@ public class MainMenuBar extends JMenuBar {
 		build.add(mcreator.actionRegistry.runServer);
 		add(build);
 
-		JMenu tools = new JMenu(L10N.t("menubar.tools"));
+		JMenu tools = L10N.menu("menubar.tools");
 		tools.setMnemonic('T');
 		tools.add(mcreator.actionRegistry.createMCItemTexture);
 		tools.add(mcreator.actionRegistry.createArmorTexture);
@@ -202,7 +202,7 @@ public class MainMenuBar extends JMenuBar {
 		tools.add(mcreator.actionRegistry.openJavaEditionFolder);
 		tools.add(mcreator.actionRegistry.openBedrockEditionFolder);
 		tools.addSeparator();
-		JMenu dataLists = new JMenu(L10N.t("menubar.tools.data_lists"));
+		JMenu dataLists = L10N.menu("menubar.tools.data_lists");
 		dataLists.add(mcreator.actionRegistry.showEntityIDList);
 		dataLists.add(mcreator.actionRegistry.showItemBlockList);
 		dataLists.add(mcreator.actionRegistry.showParticleIDList);
@@ -212,7 +212,7 @@ public class MainMenuBar extends JMenuBar {
 		tools.add(dataLists);
 		add(tools);
 
-		JMenu vcs = new JMenu(L10N.t("menubar.vcs"));
+		JMenu vcs = L10N.menu("menubar.vcs");
 		vcs.setMnemonic('R');
 		vcs.add(mcreator.actionRegistry.setupVCS);
 		vcs.addSeparator();
@@ -225,7 +225,7 @@ public class MainMenuBar extends JMenuBar {
 		vcs.add(mcreator.actionRegistry.remoteWorkspaceSettings);
 		add(vcs);
 
-		JMenu window = new JMenu(L10N.t("menubar.window"));
+		JMenu window = L10N.menu("menubar.window");
 		window.add(mcreator.actionRegistry.showWorkspaceBrowser);
 		window.add(mcreator.actionRegistry.hideWorkspaceBrowser);
 		window.addSeparator();
@@ -237,7 +237,7 @@ public class MainMenuBar extends JMenuBar {
 		window.setMnemonic('W');
 		add(window);
 
-		JMenu help = new JMenu(L10N.t("menubar.help"));
+		JMenu help = L10N.menu("menubar.help");
 		addHelpSearch(help);
 		help.add(mcreator.actionRegistry.help);
 		help.add(mcreator.actionRegistry.support);

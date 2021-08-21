@@ -31,6 +31,7 @@ import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -61,7 +62,7 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	private final Window parent;
 
-	public PreferencesDialog(Window parent, String selectedTab) {
+	public PreferencesDialog(Window parent, @Nullable String selectedTab) {
 		super(parent);
 
 		this.parent = parent;
@@ -103,7 +104,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		ComponentUtils.deriveFont(sections, 13);
 
 		JButton ok = L10N.button("dialog.preferences.save");
-		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 
 		JButton reset = L10N.button("dialog.preferences.restore_defaults");
 		reset.addActionListener(actionEvent -> {
@@ -251,8 +252,9 @@ public class PreferencesDialog extends MCreatorDialog {
 		if (actualField.getType().equals(int.class) || actualField.getType().equals(Integer.class)) {
 			int max = (int) entry.max();
 			if (entry.meta().equals("max:maxram")) {
-				max = ((int) (((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean())
-						.getTotalPhysicalMemorySize() / 1048576)) - 1024;
+				max = ((int) (
+						((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalPhysicalMemorySize()
+								/ 1048576)) - 1024;
 			}
 			value = Math.max(entry.min(), Math.min(max, (Integer) value));
 			SpinnerNumberModel model = new SpinnerNumberModel((int) Math.round((double) value), (int) entry.min(), max,

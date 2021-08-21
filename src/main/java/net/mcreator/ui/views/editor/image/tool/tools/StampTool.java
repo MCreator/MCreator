@@ -46,7 +46,6 @@ import java.util.List;
 public class StampTool extends AbstractModificationTool {
 
 	private double saturation = 1;
-	private double opacity = 1;
 
 	private Point prevPoint = null;
 
@@ -64,12 +63,13 @@ public class StampTool extends AbstractModificationTool {
 
 	public StampTool(Canvas canvas, ColorSelector colorSelector, LayerPanel layerPanel, VersionManager versionManager,
 			MCreator window) {
-		super(L10N.t("dialog.imageeditor.stamp_tool_name"), L10N.t("dialog.imageeditor.stamp_tool_description"),
-				UIRES.get("img_editor.stamp"), canvas, colorSelector, versionManager);
+		super(L10N.t("dialog.image_maker.tools.types.stamp"),
+				L10N.t("dialog.image_maker.tools.types.stamp_description"), UIRES.get("img_editor.stamp"), canvas,
+				colorSelector, versionManager);
 		setLayerPanel(layerPanel);
 
-		width = new JSlidingSpinner("Width:", 16, 0, 10000, 1);
-		height = new JSlidingSpinner("Height:", 16, 0, 10000, 1);
+		width = new JSlidingSpinner(L10N.t("dialog.imageeditor.width"), 16, 0, 10000, 1);
+		height = new JSlidingSpinner(L10N.t("dialog.imageeditor.height"), 16, 0, 10000, 1);
 
 		List<ResourcePointer> templatesSorted = new ArrayList<>(ImageMakerTexturesCache.CACHE.keySet());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
@@ -91,13 +91,10 @@ public class StampTool extends AbstractModificationTool {
 			height.setValue(icon.getIconHeight());
 		});
 
-		JSlidingSpinner opacitySlider = new JSlidingSpinner("Opacity:");
-		opacitySlider.addChangeListener(e -> opacity = opacitySlider.getValue() / 100.0);
-
-		JSlidingSpinner saturationSlider = new JSlidingSpinner("Saturation:");
+		JSlidingSpinner saturationSlider = new JSlidingSpinner(L10N.t("dialog.image_maker.tools.types.saturation"));
 		saturationSlider.addChangeListener(e -> saturation = saturationSlider.getValue() / 100.0);
 
-		colorize = L10N.checkbox("dialog.imageeditor.stamp_tool_colorize");
+		colorize = L10N.checkbox("dialog.image_maker.tools.types.colorize");
 		colorType = L10N.checkbox("dialog.imageeditor.stamp_tool_lock_saturation_brightness");
 		colorize.addActionListener(e -> colorType.setEnabled(colorize.isSelected()));
 		colorize.setSelected(false);
@@ -107,7 +104,6 @@ public class StampTool extends AbstractModificationTool {
 		connect = L10N.checkbox("dialog.imageeditor.stamp_tool_connect_points");
 		connect.setSelected(true);
 
-		settingsPanel.add(opacitySlider);
 		settingsPanel.add(PanelUtils.westAndCenterElement(L10N.label("dialog.imageeditor.stamp_tool_base_texture"),
 				PanelUtils.centerInPanel(templateChooserButton)));
 		settingsPanel.add(width);
@@ -120,7 +116,7 @@ public class StampTool extends AbstractModificationTool {
 	}
 
 	@Override public boolean process(ZoomedMouseEvent e) {
-		layer.setOverlayOpacity(opacity);
+		layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
 		if (layer.in(e.getX(), e.getY())) {
 			int sx = e.getX() - layer.getX(), sy = e.getY() - layer.getY();
 			Graphics2D graphics2D = layer.getOverlay().createGraphics();

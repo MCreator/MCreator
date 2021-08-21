@@ -27,38 +27,40 @@ import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class SetVariableBlock implements IBlockGenerator {
+	private final String[] names;
+
+	public SetVariableBlock() {
+		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName)
+				.collect(Collectors.toList()).stream().map(s -> s = "variables_set_" + s).toArray(String[]::new);
+	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String type;
+		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_set_");
+		VariableType typeObject = VariableTypeLoader.INSTANCE.fromName(type);
 
-		String blocktype = block.getAttribute("type");
-		switch (blocktype) {
-		case "variables_set_number":
-			type = "NUMBER";
-			break;
-		case "variables_set_text":
-			type = "STRING";
-			break;
-		case "variables_set_logic":
-			type = "LOGIC";
-			break;
-		case "variables_set_itemstack":
-			type = "ITEMSTACK";
-			break;
-		default:
-			return;
-		}
+		String javaType = new Dependency("", typeObject.getName()).getType(master.getWorkspace());
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
-		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
+		List<Element> inputs = XMLUtil.getChildrenWithName(block, "value");
+		Element value = null, entityInput = null;
+		for (Element input : inputs) {
+			if (input.getAttribute("name").equals("VAL"))
+				value = input;
+			else if (input.getAttribute("name").equals("entity"))
+				entityInput = input;
+		}
 		if (variable != null && value != null && variable.getTextContent() != null) {
 			String[] varfield = variable.getTextContent().split(":");
 			if (varfield.length == 2) {
@@ -71,8 +73,8 @@ public class SetVariableBlock implements IBlockGenerator {
 							"Variable set block is bound to a variable that does not exist. Skipping this block."));
 					return;
 				} else if (master instanceof BlocklyToProcedure && scope.equals("local")
-						&& !((BlocklyToProcedure) master).getVariables()
-						.contains(name)) { // check if local variable exists
+						&& !((BlocklyToProcedure) master).getLocalVariables().stream().map(VariableElement::toString)
+						.collect(Collectors.toList()).contains(name)) { // check if local variable exists
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							"Variable set block is bound to a local variable that does not exist. Skipping this block."));
 					return;
@@ -81,8 +83,8 @@ public class SetVariableBlock implements IBlockGenerator {
 							"This editor does not support local variables! Skipping this block"));
 					return;
 				} else if (scope.equalsIgnoreCase("local")) {
-					List<StatementInput> statementInputList = master
-							.getStatementInputsMatching(statementInput -> statementInput.disable_local_variables);
+					List<StatementInput> statementInputList = master.getStatementInputsMatching(
+							statementInput -> statementInput.disable_local_variables);
 					if (!statementInputList.isEmpty()) {
 						for (StatementInput statementInput : statementInputList) {
 							master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
@@ -91,26 +93,46 @@ public class SetVariableBlock implements IBlockGenerator {
 						}
 						return;
 					}
-				}
-
-				if (scope.equals("global")) {
+				} else if (scope.equals("global")) {
 					scope = master.getWorkspace().getVariableElementByName(name).getScope().name();
 					if (scope.equals("GLOBAL_MAP") || scope.equals("GLOBAL_WORLD")) {
 						master.addDependency(new Dependency("world", "world"));
-					} else if (scope.equals("PLAYER_LIFETIME") || scope.equals("PLAYER_PERSISTENT")) {
-						master.addDependency(new Dependency("entity", "entity"));
+					} else if (entityInput == null && (scope.equals("PLAYER_LIFETIME") || scope.equals(
+							"PLAYER_PERSISTENT"))) {
+						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								"Set variable block for player variable is missing entity input."));
+						return;
 					}
 				}
+
+				Object setterTemplate = typeObject.getScopeDefinition(master.getWorkspace(),
+						scope.toUpperCase(Locale.ENGLISH)).get("set");
+				if (setterTemplate == null) {
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+							"Current generator does not support setting variables of type " + type + " in " + scope
+									+ " scope. Skipping this block."));
+					return;
+				}
+
+				String valuecode = BlocklyToCode.directProcessOutputBlock(master, value);
+
+				String entitycode = null;
+				if (entityInput != null)
+					entitycode = BlocklyToCode.directProcessOutputBlock(master, entityInput);
 
 				if (master.getTemplateGenerator() != null) {
 					Map<String, Object> dataModel = new HashMap<>();
 					dataModel.put("name", name);
-					dataModel.put("scope", scope);
+					dataModel.put("scope", scope.toUpperCase(Locale.ENGLISH));
 					dataModel.put("type", type);
-					dataModel.put("value", BlocklyToCode.directProcessOutputBlock(master, value));
+					dataModel.put("javaType", javaType);
+					dataModel.put("value", valuecode);
+
+					if (entitycode != null)
+						dataModel.put("entity", entitycode);
 
 					String code = master.getTemplateGenerator()
-							.generateFromTemplate("_set_variable.java.ftl", dataModel);
+							.generateFromString(setterTemplate.toString(), dataModel);
 					master.append(code);
 				}
 			}
@@ -121,8 +143,7 @@ public class SetVariableBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "variables_set_number", "variables_set_text", "variables_set_logic",
-				"variables_set_itemstack" };
+		return names;
 	}
 
 	@Override public BlockType getBlockType() {

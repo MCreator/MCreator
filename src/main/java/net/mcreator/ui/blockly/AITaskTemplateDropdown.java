@@ -40,11 +40,11 @@ public class AITaskTemplateDropdown extends JScrollablePopupMenu {
 				JMenuItem modTypeButton = new JMenuItem(template.toString());
 
 				if (template.identifier instanceof String)
-					modTypeButton.addActionListener(actionEvent -> blocklyPanel
-							.addBlocksFromXML(ProcedureTemplateIO.importBlocklyXML("/" + template.identifier)));
+					modTypeButton.addActionListener(actionEvent -> blocklyPanel.addBlocksFromXML(
+							ProcedureTemplateIO.importBlocklyXML("/" + template.identifier)));
 				else
-					modTypeButton.addActionListener(actionEvent -> blocklyPanel
-							.addBlocksFromXML(ProcedureTemplateIO.importBlocklyXML((File) template.identifier)));
+					modTypeButton.addActionListener(actionEvent -> blocklyPanel.addBlocksFromXML(
+							ProcedureTemplateIO.importBlocklyXML((File) template.identifier)));
 				modTypeButton.setOpaque(true);
 				ComponentUtils.deriveFont(modTypeButton, 12);
 				add(modTypeButton);

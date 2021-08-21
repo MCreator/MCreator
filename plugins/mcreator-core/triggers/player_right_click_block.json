@@ -23,7 +23,12 @@
     {
       "name": "direction",
       "type": "direction"
+    },
+    {
+      "name": "blockstate",
+      "type": "blockstate"
     }
   ],
-  "cancelable": "true"
+  "cancelable": "true",
+  "side": "server"
 }

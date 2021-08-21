@@ -18,12 +18,11 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
-import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.types.GUI;
@@ -49,10 +48,13 @@ import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -87,9 +89,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	private final JPanel returnType = new JPanel(new BorderLayout());
 	private final JLabel returnTypeLabel = new JLabel();
 
-	private final JPanel triggerInfoPanel = new JPanel(new BorderLayout());
+	private final JPanel triggerInfoPanel = new JPanel(new BorderLayout(2, 2));
 	private final JLabel cancelableTriggerLabel = new JLabel();
 	private final JLabel hasResultTriggerLabel = new JLabel();
+	private final JLabel sideTriggerLabel = new JLabel();
 
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 
@@ -122,9 +125,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			cancelableTriggerLabel.setText("");
 			hasResultTriggerLabel.setText("");
+			sideTriggerLabel.setText("");
 
 			cancelableTriggerLabel.setIcon(null);
 			hasResultTriggerLabel.setIcon(null);
+			sideTriggerLabel.setIcon(null);
 
 			if (isEditingMode() && dependenciesBeforeEdit == null) {
 				dependenciesBeforeEdit = new ArrayList<>(dependenciesArrayList);
@@ -144,9 +149,9 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			if (blocklyToJava.getReturnType() != null) {
 				returnType.setVisible(true);
-				returnTypeLabel.setText(blocklyToJava.getReturnType().name());
+				returnTypeLabel.setText(blocklyToJava.getReturnType().getName().toUpperCase());
 				returnTypeLabel.setForeground(
-						new Dependency("", blocklyToJava.getReturnType().toDependencyType()).getColor().brighter());
+						BlocklyBlockUtil.getBlockColorFromHUE(blocklyToJava.getReturnType().getColor()).brighter());
 			} else {
 				returnType.setVisible(false);
 			}
@@ -171,8 +176,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					StringBuilder missingdeps = new StringBuilder();
 					boolean warn = false;
 					for (Dependency dependency : dependenciesArrayList) {
-						if (trigger.dependencies_provided != null && !trigger.dependencies_provided
-								.contains(dependency)) {
+						if (trigger.dependencies_provided != null && !trigger.dependencies_provided.contains(
+								dependency)) {
 							warn = true;
 							missingdeps.append(" ").append(dependency.getName());
 						}
@@ -195,6 +200,13 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					if (trigger.has_result) {
 						hasResultTriggerLabel.setText(L10N.t("elementgui.procedure.can_specify_result_trigger"));
 						hasResultTriggerLabel.setIcon(UIRES.get("info"));
+					}
+					if ("client".equals(trigger.side)) {
+						sideTriggerLabel.setText(L10N.t("elementgui.procedure.client_side_trigger"));
+						sideTriggerLabel.setIcon(UIRES.get("16px.client"));
+					} else if ("server".equals(trigger.side)) {
+						sideTriggerLabel.setText(L10N.t("elementgui.procedure.server_side_trigger"));
+						sideTriggerLabel.setIcon(UIRES.get("16px.server"));
 					}
 
 					if (!mcreator.getGeneratorStats().getGeneratorTriggers().contains(trigger.getID())) {
@@ -262,9 +274,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBorder(null);
-			Color varc = new Color(value.getType().getColor());
-			setBackground(isSelected ? varc : (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : varc);
+			setBackground(isSelected ?
+					BlocklyBlockUtil.getBlockColorFromHUE(value.getType().getColor()) :
+					(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			setForeground(isSelected ?
+					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
+					BlocklyBlockUtil.getBlockColorFromHUE(value.getType().getColor()));
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
 			return this;
@@ -322,6 +337,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		triggerInfoPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 0));
 		triggerInfoPanel.add("North", cancelableTriggerLabel);
 		triggerInfoPanel.add("Center", hasResultTriggerLabel);
+		triggerInfoPanel.add("South", sideTriggerLabel);
 
 		JPanel localVarsPan = new JPanel(new BorderLayout());
 		localVarsPan.setOpaque(false);
@@ -364,30 +380,28 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		bar.add(remvar);
 
 		addvar.addActionListener(e -> {
-			VariableElement element = NewVariableDialog
-					.showNewVariableDialog(mcreator, false, new OptionPaneValidatior() {
-								@Override public Validator.ValidationResult validate(JComponent component) {
-									Validator validator = new JavaMemeberNameValidator((VTextField) component, false);
-									String textname = Transliteration.transliterateString(((VTextField) component).getText());
-									for (int i = 0; i < localVars.getSize(); i++) {
-										String nameinrow = localVars.get(i).getName();
-										if (textname.equals(nameinrow))
-											return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-													L10N.t("elementgui.procedure.name_already_exists"));
-									}
-									for (Dependency dependency : dependenciesArrayList) {
-										String nameinrow = dependency.getName();
-										if (textname.equals(nameinrow))
-											return new ValidationResult(ValidationResultType.ERROR,
-													L10N.t("elementgui.procedure.name_already_exists_dep"));
-									}
-									return validator.validate();
-								}
-							}, VariableElementType.LOGIC, VariableElementType.NUMBER, VariableElementType.STRING,
-							VariableElementType.ITEMSTACK);
+			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
+					new OptionPaneValidatior() {
+						@Override public Validator.ValidationResult validate(JComponent component) {
+							Validator validator = new JavaMemeberNameValidator((VTextField) component, false);
+							String textname = Transliteration.transliterateString(((VTextField) component).getText());
+							for (int i = 0; i < localVars.getSize(); i++) {
+								String nameinrow = localVars.get(i).getName();
+								if (textname.equals(nameinrow))
+									return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+											L10N.t("common.name_already_exists"));
+							}
+							for (Dependency dependency : dependenciesArrayList) {
+								String nameinrow = dependency.getName();
+								if (textname.equals(nameinrow))
+									return new ValidationResult(ValidationResultType.ERROR,
+											L10N.t("elementgui.procedure.name_already_exists_dep"));
+							}
+							return validator.validate();
+						}
+					}, VariableTypeLoader.INSTANCE.getLocalVariableTypes(mcreator.getGeneratorConfiguration()));
 			if (element != null) {
-				blocklyPanel.addLocalVariable(element.getName(),
-						BlocklyVariables.getBlocklyVariableTypeFromMCreatorVariable(element));
+				blocklyPanel.addLocalVariable(element.getName(), element.getType().getBlocklyVariableType());
 				localVars.addElement(element);
 			}
 		});
@@ -396,11 +410,47 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			VariableElement element = localVarsList.getSelectedValue();
 			if (element != null) {
 				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("elementgui.procedure.confirm_delete_var_msg"),
-						L10N.t("elementgui.procedure.confirm_delete_var_title"), JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
+						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (n == JOptionPane.YES_OPTION) {
 					blocklyPanel.removeLocalVariable(element.getName());
 					localVars.removeElement(element);
+				}
+			}
+		});
+
+		localVarsList.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (localVars.getSize() > 0 && e.getClickCount() == 2) {
+					VariableElement selectedVar = localVarsList.getSelectedValue();
+					VariableType type = selectedVar.getType();
+					String blockXml =
+							"<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"variables_" + (e.isAltDown() ?
+									"set_" :
+									"get_") + type.getName() + "\"><field name=\"VAR\">local:" + selectedVar.getName()
+									+ "</field></block></xml>";
+					blocklyPanel.addBlocksFromXML(blockXml);
+				}
+			}
+		});
+
+		dependenciesList.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (dependencies.getSize() > 0 && e.getClickCount() == 2) {
+					Dependency selectedDep = dependenciesList.getSelectedValue();
+					String blockXml = selectedDep.getDependencyBlockXml();
+					if (blockXml != null)
+						blocklyPanel.addBlocksFromXML(blockXml);
+				}
+			}
+		});
+
+		dependenciesExtTrigList.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (dependenciesExtTrigger.getSize() > 0 && e.getClickCount() == 2) {
+					Dependency selectedDep = dependenciesExtTrigList.getSelectedValue();
+					String blockXml = selectedDep.getDependencyBlockXml();
+					if (blockXml != null)
+						blocklyPanel.addBlocksFromXML(blockXml);
 				}
 			}
 		});
@@ -481,8 +531,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		scrollPaneExtDeps.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneExtDeps.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
-		triggerDepsPan.add("Center", PanelUtils.northAndCenterElement(triggerInfoPanel, PanelUtils
-				.northAndCenterElement(
+		triggerDepsPan.add("Center", PanelUtils.northAndCenterElement(triggerInfoPanel,
+				PanelUtils.northAndCenterElement(
 						ComponentUtils.deriveFont(L10N.label("elementgui.procedure.provided_dependencies"), 13),
 						scrollPaneExtDeps, 0, 1), 0, 4));
 		triggerDepsPan.setPreferredSize(new Dimension(150, 0));
@@ -511,13 +561,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
 					.forEach(blocklyPanel.getJSBridge()::addExternalTrigger);
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
-				blocklyPanel.addGlobalVariable(variable.getName(),
-						BlocklyVariables.getBlocklyVariableTypeFromMCreatorVariable(variable));
+				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
 			blocklyPanel.getJSBridge().setJavaScriptEventListener(() -> new Thread(this::regenerateProcedure).start());
 			if (!isEditingMode()) {
-				blocklyPanel
-						.setXML("<xml><block type=\"event_trigger\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>");
+				blocklyPanel.setXML(
+						"<xml><block type=\"event_trigger\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>");
 			}
 		});
 
@@ -549,8 +598,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		super.afterGeneratableElementStored();
 
 		// check if dependency list has changed
-		boolean dependenciesChanged = dependenciesBeforeEdit != null && !new HashSet<>(dependenciesBeforeEdit)
-				.equals(new HashSet<>(dependenciesArrayList));
+		boolean dependenciesChanged = dependenciesBeforeEdit != null && !new HashSet<>(dependenciesBeforeEdit).equals(
+				new HashSet<>(dependenciesArrayList));
 
 		// this procedure could be in use and new dependencies were added
 		if (isEditingMode() && dependenciesChanged) {
@@ -569,8 +618,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						}
 						if (procedureUsedByGUI)
 							mcreator.getGenerator().generateElement(generatableElement);
-					} else if (generatableElement != null && ModElementTypeRegistry.REGISTRY.get(element.getType())
-							.hasProcedureTriggers()) {
+					} else if (generatableElement != null && element.getType().hasProcedureTriggers()) {
 						if (Procedure.isElementUsingProcedure(generatableElement, modElement.getName())) {
 							mcreator.getGenerator().generateElement(generatableElement);
 						}

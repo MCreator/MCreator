@@ -23,9 +23,11 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -44,6 +46,33 @@ public class ElementUtil {
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
 						.map(e -> (MCItem) e).collect(Collectors.toList()));
+		return elements;
+	}
+
+	/**
+	 * Loads all mod elements and all Minecraft elements (blocks and items), including elements
+	 * that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
+	 * This list also provides potions from both Minecraft elements and mod elements
+	 *
+	 * @return All Blocks and Items and Potions from both Minecraft and custom elements with or without metadata
+	 */
+	public static List<MCItem> loadBlocksAndItemsAndTagsAndPotions(Workspace workspace) {
+		List<MCItem> elements = loadBlocksAndItemsAndTags(workspace);
+		loadAllPotions(workspace).forEach(potion -> elements.add(new MCItem.Potion(workspace, potion)));
+		return elements;
+	}
+
+	/**
+	 * Loads all mod elements and all Minecraft elements (blocks and items) without elements
+	 * that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
+	 * so only oak wood, birch wood, ... are loaded, without wildcard wood element
+	 * This list also provides potions from both Minecraft elements and mod elements
+	 *
+	 * @return All Blocks and Items and Potions from both Minecraft and custom elements with or without metadata
+	 */
+	public static List<MCItem> loadBlocksAndItemsAndPotions(Workspace workspace) {
+		List<MCItem> elements = loadBlocksAndItems(workspace);
+		loadAllPotions(workspace).forEach(potion -> elements.add(new MCItem.Potion(workspace, potion)));
 		return elements;
 	}
 
@@ -82,7 +111,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllAchievements(Workspace workspace) {
-		List<DataListEntry> achievements = getCustomElementsOfType(workspace, ModElementType.ACHIEVEMENT);
+		List<DataListEntry> achievements = getCustomElementsOfType(workspace, ModElementType.ADVANCEMENT);
 		achievements.addAll(DataListLoader.loadDataList("achievements"));
 		return achievements;
 	}
@@ -96,6 +125,7 @@ public class ElementUtil {
 	public static List<DataListEntry> loadAllBiomes(Workspace workspace) {
 		List<DataListEntry> biomes = getCustomElementsOfType(workspace, BaseType.BIOME);
 		biomes.addAll(DataListLoader.loadDataList("biomes"));
+		Collections.sort(biomes);
 		return biomes;
 	}
 
@@ -116,6 +146,7 @@ public class ElementUtil {
 	public static List<DataListEntry> loadAllEntities(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENTITY);
 		retval.addAll(DataListLoader.loadDataList("entities"));
+		Collections.sort(retval);
 		return retval;
 	}
 
@@ -126,6 +157,12 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTIONEFFECT);
+		retval.addAll(DataListLoader.loadDataList("effects"));
+		return retval;
+	}
+
+	public static List<DataListEntry> loadAllPotions(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTION);
 		retval.addAll(DataListLoader.loadDataList("potions"));
 		return retval;
@@ -134,11 +171,12 @@ public class ElementUtil {
 	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
 			if (modelement.getType() == ModElementType.GAMERULE)
-				return modelement.getMetadata("type").equals("boolean");
+				return modelement.getMetadata("type").equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName());
 			return false;
 		});
 
-		retval.addAll(DataListLoader.loadDataList("gamerules").stream().filter(e -> e.getType().equals("boolean"))
+		retval.addAll(DataListLoader.loadDataList("gamerules").stream()
+				.filter(e -> e.getType().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
 				.collect(Collectors.toList()));
 		return retval;
 	}
@@ -146,11 +184,12 @@ public class ElementUtil {
 	public static List<DataListEntry> getAllNumberGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
 			if (modelement.getType() == ModElementType.GAMERULE)
-				return modelement.getMetadata("type").equals("number");
+				return modelement.getMetadata("type").equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName());
 			return false;
 		});
 
-		retval.addAll(DataListLoader.loadDataList("gamerules").stream().filter(e -> e.getType().equals("number"))
+		retval.addAll(DataListLoader.loadDataList("gamerules").stream()
+				.filter(e -> e.getType().equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
 				.collect(Collectors.toList()));
 		return retval;
 	}
@@ -178,10 +217,15 @@ public class ElementUtil {
 			retval.add("CUSTOM:" + soundElement.getName());
 		}
 
-		retval.addAll(DataListLoader.loadDataList("sounds").stream().map(DataListEntry::getName)
-				.collect(Collectors.toList()));
+		retval.addAll(DataListLoader.loadDataList("sounds").stream().sorted()
+				.map(DataListEntry::getName).collect(Collectors.toList()));
 
 		return retval.toArray(new String[0]);
+	}
+
+	public static String[] getAllSoundCategories() {
+		return DataListLoader.loadDataList("soundcategories").stream().map(DataListEntry::getName)
+				.toArray(String[]::new);
 	}
 
 	public static String[] getAllDamageSources() {
@@ -218,6 +262,10 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("mapcolors").stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
+	public static String[] loadScreens() {
+		return DataListLoader.loadDataList("screens").stream().map(DataListEntry::getName).toArray(String[]::new);
+	}
+
 	public static String[] loadAllDimensions(Workspace workspace) {
 		ArrayList<String> dimensions = new ArrayList<>();
 		dimensions.add("Surface");
@@ -232,7 +280,7 @@ public class ElementUtil {
 	}
 
 	public static String[] loadDirections() {
-		return new String[] { "DOWN", "UP", "NORTH", "SOUTH", "WEST", "EAST" };
+		return new String[] { "DOWN" , "UP" , "NORTH" , "SOUTH" , "WEST" , "EAST" };
 	}
 
 	public static ArrayList<String> loadBasicGUI(Workspace workspace) {
@@ -252,7 +300,7 @@ public class ElementUtil {
 				.collect(Collectors.toList());
 	}
 
-	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, ModElementType type) {
+	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, ModElementType<?> type) {
 		return workspace.getModElements().stream().filter(mu -> mu.getType() == type).map(DataListEntry.Custom::new)
 				.collect(Collectors.toList());
 	}

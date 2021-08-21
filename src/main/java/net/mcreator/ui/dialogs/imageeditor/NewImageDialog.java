@@ -37,7 +37,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class NewImageDialog extends MCreatorDialog {
-	private final String[] layerTypes = { "Transparency", "Color", "Template", "No Layer" };
+	private final String[] layerTypes = { L10N.t("dialog.imageeditor.transparency"),
+			L10N.t("dialog.imageeditor.color_layer_type"), L10N.t("dialog.imageeditor.template"),
+			L10N.t("dialog.imageeditor.no_layer") };
 
 	private ResourcePointer selection;
 	private final List<ResourcePointer> templatesSorted;
@@ -81,7 +83,7 @@ public class NewImageDialog extends MCreatorDialog {
 		JSpinner width = new JSpinner(new SpinnerNumberModel(16, 0, 10000, 1));
 		JSpinner height = new JSpinner(new SpinnerNumberModel(16, 0, 10000, 1));
 
-		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("action.common.create");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -137,9 +139,9 @@ public class NewImageDialog extends MCreatorDialog {
 		properties.add(L10N.label("dialog.imageeditor.new_image_fill_with"));
 		properties.add(layerType);
 
-		specialSettings
-				.add(PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor.new_image_add_transparent_layer")),
-						layerTypes[0]);
+		specialSettings.add(
+				PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor.new_image_add_transparent_layer")),
+				layerTypes[0]);
 		specialSettings.add(colorSettings, layerTypes[1]);
 		specialSettings.add(templateSettings, layerTypes[2]);
 		specialSettings.add(PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor.new_image_add_no_layer")),

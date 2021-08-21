@@ -20,6 +20,7 @@ package net.mcreator.ui.browser.action;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -34,18 +35,20 @@ import java.io.File;
 public class NewFolderAction extends BasicAction {
 
 	public NewFolderAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Folder", actionEvent -> {
-			String foldername = VOptionPane
-					.showInputDialog(actionRegistry.getMCreator(), "Enter the folder name:", "Package name", null,
-							new OptionPaneValidatior() {
-								@Override public Validator.ValidationResult validate(JComponent component) {
-									return new RegistryNameValidator((VTextField) component, "Folder").validate();
-								}
-							});
+		super(actionRegistry, L10N.t("action.browser.new_folder"), actionEvent -> {
+			String foldername = VOptionPane.showInputDialog(actionRegistry.getMCreator(),
+					L10N.t("workspace_file_browser.new_folder_name.folder_name"),
+					L10N.t("workspace_file_browser.new_folder_name.folder_name.title"), null,
+					new OptionPaneValidatior() {
+						@Override public Validator.ValidationResult validate(JComponent component) {
+							return new RegistryNameValidator((VTextField) component,
+									L10N.t("workspace_file_browser.new_folder_name.folder")).validate();
+						}
+					});
 			if (foldername != null) {
 				if (actionRegistry.getMCreator().getProjectBrowser().tree.getLastSelectedPathComponent() != null) {
-					Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator().getProjectBrowser().tree
-							.getLastSelectedPathComponent()).getUserObject();
+					Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator()
+							.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject();
 					if (selection instanceof File) {
 						File filesel = ((File) selection);
 						if (filesel.isFile())

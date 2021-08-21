@@ -59,6 +59,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	private final JCheckBox isTreasureEnchantment = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isCurse = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAllowedOnBooks = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox canGenerateInLootTables = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox canVillagerTrade = L10N.checkbox("elementgui.common.enable");
 
 	private MCItemListField compatibleItems;
 	private EnchantmentListField compatibleEnchantments;
@@ -82,24 +84,28 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		isAllowedOnBooks.setOpaque(false);
 		isCurse.setOpaque(false);
 		isTreasureEnchantment.setOpaque(false);
+		canGenerateInLootTables.setOpaque(false);
+		canVillagerTrade.setOpaque(false);
 
 		isAllowedOnBooks.setSelected(true);
+		canGenerateInLootTables.setSelected(true);
+		canVillagerTrade.setSelected(true);
 
 		ComponentUtils.deriveFont(name, 16);
 
-		JPanel selp = new JPanel(new GridLayout(11, 2, 100, 2));
+		JPanel selp = new JPanel(new GridLayout(13, 2, 100, 2));
 		selp.setOpaque(false);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("enchantment/name"), L10N.label("elementgui.enchantment.name")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/name"),
+				L10N.label("elementgui.enchantment.name")));
 		selp.add(name);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("enchantment/type"), L10N.label("elementgui.enchantment.type")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/type"),
+				L10N.label("elementgui.enchantment.type")));
 		selp.add(type);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("enchantment/rarity"), L10N.label("elementgui.enchantment.rarity")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/rarity"),
+				L10N.label("elementgui.enchantment.rarity")));
 		selp.add(rarity);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/min_level"),
@@ -118,13 +124,21 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 				L10N.label("elementgui.enchantment.treasure_enchantment")));
 		selp.add(isTreasureEnchantment);
 
-		selp.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("enchantment/curse"), L10N.label("elementgui.enchantment.curse")));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/curse"),
+				L10N.label("elementgui.enchantment.curse")));
 		selp.add(isCurse);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/allowed_on_books"),
 				L10N.label("elementgui.enchantment.allowed_on_books")));
 		selp.add(isAllowedOnBooks);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/generate_in_loot_tables"),
+				L10N.label("elementgui.enchantment.can_generate_in_loot_tables")));
+		selp.add(canGenerateInLootTables);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/villager_trade"),
+				L10N.label("elementgui.enchantment.can_villager_trade")));
+		selp.add(canVillagerTrade);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/compatible_enchantments"),
 				L10N.label("elementgui.enchantment.compatible_enchantments")));
@@ -172,6 +186,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		isTreasureEnchantment.setSelected(enchantment.isTreasureEnchantment);
 		isCurse.setSelected(enchantment.isCurse);
 		isAllowedOnBooks.setSelected(enchantment.isAllowedOnBooks);
+		canGenerateInLootTables.setSelected(enchantment.canGenerateInLootTables);
+		canVillagerTrade.setSelected(enchantment.canVillagerTrade);
 	}
 
 	@Override public Enchantment getElementFromGUI() {
@@ -187,6 +203,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		enchantment.isTreasureEnchantment = isTreasureEnchantment.isSelected();
 		enchantment.isCurse = isCurse.isSelected();
 		enchantment.isAllowedOnBooks = isAllowedOnBooks.isSelected();
+		enchantment.canGenerateInLootTables = canGenerateInLootTables.isSelected();
+		enchantment.canVillagerTrade = canVillagerTrade.isSelected();
 		return enchantment;
 	}
 

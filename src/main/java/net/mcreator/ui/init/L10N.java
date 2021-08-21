@@ -76,8 +76,8 @@ public class L10N {
 		Set<String> localeFiles = PluginLoader.INSTANCE.getResourcesInPackage("lang");
 		supportedLocales = localeFiles.stream().map(FilenameUtils::getBaseName).filter(e -> e.contains("_"))
 				.map(e -> e.split("_")).map(e -> new Locale(e[1], e[2])).collect(Collectors.toMap(key -> key, value -> {
-					ResourceBundle rb = ResourceBundle
-							.getBundle("lang/texts", value, PluginLoader.INSTANCE, new UTF8Control());
+					ResourceBundle rb = ResourceBundle.getBundle("lang/texts", value, PluginLoader.INSTANCE,
+							new UTF8Control());
 					return new LocaleRegistration(rb,
 							(int) Math.ceil(Collections.list(rb.getKeys()).size() / countAll * 100d));
 				}));
@@ -165,6 +165,10 @@ public class L10N {
 
 	public static JRadioButton radiobutton(String key, Object... parameter) {
 		return new JRadioButton(t(key, parameter));
+	}
+
+	public static JMenu menu(String key, Object... parameter) {
+		return new JMenu(t(key, parameter));
 	}
 
 }

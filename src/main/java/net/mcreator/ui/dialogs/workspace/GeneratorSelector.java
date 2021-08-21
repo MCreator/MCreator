@@ -101,20 +101,20 @@ public class GeneratorSelector {
 				addStatusLabel(L10N.t(covpfx + "obj_models"), stats.getBaseCoverageInfo().get("model_obj"),
 						baseCoverageInfo);
 
-			genStats.add(PanelUtils
-					.northAndCenterElement(L10N.label("dialog.generator_selector.features"), baseCoverageInfo, 10, 10));
+			genStats.add(
+					PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.features"), baseCoverageInfo,
+							10, 10));
 
 			genStats.add(new JEmptyBox(20, 20));
 
 			JPanel supportedModTypes = new JPanel(new GridLayout(-1, 5, 7, 2));
-			for (Map.Entry<ModElementType, GeneratorStats.CoverageStatus> typeCoverageInfo : stats
-					.getModElementTypeCoverageInfo().entrySet()) {
+			for (Map.Entry<ModElementType<?>, GeneratorStats.CoverageStatus> typeCoverageInfo : stats.getModElementTypeCoverageInfo()
+					.entrySet()) {
 				addStatusLabel(typeCoverageInfo.getKey().getReadableName(), typeCoverageInfo.getValue(),
 						supportedModTypes);
 			}
-			genStats.add(PanelUtils
-					.northAndCenterElement(L10N.label("dialog.generator_selector.mod_element_types"), supportedModTypes,
-							10, 10));
+			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.mod_element_types"),
+					supportedModTypes, 10, 10));
 
 			genStats.add(new JEmptyBox(20, 20));
 
@@ -136,17 +136,19 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "materials"), "materials", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "particles"), "particles", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "path_node_types"), "pathnodetypes", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "effects"), "effects", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "potions"), "potions", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "sounds"), "sounds", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "sound_categories"), "soundcategories", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "step_sounds"), "stepsounds", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "plant_types"), "planttypes", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "screens"), "screens", supportedElements, stats);
 
 			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
 				addStatsBar(L10N.t(covpfx + "biome_dictionary"), "biomedictionarytypes", supportedElements, stats);
 
-			genStats.add(PanelUtils
-					.northAndCenterElement(L10N.label("dialog.generator_selector.element_coverage"), supportedElements,
-							10, 10));
+			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.element_coverage"),
+					supportedElements, 10, 10));
 
 			genStats.add(new JEmptyBox(20, 20));
 
@@ -178,9 +180,8 @@ public class GeneratorSelector {
 						oldItem = (CBoxEntry) selectedItem;
 					}
 				}
-				cardLayout.show(statsPan,
-						((CBoxEntry) Objects.requireNonNull(generator.getSelectedItem())).generatorConfiguration
-								.getGeneratorName());
+				cardLayout.show(statsPan, ((CBoxEntry) Objects.requireNonNull(
+						generator.getSelectedItem())).generatorConfiguration.getGeneratorName());
 			}
 		});
 
@@ -251,8 +252,8 @@ public class GeneratorSelector {
 		@Override
 		public Component getListCellRendererComponent(JList list, CBoxEntry value, int index, boolean isSelected,
 				boolean cellHasFocus) {
-			JLabel component = (JLabel) renderer
-					.getListCellRendererComponent(list, value.generatorConfiguration, index, isSelected, cellHasFocus);
+			JLabel component = (JLabel) renderer.getListCellRendererComponent(list, value.generatorConfiguration, index,
+					isSelected, cellHasFocus);
 			if (!value.enabled) {
 				component.setBackground(list.getBackground());
 				component.setForeground(Color.gray.brighter());

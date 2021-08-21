@@ -49,8 +49,10 @@ public class AboutAction extends BasicAction {
 				L10N.t("dialog.about.option.eula"), L10N.t("dialog.about.option.third_party_licenses"),
 				L10N.t("dialog.about.option.donate") };
 		int n = JOptionPane.showOptionDialog(parent,
-				L10N.t("dialog.about.message", Launcher.version.major, Launcher.version.getFullString(),
-						MCreatorApplication.WEB_API.getUpdateInfo().getLatestMajor(), GeneratableElement.formatVersion,
+				L10N.t("dialog.about.message", Launcher.version.major, Launcher.version.getFullString(), (
+								MCreatorApplication.isInternet ?
+										MCreatorApplication.WEB_API.getUpdateInfo().getLatestMajor() :
+										L10N.t("dialog.about.latest_version_not_applicable")), GeneratableElement.formatVersion,
 						OS.getSystemBits(), OS.getBundledJVMBits()), L10N.t("dialog.about.title"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
 				new ImageIcon(generateMCreatorLogoForAboutDialog()), options, options[0]);
@@ -76,8 +78,8 @@ public class AboutAction extends BasicAction {
 		BufferedImage image = new BufferedImage(250, 250, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) image.getGraphics();
 		g.drawImage(UIRES.getBuiltIn("icon").getImage(), 54, 24, 128, 128, null);
-		g.drawImage(ImageUtils.colorize(UIRES.getBuiltIn("logo"), new Color(0x2F2F2F), true).getImage(), 22, 170, 200, 36,
-				null);
+		g.drawImage(ImageUtils.colorize(UIRES.getBuiltIn("logo"), new Color(0x2F2F2F), true).getImage(), 22, 170, 200,
+				36, null);
 		return image;
 	}
 
@@ -95,8 +97,7 @@ public class AboutAction extends BasicAction {
 		gradlesp.getVerticalScrollBar().setValue(0);
 		licenseText.setCaretPosition(0);
 		JOptionPane.showOptionDialog(parent, gradlesp, L10N.t("dialog.about.eula.title"), JOptionPane.DEFAULT_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, new Object[] { L10N.t("dialog.about.eula.close") },
-				L10N.t("dialog.about.eula.close"));
+				JOptionPane.PLAIN_MESSAGE, null, new Object[] { L10N.t("common.close") }, L10N.t("common.close"));
 	}
 
 }

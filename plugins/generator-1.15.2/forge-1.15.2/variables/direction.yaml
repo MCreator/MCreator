@@ -1,0 +1,57 @@
+defaultvalue: Direction.NORTH
+scopes:
+  local:
+    init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};
+    get: ${name}
+    set: ${name} = (${javaType}) ${value};
+  global_session:
+    init: public static Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
+    get: ${JavaModName}Variables.${name}
+    set: ${JavaModName}Variables.${name} = (Direction)${value};
+  global_world:
+    init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
+    read: ${var.getName()} = Direction.byIndex(nbt.getInt("${var.getName()}"));
+    write: nbt.putInt("${var.getName()}" , ${var.getName()}.getIndex());
+    get: ${JavaModName}Variables.WorldVariables.get(world).${name}
+    set: |
+      ${JavaModName}Variables.WorldVariables.get(world).${name} = (Direction)${value};
+      ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
+  global_map:
+    init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
+    read: ${var.getName()} = Direction.byIndex(nbt.getInt("${var.getName()}"));
+    write: nbt.putInt("${var.getName()}" , ${var.getName()}.getIndex());
+    get: ${JavaModName}Variables.MapVariables.get(world).${name}
+    set: |
+      ${JavaModName}Variables.MapVariables.get(world).${name} = (Direction)${value};
+      ${JavaModName}Variables.MapVariables.get(world).syncData(world);
+  player_lifetime:
+    init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
+    read: instance.${var.getName()} = Direction.byIndex(nbt.getInt("${var.getName()}"));
+    write: nbt.putInt("${var.getName()}" , instance.${var.getName()}.getIndex());
+    get: |
+      ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+        .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
+    set: |
+      {
+        Direction _setval = (Direction)${value};
+        ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+          capability.${name} = _setval;
+          capability.syncPlayerVariables(${entity});
+        });
+      }
+  player_persistent:
+    init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
+    read: instance.${var.getName()} = Direction.byIndex(nbt.getInt("${var.getName()}"));
+    write: nbt.putInt("${var.getName()}" , instance.${var.getName()}.getIndex());
+    get: |
+      ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+        .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
+    set: |
+      {
+        Direction _setval = (Direction)${value};
+        ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+          capability.${name} = _setval;
+          capability.syncPlayerVariables(${entity});
+        });
+      }
+

@@ -22,6 +22,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
@@ -31,14 +32,14 @@ import java.io.File;
 public class NewJsonFileAction extends BasicAction {
 
 	public NewJsonFileAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "JSON file", actionEvent -> {
-			String fileName = JOptionPane.showInputDialog(actionRegistry.getMCreator(), "Enter the JSON file name:");
+		super(actionRegistry, L10N.t("action.browser.new_json_file"), actionEvent -> {
+			String fileName = JOptionPane.showInputDialog(actionRegistry.getMCreator(), L10N.t("browser.new_json"));
 
 			if (fileName != null) {
 				fileName = RegistryNameFixer.fix(fileName);
 				if (actionRegistry.getMCreator().getProjectBrowser().tree.getLastSelectedPathComponent() != null) {
-					Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator().getProjectBrowser().tree
-							.getLastSelectedPathComponent()).getUserObject();
+					Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator()
+							.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject();
 					if (selection instanceof File) {
 						File filesel = ((File) selection);
 						if (filesel.isDirectory()) {

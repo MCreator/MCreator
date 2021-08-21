@@ -73,18 +73,48 @@ import net.minecraft.block.material.Material;
 	}
 
 	@Override public void initElements() {
-		fluidproperties = new ForgeFlowingFluid.Properties(() -> still, () -> flowing, FluidAttributes
+		fluidproperties = new ForgeFlowingFluid.Properties(() -> still, () -> flowing,
+				<#if data.extendsFluidAttributes()>Custom</#if>FluidAttributes
 				.builder(new ResourceLocation("${modid}:blocks/${data.textureStill}"), new ResourceLocation("${modid}:blocks/${data.textureFlowing}"))
 					.luminosity(${data.luminosity})
 					.density(${data.density})
 					.viscosity(${data.viscosity})
-					<#if data.isGas>.gaseous()</#if>)
+					.temperature(${data.temperature})
+					<#if data.isGas>.gaseous()</#if>
+					.rarity(Rarity.${data.rarity})
+					<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
+					.sound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.emptySound}")))
+					</#if>
+					<#if data.isFluidTinted()>
+					.color(<#if data.tintType == "Grass">
+						-6506636
+						<#elseif data.tintType == "Foliage">
+						-12012264
+						<#elseif data.tintType == "Water">
+						-13083194
+						<#elseif data.tintType == "Sky">
+						-8214273
+						<#elseif data.tintType == "Fog">
+						-4138753
+						<#else>
+						-16448205
+						</#if>)
+					</#if>)
 					.explosionResistance(${data.resistance}f)
+					<#if data.canMultiply>.canMultiply()</#if>
+					.tickRate(${data.flowRate})
+					.levelDecreasePerBlock(${data.levelDecrease})
+					.slopeFindDistance(${data.slopeFindDistance})
                     <#if data.generateBucket>.bucket(() -> bucket)</#if>
 					.block(() -> block);
 
+		<#if data.extendsForgeFlowingFluid()>
+		still = (FlowingFluid) new CustomFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
+		flowing = (FlowingFluid) new CustomFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
+		<#else>
 		still = (FlowingFluid) new ForgeFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
 		flowing = (FlowingFluid) new ForgeFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
+		</#if>
 
 		elements.blocks.add(() -> new FlowingFluidBlock(still,
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
@@ -110,19 +140,34 @@ import net.minecraft.block.material.Material;
 			}
 			</#if>
 
-			<#if hasProcedure(data.onBlockAdded)>
-			@Override public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
-				super.onBlockAdded(state, world, pos, oldState, moving);
+			<#if data.lightOpacity == 0>
+			@Override
+			public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+				return true;
+			}
+			<#elseif data.lightOpacity != 1>
+			@Override
+			public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
+				return ${data.lightOpacity};
+			}
+			</#if>
+
+			<#if hasProcedure(data.onBlockAdded) || hasProcedure(data.onTickUpdate)>
+			@Override public void onBlockAdded(BlockState blockstate, World world, BlockPos pos, BlockState oldState, boolean moving) {
+				super.onBlockAdded(blockstate, world, pos, oldState, moving);
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
+				<#if hasProcedure(data.onTickUpdate)>
+				world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
+				</#if>
 				<@procedureOBJToCode data.onBlockAdded/>
 			}
             </#if>
 
 			<#if hasProcedure(data.onNeighbourChanges)>
-			public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
-				super.neighborChanged(state, world, pos, neighborBlock, fromPos, moving);
+			public void neighborChanged(BlockState blockstate, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
+				super.neighborChanged(blockstate, world, pos, neighborBlock, fromPos, moving);
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
@@ -131,19 +176,19 @@ import net.minecraft.block.material.Material;
 			</#if>
 
 			<#if hasProcedure(data.onTickUpdate)>
-			@Override public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-				super.tick(state, world, pos, random);
+			@Override public void tick(BlockState blockstate, ServerWorld world, BlockPos pos, Random random) {
+				super.tick(blockstate, world, pos, random);
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
 				<@procedureOBJToCode data.onTickUpdate/>
-				world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, 10);
+				world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
 			}
 			</#if>
 
 			<#if hasProcedure(data.onEntityCollides)>
-			@Override public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-				super.onEntityCollision(state, world, pos, entity);
+			@Override public void onEntityCollision(BlockState blockstate, World world, BlockPos pos, Entity entity) {
+				super.onEntityCollision(blockstate, world, pos, entity);
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
@@ -153,8 +198,8 @@ import net.minecraft.block.material.Material;
 
 			<#if hasProcedure(data.onRandomUpdateEvent)>
 			@OnlyIn(Dist.CLIENT) @Override
-			public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-				super.animateTick(state, world, pos, random);
+			public void animateTick(BlockState blockstate, World world, BlockPos pos, Random random) {
+				super.animateTick(blockstate, world, pos, random);
 				PlayerEntity entity = Minecraft.getInstance().player;
 				int x = pos.getX();
 				int y = pos.getY();
@@ -176,9 +221,134 @@ import net.minecraft.block.material.Material;
 
 		<#if data.generateBucket>
 		elements.items.add(() -> new BucketItem(still, new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1)
-				<#if data.creativeTab??>.group(${data.creativeTab})<#else>.group(ItemGroup.MISC)</#if>).setRegistryName("${registryname}_bucket"));
+			<#if data.creativeTab??>.group(${data.creativeTab})<#else>.group(ItemGroup.MISC)</#if>.rarity(Rarity.${data.rarity}))
+			<#if data.specialInfo?has_content>{
+			@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+				super.addInformation(itemstack, world, list, flag);
+				<#list data.specialInfo as entry>
+				list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+			</#list>
+			}
+			}</#if>.setRegistryName("${registryname}_bucket"));
 		</#if>
 	}
+
+	<#if data.extendsForgeFlowingFluid()>
+	public static abstract class CustomFlowingFluid extends ForgeFlowingFluid {
+		public CustomFlowingFluid(Properties properties) {
+			super(properties);
+		}
+
+		<#if data.spawnParticles>
+		@OnlyIn(Dist.CLIENT)
+		@Override
+		public IParticleData getDripParticleData() {
+			return ${data.dripParticle};
+		}
+		</#if>
+
+		<#if data.flowStrength != 1>
+		@Override public Vector3d getFlow(IBlockReader world, BlockPos pos, FluidState fluidstate) {
+			return super.getFlow(world, pos, fluidstate).scale(${data.flowStrength});
+		}
+		</#if>
+
+		<#if hasProcedure(data.flowCondition)>
+		@Override protected boolean canFlow(IBlockReader worldIn, BlockPos fromPos, BlockState blockstate, Direction direction, BlockPos toPos, BlockState intostate, FluidState toFluidState, Fluid fluidIn) {
+			boolean condition = true;
+			if (worldIn instanceof IWorld) {
+				int x = fromPos.getX();
+				int y = fromPos.getY();
+				int z = fromPos.getZ();
+				IWorld world = (IWorld) worldIn;
+				condition = <@procedureOBJToConditionCode data.flowCondition/>;
+			}
+			return super.canFlow(worldIn, fromPos, blockstate, direction, toPos, intostate, toFluidState, fluidIn) && condition;
+		}
+		</#if>
+
+		<#if hasProcedure(data.beforeReplacingBlock)>
+        @Override protected void beforeReplacingBlock(IWorld world, BlockPos pos, BlockState blockstate) {
+        	int x = pos.getX();
+        	int y = pos.getY();
+        	int z = pos.getZ();
+        	<@procedureOBJToCode data.beforeReplacingBlock/>
+        }
+        </#if>
+
+		public static class Source extends CustomFlowingFluid {
+			public Source(Properties properties) {
+				super(properties);
+			}
+
+			public int getLevel(FluidState state) {
+				return 8;
+			}
+
+			public boolean isSource(FluidState state) {
+				return true;
+			}
+		}
+
+		public static class Flowing extends CustomFlowingFluid {
+			public Flowing(Properties properties) {
+				super(properties);
+			}
+
+			protected void fillStateContainer(StateContainer.Builder<Fluid, FluidState> builder) {
+				super.fillStateContainer(builder);
+				builder.add(LEVEL_1_8);
+			}
+
+			public int getLevel(FluidState state) {
+				return state.get(LEVEL_1_8);
+			}
+
+			public boolean isSource(FluidState state) {
+				return false;
+			}
+		}
+	}
+	</#if>
+
+	<#if data.extendsFluidAttributes()>
+	public static class CustomFluidAttributes extends FluidAttributes {
+		public static class CustomBuilder extends FluidAttributes.Builder {
+			protected CustomBuilder(ResourceLocation stillTexture, ResourceLocation flowingTexture,
+					BiFunction<FluidAttributes.Builder, Fluid, FluidAttributes> factory) {
+				super(stillTexture, flowingTexture, factory);
+			}
+		}
+
+		protected CustomFluidAttributes(CustomFluidAttributes.Builder builder, Fluid fluid) {
+			super(builder, fluid);
+		}
+
+		public static CustomBuilder builder(ResourceLocation stillTexture, ResourceLocation flowingTexture) {
+			return new CustomBuilder(stillTexture, flowingTexture, CustomFluidAttributes::new);
+		}
+
+		<#if data.isFluidTinted()>
+		@Override
+		public int getColor(IBlockDisplayReader world, BlockPos pos) {
+			return
+			<#if data.tintType == "Grass">
+				BiomeColors.getGrassColor(world, pos)
+			<#elseif data.tintType == "Foliage">
+				BiomeColors.getFoliageColor(world, pos)
+			<#elseif data.tintType == "Water">
+				BiomeColors.getWaterColor(world, pos)
+			<#elseif data.tintType == "Sky">
+				Minecraft.getInstance().world.getBiome(pos).getSkyColor()
+			<#elseif data.tintType == "Fog">
+				Minecraft.getInstance().world.getBiome(pos).getFogColor()
+			<#else>
+				Minecraft.getInstance().world.getBiome(pos).getWaterFogColor()
+			</#if>| 0xFF000000;
+		}
+		</#if>
+	}
+	</#if>
 
 	<#if (data.spawnWorldTypes?size > 0)>
 	private static Feature<BlockStateFeatureConfig> feature = null;
@@ -212,7 +382,7 @@ import net.minecraft.block.material.Material;
 					if(!dimensionCriteria)
 						return false;
 
-					<#if hasCondition(data.generateCondition)>
+					<#if hasProcedure(data.generateCondition)>
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();

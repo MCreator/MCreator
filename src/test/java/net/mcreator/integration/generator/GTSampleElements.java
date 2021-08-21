@@ -40,8 +40,8 @@ public class GTSampleElements {
 		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				!= GeneratorStats.CoverageStatus.NONE) {
 			for (int i = 1; i <= 13; i++) {
-				ModElement me = new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE)
-						.putMetadata("dependencies", new ArrayList<String>());
+				ModElement me = new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE).putMetadata(
+						"dependencies", new ArrayList<String>());
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
@@ -51,14 +51,55 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 4; i++) {
-				ModElement me = new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE)
-						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC");
+				ModElement me = new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE).putMetadata(
+						"dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC");
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_logic\"><value name=\"return\">"
 								+ "<block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block>"
+								+ "</value></block>");
+				assertTrue(workspace.getGenerator().generateElement(procedure));
+				workspace.getModElementManager().storeModElement(procedure);
+			}
+
+			for (int i = 1; i <= 1; i++) {
+				ModElement me = new ModElement(workspace, "number" + i, ModElementType.PROCEDURE).putMetadata(
+						"dependencies", new ArrayList<String>()).putMetadata("return_type", "NUMBER");
+				workspace.addModElement(me);
+
+				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
+						"<block type=\"return_number\"><value name=\"return\">"
+								+ "<block type=\"math_number\"><field name=\"NUM\">100</field></block>"
+								+ "</value></block>");
+				assertTrue(workspace.getGenerator().generateElement(procedure));
+				workspace.getModElementManager().storeModElement(procedure);
+			}
+
+			for (int i = 1; i <= 2; i++) {
+				ModElement me = new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE).putMetadata(
+						"dependencies", new ArrayList<String>()).putMetadata("return_type", "ITEMSTACK");
+				workspace.addModElement(me);
+
+				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
+						"<block type=\"return_itemstack\"><value name=\"return\">"
+								+ "<block type=\"empty_itemstack\"></block></value></block>");
+				assertTrue(workspace.getGenerator().generateElement(procedure));
+				workspace.getModElementManager().storeModElement(procedure);
+			}
+
+			for (int i = 1; i <= 1; i++) {
+				ModElement me = new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE).putMetadata(
+						"dependencies", new ArrayList<String>()).putMetadata("return_type", "ACTIONRESULTTYPE");
+				workspace.addModElement(me);
+
+				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
+						"<block type=\"return_actionresulttype\"><value name=\"return\">"
+								+ "<block type=\"action_result_type\"><field name=\"type\">SUCCESS</field></block>"
 								+ "</value></block>");
 				assertTrue(workspace.getGenerator().generateElement(procedure));
 				workspace.getModElementManager().storeModElement(procedure);

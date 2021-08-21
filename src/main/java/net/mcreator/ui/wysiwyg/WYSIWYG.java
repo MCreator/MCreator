@@ -82,7 +82,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 	WYSIWYG(WYSIWYGEditor wysiwygEditor) {
 		if (fontMC == null)
-			fontMC = MCreatorTheme.console_font.deriveFont(8f);
+			fontMC = MCreatorTheme.console_font.deriveFont(8f).deriveFont(Font.BOLD);
 
 		this.wysiwygEditor = wysiwygEditor;
 
@@ -218,6 +218,8 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		g.scale(2, 2);
 
 		g.setFont(fontMC);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+
 		g.setColor(Color.gray.brighter().brighter());
 
 		int gw = (Integer) wysiwygEditor.spa1.getValue();
@@ -239,10 +241,10 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 				g.drawRect(W / 2 - gw / 2, H / 2 - gh / 2, gw, gh);
 			}
 		} else {
-			if (wysiwygEditor.overlayBaseTexture.getSelectedItem() != null && !wysiwygEditor.overlayBaseTexture
-					.getSelectedItem().equals("")) {
+			if (wysiwygEditor.overlayBaseTexture.getSelectedItem() != null
+					&& !wysiwygEditor.overlayBaseTexture.getSelectedItem().equals("")) {
 				g.drawImage(new ImageIcon(wysiwygEditor.mcreator.getFolderManager().getOtherTextureFile(
-						FilenameUtils.removeExtension(wysiwygEditor.overlayBaseTexture.getSelectedItem()))
+								FilenameUtils.removeExtension(wysiwygEditor.overlayBaseTexture.getSelectedItem()))
 						.getAbsolutePath()).getImage(), 0, 0, W, H, this);
 			}
 		}
@@ -436,10 +438,10 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		guiComponentList.sort(Collections.reverseOrder());
 
 		for (GUIComponent component : guiComponentList) {
-			if (ex >= component.getX() && ex <= component.getX() + component
-					.getWidth(wysiwygEditor.mcreator.getWorkspace())) {
-				if (ey >= component.getY() && ey <= component.getY() + component
-						.getHeight(wysiwygEditor.mcreator.getWorkspace())) {
+			if (ex >= component.getX() && ex <= component.getX() + component.getWidth(
+					wysiwygEditor.mcreator.getWorkspace())) {
+				if (ey >= component.getY() && ey <= component.getY() + component.getHeight(
+						wysiwygEditor.mcreator.getWorkspace())) {
 					return component;
 				}
 			}

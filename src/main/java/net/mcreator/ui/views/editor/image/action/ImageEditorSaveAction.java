@@ -20,22 +20,22 @@ package net.mcreator.ui.views.editor.image.action;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 
 import javax.swing.*;
 
 public class ImageEditorSaveAction extends BasicAction {
 	public ImageEditorSaveAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Save", actionEvent -> {
+		super(actionRegistry, L10N.t("action.image_editor.save"), actionEvent -> {
 			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView) {
 				ImageMakerView codeEditorView = (ImageMakerView) pan;
 				codeEditorView.save();
 			}
 		});
-		setTooltip(
-				"Click this to save changes to the existing file. A \"Save as\" dialog is opened if it's a new file.");
-		actionRegistry.getMCreator().mcreatorTabs
-				.addTabShownListener(tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
+		setTooltip(L10N.t("action.image_editor.save.tooltip"));
+		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
+				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
 	}
 }

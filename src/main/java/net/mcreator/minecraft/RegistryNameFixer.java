@@ -22,12 +22,16 @@ import net.mcreator.io.Transliteration;
 import net.mcreator.util.StringUtils;
 
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class RegistryNameFixer {
 
+	private static final Pattern registryNamePattern = Pattern.compile("[^a-z0-9/._-]+");
+
 	public static String fix(String original) {
-		return Transliteration.transliterateString(original).toLowerCase(Locale.ENGLISH).replace(" ", "_")
-				.replaceAll("[^a-z0-9/._-]+", "");
+		return registryNamePattern.matcher(
+						Transliteration.transliterateString(original).toLowerCase(Locale.ENGLISH).replace(" ", "_"))
+				.replaceAll("");
 	}
 
 	public static String fromCamelCase(String original) {
@@ -35,7 +39,7 @@ public class RegistryNameFixer {
 		retval = StringUtils.camelToSnake(retval);
 		retval = retval.toLowerCase(Locale.ENGLISH);
 		retval = retval.replace("__", "_"); // in case if there is space + uppercase letter, remove one underscore
-		return retval.replaceAll("[^a-z0-9/._-]+", ""); // use [^a-z0-9/._-]+ as the last "defense line"
+		return registryNamePattern.matcher(retval).replaceAll(""); // use registryNamePattern as the last "defense line"
 	}
 
 }

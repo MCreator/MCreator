@@ -122,8 +122,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		JPopupMenu createMenu = new JPopupMenu();
 		createMenu.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		createMenu
-				.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+		createMenu.setBorder(
+				BorderFactory.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 
 		createMenu.add(workspacePanel.getMcreator().actionRegistry.createMCItemTexture);
 		createMenu.add(workspacePanel.getMcreator().actionRegistry.createArmorTexture);
@@ -141,8 +141,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		JPopupMenu importMenu = new JPopupMenu();
 		importMenu.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		importMenu
-				.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+		importMenu.setBorder(
+				BorderFactory.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importBlockTexture);
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importItemTexture);
@@ -186,9 +186,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			List<File> files = listGroup.getSelectedItemsList();
 			if (files.size() > 0) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-						L10N.t("workspace.textures.confirm_deletion_message"),
-						L10N.t("workspace.textures.confirm_deletion_title"), JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null);
+						L10N.t("workspace.textures.confirm_deletion_message"), L10N.t("common.confirmation"),
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 
 				if (n == 0) {
 					files.forEach(file -> {

@@ -19,11 +19,11 @@
 package net.mcreator.ui.views.editor.image.tool.tools;
 
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
-import net.mcreator.ui.views.editor.image.tool.component.JSlidingSpinner;
 import net.mcreator.ui.views.editor.image.tool.component.JTitledComponentWrapper;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
@@ -33,34 +33,31 @@ import java.awt.event.MouseEvent;
 
 public class ShapeTool extends AbstractModificationTool {
 
-	private double opacity = 1;
 	private Shape shape = Shape.SQUARE;
 	private final JCheckBox aliasing;
 	private Point firstPoint = null;
 
 	public ShapeTool(Canvas canvas, ColorSelector colorSelector, LayerPanel layerPanel, VersionManager versionManager) {
-		super("Shape", "Shape creation tool", UIRES.get("img_editor.shape"), canvas, colorSelector, versionManager);
+		super(L10N.t("dialog.image_maker.tools.types.shapetool"),
+				L10N.t("dialog.image_maker.tools.types.shapetool_description"), UIRES.get("img_editor.shape"), canvas,
+				colorSelector, versionManager);
 		setLayerPanel(layerPanel);
-		JSlidingSpinner opacitySlider = new JSlidingSpinner("Opacity:");
-		opacitySlider.addChangeListener(e -> opacity = opacitySlider.getValue() / 100.0);
 
 		JComboBox<Shape> shapeBox = new JComboBox<>(Shape.values());
 		shapeBox.setSelectedIndex(0);
-		JTitledComponentWrapper titledShape = new JTitledComponentWrapper("Shape:", shapeBox);
-		shapeBox.addActionListener(e -> {
-			shape = (Shape) shapeBox.getSelectedItem();
-		});
+		JTitledComponentWrapper titledShape = new JTitledComponentWrapper(
+				L10N.t("dialog.image_maker.tools.types.shape"), shapeBox);
+		shapeBox.addActionListener(e -> shape = (Shape) shapeBox.getSelectedItem());
 
-		aliasing = new JCheckBox("Smooth edge");
+		aliasing = new JCheckBox(L10N.t("dialog.image_maker.tools.types.smooth_edge"));
 
-		settingsPanel.add(opacitySlider);
 		settingsPanel.add(titledShape);
 		settingsPanel.add(aliasing);
 	}
 
 	@Override public boolean process(ZoomedMouseEvent e) {
 		layer.resetOverlay();
-		layer.setOverlayOpacity(opacity);
+		layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
 		if (layer.in(e.getX(), e.getY())) {
 			Graphics2D graphics2D = layer.getOverlay().createGraphics();
 			graphics2D.setColor(colorSelector.getForegroundColor());

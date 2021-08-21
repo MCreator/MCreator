@@ -190,15 +190,12 @@ public class FromTemplateDialog extends MCreatorDialog {
 		pas.setLayout(new BoxLayout(pas, BoxLayout.PAGE_AXIS));
 
 		pas.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_one"), cbs, bt, as));
-		pas.add(PanelUtils
-				.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_two"), cbs2, bt2, col1, type1,
-						L10N.label("dialog.imageeditor.template_rotation"), ang1));
-		pas.add(PanelUtils
-				.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_three"), cbs3, bt3, col2, type2,
-						L10N.label("dialog.imageeditor.template_rotation"), ang2));
-		pas.add(PanelUtils
-				.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_four"), cbs4, bt4, col4, type3,
-						L10N.label("dialog.imageeditor.template_rotation"), ang3));
+		pas.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_two"), cbs2, bt2, col1,
+				type1, L10N.label("dialog.imageeditor.template_rotation"), ang1));
+		pas.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_three"), cbs3, bt3, col2,
+				type2, L10N.label("dialog.imageeditor.template_rotation"), ang2));
+		pas.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_four"), cbs4, bt4, col4,
+				type3, L10N.label("dialog.imageeditor.template_rotation"), ang3));
 
 		col1.setColorSelectedListener(event -> refreshIcon());
 		col2.setColorSelectedListener(event -> refreshIcon());
@@ -255,7 +252,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		generateFromTemplate("Random");
 
-		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton merge = L10N.button("dialog.imageeditor.template_create_and_merge");
 		JButton ok = L10N.button("action.common.create");
 
@@ -283,7 +280,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 				}
 				if (cbs2.getSelectedItem() != null && !cbs2.getSelectedItem().toString().contains("(no image)")) {
 					ImageIcon layer2 = ImageUtils.rotate(new ImageIcon(ImageIO.read(
-							((ResourcePointer) Objects.requireNonNull(cbs2.getSelectedItem())).getStream())),
+									((ResourcePointer) Objects.requireNonNull(cbs2.getSelectedItem())).getStream())),
 							(Integer) ang1.getValue());
 					Layer second = new Layer(16, 16, 0, 0, cbs2.getSelectedItem().toString(),
 							ImageUtils.colorize(layer2, col1.getColor(), !type1.isSelected()).getImage());
@@ -291,7 +288,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 				}
 				if (cbs3.getSelectedItem() != null && !cbs3.getSelectedItem().toString().contains("(no image)")) {
 					ImageIcon layer3 = ImageUtils.rotate(new ImageIcon(ImageIO.read(
-							((ResourcePointer) Objects.requireNonNull(cbs3.getSelectedItem())).getStream())),
+									((ResourcePointer) Objects.requireNonNull(cbs3.getSelectedItem())).getStream())),
 							(Integer) ang2.getValue());
 					Layer third = new Layer(16, 16, 0, 0, cbs3.getSelectedItem().toString(),
 							ImageUtils.colorize(layer3, col2.getColor(), !type2.isSelected()).getImage());
@@ -299,7 +296,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 				}
 				if (cbs4.getSelectedItem() != null && !cbs4.getSelectedItem().toString().contains("(no image)")) {
 					ImageIcon layer4 = ImageUtils.rotate(new ImageIcon(ImageIO.read(
-							((ResourcePointer) Objects.requireNonNull(cbs4.getSelectedItem())).getStream())),
+									((ResourcePointer) Objects.requireNonNull(cbs4.getSelectedItem())).getStream())),
 							(Integer) ang3.getValue());
 					Layer fourth = new Layer(16, 16, 0, 0, cbs4.getSelectedItem().toString(),
 							ImageUtils.colorize(layer4, col4.getColor(), !type3.isSelected()).getImage());
@@ -623,8 +620,8 @@ public class FromTemplateDialog extends MCreatorDialog {
 			if (cbs4.getSelectedItem() != null && !cbs4.getSelectedItem().toString().contains("(no image)"))
 				joined = ImageUtils.drawOver(joined, ImageUtils.colorize(pl4, col4.getColor(), !type3.isSelected()));
 
-			prev.setIcon(new ImageIcon(ImageUtils
-					.resize(joined.getImage(), (int) (joined.getIconWidth() * (zoom / 100.0f) + 1),
+			prev.setIcon(new ImageIcon(
+					ImageUtils.resize(joined.getImage(), (int) (joined.getIconWidth() * (zoom / 100.0f) + 1),
 							(int) (joined.getIconHeight() * (zoom / 100.0f)) + 1)));
 
 			return joined;

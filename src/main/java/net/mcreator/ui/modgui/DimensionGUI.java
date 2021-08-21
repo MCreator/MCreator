@@ -28,6 +28,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -37,6 +38,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -46,7 +48,7 @@ import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -71,8 +73,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JCheckBox doesWaterVaporize = L10N.checkbox("elementgui.dimension.does_water_vaporize");
 
 	private final JCheckBox hasSkyLight = L10N.checkbox("elementgui.dimension.has_sky_light");
-	private final JCheckBox imitateOverworldBehaviour = L10N
-			.checkbox("elementgui.dimension.imitate_overworld_behaviour");
+	private final JCheckBox imitateOverworldBehaviour = L10N.checkbox(
+			"elementgui.dimension.imitate_overworld_behaviour");
 
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
 
@@ -112,7 +114,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	@Override protected void initGUI() {
 		whenPortaTriggerlUsed = new ProcedureSelector(this.withEntry("dimension/when_portal_used"), mcreator,
 				L10N.t("elementgui.dimension.event_portal_trigger_used"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+				VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeReturnValueOptional();
 		onPortalTickUpdate = new ProcedureSelector(this.withEntry("dimension/on_portal_tick_update"), mcreator,
 				L10N.t("elementgui.dimension.event_portal_tick_update"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
@@ -124,11 +127,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		portalMakeCondition = new ProcedureSelector(this.withEntry("dimension/condition_portal_make"), mcreator,
-				L10N.t("elementgui.dimension.event_can_make_portal"), VariableElementType.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+				L10N.t("elementgui.dimension.event_can_make_portal"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 		portalUseCondition = new ProcedureSelector(this.withEntry("dimension/condition_portal_use"), mcreator,
-				L10N.t("elementgui.dimension.event_can_travel_through_portal"), VariableElementType.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				L10N.t("elementgui.dimension.event_can_travel_through_portal"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeInline();
 
 		worldGenType.setRenderer(new ItemTexturesComboBoxRenderer());
 		biomesInDimension = new BiomeListField(mcreator);
@@ -168,8 +172,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.fluid_block"), new Color(0xB8E700)));
 		proper2.add(PanelUtils.join(fluidBlock));
 
-		proper2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("dimension/biomes"), L10N.label("elementgui.dimension.biomes_in")));
+		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/biomes"),
+				L10N.label("elementgui.dimension.biomes_in")));
 		proper2.add(biomesInDimension);
 
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fog_color"),
@@ -259,13 +263,14 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		portalParticles.setFont(portalParticles.getFont().deriveFont(16.0f));
 
-		JPanel dsg = new JPanel(new BorderLayout(5, 5));
+		JPanel dsg = new JPanel(new BorderLayout(5, 2));
 
 		dsg.setOpaque(false);
 
 		dsg.add("North", proper);
-		dsg.add("Center", proper22);
-		dsg.add("South", PanelUtils.join(FlowLayout.LEFT, portalMakeCondition, portalUseCondition));
+		dsg.add("South", proper22);
+		dsg.add("Center", PanelUtils.westAndCenterElement(new JEmptyBox(5, 5),
+				PanelUtils.gridElements(2, 1, 5, 2, portalMakeCondition, portalUseCondition)));
 
 		pane2.setOpaque(false);
 

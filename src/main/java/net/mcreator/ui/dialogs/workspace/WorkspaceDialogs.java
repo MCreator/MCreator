@@ -283,7 +283,9 @@ public class WorkspaceDialogs {
 			license.setEditable(true);
 			license.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXX");
 
-			modID.setValidator(new RegistryNameValidator(modID, "Mod ID").setMaxLength(32));
+			modID.setValidator(
+					new RegistryNameValidator(modID, L10N.t("dialog.workspace.settings.workspace_modid")).setMaxLength(
+							32));
 
 			modName.enableRealtimeValidation();
 			modID.enableRealtimeValidation();
@@ -299,7 +301,7 @@ public class WorkspaceDialogs {
 			validationGroup.addValidationElement(websiteURL);
 			validationGroup.addValidationElement(author);
 
-			modPicture.addItem("No picture / default picture");
+			modPicture.addItem(L10N.t("dialog.workspace.settings.workspace_nopic_default"));
 			if (workspace != null) {
 				List<File> other = workspace.getFolderManager().getOtherTexturesList();
 				for (File element : other) {
@@ -331,22 +333,19 @@ public class WorkspaceDialogs {
 			JButton selectGenerator = new JButton(UIRES.get("18px.edit"));
 			selectGenerator.setMargin(new Insets(4, 4, 4, 4));
 			selectGenerator.addActionListener(e -> {
-				GeneratorConfiguration gc = GeneratorSelector
-						.getGeneratorSelector(parent, (GeneratorConfiguration) generator.getSelectedItem(),
-								workspace != null ?
-										workspace.getGeneratorConfiguration().getGeneratorFlavor() :
-										flavorFilter);
+				GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent,
+						(GeneratorConfiguration) generator.getSelectedItem(),
+						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter);
 				if (gc != null)
 					generator.setSelectedItem(gc);
 			});
 
 			generator.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent mouseEvent) {
-					GeneratorConfiguration gc = GeneratorSelector
-							.getGeneratorSelector(parent, (GeneratorConfiguration) generator.getSelectedItem(),
-									workspace != null ?
-											workspace.getGeneratorConfiguration().getGeneratorFlavor() :
-											flavorFilter);
+					GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent,
+							(GeneratorConfiguration) generator.getSelectedItem(), workspace != null ?
+									workspace.getGeneratorConfiguration().getGeneratorFlavor() :
+									flavorFilter);
 					if (gc != null)
 						generator.setSelectedItem(gc);
 				}
@@ -370,8 +369,8 @@ public class WorkspaceDialogs {
 			_basicSettings.add(new JEmptyBox(5, 15));
 
 			JPanel descriptionSettings = new JPanel(new GridLayout(workspace != null ? 7 : 2, 2, 5, 2));
-			descriptionSettings.setBorder(BorderFactory
-					.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+			descriptionSettings.setBorder(
+					BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 							L10N.t("dialog.workspace_settings.section.details")));
 			_basicSettings.add(descriptionSettings);
 			descriptionSettings.add(L10N.label("dialog.workspace_settings.version"));
@@ -407,14 +406,14 @@ public class WorkspaceDialogs {
 				String text = packageName.getText();
 				if (text.length() == 0)
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							"Package name can't be empty");
+							L10N.t("dialog.workspace.settings.workspace_package_empty"));
 				if (text.startsWith(".")) {
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							"Package name can't start with a dot");
+							L10N.t("dialog.workspace.settings.workspace_package_startdot"));
 				}
 				if (text.endsWith(".")) {
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							"Package name can't end with a dot");
+							L10N.t("dialog.workspace.settings.workspace_package_enddot"));
 				}
 				char[] chars = text.toCharArray();
 				boolean valid = true;
@@ -432,11 +431,11 @@ public class WorkspaceDialogs {
 				}
 				if (!valid)
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							"Package name can only contain EN letters, numbers, underscore and dots.");
+							L10N.t("dialog.workspace.settings.workspace_package_pattern"));
 
 				if (text.matches(".*\\d+.*"))
 					return new Validator.ValidationResult(Validator.ValidationResultType.WARNING,
-							"Avoid using numbers in package names");
+							L10N.t("dialog.workspace.settings.workspace_package_avoid_numbers"));
 
 				return Validator.ValidationResult.PASSED;
 			});
@@ -452,8 +451,8 @@ public class WorkspaceDialogs {
 				JPanel apiList = new JPanel();
 				apiList.setLayout(new BoxLayout(apiList, BoxLayout.PAGE_AXIS));
 
-				List<ModAPI.Implementation> apisSupported = ModAPIManager
-						.getModAPIsForGenerator(workspace.getGenerator().getGeneratorName());
+				List<ModAPI.Implementation> apisSupported = ModAPIManager.getModAPIsForGenerator(
+						workspace.getGenerator().getGeneratorName());
 				for (ModAPI.Implementation api : apisSupported) {
 					JCheckBox apiEnableBox = new JCheckBox();
 					apiEnableBox.setName(api.parent.id);
@@ -477,18 +476,18 @@ public class WorkspaceDialogs {
 				explorePlugins.addActionListener(
 						e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins"));
 
-				apiSettings.add("South", PanelUtils
-						.join(FlowLayout.LEFT, L10N.label("dialog.workspace_settings.plugins_tip"), explorePlugins));
+				apiSettings.add("South",
+						PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.workspace_settings.plugins_tip"),
+								explorePlugins));
 
 				_external_apis.add(new JEmptyBox(5, 15));
 				_external_apis.add(apiSettings);
 			}
 
-			JComponent forgeVersionCheckPan = PanelUtils
-					.westAndEastElement(L10N.label("dialog.workspace_settings.section.version_check"),
-							disableForgeVersionCheck);
-			forgeVersionCheckPan.setBorder(BorderFactory
-					.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+			JComponent forgeVersionCheckPan = PanelUtils.westAndEastElement(
+					L10N.label("dialog.workspace_settings.section.version_check"), disableForgeVersionCheck);
+			forgeVersionCheckPan.setBorder(
+					BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 							L10N.t("dialog.workspace_settings.version_check")));
 			_advancedSettings.add(forgeVersionCheckPan);
 			_advancedSettings.add(new JEmptyBox(5, 15));
@@ -528,7 +527,7 @@ public class WorkspaceDialogs {
 				license.setSelectedItem(workspace.getWorkspaceSettings().getLicense());
 				websiteURL.setText(workspace.getWorkspaceSettings().getWebsiteURL());
 				modPicture.setSelectedItem(workspace.getWorkspaceSettings().getModPicture() == null ?
-						"No picture / default picture" :
+						L10N.t("dialog.workspace.settings.workspace_nopic_default") :
 						workspace.getWorkspaceSettings().getModPicture());
 				serverSideOnly.setSelected(workspace.getWorkspaceSettings().isServerSideOnly());
 				lockBaseModFiles.setSelected(workspace.getWorkspaceSettings().isLockBaseModFiles());
@@ -565,7 +564,8 @@ public class WorkspaceDialogs {
 					license.getEditor().getItem().toString());
 			retVal.setWebsiteURL(websiteURL.getText().equals("") ? null : websiteURL.getText());
 			retVal.setCredits(credits.getText().equals("") ? null : credits.getText());
-			retVal.setModPicture(Objects.equals(modPicture.getSelectedItem(), "No picture / default picture") ?
+			retVal.setModPicture(Objects.equals(modPicture.getSelectedItem(),
+					L10N.t("dialog.workspace.settings.workspace_nopic_default")) ?
 					null :
 					(String) modPicture.getSelectedItem());
 			retVal.setModElementsPackage(packageName.getText().equals("") ? null : packageName.getText());
@@ -618,9 +618,8 @@ public class WorkspaceDialogs {
 		}
 		stringBuilder.append("</ul>");
 		stringBuilder.append(L10N.t("dialog.workspace_settings.dialog.error"));
-		JOptionPane
-				.showMessageDialog(w, stringBuilder.toString(), L10N.t("dialog.workspace_settings.dialog.error.title"),
-						JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(w, stringBuilder.toString(),
+				L10N.t("dialog.workspace_settings.dialog.error.title"), JOptionPane.ERROR_MESSAGE);
 	}
 
 }

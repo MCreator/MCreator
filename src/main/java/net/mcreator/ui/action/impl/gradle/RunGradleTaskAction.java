@@ -35,9 +35,9 @@ public class RunGradleTaskAction extends GradleAction {
 					L10N.t("dialog.gradle.run_gradle_task.options.clean") });
 			ba.setEditable(true);
 			bas.add("Center", ba);
-			int retval = JOptionPane
-					.showConfirmDialog(actionRegistry.getMCreator(), bas, L10N.t("dialog.gradle.run_gradle_task.title"),
-							JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+			int retval = JOptionPane.showConfirmDialog(actionRegistry.getMCreator(), bas,
+					L10N.t("dialog.gradle.run_gradle_task.title"), JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null);
 			if (ba.getSelectedItem() != null && retval != JOptionPane.CANCEL_OPTION)
 				actionRegistry.getMCreator().getGradleConsole().exec((String) ba.getSelectedItem());
 		});

@@ -25,11 +25,11 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JModElementProgressPanel;
+import net.mcreator.ui.component.UnsupportedComponent;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -86,7 +86,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0 && modIcon.getIconHeight() > 0
 				&& modIcon != MCItem.DEFAULT_ICON)
 			return modIcon;
-		return TiledImageCache.getModTypeIcon(modElement.getType());
+		return modElement.getType().getIcon();
 	}
 
 	@Override public ViewBase showView() {
@@ -246,9 +246,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			toolBar.setOpaque(false);
 			toolBar.add(saveOnly);
 			toolBar.add(save);
-			add("North", PanelUtils
-					.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true, false,
-							false));
+			add("North",
+					PanelUtils.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true,
+							false, false));
 
 			if (wrapInScrollpane) {
 				JScrollPane splitScroll = new JScrollPane(split);
@@ -294,9 +294,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			toolBar.add(saveOnly);
 			toolBar.add(save);
 
-			add("North", PanelUtils
-					.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true, false,
-							false));
+			add("North",
+					PanelUtils.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true,
+							false, false));
 
 			if (wrapInScrollpane) {
 				JScrollPane splitScroll = new JScrollPane(new ArrayList<>(pages.values()).get(0));
@@ -326,6 +326,14 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		List<String> inclusions = mcreator.getGeneratorConfiguration()
 				.getSupportedDefinitionFields(modElement.getType());
 
+		List<String> exclusions = mcreator.getGeneratorConfiguration()
+				.getUnsupportedDefinitionFields(modElement.getType());
+
+		if (inclusions != null && exclusions != null) {
+			LOG.warn("Field inclusions and exclusions can not be used at the same time. Skipping them.");
+			return;
+		}
+
 		if (inclusions != null) {
 			Field[] fields = getClass().getDeclaredFields();
 			for (Field field : fields) {
@@ -334,7 +342,32 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 						try {
 							field.setAccessible(true);
 							Component obj = (Component) field.get(this);
-							obj.setEnabled(false);
+
+							Container parent = obj.getParent();
+							int index = Arrays.asList(parent.getComponents()).indexOf(obj);
+							parent.remove(index);
+							parent.add(new UnsupportedComponent(obj), index);
+						} catch (IllegalAccessException e) {
+							LOG.warn("Failed to access field", e);
+						}
+					}
+				}
+			}
+		}
+
+		if (exclusions != null) {
+			Field[] fields = getClass().getDeclaredFields();
+			for (Field field : fields) {
+				if (Component.class.isAssignableFrom(field.getType())) {
+					if (exclusions.contains(field.getName())) {
+						try {
+							field.setAccessible(true);
+							Component obj = (Component) field.get(this);
+
+							Container parent = obj.getParent();
+							int index = Arrays.asList(parent.getComponents()).indexOf(obj);
+							parent.remove(index);
+							parent.add(new UnsupportedComponent(obj), index);
 						} catch (IllegalAccessException e) {
 							LOG.warn("Failed to access field", e);
 						}
@@ -398,6 +431,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		if (this.tabIn != null && closeTab)
 			mcreator.mcreatorTabs.closeTab(tabIn);
+		else
+			mcreator.mcreatorTabs.getTabs().stream().filter(e -> e.getContent() == this)
+					.forEach(e -> e.setIcon(((ModElementGUI<?>) e.getContent()).getViewIcon()));
 
 		if (!editingMode && modElementCreatedListener
 				!= null) // only call this event if listener registered and we are not in editing mode

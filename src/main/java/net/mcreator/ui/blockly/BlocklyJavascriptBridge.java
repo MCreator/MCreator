@@ -20,6 +20,7 @@ package net.mcreator.ui.blockly;
 
 import com.google.gson.Gson;
 import net.mcreator.blockly.data.ExternalTrigger;
+import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.io.OS;
@@ -35,7 +36,8 @@ import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElementType;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import netscape.javascript.JSObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -74,8 +76,8 @@ public class BlocklyJavascriptBridge {
 		ImageIcon base = new ImageIcon(ImageUtils.resize(MinecraftImageGenerator.generateItemSlot(), 36, 36));
 		ImageIcon image;
 		if (name != null && !name.equals("") && !name.equals("null"))
-			image = ImageUtils
-					.drawOver(base, MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), name), 2, 2, 32, 32);
+			image = ImageUtils.drawOver(base, MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), name), 2, 2, 32,
+					32);
 		else
 			image = base;
 
@@ -159,54 +161,11 @@ public class BlocklyJavascriptBridge {
 
 	@SuppressWarnings("unused") public static String[] getListOfForWorkspace(Workspace workspace, String type) {
 		List<String> retval;
+		//We check for general cases
 		switch (type) {
 		case "procedure":
 			retval = workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
 					.map(ModElement::getName).collect(Collectors.toList());
-			break;
-		case "procedure_retval_logic":
-			retval = workspace.getModElements().stream().filter(mod -> {
-				if (mod.getType() == ModElementType.PROCEDURE) {
-					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
-							null;
-					return returnTypeCurrent == VariableElementType.LOGIC;
-				}
-				return false;
-			}).map(ModElement::getName).collect(Collectors.toList());
-			break;
-		case "procedure_retval_number":
-			retval = workspace.getModElements().stream().filter(mod -> {
-				if (mod.getType() == ModElementType.PROCEDURE) {
-					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
-							null;
-					return returnTypeCurrent == VariableElementType.NUMBER;
-				}
-				return false;
-			}).map(ModElement::getName).collect(Collectors.toList());
-			break;
-		case "procedure_retval_string":
-			retval = workspace.getModElements().stream().filter(mod -> {
-				if (mod.getType() == ModElementType.PROCEDURE) {
-					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
-							null;
-					return returnTypeCurrent == VariableElementType.STRING;
-				}
-				return false;
-			}).map(ModElement::getName).collect(Collectors.toList());
-			break;
-		case "procedure_retval_itemstack":
-			retval = workspace.getModElements().stream().filter(mod -> {
-				if (mod.getType() == ModElementType.PROCEDURE) {
-					VariableElementType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableElementType.valueOf((String) mod.getMetadata("return_type")) :
-							null;
-					return returnTypeCurrent == VariableElementType.ITEMSTACK;
-				}
-				return false;
-			}).map(ModElement::getName).collect(Collectors.toList());
 			break;
 		case "entity":
 			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
@@ -222,9 +181,11 @@ public class BlocklyJavascriptBridge {
 		case "achievement":
 			return ElementUtil.loadAllAchievements(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
-		case "potion":
+		case "effect":
 			return ElementUtil.loadAllPotionEffects(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
+		case "potion":
+			return ElementUtil.loadAllPotions(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "gamerulesboolean":
 			return ElementUtil.getAllBooleanGameRules(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
@@ -235,6 +196,8 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllFluids(workspace);
 		case "sound":
 			return ElementUtil.getAllSounds(workspace);
+		case "soundcategory":
+			return ElementUtil.getAllSoundCategories();
 		case "particle":
 			return ElementUtil.loadAllParticles(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "direction":
@@ -267,10 +230,46 @@ public class BlocklyJavascriptBridge {
 			retval = new ArrayList<>();
 		}
 
+		// check if type is "call procedure with return value"
+		if (type.contains("procedure_retval_")) {
+			retval = workspace.getModElements().stream().filter(mod -> {
+				if (mod.getType() == ModElementType.PROCEDURE) {
+					VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
+							VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
+							null;
+					return returnTypeCurrent == VariableTypeLoader.INSTANCE.fromName(
+							StringUtils.removeStart(type, "procedure_retval_"));
+				}
+				return false;
+			}).map(ModElement::getName).collect(Collectors.toList());
+		}
+
 		if (retval.size() <= 0)
 			return new String[] { "" };
 
 		return retval.toArray(new String[0]);
+	}
+
+	@SuppressWarnings("unused") public String[] getReadableListOf(String type) {
+		return getReadableListOfForWorkspace(mcreator.getWorkspace(), type);
+	}
+
+	@SuppressWarnings("unused") public static String[] getReadableListOfForWorkspace(Workspace workspace, String type) {
+		List<String> retval;
+		switch (type) {
+		case "entity":
+			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName)
+					.toArray(String[]::new);
+		case "biome":
+			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName)
+					.toArray(String[]::new);
+		default:
+			return getListOfForWorkspace(workspace, type);
+		}
+	}
+
+	@SuppressWarnings("unused") public boolean isPlayerVariable(String field) {
+		return BlocklyVariables.isPlayerVariableForWorkspace(mcreator.getWorkspace(), field);
 	}
 
 	public void setJavaScriptEventListener(JavaScriptEventListener listener) {

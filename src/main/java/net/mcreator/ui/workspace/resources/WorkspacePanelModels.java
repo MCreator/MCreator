@@ -155,9 +155,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 			Model model = modelList.getSelectedValue();
 			if (model != null) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-						L10N.t("workspace.3dmodels.delete_confirm_message"),
-						L10N.t("workspace.3dmodels.delete_confirm_title"), JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null);
+						L10N.t("workspace.3dmodels.delete_confirm_message"), L10N.t("common.confirmation"),
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 
 				if (n == 0) {
 					Arrays.stream(model.getFiles()).forEach(File::delete);
@@ -201,7 +200,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 					AtomicInteger i = new AtomicInteger();
 					// this model might be in use, we need to regenerate code of mobs
 					workspacePanel.getMcreator().getWorkspace().getModElements().forEach(e -> {
-						if (e.getType() == ModElementType.MOB && !e.isCodeLocked()) {
+						if (e.getType() == ModElementType.LIVINGENTITY && !e.isCodeLocked()) {
 							GeneratableElement generatableElement = e.getGeneratableElement();
 							if (generatableElement != null) {
 								// generate mod element
@@ -218,7 +217,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 					p0.ok();
 					dial.refreshDisplay();
 
-					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit("Rebuilding workspace");
+					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
+							L10N.t("workspace.3dmodels.rebuilding_workspace"));
 					dial.addProgress(p2);
 					workspacePanel.getMcreator().actionRegistry.buildWorkspace.doAction();
 					p2.ok();
@@ -240,8 +240,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		Model model = modelList.getSelectedValue();
 		Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(model);
 		if (textureMappingMap != null) {
-			textureMappingMap = new TextureMappingDialog(textureMappingMap)
-					.openMappingDialog(workspacePanel.getMcreator(), null, model.getType() == Model.Type.JSON);
+			textureMappingMap = new TextureMappingDialog(textureMappingMap).openMappingDialog(
+					workspacePanel.getMcreator(), null, model.getType() == Model.Type.JSON);
 			if (textureMappingMap != null) {
 				String data = TexturedModel.getJSONForTextureMapping(textureMappingMap);
 				FileIO.writeStringToFile(data, new File(workspacePanel.getMcreator().getFolderManager().getModelsDir(),

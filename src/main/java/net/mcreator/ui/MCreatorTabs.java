@@ -105,8 +105,8 @@ public class MCreatorTabs {
 		}
 
 		moreTabsMenu = new JScrollablePopupMenu();
-		moreTabsMenu
-				.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+		moreTabsMenu.setBorder(
+				BorderFactory.createMatteBorder(0, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 		moreTabsMenu.setMaximumVisibleRows(11);
 
 		int maxWidth = tabsStrip.getWidth();
@@ -253,6 +253,10 @@ public class MCreatorTabs {
 		toClose.forEach(this::closeTab);
 	}
 
+	public List<Tab> getTabs() {
+		return tabs;
+	}
+
 	public Tab getCurrentTab() {
 		return current;
 	}
@@ -349,18 +353,16 @@ public class MCreatorTabs {
 
 			if (closeable && this.icon == null) {
 				add(close, "East");
-				add(PanelUtils
-						.centerAndEastElement(blo, PanelUtils.centerAndEastElement(close, new JEmptyBox(10, 10), 0, 0),
-								0, 0), "Center");
+				add(PanelUtils.centerAndEastElement(blo,
+						PanelUtils.centerAndEastElement(close, new JEmptyBox(10, 10), 0, 0), 0, 0), "Center");
 			} else if (closeable) {
 				setIcon(this.icon);
 				iconLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				iconLabel.setBorder(BorderFactory.createEmptyBorder(1, 9, 0, 0));
 				add(iconLabel, "West");
 				add(close, "East");
-				add(PanelUtils
-						.centerAndEastElement(blo, PanelUtils.centerAndEastElement(close, new JEmptyBox(10, 10), 0, 0),
-								0, 0), "Center");
+				add(PanelUtils.centerAndEastElement(blo,
+						PanelUtils.centerAndEastElement(close, new JEmptyBox(10, 10), 0, 0), 0, 0), "Center");
 			} else {
 				add(blo, "Center");
 			}
@@ -410,14 +412,14 @@ public class MCreatorTabs {
 
 		void updateBorder() {
 			if (selected)
-				setBorder(BorderFactory.createCompoundBorder(BorderFactory
-								.createMatteBorder(0, 0, 0, hasRightBorder ? 1 : 0,
-										(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")),
+				setBorder(BorderFactory.createCompoundBorder(
+						BorderFactory.createMatteBorder(0, 0, 0, hasRightBorder ? 1 : 0,
+								(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")),
 						BorderFactory.createMatteBorder(0, 0, 5, 0, activeColor)));
 			else
-				setBorder(BorderFactory.createCompoundBorder(BorderFactory
-								.createMatteBorder(0, 0, 0, hasRightBorder ? 1 : 0,
-										(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")),
+				setBorder(BorderFactory.createCompoundBorder(
+						BorderFactory.createMatteBorder(0, 0, 0, hasRightBorder ? 1 : 0,
+								(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")),
 						BorderFactory.createMatteBorder(0, 0, 5, 0, inactiveColor)));
 		}
 

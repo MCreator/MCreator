@@ -171,8 +171,8 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 		if (outline != null) {
 			double zoom = jZoomPane.getZoomport().getZoom();
 			int x = (int) Math.round(outline.getX() * zoom), y = (int) Math.round(outline.getY() * zoom);
-			int width = (int) Math.round(outline.getWidth() * zoom), height = (int) Math
-					.round(outline.getHeight() * zoom);
+			int width = (int) Math.round(outline.getWidth() * zoom), height = (int) Math.round(
+					outline.getHeight() * zoom);
 			drawOutline((Graphics2D) g, x, y, width, height);
 		}
 	}
@@ -204,6 +204,10 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 	}
 
 	private void rebuildCheckerboardPattern() {
+		checkerboard = buildCheckerboardPattern();
+	}
+
+	public static TexturePaint buildCheckerboardPattern() {
 		BufferedImage pattern = new BufferedImage(CHECKERBOARD_TILE_SIZE * 2, CHECKERBOARD_TILE_SIZE * 2,
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = pattern.createGraphics();
@@ -213,7 +217,7 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 		g2d.fillRect(0, CHECKERBOARD_TILE_SIZE, CHECKERBOARD_TILE_SIZE, CHECKERBOARD_TILE_SIZE);
 		g2d.fillRect(CHECKERBOARD_TILE_SIZE, 0, CHECKERBOARD_TILE_SIZE, CHECKERBOARD_TILE_SIZE);
 		g2d.dispose();
-		checkerboard = new TexturePaint(pattern, new Rectangle(0, 0, pattern.getWidth(), pattern.getHeight()));
+		return new TexturePaint(pattern, new Rectangle(0, 0, pattern.getWidth(), pattern.getHeight()));
 	}
 
 	private void rebuildOutlineStroke() {

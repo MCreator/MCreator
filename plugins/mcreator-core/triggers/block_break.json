@@ -9,6 +9,10 @@
       "type": "entity"
     },
     {
+      "name": "blockstate",
+      "type": "blockstate"
+    },
+    {
       "name": "x",
       "type": "number"
     },
@@ -37,5 +41,6 @@
       "type": "number"
     }
   ],
-  "cancelable": "true"
+  "cancelable": "true",
+  "side": "server"
 }

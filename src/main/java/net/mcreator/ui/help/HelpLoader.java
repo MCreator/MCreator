@@ -21,6 +21,7 @@ package net.mcreator.ui.help;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.HtmlUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.commonmark.Extension;
 import org.commonmark.ext.autolink.AutolinkExtension;
@@ -32,6 +33,7 @@ import javax.annotation.Nullable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -47,14 +49,14 @@ public class HelpLoader {
 	private static HtmlRenderer renderer;
 
 	public static void preloadCache() {
-		PluginLoader.INSTANCE.getResources("help.default", Pattern.compile("^[^$].*\\.md")).forEach(e -> DEFAULT_CACHE
-				.put(FilenameUtils.removeExtension(e.replaceFirst("help/default/", "")),
+		PluginLoader.INSTANCE.getResources("help.default", Pattern.compile("^[^$].*\\.md")).forEach(
+				e -> DEFAULT_CACHE.put(FilenameUtils.removeExtension(e.replaceFirst("help/default/", "")),
 						FileIO.readResourceToString(PluginLoader.INSTANCE, e, StandardCharsets.UTF_8)));
 
 		PluginLoader.INSTANCE.getResources("help." + L10N.getLocaleString(), Pattern.compile("^[^$].*\\.md")).forEach(
-				e -> LOCALIZED_CACHE
-						.put(FilenameUtils.removeExtension(e.replaceFirst("help/" + L10N.getLocaleString() + "/", "")),
-								FileIO.readResourceToString(PluginLoader.INSTANCE, e, StandardCharsets.UTF_8)));
+				e -> LOCALIZED_CACHE.put(
+						FilenameUtils.removeExtension(e.replaceFirst("help/" + L10N.getLocaleString() + "/", "")),
+						FileIO.readResourceToString(PluginLoader.INSTANCE, e, StandardCharsets.UTF_8)));
 
 		List<Extension> extensionList = Arrays.asList(TablesExtension.create(), AutolinkExtension.create());
 		parser = Parser.builder().extensions(extensionList).build();
@@ -85,8 +87,14 @@ public class HelpLoader {
 							+ "th { border: 1px solid #a0a0a0; } td { border: 1px solid #a0a0a0; } </style></head><body>");
 
 			if (helpContext.getEntry() != null) {
-				if (getFromCache(helpContext.getEntry()) != null) {
-					helpString.append(renderer.render(parser.parse(getFromCache(helpContext.getEntry()))));
+				String helpText = getFromCache(helpContext.getEntry());
+				if (helpText != null) {
+					if (helpContext.getArguments() != null)
+						helpString.append(renderer.render(parser.parse(MessageFormat.format(helpText,
+								Arrays.stream(helpContext.getArguments()).map(e -> e == null ? "" : e.get().toString())
+										.map(HtmlUtils::unescapeHtml).toArray()))));
+					else
+						helpString.append(renderer.render(parser.parse(helpText)));
 				} else {
 					helpString.append(L10N.t("help_loader.no_help_entry", helpContext.getEntry()));
 				}

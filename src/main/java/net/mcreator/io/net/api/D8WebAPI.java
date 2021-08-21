@@ -61,7 +61,7 @@ public class D8WebAPI implements IWebAPI {
 		updateInfo = new Gson().fromJson(appData, UpdateInfo.class);
 
 		new Thread(() -> {
-			initAPIPrivte();
+			initAPIPrivate();
 			newsFutures.forEach(future -> future.complete(news));
 			motwFutures.forEach(future -> future.complete(motw));
 		}).start();
@@ -69,9 +69,9 @@ public class D8WebAPI implements IWebAPI {
 		return true;
 	}
 
-	private void initAPIPrivte() {
-		String motwXML = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/app/motw");
+	private void initAPIPrivate() {
 		String newsXML = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/app/news");
+		String motwXML = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/app/motw");
 
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -112,8 +112,8 @@ public class D8WebAPI implements IWebAPI {
 									.item(0).getChildNodes().item(0).getNodeValue().split("mcreator\\.net/")[1];
 					motw[2] = ((Element) node).getElementsByTagName("pubDate").item(0).getChildNodes().item(0)
 							.getNodeValue();
-					motw[3] = MCreatorApplication.SERVER_DOMAIN + "/user/" + ((Element) node)
-							.getElementsByTagName("dc:creator").item(0).getChildNodes().item(0).getNodeValue();
+					motw[3] = MCreatorApplication.SERVER_DOMAIN + "/user/" + ((Element) node).getElementsByTagName(
+							"dc:creator").item(0).getChildNodes().item(0).getNodeValue();
 					motw[4] = ((Element) node).getElementsByTagName("description").item(1).getChildNodes().item(0)
 							.getNodeValue().split("src=\"")[1].split("\" width")[0];
 				}
@@ -128,7 +128,7 @@ public class D8WebAPI implements IWebAPI {
 	}
 
 	@Override public String getSearchURL(String searchTerm) {
-		return MCreatorApplication.SERVER_DOMAIN + "/search/content?keys=" + searchTerm.replaceAll(" ", "+");
+		return MCreatorApplication.SERVER_DOMAIN + "/search/content?keys=" + searchTerm.replace(' ', '+');
 	}
 
 	@Override public void getWebsiteNews(CompletableFuture<String[]> data) {

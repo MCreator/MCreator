@@ -20,7 +20,6 @@ package net.mcreator.preferences;
 
 import net.mcreator.io.OS;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.laf.MCreatorTheme;
 
 import java.awt.*;
@@ -41,9 +40,12 @@ public class PreferencesData {
 
 	public static class UISettings {
 
+		@PreferencesEntry public Locale language = L10N.DEFAULT_LOCALE;
+
 		@PreferencesEntry public Color interfaceAccentColor = MCreatorTheme.MAIN_TINT_DEFAULT;
 
-		@PreferencesEntry public Locale language = L10N.DEFAULT_LOCALE;
+		@PreferencesEntry(arrayData = { "All", "Current theme", "Custom", "None" })
+		public String backgroundSource = "All";
 
 		@PreferencesEntry public boolean aatext = true;
 
@@ -124,7 +126,7 @@ public class PreferencesData {
 	}
 
 	public static class HiddenPreferences {
-		public WorkspaceIconSize workspaceIconSize = WorkspaceIconSize.LARGE;
+		public WorkspaceIconSize workspaceModElementIconSize = WorkspaceIconSize.TILES;
 		public boolean fullScreen = false;
 		public int projectTreeSplitPos = 0;
 		public boolean workspaceSortAscending = true;
@@ -138,7 +140,7 @@ public class PreferencesData {
 	}
 
 	public enum WorkspaceIconSize {
-		LARGE, SMALL, LIST
+		TILES, LARGE, MEDIUM, SMALL, LIST, DETAILS
 	}
 
 }

@@ -41,10 +41,10 @@ public class DesaturateDialog extends MCreatorDialog {
 		JPanel settings = new JPanel(new GridBagLayout());
 		JPanel controls = new JPanel(new BorderLayout());
 
-		JSlidingSpinner spinner = new JSlidingSpinner("Saturation:");
+		JSlidingSpinner spinner = new JSlidingSpinner(L10N.t("dialog.imageeditor.saturation"));
 		spinner.setValue(50);
 
-		JButton cancel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("dialog.imageeditor.desaturate_action");
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -60,7 +60,7 @@ public class DesaturateDialog extends MCreatorDialog {
 			g2d.setBackground(new Color(0, 0, 0, 0));
 			g2d.clearRect(0, 0, getWidth(), getHeight());
 			g2d.drawImage(ImageUtils.toBufferedImage(
-					ImageUtils.changeSaturation(new ImageIcon(bim), (float) spinner.getValue() / 100).getImage()), null,
+							ImageUtils.changeSaturation(new ImageIcon(bim), (float) spinner.getValue() / 100).getImage()), null,
 					0, 0);
 			g2d.dispose();
 			layer.mergeOverlay();

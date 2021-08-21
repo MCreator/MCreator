@@ -29,5 +29,6 @@
       "type": "cmdcontext"
     }
   ],
-  "cancelable": "true"
+  "cancelable": "true",
+  "side": "server"
 }

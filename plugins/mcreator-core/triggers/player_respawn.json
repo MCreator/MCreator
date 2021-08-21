@@ -22,7 +22,8 @@
     },
     {
       "name": "endconquered",
-      "type": "boolean"
+      "type": "logic"
     }
-  ]
+  ],
+  "side": "server"
 }

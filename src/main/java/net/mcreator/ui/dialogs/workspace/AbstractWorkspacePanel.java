@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs.workspace;
 
 import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
@@ -107,20 +108,21 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 			if (selectedFile.getAbsolutePath()
 					.equals(WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot().getAbsolutePath())) {
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"You can not make a workspace inside workspaces root folder. Make a subdirectory here first!");
+						L10N.t("dialog.file.error_save_inside_workspace_root_message"));
 			} else if (selectedFile.isDirectory() && selectedFile.list() != null
 					&& Objects.requireNonNull(selectedFile.list()).length > 0) {
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"The directory you have selected for the workspace is not empty!");
+						L10N.t("dialog.file.error_save_inside_folder_not_empty_message"));
 			} else if (!workspaceFolder.getText().matches("[a-zA-Z0-9_/+\\-\\\\:()\\[\\].,@$=`' ]+")) {
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"Only English letters, numbers, <kbd>_/+-\\:()[].,@$=`</kbd> and whitespace are allowed in the path.");
-			} else if (selectedFile.getName().contains(" ") || selectedFile.getName().contains(":") || selectedFile
-					.getName().contains("\\") || selectedFile.getName().contains("/") || selectedFile.getName()
-					.contains("|") || selectedFile.getName().contains("\"") || selectedFile.getName().contains("?")
-					|| selectedFile.getName().contains("*") || selectedFile.getName().contains(">")) {
+						L10N.t("dialog.new_workspace.letters_valid"));
+			} else if (selectedFile.getName().contains(" ") || selectedFile.getName().contains(":")
+					|| selectedFile.getName().contains("\\") || selectedFile.getName().contains("/")
+					|| selectedFile.getName().contains("|") || selectedFile.getName().contains("\"")
+					|| selectedFile.getName().contains("?") || selectedFile.getName().contains("*")
+					|| selectedFile.getName().contains(">")) {
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"Workspace folder should not contain the following characters: /\\:>\"?*| and whitespace");
+						L10N.t("dialog.new_workspace.valid_characters"));
 			} else if (!selectedFile.getParentFile().isDirectory()) {
 				try {
 					if (!selectedFile.getCanonicalPath()
@@ -129,12 +131,12 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 					}
 				} catch (IOException e) {
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							"Directory in which you are trying to make a workspace does not exist!");
+							L10N.t("dialog.file.error_directory_doesnt_exist"));
 				}
-			} else if (!Files.isWritable(selectedFile.getParentFile().toPath()) || !Files
-					.isReadable(selectedFile.getParentFile().toPath())) {
+			} else if (!Files.isWritable(selectedFile.getParentFile().toPath()) || !Files.isReadable(
+					selectedFile.getParentFile().toPath())) {
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						"MCreator does not have permissions to write or read in selected directory!");
+						L10N.t("dialog.new_workspace.file_permission_problem"));
 			}
 
 			return Validator.ValidationResult.PASSED;

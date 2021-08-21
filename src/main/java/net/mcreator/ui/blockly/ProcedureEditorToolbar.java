@@ -20,7 +20,6 @@ package net.mcreator.ui.blockly;
 
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
-import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.java.ProcedureTemplateIO;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;
@@ -136,10 +135,9 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 
 						for (ToolboxBlock block : filtered) {
 							JMenuItem menuItem = new JMenuItem("<html>" + (block.toolboxCategory != null ?
-									"<span style='background: #" + Integer
-											.toHexString(block.toolboxCategory.getColor().getRGB()).substring(2)
-											+ ";'>&nbsp;" + block.toolboxCategory.getName()
-											+ "&nbsp;</span>&nbsp;&nbsp;" :
+									"<span style='background: #" + Integer.toHexString(
+											block.toolboxCategory.getColor().getRGB()).substring(2) + ";'>&nbsp;"
+											+ block.toolboxCategory.getName() + "&nbsp;</span>&nbsp;&nbsp;" :
 									"") + block.getName().replaceAll("%\\d+?",
 									"&nbsp;<span style='background: #444444'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"));
 							menuItem.addActionListener(ev -> {
@@ -184,10 +182,9 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 					ProcedureTemplateIO.exportProcedure(blocklyPanel.getXML(), exp);
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
-					JOptionPane
-							.showMessageDialog(mcreator, L10N.t("blockly.templates.procedures.export_failed.message"),
-									L10N.t("blockly.templates.procedures.export_failed.title"),
-									JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(mcreator,
+							L10N.t("blockly.templates.procedures.export_failed.message"),
+							L10N.t("blockly.templates.procedures.export_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -212,17 +209,16 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 							continue; // skip if variable with this name already exists
 
 						blocklyPanel.addLocalVariable(localVariable.getName(),
-								BlocklyVariables.getBlocklyVariableTypeFromMCreatorVariable(localVariable));
+								localVariable.getType().getBlocklyVariableType());
 						procedureGUI.localVars.addElement(localVariable);
 					}
 
 					blocklyPanel.addBlocksFromXML(procedureXml);
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
-					JOptionPane
-							.showMessageDialog(mcreator, L10N.t("blockly.templates.procedures.import_failed.message"),
-									L10N.t("blockly.templates.procedures.import_failed.title"),
-									JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(mcreator,
+							L10N.t("blockly.templates.procedures.import_failed.message"),
+							L10N.t("blockly.templates.procedures.import_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

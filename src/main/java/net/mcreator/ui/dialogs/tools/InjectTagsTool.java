@@ -29,7 +29,6 @@ import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
@@ -60,7 +59,7 @@ public class InjectTagsTool {
 		dialog.add("Center", scrollPane);
 
 		JButton ok = L10N.button("dialog.tools.inject_tags.confirm");
-		JButton canecel = L10N.button(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton canecel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		canecel.addActionListener(e -> dialog.setVisible(false));
 		dialog.add("South", PanelUtils.join(ok, canecel));
 
@@ -112,24 +111,20 @@ public class InjectTagsTool {
 
 		JCheckBox box = new JCheckBox(
 				"<html><kbd>" + namespace + ":" + name + (existing ? (" -> " + getNameForTag(name, type)) : "")
-						+ "</kbd><small><br>" + L10N
-						.t("dialog.tools.inject_tags.tag." + type.toLowerCase(Locale.ENGLISH) + "." + namespace + "."
+						+ "</kbd><small><br>" + L10N.t(
+						"dialog.tools.inject_tags.tag." + type.toLowerCase(Locale.ENGLISH) + "." + namespace + "."
 								+ name));
 		box.setSelected(checked);
 
 		JLabel icon = new JLabel();
 		if (type.equals("Blocks"))
-			icon.setIcon(new ImageIcon(
-					ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(ModElementType.BLOCK).getImage(), 32)));
+			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.BLOCK.getIcon().getImage(), 32)));
 		if (type.equals("Items"))
-			icon.setIcon(new ImageIcon(
-					ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(ModElementType.ITEM).getImage(), 32)));
+			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.ITEM.getIcon().getImage(), 32)));
 		if (type.equals("Functions"))
-			icon.setIcon(new ImageIcon(
-					ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(ModElementType.FUNCTION).getImage(), 32)));
+			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.FUNCTION.getIcon().getImage(), 32)));
 		if (type.equals("Entities"))
-			icon.setIcon(new ImageIcon(
-					ImageUtils.resizeAA(TiledImageCache.getModTypeIcon(ModElementType.MOB).getImage(), 32)));
+			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.LIVINGENTITY.getIcon().getImage(), 32)));
 
 		panel.add(PanelUtils.centerAndEastElement(box, icon));
 

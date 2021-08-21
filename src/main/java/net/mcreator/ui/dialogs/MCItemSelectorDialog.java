@@ -57,6 +57,11 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 	private ActionListener itemSelectedListener;
 
 	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags) {
+		this(mcreator, blocksConsumer, supportTags, false);
+	}
+
+	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags,
+			boolean hasPotions) {
 		super(mcreator);
 
 		this.mcreator = mcreator;
@@ -131,7 +136,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 				if (result == JOptionPane.OK_OPTION) {
 					if (tagName.getValidationStatus().getValidationResultType()
 							!= Validator.ValidationResultType.ERROR) {
-						String selectedItem = (String) tagName.getSelectedItem();
+						String selectedItem = tagName.getSelectedItem();
 						if (selectedItem != null) {
 							MCItem mcItem = new MCItem.Tag(mcreator.getWorkspace(), selectedItem);
 							model.addElement(mcItem);
@@ -142,10 +147,9 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 								itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
 						}
 					} else {
-						JOptionPane
-								.showMessageDialog(this, L10N.t("dialog.item_selector.error_invalid_tag_name_message"),
-										L10N.t("dialog.item_selector.error_invalid_tag_name_title"),
-										JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(this,
+								L10N.t("dialog.item_selector.error_invalid_tag_name_message"),
+								L10N.t("dialog.item_selector.error_invalid_tag_name_title"), JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			});
@@ -168,6 +172,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		ComponentUtils.deriveFont(jtf, 15);
 		ComponentUtils.deriveFont(filterField, 15);
 
+		JComponent top;
 		JButton all = L10N.button("dialog.item_selector.all");
 		all.addActionListener(event -> filterField.setText(""));
 		JButton blocks = L10N.button("dialog.item_selector.blocks");
@@ -175,11 +180,19 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		JButton items = L10N.button("dialog.item_selector.items");
 		items.addActionListener(event -> filterField.setText("item"));
 		JButton mods = L10N.button("dialog.item_selector.custom_elements");
-		mods.addActionListener(event -> filterField.setText("mcreator"));
+		mods.addActionListener(event -> filterField.setText("custom"));
 
-		JComponent top = PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.item_selector.name"), jtf,
-				L10N.label("dialog.item_selector.display_filter"), filterField, new JLabel(""), all, blocks, items,
-				mods);
+		if (hasPotions) {
+			JButton potions = L10N.button("dialog.item_selector.potions");
+			potions.addActionListener(event -> filterField.setText("potion:"));
+			top = PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.item_selector.name"), jtf,
+					L10N.label("dialog.item_selector.display_filter"), filterField, new JLabel(""), all, blocks, items,
+					potions, mods);
+		} else {
+			top = PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.item_selector.name"), jtf,
+					L10N.label("dialog.item_selector.display_filter"), filterField, new JLabel(""), all, blocks, items,
+					mods);
+		}
 
 		top.setBorder(BorderFactory.createEmptyBorder(0, 0, 7, 0));
 
@@ -190,7 +203,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 
 		add("Center", mainComponent);
 
-		setSize(881, 425);
+		setSize(hasPotions ? 970 : 900, 425);
 
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
@@ -269,11 +282,12 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 			filterItems.clear();
 			String term = filterField.getText();
 			filterItems.addAll(items.stream().filter(item ->
-					item.getName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)) || item
-							.getReadableName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH))
-							|| item.getDescription().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH)) || item.getType().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH))).collect(Collectors.toList()));
+							item.getName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH))
+									|| item.getReadableName().toLowerCase(Locale.ENGLISH)
+									.contains(term.toLowerCase(Locale.ENGLISH)) || item.getDescription()
+									.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)) || item.getType()
+									.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)))
+					.collect(Collectors.toList()));
 			fireContentsChanged(this, 0, getSize());
 		}
 	}
@@ -301,7 +315,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		mainComponent.setPreferredSize(new Dimension(870, 380));
 
 		JOptionPane pane = new JOptionPane(mainComponent);
-		JDialog dialog = pane.createDialog(parent, "Block/item selector");
+		JDialog dialog = pane.createDialog(parent, L10N.t("dialog.item_selector.selector"));
 		bsd.setItemSelectedListener(e -> dialog.dispose());
 		dialog.setVisible(true);
 

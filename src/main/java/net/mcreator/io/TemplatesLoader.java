@@ -33,8 +33,8 @@ public class TemplatesLoader {
 
 	public static List<ResourcePointer> loadTemplates(String templatePackage, String extension) {
 		try {
-			Set<String> fileNames = PluginLoader.INSTANCE
-					.getResources("templates." + templatePackage, Pattern.compile(".*\\." + extension));
+			Set<String> fileNames = PluginLoader.INSTANCE.getResources("templates." + templatePackage,
+					Pattern.compile(".*\\." + extension));
 			List<String> templatesSorted = new ArrayList<>(fileNames);
 			templatesSorted.sort(String::compareToIgnoreCase);
 
@@ -43,8 +43,8 @@ public class TemplatesLoader {
 
 			UserFolderManager.getFileFromUserFolder("/templates/" + templatePackage.replace(".", "/")).mkdirs();
 
-			File[] customTemplates = UserFolderManager
-					.getFileFromUserFolder("/templates/" + templatePackage.replace(".", "/")).listFiles();
+			File[] customTemplates = UserFolderManager.getFileFromUserFolder(
+					"/templates/" + templatePackage.replace(".", "/")).listFiles();
 			if (customTemplates != null) {
 				templates.addAll(Arrays.stream(customTemplates).map(ResourcePointer::new).collect(Collectors.toList()));
 			}

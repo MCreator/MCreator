@@ -20,10 +20,10 @@ package net.mcreator.blockly;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.StatementInput;
+import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
 import org.w3c.dom.Element;
 
@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public abstract class BlocklyToCode implements IWorkspaceProvider {
+public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	private final StringBuilder code;
 	private final List<BlocklyCompileNote> compile_notes;
@@ -136,8 +136,8 @@ public abstract class BlocklyToCode implements IWorkspaceProvider {
 			String type = block.getAttribute("type");
 			boolean generated = false;
 			for (IBlockGenerator generator : blockGenerators) {
-				if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays
-						.asList(generator.getSupportedBlocks()).contains(type)) {
+				if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays.asList(
+						generator.getSupportedBlocks()).contains(type)) {
 					int compile_notes_num = compile_notes.size();
 					generator.generateBlock(this, block);
 					if (compile_notes_num == compile_notes.size()) // no errors in generation
@@ -164,8 +164,8 @@ public abstract class BlocklyToCode implements IWorkspaceProvider {
 
 		boolean generated = false;
 		for (IBlockGenerator generator : blockGenerators) {
-			if (generator.getBlockType() == IBlockGenerator.BlockType.OUTPUT && Arrays
-					.asList(generator.getSupportedBlocks()).contains(type)) {
+			if (generator.getBlockType() == IBlockGenerator.BlockType.OUTPUT && Arrays.asList(
+					generator.getSupportedBlocks()).contains(type)) {
 				generator.generateBlock(this, block);
 
 				generated = true;

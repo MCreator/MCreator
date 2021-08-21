@@ -30,7 +30,6 @@ import net.mcreator.ui.init.L10N;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 public class ClearAllGradleCachesAction extends GradleAction {
 
@@ -39,10 +38,10 @@ public class ClearAllGradleCachesAction extends GradleAction {
 			Object[] options = { L10N.t("action.gradle.clear_caches.option.gradle_caches"),
 					L10N.t("action.gradle.clear_caches.option.gradle_folder"),
 					UIManager.getString("OptionPane.cancelButtonText") };
-			int reply = JOptionPane
-					.showOptionDialog(actionRegistry.getMCreator(), L10N.t("action.gradle.clear_caches.option.message"),
-							L10N.t("action.gradle.clear_caches.option.title"), JOptionPane.YES_NO_OPTION,
-							JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+			int reply = JOptionPane.showOptionDialog(actionRegistry.getMCreator(),
+					L10N.t("action.gradle.clear_caches.option.message"),
+					L10N.t("action.gradle.clear_caches.option.title"), JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 			if (reply == 0 || reply == 1) {
 				clearAllGradleCaches(actionRegistry.getMCreator(), reply == 1, false);
 			}
@@ -59,8 +58,8 @@ public class ClearAllGradleCachesAction extends GradleAction {
 			try {
 				GradleDaemonUtils.stopAllDaemons(mcreator.getWorkspace());
 				p1.ok();
-			} catch (IOException | TimeoutException | InterruptedException e) {
-				p1.err();
+			} catch (IOException | InterruptedException e) {
+				p1.warn();
 			}
 			progressDialog.refreshDisplay();
 

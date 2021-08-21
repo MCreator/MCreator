@@ -22,6 +22,7 @@ import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 
@@ -32,14 +33,15 @@ import java.io.File;
 public class NewImageFileAction extends BasicAction {
 
 	public NewImageFileAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, "Image file", actionEvent -> {
-			String fileName = JOptionPane.showInputDialog(actionRegistry.getMCreator(), "Enter the image file name:");
+		super(actionRegistry, L10N.t("action.browser.new_image_file"), actionEvent -> {
+			String fileName = JOptionPane.showInputDialog(actionRegistry.getMCreator(),
+					L10N.t("workspace_file_browser.new_image"));
 
 			if (fileName != null) {
 				fileName = RegistryNameFixer.fix(fileName);
 				if (actionRegistry.getMCreator().getProjectBrowser().tree.getLastSelectedPathComponent() != null) {
-					Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator().getProjectBrowser().tree
-							.getLastSelectedPathComponent()).getUserObject();
+					Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator()
+							.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject();
 					if (selection instanceof File) {
 						File filesel = ((File) selection);
 						if (filesel.isDirectory()) {
