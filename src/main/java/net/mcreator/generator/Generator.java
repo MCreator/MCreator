@@ -359,7 +359,8 @@ public class Generator implements IGenerator, Closeable {
 
 		// Add mod element type specific global files (eg. registries for mod elements)
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
-			List<GeneratorTemplate> globalTemplatesList = getModElementGlobalTemplatesList(type, performFSTasks, templateID);
+			List<GeneratorTemplate> globalTemplatesList = getModElementGlobalTemplatesList(type, performFSTasks,
+					templateID);
 			if (workspace.getWorkspaceInfo().hasElementsOfType(type)) {
 				files.addAll(globalTemplatesList);
 			} else if (performFSTasks) { // if no elements of this type are present, delete the global template for that type
@@ -389,7 +390,8 @@ public class Generator implements IGenerator, Closeable {
 
 				Object conditionRaw = ((Map<?, ?>) template).get("condition");
 
-				if (TemplateConditionParser.shoudSkipTemplateBasedOnCondition(conditionRaw, workspace.getWorkspaceInfo())) {
+				if (TemplateConditionParser.shoudSkipTemplateBasedOnCondition(conditionRaw,
+						workspace.getWorkspaceInfo())) {
 					if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
 						if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
 							new File(name).delete(); // if template is skipped, we delete its potential file

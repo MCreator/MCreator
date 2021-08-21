@@ -91,7 +91,7 @@ import java.util.stream.Collectors;
 					retval.add(t);
 				} else {
 					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
-							.replaceFirst("CUSTOM:" , ""));
+							.replaceFirst("CUSTOM:", ""));
 				}
 			} else {
 				retval.add(t);
@@ -106,7 +106,7 @@ import java.util.stream.Collectors;
 			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
 					.collect(Collectors.toList());
 		} catch (IllegalArgumentException e) {
-			LOG.warn("Failed to list elements of non-existent type" , e);
+			LOG.warn("Failed to list elements of non-existent type", e);
 			return Collections.emptyList();
 		}
 	}
@@ -121,7 +121,7 @@ import java.util.stream.Collectors;
 						return false;
 					}).collect(Collectors.toList());
 		} catch (IllegalArgumentException e) {
-			LOG.warn("Failed to list elements of non-existent type" , e);
+			LOG.warn("Failed to list elements of non-existent type", e);
 			return Collections.emptyList();
 		}
 	}

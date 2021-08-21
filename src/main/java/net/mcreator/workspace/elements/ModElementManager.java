@@ -104,8 +104,7 @@ public class ModElementManager {
 			this.gsonAdapter.setLastModElement(modElement);
 			return gson.fromJson(json, GeneratableElement.class);
 		} catch (JsonSyntaxException e) {
-			LOG.warn("Failed to load generatable element from JSON. This can lead to errors further down the road!" ,
-					e);
+			LOG.warn("Failed to load generatable element from JSON. This can lead to errors further down the road!", e);
 			return null;
 		}
 	}
@@ -128,10 +127,14 @@ public class ModElementManager {
 
 		List<GeneratorTemplate> templates = new ArrayList<>();
 
-		if (!map.containsKey("global_templates_triggerbuild") || !map.get("global_templates_triggerbuild" ).toString().equals("false"))
-			templates.addAll(generator.getModElementGlobalTemplatesList(generatableElement.getModElement().getType(), false, new AtomicInteger()));
+		if (!map.containsKey("global_templates_triggerbuild") || !map.get("global_templates_triggerbuild").toString()
+				.equals("false"))
+			templates.addAll(
+					generator.getModElementGlobalTemplatesList(generatableElement.getModElement().getType(), false,
+							new AtomicInteger()));
 
-		List<GeneratorTemplate> elementTemplates = generator.getModElementGeneratorTemplatesList(generatableElement.getModElement());
+		List<GeneratorTemplate> elementTemplates = generator.getModElementGeneratorTemplatesList(
+				generatableElement.getModElement());
 		if (elementTemplates != null)
 			templates.addAll(elementTemplates);
 
