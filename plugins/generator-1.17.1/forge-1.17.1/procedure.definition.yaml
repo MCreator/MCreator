@@ -1,3 +1,0 @@
-templates:
-  - template: procedure.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/procedures/@NAMEProcedure.java"
