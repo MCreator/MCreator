@@ -217,8 +217,8 @@ public class ElementUtil {
 			retval.add("CUSTOM:" + soundElement.getName());
 		}
 
-		retval.addAll(DataListLoader.loadDataList("sounds").stream().sorted()
-				.map(DataListEntry::getName).collect(Collectors.toList()));
+		retval.addAll(DataListLoader.loadDataList("sounds").stream().sorted().map(DataListEntry::getName)
+				.collect(Collectors.toList()));
 
 		return retval.toArray(new String[0]);
 	}
@@ -280,7 +280,7 @@ public class ElementUtil {
 	}
 
 	public static String[] loadDirections() {
-		return new String[] { "DOWN" , "UP" , "NORTH" , "SOUTH" , "WEST" , "EAST" };
+		return new String[] { "DOWN", "UP", "NORTH", "SOUTH", "WEST", "EAST" };
 	}
 
 	public static ArrayList<String> loadBasicGUI(Workspace workspace) {
