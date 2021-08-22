@@ -8,11 +8,6 @@
 
 package ${package}.init;
 
-<#assign fuels = []>
-<#list w.getElementsOfType("fuel") as fuel>
-    <#assign fuels += [fuel.getGeneratableElement()]>
-</#list>
-
 @Mod.EventBusSubscriber public class FuelRegistry {
 
 	@SubscribeEvent
