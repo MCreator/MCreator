@@ -96,6 +96,8 @@
   readable_name: "Item"
 - EntityItemFrame:
   readable_name: "Item frame"
+- EntityGlowItemFrame:
+  readable_name: "Glow item frame"
 - EntityLeashKnot:
   readable_name: "Leash knot"
 - EntityLightningBolt:
@@ -188,6 +190,8 @@
   readable_name: "Spider"
 - EntitySquid:
   readable_name: "Squid"
+- EntityGlowSquid:
+  readable_name: "Glow squid"
 - EntityStray:
   readable_name: "Stray"
 - EntityTraderLlama:
@@ -250,5 +254,7 @@
   readable_name: "Zoglin"
 - EntityAxolotl:
   readable_name: "Axolotl"
+- EntityGoat:
+  readable_name: "Goat"
 - EntityMarker:
   readable_name: "Marker"
