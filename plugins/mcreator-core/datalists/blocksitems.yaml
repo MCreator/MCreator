@@ -4487,7 +4487,7 @@
   readable_name: "Cave Vines"
   type: block
 
-- Blocks.CAVE_VINES:
+- Blocks.CAVE_VINES_PLANT:
   readable_name: "Cave Vines Plant"
   type: block
 
