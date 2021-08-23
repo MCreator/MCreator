@@ -178,7 +178,7 @@ public class Generator implements IGenerator, Closeable {
 					String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get(
 							"template");
 
-					Map<String, Object> dataModel = new HashMap<>();
+					Map<String, Object> dataModel = generatorTemplate.getDataModel();
 
 					extractVariables(generatorTemplate, dataModel);
 
@@ -243,7 +243,7 @@ public class Generator implements IGenerator, Closeable {
 			for (GeneratorTemplate generatorTemplate : generatorTemplateList) {
 				String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("template");
 
-				Map<String, Object> dataModel = new HashMap<>();
+				Map<String, Object> dataModel = generatorTemplate.getDataModel();
 				extractVariables(generatorTemplate, dataModel);
 
 				String code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel,
@@ -361,7 +361,16 @@ public class Generator implements IGenerator, Closeable {
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 			List<GeneratorTemplate> globalTemplatesList = getModElementGlobalTemplatesList(type, performFSTasks,
 					templateID);
-			if (workspace.getWorkspaceInfo().hasElementsOfType(type)) {
+
+			List<ModElement> elementsList = workspace.getWorkspaceInfo().getElementsOfType(type);
+
+			if (!elementsList.isEmpty()) {
+				globalTemplatesList.forEach(e -> {
+					e.addDataModelEntry("modelements", elementsList);
+					e.addDataModelEntry(type.getRegistryName() + "s", elementsList.stream().map(ModElement::getGeneratableElement).collect(
+							Collectors.toList()));
+				});
+
 				files.addAll(globalTemplatesList);
 			} else if (performFSTasks) { // if no elements of this type are present, delete the global template for that type
 				for (GeneratorTemplate template : globalTemplatesList) {
