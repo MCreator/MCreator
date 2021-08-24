@@ -768,7 +768,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		ComboBoxUtil.updateComboBoxContents(suspiciousStewEffect,
 				ElementUtil.loadAllPotionEffects(mcreator.getWorkspace()).stream().map(DataListEntry::getName)
-						.filter(e -> !e.contains("CUSTOM:")).collect(Collectors.toList()), "SPEED");
+						.collect(Collectors.toList()), "SPEED");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

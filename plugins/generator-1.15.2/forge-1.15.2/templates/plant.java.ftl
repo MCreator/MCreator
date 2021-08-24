@@ -272,7 +272,8 @@ import net.minecraft.util.SoundEvent;
 	public static class BlockCustomFlower extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block {
 
 		public BlockCustomFlower() {
-			super(<#if data.plantType == "normal">${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},</#if>
+			super(<#if data.plantType == "normal">
+				${data.suspiciousStewEffect?starts_with("CUSTOM:")?then("Effects.SATURATION", generator.map(data.suspiciousStewEffect, "effects"))}, ${data.suspiciousStewDuration},</#if>
 					<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 					Block.Properties.create(Material.PLANTS, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
 					<#else>
@@ -308,6 +309,20 @@ import net.minecraft.util.SoundEvent;
 			);
 			setRegistryName("${registryname}");
 		}
+
+		<#if data.plantType == "normal">
+			<#if data.suspiciousStewEffect?starts_with("CUSTOM:")>
+			@Override public Effect getStewEffect() {
+				return ${generator.map(data.suspiciousStewEffect, "effects")};
+			}
+			</#if>
+
+			<#if (data.suspiciousStewDuration > 0)>
+			@Override public int getStewEffectDuration() {
+				return ${data.suspiciousStewDuration};
+			}
+			</#if>
+		</#if>
 
 		<#if data.customBoundingBox && data.boundingBoxes??>
 		@Override public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
