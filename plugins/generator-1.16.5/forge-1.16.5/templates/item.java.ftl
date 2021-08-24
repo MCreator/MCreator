@@ -84,7 +84,7 @@ package ${package}.item;
 							return itemstack;
 						</#if>
 					<#else>
-						if(success) itemstack.shrink(1);
+						if(this.isSuccessful()) itemstack.shrink(1);
 						return itemstack;
 					</#if>
 				}
