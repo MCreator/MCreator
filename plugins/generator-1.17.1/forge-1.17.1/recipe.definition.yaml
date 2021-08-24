@@ -31,7 +31,7 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/recipes/brewing/@NAMEBrewingRecipe.java"
     condition: "recipeType %= Brewing"
 
-global_templates_triggerbuild: false
+global_templates_trigger_build: false
 global_templates:
   - template: elementinits/brewingrecipes.java.ftl
     writer: java

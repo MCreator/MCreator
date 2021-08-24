@@ -52,6 +52,19 @@ MCreator and Pylo brand files in this repository are not covered by the GPL-3.0 
 
 MCreator uses several third-party libraries and projects. License files, attributions, and credits for these projects are located in the `license` subdirectory.
 
+Some code generators use official Minecraft mappings. 
+The use of these mappings is covered under a license by Microsoft. You should
+be fully aware of this license and the fact your mod may use these mappings.
+At the time of writing, the license is:
+
+`© 2020 Microsoft Corporation. These mappings are provided "as-is" and you bear 
+the risk of using them. You may copy and use the mappings for development purposes, 
+but you may not redistribute the mappings complete and unmodified. 
+Microsoft makes no warranties, express or implied, with respect to the mappings 
+provided here.  Use and modification of this document or the source code (in any form) 
+of Minecraft: Java Edition is governed by the Minecraft End User License Agreement 
+available at https://account.mojang.com/documents/minecraft_eula.`
+
 ## Notice
 
 NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG.

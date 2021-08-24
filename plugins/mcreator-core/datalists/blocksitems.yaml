@@ -4153,149 +4153,149 @@
   type: block
   texture: POLISHED_BLACKSTONE_WALL
 
-- Blocks.Candle:
+- Blocks.CANDLE:
   readable_name: "Any Candle"
   type: block
   subtypes: true
 
-- Blocks.Candle#0:
+- Blocks.CANDLE#0:
   readable_name: "Candle"
   type: block
 
-- Blocks.Candle#1:
+- Blocks.CANDLE#1:
   readable_name: "White Candle"
   type: block
 
-- Blocks.Candle#2:
+- Blocks.CANDLE#2:
   readable_name: "Orange Candle"
   type: block
 
-- Blocks.Candle#3:
+- Blocks.CANDLE#3:
   readable_name: "Magenta Candle"
   type: block
 
-- Blocks.Candle#4:
+- Blocks.CANDLE#4:
   readable_name: "Light Blue Candle"
   type: block
 
-- Blocks.Candle#5:
+- Blocks.CANDLE#5:
   readable_name: "Yellow Candle"
   type: block
 
-- Blocks.Candle#6:
+- Blocks.CANDLE#6:
   readable_name: "Lime Candle"
   type: block
 
-- Blocks.Candle#7:
+- Blocks.CANDLE#7:
   readable_name: "Pink Candle"
   type: block
 
-- Blocks.Candle#8:
+- Blocks.CANDLE#8:
   readable_name: "Gray Candle"
   type: block
 
-- Blocks.Candle#9:
+- Blocks.CANDLE#9:
   readable_name: "Light Gray Candle"
   type: block
 
-- Blocks.Candle#10:
+- Blocks.CANDLE#10:
   readable_name: "Cyan Candle"
   type: block
 
-- Blocks.Candle#11:
+- Blocks.CANDLE#11:
   readable_name: "Purple Candle"
   type: block
 
-- Blocks.Candle#12:
+- Blocks.CANDLE#12:
   readable_name: "Blue Candle"
   type: block
 
-- Blocks.Candle#13:
+- Blocks.CANDLE#13:
   readable_name: "Brown Candle"
   type: block
 
-- Blocks.Candle#14:
+- Blocks.CANDLE#14:
   readable_name: "Green Candle"
   type: block
 
-- Blocks.Candle#15:
+- Blocks.CANDLE#15:
   readable_name: "Red Candle"
   type: block
 
-- Blocks.Candle#16:
+- Blocks.CANDLE#16:
   readable_name: "Black Candle"
   type: block
 
-- Blocks.Candle:
+- Blocks.CANDLE_CAKE:
   readable_name: "Any Candle Cake"
   type: block
   subtypes: true
 
-- Blocks.Candle_CAKE#0:
+- Blocks.CANDLE_CAKE#0:
   readable_name: "Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#1:
+- Blocks.CANDLE_CAKE#1:
   readable_name: "White Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#2:
+- Blocks.CANDLE_CAKE#2:
   readable_name: "Orange Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#3:
+- Blocks.CANDLE_CAKE#3:
   readable_name: "Magenta Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#4:
+- Blocks.CANDLE_CAKE#4:
   readable_name: "Light Blue Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#5:
+- Blocks.CANDLE_CAKE#5:
   readable_name: "Yellow Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#6:
+- Blocks.CANDLE_CAKE#6:
   readable_name: "Lime Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#7:
+- Blocks.CANDLE_CAKE#7:
   readable_name: "Pink Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#8:
+- Blocks.CANDLE_CAKE#8:
   readable_name: "Gray Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#9:
+- Blocks.CANDLE_CAKE#9:
   readable_name: "Light Gray Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#10:
+- Blocks.CANDLE_CAKE#10:
   readable_name: "Cyan Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#11:
+- Blocks.CANDLE_CAKE#11:
   readable_name: "Purple Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#12:
+- Blocks.CANDLE_CAKE#12:
   readable_name: "Blue Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#13:
+- Blocks.CANDLE_CAKE#13:
   readable_name: "Brown Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#14:
+- Blocks.CANDLE_CAKE#14:
   readable_name: "Green Candle Cake"
   type: block
 
-- Blocks.Candle_CAKE#15:
+- Blocks.CANDLE_CAKE#15:
   readable_name: "Red Candle Cake"
   type: block
 
-- Blocks.Candl_CAKEe#16:
+- Blocks.CANDLE_CAKE#16:
   readable_name: "Black Candle Cake"
   type: block
 

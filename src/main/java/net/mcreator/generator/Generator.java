@@ -19,9 +19,11 @@
 package net.mcreator.generator;
 
 import com.google.gson.GsonBuilder;
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.generator.template.MinecraftCodeProvider;
 import net.mcreator.generator.template.TemplateConditionParser;
@@ -365,11 +367,8 @@ public class Generator implements IGenerator, Closeable {
 			List<ModElement> elementsList = workspace.getWorkspaceInfo().getElementsOfType(type);
 
 			if (!elementsList.isEmpty()) {
-				globalTemplatesList.forEach(e -> {
-					e.addDataModelEntry("modelements", elementsList);
-					e.addDataModelEntry(type.getRegistryName() + "s", elementsList.stream().map(ModElement::getGeneratableElement).collect(
-							Collectors.toList()));
-				});
+				globalTemplatesList.forEach(e -> e.addDataModelEntry(type.getRegistryName() + "s",
+						elementsList.stream().map(ModElement::getGeneratableElement).collect(Collectors.toList())));
 
 				files.addAll(globalTemplatesList);
 			} else if (performFSTasks) { // if no elements of this type are present, delete the global template for that type
@@ -381,13 +380,52 @@ public class Generator implements IGenerator, Closeable {
 			}
 		}
 
+		Map<BaseType, List<GeneratableElement>> baseTypeListMap = new HashMap<>();
+		for (ModElement modElement : workspace.getModElements()) {
+			GeneratableElement generatableElement = modElement.getGeneratableElement();
+			if (generatableElement instanceof ICommonType) {
+				Collection<BaseType> baseTypes = ((ICommonType) generatableElement).getBaseTypesProvided();
+				for (BaseType baseType : baseTypes) {
+					if (!baseTypeListMap.containsKey(baseType))
+						baseTypeListMap.put(baseType, new ArrayList<>());
+
+					baseTypeListMap.get(baseType).add(generatableElement);
+				}
+			}
+		}
+
+		for (BaseType baseType : BaseType.values()) {
+			List<GeneratorTemplate> globalTemplatesList = getGlobalTemplatesList(
+					generatorConfiguration.getDefinitionsProvider().getBaseTypeDefinition(baseType), performFSTasks,
+					templateID);
+
+			if (!baseTypeListMap.containsKey(baseType) || baseTypeListMap.get(baseType).isEmpty()) {
+				if (performFSTasks) { // if no elements of this type are present, delete the base type template for that type
+					for (GeneratorTemplate template : globalTemplatesList) {
+						if (workspace.getFolderManager().isFileInWorkspace(template.getFile())) {
+							template.getFile().delete();
+						}
+					}
+				}
+			} else {
+				globalTemplatesList.forEach(e -> e.addDataModelEntry(baseType.name().toLowerCase(Locale.ENGLISH) + "s",
+						baseTypeListMap.get(baseType)));
+
+				files.addAll(globalTemplatesList);
+			}
+		}
+
 		return files;
 	}
 
 	public List<GeneratorTemplate> getModElementGlobalTemplatesList(ModElementType<?> type, boolean performFSTasks,
 			AtomicInteger templateID) {
-		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type);
+		return getGlobalTemplatesList(generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type),
+				performFSTasks, templateID);
+	}
 
+	public List<GeneratorTemplate> getGlobalTemplatesList(@Nullable Map<?, ?> map, boolean performFSTasks,
+			AtomicInteger templateID) {
 		if (map == null)
 			return new ArrayList<>();
 
