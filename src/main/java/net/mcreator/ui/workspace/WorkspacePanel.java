@@ -19,6 +19,7 @@
 package net.mcreator.ui.workspace;
 
 import net.mcreator.element.*;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;
@@ -67,6 +68,7 @@ import java.io.File;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -1201,14 +1203,34 @@ import java.util.stream.Collectors;
 	}
 
 	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
-		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu);
+		GeneratableElement ge = mu.getGeneratableElement();
+
+		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu, ge);
+
+		modElementFiles.addAll(
+				mcreator.getGenerator().getModElementGlobalTemplatesList(mu.getType(), false, new AtomicInteger()));
+
+		if (ge instanceof ICommonType) {
+			Collection<BaseType> baseTypes = ((ICommonType) ge).getBaseTypesProvided();
+			for (BaseType baseType : baseTypes) {
+				modElementFiles.addAll(mcreator.getGenerator().getGlobalTemplatesList(
+						mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
+								.getBaseTypeDefinition(baseType), false, new AtomicInteger()));
+			}
+		}
 
 		if (modElementFiles.size() > 1) {
 			JPopupMenu codeDropdown = new JPopupMenu();
 			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
 			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 
+			boolean global = false;
 			for (GeneratorTemplate modElementFile : modElementFiles) {
+				if (!global && modElementFile.isGlobal()) {
+					codeDropdown.addSeparator();
+					global = true;
+				}
+
 				JMenuItem item = new JMenuItem(
 						"<html>" + modElementFile.getFile().getName() + "<br><small color=#666666>"
 								+ mcreator.getWorkspace().getWorkspaceFolder().toPath()

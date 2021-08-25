@@ -25,6 +25,6 @@ import java.util.Collection;
 
 public interface ICommonType {
 
-	 Collection<BaseType> getBaseTypesProvided();
+	Collection<BaseType> getBaseTypesProvided();
 
 }

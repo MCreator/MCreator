@@ -89,7 +89,8 @@ import java.util.stream.Collectors;
 
 	public boolean isBlock(String elementName) {
 		String ext = getElementExtension(elementName);
-		if (ext.equals("helmet") || ext.equals("body") || ext.equals("legs") || ext.equals("boots") || ext.equals("bucket"))
+		if (ext.equals("helmet") || ext.equals("body") || ext.equals("legs") || ext.equals("boots") || ext.equals(
+				"bucket"))
 			return false;
 
 		return this.getRecipeElementType(elementName) == RecipeType.BLOCK;

@@ -354,7 +354,7 @@ public class Generator implements IGenerator, Closeable {
 			}
 
 			files.add(new GeneratorTemplate(new File(name),
-					Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), template));
+					Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), true, template));
 
 			templateID.getAndIncrement();
 		}
@@ -447,7 +447,7 @@ public class Generator implements IGenerator, Closeable {
 				}
 
 				files.add(new GeneratorTemplate(new File(name),
-						Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), template));
+						Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), true, template));
 
 				templateID.getAndIncrement();
 			}
@@ -458,6 +458,11 @@ public class Generator implements IGenerator, Closeable {
 
 	public List<GeneratorTemplate> getModElementGeneratorTemplatesList(ModElement element) {
 		return getModElementGeneratorTemplatesList(element, false, null);
+	}
+
+	public List<GeneratorTemplate> getModElementGeneratorTemplatesList(ModElement element,
+			GeneratableElement generatableElement) {
+		return getModElementGeneratorTemplatesList(element, false, generatableElement);
 	}
 
 	private List<GeneratorTemplate> getModElementGeneratorTemplatesList(ModElement element, boolean performFSTasks,
@@ -511,7 +516,7 @@ public class Generator implements IGenerator, Closeable {
 				}
 
 				files.add(new GeneratorTemplate(new File(name),
-						Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), template));
+						Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), false, template));
 
 				templateID++;
 			}

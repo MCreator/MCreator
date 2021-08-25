@@ -129,7 +129,8 @@ public class ModElementManager {
 
 		if (!map.containsKey("global_templates_trigger_build") || !map.get("global_templates_trigger_build").toString()
 				.equals("false"))
-			templates.addAll(generator.getModElementGlobalTemplatesList(generatableElement.getModElement().getType(), false,
+			templates.addAll(
+					generator.getModElementGlobalTemplatesList(generatableElement.getModElement().getType(), false,
 							new AtomicInteger()));
 
 		List<GeneratorTemplate> elementTemplates = generator.getModElementGeneratorTemplatesList(
