@@ -1,4 +1,5 @@
 {
   "color": 90,
-  "blocklyVariableType": "ActionResultType"
+  "blocklyVariableType": "ActionResultType",
+  "returnTypeOnly": true
 }

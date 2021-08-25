@@ -23,10 +23,7 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.types.interfaces.IEntityWithModel;
-import net.mcreator.element.types.interfaces.IItemWithModel;
-import net.mcreator.element.types.interfaces.IItemWithTexture;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
@@ -38,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class RangedItem extends GeneratableElement
-		implements IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture {
+		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
 	public String texture;

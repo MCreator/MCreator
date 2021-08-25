@@ -30,8 +30,7 @@ public class BlocklyJavascriptTemplates {
 				+ variableType.getBlocklyVariableType() + "\")), 'VAR');"
 				+ "this.getField('VAR').setValidator(function (variable) {"
 				+ "var isPlayerVar = javabridge.isPlayerVariable(variable);"
-				+ "this.getSourceBlock().updateShape_(isPlayerVar, true);" + "});"
-				+ "});";
+				+ "this.getSourceBlock().updateShape_(isPlayerVar, true);" + "});" + "});";
 	}
 
 	public static String procedureListExtensions(VariableType variableType) {

@@ -267,9 +267,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				new ArrayList<>(Collections.singleton(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE"))));
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
-				L10N.t("elementgui.block.event_on_block_added"),
-				Dependency.fromString(
-						"x:number/y:number/z:number/world:world/blockstate:blockstate/oldState:blockstate/moving:logic"));
+				L10N.t("elementgui.block.event_on_block_added"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/blockstate:blockstate/oldState:blockstate/moving:logic"));
 		onNeighbourBlockChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
 				L10N.t("elementgui.common.event_on_neighbour_block_changes"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));

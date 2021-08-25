@@ -19,6 +19,8 @@
 package net.mcreator.generator;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GeneratorTemplate {
 
@@ -26,6 +28,8 @@ public class GeneratorTemplate {
 	private final Object templateData;
 
 	private final String templateIdentificator;
+
+	private final Map<String, Object> dataModel = new HashMap<>();
 
 	GeneratorTemplate(File file, String templateIdentificator, Object templateData) {
 		this.file = file;
@@ -44,6 +48,14 @@ public class GeneratorTemplate {
 
 	public String getTemplateIdentificator() {
 		return templateIdentificator;
+	}
+
+	public Map<String, Object> getDataModel() {
+		return dataModel;
+	}
+
+	public void addDataModelEntry(String key, Object value) {
+		dataModel.put(key, value);
 	}
 
 }

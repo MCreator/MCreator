@@ -129,4 +129,5 @@ EntityPiglinBrute: piglin_brute
 EntityStrider: strider
 EntityZoglin: zoglin
 EntityAxolotl: axolotl
-EntityMarker: EntityMarker
+EntityGoat: goat
+EntityMarker: marker

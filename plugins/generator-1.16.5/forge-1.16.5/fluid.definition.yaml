@@ -5,6 +5,16 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname_bucket.json"
 
+global_templates:
+  - template: json/fluidtag.json.ftl
+    writer: json
+    variables: "type=water"
+    name: "@RESROOT/data/minecraft/tags/fluids/water.json"
+  - template: json/fluidtag.json.ftl
+    writer: json
+    variables: "type=lava"
+    name: "@RESROOT/data/minecraft/tags/fluids/lava.json"
+
 localizationkeys:
   - key: fluid.@modid.@registryname
     mapto: name

@@ -19,8 +19,11 @@
 package net.mcreator.generator;
 
 import com.google.gson.GsonBuilder;
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.generator.template.MinecraftCodeProvider;
 import net.mcreator.generator.template.TemplateConditionParser;
@@ -177,7 +180,7 @@ public class Generator implements IGenerator, Closeable {
 					String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get(
 							"template");
 
-					Map<String, Object> dataModel = new HashMap<>();
+					Map<String, Object> dataModel = generatorTemplate.getDataModel();
 
 					extractVariables(generatorTemplate, dataModel);
 
@@ -242,7 +245,7 @@ public class Generator implements IGenerator, Closeable {
 			for (GeneratorTemplate generatorTemplate : generatorTemplateList) {
 				String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("template");
 
-				Map<String, Object> dataModel = new HashMap<>();
+				Map<String, Object> dataModel = generatorTemplate.getDataModel();
 				extractVariables(generatorTemplate, dataModel);
 
 				String code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel,
@@ -334,8 +337,9 @@ public class Generator implements IGenerator, Closeable {
 
 	public List<GeneratorTemplate> getModBaseGeneratorTemplatesList(boolean performFSTasks) {
 		List<GeneratorTemplate> files = new ArrayList<>();
-		List<?> templates = generatorConfiguration.getBaseTemplates();
 		AtomicInteger templateID = new AtomicInteger();
+
+		List<?> templates = generatorConfiguration.getBaseTemplates();
 		for (Object template : templates) {
 			Object conditionRaw = ((Map<?, ?>) template).get("condition");
 
@@ -354,6 +358,101 @@ public class Generator implements IGenerator, Closeable {
 
 			templateID.getAndIncrement();
 		}
+
+		// Add mod element type specific global files (eg. registries for mod elements)
+		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
+			List<GeneratorTemplate> globalTemplatesList = getModElementGlobalTemplatesList(type, performFSTasks,
+					templateID);
+
+			List<ModElement> elementsList = workspace.getWorkspaceInfo().getElementsOfType(type);
+
+			if (!elementsList.isEmpty()) {
+				globalTemplatesList.forEach(e -> e.addDataModelEntry(type.getRegistryName() + "s",
+						elementsList.stream().map(ModElement::getGeneratableElement).collect(Collectors.toList())));
+
+				files.addAll(globalTemplatesList);
+			} else if (performFSTasks) { // if no elements of this type are present, delete the global template for that type
+				for (GeneratorTemplate template : globalTemplatesList) {
+					if (workspace.getFolderManager().isFileInWorkspace(template.getFile())) {
+						template.getFile().delete();
+					}
+				}
+			}
+		}
+
+		Map<BaseType, List<GeneratableElement>> baseTypeListMap = new HashMap<>();
+		for (ModElement modElement : workspace.getModElements()) {
+			GeneratableElement generatableElement = modElement.getGeneratableElement();
+			if (generatableElement instanceof ICommonType) {
+				Collection<BaseType> baseTypes = ((ICommonType) generatableElement).getBaseTypesProvided();
+				for (BaseType baseType : baseTypes) {
+					if (!baseTypeListMap.containsKey(baseType))
+						baseTypeListMap.put(baseType, new ArrayList<>());
+
+					baseTypeListMap.get(baseType).add(generatableElement);
+				}
+			}
+		}
+
+		for (BaseType baseType : BaseType.values()) {
+			List<GeneratorTemplate> globalTemplatesList = getGlobalTemplatesList(
+					generatorConfiguration.getDefinitionsProvider().getBaseTypeDefinition(baseType), performFSTasks,
+					templateID);
+
+			if (!baseTypeListMap.containsKey(baseType) || baseTypeListMap.get(baseType).isEmpty()) {
+				if (performFSTasks) { // if no elements of this type are present, delete the base type template for that type
+					for (GeneratorTemplate template : globalTemplatesList) {
+						if (workspace.getFolderManager().isFileInWorkspace(template.getFile())) {
+							template.getFile().delete();
+						}
+					}
+				}
+			} else {
+				globalTemplatesList.forEach(e -> e.addDataModelEntry(baseType.name().toLowerCase(Locale.ENGLISH) + "s",
+						baseTypeListMap.get(baseType)));
+
+				files.addAll(globalTemplatesList);
+			}
+		}
+
+		return files;
+	}
+
+	public List<GeneratorTemplate> getModElementGlobalTemplatesList(ModElementType<?> type, boolean performFSTasks,
+			AtomicInteger templateID) {
+		return getGlobalTemplatesList(generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type),
+				performFSTasks, templateID);
+	}
+
+	public List<GeneratorTemplate> getGlobalTemplatesList(@Nullable Map<?, ?> map, boolean performFSTasks,
+			AtomicInteger templateID) {
+		if (map == null)
+			return new ArrayList<>();
+
+		List<GeneratorTemplate> files = new ArrayList<>();
+		List<?> templates = (List<?>) map.get("global_templates");
+		if (templates != null) {
+			for (Object template : templates) {
+				String name = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) template).get("name"));
+
+				Object conditionRaw = ((Map<?, ?>) template).get("condition");
+
+				if (TemplateConditionParser.shoudSkipTemplateBasedOnCondition(conditionRaw,
+						workspace.getWorkspaceInfo())) {
+					if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
+						if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
+							new File(name).delete(); // if template is skipped, we delete its potential file
+						}
+					continue;
+				}
+
+				files.add(new GeneratorTemplate(new File(name),
+						Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), template));
+
+				templateID.getAndIncrement();
+			}
+		}
+
 		return files;
 	}
 

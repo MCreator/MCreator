@@ -36,9 +36,11 @@ import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * ModElementManager is not thread safe
@@ -102,8 +104,7 @@ public class ModElementManager {
 			this.gsonAdapter.setLastModElement(modElement);
 			return gson.fromJson(json, GeneratableElement.class);
 		} catch (JsonSyntaxException e) {
-			LOG.warn("Failed to load generatable element from JSON. This can lead to errors further down the road!" ,
-					e);
+			LOG.warn("Failed to load generatable element from JSON. This can lead to errors further down the road!", e);
 			return null;
 		}
 	}
@@ -121,21 +122,26 @@ public class ModElementManager {
 
 	public boolean requiresElementGradleBuild(GeneratableElement generatableElement) {
 		Generator generator = workspace.getGenerator();
-		List<GeneratorTemplate> templates = generator.getModElementGeneratorTemplatesList(
-				generatableElement.getModElement());
-
-		Map<?, ?> map = workspace.getGeneratorConfiguration().getDefinitionsProvider()
+		Map<?, ?> map = generator.getGeneratorConfiguration().getDefinitionsProvider()
 				.getModElementDefinition(generatableElement.getModElement().getType());
 
-		if (map.containsKey("triggersbuild") && map.get("triggersbuild").toString().equals("true"))
-			return true;
+		List<GeneratorTemplate> templates = new ArrayList<>();
 
-		if (templates != null)
-			for (GeneratorTemplate template : templates) {
-				String writer = (String) ((Map<?, ?>) template.getTemplateData()).get("writer");
-				if (writer == null || writer.equals("java"))
-					return true;
-			}
+		if (!map.containsKey("global_templates_trigger_build") || !map.get("global_templates_trigger_build").toString()
+				.equals("false"))
+			templates.addAll(generator.getModElementGlobalTemplatesList(generatableElement.getModElement().getType(), false,
+							new AtomicInteger()));
+
+		List<GeneratorTemplate> elementTemplates = generator.getModElementGeneratorTemplatesList(
+				generatableElement.getModElement());
+		if (elementTemplates != null)
+			templates.addAll(elementTemplates);
+
+		for (GeneratorTemplate template : templates) {
+			String writer = (String) ((Map<?, ?>) template.getTemplateData()).get("writer");
+			if (writer == null || writer.equals("java"))
+				return true;
+		}
 
 		return false;
 	}

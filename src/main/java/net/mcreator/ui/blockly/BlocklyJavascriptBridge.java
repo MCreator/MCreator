@@ -185,8 +185,7 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllPotionEffects(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "potion":
-			return ElementUtil.loadAllPotions(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
+			return ElementUtil.loadAllPotions(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "gamerulesboolean":
 			return ElementUtil.getAllBooleanGameRules(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
@@ -259,9 +258,11 @@ public class BlocklyJavascriptBridge {
 		List<String> retval;
 		switch (type) {
 		case "entity":
-			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName).toArray(String[]::new);
+			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName)
+					.toArray(String[]::new);
 		case "biome":
-			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName).toArray(String[]::new);
+			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName)
+					.toArray(String[]::new);
 		default:
 			return getListOfForWorkspace(workspace, type);
 		}

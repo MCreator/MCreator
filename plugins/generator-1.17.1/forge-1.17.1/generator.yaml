@@ -1,7 +1,7 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 basefeatures: []
 status: dev
-buildfileversion: 37.0.40
+buildfileversion: 37.0.42
 subversion: 1
 
 # gradle task definitions
@@ -41,28 +41,6 @@ base_templates:
   - template: modbase/mods.toml.ftl
     writer: file
     name: "@RESROOT/META-INF/mods.toml"
-  - template: json/fluidtag.json.ftl
-    writer: json
-    condition: hasFluids()
-    deleteWhenConditionFalse: true
-    variables: "type=water"
-    name: "@RESROOT/data/minecraft/tags/fluids/water.json"
-  - template: json/fluidtag.json.ftl
-    writer: json
-    condition: hasFluids()
-    deleteWhenConditionFalse: true
-    variables: "type=lava"
-    name: "@RESROOT/data/minecraft/tags/fluids/lava.json"
-  - template: modbase/tabs.java.ftl
-    writer: java
-    condition: hasCreativeTabs()
-    deleteWhenConditionFalse: true
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/CreativeModeTabs.java"
-  - template: modbase/brewingrecipes.java.ftl
-    writer: java
-    condition: hasBrewingRecipes()
-    deleteWhenConditionFalse: true
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/BrewingRecipes.java"
 
 language_file:
   format: json
