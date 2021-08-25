@@ -79,14 +79,16 @@ public class NameMapper {
 						mcreator_map_template.replace("@NAME", origName)
 								.replace("@UPPERNAME", origName.toUpperCase(Locale.ENGLISH))
 								.replace("@name", origName.toLowerCase(Locale.ENGLISH)).replace("@NAME", origName));
-				if (mcreator_map_template.contains("@registryname") || mcreator_map_template.contains("@REGISTRYNAME")) {
+				if (mcreator_map_template.contains("@registryname") || mcreator_map_template.contains(
+						"@REGISTRYNAME")) {
 					ModElement element = workspace.getModElementByName(origName);
 					if (element != null) {
-						retval = retval.replace("@registryname", element.getRegistryName()).replace("@REGISTRYNAME", element.geRegistryNameUpper());
+						retval = retval.replace("@registryname", element.getRegistryName())
+								.replace("@REGISTRYNAME", element.geRegistryNameUpper());
 					} else {
 						LOG.warn("Failed to determine registry name for: " + origName);
-						retval = retval.replace("@registryname", UNKNOWN_ELEMENT).replace("@REGISTRYNAME", UNKNOWN_ELEMENT.toUpperCase(
-								Locale.ENGLISH));
+						retval = retval.replace("@registryname", UNKNOWN_ELEMENT)
+								.replace("@REGISTRYNAME", UNKNOWN_ELEMENT.toUpperCase(Locale.ENGLISH));
 					}
 				}
 				return retval;

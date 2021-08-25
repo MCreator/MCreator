@@ -1205,8 +1205,7 @@ import java.util.stream.Collectors;
 	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
 		GeneratableElement ge = mu.getGeneratableElement();
 
-		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator()
-				.getModElementGeneratorTemplatesList(mu, ge);
+		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu, ge);
 
 		modElementFiles.addAll(
 				mcreator.getGenerator().getModElementGlobalTemplatesList(mu.getType(), false, new AtomicInteger()));

@@ -460,7 +460,8 @@ public class Generator implements IGenerator, Closeable {
 		return getModElementGeneratorTemplatesList(element, false, null);
 	}
 
-	public List<GeneratorTemplate> getModElementGeneratorTemplatesList(ModElement element, GeneratableElement generatableElement) {
+	public List<GeneratorTemplate> getModElementGeneratorTemplatesList(ModElement element,
+			GeneratableElement generatableElement) {
 		return getModElementGeneratorTemplatesList(element, false, generatableElement);
 	}
 
