@@ -19,6 +19,7 @@
 package net.mcreator.ui.workspace;
 
 import net.mcreator.element.*;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;
@@ -67,6 +68,7 @@ import java.io.File;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -1201,29 +1203,49 @@ import java.util.stream.Collectors;
 	}
 
 	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
-		List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu).stream()
-				.map(GeneratorTemplate::getFile).collect(Collectors.toList());
+		GeneratableElement ge = mu.getGeneratableElement();
+
+		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu, ge);
+
+		modElementFiles.addAll(
+				mcreator.getGenerator().getModElementGlobalTemplatesList(mu.getType(), false, new AtomicInteger()));
+
+		if (ge instanceof ICommonType) {
+			Collection<BaseType> baseTypes = ((ICommonType) ge).getBaseTypesProvided();
+			for (BaseType baseType : baseTypes) {
+				modElementFiles.addAll(mcreator.getGenerator().getGlobalTemplatesList(
+						mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
+								.getBaseTypeDefinition(baseType), false, new AtomicInteger()));
+			}
+		}
 
 		if (modElementFiles.size() > 1) {
 			JPopupMenu codeDropdown = new JPopupMenu();
 			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
 			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 
-			for (File modElementFile : modElementFiles) {
+			boolean global = false;
+			for (GeneratorTemplate modElementFile : modElementFiles) {
+				if (!global && modElementFile.isGlobal()) {
+					codeDropdown.addSeparator();
+					global = true;
+				}
+
 				JMenuItem item = new JMenuItem(
-						"<html>" + modElementFile.getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
-								.getWorkspaceFolder().toPath().relativize(modElementFile.toPath()));
-				item.setIcon(FileIcons.getIconForFile(modElementFile));
+						"<html>" + modElementFile.getFile().getName() + "<br><small color=#666666>"
+								+ mcreator.getWorkspace().getWorkspaceFolder().toPath()
+								.relativize(modElementFile.getFile().toPath()));
+				item.setIcon(FileIcons.getIconForFile(modElementFile.getFile()));
 				item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 				item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 				item.setIconTextGap(8);
 				item.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
-				item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, modElementFile));
+				item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, modElementFile.getFile()));
 				codeDropdown.add(item);
 			}
 			codeDropdown.show(component, x, y);
 		} else if (modElementFiles.size() == 1) {
-			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0));
+			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0).getFile());
 		}
 	}
 

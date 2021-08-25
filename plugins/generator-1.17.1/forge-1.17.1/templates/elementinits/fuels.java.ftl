@@ -8,7 +8,7 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber public class FuelRegistry {
+@Mod.EventBusSubscriber public class ${JavaModName}Fuels {
 
 	@SubscribeEvent
 	public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {

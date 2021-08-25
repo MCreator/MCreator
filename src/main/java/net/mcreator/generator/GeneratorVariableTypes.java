@@ -104,7 +104,8 @@ public class GeneratorVariableTypes {
 	}
 
 	public Collection<VariableType> getSupportedVariableTypes() {
-		return variableTypesCache.keySet().stream().filter(this::canBeGlobal).filter(this::canBeLocal).collect(Collectors.toList());
+		return variableTypesCache.keySet().stream().filter(this::canBeGlobal).filter(this::canBeLocal)
+				.collect(Collectors.toList());
 	}
 
 }

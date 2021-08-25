@@ -77,15 +77,18 @@ public class NameMapper {
 				origName = origName.replace(mcreator_prefix, "");
 				String retval = GeneratorTokens.replaceTokens(workspace,
 						mcreator_map_template.replace("@NAME", origName)
-								.replace("@NAME_UPPER", origName.toUpperCase(Locale.ENGLISH))
+								.replace("@UPPERNAME", origName.toUpperCase(Locale.ENGLISH))
 								.replace("@name", origName.toLowerCase(Locale.ENGLISH)).replace("@NAME", origName));
-				if (mcreator_map_template.contains("@registryname")) {
+				if (mcreator_map_template.contains("@registryname") || mcreator_map_template.contains(
+						"@REGISTRYNAME")) {
 					ModElement element = workspace.getModElementByName(origName);
 					if (element != null) {
-						retval = retval.replace("@registryname", element.getRegistryName());
+						retval = retval.replace("@registryname", element.getRegistryName())
+								.replace("@REGISTRYNAME", element.geRegistryNameUpper());
 					} else {
 						LOG.warn("Failed to determine registry name for: " + origName);
-						retval = retval.replace("@registryname", UNKNOWN_ELEMENT);
+						retval = retval.replace("@registryname", UNKNOWN_ELEMENT)
+								.replace("@REGISTRYNAME", UNKNOWN_ELEMENT.toUpperCase(Locale.ENGLISH));
 					}
 				}
 				return retval;
