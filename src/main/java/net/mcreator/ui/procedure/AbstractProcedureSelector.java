@@ -139,19 +139,33 @@ public abstract class AbstractProcedureSelector extends JPanel {
 		}
 
 		StringBuilder deps = new StringBuilder();
+
 		if (smallIcons)
-			deps.append("<html><div style='font-size: 8px; margin-top: 0; margin-bottom: 0; color: white;'>");
+			deps.append(
+					"<html><div style='font-size: 8px; margin-top: 0; margin-bottom: 0; color: white; line-height: 20px;'>");
 		else
-			deps.append("<html><div style='font-size: 9px; margin-top: 2px; margin-bottom: 1px; color: white;'>");
+			deps.append(
+					"<html><div style='font-size: 9px; margin-top: 2px; margin-bottom: 1px; color: white; line-height: 20px;'>");
+
+		int idx = 0;
 		for (Dependency dependency : providedDependencies) {
+			if (idx == 6 && providedDependencies.length > 6)
+				deps.append("<p style='margin-top: 3'>");
+
 			String bg = "999999";
-			String optcss = "color: #444444;";
+			String optcss;
+
 			if (dependencies != null && dependencies.contains(dependency)) {
 				optcss = "color: #ffffff;";
 				bg = Integer.toHexString(dependency.getColor().getRGB()).substring(2);
+			} else {
+				optcss = "color: #" + Integer.toHexString(dependency.getColor().darker().getRGB()).substring(2) + ";";
 			}
+
 			deps.append("<span style='background: #").append(bg).append("; ").append(optcss).append("'>&nbsp;")
 					.append(dependency.getName()).append("&nbsp;</span>&#32;");
+
+			idx++;
 		}
 
 		depslab.setText(deps.toString());

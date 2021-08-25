@@ -4,15 +4,9 @@
 
 /*
  *    MCreator note: This file will be REGENERATED on each build.
- *
  */
 
 package ${package}.init;
-
-<#assign tabs = []>
-<#list w.getElementsOfType("tab") as tab>
-    <#assign tabs += [tab.getGeneratableElement()]>
-</#list>
 
 public class CreativeModeTabs {
 

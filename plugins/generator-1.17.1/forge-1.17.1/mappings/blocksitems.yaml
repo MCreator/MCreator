@@ -1,5 +1,7 @@
 _mcreator_prefix: "CUSTOM:"
-_bypass_prefix: "TAG:"
+_bypass_prefix:
+  - "TAG:"
+  - "POTION:"
 _default:
   - Blocks.AIR
   - "air"
@@ -9,3 +11,18 @@ Blocks.AIR:
 Blocks.STONE:
   - Blocks.STONE
   - "#forge:stone"
+Blocks.STONE#0:
+  - Blocks.STONE
+  - "stone"
+Blocks.STONE#1:
+  - Blocks.GRANITE
+  - "granite"
+Blocks.STONE#3:
+  - Blocks.DIORITE
+  - "diorite"
+Blocks.MYCELIUM:
+  - Blocks.MYCELIUM
+  - "mycelium"
+Blocks.DIRT:
+  - Blocks.DIRT
+  - "dirt"

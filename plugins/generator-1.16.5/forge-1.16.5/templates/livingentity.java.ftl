@@ -267,7 +267,7 @@ import net.minecraft.block.material.Material;
 							float f3 = MathHelper.cos(CustomEntity.this.rotationPitch * (float) (Math.PI / 180.0));
 							float f4 = MathHelper.sin(CustomEntity.this.rotationPitch * (float) (Math.PI / 180.0));
 							CustomEntity.this.setMoveForward(f3 * f1);
-							CustomEntity.this.setMoveVertical(-f4 * f1);
+							CustomEntity.this.setMoveVertical((float) (f1 * dy));
 						} else {
 							CustomEntity.this.setAIMoveSpeed(f1 * 0.05F);
 						}

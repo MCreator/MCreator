@@ -5,7 +5,7 @@ import ${package}.${JavaModName};
 
 public class ${JavaModName}Variables {
 
-	public ${JavaModName}Variables(${JavaModName}Elements elements) {
+	public ${JavaModName}Variables() {
 
 	}
 

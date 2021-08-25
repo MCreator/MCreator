@@ -23,6 +23,7 @@ import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -42,7 +43,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
-		implements IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
+		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	public String texture;
 	public String textureTop;
@@ -275,6 +276,8 @@ import java.util.stream.Collectors;
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateEndRodIcon(getMainTexture());
 		} else if (blockBase != null && blockBase.equals("PressurePlate")) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generatePressurePlateIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("Button")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateButtonIcon(getMainTexture());
 		} else if (renderType() == 14) {
 			Image side = ImageUtils.drawOver(new ImageIcon(getTextureWithFallback(textureFront)),
 					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();
