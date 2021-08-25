@@ -10,11 +10,7 @@
     <#if mappedBlock?starts_with("/*@BlockState*/")>
         <#return mappedBlock?replace("/*@BlockState*/","") + ".getBlock()">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
-        <#if !mappedBlock?contains(".")>
-            <#return mappedElementToClassName(mappedBlock) + ".block">
-        <#else>
-            <#return mappedElementToClassName(mappedBlock) + "." + generator.getElementExtension(mappedBlock)>
-        </#if>
+        <#return mappedElementToRegistryEntry(mappedBlock)>
     <#else>
         <#return mappedBlock>
     </#if>
@@ -24,13 +20,7 @@
     <#if mappedBlock?starts_with("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "")>
     <#elseif mappedBlock?starts_with("CUSTOM:")>
-        <#if !mappedBlock?contains(".")>
-            <#return "new ItemStack("+ mappedElementToClassName(mappedBlock) + ".block"
-            + (amount == 1)?then(")",", (int)(" + amount + "))")>
-        <#else>
-            <#return "new ItemStack("+ mappedElementToClassName(mappedBlock) + "."
-            + generator.getElementExtension(mappedBlock) + (amount == 1)?then(")",", (int)(" + amount + "))")>
-        </#if>
+        <#return "new ItemStack("+ mappedElementToRegistryEntry(mappedBlock) + (amount == 1)?then(")",", (int)(" + amount + "))")>
     <#else>
         <#return "new ItemStack(" + mappedBlock + (amount == 1)?then(")",", (int)(" + amount + "))")>
     </#if>
@@ -40,19 +30,23 @@
     <#if mappedBlock?starts_with("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "") + ".getItem()">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
-        <#if !mappedBlock?contains(".")>
-            <#return mappedElementToClassName(mappedBlock) + ".block"
-            + generator.isRecipeTypeBlockOrBucket(mappedBlock)?then(".asItem()","")>
-        <#else>
-            <#return mappedElementToClassName(mappedBlock) + "." + generator.getElementExtension(mappedBlock)>
-        </#if>
+        <#return mappedElementToRegistryEntry(mappedBlock) + generator.isBlock(mappedBlock)?then(".asItem()", "")>
     <#else>
         <#return mappedBlock + mappedBlock?contains("Blocks.")?then(".asItem()","")>
     </#if>
 </#function>
 
-<#function mappedElementToClassName mappedElement>
-    <#return generator.getElementPlainName(mappedElement) + generator.isRecipeTypeBlockOrBucket(mappedElement)?then("Block", "Item")>
+<#function mappedElementToRegistryEntry mappedElement>
+    <#return JavaModName + generator.isBlock(mappedElement)?then("Blocks", "Items") + "."
+    + generator.getRegistryNameFromFullName(mappedElement)?upper_case + transformExtension(mappedElement)?upper_case>
+</#function>
+
+<#function transformExtension mappedBlock>
+    <#return (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
+    + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
+    + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
+    + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
+    + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")>
 </#function>
 
 <#function mappedMCItemToIngameItemName mappedBlock>
@@ -61,11 +55,7 @@
         .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
         <#if customelement?has_content>
             <#return "\"item\": \"" + "${modid}:" + customelement
-            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
-            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
-            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
-            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")
+            + transformExtension(mappedBlock)
             + "\"">
         <#else>
             <#return "\"item\": \"minecraft:air\"">
@@ -89,12 +79,7 @@
         <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
         .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
         <#if customelement?has_content>
-            <#return "${modid}:" + customelement
-            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
-            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
-            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
-            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")>
+            <#return "${modid}:" + customelement + transformExtension(mappedBlock)>
         <#else>
             <#return "minecraft:air">
         </#if>

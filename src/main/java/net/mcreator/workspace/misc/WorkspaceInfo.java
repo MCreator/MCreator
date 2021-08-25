@@ -23,6 +23,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.types.Recipe;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
@@ -51,6 +52,10 @@ import java.util.stream.Collectors;
 
 	public boolean hasVariables() {
 		return workspace.getVariableElements().size() > 0;
+	}
+
+	public boolean hasSounds() {
+		return workspace.getSoundElements().size() > 0;
 	}
 
 	public boolean hasVariablesOfScope(String type) {
@@ -127,6 +132,22 @@ import java.util.stream.Collectors;
 			LOG.warn("Failed to list elements of non-existent type", e);
 			return Collections.emptyList();
 		}
+	}
+
+	public boolean hasElementsOfBaseType(BaseType baseType) {
+		for (ModElement modElement : workspace.getModElements()) {
+			GeneratableElement generatableElement = modElement.getGeneratableElement();
+			if (generatableElement instanceof ICommonType) {
+				Collection<BaseType> baseTypes = ((ICommonType) generatableElement).getBaseTypesProvided();
+				if (baseTypes.contains(baseType))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean hasElementsOfBaseType(String baseType) {
+		return hasElementsOfBaseType(BaseType.valueOf(baseType.toUpperCase(Locale.ENGLISH)));
 	}
 
 	public boolean hasElementsOfType(ModElementType<?> type) {

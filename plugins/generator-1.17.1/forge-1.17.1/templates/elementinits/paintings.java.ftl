@@ -6,7 +6,7 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class Paintings {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Paintings {
 
 	@SubscribeEvent public static void registerMotives(RegistryEvent.Register<Motive> event) {
 		<#list paintings as painting>

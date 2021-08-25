@@ -18,23 +18,24 @@ package ${package};
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod("${modid}")
-public class ${JavaModName} {
+@Mod("${modid}") public class ${JavaModName} {
 
 	public static final Logger LOGGER = LogManager.getLogger(${JavaModName}.class);
 
+	public static final String MODID = "${modid}";
+
 	private static final String PROTOCOL_VERSION = "1";
-	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation("${modid}", "${modid}"),
+	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID),
 		() -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 
 	public ${JavaModName}() {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
 
-		<#if w.hasElementsOfType("tab")>CreativeModeTabs.load();</#if>
+		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
 	}
 
 	private void init(FMLCommonSetupEvent event) {
-		<#if w.hasBrewingRecipes()>BrewingRecipes.load();</#if>
+		<#if w.hasBrewingRecipes()>${JavaModName}BrewingRecipes.load();</#if>
 	}
 
 }

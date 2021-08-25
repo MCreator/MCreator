@@ -5,4 +5,4 @@ localizationkeys:
 global_templates:
   - template: elementinits/tabs.java.ftl
     writer: java
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/CreativeModeTabs.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"

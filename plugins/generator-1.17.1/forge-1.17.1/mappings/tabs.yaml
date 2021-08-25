@@ -1,6 +1,6 @@
 _default: CreativeModeTab.TAB_MISC
 _mcreator_prefix: "CUSTOM:"
-_mcreator_map_template: "CreativeModeTabs.TAB_@NAME_UPPER"
+_mcreator_map_template: "@JavaModNameTabs.TAB_@REGISTRYNAME"
 No creative tab entry: null
 BUILDING_BLOCKS: CreativeModeTab.TAB_BUILDING_BLOCKS
 DECORATIONS: CreativeModeTab.TAB_DECORATIONS
