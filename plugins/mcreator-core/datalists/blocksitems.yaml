@@ -2211,7 +2211,7 @@
   type: block
   texture: MONSTER_EGG#5
 
-- Blocks.INFESTED_DEEPSLATE#6:
+- Blocks.MONSTER_EGG#6:
   readable_name: "Infested Deepslate"
   type: block
 
