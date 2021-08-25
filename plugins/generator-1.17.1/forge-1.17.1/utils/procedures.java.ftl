@@ -2,19 +2,19 @@
 
 <#macro procedureToCode name dependencies customVals={}>
     {
-		Map<String, Object> $_dependencies = new HashMap<>();
+		Map<String, Object> _dependencies = new HashMap<>();
 
         <#list dependencies as dependency>
             <#if !customVals[dependency.getName()]?? >
-	    	    $_dependencies.put("${dependency.getName()}",${dependency.getName()});
+	    	    _dependencies.put("${dependency.getName()}",${dependency.getName()});
             </#if>
         </#list>
 
         <#list customVals as key, value>
-        $_dependencies.put("${key}",${value});
+        _dependencies.put("${key}",${value});
         </#list>
 
-        ${(name)}Procedure.execute($_dependencies);
+        ${(name)}Procedure.execute(_dependencies);
 	}
 </#macro>
 

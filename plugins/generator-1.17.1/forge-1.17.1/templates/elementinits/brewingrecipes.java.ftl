@@ -13,7 +13,7 @@ package ${package}.init;
     <#assign recipes += [recipe.getGeneratableElement()]>
 </#list>
 
-public class BrewingRecipes {
+public class ${JavaModName}BrewingRecipes {
 
 	public static void load() {
         <#list recipes as recipe>

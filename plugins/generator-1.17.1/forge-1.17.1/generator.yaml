@@ -1,7 +1,7 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 basefeatures: []
 status: dev
-buildfileversion: 37.0.42
+buildfileversion: 37.0.44
 subversion: 1
 
 # gradle task definitions
@@ -32,9 +32,13 @@ base_templates:
   - template: modbase/variableslist.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModNameVariables.java"
     condition: hasVariables()
+  - template: elementinits/sounds.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
+    condition: hasSounds()
   - template: modbase/sounds.json.ftl
     writer: json
     name: "@MODASSETSROOT/sounds.json"
+    condition: hasSounds()
   - template: modbase/pack.mcmeta.ftl
     writer: json
     name: "@RESROOT/pack.mcmeta"

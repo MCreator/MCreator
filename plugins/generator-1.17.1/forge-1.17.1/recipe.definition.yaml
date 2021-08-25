@@ -37,4 +37,4 @@ global_templates:
     writer: java
     condition: hasBrewingRecipes()
     deleteWhenConditionFalse: true
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/BrewingRecipes.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBrewingRecipes.java"

@@ -1201,29 +1201,29 @@ import java.util.stream.Collectors;
 	}
 
 	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
-		List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu).stream()
-				.map(GeneratorTemplate::getFile).collect(Collectors.toList());
+		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu);
 
 		if (modElementFiles.size() > 1) {
 			JPopupMenu codeDropdown = new JPopupMenu();
 			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
 			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 
-			for (File modElementFile : modElementFiles) {
+			for (GeneratorTemplate modElementFile : modElementFiles) {
 				JMenuItem item = new JMenuItem(
-						"<html>" + modElementFile.getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
-								.getWorkspaceFolder().toPath().relativize(modElementFile.toPath()));
-				item.setIcon(FileIcons.getIconForFile(modElementFile));
+						"<html>" + modElementFile.getFile().getName() + "<br><small color=#666666>"
+								+ mcreator.getWorkspace().getWorkspaceFolder().toPath()
+								.relativize(modElementFile.getFile().toPath()));
+				item.setIcon(FileIcons.getIconForFile(modElementFile.getFile()));
 				item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 				item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 				item.setIconTextGap(8);
 				item.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
-				item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, modElementFile));
+				item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, modElementFile.getFile()));
 				codeDropdown.add(item);
 			}
 			codeDropdown.show(component, x, y);
 		} else if (modElementFiles.size() == 1) {
-			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0));
+			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0).getFile());
 		}
 	}
 
