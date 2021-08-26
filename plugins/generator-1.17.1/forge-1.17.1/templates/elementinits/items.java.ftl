@@ -10,11 +10,11 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Items {
 
+    private static final List<Item> REGISTRY = new ArrayList();
+
     <#list items as item>
     public static Item ${item.getModElement().geRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
     </#list>
-
-    private static final List<Item> REGISTRY = new ArrayList();
 
     private static Item register(Item item) {
 		REGISTRY.add(item);
