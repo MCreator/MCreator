@@ -7,7 +7,7 @@
 		world.setBlock(_pos, _bs.setValue(_dp, _dir), 3);
 	} else {
 		_property = _bs.getBlock().getStateDefinition().getProperty("axis");
-		if (_property != null)
-			world.setBlock(_pos, _bs.setValue((EnumProperty<Direction.Axis>) _property, _dir.getAxis()), 3);
+		if (_property instanceof EnumProperty _ap && _ap.getPossibleValues().contains(_dir.getAxis()))
+			world.setBlock(_pos, _bs.setValue(_ap, _dir.getAxis()), 3);
 	}
 }
