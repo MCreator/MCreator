@@ -34,6 +34,7 @@
 
 package ${package}.entity;
 
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.block.material.Material;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Entity extends ${JavaModName}Elements.ModElement {

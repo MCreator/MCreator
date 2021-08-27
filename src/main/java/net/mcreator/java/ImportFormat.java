@@ -52,12 +52,14 @@ class ImportFormat {
 
 				if (i == 0)
 					spos = imp.getNameStartOffset();
-				else if (i == currentImports.size() - 1)
+
+				if (i == currentImports.size() - 1)
 					epos = imp.getNameEndOffset();
 
 				if (!imp.isWildcard())
 					imports.add(imp.getName());
 			}
+
 			String before, after;
 			if (epos != 0) { // we found imports
 				before = code.substring(0, spos);
