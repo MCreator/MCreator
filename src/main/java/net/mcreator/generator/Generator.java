@@ -364,11 +364,12 @@ public class Generator implements IGenerator, Closeable {
 			List<GeneratorTemplate> globalTemplatesList = getModElementGlobalTemplatesList(type, performFSTasks,
 					templateID);
 
-			List<ModElement> elementsList = workspace.getWorkspaceInfo().getElementsOfType(type);
+			List<GeneratableElement> elementsList = workspace.getWorkspaceInfo().getElementsOfType(type).stream()
+					.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement)
+					.collect(Collectors.toList());
 
 			if (!elementsList.isEmpty()) {
-				globalTemplatesList.forEach(e -> e.addDataModelEntry(type.getRegistryName() + "s",
-						elementsList.stream().map(ModElement::getGeneratableElement).collect(Collectors.toList())));
+				globalTemplatesList.forEach(e -> e.addDataModelEntry(type.getRegistryName() + "s", elementsList));
 
 				files.addAll(globalTemplatesList);
 			} else if (performFSTasks) { // if no elements of this type are present, delete the global template for that type
