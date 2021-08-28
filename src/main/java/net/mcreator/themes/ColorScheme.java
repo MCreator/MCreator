@@ -28,16 +28,8 @@ import java.awt.*;
  * can also defines the style and colors of {@link net.mcreator.ui.blockly.BlocklyPanel} and {@link net.mcreator.ui.ide.RSyntaxTextAreaStyler}
  * if it is defined inside a plugin.</p>
  */
-public class ColorScheme {
-
-	private String backgroundColor;
-	private String altBackgroundColor;
-	private String secondAltBackgroundColor;
-
-	private String foregroundColor;
-	private String altForegroundColor;
-
-	@Nullable String interfaceAccentColor;
+public record ColorScheme(String backgroundColor, String altBackgroundColor, String secondAltBackgroundColor,
+						  String foregroundColor, String altForegroundColor, @Nullable String interfaceAccentColor) {
 
 	/**
 	 * @return Background of UI panels
