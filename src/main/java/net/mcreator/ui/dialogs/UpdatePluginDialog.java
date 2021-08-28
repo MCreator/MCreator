@@ -45,13 +45,13 @@ public class UpdatePluginDialog {
 
 			for (PluginUpdateInfo pluginUpdateInfo : PluginLoader.INSTANCE.getPluginUpdates()) {
 				JLabel label = L10N.label("dialog.plugin_update_notify.version_message",
-						pluginUpdateInfo.getPlugin().getInfo().getName(),
-						pluginUpdateInfo.getPlugin().getInfo().getVersion(), pluginUpdateInfo.getNewVersion());
+						pluginUpdateInfo.plugin().getInfo().name(),
+						pluginUpdateInfo.plugin().getInfo().getVersion(), pluginUpdateInfo.newVersion());
 
 				JButton update = L10N.button("dialog.plugin_update_notify.update");
 				update.addActionListener(e -> DesktopUtils.browseSafe(
-						MCreatorApplication.SERVER_DOMAIN + "/node/" + pluginUpdateInfo.getPlugin().getInfo()
-								.getPluginPageID()));
+						MCreatorApplication.SERVER_DOMAIN + "/node/" + pluginUpdateInfo.plugin().getInfo()
+								.pluginPageID()));
 
 				plugins.add(PanelUtils.westAndEastElement(label, update));
 			}

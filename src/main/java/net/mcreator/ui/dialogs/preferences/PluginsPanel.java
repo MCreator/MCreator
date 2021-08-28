@@ -115,26 +115,26 @@ class PluginsPanel {
 
 			ComponentUtils.deriveFont(this, 12);
 
-			if ((value.getInfo().getAuthor() != null) && (value.getInfo().getName() != null) && (value.getInfo()
+			if ((value.getInfo().author() != null) && (value.getInfo().name() != null) && (value.getInfo()
 					.getCredits().equals("None"))) {
-				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: "
-						+ value.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", loaded: "
+				setText("<html>" + value.getInfo().name() + "<br><small>ID: " + value.getID() + ", version: "
+						+ value.getPluginVersion() + ", author: " + value.getInfo().author() + ", loaded: "
 						+ (value.isLoaded() ?
 						"<html><font color=#a7ed1a>yes</font>" :
 						"<html><font color=#f24122>no</font>"));
-			} else if (value.getInfo().getAuthor() != null)
-				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: "
-						+ value.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", credit: "
+			} else if (value.getInfo().author() != null)
+				setText("<html>" + value.getInfo().name() + "<br><small>ID: " + value.getID() + ", version: "
+						+ value.getPluginVersion() + ", author: " + value.getInfo().author() + ", credit: "
 						+ value.getInfo().getCredits() + ", loaded: " + (value.isLoaded() ?
 						"<html><font color=#a7ed1a>yes</font>" :
 						"<html><font color=#f24122>no</font>"));
 			else
-				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: "
+				setText("<html>" + value.getInfo().name() + "<br><small>ID: " + value.getID() + ", version: "
 						+ value.getPluginVersion() + ", loaded: " + (value.isLoaded() ?
 						"<html><font color=#a7ed1a>yes</font>" :
 						"<html><font color=#f24122>no</font>"));
 
-			setToolTipText(value.getInfo().getDescription());
+			setToolTipText(value.getInfo().description());
 			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 			return this;
 		}
