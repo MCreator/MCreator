@@ -119,6 +119,8 @@ task initialSetup(type: DefaultTask, group: 'setup') {
     }
 }
 
-idea.project.settings.taskTriggers {
-    afterSync initialSetup
+if (idea.project != null) {
+    idea.project.settings.taskTriggers {
+        afterSync initialSetup
+    }
 }
