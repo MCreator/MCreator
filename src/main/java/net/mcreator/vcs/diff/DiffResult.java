@@ -25,29 +25,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DiffResult<T> {
-
-	private final Set<T> changed;
-	private final Set<T> removed;
-	private final Set<T> added;
-
-	DiffResult(Set<T> changed, Set<T> removed, Set<T> added) {
-		this.changed = changed;
-		this.removed = removed;
-		this.added = added;
-	}
-
-	public Set<T> getChanged() {
-		return changed;
-	}
-
-	public Set<T> getRemoved() {
-		return removed;
-	}
-
-	public Set<T> getAdded() {
-		return added;
-	}
+public record DiffResult<T>(Set<T> changed, Set<T> removed, Set<T> added) {
 
 	List<AffectedObjectWithType<T>> getAffected() {
 		List<AffectedObjectWithType<T>> retval = new ArrayList<>();

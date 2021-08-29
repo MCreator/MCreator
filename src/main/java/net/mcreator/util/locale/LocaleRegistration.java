@@ -20,4 +20,4 @@ package net.mcreator.util.locale;
 
 import java.util.ResourceBundle;
 
-public record LocaleRegistration (ResourceBundle resourceBundle, int percentage) {}
+public record LocaleRegistration(ResourceBundle resourceBundle, int percentage) {}

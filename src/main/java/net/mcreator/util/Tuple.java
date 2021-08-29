@@ -19,4 +19,4 @@
 
 package net.mcreator.util;
 
-public record Tuple<X, Y> (X x, Y y) {}
+public record Tuple<X, Y>(X x, Y y) {}

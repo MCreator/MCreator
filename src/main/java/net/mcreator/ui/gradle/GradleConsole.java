@@ -759,5 +759,5 @@ public class GradleConsole extends JPanel {
 		scrollToBottom();
 	}
 
-	public static record GradleTaskResult (String taskContents, int statusByMCreator) {}
+	public static record GradleTaskResult(String taskContents, int statusByMCreator) {}
 }
