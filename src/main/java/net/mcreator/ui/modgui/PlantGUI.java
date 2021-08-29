@@ -172,8 +172,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
-				L10N.t("elementgui.plant.event_on_added"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
+				L10N.t("elementgui.plant.event_on_added"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/blockstate:blockstate/oldState:blockstate/moving:logic"));
 		onNeighbourBlockChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
 				L10N.t("elementgui.common.event_on_neighbour_block_changes"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
@@ -201,7 +201,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onRightClicked = new ProcedureSelector(this.withEntry("block/when_right_clicked"), mcreator,
 				L10N.t("elementgui.plant.event_on_right_clicked"), VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE,
 				Dependency.fromString(
-						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate")).makeReturnValueOptional();
+						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number")).makeReturnValueOptional();
 
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
 				L10N.t("elementgui.plant.condition_additional_placing"), VariableTypeLoader.BuiltInTypes.LOGIC,

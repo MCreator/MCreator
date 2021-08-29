@@ -1,7 +1,7 @@
-defaultvalue: NORTH # unmapped, map in scopes code
+defaultvalue: Direction.NORTH
 scopes:
   local:
-    init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${generator.map(var.getType().getDefaultValue(generator.getWorkspace()), "directions")};
+    init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};
     get: ${name}
     set: ${name} = (${javaType}) ${value};
   global_session:
@@ -29,14 +29,14 @@ scopes:
     read: instance.${var.getName()} = Direction.byIndex(nbt.getInt("${var.getName()}"));
     write: nbt.putInt("${var.getName()}" , instance.${var.getName()}.getIndex());
     get: |
-      ((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+      ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
     set: |
       {
         Direction _setval = (Direction)${value};
-        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+        ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
           capability.${name} = _setval;
-          capability.syncPlayerVariables(entity);
+          capability.syncPlayerVariables(${entity});
         });
       }
   player_persistent:
@@ -44,13 +44,13 @@ scopes:
     read: instance.${var.getName()} = Direction.byIndex(nbt.getInt("${var.getName()}"));
     write: nbt.putInt("${var.getName()}" , instance.${var.getName()}.getIndex());
     get: |
-      ((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+      ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
     set: |
       {
         Direction _setval = (Direction)${value};
-        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+        ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
           capability.${name} = _setval;
-          capability.syncPlayerVariables(entity);
+          capability.syncPlayerVariables(${entity});
         });
       }

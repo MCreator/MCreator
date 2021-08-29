@@ -27,6 +27,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -124,6 +125,7 @@ public class ElementUtil {
 	public static List<DataListEntry> loadAllBiomes(Workspace workspace) {
 		List<DataListEntry> biomes = getCustomElementsOfType(workspace, BaseType.BIOME);
 		biomes.addAll(DataListLoader.loadDataList("biomes"));
+		Collections.sort(biomes);
 		return biomes;
 	}
 
@@ -144,6 +146,7 @@ public class ElementUtil {
 	public static List<DataListEntry> loadAllEntities(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENTITY);
 		retval.addAll(DataListLoader.loadDataList("entities"));
+		Collections.sort(retval);
 		return retval;
 	}
 
@@ -220,7 +223,7 @@ public class ElementUtil {
 			retval.add("CUSTOM:" + soundElement.getName());
 		}
 
-		retval.addAll(DataListLoader.loadDataList("sounds").stream().map(DataListEntry::getName)
+		retval.addAll(DataListLoader.loadDataList("sounds").stream().sorted().map(DataListEntry::getName)
 				.collect(Collectors.toList()));
 
 		return retval.toArray(new String[0]);

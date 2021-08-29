@@ -26,6 +26,7 @@ import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.util.DefaultExceptionHandler;
 import net.mcreator.util.LoggingOutputStream;
 import net.mcreator.util.MCreatorVersionNumber;
+import net.mcreator.util.TerribleModuleHacks;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,7 +61,8 @@ public class Launcher {
 		System.setOut(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDOUT"), Level.INFO), true));
 		Thread.setDefaultUncaughtExceptionHandler(new DefaultExceptionHandler());
 
-		openModuleExports();
+		TerribleModuleHacks.openAllUnnamed();
+		TerribleModuleHacks.openMCreatorRequirements();
 
 		try {
 			Properties conf = new Properties();

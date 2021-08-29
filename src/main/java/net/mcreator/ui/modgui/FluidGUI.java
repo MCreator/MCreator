@@ -142,9 +142,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.block.event_on_block_destroyed_by_explosion"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		flowCondition = new ProcedureSelector(this.withEntry("fluid/flow_condition"), mcreator,
-				L10N.t("elementgui.fluid.event_flow_condition"), VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate/intostate:blockstate"))
-				.setDefaultName(L10N.t("condition.common.no_additional")).makeInline();
+				L10N.t("elementgui.fluid.event_flow_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate/intostate:blockstate")).setDefaultName(
+				L10N.t("condition.common.no_additional")).makeInline();
 		beforeReplacingBlock = new ProcedureSelector(this.withEntry("fluid/before_replacing_block"), mcreator,
 				L10N.t("elementgui.fluid.event_before_replacing_block"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));

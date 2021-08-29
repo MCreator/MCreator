@@ -59,23 +59,11 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 	private final JButton exp;
 	private final JButton imp;
 
-	private final Font utf8Font;
-
 	WorkspacePanelLocalizations(WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
 		setOpaque(false);
 
 		this.workspacePanel = workspacePanel;
-
-		Font utf8Fontimpl = new Font("Sans-Serif", Font.PLAIN, 13);
-		try {
-			//noinspection ConstantConditions
-			utf8Fontimpl = Font.createFont(Font.TRUETYPE_FONT,
-							getClass().getClassLoader().getResourceAsStream("net/mcreator/ui/res/notosans.ttf"))
-					.deriveFont(13.0f);
-		} catch (Exception ignored) {
-		}
-		utf8Font = utf8Fontimpl;
 
 		pane = new JTabbedPane();
 		pane.setForeground(Color.white);
@@ -162,14 +150,33 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 									" - values in en_us might get overwritten!" :
 									" - mappings can be edited here") }, 0));
 
-			elements.setFont(utf8Font);
+			final Font textFont = new Font("Sans-Serif", Font.PLAIN, 13);
+			elements.setFont(textFont);
 			elements.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
 				@Override
 				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 						boolean hasFocus, int row, int column) {
 					var c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-					c.setFont(utf8Font);
+					c.setFont(textFont);
 					return c;
+				}
+			});
+			elements.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()) {
+				final JComponent component = new JTextField();
+
+				{
+					component.setFont(textFont);
+				}
+
+				@Override
+				public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
+						int rowIndex, int vColIndex) {
+					((JTextField) component).setText((String) value);
+					return component;
+				}
+
+				@Override public Object getCellEditorValue() {
+					return ((JTextField) component).getText();
 				}
 			});
 

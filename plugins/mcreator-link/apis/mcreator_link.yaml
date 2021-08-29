@@ -12,7 +12,7 @@ forge-1.15.2:
 
     compileJava.dependsOn mcreatorLink
 
-    dependencies { compile files("lib/mcreator_link.jar") }
+    dependencies { implementation files("lib/mcreator_link.jar") }
 
 forge-1.16.5:
   required_when_enabled: true
@@ -26,4 +26,4 @@ forge-1.16.5:
 
     compileJava.dependsOn mcreatorLink
 
-    dependencies { compile files("lib/mcreator_link.jar") }
+    dependencies { implementation files("lib/mcreator_link.jar") }

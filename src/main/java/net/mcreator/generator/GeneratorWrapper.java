@@ -78,6 +78,24 @@ import java.util.stream.Collectors;
 		}
 	}
 
+	public String getRegistryNameFromFullName(String elementName) {
+		try {
+			return generator.getWorkspace().getModElementByName(getElementPlainName(elementName)).getRegistryName();
+		} catch (Exception e) {
+			generator.getLogger().warn("Failed to determine recipe type for: " + elementName, e);
+			return NameMapper.UNKNOWN_ELEMENT;
+		}
+	}
+
+	public boolean isBlock(String elementName) {
+		String ext = getElementExtension(elementName);
+		if (ext.equals("helmet") || ext.equals("body") || ext.equals("legs") || ext.equals("boots") || ext.equals(
+				"bucket"))
+			return false;
+
+		return this.getRecipeElementType(elementName) == RecipeType.BLOCK;
+	}
+
 	public boolean isRecipeTypeBlockOrBucket(String elementName) {
 		RecipeType recipeType = this.getRecipeElementType(elementName);
 		return recipeType == RecipeType.BLOCK || recipeType == RecipeType.BUCKET;
