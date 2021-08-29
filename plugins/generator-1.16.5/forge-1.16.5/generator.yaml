@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 basefeatures: [model_json, model_java, model_obj]
-status: stable
+status: lts
 buildfileversion: 36.2.0
 subversion: 1.0.3
 
@@ -37,24 +37,13 @@ base_templates:
   - template: modbase/sounds.json.ftl
     writer: json
     name: "@MODASSETSROOT/sounds.json"
+    condition: hasSounds()
   - template: modbase/pack.mcmeta.ftl
     writer: json
     name: "@RESROOT/pack.mcmeta"
   - template: modbase/mods.toml.ftl
     writer: file
     name: "@RESROOT/META-INF/mods.toml"
-  - template: json/fluidtag.json.ftl
-    writer: json
-    condition: hasFluids()
-    deleteWhenConditionFalse: true
-    variables: "type=water"
-    name: "@RESROOT/data/minecraft/tags/fluids/water.json"
-  - template: json/fluidtag.json.ftl
-    writer: json
-    condition: hasFluids()
-    deleteWhenConditionFalse: true
-    variables: "type=lava"
-    name: "@RESROOT/data/minecraft/tags/fluids/lava.json"
 
 language_file:
   format: json

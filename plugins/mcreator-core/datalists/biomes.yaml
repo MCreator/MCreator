@@ -156,3 +156,7 @@
   readable_name: "Warped forest"
 - basalt_deltas:
   readable_name: "Basalt deltas"
+- dripstone_caves:
+  readable_name: "Driptstone caves"
+- lush_caves:
+  readable_name: "Lush caves"

@@ -32,7 +32,10 @@
 
 package ${package}.world.biome;
 
-import net.minecraft.block.material.Material;import java.util.ArrayList;import java.util.HashMap;
+import net.minecraftforge.common.BiomeManager;
+import net.minecraft.block.material.Material;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Biome extends ${JavaModName}Elements.ModElement{
 

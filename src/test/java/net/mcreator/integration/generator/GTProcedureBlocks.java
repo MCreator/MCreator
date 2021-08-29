@@ -111,8 +111,6 @@ public class GTProcedureBlocks {
 
 				if (skip) {
 					// We skip API specific blocks without any warnings logged as we do not intend to test them anyway
-					//LOG.warn("[" + generatorName + "] Skipping API specific procedure block: "
-					//		+ procedureBlock.machine_name);
 					continue;
 				}
 			}
@@ -251,7 +249,7 @@ public class GTProcedureBlocks {
 
 			// add additional xml to the block definition
 			testXML = testXML.replace("<block type=\"" + procedureBlock.machine_name + "\">",
-					"<block type=\"" + procedureBlock.machine_name + "\">" + additionalXML.toString());
+					"<block type=\"" + procedureBlock.machine_name + "\">" + additionalXML);
 
 			Procedure procedure = new Procedure(modElement);
 
@@ -297,12 +295,12 @@ public class GTProcedureBlocks {
 	}
 
 	public static String wrapWithBaseTestXML(String customXML) {
-		return "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-				+ "<variables><variable type=\"Number\" id=\"test\">test</variable>"
+		return "<xml xmlns=\"https://developers.google.com/blockly/xml\">" + "<variables>"
+				+ "<variable type=\"Number\" id=\"test\">test</variable>"
 				+ "<variable type=\"Boolean\" id=\"flag\">flag</variable>"
-				+ "<variable type=\"MCItem\" id=\"stackvar\">stackvar</variable></variables>"
+				+ "<variable type=\"MCItem\" id=\"stackvar\">stackvar</variable>" + "</variables>"
 				+ "<block type=\"event_trigger\" deletable=\"false\" x=\"59\" y=\"38\">"
-				+ "<field name=\"trigger\">no_ext_trigger</field><next><block type=\"variables_set_logic\">"
+				+ "<field name=\"trigger\">no_ext_trigger</field>" + "<next><block type=\"variables_set_logic\">"
 				+ "<field name=\"VAR\">local:flag</field><value name=\"VAL\"><block type=\"logic_negate\">"
 				+ "<value name=\"BOOL\"><block type=\"variables_get_logic\"><field name=\"VAR\">local:flag</field>"
 				+ "</block></value></block></value><next><block type=\"variables_set_number\">"
