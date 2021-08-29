@@ -71,10 +71,10 @@ public class PluginLoader extends URLClassLoader {
 		List<String> idList = pluginsLoadList.stream().map(Plugin::getID).collect(Collectors.toList());
 
 		for (Plugin plugin : pluginsLoadList) {
-			if (plugin.getInfo().dependencies() != null) {
-				if (!idList.containsAll(plugin.getInfo().dependencies())) {
-					LOG.warn(plugin.getInfo().name() + " can not be loaded. The plugin needs " + plugin.getInfo()
-							.dependencies());
+			if (plugin.getInfo().getDependencies() != null) {
+				if (!idList.containsAll(plugin.getInfo().getDependencies())) {
+					LOG.warn(plugin.getInfo().getName() + " can not be loaded. The plugin needs " + plugin.getInfo()
+							.getDependencies());
 					plugin.loaded = false;
 					continue;
 				}
@@ -195,10 +195,10 @@ public class PluginLoader extends URLClassLoader {
 	private void checkForPluginUpdates() {
 		if (MCreatorApplication.isInternet) {
 			pluginUpdates.addAll(plugins.stream().parallel().map(plugin -> {
-				if (plugin.getInfo().updateJSONURL() != null) {
+				if (plugin.getInfo().getUpdateJSONURL() != null) {
 					if (!plugin.getInfo().getVersion().equals(PluginInfo.VERSION_NOT_SPECIFIED)) {
 						try {
-							String updateJSON = WebIO.readURLToString(plugin.getInfo().updateJSONURL());
+							String updateJSON = WebIO.readURLToString(plugin.getInfo().getUpdateJSONURL());
 							String version = JsonParser.parseString(updateJSON).getAsJsonObject().get(plugin.getID())
 									.getAsJsonObject().get("latest").getAsString();
 							if (!version.equals(plugin.getPluginVersion())) {
