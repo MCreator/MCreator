@@ -33,12 +33,12 @@
 
 package ${package}.village;
 
-import net.minecraft.entity.merchant.villager.VillagerTrades;
+import net.minecraft.world.entity.npc.VillagerTrades;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public class ${name}Trade {
 
 	@SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
-		Int2ObjectMap<List<VillagerTrades.ITrade>> trades = event.getTrades();
+		Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
 
     	<#list data.tradeEntries as tradeEntry>
 		if (event.getType() == ${tradeEntry.tradeEntry}) {
@@ -106,7 +106,7 @@ import net.minecraft.entity.merchant.villager.VillagerTrades;
 			return this.price != null && this.forSale != null;
 		}
 
-		public VillagerTrades.ITrade build() {
+		public VillagerTrades.ItemListing build() {
 			return (entity, random) -> !this.canBuild()
 			? null
 			: new MerchantOffer(this.price.apply(random), this.price2.apply(random), this.forSale.apply(random), this.maxTrades, this.xp,
