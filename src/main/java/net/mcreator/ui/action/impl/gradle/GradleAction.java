@@ -19,6 +19,7 @@
 package net.mcreator.ui.action.impl.gradle;
 
 import net.mcreator.gradle.GradleStateListener;
+import net.mcreator.gradle.GradleTaskResult;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.gradle.GradleConsole;
@@ -37,7 +38,7 @@ public class GradleAction extends BasicAction {
 				setEnabled(false);
 			}
 
-			@Override public void taskFinished(GradleConsole.GradleTaskResult result) {
+			@Override public void taskFinished(GradleTaskResult result) {
 				setEnabled(true);
 			}
 		});

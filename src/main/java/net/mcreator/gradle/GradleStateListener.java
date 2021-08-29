@@ -18,12 +18,10 @@
 
 package net.mcreator.gradle;
 
-import net.mcreator.ui.gradle.GradleConsole;
-
 public interface GradleStateListener {
 
 	void taskStarted(String taskName);
 
-	void taskFinished(GradleConsole.GradleTaskResult result);
+	void taskFinished(GradleTaskResult result);
 
 }

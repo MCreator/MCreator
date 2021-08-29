@@ -22,6 +22,7 @@ import net.mcreator.Launcher;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleStateListener;
+import net.mcreator.gradle.GradleTaskResult;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
@@ -103,7 +104,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				mv.disableRemoving();
 			}
 
-			@Override public void taskFinished(GradleConsole.GradleTaskResult result) {
+			@Override public void taskFinished(GradleTaskResult result) {
 				mv.enableRemoving();
 			}
 		});
