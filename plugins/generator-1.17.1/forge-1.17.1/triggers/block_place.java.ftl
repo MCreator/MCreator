@@ -14,6 +14,6 @@
 		dependencies.put("blockstate",event.getState());
 		dependencies.put("placedagainst",event.getPlacedAgainst());
 		dependencies.put("event",event);
-		executeProcedure(dependencies);
+		execute(dependencies);
 	}
 }
