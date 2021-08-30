@@ -391,7 +391,7 @@ import net.minecraft.block.material.Material;
 				<@procedureOBJToCode data.whenMobIsHurt/>
 			</#if>
 			<#if data.immuneToArrows>
-				if (source.getImmediateSource() instanceof ArrowEntity)
+				if (source.getImmediateSource() instanceof AbstractArrowEntity)
 					return false;
 			</#if>
 			<#if data.immuneToPlayer>
