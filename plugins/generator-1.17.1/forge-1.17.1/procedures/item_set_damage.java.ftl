@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-(${mappedMCItemToItemStackCode(input$item, 1)}).getDamageValue((int) ${input$amount});
+(${mappedMCItemToItemStackCode(input$item, 1)}).setDamageValue((int) ${input$amount});
