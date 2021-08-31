@@ -30,7 +30,7 @@
 <#-- @formatter:off -->
 package ${package}.procedures;
 
-<#if trigger_code??>
+<#if trigger_code?has_content>
 ${trigger_code}
 <#else>
 public class ${name}Procedure {
