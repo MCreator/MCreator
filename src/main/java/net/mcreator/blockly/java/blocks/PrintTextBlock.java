@@ -25,14 +25,25 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PrintTextBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		org.w3c.dom.Element element = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (element != null) {
-			master.append("System.out.println(");
-			master.processOutputBlock(element);
-			master.append(");");
+			if (master.getTemplateGenerator() != null) {
+				if (master.getTemplateGenerator().hasTemplate("_print.java.ftl")) {
+					Map<String, Object> dataModel = new HashMap<>();
+					dataModel.put("value", BlocklyToCode.directProcessOutputBlock(master, element));
+					master.append(master.getTemplateGenerator().generateFromTemplate("_print.java.ftl", dataModel));
+				} else {
+					master.append("System.out.println(");
+					master.processOutputBlock(element);
+					master.append(");");
+				}
+			}
 		} else {
 			master.getCompileNotes()
 					.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Skipped empty print block."));

@@ -82,6 +82,14 @@ public class TemplateGenerator {
 		return generateTemplateFromString(template, dataModel);
 	}
 
+	public boolean hasTemplate(String templateName) {
+		try {
+			return templateGeneratorConfiguration.getConfiguration().getTemplate(templateName) != null;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
 	private String generateTemplate(String templateName, Map<String, Object> dataModel)
 			throws TemplateGeneratorException {
 		try {
