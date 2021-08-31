@@ -32,6 +32,7 @@ public abstract class Slot extends GUIComponent {
 
 	public Color color;
 	public int id;
+	public int numberLimit;
 	public boolean disableStackInteraction;
 
 	public boolean dropItemsWhenNotBound;
@@ -48,12 +49,13 @@ public abstract class Slot extends GUIComponent {
 		this.dropItemsWhenNotBound = true;
 	}
 
-	public Slot(int id, String name, int x, int y, Color color, boolean disableStackInteraction,
+	public Slot(int id, String name, int x, int y, Color color, int numberLimit, boolean disableStackInteraction,
 			boolean dropItemsWhenNotBound, Procedure onSlotChanged, Procedure onTakenFromSlot,
 			Procedure onStackTransfer) {
 		super(name, x, y);
 		this.color = color;
 		this.id = id;
+		this.numberLimit = numberLimit;
 		this.disableStackInteraction = disableStackInteraction;
 		this.dropItemsWhenNotBound = dropItemsWhenNotBound;
 		this.onSlotChanged = onSlotChanged;

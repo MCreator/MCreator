@@ -70,6 +70,9 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog {
 		slotID.setText("0");
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_id"), slotID));
 
+		JSpinner numberLimit = new JSpinner(new SpinnerNumberModel(64, 0, Integer.MAX_VALUE, 1));
+		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_limit_stack_number"), numberLimit));
+
 		JCheckBox disableStackInteraction = L10N.checkbox("dialog.gui.slot_disable_player_interaction");
 		options.add(PanelUtils.join(FlowLayout.LEFT, disableStackInteraction));
 
@@ -114,6 +117,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog {
 			eh.setSelectedProcedure(slot.onSlotChanged);
 			eh2.setSelectedProcedure(slot.onTakenFromSlot);
 			eh3.setSelectedProcedure(slot.onStackTransfer);
+			numberLimit.setValue(slot.numberLimit);
 			disableStackInteraction.setSelected(slot.disableStackInteraction);
 			dropItemsWhenNotBound.setSelected(slot.dropItemsWhenNotBound);
 		} else {
@@ -140,7 +144,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog {
 					editor.editor.setPositionDefinedListener(e1 -> editor.editor.addComponent(setEditingComponent(
 							new OutputSlot(slotIDnum, "Slot #" + slotIDnum, editor.editor.newlyAddedComponentPosX,
 									editor.editor.newlyAddedComponentPosY,
-									color.getColor().equals(Color.white) ? null : color.getColor(),
+									color.getColor().equals(Color.white) ? null : color.getColor(), (int) numberLimit.getValue(),
 									disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
 									eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
 									eh3.getSelectedProcedure()))));
@@ -148,7 +152,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog {
 					int idx = editor.components.indexOf(slot);
 					editor.components.remove(slot);
 					OutputSlot slotNew = new OutputSlot(slotIDnum, "Slot #" + slotIDnum, slot.getX(), slot.getY(),
-							color.getColor().equals(Color.white) ? null : color.getColor(),
+							color.getColor().equals(Color.white) ? null : color.getColor(), (int) numberLimit.getValue(),
 							disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
 							eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure());
 					editor.components.add(idx, slotNew);

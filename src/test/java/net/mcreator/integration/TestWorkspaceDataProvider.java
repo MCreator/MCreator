@@ -510,17 +510,17 @@ public class TestWorkspaceDataProvider {
 				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
 				components.add(new Button("button4", 10, 10, "button4", 100, 200, new Procedure("procedure2"),
 						new Procedure("condition4")));
-				components.add(new InputSlot(0, "slot1", 20, 30, Color.red, _true, _true, new Procedure("procedure3"),
+				components.add(new InputSlot(0, "slot1", 20, 30, Color.red, 64, _true, _true, new Procedure("procedure3"),
 						new Procedure("procedure1"), new Procedure("procedure2"),
 						new MItemBlock(modElement.getWorkspace(), "")));
 				components.add(
-						new InputSlot(4, "slot2", 20, 30, Color.white, !_true, !_true, new Procedure("procedure4"),
+						new InputSlot(4, "slot2", 20, 30, Color.white, 32, !_true, !_true, new Procedure("procedure4"),
 								null, null, new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
 								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName())));
 				components.add(
-						new OutputSlot(5, "slot out", 10, 20, Color.black, !_true, _true, new Procedure("procedure1"),
+						new OutputSlot(5, "slot out", 10, 20, Color.black, 64, !_true, _true, new Procedure("procedure1"),
 								new Procedure("procedure2"), new Procedure("procedure3")));
-				components.add(new OutputSlot(6, "sot", 243, 563, Color.black, _true, _true, null, null, null));
+				components.add(new OutputSlot(6, "sot", 243, 563, Color.black, 32, _true, _true, null, null, null));
 				components.add(new TextField("text1", 0, 10, 100, 20, "Input value ..."));
 				components.add(new TextField("text2", 55, 231, 90, 20, ""));
 				components.add(new Checkbox("checkbox1", 100, 100, "Text", new Procedure("condition1")));
