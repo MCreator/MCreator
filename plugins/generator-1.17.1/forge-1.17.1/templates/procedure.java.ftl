@@ -30,9 +30,11 @@
 <#-- @formatter:off -->
 package ${package}.procedures;
 
+<#if trigger_code??>
+${trigger_code}
+<#else>
 public class ${name}Procedure {
-
-	${trigger_code}
+</#if>
 
 	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> execute(Map<String, Object> dependencies) {
 		<#list dependencies as dependency>

@@ -1,4 +1,4 @@
-@Mod.EventBusSubscriber private static class GlobalTrigger {
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
 		Entity entity = event.getEntity();
 		LevelAccessor world = event.getWorld();
@@ -16,4 +16,3 @@
 		dependencies.put("event",event);
 		execute(dependencies);
 	}
-}

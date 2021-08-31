@@ -1,4 +1,4 @@
-@Mod.EventBusSubscriber private static class GlobalTrigger {
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onBonemeal(BonemealEvent event){
 		Player entity=event.getPlayer();
 		double i=event.getPos().getX();
@@ -17,4 +17,3 @@
 		dependencies.put("event",event);
 		execute(dependencies);
 	}
-}
