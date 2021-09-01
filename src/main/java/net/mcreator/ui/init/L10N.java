@@ -53,11 +53,11 @@ public class L10N {
 		selectedLocale = null;
 
 		if (supportedLocales.containsKey(getLocale())) {
-			rb = supportedLocales.get(getLocale()).getResourceBundle();
+			rb = supportedLocales.get(getLocale()).resourceBundle();
 		} else {
 			LOG.warn("Locale " + getLocale() + " is not supported. Falling back to default locale.");
 
-			rb = supportedLocales.get(DEFAULT_LOCALE).getResourceBundle();
+			rb = supportedLocales.get(DEFAULT_LOCALE).resourceBundle();
 		}
 
 		LOG.info("Setting default locale to: " + getLocale());
@@ -92,7 +92,7 @@ public class L10N {
 	public static int getLocaleSupport(Locale locale) {
 		LocaleRegistration localeRegistration = supportedLocales.get(locale);
 		if (localeRegistration != null)
-			return localeRegistration.getPercentage();
+			return localeRegistration.percentage();
 
 		return 0;
 	}
