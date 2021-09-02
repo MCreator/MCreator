@@ -40,6 +40,7 @@ EntityIllusionIllager: illusioner
 EntityIronGolem: iron_golem
 EntityItem: item
 EntityItemFrame: item_frame
+EntityGlowItemFrame: glow_item_frame
 EntityFireball: fireball
 EntityLeashKnot: leash_knot
 EntityLlama: llama
@@ -79,6 +80,7 @@ EntitySnowball: snowball
 EntitySpectralArrow: spectral_arrow
 EntitySpider: spider
 EntitySquid: squid
+EntityGlowSquid: glow_squid
 EntityStray: stray
 EntityTraderLlama: trader_llama
 EntityTropicalFish: tropical_fish
@@ -110,3 +112,6 @@ EntityPiglin: piglin
 EntityPiglinBrute: piglin_brute
 EntityStrider: strider
 EntityZoglin: zoglin
+EntityAxolotl: axolotl
+EntityGoat: goat
+EntityMarker: marker

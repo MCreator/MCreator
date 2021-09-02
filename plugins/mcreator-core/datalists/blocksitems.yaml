@@ -4623,6 +4623,10 @@
   readable_name: "Raw Copper Block"
   type: block
 
+- Blocks.LIGHT:
+  readable_name: "Light Block"
+  type: block
+
 - Items.DYE:
   readable_name: "Any Dye"
   type: item
