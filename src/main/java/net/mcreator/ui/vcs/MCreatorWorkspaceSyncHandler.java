@@ -165,19 +165,19 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 				localWorkspace.getModElementManager().invalidateCache();
 
 				// first we remove local to base, skipping conflicted elements
-				for (ModElement removedElement : modElementListDiffLocalToBase.getRemoved()) {
+				for (ModElement removedElement : modElementListDiffLocalToBase.removed()) {
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingModElements, removedElement))
 						baseWorkspace.removeModElement(removedElement);
 				}
 
 				// then we remove remote to base, skipping conflicted elements
-				for (ModElement removedElement : modElementListDiffRemoteToBase.getRemoved()) {
+				for (ModElement removedElement : modElementListDiffRemoteToBase.removed()) {
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingModElements, removedElement))
 						baseWorkspace.removeModElement(removedElement);
 				}
 
 				// then we add local to base, skipping conflicted elements
-				for (ModElement addedElement : modElementListDiffLocalToBase.getAdded()) {
+				for (ModElement addedElement : modElementListDiffLocalToBase.added()) {
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingModElements, addedElement)) {
 						baseWorkspace.addModElement(addedElement);
 						GeneratableElement generatableElement = addedElement.getGeneratableElement();
@@ -189,7 +189,7 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 				}
 
 				// then we add remote to base, skipping conflicted elements
-				for (ModElement addedElement : modElementListDiffRemoteToBase.getAdded()) {
+				for (ModElement addedElement : modElementListDiffRemoteToBase.added()) {
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingModElements, addedElement)) {
 						baseWorkspace.addModElement(addedElement);
 						GeneratableElement generatableElement = addedElement.getGeneratableElement();
@@ -222,22 +222,22 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 							variableElementListDiffRemoteToBase));
 
 			if (!dryRun) {
-				for (VariableElement removedVariableElement : variableElementListDiffLocalToBase.getRemoved())
+				for (VariableElement removedVariableElement : variableElementListDiffLocalToBase.removed())
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingVariableElements,
 							removedVariableElement))
 						baseWorkspace.removeVariableElement(removedVariableElement);
 
-				for (VariableElement removedVariableElement : variableElementListDiffRemoteToBase.getRemoved())
+				for (VariableElement removedVariableElement : variableElementListDiffRemoteToBase.removed())
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingVariableElements,
 							removedVariableElement))
 						baseWorkspace.removeVariableElement(removedVariableElement);
 
-				for (VariableElement addedVariableElement : variableElementListDiffLocalToBase.getAdded())
+				for (VariableElement addedVariableElement : variableElementListDiffLocalToBase.added())
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingVariableElements,
 							addedVariableElement))
 						baseWorkspace.addVariableElement(addedVariableElement);
 
-				for (VariableElement addedVariableElement : variableElementListDiffRemoteToBase.getAdded())
+				for (VariableElement addedVariableElement : variableElementListDiffRemoteToBase.added())
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingVariableElements,
 							addedVariableElement))
 						baseWorkspace.addVariableElement(addedVariableElement);
@@ -254,19 +254,19 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 							soundElementListDiffRemoteToBase));
 
 			if (!dryRun) {
-				for (SoundElement removedSoundElement : soundElementListDiffLocalToBase.getRemoved())
+				for (SoundElement removedSoundElement : soundElementListDiffLocalToBase.removed())
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingSoundElements, removedSoundElement))
 						baseWorkspace.removeSoundElement(removedSoundElement);
 
-				for (SoundElement removedSoundElement : soundElementListDiffRemoteToBase.getRemoved())
+				for (SoundElement removedSoundElement : soundElementListDiffRemoteToBase.removed())
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingSoundElements, removedSoundElement))
 						baseWorkspace.removeSoundElement(removedSoundElement);
 
-				for (SoundElement addedSoundElement : soundElementListDiffLocalToBase.getAdded())
+				for (SoundElement addedSoundElement : soundElementListDiffLocalToBase.added())
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingSoundElements, addedSoundElement))
 						baseWorkspace.addSoundElement(addedSoundElement);
 
-				for (SoundElement addedSoundElement : soundElementListDiffRemoteToBase.getAdded())
+				for (SoundElement addedSoundElement : soundElementListDiffRemoteToBase.added())
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingSoundElements, addedSoundElement))
 						baseWorkspace.addSoundElement(addedSoundElement);
 			}
@@ -304,21 +304,21 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 					DiffResultToBaseConflictFinder.findConflicts(langMapDiffLocalToBase, langMapDiffRemoteToBase));
 
 			if (!dryRun) {
-				for (String removedLangMap : langMapDiffLocalToBase.getRemoved())
+				for (String removedLangMap : langMapDiffLocalToBase.removed())
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingLangMaps, removedLangMap))
 						baseWorkspace.getLanguageMap().remove(removedLangMap);
 
-				for (String removedLangMap : langMapDiffRemoteToBase.getRemoved())
+				for (String removedLangMap : langMapDiffRemoteToBase.removed())
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingLangMaps, removedLangMap))
 						baseWorkspace.getLanguageMap().remove(removedLangMap);
 
-				for (String addedLangMap : langMapDiffLocalToBase.getAdded())
+				for (String addedLangMap : langMapDiffLocalToBase.added())
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingLangMaps, addedLangMap))
 						if (localWorkspace.getLanguageMap().get(addedLangMap) != null)
 							baseWorkspace.getLanguageMap()
 									.put(addedLangMap, localWorkspace.getLanguageMap().get(addedLangMap));
 
-				for (String addedLangMap : langMapDiffRemoteToBase.getAdded())
+				for (String addedLangMap : langMapDiffRemoteToBase.added())
 					if (MergeHandle.isElementNotInMergeHandleCollection(conflictingLangMaps, addedLangMap))
 						if (remoteWorkspace.getLanguageMap().get(addedLangMap) != null)
 							baseWorkspace.getLanguageMap()
@@ -344,20 +344,20 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 					Set<MergeHandle<String>> conflictingLangEntries = DiffResultToBaseConflictFinder.findConflicts(
 							langMapContentsDiffLocalToBase, langMapContentsDiffRemoteToBase);
 
-					for (String removedLangEntry : langMapContentsDiffLocalToBase.getRemoved())
+					for (String removedLangEntry : langMapContentsDiffLocalToBase.removed())
 						if (MergeHandle.isElementNotInMergeHandleCollection(conflictingLangEntries, removedLangEntry))
 							baseWorkspace.removeLocalizationEntryByKey(removedLangEntry);
 
-					for (String removedLangEntry : langMapContentsDiffRemoteToBase.getRemoved())
+					for (String removedLangEntry : langMapContentsDiffRemoteToBase.removed())
 						if (MergeHandle.isElementNotInMergeHandleCollection(conflictingLangEntries, removedLangEntry))
 							baseWorkspace.removeLocalizationEntryByKey(removedLangEntry);
 
-					for (String addedLangEntry : langMapContentsDiffLocalToBase.getAdded())
+					for (String addedLangEntry : langMapContentsDiffLocalToBase.added())
 						if (MergeHandle.isElementNotInMergeHandleCollection(conflictingLangEntries, addedLangEntry))
 							baseWorkspace.getLanguageMap().get(language).put(addedLangEntry,
 									localWorkspace.getLanguageMap().get(language).get(addedLangEntry));
 
-					for (String addedLangEntry : langMapContentsDiffRemoteToBase.getAdded())
+					for (String addedLangEntry : langMapContentsDiffRemoteToBase.added())
 						if (MergeHandle.isElementNotInMergeHandleCollection(conflictingLangEntries, addedLangEntry))
 							baseWorkspace.getLanguageMap().get(language).put(addedLangEntry,
 									remoteWorkspace.getLanguageMap().get(language).get(addedLangEntry));
