@@ -94,7 +94,7 @@ public class ImageMakerTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new NewLayerDialog(mcreator, imv.getCanvas()));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> new RecolorDialog(mcreator, imv.getCanvas(), null, new ColorSelector(mcreator), null));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new ResizeCanvasDialog(mcreator, imv.getCanvas()));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new ResizeCanvasDialog(mcreator, imv.getCanvas(), null));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> new ResizeDialog(mcreator, imv.getCanvas(), imv.getToolPanel().getCurrentTool().getLayer(),
 						null));

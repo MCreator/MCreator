@@ -23,13 +23,14 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
+import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class ResizeCanvasDialog extends MCreatorDialog {
 
-	public ResizeCanvasDialog(MCreator window, Canvas canvas) {
+	public ResizeCanvasDialog(MCreator window, Canvas canvas, VersionManager versionManager) {
 		super(window, L10N.t("dialog.imageeditor.resize_canvas"), true);
 
 		JPanel settings = new JPanel(new GridBagLayout());
@@ -51,7 +52,7 @@ public class ResizeCanvasDialog extends MCreatorDialog {
 		cancel.addActionListener(e -> setVisible(false));
 
 		ok.addActionListener(e -> {
-			canvas.setSize((int) width.getValue(), (int) height.getValue());
+			versionManager.addRevision(canvas.setSize((int) width.getValue(), (int) height.getValue()));
 			setVisible(false);
 		});
 

@@ -25,6 +25,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
+import net.mcreator.ui.views.editor.image.versioning.change.CanvasResize;
 import net.mcreator.ui.views.editor.image.versioning.change.Modification;
 
 import javax.swing.*;
@@ -43,6 +44,7 @@ public class ResizeDialog extends MCreatorDialog {
 		JSpinner width = new JSpinner(new SpinnerNumberModel(layer.getWidth(), 0, 10000, 1));
 		JSpinner height = new JSpinner(new SpinnerNumberModel(layer.getHeight(), 0, 10000, 1));
 		JCheckBox type = new JCheckBox();
+		JCheckBox affectCanvas = new JCheckBox();
 
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("action.common.resize");
@@ -55,8 +57,17 @@ public class ResizeDialog extends MCreatorDialog {
 		cancel.addActionListener(e -> setVisible(false));
 
 		ok.addActionListener(e -> {
+			CanvasResize canvasResize = null;
 			layer.resize((int) width.getValue(), (int) height.getValue(), type.isSelected());
-			versionManager.addRevision(new Modification(canvas, layer));
+			if (affectCanvas.isSelected() && (canvas.getWidth() < layer.getWidth()
+					|| canvas.getHeight() < layer.getHeight())) {
+				canvasResize = canvas.setSize(Math.max(canvas.getWidth(), layer.getWidth()),
+						Math.max(canvas.getHeight(), layer.getHeight()));
+			}
+			if (canvasResize != null)
+				versionManager.addRevision(new Modification(canvasResize, layer));
+			else
+				versionManager.addRevision(new Modification(canvas, layer));
 			setVisible(false);
 		});
 
@@ -66,6 +77,8 @@ public class ResizeDialog extends MCreatorDialog {
 		constraints.add(height);
 		constraints.add(L10N.label("dialog.imageeditor.resize_enable_anti_aliasing"));
 		constraints.add(type);
+		constraints.add(L10N.label("dialog.imageeditor.resize_canvas"));
+		constraints.add(affectCanvas);
 
 		layoutConstraints.gridx = 0;
 		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;

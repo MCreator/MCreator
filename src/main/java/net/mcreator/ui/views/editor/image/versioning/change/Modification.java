@@ -21,15 +21,23 @@ package net.mcreator.ui.views.editor.image.versioning.change;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 
+import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 
 public class Modification extends Change implements IVisualChange {
 	private final BufferedImage after;
 	private BufferedImage before;
+	@Nullable private CanvasResize canvasResize;
 
 	public Modification(Canvas canvas, Layer layer) {
 		super(canvas, layer);
 		this.after = layer.copyImage();
+	}
+
+	public Modification(CanvasResize canvasResize, Layer layer) {
+		super(canvasResize.canvas, layer);
+		this.after = layer.copyImage();
+		this.canvasResize = canvasResize;
 	}
 
 	public void setBefore(BufferedImage before) {
@@ -37,12 +45,16 @@ public class Modification extends Change implements IVisualChange {
 	}
 
 	@Override public void apply() {
+		if (canvasResize != null)
+			canvasResize.apply();
 		int index = canvas.indexOf(layer);
 		canvas.get(index).replaceImage(after);
 		canvas.getCanvasRenderer().repaint();
 	}
 
 	@Override public void revert() {
+		if (canvasResize != null)
+			canvasResize.revert();
 		int index = canvas.indexOf(layer);
 		canvas.get(index).replaceImage(before);
 		canvas.getCanvasRenderer().repaint();
