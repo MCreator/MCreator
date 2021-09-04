@@ -42,7 +42,7 @@ package ${package}.init;
     private static final List<Item> REGISTRY = new ArrayList();
 
     <#list items as item>
-    public static Item ${item.getModElement().geRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
+    public static Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
     </#list>
 
     private static Item register(Item item) {

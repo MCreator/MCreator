@@ -84,7 +84,7 @@ public class NameMapper {
 					ModElement element = workspace.getModElementByName(origName);
 					if (element != null) {
 						retval = retval.replace("@registryname", element.getRegistryName())
-								.replace("@REGISTRYNAME", element.geRegistryNameUpper());
+								.replace("@REGISTRYNAME", element.getRegistryNameUpper());
 					} else {
 						LOG.warn("Failed to determine registry name for: " + origName);
 						retval = retval.replace("@registryname", UNKNOWN_ELEMENT)
