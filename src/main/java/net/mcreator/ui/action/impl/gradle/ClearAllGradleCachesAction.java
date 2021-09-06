@@ -30,7 +30,6 @@ import net.mcreator.ui.init.L10N;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 public class ClearAllGradleCachesAction extends GradleAction {
 

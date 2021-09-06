@@ -1,0 +1,17 @@
+templates:
+  - template: biome/biome.json.ftl
+    writer: json
+    name: "@MODDATAROOT/worldgen/biome/@registryname.json"
+  - template: biome/biome_builder.json.ftl
+    writer: json
+    name: "@MODDATAROOT/worldgen/configured_surface_builder/@registryname.json"
+
+field_inclusions: [heightVariation, baseHeight, rainingPossibility, temperature, biomeCategory,
+                   parent, foliageColor, grassColor, airColor, waterColor, waterFogColor, spawnEntries,
+                   defaultFeatures, name, groundBlock, undergroundBlock, spawnWoodlandMansion,
+                   spawnMineshaft, spawnStronghold, spawnPillagerOutpost, spawnShipwreck, oceanRuinType,
+                   spawnOceanMonument, spawnDesertPyramid, spawnJungleTemple, spawnIgloo, villageType]
+
+localizationkeys:
+  - key: biome.@modid.@registryname
+    mapto: name

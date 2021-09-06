@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class DataListEntry {
+public class DataListEntry implements Comparable<DataListEntry> {
 
 	private final String name;
 	private String readableName;
@@ -111,6 +111,16 @@ public class DataListEntry {
 
 	@Override public int hashCode() {
 		return name.hashCode();
+	}
+
+	@Override public int compareTo(DataListEntry o) {
+		String a = this.getReadableName();
+		String b = o.getReadableName();
+		if (a.startsWith("CUSTOM:") && !b.startsWith("CUSTOM:"))
+			return -1;
+		else if (!a.startsWith("CUSTOM:") && b.startsWith("CUSTOM:"))
+			return 1;
+		return a.compareToIgnoreCase(b);
 	}
 
 	public void addSupportedGenerator(GeneratorConfiguration generatorConfiguration) {

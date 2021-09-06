@@ -33,6 +33,8 @@
 
 package ${package}.item;
 
+import net.minecraft.entity.ai.attributes.Attributes;
+
 @${JavaModName}Elements.ModElement.Tag
 public class ${name}Item extends ${JavaModName}Elements.ModElement{
 

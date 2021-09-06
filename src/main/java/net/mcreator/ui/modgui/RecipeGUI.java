@@ -90,7 +90,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		smcm = new SmithingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
 				ElementUtil::loadBlocksAndItems);
 		brm = new BrewingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTagsAndPotions,
-				ElementUtil::loadBlocksAndItemsAndTags,	ElementUtil::loadBlocksAndItemsAndPotions);
+				ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItemsAndPotions);
 
 		rm.setOpaque(false);
 		fm.setOpaque(false);

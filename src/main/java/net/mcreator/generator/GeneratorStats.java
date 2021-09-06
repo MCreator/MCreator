@@ -123,9 +123,8 @@ public class GeneratorStats {
 		} else {
 			baseCoverageInfo.put("variables",
 					generatorConfiguration.getVariableTypes().getSupportedVariableTypes().size()
-							== VariableTypeLoader.INSTANCE.getAllVariableTypes().size() ?
-							CoverageStatus.FULL :
-							CoverageStatus.PARTIAL);
+							== VariableTypeLoader.INSTANCE.getAllVariableTypes().stream()
+							.filter(e -> !e.isReturnTypeOnly()).count() ? CoverageStatus.FULL : CoverageStatus.PARTIAL);
 		}
 
 		baseCoverageInfo.put("model_json",

@@ -165,8 +165,8 @@ public class CodeEditorView extends ViewBase {
 		te.setClearWhitespaceLinesEnabled(true);
 		te.setAutoIndentEnabled(true);
 
-		te.setTabSize(4);
-		te.setTabsEmulated(false);
+		te.setTabSize(2);
+		te.setTabsEmulated(true);
 
 		ToolTipManager.sharedInstance().registerComponent(te);
 

@@ -27,7 +27,7 @@ task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) 
             from configurations.mac64
         }
     }
-    into('MacOS/jdk/') { with copySpec { from 'jdk/jdk11_mac_64/' } }
+    into('MacOS/jdk/') { with copySpec { from 'jdk/jdk16_mac_64/' } }
     doLast {
         convertCRLF(file(exportPath + '/Info.plistdos'), file(exportPath + '/Info.plist'))
         delete exportPath + '/Info.plistdos'

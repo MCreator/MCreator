@@ -19,21 +19,4 @@
 
 package net.mcreator.plugin;
 
-public class PluginUpdateInfo {
-	private final Plugin plugin;
-	private final String newVersion;
-
-	public PluginUpdateInfo(Plugin plugin, String newVersion) {
-		this.plugin = plugin;
-		this.newVersion = newVersion;
-	}
-
-	public Plugin getPlugin() {
-		return plugin;
-	}
-
-	public String getNewVersion() {
-		return newVersion;
-	}
-
-}
+public record PluginUpdateInfo(Plugin plugin, String newVersion) {}

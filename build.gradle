@@ -80,36 +80,37 @@ dependencies {
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.16.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.16.1'
     implementation group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.2'
+    implementation group: 'com.google.googlejavaformat', name: 'google-java-format', version: '1.11.0'
 
     // test dependencies
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.1'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.1'
 
     // JFX natives
-    win64 group: 'org.openjfx', name: 'javafx-base', version: '15', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-controls', version: '15', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-graphics', version: '15', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-media', version: '15', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-web', version: '15', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-swing', version: '15', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-base', version: '16', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-controls', version: '16', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-graphics', version: '16', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-media', version: '16', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-web', version: '16', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-swing', version: '16', classifier: 'win'
 
-    mac64 group: 'org.openjfx', name: 'javafx-base', version: '15', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-controls', version: '15', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-graphics', version: '15', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-media', version: '15', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-web', version: '15', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-swing', version: '15', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-base', version: '16', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-controls', version: '16', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-graphics', version: '16', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-media', version: '16', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-web', version: '16', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-swing', version: '16', classifier: 'mac'
 
-    linux64 group: 'org.openjfx', name: 'javafx-base', version: '15', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-controls', version: '15', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-graphics', version: '15', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-media', version: '15', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-web', version: '15', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-swing', version: '15', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-base', version: '16', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-controls', version: '16', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-graphics', version: '16', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-media', version: '16', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-web', version: '16', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-swing', version: '16', classifier: 'linux'
 }
 
 javafx {
-    version = "15"
+    version = "16"
     modules = [ 'javafx.web', 'javafx.swing' ]
     configuration = 'provided' // we provide natives during deployment or with SDK
 }
@@ -120,6 +121,8 @@ test {
     testLogging.showStandardStreams = true
     testLogging.exceptionFormat = 'full'
     maxHeapSize = "1024m"
+
+    jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
 }
 
 javadoc {
@@ -128,6 +131,8 @@ javadoc {
 }
 
 task runMCreator(type: JavaExec, dependsOn: jar) {
+    jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
+
     classpath += sourceSets.main.runtimeClasspath
     main = "net.mcreator.Launcher"
 
