@@ -25,6 +25,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.minecraft.modbases.ToolTypesLoader;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreatorApplication;
@@ -108,6 +109,9 @@ public class TestSetup {
 
 		// register mod element types
 		ModElementTypeLoader.loadModElements();
+
+		// load tool types
+		ToolTypesLoader.init();
 
 		// load generator configurations
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
