@@ -30,7 +30,7 @@ base_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModName.java"
     canLock: true
   - template: modbase/variableslist.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModNameVariables.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
     condition: hasVariables()
   - template: elementinits/sounds.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
