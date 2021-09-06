@@ -49,8 +49,8 @@ public class ItemTexturesComboBoxRenderer extends JLabel implements ListCellRend
 
 		setText(value);
 
-		if(ToolTypesLoader.contains(value)) {
-			ToolType toolType = ToolTypesLoader.getToolType(value);
+		if(ToolTypesLoader.INSTANCE.contains(value)) {
+			ToolType toolType = ToolTypesLoader.INSTANCE.getToolType(value);
 			if (toolType.getItemIcon().equals("mod"))
 				setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("mod").getImage(), 30)));
 			else

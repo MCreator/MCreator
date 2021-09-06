@@ -151,7 +151,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 
 		toolType = new JComboBox<>(
-				ToolTypesLoader.getToolTypes().stream().map(ToolType::getName).sorted().toArray(String[]::new));
+				ToolTypesLoader.INSTANCE.getToolTypes().stream().map(ToolType::getName).sorted().toArray(String[]::new));
 		toolType.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));

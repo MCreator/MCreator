@@ -36,7 +36,9 @@ public class ToolTypesLoader {
 
 	private static final List<ToolType> toolTypes = new ArrayList<>();
 
-	public static void init() {
+	public static ToolTypesLoader INSTANCE;
+
+	public ToolTypesLoader() {
 		LOG.debug("Loading tool types");
 
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources("modbases.tooltypes",
@@ -50,15 +52,19 @@ public class ToolTypesLoader {
 		}
 	}
 
-	public static List<ToolType> getToolTypes() {
+	public static void init() {
+		INSTANCE = new ToolTypesLoader();
+	}
+
+	public List<ToolType> getToolTypes() {
 		return toolTypes;
 	}
 
-	public static boolean contains(String toolType) {
+	public boolean contains(String toolType) {
 		return toolTypes.stream().anyMatch(tool -> tool.getName().equals(toolType));
 	}
 
-	public static ToolType getToolType(String name) {
+	public ToolType getToolType(String name) {
 		return toolTypes.stream().filter(toolType -> toolType.getName().equals(name)).findFirst().orElse(null);
 
 	}
