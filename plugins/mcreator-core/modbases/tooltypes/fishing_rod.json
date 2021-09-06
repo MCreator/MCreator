@@ -1,4 +1,11 @@
 {
   "name": "Fishing rod",
-  "itemIcon": "FISHING_ROD"
+  "itemIcon": "FISHING_ROD",
+  "exclusionFields": [
+    "harvestLevel",
+    "efficiency",
+    "damageVsEntity",
+    "attackSpeed",
+    "blocksAffected"
+  ]
 }

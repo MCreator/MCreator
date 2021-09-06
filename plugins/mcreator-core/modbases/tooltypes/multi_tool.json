@@ -1,4 +1,7 @@
 {
   "name": "MultiTool",
-  "itemIcon": "mod"
+  "itemIcon": "mod",
+  "exclusionFields": [
+    "blocksAffected"
+  ]
 }

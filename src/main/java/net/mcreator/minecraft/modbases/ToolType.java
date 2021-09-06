@@ -26,6 +26,7 @@ public class ToolType {
 
 	private String name;
 	private String itemIcon;
+	private List<String> exclusionFields;
 
 	private final transient List<String> supportedGenerators = new ArrayList<>();
 
@@ -35,6 +36,10 @@ public class ToolType {
 
 	public String getItemIcon() {
 		return itemIcon;
+	}
+
+	public List<String> getExclusionFields() {
+		return exclusionFields;
 	}
 
 	public List<String> getSupportedGenerators() {

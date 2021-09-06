@@ -28,6 +28,7 @@ import net.mcreator.minecraft.modbases.ToolTypesLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.UnsupportedComponent;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -54,12 +55,11 @@ import net.mcreator.workspace.resources.Model;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ToolGUI extends ModElementGUI<Tool> {
@@ -316,30 +316,26 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	private void updateFields() {
 		if (toolType.getSelectedItem() != null) {
-			harvestLevel.setEnabled(true);
-			efficiency.setEnabled(true);
-			damageVsEntity.setEnabled(true);
-			attackSpeed.setEnabled(true);
-			blocksAffected.setEnabled(true);
-			repairItems.setEnabled(true);
-
-			if (toolType.getSelectedItem().equals("Special")) {
-				harvestLevel.setEnabled(false);
-				repairItems.setEnabled(false);
-			} else if (toolType.getSelectedItem().equals("Fishing rod")) {
-				harvestLevel.setEnabled(false);
-				efficiency.setEnabled(false);
-				damageVsEntity.setEnabled(false);
-				attackSpeed.setEnabled(false);
-				blocksAffected.setEnabled(false);
-			} else if (toolType.getSelectedItem().equals("Shears")) {
-				harvestLevel.setEnabled(false);
-				damageVsEntity.setEnabled(false);
-				attackSpeed.setEnabled(false);
-				blocksAffected.setEnabled(false);
-				repairItems.setEnabled(false);
-			} else {
-				blocksAffected.setEnabled(false);
+			Field[] fields = getClass().getDeclaredFields();
+			for (Field field : fields) {
+				field.setAccessible(true);
+				Component obj;
+				try {
+					if (field.get(this) instanceof Component) {
+						obj = (Component) field.get(this);
+						obj.setEnabled(true);
+						for (ToolType toolType : ToolTypesLoader.INSTANCE.getToolTypes())
+							if (toolType.getName().equals(this.toolType.getSelectedItem())
+									&& Component.class.isAssignableFrom(field.getType())) {
+								if (toolType.getExclusionFields().contains(field.getName())) {
+									field.setAccessible(true);
+									obj.setEnabled(false);
+									break;
+								}
+							}
+					}
+				} catch (IllegalAccessException ignored) {
+				}
 			}
 		}
 	}

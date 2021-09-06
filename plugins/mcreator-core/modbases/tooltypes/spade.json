@@ -1,4 +1,7 @@
 {
   "name": "Spade",
-  "itemIcon": "IRON_SHOVEL"
+  "itemIcon": "IRON_SHOVEL",
+  "exclusionFields": [
+    "blocksAffected"
+  ]
 }

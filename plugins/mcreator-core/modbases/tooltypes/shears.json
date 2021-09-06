@@ -1,4 +1,11 @@
 {
   "name": "Shears",
-  "itemIcon": "SHEARS"
+  "itemIcon": "SHEARS",
+  "exclusionFields": [
+    "harvestLevel",
+    "damageVsEntity",
+    "attackSpeed",
+    "blocksAffected",
+    "repairItems"
+  ]
 }

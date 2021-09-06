@@ -1,4 +1,8 @@
 {
   "name": "Special",
-  "itemIcon": "mod"
+  "itemIcon": "mod",
+  "exclusionFields": [
+    "harvestLevel",
+    "repairItems"
+  ]
 }

@@ -1,4 +1,7 @@
 {
   "name": "Sword",
-  "itemIcon": "IRON_SWORD"
+  "itemIcon": "IRON_SWORD",
+  "exclusionFields": [
+    "blocksAffected"
+  ]
 }

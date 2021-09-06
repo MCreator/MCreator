@@ -1,4 +1,7 @@
 {
   "name": "Pickaxe",
-  "itemIcon": "IRON_PICKAXE"
+  "itemIcon": "IRON_PICKAXE",
+  "exclusionFields": [
+    "blocksAffected"
+  ]
 }
