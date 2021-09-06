@@ -1,4 +1,4 @@
-@Mod.EventBusSubscriber public class GlobalTrigger {
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onEntityHealed(LivingHealEvent event) {
 		Entity entity = event.getEntity();
 		double i = entity.getX();
@@ -16,4 +16,3 @@
 		dependencies.put("event", event);
 		execute(dependencies);
 	}
-}

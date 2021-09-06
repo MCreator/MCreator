@@ -1,4 +1,4 @@
-@Mod.EventBusSubscriber public class GlobalTrigger {
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onChat(ServerChatEvent event){
 		ServerPlayer entity=event.getPlayer();
 		double i=entity.getX();
@@ -14,4 +14,3 @@
 		dependencies.put("event",event);
 		execute(dependencies);
 	}
-}

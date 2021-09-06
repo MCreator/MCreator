@@ -1,4 +1,4 @@
-@Mod.EventBusSubscriber public  class GlobalTrigger {
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onCommand(CommandEvent event) {
 		Entity entity = event.getParseResults().getContext().getSource().getEntity();
 		if (entity != null) {
@@ -17,4 +17,3 @@
 			execute(dependencies);
 		}
 	}
-}

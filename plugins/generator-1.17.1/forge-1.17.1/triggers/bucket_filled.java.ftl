@@ -1,4 +1,4 @@
-@Mod.EventBusSubscriber public class GlobalTrigger {
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onBucketFill(FillBucketEvent event) {
 		Player entity=event.getPlayer();
 		double i=entity.getX();
@@ -18,4 +18,3 @@
 		dependencies.put("event",event);
 		execute(dependencies);
 	}
-}

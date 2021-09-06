@@ -1,4 +1,4 @@
-@Mod.EventBusSubscriber public class GlobalTrigger {
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onLivingDropXp(LivingExperienceDropEvent event) {
 		if (event != null && event.getEntity() != null) {
 			Entity entity = event.getEntity();
@@ -22,4 +22,3 @@
 			execute(dependencies);
 		}
 	}
-}

@@ -1,4 +1,4 @@
-@Mod.EventBusSubscriber public class GlobalTrigger {
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onCropGrowPre(BlockEvent.CropGrowEvent.Pre event) {
 		LevelAccessor  world = event.getWorld();
 		Map<String, Object> dependencies = new HashMap<>();
@@ -10,4 +10,3 @@
 		dependencies.put("event",event);
 		execute(dependencies);
 	}
-}
