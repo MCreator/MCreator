@@ -28,7 +28,7 @@ public class ToolType {
 	private String itemIcon;
 	private List<String> exclusionFields;
 
-	private final transient List<String> supportedGenerators = new ArrayList<>();
+	private final List<String> supportedGenerators = new ArrayList<>();
 
 	public String getName() {
 		return name;
