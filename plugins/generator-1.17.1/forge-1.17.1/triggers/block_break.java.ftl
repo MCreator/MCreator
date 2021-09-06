@@ -7,9 +7,9 @@
 		dependencies.put("x",event.getPos().getX());
 		dependencies.put("y",event.getPos().getY());
 		dependencies.put("z",event.getPos().getZ());
-		dependencies.put("px",entity.getBlockX());
-		dependencies.put("py",entity.getBlockY());
-		dependencies.put("pz",entity.getBlockZ());
+		dependencies.put("px",entity.getX());
+		dependencies.put("py",entity.getY());
+		dependencies.put("pz",entity.getZ());
 		dependencies.put("world",world);
 		dependencies.put("entity",entity);
 		dependencies.put("blockstate",event.getState());
