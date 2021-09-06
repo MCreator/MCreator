@@ -31,6 +31,7 @@ import net.mcreator.io.net.api.D8WebAPI;
 import net.mcreator.io.net.api.IWebAPI;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.minecraft.modbases.ToolTypesLoader;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
@@ -145,6 +146,9 @@ public final class MCreatorApplication {
 
 		// register mod element types
 		ModElementTypeLoader.loadModElements();
+
+		// load tool types
+		ToolTypesLoader.init();
 
 		splashScreen.setProgress(60, "Preloading resources");
 		TiledImageCache.loadAndTileImages();

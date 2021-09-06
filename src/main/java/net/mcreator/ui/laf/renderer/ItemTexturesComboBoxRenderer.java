@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.laf.renderer;
 
+import net.mcreator.minecraft.modbases.ToolType;
+import net.mcreator.minecraft.modbases.ToolTypesLoader;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
@@ -47,11 +49,14 @@ public class ItemTexturesComboBoxRenderer extends JLabel implements ListCellRend
 
 		setText(value);
 
-		if (value.equals("Special") || value.equals("MultiTool")) {
-			setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("mod").getImage(), 30)));
-		} else {
+		if(ToolTypesLoader.contains(value)) {
+			ToolType toolType = ToolTypesLoader.getToolType(value);
+			if (toolType.getItemIcon().equals("mod"))
+				setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("mod").getImage(), 30)));
+			else
+				setIcon(new ImageIcon(ImageUtils.resize(BlockItemIcons.getIconForItem(toolType.getItemIcon()).getImage(), 30)));
+		} else
 			setIcon(new ImageIcon(ImageUtils.resize(BlockItemIcons.getIconFor(value).getImage(), 30)));
-		}
 
 		setHorizontalTextPosition(SwingConstants.RIGHT);
 		setHorizontalAlignment(SwingConstants.LEFT);

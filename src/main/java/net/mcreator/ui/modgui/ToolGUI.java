@@ -23,6 +23,8 @@ import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Tool;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.modbases.ToolType;
+import net.mcreator.minecraft.modbases.ToolTypesLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.SearchableComboBox;
@@ -54,7 +56,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -71,9 +75,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	private final VTextField name = new VTextField(28);
 
-	private final JComboBox<String> toolType = new JComboBox<>(
-			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Fishing rod", "Special",
-					"MultiTool" });
+	private JComboBox<String> toolType;
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
@@ -148,6 +150,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 
+		toolType = new JComboBox<>(
+				ToolTypesLoader.getToolTypes().stream().map(ToolType::getName).sorted().toArray(String[]::new));
 		toolType.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
