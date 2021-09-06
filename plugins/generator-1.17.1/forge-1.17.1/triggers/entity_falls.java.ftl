@@ -7,7 +7,7 @@
 			double k = entity.getZ();
 			double damagemultiplier = event.getDamageMultiplier();
 			double distance = event.getDistance();
-			World world = entity.world;
+			LevelAccessor world = entity.level;
 			Map<String, Object> dependencies = new HashMap<>();
 			dependencies.put("x", i);
 			dependencies.put("y", j);

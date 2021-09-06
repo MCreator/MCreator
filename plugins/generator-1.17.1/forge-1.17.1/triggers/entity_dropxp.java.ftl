@@ -8,7 +8,7 @@
 			Player attacked = event.getAttackingPlayer();
 			int droppedxp = (int) event.getDroppedExperience();
 			int originalxp = (int) event.getOriginalExperience();
-			World world = entity.world;
+			LevelAccessor world = entity.level;
 			Map<String, Object> dependencies = new HashMap<>();
 			dependencies.put("x", i);
 			dependencies.put("y", j);
