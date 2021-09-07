@@ -1,1 +1,2 @@
-(EntityTypeTags.getCollection().getTagByID(new ResourceLocation((${input$tag}).toLowerCase(java.util.Locale.ENGLISH))).contains(${input$entity}.getType()))
+<#include "mcelements.ftl">
+(EntityTypeTags.getCollection().getTagByID(${toResourceLocation(input$tag)}).contains(${input$entity}.getType()))
