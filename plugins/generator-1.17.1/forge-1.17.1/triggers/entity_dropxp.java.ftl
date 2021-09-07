@@ -2,21 +2,14 @@
 	@SubscribeEvent public static void onLivingDropXp(LivingExperienceDropEvent event) {
 		if (event != null && event.getEntity() != null) {
 			Entity entity = event.getEntity();
-			double i = entity.getX();
-			double j = entity.getY();
-			double k = entity.getZ();
-			Player attacked = event.getAttackingPlayer();
-			int droppedxp = (int) event.getDroppedExperience();
-			int originalxp = (int) event.getOriginalExperience();
-			LevelAccessor world = entity.level;
 			Map<String, Object> dependencies = new HashMap<>();
-			dependencies.put("x", i);
-			dependencies.put("y", j);
-			dependencies.put("z", k);
-			dependencies.put("droppedexperience", droppedxp);
-			dependencies.put("originalexperience", originalxp);
-			dependencies.put("sourceentity", attacked);
-			dependencies.put("world", world);
+		    dependencies.put("x", entity.getX());
+		    dependencies.put("y", entity.getY());
+		    dependencies.put("z", entity.getZ());
+			dependencies.put("droppedexperience", (int) event.getDroppedExperience());
+			dependencies.put("originalexperience", (int) event.getOriginalExperience());
+			dependencies.put("sourceentity", event.getAttackingPlayer());
+			dependencies.put("world", entity.level);
 			dependencies.put("entity", entity);
 			dependencies.put("event", event);
 			execute(dependencies);
