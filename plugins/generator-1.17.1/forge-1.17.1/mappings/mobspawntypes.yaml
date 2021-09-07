@@ -1,0 +1,6 @@
+_default: MobCategory.MONSTER
+monster: MobCategory.MONSTER
+creature: MobCategory.CREATURE
+ambient: MobCategory.AMBIENT
+waterCreature: MobCategory.WATER_CREATURE
+misc: MobCategory.MISC
