@@ -20,9 +20,21 @@ Blocks.STONE#1:
 Blocks.STONE#3:
   - Blocks.DIORITE
   - "diorite"
+Blocks.GRASS:
+  - Blocks.GRASS_BLOCK
+  - "grass_block"
 Blocks.MYCELIUM:
   - Blocks.MYCELIUM
   - "mycelium"
 Blocks.DIRT:
   - Blocks.DIRT
   - "dirt"
+Blocks.DIRT#0:
+  - Blocks.DIRT
+  - "dirt"
+Blocks.DIRT#1:
+  - Blocks.COARSE_DIRT
+  - "coarse_dirt"
+Blocks.DIRT#2:
+  - Blocks.PODZOL
+  - "podzol"
