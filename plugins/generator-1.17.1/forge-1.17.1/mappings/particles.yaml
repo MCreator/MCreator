@@ -1,0 +1,3 @@
+_default: ParticleTypes.CRIT
+EXPLOSION_EMITTER: ParticleTypes.EXPLOSION_EMITTER
+EXPLOSION_NORMAL: ParticleTypes.EXPLOSION
