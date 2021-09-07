@@ -34,7 +34,7 @@ package ${package}.network;
 
 import ${package}.${JavaModName};
 
-public class ${name}Message {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Message {
 
 	int type, pressedms;
 
@@ -87,6 +87,10 @@ public class ${name}Message {
 		</#if>
 	}
 	</#if>
+
+	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
+		${JavaModName}.addNetworkMessage(${name}Message.class, ${name}Message::buffer, ${name}Message::new, ${name}Message::handler);
+	}
 
 }
 <#-- @formatter:on -->

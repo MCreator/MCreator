@@ -30,6 +30,8 @@
 <#-- @formatter:off -->
 package ${package}.procedures;
 
+import net.minecraftforge.eventbus.api.Event;
+
 <#if trigger_code?has_content>
 ${trigger_code}
 <#else>

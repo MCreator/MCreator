@@ -37,10 +37,10 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}KeyMappings {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT}) public class ${JavaModName}KeyMappings {
 
     <#list keybinds as keybind>
-	@OnlyIn(Dist.CLIENT) public static final KeyMapping ${keybind.getModElement().getRegistryNameUpper()} = new KeyMapping(
+	public static final KeyMapping ${keybind.getModElement().getRegistryNameUpper()} = new KeyMapping(
 			"key.${modid}.${keybind.getModElement().getRegistryName()}", GLFW.GLFW_KEY_${generator.map(keybind.triggerKey, "keybuttons")},
 			"key.categories.${keybind.keyBindingCategoryKey}");
     </#list>
@@ -51,15 +51,13 @@ package ${package}.init;
 		</#if>
 	</#list>
 
-	@SubscribeEvent public static void registerKeyMappings(FMLCommonSetupEvent event) {
+	@SubscribeEvent public static void registerKeyBindings(FMLClientSetupEvent event) {
 		<#list keybinds as keybind>
-			${JavaModName}.addNetworkMessage(${keybind.getModElement().getName()}Message.class, ${keybind.getModElement().getName()}Message::buffer,
-					${keybind.getModElement().getName()}Message::new, ${keybind.getModElement().getName()}Message::handler);
 			ClientRegistry.registerKeyBinding(${keybind.getModElement().getRegistryNameUpper()});
 		</#list>
 	}
 
-	@Mod.EventBusSubscriber @OnlyIn(Dist.CLIENT) public static class KeyEventListener {
+	@Mod.EventBusSubscriber({Dist.CLIENT}) public static class KeyEventListener {
 
 		@SubscribeEvent public static void onKeyInput(InputEvent.KeyInputEvent event) {
 			if (Minecraft.getInstance().screen == null) {

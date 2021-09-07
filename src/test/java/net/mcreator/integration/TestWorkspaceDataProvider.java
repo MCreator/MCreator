@@ -120,6 +120,61 @@ public class TestWorkspaceDataProvider {
 			sampleVariable1.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
 			sampleVariable1.setScope(VariableType.Scope.GLOBAL_WORLD);
 			workspace.addVariableElement(sampleVariable1);
+
+			int idx = 0;
+			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
+					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+				VariableElement logicVariable = new VariableElement();
+				logicVariable.setName("logic" + (idx++));
+				logicVariable.setValue("true");
+				logicVariable.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
+				logicVariable.setScope(scope);
+				workspace.addVariableElement(logicVariable);
+			}
+
+			idx = 0;
+			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
+					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+				VariableElement logicVariable = new VariableElement();
+				logicVariable.setName("number" + (idx++));
+				logicVariable.setValue("12");
+				logicVariable.setType(VariableTypeLoader.BuiltInTypes.NUMBER);
+				logicVariable.setScope(scope);
+				workspace.addVariableElement(logicVariable);
+			}
+
+			idx = 0;
+			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
+					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+				VariableElement logicVariable = new VariableElement();
+				logicVariable.setName("string" + (idx++));
+				logicVariable.setValue("test");
+				logicVariable.setType(VariableTypeLoader.BuiltInTypes.STRING);
+				logicVariable.setScope(scope);
+				workspace.addVariableElement(logicVariable);
+			}
+
+			idx = 0;
+			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
+					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+				VariableElement logicVariable = new VariableElement();
+				logicVariable.setName("itemstack" + (idx++));
+				logicVariable.setValue("ItemStack.EMPTY");
+				logicVariable.setType(VariableTypeLoader.BuiltInTypes.ITEMSTACK);
+				logicVariable.setScope(scope);
+				workspace.addVariableElement(logicVariable);
+			}
+
+			idx = 0;
+			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
+					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+				VariableElement logicVariable = new VariableElement();
+				logicVariable.setName("direction" + (idx++));
+				logicVariable.setValue("UP");
+				logicVariable.setType(VariableTypeLoader.BuiltInTypes.DIRECTION);
+				logicVariable.setScope(scope);
+				workspace.addVariableElement(logicVariable);
+			}
 		}
 
 		EmptyIcon.ImageIcon imageIcon = new EmptyIcon.ImageIcon(16, 16);
