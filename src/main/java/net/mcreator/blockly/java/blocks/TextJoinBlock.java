@@ -41,8 +41,21 @@ public class TextJoinBlock implements IBlockGenerator {
 				return;
 			}
 
+			boolean hasString = false;
+			for (Element element : elements) {
+				if (element != null && BlocklyToCode.directProcessOutputBlock(master, element).startsWith("\"")) {
+					hasString = true;
+					break;
+				}
+			}
+
 			if (sumnum == 1) {
-				master.append("(\"\" + ");
+				if (hasString) { // The only element is a string, we return it as is
+					master.processOutputBlock(elements.get(0));
+					return;
+				} else {
+					master.append("(\"\" + ");
+				}
 			} else {
 				master.append("(");
 			}
@@ -63,7 +76,7 @@ public class TextJoinBlock implements IBlockGenerator {
 				}
 				master.append(")");
 				if (i < sumnum - 1)
-					master.append("+\"\"+");
+					master.append(hasString ? "+" : "+\"\"+");
 			}
 			master.append(")");
 		} else {
