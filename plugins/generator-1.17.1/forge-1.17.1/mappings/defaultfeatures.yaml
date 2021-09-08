@@ -1,12 +1,12 @@
 _default: null
 AmethystGeodes: DefaultCrystalFormations
 Bamboo: BambooVegetation
-BerryBushes: ChanceBerries
+BerryBushes: BerryBushes
 Caves: DefaultCarvers
 DeadBushes: DesertVegetation
 DesertFeatures: DesertExtraDecoration
 Dripstone: Dripstone
-ExtraEmeraldOre: ExtraEmerald
+ExtraEmeraldOre: ExtraEmeralds
 ExtraGoldOre: ExtraGold
 Fossils: FossilDecoration
 FrozenTopLayer: SurfaceFreezing

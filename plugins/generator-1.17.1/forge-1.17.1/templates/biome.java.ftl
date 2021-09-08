@@ -29,12 +29,12 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
 
 package ${package}.world.biome;
+<#include "mcitems.ftl">
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Biome {
-    
+
     @SubscribeEvent public void registerBiomes(RegistryEvent.Register<Biome> event) {
     	if (biome == null) {
             BiomeSpecialEffects effects = new BiomeSpecialEffects.Builder()
@@ -45,16 +45,16 @@ package ${package}.world.biome;
                 .foliageColorOverride(${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)})
                 .grassColorOverride(${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)})
                 <#if data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
-                    .ambientLoopSound((SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.ambientSound}")))
+                    .ambientLoopSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.ambientSound}")))
                 </#if>
                 <#if data.moodSound?has_content && data.moodSound.getMappedValue()?has_content>
-                    .ambientMoodSound(new AmbientMoodSettings((SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.moodSound}")), ${data.moodSoundDelay}, 8, 2))
+                    .ambientMoodSound(new AmbientMoodSettings(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.moodSound}")), ${data.moodSoundDelay}, 8, 2))
                 </#if>
                 <#if data.additionsSound?has_content && data.additionsSound.getMappedValue()?has_content>
-                    .ambientAdditionsSound(new AmbientAdditionsSettings((SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.additionsSound}")), 0.0111D))
+                    .ambientAdditionsSound(new AmbientAdditionsSettings(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.additionsSound}")), 0.0111D))
                 </#if>
                 <#if data.music?has_content && data.music.getMappedValue()?has_content>
-                    .backgroundMusic(new Music((SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")), 12000, 24000, true))
+                    .backgroundMusic(new Music(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")), 12000, 24000, true))
                 </#if>
                 <#if data.spawnParticles>
                     .ambientParticle(new AmbientParticleSettings(${data.particleToSpawn}, ${data.particlesProbability / 100}f))
@@ -257,7 +257,7 @@ package ${package}.world.biome;
 
         <#if (data.flowersPerChunk > 0)>
         biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-            Feature.FLOWER.configured(Features.Configs.NORMAL_FLOWER_CONFIG)
+            Feature.FLOWER.configured(Features.Configs.DEFAULT_FLOWER_CONFIG)
                 .decorated(Features.Decorators.ADD_32)
                 .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
                 .count(${data.flowersPerChunk}));
@@ -315,7 +315,7 @@ package ${package}.world.biome;
         <#list data.defaultFeatures as defaultFeature>
         	<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
         	<#if mfeat != "null">
-            BiomeDefaultFeatures.add{mfeat}(biomeGenerationSettings);
+            BiomeDefaultFeatures.add${mfeat}(biomeGenerationSettings);
         	</#if>
         </#list>
 
@@ -331,7 +331,7 @@ package ${package}.world.biome;
         	</#if>
         </#list>
 
-        {$name} = new Biome.BiomeBuilder()
+        ${name} = new Biome.BiomeBuilder()
             .precipitation(Biome.Precipitation.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
             .biomeCategory(Biome.BiomeCategory.${data.biomeCategory})
             .depth(${data.baseHeight}f)
@@ -347,9 +347,9 @@ package ${package}.world.biome;
     	}
     }
 
-	@Override public void init(FMLCommonSetupEvent event) {
+	@SubscribeEvent public void init(FMLCommonSetupEvent event) {
     <#if data.biomeDictionaryTypes?has_content>
-    	BiomeDictionary.addTypes(RegistryKey.getOrCreateKey(Registry.BIOME_KEY, WorldGenRegistries.BIOME.getKey(biome)),
+    	BiomeDictionary.addTypes(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(biome)),
     	<#list data.biomeDictionaryTypes as biomeDictionaryType>
         BiomeDictionary.Type.${generator.map(biomeDictionaryType, "biomedictionarytypes")}<#if biomeDictionaryType?has_next>,</#if>
     	</#list>
@@ -357,7 +357,7 @@ package ${package}.world.biome;
     </#if>
     <#if data.spawnBiome>
     BiomeManager.addBiome(BiomeManager.BiomeType.${data.biomeType},
-        new BiomeManager.BiomeEntry(RegistryKey.getOrCreateKey(Registry.BIOME_KEY, WorldGenRegistries.BIOME.getKey(biome)), ${data.biomeWeight}));
+        new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(biome)), ${data.biomeWeight}));
         </#if>
 	}
 
