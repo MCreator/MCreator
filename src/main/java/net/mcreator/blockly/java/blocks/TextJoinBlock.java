@@ -67,9 +67,10 @@ public class TextJoinBlock implements IBlockGenerator {
 						element = candidate;
 				}
 				master.append("(");
-				if (element != null)
+				if (element != null) {
 					master.processOutputBlock(element);
-				else {
+					hasString = BlocklyToCode.directProcessOutputBlock(master, element).startsWith("\"");
+				} else {
 					master.addCompileNote(
 							new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Text join elements is empty."));
 					master.append("null");
