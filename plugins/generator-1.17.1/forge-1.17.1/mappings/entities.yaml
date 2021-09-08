@@ -59,7 +59,7 @@ EntityCow:
   - Cow
   - EntityType.COW
   - cow
-EntityCreature: CreatureEntity
+EntityCreature: PathfinderMob
 EntityCreeper:
   - Creeper
   - EntityType.CREEPER
@@ -276,7 +276,7 @@ EntityPufferfish:
   - EntityType.PUFFERFISH
   - pufferfish
 EntityPigZombie:
-  - ZombifiedPiglinEntity
+  - ZombifiedPiglin
   - EntityType.ZOMBIFIED_PIGLIN
   - zombified_piglin
 EntityPolarBear:
