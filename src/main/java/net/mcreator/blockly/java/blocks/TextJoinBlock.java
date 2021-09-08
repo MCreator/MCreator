@@ -41,16 +41,15 @@ public class TextJoinBlock implements IBlockGenerator {
 				return;
 			}
 
-			boolean hasString = false;
-			for (Element element : elements) {
-				if (element != null && BlocklyToCode.directProcessOutputBlock(master, element).matches("\"[^\"]*\"")) {
-					hasString = true;
-					break;
-				}
+			boolean[] strings = new boolean[elements.size()];
+			for (int i = 0; i < elements.size(); i++) {
+				Element element = elements.get(i);
+				strings[i] = element != null && BlocklyToCode.directProcessOutputBlock(master, element)
+						.matches("\"[^\"]*\"");
 			}
 
 			if (sumnum == 1) {
-				if (hasString) { // The only element is a string, we return it as is
+				if (strings[0]) { // The only element is a string, we return it as is
 					master.processOutputBlock(elements.get(0));
 					return;
 				} else {
@@ -67,17 +66,16 @@ public class TextJoinBlock implements IBlockGenerator {
 						element = candidate;
 				}
 				master.append("(");
-				if (element != null) {
+				if (element != null)
 					master.processOutputBlock(element);
-					hasString = BlocklyToCode.directProcessOutputBlock(master, element).matches("\"[^\"]*\"");
-				} else {
+				else {
 					master.addCompileNote(
 							new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Text join elements is empty."));
 					master.append("null");
 				}
 				master.append(")");
 				if (i < sumnum - 1)
-					master.append(hasString ? "+" : "+\"\"+");
+					master.append(strings[i] ? "+" : "+\"\"+");
 			}
 			master.append(")");
 		} else {
