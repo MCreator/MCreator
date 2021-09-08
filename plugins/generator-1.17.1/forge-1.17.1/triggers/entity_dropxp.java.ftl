@@ -6,8 +6,8 @@
 		    dependencies.put("x", entity.getX());
 		    dependencies.put("y", entity.getY());
 		    dependencies.put("z", entity.getZ());
-			dependencies.put("droppedexperience", (int) event.getDroppedExperience());
-			dependencies.put("originalexperience", (int) event.getOriginalExperience());
+			dependencies.put("droppedexperience", event.getDroppedExperience());
+			dependencies.put("originalexperience", event.getOriginalExperience());
 			dependencies.put("sourceentity", event.getAttackingPlayer());
 			dependencies.put("world", entity.level);
 			dependencies.put("entity", entity);
