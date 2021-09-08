@@ -43,7 +43,7 @@ public class TextJoinBlock implements IBlockGenerator {
 
 			boolean hasString = false;
 			for (Element element : elements) {
-				if (element != null && BlocklyToCode.directProcessOutputBlock(master, element).startsWith("\"")) {
+				if (element != null && BlocklyToCode.directProcessOutputBlock(master, element).matches("\"[^\"]*\"")) {
 					hasString = true;
 					break;
 				}
@@ -69,7 +69,7 @@ public class TextJoinBlock implements IBlockGenerator {
 				master.append("(");
 				if (element != null) {
 					master.processOutputBlock(element);
-					hasString = BlocklyToCode.directProcessOutputBlock(master, element).startsWith("\"");
+					hasString = BlocklyToCode.directProcessOutputBlock(master, element).matches("\"[^\"]*\"");
 				} else {
 					master.addCompileNote(
 							new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Text join elements is empty."));
