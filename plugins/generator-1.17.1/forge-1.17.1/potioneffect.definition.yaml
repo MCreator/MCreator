@@ -9,5 +9,3 @@ global_templates:
 localizationkeys:
   - key: effect.@modid.@registryname
     mapto: effectName
-
-field_exclusions: [ renderStatusInInventory, renderStatusInHUD ]
