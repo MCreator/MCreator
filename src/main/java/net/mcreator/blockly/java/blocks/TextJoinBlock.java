@@ -25,6 +25,7 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TextJoinBlock implements IBlockGenerator {
@@ -41,16 +42,23 @@ public class TextJoinBlock implements IBlockGenerator {
 				return;
 			}
 
-			boolean[] strings = new boolean[elements.size()];
-			for (int i = 0; i < elements.size(); i++) {
-				Element element = elements.get(i);
-				strings[i] = element != null && BlocklyToCode.directProcessOutputBlock(master, element)
-						.matches("\"[^\"]*\"");
+			List<String> inputCodes = new ArrayList<>();
+			for (int i = 0; i < sumnum; i++) {
+				inputCodes.add("null");
+				for (Element element : elements) {
+					if (element.getAttribute("name").equals("ADD" + i)) {
+						inputCodes.set(i, BlocklyToCode.directProcessOutputBlock(master, element));
+						break;
+					}
+				}
+				if (inputCodes.get(i).equals("null"))
+					master.addCompileNote(
+							new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Text join elements is empty."));
 			}
 
 			if (sumnum == 1) {
-				if (strings[0]) { // The only element is a string, we return it as is
-					master.processOutputBlock(elements.get(0));
+				if (inputCodes.get(0).matches("\"[^\"]*\"")) { // The only element is a string, we return it as is
+					master.append(inputCodes.get(0));
 					return;
 				} else {
 					master.append("(\"\" + ");
@@ -60,22 +68,13 @@ public class TextJoinBlock implements IBlockGenerator {
 			}
 
 			for (int i = 0; i < sumnum; i++) {
-				Element element = null;
-				for (Element candidate : elements) {
-					if (candidate.getAttribute("name").equals("ADD" + i))
-						element = candidate;
-				}
-				master.append("(");
-				if (element != null)
-					master.processOutputBlock(element);
-				else {
-					master.addCompileNote(
-							new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Text join elements is empty."));
-					master.append("null");
-				}
-				master.append(")");
+				boolean isString = inputCodes.get(i).matches("\"[^\"]*\"");
+				if (isString)
+					master.append(inputCodes.get(i));
+				else
+					master.append("(" + inputCodes.get(i) + ")");
 				if (i < sumnum - 1)
-					master.append(strings[i] ? "+" : "+\"\"+");
+					master.append(isString ? "+" : "+\"\"+");
 			}
 			master.append(")");
 		} else {
