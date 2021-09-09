@@ -14,3 +14,7 @@ run/
 
 # MacOS system files
 .DS_STORE
+
+# Other Files (In Eclipse)
+.classpath
+.project
