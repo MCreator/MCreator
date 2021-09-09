@@ -1,1 +1,1 @@
-((world instanceof Level)?((Level) world).getBestNeighborSignal(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})):0)
+(world instanceof Level _lvl_getIndPow ? _lvl_getIndPow.getBestNeighborSignal(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})):0)

@@ -1,1 +1,1 @@
-(world.getRawBrightness(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), 0))
+(world.getMaxLocalRawBrightness(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))

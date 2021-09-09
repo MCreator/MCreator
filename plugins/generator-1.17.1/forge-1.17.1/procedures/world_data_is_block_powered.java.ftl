@@ -1,1 +1,1 @@
-((world instanceof Level)?((Level) world).hasNeighborSignal(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})):false)
+(world instanceof Level _lvl_isPow ? _lvl_isPow.hasNeighborSignal(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})):false)
