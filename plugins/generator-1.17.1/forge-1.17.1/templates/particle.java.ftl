@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2021, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -30,7 +31,7 @@
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
 
-package ${package}.particles;
+package ${package}.particle;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Particle {
 
@@ -44,7 +45,7 @@ package ${package}.particles;
 		Minecraft.getInstance().particleEngine.register(particle, CustomParticleProvider::new);
 	}
 
-	@OnlyIn(Dist.CLIENT) private static class CustomParticle extends SpriteTexturedParticle {
+	@OnlyIn(Dist.CLIENT) private static class CustomParticle extends TextureSheetParticle {
 
 		private final SpriteSet spriteSet;
 		<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
@@ -60,7 +61,7 @@ package ${package}.particles;
 			this.quadSize *= (float) ${data.scale};
 
 			<#if (data.maxAgeDiff > 0)>
-			this.lifetime = (int) Math.max(1, ${data.maxAge} + (this.rand.nextInt(${data.maxAgeDiff * 2}) - ${data.maxAgeDiff}));
+			this.lifetime = (int) Math.max(1, ${data.maxAge} + (this.random.nextInt(${data.maxAgeDiff * 2}) - ${data.maxAgeDiff}));
 			<#else>
 			this.lifetime = ${data.maxAge};
 			</#if>
@@ -91,7 +92,7 @@ package ${package}.particles;
 		</#if>
 
 		@Override public ParticleRenderType getRenderType() {
-			return IParticleRenderType.PARTICLE_SHEET_${data.renderType};
+			return ParticleRenderType.PARTICLE_SHEET_${data.renderType};
 		}
 
 		@Override public void tick() {
