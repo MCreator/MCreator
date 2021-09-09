@@ -44,16 +44,19 @@ public class TextJoinBlock implements IBlockGenerator {
 
 			List<String> inputCodes = new ArrayList<>();
 			for (int i = 0; i < sumnum; i++) {
-				inputCodes.add("null");
+				boolean match = false;
 				for (Element element : elements) {
 					if (element.getAttribute("name").equals("ADD" + i)) {
-						inputCodes.set(i, BlocklyToCode.directProcessOutputBlock(master, element));
+						match = true;
+						inputCodes.add(BlocklyToCode.directProcessOutputBlock(master, element));
 						break;
 					}
 				}
-				if (inputCodes.get(i).equals("null"))
-					master.addCompileNote(
-							new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Text join elements is empty."));
+				if (!match) {
+					inputCodes.add("null");
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+						"Text join elements is empty."));
+				}
 			}
 
 			if (sumnum == 1) {
