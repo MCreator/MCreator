@@ -356,9 +356,9 @@ package ${package}.world.biome;
     	);
     </#if>
     <#if data.spawnBiome>
-    BiomeManager.addBiome(BiomeManager.BiomeType.${data.biomeType},
-        new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(biome)), ${data.biomeWeight}));
-        </#if>
+        BiomeManager.addBiome(BiomeManager.BiomeType.${data.biomeType},
+            new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(biome)), ${data.biomeWeight}));
+    </#if>
 	}
 
 	<#if (data.treeVines?has_content && !data.treeVines.isEmpty())>
