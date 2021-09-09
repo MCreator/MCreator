@@ -53,9 +53,9 @@ public class TextJoinBlock implements IBlockGenerator {
 					}
 				}
 				if (!match) {
-					inputCodes.add("null");
-					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-						"Text join elements is empty."));
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							"Join text block requires all inputs defined"));
+					return;
 				}
 			}
 
@@ -76,9 +76,11 @@ public class TextJoinBlock implements IBlockGenerator {
 					master.append(inputCodes.get(i));
 				else
 					master.append("(" + inputCodes.get(i) + ")");
+
 				if (i < sumnum - 1)
 					master.append(isString ? "+" : "+\"\"+");
 			}
+
 			master.append(")");
 		} else {
 			master.addCompileNote(
