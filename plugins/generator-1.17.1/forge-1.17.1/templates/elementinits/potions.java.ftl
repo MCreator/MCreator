@@ -43,7 +43,7 @@ package ${package}.init;
     <#list potions as potion>
     public static Potion ${potion.getModElement().getRegistryNameUpper()} = register(new Potion(
         <#list potion.effects as effect>
-        new MobEffectInstance(${effect.effect?replace("Effect.effect", ".potion")?replace("Potion.potion", "PotionEffect.potion")}, ${effect.duration}, ${effect.amplifier}, ${effect.ambient}, ${effect.showParticles})<#if effect?has_next>,</#if>
+        new MobEffectInstance(${effect.effect}, ${effect.duration}, ${effect.amplifier}, ${effect.ambient}, ${effect.showParticles})<#if effect?has_next>,</#if>
         </#list>)
     .setRegistryName("${potion.getModElement().getRegistryName()}"));
     </#list>
