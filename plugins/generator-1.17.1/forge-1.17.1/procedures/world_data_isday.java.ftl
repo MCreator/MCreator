@@ -1,0 +1,1 @@
+(world instanceof Level _lvl_isDay? _lvl_isDay.isDay():false)
