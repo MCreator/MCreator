@@ -37,10 +37,6 @@ package ${package}.particle;
 
 	public static final SimpleParticleType particle = new SimpleParticleType(${data.alwaysShow});
 
-	@SubscribeEvent public static void registerParticleType(RegistryEvent.Register<ParticleType<?>> event) {
-		event.getRegistry().register(particle.setRegistryName("${registryname}"));
-	}
-
 	@OnlyIn(Dist.CLIENT) @SubscribeEvent public static void registerParticle(ParticleFactoryRegisterEvent event) {
 		Minecraft.getInstance().particleEngine.register(particle, CustomParticleProvider::new);
 	}

@@ -38,18 +38,19 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Particles {
 
-    private static final List<ParticleType<?>> REGISTRY = new ArrayList();
+	private static final List<ParticleType<?>> REGISTRY = new ArrayList();
 
-    <#list particles as particle>
-    public static ParticleType<?> ${particle.getModElement().getRegistryNameUpper()} = register(new ${particle.getModElement().getName()}Particle().particle);
-    </#list>
+	<#list particles as particle>
+	public static ParticleType<?> ${particle.getModElement().getRegistryNameUpper()} = register(
+			new ${particle.getModElement().getName()}Particle().particle.setRegistryName("${particle.getModElement().getRegistryName()}"));
+	</#list>
 
-    private static ParticleType<?> register(ParticleType<?> particle) {
+	private static ParticleType<?> register(ParticleType<?> particle) {
 		REGISTRY.add(particle);
-    	return particle;
-    }
+		return particle;
+	}
 
-	@SubscribeEvent public static void registerParticles(RegistryEvent.Register<ParticleType<?>> event) {
+	@SubscribeEvent public static void registerParticleTypes(RegistryEvent.Register<ParticleType<?>> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new ParticleType[0]));
 	}
 
