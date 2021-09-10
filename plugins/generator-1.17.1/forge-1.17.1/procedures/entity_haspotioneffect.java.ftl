@@ -1,0 +1,1 @@
+(${input$entity} instanceof LivingEntity _ent_hasEff ? _ent_hasEff.hasEffect(${generator.map(field$potion, "effects")}) : false)

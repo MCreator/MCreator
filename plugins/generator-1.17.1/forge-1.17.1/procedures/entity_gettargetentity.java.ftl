@@ -1,0 +1,1 @@
+(${input$entity} instanceof Mob _mob_target ? _mob_target.getTarget() : null)
