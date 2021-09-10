@@ -1,2 +1,3 @@
+<#include "mcelements.ftl">
 <#include "mcitems.ftl">
-(BlockTags.getAllTags().getTagOrEmpty(new ResourceLocation((${input$b}).toLowerCase(java.util.Locale.ENGLISH))).contains(${mappedBlockToBlock(input$a)}))
+(BlockTags.getAllTags().getTagOrEmpty(${toResourceLocation(input$b)}).contains(${mappedBlockToBlock(input$a)}))

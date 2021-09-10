@@ -25,6 +25,7 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TextJoinBlock implements IBlockGenerator {
@@ -41,30 +42,45 @@ public class TextJoinBlock implements IBlockGenerator {
 				return;
 			}
 
+			List<String> inputCodes = new ArrayList<>();
+			for (int i = 0; i < sumnum; i++) {
+				boolean match = false;
+				for (Element element : elements) {
+					if (element.getAttribute("name").equals("ADD" + i)) {
+						match = true;
+						inputCodes.add(BlocklyToCode.directProcessOutputBlock(master, element));
+						break;
+					}
+				}
+				if (!match) {
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							"Join text block requires all inputs defined"));
+					return;
+				}
+			}
+
 			if (sumnum == 1) {
-				master.append("(\"\" + ");
+				if (inputCodes.get(0).matches("\"[^\"]*\"")) { // The only element is a string, we return it as is
+					master.append(inputCodes.get(0));
+					return;
+				} else {
+					master.append("(\"\" + ");
+				}
 			} else {
 				master.append("(");
 			}
 
 			for (int i = 0; i < sumnum; i++) {
-				Element element = null;
-				for (Element candidate : elements) {
-					if (candidate.getAttribute("name").equals("ADD" + i))
-						element = candidate;
-				}
-				master.append("(");
-				if (element != null)
-					master.processOutputBlock(element);
-				else {
-					master.addCompileNote(
-							new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Text join elements is empty."));
-					master.append("null");
-				}
-				master.append(")");
+				boolean isString = inputCodes.get(i).matches("\"[^\"]*\"");
+				if (isString)
+					master.append(inputCodes.get(i));
+				else
+					master.append("(" + inputCodes.get(i) + ")");
+
 				if (i < sumnum - 1)
-					master.append("+\"\"+");
+					master.append(isString ? "+" : "+\"\"+");
 			}
+
 			master.append(")");
 		} else {
 			master.addCompileNote(

@@ -1,7 +1,6 @@
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onBlockMultiPlace(BlockEvent.EntityMultiPlaceEvent event) {
 		Entity entity = event.getEntity();
-		LevelAccessor world = event.getWorld();
 		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x",event.getPos().getX());
 		dependencies.put("y",event.getPos().getY());
@@ -9,7 +8,7 @@
 		dependencies.put("px",entity.getX());
 		dependencies.put("py",entity.getY());
 		dependencies.put("pz",entity.getZ());
-		dependencies.put("world",world);
+		dependencies.put("world",event.getWorld());
 		dependencies.put("entity",entity);
 		dependencies.put("blockstate",event.getState());
 		dependencies.put("placedagainst",event.getPlacedAgainst());
