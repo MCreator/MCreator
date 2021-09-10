@@ -36,7 +36,6 @@ package ${package}.potion;
 
 public class ${name}MobEffect extends MobEffect {
 
-	private final ResourceLocation potionIcon;
 	<#if data.hasCustomRenderer()>
 	private final EffectRenderer renderer = new EffectRenderer() {
 		<#if !data.renderStatusInInventory>
@@ -64,7 +63,6 @@ public class ${name}MobEffect extends MobEffect {
 	public ${name}MobEffect() {
 		super(MobEffectCategory.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
 		setRegistryName("${registryname}");
-		potionIcon = new ResourceLocation("${modid}:textures/${data.icon}");
 	}
 
 	@Override public String getDescriptionId() {
