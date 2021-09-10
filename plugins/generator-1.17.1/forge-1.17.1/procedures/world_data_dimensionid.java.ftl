@@ -1,0 +1,1 @@
+(world instanceof Level _lvl_dimId ? _lvl_dimId.dimension() : Level.OVERWORLD)
