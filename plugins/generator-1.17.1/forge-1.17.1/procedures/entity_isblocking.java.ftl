@@ -1,0 +1,1 @@
+(${input$entity} instanceof LivingEntity _ent_blocking?_ent_blocking.isBlocking():false)
