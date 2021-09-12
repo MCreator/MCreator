@@ -33,8 +33,8 @@ package ${package}.world;
 
 import ${package}.${JavaModName};
 
-@${JavaModName}Elements.ModElement.Tag
-public class ${name}GameRule extends ${JavaModName}Elements.ModElement {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+public class ${name}GameRule {
 
     <#if data.type == "Number">
     public static final GameRules.Key<GameRules.IntegerValue> gamerule = GameRules.register("${registryname}", GameRules.Category.${data.category}, create(${data.defaultValueNumber}));
@@ -42,8 +42,8 @@ public class ${name}GameRule extends ${JavaModName}Elements.ModElement {
     public static final GameRules.Key<GameRules.BooleanValue> gamerule = GameRules.register("${registryname}", GameRules.Category.${data.category}, create(${data.defaultValueLogic}));
     </#if>
 
-    public ${name}GameRule (${JavaModName}Elements instance) {
-        super(instance, ${data.getModElement().getSortID()});
+    public ${name}GameRule () {
+        MinecraftForge.EVENT_BUS.register(this));
     }
 
     <#if data.type == "Number">
