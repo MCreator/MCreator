@@ -33,6 +33,8 @@
 package ${package}.world.biome;
 <#include "mcitems.ftl">
 
+import net.minecraftforge.common.BiomeManager;
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Biome {
 
     public static Biome createBiome() {
