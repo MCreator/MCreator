@@ -30,8 +30,6 @@
 
 <#-- @formatter:off -->
 
-<#include "../mcitems.ftl">
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
@@ -40,10 +38,11 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Biomes {
 
-    private static final List<Biome> REGISTRY = new ArrayList();
+    private static final List<Biome> REGISTRY = new ArrayList<>();
 
     <#list biomes as biome>
-    public static Biome ${biome.getModElement().getRegistryNameUpper()} = register(new ${biome.getModElement().getName()}Biome());
+    public static Biome ${biome.getModElement().getRegistryNameUpper()} = register(${biome.getModElement().getName()}Biome.createBiome()
+        .setRegistryName(new ResourceLocation(${JavaModName}.MODID, "${biome.getModElement().getRegistryName()}")));
     </#list>
 
     private static Biome register(Biome biome) {

@@ -35,8 +35,7 @@ package ${package}.world.biome;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Biome {
 
-    @SubscribeEvent public void registerBiomes(RegistryEvent.Register<Biome> event) {
-    	if (biome == null) {
+    public static Biome createBiome() {
             BiomeSpecialEffects effects = new BiomeSpecialEffects.Builder()
                 .fogColor(${data.airColor?has_content?then(data.airColor.getRGB(), 12638463)})
                 .waterColor(${data.waterColor?has_content?then(data.waterColor.getRGB(), 4159204)})
@@ -331,7 +330,7 @@ package ${package}.world.biome;
         	</#if>
         </#list>
 
-        ${name} = new Biome.BiomeBuilder()
+        return new Biome.BiomeBuilder()
             .precipitation(Biome.Precipitation.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
             .biomeCategory(Biome.BiomeCategory.${data.biomeCategory})
             .depth(${data.baseHeight}f)
@@ -342,14 +341,11 @@ package ${package}.world.biome;
             .mobSpawnSettings(mobSpawnInfo.build())
             .generationSettings(biomeGenerationSettings.build())
             .build();
-
-        event.getRegistry().register(biome.setRegistryName("${modid}:${registryname}"));
-    	}
     }
 
 	@SubscribeEvent public void init(FMLCommonSetupEvent event) {
     <#if data.biomeDictionaryTypes?has_content>
-    	BiomeDictionary.addTypes(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(biome)),
+    	BiomeDictionary.addTypes(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})),
     	<#list data.biomeDictionaryTypes as biomeDictionaryType>
         BiomeDictionary.Type.${generator.map(biomeDictionaryType, "biomedictionarytypes")}<#if biomeDictionaryType?has_next>,</#if>
     	</#list>
@@ -357,7 +353,7 @@ package ${package}.world.biome;
     </#if>
     <#if data.spawnBiome>
         BiomeManager.addBiome(BiomeManager.BiomeType.${data.biomeType},
-            new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(biome)), ${data.biomeWeight}));
+            new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})), ${data.biomeWeight}));
     </#if>
 	}
 
