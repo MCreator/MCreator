@@ -1,2 +1,3 @@
+<#include "mcelements.ftl">
 <#include "mcitems.ftl">
-(ItemTags.getAllTags().getTagOrEmpty(new ResourceLocation((${input$b}).toLowerCase(java.util.Locale.ENGLISH))).contains(${mappedMCItemToItem(input$a)}))
+(ItemTags.getAllTags().getTagOrEmpty(${toResourceLocation(input$b)}).contains(${mappedMCItemToItem(input$a)}))
