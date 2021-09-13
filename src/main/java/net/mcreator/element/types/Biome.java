@@ -27,7 +27,10 @@ import net.mcreator.workspace.elements.ModElement;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Biome extends GeneratableElement {
 
@@ -136,6 +139,12 @@ import java.util.List;
 		public int weight;
 		public String spawnType;
 
+	}
+
+	public boolean hasFruits() {
+		String[] airBlocks = { "blocks.air", "blocks.cave_air", "blocks.void_air" };
+		return !(Arrays.stream(airBlocks).collect(Collectors.toList())
+				.contains(treeFruits.getUnmappedValue().toLowerCase()) && !treeFruits.isEmpty());
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

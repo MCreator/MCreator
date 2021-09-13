@@ -1,6 +1,10 @@
 templates:
   - template: biome.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/biome/@NAMEBiome.java"
+  - template: tree_fruits.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/level/levelgen/feature/treedecorators/@NAMEDecorator.java"
+    condition: hasFruits()
+    deleteWhenConditionFalse: true
 
 global_templates:
   - template: elementinits/biomes.java.ftl

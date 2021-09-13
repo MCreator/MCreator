@@ -131,7 +131,7 @@ import java.util.function.BiConsumer;
                 new JungleFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 2),
                 new TwoLayersFeatureSize(1, 1, 2)))
                 <#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-                	<@vinesAndCocoa/>
+                	<@treeFruits/>
                 <#else>
                 	.setDecorators(ImmutableList.of(TrunkVineTreeDecorator.field_236879_b_, LeaveVineTreeDecorator.field_236871_b_))
                 </#if>
@@ -151,7 +151,7 @@ import java.util.function.BiConsumer;
                 new AcaciaFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
                 new TwoLayersFeatureSize(1, 0, 2)))
                 <#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-                	<@vinesAndCocoa/>
+                	<@treeFruits/>
                 <#else>
                 	.ignoreVines()
                 </#if>
@@ -171,7 +171,7 @@ import java.util.function.BiConsumer;
                 new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(3, 4)),
                 new TwoLayersFeatureSize(1, 1, 2)))
                 <#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-                	<@vinesAndCocoa/>
+                	<@treeFruits/>
                 </#if>
                 <#if data.treeType == data.TREES_CUSTOM>
                 </#if>
@@ -189,7 +189,7 @@ import java.util.function.BiConsumer;
                 new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(13, 4)),
                 new TwoLayersFeatureSize(1, 1, 2)))
                 <#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-                	<@vinesAndCocoa/>
+                	<@treeFruits/>
                 </#if>
                 <#if data.treeType == data.TREES_CUSTOM>
                 </#if>
@@ -207,7 +207,7 @@ import java.util.function.BiConsumer;
                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                 new TwoLayersFeatureSize(1, 0, 1)))
                 <#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-                	<@vinesAndCocoa/>
+                	<@treeFruits/>
                 <#else>
                 	.ignoreVines()
                 </#if>
@@ -227,7 +227,7 @@ import java.util.function.BiConsumer;
                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                 new TwoLayersFeatureSize(1, 0, 1)))
                 <#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-                	<@vinesAndCocoa/>
+                	<@treeFruits/>
                 <#else>
                 	.ignoreVines()
                 </#if>
@@ -358,43 +358,12 @@ import java.util.function.BiConsumer;
     </#if>
     }
     </#if>
-
-	<#if (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-	private static class CustomCocoaDecorator extends CocoaDecorator {
-
-    public static final CustomCocoaDecorator instance = new CustomCocoaDecorator();
-    public static com.mojang.serialization.Codec<CustomCocoaDecorator> codec;
-    public static TreeDecoratorType tdt;
-
-    static {
-    	codec = com.mojang.serialization.Codec.unit(() -> instance);
-    	tdt = new TreeDecoratorType(codec);
-    	tdt.setRegistryName("${registryname}_ctd");
-    	ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
-    }
-
-    public CustomCocoaDecorator() {
-    	super(0.2f);
-    }
-
-    @Override protected TreeDecoratorType<?> type() {
-    	return tdt;
-    }
-
-    @Override ${mcc.getMethod("net.minecraft.world.level.levelgen.feature.treedecorators.CocoaDecorator", "place", "LevelSimulatedReader", "java.util.function.BiConsumer<BlockPos, BlockState>", "Random", "List", "List")
-    	.replace("this.probability", "0.2F")
-    	.replace("Blocks.COCOA.defaultBlockState().setValue(CocoaBlock.AGE,Integer.valueOf(p_161721_.nextInt(3))).setValue(CocoaBlock.FACING,direction)",
-        mappedBlockToBlockStateCode(data.treeFruits))}
-
-	}
-	</#if>
-
 }
 
-<#macro vinesAndCocoa>
+<#macro treeFruits>
 .decorators(ImmutableList.of(
-	<#if (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-        new CustomCocoaDecorator()
+	<#if data.hasFruits()>
+        new ${name}Decorator()
 	</#if>
 ))
 </#macro>
