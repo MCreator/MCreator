@@ -31,7 +31,9 @@
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
 
-package ${package}.particle;
+package ${package}.client.particle;
+
+import ${package}.client.particle.${name}Particle;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Particle {
 
