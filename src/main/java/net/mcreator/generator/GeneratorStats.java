@@ -52,12 +52,10 @@ public class GeneratorStats {
 				generatorConfiguration.getRaw().get("status").toString().toUpperCase(Locale.ENGLISH));
 
 		// determine supported mod element types
-		List<?> partials = ((List<?>) generatorConfiguration.getRaw().get("partial_support"));
-		if (partials == null)
-			partials = new ArrayList<>();
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
-			if (generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type) != null) {
-				if (partials.contains(type.getRegistryName().toLowerCase(Locale.ENGLISH))) {
+			Map<?, ?> definition = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type);
+			if (definition != null) {
+				if (definition.containsKey("field_inclusions") || definition.containsKey("field_exclusions")) {
 					modElementTypeCoverageInfo.put(type, CoverageStatus.PARTIAL);
 				} else {
 					modElementTypeCoverageInfo.put(type, CoverageStatus.FULL);

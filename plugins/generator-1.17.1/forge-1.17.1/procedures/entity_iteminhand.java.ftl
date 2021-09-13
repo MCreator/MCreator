@@ -1,0 +1,1 @@
+/*@ItemStack*/(${input$entity} instanceof LivingEntity _ent_itemMain?_ent_itemMain.getMainHandItem():ItemStack.EMPTY)

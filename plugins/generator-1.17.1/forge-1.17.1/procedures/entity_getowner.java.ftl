@@ -1,0 +1,1 @@
+(entity instanceof TamableAnimal _tam_getOwn ? _tam_getOwn.getOwner() : null)
