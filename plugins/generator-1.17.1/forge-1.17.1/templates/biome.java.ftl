@@ -362,49 +362,79 @@ import net.minecraftforge.common.BiomeManager;
     </#if>
 
 	<#if (data.treeVines?has_content && !data.treeVines.isEmpty())>
-	private static class CustomLeaveVineDecorator extends LeaveVineDecorator {
+	private static class CustomLeaveVineTreeDecorator extends LeaveVineTreeDecorator {
 
-    public static final CustomLeaveVineDecorator instance = new CustomLeaveVineDecorator();
+    public static final CustomLeaveVineTreeDecorator instance = new CustomLeaveVineTreeDecorator();
     public static com.mojang.serialization.Codec<LeaveVineTreeDecorator> codec;
-    public static TreeDecorator decorator;
+    public static TreeDecoratorType tdt;
 
     static {
     	codec = com.mojang.serialization.Codec.unit(() -> instance);
-    	decorator = new TreeDecorator(codec);
-    	decorator.setRegistryName("${registryname}_lvd");
-    	ForgeRegistries.TREE_DECORATOR_TYPES.register(decorator);
+    	tdt = new TreeDecoratorType(codec);
+    	tdt.setRegistryName("${registryname}_lvtd");
+    	ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
     }
 
-    @Override protected TreeDecorator<?> type() {
-    	return decorator;
+    @Override protected TreeDecoratorType<?> func_230380_a_() {
+    	return tdt;
     }
 
-    @Override protected static void placeVine(BiConsumer<BlockPos, BlockState> p_161751_, BlockPos p_161752_, BooleanProperty p_161753_) {
-          p_161751_.accept(p_161752_, ${mappedBlockToBlockStateCode(data.treeVines)}.setValue(p_161753_, Boolean.valueOf(true)));
-       }
+    @Override protected void func_227424_a_(IWorldWriter ww, BlockPos bp, BooleanProperty bpr, Set<BlockPos> sbc, MutableBoundingBox mbb) {
+    	this.func_227423_a_(ww, bp, ${mappedBlockToBlockStateCode(data.treeVines)}, sbc, mbb);
+    }
 
 	}
 
-	private static class CustomTrunkVineDecorator extends TrunkVineDecorator {
+	private static class CustomTrunkVineTreeDecorator extends TrunkVineTreeDecorator {
 
-    public static final CustomTrunkVineDecorator instance = new CustomTrunkVineDecorator();
-    public static com.mojang.serialization.Codec<CustomTrunkVineDecorator> codec;
-    public static TreeDecorator decorator;
+    public static final CustomTrunkVineTreeDecorator instance = new CustomTrunkVineTreeDecorator();
+    public static com.mojang.serialization.Codec<CustomTrunkVineTreeDecorator> codec;
+    public static TreeDecoratorType tdt;
 
     static {
     	codec = com.mojang.serialization.Codec.unit(() -> instance);
-    	decorator = new TreeDecorator(codec);
-    	decorator.setRegistryName("${registryname}_tvd");
-    	ForgeRegistries.TREE_DECORATOR_TYPES.register(decorator);
+    	tdt = new TreeDecoratorType(codec);
+    	tdt.setRegistryName("${registryname}_tvtd");
+    	ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
     }
 
-    @Override protected TreeDecorator<?> type() {
-    	return decorator;
+    @Override protected TreeDecoratorType<?> func_230380_a_() {
+    	return tdt;
     }
 
-    @Override protected void place(LevelSimulatedReader p_161755_, BiConsumer<BlockPos, BlockState> p_161756_, Random p_161757_, List<BlockPos> p_161758_, List<BlockPos> p_161759_) {
-    	this.placeVine(ww, bp, ${mappedBlockToBlockStateCode(data.treeVines)}, sbc, mbb);
+    @Override protected void func_227424_a_(IWorldWriter ww, BlockPos bp, BooleanProperty bpr, Set<BlockPos> sbc, MutableBoundingBox mbb) {
+    	this.func_227423_a_(ww, bp, ${mappedBlockToBlockStateCode(data.treeVines)}, sbc, mbb);
     }
+
+	}
+	</#if>
+
+	<#if (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
+	private static class CustomCocoaTreeDecorator extends CocoaTreeDecorator {
+
+    public static final CustomCocoaTreeDecorator instance = new CustomCocoaTreeDecorator();
+    public static com.mojang.serialization.Codec<CustomCocoaTreeDecorator> codec;
+    public static TreeDecoratorType tdt;
+
+    static {
+    	codec = com.mojang.serialization.Codec.unit(() -> instance);
+    	tdt = new TreeDecoratorType(codec);
+    	tdt.setRegistryName("${registryname}_ctd");
+    	ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
+    }
+
+    public CustomCocoaTreeDecorator() {
+    	super(0.2f);
+    }
+
+    @Override protected TreeDecoratorType<?> func_230380_a_() {
+    	return tdt;
+    }
+
+    @Override ${mcc.getMethod("net.minecraft.world.gen.treedecorator.CocoaTreeDecorator", "func_225576_a_", "ISeedReader", "Random", "List", "List", "Set", "MutableBoundingBox")
+    	.replace("this.field_227417_b_", "0.2F")
+    	.replace("Blocks.COCOA.defaultBlockState().setValue(CocoaBlock.AGE,Integer.valueOf(p_225576_2_.nextInt(3))).setValue(CocoaBlock.HORIZONTAL_FACING,direction)",
+        mappedBlockToBlockStateCode(data.treeFruits))}
 
 	}
 	</#if>
@@ -414,8 +444,8 @@ import net.minecraftforge.common.BiomeManager;
 <#macro vinesAndCocoa>
 .setDecorators(ImmutableList.of(
 	<#if (data.treeVines?has_content && !data.treeVines.isEmpty())>
-        CustomLeaveVineDecorator.instance,
-        CustomTrunkVineDecorator.instance
+        CustomLeaveVineTreeDecorator.instance,
+        CustomTrunkVineTreeDecorator.instance
 	</#if>
 
 	<#if (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
