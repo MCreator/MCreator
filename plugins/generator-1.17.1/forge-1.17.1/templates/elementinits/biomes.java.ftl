@@ -54,6 +54,15 @@ package ${package}.init;
 		event.getRegistry().registerAll(REGISTRY.toArray(new Biome[0]));
 	}
 
+	@SubscribeEvent public void init(FMLCommonSetupEvent event) {
+	    <#list biomes as biome>
+	        <#assign ge = biome.getGeneratableElement()>
+            <#if ge.biomeDictionaryTypes?has_content || ge.spawnBiome>
+                ${ge}Biome.init();
+            </#if>
+        </#list>
+	}
+
 }
 
 <#-- @formatter:on -->
