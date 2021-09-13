@@ -34,6 +34,10 @@ package ${package}.world.biome;
 <#include "mcitems.ftl">
 
 import net.minecraftforge.common.BiomeManager;
+import net.minecraft.core.Direction;
+
+import java.util.List;
+import java.util.function.BiConsumer;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Biome {
 
@@ -132,7 +136,6 @@ import net.minecraftforge.common.BiomeManager;
                 	.setDecorators(ImmutableList.of(TrunkVineTreeDecorator.field_236879_b_, LeaveVineTreeDecorator.field_236871_b_))
                 </#if>
                 <#if data.treeType == data.TREES_CUSTOM>
-                .setMaxWaterDepth(${data.maxWaterDepth})
                 </#if>
             	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
@@ -153,7 +156,6 @@ import net.minecraftforge.common.BiomeManager;
                 	.ignoreVines()
                 </#if>
                 <#if data.treeType == data.TREES_CUSTOM>
-                .setMaxWaterDepth(${data.maxWaterDepth})
                 </#if>
             	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
@@ -172,7 +174,6 @@ import net.minecraftforge.common.BiomeManager;
                 	<@vinesAndCocoa/>
                 </#if>
                 <#if data.treeType == data.TREES_CUSTOM>
-                .setMaxWaterDepth(${data.maxWaterDepth})
                 </#if>
             	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
@@ -191,7 +192,6 @@ import net.minecraftforge.common.BiomeManager;
                 	<@vinesAndCocoa/>
                 </#if>
                 <#if data.treeType == data.TREES_CUSTOM>
-                .setMaxWaterDepth(${data.maxWaterDepth})
                 </#if>
             	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
@@ -212,7 +212,6 @@ import net.minecraftforge.common.BiomeManager;
                 	.ignoreVines()
                 </#if>
                 <#if data.treeType == data.TREES_CUSTOM>
-                .setMaxWaterDepth(${data.maxWaterDepth})
                 </#if>
             	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
@@ -233,7 +232,6 @@ import net.minecraftforge.common.BiomeManager;
                 	.ignoreVines()
                 </#if>
                 <#if data.treeType == data.TREES_CUSTOM>
-                .setMaxWaterDepth(${data.maxWaterDepth})
                 </#if>
             	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
@@ -362,10 +360,10 @@ import net.minecraftforge.common.BiomeManager;
     </#if>
 
 	<#if (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-	private static class CustomCocoaTreeDecorator extends CocoaTreeDecorator {
+	private static class CustomCocoaDecorator extends CocoaDecorator {
 
-    public static final CustomCocoaTreeDecorator instance = new CustomCocoaTreeDecorator();
-    public static com.mojang.serialization.Codec<CustomCocoaTreeDecorator> codec;
+    public static final CustomCocoaDecorator instance = new CustomCocoaDecorator();
+    public static com.mojang.serialization.Codec<CustomCocoaDecorator> codec;
     public static TreeDecoratorType tdt;
 
     static {
@@ -375,17 +373,17 @@ import net.minecraftforge.common.BiomeManager;
     	ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
     }
 
-    public CustomCocoaTreeDecorator() {
+    public CustomCocoaDecorator() {
     	super(0.2f);
     }
 
-    @Override protected TreeDecoratorType<?> func_230380_a_() {
+    @Override protected TreeDecoratorType<?> type() {
     	return tdt;
     }
 
-    @Override ${mcc.getMethod("net.minecraft.world.gen.treedecorator.CocoaTreeDecorator", "func_225576_a_", "ISeedReader", "Random", "List", "List", "Set", "MutableBoundingBox")
-    	.replace("this.field_227417_b_", "0.2F")
-    	.replace("Blocks.COCOA.defaultBlockState().setValue(CocoaBlock.AGE,Integer.valueOf(p_225576_2_.nextInt(3))).setValue(CocoaBlock.HORIZONTAL_FACING,direction)",
+    @Override ${mcc.getMethod("net.minecraft.world.level.levelgen.feature.treedecorators.CocoaDecorator", "place", "LevelSimulatedReader", "java.util.function.BiConsumer<BlockPos, BlockState>", "Random", "List", "List")
+    	.replace("this.probability", "0.2F")
+    	.replace("Blocks.COCOA.defaultBlockState().setValue(CocoaBlock.AGE,Integer.valueOf(p_161721_.nextInt(3))).setValue(CocoaBlock.FACING,direction)",
         mappedBlockToBlockStateCode(data.treeFruits))}
 
 	}
@@ -394,10 +392,9 @@ import net.minecraftforge.common.BiomeManager;
 }
 
 <#macro vinesAndCocoa>
-.setDecorators(ImmutableList.of(
+.decorators(ImmutableList.of(
 	<#if (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-        <#if (data.treeVines?has_content && !data.treeVines.isEmpty())>,</#if>
-        new CustomCocoaTreeDecorator()
+        new CustomCocoaDecorator()
 	</#if>
 ))
 </#macro>
