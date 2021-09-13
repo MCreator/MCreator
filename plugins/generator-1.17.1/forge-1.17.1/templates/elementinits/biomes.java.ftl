@@ -56,7 +56,7 @@ package ${package}.init;
 
 	@SubscribeEvent public void init(FMLCommonSetupEvent event) {
 	    <#list biomes as biome>
-            <#if biome.biomeDictionaryTypes?has_content || ge.spawnBiome>
+            <#if biome.biomeDictionaryTypes?has_content || biome.spawnBiome>
                 ${biome.getModElement().getName()}Biome.init();
             </#if>
         </#list>
