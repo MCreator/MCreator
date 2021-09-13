@@ -361,54 +361,6 @@ import net.minecraftforge.common.BiomeManager;
     }
     </#if>
 
-	<#if (data.treeVines?has_content && !data.treeVines.isEmpty())>
-	private static class CustomLeaveVineTreeDecorator extends LeaveVineTreeDecorator {
-
-    public static final CustomLeaveVineTreeDecorator instance = new CustomLeaveVineTreeDecorator();
-    public static com.mojang.serialization.Codec<LeaveVineTreeDecorator> codec;
-    public static TreeDecoratorType tdt;
-
-    static {
-    	codec = com.mojang.serialization.Codec.unit(() -> instance);
-    	tdt = new TreeDecoratorType(codec);
-    	tdt.setRegistryName("${registryname}_lvtd");
-    	ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
-    }
-
-    @Override protected TreeDecoratorType<?> func_230380_a_() {
-    	return tdt;
-    }
-
-    @Override protected void func_227424_a_(IWorldWriter ww, BlockPos bp, BooleanProperty bpr, Set<BlockPos> sbc, MutableBoundingBox mbb) {
-    	this.func_227423_a_(ww, bp, ${mappedBlockToBlockStateCode(data.treeVines)}, sbc, mbb);
-    }
-
-	}
-
-	private static class CustomTrunkVineTreeDecorator extends TrunkVineTreeDecorator {
-
-    public static final CustomTrunkVineTreeDecorator instance = new CustomTrunkVineTreeDecorator();
-    public static com.mojang.serialization.Codec<CustomTrunkVineTreeDecorator> codec;
-    public static TreeDecoratorType tdt;
-
-    static {
-    	codec = com.mojang.serialization.Codec.unit(() -> instance);
-    	tdt = new TreeDecoratorType(codec);
-    	tdt.setRegistryName("${registryname}_tvtd");
-    	ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
-    }
-
-    @Override protected TreeDecoratorType<?> func_230380_a_() {
-    	return tdt;
-    }
-
-    @Override protected void func_227424_a_(IWorldWriter ww, BlockPos bp, BooleanProperty bpr, Set<BlockPos> sbc, MutableBoundingBox mbb) {
-    	this.func_227423_a_(ww, bp, ${mappedBlockToBlockStateCode(data.treeVines)}, sbc, mbb);
-    }
-
-	}
-	</#if>
-
 	<#if (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
 	private static class CustomCocoaTreeDecorator extends CocoaTreeDecorator {
 
@@ -443,11 +395,6 @@ import net.minecraftforge.common.BiomeManager;
 
 <#macro vinesAndCocoa>
 .setDecorators(ImmutableList.of(
-	<#if (data.treeVines?has_content && !data.treeVines.isEmpty())>
-        CustomLeaveVineTreeDecorator.instance,
-        CustomTrunkVineTreeDecorator.instance
-	</#if>
-
 	<#if (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
         <#if (data.treeVines?has_content && !data.treeVines.isEmpty())>,</#if>
         new CustomCocoaTreeDecorator()
