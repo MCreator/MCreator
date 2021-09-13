@@ -347,7 +347,7 @@ import net.minecraftforge.common.BiomeManager;
 
  <#if data.biomeDictionaryTypes?has_content || data.spawnBiome>
     public static void init() {
-    <#if data.biomeDictionaryTypes?has_content
+    <#if data.biomeDictionaryTypes?has_content>
         BiomeDictionary.addTypes(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})),
         <#list data.biomeDictionaryTypes as biomeDictionaryType>
         BiomeDictionary.Type.${generator.map(biomeDictionaryType, "biomedictionarytypes")}<#if biomeDictionaryType?has_next>,</#if>
