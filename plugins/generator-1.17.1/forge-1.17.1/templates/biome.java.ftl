@@ -128,7 +128,7 @@ import java.util.function.BiConsumer;
                 new MegaJungleTrunkPlacer(${ct?then(data.minHeight, 10)}, 2, 19),
                 new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.JUNGLE_LEAVES.defaultBlockState()")}),
                 new SimpleStateProvider(Blocks.OAK_SAPLING.defaultBlockState()),
-                new JungleFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 2),
+                new MegaJungleFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 2),
                 new TwoLayersFeatureSize(1, 1, 2)))
                 <#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
                 	<@treeFruits/>
@@ -145,7 +145,7 @@ import java.util.function.BiConsumer;
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
             	Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                 new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.ACACIA_LOG.defaultBlockState()")}),
-                new ForkyTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 2),
+                new ForkingTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 2),
                 new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.ACACIA_LEAVES.defaultBlockState()")}),
                 new SimpleStateProvider(Blocks.ACACIA_SAPLING.defaultBlockState()),
                 new AcaciaFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
