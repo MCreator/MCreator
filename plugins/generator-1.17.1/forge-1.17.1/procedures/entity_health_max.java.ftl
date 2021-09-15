@@ -1,0 +1,1 @@
+(${input$entity} instanceof LivingEntity _ent_maxHealth? _ent_maxHealth.getMaxHealth():-1)

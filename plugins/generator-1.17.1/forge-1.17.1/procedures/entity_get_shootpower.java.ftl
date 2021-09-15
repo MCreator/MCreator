@@ -1,0 +1,1 @@
+(${input$projectile_entity} instanceof Projectile _proj_getPower? _proj_getPower.getDeltaMovement().length():0)
