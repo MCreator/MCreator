@@ -46,6 +46,12 @@ import java.util.Map;
 		return color;
 	}
 
+	/**
+	 * Returns the color of the blocks associated with this variable type. If the field is a valid hex color code, it's
+	 * returned as-is. If it's a valid integer, it's treated as a hue to get the color with the correct saturation and
+	 * value.
+	 * @return The color of the associated blocks, or black if it's badly formatted.
+	 */
 	public Color getBlocklyColor() {
 		try {
 			if (!color.startsWith("#"))
