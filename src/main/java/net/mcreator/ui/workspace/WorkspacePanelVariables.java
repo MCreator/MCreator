@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.workspace;
 
-import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.io.Transliteration;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreatorApplication;
@@ -150,7 +149,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				if (column == 1 && component instanceof JLabel) {
 					VariableType value = VariableTypeLoader.INSTANCE.fromName(((JLabel) component).getText());
 					if (value != null)
-						component.setForeground(BlocklyBlockUtil.getBlockColorFromHUE(value.getColor()).brighter());
+						component.setForeground(value.getBlocklyColor().brighter());
 				} else {
 					component.setForeground(elements.getForeground());
 				}

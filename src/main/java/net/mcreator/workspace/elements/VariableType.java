@@ -19,16 +19,18 @@
 package net.mcreator.workspace.elements;
 
 import com.google.gson.annotations.SerializedName;
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 
+import java.awt.*;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class VariableType {
 
 	private String name;
-	private int color;
+	private String color;
 	private String blocklyVariableType;
 	private boolean returnTypeOnly;
 
@@ -40,8 +42,19 @@ import java.util.Map;
 		return name;
 	}
 
-	public int getColor() {
+	public String getColor() {
 		return color;
+	}
+
+	public Color getBlocklyColor() {
+		try {
+			if (!color.startsWith("#"))
+				return BlocklyBlockUtil.getBlockColorFromHUE(Integer.parseInt(color));
+			else
+				return Color.decode(color);
+		} catch (Exception e) {
+			return Color.BLACK;
+		}
 	}
 
 	public boolean isReturnTypeOnly() {
