@@ -23,11 +23,14 @@ import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class VariableType {
+	private static final Logger LOG = LogManager.getLogger("Variable loader");
 
 	private String name;
 	private String color;
@@ -59,6 +62,7 @@ import java.util.Map;
 			else
 				return Color.decode(color);
 		} catch (Exception e) {
+			LOG.warn("The color for variable type " + name + " isn't formatted correctly. Using color black for it");
 			return Color.BLACK;
 		}
 	}
