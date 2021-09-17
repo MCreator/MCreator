@@ -36,10 +36,6 @@
 
 package ${package}.init;
 
-<#list particles as particle>
-import ${package}.client.particle.${particle.getModElement().getName()}Particle;
-</#list>
-
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Particles {
 
 	private static final List<ParticleType<?>> REGISTRY = new ArrayList();
