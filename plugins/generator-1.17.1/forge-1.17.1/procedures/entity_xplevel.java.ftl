@@ -1,0 +1,1 @@
+(${input$entity} instanceof Player _playerXpLvl ? _playerXpLvl.experienceLevel:0)

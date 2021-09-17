@@ -1,0 +1,1 @@
+(${input$entity} instanceof Player _playerFoodLvl ? _playerFoodLvl.getFoodData().getFoodLevel():0)
