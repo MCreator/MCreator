@@ -27,13 +27,23 @@ public class ProcedureCodeOptimizer {
 	 */
 	public static String removeParentheses(String code) {
 		if (code.startsWith("(") && code.endsWith(")")) {
+			boolean isInString = false;
+			boolean isInComment = false;
 			int parentheses = 1;
 			for (int i = 1; i < code.length() - 1; i++) {
-				if (code.charAt(i) == '(')
-					parentheses++;
-				else if (code.charAt(i) == ')') {
-					if (--parentheses == 0) // The first and last parentheses aren't paired, we can't remove them
-						return code;
+				if (code.charAt(i) == '"' && code.charAt(i-1) != '\\' && !isInComment)
+					isInString = !isInString;
+				else if (code.charAt(i) == '*' && code.charAt(i-1) == '/' && !isInString)
+					isInComment = true;
+				else if (code.charAt(i) == '/' && code.charAt(i-1) == '*' && !isInString)
+					isInComment = false;
+				if (!isInString && !isInComment) { // Ignore parentheses in strings and comments
+					if (code.charAt(i) == '(')
+						parentheses++;
+					else if (code.charAt(i) == ')') {
+						if (--parentheses == 0) // The first and last parentheses aren't paired, we can't remove them
+							return code;
+					}
 				}
 			}
 			if (--parentheses == 0) // The last character is a ")"
