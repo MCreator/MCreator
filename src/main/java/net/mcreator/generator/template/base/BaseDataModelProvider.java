@@ -18,6 +18,7 @@
 
 package net.mcreator.generator.template.base;
 
+import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.template.TemplateHelper;
@@ -32,6 +33,7 @@ public class BaseDataModelProvider {
 
 	private final JavaConventions javaConventions;
 	private final GeneratorWrapper generatorWrapper;
+	private final ProcedureCodeOptimizer codeOptimizer;
 
 	private final Generator generator;
 
@@ -45,6 +47,7 @@ public class BaseDataModelProvider {
 		this.javaConventions = new JavaConventions();
 		this.generatorWrapper = new GeneratorWrapper(generator);
 		this.fileProvider = new FileProvider(generator);
+		this.codeOptimizer = new ProcedureCodeOptimizer();
 
 		this.templateHelper = new TemplateHelper();
 
@@ -66,6 +69,7 @@ public class BaseDataModelProvider {
 		retval.put("JavaConventions", javaConventions);
 		retval.put("thelper", templateHelper);
 		retval.put("Log", TEMPLATE_LOG);
+		retval.put("opt", codeOptimizer);
 		return retval;
 	}
 
