@@ -141,7 +141,7 @@ import java.util.stream.Collectors;
 
 	}
 
-	public boolean hasFruits() {
+	public boolean haveFruits() {
 		String[] airBlocks = { "blocks.air", "blocks.cave_air", "blocks.void_air" };
 		return !(Arrays.stream(airBlocks).collect(Collectors.toList())
 				.contains(treeFruits.getUnmappedValue().toLowerCase()) && !treeFruits.isEmpty());

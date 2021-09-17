@@ -3,7 +3,7 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/world/biome/@NAMEBiome.java"
   - template: tree_fruits.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/level/levelgen/feature/treedecorators/@NAMEDecorator.java"
-    condition: hasFruits()
+    condition: haveFruits()
     deleteWhenConditionFalse: true
 
 global_templates:

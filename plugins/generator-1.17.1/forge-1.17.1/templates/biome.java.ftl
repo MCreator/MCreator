@@ -362,7 +362,7 @@ import java.util.function.BiConsumer;
 
 <#macro treeFruits>
 .decorators(ImmutableList.of(
-	<#if data.hasFruits()>
+	<#if data.haveFruits()>
         new ${name}Decorator()
 	</#if>
 ))
