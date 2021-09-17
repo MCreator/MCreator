@@ -15,4 +15,4 @@ localizationkeys:
   - key: biome.@modid.@registryname
     mapto: name
 
-field_exclusions: [ maxWaterDepth, treeVines ]
+field_exclusions: [ treeVines ]
