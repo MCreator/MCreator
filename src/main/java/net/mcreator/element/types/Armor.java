@@ -186,6 +186,11 @@ import java.util.Set;
 		return modelsCode.toString();
 	}
 
+	public boolean hasCustomArmorModel() {
+		String code = getArmorModelsCode();
+		return code != null && !code.isBlank();
+	}
+
 	@Override public TabEntry getCreativeTab() {
 		return creativeTab;
 	}
