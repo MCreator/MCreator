@@ -33,89 +33,85 @@
 
 package ${package}.client.particle;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Particle {
+@OnlyIn(Dist.CLIENT) @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Particle extends TextureSheetParticle {
 
 	public static final SimpleParticleType particle = new SimpleParticleType(${data.alwaysShow});
+
+	private final SpriteSet spriteSet;
+	<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
+	private float angularVelocity;
+	private float angularAcceleration;
+	</#if>
 
 	@OnlyIn(Dist.CLIENT) @SubscribeEvent public static void registerParticle(ParticleFactoryRegisterEvent event) {
 		Minecraft.getInstance().particleEngine.register(particle, CustomParticleProvider::new);
 	}
 
-	@OnlyIn(Dist.CLIENT) private static class CustomParticle extends TextureSheetParticle {
+	protected ${name}Particle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
+		super(world, x, y, z);
+		this.spriteSet = spriteSet;
 
-		private final SpriteSet spriteSet;
+		this.setSize((float) ${data.width}, (float) ${data.height});
+		this.quadSize *= (float) ${data.scale};
+
+		<#if (data.maxAgeDiff > 0)>
+		this.lifetime = (int) Math.max(1, ${data.maxAge} + (this.random.nextInt(${data.maxAgeDiff * 2}) - ${data.maxAgeDiff}));
+		<#else>
+		this.lifetime = ${data.maxAge};
+		</#if>
+
+		this.gravity = (float) ${data.gravity};
+		this.hasPhysics = ${data.canCollide};
+
+		this.xd = vx * ${data.speedFactor};
+		this.yd = vy * ${data.speedFactor};
+		this.zd = vz * ${data.speedFactor};
+
 		<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
-		private float angularVelocity;
-		private float angularAcceleration;
+		this.angularVelocity = (float) ${data.angularVelocity};
+		this.angularAcceleration = (float) ${data.angularAcceleration};
 		</#if>
 
-		protected CustomParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
-			super(world, x, y, z);
-			this.spriteSet = spriteSet;
+		<#if data.animate>
+		this.setSpriteFromAge(spriteSet);
+		<#else>
+		this.pickSprite(spriteSet);
+		</#if>
+	}
 
-			this.setSize((float) ${data.width}, (float) ${data.height});
-			this.quadSize *= (float) ${data.scale};
+	<#if data.renderType == "LIT">
+   	@Override public int getLightColor(float partialTick) {
+		return 15728880;
+   	}
+	</#if>
 
-			<#if (data.maxAgeDiff > 0)>
-			this.lifetime = (int) Math.max(1, ${data.maxAge} + (this.random.nextInt(${data.maxAgeDiff * 2}) - ${data.maxAgeDiff}));
-			<#else>
-			this.lifetime = ${data.maxAge};
-			</#if>
+	@Override public ParticleRenderType getRenderType() {
+		return ParticleRenderType.PARTICLE_SHEET_${data.renderType};
+	}
 
-			this.gravity = (float) ${data.gravity};
-			this.hasPhysics = ${data.canCollide};
+	@Override public void tick() {
+		super.tick();
 
-			this.xd = vx * ${data.speedFactor};
-			this.yd = vy * ${data.speedFactor};
-			this.zd = vz * ${data.speedFactor};
-
-			<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
-			this.angularVelocity = (float) ${data.angularVelocity};
-			this.angularAcceleration = (float) ${data.angularAcceleration};
-			</#if>
-
-			<#if data.animate>
-			this.setSpriteFromAge(spriteSet);
-			<#else>
-			this.pickSprite(spriteSet);
-			</#if>
-		}
-
-		<#if data.renderType == "LIT">
-   		@Override public int getLightColor(float partialTick) {
-			return 15728880;
-   		}
+		<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
+		this.oRoll = this.roll;
+		this.roll += this.angularVelocity;
+		this.angularVelocity += this.angularAcceleration;
 		</#if>
 
-		@Override public ParticleRenderType getRenderType() {
-			return ParticleRenderType.PARTICLE_SHEET_${data.renderType};
+		<#if data.animate>
+		if(!this.removed) {
+			<#assign frameCount = data.getTextureTileCount()>
+			this.setSprite(this.spriteSet.get((this.age / ${data.frameDuration}) % ${frameCount} + 1, ${frameCount}));
 		}
+		</#if>
 
-		@Override public void tick() {
-			super.tick();
-
-			<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
-			this.oRoll = this.roll;
-			this.roll += this.angularVelocity;
-			this.angularVelocity += this.angularAcceleration;
-			</#if>
-
-			<#if data.animate>
-			if(!this.removed) {
-				<#assign frameCount = data.getTextureTileCount()>
-				this.setSprite(this.spriteSet.get((this.age / ${data.frameDuration}) % ${frameCount} + 1, ${frameCount}));
-			}
-			</#if>
-
-			<#if hasProcedure(data.additionalExpiryCondition)>
-			double x = this.x;
-			double y = this.y;
-			double z = this.z;
-			if (<@procedureOBJToConditionCode data.additionalExpiryCondition/>)
-				this.remove();
-			</#if>
-		}
-
+		<#if hasProcedure(data.additionalExpiryCondition)>
+		double x = this.x;
+		double y = this.y;
+		double z = this.z;
+		if (<@procedureOBJToConditionCode data.additionalExpiryCondition/>)
+			this.remove();
+		</#if>
 	}
 
 	@OnlyIn(Dist.CLIENT) private static class CustomParticleProvider implements ParticleProvider<SimpleParticleType> {
@@ -126,7 +122,7 @@ package ${package}.client.particle;
 		}
 
 		public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			return new CustomParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet);
+			return new ${name}Particle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet);
 		}
 	}
 

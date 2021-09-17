@@ -42,7 +42,7 @@ package ${package}.init;
 
 	<#list particles as particle>
 	public static ParticleType<?> ${particle.getModElement().getRegistryNameUpper()} = register(
-			new ${particle.getModElement().getName()}Particle().particle.setRegistryName("${particle.getModElement().getRegistryName()}"));
+			${particle.getModElement().getName()}Particle.particle.setRegistryName("${particle.getModElement().getRegistryName()}"));
 	</#list>
 
 	private static ParticleType<?> register(ParticleType<?> particle) {
