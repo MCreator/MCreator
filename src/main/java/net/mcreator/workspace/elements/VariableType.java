@@ -30,7 +30,7 @@ import java.awt.*;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class VariableType {
-	private static final Logger LOG = LogManager.getLogger("Variable loader");
+	private static final Logger LOG = LogManager.getLogger("Variable type");
 
 	private String name;
 	private String color;
