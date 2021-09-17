@@ -22,6 +22,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.JavaKeywordsMap;
+import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -58,9 +59,9 @@ public class BinaryOperationsBlock implements IBlockGenerator {
 				master.append(")");
 			} else if (JavaKeywordsMap.MATH_OPERATORS.get(operationType) != null) {
 				master.append("Math.").append(JavaKeywordsMap.MATH_OPERATORS.get(operationType)).append("(");
-				master.append(withoutParentheses(codeA));
+				master.append(ProcedureCodeOptimizer.removeParentheses(codeA));
 				master.append(",");
-				master.append(withoutParentheses(codeB));
+				master.append(ProcedureCodeOptimizer.removeParentheses(codeB));
 				master.append(")");
 			}
 		}else {
@@ -79,55 +80,32 @@ public class BinaryOperationsBlock implements IBlockGenerator {
 	}
 
 	private static String withoutParentheses(String code, String blockType, String operator) {
-		if (canRemoveParentheses(code)) {
-			String lowerPriority; // Operations that require () because of lower priority or non-associativity
-			if ("logic_binary_ops".equals(blockType)) {
-				lowerPriority = switch (operator) {
-					case "!=", "==" -> "^&|?";
-					case "^" -> "&|?";
-					case "&&" -> "|?";
-					case "||" -> "?";
-					default -> "!=^&|?";
-				};
-			} else if ("math_dual_ops".equals(blockType)) {
-				lowerPriority = switch (operator) {
-					case "*" -> "+-/%&^|?";
-					case "-" -> "+-&^|?";
-					case "+" -> "&^|?";
-					case "&" -> "^|?";
-					case "^" -> "|?";
-					case "|" -> "?";
-					default -> "+-*/%&^|?";
-				};
-			} else if ("math_binary_ops".equals(blockType)) {
-				lowerPriority = "&^|?";
-			} else {
-				return code;
-			}
-			return StringUtils.containsNone(code, lowerPriority) ? code.substring(1, code.length() - 1) : code;
+		String lowerPriority; // Operations that require () because of lower priority or non-associativity
+		if ("logic_binary_ops".equals(blockType)) {
+			lowerPriority = switch (operator) {
+				case "!=", "==" -> "^&|?";
+				case "^" -> "&|?";
+				case "&&" -> "|?";
+				case "||" -> "?";
+				default -> "!=^&|?";
+			};
+		} else if ("math_dual_ops".equals(blockType)) {
+			lowerPriority = switch (operator) {
+				case "*" -> "+-/%&^|?";
+				case "-" -> "+-&^|?";
+				case "+" -> "&^|?";
+				case "&" -> "^|?";
+				case "^" -> "|?";
+				case "|" -> "?";
+				default -> "+-*/%&^|?";
+			};
+		} else if ("math_binary_ops".equals(blockType)) {
+			lowerPriority = "&^|?";
+		} else {
+			return code;
 		}
+		if (StringUtils.containsNone(code, lowerPriority))
+			return ProcedureCodeOptimizer.removeParentheses(code);
 		return code;
-	}
-
-	private static String withoutParentheses(String code) {
-		if (canRemoveParentheses(code))
-			return code.substring(1, code.length()-1);
-		return code;
-	}
-
-	private static boolean canRemoveParentheses(String code) {
-		if (code.startsWith("(") && code.endsWith(")")) {
-			int parentheses = 1;
-			for (int i = 1; i < code.length() - 1; i++) {
-				if (code.charAt(i) == '(')
-					parentheses++;
-				else if (code.charAt(i) == ')') {
-					if (--parentheses == 0) // The first and last parentheses aren't paired, we can't remove them
-						return false;
-				}
-			}
-			return parentheses == 0;
-		}
-		return false;
 	}
 }

@@ -41,9 +41,8 @@ public class SingularMathOperationsBlock implements IBlockGenerator {
 				num = element;
 		}
 		if (JavaKeywordsMap.MATH_OPERATORS.get(operationType) != null && num != null) {
-			String inputCode = BlocklyToCode.directProcessOutputBlock(master, num);
 			master.append("Math.").append(JavaKeywordsMap.MATH_OPERATORS.get(operationType)).append("(");
-			master.append(withoutParentheses(inputCode));
+			master.processOutputBlockWithoutParentheses(num);
 			master.append(")");
 		} else {
 			master.append("0");
@@ -58,22 +57,5 @@ public class SingularMathOperationsBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
-	}
-
-	private static String withoutParentheses(String code) {
-		if (code.startsWith("(") && code.endsWith(")")) {
-			int parentheses = 1;
-			for (int i = 1; i < code.length() - 1; i++) {
-				if (code.charAt(i) == '(')
-					parentheses++;
-				else if (code.charAt(i) == ')') {
-					if (--parentheses == 0) // The first and last parentheses aren't paired, we can't remove them
-						return code;
-				}
-			}
-			if (parentheses == 0)
-				return code.substring(1, code.length() - 1);
-		}
-		return code;
 	}
 }

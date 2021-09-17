@@ -21,6 +21,7 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -57,21 +58,8 @@ public class LogicNegateBlock implements IBlockGenerator {
 	}
 
 	private static String withoutParentheses(String code) {
-		if (code.startsWith("(") && code.endsWith(")")) {
-			if (code.contains("instanceof") || StringUtils.containsAny(code, "=><&|^!?"))
-				return code;
-			int parentheses = 1;
-			for (int i = 1; i < code.length() - 1; i++) {
-				if (code.charAt(i) == '(')
-					parentheses++;
-				else if (code.charAt(i) == ')') {
-					if (--parentheses == 0) // The first and last parentheses aren't paired, we can't remove them
-						return code;
-				}
-			}
-			if (parentheses == 0)
-				return code.substring(1, code.length() - 1);
-		}
-		return code;
+		if (code.contains("instanceof") || StringUtils.containsAny(code, "=><&|^!?"))
+			return code;
+		return ProcedureCodeOptimizer.removeParentheses(code);
 	}
 }
