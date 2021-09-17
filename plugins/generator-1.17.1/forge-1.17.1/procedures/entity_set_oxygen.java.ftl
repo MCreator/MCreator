@@ -1,0 +1,1 @@
+${input$entity}.setAirSupply((int)${input$air});
