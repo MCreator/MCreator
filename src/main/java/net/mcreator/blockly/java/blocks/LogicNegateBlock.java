@@ -23,22 +23,29 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
 public class LogicNegateBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element negated_output_block = XMLUtil.getFirstChildrenWithName(block, "value");
-		master.append("(");
 		if (negated_output_block != null) {
-			master.append("!");
-			master.processOutputBlock(negated_output_block);
+			String inputCode = BlocklyToCode.directProcessOutputBlock(master, negated_output_block);
+			if (inputCode.equals("(true)"))
+				master.append("(false)");
+			else if (inputCode.equals("(false)"))
+				master.append("(true)");
+			else {
+				master.append("(!");
+				master.append(withoutParentheses(inputCode));
+				master.append(")");
+			}
 		} else {
-			master.append("false");
+			master.append("(false)");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					"Found not block without input. Its value will always be false."));
 		}
-		master.append(")");
 	}
 
 	@Override public String[] getSupportedBlocks() {
@@ -47,5 +54,24 @@ public class LogicNegateBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	private static String withoutParentheses(String code) {
+		if (code.startsWith("(") && code.endsWith(")")) {
+			if (code.contains("instanceof") || StringUtils.containsAny(code, "=><&|^!?"))
+				return code;
+			int parentheses = 1;
+			for (int i = 1; i < code.length() - 1; i++) {
+				if (code.charAt(i) == '(')
+					parentheses++;
+				else if (code.charAt(i) == ')') {
+					if (--parentheses == 0) // The first and last parentheses aren't paired, we can't remove them
+						return code;
+				}
+			}
+			if (parentheses == 0)
+				return code.substring(1, code.length() - 1);
+		}
+		return code;
 	}
 }

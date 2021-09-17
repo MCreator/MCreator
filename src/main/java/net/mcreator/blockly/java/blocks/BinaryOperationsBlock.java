@@ -24,6 +24,7 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.JavaKeywordsMap;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
 import java.util.List;
@@ -45,19 +46,24 @@ public class BinaryOperationsBlock implements IBlockGenerator {
 				else if (element.getAttribute("name").equals("B"))
 					b = element;
 		}
-		if (JavaKeywordsMap.BINARY_OPERATORS.get(operationType) != null && a != null && b != null) {
-			master.append("(");
-			master.processOutputBlock(a);
-			master.append(JavaKeywordsMap.BINARY_OPERATORS.get(operationType));
-			master.processOutputBlock(b);
-			master.append(")");
-		} else if (JavaKeywordsMap.MATH_OPERATORS.get(operationType) != null && a != null && b != null) {
-			master.append("Math.").append(JavaKeywordsMap.MATH_OPERATORS.get(operationType)).append("(");
-			master.processOutputBlock(a);
-			master.append(",");
-			master.processOutputBlock(b);
-			master.append(")");
-		} else {
+		if (a != null && b != null) {
+			String codeA = BlocklyToCode.directProcessOutputBlock(master, a);
+			String codeB = BlocklyToCode.directProcessOutputBlock(master, b);
+			if (JavaKeywordsMap.BINARY_OPERATORS.get(operationType) != null) {
+				String operator = JavaKeywordsMap.BINARY_OPERATORS.get(operationType);
+				master.append("(");
+				master.append(withoutParentheses(codeA, blocktype, operator));
+				master.append(operator);
+				master.append(withoutParentheses(codeB, blocktype, operator));
+				master.append(")");
+			} else if (JavaKeywordsMap.MATH_OPERATORS.get(operationType) != null) {
+				master.append("Math.").append(JavaKeywordsMap.MATH_OPERATORS.get(operationType)).append("(");
+				master.append(withoutParentheses(codeA));
+				master.append(",");
+				master.append(withoutParentheses(codeB));
+				master.append(")");
+			}
+		}else {
 			master.append(blocktype.equals("logic_binary_ops") ? "(true)" : "0");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					"One of dual input blocks input is empty. Using default type value for it."));
@@ -70,5 +76,58 @@ public class BinaryOperationsBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	private static String withoutParentheses(String code, String blockType, String operator) {
+		if (canRemoveParentheses(code)) {
+			String lowerPriority; // Operations that require () because of lower priority or non-associativity
+			if ("logic_binary_ops".equals(blockType)) {
+				lowerPriority = switch (operator) {
+					case "!=", "==" -> "^&|?";
+					case "^" -> "&|?";
+					case "&&" -> "|?";
+					case "||" -> "?";
+					default -> "!=^&|?";
+				};
+			} else if ("math_dual_ops".equals(blockType)) {
+				lowerPriority = switch (operator) {
+					case "*" -> "+-/%&^|?";
+					case "-" -> "+-&^|?";
+					case "+" -> "&^|?";
+					case "&" -> "^|?";
+					case "^" -> "|?";
+					case "|" -> "?";
+					default -> "+-*/%&^|?";
+				};
+			} else if ("math_binary_ops".equals(blockType)) {
+				lowerPriority = "&^|?";
+			} else {
+				return code;
+			}
+			return StringUtils.containsNone(code, lowerPriority) ? code.substring(1, code.length() - 1) : code;
+		}
+		return code;
+	}
+
+	private static String withoutParentheses(String code) {
+		if (canRemoveParentheses(code))
+			return code.substring(1, code.length()-1);
+		return code;
+	}
+
+	private static boolean canRemoveParentheses(String code) {
+		if (code.startsWith("(") && code.endsWith(")")) {
+			int parentheses = 1;
+			for (int i = 1; i < code.length() - 1; i++) {
+				if (code.charAt(i) == '(')
+					parentheses++;
+				else if (code.charAt(i) == ')') {
+					if (--parentheses == 0) // The first and last parentheses aren't paired, we can't remove them
+						return false;
+				}
+			}
+			return parentheses == 0;
+		}
+		return false;
 	}
 }
