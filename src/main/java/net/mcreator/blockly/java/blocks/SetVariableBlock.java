@@ -78,7 +78,7 @@ public class SetVariableBlock implements IBlockGenerator {
 						&& !((BlocklyToProcedure) master).getLocalVariables().stream().map(VariableElement::toString)
 						.collect(Collectors.toList()).contains(name)) { // check if local variable exists
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-							L10N.t("blockly.errors.variables.invalid_var", L10N.t("blockly.block.set_var"),
+							L10N.t("blockly.errors.variables.invalid_local_var", L10N.t("blockly.block.set_var"),
 									L10N.t("blockly.warnings.skip"))));
 					return;
 				} else if (scope.equals("local") && !(master instanceof BlocklyToProcedure)) {
