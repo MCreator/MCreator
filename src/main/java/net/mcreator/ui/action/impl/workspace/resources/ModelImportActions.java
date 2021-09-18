@@ -63,7 +63,7 @@ public class ModelImportActions {
 	public static class JAVA extends BasicAction {
 		public JAVA(ActionRegistry actionRegistry) {
 			super(actionRegistry, L10N.t("action.workspace.resources.import_java_model"), actionEvent -> {
-				if(actionRegistry.getMCreator().getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
+				if (actionRegistry.getMCreator().getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
 					JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
 							L10N.t("dialog.workspace.resources.import_java_model.version_notice.message"),
 							L10N.t("dialog.workspace.resources.import_java_model.version_notice.title"),
@@ -71,7 +71,8 @@ public class ModelImportActions {
 				} else {
 					JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
 							L10N.t("dialog.workspace.resources.import_java_model.version_notice_new.message",
-									actionRegistry.getMCreator().getGeneratorConfiguration().getGeneratorMinecraftVersion()),
+									actionRegistry.getMCreator().getGeneratorConfiguration()
+											.getGeneratorMinecraftVersion()),
 							L10N.t("dialog.workspace.resources.import_java_model.version_notice.title"),
 							JOptionPane.INFORMATION_MESSAGE);
 				}
@@ -91,10 +92,10 @@ public class ModelImportActions {
 	public static void importJavaModel(MCreator mcreator, File file) {
 		String origCode = FileIO.readFileToString(file);
 
-		if(mcreator.getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
-			origCode = origCode.replace("public class", "public static class" )
-					.replace("RendererModel ", "ModelRenderer " ).replace("RendererModel(", "ModelRenderer(" )
-					.replace("ModelRenderer ;", "" );
+		if (mcreator.getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
+			origCode = origCode.replace("public class", "public static class")
+					.replace("RendererModel ", "ModelRenderer ").replace("RendererModel(", "ModelRenderer(")
+					.replace("ModelRenderer ;", "");
 		}
 
 		if (origCode.contains("software.bernie.geckolib.animation.model.AnimatedEntityModel")
@@ -160,13 +161,14 @@ public class ModelImportActions {
 			return;
 		}
 
-		if(mcreator.getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
+		if (mcreator.getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
 			FileIO.writeStringToFile(finalModelCode.replace("setRotationAngles(f, f1, f2, f3, f4, f5);",
 							"setRotationAngles(f, f1, f2, f3, f4, f5, entity);"),
 					new File(mcreator.getFolderManager().getModelsDir(), classJavaSource.getName() + ".java"));
 		} else {
 			FileIO.writeStringToFile(finalModelCode, new File(mcreator.getFolderManager().getModelsDir(),
-					mcreator.getGeneratorConfiguration().getJavaModelsKey() + "/" + classJavaSource.getName() + ".java"));
+					mcreator.getGeneratorConfiguration().getJavaModelsKey() + "/" + classJavaSource.getName()
+							+ ".java"));
 		}
 
 		mcreator.mv.resourcesPan.workspacePanelModels.reloadElements();

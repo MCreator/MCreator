@@ -67,27 +67,27 @@ public class TestWorkspaceDataProvider {
 		List<GeneratableElement> generatableElements = new ArrayList<>();
 
 		if (type == ModElementType.RECIPE) {
-			generatableElements.add(getRecipeExample(me(workspace, type, "1"), "Crafting" , random, true));
-			generatableElements.add(getRecipeExample(me(workspace, type, "2"), "Crafting" , random, false));
-			generatableElements.add(getRecipeExample(me(workspace, type, "3"), "Smelting" , random, true));
-			generatableElements.add(getRecipeExample(me(workspace, type, "4"), "Blasting" , random, true));
-			generatableElements.add(getRecipeExample(me(workspace, type, "5"), "Smoking" , random, true));
-			generatableElements.add(getRecipeExample(me(workspace, type, "6"), "Stone cutting" , random, true));
-			generatableElements.add(getRecipeExample(me(workspace, type, "7"), "Campfire cooking" , random, true));
-			generatableElements.add(getRecipeExample(me(workspace, type, "8"), "Smithing" , random, true));
-			generatableElements.add(getRecipeExample(me(workspace, type, "9"), "Brewing" , random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "1"), "Crafting", random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "2"), "Crafting", random, false));
+			generatableElements.add(getRecipeExample(me(workspace, type, "3"), "Smelting", random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "4"), "Blasting", random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "5"), "Smoking", random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "6"), "Stone cutting", random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "7"), "Campfire cooking", random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "8"), "Smithing", random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "9"), "Brewing", random, true));
 		} else if (type == ModElementType.TOOL) {
-			generatableElements.add(getToolExample(me(workspace, type, "1"), "Pickaxe" , random, false, false));
-			generatableElements.add(getToolExample(me(workspace, type, "2"), "Pickaxe" , random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "3"), "Pickaxe" , random, false, true));
-			generatableElements.add(getToolExample(me(workspace, type, "4"), "Pickaxe" , random, true, true));
-			generatableElements.add(getToolExample(me(workspace, type, "5"), "Axe" , random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "6"), "Sword" , random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "7"), "Spade" , random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "8"), "Hoe" , random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "9"), "Special" , random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "10"), "MultiTool" , random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears" , random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "1"), "Pickaxe", random, false, false));
+			generatableElements.add(getToolExample(me(workspace, type, "2"), "Pickaxe", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "3"), "Pickaxe", random, false, true));
+			generatableElements.add(getToolExample(me(workspace, type, "4"), "Pickaxe", random, true, true));
+			generatableElements.add(getToolExample(me(workspace, type, "5"), "Axe", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "6"), "Sword", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "7"), "Spade", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "8"), "Hoe", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "9"), "Special", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "10"), "MultiTool", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears", random, true, false));
 		} else if (type == ModElementType.FUEL || type == ModElementType.TAB) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));
@@ -232,7 +232,7 @@ public class TestWorkspaceDataProvider {
 			achievement.achievementDescription = "Description of it";
 			achievement.achievementIcon = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-			achievement.achievementType = new String[] { "task" , "goal" , "challenge" , "challenge" }[valueIndex];
+			achievement.achievementType = new String[] { "task", "goal", "challenge", "challenge" }[valueIndex];
 			achievement.parent = new AchievementEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllAchievements(modElement.getWorkspace())));
 			achievement.announceToChat = _true;
@@ -269,7 +269,7 @@ public class TestWorkspaceDataProvider {
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			biome.vanillaTreeType = getRandomItem(random,
-					new String[] { "Default" , "Big trees" , "Birch trees" , "Savanna trees" , "Mega pine trees" ,
+					new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
 							"Mega spruce trees" });
 			biome.airColor = Color.red;
 			biome.treeType = _true ? 0 : 1;
@@ -308,7 +308,7 @@ public class TestWorkspaceDataProvider {
 			biome.heightVariation = 0.7;
 			biome.temperature = 4.0;
 			biome.spawnShipwreck = _true;
-			biome.oceanRuinType = getRandomItem(random, new String[] { "NONE" , "COLD" , "WARM" });
+			biome.oceanRuinType = getRandomItem(random, new String[] { "NONE", "COLD", "WARM" });
 			biome.spawnOceanMonument = !_true;
 			biome.spawnWoodlandMansion = _true;
 			biome.spawnJungleTemple = !_true;
@@ -318,11 +318,11 @@ public class TestWorkspaceDataProvider {
 			biome.spawnStronghold = _true;
 			biome.spawnMineshaft = !_true;
 			biome.villageType = getRandomItem(random,
-					new String[] { "none" , "desert" , "plains" , "savanna" , "snowy" , "taiga" });
+					new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
 			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
-			biome.biomeType = getRandomItem(random, new String[] { "WARM" , "DESERT" , "COOL" , "ICY" });
+			biome.biomeType = getRandomItem(random, new String[] { "WARM", "DESERT", "COOL", "ICY" });
 			biome.biomeCategory = getRandomItem(random,
-					new String[] { "NONE" , "TAIGA" , "EXTREME_HILLS" , "JUNGLE" , "MESA" , "PLAINS" , "SAVANNA" });
+					new String[] { "NONE", "TAIGA", "EXTREME_HILLS", "JUNGLE", "MESA", "PLAINS", "SAVANNA" });
 
 			if (!emptyLists) {
 				biome.parent = new BiomeEntry(modElement.getWorkspace(),
@@ -404,7 +404,7 @@ public class TestWorkspaceDataProvider {
 			fluid.dripParticle = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			fluid.tintType = getRandomString(random,
-					Arrays.asList("No tint" , "Grass" , "Foliage" , "Water" , "Sky" , "Fog" , "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
 			fluid.flowStrength = 2.3;
 			fluid.luminosity = 3;
 			fluid.density = 5;
@@ -420,7 +420,7 @@ public class TestWorkspaceDataProvider {
 					new Sound(modElement.getWorkspace(), "") :
 					new Sound(modElement.getWorkspace(),
 							getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			fluid.rarity = getRandomString(random, Arrays.asList("COMMON" , "UNCOMMON" , "RARE" , "EPIC"));
+			fluid.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			fluid.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
 				fluid.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
@@ -445,7 +445,7 @@ public class TestWorkspaceDataProvider {
 			fluid.flowCondition = new Procedure("condition1");
 			fluid.beforeReplacingBlock = new Procedure("procedure7");
 			fluid.type = _true ? "WATER" : "LAVA";
-			fluid.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether" , "End"));
+			fluid.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "End"));
 			fluid.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				fluid.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
@@ -463,7 +463,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.FOOD.equals(modElement.getType())) {
 			Food food = new Food(modElement);
 			food.name = modElement.getName();
-			food.rarity = getRandomString(random, Arrays.asList("COMMON" , "UNCOMMON" , "RARE" , "EPIC"));
+			food.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			food.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
 				food.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
@@ -484,7 +484,7 @@ public class TestWorkspaceDataProvider {
 			food.forDogs = _true;
 			food.isAlwaysEdible = _true;
 			food.animation = getRandomItem(random,
-					new String[] { "block" , "bow" , "crossbow" , "drink" , "eat" , "none" , "spear" });
+					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 			food.hasGlow = _true;
 			food.onRightClicked = new Procedure("procedure1");
 			food.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
@@ -501,7 +501,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.COMMAND.equals(modElement.getType())) {
 			Command command = new Command(modElement);
 			command.commandName = modElement.getName();
-			command.permissionLevel = getRandomItem(random, new String[] { "No requirement" , "1" , "2" , "3" , "4" });
+			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
 			command.onCommandExecuted = new Procedure("procedure2");
 			return command;
 		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
@@ -523,18 +523,18 @@ public class TestWorkspaceDataProvider {
 			return tab;
 		} else if (ModElementType.OVERLAY.equals(modElement.getType())) {
 			Overlay overlay = new Overlay(modElement);
-			overlay.priority = getRandomItem(random, new String[] { "NORMAL" , "HIGH" , "HIGHEST" , "LOW" , "LOWEST" });
+			overlay.priority = getRandomItem(random, new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 			ArrayList<GUIComponent> components = new ArrayList<>();
 			if (!emptyLists) {
-				components.add(new Label("text" , 100, 150, "text" , Color.red, new Procedure("condition1")));
-				components.add(new Label("text2" , 100, 150, "text2" , Color.white, new Procedure("condition4")));
+				components.add(new Label("text", 100, 150, "text", Color.red, new Procedure("condition1")));
+				components.add(new Label("text2", 100, 150, "text2", Color.white, new Procedure("condition4")));
 				if (modElement.getWorkspace().getGeneratorStats().getBaseCoverageInfo().get("variables")
 						== GeneratorStats.CoverageStatus.FULL) {
-					components.add(new Label("text3 <VAR:test>" , 100, 150, "text3 <VAR:test>" , Color.black,
+					components.add(new Label("text3 <VAR:test>", 100, 150, "text3 <VAR:test>", Color.black,
 							new Procedure("condition1")));
 				}
-				components.add(new Image("picture1" , 20, 30, "pricture1" , true, new Procedure("condition1")));
-				components.add(new Image("picture2" , 22, 31, "pricture2" , false, new Procedure("condition2")));
+				components.add(new Image("picture1", 20, 30, "pricture1", true, new Procedure("condition1")));
+				components.add(new Image("picture2", 22, 31, "pricture2", false, new Procedure("condition2")));
 			}
 			overlay.displayCondition = new Procedure("condition1");
 			overlay.components = components;
@@ -561,32 +561,32 @@ public class TestWorkspaceDataProvider {
 			}
 			ArrayList<GUIComponent> components = new ArrayList<>();
 			if (!emptyLists) {
-				components.add(new Label("text" , 100, 150, "text" , Color.red, new Procedure("condition2")));
-				components.add(new Label("text2" , 100, 150, "text2" , Color.white, new Procedure("condition1")));
-				components.add(new Label("text3 <VAR:test>" , 100, 150, "text3 <VAR:test>" , Color.black,
+				components.add(new Label("text", 100, 150, "text", Color.red, new Procedure("condition2")));
+				components.add(new Label("text2", 100, 150, "text2", Color.white, new Procedure("condition1")));
+				components.add(new Label("text3 <VAR:test>", 100, 150, "text3 <VAR:test>", Color.black,
 						new Procedure("condition4")));
-				components.add(new Image("picture1" , 20, 30, "picture1" , true, new Procedure("condition1")));
-				components.add(new Image("picture2" , 22, 31, "picture2" , false, new Procedure("condition2")));
-				components.add(new Button("button1" , 10, 10, "button1" , 100, 200, new Procedure("procedure1"), null));
-				components.add(new Button("button2" , 10, 10, "button2" , 100, 200, null, null));
-				components.add(new Button("button3" , 10, 10, "button3" , 100, 200, null, new Procedure("condition3")));
-				components.add(new Button("button4" , 10, 10, "button4" , 100, 200, new Procedure("procedure2"),
+				components.add(new Image("picture1", 20, 30, "picture1", true, new Procedure("condition1")));
+				components.add(new Image("picture2", 22, 31, "picture2", false, new Procedure("condition2")));
+				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure1"), null));
+				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null));
+				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
+				components.add(new Button("button4", 10, 10, "button4", 100, 200, new Procedure("procedure2"),
 						new Procedure("condition4")));
-				components.add(new InputSlot(0, "slot1" , 20, 30, Color.red, _true, _true, new Procedure("procedure3"),
+				components.add(new InputSlot(0, "slot1", 20, 30, Color.red, _true, _true, new Procedure("procedure3"),
 						new Procedure("procedure1"), new Procedure("procedure2"),
 						new MItemBlock(modElement.getWorkspace(), "")));
 				components.add(
-						new InputSlot(4, "slot2" , 20, 30, Color.white, !_true, !_true, new Procedure("procedure4"),
+						new InputSlot(4, "slot2", 20, 30, Color.white, !_true, !_true, new Procedure("procedure4"),
 								null, null, new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
 								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName())));
 				components.add(
-						new OutputSlot(5, "slot out" , 10, 20, Color.black, !_true, _true, new Procedure("procedure1"),
+						new OutputSlot(5, "slot out", 10, 20, Color.black, !_true, _true, new Procedure("procedure1"),
 								new Procedure("procedure2"), new Procedure("procedure3")));
-				components.add(new OutputSlot(6, "sot" , 243, 563, Color.black, _true, _true, null, null, null));
-				components.add(new TextField("text1" , 0, 10, 100, 20, "Input value ..."));
-				components.add(new TextField("text2" , 55, 231, 90, 20, ""));
-				components.add(new Checkbox("checkbox1" , 100, 100, "Text" , new Procedure("condition1")));
-				components.add(new Checkbox("checkbox2" , 125, 125, "Other text" , new Procedure("condition2")));
+				components.add(new OutputSlot(6, "sot", 243, 563, Color.black, _true, _true, null, null, null));
+				components.add(new TextField("text1", 0, 10, 100, 20, "Input value ..."));
+				components.add(new TextField("text2", 55, 231, 90, 20, ""));
+				components.add(new Checkbox("checkbox1", 100, 100, "Text", new Procedure("condition1")));
+				components.add(new Checkbox("checkbox2", 125, 125, "Other text", new Procedure("condition2")));
 			}
 			gui.components = components;
 			return gui;
@@ -603,9 +603,9 @@ public class TestWorkspaceDataProvider {
 			livingEntity.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			livingEntity.bossBarColor = getRandomItem(random,
-					new String[] { "PINK" , "BLUE" , "RED" , "GREEN" , "YELLOW" , "PURPLE" , "WHITE" });
+					new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
 			livingEntity.bossBarType = getRandomItem(random,
-					new String[] { "PROGRESS" , "NOTCHED_6" , "NOTCHED_10" , "NOTCHED_12" , "NOTCHED_20" });
+					new String[] { "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" });
 			livingEntity.equipmentMainHand = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			livingEntity.equipmentOffHand = new MItemBlock(modElement.getWorkspace(),
@@ -620,7 +620,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			livingEntity.mobBehaviourType = _true ? "Creature" : "Mob";
 			livingEntity.mobCreatureType = getRandomItem(random,
-					new String[] { "UNDEFINED" , "UNDEAD" , "ARTHROPOD" , "ILLAGER" , "WATER" });
+					new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
 			livingEntity.attackStrength = 4;
 			livingEntity.attackKnockback = 1.5;
 			livingEntity.knockbackResistance = 0.5;
@@ -669,7 +669,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.spawnParticles = _true;
 			livingEntity.particleToSpawn = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			livingEntity.particleSpawningShape = new String[] { "Spread" , "Top" , "Tube" , "Plane" }[valueIndex];
+			livingEntity.particleSpawningShape = new String[] { "Spread", "Top", "Tube", "Plane" }[valueIndex];
 			livingEntity.rangedItemType = "Default item";
 			livingEntity.particleSpawningRadious = 4;
 			livingEntity.particleAmount = 13;
@@ -727,7 +727,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.spawnThisMob = !_true;
 			livingEntity.doesDespawnWhenIdle = _true;
 			livingEntity.spawningProbability = 23;
-			livingEntity.mobSpawningType = new String[] { "monster" , "creature" , "ambient" ,
+			livingEntity.mobSpawningType = new String[] { "monster", "creature", "ambient",
 					"waterCreature" }[valueIndex];
 			livingEntity.minNumberOfMobsPerGroup = 4;
 			livingEntity.maxNumberOfMobsPerGroup = 40;
@@ -779,7 +779,7 @@ public class TestWorkspaceDataProvider {
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			dimension.igniterName = modElement.getName();
-			dimension.worldGenType = new String[] { "Nether like gen" , "Normal world gen" , "End like gen" ,
+			dimension.worldGenType = new String[] { "Nether like gen", "Normal world gen", "End like gen",
 					"Normal world gen" }[valueIndex];
 			dimension.mainFillerBlock = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
@@ -803,12 +803,12 @@ public class TestWorkspaceDataProvider {
 			structure.spawnHeightOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
 			structure.spawnXOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
 			structure.spawnZOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
-			structure.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether" , "Surface" , "End"));
-			structure.spawnLocation = getRandomString(random, Arrays.asList("Ground" , "Air" , "Underground"));
+			structure.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
+			structure.spawnLocation = getRandomString(random, Arrays.asList("Ground", "Air", "Underground"));
 			structure.surfaceDetectionType = getRandomString(random,
-					Arrays.asList("First motion blocking block" , "First block"));
+					Arrays.asList("First motion blocking block", "First block"));
 			structure.ignoreBlocks = getRandomString(random,
-					Arrays.asList("STRUCTURE_BLOCK" , "AIR_AND_STRUCTURE_BLOCK" , "AIR"));
+					Arrays.asList("STRUCTURE_BLOCK", "AIR_AND_STRUCTURE_BLOCK", "AIR"));
 			structure.restrictionBlocks = new ArrayList<>();
 			structure.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
@@ -905,17 +905,17 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
-			plant.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether" , "Surface" , "End"));
+			plant.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			plant.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			plant.texture = "test";
 			plant.textureBottom = "test2";
 			plant.itemTexture = emptyLists ? "" : "itest";
 			plant.particleTexture = emptyLists ? "" : "test3";
-			plant.plantType = new String[] { "normal" , "growapable" , "double" , "normal" }[valueIndex];
+			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
 			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getAllPlantTypes());
-			plant.staticPlantGenerationType = getRandomItem(random, new String[] { "Grass" , "Flower" });
-			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass" , "Flower" });
+			plant.staticPlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
+			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.suspiciousStewEffect = getRandomString(random,
 					ElementUtil.loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
 							.filter(e -> !e.contains("CUSTOM:")).collect(Collectors.toList()));
@@ -956,7 +956,7 @@ public class TestWorkspaceDataProvider {
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			plant.colorOnMap = getRandomItem(random, ElementUtil.loadMapColors());
-			plant.offsetType = getRandomString(random, Arrays.asList("NONE" , "XZ" , "XYZ"));
+			plant.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
 			plant.aiPathNodeType = getRandomItem(random, ElementUtil.loadPathNodeTypes());
 			plant.unbreakable = _true;
 			plant.isCustomSoundType = !_true;
@@ -1015,17 +1015,17 @@ public class TestWorkspaceDataProvider {
 			plant.placingCondition = _true ? null : new Procedure("condition2");
 			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
 			plant.tintType = getRandomString(random,
-					Arrays.asList("No tint" , "Grass" , "Foliage" , "Water" , "Sky" , "Fog" , "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
 			plant.renderType = new int[] { 13, !"No tint".equals(plant.tintType) ? 120 : 12, 13,
 					!"No tint".equals(plant.tintType) ? 120 : 12 }[valueIndex];
-			plant.customModelName = new String[] { "Crop model" , "Cross model" , "Crop model" ,
+			plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
 					"Cross model" }[valueIndex];
 			plant.isItemTinted = _true;
 			return plant;
 		} else if (ModElementType.ITEM.equals(modElement.getType())) {
 			Item item = new Item(modElement);
 			item.name = modElement.getName();
-			item.rarity = getRandomString(random, Arrays.asList("COMMON" , "UNCOMMON" , "RARE" , "EPIC"));
+			item.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			item.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			item.stackSize = 52;
@@ -1085,7 +1085,7 @@ public class TestWorkspaceDataProvider {
 				rangedItem.specialInfo = new ArrayList<>();
 			}
 			rangedItem.animation = getRandomItem(random,
-					new String[] { "block" , "bow" , "crossbow" , "drink" , "eat" , "none" , "spear" });
+					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 			rangedItem.shootConstantly = _true;
 			rangedItem.usageCount = 67;
 			rangedItem.stackSize = 41;
@@ -1164,7 +1164,7 @@ public class TestWorkspaceDataProvider {
 			block.connectedSides = _true;
 			block.displayFluidOverlay = _true;
 			block.emissiveRendering = _true;
-			block.transparencyType = new String[] { "SOLID" , "CUTOUT" , "CUTOUT_MIPPED" , "TRANSLUCENT" }[valueIndex];
+			block.transparencyType = new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" }[valueIndex];
 			block.disableOffset = !_true;
 			block.boundingBoxes = new ArrayList<>();
 			if (!emptyLists) {
@@ -1190,7 +1190,7 @@ public class TestWorkspaceDataProvider {
 			block.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			block.destroyTool = getRandomItem(random,
-					new String[] { "Not specified" , "pickaxe" , "axe" , "shovel" , "hoe" });
+					new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 			block.customDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			block.flammability = 5;
@@ -1203,7 +1203,7 @@ public class TestWorkspaceDataProvider {
 			block.isLadder = _true;
 			block.enchantPowerBonus = 1.2342;
 			block.reactionToPushing = getRandomItem(random,
-					new String[] { "NORMAL" , "DESTROY" , "BLOCK" , "PUSH_ONLY" , "IGNORE" });
+					new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" });
 			block.slipperiness = 12.342;
 			block.speedFactor = 34.632;
 			block.jumpFactor = 17.732;
@@ -1228,11 +1228,11 @@ public class TestWorkspaceDataProvider {
 			block.luminance = 3;
 			block.isReplaceable = !_true;
 			block.canProvidePower = !_true;
-			block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1" , 8);
+			block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);
 			block.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
 			block.colorOnMap = getRandomItem(random, ElementUtil.loadMapColors());
-			block.offsetType = getRandomString(random, Arrays.asList("NONE" , "XZ" , "XYZ"));
+			block.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
 			block.aiPathNodeType = getRandomItem(random, ElementUtil.loadPathNodeTypes());
 			if (!emptyLists)
 				block.beaconColorModifier = Color.cyan;
@@ -1244,7 +1244,7 @@ public class TestWorkspaceDataProvider {
 			block.tickRandomly = _true;
 			block.particleToSpawn = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			block.particleSpawningShape = new String[] { "Spread" , "Top" , "Tube" , "Plane" }[valueIndex];
+			block.particleSpawningShape = new String[] { "Spread", "Top", "Tube", "Plane" }[valueIndex];
 			block.particleSpawningRadious = 4;
 			block.particleAmount = 13;
 			block.hasInventory = _true;
@@ -1282,7 +1282,7 @@ public class TestWorkspaceDataProvider {
 				block.fluidRestrictions.add(new net.mcreator.element.parts.Fluid(modElement.getWorkspace(),
 						getRandomItem(random, ElementUtil.loadAllFluids(modElement.getWorkspace()))));
 			}
-			block.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether" , "Surface" , "End"));
+			block.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			block.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				block.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(),
@@ -1341,17 +1341,17 @@ public class TestWorkspaceDataProvider {
 				block.specialInfo = new ArrayList<>();
 			}
 			block.tintType = getRandomString(random,
-					Arrays.asList("No tint" , "Grass" , "Foliage" , "Water" , "Sky" , "Fog" , "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
 			block.isItemTinted = _true;
 			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
 					14 }[valueIndex];
-			block.customModelName = new String[] { "Normal" , "Single texture" , "Cross model" ,
+			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",
 					"Grass block" }[valueIndex];
 			return block;
 		} else if (ModElementType.TAG.equals(modElement.getType())) {
 			Tag tag = new Tag(modElement);
-			tag.namespace = getRandomItem(random, new String[] { "forge" , "minecraft" , "test1" , "test2" });
-			tag.type = getRandomItem(random, new String[] { "Items" , "Blocks" , "Entities" , "Functions" });
+			tag.namespace = getRandomItem(random, new String[] { "forge", "minecraft", "test1", "test2" });
+			tag.type = getRandomItem(random, new String[] { "Items", "Blocks", "Entities", "Functions" });
 			tag.name = modElement.getName();
 			tag.items = new ArrayList<>();
 			tag.blocks = new ArrayList<>();
@@ -1381,10 +1381,9 @@ public class TestWorkspaceDataProvider {
 			LootTable lootTable = new LootTable(modElement);
 
 			lootTable.name = modElement.getName().toLowerCase(Locale.ENGLISH);
-			lootTable.namespace = getRandomItem(random, new String[] { "minecraft" , "mod" });
+			lootTable.namespace = getRandomItem(random, new String[] { "minecraft", "mod" });
 			lootTable.type = getRandomItem(random,
-					new String[] { "Generic" , "Entity" , "Block" , "Chest" , "Fishing" , "Empty" ,
-							"Advancement reward" });
+					new String[] { "Generic", "Entity", "Block", "Chest", "Fishing", "Empty", "Advancement reward" });
 
 			lootTable.pools = new ArrayList<>();
 
@@ -1431,7 +1430,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.FUNCTION.equals(modElement.getType())) {
 			Function function = new Function(modElement);
 			function.name = modElement.getName().toLowerCase(Locale.ENGLISH);
-			function.namespace = getRandomItem(random, new String[] { "minecraft" , "mod" });
+			function.namespace = getRandomItem(random, new String[] { "minecraft", "mod" });
 			function.code = "execute as @a at @s run function custom:test\n";
 			return function;
 		} else if (ModElementType.MUSICDISC.equals(modElement.getType())) {
@@ -1464,7 +1463,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {
 			Enchantment enchantment = new Enchantment(modElement);
 			enchantment.name = modElement.getName().toLowerCase(Locale.ENGLISH);
-			enchantment.rarity = getRandomItem(random, new String[] { "COMMON" , "UNCOMMON" , "RARE" , "VERY_RARE" });
+			enchantment.rarity = getRandomItem(random, new String[] { "COMMON", "UNCOMMON", "RARE", "VERY_RARE" });
 			enchantment.type = getRandomString(random,
 					ElementUtil.loadEnchantmentTypes().stream().map(DataListEntry::getName)
 							.collect(Collectors.toList()));
@@ -1527,7 +1526,7 @@ public class TestWorkspaceDataProvider {
 			particle.animate = _true;
 			particle.maxAge = 12;
 			particle.maxAgeDiff = emptyLists ? 0 : 15;
-			particle.renderType = new String[] { "OPAQUE" , "OPAQUE" , "TRANSLUCENT" , "LIT" }[valueIndex];
+			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "LIT" }[valueIndex];
 			particle.additionalExpiryCondition = new Procedure("condition1");
 			return particle;
 		} else if (ModElementType.GAMERULE.equals(modElement.getType())) {
@@ -1535,8 +1534,8 @@ public class TestWorkspaceDataProvider {
 			gamerule.displayName = modElement.getName();
 			gamerule.description = modElement.getName() + " description";
 			gamerule.category = getRandomString(random,
-					Arrays.asList("PLAYER" , "UPDATES" , "CHAT" , "DROPS" , "MISC" , "MOBS" , "SPAWNING"));
-			gamerule.type = new String[] { "Number" , "Logic" , "Number" , "Logic" }[valueIndex];
+					Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
+			gamerule.type = new String[] { "Number", "Logic", "Number", "Logic" }[valueIndex];
 			gamerule.defaultValueLogic = _true;
 			gamerule.defaultValueNumber = -45;
 			return gamerule;

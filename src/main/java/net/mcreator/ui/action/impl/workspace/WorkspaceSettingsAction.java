@@ -49,6 +49,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 		super(actionRegistry, L10N.t("action.workspace.settings"), e -> {
 			WorkspaceSettingsChange change = WorkspaceDialogs.workspaceSettings(actionRegistry.getMCreator(),
 					actionRegistry.getMCreator().getWorkspace());
+
 			actionRegistry.getMCreator().getWorkspace().setWorkspaceSettings(change.workspaceSettings);
 
 			refactorWorkspace(actionRegistry.getMCreator(), change);
@@ -155,26 +156,29 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 					// check the Java models situation and warn the user if needed
 					try {
-						if (Generator.GENERATOR_CACHE
-								.get(change.workspaceSettings.getCurrentGenerator()).getGeneratorStats()
-								.getBaseCoverageInfo().get("model_java") != GeneratorStats.CoverageStatus.NONE) {
-							List<Model> javaModelsOld = Model.getJavaModels(mcreator.getWorkspace(), Generator.GENERATOR_CACHE
-									.get(change.oldSettings.getCurrentGenerator()).getJavaModelsKey());
-							List<Model> javaModelsNew = Model.getJavaModels(mcreator.getWorkspace(), Generator.GENERATOR_CACHE
-									.get(change.workspaceSettings.getCurrentGenerator()).getJavaModelsKey());
+						if (Generator.GENERATOR_CACHE.get(change.workspaceSettings.getCurrentGenerator())
+								.getGeneratorStats().getBaseCoverageInfo().get("model_java")
+								!= GeneratorStats.CoverageStatus.NONE) {
+							List<Model> javaModelsOld = Model.getJavaModels(mcreator.getWorkspace(),
+									Generator.GENERATOR_CACHE.get(change.oldSettings.getCurrentGenerator())
+											.getJavaModelsKey());
+							List<Model> javaModelsNew = Model.getJavaModels(mcreator.getWorkspace(),
+									Generator.GENERATOR_CACHE.get(change.workspaceSettings.getCurrentGenerator())
+											.getJavaModelsKey());
 
 							DiffResult<Model> diffResult = ListDiff.getListDiff(javaModelsOld, javaModelsNew);
 
 							if (!diffResult.removed().isEmpty()) {
 								JOptionPane.showMessageDialog(mcreator,
-										L10N.t("dialog.workspace.version_switch.java_model_warning", diffResult.removed().stream().map(Model::getReadableName).collect(
-												Collectors.joining(", ")).trim()),
+										L10N.t("dialog.workspace.version_switch.java_model_warning",
+												diffResult.removed().stream().map(Model::getReadableName)
+														.collect(Collectors.joining(", ")).trim()),
 										L10N.t("dialog.workspace.version_switch.java_model_warning.title"),
 										JOptionPane.WARNING_MESSAGE);
 							}
 						}
-					} catch (Exception ignored) {}
-
+					} catch (Exception ignored) {
+					}
 
 					// we need to regenerate the whole code after new generator is selected, no need to reload gradle caches as runSetup already did this
 					RegenerateCodeAction.regenerateCode(mcreator, true, true);

@@ -164,7 +164,8 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 	public String getJavaModelsKey() {
 		return generatorConfig.get("java_models") != null ?
-				((Map<?, ?>) generatorConfig.get("java_models")).get("key").toString() : "legacy";
+				((Map<?, ?>) generatorConfig.get("java_models")).get("key").toString() :
+				"legacy";
 	}
 
 	public List<String> getCompatibleJavaModelKeys() {
@@ -173,8 +174,8 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 		if (generatorConfig.get("java_models") != null) {
 			if (((Map<?, ?>) generatorConfig.get("java_models")).get("compatible") != null) {
-				retval.addAll(((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("compatible")).stream().map(Object::toString).collect(
-						Collectors.toList()));
+				retval.addAll(((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("compatible")).stream()
+						.map(Object::toString).collect(Collectors.toList()));
 			}
 		}
 

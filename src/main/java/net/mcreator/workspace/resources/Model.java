@@ -21,7 +21,9 @@ package net.mcreator.workspace.resources;
 import net.mcreator.workspace.Workspace;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Model {
@@ -124,17 +126,17 @@ public class Model {
 		} else if (type == Type.JAVA) {
 			File modelFile;
 			if (workspace.getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
-				 modelFile = new File(workspace.getFolderManager().getModelsDir(), name + ".java" );
+				modelFile = new File(workspace.getFolderManager().getModelsDir(), name + ".java");
 			} else {
 				modelFile = new File(workspace.getFolderManager().getModelsDir(),
-						workspace.getGeneratorConfiguration().getJavaModelsKey() + "/" + name + ".java" );
+						workspace.getGeneratorConfiguration().getJavaModelsKey() + "/" + name + ".java");
 			}
 			if (modelFile.isFile())
 				return new Model(modelFile);
 			else
 				return null;
 		} else if (type == Type.MCREATOR) {
-			return new TexturedModel(new File(workspace.getFolderManager().getModelsDir(), name + ".mcm" ), textureMap);
+			return new TexturedModel(new File(workspace.getFolderManager().getModelsDir(), name + ".mcm"), textureMap);
 		}
 		return null;
 	}
@@ -187,7 +189,7 @@ public class Model {
 		List<Model> models = new ArrayList<>();
 
 		File[] candidates;
-		if(modelKey.equals("legacy")) {
+		if (modelKey.equals("legacy")) {
 			candidates = workspace.getFolderManager().getModelsDir().listFiles();
 		} else {
 			candidates = new File(workspace.getFolderManager().getModelsDir(), modelKey).listFiles();
