@@ -283,6 +283,10 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		return ModElementTypeLoader.getModElementType(type);
 	}
 
+	public String getTypeString() {
+		return type.toLowerCase(Locale.ENGLISH);
+	}
+
 	public void setType(ModElementType<?> type) {
 		this.type = type.getRegistryName();
 	}
