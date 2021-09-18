@@ -19,6 +19,7 @@
 package net.mcreator.ui.action.impl.workspace;
 
 import net.mcreator.generator.Generator;
+import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTokens;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.io.FileIO;
@@ -32,9 +33,15 @@ import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
+import net.mcreator.vcs.diff.DiffResult;
+import net.mcreator.vcs.diff.ListDiff;
+import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 
+import javax.swing.*;
 import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class WorkspaceSettingsAction extends GradleAction {
 
@@ -121,6 +128,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 			// handle change of generator in a different manner
 			if (change.generatorchanged) {
+				// Model.getJavaModelKeys
 				ProgressDialog dial = new ProgressDialog(mcreator,
 						L10N.t("dialog.workspace.settings.workspace_switch.title"));
 				Thread t = new Thread(() -> {
@@ -144,6 +152,29 @@ public class WorkspaceSettingsAction extends GradleAction {
 					dial.hideAll();
 
 					WorkspaceGeneratorSetupDialog.runSetup(mcreator, false);
+
+					// check the Java models situation and warn the user if needed
+					try {
+						if (Generator.GENERATOR_CACHE
+								.get(change.workspaceSettings.getCurrentGenerator()).getGeneratorStats()
+								.getBaseCoverageInfo().get("model_java") != GeneratorStats.CoverageStatus.NONE) {
+							List<Model> javaModelsOld = Model.getJavaModels(mcreator.getWorkspace(), Generator.GENERATOR_CACHE
+									.get(change.oldSettings.getCurrentGenerator()).getJavaModelsKey());
+							List<Model> javaModelsNew = Model.getJavaModels(mcreator.getWorkspace(), Generator.GENERATOR_CACHE
+									.get(change.workspaceSettings.getCurrentGenerator()).getJavaModelsKey());
+
+							DiffResult<Model> diffResult = ListDiff.getListDiff(javaModelsOld, javaModelsNew);
+
+							if (!diffResult.removed().isEmpty()) {
+								JOptionPane.showMessageDialog(mcreator,
+										L10N.t("dialog.workspace.version_switch.java_model_warning", diffResult.removed().stream().map(Model::getReadableName).collect(
+												Collectors.joining(", ")).trim()),
+										L10N.t("dialog.workspace.version_switch.java_model_warning.title"),
+										JOptionPane.WARNING_MESSAGE);
+							}
+						}
+					} catch (Exception ignored) {}
+
 
 					// we need to regenerate the whole code after new generator is selected, no need to reload gradle caches as runSetup already did this
 					RegenerateCodeAction.regenerateCode(mcreator, true, true);

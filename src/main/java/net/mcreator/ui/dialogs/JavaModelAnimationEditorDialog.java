@@ -98,7 +98,7 @@ public class JavaModelAnimationEditorDialog {
 			classJavaSource.addMethod(
 					"public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {super.setRotationAngles(f, f1, f2, f3, f4, f5, e);"
 							+ anim + "}");
-		} else if (classJavaSource.toString()
+		} else if (mcreator.getGeneratorConfiguration().getJavaModelsKey().equals("legacy") && classJavaSource.toString()
 				.contains("setRotationAngles(f, f1, f2, f3, f4, f5);")) { // outdated model format
 			List<MethodSource<JavaClassSource>> methods = classJavaSource.getMethods();
 			for (MethodSource<JavaClassSource> method : methods) {
@@ -108,8 +108,8 @@ public class JavaModelAnimationEditorDialog {
 
 			classJavaSource.addMethod(
 					"public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {super.setRotationAngles(f, f1, f2, f3, f4, f5, e);}");
-		} else if (!classJavaSource.toString().contains("setRotationAngles(")) {
-			// if not setRotationAngles is defined in model, we add it now
+		} else if (mcreator.getGeneratorConfiguration().getJavaModelsKey().equals("legacy") && !classJavaSource.toString().contains("setRotationAngles(")) {
+			// if no setRotationAngles is defined in model, we add it now
 			classJavaSource.addMethod(
 					"public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {super.setRotationAngles(f, f1, f2, f3, f4, f5, e);}");
 		} else {
@@ -127,4 +127,5 @@ public class JavaModelAnimationEditorDialog {
 				parts.add(field.getName());
 		return parts;
 	}
+
 }

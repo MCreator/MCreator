@@ -125,10 +125,15 @@ public class GeneratorStats {
 							.filter(e -> !e.isReturnTypeOnly()).count() ? CoverageStatus.FULL : CoverageStatus.PARTIAL);
 		}
 
+		if(generatorConfiguration.getJavaModelsKey().equals("legacy")) {
+			baseCoverageInfo.put("model_java",
+					forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_java"));
+		} else {
+			baseCoverageInfo.put("model_java", CoverageStatus.FULL);
+		}
+
 		baseCoverageInfo.put("model_json",
 				forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_json"));
-		baseCoverageInfo.put("model_java",
-				forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_java"));
 		baseCoverageInfo.put("model_obj",
 				forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_obj"));
 

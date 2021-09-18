@@ -162,6 +162,25 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return (List<?>) generatorConfig.get("resources_setup_tasks");
 	}
 
+	public String getJavaModelsKey() {
+		return generatorConfig.get("java_models") != null ?
+				((Map<?, ?>) generatorConfig.get("java_models")).get("key").toString() : "legacy";
+	}
+
+	public List<String> getCompatibleJavaModelKeys() {
+		List<String> retval = new ArrayList<>();
+		retval.add(getJavaModelsKey());
+
+		if (generatorConfig.get("java_models") != null) {
+			if (((Map<?, ?>) generatorConfig.get("java_models")).get("compatible") != null) {
+				retval.addAll(((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("compatible")).stream().map(Object::toString).collect(
+						Collectors.toList()));
+			}
+		}
+
+		return retval;
+	}
+
 	public String getGeneratorName() {
 		return generatorName;
 	}
