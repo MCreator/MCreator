@@ -43,8 +43,8 @@ package ${package}.client.particle;
 	private float angularAcceleration;
 	</#if>
 
-	@OnlyIn(Dist.CLIENT) @SubscribeEvent public static void registerParticle(ParticleFactoryRegisterEvent event) {
-		Minecraft.getInstance().particleEngine.register(particle, CustomParticleProvider::new);
+	@OnlyIn(Dist.CLIENT) public static ${name}ParticleProvider provider(SpriteSet spriteSet) {
+		return new ${name}ParticleProvider(spriteSet);
 	}
 
 	protected ${name}Particle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
@@ -114,10 +114,10 @@ package ${package}.client.particle;
 		</#if>
 	}
 
-	@OnlyIn(Dist.CLIENT) private static class CustomParticleProvider implements ParticleProvider<SimpleParticleType> {
+	@OnlyIn(Dist.CLIENT) private static class ${name}ParticleProvider implements ParticleProvider<SimpleParticleType> {
 		private final SpriteSet spriteSet;
 
-		public CustomParticleProvider(SpriteSet spriteSet) {
+		public ${name}ParticleProvider(SpriteSet spriteSet) {
 			this.spriteSet = spriteSet;
 		}
 

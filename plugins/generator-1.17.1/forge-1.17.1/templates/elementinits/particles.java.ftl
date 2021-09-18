@@ -36,7 +36,7 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Particles {
+@OnlyIn(Dist.CLIENT) @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Particles {
 
 	private static final List<ParticleType<?>> REGISTRY = new ArrayList();
 
@@ -52,6 +52,13 @@ package ${package}.init;
 
 	@SubscribeEvent public static void registerParticleTypes(RegistryEvent.Register<ParticleType<?>> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new ParticleType[0]));
+	}
+
+	@SubscribeEvent public static void registerParticles(ParticleFactoryRegisterEvent event) {
+		<#list particles as particle>
+		Minecraft.getInstance().particleEngine.register(${particle.getModElement().getName()}Particle.particle,
+				${particle.getModElement().getName()}Particle::provider);
+		</#list>
 	}
 
 }
