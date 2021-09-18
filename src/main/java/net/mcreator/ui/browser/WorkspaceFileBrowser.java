@@ -38,6 +38,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.SlickTreeUI;
+import net.mcreator.util.DesktopUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
@@ -242,6 +243,16 @@ public class WorkspaceFileBrowser extends JPanel {
 				}
 			}
 
+		});
+		tree.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				if (e.isAltDown() && e.getKeyCode() == KeyEvent.VK_ENTER)
+					DesktopUtils.openSafe(
+							(File) ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent()).getUserObject());
+				else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_ENTER)
+					DesktopUtils.openSafe(
+							((File) ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent()).getUserObject()).getParentFile());
+			}
 		});
 	}
 
