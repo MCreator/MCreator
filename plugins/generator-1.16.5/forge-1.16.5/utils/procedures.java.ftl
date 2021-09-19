@@ -4,14 +4,12 @@
 
     <#list dependencies as dependency>
         <#if !customVals[dependency.getName()]?? >
-            <#assign depsBuilder += ["\"" + dependency.getName() + "\""]>
-            <#assign depsBuilder += [dependency.getName()]>
+            <#assign depsBuilder += ["\"" + dependency.getName() + "\", " + dependency.getName()]>
         </#if>
     </#list>
 
     <#list customVals as key, value>
-        <#assign depsBuilder += ["\"" + key + "\""]>
-        <#assign depsBuilder += [value]>
+        <#assign depsBuilder += ["\"" + key + "\", " + value]>
     </#list>
 
     ${(name)}Procedure.executeProcedure(ImmutableMap.<String, Object>builder()<#list depsBuilder as dep>.put(${dep})</#list>.build())

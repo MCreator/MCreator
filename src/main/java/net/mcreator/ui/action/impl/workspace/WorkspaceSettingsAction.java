@@ -159,12 +159,8 @@ public class WorkspaceSettingsAction extends GradleAction {
 						if (Generator.GENERATOR_CACHE.get(change.workspaceSettings.getCurrentGenerator())
 								.getGeneratorStats().getBaseCoverageInfo().get("model_java")
 								!= GeneratorStats.CoverageStatus.NONE) {
-							List<Model> javaModelsOld = Model.getJavaModels(mcreator.getWorkspace(),
-									Generator.GENERATOR_CACHE.get(change.oldSettings.getCurrentGenerator())
-											.getJavaModelsKey());
-							List<Model> javaModelsNew = Model.getJavaModels(mcreator.getWorkspace(),
-									Generator.GENERATOR_CACHE.get(change.workspaceSettings.getCurrentGenerator())
-											.getJavaModelsKey());
+							List<Model> javaModelsOld = Model.getJavaModels(mcreator.getWorkspace());
+							List<Model> javaModelsNew = Model.getJavaModels(mcreator.getWorkspace());
 
 							DiffResult<Model> diffResult = ListDiff.getListDiff(javaModelsOld, javaModelsNew);
 

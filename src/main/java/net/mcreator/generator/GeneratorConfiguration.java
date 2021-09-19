@@ -162,6 +162,10 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return (List<?>) generatorConfig.get("resources_setup_tasks");
 	}
 
+	@Nullable public List<?> getSourceSetupTasks() {
+		return (List<?>) generatorConfig.get("sources_setup_tasks");
+	}
+
 	public String getJavaModelsKey() {
 		return generatorConfig.get("java_models") != null ?
 				((Map<?, ?>) generatorConfig.get("java_models")).get("key").toString() :

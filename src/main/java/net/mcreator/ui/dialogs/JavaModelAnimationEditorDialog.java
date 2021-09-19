@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+// todo: 1.17 support
 public class JavaModelAnimationEditorDialog {
 
 	public static String openAnimationEditorDialog(MCreator mcreator, String modelSource) {
@@ -125,7 +126,7 @@ public class JavaModelAnimationEditorDialog {
 		Vector<String> parts = new Vector<>();
 		List<FieldSource<JavaClassSource>> fields = classJavaSource.getFields();
 		for (FieldSource<JavaClassSource> field : fields)
-			if (field.getType().getName().contains("ModelRenderer"))
+			if (field.getType().getName().contains("ModelRenderer") || field.getType().getName().contains("ModelPart"))
 				parts.add(field.getName());
 		return parts;
 	}

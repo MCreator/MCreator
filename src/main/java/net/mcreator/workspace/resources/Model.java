@@ -16,14 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/*
+ * Additional permission under GNU GPL version 3 section 7
+ *
+ * If you modify this Program, or any covered work, by linking or combining
+ * it with JBoss Forge (or a modified version of that library), containing
+ * parts covered by the terms of Eclipse Public License, the licensors of
+ * this Program grant you additional permission to convey the resulting work.
+ */
+
 package net.mcreator.workspace.resources;
 
+import net.mcreator.io.FileIO;
 import net.mcreator.workspace.Workspace;
+import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster.model.source.JavaClassSource;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Model {
@@ -70,6 +80,16 @@ public class Model {
 
 		if (this.file == null)
 			return;
+
+		if (this.type == Type.JAVA) {
+			try {
+				JavaClassSource classJavaSource = (JavaClassSource) Roaster.parse(
+						FileIO.readFileToString(this.file[0]));
+				this.readableName = classJavaSource.getName();
+				return;
+			} catch (Exception ignored) {
+			}
+		}
 
 		this.readableName = this.file[0].getName().substring(0, this.file[0].getName().lastIndexOf('.'));
 	}
@@ -163,7 +183,7 @@ public class Model {
 	}
 
 	public static List<Model> getModels(Workspace workspace) {
-		List<Model> models = new ArrayList<>();
+		Set<Model> models = new HashSet<>();
 
 		File[] candidates = workspace.getFolderManager().getModelsDir().listFiles();
 		for (File f : candidates != null ? candidates : new File[0]) {
@@ -179,29 +199,31 @@ public class Model {
 				models.add(m);
 		}
 
-		models.addAll(getJavaModels(workspace, workspace.getGeneratorConfiguration().getJavaModelsKey()));
+		models.addAll(getJavaModels(workspace));
 
 		// only return valid models
 		return models.stream().filter(model -> model.file != null).collect(Collectors.toList());
 	}
 
-	public static List<Model> getJavaModels(Workspace workspace, String modelKey) {
-		List<Model> models = new ArrayList<>();
+	public static List<Model> getJavaModels(Workspace workspace) {
+		Set<Model> models = new HashSet<>();
 
-		File[] candidates;
-		if (modelKey.equals("legacy")) {
-			candidates = workspace.getFolderManager().getModelsDir().listFiles();
-		} else {
-			candidates = new File(workspace.getFolderManager().getModelsDir(), modelKey).listFiles();
-		}
+		for (String modelKey : workspace.getGeneratorConfiguration().getCompatibleJavaModelKeys()) {
+			File[] candidates;
+			if (modelKey.equals("legacy")) {
+				candidates = workspace.getFolderManager().getModelsDir().listFiles();
+			} else {
+				candidates = new File(workspace.getFolderManager().getModelsDir(), modelKey).listFiles();
+			}
 
-		for (File f : candidates != null ? candidates : new File[0]) {
-			if (f.isDirectory())
-				continue;
+			for (File f : candidates != null ? candidates : new File[0]) {
+				if (f.isDirectory())
+					continue;
 
-			Model m = new Model(f);
-			if (m.getType() != null)
-				models.add(m);
+				Model m = new Model(f);
+				if (m.getType() != null)
+					models.add(m);
+			}
 		}
 
 		// only return valid models
