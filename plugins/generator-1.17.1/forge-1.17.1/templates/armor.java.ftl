@@ -97,7 +97,13 @@ public abstract class ${name}Item extends ArmorItem {
 			consumer.accept(new IItemRenderProperties() {
 				@Override public HumanoidModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 					HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
-							"head", new ${name}Models.${data.helmetModelName}().${data.helmetModelPart}
+							"head", new ${data.helmetModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.helmetModelName}.LAYER_LOCATION)).${data.helmetModelPart},
+							"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"body", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap())
 					)));
 					armorModel.crouching = living.isShiftKeyDown();
 					armorModel.riding = defaultModel.riding;
@@ -152,9 +158,13 @@ public abstract class ${name}Item extends ArmorItem {
 			consumer.accept(new IItemRenderProperties() {
 				@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 					HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
-							"body", new ${name}Models.${data.bodyModelName}().${data.bodyModelPart},
-							"left_arm", new ${name}Models.${data.bodyModelName}().${data.armsModelPartL},
-							"right_arm", new ${name}Models.${data.bodyModelName}().${data.armsModelPartR}
+							"body", new ${data.bodyModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bodyModelName}.LAYER_LOCATION)).${data.bodyModelPart},
+							"left_arm", new ${data.bodyModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bodyModelName}.LAYER_LOCATION)).${data.armsModelPartL},
+							"right_arm", new ${data.bodyModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bodyModelName}.LAYER_LOCATION)).${data.armsModelPartR},
+							"head", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap())
 					)));
 					armorModel.crouching = living.isShiftKeyDown();
 					armorModel.riding = defaultModel.riding;
@@ -208,8 +218,13 @@ public abstract class ${name}Item extends ArmorItem {
 			consumer.accept(new IItemRenderProperties() {
 				@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 					HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
-							"left_leg", new ${name}Models.${data.leggingsModelName}().${data.leggingsModelPartL},
-							"right_leg", new ${name}Models.${data.leggingsModelName}().${data.leggingsModelPartR}
+							"left_leg", new ${data.leggingsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.leggingsModelName}.LAYER_LOCATION)).${data.leggingsModelPartL},
+							"right_leg", new ${data.leggingsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.leggingsModelName}.LAYER_LOCATION)).${data.leggingsModelPartR},
+							"head", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"body", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap())
 					)));
 					armorModel.crouching = living.isShiftKeyDown();
 					armorModel.riding = defaultModel.riding;
@@ -263,8 +278,13 @@ public abstract class ${name}Item extends ArmorItem {
 			consumer.accept(new IItemRenderProperties() {
 				@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 					HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
-							"left_leg", new ${name}Models.${data.bootsModelName}().${data.bootsModelPartL},
-							"right_leg", new ${name}Models.${data.bootsModelName}().${data.bootsModelPartR}
+							"left_leg", new ${data.bootsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bootsModelName}.LAYER_LOCATION)).${data.bootsModelPartL},
+							"right_leg", new ${data.bootsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bootsModelName}.LAYER_LOCATION)).${data.bootsModelPartR},
+							"head", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"body", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+							"left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap())
 					)));
 					armorModel.crouching = living.isShiftKeyDown();
 					armorModel.riding = defaultModel.riding;

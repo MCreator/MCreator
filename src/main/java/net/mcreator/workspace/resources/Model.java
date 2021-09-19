@@ -16,21 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * Additional permission under GNU GPL version 3 section 7
- *
- * If you modify this Program, or any covered work, by linking or combining
- * it with JBoss Forge (or a modified version of that library), containing
- * parts covered by the terms of Eclipse Public License, the licensors of
- * this Program grant you additional permission to convey the resulting work.
- */
-
 package net.mcreator.workspace.resources;
 
-import net.mcreator.io.FileIO;
 import net.mcreator.workspace.Workspace;
-import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.source.JavaClassSource;
 
 import java.io.File;
 import java.util.*;
@@ -80,16 +68,6 @@ public class Model {
 
 		if (this.file == null)
 			return;
-
-		if (this.type == Type.JAVA) {
-			try {
-				JavaClassSource classJavaSource = (JavaClassSource) Roaster.parse(
-						FileIO.readFileToString(this.file[0]));
-				this.readableName = classJavaSource.getName();
-				return;
-			} catch (Exception ignored) {
-			}
-		}
 
 		this.readableName = this.file[0].getName().substring(0, this.file[0].getName().lastIndexOf('.'));
 	}
@@ -144,17 +122,17 @@ public class Model {
 						textureMap);
 			return objModel;
 		} else if (type == Type.JAVA) {
-			File modelFile;
-			if (workspace.getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
-				modelFile = new File(workspace.getFolderManager().getModelsDir(), name + ".java");
-			} else {
-				modelFile = new File(workspace.getFolderManager().getModelsDir(),
-						workspace.getGeneratorConfiguration().getJavaModelsKey() + "/" + name + ".java");
+			for (String modelsKey : workspace.getGeneratorConfiguration().getCompatibleJavaModelKeys()) {
+				File modelFile;
+				if (modelsKey.equals("legacy")) {
+					modelFile = new File(workspace.getFolderManager().getModelsDir(), name + ".java");
+				} else {
+					modelFile = new File(workspace.getFolderManager().getModelsDir(), modelsKey + "/" + name + ".java");
+				}
+				if (modelFile.isFile())
+					return new Model(modelFile);
 			}
-			if (modelFile.isFile())
-				return new Model(modelFile);
-			else
-				return null;
+			return null;
 		} else if (type == Type.MCREATOR) {
 			return new TexturedModel(new File(workspace.getFolderManager().getModelsDir(), name + ".mcm"), textureMap);
 		}

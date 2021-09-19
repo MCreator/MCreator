@@ -1,10 +1,6 @@
 templates:
   - template: armor.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
-  - template: armor_models.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/client/model/@NAMEModels.java"
-    condition: hasCustomArmorModel()
-    deleteWhenConditionFalse: true
   - template: json/item.json.ftl
     writer: json
     condition: enableHelmet
@@ -29,8 +25,6 @@ templates:
     deleteWhenConditionFalse: true
     variables: "item=boots"
     name: "@MODASSETSROOT/models/item/@registryname_boots.json"
-
-field_exclusions: [helmetModel, bodyModel, leggingsModel, bootsModel]
 
 localizationkeys:
   - key: item.@modid.@registryname_helmet

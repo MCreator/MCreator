@@ -4,10 +4,9 @@ status: dev
 buildfileversion: 37.0.65
 subversion: 1
 
-#java_models:
-#  key: mojmap-1.17.x
-#  compatible: []
-#todo: JavaModelAnimationEditorDialog handling for 1.17 models
+java_models:
+  key: mojmap-1.17.x
+  compatible: []
 
 # gradle task definitions
 gradle:
@@ -40,6 +39,9 @@ base_templates:
   - template: elementinits/sounds.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
     condition: hasSounds()
+  - template: elementinits/javamodels.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+    condition: hasJavaModels()
   - template: modbase/sounds.json.ftl
     writer: json
     name: "@MODASSETSROOT/sounds.json"
@@ -50,6 +52,12 @@ base_templates:
   - template: modbase/mods.toml.ftl
     writer: file
     name: "@RESROOT/META-INF/mods.toml"
+
+sources_setup_tasks:
+  - task: copy_models
+    type: JAVA_viatemplate
+    template: javamodel.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
 
 language_file:
   format: json
