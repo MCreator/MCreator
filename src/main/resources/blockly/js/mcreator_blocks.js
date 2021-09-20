@@ -279,6 +279,7 @@ Blockly.defineBlocksWithJsonArray([
                     ["Bitwise XOR", "BXOR"],
                     ["Min", "MIN"],
                     ["Max", "MAX"],
+                    ["hypot", "HYPOT"],
                     ["atan2", "ATAN2"]
                 ]
             },
