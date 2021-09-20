@@ -1,1 +1,1 @@
-defaultvalue: ActionResultType.PASS
+defaultvalue: InteractionResult.PASS
