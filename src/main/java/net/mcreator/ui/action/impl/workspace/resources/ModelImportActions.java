@@ -98,6 +98,27 @@ public class ModelImportActions {
 					.replace("ModelRenderer ;", "");
 		}
 
+		boolean compatibleModel = true;
+		for (String keyword : mcreator.getGeneratorConfiguration().getJavaModelRequirementKeyWords()) {
+			if (keyword.startsWith("~")) {
+				if (origCode.contains(keyword.substring(1))) {
+					compatibleModel = false;
+					break;
+				}
+			} else if (!origCode.contains(keyword)) {
+				compatibleModel = false;
+				break;
+			}
+		}
+
+		if(!compatibleModel) {
+			JOptionPane.showMessageDialog(mcreator,
+					L10N.t("dialog.workspace.resources.import_java_model.incompatible_model.message"),
+					L10N.t("dialog.workspace.resources.import_java_model.incompatible_model.title"),
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
 		if (origCode.contains("software.bernie.geckolib.animation.model.AnimatedEntityModel")
 				&& !mcreator.getWorkspaceSettings().getMCreatorDependencies().contains("geckolib")) {
 			JOptionPane.showMessageDialog(mcreator,

@@ -18,6 +18,7 @@
 
 package net.mcreator.generator;
 
+import com.google.gson.Gson;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
@@ -132,10 +133,9 @@ public class GeneratorStats {
 			baseCoverageInfo.put("model_java", CoverageStatus.FULL);
 		}
 
-		baseCoverageInfo.put("model_json",
-				forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_json"));
-		baseCoverageInfo.put("model_obj",
-				forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_obj"));
+		String resourceTasksJSON = new Gson().toJson(generatorConfiguration.getResourceSetupTasks());
+		baseCoverageInfo.put("model_json", resourceTasksJSON.contains("\"type\":\"JSON") ? CoverageStatus.FULL : CoverageStatus.NONE);
+		baseCoverageInfo.put("model_obj", resourceTasksJSON.contains("\"type\":\"OBJ") ? CoverageStatus.FULL : CoverageStatus.NONE);
 
 		baseCoverageInfo.put("textures", generatorConfiguration.getSpecificRoot("other_textures_dir") == null ?
 				CoverageStatus.NONE :

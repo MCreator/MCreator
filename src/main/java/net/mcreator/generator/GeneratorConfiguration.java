@@ -186,6 +186,20 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return retval;
 	}
 
+	public List<String> getJavaModelRequirementKeyWords() {
+		List<String> retval = new ArrayList<>();
+
+		if (generatorConfig.get("java_models") != null) {
+			if (((Map<?, ?>) generatorConfig.get("java_models")).get("requested_key_words") != null) {
+				retval.addAll(
+						((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("requested_key_words")).stream()
+								.map(Object::toString).collect(Collectors.toList()));
+			}
+		}
+
+		return retval;
+	}
+
 	public String getGeneratorName() {
 		return generatorName;
 	}
