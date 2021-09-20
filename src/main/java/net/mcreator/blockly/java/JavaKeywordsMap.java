@@ -71,6 +71,7 @@ public final class JavaKeywordsMap {
 		put("POWER", "pow");
 		put("MIN", "min");
 		put("MAX", "max");
+		put("ATAN2", "atan2");
 	}};
 
 	public static final HashMap<String, String> MATH_CONSTANTS = new HashMap<>() {{
