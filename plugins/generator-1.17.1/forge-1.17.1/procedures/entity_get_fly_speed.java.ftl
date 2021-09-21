@@ -1,1 +1,1 @@
-(${input$entity} instanceof Player _playerFlySpeed ? _playerFlySpeed.getAbilities().getFlyingSpeed():0)
+(${input$entity} instanceof Player _plr ? _plr.getAbilities().getFlyingSpeed():0)

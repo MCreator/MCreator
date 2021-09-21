@@ -1,1 +1,1 @@
-(${input$entity} instanceof Player _playerWalkSpeed ? _playerWalkSpeed.getAbilities().getWalkingSpeed():0)
+(${input$entity} instanceof Player _plr ? _plr.getAbilities().getWalkingSpeed():0)

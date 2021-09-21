@@ -1,1 +1,1 @@
-(${input$entity} instanceof Player _playerAbsorption ? _playerAbsorption.getAbsorptionAmount() : 0)
+(${input$entity} instanceof Player _plr ? _plr.getAbsorptionAmount() : 0)
