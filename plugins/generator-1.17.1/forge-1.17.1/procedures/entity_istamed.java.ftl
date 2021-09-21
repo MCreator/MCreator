@@ -1,1 +1,1 @@
-(${input$entity} instanceof TamableAnimal _tam_isTamed? _tam_isTamed.isTame():false)
+(${input$entity} instanceof TamableAnimal _tamEnt ? _tamEnt.isTame():false)

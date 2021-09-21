@@ -1,1 +1,1 @@
-(${input$entity} instanceof Mob _mob_leash ? _mob_leash.isLeashed():false)
+(${input$entity} instanceof Mob _mobEnt ? _mobEnt.isLeashed():false)

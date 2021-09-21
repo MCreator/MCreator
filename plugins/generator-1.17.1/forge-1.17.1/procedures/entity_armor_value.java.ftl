@@ -1,1 +1,1 @@
-(${input$entity} instanceof LivingEntity _ent_armVal ? _ent_armVal.getArmorValue():0)
+(${input$entity} instanceof LivingEntity _livEnt ? _livEnt.getArmorValue():0)
