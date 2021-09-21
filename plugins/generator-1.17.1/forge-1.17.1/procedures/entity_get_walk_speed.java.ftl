@@ -1,0 +1,1 @@
+(${input$entity} instanceof Player _playerWalkSpeed ? _playerWalkSpeed.getAbilities().getWalkingSpeed():0)
