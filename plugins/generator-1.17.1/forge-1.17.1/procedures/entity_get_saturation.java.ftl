@@ -1,0 +1,1 @@
+(${input$entity} instanceof Player _playerSaturation? _playerSaturation.getFoodData().getSaturationLevel():0)

@@ -1,0 +1,1 @@
+(${input$entity} instanceof Player _playerIsCreative ? _playerIsCreative.getAbilities().instabuild:false)
