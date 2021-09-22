@@ -134,8 +134,10 @@ public class GeneratorStats {
 		}
 
 		String resourceTasksJSON = new Gson().toJson(generatorConfiguration.getResourceSetupTasks());
-		baseCoverageInfo.put("model_json", resourceTasksJSON.contains("\"type\":\"JSON") ? CoverageStatus.FULL : CoverageStatus.NONE);
-		baseCoverageInfo.put("model_obj", resourceTasksJSON.contains("\"type\":\"OBJ") ? CoverageStatus.FULL : CoverageStatus.NONE);
+		baseCoverageInfo.put("model_json",
+				resourceTasksJSON.contains("\"type\":\"JSON") ? CoverageStatus.FULL : CoverageStatus.NONE);
+		baseCoverageInfo.put("model_obj",
+				resourceTasksJSON.contains("\"type\":\"OBJ") ? CoverageStatus.FULL : CoverageStatus.NONE);
 
 		baseCoverageInfo.put("textures", generatorConfiguration.getSpecificRoot("other_textures_dir") == null ?
 				CoverageStatus.NONE :

@@ -111,7 +111,7 @@ public class ModelImportActions {
 			}
 		}
 
-		if(!compatibleModel) {
+		if (!compatibleModel) {
 			JOptionPane.showMessageDialog(mcreator,
 					L10N.t("dialog.workspace.resources.import_java_model.incompatible_model.message"),
 					L10N.t("dialog.workspace.resources.import_java_model.incompatible_model.title"),
