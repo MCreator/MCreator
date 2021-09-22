@@ -106,6 +106,9 @@
 - VINE_END:
   readable_name: "vine_end"
   type: boolean
+- BERRIES:
+  readable_name: "berries"
+  type: boolean
 - AGE:
   readable_name: "age"
   type: integer
@@ -117,6 +120,9 @@
   type: integer
 - BITES:
   readable_name: "bites"
+  type: integer
+- CANDLES:
+  readable_name: "candles"
   type: integer
 - DELAY:
   readable_name: "delay"
@@ -201,6 +207,18 @@
   type: enum
 - LEAVES:
   readable_name: "leaves"
+  type: enum
+- VERTICAL_DIRECTION:
+  readable_name: "vertical_direction"
+  type: enum
+- TILT:
+  readable_name: "tilt"
+  type: enum
+- THICKNESS:
+  readable_name: "thickness"
+  type: enum
+- SCULK_SENSOR_PHASE:
+  readable_name: "sculk_sensor_phase"
   type: enum
 - FACING:
   readable_name: "facing"
