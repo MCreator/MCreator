@@ -6558,7 +6558,7 @@
   type: item
 
 - Items.RAW_GOLD:
-  readable_name: "Raw GOld"
+  readable_name: "Raw Gold"
   type: item
 
 - Items.RAW_COPPER:
