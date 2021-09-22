@@ -35,11 +35,11 @@ package ${package}.client.particle;
 
 @OnlyIn(Dist.CLIENT) public class ${name}Particle extends TextureSheetParticle {
 
-	@OnlyIn(Dist.CLIENT) public static ${name}ParticleProvider provider(SpriteSet spriteSet) {
+	public static ${name}ParticleProvider provider(SpriteSet spriteSet) {
 		return new ${name}ParticleProvider(spriteSet);
 	}
 
-	@OnlyIn(Dist.CLIENT) private static class ${name}ParticleProvider implements ParticleProvider<SimpleParticleType> {
+	public static class ${name}ParticleProvider implements ParticleProvider<SimpleParticleType> {
 		private final SpriteSet spriteSet;
 
 		public ${name}ParticleProvider(SpriteSet spriteSet) {
@@ -52,6 +52,7 @@ package ${package}.client.particle;
 	}
 
 	private final SpriteSet spriteSet;
+	
 	<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
 	private float angularVelocity;
 	private float angularAcceleration;
