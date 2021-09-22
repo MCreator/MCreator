@@ -1,1 +1,1 @@
-(${input$entity} instanceof Player _playerSaturation? _playerSaturation.getFoodData().getSaturationLevel():0)
+(${input$entity} instanceof Player _plr ? _plr.getFoodData().getSaturationLevel():0)

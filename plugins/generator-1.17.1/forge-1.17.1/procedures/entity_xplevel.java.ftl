@@ -1,1 +1,1 @@
-(${input$entity} instanceof Player _playerXpLvl ? _playerXpLvl.experienceLevel:0)
+(${input$entity} instanceof Player _plr ? _plr.experienceLevel:0)
