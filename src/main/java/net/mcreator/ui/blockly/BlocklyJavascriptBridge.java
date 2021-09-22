@@ -20,6 +20,7 @@ package net.mcreator.ui.blockly;
 
 import com.google.gson.Gson;
 import net.mcreator.blockly.data.ExternalTrigger;
+import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.io.OS;
@@ -184,8 +185,7 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllPotionEffects(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "potion":
-			return ElementUtil.loadAllPotions(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
+			return ElementUtil.loadAllPotions(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "gamerulesboolean":
 			return ElementUtil.getAllBooleanGameRules(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
@@ -267,9 +267,11 @@ public class BlocklyJavascriptBridge {
 		List<String> retval;
 		switch (type) {
 		case "entity":
-			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName).toArray(String[]::new);
+			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName)
+					.toArray(String[]::new);
 		case "biome":
-			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName).toArray(String[]::new);
+			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName)
+					.toArray(String[]::new);
 		case "blockstatesboolean":
 			return ElementUtil.loadBooleanBlockStateProperties().stream().map(DataListEntry::getReadableName)
 					.toArray(String[]::new);
@@ -282,6 +284,10 @@ public class BlocklyJavascriptBridge {
 		default:
 			return getListOfForWorkspace(workspace, type);
 		}
+	}
+
+	@SuppressWarnings("unused") public boolean isPlayerVariable(String field) {
+		return BlocklyVariables.isPlayerVariableForWorkspace(mcreator.getWorkspace(), field);
 	}
 
 	public void setJavaScriptEventListener(JavaScriptEventListener listener) {

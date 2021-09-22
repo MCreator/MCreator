@@ -222,11 +222,11 @@ public class ExternalBlockLoader {
 		for (Map.Entry<String, List<Tuple<ToolboxBlock, String>>> entry : toolbox.entrySet()) {
 			StringBuilder categoryBuilderFinal = new StringBuilder();
 			for (Tuple<ToolboxBlock, String> tuple : entry.getValue()) {
-				if (tuple.x instanceof DynamicBlockLoader.DynamicToolboxBlock
-						&& !((DynamicBlockLoader.DynamicToolboxBlock) tuple.x).shouldLoad(
+				if (tuple.x() instanceof DynamicBlockLoader.DynamicToolboxBlock
+						&& !((DynamicBlockLoader.DynamicToolboxBlock) tuple.x()).shouldLoad(
 						pane.getMCreator().getGeneratorConfiguration()))
 					continue;
-				categoryBuilderFinal.append(tuple.y);
+				categoryBuilderFinal.append(tuple.y());
 			}
 			toolbox_xml = toolbox_xml.replace("<custom-" + entry.getKey() + "/>", categoryBuilderFinal.toString());
 		}

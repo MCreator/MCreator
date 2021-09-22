@@ -1,0 +1,4 @@
+global_templates:
+  - template: elementinits/fuels.java.ftl
+    writer: java
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFuels.java"

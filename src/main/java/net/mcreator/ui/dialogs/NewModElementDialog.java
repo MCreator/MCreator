@@ -63,10 +63,6 @@ public class NewModElementDialog {
 
 			ModElement element = new ModElement(mcreator.getWorkspace(), modName, type);
 
-			// if we are not in the root folder, specify the folder of the mod element
-			if (!mcreator.mv.currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
-				element.setParentFolder(mcreator.mv.currentFolder);
-
 			ModElementGUI<?> newGUI = type.getModElementGUI(mcreator, element, false);
 			if (newGUI != null) {
 				newGUI.showView();

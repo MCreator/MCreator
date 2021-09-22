@@ -1,1 +1,0 @@
-"${generator.map(field$blockstatesinteger, "blockstateproperties")}"

@@ -18,6 +18,7 @@
 
 package net.mcreator.generator;
 
+import com.google.gson.Gson;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
@@ -52,12 +53,10 @@ public class GeneratorStats {
 				generatorConfiguration.getRaw().get("status").toString().toUpperCase(Locale.ENGLISH));
 
 		// determine supported mod element types
-		List<?> partials = ((List<?>) generatorConfiguration.getRaw().get("partial_support"));
-		if (partials == null)
-			partials = new ArrayList<>();
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
-			if (generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type) != null) {
-				if (partials.contains(type.getRegistryName().toLowerCase(Locale.ENGLISH))) {
+			Map<?, ?> definition = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type);
+			if (definition != null) {
+				if (definition.containsKey("field_inclusions") || definition.containsKey("field_exclusions")) {
 					modElementTypeCoverageInfo.put(type, CoverageStatus.PARTIAL);
 				} else {
 					modElementTypeCoverageInfo.put(type, CoverageStatus.FULL);
@@ -123,17 +122,20 @@ public class GeneratorStats {
 		} else {
 			baseCoverageInfo.put("variables",
 					generatorConfiguration.getVariableTypes().getSupportedVariableTypes().size()
-							== VariableTypeLoader.INSTANCE.getAllVariableTypes().size() ?
-							CoverageStatus.FULL :
-							CoverageStatus.PARTIAL);
+							== VariableTypeLoader.INSTANCE.getAllVariableTypes().stream()
+							.filter(e -> !e.isReturnTypeOnly()).count() ? CoverageStatus.FULL : CoverageStatus.PARTIAL);
 		}
 
-		baseCoverageInfo.put("model_json",
-				forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_json"));
-		baseCoverageInfo.put("model_java",
-				forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_java"));
-		baseCoverageInfo.put("model_obj",
-				forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_obj"));
+		if (generatorConfiguration.getJavaModelsKey().equals("legacy")) {
+			baseCoverageInfo.put("model_java",
+					forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_java"));
+		} else {
+			baseCoverageInfo.put("model_java", CoverageStatus.FULL);
+		}
+
+		String resourceTasksJSON = new Gson().toJson(generatorConfiguration.getResourceSetupTasks());
+		baseCoverageInfo.put("model_json", resourceTasksJSON.contains("\"type\":\"JSON") ? CoverageStatus.FULL : CoverageStatus.NONE);
+		baseCoverageInfo.put("model_obj", resourceTasksJSON.contains("\"type\":\"OBJ") ? CoverageStatus.FULL : CoverageStatus.NONE);
 
 		baseCoverageInfo.put("textures", generatorConfiguration.getSpecificRoot("other_textures_dir") == null ?
 				CoverageStatus.NONE :
