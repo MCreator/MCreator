@@ -1,6 +1,8 @@
 {
-	BlockState _bs =  world.getBlockState(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}));
+	int _value = (int) ${input$value};
+	BlockPos _pos = new BlockPos((int)${input$x},(int)${input$y},(int)${input$z});
+	BlockState _bs =  world.getBlockState(_pos);
 	Property<?> _property = _bs.getBlock().getStateContainer().getProperty(${input$property});
-	if (_property instanceof IntegerProperty && _property.getAllowedValues().contains(${input$value}))
-		world.setBlockState(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), _bs.with((IntegerProperty) _property, (int) ${input$value}), 3);
+	if (_property instanceof IntegerProperty && _property.getAllowedValues().contains(_value))
+		world.setBlockState(_pos, _bs.with((IntegerProperty) _property, _value), 3);
 }
