@@ -30,6 +30,7 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,6 +53,10 @@ import java.util.stream.Collectors;
 
 	public boolean hasVariables() {
 		return workspace.getVariableElements().size() > 0;
+	}
+
+	public boolean hasJavaModels() {
+		return Model.getModels(workspace).stream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
 	public boolean hasSounds() {

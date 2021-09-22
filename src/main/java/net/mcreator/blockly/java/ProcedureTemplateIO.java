@@ -21,9 +21,6 @@ package net.mcreator.blockly.java;
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.io.BinaryStringIO;
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableType;
-import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.ls.DOMImplementationLS;
@@ -38,10 +35,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.ParseException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ProcedureTemplateIO {
 

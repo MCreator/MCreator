@@ -44,12 +44,9 @@ package ${package}.potion;
 
 	public static class EffectCustom extends Effect {
 
-		private final ResourceLocation potionIcon;
-
 		public EffectCustom() {
 			super(EffectType.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
 			setRegistryName("${registryname}");
-			potionIcon = new ResourceLocation("${modid}:textures/${data.icon}");
 		}
 
 		@Override public String getName() {
