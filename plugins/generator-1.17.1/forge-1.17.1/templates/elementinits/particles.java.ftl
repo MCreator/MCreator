@@ -42,7 +42,7 @@ package ${package}.init;
 
 	<#list particles as particle>
 	public static ParticleType<?> ${particle.getModElement().getRegistryNameUpper()} = register(
-			${particle.getModElement().getName()}Particle.particle.setRegistryName("${particle.getModElement().getRegistryName()}"),
+			new SimpleParticleType(${particle.alwaysShow}).setRegistryName("${particle.getModElement().getRegistryName()}"),
 			${particle.getModElement().getName()}Particle::provider);
 	</#list>
 
@@ -56,8 +56,7 @@ package ${package}.init;
 	}
 
 	@SubscribeEvent public static void registerParticles(ParticleFactoryRegisterEvent event) {
-		REGISTRY.forEach((particle, provider) -> Minecraft.getInstance().particleEngine.register(
-				(SimpleParticleType) particle, spriteSet -> provider.apply(spriteSet)));
+		REGISTRY.forEach((particle, provider) -> Minecraft.getInstance().particleEngine.register((SimpleParticleType) particle, spriteSet -> provider.apply(spriteSet)));
 	}
 
 }

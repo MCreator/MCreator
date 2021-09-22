@@ -33,19 +33,29 @@
 
 package ${package}.client.particle;
 
-@OnlyIn(Dist.CLIENT) @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Particle extends TextureSheetParticle {
+@OnlyIn(Dist.CLIENT) public class ${name}Particle extends TextureSheetParticle {
 
-	public static final SimpleParticleType particle = new SimpleParticleType(${data.alwaysShow});
+	@OnlyIn(Dist.CLIENT) public static ${name}ParticleProvider provider(SpriteSet spriteSet) {
+		return new ${name}ParticleProvider(spriteSet);
+	}
+
+	@OnlyIn(Dist.CLIENT) private static class ${name}ParticleProvider implements ParticleProvider<SimpleParticleType> {
+		private final SpriteSet spriteSet;
+
+		public ${name}ParticleProvider(SpriteSet spriteSet) {
+			this.spriteSet = spriteSet;
+		}
+
+		public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			return new ${name}Particle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet);
+		}
+	}
 
 	private final SpriteSet spriteSet;
 	<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
 	private float angularVelocity;
 	private float angularAcceleration;
 	</#if>
-
-	@OnlyIn(Dist.CLIENT) public static ${name}ParticleProvider provider(SpriteSet spriteSet) {
-		return new ${name}ParticleProvider(spriteSet);
-	}
 
 	protected ${name}Particle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
 		super(world, x, y, z);
@@ -112,18 +122,6 @@ package ${package}.client.particle;
 		if (<@procedureOBJToConditionCode data.additionalExpiryCondition/>)
 			this.remove();
 		</#if>
-	}
-
-	@OnlyIn(Dist.CLIENT) private static class ${name}ParticleProvider implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet spriteSet;
-
-		public ${name}ParticleProvider(SpriteSet spriteSet) {
-			this.spriteSet = spriteSet;
-		}
-
-		public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			return new ${name}Particle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet);
-		}
 	}
 
 }
