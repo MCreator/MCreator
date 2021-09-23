@@ -19,35 +19,65 @@
 
 package net.mcreator.blockly.java;
 
-public class ProcedureCodeOptimizer {
+@SuppressWarnings("unused") public class ProcedureCodeOptimizer {
+	enum ParseState {
+		INSIDE_INLINE_COMMENT, INSIDE_COMMENT_BLOCK, INSIDE_STRING, INSIDE_STRING_ESCAPE_SEQUENCE, OUTSIDE
+	}
+
 	/**
 	 * This method attempts to remove the parentheses surrounding the given code, if they are paired.
 	 * @param code The code to optimize
 	 * @return If possible, the code without surrounding parentheses
 	 */
 	public static String removeParentheses(String code) {
-		if (code.startsWith("(") && code.endsWith(")")) {
-			boolean isInString = false;
-			boolean isInComment = false;
+		String toClean = code.strip();
+		if (toClean.startsWith("(") && toClean.endsWith(")")) {
+			var state = ParseState.OUTSIDE;
 			int parentheses = 1;
-			for (int i = 1; i < code.length() - 1; i++) {
-				if (code.charAt(i) == '"' && code.charAt(i-1) != '\\' && !isInComment)
-					isInString = !isInString;
-				else if (code.charAt(i) == '*' && code.charAt(i-1) == '/' && !isInString)
-					isInComment = true;
-				else if (code.charAt(i) == '/' && code.charAt(i-1) == '*' && !isInString)
-					isInComment = false;
-				if (!isInString && !isInComment) { // Ignore parentheses in strings and comments
-					if (code.charAt(i) == '(')
+			char prevChar = '(';
+			int backSlashCounter = 0;
+			for (int i = 1; i < toClean.length() - 1; i++) {
+				char c = toClean.charAt(i);
+				switch (state) {
+				case OUTSIDE:
+					if (c == '/' && prevChar == '/')
+						state = ParseState.INSIDE_INLINE_COMMENT;
+					else if (c == '*' && prevChar == '/')
+						state = ParseState.INSIDE_COMMENT_BLOCK;
+					else if (c == '"')
+						state = ParseState.INSIDE_STRING;
+					else if (c == '(')
 						parentheses++;
-					else if (code.charAt(i) == ')') {
-						if (--parentheses == 0) // The first and last parentheses aren't paired, we can't remove them
-							return code;
+					else if (c == ')' && --parentheses == 0) // The first ( isn't paired with the last ), we can't remove them
+						return code;
+					break;
+				case INSIDE_INLINE_COMMENT:
+					if (c == '\n' || c == '\r')
+						state = ParseState.OUTSIDE;
+					break;
+				case INSIDE_STRING_ESCAPE_SEQUENCE:
+					if (c == '\\') {
+						backSlashCounter++;
+						break;
 					}
+					state = ParseState.INSIDE_STRING;
+				case INSIDE_STRING:
+					if (c == '\\') {
+						state = ParseState.INSIDE_STRING_ESCAPE_SEQUENCE;
+						backSlashCounter = 0;
+					} else if (c == '"' && (prevChar != '\\' || backSlashCounter % 2 != 0)) {
+						state = ParseState.OUTSIDE;
+					}
+					break;
+				case INSIDE_COMMENT_BLOCK:
+					if (c == '/' && prevChar == '*')
+						state = ParseState.OUTSIDE;
+					break;
 				}
+				prevChar = c;
 			}
-			if (--parentheses == 0) // The last character is a ")"
-				return code.substring(1, code.length() - 1);
+			if (state == ParseState.OUTSIDE && --parentheses == 0) // The last character is a valid ")"
+				return toClean.substring(1, toClean.length() - 1);
 		}
 		return code;
 	}
