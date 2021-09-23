@@ -211,12 +211,12 @@ public class Canvas extends ArrayListListModel<Layer> {
 		canvasRenderer.repaint();
 	}
 
-	public CanvasResize setSize(int width, int height) {
+	public void setSize(int width, int height) {
 		CanvasResize canvasResize = new CanvasResize(this, layerPanel.selected(), width, height);
+		versionManager.addRevision(canvasResize);
 		this.width = width;
 		this.height = height;
 		canvasRenderer.recalculateBounds();
 		canvasRenderer.repaint();
-		return canvasResize;
 	}
 }
