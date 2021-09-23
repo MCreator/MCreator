@@ -20,12 +20,16 @@ package net.mcreator.ui.browser;
 
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.component.tree.FilterTreeNode;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
 class AddFileDropdown extends JPopupMenu {
+
+	private final Logger LOG = LogManager.getLogger("Add File Dropdown");
 
 	AddFileDropdown(WorkspaceFileBrowser workspaceFileBrowser) {
 		setBorder(BorderFactory.createMatteBorder(0, 2, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
@@ -34,20 +38,25 @@ class AddFileDropdown extends JPopupMenu {
 		try {
 			FilterTreeNode selected = (FilterTreeNode) workspaceFileBrowser.tree.getLastSelectedPathComponent();
 			if (selected != null) {
+				LOG.debug("Something is selected");
 				if (selected.getUserObject() instanceof File) {
+					LOG.debug("A file is selected");
 					File file = (File) selected.getUserObject();
 					if (file.isFile())
 						file = file.getParentFile();
 
 					if (workspaceFileBrowser.mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 							== GeneratorFlavor.BaseLanguage.JAVA) {
+						LOG.debug("Java file is selected");
 						if (file.isDirectory() && file.getCanonicalPath().startsWith(
 								workspaceFileBrowser.mcreator.getGenerator().getSourceRoot().getCanonicalPath())) {
+							LOG.debug("Source is selected");
 							add(workspaceFileBrowser.mcreator.actionRegistry.newClass);
 							addSeparator();
 							add(workspaceFileBrowser.mcreator.actionRegistry.newPackage);
 						} else if (file.isDirectory() && (file.getCanonicalPath().startsWith(
 								workspaceFileBrowser.mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
+							LOG.debug("Resource is selected");
 							add(workspaceFileBrowser.mcreator.actionRegistry.newJson);
 							add(workspaceFileBrowser.mcreator.actionRegistry.newImage);
 							addSeparator();
@@ -58,6 +67,7 @@ class AddFileDropdown extends JPopupMenu {
 								workspaceFileBrowser.mcreator.getGenerator().getSourceRoot().getCanonicalPath())
 								|| file.isDirectory() && (file.getCanonicalPath().startsWith(
 								workspaceFileBrowser.mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
+							LOG.debug("Resource file is selected");
 							add(workspaceFileBrowser.mcreator.actionRegistry.newJson);
 							add(workspaceFileBrowser.mcreator.actionRegistry.newImage);
 							addSeparator();
@@ -65,12 +75,14 @@ class AddFileDropdown extends JPopupMenu {
 						}
 					}
 				} else if (selected == workspaceFileBrowser.sourceCode) {
+					LOG.debug("Source code is selected");
 					add(workspaceFileBrowser.mcreator.actionRegistry.newClass);
 					addSeparator();
 					add(workspaceFileBrowser.mcreator.actionRegistry.newPackage);
 				}
 			}
-		} catch (Exception ignored) {
+		} catch (Exception e) {
+			LOG.debug("Nothing is selected :/");
 		}
 
 		if (getComponents().length == 0) {
