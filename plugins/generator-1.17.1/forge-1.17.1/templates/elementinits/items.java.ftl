@@ -43,7 +43,22 @@ package ${package}.init;
     private static final List<Item> REGISTRY = new ArrayList();
 
     <#list items as item>
-    public static Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
+        <#if item.getModElement().getTypeString() == "armor">
+            <#if item.enableHelmet>
+            public static Item ${item.getModElement().getRegistryNameUpper()}_HELMET = register(new ${item.getModElement().getName()}Item.Helmet());
+            </#if>
+            <#if item.enableBody>
+            public static Item ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE = register(new ${item.getModElement().getName()}Item.Chestplate());
+            </#if>
+            <#if item.enableLeggings>
+            public static Item ${item.getModElement().getRegistryNameUpper()}_LEGGINGS = register(new ${item.getModElement().getName()}Item.Leggings());
+            </#if>
+            <#if item.enableBoots>
+            public static Item ${item.getModElement().getRegistryNameUpper()}_BOOTS = register(new ${item.getModElement().getName()}Item.Boots());
+            </#if>
+        <#else>
+            public static Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
+        </#if>
     </#list>
 
     private static Item register(Item item) {

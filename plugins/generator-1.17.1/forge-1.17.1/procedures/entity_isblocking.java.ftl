@@ -1,1 +1,1 @@
-(${input$entity} instanceof LivingEntity _ent_blocking?_ent_blocking.isBlocking():false)
+(${input$entity} instanceof LivingEntity _livEnt ? _livEnt.isBlocking():false)

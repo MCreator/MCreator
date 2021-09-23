@@ -430,7 +430,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bulletModel, ListUtils.merge(Collections.singletonList(adefault),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+				Model.getModels(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
 						.collect(Collectors.toList())));
 

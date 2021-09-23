@@ -32,6 +32,7 @@ import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Armor;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.JavaModels;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
@@ -43,7 +44,6 @@ import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
-import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
@@ -547,9 +547,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			if (model != null && model != defaultModel) {
 				helmetModelPart.removeAllItems();
 				try {
-					ComboBoxUtil.updateComboBoxContents(helmetModelPart, new ArrayList<>(
-							JavaModelAnimationEditorDialog.getModelParts(
-									(JavaClassSource) Roaster.parse(model.getFile()))));
+					ComboBoxUtil.updateComboBoxContents(helmetModelPart,
+							JavaModels.getModelParts((JavaClassSource) Roaster.parse(model.getFile())));
 					return;
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
@@ -570,15 +569,12 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 					leggingsModelPartL.addItem("");
 					leggingsModelPartR.addItem("");
 
-					ComboBoxUtil.updateComboBoxContents(bodyModelPart, new ArrayList<>(
-							JavaModelAnimationEditorDialog.getModelParts(
-									(JavaClassSource) Roaster.parse(model.getFile()))));
-					ComboBoxUtil.updateComboBoxContents(armsModelPartL, new ArrayList<>(
-							JavaModelAnimationEditorDialog.getModelParts(
-									(JavaClassSource) Roaster.parse(model.getFile()))));
-					ComboBoxUtil.updateComboBoxContents(armsModelPartR, new ArrayList<>(
-							JavaModelAnimationEditorDialog.getModelParts(
-									(JavaClassSource) Roaster.parse(model.getFile()))));
+					ComboBoxUtil.updateComboBoxContents(bodyModelPart,
+							JavaModels.getModelParts((JavaClassSource) Roaster.parse(model.getFile())));
+					ComboBoxUtil.updateComboBoxContents(armsModelPartL,
+							JavaModels.getModelParts((JavaClassSource) Roaster.parse(model.getFile())));
+					ComboBoxUtil.updateComboBoxContents(armsModelPartR,
+							JavaModels.getModelParts((JavaClassSource) Roaster.parse(model.getFile())));
 
 					return;
 				} catch (Exception e) {
@@ -599,12 +595,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				leggingsModelPartL.removeAllItems();
 				leggingsModelPartR.removeAllItems();
 				try {
-					ComboBoxUtil.updateComboBoxContents(leggingsModelPartL, new ArrayList<>(
-							JavaModelAnimationEditorDialog.getModelParts(
-									(JavaClassSource) Roaster.parse(model.getFile()))));
-					ComboBoxUtil.updateComboBoxContents(leggingsModelPartR, new ArrayList<>(
-							JavaModelAnimationEditorDialog.getModelParts(
-									(JavaClassSource) Roaster.parse(model.getFile()))));
+					ComboBoxUtil.updateComboBoxContents(leggingsModelPartL,
+							JavaModels.getModelParts((JavaClassSource) Roaster.parse(model.getFile())));
+					ComboBoxUtil.updateComboBoxContents(leggingsModelPartR,
+							JavaModels.getModelParts((JavaClassSource) Roaster.parse(model.getFile())));
 					return;
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
@@ -622,12 +616,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				bootsModelPartL.removeAllItems();
 				bootsModelPartR.removeAllItems();
 				try {
-					ComboBoxUtil.updateComboBoxContents(bootsModelPartL, new ArrayList<>(
-							JavaModelAnimationEditorDialog.getModelParts(
-									(JavaClassSource) Roaster.parse(model.getFile()))));
-					ComboBoxUtil.updateComboBoxContents(bootsModelPartR, new ArrayList<>(
-							JavaModelAnimationEditorDialog.getModelParts(
-									(JavaClassSource) Roaster.parse(model.getFile()))));
+					ComboBoxUtil.updateComboBoxContents(bootsModelPartL,
+							JavaModels.getModelParts((JavaClassSource) Roaster.parse(model.getFile())));
+					ComboBoxUtil.updateComboBoxContents(bootsModelPartR,
+							JavaModels.getModelParts((JavaClassSource) Roaster.parse(model.getFile())));
 					return;
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
@@ -710,22 +702,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				new DataListEntry.Dummy("COMBAT"));
 
 		ComboBoxUtil.updateComboBoxContents(helmetModel, ListUtils.merge(Collections.singleton(defaultModel),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+				Model.getModels(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
 						.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(bodyModel, ListUtils.merge(Collections.singleton(defaultModel),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+				Model.getModels(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
 						.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(leggingsModel, ListUtils.merge(Collections.singleton(defaultModel),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+				Model.getModels(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
 						.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(bootsModel, ListUtils.merge(Collections.singleton(defaultModel),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+				Model.getModels(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
 						.collect(Collectors.toList())));
 

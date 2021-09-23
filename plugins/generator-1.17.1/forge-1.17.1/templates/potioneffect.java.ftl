@@ -36,30 +36,6 @@ package ${package}.potion;
 
 public class ${name}MobEffect extends MobEffect {
 
-	<#if data.hasCustomRenderer()>
-	private final EffectRenderer renderer = new EffectRenderer() {
-		<#if !data.renderStatusInInventory>
-		@Override public boolean shouldRender(MobEffectInstance effect) {
-			return false;
-		}
-
-		@Override public boolean shouldRenderInvText(MobEffectInstance effect) {
-			return false;
-		}
-		</#if>
-
-		<#if !data.renderStatusInHUD>
-		@Override public boolean shouldRenderHUD(MobEffectInstance effect) {
-			return false;
-		}
-		</#if>
-
-		@Override public void renderInventoryEffect(MobEffectInstance effect, EffectRenderingInventoryScreen<?> gui, PoseStack mStack, int x, int y, float z) {}
-
-		@Override public void renderHUDEffect(MobEffectInstance effect, GuiComponent gui, PoseStack mStack, int x, int y, float z, float alpha) {}
-	};
-	</#if>
-
 	public ${name}MobEffect() {
 		super(MobEffectCategory.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
 		setRegistryName("${registryname}");
@@ -125,8 +101,28 @@ public class ${name}MobEffect extends MobEffect {
 	}
 
 	<#if data.hasCustomRenderer()>
-	@Override public Object getEffectRendererInternal() {
-		return renderer;
+	@Override public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.EffectRenderer> consumer) {
+		consumer.accept(new EffectRenderer() {
+			<#if !data.renderStatusInInventory>
+			@Override public boolean shouldRender(MobEffectInstance effect) {
+				return false;
+			}
+
+			@Override public boolean shouldRenderInvText(MobEffectInstance effect) {
+				return false;
+			}
+			</#if>
+
+			<#if !data.renderStatusInHUD>
+			@Override public boolean shouldRenderHUD(MobEffectInstance effect) {
+				return false;
+			}
+			</#if>
+
+			@Override public void renderInventoryEffect(MobEffectInstance effect, EffectRenderingInventoryScreen<?> gui, PoseStack mStack, int x, int y, float z) {}
+
+			@Override public void renderHUDEffect(MobEffectInstance effect, GuiComponent gui, PoseStack mStack, int x, int y, float z, float alpha) {}
+		});
 	}
 	</#if>
 }

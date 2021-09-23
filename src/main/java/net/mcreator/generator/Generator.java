@@ -197,6 +197,9 @@ public class Generator implements IGenerator, Closeable {
 
 		generateFiles(generatorFiles, formatAndOrganiseImports);
 
+		// run other source tasks
+		runSetupTasks(generatorConfiguration.getSourceSetupTasks());
+
 		// generate lang files
 		LanguageFilesGenerator.generateLanguageFiles(this, workspace,
 				generatorConfiguration.getLanguageFileSpecification());
@@ -583,12 +586,15 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	public void runResourceSetupTasks() {
-		List<?> setupTaks = generatorConfiguration.getResourceSetupTasks();
+		runSetupTasks(generatorConfiguration.getResourceSetupTasks());
+	}
+
+	public void runSetupTasks(List<?> setupTaks) {
 		if (setupTaks != null) {
 			setupTaks.forEach(task -> {
 				String taskType = (String) ((Map<?, ?>) task).get("task");
 				switch (taskType) {
-				case "empty_dir":
+				case "empty_dir" -> {
 					String dir = (String) ((Map<?, ?>) task).get("dir");
 					List<?> excludes_raw = (List<?>) ((Map<?, ?>) task).get("excludes");
 					List<String> excludes = new ArrayList<>();
@@ -601,8 +607,8 @@ public class Generator implements IGenerator, Closeable {
 						FileIO.emptyDirectory(new File(GeneratorTokens.replaceTokens(workspace, dir)),
 								excludes.toArray(new String[0]));
 					}
-					break;
-				case "sync_dir": {
+				}
+				case "sync_dir" -> {
 					String from = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("from"));
 					String to = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("to"));
 					if (workspace.getFolderManager().isFileInWorkspace(new File(to))) {
@@ -610,16 +616,14 @@ public class Generator implements IGenerator, Closeable {
 								new File(to)); // first delete existing contents of the destination directory
 						FileIO.copyDirectory(new File(from), new File(to));
 					}
-					break;
 				}
-				case "copy_file": {
+				case "copy_file" -> {
 					String from = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("from"));
 					String to = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("to"));
 					if (workspace.getFolderManager().isFileInWorkspace(new File(to)) && new File(from).isFile())
 						FileIO.copyFile(new File(from), new File(to));
-					break;
 				}
-				case "copy_and_resize_image": {
+				case "copy_and_resize_image" -> {
 					String from = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("from"));
 					String to = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("to"));
 					int w = Integer.parseInt(
@@ -642,14 +646,15 @@ public class Generator implements IGenerator, Closeable {
 							LOG.warn("Failed to read image file for resizing", e);
 						}
 					}
-					break;
 				}
-				case "copy_models": {
+				case "copy_models" -> {
 					String to = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("to"));
 					if (!workspace.getFolderManager().isFileInWorkspace(new File(to, "model.dummy")))
 						break;
-					String type = (String) ((Map<?, ?>) task).get("type");
+
 					List<Model> modelList = Model.getModels(workspace);
+
+					String type = (String) ((Map<?, ?>) task).get("type");
 					switch (type) {
 					case "OBJ":
 						for (Model model : modelList)
@@ -682,8 +687,23 @@ public class Generator implements IGenerator, Closeable {
 								FileIO.writeStringToFile(notextures, new File(to, model.getFile().getName()));
 							}
 						break;
+					case "JAVA_viatemplate":
+						String template = GeneratorTokens.replaceTokens(workspace,
+								(String) ((Map<?, ?>) task).get("template"));
+						for (Model model : modelList)
+							if (model.getType() == Model.Type.JAVA) {
+								String modelCode = FileIO.readFileToString(model.getFile());
+								try {
+									modelCode = templateGenerator.generateFromTemplate(template, new HashMap<>(
+											Map.of("modelname", model.getReadableName(), "model", modelCode)));
+								} catch (TemplateGeneratorException e) {
+									e.printStackTrace();
+								}
+								ClassWriter.writeClassToFileWithoutQueue(workspace, modelCode,
+										new File(to, model.getReadableName() + ".java"), true);
+							}
+						break;
 					}
-					break;
 				}
 				}
 			});
