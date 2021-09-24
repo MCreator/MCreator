@@ -83,15 +83,26 @@ package net.mcreator.blockly.java;
 	}
 
 	/**
-	 * This method removes the blockstate/itemstack marker comment, and if possible the parentheses surrounding the
-	 * remaining code.<br>
+	 * This method removes the parentheses surrounding the input code, while ignoring the blockstate/itemstack markers.<br>
 	 * This should be used only in blocks that accept blockstate/itemstack inputs but don't process them,
 	 * such as the print block.
 	 * @param code The code to optimize
 	 * @return The code without the initial comment and, if possible, without surrounding parentheses
 	 */
-	public static String removeCommentAndParentheses(String code) {
-		String withoutComment = code.replaceFirst("/\\*@BlockState\\*/", "").replaceFirst("/\\*@ItemStack\\*/", "");
-		return removeParentheses(withoutComment);
+	public static String removeParenthesesIgnoreComment(String code) {
+		String prefix;
+		String withoutComment;
+		if (code.startsWith("/*@BlockState*/")) {
+			prefix = "/*@BlockState*/";
+			withoutComment = code.replaceFirst("/\\*@BlockState\\*/", "");
+		}
+		else if (code.startsWith("/*@ItemStack*/")) {
+			prefix = "/*@ItemStack*/";
+			withoutComment = code.replaceFirst("/\\*@ItemStack\\*/", "");
+		} else {
+			prefix = "";
+			withoutComment = code;
+		}
+		return prefix + removeParentheses(withoutComment);
 	}
 }
