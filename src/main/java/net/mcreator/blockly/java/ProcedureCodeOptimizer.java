@@ -83,9 +83,7 @@ package net.mcreator.blockly.java;
 	}
 
 	/**
-	 * This method removes the parentheses surrounding the input code, while ignoring the blockstate/itemstack markers.<br>
-	 * This should be used only in blocks that accept blockstate/itemstack inputs but don't process them,
-	 * such as the print block.
+	 * This method removes the parentheses surrounding the input code, while ignoring the blockstate/itemstack markers.
 	 * @param code The code to optimize
 	 * @return The code without the initial comment and, if possible, without surrounding parentheses
 	 */
