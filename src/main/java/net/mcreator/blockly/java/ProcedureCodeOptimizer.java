@@ -84,7 +84,9 @@ package net.mcreator.blockly.java;
 
 	/**
 	 * This method removes the blockstate/itemstack marker comment, and if possible the parentheses surrounding the
-	 * remaining code.
+	 * remaining code.<br>
+	 * This should be used only in blocks that accept blockstate/itemstack inputs but don't process them,
+	 * such as the print block.
 	 * @param code The code to optimize
 	 * @return The code without the initial comment and, if possible, without surrounding parentheses
 	 */
