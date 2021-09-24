@@ -105,4 +105,13 @@ package net.mcreator.blockly.java;
 		}
 		return prefix + removeParentheses(withoutComment);
 	}
+
+	/**
+	 * This method removes blockstate/itemstack markers from the given code
+	 * @param code The code to optimize
+	 * @return The code without blockstate/itemstack markers
+	 */
+	public static String removeMarkers(String code) {
+		return code.replaceAll("/\\*@BlockState\\*/", "").replaceAll("/\\*@ItemStack\\*/", "");
+	}
 }
