@@ -1,0 +1,1 @@
+if(world instanceof ServerLevel _level) _level.setDayTime((int) ${input$time});
