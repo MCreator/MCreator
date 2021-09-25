@@ -8,5 +8,5 @@
 		dependencies.put("world", event.getWorld());
 		dependencies.put("entity", entity);
 		dependencies.put("event", event);
-		executeProcedure(dependencies);
+		execute(dependencies);
 	}

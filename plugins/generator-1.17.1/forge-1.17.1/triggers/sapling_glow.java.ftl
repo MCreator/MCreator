@@ -7,5 +7,5 @@
 		dependencies.put("world",event.getWorld());
 		dependencies.put("blockstate",event.getWorld().getBlockState(event.getPos()));
 		dependencies.put("event",event);
-		executeProcedure(dependencies);
+		execute(dependencies);
 	}

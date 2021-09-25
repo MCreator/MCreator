@@ -1,19 +1,14 @@
-@Mod.EventBusSubscriber private static class GlobalTrigger {
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
 		if(event.phase == TickEvent.Phase.END){
 			Entity entity = event.player;
-			World world = entity.world;
-			double i=entity.getPosX();
-			double j=entity.getPosY();
-			double k=entity.getPosZ();
 			Map<String, Object> dependencies = new HashMap<>();
-			dependencies.put("x",i);
-			dependencies.put("y",j);
-			dependencies.put("z",k);
-			dependencies.put("world",world);
-			dependencies.put("entity",entity);
-			dependencies.put("event",event);
-			executeProcedure(dependencies);
+		    dependencies.put("x", entity.getX());
+		    dependencies.put("y", entity.getY());
+		    dependencies.put("z", entity.getZ());
+			dependencies.put("world", entity.level);
+			dependencies.put("entity", entity);
+			dependencies.put("event", event);
+			execute(dependencies);
 		}
 	}
-}

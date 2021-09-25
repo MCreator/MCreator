@@ -4,6 +4,6 @@
 			Map<String, Object> dependencies = new HashMap<>();
 			dependencies.put("world",event.world);
 			dependencies.put("event",event);
-			executeProcedure(dependencies);
+			execute(dependencies);
 		}
 	}

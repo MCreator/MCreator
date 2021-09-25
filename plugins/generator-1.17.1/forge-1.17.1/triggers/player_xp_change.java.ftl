@@ -10,6 +10,6 @@
 			dependencies.put("entity", entity);
 			dependencies.put("amount", event.getAmount());
 			dependencies.put("event", event);
-			executeProcedure(dependencies);
+			execute(dependencies);
 		}
 	}

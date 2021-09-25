@@ -1,19 +1,13 @@
-@Mod.EventBusSubscriber private static class GlobalTrigger {
+@Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onUseHoe(UseHoeEvent event) {
-		PlayerEntity entity=event.getPlayer();
-		double i=event.getContext().getPos().getX();
-		double j=event.getContext().getPos().getY();
-		double k=event.getContext().getPos().getZ();
-		World world=entity.world;
-		BlockState state = world.getBlockState(event.getContext().getPos());
+		Player entity=event.getPlayer();
 		Map<String, Object> dependencies = new HashMap<>();
-		dependencies.put("x",i);
-		dependencies.put("y",j);
-		dependencies.put("z",k);
-		dependencies.put("world",world);
+		dependencies.put("x", event.getContext().getClickedPos().getX());
+		dependencies.put("y", event.getContext().getClickedPos().getY());
+		dependencies.put("z", event.getContext().getClickedPos().getZ());
+		dependencies.put("world",entity.level);
 		dependencies.put("entity",entity);
-		dependencies.put("blockstate",state);
+		dependencies.put("blockstate",entity.level.getBlockState(event.getContext().getClickedPos()));
 		dependencies.put("event",event);
-		executeProcedure(dependencies);
+		execute(dependencies);
 	}
-}
