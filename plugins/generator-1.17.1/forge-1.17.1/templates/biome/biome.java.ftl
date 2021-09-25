@@ -133,9 +133,7 @@ import java.util.function.BiConsumer;
                 <#if data.hasVines() || data.haveFruits()>
                 	<@vinesAndFruits/>
                 <#else>
-                	.setDecorators(ImmutableList.of(TrunkVineTreeDecorator.field_236879_b_, LeaveVineTreeDecorator.field_236871_b_))
-                </#if>
-                <#if data.treeType == data.TREES_CUSTOM>
+                	.decorators(ImmutableList.of(TrunkVineDecorator.INSTANCE, LeaveVineDecorator.INSTANCE))
                 </#if>
             	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
