@@ -171,8 +171,6 @@ import java.util.function.BiConsumer;
                 <#if data.hasVines() || data.haveFruits()>
                 	<@vinesAndFruits/>
                 </#if>
-                <#if data.treeType == data.TREES_CUSTOM>
-                </#if>
             	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
             	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1)))
@@ -186,10 +184,9 @@ import java.util.function.BiConsumer;
                 new SimpleStateProvider(Blocks.SPRUCE_SAPLING.defaultBlockState()),
                 new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(13, 4)),
                 new TwoLayersFeatureSize(1, 1, 2)))
+                .decorators(ImmutableList.of(new AlterGroundDecorator(new SimpleStateProvider(Blocks.PODZOL.defaultBlockState()))))
                 <#if data.hasVines() || data.haveFruits()>
                 	<@vinesAndFruits/>
-                </#if>
-                <#if data.treeType == data.TREES_CUSTOM>
                 </#if>
             	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
@@ -209,8 +206,6 @@ import java.util.function.BiConsumer;
                 <#else>
                 	.ignoreVines()
                 </#if>
-                <#if data.treeType == data.TREES_CUSTOM>
-                </#if>
             	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
             	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1)))
@@ -228,8 +223,6 @@ import java.util.function.BiConsumer;
                 	<@vinesAndFruits/>
                 <#else>
                 	.ignoreVines()
-                </#if>
-                <#if data.treeType == data.TREES_CUSTOM>
                 </#if>
             	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
