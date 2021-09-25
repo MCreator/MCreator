@@ -23,6 +23,7 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.JavaKeywordsMap;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -59,8 +60,7 @@ public class BinaryOperationsBlock implements IBlockGenerator {
 			master.append(")");
 		} else {
 			master.append(blocktype.equals("logic_binary_ops") ? "(true)" : "0");
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					"One of dual input blocks input is empty. Using default type value for it."));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.binary_operations")));
 		}
 	}
 
