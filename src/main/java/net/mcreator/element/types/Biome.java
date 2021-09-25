@@ -146,6 +146,11 @@ import java.util.stream.Collectors;
 				.contains(treeFruits.getUnmappedValue().toLowerCase()) && !treeFruits.isEmpty());
 	}
 
+	public boolean hasVines() {
+		String[] airBlocks = { "blocks.air", "blocks.cave_air", "blocks.void_air" };
+		return !(Arrays.stream(airBlocks).collect(Collectors.toList())
+				.contains(treeVines.getUnmappedValue().toLowerCase()) && !treeVines.isEmpty());}
+
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateBiomePreviewPicture(getModElement().getWorkspace(), airColor,
 				grassColor, waterColor, groundBlock, undergroundBlock, treesPerChunk, treeType, treeStem, treeBranch);

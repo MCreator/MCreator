@@ -30,12 +30,12 @@
 
 <#-- @formatter:off -->
 package ${package}.world.level.levelgen.feature.treedecorators;
-<#include "mcitems.ftl">
+<#include "../mcitems.ftl">
 
-public class ${name}Decorator extends CocoaDecorator {
+public class ${name}FruitDecorator extends CocoaDecorator {
 
-    public static final ${name}Decorator instance = new ${name}Decorator();
-    public static com.mojang.serialization.Codec<${name}Decorator> codec;
+    public static final ${name}FruitDecorator instance = new ${name}FruitDecorator();
+    public static com.mojang.serialization.Codec<${name}FruitDecorator> codec;
     public static TreeDecoratorType tdt;
 
     static {
@@ -45,7 +45,7 @@ public class ${name}Decorator extends CocoaDecorator {
         ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
     }
 
-    public ${name}Decorator() {
+    public ${name}FruitDecorator() {
         super(0.2f);
     }
 

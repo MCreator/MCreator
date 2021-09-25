@@ -31,7 +31,7 @@
 <#-- @formatter:off -->
 
 package ${package}.world.biome;
-<#include "mcitems.ftl">
+<#include "../mcitems.ftl">
 
 import net.minecraftforge.common.BiomeManager;
 import net.minecraft.core.Direction;
@@ -130,8 +130,8 @@ import java.util.function.BiConsumer;
                 new SimpleStateProvider(Blocks.OAK_SAPLING.defaultBlockState()),
                 new MegaJungleFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 2),
                 new TwoLayersFeatureSize(1, 1, 2)))
-                <#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-                	<@treeFruits/>
+                <#if data.hasVines() || data.haveFruits()>
+                	<@vinesAndFruits/>
                 <#else>
                 	.setDecorators(ImmutableList.of(TrunkVineTreeDecorator.field_236879_b_, LeaveVineTreeDecorator.field_236871_b_))
                 </#if>
@@ -150,8 +150,8 @@ import java.util.function.BiConsumer;
                 new SimpleStateProvider(Blocks.ACACIA_SAPLING.defaultBlockState()),
                 new AcaciaFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
                 new TwoLayersFeatureSize(1, 0, 2)))
-                <#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-                	<@treeFruits/>
+                <#if data.hasVines() || data.haveFruits()>
+                	<@vinesAndFruits/>
                 <#else>
                 	.ignoreVines()
                 </#if>
@@ -170,8 +170,8 @@ import java.util.function.BiConsumer;
                 new SimpleStateProvider(Blocks.SPRUCE_SAPLING.defaultBlockState()),
                 new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(3, 4)),
                 new TwoLayersFeatureSize(1, 1, 2)))
-                <#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-                	<@treeFruits/>
+                <#if data.hasVines() || data.haveFruits()>
+                	<@vinesAndFruits/>
                 </#if>
                 <#if data.treeType == data.TREES_CUSTOM>
                 </#if>
@@ -188,8 +188,8 @@ import java.util.function.BiConsumer;
                 new SimpleStateProvider(Blocks.SPRUCE_SAPLING.defaultBlockState()),
                 new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(13, 4)),
                 new TwoLayersFeatureSize(1, 1, 2)))
-                <#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-                	<@treeFruits/>
+                <#if data.hasVines() || data.haveFruits()>
+                	<@vinesAndFruits/>
                 </#if>
                 <#if data.treeType == data.TREES_CUSTOM>
                 </#if>
@@ -206,8 +206,8 @@ import java.util.function.BiConsumer;
                 new SimpleStateProvider(Blocks.BIRCH_SAPLING.defaultBlockState()),
                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                 new TwoLayersFeatureSize(1, 0, 1)))
-                <#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-                	<@treeFruits/>
+                <#if data.hasVines() || data.haveFruits()>
+                	<@vinesAndFruits/>
                 <#else>
                 	.ignoreVines()
                 </#if>
@@ -226,8 +226,8 @@ import java.util.function.BiConsumer;
                 new SimpleStateProvider(Blocks.OAK_SAPLING.defaultBlockState()),
                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                 new TwoLayersFeatureSize(1, 0, 1)))
-                <#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
-                	<@treeFruits/>
+                <#if data.hasVines() || data.haveFruits()>
+                	<@vinesAndFruits/>
                 <#else>
                 	.ignoreVines()
                 </#if>
@@ -360,10 +360,16 @@ import java.util.function.BiConsumer;
     </#if>
 }
 
-<#macro treeFruits>
+<#macro vinesAndFruits>
 .decorators(ImmutableList.of(
+	<#if data.hasVines()>
+		${name}LeaveDecorator.instance,
+		${name}TrunkDecorator.instance
+	</#if>
+
 	<#if data.haveFruits()>
-        new ${name}Decorator()
+	    <#if data.hasVines()>,</#if>
+        ${name}FruitDecorator.instance
 	</#if>
 ))
 </#macro>

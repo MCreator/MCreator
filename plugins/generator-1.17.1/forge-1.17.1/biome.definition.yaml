@@ -1,9 +1,17 @@
 templates:
-  - template: biome.java.ftl
+  - template: biome/biome.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/biome/@NAMEBiome.java"
-  - template: tree_fruits.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/level/levelgen/feature/treedecorators/@NAMEDecorator.java"
+  - template: biome/tree_fruits_decorator.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/level/levelgen/feature/treedecorators/@NAMEFruitDecorator.java"
     condition: haveFruits()
+    deleteWhenConditionFalse: true
+  - template: biome/tree_leave_decorator.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/level/levelgen/feature/treedecorators/@NAMELeaveDecorator.java"
+    condition: hasVines()
+    deleteWhenConditionFalse: true
+  - template: biome/tree_trunk_decorator.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/level/levelgen/feature/treedecorators/@NAMETrunkDecorator.java"
+    condition: hasVines()
     deleteWhenConditionFalse: true
 
 global_templates:
@@ -14,5 +22,3 @@ global_templates:
 localizationkeys:
   - key: biome.@modid.@registryname
     mapto: name
-
-field_exclusions: [ treeVines ]
