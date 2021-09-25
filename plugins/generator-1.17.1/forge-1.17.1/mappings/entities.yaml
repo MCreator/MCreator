@@ -3,7 +3,7 @@ _default:
   - EntityType.ZOMBIE
   - zombie
 _mcreator_prefix: "CUSTOM:"
-_mcreator_map_template: "@NAMEEntity.CustomEntity"
+_mcreator_map_template: "@JavaModNameEntityTypes.@REGISTRYNAME"
 EntityAgeable: AgeableMob
 EntityAmbientCreature: AmbientCreature
 EntityAnimal: Animal
