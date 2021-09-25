@@ -76,8 +76,7 @@ package net.mcreator.blockly.java;
 				}
 				prevChar = c;
 			}
-			if (state == ParseState.OUTSIDE && --parentheses == 0) // The last character is a valid ")"
-				return toClean.substring(1, toClean.length() - 1);
+			return toClean.substring(1, toClean.length() - 1);
 		}
 		return code;
 	}
