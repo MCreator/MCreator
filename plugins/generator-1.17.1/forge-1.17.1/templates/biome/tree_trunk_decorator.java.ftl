@@ -29,7 +29,7 @@
 -->
 
 <#-- @formatter:off -->
-package ${package}.world.level.levelgen.feature.treedecorators;
+package ${package}.world.features.treedecorators;
 <#include "../mcitems.ftl">
 
 public class ${name}TrunkDecorator extends TrunkVineDecorator {
