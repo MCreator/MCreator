@@ -114,7 +114,7 @@ public class SetVariableBlock implements IBlockGenerator {
 						scope.toUpperCase(Locale.ENGLISH)).get("set");
 				if (setterTemplate == null) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-							L10N.t("blockly.errors.variables.no_getter_support", type, scope,
+							L10N.t("blockly.errors.variables.no_setter_support", type, scope,
 									L10N.t("blockly.warnings.skip"))));
 					return;
 				}
