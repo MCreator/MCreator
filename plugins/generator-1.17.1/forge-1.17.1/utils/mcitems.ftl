@@ -42,11 +42,11 @@
 </#function>
 
 <#function transformExtension mappedBlock>
-    <#return (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
-    + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
-    + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-    + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
-    + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")>
+    <#return (mappedBlock.toString().contains(".helmet"))?then("_helmet", "")
+    + (mappedBlock.toString().contains(".body"))?then("_chestplate", "")
+    + (mappedBlock.toString().contains(".legs"))?then("_leggings", "")
+    + (mappedBlock.toString().contains(".boots"))?then("_boots", "")
+    + (mappedBlock.toString().contains(".bucket"))?then("_bucket", "")>
 </#function>
 
 <#function mappedMCItemToIngameItemName mappedBlock>

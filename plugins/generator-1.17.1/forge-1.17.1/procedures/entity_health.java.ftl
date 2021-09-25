@@ -1,1 +1,1 @@
-(${input$entity} instanceof LivingEntity _ent_health ? _ent_health.getHealth():-1)
+(${input$entity} instanceof LivingEntity _livEnt ? _livEnt.getHealth():-1)

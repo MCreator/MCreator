@@ -1,0 +1,1 @@
+if(${input$entity} instanceof LivingEntity _entity) _entity.setHealth((float)${input$health});
