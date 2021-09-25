@@ -1,5 +1,5 @@
 <#include "mcitems.ftl">
 return
-<#if type == "itemstack">${mappedMCItemToItemStackCode(value, 1)}
-<#elseif type == "blockstate">${mappedBlockToBlockStateCode(value)}
-<#else>${value}</#if>;
+<#if type == "itemstack">${opt.removeParentheses(mappedMCItemToItemStackCode(value, 1))}
+<#elseif type == "blockstate">${opt.removeParentheses(mappedBlockToBlockStateCode(value))}
+<#else>${opt.removeParentheses(value)}</#if>;

@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyToProcedure;
+import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
@@ -98,7 +99,7 @@ public class Procedure extends GeneratableElement {
 				triggerCode = templateGenerator.generateFromTemplate(trigger.getID() + ".java.ftl", additionalData);
 			}
 
-			additionalData.put("procedurecode", blocklyToJava.getGeneratedCode());
+			additionalData.put("procedurecode", ProcedureCodeOptimizer.removeMarkers(blocklyToJava.getGeneratedCode()));
 			additionalData.put("return_type", blocklyToJava.getReturnType());
 			additionalData.put("has_trigger", trigger != null);
 			additionalData.put("trigger_code", triggerCode);

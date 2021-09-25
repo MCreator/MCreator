@@ -21,6 +21,7 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
@@ -41,7 +42,7 @@ public class PrintTextBlock implements IBlockGenerator {
 					master.append(master.getTemplateGenerator().generateFromTemplate("_print.java.ftl", dataModel));
 				} else {
 					master.append("System.out.println(");
-					master.append(elementcode);
+					master.append(ProcedureCodeOptimizer.removeParenthesesIgnoreComment(elementcode));
 					master.append(");");
 				}
 			}
