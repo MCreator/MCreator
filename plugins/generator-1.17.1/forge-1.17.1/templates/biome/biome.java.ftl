@@ -130,7 +130,7 @@ import java.util.function.BiConsumer;
                 new SimpleStateProvider(Blocks.OAK_SAPLING.defaultBlockState()),
                 new MegaJungleFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 2),
                 new TwoLayersFeatureSize(1, 1, 2)))
-                <#if data.hasVines() || data.haveFruits()>
+                <#if data.hasVines() || data.hasFruits()>
                 	<@vinesAndFruits/>
                 <#else>
                 	.decorators(ImmutableList.of(TrunkVineDecorator.INSTANCE, LeaveVineDecorator.INSTANCE))
@@ -148,7 +148,7 @@ import java.util.function.BiConsumer;
                 new SimpleStateProvider(Blocks.ACACIA_SAPLING.defaultBlockState()),
                 new AcaciaFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
                 new TwoLayersFeatureSize(1, 0, 2)))
-                <#if data.hasVines() || data.haveFruits()>
+                <#if data.hasVines() || data.hasFruits()>
                 	<@vinesAndFruits/>
                 <#else>
                 	.ignoreVines()
@@ -168,7 +168,7 @@ import java.util.function.BiConsumer;
                 new SimpleStateProvider(Blocks.SPRUCE_SAPLING.defaultBlockState()),
                 new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(3, 4)),
                 new TwoLayersFeatureSize(1, 1, 2)))
-                <#if data.hasVines() || data.haveFruits()>
+                <#if data.hasVines() || data.hasFruits()>
                 	<@vinesAndFruits/>
                 </#if>
             	.build())
@@ -185,7 +185,7 @@ import java.util.function.BiConsumer;
                 new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(13, 4)),
                 new TwoLayersFeatureSize(1, 1, 2)))
                 .decorators(ImmutableList.of(new AlterGroundDecorator(new SimpleStateProvider(Blocks.PODZOL.defaultBlockState()))))
-                <#if data.hasVines() || data.haveFruits()>
+                <#if data.hasVines() || data.hasFruits()>
                 	<@vinesAndFruits/>
                 </#if>
             	.build())
@@ -201,7 +201,7 @@ import java.util.function.BiConsumer;
                 new SimpleStateProvider(Blocks.BIRCH_SAPLING.defaultBlockState()),
                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                 new TwoLayersFeatureSize(1, 0, 1)))
-                <#if data.hasVines() || data.haveFruits()>
+                <#if data.hasVines() || data.hasFruits()>
                 	<@vinesAndFruits/>
                 <#else>
                 	.ignoreVines()
@@ -219,7 +219,7 @@ import java.util.function.BiConsumer;
                 new SimpleStateProvider(Blocks.OAK_SAPLING.defaultBlockState()),
                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                 new TwoLayersFeatureSize(1, 0, 1)))
-                <#if data.hasVines() || data.haveFruits()>
+                <#if data.hasVines() || data.hasFruits()>
                 	<@vinesAndFruits/>
                 <#else>
                 	.ignoreVines()
@@ -358,7 +358,7 @@ import java.util.function.BiConsumer;
 		${name}TrunkDecorator.instance
 	</#if>
 
-	<#if data.haveFruits()>
+	<#if data.hasFruits()>
 	    <#if data.hasVines()>,</#if>
         ${name}FruitDecorator.instance
 	</#if>

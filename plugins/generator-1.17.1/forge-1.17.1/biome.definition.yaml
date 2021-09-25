@@ -3,7 +3,7 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/world/biome/@NAMEBiome.java"
   - template: biome/tree_fruits_decorator.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/level/levelgen/feature/treedecorators/@NAMEFruitDecorator.java"
-    condition: haveFruits()
+    condition: hasFruits()
     deleteWhenConditionFalse: true
   - template: biome/tree_leave_decorator.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/level/levelgen/feature/treedecorators/@NAMELeaveDecorator.java"
