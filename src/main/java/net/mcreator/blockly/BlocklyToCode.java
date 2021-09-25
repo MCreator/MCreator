@@ -20,6 +20,7 @@ package net.mcreator.blockly;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.StatementInput;
+import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -202,6 +203,16 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		master.clearCodeGeneratorBuffer(); // we clear the master again to remove the code we just generated
 		master.append(originalMasterCode); // set the master code to the original code
 		return generatedCode;
+	}
+
+	/**
+	 * Helper method to process an output block and remove surrounding parentheses if possible
+	 * @param element The element to process
+	 * @throws TemplateGeneratorException When the
+	 */
+	public final void processOutputBlockWithoutParentheses(Element element) throws TemplateGeneratorException {
+		String code = directProcessOutputBlock(this, element);
+		this.append(ProcedureCodeOptimizer.removeParentheses(code));
 	}
 
 }

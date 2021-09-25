@@ -45,9 +45,9 @@ public class TextReplace implements IBlockGenerator {
 			master.append("(");
 			master.processOutputBlock(text);
 			master.append(".replace(");
-			master.processOutputBlock(what);
+			master.processOutputBlockWithoutParentheses(what);
 			master.append(",");
-			master.processOutputBlock(with);
+			master.processOutputBlockWithoutParentheses(with);
 			master.append("))");
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,

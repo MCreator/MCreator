@@ -42,7 +42,7 @@ public class SingularMathOperationsBlock implements IBlockGenerator {
 		}
 		if (JavaKeywordsMap.MATH_OPERATORS.get(operationType) != null && num != null) {
 			master.append("Math.").append(JavaKeywordsMap.MATH_OPERATORS.get(operationType)).append("(");
-			master.processOutputBlock(num);
+			master.processOutputBlockWithoutParentheses(num);
 			master.append(")");
 		} else {
 			master.append("0");
