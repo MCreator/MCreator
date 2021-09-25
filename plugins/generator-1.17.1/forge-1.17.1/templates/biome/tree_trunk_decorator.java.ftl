@@ -51,8 +51,8 @@ public class ${name}TrunkDecorator extends TrunkVineDecorator {
         }
 
         @Override
-        public void place(LevelSimulatedReader levelReader, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> p_161758_, List<BlockPos> p_161759_) {
-            p_161758_.forEach(bp -> {
+        public void place(LevelSimulatedReader levelReader, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> listBlockPos, List<BlockPos> listBlockPos2) {
+            listBlockPos.forEach(bp -> {
                 if (random.nextInt(3) > 0) {
                     BlockPos blockpos = bp.west();
                     if (Feature.isAir(levelReader, blockpos)) {

@@ -51,30 +51,30 @@ public class ${name}LeaveDecorator extends LeaveVineDecorator {
         }
 
         @Override
-        public void place(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> biConsumer, Random p_161737_, List<BlockPos> p_161738_, List<BlockPos> p_161739_) {
-            p_161739_.forEach((blockpos) -> {
-                if (p_161737_.nextInt(4) == 0) {
+        public void place(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> listBlockPos, List<BlockPos> listBlockPos2) {
+            listBlockPos2.forEach((blockpos) -> {
+                if (random.nextInt(4) == 0) {
                     BlockPos bp = blockpos.west();
                     if (Feature.isAir(level, bp)) {
                         addVine(level, bp, biConsumer);
                     }
                 }
 
-                if (p_161737_.nextInt(4) == 0) {
+                if (random.nextInt(4) == 0) {
                     BlockPos blockpos1 = blockpos.east();
                     if (Feature.isAir(level, blockpos1)) {
                         addVine(level, blockpos1, biConsumer);
                     }
                 }
 
-                if (p_161737_.nextInt(4) == 0) {
+                if (random.nextInt(4) == 0) {
                     BlockPos blockpos2 = blockpos.north();
                     if (Feature.isAir(level, blockpos2)) {
                         addVine(level, blockpos2, biConsumer);
                     }
                 }
 
-                if (p_161737_.nextInt(4) == 0) {
+                if (random.nextInt(4) == 0) {
                     BlockPos blockpos3 = blockpos.south();
                     if (Feature.isAir(level, blockpos3)) {
                         addVine(level, blockpos3, biConsumer);
@@ -84,12 +84,12 @@ public class ${name}LeaveDecorator extends LeaveVineDecorator {
             });
         }
 
-        private static void addVine(LevelSimulatedReader p_161730_, BlockPos p_161731_, BiConsumer<BlockPos, BlockState> p_161733_) {
-            p_161733_.accept(p_161731_, Blocks.DIRT.defaultBlockState());
+        private static void addVine(LevelSimulatedReader levelReader, BlockPos blockPos, BiConsumer<BlockPos, BlockState> biConsumer) {
+            biConsumer.accept(blockPos, Blocks.DIRT.defaultBlockState());
             int i = 4;
 
-            for(BlockPos blockpos = p_161731_.below(); Feature.isAir(p_161730_, blockpos) && i > 0; --i) {
-                p_161733_.accept(blockpos, ${mappedBlockToBlockStateCode(data.treeFruits)});
+            for(BlockPos blockpos = blockPos.below(); Feature.isAir(levelReader, blockpos) && i > 0; --i) {
+                biConsumer.accept(blockpos, ${mappedBlockToBlockStateCode(data.treeFruits)});
                 blockpos = blockpos.below();
             }
 

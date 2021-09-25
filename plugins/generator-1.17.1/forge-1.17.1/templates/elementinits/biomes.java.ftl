@@ -42,7 +42,7 @@ package ${package}.init;
 
     <#list biomes as biome>
     public static Biome ${biome.getModElement().getRegistryNameUpper()} = register(${biome.getModElement().getName()}Biome.createBiome()
-        .setRegistryName(new ResourceLocation(${JavaModName}.MODID, "${biome.getModElement().getRegistryName()}")));
+        .setRegistryName(new ResourceLocation("${biome.getModElement().getRegistryName()}")));
     </#list>
 
     private static Biome register(Biome biome) {
