@@ -130,50 +130,50 @@ public class ${name}Item extends ${data.toolType.replace("Spade", "Shovel")}Item
     </#if>
     
     <#if data.specialInfo?has_content>
-        @Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
-            super.addInformation(itemstack, world, list, flag);
-            <#list data.specialInfo as entry>
-                list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-            </#list>
+    	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
+    		super.appendHoverText(itemstack, world, list, flag);
+    		<#list data.specialInfo as entry>
+    		list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+    		</#list>
     	}
     </#if>
     
     <#if hasProcedure(data.onRightClickedInAir)>
-        @Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand){
-            ActionResult<ItemStack> retval = super.onItemRightClick(world,entity,hand);
-            ItemStack itemstack = retval.getResult();
-            double x = entity.getPosX();
-            double y = entity.getPosY();
-            double z = entity.getPosZ();
-            <@procedureOBJToCode data.onRightClickedInAir/>
-            return retval;
+    	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+    		InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+    		ItemStack itemstack = ar.getObject();
+    		double x = entity.getX();
+    		double y = entity.getY();
+    		double z = entity.getZ();
+    		<@procedureOBJToCode data.onRightClickedInAir/>
+    		return ar;
     	}
     </#if>
     
     <#if hasProcedure(data.onRightClickedOnBlock)>
-    	@Override public ActionResultType onItemUse(ItemUseContext context) {
-            ActionResultType retval = super.onItemUse(context);
-            World world = context.getWorld();
-          	BlockPos pos = context.getPos();
-          	PlayerEntity entity = context.getPlayer();
-          	Direction direction = context.getFace();
-          	BlockState blockstate = world.getBlockState(pos);
-            int x = pos.getX();
-            int y = pos.getY();
-            int z = pos.getZ();
-            ItemStack itemstack = context.getItem();
-            <#if hasReturnValue(data.onRightClickedOnBlock)>
-                return <@procedureOBJToActionResultTypeCode data.onRightClickedOnBlock/>;
-            <#else>
-                <@procedureOBJToCode data.onRightClickedOnBlock/>
-                return retval;
-            </#if>
+    	@Override public InteractionResult useOn(UseOnContext context) {
+    		InteractionResult retval = super.useOn(context);
+    		Level world = context.getLevel();
+    		BlockPos pos = context.getClickedPos();
+    		Player entity = context.getPlayer();
+    		Direction direction = context.getClickedFace();
+    		BlockState blockstate = world.getBlockState(pos);
+    		int x = pos.getX();
+    		int y = pos.getY();
+    		int z = pos.getZ();
+    		ItemStack itemstack = context.getItemInHand();
+    		<#if hasReturnValue(data.onRightClickedOnBlock)>
+    		return <@procedureOBJToActionResultTypeCode data.onRightClickedOnBlock/>;
+    		<#else>
+    		<@procedureOBJToCode data.onRightClickedOnBlock/>
+    		return retval;
+    		</#if>
     	}
     </#if>
     
     <#if hasProcedure(data.onBlockDestroyedWithTool)>
-    	@Override public boolean onBlockDestroyed(ItemStack itemstack, World world, BlockState blockstate, BlockPos pos, LivingEntity entity){
-            boolean retval = super.onBlockDestroyed(itemstack,world,blockstate,pos,entity);
+    	@Override public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity){
+            boolean retval = super.mineBlock(itemstack,world,blockstate,pos,entity);
             int x = pos.getX();
             int y = pos.getY();
             int z = pos.getZ();
@@ -183,75 +183,75 @@ public class ${name}Item extends ${data.toolType.replace("Spade", "Shovel")}Item
     </#if>
     
     <#if hasProcedure(data.onCrafted)>
-        @Override public void onCreated(ItemStack itemstack, World world, PlayerEntity entity){
-            super.onCreated(itemstack,world,entity);
-            double x = entity.getPosX();
-            double y = entity.getPosY();
-            double z = entity.getPosZ();
-            <@procedureOBJToCode data.onCrafted/>
+    	@Override public void onCraftedBy(ItemStack itemstack, Level world, Player entity) {
+    		super.onCraftedBy(itemstack, world, entity);
+    		double x = entity.getX();
+    		double y = entity.getY();
+    		double z = entity.getZ();
+    		<@procedureOBJToCode data.onCrafted/>
     	}
     </#if>
     
     <#if hasProcedure(data.onEntityHitWith)>
-    	@Override public boolean hitEntity(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity){
-            boolean retval = super.hitEntity(itemstack,entity,sourceentity);
-            double x = entity.getPosX();
-            double y = entity.getPosY();
-            double z = entity.getPosZ();
-            World world = entity.world;
-            <@procedureOBJToCode data.onEntityHitWith/>
-            return retval;
+    	@Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
+    		boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
+    		double x = entity.getX();
+    		double y = entity.getY();
+    		double z = entity.getZ();
+    		Level world = entity.level;
+    		<@procedureOBJToCode data.onEntityHitWith/>
+    		return retval;
     	}
     </#if>
     
     <#if hasProcedure(data.onEntitySwing)>
     	@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
-            boolean retval = super.onEntitySwing(itemstack, entity);
-            double x = entity.getPosX();
-            double y = entity.getPosY();
-            double z = entity.getPosZ();
-            World world = entity.world;
-            <@procedureOBJToCode data.onEntitySwing/>
-            return retval;
+    		boolean retval = super.onEntitySwing(itemstack, entity);
+    		double x = entity.getX();
+    		double y = entity.getY();
+    		double z = entity.getZ();
+    		Level world = entity.level;
+    		<@procedureOBJToCode data.onEntitySwing/>
+    		return retval;
     	}
     </#if>
     
     <#if hasProcedure(data.onStoppedUsing)>
-    	@Override public void onPlayerStoppedUsing(ItemStack itemstack, World world, LivingEntity entity, int time){
-            super.onPlayerStoppedUsing(itemstack,world,entity,time);
-            double x = entity.getPosX();
-            double y = entity.getPosY();
-            double z = entity.getPosZ();
-            <@procedureOBJToCode data.onStoppedUsing/>
+    	@Override
+    	public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
+    		double x = entity.getX();
+    		double y = entity.getY();
+    		double z = entity.getZ();
+    		<@procedureOBJToCode data.onStoppedUsing/>
     	}
     </#if>
     
     <#if hasProcedure(data.onItemInUseTick) || hasProcedure(data.onItemInInventoryTick)>
-    	@Override public void inventoryTick(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
-            super.inventoryTick(itemstack, world, entity, slot, selected);
-            double x = entity.getPosX();
-            double y = entity.getPosY();
-            double z = entity.getPosZ();
-        	<#if hasProcedure(data.onItemInUseTick)>
-                if (selected)
-        	        <@procedureOBJToCode data.onItemInUseTick/>
-        	</#if>
-        	<@procedureOBJToCode data.onItemInInventoryTick/>
+    	@Override public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
+    		super.inventoryTick(itemstack, world, entity, slot, selected);
+    		double x = entity.getX();
+    		double y = entity.getY();
+    		double z = entity.getZ();
+    		<#if hasProcedure(data.onItemInUseTick)>
+    		if (selected)
+    			<@procedureOBJToCode data.onItemInUseTick/>
+    		</#if>
+    		<@procedureOBJToCode data.onItemInInventoryTick/>
     	}
     </#if>
     
     <#if data.hasGlow>
-    	@Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
-            <#if hasProcedure(data.glowCondition)>
-                PlayerEntity entity = Minecraft.getInstance().player;
-                World world = entity.world;
-                double x = entity.getPosX();
-                double y = entity.getPosY();
-                double z = entity.getPosZ();
-                if (!(<@procedureOBJToConditionCode data.glowCondition/>))
-                    return false;
-            </#if>
-            return true;
+    	@Override public boolean isFoil(ItemStack itemstack) {
+    		<#if hasProcedure(data.glowCondition)>
+    		Player entity = Minecraft.getInstance().player;
+    		Level world = entity.level;
+    		double x = entity.getX();
+    		double y = entity.getY();
+    		double z = entity.getZ();
+    		return <@procedureOBJToConditionCode data.glowCondition/>;
+    		<#else>
+    		return true;
+    		</#if>
     	}
     </#if>
 
