@@ -1,6 +1,18 @@
 templates:
   - template: dimension.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/level/dimension/@NAMEDimension.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEDimension.java"
+  - template: dimension/teleporter.java.ftl
+    condition: enablePortal
+    deleteWhenConditionFalse: true
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/teleporter/@NAMETeleporter.java"
+  - template: dimension/portalshape.java.ftl
+    condition: enablePortal
+    deleteWhenConditionFalse: true
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/teleporter/@NAMEPortalShape.java"
+  - template: dimension/blockportal.java.ftl
+    condition: enablePortal
+    deleteWhenConditionFalse: true
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEPortalBlock.java"
   - template: dimension/portaltrigger.java.ftl
     condition: enablePortal
     deleteWhenConditionFalse: true

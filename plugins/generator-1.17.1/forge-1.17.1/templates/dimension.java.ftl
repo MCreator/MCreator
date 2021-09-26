@@ -32,7 +32,7 @@
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
 
-package ${package}.world.level.dimension;
+package ${package}.world.dimension;
 
 @Mod.EventBusSubscriber public class ${name}Dimension {
 

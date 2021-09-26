@@ -66,7 +66,7 @@ public static class TeleporterDimensionMod implements ITeleporter {
 		} else {
 			Entity entityNew = entity.getType().create(server);
 			if (entityNew != null) {
-				entityNew.copyDataFromOld(entity);
+				entityNew.restoreFrom(entity);
 				entityNew.setLocationAndAngles(portalinfo.pos.x, portalinfo.pos.y, portalinfo.pos.z,
 						portalinfo.rotationYaw, entityNew.rotationPitch);
 				entityNew.setMotion(portalinfo.motion);
