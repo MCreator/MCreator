@@ -29,12 +29,16 @@ public class BuildWorkspaceAction extends GradleAction {
 
 	private static final Logger LOG = LogManager.getLogger(BuildWorkspaceAction.class);
 
+	private boolean regenerateBase = true;
+
 	public BuildWorkspaceAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.gradle.build_workspace"), evt -> new Thread(() -> {
+		super(actionRegistry, L10N.t("action.gradle.build_workspace"), null);
+		setActionListener(evt -> new Thread(() -> {
 			actionRegistry.getMCreator().getGradleConsole()
 					.markRunning(); // so console gets locked while we generate code already
 			try {
-				actionRegistry.getMCreator().getGenerator().generateBase();
+				if (regenerateBase)
+					actionRegistry.getMCreator().getGenerator().generateBase();
 				SwingUtilities.invokeLater(() -> actionRegistry.getMCreator().getGradleConsole().exec("build"));
 			} catch (Exception e) { // if something fails, we still need to free the gradle console
 				LOG.error(e.getMessage(), e);
@@ -44,4 +48,7 @@ public class BuildWorkspaceAction extends GradleAction {
 		setTooltip(L10N.t("action.gradle.build_workspace.tooltip"));
 	}
 
+	public void setRegenerateBase(boolean regenerateBase) {
+		this.regenerateBase = regenerateBase;
+	}
 }
