@@ -36,7 +36,6 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.SlickTreeUI;
-import net.mcreator.util.DesktopUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
@@ -51,7 +50,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
@@ -89,11 +87,6 @@ public class WorkspaceFileBrowser extends JPanel {
 		}
 	};
 
-	private final JMenuItem openAsCode;
-	private final JMenuItem openFile;
-	private final JMenuItem openParentFolder;
-	private final JMenuItem delete;
-
 	final MCreator mcreator;
 
 	public WorkspaceFileBrowser(MCreator mcreator) {
@@ -106,28 +99,6 @@ public class WorkspaceFileBrowser extends JPanel {
 		tree.setOpaque(false);
 		tree.setRootVisible(false);
 		tree.setShowsRootHandles(true);
-
-		openAsCode = new JMenuItem(L10N.t("workspace_file_browser.open"));
-		openAsCode.setFont(openAsCode.getFont().deriveFont(Font.BOLD));
-		openAsCode.addActionListener(e -> openSelectedFileAsCode());
-
-		openFile = new JMenuItem(L10N.t("workspace_file_browser.open_file"));
-		openFile.addActionListener(e -> {
-			File selectedFile = (File) ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent()).getUserObject();
-			if (Files.isRegularFile(selectedFile.toPath()) || Files.isDirectory(selectedFile.toPath()))
-				DesktopUtils.openSafe(selectedFile);
-			else
-				Toolkit.getDefaultToolkit().beep();
-		});
-
-		openParentFolder = new JMenuItem(L10N.t("workspace_file_browser.open_parent_folder"));
-		openParentFolder.addActionListener(e -> DesktopUtils.openSafe(
-				((File) ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent()).getUserObject()).getParentFile()));
-
-		JMenu createMenu = L10N.menu("workspace_file_browser.add");
-
-		delete = new JMenuItem(L10N.t("workspace_file_browser.delete"));
-		delete.setIcon(UIRES.get("16px.delete.gif"));
 
 		JScrollPane jsp = new JScrollPane(tree);
 		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
@@ -201,28 +172,6 @@ public class WorkspaceFileBrowser extends JPanel {
 
 		add("North", topBar);
 		add("South", bar);
-
-		delete.addActionListener(e -> {
-			FilterTreeNode selected = (FilterTreeNode) tree.getLastSelectedPathComponent();
-			if (selected != null) {
-				if (selected.getUserObject() instanceof File) {
-					int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("workspace_file_browser.remove_file"),
-							L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-					if (n == 0) {
-						File file = (File) selected.getUserObject();
-						if (file.isFile())
-							file.delete();
-						else
-							FileIO.deleteDir(file);
-						mods.removeNodeFromParent(selected);
-					}
-				} else {
-					Toolkit.getDefaultToolkit().beep();
-				}
-			} else {
-				Toolkit.getDefaultToolkit().beep();
-			}
-		});
 
 		tree.addMouseListener(new MouseAdapter() {
 
@@ -331,13 +280,36 @@ public class WorkspaceFileBrowser extends JPanel {
 		}
 	}
 
-	private void openSelectedFileAsCode() {
+	public void openSelectedFileAsCode() {
 		if (tree.getLastSelectedPathComponent() != null) {
 			Object selection = ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent()).getUserObject();
 			if (selection instanceof File selFile)
-				if (selFile.isDirectory()) tree.expandPath(tree.getSelectionPath());
-			else
-				FileOpener.openFile(mcreator, selection);
+				if (selFile.isDirectory())
+					tree.expandPath(tree.getSelectionPath());
+				else
+					FileOpener.openFile(mcreator, selection);
+		}
+	}
+
+	public void deleteSelectedFile() {
+		FilterTreeNode selected = (FilterTreeNode) tree.getLastSelectedPathComponent();
+		if (selected != null) {
+			if (selected.getUserObject() instanceof File) {
+				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("workspace_file_browser.remove_file.message"),
+						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (n == 0) {
+					File file = (File) selected.getUserObject();
+					if (file.isFile())
+						file.delete();
+					else
+						FileIO.deleteDir(file);
+					mods.removeNodeFromParent(selected);
+				}
+			} else {
+				Toolkit.getDefaultToolkit().beep();
+			}
+		} else {
+			Toolkit.getDefaultToolkit().beep();
 		}
 	}
 
@@ -462,18 +434,18 @@ public class WorkspaceFileBrowser extends JPanel {
 		} catch (Exception ignored) {
 		}
 
-		openAsCode.setEnabled(contextActionsAvailable);
-		openFile.setEnabled(contextActionsAvailable);
-		openParentFolder.setEnabled(contextActionsAvailable);
+		mcreator.actionRegistry.openAsCode.setEnabled(contextActionsAvailable);
+		mcreator.actionRegistry.openFile.setEnabled(contextActionsAvailable);
+		mcreator.actionRegistry.openParentFolder.setEnabled(contextActionsAvailable);
 		createMenu.setEnabled(contextActionsAvailable);
-		delete.setEnabled(contextActionsAvailable);
+		mcreator.actionRegistry.deleteFile.setEnabled(contextActionsAvailable);
 
-		retVal.add(openAsCode);
-		retVal.add(openFile);
-		retVal.add(openParentFolder);
+		retVal.add(mcreator.actionRegistry.openAsCode);
+		retVal.add(mcreator.actionRegistry.openFile);
+		retVal.add(mcreator.actionRegistry.openParentFolder);
 		retVal.addSeparator();
 		retVal.add(createMenu);
-		retVal.add(delete);
+		retVal.add(mcreator.actionRegistry.deleteFile);
 
 		return retVal;
 	}

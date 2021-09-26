@@ -50,6 +50,10 @@ import net.mcreator.ui.views.editor.image.tool.action.*;
 import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.*;
+import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,6 +111,10 @@ public class ActionRegistry {
 	public final BasicAction injectDefaultTags;
 
 	// IDE actions
+	public final BasicAction openAsCode;
+	public final BasicAction openFile;
+	public final BasicAction openParentFolder;
+	public final BasicAction deleteFile;
 	public final BasicAction newClass;
 	public final BasicAction newJson;
 	public final BasicAction newImage;
@@ -212,6 +220,20 @@ public class ActionRegistry {
 		this.help = new VisitURIAction(this, L10N.t("action.wiki"), MCreatorApplication.SERVER_DOMAIN + "/wiki");
 		this.support = new VisitURIAction(this, L10N.t("action.support"),
 				MCreatorApplication.SERVER_DOMAIN + "/support");
+		this.openAsCode = new BasicAction(this, L10N.t("workspace_file_browser.open"),
+				e -> mcreator.getProjectBrowser().openSelectedFileAsCode());
+		this.openFile = new BasicAction(this, L10N.t("workspace_file_browser.open_file"), e -> {
+			File selectedFile = (File) ((DefaultMutableTreeNode) mcreator.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject();
+			if (Files.isRegularFile(selectedFile.toPath()) || Files.isDirectory(selectedFile.toPath()))
+				DesktopUtils.openSafe(selectedFile);
+			else
+				Toolkit.getDefaultToolkit().beep();
+		});
+		this.openParentFolder = new BasicAction(this, L10N.t("workspace_file_browser.open_parent_folder"),
+				e -> DesktopUtils.openSafe(
+						((File) ((DefaultMutableTreeNode) mcreator.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject()).getParentFile()));
+		this.deleteFile = new BasicAction(this, L10N.t("workspace_file_browser.remove_file"),
+				e -> mcreator.getProjectBrowser().deleteSelectedFile()).setIcon(UIRES.get("16px.delete.gif"));
 		this.newClass = new NewClassAction(this);
 		this.newJson = new NewJsonFileAction(this);
 		this.newImage = new NewImageFileAction(this);
