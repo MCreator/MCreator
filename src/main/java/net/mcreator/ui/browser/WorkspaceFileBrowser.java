@@ -30,9 +30,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.tree.FilterTreeNode;
 import net.mcreator.ui.component.tree.FilteredTreeModel;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
-import net.mcreator.ui.component.util.WrapLayout;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
@@ -40,8 +38,6 @@ import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.SlickTreeUI;
 import net.mcreator.util.DesktopUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
 import javax.swing.*;
@@ -55,13 +51,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
 
-public class WorkspaceFileBrowser extends JPanel { // See you on L274
-
-	private final Logger LOG = LogManager.getLogger("Workspace File Browser");
+public class WorkspaceFileBrowser extends JPanel {
 
 	private final FilteredTreeModel mods = new FilteredTreeModel(null);
 
@@ -94,6 +89,11 @@ public class WorkspaceFileBrowser extends JPanel { // See you on L274
 		}
 	};
 
+	private final JMenuItem openAsCode;
+	private final JMenuItem openFile;
+	private final JMenuItem openParentFolder;
+	private final JMenuItem delete;
+
 	final MCreator mcreator;
 
 	public WorkspaceFileBrowser(MCreator mcreator) {
@@ -107,27 +107,27 @@ public class WorkspaceFileBrowser extends JPanel { // See you on L274
 		tree.setRootVisible(false);
 		tree.setShowsRootHandles(true);
 
-		JPopupMenu contextMenu = new JPopupMenu();
-		/*contextMenu.setPreferredSize(new Dimension(180, 200));
-		contextMenu.updateUI();*/
-
-		JMenuItem openAsCode = new JMenuItem(L10N.t("workspace_file_browser.open"));
-		//openAsCode.setFont(openAsCode.getFont().deriveFont(Font.BOLD));
+		openAsCode = new JMenuItem(L10N.t("workspace_file_browser.open"));
+		openAsCode.setFont(openAsCode.getFont().deriveFont(Font.BOLD));
 		openAsCode.addActionListener(e -> openSelectedFileAsCode());
 
-		JMenuItem openFile = new JMenuItem(L10N.t("workspace_file_browser.open_file"));
-		openFile.addActionListener(e -> DesktopUtils.openSafe(
-				(File) ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent()).getUserObject()));
+		openFile = new JMenuItem(L10N.t("workspace_file_browser.open_file"));
+		openFile.addActionListener(e -> {
+			File selectedFile = (File) ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent()).getUserObject();
+			if (Files.isRegularFile(selectedFile.toPath()) || Files.isDirectory(selectedFile.toPath()))
+				DesktopUtils.openSafe(selectedFile);
+			else
+				Toolkit.getDefaultToolkit().beep();
+		});
 
-		JMenuItem openParentFolder = new JMenuItem(L10N.t("workspace_file_browser.open_parent_folder"));
+		openParentFolder = new JMenuItem(L10N.t("workspace_file_browser.open_parent_folder"));
 		openParentFolder.addActionListener(e -> DesktopUtils.openSafe(
 				((File) ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent()).getUserObject()).getParentFile()));
 
 		JMenu createMenu = L10N.menu("workspace_file_browser.add");
 
-		JMenuItem delete2 = new JMenuItem(L10N.t("workspace_file_browser.delete"));
-		delete2.setIcon(UIRES.get("16px.delete.gif"));
-		//delete.setOpaque(false);
+		delete = new JMenuItem(L10N.t("workspace_file_browser.delete"));
+		delete.setIcon(UIRES.get("16px.delete.gif"));
 
 		JScrollPane jsp = new JScrollPane(tree);
 		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
@@ -184,35 +184,6 @@ public class WorkspaceFileBrowser extends JPanel { // See you on L274
 			}
 		});
 
-		contextMenu.add(openAsCode);
-		contextMenu.add(openFile);
-		contextMenu.add(openParentFolder);
-		contextMenu.addSeparator();
-		contextMenu.add(createMenu);
-		contextMenu.add(delete2);
-
-		JPanel tools = new JPanel(new WrapLayout(FlowLayout.LEFT, 0, 4));
-
-		JButton create = L10N.button("workspace_file_browser.add");
-		create.setIcon(UIRES.get("16px.add.gif"));
-		create.setContentAreaFilled(false);
-		create.setOpaque(false);
-		create.setForeground(Color.white);
-		ComponentUtils.deriveFont(create, 11);
-		create.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 7));
-		tools.add(create);
-
-		JButton delete = new JButton(UIRES.get("16px.delete.gif"));
-		delete.setContentAreaFilled(false);
-		delete.setOpaque(false);
-		delete.setForeground(Color.white);
-		delete.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 7));
-		tools.add(delete);
-
-		tools.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
-				BorderFactory.createEmptyBorder(0, 5, 0, 0)));
-
 		JPanel bar = new JPanel(new BorderLayout());
 		bar.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		bar.add(jtf1);
@@ -228,10 +199,8 @@ public class WorkspaceFileBrowser extends JPanel { // See you on L274
 				BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
 				BorderFactory.createEmptyBorder(2, 5, 2, 0)));
 
-		add("North", PanelUtils.northAndCenterElement(topBar, tools));
+		add("North", topBar);
 		add("South", bar);
-
-		create.addActionListener(e -> new AddFileDropdown(this).show(create, 0, 20));
 
 		delete.addActionListener(e -> {
 			FilterTreeNode selected = (FilterTreeNode) tree.getLastSelectedPathComponent();
@@ -268,64 +237,10 @@ public class WorkspaceFileBrowser extends JPanel { // See you on L274
 			}
 
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
-				if (mouseEvent.getClickCount() == 2) {
+				if (mouseEvent.getClickCount() == 2)
 					openSelectedFileAsCode();
-				} else if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
-					try {
-						FilterTreeNode selected = (FilterTreeNode) tree.getLastSelectedPathComponent();
-						if (selected != null) {
-							LOG.debug("Something is selected");
-							if (selected.getUserObject() instanceof File) {
-								LOG.debug("A file is selected");
-								File file = (File) selected.getUserObject();
-								if (file.isFile())
-									file = file.getParentFile();
-
-								if (mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
-										== GeneratorFlavor.BaseLanguage.JAVA) {
-									LOG.debug("Java file is selected");
-									if (file.isDirectory() && file.getCanonicalPath().startsWith(
-											mcreator.getGenerator().getSourceRoot().getCanonicalPath())) {
-										LOG.debug("Source is selected");
-										createMenu.add(mcreator.actionRegistry.preferences/*newClass*/);
-										createMenu.add(mcreator.actionRegistry.newPackage);
-									} else if (file.isDirectory() && (file.getCanonicalPath().startsWith(
-											mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
-										LOG.debug("Resource is selected");
-										LOG.debug(createMenu.add(mcreator.actionRegistry.newJson));
-										createMenu.add(mcreator.actionRegistry.newImage);
-										createMenu.add(mcreator.actionRegistry.newFolder);
-									}
-								} else {
-									if (file.isDirectory() && file.getCanonicalPath().startsWith(
-											mcreator.getGenerator().getSourceRoot().getCanonicalPath())
-											|| file.isDirectory() && (file.getCanonicalPath().startsWith(
-											mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
-										LOG.debug("Resource file is selected");
-										LOG.debug(createMenu.add(mcreator.actionRegistry.newJson));
-										createMenu.add(mcreator.actionRegistry.newImage);
-										createMenu.add(mcreator.actionRegistry.newFolder);
-									}
-								}
-							} else if (selected == sourceCode) {
-								LOG.debug("Source code is selected");
-								LOG.debug(createMenu.add(mcreator.actionRegistry.newClass));
-								createMenu.add(mcreator.actionRegistry.newPackage);
-							}
-						}
-					} catch (Exception e) {
-						LOG.debug("Nothing is selected :/", e);
-					}
-
-					LOG.debug(createMenu.getComponents().length > 0 ? "Create smth!" : "Stay awesome!");
-					openAsCode.setEnabled(createMenu.getComponents().length > 0);
-					openFile.setEnabled(createMenu.getComponents().length > 0);
-					openParentFolder.setEnabled(createMenu.getComponents().length > 0);
-					createMenu.setEnabled(createMenu.getComponents().length > 0);
-					delete2.setEnabled(createMenu.getComponents().length > 0);
-
-					contextMenu.show(tree, mouseEvent.getX(), mouseEvent.getY());
-				}
+				else if (mouseEvent.getButton() == MouseEvent.BUTTON3)
+					getContextMenu().show(tree, mouseEvent.getX(), mouseEvent.getY());
 			}
 
 		});
@@ -396,7 +311,7 @@ public class WorkspaceFileBrowser extends JPanel { // See you on L274
 
 			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 					== GeneratorFlavor.BaseLanguage.JAVA)
-				loadExtSoruces(root);
+				loadExtSources(root);
 
 			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON
 					&& MinecraftFolderUtils.getBedrockEditionFolder() != null) {
@@ -419,11 +334,14 @@ public class WorkspaceFileBrowser extends JPanel { // See you on L274
 	private void openSelectedFileAsCode() {
 		if (tree.getLastSelectedPathComponent() != null) {
 			Object selection = ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent()).getUserObject();
-			FileOpener.openFile(mcreator, selection);
+			if (selection instanceof File selFile)
+				if (selFile.isDirectory()) tree.expandPath(tree.getSelectionPath());
+			else
+				FileOpener.openFile(mcreator, selection);
 		}
 	}
 
-	private void loadExtSoruces(FilterTreeNode node) {
+	private void loadExtSources(FilterTreeNode node) {
 		FilterTreeNode extDeps = new FilterTreeNode("External libraries");
 
 		if (mcreator.getGenerator().getProjectJarManager() != null) {
@@ -498,6 +416,68 @@ public class WorkspaceFileBrowser extends JPanel { // See you on L274
 				curDir.add(new FilterTreeNode(files.elementAt(fnum)));
 	}
 
+	private JPopupMenu getContextMenu() {
+		boolean contextActionsAvailable = false;
+		JPopupMenu retVal = new JPopupMenu();
+		JMenu createMenu = L10N.menu("workspace_file_browser.add");
+
+		try {
+			FilterTreeNode selected = (FilterTreeNode) tree.getLastSelectedPathComponent();
+			if (selected != null) {
+				if (selected.getUserObject() instanceof File file) {
+					if (file.isFile())
+						file = file.getParentFile();
+
+					if (mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+							== GeneratorFlavor.BaseLanguage.JAVA) {
+						if (file.isDirectory() && file.getCanonicalPath().startsWith(
+								mcreator.getGenerator().getSourceRoot().getCanonicalPath())) {
+							contextActionsAvailable = true;
+							createMenu.add(mcreator.actionRegistry.newClass);
+							createMenu.add(mcreator.actionRegistry.newPackage);
+						} else if (file.isDirectory() && (file.getCanonicalPath().startsWith(
+								mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
+							contextActionsAvailable = true;
+							createMenu.add(mcreator.actionRegistry.newJson);
+							createMenu.add(mcreator.actionRegistry.newImage);
+							createMenu.add(mcreator.actionRegistry.newFolder);
+						}
+					} else {
+						if (file.isDirectory() && file.getCanonicalPath().startsWith(
+								mcreator.getGenerator().getSourceRoot().getCanonicalPath())
+								|| file.isDirectory() && (file.getCanonicalPath().startsWith(
+								mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
+							contextActionsAvailable = true;
+							createMenu.add(mcreator.actionRegistry.newJson);
+							createMenu.add(mcreator.actionRegistry.newImage);
+							createMenu.add(mcreator.actionRegistry.newFolder);
+						}
+					}
+				} else if (selected == sourceCode) {
+					contextActionsAvailable = true;
+					createMenu.add(mcreator.actionRegistry.newClass);
+					createMenu.add(mcreator.actionRegistry.newPackage);
+				}
+			}
+		} catch (Exception ignored) {
+		}
+
+		openAsCode.setEnabled(contextActionsAvailable);
+		openFile.setEnabled(contextActionsAvailable);
+		openParentFolder.setEnabled(contextActionsAvailable);
+		createMenu.setEnabled(contextActionsAvailable);
+		delete.setEnabled(contextActionsAvailable);
+
+		retVal.add(openAsCode);
+		retVal.add(openFile);
+		retVal.add(openParentFolder);
+		retVal.addSeparator();
+		retVal.add(createMenu);
+		retVal.add(delete);
+
+		return retVal;
+	}
+
 	private class ProjectBrowserCellRenderer extends DefaultTreeCellRenderer {
 
 		ProjectBrowserCellRenderer() {
@@ -514,8 +494,7 @@ public class WorkspaceFileBrowser extends JPanel { // See you on L274
 			a.setOpaque(true);
 			ComponentUtils.deriveFont(a, 11);
 
-			if (node.getUserObject() instanceof String) {
-				String tsi = (String) node.getUserObject();
+			if (node.getUserObject() instanceof String tsi) {
 				a.setText(tsi);
 				if (tsi.equals(mcreator.getWorkspaceSettings().getModName()))
 					a.setIcon(UIRES.get("16px.package.gif"));
@@ -535,8 +514,7 @@ public class WorkspaceFileBrowser extends JPanel { // See you on L274
 					a.setIcon(UIRES.get("16px.directory.gif"));
 				else if (tsi.equals("Structures"))
 					a.setIcon(UIRES.get("16px.structures.png"));
-			} else if (node.getUserObject() instanceof FileNode) {
-				FileNode fileNode = (FileNode) node.getUserObject();
+			} else if (node.getUserObject() instanceof FileNode fileNode) {
 				a.setText(fileNode.data);
 				if (fileNode.data.endsWith(".java"))
 					a.setIcon(UIRES.get("16px.classro.gif"));
@@ -546,8 +524,7 @@ public class WorkspaceFileBrowser extends JPanel { // See you on L274
 					a.setIcon(UIRES.get("16px.directory.gif"));
 				else
 					a.setIcon(FileIcons.getIconForFile(fileNode.data));
-			} else if (node.getUserObject() instanceof File) {
-				File fil = (File) node.getUserObject();
+			} else if (node.getUserObject() instanceof File fil) {
 				a.setText(fil.getName());
 				if (!fil.isDirectory())
 					a.setIcon(FileIcons.getIconForFile(fil));
