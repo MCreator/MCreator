@@ -23,15 +23,15 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
 import org.w3c.dom.Element;
 
-public class SourceEntityDependenyBlock implements IBlockGenerator {
+public class DirectionDependencyBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
-		master.append("sourceentity");
-		master.addDependency(new Dependency("sourceentity", "entity"));
+		master.append("direction");
+		master.addDependency(new Dependency("direction", "direction"));
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "source_entity_from_deps" };
+		return new String[] { "direction_from_deps" };
 	}
 
 	@Override public BlockType getBlockType() {
