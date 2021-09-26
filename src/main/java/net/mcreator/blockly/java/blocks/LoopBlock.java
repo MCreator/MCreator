@@ -44,7 +44,7 @@ public class LoopBlock implements IBlockGenerator {
 			else if ("controls_repeat_ext".equals(blocktype))
 				master.append("for (int index").append(index).append(" = 0; index").append(index).append("<(int)(");
 
-			master.processOutputBlock(value);
+			master.processOutputBlockWithoutParentheses(value);
 
 			if ("controls_while".equals(blocktype))
 				master.append(") {");
