@@ -221,7 +221,7 @@ public class ActionRegistry {
 		this.support = new VisitURIAction(this, L10N.t("action.support"),
 				MCreatorApplication.SERVER_DOMAIN + "/support");
 		this.openAsCode = new BasicAction(this, L10N.t("workspace_file_browser.open"),
-				e -> mcreator.getProjectBrowser().openSelectedFileAsCode());
+				e -> mcreator.getProjectBrowser().openSelectedFileAsCode(true));
 		this.openFile = new BasicAction(this, L10N.t("workspace_file_browser.open_file"), e -> {
 			File selectedFile = (File) ((DefaultMutableTreeNode) mcreator.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject();
 			if (Files.isRegularFile(selectedFile.toPath()) || Files.isDirectory(selectedFile.toPath()))

@@ -187,7 +187,7 @@ public class WorkspaceFileBrowser extends JPanel {
 
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				if (mouseEvent.getClickCount() == 2)
-					openSelectedFileAsCode();
+					openSelectedFileAsCode(false);
 				else if (mouseEvent.getButton() == MouseEvent.BUTTON3)
 					getContextMenu().show(tree, mouseEvent.getX(), mouseEvent.getY());
 			}
@@ -280,11 +280,11 @@ public class WorkspaceFileBrowser extends JPanel {
 		}
 	}
 
-	public void openSelectedFileAsCode() {
+	public void openSelectedFileAsCode(boolean forceExpansion) {
 		if (tree.getLastSelectedPathComponent() != null) {
 			Object selection = ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent()).getUserObject();
 			if (selection instanceof File selFile)
-				if (selFile.isDirectory())
+				if (selFile.isDirectory() && forceExpansion)
 					tree.expandPath(tree.getSelectionPath());
 				else
 					FileOpener.openFile(mcreator, selection);
