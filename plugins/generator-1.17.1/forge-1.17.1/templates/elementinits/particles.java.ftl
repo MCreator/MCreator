@@ -41,14 +41,14 @@ package ${package}.init;
 	private static final Map<ParticleType<?>, Function<SpriteSet, ParticleProvider<SimpleParticleType>>> REGISTRY = new HashMap<>();
 
 	<#list particles as particle>
-	public static ParticleType<?> ${particle.getModElement().getRegistryNameUpper()} = register(
+	public static SimpleParticleType ${particle.getModElement().getRegistryNameUpper()} = register(
 			new SimpleParticleType(${particle.alwaysShow}).setRegistryName("${particle.getModElement().getRegistryName()}"),
 			${particle.getModElement().getName()}Particle::provider);
 	</#list>
 
-	private static ParticleType<?> register(ParticleType<?> particle, Function<SpriteSet, ParticleProvider<SimpleParticleType>> provider) {
+	private static SimpleParticleType register(ParticleType<?> particle, Function<SpriteSet, ParticleProvider<SimpleParticleType>> provider) {
 		REGISTRY.put(particle, provider);
-		return particle;
+		return (SimpleParticleType) particle;
 	}
 
 	@SubscribeEvent public static void registerParticleTypes(RegistryEvent.Register<ParticleType<?>> event) {
