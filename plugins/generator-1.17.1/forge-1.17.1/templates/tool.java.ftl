@@ -99,37 +99,6 @@ public class ${name}Item extends ${data.toolType.replace("Spade", "Shovel")}Item
         	return ${data.efficiency}f;
         }
     </#if>
-	
-	<#if data.stayInGridWhenCrafting>
-        @Override public boolean hasContainerItem(ItemStack stack) {
-        	return true;
-        }
-    
-        <#if data.damageOnCrafting && data.usageCount != 0>
-        	@Override public ItemStack getContainerItem(ItemStack itemstack) {
-        		ItemStack retval = new ItemStack(this);
-        		retval.setDamageValue(itemstack.getDamageValue() + 1);
-        		if(retval.getDamageValue() >= retval.getMaxDamage()) {
-        			return ItemStack.EMPTY;
-        		}
-        		return retval;
-        	}
-    
-        	@Override public boolean isRepairable(ItemStack itemstack) {
-        		return false;
-        	}
-        <#else>
-        	@Override public ItemStack getContainerItem(ItemStack itemstack) {
-        		return new ItemStack(this);
-        	}
-    
-        	<#if data.usageCount != 0>
-        	    @Override public boolean isRepairable(ItemStack itemstack) {
-        		    return false;
-        	    }
-        	</#if>
-        </#if>
-    </#if>
 
     <@generalProps/>
 }
@@ -184,88 +153,40 @@ public class ${name}Item extends Item{
 
     <@generalProps/>
 }
-<#elseif data.toolType=="MultiTool">
-public class ${name}Item extends Item{
-    public ${name}Item() {
-		super(new Item.Properties()
-			.tab(${data.creativeTab})
-			.durability(${data.usageCount})
-			<#if data.immuneToFire>
-			.fireResistant()
-			</#if>
-		);
-
-		setRegistryName("${registryname}");
-	}
-
-	@Override
-	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-		if (equipmentSlot == EquipmentSlot.MAINHAND) {
-			ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-			builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
-			builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 2}f, AttributeModifier.Operation.ADDITION));
-			builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
-			return builder.build();
-		}
-		return super.getDefaultAttributeModifiers(equipmentSlot);
-	}
-
-	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
-		return ${data.efficiency}f;
-	}
-
-	@Override public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		stack.hurtAndBreak(1, attacker, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-		return true;
-	}
-
-	@Override
-	public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-		stack.hurtAndBreak(1, entityLiving, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-		return true;
-	}
-
-	@Override public int getEnchantmentValue() {
-		return ${data.enchantability};
-	}
-
-    <@generalProps/>
-}
-<#elseif data.toolType == "Fishing rod">
-public class ${name}Item extends FishingRodItem{
-    public ${name}Item() {
-		super(new Item.Properties()
-			.tab(${data.creativeTab})
-			.durability(${data.usageCount})
-			<#if data.immuneToFire>
-			.fireResistant()
-			</#if>
-		);
-
-		setRegistryName("${registryname}");
-	}
-
-	@Override public int getEnchantmentValue() {
-		return ${data.enchantability};
-	}
-
-	<#if data.repairItems?has_content>
-	    @Override
-        public boolean isRepairable(ItemStack toRepair, ItemStack repair) {
-            Item repairItem = repair.getItem();
-            return
-            <#list data.repairItems as repairItem>
-                repairItem == ${mappedMCItemToItem(repairItem)}
-                <#if repairItem?has_next>||</#if>
-            </#list>;
-       }
-    </#if>
-
-    <@generalProps/>
-}
 </#if>
 
 <#macro generalProps>
+	<#if data.stayInGridWhenCrafting>
+        @Override public boolean hasContainerItem(ItemStack stack) {
+        	return true;
+        }
+
+        <#if data.damageOnCrafting && data.usageCount != 0>
+        	@Override public ItemStack getContainerItem(ItemStack itemstack) {
+        		ItemStack retval = new ItemStack(this);
+        		retval.setDamageValue(itemstack.getDamageValue() + 1);
+        		if(retval.getDamageValue() >= retval.getMaxDamage()) {
+        			return ItemStack.EMPTY;
+        		}
+        		return retval;
+        	}
+
+        	@Override public boolean isRepairable(ItemStack itemstack) {
+        		return false;
+        	}
+        <#else>
+        	@Override public ItemStack getContainerItem(ItemStack itemstack) {
+        		return new ItemStack(this);
+        	}
+
+        	<#if data.usageCount != 0>
+        	    @Override public boolean isRepairable(ItemStack itemstack) {
+        		    return false;
+        	    }
+        	</#if>
+        </#if>
+    </#if>
+
     <#if data.specialInfo?has_content>
     	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
     		super.appendHoverText(itemstack, world, list, flag);
