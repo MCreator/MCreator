@@ -90,7 +90,7 @@ public class ${name}Item extends RecordItem {
 		int z = pos.getZ();
 		ItemStack itemstack = context.getItemInHand();
 		<#if hasReturnValue(data.onRightClickedOnBlock)>
-		return <@procedureOBJToActionResultTypeCode data.onRightClickedOnBlock/>;
+		return <@procedureOBJToInteractionResultCode data.onRightClickedOnBlock/>;
 		<#else>
 		<@procedureOBJToCode data.onRightClickedOnBlock/>
 		return retval;
