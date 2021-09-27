@@ -434,11 +434,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// build if selected and needed
 		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
-				.requiresElementGradleBuild(element)) {
-			((BuildWorkspaceAction) mcreator.actionRegistry.buildWorkspace).setRegenerateBase(false);
+				.requiresElementGradleBuild(element))
 			mcreator.actionRegistry.buildWorkspace.doAction();
-			((BuildWorkspaceAction) mcreator.actionRegistry.buildWorkspace).setRegenerateBase(true);
-		}
 
 		if (this.tabIn != null && closeTab)
 			mcreator.mcreatorTabs.closeTab(tabIn);
