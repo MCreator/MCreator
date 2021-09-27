@@ -149,14 +149,8 @@ public class BlocklyPanel extends JFXPanel {
 					// Load JS files from plugins
 					for (String script : BlocklyJSFilesLoader.INSTANCE.getScripts())
 						webEngine.executeScript(script);
-					webEngine.executeScript(FileIO.readResourceToString(
-							"/plugins/mcreator-core/blockly/block_mcitem.js"));
-					webEngine.executeScript(FileIO.readResourceToString(
-							"/plugins/mcreator-core/blockly/field_ai_condition.js"));
-					webEngine.executeScript(FileIO.readResourceToString(
-							"/plugins/mcreator-core/blockly/mcreator_blocks.js"));
-					webEngine.executeScript(FileIO.readResourceToString(
-							"/plugins/mcreator-core/blockly/mcreator_blockly.js"));
+					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/block_mcitem.js"));
+					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/field_ai_condition.js"));
 
 					//JS code generation for custom variables
 					webEngine.executeScript(VariableTypeLoader.INSTANCE.getVariableBlocklyJS());
