@@ -8,11 +8,8 @@ plugins {
 }
 
 repositories {
-    maven {
-        url "https://repo.gradle.org/gradle/libs-releases-local/"
-        url "https://maven.scijava.org/content/repositories/public/"
-        url "https://repo.gradle.org/gradle/libs-releases-local/"
-    }
+    maven { url "https://repo.gradle.org/gradle/libs-releases-local/" }
+    maven { url "https://maven.scijava.org/content/repositories/public/" }
     flatDir { dirs 'lib' }
 }
 
