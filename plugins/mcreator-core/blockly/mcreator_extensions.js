@@ -51,7 +51,7 @@ Blockly.Extensions.register('biome_list_provider',
 Blockly.Extensions.register('biome_dictionary_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("biomedictionary"))), 'biomedict');
+            arrayToBlocklyDropDownArray(javabridge.getListOf("biomedictionarytypes_datalist"))), 'biomedict');
     });
 
 Blockly.Extensions.register('entity_list_provider',
@@ -82,13 +82,13 @@ Blockly.Extensions.register('dimension_list_provider',
 Blockly.Extensions.register('gamemode_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("gamemode"))), 'gamemode');
+            arrayToBlocklyDropDownArray(javabridge.getListOf("gamemodes_datalist"))), 'gamemode');
     });
 
 Blockly.Extensions.register('damagesource_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("damagesource"))), 'damagesource');
+            arrayToBlocklyDropDownArray(javabridge.getListOf("damagesources_datalist"))), 'damagesource');
     });
 
 Blockly.Extensions.register('achievement_list_provider',
@@ -138,7 +138,7 @@ Blockly.Extensions.register('sound_category_list_provider',
     function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.extension.sound_category_list"))
             .appendField(new Blockly.FieldDropdown(
-                arrayToBlocklyDropDownArray(javabridge.getListOf("soundcategory"))), 'soundcategory');
+                arrayToBlocklyDropDownArray(javabridge.getListOf("soundcategories_datalist"))), 'soundcategory');
     });
 
 Blockly.Extensions.register('particle_list_provider',
@@ -180,5 +180,5 @@ Blockly.Extensions.register('dimension_custom_list_provider',
 Blockly.Extensions.register('plant_type_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("planttype"))), 'planttype');
+            arrayToBlocklyDropDownArray(javabridge.getListOf("planttype_datalist"))), 'planttype');
     });

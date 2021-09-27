@@ -223,30 +223,8 @@ public class ElementUtil {
 		return retval.toArray(new String[0]);
 	}
 
-	public static String[] getAllSoundCategories() {
-		return DataListLoader.loadDataList("soundcategories").stream().map(DataListEntry::getName)
-				.toArray(String[]::new);
-	}
-
-	public static String[] getAllDamageSources() {
-		return DataListLoader.loadDataList("damagesources").stream().map(DataListEntry::getName).toArray(String[]::new);
-	}
-
-	public static String[] getAllGameModes() {
-		return DataListLoader.loadDataList("gamemodes").stream().map(DataListEntry::getName).toArray(String[]::new);
-	}
-
-	public static String[] getAllPlantTypes() {
-		return DataListLoader.loadDataList("planttypes").stream().map(DataListEntry::getName).toArray(String[]::new);
-	}
-
 	public static List<DataListEntry> loadStepSounds() {
 		return DataListLoader.loadDataList("stepsounds");
-	}
-
-	public static String[] loadBiomeDictionaryTypes() {
-		return DataListLoader.loadDataList("biomedictionarytypes").stream().map(DataListEntry::getName)
-				.toArray(String[]::new);
 	}
 
 	public static String[] loadDefaultFeatures() {
@@ -277,6 +255,10 @@ public class ElementUtil {
 				dimensions.add("CUSTOM:" + mu.getName());
 
 		return dimensions.toArray(new String[0]);
+	}
+
+	public static String[] loadDataList(String dataList) {
+		return DataListLoader.loadDataList(dataList).stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
 	public static String[] loadDirections() {
