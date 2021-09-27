@@ -34,6 +34,7 @@ import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.BlocklyJSFilesLoader;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -145,6 +146,9 @@ public class BlocklyPanel extends JFXPanel {
 							StandardCharsets.UTF_8));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blocks_compressed.js"));
 
+					// Load JS files from plugins
+					for (String script : BlocklyJSFilesLoader.INSTANCE.getScripts())
+						webEngine.executeScript(script);
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/block_mcitem.js"));
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/field_ai_condition.js"));
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blocks.js"));
