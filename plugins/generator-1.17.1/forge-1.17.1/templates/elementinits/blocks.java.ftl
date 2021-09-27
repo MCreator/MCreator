@@ -30,8 +30,6 @@
 
 <#-- @formatter:off -->
 
-<#include "../mcitems.ftl">
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
@@ -50,12 +48,12 @@ package ${package}.init;
         </#if>
     </#list>
 
-    private static Block register(Block item) {
-		REGISTRY.add(item);
-    	return item;
+    private static Block register(Block block) {
+		REGISTRY.add(block);
+    	return block;
     }
 
-	@SubscribeEvent public static void registerItems(RegistryEvent.Register<Block> event) {
+	@SubscribeEvent public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new Block[0]));
 	}
 

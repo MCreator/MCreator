@@ -36,6 +36,8 @@ public class ${name}Item extends Item {
 
 	public ${name}Item() {
 		super(new Item.Properties().tab(${data.igniterTab}).durability(64));
+
+		setRegistryName("${registryname}");
 	}
 
 	@Override public InteractionResult useOn(UseOnContext context) {

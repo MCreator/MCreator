@@ -32,7 +32,7 @@
 
 package ${package}.world.teleporter;
 
-@Mod.EventBusSubscriber public class ${name}Teleporter implements ITeleporter {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Teleporter implements ITeleporter {
 
 	public static final TicketType<BlockPos> CUSTOM_PORTAL = TicketType.create("${registryname}_portal", Vec3i::compareTo, 300);
 
