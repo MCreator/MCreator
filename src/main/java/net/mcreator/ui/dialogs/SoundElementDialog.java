@@ -60,7 +60,7 @@ public class SoundElementDialog {
 							.collect(Collectors.toList()));
 		}
 
-		JComboBox<String> soundCategory = new JComboBox<>(ElementUtil.getAllSoundCategories());
+		JComboBox<String> soundCategory = new JComboBox<>(ElementUtil.loadDataList("soundcategories"));
 
 		ui.add(L10N.label("dialog.sounds.registry_name"));
 		ui.add(soundName);

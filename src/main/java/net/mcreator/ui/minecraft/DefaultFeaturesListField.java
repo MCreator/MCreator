@@ -37,7 +37,7 @@ public class DefaultFeaturesListField extends JItemListField<String> {
 	}
 
 	@Override protected List<String> getElementsToAdd() {
-		JList<String> vlist = new JList<>(ElementUtil.loadDefaultFeatures());
+		JList<String> vlist = new JList<>(ElementUtil.loadDataList("defaultfeatures"));
 		int option = JOptionPane.showOptionDialog(frame,
 				PanelUtils.northAndCenterElement(L10N.label("dialog.list_field.biome_default_feature_message"),
 						new JScrollPane(vlist)), L10N.t("dialog.list_field.biome_default_feature_title"),
