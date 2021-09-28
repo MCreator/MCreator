@@ -450,6 +450,7 @@ Blockly.defineBlocksWithJsonArray([
     },
 ]);
 
+// Extension to mark a procedure block as a custom loop
 Blockly.Extensions.register('is_custom_loop',
     function () {
         Blockly.Constants.Loops.CONTROL_FLOW_IN_LOOP_CHECK_MIXIN.LOOP_TYPES.push(this.type);
@@ -524,8 +525,6 @@ Blockly.Extensions.register('dimension_list_provider',
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("dimension"))), 'dimension');
     });
-
-
 
 Blockly.Extensions.register('achievement_list_provider',
     function () {
