@@ -2796,7 +2796,7 @@ Blocks.POLISHED_DEEPSLATE_WALL:
   - Blocks.POLISHED_DEEPSLATE_WALL
   - "polished_deepslate_wall"
 Blocks.DEEPSLATE_TILES:
-  - Blocks.DEEPSLATE_TILES"
+  - Blocks.DEEPSLATE_TILES
   - "deepslate_tiles"
 Blocks.DEEPSLATE_TILE_STAIRS:
   - Blocks.DEEPSLATE_TILE_STAIRS
@@ -2841,10 +2841,10 @@ Blocks.LIGHT:
   - Blocks.LIGHT
   - "light"
 Blocks.POTTED_AZALEA_BUSH:
-  - Blocks.POTTED_AZALEA_BUSH
+  - Blocks.POTTED_AZALEA
   - "potted_azalea_bush"
 Blocks.POTTED_FLOWERING_AZALEA_BUSH:
-  - Blocks.POTTED_FLOWERING_AZALEA_BUSH
+  - Blocks.POTTED_FLOWERING_AZALEA
   - "potted_flowering_azalea_bush"
 Items.DYE:
   - Items.INK_SAC
@@ -3885,7 +3885,7 @@ Items.THING_BANNER_PATTERN:
   - Items.MOJANG_BANNER_PATTERN
   - "mojang_banner_pattern"
 Items.GLOBE_BANNER_PATTERN:
-  - Items.GLOBE_BANNER_PATTERN
+  - Items.GLOBE_BANNER_PATTER
   - "globe_banner_pattern"
 Items.SWEET_BERRIES:
   - Items.SWEET_BERRIES
@@ -3982,7 +3982,7 @@ Items.GLOW_BERRIES:
   - "glow_berries"
 Items.GLOW_INK_SAC:
   - Items.GLOW_INK_SAC
-  - "glow_inc_sac"
+  - "glow_ink_sac"
 Items.GLOW_ITEM_FRAME:
   - Items.GLOW_ITEM_FRAME
   - "glow_item_frame"
@@ -3990,7 +3990,7 @@ Items.AMETHYST_SHARD:
   - Items.AMETHYST_SHARD
   - "amethyst_shard"
 Items.BUNDLE:
-  - Items."Bundle"
+  - Items.BUNDLE
   - "bundle"
 Items.RAW_IRON:
   - Items.RAW_IRON
