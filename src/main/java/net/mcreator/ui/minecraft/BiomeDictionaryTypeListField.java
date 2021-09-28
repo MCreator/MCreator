@@ -37,7 +37,7 @@ public class BiomeDictionaryTypeListField extends JItemListField<String> {
 	}
 
 	@Override protected List<String> getElementsToAdd() {
-		JList<String> vlist = new JList<>(ElementUtil.loadDataList("biomedictionnarytypes"));
+		JList<String> vlist = new JList<>(ElementUtil.getDataList("biomedictionnarytypes"));
 		int option = JOptionPane.showOptionDialog(frame,
 				PanelUtils.northAndCenterElement(L10N.label("dialog.list_field.biome_dictionary_message"),
 						new JScrollPane(vlist)), L10N.t("dialog.list_field.biome_dictionary_title"),

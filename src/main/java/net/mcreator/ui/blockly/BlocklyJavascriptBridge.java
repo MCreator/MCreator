@@ -24,10 +24,7 @@ import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.io.OS;
-import net.mcreator.minecraft.DataListEntry;
-import net.mcreator.minecraft.ElementUtil;
-import net.mcreator.minecraft.MCItem;
-import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.AIConditionEditor;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
@@ -220,9 +217,9 @@ public class BlocklyJavascriptBridge {
 			retval = new ArrayList<>();
 		}
 
-		// check if it ends with _datalists to load the data list
-		if (type.endsWith("_datalist"))
-			return ElementUtil.loadDataList(type.replace("_datalist", ""));
+		// check if the data list exists and returns it if true
+		if (!DataListLoader.loadDataList(type).isEmpty())
+			return ElementUtil.getDataList(type);
 
 		// check if type is "call procedure with return value"
 		if (type.contains("procedure_retval_")) {

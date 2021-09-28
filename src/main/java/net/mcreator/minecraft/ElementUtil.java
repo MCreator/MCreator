@@ -240,10 +240,6 @@ public class ElementUtil {
 		return dimensions.toArray(new String[0]);
 	}
 
-	public static String[] loadDataList(String dataList) {
-		return DataListLoader.loadDataList(dataList).stream().map(DataListEntry::getName).toArray(String[]::new);
-	}
-
 	public static String[] loadDirections() {
 		return new String[] { "DOWN", "UP", "NORTH", "SOUTH", "WEST", "EAST" };
 	}
@@ -257,6 +253,10 @@ public class ElementUtil {
 		}
 
 		return blocks;
+	}
+
+	public static String[] getDataList(String dataList) {
+		return DataListLoader.loadDataList(dataList).stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
 	private static List<DataListEntry> getCustomElements(@Nonnull Workspace workspace,

@@ -355,30 +355,30 @@ public class TestWorkspaceDataProvider {
 			biome.minHeight = 2;
 			List<String> biomeDictTypes = new ArrayList<>();
 			if (!emptyLists) {
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
+				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
 			}
 			biome.biomeDictionaryTypes = biomeDictTypes;
 			List<String> biomeDefaultFeatures = new ArrayList<>();
 			if (!emptyLists) {
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDataList("defaultfeatures")));
+				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
+				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.getDataList("defaultfeatures")));
 			}
 			biome.defaultFeatures = biomeDefaultFeatures;
 			biome.treeVines = new MItemBlock(modElement.getWorkspace(),
@@ -435,7 +435,7 @@ public class TestWorkspaceDataProvider {
 			fluid.lightOpacity = 2;
 			fluid.flammability = 5;
 			fluid.fireSpreadSpeed = 12;
-			fluid.colorOnMap = getRandomItem(random, ElementUtil.loadDataList("mapcolors"));
+			fluid.colorOnMap = getRandomItem(random, ElementUtil.getDataList("mapcolors"));
 			fluid.onBlockAdded = new Procedure("procedure1");
 			fluid.onNeighbourChanges = new Procedure("procedure2");
 			fluid.onTickUpdate = new Procedure("procedure3");
@@ -542,7 +542,7 @@ public class TestWorkspaceDataProvider {
 			if (_true) {
 				overlay.overlayTarget = "Ingame";
 			} else {
-				overlay.overlayTarget = getRandomItem(random, ElementUtil.loadDataList("screens"));
+				overlay.overlayTarget = getRandomItem(random, ElementUtil.getDataList("screens"));
 			}
 			return overlay;
 		} else if (ModElementType.GUI.equals(modElement.getType())) {
@@ -913,7 +913,7 @@ public class TestWorkspaceDataProvider {
 			plant.itemTexture = emptyLists ? "" : "itest";
 			plant.particleTexture = emptyLists ? "" : "test3";
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
-			plant.growapableSpawnType = getRandomItem(random, ElementUtil.loadDataList("planttypes"));
+			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getDataList("planttypes"));
 			plant.staticPlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.suspiciousStewEffect = getRandomString(random,
@@ -955,9 +955,9 @@ public class TestWorkspaceDataProvider {
 			}
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			plant.colorOnMap = getRandomItem(random, ElementUtil.loadDataList("mapcolors"));
+			plant.colorOnMap = getRandomItem(random, ElementUtil.getDataList("mapcolors"));
 			plant.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
-			plant.aiPathNodeType = getRandomItem(random, ElementUtil.loadDataList("pathnodetypes"));
+			plant.aiPathNodeType = getRandomItem(random, ElementUtil.getDataList("pathnodetypes"));
 			plant.unbreakable = _true;
 			plant.isCustomSoundType = !_true;
 			plant.soundOnStep = new StepSound(modElement.getWorkspace(),
@@ -1231,9 +1231,9 @@ public class TestWorkspaceDataProvider {
 			block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);
 			block.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			block.colorOnMap = getRandomItem(random, ElementUtil.loadDataList("mapcolors"));
+			block.colorOnMap = getRandomItem(random, ElementUtil.getDataList("mapcolors"));
 			block.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
-			block.aiPathNodeType = getRandomItem(random, ElementUtil.loadDataList("pathnodetypes"));
+			block.aiPathNodeType = getRandomItem(random, ElementUtil.getDataList("pathnodetypes"));
 			if (!emptyLists)
 				block.beaconColorModifier = Color.cyan;
 			else
