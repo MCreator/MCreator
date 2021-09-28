@@ -29,7 +29,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Biome extends GeneratableElement {
@@ -141,13 +140,13 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean hasFruits() {
-		String[] airBlocks = { "blocks.air", "blocks.cave_air", "blocks.void_air" };
+		String[] airBlocks = { "Blocks.AIR", "Blocks.CAVE_AIR", "Blocks.VOID_AIR" };
 		return !(Arrays.stream(airBlocks).collect(Collectors.toList())
 				.contains(treeFruits.getUnmappedValue()) && !treeFruits.isEmpty());
 	}
 
 	public boolean hasVines() {
-		String[] airBlocks = { "blocks.air", "blocks.cave_air", "blocks.void_air" };
+		String[] airBlocks = { "Blocks.AIR", "Blocks.CAVE_AIR", "Blocks.VOID_AIR" };
 		return !(Arrays.stream(airBlocks).collect(Collectors.toList())
 				.contains(treeVines.getUnmappedValue()) && !treeVines.isEmpty());
 	}
