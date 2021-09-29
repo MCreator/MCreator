@@ -21,6 +21,7 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
@@ -48,7 +49,10 @@ public class TextJoinBlock implements IBlockGenerator {
 				for (Element element : elements) {
 					if (element.getAttribute("name").equals("ADD" + i)) {
 						match = true;
-						inputCodes.add(BlocklyToCode.directProcessOutputBlock(master, element));
+						String code = BlocklyToCode.directProcessOutputBlock(master, element);
+						// Remove parentheses, unless it contains operations with same or lower precedence
+						inputCodes.add(code.contains("instanceof") ? code :
+								ProcedureCodeOptimizer.removeParentheses(code, "+-><=&|^?"));
 						break;
 					}
 				}
@@ -70,15 +74,14 @@ public class TextJoinBlock implements IBlockGenerator {
 				master.append("(");
 			}
 
+			// If the first two elements aren't strings, we need to add a "" in between
+			boolean needsString = !(inputCodes.get(0).matches("\"[^\"]*\"") || inputCodes.get(1).matches("\"[^\"]*\""));
 			for (int i = 0; i < sumnum; i++) {
-				boolean isString = inputCodes.get(i).matches("\"[^\"]*\"");
-				if (isString)
-					master.append(inputCodes.get(i));
-				else
-					master.append("(" + inputCodes.get(i) + ")");
-
+				master.append(inputCodes.get(i));
+				if (i == 0 && needsString)
+					master.append("+\"\"");
 				if (i < sumnum - 1)
-					master.append(isString ? "+" : "+\"\"+");
+					master.append("+");
 			}
 
 			master.append(")");
