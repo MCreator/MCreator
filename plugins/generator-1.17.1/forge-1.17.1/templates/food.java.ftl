@@ -105,7 +105,7 @@ public class ${name}Item extends Item {
 		int y = pos.getY();
 		int z = pos.getZ();
 		<#if hasReturnValue(data.onRightClickedOnBlock)>
-		return <@procedureOBJToActionResultTypeCode data.onRightClickedOnBlock/>;
+		return <@procedureOBJToInteractionResultCode data.onRightClickedOnBlock/>;
 		<#else>
 		<@procedureOBJToCode data.onRightClickedOnBlock/>
 		return InteractionResult.PASS;
