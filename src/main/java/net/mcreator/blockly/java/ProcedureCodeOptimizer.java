@@ -19,7 +19,7 @@
 
 package net.mcreator.blockly.java;
 
-import org.jboss.forge.roaster._shade.org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @SuppressWarnings("unused") public class ProcedureCodeOptimizer {
 	enum ParseState {
