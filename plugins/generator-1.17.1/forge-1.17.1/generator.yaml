@@ -1,8 +1,10 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-basefeatures: []
 status: dev
-buildfileversion: 37.0.58
-subversion: 1
+buildfileversion: 37.0.71
+
+java_models:
+  key: mojmap-1.17.x
+  requested_key_words: [ModelPart, ~ModelRenderer]
 
 # gradle task definitions
 gradle:
@@ -35,6 +37,9 @@ base_templates:
   - template: elementinits/sounds.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
     condition: hasSounds()
+  - template: elementinits/javamodels.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+    condition: hasJavaModels()
   - template: modbase/sounds.json.ftl
     writer: json
     name: "@MODASSETSROOT/sounds.json"
@@ -46,6 +51,12 @@ base_templates:
     writer: file
     name: "@RESROOT/META-INF/mods.toml"
 
+sources_setup_tasks:
+  - task: copy_models
+    type: JAVA_viatemplate
+    template: javamodel.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+
 language_file:
   format: json
   root_folder: "@MODASSETSROOT/lang/"
@@ -55,10 +66,10 @@ resources_setup_tasks:
   - task: copy_file
     from: "@MODASSETSROOT/textures/@modpicture.png"
     to: "@RESROOT/logo.png"
-  - task: copy_models
-    type: OBJ_inlinetextures
-    prefix: "@modid:blocks/"
-    to: "@MODASSETSROOT/models/item"
-  - task: copy_models
-    type: JSON_noinlinetextures
-    to: "@MODASSETSROOT/models/custom"
+#  - task: copy_models
+#    type: OBJ_inlinetextures
+#    prefix: "@modid:blocks/"
+#    to: "@MODASSETSROOT/models/item"
+#  - task: copy_models
+#    type: JSON_noinlinetextures
+#    to: "@MODASSETSROOT/models/custom"

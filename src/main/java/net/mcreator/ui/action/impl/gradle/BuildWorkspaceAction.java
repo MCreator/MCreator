@@ -30,7 +30,8 @@ public class BuildWorkspaceAction extends GradleAction {
 	private static final Logger LOG = LogManager.getLogger(BuildWorkspaceAction.class);
 
 	public BuildWorkspaceAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.gradle.build_workspace"), evt -> new Thread(() -> {
+		super(actionRegistry, L10N.t("action.gradle.build_workspace"), null);
+		setActionListener(evt -> new Thread(() -> {
 			actionRegistry.getMCreator().getGradleConsole()
 					.markRunning(); // so console gets locked while we generate code already
 			try {

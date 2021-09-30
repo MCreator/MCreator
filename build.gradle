@@ -2,15 +2,14 @@ plugins {
     id "java"
     id "idea"
     id "de.undercouch.download" version "4.1.2"
-    id 'edu.sc.seis.launch4j' version '2.5.0'
+    id 'edu.sc.seis.launch4j' version '2.5.1'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.0.1'
     id 'org.openjfx.javafxplugin' version '0.0.10'
 }
 
 repositories {
-    maven {
-        url "https://repo.gradle.org/gradle/libs-releases-local/"
-    }
+    maven { url "https://repo.gradle.org/gradle/libs-releases-local/" }
+    maven { url "https://maven.scijava.org/content/repositories/public/" }
     flatDir { dirs 'lib' }
 }
 

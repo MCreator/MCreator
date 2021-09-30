@@ -39,7 +39,7 @@ public class NumberFromTextBlock implements IBlockGenerator {
 		if (num != null) {
 			master.append(
 					"new Object() {double convert(String s) { try { return Double.parseDouble(s.trim()); } catch (Exception e) { } return 0; }}.convert(");
-			master.processOutputBlock(num);
+			master.processOutputBlockWithoutParentheses(num);
 			master.append(")");
 		} else {
 			master.addCompileNote(
