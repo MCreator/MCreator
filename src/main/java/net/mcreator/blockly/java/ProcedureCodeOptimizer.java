@@ -21,7 +21,7 @@ package net.mcreator.blockly.java;
 
 import org.apache.commons.lang3.StringUtils;
 
-@SuppressWarnings("unused") public class ProcedureCodeOptimizer {
+public class ProcedureCodeOptimizer {
 	enum ParseState {
 		INSIDE_INLINE_COMMENT, INSIDE_COMMENT_BLOCK, INSIDE_STRING, INSIDE_STRING_ESCAPE_SEQUENCE, OUTSIDE
 	}
@@ -49,11 +49,11 @@ import org.apache.commons.lang3.StringUtils;
 		String prefix;
 		if (toClean.startsWith("/*@BlockState*/")) {
 			prefix = "/*@BlockState*/";
-			toClean = toClean.replaceFirst("/\\*@BlockState\\*/", "");
+			toClean = toClean.substring(15);
 		}
 		else if (code.startsWith("/*@ItemStack*/")) {
 			prefix = "/*@ItemStack*/";
-			toClean = toClean.replaceFirst("/\\*@ItemStack\\*/", "");
+			toClean = toClean.substring(14);
 		} else {
 			prefix = "";
 		}
