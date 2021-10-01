@@ -46,7 +46,7 @@ public class ProcedureCodeOptimizer {
 	 */
 	public static String removeParentheses(String code, String blacklist) {
 		String toClean = code.strip();
-		String prefix;
+		String prefix = "";
 		if (toClean.startsWith("/*@BlockState*/")) {
 			prefix = "/*@BlockState*/";
 			toClean = toClean.substring(15);
@@ -54,8 +54,6 @@ public class ProcedureCodeOptimizer {
 		else if (code.startsWith("/*@ItemStack*/")) {
 			prefix = "/*@ItemStack*/";
 			toClean = toClean.substring(14);
-		} else {
-			prefix = "";
 		}
 		return canRemoveParentheses(toClean, blacklist) ? prefix + toClean.substring(1, toClean.length() - 1) : code;
 	}
