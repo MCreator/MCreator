@@ -42,7 +42,7 @@ public class PrintTextBlock implements IBlockGenerator {
 					master.append(master.getTemplateGenerator().generateFromTemplate("_print.java.ftl", dataModel));
 				} else {
 					master.append("System.out.println(");
-					master.append(ProcedureCodeOptimizer.removeParenthesesIgnoreComment(elementcode));
+					master.append(ProcedureCodeOptimizer.removeParentheses(elementcode));
 					master.append(");");
 				}
 			}
