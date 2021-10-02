@@ -44,7 +44,7 @@ public class CodeCleanup {
 	public String reformatTheCodeAndOrganiseImports(@Nullable Workspace workspace, String code,
 			boolean skipModClassReloading) {
 		try {
-			return formatter.formatSource(importFormat.arrangeImports(workspace, code, skipModClassReloading));
+			return tabify(formatter.formatSource(importFormat.arrangeImports(workspace, code, skipModClassReloading)));
 		} catch (Exception e) {
 			LOG.error("Failed to format code and organize imports", e);
 			return code;
@@ -53,11 +53,33 @@ public class CodeCleanup {
 
 	public String reformatTheCodeOnly(String code) {
 		try {
-			return formatter.formatSource(code);
+			return tabify(formatter.formatSource(code));
 		} catch (Exception e) {
 			LOG.error("Failed to format code", e);
 			return code;
 		}
+	}
+
+	private static String tabify(String code) {
+		var betterCode = new StringBuilder();
+		boolean start = true, second = false;
+		char c;
+		for (int i = 0, n = code.length(); i < n; i++) {
+			c = code.charAt(i);
+			if (start && c == ' ') {
+				if (second)
+					betterCode.append("\t");
+				second = !second;
+			} else {
+				if (second) {
+					betterCode.append(' ');
+					second = false;
+				}
+				betterCode.append(c);
+				start = c == '\n';
+			}
+		}
+		return betterCode.toString();
 	}
 
 }
