@@ -26,7 +26,6 @@ import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
 import java.util.List;
@@ -104,8 +103,6 @@ public class BinaryOperationsBlock implements IBlockGenerator {
 		} else {
 			return code;
 		}
-		if (StringUtils.containsNone(code, lowerPriority))
-			return ProcedureCodeOptimizer.removeParentheses(code);
-		return code;
+		return ProcedureCodeOptimizer.removeParentheses(code, lowerPriority);
 	}
 }
