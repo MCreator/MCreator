@@ -216,6 +216,10 @@ import net.minecraft.block.material.Material;
 			experienceValue = ${data.xpAmount};
 			setNoAI(${(!data.hasAI)});
 
+			<#if data.waterMob>
+			    this.setPathPriority(PathNodeType.WATER, 0.0F);
+			</#if>
+
 			<#if data.mobLabel?has_content >
             	setCustomName(new StringTextComponent("${data.mobLabel}"));
             	setCustomNameVisible(true);
@@ -251,6 +255,9 @@ import net.minecraft.block.material.Material;
 			<#elseif data.waterMob>
 			this.moveController = new MovementController(this) {
 				@Override public void tick() {
+				    if (CustomEntity.this.isInWater())
+                        CustomEntity.this.setMotion(CustomEntity.this.getMotion().add(0.0D, 0.005D, 0.0D));
+
 					if (this.action == MovementController.Action.MOVE_TO && !CustomEntity.this.getNavigator().noPath()) {
 						double dx = this.posX - CustomEntity.this.getPosX();
 						double dy = this.posY - CustomEntity.this.getPosY();
