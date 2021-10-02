@@ -78,11 +78,13 @@ public class ProcedureCodeOptimizer {
 				case OUTSIDE:
 					if (c == '/' && prevChar == '/') {
 						state = ParseState.INSIDE_INLINE_COMMENT;
-						topLevelChars.deleteCharAt(topLevelChars.length() - 1); // The previous character was part of the comment
+						if (blacklist != null && parentheses == 1)
+							topLevelChars.deleteCharAt(topLevelChars.length() - 1); // The previous character was part of the comment
 					}
 					else if (c == '*' && prevChar == '/') {
 						state = ParseState.INSIDE_COMMENT_BLOCK;
-						topLevelChars.deleteCharAt(topLevelChars.length() - 1);
+						if (blacklist != null && parentheses == 1)
+							topLevelChars.deleteCharAt(topLevelChars.length() - 1);
 					}
 					else if (c == '"')
 						state = ParseState.INSIDE_STRING;
