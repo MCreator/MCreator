@@ -28,6 +28,8 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+
 package ${package}.network;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}SlotMessage {
@@ -43,7 +45,7 @@ package ${package}.network;
 		this.meta = meta;
 	}
 
-	public ${name}SlotMessage(PacketBuffer buffer) {
+	public ${name}SlotMessage(FriendlyByteBuf buffer) {
 		this.slotID = buffer.readInt();
 		this.x = buffer.readInt();
 		this.y = buffer.readInt();
@@ -52,7 +54,7 @@ package ${package}.network;
 		this.meta = buffer.readInt();
 	}
 
-	public static void buffer(${name}SlotMessage message, PacketBuffer buffer) {
+	public static void buffer(${name}SlotMessage message, FriendlyByteBuf buffer) {
 		buffer.writeInt(message.slotID);
 		buffer.writeInt(message.x);
 		buffer.writeInt(message.y);
@@ -64,7 +66,7 @@ package ${package}.network;
 	public static void handler(${name}SlotMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
 		NetworkEvent.Context context = contextSupplier.get();
 		context.enqueueWork(() -> {
-			PlayerEntity entity = context.getSender();
+			Player entity = context.getSender();
 			int slotID = message.slotID;
 			int changeType = message.changeType;
 			int meta = message.meta;
@@ -77,12 +79,12 @@ package ${package}.network;
 		context.setPacketHandled(true);
 	}
 
-	public static void handleSlotAction(PlayerEntity entity, int slotID, int changeType, int meta, int x, int y, int z) {
-		World world = entity.world;
-		HashMap guistate = ${name}Container.guistate;
+	public static void handleSlotAction(Player entity, int slotID, int changeType, int meta, int x, int y, int z) {
+		Level world = entity.level;
+		HashMap guistate = ${name}Screen.guistate;
 
 		// security measure to prevent arbitrary chunk generation
-		if (!world.isBlockLoaded(new BlockPos(x, y, z)))
+		if (!world.hasChunkAt(new BlockPos(x, y, z)))
 			return;
 
 		<#list data.components as component>

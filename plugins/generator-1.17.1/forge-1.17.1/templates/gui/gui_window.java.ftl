@@ -28,41 +28,36 @@
 -->
 
 <#-- @formatter:off -->
-<#include "procedures.java.ftl">
-<#include "tokens.ftl">
+<#include "../procedures.java.ftl">
+<#include "../tokens.ftl">
 
-<#assign mx = data.W - data.width>
-<#assign my = data.H - data.height>
+package ${package}.client.gui;
 
-package ${package}.gui;
+public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
-import ${package}.${JavaModName};
+	public final static HashMap<String, Object> guistate = new HashMap<>();
 
-@OnlyIn(Dist.CLIENT) public class ${name}GuiWindow extends ContainerScreen<${name}Gui.GuiContainerMod> {
-
-	private World world;
-	private int x, y, z;
-	private PlayerEntity entity;
-
-	private final static HashMap guistate = ${name}Gui.guistate;
+	private final Level world;
+	private final int x, y, z;
+	private final Player entity;
 
 	<#list data.components as component>
 		<#if component.getClass().getSimpleName() == "TextField">
-	    TextFieldWidget ${component.name};
+	    EditBox ${component.name};
 		<#elseif component.getClass().getSimpleName() == "Checkbox">
-	    CheckboxButton ${component.name};
+	    Checkbox ${component.name};
 		</#if>
 	</#list>
 
-	public ${name}GuiWindow(${name}Gui.GuiContainerMod container, PlayerInventory inventory, ITextComponent text) {
+	public ${name}Screen(${name}Menu container, Inventory inventory, Component text) {
 		super(container, inventory, text);
 		this.world = container.world;
 		this.x = container.x;
 		this.y = container.y;
 		this.z = container.z;
 		this.entity = container.entity;
-		this.xSize = ${data.width};
-		this.ySize = ${data.height};
+		this.imageWidth = ${data.width};
+		this.imageHeight = ${data.height};
 	}
 
 	<#if data.doesPauseGame>
@@ -75,10 +70,10 @@ import ${package}.${JavaModName};
 	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/${registryname}.png" );
 	</#if>
 
-	@Override public void render(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
+	@Override public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(ms);
 		super.render(ms, mouseX, mouseY, partialTicks);
-		this.renderHoveredTooltip(ms, mouseX, mouseY);
+		this.renderTooltip(ms, mouseX, mouseY);
 
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
@@ -87,23 +82,23 @@ import ${package}.${JavaModName};
 		</#list>
 	}
 
-	@Override protected void drawGuiContainerBackgroundLayer(MatrixStack ms, float partialTicks, int gx, int gy) {
-		RenderSystem.color4f(1, 1, 1, 1);
+	@Override protected void renderBg(PoseStack ms, float partialTicks, int gx, int gy) {
+		RenderSystem.setShaderColor(1, 1, 1, 1);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 
 		<#if data.renderBgLayer>
-		Minecraft.getInstance().getTextureManager().bindTexture(texture);
-		int k = (this.width - this.xSize) / 2;
-		int l = (this.height - this.ySize) / 2;
-		this.blit(ms, k, l, 0, 0, this.xSize, this.ySize, this.xSize, this.ySize);
+		RenderSystem.setShaderTexture(0, texture);
+		int k = (this.width - this.imageWidth) / 2;
+		int l = (this.height - this.imageHeight) / 2;
+		this.blit(ms, k, l, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 		</#if>
 
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "Image">
 				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-					Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/${component.image}"));
-					this.blit(ms, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int}, 0, 0,
+					RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/${component.image}"));
+					this.blit(ms, ${component.x}, ${component.y}, 0, 0,
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 				<#if hasProcedure(component.displayCondition)>}</#if>
@@ -115,7 +110,7 @@ import ${package}.${JavaModName};
 
 	@Override public boolean keyPressed(int key, int b, int c) {
 		if (key == 256) {
-			this.minecraft.player.closeScreen();
+			this.minecraft.player.closeContainer();
 			return true;
 		}
 
@@ -129,8 +124,8 @@ import ${package}.${JavaModName};
 		return super.keyPressed(key, b, c);
 	}
 
-	@Override public void tick() {
-		super.tick();
+	@Override public void containerTick() {
+		super.containerTick();
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
 				${component.name}.tick();
@@ -138,51 +133,52 @@ import ${package}.${JavaModName};
 		</#list>
 	}
 
-	@Override protected void drawGuiContainerForegroundLayer(MatrixStack ms, int mouseX, int mouseY) {
+	@Override protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "Label">
 				<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-		    	this.font.drawString(ms, "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
-					${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
+		    	drawString(poseStack, this.font, "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
+					${component.x} - this.leftPos, ${component.y} - this.topPos, ${component.color.getRGB()});
 			</#if>
 		</#list>
 	}
 
 	@Override public void onClose() {
 		super.onClose();
-		Minecraft.getInstance().keyboardListener.enableRepeatEvents(false);
+		Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(false);
 	}
 
-	@Override public void init(Minecraft minecraft, int width, int height) {
-		super.init(minecraft, width, height);
-		minecraft.keyboardListener.enableRepeatEvents(true);
+	@Override public void init() {
+		super.init();
+
+		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
 		<#assign btid = 0>
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-				${component.name} = new TextFieldWidget(this.font, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-				${component.width}, ${component.height}, new StringTextComponent("${component.placeholder}"))
+				${component.name} = new EditBox(this.font, ${component.x}, ${component.y},
+				${component.width}, ${component.height}, new TextComponent("${component.placeholder}"))
 				<#if component.placeholder?has_content>
 				{
 					{
 						setSuggestion("${component.placeholder}");
 					}
 
-					@Override public void writeText(String text) {
-						super.writeText(text);
+					@Override public void insertText(String text) {
+						super.insertText(text);
 
-						if(getText().isEmpty())
+						if(getValue().isEmpty())
 							setSuggestion("${component.placeholder}");
 						else
 							setSuggestion(null);
 					}
 
-					@Override public void setCursorPosition(int pos) {
-						super.setCursorPosition(pos);
+					@Override public void moveCursorTo(int pos) {
+						super.moveCursorTo(pos);
 
-						if(getText().isEmpty())
+						if(getValue().isEmpty())
 							setSuggestion("${component.placeholder}");
 						else
 							setSuggestion(null);
@@ -190,20 +186,20 @@ import ${package}.${JavaModName};
 				}
 				</#if>;
                 guistate.put("text:${component.name}", ${component.name});
-				${component.name}.setMaxStringLength(32767);
-                this.children.add(this.${component.name});
+				${component.name}.setMaxLength(32767);
+				this.addWidget(this.${component.name});
 			<#elseif component.getClass().getSimpleName() == "Button">
-				this.addButton(new Button(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, new StringTextComponent("${component.text}"), e -> {
-						if (<@procedureOBJToConditionCode component.displayCondition/>) {
-							${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}Gui.ButtonPressedMessage(${btid}, x, y, z));
-							${name}Gui.handleButtonAction(entity, ${btid}, x, y, z);
-						}
+				this.addRenderableWidget(new Button(${component.x}, ${component.y}, ${component.width}, ${component.height},
+						new TextComponent("${component.text}"), e -> {
+							if (<@procedureOBJToConditionCode component.displayCondition/>) {
+								${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
+								${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
+							}
 					}
 				)
                 <#if hasProcedure(component.displayCondition)>
                 {
-					@Override public void render(MatrixStack ms, int gx, int gy, float ticks) {
+					@Override public void render(PoseStack ms, int gx, int gy, float ticks) {
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 							super.render(ms, gx, gy, ticks);
 					}
@@ -211,11 +207,11 @@ import ${package}.${JavaModName};
 				</#if>);
 				<#assign btid +=1>
 			<#elseif component.getClass().getSimpleName() == "Checkbox">
-            	${component.name} = new CheckboxButton(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-            	    150, 20, new StringTextComponent("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>
+            	${component.name} = new Checkbox(${component.x}, ${component.y}, 150, 20,
+						new TextComponent("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>
             	    <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
-                ${name}Gui.guistate.put("checkbox:${component.name}", ${component.name});
-                this.addButton(${component.name});
+                guistate.put("checkbox:${component.name}", ${component.name});
+                this.addRenderableWidget(${component.name});
 			</#if>
 		</#list>
 	}

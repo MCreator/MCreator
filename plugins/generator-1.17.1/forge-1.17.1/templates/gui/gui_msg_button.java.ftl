@@ -28,13 +28,15 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+
 package ${package}.network;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}ButtonMessage {
 
 	private final int buttonID, x, y, z;
 
-	public ${name}ButtonMessage(PacketBuffer buffer) {
+	public ${name}ButtonMessage(FriendlyByteBuf buffer) {
 		this.buttonID = buffer.readInt();
 		this.x = buffer.readInt();
 		this.y = buffer.readInt();
@@ -48,7 +50,7 @@ package ${package}.network;
 		this.z = z;
 	}
 
-	public static void buffer(${name}ButtonMessage message, PacketBuffer buffer) {
+	public static void buffer(${name}ButtonMessage message, FriendlyByteBuf buffer) {
 		buffer.writeInt(message.buttonID);
 		buffer.writeInt(message.x);
 		buffer.writeInt(message.y);
@@ -58,7 +60,7 @@ package ${package}.network;
 	public static void handler(${name}ButtonMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
 		NetworkEvent.Context context = contextSupplier.get();
 		context.enqueueWork(() -> {
-			PlayerEntity entity = context.getSender();
+			Player entity = context.getSender();
 			int buttonID = message.buttonID;
 			int x = message.x;
 			int y = message.y;
@@ -69,12 +71,12 @@ package ${package}.network;
 		context.setPacketHandled(true);
 	}
 
-	public static void handleButtonAction(PlayerEntity entity, int buttonID, int x, int y, int z) {
-		World world = entity.world;
-		HashMap guistate = ${name}Container.guistate;
+	public static void handleButtonAction(Player entity, int buttonID, int x, int y, int z) {
+		Level world = entity.level;
+		HashMap guistate = ${name}Screen.guistate;
 
 		// security measure to prevent arbitrary chunk generation
-		if (!world.isBlockLoaded(new BlockPos(x, y, z)))
+		if (!world.hasChunkAt(new BlockPos(x, y, z)))
 			return;
 
 		<#assign btid = 0>

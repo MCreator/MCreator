@@ -28,228 +28,174 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
-<#include "procedures.java.ftl">
+<#include "../mcitems.ftl">
+<#include "../procedures.java.ftl">
 
-<#assign mx = data.W - data.width>
-<#assign my = data.H - data.height>
+<#assign mx = (data.W - data.width) / 2>
+<#assign my = (data.H - data.height) / 2>
 <#assign slotnum = 0>
 
-package ${package}.gui;
+package ${package}.world.inventory;
 
 import ${package}.${JavaModName};
 
-@${JavaModName}Elements.ModElement.Tag public class ${name}Container extends ${JavaModName}Elements.ModElement {
+<#if hasProcedure(data.onTick)>
+@Mod.EventBusSubscriber
+</#if>
+public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
 
-	public static HashMap guistate = new HashMap();
+	public final Level world;
+	public final Player entity;
+	public int x, y, z;
 
-	private static final ContainerType<GuiContainerMod> containerType = new ContainerType<>(new GuiContainerModFactory());
+	private IItemHandler internal;
 
-	public ${name}Gui(${JavaModName}Elements instance) {
-		super(instance, ${data.getModElement().getSortID()});
+	private final Map<Integer, Slot> customSlots = new HashMap<>();
 
-		FMLJavaModLoadingContext.get().getModEventBus().register(new ContainerRegisterHandler());
+	private boolean bound = false;
 
-		<#if hasProcedure(data.onTick)>
-		MinecraftForge.EVENT_BUS.register(this);
-		</#if>
-	}
+	public ${name}Menu(int id, Inventory inv, FriendlyByteBuf extraData) {
+		super(${JavaModName}Menus.${data.getModElement().getRegistryNameUpper()}, id);
 
-	private static class ContainerRegisterHandler {
+		this.entity = inv.player;
+		this.world = inv.player.level;
 
-		@SubscribeEvent public void registerContainer(RegistryEvent.Register<ContainerType<?>> event) {
-			event.getRegistry().register(containerType.setRegistryName("${registryname}"));
-		}
+		this.internal = new ItemStackHandler(${data.getMaxSlotID() + 1});
 
-	}
-
-	@OnlyIn(Dist.CLIENT) public void initElements() {
-		DeferredWorkQueue.runLater(() -> ScreenManager.registerFactory(containerType, ${name}GuiWindow::new));
-	}
-
-	<#if hasProcedure(data.onTick)>
-		@SubscribeEvent public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-			PlayerEntity entity = event.player;
-			if(event.phase == TickEvent.Phase.END && entity.openContainer instanceof GuiContainerMod) {
-				World world = entity.world;
-				double x = entity.getPosX();
-				double y = entity.getPosY();
-				double z = entity.getPosZ();
-				<@procedureOBJToCode data.onTick/>
-			}
-		}
-	</#if>
-
-	public static class GuiContainerModFactory implements IContainerFactory {
-
-		public GuiContainerMod create(int id, PlayerInventory inv, PacketBuffer extraData) {
-			return new GuiContainerMod(id, inv, extraData);
-		}
-
-	}
-
-	public static class GuiContainerMod extends Container implements Supplier<Map<Integer, Slot>> {
-
-		World world;
-		PlayerEntity entity;
-		int x, y, z;
-
-		private IItemHandler internal;
-
-		private Map<Integer, Slot> customSlots = new HashMap<>();
-
-		private boolean bound = false;
-
-		public GuiContainerMod(int id, PlayerInventory inv, PacketBuffer extraData) {
-			super(containerType, id);
-
-			this.entity = inv.player;
-			this.world = inv.player.world;
-
-			this.internal = new ItemStackHandler(${data.getMaxSlotID() + 1});
-
-			BlockPos pos = null;
-			if (extraData != null) {
-				pos = extraData.readBlockPos();
-				this.x = pos.getX();
-				this.y = pos.getY();
-				this.z = pos.getZ();
-			}
-
-			<#if data.type == 1>
-				if (pos != null) {
-					if (extraData.readableBytes() == 1) { // bound to item
-						byte hand = extraData.readByte();
-						ItemStack itemstack;
-						if(hand == 0)
-							itemstack = this.entity.getHeldItemMainhand();
-						else
-							itemstack = this.entity.getHeldItemOffhand();
-						itemstack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
-							this.internal = capability;
-							this.bound = true;
-						});
-					} else if (extraData.readableBytes() > 1) {
-						extraData.readByte(); // drop padding
-						Entity entity = world.getEntityByID(extraData.readVarInt());
-						if(entity != null)
-							entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
-								this.internal = capability;
-								this.bound = true;
-							});
-					} else { // might be bound to block
-						TileEntity ent = inv.player != null ? inv.player.world.getTileEntity(pos) : null;
-						if (ent != null) {
-							ent.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
-								this.internal = capability;
-								this.bound = true;
-							});
-						}
-					}
-				}
-
-				<#list data.components as component>
-					<#if component.getClass().getSimpleName()?ends_with("Slot")>
-						<#assign slotnum += 1>
-            	    this.customSlots.put(${component.id}, this.addSlot(new SlotItemHandler(internal, ${component.id},
-						${(component.x - mx / 2)?int + 1},
-						${(component.y - my / 2)?int + 1}) {
-
-            	    	<#if component.disableStackInteraction>
-						@Override public boolean canTakeStack(PlayerEntity player) {
-							return false;
-						}
-            	    	</#if>
-
-						<#if hasProcedure(component.onSlotChanged)>
-            	        @Override public void onSlotChanged() {
-							super.onSlotChanged();
-							GuiContainerMod.this.slotChanged(${component.id}, 0, 0);
-						}
-						</#if>
-
-						<#if hasProcedure(component.onTakenFromSlot)>
-            	        @Override public ItemStack onTake(PlayerEntity entity, ItemStack stack) {
-							ItemStack retval = super.onTake(entity, stack);
-							GuiContainerMod.this.slotChanged(${component.id}, 1, 0);
-							return retval;
-						}
-						</#if>
-
-						<#if hasProcedure(component.onStackTransfer)>
-            	        @Override public void onSlotChange(ItemStack a, ItemStack b) {
-							super.onSlotChange(a, b);
-							GuiContainerMod.this.slotChanged(${component.id}, 2, b.getCount() - a.getCount());
-						}
-						</#if>
-
-						<#if component.disableStackInteraction>
-							@Override public boolean isItemValid(ItemStack stack) {
-								return false;
-							}
-            	        <#elseif component.getClass().getSimpleName() == "InputSlot">
-							<#if component.inputLimit.toString()?has_content>
-            	             @Override public boolean isItemValid(ItemStack stack) {
-								 return (${mappedMCItemToItem(component.inputLimit)} == stack.getItem());
-							 }
-							</#if>
-						<#elseif component.getClass().getSimpleName() == "OutputSlot">
-            	            @Override public boolean isItemValid(ItemStack stack) {
-								return false;
-							}
-						</#if>
-					}));
-					</#if>
-				</#list>
-
-				<#assign coffx = ((data.width - 176) / 2 + data.inventoryOffsetX)?int>
-				<#assign coffy = ((data.height - 166) / 2 + data.inventoryOffsetY)?int>
-
-            	int si;
-				int sj;
-
-				for (si = 0; si < 3; ++si)
-					for (sj = 0; sj < 9; ++sj)
-						this.addSlot(new Slot(inv, sj + (si + 1) * 9, ${coffx} + 8 + sj * 18, ${coffy}+ 84 + si * 18));
-
-				for (si = 0; si < 9; ++si)
-					this.addSlot(new Slot(inv, si, ${coffx} + 8 + si * 18, ${coffy} + 142));
-			</#if>
-
-			<#if hasProcedure(data.onOpen)>
-				<@procedureOBJToCode data.onOpen/>
-			</#if>
-		}
-
-		public Map<Integer, Slot> get() {
-			return customSlots;
-		}
-
-		@Override public boolean canInteractWith(PlayerEntity player) {
-			return true;
+		BlockPos pos = null;
+		if (extraData != null) {
+			pos = extraData.readBlockPos();
+			this.x = pos.getX();
+			this.y = pos.getY();
+			this.z = pos.getZ();
 		}
 
 		<#if data.type == 1>
-		@Override public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
-			ItemStack itemstack = ItemStack.EMPTY;
-			Slot slot = (Slot) this.inventorySlots.get(index);
+			if (pos != null) {
+				if (extraData.readableBytes() == 1) { // bound to item
+					byte hand = extraData.readByte();
+					ItemStack itemstack;
+					if(hand == 0)
+						itemstack = this.entity.getMainHandItem();
+					else
+						itemstack = this.entity.getOffhandItem();
+					itemstack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
+						this.internal = capability;
+						this.bound = true;
+					});
+				} else if (extraData.readableBytes() > 1) {
+					extraData.readByte(); // drop padding
+					Entity entity = world.getEntity(extraData.readVarInt());
+					if(entity != null)
+						entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
+							this.internal = capability;
+							this.bound = true;
+						});
+				} else { // might be bound to block
+					BlockEntity ent = inv.player != null ? inv.player.level.getBlockEntity(pos) : null;
+					if (ent != null) {
+						ent.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
+							this.internal = capability;
+							this.bound = true;
+						});
+					}
+				}
+			}
 
-			if (slot != null && slot.getHasStack()) {
-				ItemStack itemstack1 = slot.getStack();
+			<#list data.components as component>
+				<#if component.getClass().getSimpleName()?ends_with("Slot")>
+					<#assign slotnum += 1>
+        	    this.customSlots.put(${component.id}, this.addSlot(new SlotItemHandler(internal, ${component.id},
+					${(component.x - mx)?int + 1},
+					${(component.y - my)?int + 1}) {
+
+        	    	<#if component.disableStackInteraction>
+					@Override public boolean mayPickup(Player player) {
+						return false;
+					}
+        	    	</#if>
+
+					<#if hasProcedure(component.onSlotChanged)>
+        	        @Override public void setChanged() {
+						super.setChanged();
+						slotChanged(${component.id}, 0, 0);
+					}
+					</#if>
+
+					<#if hasProcedure(component.onTakenFromSlot)>
+        	        @Override public void onTake(Player entity, ItemStack stack) {
+						super.onTake(entity, stack);
+						slotChanged(${component.id}, 1, 0);
+					}
+					</#if>
+
+					<#if hasProcedure(component.onStackTransfer)>
+        	        @Override public void onQuickCraft(ItemStack a, ItemStack b) {
+						super.onQuickCraft(a, b);
+						slotChanged(${component.id}, 2, b.getCount() - a.getCount());
+					}
+					</#if>
+
+					<#if component.disableStackInteraction>
+						@Override public boolean mayPlace(ItemStack stack) {
+							return false;
+						}
+        	        <#elseif component.getClass().getSimpleName() == "InputSlot">
+						<#if component.inputLimit.toString()?has_content>
+        	             @Override public boolean mayPlace(ItemStack stack) {
+							 return (${mappedMCItemToItem(component.inputLimit)} == stack.getItem());
+						 }
+						</#if>
+					<#elseif component.getClass().getSimpleName() == "OutputSlot">
+        	            @Override public boolean mayPlace(ItemStack stack) {
+							return false;
+						}
+					</#if>
+				}));
+				</#if>
+			</#list>
+
+			<#assign coffx = ((data.width - 176) / 2 + data.inventoryOffsetX)?int>
+			<#assign coffy = ((data.height - 166) / 2 + data.inventoryOffsetY)?int>
+
+			for (int si = 0; si < 3; ++si)
+				for (int sj = 0; sj < 9; ++sj)
+					this.addSlot(new Slot(inv, sj + (si + 1) * 9, ${coffx} + 8 + sj * 18, ${coffy}+ 84 + si * 18));
+
+			for (int si = 0; si < 9; ++si)
+				this.addSlot(new Slot(inv, si, ${coffx} + 8 + si * 18, ${coffy} + 142));
+		</#if>
+
+		<#if hasProcedure(data.onOpen)>
+			<@procedureOBJToCode data.onOpen/>
+		</#if>
+	}
+
+	@Override public boolean stillValid(Player player) {
+		return true;
+	}
+
+	<#if data.type == 1>
+		@Override public ItemStack quickMoveStack(Player playerIn, int index) {
+			ItemStack itemstack = ItemStack.EMPTY;
+			Slot slot = (Slot) this.slots.get(index);
+
+			if (slot != null && slot.hasItem()) {
+				ItemStack itemstack1 = slot.getItem();
 				itemstack = itemstack1.copy();
 
 				if (index < ${slotnum}) {
-					if (!this.mergeItemStack(itemstack1, ${slotnum}, this.inventorySlots.size(), true)) {
+					if (!this.moveItemStackTo(itemstack1, ${slotnum}, this.slots.size(), true)) {
 						return ItemStack.EMPTY;
 					}
-					slot.onSlotChange(itemstack1, itemstack);
-				} else if (!this.mergeItemStack(itemstack1, 0, ${slotnum}, false)) {
+					slot.onQuickCraft(itemstack1, itemstack);
+				} else if (!this.moveItemStackTo(itemstack1, 0, ${slotnum}, false)) {
 					if (index < ${slotnum} + 27) {
-						if (!this.mergeItemStack(itemstack1, ${slotnum} + 27, this.inventorySlots.size(), true)) {
+						if (!this.moveItemStackTo(itemstack1, ${slotnum} + 27, this.slots.size(), true)) {
 							return ItemStack.EMPTY;
 						}
 					} else {
-						if (!this.mergeItemStack(itemstack1, ${slotnum}, ${slotnum} + 27, false)) {
+						if (!this.moveItemStackTo(itemstack1, ${slotnum}, ${slotnum} + 27, false)) {
 							return ItemStack.EMPTY;
 						}
 					}
@@ -257,9 +203,9 @@ import ${package}.${JavaModName};
 				}
 
 				if (itemstack1.getCount() == 0) {
-					slot.putStack(ItemStack.EMPTY);
+					slot.set(ItemStack.EMPTY);
 				} else {
-					slot.onSlotChanged();
+					slot.setChanged();
 				}
 
 				if (itemstack1.getCount() == itemstack.getCount()) {
@@ -272,26 +218,26 @@ import ${package}.${JavaModName};
 		}
 
 		<#-- #47997 -->
-		@Override ${mcc.getMethod("net.minecraft.inventory.container.Container", "mergeItemStack", "ItemStack", "int", "int", "boolean")
-			.replace("slot.onSlotChanged();", "slot.putStack(itemstack);")
-			.replace("!itemstack.isEmpty()", "slot.isItemValid(itemstack) && !itemstack.isEmpty()")}
+		@Override ${mcc.getMethod("net.minecraft.world.inventory.AbstractContainerMenu", "moveItemStackTo", "ItemStack", "int", "int", "boolean")
+			.replace("slot.setChanged();", "slot.set(itemstack);")
+			.replace("!itemstack.isEmpty()", "slot.mayPlace(itemstack) && !itemstack.isEmpty()")}
 
-		@Override public void onContainerClosed(PlayerEntity playerIn) {
-			super.onContainerClosed(playerIn);
+		@Override public void removed(Player playerIn) {
+			super.removed(playerIn);
 
 			<#if hasProcedure(data.onClosed)>
 				<@procedureOBJToCode data.onClosed/>
 			</#if>
 
-			if (!bound && (playerIn instanceof ServerPlayerEntity)) {
-				if (!playerIn.isAlive() || playerIn instanceof ServerPlayerEntity && ((ServerPlayerEntity)playerIn).hasDisconnected()) {
+			if (!bound && (playerIn instanceof ServerPlayer)) {
+				if (!playerIn.isAlive() || playerIn instanceof ServerPlayer && ((ServerPlayer)playerIn).hasDisconnected()) {
 					for(int j = 0; j < internal.getSlots(); ++j) {
 						<#list data.components as component>
 							<#if component.getClass().getSimpleName()?ends_with("Slot") && !component.dropItemsWhenNotBound>
 								if(j == ${component.id}) continue;
 							</#if>
 						</#list>
-						playerIn.dropItem(internal.extractItem(j, internal.getStackInSlot(j).getCount(), false), false);
+						playerIn.drop(internal.extractItem(j, internal.getStackInSlot(j).getCount(), false), false);
 					}
 				} else {
 					for(int i = 0; i < internal.getSlots(); ++i) {
@@ -300,21 +246,38 @@ import ${package}.${JavaModName};
 								if(i == ${component.id}) continue;
 							</#if>
 						</#list>
-						playerIn.inventory.placeItemBackInInventory(playerIn.world, internal.extractItem(i, internal.getStackInSlot(i).getCount(), false));
+						playerIn.getInventory().placeItemBackInInventory(internal.extractItem(i, internal.getStackInSlot(i).getCount(), false));
 					}
 				}
 			}
 		}
 
+		<#if data.hasSlotEvents()>
 		private void slotChanged(int slotid, int ctype, int meta) {
-			if(this.world != null && this.world.isRemote()) {
-				${JavaModName}.PACKET_HANDLER.sendToServer(new GUISlotChangedMessage(slotid, x, y, z, ctype, meta));
-				handleSlotAction(entity, slotid, ctype, meta, x, y, z);
+			if(this.world != null && this.world.isClientSide()) {
+				${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}SlotMessage(slotid, x, y, z, ctype, meta));
+				${name}SlotMessage.handleSlotAction(entity, slotid, ctype, meta, x, y, z);
 			}
 		}
-
 		</#if>
+	</#if>
+
+	public Map<Integer, Slot> get() {
+		return customSlots;
 	}
+
+	<#if hasProcedure(data.onTick)>
+	@SubscribeEvent public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+		Player entity = event.player;
+		if(event.phase == TickEvent.Phase.END && entity.containerMenu instanceof ${name}Menu) {
+			Level world = entity.level;
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
+			<@procedureOBJToCode data.onTick/>
+		}
+	}
+	</#if>
 
 }
 <#-- @formatter:on -->
