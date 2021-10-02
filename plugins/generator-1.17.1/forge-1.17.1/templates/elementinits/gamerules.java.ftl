@@ -58,10 +58,7 @@ public class ${JavaModName}GameRules {
 		</#list>
 	}
 
-	<#assign number = false>
-	<#list gamerules as gamerule>
-		<#if gamerule.type == "Number" && !number>
-			<#assign number = true>
+	<#if w.hasGameRulesOfType("Number")>
 	private static GameRules.Type<GameRules.IntegerValue> create(int defaultValue) {
 		try {
 			Method createGameRuleMethod = ObfuscationReflectionHelper.findMethod(GameRules.IntegerValue.class, "create", int.class);
@@ -72,13 +69,9 @@ public class ${JavaModName}GameRules {
 		}
 		return null;
 	}
-		</#if>
-	</#list>
+	</#if>
 
-	<#assign logic = false>
-	<#list gamerules as gamerule>
-		<#if gamerule.type == "Logic" && !logic>
-			<#assign logic = true>
+	<#if w.hasGameRulesOfType("Logic")>
 	private static GameRules.Type<GameRules.BooleanValue> create(boolean defaultValue) {
 		try {
 			Method createGameRuleMethod = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "create", boolean.class);
@@ -89,8 +82,7 @@ public class ${JavaModName}GameRules {
 		}
 		return null;
 	}
-		</#if>
-	</#list>
+	</#if>
 
 }
 <#-- @formatter:on -->

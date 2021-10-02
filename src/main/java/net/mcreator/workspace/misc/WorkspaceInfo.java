@@ -22,6 +22,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.types.GameRule;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
@@ -173,6 +174,17 @@ import java.util.stream.Collectors;
 				GeneratableElement ge = element.getGeneratableElement();
 				if (ge instanceof Recipe)
 					if (((Recipe) ge).recipeType.equals("Brewing"))
+						return true;
+			}
+		return false;
+	}
+
+	public boolean hasGameRulesOfType(String type) {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.GAMERULE) {
+				GeneratableElement ge = element.getGeneratableElement();
+				if (ge instanceof GameRule)
+					if (((GameRule) ge).type.equals(type))
 						return true;
 			}
 		return false;
