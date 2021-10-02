@@ -182,8 +182,7 @@ import java.util.stream.Collectors;
 	public boolean hasGameRulesOfType(String type) {
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.GAMERULE) {
-				GeneratableElement ge = element.getGeneratableElement();
-				if (ge instanceof GameRule gr)
+				if (element.getGeneratableElement() instanceof GameRule gr)
 					if (gr.type.equals(type))
 						return true;
 			}
