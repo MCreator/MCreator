@@ -45,10 +45,14 @@ public class DesktopUtils {
 	}
 
 	public static void openSafe(File file) {
+		openSafe(file, false);
+	}
+
+	public static void openSafe(File file, boolean selectFile) {
 		try {
 			new Thread(() -> {
 				try {
-					open(file);
+					open(file, selectFile);
 				} catch (Exception ignored) {
 				}
 			}).start();
@@ -70,8 +74,8 @@ public class DesktopUtils {
 		return false;
 	}
 
-	public static boolean open(File file) {
-		if (openDESKTOP(file)) {
+	public static boolean open(File file, boolean selectFile) {
+		if (openDESKTOP(file, selectFile)) {
 			return true;
 		}
 
@@ -160,7 +164,7 @@ public class DesktopUtils {
 		}
 	}
 
-	private static boolean openDESKTOP(File file) {
+	private static boolean openDESKTOP(File file, boolean selectFile) {
 		try {
 			if (!java.awt.Desktop.isDesktopSupported()) {
 				LOG.debug("Platform is not supported.");
@@ -170,10 +174,19 @@ public class DesktopUtils {
 			if (!java.awt.Desktop.getDesktop().isSupported(java.awt.Desktop.Action.OPEN)) {
 				LOG.debug("OPEN is not supported.");
 				return false;
+			} else if (selectFile && !java.awt.Desktop.getDesktop()
+					.isSupported(java.awt.Desktop.Action.BROWSE_FILE_DIR)) {
+				LOG.debug("BROWSE_FILE_DIR is not supported.");
+				return false;
 			}
 
-			LOG.info("Trying to use Desktop.getDesktop().open() with " + file.toString());
-			java.awt.Desktop.getDesktop().open(file);
+			if (selectFile) {
+				LOG.info("Trying to use Desktop.getDesktop().browseFileDirectory() with " + file.toString());
+				java.awt.Desktop.getDesktop().browseFileDirectory(file);
+			} else {
+				LOG.info("Trying to use Desktop.getDesktop().open() with " + file.toString());
+				java.awt.Desktop.getDesktop().open(file);
+			}
 
 			return true;
 		} catch (Throwable t) {

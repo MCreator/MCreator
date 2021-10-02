@@ -36,6 +36,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.SlickTreeUI;
+import net.mcreator.util.DesktopUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
@@ -50,6 +51,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
@@ -59,6 +61,7 @@ public class WorkspaceFileBrowser extends JPanel {
 	private final FilteredTreeModel mods = new FilteredTreeModel(null);
 
 	FilterTreeNode sourceCode = null;
+	FilterTreeNode currRes = null;
 
 	public JTree tree = new JTree(mods) {
 		@Override public void paintComponent(Graphics g) {
@@ -208,7 +211,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			addNodes(sourceCode, mcreator.getGenerator().getSourceRoot(), true);
 			node.add(sourceCode);
 
-			FilterTreeNode currRes = new FilterTreeNode("Resources (Gradle)");
+			currRes = new FilterTreeNode("Resources (Gradle)");
 			addNodes(currRes, mcreator.getGenerator().getResourceRoot(), true);
 			node.add(currRes);
 
@@ -282,18 +285,42 @@ public class WorkspaceFileBrowser extends JPanel {
 
 	public void openSelectedFileAsCode(boolean forceExpansion) {
 		if (tree.getLastSelectedPathComponent() != null) {
-			Object selection = ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent()).getUserObject();
-			if (selection instanceof File selFile)
+			FilterTreeNode selection = (FilterTreeNode) tree.getLastSelectedPathComponent();
+			if (selection.getUserObject() instanceof File selFile) {
 				if (selFile.isDirectory() && forceExpansion)
 					tree.expandPath(tree.getSelectionPath());
 				else
 					FileOpener.openFile(mcreator, selection);
+			} else if ((selection == sourceCode || selection == currRes) && forceExpansion) {
+				tree.expandPath(tree.getSelectionPath());
+			}
+		}
+	}
+
+	public void openSelectedFileInDesktop() {
+		if (tree.getLastSelectedPathComponent() != null) {
+			FilterTreeNode selection = (FilterTreeNode) tree.getLastSelectedPathComponent();
+			if (selection.getUserObject() instanceof File selectedFile) {
+				if (Files.isRegularFile(selectedFile.toPath()) || Files.isDirectory(selectedFile.toPath()))
+					DesktopUtils.openSafe(selectedFile);
+				else
+					Toolkit.getDefaultToolkit().beep();
+			} else if (selection.getUserObject() instanceof String selectedObject) {
+				if (selectedObject.equals("Source (Gradle)"))
+					DesktopUtils.openSafe(mcreator.getGenerator().getSourceRoot());
+				else if (selectedObject.equals("Resources (Gradle)"))
+					DesktopUtils.openSafe(mcreator.getGenerator().getResourceRoot());
+				else
+					Toolkit.getDefaultToolkit().beep();
+			} else {
+				Toolkit.getDefaultToolkit().beep();
+			}
 		}
 	}
 
 	public void deleteSelectedFile() {
 		FilterTreeNode selected = (FilterTreeNode) tree.getLastSelectedPathComponent();
-		if (selected != null) {
+		if (selected != null && selected != sourceCode && selected != currRes) {
 			if (selected.getUserObject() instanceof File) {
 				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("workspace_file_browser.remove_file.message"),
 						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -392,9 +419,10 @@ public class WorkspaceFileBrowser extends JPanel {
 		boolean contextActionsAvailable = false;
 		JPopupMenu retVal = new JPopupMenu();
 		JMenu createMenu = L10N.menu("workspace_file_browser.add");
+		createMenu.setIcon(UIRES.get("16px.add.gif"));
 
+		FilterTreeNode selected = (FilterTreeNode) tree.getLastSelectedPathComponent();
 		try {
-			FilterTreeNode selected = (FilterTreeNode) tree.getLastSelectedPathComponent();
 			if (selected != null) {
 				if (selected.getUserObject() instanceof File file) {
 					if (file.isFile())
@@ -429,6 +457,11 @@ public class WorkspaceFileBrowser extends JPanel {
 					contextActionsAvailable = true;
 					createMenu.add(mcreator.actionRegistry.newClass);
 					createMenu.add(mcreator.actionRegistry.newPackage);
+				} else if (selected == currRes) {
+					contextActionsAvailable = true;
+					createMenu.add(mcreator.actionRegistry.newJson);
+					createMenu.add(mcreator.actionRegistry.newImage);
+					createMenu.add(mcreator.actionRegistry.newFolder);
 				}
 			}
 		} catch (Exception ignored) {
@@ -436,9 +469,11 @@ public class WorkspaceFileBrowser extends JPanel {
 
 		mcreator.actionRegistry.openAsCode.setEnabled(contextActionsAvailable);
 		mcreator.actionRegistry.openFile.setEnabled(contextActionsAvailable);
-		mcreator.actionRegistry.openParentFolder.setEnabled(contextActionsAvailable);
+		mcreator.actionRegistry.openParentFolder.setEnabled(
+				contextActionsAvailable && selected != sourceCode && selected != currRes);
 		createMenu.setEnabled(contextActionsAvailable);
-		mcreator.actionRegistry.deleteFile.setEnabled(contextActionsAvailable);
+		mcreator.actionRegistry.deleteFile.setEnabled(
+				contextActionsAvailable && selected != sourceCode && selected != currRes);
 
 		retVal.add(mcreator.actionRegistry.openAsCode);
 		retVal.add(mcreator.actionRegistry.openFile);

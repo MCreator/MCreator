@@ -51,9 +51,7 @@ import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.awt.*;
 import java.io.File;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -221,17 +219,13 @@ public class ActionRegistry {
 		this.support = new VisitURIAction(this, L10N.t("action.support"),
 				MCreatorApplication.SERVER_DOMAIN + "/support");
 		this.openAsCode = new BasicAction(this, L10N.t("workspace_file_browser.open"),
-				e -> mcreator.getProjectBrowser().openSelectedFileAsCode(true));
-		this.openFile = new BasicAction(this, L10N.t("workspace_file_browser.open_file"), e -> {
-			File selectedFile = (File) ((DefaultMutableTreeNode) mcreator.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject();
-			if (Files.isRegularFile(selectedFile.toPath()) || Files.isDirectory(selectedFile.toPath()))
-				DesktopUtils.openSafe(selectedFile);
-			else
-				Toolkit.getDefaultToolkit().beep();
-		});
+				e -> mcreator.getProjectBrowser().openSelectedFileAsCode(true)).setIcon(UIRES.get("16px.edit.gif"));
+		this.openFile = new BasicAction(this, L10N.t("workspace_file_browser.open_file"),
+				e -> mcreator.getProjectBrowser().openSelectedFileInDesktop());
 		this.openParentFolder = new BasicAction(this, L10N.t("workspace_file_browser.open_parent_folder"),
 				e -> DesktopUtils.openSafe(
-						((File) ((DefaultMutableTreeNode) mcreator.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject()).getParentFile()));
+						((File) ((DefaultMutableTreeNode) mcreator.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject()).getParentFile(),
+						true)).setIcon(UIRES.get("16px.open.gif"));
 		this.deleteFile = new BasicAction(this, L10N.t("workspace_file_browser.remove_file"),
 				e -> mcreator.getProjectBrowser().deleteSelectedFile()).setIcon(UIRES.get("16px.delete.gif"));
 		this.newClass = new NewClassAction(this);
