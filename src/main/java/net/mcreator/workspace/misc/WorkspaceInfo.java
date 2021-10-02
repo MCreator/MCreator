@@ -183,8 +183,8 @@ import java.util.stream.Collectors;
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.GAMERULE) {
 				GeneratableElement ge = element.getGeneratableElement();
-				if (ge instanceof GameRule)
-					if (((GameRule) ge).type.equals(type))
+				if (ge instanceof GameRule gr)
+					if (gr.type.equals(type))
 						return true;
 			}
 		return false;
