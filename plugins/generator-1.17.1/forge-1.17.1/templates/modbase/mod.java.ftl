@@ -34,6 +34,8 @@ import org.apache.logging.log4j.Logger;
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
 
 		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
+
+		<#if w.hasElementsOfType("gamerule")>${JavaModName}GameRules.load();</#if>
 	}
 
 	private void init(FMLCommonSetupEvent event) {

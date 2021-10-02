@@ -1,6 +1,6 @@
-templates:
-  - template: gamerule.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/@NAMEGameRule.java"
+global_templates:
+  - template: elementinits/gamerules.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameGameRules.java"
 
 localizationkeys:
   - key: gamerule.@registryname
