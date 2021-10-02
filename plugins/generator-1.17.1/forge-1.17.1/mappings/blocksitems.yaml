@@ -23,6 +23,21 @@ Blocks.STONE#2:
 Blocks.STONE#3:
   - Blocks.DIORITE
   - "diorite"
+Blocks.STONE#4:
+  - Blocks.POLISHED_DIORITE
+  - "polished_diorite"
+Blocks.STONE#5:
+  - Blocks.ANDESITE
+  - "andesite"
+Blocks.STONE#6:
+  - Blocks.POLISHED_ANDESITE
+  - "polished_andesite"
+Blocks.GRASS:
+  - Blocks.GRASS_BLOCK
+  - "grass_block"
+Blocks.GRASS_PATH:
+  - Blocks.DIRT_PATH
+  - "dirt_path"
 Blocks.MYCELIUM:
   - Blocks.MYCELIUM
   - "mycelium"
