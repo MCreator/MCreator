@@ -39,25 +39,29 @@ package ${package}.init;
 public class ${JavaModName}GameRules {
 
 	<#list gamerules as gamerule>
-	<#if gamerule.type == "Number">
+		<#if gamerule.type == "Number">
 	public static GameRules.Key<GameRules.IntegerValue> ${gamerule.getModElement().getRegistryNameUpper()};
-	<#else>
+		<#else>
 	public static GameRules.Key<GameRules.BooleanValue> ${gamerule.getModElement().getRegistryNameUpper()};
-	</#if>
+		</#if>
 	</#list>
 
 	public static void load() {
 		<#list gamerules as gamerule>
-		<#if gamerule.type == "Number">
+			<#if gamerule.type == "Number">
 		${gamerule.getModElement().getRegistryNameUpper()} = GameRules.register("${gamerule.getModElement().getRegistryName()}",
 				GameRules.Category.${gamerule.category}, create(${gamerule.defaultValueNumber}));
-		<#else>
+			<#else>
 		${gamerule.getModElement().getRegistryNameUpper()} = GameRules.register("${gamerule.getModElement().getRegistryName()}",
-				GameRules.Category.${gamerule.category}, create(${gamerule.defaultValueLogic});
-		</#if>
+				GameRules.Category.${gamerule.category}, create(${gamerule.defaultValueLogic}));
+			</#if>
 		</#list>
 	}
 
+	<#assign number = false>
+	<#list gamerules as gamerule>
+		<#if gamerule.type == "Number" && !number>
+			<#assign number = true>
 	private static GameRules.Type<GameRules.IntegerValue> create(int defaultValue) {
 		try {
 			Method createGameRuleMethod = ObfuscationReflectionHelper.findMethod(GameRules.IntegerValue.class, "create", int.class);
@@ -68,7 +72,13 @@ public class ${JavaModName}GameRules {
 		}
 		return null;
 	}
+		</#if>
+	</#list>
 
+	<#assign logic = false>
+	<#list gamerules as gamerule>
+		<#if gamerule.type == "Logic" && !logic>
+			<#assign logic = true>
 	private static GameRules.Type<GameRules.BooleanValue> create(boolean defaultValue) {
 		try {
 			Method createGameRuleMethod = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "create", boolean.class);
@@ -79,6 +89,8 @@ public class ${JavaModName}GameRules {
 		}
 		return null;
 	}
+		</#if>
+	</#list>
 
 }
 <#-- @formatter:on -->
