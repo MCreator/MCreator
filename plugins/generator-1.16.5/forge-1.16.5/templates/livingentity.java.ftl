@@ -249,24 +249,32 @@ import net.minecraft.block.material.Material;
 			this.moveController = new FlyingMovementController(this, 10, true);
 			this.navigator = new FlyingPathNavigator(this, this.world);
 			<#elseif data.waterMob>
+			this.setPathPriority(PathNodeType.WATER, 0);
 			this.moveController = new MovementController(this) {
 				@Override public void tick() {
+				    if (CustomEntity.this.isInWater())
+                        CustomEntity.this.setMotion(CustomEntity.this.getMotion().add(0, 0.005, 0));
+
 					if (this.action == MovementController.Action.MOVE_TO && !CustomEntity.this.getNavigator().noPath()) {
 						double dx = this.posX - CustomEntity.this.getPosX();
 						double dy = this.posY - CustomEntity.this.getPosY();
 						double dz = this.posZ - CustomEntity.this.getPosZ();
+
 						float f = (float)(MathHelper.atan2(dz, dx) * (double)(180 / Math.PI)) - 90;
+						float f1 = (float)(this.speed * CustomEntity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+
 						CustomEntity.this.rotationYaw = this.limitAngle(CustomEntity.this.rotationYaw, f, 10);
 						CustomEntity.this.renderYawOffset = CustomEntity.this.rotationYaw;
 						CustomEntity.this.rotationYawHead = CustomEntity.this.rotationYaw;
-						float f1 = (float)(this.speed * CustomEntity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+
 						if (CustomEntity.this.isInWater()) {
-							CustomEntity.this.setAIMoveSpeed(f1 * 0.1F);
+							CustomEntity.this.setAIMoveSpeed((float)CustomEntity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+
 							float f2 = - (float) (MathHelper.atan2(dy, MathHelper.sqrt(dx * dx + dz * dz)) * (180F / Math.PI));
 							f2 = MathHelper.clamp(MathHelper.wrapDegrees(f2), -85, 85);
 							CustomEntity.this.rotationPitch = this.limitAngle(CustomEntity.this.rotationPitch, f2, 5);
 							float f3 = MathHelper.cos(CustomEntity.this.rotationPitch * (float) (Math.PI / 180.0));
-							float f4 = MathHelper.sin(CustomEntity.this.rotationPitch * (float) (Math.PI / 180.0));
+
 							CustomEntity.this.setMoveForward(f3 * f1);
 							CustomEntity.this.setMoveVertical((float) (f1 * dy));
 						} else {
@@ -681,9 +689,9 @@ import net.minecraft.block.material.Material;
         	return true;
     	}
 
-    	@Override public boolean isNotColliding(IWorldReader worldreader) {
-        	return worldreader.checkNoEntityCollision(this, VoxelShapes.create(this.getBoundingBox()));
-    	}
+    	@Override public boolean isNotColliding(IWorldReader world) {
+			return world.checkNoEntityCollision(this);
+		}
 
     	@Override public boolean isPushedByWater() {
 			return false;
