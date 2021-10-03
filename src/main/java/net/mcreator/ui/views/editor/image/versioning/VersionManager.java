@@ -48,6 +48,10 @@ public class VersionManager {
 		this.layerPanel = layerPanel;
 	}
 
+	public void setRevisionListener(RevisionListener listener) {
+		this.revisionListener = listener;
+	}
+
 	public void addRevision(Change change) {
 		while (((sizeOf() + change.sizeOf()) > MAX_HEAP_SIZE) && (changes.size() > 0)) {
 			changes.removeFirst();
@@ -67,10 +71,6 @@ public class VersionManager {
 			layerPanel.repaintList();
 
 		revisionListener.revisionChanged();
-	}
-
-	public void setRevisionListener(RevisionListener listener) {
-		this.revisionListener = listener;
 	}
 
 	private void linkChanges(Change change) {
