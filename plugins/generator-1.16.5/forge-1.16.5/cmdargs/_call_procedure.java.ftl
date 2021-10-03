@@ -11,5 +11,5 @@
 	if (entity == null)
 		entity = FakePlayerFactory.getMinecraft(world);
     <@procedureToCode name=procedure dependencies=dependencies/>
-    return 1;
+    return 0;
 })
