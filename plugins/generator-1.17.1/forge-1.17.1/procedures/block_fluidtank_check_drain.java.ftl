@@ -8,5 +8,5 @@
 				_retval.set(capability.drain(amount, IFluidHandler.FluidAction.SIMULATE).getAmount()));
 		return _retval.get();
 	}
-}.drainTankSimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
+}.drainTankSimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),${opt.toInt(input$amount)}))
 <#-- @formatter:on -->

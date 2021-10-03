@@ -8,5 +8,5 @@
 				_retval.set(capability.getTankCapacity(tank)));
 		return _retval.get();
 	}
-}.getFluidTankCapacity(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), (int)${input$tank}))
+}.getFluidTankCapacity(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),${opt.toInt(input$tank)}))
 <#-- @formatter:on -->

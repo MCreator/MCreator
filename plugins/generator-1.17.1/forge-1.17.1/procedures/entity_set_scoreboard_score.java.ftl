@@ -7,6 +7,6 @@
 			_so = _sc.addObjective(${input$score}, ObjectiveCriteria.DUMMY, new TextComponent(${input$score}), ObjectiveCriteria.RenderType.INTEGER);
 		}
 		Score _scr = _sc.getOrCreatePlayerScore(_player.getScoreboardName(), _so);
-		_scr.setScore((int)${input$value});
+		_scr.setScore(${opt.toInt(input$value)});
 	}
 }

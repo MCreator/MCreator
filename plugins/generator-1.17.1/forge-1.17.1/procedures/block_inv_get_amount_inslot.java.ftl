@@ -10,5 +10,5 @@
 		}
 		return _retval.get();
 	}
-}.getAmount(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)(${input$slotid})))
+}.getAmount(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),${opt.toInt(input$slotid)}))
 <#-- @formatter:on -->

@@ -14,5 +14,5 @@
 		);
 		return _retval.get();
 	}
-}.fillTankSimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
+}.fillTankSimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),${opt.toInt(input$amount)}))
 <#-- @formatter:on -->
