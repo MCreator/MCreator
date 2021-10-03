@@ -50,12 +50,10 @@ public class ProcedureCodeOptimizer {
 		if (toClean.startsWith("/*@BlockState*/")) {
 			prefix = "/*@BlockState*/";
 			toClean = toClean.substring(15);
-		}
-		else if (code.startsWith("/*@ItemStack*/")) {
+		} else if (code.startsWith("/*@ItemStack*/")) {
 			prefix = "/*@ItemStack*/";
 			toClean = toClean.substring(14);
-		}
-		else if (code.startsWith("/*@int*/")) {
+		} else if (code.startsWith("/*@int*/")) {
 			prefix = "/*@int*/";
 			toClean = toClean.substring(8);
 		}
