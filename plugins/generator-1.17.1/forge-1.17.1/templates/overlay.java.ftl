@@ -84,7 +84,7 @@ package ${package}.client.gui;
 				RenderSystem.setShader(GameRenderer::getPositionTexShader);
 				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
 						GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+				RenderSystem.setShaderColor(1, 1, 1, 1);
 			</#if>
 
 			if (<@procedureOBJToConditionCode data.displayCondition/>) {
@@ -119,7 +119,7 @@ package ${package}.client.gui;
 			<#if hasTextures>
 				RenderSystem.depthMask(true);
 				RenderSystem.enableDepthTest();
-				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+				RenderSystem.setShaderColor(1, 1, 1, 1);
 			</#if>
 		}
 	}
