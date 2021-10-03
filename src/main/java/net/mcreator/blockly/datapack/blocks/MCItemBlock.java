@@ -33,8 +33,8 @@ public class MCItemBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
-		if (element != null && element.getTextContent() != null && !element.getTextContent().equals("") && !element
-				.getTextContent().equals("null")) {
+		if (element != null && element.getTextContent() != null && !element.getTextContent().equals("")
+				&& !element.getTextContent().equals("null")) {
 			if (master.getTemplateGenerator() != null) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("block", new MItemBlock(master.getWorkspace(), element.getTextContent()));

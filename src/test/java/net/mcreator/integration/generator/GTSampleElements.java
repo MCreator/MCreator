@@ -40,8 +40,8 @@ public class GTSampleElements {
 		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				!= GeneratorStats.CoverageStatus.NONE) {
 			for (int i = 1; i <= 13; i++) {
-				ModElement me = new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE)
-						.putMetadata("dependencies", new ArrayList<String>());
+				ModElement me = new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE).putMetadata(
+						"dependencies", new ArrayList<String>());
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
@@ -51,8 +51,8 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 4; i++) {
-				ModElement me = new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE)
-						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC");
+				ModElement me = new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE).putMetadata(
+						"dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC");
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
@@ -65,8 +65,8 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 1; i++) {
-				ModElement me = new ModElement(workspace, "number" + i, ModElementType.PROCEDURE)
-						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "NUMBER");
+				ModElement me = new ModElement(workspace, "number" + i, ModElementType.PROCEDURE).putMetadata(
+						"dependencies", new ArrayList<String>()).putMetadata("return_type", "NUMBER");
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
@@ -79,8 +79,8 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 2; i++) {
-				ModElement me = new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE)
-						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "ITEMSTACK");
+				ModElement me = new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE).putMetadata(
+						"dependencies", new ArrayList<String>()).putMetadata("return_type", "ITEMSTACK");
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
@@ -92,8 +92,8 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 1; i++) {
-				ModElement me = new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE)
-						.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "ACTIONRESULTTYPE");
+				ModElement me = new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE).putMetadata(
+						"dependencies", new ArrayList<String>()).putMetadata("return_type", "ACTIONRESULTTYPE");
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);

@@ -252,8 +252,9 @@ public class PreferencesDialog extends MCreatorDialog {
 		if (actualField.getType().equals(int.class) || actualField.getType().equals(Integer.class)) {
 			int max = (int) entry.max();
 			if (entry.meta().equals("max:maxram")) {
-				max = ((int) (((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean())
-						.getTotalPhysicalMemorySize() / 1048576)) - 1024;
+				max = ((int) (
+						((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
+								/ 1048576)) - 1024;
 			}
 			value = Math.max(entry.min(), Math.min(max, (Integer) value));
 			SpinnerNumberModel model = new SpinnerNumberModel((int) Math.round((double) value), (int) entry.min(), max,

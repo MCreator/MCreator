@@ -23,6 +23,7 @@ import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -42,7 +43,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
-		implements IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
+		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	public String texture;
 	public String textureTop;
@@ -252,20 +253,19 @@ import java.util.stream.Collectors;
 
 	@Override public BufferedImage generateModElementPicture() {
 		if (renderType() == 10) {
-			return (BufferedImage) MinecraftImageGenerator.Preview
-					.generateBlockIcon(getTextureWithFallback(textureTop), getTextureWithFallback(textureLeft),
-							getTextureWithFallback(textureFront));
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
+					getTextureWithFallback(textureLeft), getTextureWithFallback(textureFront));
 		} else if (renderType() == 11 || renderType() == 110 || (blockBase != null && blockBase.equals("Leaves"))) {
-			return (BufferedImage) MinecraftImageGenerator.Preview
-					.generateBlockIcon(getMainTexture(), getMainTexture(), getMainTexture());
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getMainTexture(), getMainTexture(),
+					getMainTexture());
 		} else if (blockBase != null && blockBase.equals("Slab")) {
-			return (BufferedImage) MinecraftImageGenerator.Preview
-					.generateSlabIcon(getTextureWithFallback(textureTop), getTextureWithFallback(textureFront));
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateSlabIcon(getTextureWithFallback(textureTop),
+					getTextureWithFallback(textureFront));
 		} else if (blockBase != null && blockBase.equals("TrapDoor")) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateTrapdoorIcon(getMainTexture());
 		} else if (blockBase != null && blockBase.equals("Stairs")) {
-			return (BufferedImage) MinecraftImageGenerator.Preview
-					.generateStairsIcon(getTextureWithFallback(textureTop), getTextureWithFallback(textureFront));
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateStairsIcon(
+					getTextureWithFallback(textureTop), getTextureWithFallback(textureFront));
 		} else if (blockBase != null && blockBase.equals("Wall")) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateWallIcon(getMainTexture());
 		} else if (blockBase != null && blockBase.equals("Fence")) {
@@ -276,11 +276,13 @@ import java.util.stream.Collectors;
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateEndRodIcon(getMainTexture());
 		} else if (blockBase != null && blockBase.equals("PressurePlate")) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generatePressurePlateIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("Button")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateButtonIcon(getMainTexture());
 		} else if (renderType() == 14) {
 			Image side = ImageUtils.drawOver(new ImageIcon(getTextureWithFallback(textureFront)),
 					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();
-			return (BufferedImage) MinecraftImageGenerator.Preview
-					.generateBlockIcon(getTextureWithFallback(textureTop), side, side);
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
+					side, side);
 		} else {
 			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
 		}

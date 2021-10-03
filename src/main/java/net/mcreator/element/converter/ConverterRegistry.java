@@ -38,6 +38,7 @@ import net.mcreator.element.converter.fv21.ProcedureVariablesConverter;
 import net.mcreator.element.converter.fv24.CommandArgumentBlockFixer;
 import net.mcreator.element.converter.fv22.BlockLightOpacityFixer;
 import net.mcreator.element.converter.fv23.PotionToEffectConverter;
+import net.mcreator.element.converter.fv24.ProcedureVariablesEntityFixer;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -49,13 +50,13 @@ import java.util.*;
 
 public class ConverterRegistry {
 
-	private static final Map<ModElementType, List<IConverter>> converters = new HashMap<>() {{
+	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
-		put(ModElementType.ACHIEVEMENT, Collections.singletonList(new AchievementFixer()));
+		put(ModElementType.ADVANCEMENT, Collections.singletonList(new AchievementFixer()));
 		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
 		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
-				new ProcedureVariablesConverter()));
+				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer()));
 		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
 				new BiomeFrozenTopLayerConverter()));
 		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
@@ -69,7 +70,7 @@ public class ConverterRegistry {
 		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
 	}};
 
-	public static List<IConverter> getConvertersForModElementType(ModElementType modElementType) {
+	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {
 		return converters.get(modElementType);
 	}
 

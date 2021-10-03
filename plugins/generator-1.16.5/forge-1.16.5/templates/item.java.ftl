@@ -33,6 +33,8 @@
 
 package ${package}.item;
 
+import net.minecraft.entity.ai.attributes.Attributes;
+
 @${JavaModName}Elements.ModElement.Tag public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 	@ObjectHolder("${modid}:${registryname}")
@@ -84,7 +86,7 @@ package ${package}.item;
 							return itemstack;
 						</#if>
 					<#else>
-						if(success) itemstack.shrink(1);
+						if(this.isSuccessful()) itemstack.shrink(1);
 						return itemstack;
 					</#if>
 				}

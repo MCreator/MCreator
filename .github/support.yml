@@ -6,9 +6,9 @@ supportLabel: "invalid: support request"
 # Comment to post on issues marked as support requests, `{issue-author}` is an
 # optional placeholder. Set to `false` to disable
 supportComment: >
-  :wave: @{issue-author}, we use the issue tracker exclusively for bug reports
-  and feature requests. However, this issue appears to be a support request.
-  Please use our [Forums on the website](https://mcreator.net/forum) for support requests.
+  :wave: @{issue-author}, we use GitHub issue tracker exclusively for bug reports.
+  However, this issue appears to be a support or a feature request. Please use our
+  [Forums on the website](https://mcreator.net/forum) for support and feature requests.
 
 # Close issues marked as support requests
 close: true

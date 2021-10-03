@@ -20,6 +20,7 @@ package net.mcreator.integration;
 
 import net.mcreator.Launcher;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.minecraft.DataListLoader;
@@ -33,6 +34,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
 import net.mcreator.util.MCreatorVersionNumber;
+import net.mcreator.util.TerribleModuleHacks;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,7 +55,8 @@ public class TestSetup {
 		if (already)
 			return;
 
-		Launcher.openModuleExports();
+		TerribleModuleHacks.openAllUnnamed();
+		TerribleModuleHacks.openMCreatorRequirements();
 
 		WebConsoleListener.registerLogger(LOG);
 
@@ -102,6 +105,9 @@ public class TestSetup {
 
 		// load entity animations for the Java Model animation editor
 		EntityAnimationsLoader.init();
+
+		// register mod element types
+		ModElementTypeLoader.loadModElements();
 
 		// load generator configurations
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));

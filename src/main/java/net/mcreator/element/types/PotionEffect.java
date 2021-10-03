@@ -30,7 +30,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class PotionEffect extends GeneratableElement {
+@SuppressWarnings("unused") public class PotionEffect extends GeneratableElement {
 
 	public String effectName;
 	public String icon;
@@ -44,6 +44,7 @@ public class PotionEffect extends GeneratableElement {
 	public Procedure onStarted;
 	public Procedure onActiveTick;
 	public Procedure onExpired;
+	public Procedure activeTickCondition;
 
 	public PotionEffect(ModElement element) {
 		super(element);
@@ -63,4 +64,7 @@ public class PotionEffect extends GeneratableElement {
 		FileIO.copyFile(originalTextureFileLocation, newLocation);
 	}
 
+	public boolean hasCustomRenderer() {
+		return !renderStatusInHUD || !renderStatusInInventory;
+	}
 }

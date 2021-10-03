@@ -44,12 +44,9 @@ package ${package}.potion;
 
 	public static class EffectCustom extends Effect {
 
-		private final ResourceLocation potionIcon;
-
 		public EffectCustom() {
 			super(EffectType.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
 			setRegistryName("${registryname}");
-			potionIcon = new ResourceLocation("${modid}:textures/${data.icon}");
 		}
 
 		@Override public String getName() {
@@ -118,8 +115,12 @@ package ${package}.potion;
 		</#if>
 
 		@Override public boolean isReady(int duration, int amplifier) {
-    		return true;
-    	}
+			<#if hasProcedure(data.activeTickCondition)>
+			return <@procedureOBJToConditionCode data.activeTickCondition/>;
+			<#else>
+			return true;
+			</#if>
+		}
 
 	}
 

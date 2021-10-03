@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.workspace;
 
-import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.io.Transliteration;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreatorApplication;
@@ -76,10 +75,9 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					return;
 
 				if (column != 3) {
-					int n = JOptionPane
-							.showConfirmDialog(workspacePanel.getMcreator(), L10N.t("workspace.variables.change_type"),
-									L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION,
-									JOptionPane.QUESTION_MESSAGE);
+					int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
+							L10N.t("workspace.variables.change_type"), L10N.t("common.confirmation"),
+							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (n == JOptionPane.YES_OPTION) {
 						super.setValueAt(value, row, column);
 						if (column == 1) { // variable type has been changed
@@ -105,11 +103,11 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				int modelColumn = convertColumnIndexToModel(column);
 				VariableType variableType = VariableTypeLoader.INSTANCE.fromName((String) elements.getValueAt(row, 1));
 				if (modelColumn == 2) {
-					return new DefaultCellEditor(new JComboBox<>(variableType
-							.getSupportedScopesWithoutLocal(workspacePanel.getMcreator().getGeneratorConfiguration())));
+					return new DefaultCellEditor(new JComboBox<>(variableType.getSupportedScopesWithoutLocal(
+							workspacePanel.getMcreator().getGeneratorConfiguration())));
 				} else if (modelColumn == 1) {
-					return new DefaultCellEditor(new JComboBox<>(VariableTypeLoader.INSTANCE
-							.getGlobalVariableTypes(workspacePanel.getMcreator().getGeneratorConfiguration()).stream()
+					return new DefaultCellEditor(new JComboBox<>(VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
+									workspacePanel.getMcreator().getGeneratorConfiguration()).stream()
 							.map(VariableType::getName).toArray(String[]::new)));
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
@@ -151,7 +149,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				if (column == 1 && component instanceof JLabel) {
 					VariableType value = VariableTypeLoader.INSTANCE.fromName(((JLabel) component).getText());
 					if (value != null)
-						component.setForeground(BlocklyBlockUtil.getBlockColorFromHUE(value.getColor()).brighter());
+						component.setForeground(value.getBlocklyColor().brighter());
 				} else {
 					component.setForeground(elements.getForeground());
 				}
@@ -225,8 +223,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		add("North", bar);
 
 		addvar.addActionListener(e -> {
-			VariableElement element = NewVariableDialog
-					.showNewVariableDialog(workspacePanel.getMcreator(), true, new OptionPaneValidatior() {
+			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMcreator(), true,
+					new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
 							Validator validator = new JavaMemeberNameValidator((VTextField) component, false);
 							String textname = Transliteration.transliterateString(((VTextField) component).getText());
@@ -238,8 +236,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 							}
 							return validator.validate();
 						}
-					}, VariableTypeLoader.INSTANCE
-							.getGlobalVariableTypes(workspacePanel.getMcreator().getGeneratorConfiguration()));
+					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
+							workspacePanel.getMcreator().getGeneratorConfiguration()));
 			if (element != null) {
 				workspacePanel.getMcreator().getWorkspace().addVariableElement(element);
 				reloadElements();

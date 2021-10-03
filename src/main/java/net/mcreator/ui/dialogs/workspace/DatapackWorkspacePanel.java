@@ -69,8 +69,8 @@ public class DatapackWorkspacePanel extends AbstractWorkspacePanel {
 		Generator.GENERATOR_CACHE.values().stream().filter(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.DATAPACK)
 				.forEach(workspaceDialogPanel.generator::addItem);
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration
-				.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(), GeneratorFlavor.DATAPACK);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.DATAPACK);
 		workspaceDialogPanel.generator.setSelectedItem(generatorConfiguration);
 	}
 }

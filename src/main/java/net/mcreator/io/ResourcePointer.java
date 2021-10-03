@@ -53,8 +53,8 @@ public class ResourcePointer {
 
 	@Override public String toString() {
 		if (inClasspath)
-			return FilenameUtils
-					.removeExtension(((String) identifier).substring(((String) identifier).lastIndexOf("/") + 1));
+			return FilenameUtils.removeExtension(
+					((String) identifier).substring(((String) identifier).lastIndexOf("/") + 1));
 		else
 			return FilenameUtils.removeExtension(((File) identifier).getName());
 	}

@@ -20,6 +20,7 @@ package net.mcreator.blockly;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.StatementInput;
+import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -136,8 +137,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 			String type = block.getAttribute("type");
 			boolean generated = false;
 			for (IBlockGenerator generator : blockGenerators) {
-				if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays
-						.asList(generator.getSupportedBlocks()).contains(type)) {
+				if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays.asList(
+						generator.getSupportedBlocks()).contains(type)) {
 					int compile_notes_num = compile_notes.size();
 					generator.generateBlock(this, block);
 					if (compile_notes_num == compile_notes.size()) // no errors in generation
@@ -164,8 +165,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 		boolean generated = false;
 		for (IBlockGenerator generator : blockGenerators) {
-			if (generator.getBlockType() == IBlockGenerator.BlockType.OUTPUT && Arrays
-					.asList(generator.getSupportedBlocks()).contains(type)) {
+			if (generator.getBlockType() == IBlockGenerator.BlockType.OUTPUT && Arrays.asList(
+					generator.getSupportedBlocks()).contains(type)) {
 				generator.generateBlock(this, block);
 
 				generated = true;
@@ -202,6 +203,16 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		master.clearCodeGeneratorBuffer(); // we clear the master again to remove the code we just generated
 		master.append(originalMasterCode); // set the master code to the original code
 		return generatedCode;
+	}
+
+	/**
+	 * Helper method to process an output block and remove surrounding parentheses if possible
+	 * @param element The element to process
+	 * @throws TemplateGeneratorException When the
+	 */
+	public final void processOutputBlockWithoutParentheses(Element element) throws TemplateGeneratorException {
+		String code = directProcessOutputBlock(this, element);
+		this.append(ProcedureCodeOptimizer.removeParentheses(code));
 	}
 
 }

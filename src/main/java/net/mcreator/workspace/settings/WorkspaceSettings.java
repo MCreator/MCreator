@@ -166,18 +166,18 @@ import java.util.stream.Stream;
 	}
 
 	public Set<String> getRequiredMods() {
-		List<String> apisSupportedNames = ModAPIManager
-				.getModAPIsForGenerator(workspace.getGenerator().getGeneratorName()).stream()
-				.filter(e -> e.requiredWhenEnabled).map(e -> e.parent.id).collect(Collectors.toList());
+		List<String> apisSupportedNames = ModAPIManager.getModAPIsForGenerator(
+						workspace.getGenerator().getGeneratorName()).stream().filter(e -> e.requiredWhenEnabled)
+				.map(e -> e.parent.id).collect(Collectors.toList());
 
 		return Stream.concat(requiredMods.stream(), mcreatorDependencies.stream().filter(apisSupportedNames::contains))
 				.collect(Collectors.toSet());
 	}
 
 	public Set<String> getDependencies() {
-		List<String> apisSupportedNames = ModAPIManager
-				.getModAPIsForGenerator(workspace.getGenerator().getGeneratorName()).stream()
-				.filter(e -> !e.requiredWhenEnabled).map(e -> e.parent.id).collect(Collectors.toList());
+		List<String> apisSupportedNames = ModAPIManager.getModAPIsForGenerator(
+						workspace.getGenerator().getGeneratorName()).stream().filter(e -> !e.requiredWhenEnabled)
+				.map(e -> e.parent.id).collect(Collectors.toList());
 
 		return Stream.concat(dependencies.stream(), mcreatorDependencies.stream().filter(apisSupportedNames::contains))
 				.collect(Collectors.toSet());
@@ -188,8 +188,8 @@ import java.util.stream.Stream;
 	}
 
 	public Set<String> getMCreatorDependencies() {
-		List<String> apisSupportedNames = ModAPIManager
-				.getModAPIsForGenerator(workspace.getGenerator().getGeneratorName()).stream().map(e -> e.parent.id)
+		List<String> apisSupportedNames = ModAPIManager.getModAPIsForGenerator(
+						workspace.getGenerator().getGeneratorName()).stream().map(e -> e.parent.id)
 				.collect(Collectors.toList());
 		return mcreatorDependencies.stream().filter(apisSupportedNames::contains).collect(Collectors.toSet());
 	}
@@ -274,18 +274,21 @@ import java.util.stream.Stream;
 	}
 
 	public String getWebsiteURL() {
-		if (websiteURL == null || websiteURL.trim().equals("") || !websiteURL.contains("http") || !websiteURL
-				.contains("://") || !websiteURL.contains("."))
+		if (websiteURL == null || websiteURL.trim().equals("") || !websiteURL.contains("http") || !websiteURL.contains(
+				"://") || !websiteURL.contains("."))
 			return MCreatorApplication.SERVER_DOMAIN;
 		return websiteURL;
 	}
 
 	public int[] get3DigitVersion() {
 		int[] ver3 = { 0, 0, 0 };
-		String[] parts = version.split("\\.");
-		for (int i = 0; i < parts.length; i++) {
-			String digit = parts[i].replaceAll("[^\\d]", "");
-			ver3[i] = Integer.parseInt(digit);
+		try {
+			String[] parts = version.split("\\.");
+			for (int i = 0; i < Math.min(parts.length, ver3.length); i++) {
+				String digit = parts[i].replaceAll("[^\\d]", "");
+				ver3[i] = Integer.parseInt(digit);
+			}
+		} catch (Exception ignored) {
 		}
 		return ver3;
 	}

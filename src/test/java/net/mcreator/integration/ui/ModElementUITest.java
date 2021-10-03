@@ -39,7 +39,7 @@ package net.mcreator.integration.ui;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -65,7 +65,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -89,8 +92,8 @@ public class ModElementUITest {
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration
-				.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
 
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
@@ -99,8 +102,8 @@ public class ModElementUITest {
 		WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
 		workspaceSettings.setModName("Test mod");
 		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
-		workspace = Workspace
-				.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"), workspaceSettings);
+		workspace = Workspace.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"),
+				workspaceSettings);
 
 		mcreator = new MCreator(null, workspace);
 
@@ -108,28 +111,33 @@ public class ModElementUITest {
 
 		// generate some "dummy" procedures for dropdowns to work
 		for (int i = 1; i <= 13; i++) {
-			workspace.addModElement(new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE)
-					.putMetadata("dependencies", new ArrayList<String>()));
+			workspace.addModElement(
+					new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
+							new ArrayList<String>()));
 		}
 
 		for (int i = 1; i <= 4; i++) {
-			workspace.addModElement(new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE)
-					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
+			workspace.addModElement(
+					new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
+							new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
 		}
 
 		for (int i = 1; i <= 1; i++) {
-			workspace.addModElement(new ModElement(workspace, "number" + i, ModElementType.PROCEDURE)
-					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "NUMBER"));
+			workspace.addModElement(
+					new ModElement(workspace, "number" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
+							new ArrayList<String>()).putMetadata("return_type", "NUMBER"));
 		}
 
 		for (int i = 1; i <= 2; i++) {
-			workspace.addModElement(new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE)
-					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "ITEMSTACK"));
+			workspace.addModElement(
+					new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
+							new ArrayList<String>()).putMetadata("return_type", "ITEMSTACK"));
 		}
 
 		for (int i = 1; i <= 1; i++) {
-			workspace.addModElement(new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE)
-					.putMetadata("dependencies", new ArrayList<String>()).putMetadata("return_type", "ACTIONRESULTTYPE"));
+			workspace.addModElement(
+					new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE).putMetadata(
+							"dependencies", new ArrayList<String>()).putMetadata("return_type", "ACTIONRESULTTYPE"));
 		}
 
 		// reduce autosave interval for tests
@@ -168,13 +176,12 @@ public class ModElementUITest {
 
 	private void testModElementLoading(Random random)
 			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
-		for (Map.Entry<ModElementType, ModElementTypeRegistry.ModTypeRegistration<?>> modElementRegistration : ModElementTypeRegistry.REGISTRY
-				.entrySet()) {
+		for (ModElementType<?> modElementType : ModElementTypeLoader.REGISTRY) {
 
-			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider
-					.getModElementExamplesFor(workspace, modElementRegistration.getKey(), random);
+			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
+					modElementType, random);
 
-			LOG.info("Testing mod element type UI " + modElementRegistration.getKey().getReadableName() + " with "
+			LOG.info("Testing mod element type UI " + modElementType.getReadableName() + " with "
 					+ generatableElements.size() + " variants");
 
 			for (GeneratableElement generatableElementOrig : generatableElements) {
@@ -195,8 +202,7 @@ public class ModElementUITest {
 					continue;
 				}
 
-				ModElementGUI<?> modElementGUI = modElementRegistration.getValue()
-						.getModElement(mcreator, modElement, false);
+				ModElementGUI<?> modElementGUI = modElementType.getModElementGUI(mcreator, modElement, false);
 
 				Field field = modElementGUI.getClass().getSuperclass().getDeclaredField("editingMode");
 				field.setAccessible(true);

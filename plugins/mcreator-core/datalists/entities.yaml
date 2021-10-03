@@ -1,125 +1,260 @@
-- EntityAgeable
-- EntityAmbientCreature
-- EntityAnimal
-- EntityAreaEffectCloud
-- EntityArmorStand
-- EntityArrow
-- EntityBat
-- EntityBee
-- EntityBlaze
-- EntityBoat
-- EntityCat
-- EntityCaveSpider
-- EntityChicken
-- EntityCod
-- EntityCow
-- EntityCreature
-- EntityCreeper
-- EntityDonkey
-- EntityDolphin
-- EntityDrowned
-- EntityDragon
-- EntityDragonFireball
-- EntityEgg
-- EntityElderGuardian
-- EntityEnderCrystal
-- EntityEnderEye
-- EntityEnderman
-- EntityEndermite
-- EntityEnderPearl
-- EntityEvoker
-- EntityEvokerFangs
-- EntityExpBottle
-- EntityFallingBlock
-- EntityFireball
-- EntityFireworkRocket
-- EntityFlying
-- EntityFox
-- EntityGhast
-- EntityGiantZombie
-- EntityGolem
-- EntityGuardian
-- EntityHanging
-- EntityHoglin
-- EntityHorse
-- EntityHusk
-- EntityIllusionIllager
-- EntityIronGolem
-- EntityItem
-- EntityItemFrame
-- EntityLeashKnot
-- EntityLightningBolt
-- EntityLiving
-- EntityLlama
-- EntityLlamaSpit
-- EntityMagmaCube
-- EntityMinecart
-- EntityMinecartChest
-- EntityMinecartCommandBlock
-- EntityMinecartContainer
-- EntityMinecartFurnace
-- EntityMinecartHopper
-- EntityMinecartMobSpawner
-- EntityMinecartTNT
-- EntityMob
-- EntityMooshroom
-- EntityMule
-- EntityOcelot
-- EntityPainting
-- EntityPanda
-- EntityParrot
-- EntityPig
-- EntityPillager
-- EntityPufferfish
-- EntityPigZombie
-- EntityPlayer
-- EntityPlayerMP
-- EntityPolarBear
-- EntityPotion
-- EntityRabbit
-- EntitySalmon
-- EntitySheep
-- EntityShoulderRiding
-- EntityShulker
-- EntityShulkerBullet
-- EntitySilverfish
-- EntitySkeleton
-- EntitySkeletonHorse
-- EntitySlime
-- EntitySmallFireball
-- EntitySnowball
-- EntitySnowman
-- EntitySpectralArrow
-- EntitySpellcasterIllager
-- EntitySpider
-- EntitySquid
-- EntityStray
-- EntityTraderLlama
-- EntityTameable
-- EntityThrowable
-- EntityTropicalFish
-- EntityTurtle
-- EntityTrident
-- EntityTNTPrimed
-- EntityVex
-- EntityVillager
-- EntityVindicator
-- EntityWaterMob
-- EntityWanderingTrader
-- EntityWitch
-- EntityWither
-- EntityWitherSkeleton
-- EntityWitherSkull
-- EntityWolf
-- EntityXPOrb
-- EntityZombie
-- EntityZombieHorse
-- EntityZombieVillager
-- EntityPhantom
-- EntityRavager
-- EntityFishHook
-- EntityMonster
-- EntityPiglin
-- EntityPiglinBrute
-- EntityStrider
-- EntityZoglin
+- EntityAgeable:
+  readable_name: "Ageable entity"
+- EntityAmbientCreature:
+  readable_name: "Ambient entity"
+- EntityAnimal:
+  readable_name: "Animal entity"
+- EntityAreaEffectCloud:
+  readable_name: "Area of effect cloud"
+- EntityArmorStand:
+  readable_name: "Armor stand"
+- EntityArrow:
+  readable_name: "Arrow"
+- EntityBat:
+  readable_name: "Bat"
+- EntityBee:
+  readable_name: "Bee"
+- EntityBlaze:
+  readable_name: "Blaze"
+- EntityBoat:
+  readable_name: "Boat"
+- EntityCat:
+  readable_name: "Cat"
+- EntityCaveSpider:
+  readable_name: "Cave spider"
+- EntityChicken:
+  readable_name: "Chicken"
+- EntityCod:
+  readable_name: "Cod"
+- EntityCow:
+  readable_name: "Cow"
+- EntityCreature:
+  readable_name: "Creature entity"
+- EntityCreeper:
+  readable_name: "Creeper"
+- EntityDonkey:
+  readable_name: "Donkey"
+- EntityDolphin:
+  readable_name: "Dolphin"
+- EntityDrowned:
+  readable_name: "Drowned"
+- EntityDragon:
+  readable_name: "Dragon"
+- EntityDragonFireball:
+  readable_name: "Dragon fireball"
+- EntityEgg:
+  readable_name: "Egg"
+- EntityElderGuardian:
+  readable_name: "Elder guardian"
+- EntityEnderCrystal:
+  readable_name: "Ender crystal"
+- EntityEnderEye:
+  readable_name: "Eye of ender"
+- EntityEnderman:
+  readable_name: "Enderman"
+- EntityEndermite:
+  readable_name: "Endermite"
+- EntityEnderPearl:
+  readable_name: "Ender pearl"
+- EntityEvoker:
+  readable_name: "Evoker"
+- EntityEvokerFangs:
+  readable_name: "Evoker fangs"
+- EntityExpBottle:
+  readable_name: "Experience bottle"
+- EntityFallingBlock:
+  readable_name: "Falling block"
+- EntityFireball:
+  readable_name: "Fireball"
+- EntityFireworkRocket:
+  readable_name: "Firework rocket"
+- EntityFlying:
+  readable_name: "Flying entity"
+- EntityFox:
+  readable_name: "Fox"
+- EntityGhast:
+  readable_name: "Ghast"
+- EntityGiantZombie:
+  readable_name: "Giant"
+- EntityGolem:
+  readable_name: "Golem entity"
+- EntityGuardian:
+  readable_name: "Guardian"
+- EntityHanging:
+  readable_name: "Hanging entity"
+- EntityHoglin:
+  readable_name: "Hoglin"
+- EntityHorse:
+  readable_name: "Horse"
+- EntityHusk:
+  readable_name: "Husk"
+- EntityIllusionIllager:
+  readable_name: "Illusioner"
+- EntityIronGolem:
+  readable_name: "Iron golem"
+- EntityItem:
+  readable_name: "Item"
+- EntityItemFrame:
+  readable_name: "Item frame"
+- EntityGlowItemFrame:
+  readable_name: "Glow item frame"
+- EntityLeashKnot:
+  readable_name: "Leash knot"
+- EntityLightningBolt:
+  readable_name: "Lightning bolt"
+- EntityLiving:
+  readable_name: "Living entity"
+- EntityLlama:
+  readable_name: "Llama"
+- EntityLlamaSpit:
+  readable_name: "Llama spit"
+- EntityMagmaCube:
+  readable_name: "Magma cube"
+- EntityMinecart:
+  readable_name: "Minecart"
+- EntityMinecartChest:
+  readable_name: "Minecart with chest"
+- EntityMinecartCommandBlock:
+  readable_name: "Minecart with command block"
+- EntityMinecartContainer:
+  readable_name: "Minecart with container"
+- EntityMinecartFurnace:
+  readable_name: "Minecart with furnace"
+- EntityMinecartHopper:
+  readable_name: "Minecart with hopper"
+- EntityMinecartMobSpawner:
+  readable_name: "Minecart with spawner"
+- EntityMinecartTNT:
+  readable_name: "Minecart with TNT"
+- EntityMob:
+  readable_name: "Mob entity"
+- EntityMooshroom:
+  readable_name: "Mooshroom"
+- EntityMule:
+  readable_name: "Mule"
+- EntityOcelot:
+  readable_name: "Ocelot"
+- EntityPainting:
+  readable_name: "Painting"
+- EntityPanda:
+  readable_name: "Panda"
+- EntityParrot:
+  readable_name: "Parrot"
+- EntityPig:
+  readable_name: "Pig"
+- EntityPillager:
+  readable_name: "Pillager"
+- EntityPufferfish:
+  readable_name: "Pufferfish"
+- EntityPigZombie:
+  readable_name: "Zombified piglin"
+- EntityPlayer:
+  readable_name: "Player"
+- EntityPlayerMP:
+  readable_name: "Server player"
+- EntityPolarBear:
+  readable_name: "Polar bear"
+- EntityPotion:
+  readable_name: "Potion"
+- EntityRabbit:
+  readable_name: "Rabbit"
+- EntitySalmon:
+  readable_name: "Salmon"
+- EntitySheep:
+  readable_name: "Sheep"
+- EntityShoulderRiding:
+  readable_name: "Shoulder riding entity"
+- EntityShulker:
+  readable_name: "Shulker"
+- EntityShulkerBullet:
+  readable_name: "Shulker bullet"
+- EntitySilverfish:
+  readable_name: "Silverfish"
+- EntitySkeleton:
+  readable_name: "Skeleton"
+- EntitySkeletonHorse:
+  readable_name: "Skeleton horse"
+- EntitySlime:
+  readable_name: "Slime"
+- EntitySmallFireball:
+  readable_name: "Small fireball"
+- EntitySnowball:
+  readable_name: "Snowball"
+- EntitySnowman:
+  readable_name: "Snow golem"
+- EntitySpectralArrow:
+  readable_name: "Spectral arrow"
+- EntitySpellcasterIllager:
+  readable_name: "Spellcasting illager entity"
+- EntitySpider:
+  readable_name: "Spider"
+- EntitySquid:
+  readable_name: "Squid"
+- EntityGlowSquid:
+  readable_name: "Glow squid"
+- EntityStray:
+  readable_name: "Stray"
+- EntityTraderLlama:
+  readable_name: "Trader llama"
+- EntityTameable:
+  readable_name: "Tameable entity"
+- EntityThrowable:
+  readable_name: "Throwable entity"
+- EntityTropicalFish:
+  readable_name: "Tropical fish"
+- EntityTurtle:
+  readable_name: "Turtle"
+- EntityTrident:
+  readable_name: "Trident"
+- EntityTNTPrimed:
+  readable_name: "TNT"
+- EntityVex:
+  readable_name: "Vex"
+- EntityVillager:
+  readable_name: "Villager"
+- EntityVindicator:
+  readable_name: "Vindicator"
+- EntityWaterMob:
+  readable_name: "Water mob entity"
+- EntityWanderingTrader:
+  readable_name: "Wandering trader"
+- EntityWitch:
+  readable_name: "Witch"
+- EntityWither:
+  readable_name: "Wither"
+- EntityWitherSkeleton:
+  readable_name: "Wither skeleton"
+- EntityWitherSkull:
+  readable_name: "Wither skull"
+- EntityWolf:
+  readable_name: "Wolf"
+- EntityXPOrb:
+  readable_name: "Experience orb"
+- EntityZombie:
+  readable_name: "Zombie"
+- EntityZombieHorse:
+  readable_name: "Zombie horse"
+- EntityZombieVillager:
+  readable_name: "Zombie villager"
+- EntityPhantom:
+  readable_name: "Phantom"
+- EntityRavager:
+  readable_name: "Ravager"
+- EntityFishHook:
+  readable_name: "Fishing bobber"
+- EntityMonster:
+  readable_name: "Monster entity"
+- EntityPiglin:
+  readable_name: "Piglin"
+- EntityPiglinBrute:
+  readable_name: "Piglin brute"
+- EntityStrider:
+  readable_name: "Strider"
+- EntityZoglin:
+  readable_name: "Zoglin"
+- EntityAxolotl:
+  readable_name: "Axolotl"
+- EntityGoat:
+  readable_name: "Goat"
+- EntityMarker:
+  readable_name: "Marker"

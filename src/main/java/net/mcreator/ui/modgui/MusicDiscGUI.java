@@ -92,20 +92,19 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
 				L10N.t("elementgui.common.event_right_clicked_block"), VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE,
 				Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction/blockstate:blockstate"))
-				.makeReturnValueOptional();
+						"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction/blockstate:blockstate")).makeReturnValueOptional();
 		onEntityHitWith = new ProcedureSelector(this.withEntry("item/when_entity_hit"), mcreator,
 				L10N.t("elementgui.music_disc.event_entity_hitwith"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack"));
 		onItemInInventoryTick = new ProcedureSelector(this.withEntry("item/inventory_tick"), mcreator,
-				L10N.t("elementgui.music_disc.event_inventory"), Dependency
-				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
+				L10N.t("elementgui.music_disc.event_inventory"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
 		onItemInUseTick = new ProcedureSelector(this.withEntry("item/hand_tick"), mcreator,
-				L10N.t("elementgui.music_disc.event_inhand"), Dependency
-				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
+				L10N.t("elementgui.music_disc.event_inhand"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
 		onStoppedUsing = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
-				L10N.t("elementgui.music_disc.event_stopped_using"), Dependency
-				.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
+				L10N.t("elementgui.music_disc.event_stopped_using"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.music_disc.event_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
@@ -121,7 +120,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(description, 16);
 
-		JPanel subpane2 = new JPanel(new GridLayout(6, 2, 45, 8));
+		JPanel subpane2 = new JPanel(new GridLayout(6, 2, 45, 2));
 		subpane2.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -130,8 +129,8 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.label("elementgui.music_disc.music_mono_tip")));
 		subpane2.add(music);
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				L10N.label("elementgui.common.name_in_gui")));
 		subpane2.add(name);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/description"),

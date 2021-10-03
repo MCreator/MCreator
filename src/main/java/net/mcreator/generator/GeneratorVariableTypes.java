@@ -31,6 +31,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class GeneratorVariableTypes {
 
@@ -39,8 +40,8 @@ public class GeneratorVariableTypes {
 	private final Map<VariableType, Map<?, ?>> variableTypesCache = new ConcurrentHashMap<>();
 
 	GeneratorVariableTypes(GeneratorConfiguration generatorConfiguration) {
-		Set<String> fileNames = PluginLoader.INSTANCE
-				.getResources(generatorConfiguration.getGeneratorName() + ".variables", Pattern.compile(".*\\.yaml"));
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources(
+				generatorConfiguration.getGeneratorName() + ".variables", Pattern.compile(".*\\.yaml"));
 
 		for (String res : fileNames) {
 			String variableTypeName = res.split("variables/")[1].replace(".yaml", "");
@@ -103,7 +104,8 @@ public class GeneratorVariableTypes {
 	}
 
 	public Collection<VariableType> getSupportedVariableTypes() {
-		return variableTypesCache.keySet();
+		return variableTypesCache.keySet().stream().filter(this::canBeGlobal).filter(this::canBeLocal)
+				.collect(Collectors.toList());
 	}
 
 }

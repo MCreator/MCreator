@@ -40,8 +40,8 @@ public class DeviceInfo {
 		}
 		this.systemBits = OS.getSystemBits();
 		this.ramAmountMB = (int) (
-				((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean())
-						.getTotalPhysicalMemorySize() / 1048576);
+				((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
+						/ 1048576);
 		this.osName = System.getProperty("os.name");
 		this.jvmVersion = System.getProperty("java.version");
 	}

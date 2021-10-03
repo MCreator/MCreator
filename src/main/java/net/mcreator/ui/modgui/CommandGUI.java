@@ -38,6 +38,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -102,8 +103,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		JPanel enderpanel = new JPanel(new GridLayout(2, 2, 10, 2));
 
-		enderpanel.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("command/name"), L10N.label("elementgui.command.name")));
+		enderpanel.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("command/name"), L10N.label("elementgui.command.name")));
 		enderpanel.add(commandName);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("command/permission_level"),
@@ -133,8 +134,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 				compileNotesPanel);
 		args.setOpaque(false);
 
-		commandName
-				.setValidator(new TextFieldValidator(commandName, L10N.t("elementgui.command.warning.empty_string")));
+		commandName.setValidator(
+				new TextFieldValidator(commandName, L10N.t("elementgui.command.warning.empty_string")));
 		commandName.enableRealtimeValidation();
 
 		page1group.addValidationElement(commandName);

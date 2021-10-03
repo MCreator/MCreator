@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -36,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class Tool extends GeneratableElement
-		implements IItemWithModel, ITabContainedElement, IItemWithTexture {
+		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
 	public String texture;

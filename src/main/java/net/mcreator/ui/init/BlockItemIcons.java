@@ -39,11 +39,11 @@ public class BlockItemIcons {
 
 	public static void init() {
 		ImageIO.setUseCache(false); // we use custom image cache for this
-		Map<String, ImageIcon> tmp = new Reflections("datalists.icons", new ResourcesScanner(), PluginLoader.INSTANCE)
-				.getResources(Pattern.compile(".*\\.png")).parallelStream().collect(Collectors
-						.toMap(resource -> FilenameUtils.removeExtension(FilenameUtils.getName(resource)),
-								resource -> new ImageIcon(Toolkit.getDefaultToolkit()
-										.createImage(PluginLoader.INSTANCE.getResource(resource)))));
+		Map<String, ImageIcon> tmp = new Reflections("datalists.icons", new ResourcesScanner(),
+				PluginLoader.INSTANCE).getResources(Pattern.compile(".*\\.png")).parallelStream().collect(
+				Collectors.toMap(resource -> FilenameUtils.removeExtension(FilenameUtils.getName(resource)),
+						resource -> new ImageIcon(
+								Toolkit.getDefaultToolkit().createImage(PluginLoader.INSTANCE.getResource(resource)))));
 		ImageIO.setUseCache(true);
 		CACHE.putAll(tmp);
 	}
@@ -72,6 +72,7 @@ public class BlockItemIcons {
 		put("Spade", 				"IRON_SHOVEL");
 		put("Hoe", 					"IRON_HOE");
 		put("Shears", 				"SHEARS");
+		put("Fishing rod",			"FISHING_ROD");
 
 		//NewBlockGUI
 		put("pickaxe", 				"IRON_PICKAXE");

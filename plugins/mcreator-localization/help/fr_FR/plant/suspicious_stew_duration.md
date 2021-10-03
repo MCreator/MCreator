@@ -1,0 +1,2 @@
+Ce paramètre détermine la durée de l'effet de la soupe suspecte fabriquée avec cette plante. La valeur est mesuré en 
+ticks pour les effets immédiats (comme la saturation) et en secondes pour les autres.

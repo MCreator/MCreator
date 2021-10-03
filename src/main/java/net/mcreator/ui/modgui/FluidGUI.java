@@ -67,6 +67,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner slopeFindDistance = new JSpinner(new SpinnerNumberModel(4, 1, 16, 1));
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.common.enable");
 	private final DataListComboBox dripParticle = new DataListComboBox(mcreator);
+	private final JSpinner flowStrength = new JSpinner(new SpinnerNumberModel(1, -25, 25, 0.1));
+	private final JComboBox<String> tintType = new JComboBox<>(
+			new String[] { "No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog" });
 
 	private final JSpinner luminosity = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
 	private final JSpinner density = new JSpinner(new SpinnerNumberModel(1000, -100000, 100000, 1));
@@ -90,6 +93,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 1, 9999999, 1));
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JComboBox<String> colorOnMap = new JComboBox<>();
@@ -100,6 +104,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private ProcedureSelector onEntityCollides;
 	private ProcedureSelector onRandomUpdateEvent;
 	private ProcedureSelector onDestroyedByExplosion;
+	private ProcedureSelector flowCondition;
+	private ProcedureSelector beforeReplacingBlock;
 
 	private ProcedureSelector generateCondition;
 
@@ -135,11 +141,19 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onDestroyedByExplosion = new ProcedureSelector(this.withEntry("block/when_destroyed_explosion"), mcreator,
 				L10N.t("elementgui.block.event_on_block_destroyed_by_explosion"),
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
+		flowCondition = new ProcedureSelector(this.withEntry("fluid/flow_condition"), mcreator,
+				L10N.t("elementgui.fluid.event_flow_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate/intostate:blockstate")).setDefaultName(
+				L10N.t("condition.common.no_additional")).makeInline();
+		beforeReplacingBlock = new ProcedureSelector(this.withEntry("fluid/before_replacing_block"), mcreator,
+				L10N.t("elementgui.fluid.event_before_replacing_block"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				"Additional generation condition", VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world"))
-				.setDefaultName(L10N.t("condition.common.no_additional")).makeInline();
+				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
+				L10N.t("condition.common.no_additional")).makeInline();
 
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
@@ -162,7 +176,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
 		destalx.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
 
-		JPanel destal = new JPanel(new GridLayout(8, 2, 5, 2));
+		JPanel destal = new JPanel(new GridLayout(10, 2, 5, 2));
 		destal.setOpaque(false);
 
 		canMultiply.setOpaque(false);
@@ -170,21 +184,26 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		levelDecrease.setOpaque(false);
 		slopeFindDistance.setOpaque(false);
 		spawnParticles.setOpaque(false);
+		flowStrength.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(bucketName, 16);
 		ComponentUtils.deriveFont(specialInfo, 16);
 
-		destal.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.common.name_in_gui")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				L10N.label("elementgui.common.name_in_gui")));
 		destal.add(name);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/type"), L10N.label("elementgui.fluid.type")));
 		destal.add(fluidtype);
 
-		destal.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/flow_rate"), L10N.label("elementgui.fluid.flow_rate")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/flow_rate"),
+				L10N.label("elementgui.fluid.flow_rate")));
 		destal.add(flowRate);
+
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/flow_strength"),
+				L10N.label("elementgui.fluid.flow_strength")));
+		destal.add(flowStrength);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/level_decrease"),
 				L10N.label("elementgui.fluid.level_decrease")));
@@ -194,8 +213,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.slope_find_distance")));
 		destal.add(slopeFindDistance);
 
-		destal.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/can_multiply"), L10N.label("elementgui.fluid.can_multiply")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/can_multiply"),
+				L10N.label("elementgui.fluid.can_multiply")));
 		destal.add(canMultiply);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/spawn_drip_particles"),
@@ -206,10 +225,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.drip_particle")));
 		destal.add(dripParticle);
 
-		destal.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.fluid.fluid_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/tint_type"),
+				L10N.label("elementgui.fluid.tint_type")));
+		destal.add(tintType);
 
 		JPanel bucketProperties = new JPanel(new GridLayout(7, 2, 5, 2));
 		bucketProperties.setOpaque(false);
@@ -235,12 +253,12 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.common.creative_tab")));
 		bucketProperties.add(creativeTab);
 
-		bucketProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/empty_sound"), L10N.label("elementgui.fluid.empty_sound")));
+		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/empty_sound"),
+				L10N.label("elementgui.fluid.empty_sound")));
 		bucketProperties.add(emptySound);
 
-		bucketProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		bucketProperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
 		bucketProperties.add(rarity);
 
 		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
@@ -263,8 +281,16 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.bucket_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent fluidBucketProperties = PanelUtils
-				.westAndEastElement(destal, PanelUtils.pullElementUp(bucketProperties));
+		JComponent destala = PanelUtils.northAndCenterElement(destal,
+				PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), flowCondition), 0, 2);
+
+		destala.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.fluid.fluid_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		JComponent fluidBucketProperties = PanelUtils.westAndEastElement(destala,
+				PanelUtils.pullElementUp(bucketProperties));
 		fluidBucketProperties.setOpaque(false);
 		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(destalx, fluidBucketProperties)));
 
@@ -272,38 +298,43 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		JPanel blockProperties = new JPanel(new GridLayout(7, 2, 20, 2));
+		JPanel blockProperties = new JPanel(new GridLayout(8, 2, 20, 2));
 		blockProperties.setOpaque(false);
 
 		resistance.setOpaque(false);
 		luminance.setOpaque(false);
 		lightOpacity.setOpaque(false);
 		emissiveRendering.setOpaque(false);
+		tickRate.setOpaque(false);
 		flammability.setOpaque(false);
 		fireSpreadSpeed.setOpaque(false);
 
-		blockProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/resistance"), L10N.label("elementgui.common.resistance")));
+		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/resistance"),
+				L10N.label("elementgui.common.resistance")));
 		blockProperties.add(resistance);
 
-		blockProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/luminance"), L10N.label("elementgui.common.luminance")));
+		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
+				L10N.label("elementgui.common.luminance")));
 		blockProperties.add(luminance);
 
 		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/light_opacity"),
 				L10N.label("elementgui.common.light_opacity")));
 		blockProperties.add(lightOpacity);
 
-		blockProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/flammability"), L10N.label("elementgui.block.flammability")));
+		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_rate"),
+				L10N.label("elementgui.common.tick_rate")));
+		blockProperties.add(tickRate);
+
+		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
+				L10N.label("elementgui.block.flammability")));
 		blockProperties.add(flammability);
 
 		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
 				L10N.label("elementgui.common.fire_spread_speed")));
 		blockProperties.add(fireSpreadSpeed);
 
-		blockProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("block/color_on_map"), L10N.label("elementgui.block.color_on_map")));
+		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/color_on_map"),
+				L10N.label("elementgui.block.color_on_map")));
 		blockProperties.add(colorOnMap);
 
 		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
@@ -328,24 +359,24 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		ComponentUtils.deriveFont(viscosity, 16);
 		ComponentUtils.deriveFont(temperature, 16);
 
-		forgeProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/luminosity"), L10N.label("elementgui.fluid.luminosity")));
+		forgeProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/luminosity"),
+				L10N.label("elementgui.fluid.luminosity")));
 		forgeProperties.add(luminosity);
 
-		forgeProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/density"), L10N.label("elementgui.fluid.density")));
+		forgeProperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("fluid/density"), L10N.label("elementgui.fluid.density")));
 		forgeProperties.add(density);
 
-		forgeProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/viscosity"), L10N.label("elementgui.fluid.viscosity")));
+		forgeProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/viscosity"),
+				L10N.label("elementgui.fluid.viscosity")));
 		forgeProperties.add(viscosity);
 
-		forgeProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/temperature"), L10N.label("elementgui.fluid.temperature")));
+		forgeProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/temperature"),
+				L10N.label("elementgui.fluid.temperature")));
 		forgeProperties.add(temperature);
 
-		forgeProperties.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("fluid/is_gas"), L10N.label("elementgui.fluid.is_gas")));
+		forgeProperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("fluid/is_gas"), L10N.label("elementgui.fluid.is_gas")));
 		forgeProperties.add(PanelUtils.centerInPanel(isGas));
 
 		forgeProperties.setBorder(BorderFactory.createTitledBorder(
@@ -353,8 +384,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.modded_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent properties = PanelUtils
-				.westAndEastElement(blockProperties, PanelUtils.pullElementUp(forgeProperties));
+		JComponent properties = PanelUtils.westAndEastElement(blockProperties,
+				PanelUtils.pullElementUp(forgeProperties));
 		properties.setOpaque(false);
 
 		pane2.setOpaque(false);
@@ -363,7 +394,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		JPanel events = new JPanel();
 		events.setLayout(new BoxLayout(events, BoxLayout.PAGE_AXIS));
-		JPanel events2 = new JPanel(new GridLayout(2, 3, 6, 8));
+		JPanel events2 = new JPanel(new GridLayout(3, 3, 6, 8));
 		events2.setOpaque(false);
 		events2.add(onBlockAdded);
 		events2.add(onNeighbourChanges);
@@ -371,6 +402,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		events2.add(onEntityCollides);
 		events2.add(onRandomUpdateEvent);
 		events2.add(onDestroyedByExplosion);
+		events2.add(beforeReplacingBlock);
+		events2.add(new JLabel());
+		events2.add(new JLabel());
 		events.add(PanelUtils.join(events2));
 		events.setOpaque(false);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
@@ -432,6 +466,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onEntityCollides.refreshListKeepSelected();
 		onRandomUpdateEvent.refreshListKeepSelected();
 		onDestroyedByExplosion.refreshListKeepSelected();
+		flowCondition.refreshListKeepSelected();
+		beforeReplacingBlock.refreshListKeepSelected();
 
 		generateCondition.refreshListKeepSelected();
 
@@ -460,6 +496,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		slopeFindDistance.setValue(fluid.slopeFindDistance);
 		spawnParticles.setSelected(fluid.spawnParticles);
 		dripParticle.setSelectedItem(fluid.dripParticle);
+		tintType.setSelectedItem(fluid.tintType);
+		flowStrength.setValue(fluid.flowStrength);
 		luminosity.setValue(fluid.luminosity);
 		density.setValue(fluid.density);
 		viscosity.setValue(fluid.viscosity);
@@ -475,6 +513,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		luminance.setValue(fluid.luminance);
 		lightOpacity.setValue(fluid.lightOpacity);
 		emissiveRendering.setSelected(fluid.emissiveRendering);
+		tickRate.setValue(fluid.tickRate);
 		flammability.setValue(fluid.flammability);
 		fireSpreadSpeed.setValue(fluid.fireSpreadSpeed);
 		colorOnMap.setSelectedItem(fluid.colorOnMap);
@@ -485,6 +524,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onEntityCollides.setSelectedProcedure(fluid.onEntityCollides);
 		onRandomUpdateEvent.setSelectedProcedure(fluid.onRandomUpdateEvent);
 		onDestroyedByExplosion.setSelectedProcedure(fluid.onDestroyedByExplosion);
+		flowCondition.setSelectedProcedure(fluid.flowCondition);
+		beforeReplacingBlock.setSelectedProcedure(fluid.beforeReplacingBlock);
 		fluidtype.setSelectedItem(fluid.type);
 		frequencyOnChunks.setValue(fluid.frequencyOnChunks);
 		generateCondition.setSelectedProcedure(fluid.generateCondition);
@@ -512,6 +553,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.slopeFindDistance = (int) slopeFindDistance.getValue();
 		fluid.spawnParticles = spawnParticles.isSelected();
 		fluid.dripParticle = new Particle(mcreator.getWorkspace(), dripParticle.getSelectedItem());
+		fluid.tintType = (String) tintType.getSelectedItem();
+		fluid.flowStrength = (double) flowStrength.getValue();
 		fluid.luminosity = (int) luminosity.getValue();
 		fluid.density = (int) density.getValue();
 		fluid.viscosity = (int) viscosity.getValue();
@@ -526,6 +569,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.luminance = (int) luminance.getValue();
 		fluid.lightOpacity = (int) lightOpacity.getValue();
 		fluid.emissiveRendering = emissiveRendering.isSelected();
+		fluid.tickRate = (int) tickRate.getValue();
 		fluid.flammability = (int) flammability.getValue();
 		fluid.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 		fluid.colorOnMap = (String) colorOnMap.getSelectedItem();
@@ -535,6 +579,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.onEntityCollides = onEntityCollides.getSelectedProcedure();
 		fluid.onRandomUpdateEvent = onRandomUpdateEvent.getSelectedProcedure();
 		fluid.onDestroyedByExplosion = onDestroyedByExplosion.getSelectedProcedure();
+		fluid.flowCondition = flowCondition.getSelectedProcedure();
+		fluid.beforeReplacingBlock = beforeReplacingBlock.getSelectedProcedure();
 		fluid.type = (String) fluidtype.getSelectedItem();
 		fluid.spawnWorldTypes = spawnWorldTypes.getListElements();
 		fluid.restrictionBiomes = restrictionBiomes.getListElements();

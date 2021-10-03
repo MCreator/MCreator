@@ -32,13 +32,13 @@ public class FolderSyncHandler {
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public static boolean mergeFoldersRecursively(FolderElement local, FolderElement remote, FolderElement base,
 			boolean dryRun) {
-		DiffResult<FolderElement> folderElementListDiffLocalToBase = ListDiff
-				.getListDiff(base.getDirectFolderChildren(), local.getDirectFolderChildren());
-		DiffResult<FolderElement> folderElementListDiffRemoteToBase = ListDiff
-				.getListDiff(base.getDirectFolderChildren(), remote.getDirectFolderChildren());
+		DiffResult<FolderElement> folderElementListDiffLocalToBase = ListDiff.getListDiff(
+				base.getDirectFolderChildren(), local.getDirectFolderChildren());
+		DiffResult<FolderElement> folderElementListDiffRemoteToBase = ListDiff.getListDiff(
+				base.getDirectFolderChildren(), remote.getDirectFolderChildren());
 
-		Set<MergeHandle<FolderElement>> conflictingFolderElements = DiffResultToBaseConflictFinder
-				.findConflicts(folderElementListDiffLocalToBase, folderElementListDiffRemoteToBase);
+		Set<MergeHandle<FolderElement>> conflictingFolderElements = DiffResultToBaseConflictFinder.findConflicts(
+				folderElementListDiffLocalToBase, folderElementListDiffRemoteToBase);
 
 		if (!conflictingFolderElements.isEmpty())
 			return false;
@@ -47,19 +47,19 @@ public class FolderSyncHandler {
 		Set<FolderElement> mergedChildren = new HashSet<>(base.getDirectFolderChildren());
 
 		// process "mergable changes" for the current tree depth
-		for (FolderElement removedFolderElement : folderElementListDiffLocalToBase.getRemoved())
+		for (FolderElement removedFolderElement : folderElementListDiffLocalToBase.removed())
 			if (MergeHandle.isElementNotInMergeHandleCollection(conflictingFolderElements, removedFolderElement))
 				mergedChildren.remove(removedFolderElement);
 
-		for (FolderElement removedFolderElement : folderElementListDiffRemoteToBase.getRemoved())
+		for (FolderElement removedFolderElement : folderElementListDiffRemoteToBase.removed())
 			if (MergeHandle.isElementNotInMergeHandleCollection(conflictingFolderElements, removedFolderElement))
 				mergedChildren.remove(removedFolderElement);
 
-		for (FolderElement addedFolderElement : folderElementListDiffLocalToBase.getAdded())
+		for (FolderElement addedFolderElement : folderElementListDiffLocalToBase.added())
 			if (MergeHandle.isElementNotInMergeHandleCollection(conflictingFolderElements, addedFolderElement))
 				mergedChildren.add(addedFolderElement);
 
-		for (FolderElement addedFolderElement : folderElementListDiffRemoteToBase.getAdded())
+		for (FolderElement addedFolderElement : folderElementListDiffRemoteToBase.added())
 			if (MergeHandle.isElementNotInMergeHandleCollection(conflictingFolderElements, addedFolderElement))
 				mergedChildren.add(addedFolderElement);
 

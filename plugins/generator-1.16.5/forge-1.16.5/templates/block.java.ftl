@@ -150,6 +150,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	public static class CustomBlock extends
 			<#if data.hasGravity>
 				FallingBlock
+			<#elseif data.blockBase?has_content && data.blockBase == "Button">
+			    <#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>Wood<#else>Stone</#if>ButtonBlock
 			<#elseif data.blockBase?has_content>
 				${data.blockBase}Block
 			<#else>
@@ -468,7 +470,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
         </#if>
 
-		<#if data.canProvidePower>
+		<#if data.canProvidePower && data.emittedRedstonePower??>
 		@Override public boolean canProvidePower(BlockState state) {
 			return true;
 		}
@@ -743,6 +745,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			</#if>
 
 			<#if hasProcedure(data.onRightClicked)>
+				double hitX = hit.getHitVec().x;
+				double hitY = hit.getHitVec().y;
+				double hitZ = hit.getHitVec().z;
 				Direction direction = hit.getFace();
 				<#if hasReturnValue(data.onRightClicked)>
 				ActionResultType result = <@procedureOBJToActionResultTypeCode data.onRightClicked/>;

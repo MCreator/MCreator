@@ -26,5 +26,6 @@
     }
   ],
   "cancelable": "true",
-  "has_result": "true"
+  "has_result": "true",
+  "side": "server"
 }

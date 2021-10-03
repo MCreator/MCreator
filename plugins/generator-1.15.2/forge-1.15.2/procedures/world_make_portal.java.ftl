@@ -1,1 +1,0 @@
-if(world instanceof World) ${(field$dimension.toString().replace("CUSTOM:", ""))}Dimension.portal.portalSpawn(world.getWorld(), new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}));

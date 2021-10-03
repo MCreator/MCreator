@@ -33,8 +33,8 @@ import java.awt.*;
 public class UpdatePluginDialog {
 
 	public static void showPluginUpdateDialogIfUpdatesExist(Window parent) {
-		if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPluginUpdates && !PluginLoader.INSTANCE
-				.getPluginUpdates().isEmpty()) {
+		if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPluginUpdates
+				&& !PluginLoader.INSTANCE.getPluginUpdates().isEmpty()) {
 			JPanel pan = new JPanel(new BorderLayout(10, 15));
 
 			JPanel plugins = new JPanel(new GridLayout(0, 1, 10, 10));
@@ -45,12 +45,12 @@ public class UpdatePluginDialog {
 
 			for (PluginUpdateInfo pluginUpdateInfo : PluginLoader.INSTANCE.getPluginUpdates()) {
 				JLabel label = L10N.label("dialog.plugin_update_notify.version_message",
-						pluginUpdateInfo.getPlugin().getInfo().getName(),
-						pluginUpdateInfo.getPlugin().getInfo().getVersion(), pluginUpdateInfo.getNewVersion());
+						pluginUpdateInfo.plugin().getInfo().getName(), pluginUpdateInfo.plugin().getInfo().getVersion(),
+						pluginUpdateInfo.newVersion());
 
 				JButton update = L10N.button("dialog.plugin_update_notify.update");
 				update.addActionListener(e -> DesktopUtils.browseSafe(
-						MCreatorApplication.SERVER_DOMAIN + "/node/" + pluginUpdateInfo.getPlugin().getInfo()
+						MCreatorApplication.SERVER_DOMAIN + "/node/" + pluginUpdateInfo.plugin().getInfo()
 								.getPluginPageID()));
 
 				plugins.add(PanelUtils.westAndEastElement(label, update));

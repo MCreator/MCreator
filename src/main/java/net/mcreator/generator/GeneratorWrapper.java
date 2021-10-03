@@ -19,7 +19,6 @@
 package net.mcreator.generator;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.RecipeType;
 import net.mcreator.element.parts.Procedure;
@@ -79,6 +78,24 @@ import java.util.stream.Collectors;
 		}
 	}
 
+	public String getRegistryNameFromFullName(String elementName) {
+		try {
+			return generator.getWorkspace().getModElementByName(getElementPlainName(elementName)).getRegistryName();
+		} catch (Exception e) {
+			generator.getLogger().warn("Failed to determine recipe type for: " + elementName, e);
+			return NameMapper.UNKNOWN_ELEMENT;
+		}
+	}
+
+	public boolean isBlock(String elementName) {
+		String ext = getElementExtension(elementName);
+		if (ext.equals("helmet") || ext.equals("body") || ext.equals("legs") || ext.equals("boots") || ext.equals(
+				"bucket"))
+			return false;
+
+		return this.getRecipeElementType(elementName) == RecipeType.BLOCK;
+	}
+
 	public boolean isRecipeTypeBlockOrBucket(String elementName) {
 		RecipeType recipeType = this.getRecipeElementType(elementName);
 		return recipeType == RecipeType.BLOCK || recipeType == RecipeType.BUCKET;
@@ -113,8 +130,7 @@ import java.util.stream.Collectors;
 		ModElement element = generator.getWorkspace().getModElementByName(modElement);
 		if (element != null) {
 			// check if we are dealing with namespaced element
-			if (NamespacedGeneratableElement.class.isAssignableFrom(
-					ModElementTypeRegistry.REGISTRY.get(element.getType()).getModElementStorageClass())) {
+			if (NamespacedGeneratableElement.class.isAssignableFrom(element.getType().getModElementStorageClass())) {
 				GeneratableElement namespacedgeneratableemenet = element.getGeneratableElement();
 				if (namespacedgeneratableemenet instanceof NamespacedGeneratableElement) {
 					return ((NamespacedGeneratableElement) namespacedgeneratableemenet).getResourceLocation();

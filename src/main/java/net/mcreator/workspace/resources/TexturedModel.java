@@ -53,12 +53,12 @@ public class TexturedModel extends Model {
 	public static Map<String, TextureMapping> getTextureMappingsForModel(Model model) {
 		try {
 			if (model.type == Type.JSON && model.getFiles().length == 2) {
-				TextureMappings mappings = gson
-						.fromJson(FileIO.readFileToString(model.getFiles()[1]), TextureMappings.class);
+				TextureMappings mappings = gson.fromJson(FileIO.readFileToString(model.getFiles()[1]),
+						TextureMappings.class);
 				return mappings.mappings;
 			} else if (model.type == Type.OBJ && model.getFiles().length == 3) {
-				TextureMappings mappings = gson
-						.fromJson(FileIO.readFileToString(model.getFiles()[2]), TextureMappings.class);
+				TextureMappings mappings = gson.fromJson(FileIO.readFileToString(model.getFiles()[2]),
+						TextureMappings.class);
 				return mappings.mappings;
 			}
 		} catch (Exception ignored) {

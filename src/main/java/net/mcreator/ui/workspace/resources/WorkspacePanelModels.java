@@ -240,8 +240,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		Model model = modelList.getSelectedValue();
 		Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(model);
 		if (textureMappingMap != null) {
-			textureMappingMap = new TextureMappingDialog(textureMappingMap)
-					.openMappingDialog(workspacePanel.getMcreator(), null, model.getType() == Model.Type.JSON);
+			textureMappingMap = new TextureMappingDialog(textureMappingMap).openMappingDialog(
+					workspacePanel.getMcreator(), null, model.getType() == Model.Type.JSON);
 			if (textureMappingMap != null) {
 				String data = TexturedModel.getJSONForTextureMapping(textureMappingMap);
 				FileIO.writeStringToFile(data, new File(workspacePanel.getMcreator().getFolderManager().getModelsDir(),
@@ -282,7 +282,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		}
 
 		@Override public Model getElementAt(int index) {
-			if (index < filterItems.size())
+			if (!filterItems.isEmpty() && index < filterItems.size())
 				return filterItems.get(index);
 			else
 				return null;

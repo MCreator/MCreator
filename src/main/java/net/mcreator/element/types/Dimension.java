@@ -18,19 +18,24 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Dimension extends GeneratableElement implements ITabContainedElement {
+@SuppressWarnings("unused") public class Dimension extends GeneratableElement
+		implements ICommonType, ITabContainedElement {
 
 	public List<BiomeEntry> biomesInDimension;
 
@@ -86,6 +91,13 @@ import java.util.List;
 
 	@Override public TabEntry getCreativeTab() {
 		return igniterTab;
+	}
+
+	@Override public Collection<BaseType> getBaseTypesProvided() {
+		if (enablePortal)
+			return List.of(BaseType.BLOCK, BaseType.ITEM);
+		else
+			return Collections.emptyList();
 	}
 
 }

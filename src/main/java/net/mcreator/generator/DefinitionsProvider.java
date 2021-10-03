@@ -20,7 +20,9 @@ package net.mcreator.generator;
 
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
+import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import org.apache.logging.log4j.LogManager;
@@ -30,16 +32,19 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-class DefinitionsProvider {
+public class DefinitionsProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Definition Loader");
 
-	private final Map<ModElementType, Map<?, ?>> cache = new ConcurrentHashMap<>();
+	private final Map<ModElementType<?>, Map<?, ?>> cache = new ConcurrentHashMap<>();
 
-	DefinitionsProvider(String generatorName) {
-		for (ModElementType type : ModElementType.values()) {
+	private final Map<BaseType, Map<?, ?>> global_cache = new ConcurrentHashMap<>();
+
+	public DefinitionsProvider(String generatorName) {
+		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
-					"/" + generatorName + "/" + type.name().toLowerCase(Locale.ENGLISH) + ".definition.yaml");
+					"/" + generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH)
+							+ ".definition.yaml");
 
 			if (config.equals("")) // definition not specified
 				continue;
@@ -48,14 +53,33 @@ class DefinitionsProvider {
 			try {
 				cache.put(type, new ConcurrentHashMap<>((Map<?, ?>) reader.read())); // add definition to the cache
 			} catch (YamlException e) {
-				LOG.error(e.getMessage(), e);
-				LOG.info("[" + generatorName + "] Error: " + e.getMessage());
+				LOG.error("[" + generatorName + "] Error: " + e.getMessage(), e);
+			}
+		}
+
+		for (BaseType type : BaseType.values()) {
+			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
+					"/" + generatorName + "/common." + type.name().toLowerCase(Locale.ENGLISH) + "s.yaml");
+
+			if (config.equals("")) // definition not specified
+				continue;
+
+			YamlReader reader = new YamlReader(config);
+			try {
+				global_cache.put(type,
+						new ConcurrentHashMap<>((Map<?, ?>) reader.read())); // add definition to the cache
+			} catch (YamlException e) {
+				LOG.info("[" + generatorName + "] Error: " + e.getMessage(), e);
 			}
 		}
 	}
 
-	Map<?, ?> getModElementDefinition(ModElementType elementType) {
+	public Map<?, ?> getModElementDefinition(ModElementType<?> elementType) {
 		return cache.get(elementType);
+	}
+
+	public Map<?, ?> getBaseTypeDefinition(BaseType baseType) {
+		return global_cache.get(baseType);
 	}
 
 }

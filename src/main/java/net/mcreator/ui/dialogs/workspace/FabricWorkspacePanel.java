@@ -75,8 +75,8 @@ public class FabricWorkspacePanel extends AbstractWorkspacePanel {
 		Generator.GENERATOR_CACHE.values().stream().filter(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.FABRIC)
 				.forEach(workspaceDialogPanel.generator::addItem);
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration
-				.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FABRIC);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FABRIC);
 		workspaceDialogPanel.generator.setSelectedItem(generatorConfiguration);
 	}
 }

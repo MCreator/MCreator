@@ -34,7 +34,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class WorkspaceGeneratorSetupDialog {
@@ -66,7 +65,7 @@ public class WorkspaceGeneratorSetupDialog {
 				try {
 					GradleDaemonUtils.stopAllDaemons(m.getWorkspace());
 					p20.ok();
-				} catch (IOException | TimeoutException | InterruptedException e) {
+				} catch (IOException | InterruptedException e) {
 					LOG.warn("Failed to stop Gradle daemons", e);
 					p20.warn();
 				}
@@ -80,7 +79,7 @@ public class WorkspaceGeneratorSetupDialog {
 
 				m.getGradleConsole().exec(m.getGeneratorConfiguration().getGradleTaskFor("setup_task"), taskResult -> {
 					m.getGradleConsole().setGradleSetupTaskRunningFlag(false);
-					if (taskResult.getStatusByMCreator() == GradleErrorCodes.STATUS_OK) {
+					if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
 						p2.ok();
 						dial.refreshDisplay();
 
@@ -125,7 +124,8 @@ public class WorkspaceGeneratorSetupDialog {
 			} catch (Exception e) {
 				LOG.error(L10N.t("dialog.setup_workspace.step.failed_gradle_caches"), e);
 				p3.err();
-				showSetupFailedMessage(dial, m, L10N.t("dialog.setup_workspace.step.failed_build_caches") + e.getMessage());
+				showSetupFailedMessage(dial, m,
+						L10N.t("dialog.setup_workspace.step.failed_build_caches") + e.getMessage());
 			}
 		}).start();
 	}
@@ -135,9 +135,12 @@ public class WorkspaceGeneratorSetupDialog {
 
 		Object[] options = { L10N.t("dialog.setup_workspace.step.workspace_setup_rerun"),
 				L10N.t("dialog.setup_workspace.step.workspace_setup_openpref"),
-				L10N.t("dialog.setup_workspace.step.workspace_setup_copyclipboard"), L10N.t("dialog.setup_workspace.step.workspace_setup_close") };
-		int action = JOptionPane.showOptionDialog(m, L10N.t("dialog.setup_workspace.step.workspace_setup_fail")
-						+ (s != null ? L10N.t("dialog.setup_workspace.step.workspace_setup_fail_additionalinfo") + s : "") + "<br><br>", L10N.t("dialog.setup_workspace.step.workspace_setup_fail_title"),
+				L10N.t("dialog.setup_workspace.step.workspace_setup_copyclipboard"),
+				L10N.t("dialog.setup_workspace.step.workspace_setup_close") };
+		int action = JOptionPane.showOptionDialog(m,
+				L10N.t("dialog.setup_workspace.step.workspace_setup_fail") + (s != null ?
+						L10N.t("dialog.setup_workspace.step.workspace_setup_fail_additionalinfo") + s :
+						"") + "<br><br>", L10N.t("dialog.setup_workspace.step.workspace_setup_fail_title"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 		if (action == 0) {
 			runSetup(m, false);

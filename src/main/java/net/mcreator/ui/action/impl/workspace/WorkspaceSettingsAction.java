@@ -19,6 +19,7 @@
 package net.mcreator.ui.action.impl.workspace;
 
 import net.mcreator.generator.Generator;
+import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTokens;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.io.FileIO;
@@ -32,16 +33,23 @@ import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
+import net.mcreator.vcs.diff.DiffResult;
+import net.mcreator.vcs.diff.ListDiff;
+import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 
+import javax.swing.*;
 import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class WorkspaceSettingsAction extends GradleAction {
 
 	public WorkspaceSettingsAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.workspace.settings"), e -> {
-			WorkspaceSettingsChange change = WorkspaceDialogs
-					.workspaceSettings(actionRegistry.getMCreator(), actionRegistry.getMCreator().getWorkspace());
+			WorkspaceSettingsChange change = WorkspaceDialogs.workspaceSettings(actionRegistry.getMCreator(),
+					actionRegistry.getMCreator().getWorkspace());
+
 			actionRegistry.getMCreator().getWorkspace().setWorkspaceSettings(change.workspaceSettings);
 
 			refactorWorkspace(actionRegistry.getMCreator(), change);
@@ -77,13 +85,13 @@ public class WorkspaceSettingsAction extends GradleAction {
 				originalWorkspaceFile.delete();
 
 				// refactor assets folder if it contains modid
-				if (mcreator.getGeneratorConfiguration().getModAssetsRoot() != null && mcreator
-						.getGeneratorConfiguration().getModAssetsRoot().contains("@modid")) {
-					File originalAssetsFolder = new File(GeneratorTokens
-							.replaceTokens(mcreator.getWorkspace(), change.oldSettings,
+				if (mcreator.getGeneratorConfiguration().getModAssetsRoot() != null
+						&& mcreator.getGeneratorConfiguration().getModAssetsRoot().contains("@modid")) {
+					File originalAssetsFolder = new File(
+							GeneratorTokens.replaceTokens(mcreator.getWorkspace(), change.oldSettings,
 									mcreator.getGeneratorConfiguration().getModAssetsRoot()));
-					File newAssetsFolder = new File(GeneratorTokens
-							.replaceTokens(mcreator.getWorkspace(), change.workspaceSettings,
+					File newAssetsFolder = new File(
+							GeneratorTokens.replaceTokens(mcreator.getWorkspace(), change.workspaceSettings,
 									mcreator.getGeneratorConfiguration().getModAssetsRoot()));
 
 					FileIO.copyDirectory(originalAssetsFolder, newAssetsFolder);
@@ -91,13 +99,13 @@ public class WorkspaceSettingsAction extends GradleAction {
 				}
 
 				// refactor data folder if it contains modid
-				if (mcreator.getGeneratorConfiguration().getModDataRoot() != null && mcreator
-						.getGeneratorConfiguration().getModDataRoot().contains("@modid")) {
-					File originalDataFolder = new File(GeneratorTokens
-							.replaceTokens(mcreator.getWorkspace(), change.oldSettings,
+				if (mcreator.getGeneratorConfiguration().getModDataRoot() != null
+						&& mcreator.getGeneratorConfiguration().getModDataRoot().contains("@modid")) {
+					File originalDataFolder = new File(
+							GeneratorTokens.replaceTokens(mcreator.getWorkspace(), change.oldSettings,
 									mcreator.getGeneratorConfiguration().getModDataRoot()));
-					File newDataFolder = new File(GeneratorTokens
-							.replaceTokens(mcreator.getWorkspace(), change.workspaceSettings,
+					File newDataFolder = new File(
+							GeneratorTokens.replaceTokens(mcreator.getWorkspace(), change.workspaceSettings,
 									mcreator.getGeneratorConfiguration().getModDataRoot()));
 
 					FileIO.copyDirectory(originalDataFolder, newDataFolder);
@@ -121,6 +129,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 			// handle change of generator in a different manner
 			if (change.generatorchanged) {
+				// Model.getJavaModelKeys
 				ProgressDialog dial = new ProgressDialog(mcreator,
 						L10N.t("dialog.workspace.settings.workspace_switch.title"));
 				Thread t = new Thread(() -> {
@@ -144,6 +153,28 @@ public class WorkspaceSettingsAction extends GradleAction {
 					dial.hideAll();
 
 					WorkspaceGeneratorSetupDialog.runSetup(mcreator, false);
+
+					// check the Java models situation and warn the user if needed
+					try {
+						if (Generator.GENERATOR_CACHE.get(change.workspaceSettings.getCurrentGenerator())
+								.getGeneratorStats().getBaseCoverageInfo().get("model_java")
+								!= GeneratorStats.CoverageStatus.NONE) {
+							List<Model> javaModelsOld = Model.getJavaModels(mcreator.getWorkspace());
+							List<Model> javaModelsNew = Model.getJavaModels(mcreator.getWorkspace());
+
+							DiffResult<Model> diffResult = ListDiff.getListDiff(javaModelsOld, javaModelsNew);
+
+							if (!diffResult.removed().isEmpty()) {
+								JOptionPane.showMessageDialog(mcreator,
+										L10N.t("dialog.workspace.version_switch.java_model_warning",
+												diffResult.removed().stream().map(Model::getReadableName)
+														.collect(Collectors.joining(", ")).trim()),
+										L10N.t("dialog.workspace.version_switch.java_model_warning.title"),
+										JOptionPane.WARNING_MESSAGE);
+							}
+						}
+					} catch (Exception ignored) {
+					}
 
 					// we need to regenerate the whole code after new generator is selected, no need to reload gradle caches as runSetup already did this
 					RegenerateCodeAction.regenerateCode(mcreator, true, true);

@@ -23,6 +23,7 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
+import net.mcreator.ui.action.impl.gradle.BuildWorkspaceAction;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JModElementProgressPanel;
 import net.mcreator.ui.component.UnsupportedComponent;
@@ -30,7 +31,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -87,7 +87,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0 && modIcon.getIconHeight() > 0
 				&& modIcon != MCItem.DEFAULT_ICON)
 			return modIcon;
-		return TiledImageCache.getModTypeIcon(modElement.getType());
+		return modElement.getType().getIcon();
 	}
 
 	@Override public ViewBase showView() {
@@ -247,9 +247,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			toolBar.setOpaque(false);
 			toolBar.add(saveOnly);
 			toolBar.add(save);
-			add("North", PanelUtils
-					.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true, false,
-							false));
+			add("North",
+					PanelUtils.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true,
+							false, false));
 
 			if (wrapInScrollpane) {
 				JScrollPane splitScroll = new JScrollPane(split);
@@ -295,9 +295,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			toolBar.add(saveOnly);
 			toolBar.add(save);
 
-			add("North", PanelUtils
-					.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true, false,
-							false));
+			add("North",
+					PanelUtils.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true,
+							false, false));
 
 			if (wrapInScrollpane) {
 				JScrollPane splitScroll = new JScrollPane(new ArrayList<>(pages.values()).get(0));
@@ -360,23 +360,18 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			Field[] fields = getClass().getDeclaredFields();
 			for (Field field : fields) {
 				if (Component.class.isAssignableFrom(field.getType())) {
-					if (!exclusions.contains(field.getName())) {
-						if (exclusions.contains(field.getName())) {
-							try {
-								field.setAccessible(true);
-								Component obj = (Component) field.get(this);
+					if (exclusions.contains(field.getName())) {
+						try {
+							field.setAccessible(true);
+							Component obj = (Component) field.get(this);
 
-								Container parent = obj.getParent();
-								int index = Arrays.asList(parent.getComponents()).indexOf(obj);
-								parent.remove(index);
-								parent.add(new UnsupportedComponent(obj), index);
-							} catch (IllegalAccessException e) {
-								LOG.warn("Failed to access field", e);
-							}
+							Container parent = obj.getParent();
+							int index = Arrays.asList(parent.getComponents()).indexOf(obj);
+							parent.remove(index);
+							parent.add(new UnsupportedComponent(obj), index);
+						} catch (IllegalAccessException e) {
+							LOG.warn("Failed to access field", e);
 						}
-					} else {
-						LOG.warn(field.getName()
-								+ " can not be used in both inclusions and exclusions fields at the same time. The field will be enabled.");
 					}
 				}
 			}
@@ -410,15 +405,16 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private void finishModCreation(boolean closeTab) {
 		GE element = getElementFromGUI();
 
+		// if new element, and if we are not in the root folder, specify the folder of the mod element
+		if (!editingMode && !mcreator.mv.currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
+			modElement.setParentFolder(mcreator.mv.currentFolder);
+
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed
 		// add it before generating so all references are loaded
 		mcreator.getWorkspace().addModElement(modElement);
 
 		// we perform any custom defined before the generatable element is generated
 		beforeGeneratableElementGenerated();
-
-		// generate mod element code
-		mcreator.getGenerator().generateElement(element);
 
 		// save custom mod element (preview) picture if it has one
 		mcreator.getModElementManager().storeModElementPicture(element);
@@ -430,9 +426,15 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// we perform any custom defined after all other operations are complete
 		afterGeneratableElementStored();
 
+		// generate mod base as it may be needed
+		mcreator.getGenerator().generateBase();
+
+		// generate mod element code
+		mcreator.getGenerator().generateElement(element);
+
 		// build if selected and needed
 		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
-				.usesGeneratableElementJava(element))
+				.requiresElementGradleBuild(element))
 			mcreator.actionRegistry.buildWorkspace.doAction();
 
 		if (this.tabIn != null && closeTab)

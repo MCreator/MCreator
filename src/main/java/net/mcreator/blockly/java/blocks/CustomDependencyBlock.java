@@ -22,6 +22,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -53,8 +54,7 @@ public class CustomDependencyBlock implements IBlockGenerator {
 
 			master.append("(").append(element.getTextContent()).append(")");
 		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"Custom dependency block is not well defined!"));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.custom_dependency")));
 		}
 	}
 

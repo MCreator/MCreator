@@ -26,6 +26,7 @@ import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.util.DefaultExceptionHandler;
 import net.mcreator.util.LoggingOutputStream;
 import net.mcreator.util.MCreatorVersionNumber;
+import net.mcreator.util.TerribleModuleHacks;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,6 +46,7 @@ public class Launcher {
 	public static void main(String[] args) {
 		List<String> arguments = Arrays.asList(args);
 
+		System.setProperty("jna.nosys", "true");
 		System.setProperty("log_directory", UserFolderManager.getFileFromUserFolder("").getAbsolutePath());
 
 		if (OS.getOS() == OS.WINDOWS && ManagementFactory.getRuntimeMXBean().getInputArguments().stream()
@@ -60,7 +62,8 @@ public class Launcher {
 		System.setOut(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDOUT"), Level.INFO), true));
 		Thread.setDefaultUncaughtExceptionHandler(new DefaultExceptionHandler());
 
-		openModuleExports();
+		TerribleModuleHacks.openAllUnnamed();
+		TerribleModuleHacks.openMCreatorRequirements();
 
 		try {
 			Properties conf = new Properties();
@@ -130,12 +133,12 @@ public class Launcher {
 		// MCreator theme
 		ModuleLayer.boot().findModule("java.desktop").ifPresent(
 				module -> module.addOpens("sun.awt", net.mcreator.ui.laf.MCreatorLookAndFeel.class.getModule()));
-		ModuleLayer.boot().findModule("java.desktop").ifPresent(module -> module
-				.addOpens("javax.swing.text.html", net.mcreator.ui.laf.MCreatorLookAndFeel.class.getModule()));
+		ModuleLayer.boot().findModule("java.desktop").ifPresent(module -> module.addOpens("javax.swing.text.html",
+				net.mcreator.ui.laf.MCreatorLookAndFeel.class.getModule()));
 
 		// Blockly panel transparency
-		ModuleLayer.boot().findModule("javafx.web").ifPresent(module -> module
-				.addOpens("com.sun.javafx.webkit", net.mcreator.ui.blockly.BlocklyPanel.class.getModule()));
+		ModuleLayer.boot().findModule("javafx.web").ifPresent(module -> module.addOpens("com.sun.javafx.webkit",
+				net.mcreator.ui.blockly.BlocklyPanel.class.getModule()));
 		ModuleLayer.boot().findModule("javafx.web").ifPresent(
 				module -> module.addOpens("com.sun.webkit", net.mcreator.ui.blockly.BlocklyPanel.class.getModule()));
 	}

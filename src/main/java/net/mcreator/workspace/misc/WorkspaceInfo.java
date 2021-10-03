@@ -21,12 +21,16 @@ package net.mcreator.workspace.misc;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.types.Recipe;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,15 +55,16 @@ import java.util.stream.Collectors;
 		return workspace.getVariableElements().size() > 0;
 	}
 
-	public boolean hasVariablesOfScope(String type) {
-		return workspace.getVariableElements().stream().anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
+	public boolean hasJavaModels() {
+		return Model.getModels(workspace).stream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
-	public boolean hasFluids() {
-		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.FLUID)
-				return true;
-		return false;
+	public boolean hasSounds() {
+		return workspace.getSoundElements().size() > 0;
+	}
+
+	public boolean hasVariablesOfScope(String type) {
+		return workspace.getVariableElements().stream().anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
 	}
 
 	public Map<String, String> getItemTextureMap() {
@@ -73,12 +78,6 @@ import java.util.stream.Collectors;
 			}
 		}
 		return textureMap;
-	}
-
-	public List<ModElement> getElementsOfType(String typestring) {
-		ModElementType type = ModElementType.valueOf(typestring);
-		return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
-				.collect(Collectors.toList());
 	}
 
 	public String getUUID(String offset) {
@@ -109,6 +108,74 @@ import java.util.stream.Collectors;
 			}
 		}
 		return retval;
+	}
+
+	public List<ModElement> getElementsOfType(String typestring) {
+		return getElementsOfType(ModElementTypeLoader.getModElementType(typestring));
+	}
+
+	public List<ModElement> getElementsOfType(ModElementType<?> type) {
+		try {
+			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
+					.collect(Collectors.toList());
+		} catch (IllegalArgumentException e) {
+			LOG.warn("Failed to list elements of non-existent type", e);
+			return Collections.emptyList();
+		}
+	}
+
+	public List<ModElement> getRecipesOfType(String typestring) {
+		try {
+			return workspace.getModElements().parallelStream().filter(e -> e.getType() == ModElementType.RECIPE)
+					.filter(e -> {
+						GeneratableElement ge = e.getGeneratableElement();
+						if (ge instanceof Recipe)
+							return ((Recipe) ge).recipeType.equals(typestring);
+						return false;
+					}).collect(Collectors.toList());
+		} catch (IllegalArgumentException e) {
+			LOG.warn("Failed to list elements of non-existent type", e);
+			return Collections.emptyList();
+		}
+	}
+
+	public boolean hasElementsOfBaseType(BaseType baseType) {
+		for (ModElement modElement : workspace.getModElements()) {
+			GeneratableElement generatableElement = modElement.getGeneratableElement();
+			if (generatableElement instanceof ICommonType) {
+				Collection<BaseType> baseTypes = ((ICommonType) generatableElement).getBaseTypesProvided();
+				if (baseTypes.contains(baseType))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean hasElementsOfBaseType(String baseType) {
+		return hasElementsOfBaseType(BaseType.valueOf(baseType.toUpperCase(Locale.ENGLISH)));
+	}
+
+	public boolean hasElementsOfType(ModElementType<?> type) {
+		try {
+			return workspace.getModElements().parallelStream().anyMatch(e -> e.getType() == type);
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
+	}
+
+	public boolean hasElementsOfType(String typestring) {
+		return hasElementsOfType(ModElementTypeLoader.getModElementType(typestring));
+	}
+
+	public boolean hasBrewingRecipes() {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.RECIPE) {
+				GeneratableElement ge = element.getGeneratableElement();
+				if (ge instanceof Recipe)
+					if (((Recipe) ge).recipeType.equals("Brewing"))
+						return true;
+			}
+		return false;
 	}
 
 	public Workspace getWorkspace() {

@@ -4,5 +4,6 @@
       "name": "world",
       "type": "world"
     }
-  ]
+  ],
+  "side": "server"
 }

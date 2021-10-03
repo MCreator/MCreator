@@ -23,6 +23,7 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -36,7 +37,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings("unused") public class Armor extends GeneratableElement implements ITabContainedElement {
+@SuppressWarnings("unused") public class Armor extends GeneratableElement implements IItem, ITabContainedElement {
 
 	public boolean enableHelmet;
 	public String textureHelmet;
@@ -84,6 +85,11 @@ import java.util.Set;
 	public String bootsModelPartL;
 	public String bootsModelPartR;
 	public String bootsModelTexture;
+
+	public boolean helmetImmuneToFire;
+	public boolean bodyImmuneToFire;
+	public boolean leggingsImmuneToFire;
+	public boolean bootsImmuneToFire;
 
 	public int maxDamage;
 	public int damageValueHelmet;

@@ -18,10 +18,8 @@
 
 package net.mcreator.ui.procedure;
 
-import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeRegistry;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
@@ -95,7 +93,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
 
 		if (returnType != null) {
-			setBorder(BorderFactory.createLineBorder(BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor())));
+			setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
 
 			if (returnType == VariableTypeLoader.BuiltInTypes.LOGIC)
 				defaultName = L10N.t("condition.common.true");
@@ -174,31 +172,29 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 					for (String part : parts) {
 						procedureName.append(StringUtils.uppercaseFirstLetter(part));
 					}
-					procedureNameString = JavaConventions
-							.convertToValidClassName(procedureName.toString().replace("When", ""));
+					procedureNameString = JavaConventions.convertToValidClassName(
+							procedureName.toString().replace("When", ""));
 				}
 
-				procedureNameString = VOptionPane
-						.showInputDialog(mcreator, L10N.t("action.procedure.enter_procedure_name"),
-								L10N.t("action.procedure.new_procedure_dialog_title"), null,
-								new OptionPaneValidatior() {
-									@Override public ValidationResult validate(JComponent component) {
-										return new ModElementNameValidator(mcreator.getWorkspace(),
-												(VTextField) component).validate();
-									}
-								}, L10N.t("action.procedure.create_procedure"),
-								UIManager.getString("OptionPane.cancelButtonText"), procedureNameString);
+				procedureNameString = VOptionPane.showInputDialog(mcreator,
+						L10N.t("action.procedure.enter_procedure_name"),
+						L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidatior() {
+							@Override public ValidationResult validate(JComponent component) {
+								return new ModElementNameValidator(mcreator.getWorkspace(),
+										(VTextField) component).validate();
+							}
+						}, L10N.t("action.procedure.create_procedure"),
+						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString);
 
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
 							ModElementType.PROCEDURE);
-					ModElementGUI<?> newGUI = ModElementTypeRegistry.REGISTRY.get(ModElementType.PROCEDURE)
-							.getModElement(mcreator, element, false);
+					ModElementGUI<?> newGUI = ModElementType.PROCEDURE.getModElementGUI(mcreator, element, false);
 					if (newGUI != null) {
 						newGUI.showView();
 						newGUI.setModElementCreatedListener(generatableElement -> {
-							String modName = JavaConventions
-									.convertToValidClassName(generatableElement.getModElement().getName());
+							String modName = JavaConventions.convertToValidClassName(
+									generatableElement.getModElement().getName());
 							refreshList();
 							setSelectedProcedure(modName);
 						});
@@ -216,9 +212,8 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 				if (getSelectedProcedure() != null) {
 					ModElement selectedProcedureAsModElement = mcreator.getWorkspace()
 							.getModElementByName(getSelectedProcedure().getName());
-					ModElementGUI<?> modeditor = ModElementTypeRegistry.REGISTRY
-							.get(selectedProcedureAsModElement.getType())
-							.getModElement(mcreator, selectedProcedureAsModElement, true);
+					ModElementGUI<?> modeditor = selectedProcedureAsModElement.getType()
+							.getModElementGUI(mcreator, selectedProcedureAsModElement, true);
 					if (modeditor != null)
 						modeditor.showView();
 				}
@@ -274,8 +269,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		if (returnType != null)
 			setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(1, 0, 1, 1, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
-					BorderFactory.createMatteBorder(0, 1, 0, 0,
-							BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor()))));
+					BorderFactory.createMatteBorder(0, 1, 0, 0, returnType.getBlocklyColor())));
 
 		return (ProcedureSelector) retval;
 	}

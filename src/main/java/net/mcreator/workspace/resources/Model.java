@@ -21,9 +21,8 @@ package net.mcreator.workspace.resources;
 import net.mcreator.workspace.Workspace;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Model {
 
@@ -122,10 +121,21 @@ public class Model {
 				objModel = new TexturedModel(new File(workspace.getFolderManager().getModelsDir(), name + ".obj"),
 						textureMap);
 			return objModel;
-		} else if (type == Type.JAVA)
-			return new Model(new File(workspace.getFolderManager().getModelsDir(), name + ".java"));
-		else if (type == Type.MCREATOR)
+		} else if (type == Type.JAVA) {
+			for (String modelsKey : workspace.getGeneratorConfiguration().getCompatibleJavaModelKeys()) {
+				File modelFile;
+				if (modelsKey.equals("legacy")) {
+					modelFile = new File(workspace.getFolderManager().getModelsDir(), name + ".java");
+				} else {
+					modelFile = new File(workspace.getFolderManager().getModelsDir(), modelsKey + "/" + name + ".java");
+				}
+				if (modelFile.isFile())
+					return new Model(modelFile);
+			}
+			return null;
+		} else if (type == Type.MCREATOR) {
 			return new TexturedModel(new File(workspace.getFolderManager().getModelsDir(), name + ".mcm"), textureMap);
+		}
 		return null;
 	}
 
@@ -135,8 +145,8 @@ public class Model {
 		for (File f : candidates != null ? candidates : new File[0]) {
 			Model m = new Model(f);
 			if (m.getType() != null) {
-				Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel
-						.getTextureMappingsForModel(m);
+				Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(
+						m);
 				if (textureMappingMap != null) {
 					// we add all variations of texturemappings for model
 					for (Map.Entry<String, TexturedModel.TextureMapping> entry : textureMappingMap.entrySet()) {
@@ -151,14 +161,51 @@ public class Model {
 	}
 
 	public static List<Model> getModels(Workspace workspace) {
-		List<Model> models = new ArrayList<>();
+		Set<Model> models = new HashSet<>();
+
 		File[] candidates = workspace.getFolderManager().getModelsDir().listFiles();
 		for (File f : candidates != null ? candidates : new File[0]) {
+			if (f.isDirectory())
+				continue;
+
+			// we will load java models in a separate loop
+			if (f.getName().endsWith(".java"))
+				continue;
+
 			Model m = new Model(f);
 			if (m.getType() != null)
 				models.add(m);
 		}
-		return models;
+
+		models.addAll(getJavaModels(workspace));
+
+		// only return valid models
+		return models.stream().filter(model -> model.file != null).collect(Collectors.toList());
+	}
+
+	public static List<Model> getJavaModels(Workspace workspace) {
+		Set<Model> models = new HashSet<>();
+
+		for (String modelKey : workspace.getGeneratorConfiguration().getCompatibleJavaModelKeys()) {
+			File[] candidates;
+			if (modelKey.equals("legacy")) {
+				candidates = workspace.getFolderManager().getModelsDir().listFiles();
+			} else {
+				candidates = new File(workspace.getFolderManager().getModelsDir(), modelKey).listFiles();
+			}
+
+			for (File f : candidates != null ? candidates : new File[0]) {
+				if (f.isDirectory())
+					continue;
+
+				Model m = new Model(f);
+				if (m.getType() != null)
+					models.add(m);
+			}
+		}
+
+		// only return valid models
+		return models.stream().filter(model -> model.file != null).collect(Collectors.toList());
 	}
 
 	public static class BuiltInModel extends Model {

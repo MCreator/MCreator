@@ -48,8 +48,8 @@ public class UpdateNotifyDialog {
 				if (newMajor > oldMajor && (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates
 						|| Launcher.version.isSnapshot())) {
 					JPanel pan = new JPanel(new BorderLayout());
-					JLabel upde = L10N
-							.label("dialog.update_notify.message", Launcher.version.major, updateInfo.getLatestMajor());
+					JLabel upde = L10N.label("dialog.update_notify.message", Launcher.version.major,
+							updateInfo.getLatestMajor());
 
 					ComponentUtils.deriveFont(upde, 13);
 					pan.add("North", upde);
@@ -108,10 +108,9 @@ public class UpdateNotifyDialog {
 
 							Object[] options = { L10N.t("dialog.update_notify.open_download_page"),
 									L10N.t("dialog.update_notify.remind_later") };
-							int option = JOptionPane
-									.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
-											JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options,
-											options[0]);
+							int option = JOptionPane.showOptionDialog(parent, pan,
+									L10N.t("dialog.update_notify.update_title"), JOptionPane.YES_NO_CANCEL_OPTION,
+									JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 							if (option == 0) {
 								DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#updatebuild");
 							}

@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.procedure;
 
-import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
@@ -33,8 +32,8 @@ class ConditionalComboBoxRenderer implements ListCellRenderer<CBoxEntry> {
 	@Override
 	public Component getListCellRendererComponent(JList list, CBoxEntry value, int index, boolean isSelected,
 			boolean cellHasFocus) {
-		JLabel component = (JLabel) renderer
-				.getListCellRendererComponent(list, value.string, index, isSelected, cellHasFocus);
+		JLabel component = (JLabel) renderer.getListCellRendererComponent(list, value.string, index, isSelected,
+				cellHasFocus);
 
 		if (!value.correctDependencies) {
 			component.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
@@ -42,8 +41,7 @@ class ConditionalComboBoxRenderer implements ListCellRenderer<CBoxEntry> {
 		}
 
 		if (value.getVariableType() != null && !cellHasFocus && value.correctDependencies) {
-			component.setForeground(
-					BlocklyBlockUtil.getBlockColorFromHUE(value.getVariableType().getColor()).brighter());
+			component.setForeground(value.getVariableType().getBlocklyColor().brighter());
 		}
 
 		return component;

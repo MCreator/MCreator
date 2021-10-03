@@ -78,8 +78,8 @@ public class ForgeWorkspacePanel extends AbstractWorkspacePanel {
 		Generator.GENERATOR_CACHE.values().stream().filter(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.FORGE)
 				.forEach(workspaceDialogPanel.generator::addItem);
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration
-				.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
 		workspaceDialogPanel.generator.setSelectedItem(generatorConfiguration);
 	}
 }

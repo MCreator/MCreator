@@ -33,6 +33,8 @@
 
 package ${package}.item;
 
+import net.minecraft.entity.ai.attributes.Attributes;
+
 @${JavaModName}Elements.ModElement.Tag
 public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
@@ -318,7 +320,13 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
     private static class ItemToolCustom extends Item {
 
 		protected ItemToolCustom() {
-			super(new Item.Properties().group(${data.creativeTab}).maxDamage(${data.usageCount}));
+			super(new Item.Properties()
+				.group(${data.creativeTab})
+				.maxDamage(${data.usageCount})
+				<#if data.immuneToFire>
+				.isImmuneToFire()
+				</#if>
+			);
 		}
 
 		@Override
@@ -356,6 +364,35 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			return ${data.enchantability};
 		}
 
+	}
+<#elseif data.toolType == "Fishing rod">
+    private static class ItemToolCustom extends FishingRodItem {
+
+		protected ItemToolCustom() {
+			super(new Item.Properties()
+				.group(${data.creativeTab})
+				.maxDamage(${data.usageCount})
+				<#if data.immuneToFire>
+				.isImmuneToFire()
+				</#if>
+			);
+		}
+
+		@Override public int getItemEnchantability() {
+			return ${data.enchantability};
+		}
+
+		<#if data.repairItems?has_content>
+		    @Override
+            public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+                Item repairItem = repair.getItem();
+                return
+                <#list data.repairItems as repairItem>
+                	repairItem == ${mappedMCItemToItem(repairItem)}
+                	<#if repairItem?has_next>||</#if>
+                </#list>;
+            }
+        </#if>
 	}
 </#if>
 

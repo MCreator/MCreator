@@ -53,11 +53,11 @@ public class L10N {
 		selectedLocale = null;
 
 		if (supportedLocales.containsKey(getLocale())) {
-			rb = supportedLocales.get(getLocale()).getResourceBundle();
+			rb = supportedLocales.get(getLocale()).resourceBundle();
 		} else {
 			LOG.warn("Locale " + getLocale() + " is not supported. Falling back to default locale.");
 
-			rb = supportedLocales.get(DEFAULT_LOCALE).getResourceBundle();
+			rb = supportedLocales.get(DEFAULT_LOCALE).resourceBundle();
 		}
 
 		LOG.info("Setting default locale to: " + getLocale());
@@ -76,8 +76,8 @@ public class L10N {
 		Set<String> localeFiles = PluginLoader.INSTANCE.getResourcesInPackage("lang");
 		supportedLocales = localeFiles.stream().map(FilenameUtils::getBaseName).filter(e -> e.contains("_"))
 				.map(e -> e.split("_")).map(e -> new Locale(e[1], e[2])).collect(Collectors.toMap(key -> key, value -> {
-					ResourceBundle rb = ResourceBundle
-							.getBundle("lang/texts", value, PluginLoader.INSTANCE, new UTF8Control());
+					ResourceBundle rb = ResourceBundle.getBundle("lang/texts", value, PluginLoader.INSTANCE,
+							new UTF8Control());
 					return new LocaleRegistration(rb,
 							(int) Math.ceil(Collections.list(rb.getKeys()).size() / countAll * 100d));
 				}));
@@ -92,7 +92,7 @@ public class L10N {
 	public static int getLocaleSupport(Locale locale) {
 		LocaleRegistration localeRegistration = supportedLocales.get(locale);
 		if (localeRegistration != null)
-			return localeRegistration.getPercentage();
+			return localeRegistration.percentage();
 
 		return 0;
 	}

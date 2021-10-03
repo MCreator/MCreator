@@ -44,7 +44,7 @@ public class MCreatorTheme extends OceanTheme {
 
 	private static final Logger LOG = LogManager.getLogger("Theme");
 
-	private static final List<String> SYSTEM_FONT_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
+	public static final List<String> SYSTEM_FONT_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
 
 	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
 	private Color MAIN_TINT;
@@ -77,8 +77,8 @@ public class MCreatorTheme extends OceanTheme {
 
 			String lang = L10N.getLocale().getLanguage();
 			if (!SYSTEM_FONT_LANGUAGES.contains(lang) && !theme.useDefaultFontForSecondary()) {
-				InputStream secondaryFontStream = PluginLoader.INSTANCE
-						.getResourceAsStream("themes/" + theme.getID() + "/fonts/secondary_font.ttf");
+				InputStream secondaryFontStream = PluginLoader.INSTANCE.getResourceAsStream(
+						"themes/" + theme.getID() + "/fonts/secondary_font.ttf");
 				if (secondaryFontStream != null) { // Font loaded from a file in the theme
 					secondary_font = Font.createFont(Font.TRUETYPE_FONT, secondaryFontStream);
 				} else { // Default secondary front (from the default_dark theme)
@@ -88,8 +88,8 @@ public class MCreatorTheme extends OceanTheme {
 				}
 			}
 
-			InputStream consoleFontStream = PluginLoader.INSTANCE
-					.getResourceAsStream("themes/" + theme.getID() + "/fonts/console_font.ttf");
+			InputStream consoleFontStream = PluginLoader.INSTANCE.getResourceAsStream(
+					"themes/" + theme.getID() + "/fonts/console_font.ttf");
 			if (consoleFontStream != null) {
 				console_font = Font.createFont(Font.TRUETYPE_FONT, consoleFontStream);
 			} else {
@@ -168,9 +168,10 @@ public class MCreatorTheme extends OceanTheme {
 
 		table.put("Button.toolBarBorderBackground", colorScheme.getForegroundColor());
 		table.put("Button.disabledToolBarBorderBackground", colorScheme.getAltBackgroundColor());
-		table.put("ToolBar.rolloverBorder", BorderFactory
-				.createCompoundBorder(BorderFactory.createLineBorder(colorScheme.getBackgroundColor(), 1), BorderFactory
-						.createCompoundBorder(BorderFactory.createLineBorder(colorScheme.getAltBackgroundColor(), 1),
+		table.put("ToolBar.rolloverBorder",
+				BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(colorScheme.getBackgroundColor(), 1),
+						BorderFactory.createCompoundBorder(
+								BorderFactory.createLineBorder(colorScheme.getAltBackgroundColor(), 1),
 								BorderFactory.createLineBorder(colorScheme.getBackgroundColor(), 3))));
 
 		table.put("ScrollBarUI", SlickDarkScrollBarUI.class.getName());

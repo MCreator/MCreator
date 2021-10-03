@@ -90,8 +90,8 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 				L10N.label("elementgui.gamerule.description")));
 		subpane2.add(description);
 
-		subpane2.add(HelpUtils
-				.wrapWithHelpButton(this.withEntry("gamerule/category"), L10N.label("elementgui.gamerule.category")));
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/category"),
+				L10N.label("elementgui.gamerule.category")));
 		subpane2.add(gameruleCategory);
 
 		subpane2.add(
