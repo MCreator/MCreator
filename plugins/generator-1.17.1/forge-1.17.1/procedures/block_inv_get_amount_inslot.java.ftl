@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-(new Object(){
+/*@int*/(new Object(){
 	public int getAmount(LevelAccessor world, BlockPos pos, int sltid) {
 		AtomicInteger _retval = new AtomicInteger(0);
 		BlockEntity _ent = world.getBlockEntity(pos);
