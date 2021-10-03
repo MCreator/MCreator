@@ -236,7 +236,7 @@ import net.minecraft.nbt.Tag;
 	</#if>
 
 	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
-	@CapabilityInject(PlayerVariables.class) public static Capability<PlayerVariables> PLAYER_VARIABLES_CAPABILITY = null;
+	public static final Capability<PlayerVariables> PLAYER_VARIABLES_CAPABILITY = CapabilityManager.get(new CapabilityToken<PlayerVariables>() {});
 
 	@Mod.EventBusSubscriber private static class PlayerVariablesProvider implements ICapabilitySerializable<Tag> {
 
