@@ -12,7 +12,7 @@ createExe {
             "./lib/*"
     ]
     jvmOptions = [
-            "--add-opens=java.base/java.lang=ALL-UNNAMED"
+            "--add-opens=java.base/java.lang=MCreator"
     ]
     libraryDir = "null"
     stayAlive = true

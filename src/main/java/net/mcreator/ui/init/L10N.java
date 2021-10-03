@@ -20,8 +20,8 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.util.locale.LocaleLoader;
 import net.mcreator.util.locale.LocaleRegistration;
-import net.mcreator.util.locale.UTF8Control;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -69,15 +69,14 @@ public class L10N {
 		if (rb_en != null) // check if locales are already loaded
 			return;
 
-		rb_en = ResourceBundle.getBundle("lang/texts", Locale.ROOT, PluginLoader.INSTANCE, new UTF8Control());
+		rb_en = LocaleLoader.getBundle("lang/texts", Locale.ROOT);
 
 		double countAll = Collections.list(rb_en.getKeys()).size();
 
 		Set<String> localeFiles = PluginLoader.INSTANCE.getResourcesInPackage("lang");
 		supportedLocales = localeFiles.stream().map(FilenameUtils::getBaseName).filter(e -> e.contains("_"))
 				.map(e -> e.split("_")).map(e -> new Locale(e[1], e[2])).collect(Collectors.toMap(key -> key, value -> {
-					ResourceBundle rb = ResourceBundle.getBundle("lang/texts", value, PluginLoader.INSTANCE,
-							new UTF8Control());
+					ResourceBundle rb = LocaleLoader.getBundle("lang/texts", value);
 					return new LocaleRegistration(rb,
 							(int) Math.ceil(Collections.list(rb.getKeys()).size() / countAll * 100d));
 				}));

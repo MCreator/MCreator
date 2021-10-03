@@ -39,6 +39,8 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static net.mcreator.util.TerribleModuleHacks.addOpens;
+
 public class PluginLoader extends URLClassLoader {
 
 	private static final Logger LOG = LogManager.getLogger("Plugin Loader");
@@ -55,7 +57,7 @@ public class PluginLoader extends URLClassLoader {
 	private final Reflections reflections;
 
 	public PluginLoader() {
-		super(new URL[] {}, null);
+		super(new URL[] {});
 
 		this.plugins = new ArrayList<>();
 		this.pluginUpdates = new ArrayList<>();

@@ -38,6 +38,13 @@
 
 package net.mcreator.util;
 
+import com.google.gson.Gson;
+import foxtrot.Worker;
+import net.mcreator.generator.template.base.DefaultFreemarkerConfiguration;
+import net.mcreator.ui.MCreator;
+import net.mcreator.ui.laf.MCreatorTheme;
+import org.reflections.Reflections;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -46,6 +53,16 @@ public class TerribleModuleHacks {
 	public static void openAllUnnamed() {
 		ModuleLayer.boot().modules().forEach(module -> module.getPackages()
 				.forEach(pn -> addOpens(module, pn, ClassLoader.getSystemClassLoader().getUnnamedModule())));
+
+		// Some libraries should also have access to all the modules
+		ModuleLayer.boot().modules()
+				.forEach(module -> module.getPackages().forEach(pn -> addOpens(module, pn, Gson.class.getModule())));
+
+		ModuleLayer.boot().modules()
+				.forEach(module -> module.getPackages().forEach(pn -> addOpens(module, pn, Reflections.class.getModule())));
+
+		ModuleLayer.boot().modules()
+				.forEach(module -> module.getPackages().forEach(pn -> addOpens(module, pn, Worker.class.getModule())));
 	}
 
 	public static void openMCreatorRequirements() {
