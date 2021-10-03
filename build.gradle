@@ -24,6 +24,9 @@ javadoc.source = sourceSets.main.allJava
 compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 
+sourceCompatibility = 16
+targetCompatibility = 16
+
 // workaround for IDEA-265203
 System.setProperty("user.dir", projectDir.toString())
 
@@ -79,7 +82,6 @@ dependencies {
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.16.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.16.1'
     implementation group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.2'
-    implementation group: 'com.google.googlejavaformat', name: 'google-java-format', version: '1.11.0'
 
     // test dependencies
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.1'
