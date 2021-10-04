@@ -40,28 +40,18 @@ package ${package}.init;
 
 	<#list gamerules as gamerule>
 		<#if gamerule.type == "Number">
-	public static GameRules.Key<GameRules.IntegerValue> ${gamerule.getModElement().getRegistryNameUpper()};
+	public static GameRules.Key<GameRules.IntegerValue> ${gamerule.getModElement().getRegistryNameUpper()} = GameRules.register("${gamerule.getModElement().getRegistryName()}",
+				GameRules.Category.${gamerule.category}, create(${gamerule.defaultValueNumber}));
 		<#else>
-	public static GameRules.Key<GameRules.BooleanValue> ${gamerule.getModElement().getRegistryNameUpper()};
+	public static GameRules.Key<GameRules.BooleanValue> ${gamerule.getModElement().getRegistryNameUpper()} = GameRules.register("${gamerule.getModElement().getRegistryName()}",
+				GameRules.Category.${gamerule.category}, create(${gamerule.defaultValueLogic}));
 		</#if>
 	</#list>
-
-	@SubscribeEvent public static void load(FMLCommonSetupEvent event) {
-		<#list gamerules as gamerule>
-			<#if gamerule.type == "Number">
-		${gamerule.getModElement().getRegistryNameUpper()} = GameRules.register("${gamerule.getModElement().getRegistryName()}",
-				GameRules.Category.${gamerule.category}, create(${gamerule.defaultValueNumber}));
-			<#else>
-		${gamerule.getModElement().getRegistryNameUpper()} = GameRules.register("${gamerule.getModElement().getRegistryName()}",
-				GameRules.Category.${gamerule.category}, create(${gamerule.defaultValueLogic}));
-			</#if>
-		</#list>
-	}
 
 	<#if w.hasGameRulesOfType("Number")>
 	private static GameRules.Type<GameRules.IntegerValue> create(int defaultValue) {
 		try {
-			Method createGameRuleMethod = ObfuscationReflectionHelper.findMethod(GameRules.IntegerValue.class, "create", int.class);
+			Method createGameRuleMethod = ObfuscationReflectionHelper.findMethod(GameRules.IntegerValue.class, "m_46312_", int.class);
 			createGameRuleMethod.setAccessible(true);
 			return (GameRules.Type<GameRules.IntegerValue>) createGameRuleMethod.invoke(null, defaultValue);
 		} catch (Exception e) {
@@ -74,7 +64,7 @@ package ${package}.init;
 	<#if w.hasGameRulesOfType("Logic")>
 	private static GameRules.Type<GameRules.BooleanValue> create(boolean defaultValue) {
 		try {
-			Method createGameRuleMethod = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "create", boolean.class);
+			Method createGameRuleMethod = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "m_46250_", boolean.class);
 			createGameRuleMethod.setAccessible(true);
 			return (GameRules.Type<GameRules.BooleanValue>) createGameRuleMethod.invoke(null, defaultValue);
 		} catch (Exception e) {
