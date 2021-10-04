@@ -50,10 +50,12 @@ public class ProcedureCodeOptimizer {
 		if (toClean.startsWith("/*@BlockState*/")) {
 			prefix = "/*@BlockState*/";
 			toClean = toClean.substring(15);
-		}
-		else if (code.startsWith("/*@ItemStack*/")) {
+		} else if (code.startsWith("/*@ItemStack*/")) {
 			prefix = "/*@ItemStack*/";
 			toClean = toClean.substring(14);
+		} else if (code.startsWith("/*@int*/")) {
+			prefix = "/*@int*/";
+			toClean = toClean.substring(8);
 		}
 		return canRemoveParentheses(toClean, blacklist) ? prefix + toClean.substring(1, toClean.length() - 1) : code;
 	}
@@ -127,11 +129,22 @@ public class ProcedureCodeOptimizer {
 	}
 
 	/**
-	 * This method removes blockstate/itemstack markers from the given code
+	 * This method performs parentheses optimization and adds an (int) cast to the given code if needed.
+	 * @param code The code representing the number to cast
+	 * @return The code without parentheses, if it's already an int, or with a cast to (int) behind otherwise
+	 */
+	@SuppressWarnings("unused") public static String toInt(String code) {
+		if (code.startsWith("/*@int*/"))
+			return removeParentheses(code);
+		return "(int)" + (code.contains("instanceof") ? code : removeParentheses(code, "*/%+-!=><&^|?"));
+	}
+
+	/**
+	 * This method removes blockstate/itemstack/int markers from the given code
 	 * @param code The code to optimize
 	 * @return The code without blockstate/itemstack markers
 	 */
 	public static String removeMarkers(String code) {
-		return code.replaceAll("/\\*@BlockState\\*/", "").replaceAll("/\\*@ItemStack\\*/", "");
+		return code.replaceAll("(/\\*@BlockState\\*/|/\\*@ItemStack\\*/|/\\*@int\\*/)", "");
 	}
 }

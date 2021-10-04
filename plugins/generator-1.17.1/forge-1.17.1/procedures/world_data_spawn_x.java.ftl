@@ -1,1 +1,1 @@
-(world.getLevelData().getXSpawn())
+/*@int*/(world.getLevelData().getXSpawn())
