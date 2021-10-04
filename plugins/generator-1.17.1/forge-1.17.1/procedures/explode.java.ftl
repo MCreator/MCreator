@@ -1,2 +1,2 @@
 if(world instanceof Level _level && !_level.isClientSide())
-	_level.explode(null,(int)${input$x},(int)${input$y},(int)${input$z},(float)${input$power}, Explosion.BlockInteraction.${field$mode!"BREAK"});
+	_level.explode(null,(int)${input$x},(int)${input$y},(int)${input$z},${opt.toFloat(input$power)}, Explosion.BlockInteraction.${field$mode!"BREAK"});
