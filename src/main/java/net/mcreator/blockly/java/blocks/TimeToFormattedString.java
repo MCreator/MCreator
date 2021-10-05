@@ -41,7 +41,7 @@ public class TimeToFormattedString implements IBlockGenerator {
 			master.append("new java.text.SimpleDateFormat(\"" + format.getTextContent() + "\").format(Calendar.getInstance().getTime())");
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					L10N.t("blockly.compile_notes.errors.time_to_formatted_string")));
+					L10N.t("blockly.errors.time_to_formatted_string")));
 		}
 	}
 
