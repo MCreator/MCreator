@@ -56,6 +56,9 @@ public class ProcedureCodeOptimizer {
 		} else if (code.startsWith("/*@int*/")) {
 			prefix = "/*@int*/";
 			toClean = toClean.substring(8);
+		} else if (code.startsWith("/*@float*/")) {
+			prefix = "/*@float*/";
+			toClean = toClean.substring(10);
 		}
 		return canRemoveParentheses(toClean, blacklist) ? prefix + toClean.substring(1, toClean.length() - 1) : code;
 	}
@@ -140,11 +143,22 @@ public class ProcedureCodeOptimizer {
 	}
 
 	/**
+	 * This method performs parentheses optimization and adds a (float) cast to the given code if needed.
+	 * @param code The code representing the number to cast
+	 * @return The code without parentheses, if it's already an int or float, or with a cast to (float) behind otherwise
+	 */
+	@SuppressWarnings("unused") public static String toFloat(String code) {
+		if (code.startsWith("/*@int*/") || code.startsWith("/*@float*/"))
+			return removeParentheses(code);
+		return "(float)" + (code.contains("instanceof") ? code : removeParentheses(code, "*/%+-!=><&^|?"));
+	}
+
+	/**
 	 * This method removes blockstate/itemstack/int markers from the given code
 	 * @param code The code to optimize
 	 * @return The code without blockstate/itemstack markers
 	 */
 	public static String removeMarkers(String code) {
-		return code.replaceAll("(/\\*@BlockState\\*/|/\\*@ItemStack\\*/|/\\*@int\\*/)", "");
+		return code.replaceAll("(/\\*@BlockState\\*/|/\\*@ItemStack\\*/|/\\*@int\\*/|/\\*@float\\*/)", "");
 	}
 }

@@ -1,1 +1,1 @@
-(${input$entity}.getXRot())
+/*@float*/(${input$entity}.getXRot())

@@ -1,1 +1,1 @@
-(${input$entity}.getBbHeight())
+/*@float*/(${input$entity}.getBbHeight())
