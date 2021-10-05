@@ -45,8 +45,8 @@ public class UpdatePluginDialog {
 
 			for (PluginUpdateInfo pluginUpdateInfo : PluginLoader.INSTANCE.getPluginUpdates()) {
 				JLabel label = L10N.label("dialog.plugin_update_notify.version_message",
-						pluginUpdateInfo.plugin().getInfo().getName(),
-						pluginUpdateInfo.plugin().getInfo().getVersion(), pluginUpdateInfo.newVersion());
+						pluginUpdateInfo.plugin().getInfo().getName(), pluginUpdateInfo.plugin().getInfo().getVersion(),
+						pluginUpdateInfo.newVersion());
 
 				JButton update = L10N.button("dialog.plugin_update_notify.update");
 				update.addActionListener(e -> DesktopUtils.browseSafe(

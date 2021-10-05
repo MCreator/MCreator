@@ -1,7 +1,8 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
- # 
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2021, Pylo, opensource contributors
+ #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
  # the Free Software Foundation, either version 3 of the License, or
@@ -29,6 +30,8 @@
 
 <#-- @formatter:off -->
 package ${package}.procedures;
+
+import net.minecraftforge.eventbus.api.Event;
 
 <#if trigger_code?has_content>
 ${trigger_code}

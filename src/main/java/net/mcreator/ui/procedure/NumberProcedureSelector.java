@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.procedure;
 
-import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.NumberProcedure;
@@ -77,8 +76,7 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 		setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
 
 		setOpaque(true);
-		procedures.setBorder(
-				BorderFactory.createLineBorder(BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor())));
+		procedures.setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
 		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());

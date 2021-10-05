@@ -1,5 +1,5 @@
 <#include "mcitems.ftl">
 /*@ItemStack*/
-((world instanceof Level _lvl_sr && _lvl_sr.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(${mappedMCItemToItemStackCode(input$item, 1)}), _lvl_sr).isPresent()) ?
-        _lvl_sr.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(${mappedMCItemToItemStackCode(input$item, 1)}), _lvl_sr).get().getResultItem().copy()
+((world instanceof Level _lvlSmeltResult && _lvlSmeltResult.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(${mappedMCItemToItemStackCode(input$item, 1)}), _lvlSmeltResult).isPresent()) ?
+        _lvlSmeltResult.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(${mappedMCItemToItemStackCode(input$item, 1)}), _lvlSmeltResult).get().getResultItem().copy()
         : ItemStack.EMPTY)

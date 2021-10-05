@@ -850,7 +850,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 						.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+				Model.getModels(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
 						.collect(Collectors.toList())));
 

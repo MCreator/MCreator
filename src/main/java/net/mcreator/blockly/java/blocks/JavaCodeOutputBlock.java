@@ -29,7 +29,7 @@ public class JavaCodeOutputBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null) {
-			master.append(element.getTextContent());
+			master.append(element.getTextContent().replace("&#10;", "\n"));
 		} else {
 			master.addCompileNote(
 					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, "Output code block can't be empty!"));

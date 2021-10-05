@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 (new Object() {
     public boolean hasRecipe(Entity _ent, ResourceLocation recipe) {
         if (_ent instanceof ServerPlayerEntity)
@@ -6,4 +7,4 @@
             return ((ClientPlayerEntity)_ent).getRecipeBook().isUnlocked(recipe);
         return false;
     }
-}.hasRecipe(${input$entity}, new ResourceLocation(${input$recipe})))
+}.hasRecipe(${input$entity}, ${toResourceLocation(input$recipe)}))

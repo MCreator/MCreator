@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2021, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -80,14 +81,15 @@ package ${package}.client.gui;
 			<#if hasTextures>
 				RenderSystem.disableDepthTest();
 				RenderSystem.depthMask(false);
+				RenderSystem.setShader(GameRenderer::getPositionTexShader);
 				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
 						GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+				RenderSystem.setShaderColor(1, 1, 1, 1);
 			</#if>
 
 			if (<@procedureOBJToConditionCode data.displayCondition/>) {
 				<#if data.baseTexture?has_content>
-					Minecraft.getInstance().getTextureManager().bindForSetup(new ResourceLocation("${modid}:textures/${data.baseTexture}"));
+					RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/${data.baseTexture}"));
 					Minecraft.getInstance().gui.blit(event.getMatrixStack(), 0, 0, 0, 0, w, h, w, h);
 				</#if>
 
@@ -104,7 +106,7 @@ package ${package}.client.gui;
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>) {
 						</#if>
-						Minecraft.getInstance().getTextureManager().bindForSetup(new ResourceLocation("${modid}:textures/${component.image}"));
+						RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/${component.image}"));
 						Minecraft.getInstance().gui.blit(event.getMatrixStack(), posX + ${x}, posY + ${y}, 0, 0,
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
@@ -117,7 +119,7 @@ package ${package}.client.gui;
 			<#if hasTextures>
 				RenderSystem.depthMask(true);
 				RenderSystem.enableDepthTest();
-				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+				RenderSystem.setShaderColor(1, 1, 1, 1);
 			</#if>
 		}
 	}

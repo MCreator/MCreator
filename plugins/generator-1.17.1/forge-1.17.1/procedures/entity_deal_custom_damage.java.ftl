@@ -1,0 +1,1 @@
+if (${input$entity} instanceof LivingEntity _entity) _entity.hurt(new DamageSource(${input$localization_text}).bypassArmor(), (float) ${input$damage_number});
