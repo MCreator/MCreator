@@ -44,7 +44,14 @@ public enum BaseType {
 	TAB,
 
 	/* legacy base types */
-	ACHIEVEMENT
+	ACHIEVEMENT;
+
+	public String getPluralName() {
+		if (this == ENTITY)
+			return "entities";
+
+		return name() + "s";
+	}
 
 }
 // @formatter:on
