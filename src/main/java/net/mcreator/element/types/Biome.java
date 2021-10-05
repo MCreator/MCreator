@@ -140,15 +140,11 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean hasFruits() {
-		String[] airBlocks = { "Blocks.AIR", "Blocks.CAVE_AIR", "Blocks.VOID_AIR" };
-		return !(Arrays.stream(airBlocks).collect(Collectors.toList())
-				.contains(treeFruits.getUnmappedValue()) && !treeFruits.isEmpty());
+		return !treeFruits.isEmpty();
 	}
 
 	public boolean hasVines() {
-		String[] airBlocks = { "Blocks.AIR", "Blocks.CAVE_AIR", "Blocks.VOID_AIR" };
-		return !(Arrays.stream(airBlocks).collect(Collectors.toList())
-				.contains(treeVines.getUnmappedValue()) && !treeVines.isEmpty());
+		return !treeVines.isEmpty();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
