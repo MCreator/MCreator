@@ -125,11 +125,8 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			entityarrow.setSecondsOnFire(100);
 		</#if>
 		world.addFreshEntity(entityarrow);
-
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		world.playSound((Player) null, (double) x, (double) y, (double) z, (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS
+		
+		world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS
 				.getValue(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
 
 		return entityarrow;
