@@ -2,4 +2,4 @@
 
 Примеры:
 * продвижение по службе
-* улучшение_biome_reward
+* advancement_biome_reward
