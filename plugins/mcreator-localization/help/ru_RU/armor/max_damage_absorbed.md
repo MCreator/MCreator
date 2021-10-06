@@ -1,6 +1,6 @@
 Этот параметр определяет прочность брони и эффективно применяется в качестве:
 
-* шлем: max_damage_абсорбирован * 13
+* шлем: max_damage_absorbed * 13
 * нагрудный знак: max_damage_absorbed * 15
 * леггинсы: max_damage_absorbed * 16
 * ботинки: max_damage_absorbed * 11
