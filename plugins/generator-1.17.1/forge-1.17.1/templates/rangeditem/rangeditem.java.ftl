@@ -28,46 +28,49 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
-<#include "procedures.java.ftl">
+<#include "../mcitems.ftl">
+<#include "../procedures.java.ftl">
 
 package ${package}.item;
+
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class ${name}Item extends Item {
 
 	public ${name}Item() {
-		super(new Item.Properties().group(${data.creativeTab})<#if data.usageCount != 0>.maxDamage(${data.usageCount})<#else>.maxStackSize(${data.stackSize})</#if>);
+		super(new Item.Properties().tab(${data.creativeTab})<#if data.usageCount != 0>.durability(${data.usageCount})<#else>.maxStackSize(${data.stackSize})</#if>);
 		setRegistryName("${registryname}");
 	}
 
-	@Override public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
-		entity.setActiveHand(hand);
-		return new ActionResult(ActionResultType.SUCCESS, entity.getHeldItem(hand));
+	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+		entity.startUsingItem(hand);
+		return new InteractionResultHolder(InteractionResult.SUCCESS, entity.getItemInHand(hand));
 	}
 
 	<#if hasProcedure(data.onEntitySwing)>
 	@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
 		boolean retval = super.onEntitySwing(itemstack, entity);
-		double x = entity.getPosX();
-		double y = entity.getPosY();
-		double z = entity.getPosZ();
-		World world = entity.world;
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
+		Level world = entity.level;
 		<@procedureOBJToCode data.onEntitySwing/>
 		return retval;
 	}
 	</#if>
 
 	<#if data.specialInfo?has_content>
-	@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
-		super.addInformation(itemstack, world, list, flag);
+	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
+		super.appendHoverText(itemstack, world, list, flag);
 		<#list data.specialInfo as entry>
-		list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+		list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
 		</#list>
 	}
 	</#if>
 
-	@Override public UseAction getUseAction(ItemStack itemstack) {
-		return UseAction.${data.animation?upper_case};
+	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
+		return UseAnim.${data.animation?upper_case};
 	}
 
 	@Override public int getUseDuration(ItemStack itemstack) {
@@ -75,13 +78,13 @@ public class ${name}Item extends Item {
 	}
 
 	<#if data.hasGlow>
-	@Override @OnlyIn(Dist.CLIENT) public boolean hasEffect(ItemStack itemstack) {
+	@Override public boolean isFoil(ItemStack itemstack) {
 	    <#if hasProcedure(data.glowCondition)>
-		PlayerEntity entity = Minecraft.getInstance().player;
-		World world = entity.world;
-		double x = entity.getPosX();
-		double y = entity.getPosY();
-		double z = entity.getPosZ();
+		Player entity = Minecraft.getInstance().player;
+		Level world = entity.level;
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
     	if (!(<@procedureOBJToConditionCode data.glowCondition/>)) {
     	    return false;
     	}
@@ -91,40 +94,39 @@ public class ${name}Item extends Item {
     </#if>
 
 	<#if data.enableMeleeDamage>
-		@Override public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot) {
-			if (slot == EquipmentSlotType.MAINHAND) {
+		@Override public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
+			if (slot == EquipmentSlot.MAINHAND) {
 				ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-				builder.putAll(super.getAttributeModifiers(slot));
-				builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Ranged item modifier", (double) ${data.damageVsEntity - 2}, AttributeModifier.Operation.ADDITION));
-				builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Ranged item modifier", -2.4, AttributeModifier.Operation.ADDITION));
+				builder.putAll(super.getDefaultAttributeModifiers(slot));
+				builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Ranged item modifier", (double) ${data.damageVsEntity - 2}, AttributeModifier.Operation.ADDITION));
+				builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Ranged item modifier", -2.4, AttributeModifier.Operation.ADDITION));
 				return builder.build();
 			}
-			return super.getAttributeModifiers(slot);
+			return super.getDefaultAttributeModifiers(slot);
 		}
 	</#if>
 
 	<#if data.shootConstantly>
 		@Override public void onUsingTick(ItemStack itemstack, LivingEntity entityLiving, int count) {
-			World world = entityLiving.world;
-			if (!world.isRemote && entityLiving instanceof ServerPlayerEntity) {
-				ServerPlayerEntity entity = (ServerPlayerEntity) entityLiving;
-				double x = entity.getPosX();
-				double y = entity.getPosY();
-				double z = entity.getPosZ();
+			Level world = entityLiving.level;
+			if (!world.isClientSide() && entityLiving instanceof ServerPlayer) {
+				ServerPlayer entity = (ServerPlayer) entityLiving;
+				double x = entity.getX();
+				double y = entity.getY();
+				double z = entity.getZ();
 				if (<@procedureOBJToConditionCode data.useCondition/>) {
 					<@arrowShootCode/>
-					entity.stopActiveHand();
+					entity.releaseUsingItem();
 				}
 			}
 		}
     <#else>
 		@Override
-		public void onPlayerStoppedUsing(ItemStack itemstack, World world, LivingEntity entityLiving, int timeLeft) {
-			if (!world.isRemote && entityLiving instanceof ServerPlayerEntity) {
-				ServerPlayerEntity entity = (ServerPlayerEntity) entityLiving;
-				double x = entity.getPosX();
-				double y = entity.getPosY();
-				double z = entity.getPosZ();
+		public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entityLiving, int timeLeft) {
+			if (!world.isClientSide() && entityLiving instanceof ServerPlayer entity) {
+				double x = entity.getX();
+				double y = entity.getY();
+				double z = entity.getZ();
 				if (<@procedureOBJToConditionCode data.useCondition/>) {
 					<@arrowShootCode/>
 				}
@@ -136,11 +138,11 @@ public class ${name}Item extends Item {
 
 <#macro arrowShootCode>
 	<#if !data.ammoItem.isEmpty()>
-	ItemStack stack = ShootableItem.getHeldAmmo(entity, e -> e.getItem() == ${mappedMCItemToItem(data.ammoItem)});
+	ItemStack stack = ProjectileWeaponItem.getHeldProjectile(entity, e -> e.getItem() == ${mappedMCItemToItem(data.ammoItem)});
 
 	if(stack == ItemStack.EMPTY) {
-		for (int i = 0; i < entity.inventory.mainInventory.size(); i++) {
-			ItemStack teststack = entity.inventory.mainInventory.get(i);
+		for (int i = 0; i < entity.getInventory().items.size(); i++) {
+			ItemStack teststack = entity.getInventory().items.get(i);
 			if(teststack != null && teststack.getItem() == ${mappedMCItemToItem(data.ammoItem)}) {
 				stack = teststack;
 				break;
@@ -148,32 +150,32 @@ public class ${name}Item extends Item {
 		}
 	}
 
-	if (entity.abilities.isCreativeMode || stack != ItemStack.EMPTY) {
+	if (entity.getAbilities().instabuild || stack != ItemStack.EMPTY) {
 	</#if>
 
-	ArrowCustomEntity entityarrow = shoot(world, entity, random, ${data.bulletPower}f, ${data.bulletDamage}, ${data.bulletKnockback});
+	${name}Entity entityarrow = ${name}Entity.shoot(world, entity, world.getRandom(), ${data.bulletPower}f, ${data.bulletDamage}, ${data.bulletKnockback});
 
-	itemstack.damageItem(1, entity, e -> e.sendBreakAnimation(entity.getActiveHand()));
+	itemstack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(entity.getUsedItemHand()));
 
 	<#if !data.ammoItem.isEmpty()>
-	if (entity.abilities.isCreativeMode) {
-		entityarrow.pickupStatus = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
+	if (entity.getAbilities().instabuild) {
+		entityarrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 	} else {
-		if (${mappedMCItemToItemStackCode(data.ammoItem, 1)}.isDamageable()){
-			if (stack.attemptDamageItem(1, random, entity)) {
+		if (${mappedMCItemToItemStackCode(data.ammoItem, 1)}.isDamageableItem()){
+			if (stack.hurt(1, world.getRandom(), entity)) {
 				stack.shrink(1);
-				stack.setDamage(0);
+				stack.setDamageValue(0);
             	if (stack.isEmpty())
-               		entity.inventory.deleteStack(stack);
+               		entity.getInventory().removeItem(stack);
 			}
 		} else{
 			stack.shrink(1);
             if (stack.isEmpty())
-               entity.inventory.deleteStack(stack);
+               entity.getInventory().removeItem(stack);
 		}
 	}
 	<#else>
-	entityarrow.pickupStatus = AbstractArrowEntity.PickupStatus.DISALLOWED;
+	entityarrow.pickup = AbstractArrow.Pickup.DISALLOWED;
 	</#if>
 
 	<#if hasProcedure(data.onRangedItemUsed)>

@@ -36,29 +36,19 @@
 
 package ${package}.init;
 
-<#if data.bulletModel != "Default">
-RenderingRegistry.registerEntityRenderingHandler(${name}Item.arrow, renderManager -> new CustomRender(renderManager));
-<#else>
-RenderingRegistry.registerEntityRenderingHandler(${name}Item.arrow, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
-</#if>
-
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}EntityRenderers {
 
-	private static final List<EntityRenderer<?>> REGISTRY = new ArrayList();
-
-	<#list entities as entity>
-		<#if entity.getModElement().getTypeString() == "rangeditem">
-		<#else>
-		</#if>
-    </#list>
-
-	private static <T> EntityRenderer<T> register(EntityRenderer<T> renderer) {
-		REGISTRY.add(renderer);
-		return renderer;
-	}
-
-	@SubscribeEvent public static void registerEntityRenderers(ModelRegistryEvent event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new EntityRenderer[0]));
+	@SubscribeEvent public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+		<#list entities as entity>
+			<#if entity.getModElement().getTypeString() == "rangeditem">
+				<#if entity.bulletModel != "Default">
+				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}, ${entity.getModElement().getName()}Renderer::new);
+				<#else>
+				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}, ThrownItemRenderer::new);
+				</#if>
+			<#else>
+			</#if>
+		</#list>
 	}
 }
 <#-- @formatter:on -->

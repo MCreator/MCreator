@@ -28,31 +28,31 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
-<#include "procedures.java.ftl">
+<#include "../mcitems.ftl">
+<#include "../procedures.java.ftl">
 
 package ${package}.entity;
 
-@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
-public static class ${name}Entity extends AbstractArrowEntity implements IRendersAsItem {
+@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
+public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
-	public ${name}Entity(FMLPlayMessages.SpawnEntity packet, World world) {
-		super(arrow, world);
+	public ${name}Entity(FMLPlayMessages.SpawnEntity packet, Level world) {
+		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, world);
 	}
 
-	public ${name}Entity(EntityType<? extends ${name}Entity> type, World world) {
+	public ${name}Entity(EntityType<? extends ${name}Entity> type, Level world) {
 		super(type, world);
 	}
 
-	public ${name}Entity(EntityType<? extends ${name}Entity> type, double x, double y, double z, World world) {
+	public ${name}Entity(EntityType<? extends ${name}Entity> type, double x, double y, double z, Level world) {
 		super(type, x, y, z, world);
 	}
 
-	public ${name}Entity(EntityType<? extends ${name}Entity> type, LivingEntity entity, World world) {
+	public ${name}Entity(EntityType<? extends ${name}Entity> type, LivingEntity entity, Level world) {
 		super(type, entity, world);
 	}
 
-	@Override public IPacket<?> createSpawnPacket() {
+	@Override public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
@@ -64,7 +64,7 @@ public static class ${name}Entity extends AbstractArrowEntity implements IRender
     	</#if>
 	}
 
-	@Override protected ItemStack getArrowStack() {
+	@Override protected ItemStack getPickupItem() {
 		<#if !data.ammoItem.isEmpty()>
 		return ${mappedMCItemToItemStackCode(data.ammoItem, 1)};
     	<#else>
@@ -73,27 +73,27 @@ public static class ${name}Entity extends AbstractArrowEntity implements IRender
 	}
 
 	<#if hasProcedure(data.onBulletHitsPlayer)>
-	@Override public void onCollideWithPlayer(PlayerEntity entity) {
-		super.onCollideWithPlayer(entity);
-		Entity sourceentity = this.func_234616_v_();
-		double x = this.getPosX();
-		double y = this.getPosY();
-		double z = this.getPosZ();
-		World world = this.world;
+	@Override public void playerTouch(Player entity) {
+		super.playerTouch(entity);
+		Entity sourceentity = this.getOwner();
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
+		Level world = this.level;
 		Entity imediatesourceentity = this;
 		<@procedureOBJToCode data.onBulletHitsPlayer/>
 	}
     </#if>
 
-	@Override protected void arrowHit(LivingEntity entity) {
-		super.arrowHit(entity);
-		entity.setArrowCountInEntity(entity.getArrowCountInEntity() - 1); <#-- #53957 -->
+	@Override protected void doPostHurtEffects(LivingEntity entity) {
+		super.doPostHurtEffects(entity);
+		entity.setArrowCount(entity.getArrowCount() - 1); <#-- #53957 -->
 		<#if hasProcedure(data.onBulletHitsEntity)>
-			Entity sourceentity = this.func_234616_v_();
-			double x = this.getPosX();
-			double y = this.getPosY();
-			double z = this.getPosZ();
-			World world = this.world;
+			Entity sourceentity = this.getOwner();
+			double x = this.getX();
+			double y = this.getY();
+			double z = this.getZ();
+			Level world = this.level;
 			Entity imediatesourceentity = this;
             <@procedureOBJToCode data.onBulletHitsEntity/>
         </#if>
@@ -101,61 +101,61 @@ public static class ${name}Entity extends AbstractArrowEntity implements IRender
 
 	@Override public void tick() {
 		super.tick();
-		double x = this.getPosX();
-		double y = this.getPosY();
-		double z = this.getPosZ();
-		World world = this.world;
-		Entity entity = this.func_234616_v_();
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
+		Level world = this.level;
+		Entity entity = this.getOwner();
 		Entity imediatesourceentity = this;
 		<@procedureOBJToCode data.onBulletFlyingTick/>
 		if (this.inGround) {
 			<@procedureOBJToCode data.onBulletHitsBlock/>
-			this.remove();
+			this.discard();
 		}
 	}
 
-	public static ${name}Entity shoot(World world, LivingEntity entity, Random random, float power, double damage, int knockback) {
-		${name}Entity entityarrow = new ${name}Entity(arrow, entity, world);
-		entityarrow.shoot(entity.getLookVec().x, entity.getLookVec().y, entity.getLookVec().z, power * 2, 0);
+	public static ${name}Entity shoot(Level world, LivingEntity entity, Random random, float power, double damage, int knockback) {
+		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, entity, world);
+		entityarrow.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, power * 2, 0);
 		entityarrow.setSilent(true);
-		entityarrow.setIsCritical(${data.bulletParticles});
-		entityarrow.setDamage(damage);
-		entityarrow.setKnockbackStrength(knockback);
+		entityarrow.setCritArrow(${data.bulletParticles});
+		entityarrow.setBaseDamage(damage);
+		entityarrow.setKnockback(knockback);
 		<#if data.bulletIgnitesFire>
-			entityarrow.setFire(100);
+			entityarrow.setSecondsOnFire(100);
 		</#if>
-		world.addEntity(entityarrow);
+		world.addFreshEntity(entityarrow);
 
-		double x = entity.getPosX();
-		double y = entity.getPosY();
-		double z = entity.getPosZ();
-		world.playSound((PlayerEntity) null, (double) x, (double) y, (double) z, (net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS
-				.getValue(new ResourceLocation("${data.actionSound}")), SoundCategory.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
+		world.playSound((Player) null, (double) x, (double) y, (double) z, (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS
+				.getValue(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
 
 		return entityarrow;
 	}
 
 	public static ${name}Entity shoot(LivingEntity entity, LivingEntity target) {
-		${name}Entity entityarrow = new ${name}Entity(arrow, entity, entity.world);
-		double d0 = target.getPosY() + (double) target.getEyeHeight() - 1.1;
-		double d1 = target.getPosX() - entity.getPosX();
-		double d3 = target.getPosZ() - entity.getPosZ();
-		entityarrow.shoot(d1, d0 - entityarrow.getPosY() + (double) MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, ${data.bulletPower}f * 2, 12.0F);
+		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, entity, entity.level);
+		double d0 = target.getY() + (double) target.getEyeHeight() - 1.1;
+		double d1 = target.getX() - entity.getX();
+		double d3 = target.getZ() - entity.getZ();
+		entityarrow.shoot(d1, d0 - entityarrow.getY() + Math.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, ${data.bulletPower}f * 2, 12.0F);
 
 		entityarrow.setSilent(true);
-		entityarrow.setDamage(${data.bulletDamage});
-		entityarrow.setKnockbackStrength(${data.bulletKnockback});
-		entityarrow.setIsCritical(${data.bulletParticles});
+		entityarrow.setBaseDamage(${data.bulletDamage});
+		entityarrow.setKnockback(${data.bulletKnockback});
+		entityarrow.setCritArrow(${data.bulletParticles});
 		<#if data.bulletIgnitesFire>
-			entityarrow.setFire(100);
+			entityarrow.setSecondsOnFire(100);
 		</#if>
-		entity.world.addEntity(entityarrow);
+		entity.level.addFreshEntity(entityarrow);
 
-		double x = entity.getPosX();
-		double y = entity.getPosY();
-		double z = entity.getPosZ();
-		entity.world.playSound((PlayerEntity) null, (double) x, (double) y, (double) z, (net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS
-				.getValue(new ResourceLocation("${data.actionSound}")), SoundCategory.PLAYERS, 1, 1f / (new Random().nextFloat() * 0.5f + 1));
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
+		entity.level.playSound((Player) null, (double) x, (double) y, (double) z, (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS
+				.getValue(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (new Random().nextFloat() * 0.5f + 1));
 
 		return entityarrow;
 	}

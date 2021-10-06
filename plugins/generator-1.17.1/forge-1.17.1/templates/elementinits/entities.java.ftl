@@ -38,20 +38,21 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Entities {
 
-	private static final List<EntityType<?>> REGISTRY = new ArrayList();
+	private static final List<EntityType<?>> REGISTRY = new ArrayList<>();
 
 	<#list entities as entity>
 		<#if entity.getModElement().getTypeString() == "rangeditem">
-		public static final EntityType<?> ${entity.getModElement().getRegistryNameUpper()} = register("entitybullet${entity.getModElement().getRegistryName()}",
-					EntityType.Builder.<${entity.getModElement().getName()}Entity>create(${entity.getModElement().getName()}Entity::new, EntityClassification.MISC)
-					.setCustomClientFactory(${entity.getModElement().getName()}Entity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64)
-					.setUpdateInterval(1).size(0.5f, 0.5f));
+		public static final EntityType<${entity.getModElement().getName()}Entity> ${entity.getModElement().getRegistryNameUpper()} =
+					register("entitybullet${entity.getModElement().getRegistryName()}",
+						EntityType.Builder.<${entity.getModElement().getName()}Entity>of(${entity.getModElement().getName()}Entity::new, MobCategory.MISC)
+						.setCustomClientFactory(${entity.getModElement().getName()}Entity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64)
+						.setUpdateInterval(1).sized(0.5f, 0.5f));
 		<#else>
 		</#if>
     </#list>
 
-	private static <T> EntityType<T> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
-		EntityType<T> entityType = entityTypeBuilder.build(registryname).setRegistryName(registryname);
+	private static <T extends Entity> EntityType<T> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
+		EntityType<T> entityType = (EntityType<T>) entityTypeBuilder.build(registryname).setRegistryName(registryname);
 		REGISTRY.add(entityType);
 		return entityType;
 	}

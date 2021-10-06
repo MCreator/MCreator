@@ -30,27 +30,29 @@
 <#-- @formatter:off -->
 package ${package}.client.renderer;
 
-public class ${name}Render extends EntityRenderer<${name}Entity> {
+public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 
 	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/${data.customBulletModelTexture}");
 
-	public ${name}Render(EntityRendererManager renderManager) {
-		super(renderManager);
+	private final ${data.bulletModel} model;
+
+	public ${name}Renderer(EntityRendererProvider.Context context) {
+		super(context);
+		model = new ${data.bulletModel}(context.bakeLayer(${data.bulletModel}.LAYER_LOCATION));
 	}
 
-	@Override public void render(${name}Entity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-		IVertexBuilder vb = bufferIn.getBuffer(RenderType.getEntityCutout(this.getEntityTexture(entityIn)));
-		matrixStackIn.push();
-		matrixStackIn.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationYaw, entityIn.rotationYaw) - 90));
-		matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(90 + MathHelper.lerp(partialTicks, entityIn.prevRotationPitch, entityIn.rotationPitch)));
-		EntityModel model = new ${data.bulletModel}();
-		model.render(matrixStackIn, vb, packedLightIn, OverlayTexture.NO_OVERLAY, 1, 1, 1, 0.0625f);
-		matrixStackIn.pop();
+	@Override public void render(${name}Entity entityIn, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
+		VertexConsumer vb = bufferIn.getBuffer(RenderType.entityCutout(this.getTextureLocation(entityIn)));
+		poseStack.pushPose();
+		poseStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 90));
+		poseStack.mulPose(Vector3f.ZP.rotationDegrees(90 + Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
+		model.renderToBuffer(poseStack, vb, packedLightIn, OverlayTexture.NO_OVERLAY, 1, 1, 1, 0.0625f);
+		poseStack.popPose();
 
-		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+		super.render(entityIn, entityYaw, partialTicks, poseStack, bufferIn, packedLightIn);
 	}
 
-	@Override public ResourceLocation getEntityTexture(${name}Entity entity) {
+	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
 		return texture;
 	}
 
