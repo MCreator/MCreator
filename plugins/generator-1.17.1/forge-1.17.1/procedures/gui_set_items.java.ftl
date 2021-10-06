@@ -1,13 +1,7 @@
 <#include "mcitems.ftl">
-if(${input$entity} instanceof ServerPlayer _player) {
-	AbstractContainerMenu _current = _player.containerMenu;
-	if(_current instanceof Supplier) {
-		Object invobj = ((Supplier) _current).get();
-		if(invobj instanceof Map) {
-			ItemStack _setstack = ${mappedMCItemToItemStackCode(input$item, 1)};
-			_setstack.setCount((int) ${input$amount});
-			((Slot) ((Map) invobj).get((int)(${input$slotid}))).set(_setstack);
-			_current.broadcastChanges();
-		}
-	}
+if(${input$entity} instanceof ServerPlayer _player && _player.containerMenu instanceof Supplier _current && _current.get() instanceof Map _slots) {
+	ItemStack _setstack = ${mappedMCItemToItemStackCode(input$item, 1)};
+	_setstack.setCount(${opt.toInt(input$amount)});
+	((Slot) _slots.get(${opt.toInt(input$slotid)})).set(_setstack);
+	_player.containerMenu.broadcastChanges();
 }
