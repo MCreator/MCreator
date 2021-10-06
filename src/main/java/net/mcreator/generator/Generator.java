@@ -412,7 +412,7 @@ public class Generator implements IGenerator, Closeable {
 					}
 				}
 			} else {
-				globalTemplatesList.forEach(e -> e.addDataModelEntry(baseType.name().toLowerCase(Locale.ENGLISH) + "s",
+				globalTemplatesList.forEach(e -> e.addDataModelEntry(baseType.getPluralName().toLowerCase(Locale.ENGLISH),
 						baseTypeListMap.get(baseType).stream()
 								.sorted(Comparator.comparing(ge -> ge.getModElement().getSortID()))
 								.collect(Collectors.toList())));

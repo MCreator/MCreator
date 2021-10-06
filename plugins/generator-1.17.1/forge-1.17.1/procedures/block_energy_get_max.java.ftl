@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-(new Object(){
+/*@int*/(new Object(){
 	public int getMaxEnergyStored(LevelAccessor level, BlockPos pos) {
 		AtomicInteger _retval = new AtomicInteger(0);
 		BlockEntity _ent = level.getBlockEntity(pos);

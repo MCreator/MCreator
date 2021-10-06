@@ -1,1 +1,1 @@
-(${input$entity}.getBbWidth())
+/*@float*/(${input$entity}.getBbWidth())

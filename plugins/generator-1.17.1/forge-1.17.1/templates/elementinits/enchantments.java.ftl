@@ -38,7 +38,7 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Enchantments {
 
-	private static final List<Enchantment> REGISTRY = new ArrayList();
+	private static final List<Enchantment> REGISTRY = new ArrayList<>();
 
 	<#list enchantments as enchantment>
 	public static Enchantment ${enchantment.getModElement().getRegistryNameUpper()} = register(new ${enchantment.getModElement().getName()}Enchantment().setRegistryName("${modid}:${enchantment.getModElement().getRegistryName()}"));

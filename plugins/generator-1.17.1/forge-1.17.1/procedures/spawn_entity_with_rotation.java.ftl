@@ -6,9 +6,9 @@ if(world instanceof ServerLevel _level) {
    	<#else>
 	Entity entityToSpawn = new ${entity}(${JavaModName}EntityTypes.${generator.getRegistryNameForModElement(field$entity?replace("CUSTOM:", ""))?upper_case}, _level);
    	</#if>
-	entityToSpawn.moveTo(${input$x}, ${input$y}, ${input$z}, (float) ${input$yaw}, (float) ${input$pitch});
-	entityToSpawn.setYBodyRot((float) ${input$yaw});
-	entityToSpawn.setYHeadRot((float) ${input$yaw});
+	entityToSpawn.moveTo(${input$x}, ${input$y}, ${input$z}, ${opt.toFloat(input$yaw)}, ${opt.toFloat(input$pitch)});
+	entityToSpawn.setYBodyRot(${opt.toFloat(input$yaw)});
+	entityToSpawn.setYHeadRot(${opt.toFloat(input$yaw)});
 
 	if (entityToSpawn instanceof Mob _mobToSpawn)
 		_mobToSpawn.finalizeSpawn(_level, world.getCurrentDifficultyAt(entityToSpawn.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);

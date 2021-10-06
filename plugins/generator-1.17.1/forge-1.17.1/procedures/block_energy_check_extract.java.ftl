@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-(new Object(){
+/*@int*/(new Object(){
 	public int extractEnergySimulate(LevelAccessor level, BlockPos pos, int _amount) {
 		AtomicInteger _retval = new AtomicInteger(0);
 		BlockEntity _ent = level.getBlockEntity(pos);
@@ -8,5 +8,5 @@
 				_retval.set(capability.extractEnergy(_amount, true)));
 		return _retval.get();
 	}
-}.extractEnergySimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
+}.extractEnergySimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),${opt.toInt(input$amount)}))
 <#-- @formatter:on -->

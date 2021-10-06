@@ -1,1 +1,1 @@
-(${input$entity}.getYRot())
+/*@float*/(${input$entity}.getYRot())
