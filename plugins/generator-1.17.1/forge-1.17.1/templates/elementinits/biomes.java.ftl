@@ -41,12 +41,12 @@ package ${package}.init;
     private static final List<Biome> REGISTRY = new ArrayList<>();
 
     <#list biomes as biome>
-    public static Biome ${biome.getModElement().getRegistryNameUpper()} = register(${biome.getModElement().getName()}Biome.createBiome()
-        .setRegistryName(new ResourceLocation("${biome.getModElement().getRegistryName()}")));
+    public static Biome ${biome.getModElement().getRegistryNameUpper()}
+        = register("${biome.getModElement().getRegistryName()}", ${biome.getModElement().getName()}Biome.createBiome());
     </#list>
 
-    private static Biome register(Biome biome) {
-		REGISTRY.add(biome);
+    private static Biome register(String registryname, Biome biome) {
+		REGISTRY.add(biome.setRegistryName(new ResourceLocation(registryname)));
     	return biome;
     }
 
