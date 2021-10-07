@@ -40,33 +40,29 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber public class ${JavaModName}Features {
 
-	private static List<Feature<?>> REGISTRY = new ArrayList<>();
+	private static List<ConfiguredFeature<NoneFeatureConfiguration, Feature<NoneFeatureConfiguration>>> REGISTRY = new ArrayList<>();
 
 	<#list structures as structure>
-	public static final Feature<NoneFeatureConfiguration> ${structure.getModElement().getRegistryNameUpper()} = register(
+	public static final ConfiguredFeature<NoneFeatureConfiguration, Feature<NoneFeatureConfiguration>> ${structure.getModElement().getRegistryNameUpper()} = register(
 			new ${structure.getModElement().getName()}Structure(NoneFeatureConfiguration.CODEC).setRegistryName("${structure.getModElement().getRegistryName()}"));
 	</#list>
 
-	private static Feature<NoneFeatureConfiguration> register(Feature<?> feature) {
-		REGISTRY.add(feature);
-		return (Feature<NoneFeatureConfiguration>) feature;
+	private static ConfiguredFeature<NoneFeatureConfiguration, Feature<NoneFeatureConfiguration>> register(Feature<?> feature) {
+		ConfiguredFeature<NoneFeatureConfiguration, Feature<NoneFeatureConfiguration>> retVal = new ConfiguredFeature((Feature<NoneFeatureConfiguration>) feature,
+				NoneFeatureConfiguration.INSTANCE).decorated(FeatureDecorator.NOPE.configured(NoneDecoratorConfiguration.INSTANCE));
+		REGISTRY.add(retVal);
+		return retVal;
 	}
 
 	@SubscribeEvent public static void registerFeatures(RegistryEvent.Register<Feature<?>> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new Feature[0]));
-		REGISTRY.forEach(e -> Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation("${modid}:" + e.getRegistryName()),
-					configuredFeature((Feature<NoneFeatureConfiguration>) e)));
+		event.getRegistry().registerAll(REGISTRY.stream().map(e -> e.feature()).toArray(Feature[]::new));
+		REGISTRY.forEach(e -> Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation("${modid}:" + e.feature().getRegistryName()), e));
 	}
 
 	@SubscribeEvent public static void addFeaturesToBiomes(BiomeLoadingEvent event) {
 		<#list structures as structure>
 		${structure.getModElement().getName()}Structure.addToBiome(event);
 		</#list>
-	}
-
-	public static ConfiguredFeature<?, ?> configuredFeature(Feature<NoneFeatureConfiguration> feature) {
-		return feature.configured(NoneFeatureConfiguration.INSTANCE)
-				.decorated(FeatureDecorator.NOPE.configured(NoneDecoratorConfiguration.INSTANCE));
 	}
 
 }

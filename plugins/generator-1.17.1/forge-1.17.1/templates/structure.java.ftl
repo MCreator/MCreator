@@ -33,7 +33,7 @@
 <#include "procedures.java.ftl">
 package ${package}.world.structure;
 
-@Mod.EventBusSubscriber public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
+public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 
 	public static void addToBiome(BiomeLoadingEvent event) {
 		<#if data.restrictionBiomes?has_content>
