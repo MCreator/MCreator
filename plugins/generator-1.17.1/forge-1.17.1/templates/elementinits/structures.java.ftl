@@ -38,7 +38,7 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber public class ${JavaModName}Structures {
+@Mod.EventBusSubscriber public class ${JavaModName}Features {
 
 	private static List<Feature<?>> REGISTRY = new ArrayList<>();
 
@@ -54,15 +54,13 @@ package ${package}.init;
 
 	@SubscribeEvent public static void registerFeatures(RegistryEvent.Register<Feature<?>> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new Feature[0]));
-		for (Feature<?> feature : REGISTRY) {
-			Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation("${modid}:" + feature.getRegistryName()),
-					configuredFeature((Feature<NoneFeatureConfiguration>) feature));
-		}
+		REGISTRY.forEach(e -> Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation("${modid}:" + e.getRegistryName()),
+					configuredFeature((Feature<NoneFeatureConfiguration>) e)));
 	}
 
 	@SubscribeEvent public static void addFeaturesToBiomes(BiomeLoadingEvent event) {
 		<#list structures as structure>
-		${structure.getModElement().getRegistryNameUpper()}.addToBiome(biome);
+		${structure.getModElement().getName()}Structure.addToBiome(event);
 		</#list>
 	}
 
