@@ -46,7 +46,7 @@ package ${package}.world.structure;
 		int ci = (context.origin().getX() >> 4) << 4;
 		int ck = (context.origin().getZ() >> 4) << 4;
 
-		boolean dimensionCriteria = false;
+		boolean dimensionCriteria = <#if data.spawnWorldTypes.size() > 0>false<#else>true</#if>;
 		<#list data.spawnWorldTypes as worldType>
 			<#if worldType=="Surface">
 				dimensionCriteria |= (level.dimension() == Level.OVERWORLD);
@@ -83,7 +83,7 @@ package ${package}.world.structure;
 
 				<#if data.restrictionBlocks?has_content>
 					BlockState blockAt = level.getBlockState(new BlockPos(i, j, k));
-					boolean blockCriteria = false;
+					boolean blockCriteria = <#if data.restrictionBlocks.size() > 0>false<#else>true</#if>;
 					<#list data.restrictionBlocks as restrictionBlock>
 						blockCriteria |= (blockAt == ${mappedBlockToBlock(restrictionBlock)}.defaultBlockState());
 					</#list>
@@ -137,8 +137,8 @@ package ${package}.world.structure;
 		return true;
 	}
 
-	@SubscribeEvent public void addToBiome(BiomeLoadingEvent event) {
-		boolean biomeCriteria = false;
+	public void addToBiome(BiomeLoadingEvent event) {
+		boolean biomeCriteria = <#if data.restrictionBiomes.size() > 0>false<#else>true</#if>;
 		<#list data.restrictionBiomes as restrictionBiome>
 			<#if restrictionBiome.canProperlyMap()>
 		biomeCriteria |= (event.getName() == new ResourceLocation("${restrictionBiome}"));

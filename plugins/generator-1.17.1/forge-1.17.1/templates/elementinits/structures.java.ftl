@@ -60,6 +60,12 @@ package ${package}.init;
 		}
 	}
 
+	@SubscribeEvent public static void addFeaturesToBiomes(BiomeLoadingEvent event) {
+		<#list structures as structure>
+		${structure.getModElement().getRegistryNameUpper()}.addToBiome(biome);
+		</#list>
+	}
+
 	public static ConfiguredFeature<?, ?> configuredFeature(Feature<NoneFeatureConfiguration> feature) {
 		return feature.configured(NoneFeatureConfiguration.INSTANCE)
 				.decorated(FeatureDecorator.NOPE.configured(NoneDecoratorConfiguration.INSTANCE));
