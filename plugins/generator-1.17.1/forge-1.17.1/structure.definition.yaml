@@ -1,0 +1,7 @@
+templates:
+  - template: structure.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/structure/@NAMEStructure.java"
+
+global_templates:
+  - template: elementinits/structures.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameStructures.java"
