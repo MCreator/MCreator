@@ -35,6 +35,24 @@ package ${package}.world.structure;
 
 @Mod.EventBusSubscriber public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 
+	public static void addToBiome(BiomeLoadingEvent event) {
+		<#if data.restrictionBiomes?has_content>
+		boolean biomeCriteria = false;
+			<#list data.restrictionBiomes as restrictionBiome>
+				<#if restrictionBiome.canProperlyMap()>
+		biomeCriteria |= (event.getName() == new ResourceLocation("${restrictionBiome}"));
+				</#if>
+			</#list>
+		if (biomeCriteria)
+		</#if>
+			event.getGeneration().getFeatures(GenerationStep.Decoration.
+					<#if data.spawnLocation=="Ground">SURFACE_STRUCTURES
+					<#elseif data.spawnLocation=="Air">RAW_GENERATION
+					<#elseif data.spawnLocation=="Underground">UNDERGROUND_STRUCTURES</#if>)
+					.add(() -> new ${name}Structure(NoneFeatureConfiguration.CODEC).configured(NoneFeatureConfiguration.INSTANCE)
+					.decorated(FeatureDecorator.NOPE.configured(NoneDecoratorConfiguration.INSTANCE)));
+	}
+
 	public ${name}Structure(Codec<NoneFeatureConfiguration> codec) {
 		super(codec);
 	}
@@ -46,19 +64,21 @@ package ${package}.world.structure;
 		int ci = (context.origin().getX() >> 4) << 4;
 		int ck = (context.origin().getZ() >> 4) << 4;
 
-		boolean dimensionCriteria = <#if data.spawnWorldTypes.size() > 0>false<#else>true</#if>;
-		<#list data.spawnWorldTypes as worldType>
-			<#if worldType=="Surface">
+		<#if data.spawnWorldTypes?has_content>
+		boolean dimensionCriteria = false;
+			<#list data.spawnWorldTypes as worldType>
+				<#if worldType=="Surface">
 				dimensionCriteria |= (level.dimension() == Level.OVERWORLD);
-			<#elseif worldType=="Nether">
+				<#elseif worldType=="Nether">
 				dimensionCriteria |= (level.dimension() == Level.NETHER);
-			<#elseif worldType=="End">
+				<#elseif worldType=="End">
 				dimensionCriteria |= (level.dimension() == Level.END);
-			<#else>
+				<#else>
 				dimensionCriteria |= (level.dimension() == ResourceKey.create(Registry.DIMENSION_REGISTRY,
 						new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")));
-			</#if>
-		</#list>
+				</#if>
+			</#list>
+		</#if>
 
 		if (!dimensionCriteria)
 			return false;
@@ -83,7 +103,7 @@ package ${package}.world.structure;
 
 				<#if data.restrictionBlocks?has_content>
 					BlockState blockAt = level.getBlockState(new BlockPos(i, j, k));
-					boolean blockCriteria = <#if data.restrictionBlocks.size() > 0>false<#else>true</#if>;
+					boolean blockCriteria = false;
 					<#list data.restrictionBlocks as restrictionBlock>
 						blockCriteria |= (blockAt == ${mappedBlockToBlock(restrictionBlock)}.defaultBlockState());
 					</#list>
@@ -135,21 +155,6 @@ package ${package}.world.structure;
 		}
 
 		return true;
-	}
-
-	public void addToBiome(BiomeLoadingEvent event) {
-		boolean biomeCriteria = <#if data.restrictionBiomes.size() > 0>false<#else>true</#if>;
-		<#list data.restrictionBiomes as restrictionBiome>
-			<#if restrictionBiome.canProperlyMap()>
-		biomeCriteria |= (event.getName() == new ResourceLocation("${restrictionBiome}"));
-			</#if>
-		</#list>
-		if (biomeCriteria)
-			event.getGeneration().getFeatures(GenerationStep.Decoration.
-					<#if data.spawnLocation=="Ground">SURFACE_STRUCTURES
-					<#elseif data.spawnLocation=="Air">RAW_GENERATION
-					<#elseif data.spawnLocation=="Underground">UNDERGROUND_STRUCTURES</#if>)
-					.add(() -> ${JavaModName}Structures.configuredFeature(this));
 	}
 
 }

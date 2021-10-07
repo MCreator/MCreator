@@ -4,4 +4,4 @@ templates:
 
 global_templates:
   - template: elementinits/structures.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameStructures.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFeatures.java"
