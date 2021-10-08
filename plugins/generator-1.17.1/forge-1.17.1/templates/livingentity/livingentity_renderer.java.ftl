@@ -61,12 +61,12 @@ package ${package}.client.renderer;
 	<#assign super = "super(context, new SilverfishModel(context.bakeLayer(ModelLayers.SILVERFISH)), " + data.modelShadowSize + "f);">
 	<#assign model = "SilverfishModel">
 <#elseif !data.isBuiltInModel()>
-	<#assign super = "super(context, new ${data.customModel}(context.bakeLayer(${data.customModel}.LAYER_LOCATION)), " + data.modelShadowSize + "f);">
-	<#assign model = data.customModel>
+	<#assign super = "super(context, new ${data.mobModelName}(context.bakeLayer(${data.mobModelName}.LAYER_LOCATION)), " + data.modelShadowSize + "f);">
+	<#assign model = data.mobModelName>
 <#else>
 	<#assign super = "super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), " + data.modelShadowSize + "f);">
-	<#assign humanoid = true>
 	<#assign model = "HumanoidModel">
+	<#assign humanoid = true>
 </#if>
 
 <#assign model = model + "<" + name + "Entity>">
@@ -95,4 +95,3 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	}
 
 }
-

@@ -32,7 +32,7 @@
 
 package ${package}.entity;
 
-@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class) public class ${name}ProjectileEntity extends AbstractArrowEntity implements IRendersAsItem {
+@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class) public class ${name}ProjectileEntity extends AbstractArrowEntity implements ItemSupplier {
 
 	public ${name}ProjectileEntity(FMLPlayMessages.SpawnEntity packet, Level world) {
 		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE, world);
