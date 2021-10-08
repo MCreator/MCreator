@@ -56,21 +56,21 @@ public class ${name}TrunkDecorator extends TrunkVineDecorator {
                 if (random.nextInt(3) > 0) {
                     BlockPos blockpos = bp.west();
                     if (Feature.isAir(levelReader, blockpos)) {
-                        biConsumer.accept(bp, Blocks.DIRT.defaultBlockState());
+                        biConsumer.accept(bp, ${mappedBlockToBlockStateCode(data.treeVines)});
                     }
                 }
 
                 if (random.nextInt(3) > 0) {
                     BlockPos blockpos1 = bp.east();
                     if (Feature.isAir(levelReader, blockpos1)) {
-                        biConsumer.accept(bp, Blocks.DIRT.defaultBlockState());
+                        biConsumer.accept(bp, ${mappedBlockToBlockStateCode(data.treeVines)});
                     }
                 }
 
                 if (random.nextInt(3) > 0) {
                     BlockPos blockpos2 = bp.north();
                     if (Feature.isAir(levelReader, blockpos2)) {
-                        biConsumer.accept(bp, Blocks.DIRT.defaultBlockState());
+                        biConsumer.accept(bp, ${mappedBlockToBlockStateCode(data.treeVines)});
                     }
                 }
 

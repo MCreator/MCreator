@@ -85,9 +85,8 @@ public class ${name}LeaveDecorator extends LeaveVineDecorator {
         }
 
         private static void addVine(LevelSimulatedReader levelReader, BlockPos blockPos, BiConsumer<BlockPos, BlockState> biConsumer) {
-            biConsumer.accept(blockPos, Blocks.DIRT.defaultBlockState());
+            biConsumer.accept(blockPos, ${mappedBlockToBlockStateCode(data.treeVines)});
             int i = 4;
-
             for(BlockPos blockpos = blockPos.below(); Feature.isAir(levelReader, blockpos) && i > 0; --i) {
                 biConsumer.accept(blockpos, ${mappedBlockToBlockStateCode(data.treeVines)});
                 blockpos = blockpos.below();
