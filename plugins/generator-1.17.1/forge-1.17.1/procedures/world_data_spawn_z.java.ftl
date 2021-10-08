@@ -1,1 +1,1 @@
-(world.getLevelData().getZSpawn())
+/*@int*/(world.getLevelData().getZSpawn())

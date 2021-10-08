@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-(new Object() {
+/*@int*/(new Object() {
 	public int getFluidTankCapacity(LevelAccessor level, BlockPos pos, int tank) {
 		AtomicInteger _retval = new AtomicInteger(0);
 		BlockEntity _ent = level.getBlockEntity(pos);
@@ -8,5 +8,5 @@
 				_retval.set(capability.getTankCapacity(tank)));
 		return _retval.get();
 	}
-}.getFluidTankCapacity(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), (int)${input$tank}))
+}.getFluidTankCapacity(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),${opt.toInt(input$tank)}))
 <#-- @formatter:on -->

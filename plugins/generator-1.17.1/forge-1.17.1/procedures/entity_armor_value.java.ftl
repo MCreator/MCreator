@@ -1,1 +1,1 @@
-(${input$entity} instanceof LivingEntity _livEnt ? _livEnt.getArmorValue():0)
+/*@int*/(${input$entity} instanceof LivingEntity _livEnt ? _livEnt.getArmorValue():0)
