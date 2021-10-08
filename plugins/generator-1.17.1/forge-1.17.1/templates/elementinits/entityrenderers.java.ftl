@@ -49,8 +49,7 @@ package ${package}.init;
 			<#else>
 				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}, ${entity.getModElement().getName()}Renderer::new);
 				<#if entity.hasCustomProjectile()>
-				event.registerEntityRenderer(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE,
-						context -> new SpriteRenderer(context, Minecraft.getInstance().getItemRenderer()));
+				event.registerEntityRenderer(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE, ThrownItemRenderer::new);
 				</#if>
 			</#if>
 		</#list>

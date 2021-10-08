@@ -34,26 +34,28 @@
 
 package ${package}.entity;
 
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.material.Material;
 
-<#assign extendsClass = "Creature">
+<#assign extendsClass = "PathfinderMob">
+
 <#if data.aiBase != "(none)" >
 	<#assign extendsClass = data.aiBase>
 <#else>
-	<#assign extendsClass = data.mobBehaviourType.replace("Mob", "Monster")>
+	<#assign extendsClass = data.mobBehaviourType?replace("Mob", "Monster")?replace("Creature", "PathfinderMob")>
 </#if>
 
 <#if data.breedable>
-	<#assign extendsClass = "Animal">
+	<#assign extendsClass = "AnimalEntity">
 </#if>
 
 <#if data.tameable>
-	<#assign extendsClass = "Tameable">
+	<#assign extendsClass = "TameableEntity">
 </#if>
 
 <#if data.spawnThisMob>@Mod.EventBusSubscriber</#if>
-public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged>implements IRangedAttackMob</#if> {
+public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements IRangedAttackMob</#if> {
 
 	<#if data.spawnThisMob>
 	private static final Set<ResourceLocation> SPAWN_BIOMES = Set.of(
@@ -64,52 +66,57 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 
 	@SubscribeEvent public static void addLivingEntityToBiomes(BiomeLoadingEvent event) {
 		if (SPAWN_BIOMES.contains(event.getName()))
-			event.getSpawns().getSpawner(${generator.map(data.mobSpawningType, "mobspawntypes")}).add(new MobSpawnInfo.Spawners(entity, ${data.spawningProbability},
-				${data.minNumberOfMobsPerGroup}, ${data.maxNumberOfMobsPerGroup}));
+			event.getSpawns().getSpawner(${generator.map(data.mobSpawningType, "mobspawntypes")})
+					.add(new MobSpawnSettings.SpawnerData(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()},
+						${data.spawningProbability}, ${data.minNumberOfMobsPerGroup}, ${data.maxNumberOfMobsPerGroup}));
 	}
 	</#if>
 
+	<#if data.isBoss>
+	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(),
+			ServerBossEvent.BossBarColor.${data.bossBarColor}, ServerBossEvent.BossBarOverlay.${data.bossBarType});
+	</#if>
+
 	public ${name}Entity(FMLPlayMessages.SpawnEntity packet, Level world) {
-    	this(entity, world);
+    	this(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, world);
     }
 
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
     	super(type, world);
-		experienceValue = ${data.xpAmount};
-		setNoAI(${(!data.hasAI)});
+		xpReward = ${data.xpAmount};
+		setNoAi(${(!data.hasAI)});
 
 		<#if data.mobLabel?has_content >
-        	setCustomName(new StringTextComponent("${data.mobLabel}"));
+        	setCustomName(new TextComponent("${data.mobLabel}"));
         	setCustomNameVisible(true);
         </#if>
 
 		<#if !data.doesDespawnWhenIdle>
-			enablePersistence();
+			setPersistenceRequired();
         </#if>
 
 		<#if !data.equipmentMainHand.isEmpty()>
-        this.setItemStackToSlot(EquipmentSlotType.MAINHAND, ${mappedMCItemToItemStackCode(data.equipmentMainHand, 1)});
+        this.setItemSlot(EquipmentSlot.MAINHAND, ${mappedMCItemToItemStackCode(data.equipmentMainHand, 1)});
         </#if>
         <#if !data.equipmentOffHand.isEmpty()>
-        this.setItemStackToSlot(EquipmentSlotType.OFFHAND, ${mappedMCItemToItemStackCode(data.equipmentOffHand, 1)});
+        this.setItemSlot(EquipmentSlot.OFFHAND, ${mappedMCItemToItemStackCode(data.equipmentOffHand, 1)});
         </#if>
         <#if !data.equipmentHelmet.isEmpty()>
-        this.setItemStackToSlot(EquipmentSlotType.HEAD, ${mappedMCItemToItemStackCode(data.equipmentHelmet, 1)});
+        this.setItemSlot(EquipmentSlot.HEAD, ${mappedMCItemToItemStackCode(data.equipmentHelmet, 1)});
         </#if>
         <#if !data.equipmentBody.isEmpty()>
-        this.setItemStackToSlot(EquipmentSlotType.CHEST, ${mappedMCItemToItemStackCode(data.equipmentBody, 1)});
+        this.setItemSlot(EquipmentSlot.CHEST, ${mappedMCItemToItemStackCode(data.equipmentBody, 1)});
         </#if>
         <#if !data.equipmentLeggings.isEmpty()>
-        this.setItemStackToSlot(
-				EquipmentSlotType.LEGS, ${mappedMCItemToItemStackCode(data.equipmentLeggings, 1)});
+        this.setItemSlot(EquipmentSlot.LEGS, ${mappedMCItemToItemStackCode(data.equipmentLeggings, 1)});
         </#if>
         <#if !data.equipmentBoots.isEmpty()>
-        this.setItemStackToSlot(EquipmentSlotType.FEET, ${mappedMCItemToItemStackCode(data.equipmentBoots, 1)});
+        this.setItemSlot(EquipmentSlot.FEET, ${mappedMCItemToItemStackCode(data.equipmentBoots, 1)});
         </#if>
 
 		<#if data.flyingMob>
 		this.moveController = new FlyingMovementController(this, 10, true);
-		this.navigator = new FlyingPathNavigator(this, this.world);
+		this.navigator = new FlyingPathNavigator(this, this.level);
 		<#elseif data.waterMob>
 		this.setPathPriority(PathNodeType.WATER, 0);
 		this.moveController = new MovementController(this) {
@@ -118,9 +125,9 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
                     ${name}Entity.this.setMotion(${name}Entity.this.getMotion().add(0, 0.005, 0));
 
 				if (this.action == MovementController.Action.MOVE_TO && !${name}Entity.this.getNavigator().noPath()) {
-					double dx = this.posX - ${name}Entity.this.getPosX();
-					double dy = this.posY - ${name}Entity.this.getPosY();
-					double dz = this.posZ - ${name}Entity.this.getPosZ();
+					double dx = this.posX - ${name}Entity.this.getX();
+					double dy = this.posY - ${name}Entity.this.getY();
+					double dz = this.posZ - ${name}Entity.this.getZ();
 
 					float f = (float)(MathHelper.atan2(dz, dx) * (double)(180 / Math.PI)) - 90;
 					float f1 = (float)(this.speed * ${name}Entity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
@@ -149,7 +156,7 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 				}
 			}
 		};
-		this.navigator = new SwimmerPathNavigator(this, this.world);
+		this.navigator = new SwimmerPathNavigator(this, this.level);
 		</#if>
 	}
 
@@ -175,66 +182,66 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 	}
 	</#if>
 
-	@Override public CreatureAttribute getCreatureAttribute() {
-		return CreatureAttribute.${data.mobCreatureType};
+	@Override public MobType getMobType() {
+		return MobType.${data.mobCreatureType};
 	}
 
 	<#if !data.doesDespawnWhenIdle>
-	@Override public boolean canDespawn(double distanceToClosestPlayer) {
+	@Override public boolean removeWhenFarAway(double distanceToClosestPlayer) {
 		return false;
 	}
     </#if>
 
 	<#if data.mountedYOffset != 0>
-	@Override public double getMountedYOffset() {
-		return super.getMountedYOffset() + ${data.mountedYOffset};
+	@Override public double getPassengersRidingOffset() {
+		return super.getPassengersRidingOffset() + ${data.mountedYOffset};
 	}
 	</#if>
 
 	<#if !data.mobDrop.isEmpty()>
-	protected void dropSpecialItems(DamageSource source, int looting, boolean recentlyHitIn) {
-   	   super.dropSpecialItems(source, looting, recentlyHitIn);
-	   	this.entityDropItem(${mappedMCItemToItemStackCode(data.mobDrop, 1)});
+    protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHitIn) {
+        super.dropCustomDeathLoot(source, looting, recentlyHitIn);
+        this.spawnAtLocation(${mappedMCItemToItemStackCode(data.mobDrop, 1)});
    	}
 	</#if>
 
    	<#if data.livingSound.getMappedValue()?has_content>
-	@Override public net.minecraft.util.SoundEvent getAmbientSound() {
-		return (net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.livingSound}"));
+	@Override public net.minecraft.sounds.SoundEvent getAmbientSound() {
+		return (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.livingSound}"));
 	}
 	</#if>
 
    	<#if data.stepSound?has_content && data.stepSound.getMappedValue()?has_content>
 	@Override public void playStepSound(BlockPos pos, BlockState blockIn) {
-		this.playSound((net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")), 0.15f, 1);
+		this.playSound((net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")), 0.15f, 1);
 	}
 	</#if>
 
-	@Override public net.minecraft.util.SoundEvent getHurtSound(DamageSource ds) {
-		return (net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hurtSound}"));
+	@Override public net.minecraft.sounds.SoundEvent getHurtSound(DamageSource ds) {
+		return (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hurtSound}"));
 	}
 
-	@Override public net.minecraft.util.SoundEvent getDeathSound() {
-		return (net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.deathSound}"));
+	@Override public net.minecraft.sounds.SoundEvent getDeathSound() {
+		return (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.deathSound}"));
 	}
 
 	<#if hasProcedure(data.onStruckByLightning)>
-	@Override public void func_241841_a(ServerWorld serverWorld, LightningBoltEntity entityLightningBolt) {
-		super.func_241841_a(serverWorld, entityLightningBolt);
-		double x = this.getPosX();
-		double y = this.getPosY();
-		double z = this.getPosZ();
+	@Override public void thunderHit(ServerLevel serverWorld, LightningBolt lightningBolt) {
+		super.thunderHit(serverWorld, lightningBolt);
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
 		Entity entity = this;
 		<@procedureOBJToCode data.onStruckByLightning/>
 	}
     </#if>
 
 	<#if hasProcedure(data.whenMobFalls) || data.flyingMob>
-	@Override public boolean onLivingFall(float l, float d) {
+	@Override public boolean causeFallDamage(float l, float d, DamageSource source) {
 		<#if hasProcedure(data.whenMobFalls) >
-			double x = this.getPosX();
-			double y = this.getPosY();
-			double z = this.getPosZ();
+			double x = this.getX();
+			double y = this.getY();
+			double z = this.getZ();
 			Entity entity = this;
 			<@procedureOBJToCode data.whenMobFalls/>
 		</#if>
@@ -242,7 +249,7 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 		<#if data.flyingMob >
 			return false;
 		<#else>
-			return super.onLivingFall(l, d);
+			return super.causeFallDamage(l, d, source);
 		</#if>
 	}
     </#if>
@@ -251,25 +258,25 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 		|| data.immuneToCactus || data.immuneToDrowning || data.immuneToLightning || data.immuneToPotions
 		|| data.immuneToPlayer || data.immuneToExplosion || data.immuneToTrident || data.immuneToAnvil
 		|| data.immuneToDragonBreath || data.immuneToWither>
-	@Override public boolean attackEntityFrom(DamageSource source, float amount) {
+	@Override public boolean hurt(DamageSource source, float amount) {
 		<#if hasProcedure(data.whenMobIsHurt)>
-			double x = this.getPosX();
-			double y = this.getPosY();
-			double z = this.getPosZ();
+			double x = this.getX();
+			double y = this.getY();
+			double z = this.getZ();
 			Entity entity = this;
-			Entity sourceentity = source.getTrueSource();
+			Entity sourceentity = source.getEntity();
 			<@procedureOBJToCode data.whenMobIsHurt/>
 		</#if>
 		<#if data.immuneToArrows>
-			if (source.getImmediateSource() instanceof AbstractArrowEntity)
+			if (source.getDirectEntity() instanceof AbstractArrow)
 				return false;
 		</#if>
 		<#if data.immuneToPlayer>
-			if (source.getImmediateSource() instanceof PlayerEntity)
+			if (source.getDirectEntity() instanceof Player)
 				return false;
 		</#if>
 		<#if data.immuneToPotions>
-			if (source.getImmediateSource() instanceof PotionEntity)
+			if (source.getDirectEntity() instanceof ThrownPotion)
 				return false;
 		</#if>
 		<#if data.immuneToFallDamage>
@@ -293,7 +300,7 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 				return false;
 		</#if>
 		<#if data.immuneToTrident>
-			if (source.getDamageType().equals("trident"))
+			if (source.getMsgId().equals("trident"))
 				return false;
 		</#if>
 		<#if data.immuneToAnvil>
@@ -307,32 +314,32 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 		<#if data.immuneToWither>
 			if (source == DamageSource.WITHER)
 				return false;
-			if (source.getDamageType().equals("witherSkull"))
+			if (source.getMsgId().equals("witherSkull"))
 				return false;
 		</#if>
-		return super.attackEntityFrom(source, amount);
+		return super.hurt(source, amount);
 	}
     </#if>
 
 	<#if hasProcedure(data.whenMobDies)>
-	@Override public void onDeath(DamageSource source) {
-		super.onDeath(source);
-		double x = this.getPosX();
-		double y = this.getPosY();
-		double z = this.getPosZ();
-		Entity sourceentity = source.getTrueSource();
+	@Override public void die(DamageSource source) {
+		super.die(source);
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
+		Entity sourceentity = source.getEntity();
 		Entity entity = this;
 		<@procedureOBJToCode data.whenMobDies/>
 	}
     </#if>
 
 	<#if hasProcedure(data.onInitialSpawn)>
-	@Override public ILivingEntityData onInitialSpawn(IServerLevel world, DifficultyInstance difficulty,
-			SpawnReason reason, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT tag) {
-		ILivingEntityData retval = super.onInitialSpawn(world, difficulty, reason, livingdata, tag);
-		double x = this.getPosX();
-		double y = this.getPosY();
-		double z = this.getPosZ();
+	@Override public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
+			MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+		SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
 		Entity entity = this;
 		<@procedureOBJToCode data.onInitialSpawn/>
 		return retval;
@@ -379,22 +386,22 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
     </#if>
 
 	<#if hasProcedure(data.onRightClickedOn) || data.ridable || data.tameable || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
-	@Override public ActionResultType func_230254_b_(PlayerEntity sourceentity, Hand hand) {
-		ItemStack itemstack = sourceentity.getHeldItem(hand);
-		ActionResultType retval = ActionResultType.func_233537_a_(this.world.isRemote());
+	@Override public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
+		ItemStack itemstack = sourceentity.getItemInHand(hand);
+		InteractionResult retval = InteractionResult.sidedSuccess(this.level.isClientSide());
 
 		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 			<#if data.ridable>
 				if (sourceentity.isSecondaryUseActive()) {
 			</#if>
-				if(sourceentity instanceof ServerPlayerEntity) {
-					NetworkHooks.openGui((ServerPlayerEntity) sourceentity, new INamedContainerProvider() {
+				if(sourceentity instanceof ServerPlayer) {
+					NetworkHooks.openGui((ServerPlayer) sourceentity, new INamedContainerProvider() {
 
 						@Override public ITextComponent getDisplayName() {
 							return new StringTextComponent("${data.mobName}");
 						}
 
-						@Override public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
+						@Override public Container createMenu(int id, PlayerInventory inventory, Player player) {
 							PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
 							packetBuffer.writeBlockPos(new BlockPos(sourceentity.getPosition()));
 							packetBuffer.writeByte(0);
@@ -409,7 +416,7 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 					});
 				}
 			<#if data.ridable>
-					return ActionResultType.func_233537_a_(this.world.isRemote());
+					return InteractionResult.sidedSuccess(this.level.isClientSide());
 				}
 			</#if>
 		</#if>
@@ -417,44 +424,44 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 		<#if data.tameable>
 			Item item = itemstack.getItem();
 			if (itemstack.getItem() instanceof SpawnEggItem) {
-				retval = super.func_230254_b_(sourceentity, hand);
-			} else if (this.world.isRemote()) {
+				retval = super.mobInteract(sourceentity, hand);
+			} else if (this.level.isClientSide()) {
 				retval = (this.isTamed() && this.isOwner(sourceentity) || this.isBreedingItem(itemstack))
-						? ActionResultType.func_233537_a_(this.world.isRemote()) : ActionResultType.PASS;
+						? InteractionResult.sidedSuccess(this.level.isClientSide()) : InteractionResult.PASS;
 			} else {
 				if (this.isTamed()) {
 					if (this.isOwner(sourceentity)) {
 						if (item.isFood() && this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.consumeItemFromStack(sourceentity, itemstack);
 							this.heal((float)item.getFood().getHealing());
-							retval = ActionResultType.func_233537_a_(this.world.isRemote());
+							retval = InteractionResult.sidedSuccess(this.level.isClientSide());
 						} else if (this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.consumeItemFromStack(sourceentity, itemstack);
 							this.heal(4);
-							retval = ActionResultType.func_233537_a_(this.world.isRemote());
+							retval = InteractionResult.sidedSuccess(this.level.isClientSide());
 						} else {
-							retval = super.func_230254_b_(sourceentity, hand);
+							retval = super.mobInteract(sourceentity, hand);
 						}
 					}
 				} else if (this.isBreedingItem(itemstack)) {
 					this.consumeItemFromStack(sourceentity, itemstack);
-					if (this.rand.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, sourceentity)) {
+					if (this.random.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, sourceentity)) {
 						this.setTamedBy(sourceentity);
-						this.world.setEntityState(this, (byte) 7);
+						this.level.setEntityState(this, (byte) 7);
 					} else {
-						this.world.setEntityState(this, (byte) 6);
+						this.level.setEntityState(this, (byte) 6);
 					}
 
 					this.enablePersistence();
-					retval = ActionResultType.func_233537_a_(this.world.isRemote());
+					retval = InteractionResult.sidedSuccess(this.level.isClientSide());
 				} else {
-					retval = super.func_230254_b_(sourceentity, hand);
-					if (retval == ActionResultType.SUCCESS || retval == ActionResultType.CONSUME)
+					retval = super.mobInteract(sourceentity, hand);
+					if (retval == InteractionResult.SUCCESS || retval == InteractionResult.CONSUME)
 						this.enablePersistence();
 				}
 			}
 		<#else>
-			super.func_230254_b_(sourceentity, hand);
+			super.mobInteract(sourceentity, hand);
 		</#if>
 
 		<#if data.ridable>
@@ -462,12 +469,12 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 	    </#if>
 
 		<#if hasProcedure(data.onRightClickedOn)>
-			double x = this.getPosX();
-			double y = this.getPosY();
-			double z = this.getPosZ();
+			double x = this.getX();
+			double y = this.getY();
+			double z = this.getZ();
 			Entity entity = this;
 			<#if hasReturnValue(data.onRightClickedOn)>
-				return <@procedureOBJToActionResultTypeCode data.onRightClickedOn/>;
+				return <@procedureOBJToInteractionResultCode data.onRightClickedOn/>;
 			<#else>
 				<@procedureOBJToCode data.onRightClickedOn/>
 				return retval;
@@ -481,9 +488,9 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 	<#if hasProcedure(data.whenThisMobKillsAnother)>
 	@Override public void awardKillScore(Entity entity, int score, DamageSource damageSource) {
 		super.awardKillScore(entity, score, damageSource);
-		double x = this.getPosX();
-		double y = this.getPosY();
-		double z = this.getPosZ();
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
 		Entity sourceentity = this;
 		<@procedureOBJToCode data.whenThisMobKillsAnother/>
 	}
@@ -492,21 +499,21 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 	<#if hasProcedure(data.onMobTickUpdate)>
 	@Override public void baseTick() {
 		super.baseTick();
-		double x = this.getPosX();
-		double y = this.getPosY();
-		double z = this.getPosZ();
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
 		Entity entity = this;
 		<@procedureOBJToCode data.onMobTickUpdate/>
 	}
     </#if>
 
 	<#if hasProcedure(data.onPlayerCollidesWith)>
-	@Override public void onCollideWithPlayer(PlayerEntity sourceentity) {
-		super.onCollideWithPlayer(sourceentity);
+	@Override public void playerTouch(Player sourceentity) {
+		super.playerTouch(sourceentity);
 		Entity entity = this;
-		double x = this.getPosX();
-		double y = this.getPosY();
-		double z = this.getPosZ();
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
 		<@procedureOBJToCode data.onPlayerCollidesWith/>
 	}
     </#if>
@@ -514,11 +521,11 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
     <#if data.ranged>
 	    public void attackEntityWithRangedAttack(LivingEntity target, float flval) {
 			<#if data.rangedItemType == "Default item">
-				${name}ProjectileEntity entityarrow = new ${name}ProjectileEntity(arrow, this, this.world);
-				double d0 = target.getPosY() + (double) target.getEyeHeight() - 1.1;
-				double d1 = target.getPosX() - this.getPosX();
-				double d3 = target.getPosZ() - this.getPosZ();
-				entityarrow.shoot(d1, d0 - entityarrow.getPosY() + (double) MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, 1.6F, 12.0F);
+				${name}ProjectileEntity entityarrow = new ${name}ProjectileEntity(arrow, this, this.level);
+				double d0 = target.getY() + (double) target.getEyeHeight() - 1.1;
+				double d1 = target.getX() - this.getX();
+				double d3 = target.getZ() - this.getZ();
+				entityarrow.shoot(d1, d0 - entityarrow.getY() + (double) MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, 1.6F, 12.0F);
 				world.addEntity(entityarrow);
 			<#else>
 				${data.rangedItemType}Item.shoot(this, target);
@@ -527,7 +534,7 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
     </#if>
 
 	<#if data.breedable>
-        @Override public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
+        @Override public AgeableEntity func_241840_a(ServerLevel serverWorld, AgeableEntity ageable) {
 			${name}Entity retval = (${name}Entity) entity.create(serverWorld);
 			retval.onInitialSpawn(serverWorld, serverWorld.getDifficultyForLocation(new BlockPos(retval.getPosition())), SpawnReason.BREEDING, (ILivingEntityData)null, (CompoundNBT)null);
 			return retval;
@@ -561,39 +568,36 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 	</#if>
 
 	<#if data.disableCollisions>
-	@Override public boolean canBePushed() {
+	@Override public boolean isPushable() {
 		return false;
 	}
 
-   	@Override protected void collideWithEntity(Entity entityIn) {
+   	@Override protected void doPush(Entity entityIn) {
    	}
 
-   	@Override protected void collideWithNearbyEntities() {
+   	@Override protected void pushEntities() {
    	}
 	</#if>
 
 	<#if data.isBoss>
-	   @Override public boolean isNonBoss() {
-			return false;
-		}
+	@Override public boolean canChangeDimensions() {
+		return false;
+	}
 
-	   private final ServerBossInfo bossInfo = new ServerBossInfo(this.getDisplayName(),
-				BossInfo.Color.${data.bossBarColor}, BossInfo.Overlay.${data.bossBarType});
+	@Override public void startSeenByPlayer(ServerPlayer player) {
+		super.startSeenByPlayer(player);
+		this.bossInfo.addPlayer(player);
+	}
 
-	   @Override public void addTrackingPlayer(ServerPlayerEntity player) {
-			super.addTrackingPlayer(player);
-			this.bossInfo.addPlayer(player);
-		}
+	@Override public void stopSeenByPlayer(ServerPlayer player) {
+		super.stopSeenByPlayer(player);
+		this.bossInfo.removePlayer(player);
+	}
 
-	   @Override public void removeTrackingPlayer(ServerPlayerEntity player) {
-			super.removeTrackingPlayer(player);
-			this.bossInfo.removePlayer(player);
-		}
-
-	   @Override public void updateAITasks() {
-			super.updateAITasks();
-			this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
-		}
+	@Override public void customServerAiStep() {
+		super.customServerAiStep();
+		this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
+	}
 	</#if>
 
     <#if data.ridable && (data.canControlForward || data.canControlStrafe)>
@@ -629,8 +633,8 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 				}
 
 				this.prevLimbSwingAmount = this.limbSwingAmount;
-				double d1 = this.getPosX() - this.prevPosX;
-				double d0 = this.getPosZ() - this.prevPosZ;
+				double d1 = this.getX() - this.prevPosX;
+				double d0 = this.getZ() - this.prevPosZ;
 				float f1 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
 				if (f1 > 1.0F) f1 = 1.0F;
 				this.limbSwingAmount += (f1 - this.limbSwingAmount) * 0.4F;
@@ -655,19 +659,19 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
     </#if>
 
     <#if data.spawnParticles || data.flyingMob>
-    public void livingTick() {
-		super.livingTick();
+    public void aiStep() {
+		super.aiStep();
 
 		<#if data.flyingMob>
 		this.setNoGravity(true);
 		</#if>
 
 		<#if data.spawnParticles>
-		double x = this.getPosX();
-		double y = this.getPosY();
-		double z = this.getPosZ();
-		Random random = this.rand;
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
 		Entity entity = this;
+		Level world = this.level;
         <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious data.particleAmount data.particleCondition/>
 		</#if>
 	}
@@ -676,7 +680,8 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 	public static void init() {
 		<#if data.spawnThisMob>
 			<#if data.mobSpawningType == "creature">
-			EntitySpawnPlacementRegistry.register(entity, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
+			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()},
+					SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 				<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
 						int x = pos.getX();
@@ -685,11 +690,12 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 				<#else>
-					(entityType, world, reason, pos, random) -> (world.getBlockState(pos.down()).getMaterial() == Material.ORGANIC && world.getLightSubtracted(pos, 0) > 8)
+					(entityType, world, reason, pos, random) -> (world.getBlockState(pos.below()).getMaterial() == Material.GRASS && world.getRawBrightness(pos, 0) > 8)
 				</#if>
 			);
-			<#elseif data.mobSpawningType == "ambient">
-			EntitySpawnPlacementRegistry.register(entity, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
+			<#elseif data.mobSpawningType == "ambient" || data.mobSpawningType == "misc">
+			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()},
+					SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
 						int x = pos.getX();
@@ -698,11 +704,12 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 					<#else>
-					MobEntity::canSpawnOn
+					Mob::checkMobSpawnRules
 					</#if>
 			);
-			<#elseif data.mobSpawningType == "waterCreature">
-			EntitySpawnPlacementRegistry.register(entity, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
+			<#elseif data.mobSpawningType == "waterCreature" || data.mobSpawningType == "waterAmbient">
+			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()},
+					SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
 						int x = pos.getX();
@@ -711,11 +718,26 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 					<#else>
-					SquidEntity::func_223365_b
+					(entityType, world, reason, pos, random) -> (world.getBlockState(pos).is(Blocks.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER))
+					</#if>
+			);
+			<#elseif data.mobSpawningType == "undergroundWaterCreature">
+			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()},
+					SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+					<#if hasProcedure(data.spawningCondition)>
+					(entityType, world, reason, pos, random) -> {
+						int x = pos.getX();
+						int y = pos.getY();
+						int z = pos.getZ();
+						return <@procedureOBJToConditionCode data.spawningCondition/>;
+					}
+					<#else>
+					WaterAnimal::checkUndergroundWaterCreatureSpawnRules
 					</#if>
 			);
 			<#else>
-			EntitySpawnPlacementRegistry.register(entity, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
+			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()},
+					SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
 						int x = pos.getX();
@@ -724,45 +746,45 @@ public static class ${name}Entity extends ${extendsClass}Entity <#if data.ranged
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 					<#else>
-					MonsterEntity::canMonsterSpawn
+					Monster::checkMonsterSpawnRules
 					</#if>
 			);
 			</#if>
 		</#if>
 
 		<#if data.spawnInDungeons>
-			DungeonHooks.addDungeonMob(entity, 180);
+			DungeonHooks.addDungeonMob(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, 180);
 		</#if>
 	}
 
-	public static AttributeSupplier.Builder createAttributes(EntityAttributeCreationEvent event) {
-		AttributeSupplier.Builder ammma = MobEntity.createMobAttributes();
-		ammma = ammma.createMutableAttribute(Attributes.MOVEMENT_SPEED, ${data.movementSpeed});
-		ammma = ammma.createMutableAttribute(Attributes.MAX_HEALTH, ${data.health});
-		ammma = ammma.createMutableAttribute(Attributes.ARMOR, ${data.armorBaseValue});
-		ammma = ammma.createMutableAttribute(Attributes.ATTACK_DAMAGE, ${data.attackStrength});
+	public static AttributeSupplier.Builder createAttributes() {
+		AttributeSupplier.Builder builder = Mob.createMobAttributes();
+		builder = builder.add(Attributes.MOVEMENT_SPEED, ${data.movementSpeed});
+		builder = builder.add(Attributes.MAX_HEALTH, ${data.health});
+		builder = builder.add(Attributes.ARMOR, ${data.armorBaseValue});
+		builder = builder.add(Attributes.ATTACK_DAMAGE, ${data.attackStrength});
 
 		<#if (data.knockbackResistance > 0)>
-		ammma = ammma.createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, ${data.knockbackResistance});
+		builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, ${data.knockbackResistance});
 		</#if>
 
 		<#if (data.attackKnockback > 0)>
-		ammma = ammma.createMutableAttribute(Attributes.ATTACK_KNOCKBACK, ${data.attackKnockback});
+		builder = builder.add(Attributes.ATTACK_KNOCKBACK, ${data.attackKnockback});
 		</#if>
 
 		<#if data.flyingMob>
-		ammma = ammma.createMutableAttribute(Attributes.FLYING_SPEED, ${data.movementSpeed});
+		builder = builder.add(Attributes.FLYING_SPEED, ${data.movementSpeed});
 		</#if>
 
 		<#if data.waterMob>
-		ammma = ammma.createMutableAttribute(ForgeMod.SWIM_SPEED.get(), ${data.movementSpeed});
+		builder = builder.add(ForgeMod.SWIM_SPEED.get(), ${data.movementSpeed});
 		</#if>
 
 		<#if data.aiBase == "Zombie">
-		ammma = ammma.createMutableAttribute(Attributes.ZOMBIE_SPAWN_REINFORCEMENTS);
+		builder = builder.add(Attributes.ZOMBIE_SPAWN_REINFORCEMENTS);
 		</#if>
 
-		return ammma;
+		return builder;
 	}
 
 }

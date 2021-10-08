@@ -30,46 +30,67 @@
 <#-- @formatter:off -->
 package ${package}.client.renderer;
 
-public class ${name}Renderer extends MobRenderer {
+<#assign humanoid = false>
+<#assign model = "HumanoidModel">
+
+<#if data.mobModelName == "Chicken">
+	<#assign super = "super(context, new ChickenModel(context.bakeLayer(ModelLayers.CHICKEN)), " + data.modelShadowSize + "f);">
+	<#assign model = "ChickenModel">
+<#elseif data.mobModelName == "Cow">
+	<#assign super = "super(context, new CowModel(context.bakeLayer(ModelLayers.COW)), " + data.modelShadowSize + "f);">
+	<#assign model = "CowModel">
+<#elseif data.mobModelName == "Creeper">
+	<#assign super = "super(context, new CreeperModel(context.bakeLayer(ModelLayers.CREEPER)), " + data.modelShadowSize + "f);">
+	<#assign model = "CreeperModel">
+<#elseif data.mobModelName == "Ghast">
+	<#assign super = "super(context, new GhastModel(context.bakeLayer(ModelLayers.GHAST)), " + data.modelShadowSize + "f);">
+	<#assign model = "GhastModel">
+<#elseif data.mobModelName == "Pig">
+	<#assign super = "super(context, new PigModel(context.bakeLayer(ModelLayers.PIG)), " + data.modelShadowSize + "f);">
+	<#assign model = "PigModel">
+<#elseif data.mobModelName == "Slime">
+	<#assign super = "super(context, new SlimeModel(context.bakeLayer(ModelLayers.SLIME)), " + data.modelShadowSize + "f);">
+	<#assign model = "SlimeModel">
+<#elseif data.mobModelName == "Spider">
+	<#assign super = "super(context, new SpiderModel(context.bakeLayer(ModelLayers.SPIDER)), " + data.modelShadowSize + "f);">
+	<#assign model = "SpiderModel">
+<#elseif data.mobModelName == "Villager">
+	<#assign super = "super(context, new VillagerModel(context.bakeLayer(ModelLayers.VILLAGER)), " + data.modelShadowSize + "f);">
+	<#assign model = "VillagerModel">
+<#elseif data.mobModelName == "Silverfish">
+	<#assign super = "super(context, new SilverfishModel(context.bakeLayer(ModelLayers.SILVERFISH)), " + data.modelShadowSize + "f);">
+	<#assign model = "SilverfishModel">
+<#elseif !data.isBuiltInModel()>
+	<#assign super = "super(context, new ${data.customModel}(context.bakeLayer(${data.customModel}.LAYER_LOCATION)), " + data.modelShadowSize + "f);">
+	<#assign model = data.customModel>
+<#else>
+	<#assign super = "super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), " + data.modelShadowSize + "f);">
+	<#assign humanoid = true>
+	<#assign model = "HumanoidModel">
+</#if>
+
+<#assign model = model + "<" + name + "Entity>">
+
+public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${name}Entity, ${model}> {
 
 	public ${name}Renderer(EntityRendererProvider.Context context) {
-		<#if data.mobModelName == "Chicken">
-		super(context, new ChickenModel(), ${data.modelShadowSize});
-		<#elseif data.mobModelName == "Cow">
-		super(context, new CowModel(), ${data.modelShadowSize});
-		<#elseif data.mobModelName == "Creeper">
-		super(context, new CreeperModel(), ${data.modelShadowSize});
-		<#elseif data.mobModelName == "Ghast">
-		super(context, new GhastModel(), ${data.modelShadowSize});
-		<#elseif data.mobModelName == "Pig">
-		super(context, new PigModel(), ${data.modelShadowSize});
-		<#elseif data.mobModelName == "Slime">
-		super(context, new SlimeModel(0), ${data.modelShadowSize});
-		<#elseif data.mobModelName == "Spider">
-		super(context, new SpiderModel(), ${data.modelShadowSize});
-		<#elseif data.mobModelName == "Villager">
-		super(context, new VillagerModel(0), ${data.modelShadowSize});
-		<#elseif data.mobModelName == "Silverfish">
-		super(context, new SilverfishModel(), ${data.modelShadowSize});
-		<#elseif !data.isBuiltInModel()>
-		super(context, new ${data.bulletModel}(context.bakeLayer(${data.bulletModel}.LAYER_LOCATION)), ${data.modelShadowSize});
-		<#else>
-		super(context, new BipedModel(0), ${data.modelShadowSize});
-		this.addLayer(new BipedArmorLayer(customRender, new BipedModel(0.5f), new BipedModel(1)));
+		${super}
+
+		<#if humanoid>
+		this.addLayer(new HumanoidArmorLayer(this, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
+				new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
 		</#if>
 
 		<#if data.mobModelGlowTexture?has_content>
-		this.addLayer(new GlowingLayer<>(this) {
-			@Override public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing,
-					float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-				IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEyes(new ResourceLocation("${modid}:textures/${data.mobModelGlowTexture}")));
-				this.getEntityModel().render(matrixStackIn, ivertexbuilder, 15728640, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+		this.addLayer(new EyesLayer<${name}Entity, ${model}>(this) {
+			@Override public RenderType renderType() {
+				return RenderType.eyes(new ResourceLocation("${modid}:textures/${data.mobModelGlowTexture}"));
 			}
 		});
 		</#if>
 	}
 
-	@Override public ResourceLocation getEntityTexture(Entity entity) { 
+	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
 		return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
 	}
 

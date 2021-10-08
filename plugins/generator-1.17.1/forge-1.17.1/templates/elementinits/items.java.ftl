@@ -61,10 +61,10 @@ package ${package}.init;
         <#elseif item.getModElement().getType().getBaseType()?string == "BLOCK">
             <#assign hasBlocks = true>
             public static Item ${item.getModElement().getRegistryNameUpper()} = register(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
-        <#elseif item.getModElement().getTypeString() == "entity">
-            public static Item ${item.getModElement().getRegistryNameUpper()} = register(new SpawnEggItem(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()},
+        <#elseif item.getModElement().getTypeString() == "livingentity">
+            public static Item ${item.getModElement().getRegistryNameUpper()} = register(new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
                     ${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties() <#if item.creativeTab??>.tab(${item.creativeTab})<#else>
-                    .tab(CreativeModeTab.MISC)</#if>).setRegistryName("${registryname}_spawn_egg"));
+                    .tab(CreativeModeTab.MISC)</#if>).setRegistryName("${item.getModElement().getRegistryName()}_spawn_egg"));
         <#else>
             public static Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
         </#if>
