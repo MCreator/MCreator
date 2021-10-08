@@ -46,7 +46,7 @@ package ${package}.init;
     </#list>
 
     private static Biome register(String registryname, Biome biome) {
-		REGISTRY.add(biome.setRegistryName(new ResourceLocation(registryname)));
+		REGISTRY.add(biome.setRegistryName(new ResourceLocation(${JavaModName}.MODID, registryname)));
     	return biome;
     }
 
