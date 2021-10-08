@@ -89,7 +89,7 @@ public class ${name}LeaveDecorator extends LeaveVineDecorator {
             int i = 4;
 
             for(BlockPos blockpos = blockPos.below(); Feature.isAir(levelReader, blockpos) && i > 0; --i) {
-                biConsumer.accept(blockpos, ${mappedBlockToBlockStateCode(data.treeFruits)});
+                biConsumer.accept(blockpos, ${mappedBlockToBlockStateCode(data.treeVines)});
                 blockpos = blockpos.below();
             }
 

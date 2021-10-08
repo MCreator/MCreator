@@ -77,7 +77,7 @@ public class ${name}TrunkDecorator extends TrunkVineDecorator {
                 if (random.nextInt(3) > 0) {
                     BlockPos blockpos3 = bp.south();
                     if (Feature.isAir(levelReader, blockpos3)) {
-                        biConsumer.accept(bp, ${mappedBlockToBlockStateCode(data.treeFruits)});
+                        biConsumer.accept(bp, ${mappedBlockToBlockStateCode(data.treeVines)});
                     }
                 }
 
