@@ -291,7 +291,7 @@ public class WorkspaceFileBrowser extends JPanel {
 					tree.expandPath(tree.getSelectionPath());
 				else
 					FileOpener.openFile(mcreator, selection);
-			} else if ((selection == sourceCode || selection == currRes) && forceExpansion) {
+			} else if (!selection.isLeaf() && forceExpansion) {
 				tree.expandPath(tree.getSelectionPath());
 			}
 		}
@@ -467,7 +467,7 @@ public class WorkspaceFileBrowser extends JPanel {
 		} catch (Exception ignored) {
 		}
 
-		mcreator.actionRegistry.openAsCode.setEnabled(contextActionsAvailable);
+		mcreator.actionRegistry.openAsCode.setEnabled(selected != null);
 		mcreator.actionRegistry.openFile.setEnabled(contextActionsAvailable);
 		mcreator.actionRegistry.openParentFolder.setEnabled(
 				contextActionsAvailable && selected != sourceCode && selected != currRes);

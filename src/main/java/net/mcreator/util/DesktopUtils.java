@@ -171,12 +171,11 @@ public class DesktopUtils {
 				return false;
 			}
 
-			if (!java.awt.Desktop.getDesktop().isSupported(java.awt.Desktop.Action.OPEN)) {
-				LOG.debug("OPEN is not supported.");
-				return false;
-			} else if (selectFile && !java.awt.Desktop.getDesktop()
-					.isSupported(java.awt.Desktop.Action.BROWSE_FILE_DIR)) {
+			if (selectFile && !java.awt.Desktop.getDesktop().isSupported(java.awt.Desktop.Action.BROWSE_FILE_DIR)) {
 				LOG.debug("BROWSE_FILE_DIR is not supported.");
+				return openDESKTOP(file, false);
+			} else if (!java.awt.Desktop.getDesktop().isSupported(java.awt.Desktop.Action.OPEN)) {
+				LOG.debug("OPEN is not supported.");
 				return false;
 			}
 
