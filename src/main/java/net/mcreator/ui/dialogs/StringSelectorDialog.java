@@ -22,26 +22,38 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.ui.MCreator;
 import net.mcreator.workspace.Workspace;
 
+import javax.swing.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class StringSelectorDialog extends ListSelectorDialog<String> {
-	public StringSelectorDialog(MCreator mcreator, Function<Workspace, List<String>> entryProvider) {
-		super(mcreator, entryProvider);
+	public StringSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider) {
+		super(mcreator, entryProvider.andThen(Arrays::asList));
 	}
 
 	@Override Predicate<String> getFilter(String term) {
 		return s -> s.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH));
 	}
 
-	public static String openSelectorDialog(MCreator mcreator, Function<Workspace, List<String>> entryProvider,
+	public static String openSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
 			String title, String message) {
 		var stringSelector = new StringSelectorDialog(mcreator, entryProvider);
 		stringSelector.message.setText(message);
 		stringSelector.setTitle(title);
 		stringSelector.setVisible(true);
 		return stringSelector.list.getSelectedValue();
+	}
+
+	public static List<String> openMultiSelectorDialog(MCreator mcreator,
+			Function<Workspace, String[]> entryProvider, String title, String message) {
+		var dataListSelector = new StringSelectorDialog(mcreator, entryProvider);
+		dataListSelector.message.setText(message);
+		dataListSelector.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		dataListSelector.setTitle(title);
+		dataListSelector.setVisible(true);
+		return dataListSelector.list.getSelectedValuesList();
 	}
 }
