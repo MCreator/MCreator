@@ -14,7 +14,7 @@
   "nextStatement": null,
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
-    "toolbox_id": "worlddata",
+    "toolbox_id": "worldmanagement",
     "toolbox_init": [
       "<value name=\"gameruleValue\"><block type=\"logic_boolean\"><field name=\"BOOL\">TRUE</field></block></value>"
     ],

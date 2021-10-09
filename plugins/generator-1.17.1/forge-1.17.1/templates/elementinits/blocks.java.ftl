@@ -38,7 +38,7 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Blocks {
 
-    private static final List<Block> REGISTRY = new ArrayList();
+    private static final List<Block> REGISTRY = new ArrayList<>();
 
     <#list blocks as block>
         <#if block.getModElement().getTypeString() == "dimension">

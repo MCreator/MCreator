@@ -7,4 +7,4 @@
 		});
 		return _retval.get();
 	}
-}.getItemStack((int)(${input$slotid}), ${mappedMCItemToItemStackCode(input$item, 1)}))
+}.getItemStack(${opt.toInt(input$slotid)}, ${mappedMCItemToItemStackCode(input$item, 1)}))
