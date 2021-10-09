@@ -25,8 +25,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
-import net.mcreator.ui.views.editor.image.versioning.change.CanvasResize;
 import net.mcreator.ui.views.editor.image.versioning.change.Modification;
+import net.mcreator.ui.views.editor.image.versioning.change.Relocation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,12 +57,24 @@ public class ResizeDialog extends MCreatorDialog {
 
 		ok.addActionListener(e -> {
 			layer.resize((int) width.getValue(), (int) height.getValue(), type.isSelected());
-			if (affectCanvas.isSelected() && (canvas.getWidth() < layer.getWidth()
-					|| canvas.getHeight() < layer.getHeight())) {
+			if (affectCanvas.isSelected() && (
+					(canvas.getWidth() < layer.getWidth() || canvas.getHeight() < layer.getHeight()) || (
+							layer.getX() != 0 || layer.getY() != 0))) {
 				UUID uuid = UUID.randomUUID();
 				versionManager.addRevision(new Modification(canvas, layer).setUUID(uuid));
 				canvas.setSize(Math.max(canvas.getWidth(), layer.getWidth()),
 						Math.max(canvas.getHeight(), layer.getHeight()), uuid);
+				if (layer.getX() != 0 || layer.getY() != 0) {
+					int dx = layer.getX();
+					int dy = layer.getY();
+					for (Layer lay : canvas) {
+						Relocation reloc = new Relocation(canvas, lay);
+						lay.setX(lay.getX() - dx);
+						lay.setY(lay.getY() - dy);
+						reloc.setAfter(lay);
+						versionManager.addRevision(reloc.setUUID(uuid));
+					}
+				}
 			} else {
 				versionManager.addRevision(new Modification(canvas, layer));
 			}
@@ -93,7 +105,7 @@ public class ResizeDialog extends MCreatorDialog {
 		controls.add(ok, BorderLayout.EAST);
 		add(PanelUtils.maxMargin(settings, 5, true, true, true, true), BorderLayout.CENTER);
 		add(PanelUtils.maxMargin(controls, 5, true, true, true, true), BorderLayout.SOUTH);
-		setSize(300, 150);
+		setSize(450, 150);
 		setResizable(false);
 		setLocationRelativeTo(window);
 	}
