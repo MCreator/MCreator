@@ -36,26 +36,19 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Menus {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}EntityRenderers {
 
-    private static final List<MenuType<?>> REGISTRY = new ArrayList<>();
-
-    <#list guis as gui>
-    public static final MenuType<${gui.getModElement().getName()}Menu> ${gui.getModElement().getRegistryNameUpper()}
-		= register("${gui.getModElement().getRegistryName()}", (id, inv, extraData) -> new ${gui.getModElement().getName()}Menu(id, inv, extraData));
-    </#list>
-
-    private static <T extends AbstractContainerMenu> MenuType<T> register(String registryname, IContainerFactory<T> containerFactory) {
-		MenuType<T> menuType = new MenuType<T>(containerFactory);
-		menuType.setRegistryName(registryname);
-		REGISTRY.add(menuType);
-    	return menuType;
-    }
-
-	@SubscribeEvent public static void registerContainers(RegistryEvent.Register<MenuType<?>> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new MenuType[0]));
+	@SubscribeEvent public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+		<#list entities as entity>
+			<#if entity.getModElement().getTypeString() == "rangeditem">
+				<#if entity.bulletModel != "Default">
+				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}, ${entity.getModElement().getName()}Renderer::new);
+				<#else>
+				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}, ThrownItemRenderer::new);
+				</#if>
+			<#else>
+			</#if>
+		</#list>
 	}
-
 }
-
 <#-- @formatter:on -->

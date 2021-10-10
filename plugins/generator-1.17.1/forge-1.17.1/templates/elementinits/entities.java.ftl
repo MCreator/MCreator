@@ -36,26 +36,30 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Menus {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Entities {
 
-    private static final List<MenuType<?>> REGISTRY = new ArrayList<>();
+	private static final List<EntityType<?>> REGISTRY = new ArrayList<>();
 
-    <#list guis as gui>
-    public static final MenuType<${gui.getModElement().getName()}Menu> ${gui.getModElement().getRegistryNameUpper()}
-		= register("${gui.getModElement().getRegistryName()}", (id, inv, extraData) -> new ${gui.getModElement().getName()}Menu(id, inv, extraData));
+	<#list entities as entity>
+		<#if entity.getModElement().getTypeString() == "rangeditem">
+		public static final EntityType<${entity.getModElement().getName()}Entity> ${entity.getModElement().getRegistryNameUpper()} =
+					register("entitybullet${entity.getModElement().getRegistryName()}",
+						EntityType.Builder.<${entity.getModElement().getName()}Entity>of(${entity.getModElement().getName()}Entity::new, MobCategory.MISC)
+						.setCustomClientFactory(${entity.getModElement().getName()}Entity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64)
+						.setUpdateInterval(1).sized(0.5f, 0.5f));
+		<#else>
+		</#if>
     </#list>
 
-    private static <T extends AbstractContainerMenu> MenuType<T> register(String registryname, IContainerFactory<T> containerFactory) {
-		MenuType<T> menuType = new MenuType<T>(containerFactory);
-		menuType.setRegistryName(registryname);
-		REGISTRY.add(menuType);
-    	return menuType;
-    }
+	private static <T extends Entity> EntityType<T> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
+		EntityType<T> entityType = (EntityType<T>) entityTypeBuilder.build(registryname).setRegistryName(registryname);
+		REGISTRY.add(entityType);
+		return entityType;
+	}
 
-	@SubscribeEvent public static void registerContainers(RegistryEvent.Register<MenuType<?>> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new MenuType[0]));
+	@SubscribeEvent public static void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
+		event.getRegistry().registerAll(REGISTRY.toArray(new EntityType[0]));
 	}
 
 }
-
 <#-- @formatter:on -->

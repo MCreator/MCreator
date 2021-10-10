@@ -38,7 +38,7 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Potions {
 
-    private static final List<Potion> REGISTRY = new ArrayList();
+    private static final List<Potion> REGISTRY = new ArrayList<>();
 
     <#list potions as potion>
     public static Potion ${potion.getModElement().getRegistryNameUpper()} = register(new Potion(
