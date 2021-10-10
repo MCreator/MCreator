@@ -40,7 +40,7 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Items {
 
-    private static final List<Item> REGISTRY = new ArrayList();
+    private static final List<Item> REGISTRY = new ArrayList<>();
 
     <#list items as item>
         <#if item.getModElement().getTypeString() == "armor">

@@ -1,7 +1,6 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020 Pylo and contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,33 +28,33 @@
 -->
 
 <#-- @formatter:off -->
+package ${package}.client.renderer;
 
-/*
- *    MCreator note: This file will be REGENERATED on each build.
- */
+public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 
-package ${package}.init;
+	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/${data.customBulletModelTexture}");
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Menus {
+	private final ${data.bulletModel} model;
 
-    private static final List<MenuType<?>> REGISTRY = new ArrayList<>();
+	public ${name}Renderer(EntityRendererProvider.Context context) {
+		super(context);
+		model = new ${data.bulletModel}(context.bakeLayer(${data.bulletModel}.LAYER_LOCATION));
+	}
 
-    <#list guis as gui>
-    public static final MenuType<${gui.getModElement().getName()}Menu> ${gui.getModElement().getRegistryNameUpper()}
-		= register("${gui.getModElement().getRegistryName()}", (id, inv, extraData) -> new ${gui.getModElement().getName()}Menu(id, inv, extraData));
-    </#list>
+	@Override public void render(${name}Entity entityIn, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
+		VertexConsumer vb = bufferIn.getBuffer(RenderType.entityCutout(this.getTextureLocation(entityIn)));
+		poseStack.pushPose();
+		poseStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 90));
+		poseStack.mulPose(Vector3f.ZP.rotationDegrees(90 + Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
+		model.renderToBuffer(poseStack, vb, packedLightIn, OverlayTexture.NO_OVERLAY, 1, 1, 1, 0.0625f);
+		poseStack.popPose();
 
-    private static <T extends AbstractContainerMenu> MenuType<T> register(String registryname, IContainerFactory<T> containerFactory) {
-		MenuType<T> menuType = new MenuType<T>(containerFactory);
-		menuType.setRegistryName(registryname);
-		REGISTRY.add(menuType);
-    	return menuType;
-    }
+		super.render(entityIn, entityYaw, partialTicks, poseStack, bufferIn, packedLightIn);
+	}
 
-	@SubscribeEvent public static void registerContainers(RegistryEvent.Register<MenuType<?>> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new MenuType[0]));
+	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
+		return texture;
 	}
 
 }
-
 <#-- @formatter:on -->
