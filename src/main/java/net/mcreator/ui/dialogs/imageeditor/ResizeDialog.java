@@ -62,11 +62,9 @@ public class ResizeDialog extends MCreatorDialog {
 							layer.getX() != 0 || layer.getY() != 0))) {
 				UUID uuid = UUID.randomUUID();
 				versionManager.addRevision(new Modification(canvas, layer).setUUID(uuid));
-				canvas.setSize(Math.max(canvas.getWidth(), layer.getWidth()),
-						Math.max(canvas.getHeight(), layer.getHeight()), uuid);
-				if (layer.getX() != 0 || layer.getY() != 0) {
-					int dx = layer.getX();
-					int dy = layer.getY();
+				int dx = layer.getX();
+				int dy = layer.getY();
+				if (dx < 0 || dy < 0) {
 					for (Layer lay : canvas) {
 						Relocation reloc = new Relocation(canvas, lay);
 						lay.setX(lay.getX() - dx);
@@ -75,6 +73,8 @@ public class ResizeDialog extends MCreatorDialog {
 						versionManager.addRevision(reloc.setUUID(uuid));
 					}
 				}
+				canvas.setSize(Math.max(canvas.getWidth(), layer.getWidth() + Math.max(dx, 0)),
+						Math.max(canvas.getHeight(), layer.getHeight() + Math.max(dy, 0)), uuid);
 			} else {
 				versionManager.addRevision(new Modification(canvas, layer));
 			}
