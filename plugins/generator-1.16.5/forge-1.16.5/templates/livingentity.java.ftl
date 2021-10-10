@@ -201,7 +201,7 @@ import net.minecraft.block.material.Material;
 	    <#assign extendsClass = "Animal">
 	</#if>
 
-	<#if data.tameable>
+	<#if (data.tameable && data.breedable)>
 		<#assign extendsClass = "Tameable">
 	</#if>
 
@@ -516,7 +516,7 @@ import net.minecraft.block.material.Material;
       	}
         </#if>
 
-		<#if hasProcedure(data.onRightClickedOn) || data.ridable || data.tameable || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
+		<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 		@Override public ActionResultType func_230254_b_(PlayerEntity sourceentity, Hand hand) {
 			ItemStack itemstack = sourceentity.getHeldItem(hand);
 			ActionResultType retval = ActionResultType.func_233537_a_(this.world.isRemote());
@@ -552,7 +552,7 @@ import net.minecraft.block.material.Material;
 				</#if>
 			</#if>
 
-			<#if data.tameable>
+			<#if (data.tameable && data.breedable)>
 				Item item = itemstack.getItem();
 				if (itemstack.getItem() instanceof SpawnEggItem) {
 					retval = super.func_230254_b_(sourceentity, hand);
