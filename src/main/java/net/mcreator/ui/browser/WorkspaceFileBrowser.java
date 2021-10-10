@@ -192,7 +192,8 @@ public class WorkspaceFileBrowser extends JPanel {
 				if (mouseEvent.getClickCount() == 2)
 					openSelectedFileAsCode(false);
 				else if (mouseEvent.getButton() == MouseEvent.BUTTON3)
-					getContextMenu().show(tree, mouseEvent.getX(), mouseEvent.getY());
+					new WorkspaceFileBrowserContextMenu(WorkspaceFileBrowser.this).show(tree, mouseEvent.getX(),
+							mouseEvent.getY());
 			}
 
 		});
@@ -413,76 +414,6 @@ public class WorkspaceFileBrowser extends JPanel {
 		for (int fnum = 0; fnum < files.size(); fnum++)
 			if (curDir != null)
 				curDir.add(new FilterTreeNode(files.elementAt(fnum)));
-	}
-
-	private JPopupMenu getContextMenu() {
-		boolean contextActionsAvailable = false;
-		JPopupMenu retVal = new JPopupMenu();
-		JMenu createMenu = L10N.menu("workspace_file_browser.add");
-		createMenu.setIcon(UIRES.get("16px.add.gif"));
-
-		FilterTreeNode selected = (FilterTreeNode) tree.getLastSelectedPathComponent();
-		try {
-			if (selected != null) {
-				if (selected.getUserObject() instanceof File file) {
-					if (file.isFile())
-						file = file.getParentFile();
-
-					if (mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
-							== GeneratorFlavor.BaseLanguage.JAVA) {
-						if (file.isDirectory() && file.getCanonicalPath().startsWith(
-								mcreator.getGenerator().getSourceRoot().getCanonicalPath())) {
-							contextActionsAvailable = true;
-							createMenu.add(mcreator.actionRegistry.newClass);
-							createMenu.add(mcreator.actionRegistry.newPackage);
-						} else if (file.isDirectory() && (file.getCanonicalPath().startsWith(
-								mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
-							contextActionsAvailable = true;
-							createMenu.add(mcreator.actionRegistry.newJson);
-							createMenu.add(mcreator.actionRegistry.newImage);
-							createMenu.add(mcreator.actionRegistry.newFolder);
-						}
-					} else {
-						if (file.isDirectory() && file.getCanonicalPath().startsWith(
-								mcreator.getGenerator().getSourceRoot().getCanonicalPath())
-								|| file.isDirectory() && (file.getCanonicalPath().startsWith(
-								mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
-							contextActionsAvailable = true;
-							createMenu.add(mcreator.actionRegistry.newJson);
-							createMenu.add(mcreator.actionRegistry.newImage);
-							createMenu.add(mcreator.actionRegistry.newFolder);
-						}
-					}
-				} else if (selected == sourceCode) {
-					contextActionsAvailable = true;
-					createMenu.add(mcreator.actionRegistry.newClass);
-					createMenu.add(mcreator.actionRegistry.newPackage);
-				} else if (selected == currRes) {
-					contextActionsAvailable = true;
-					createMenu.add(mcreator.actionRegistry.newJson);
-					createMenu.add(mcreator.actionRegistry.newImage);
-					createMenu.add(mcreator.actionRegistry.newFolder);
-				}
-			}
-		} catch (Exception ignored) {
-		}
-
-		mcreator.actionRegistry.openAsCode.setEnabled(selected != null);
-		mcreator.actionRegistry.openFile.setEnabled(contextActionsAvailable);
-		mcreator.actionRegistry.openParentFolder.setEnabled(
-				contextActionsAvailable && selected != sourceCode && selected != currRes);
-		createMenu.setEnabled(contextActionsAvailable);
-		mcreator.actionRegistry.deleteFile.setEnabled(
-				contextActionsAvailable && selected != sourceCode && selected != currRes);
-
-		retVal.add(mcreator.actionRegistry.openAsCode);
-		retVal.add(mcreator.actionRegistry.openFile);
-		retVal.add(mcreator.actionRegistry.openParentFolder);
-		retVal.addSeparator();
-		retVal.add(createMenu);
-		retVal.add(mcreator.actionRegistry.deleteFile);
-
-		return retVal;
 	}
 
 	private class ProjectBrowserCellRenderer extends DefaultTreeCellRenderer {
