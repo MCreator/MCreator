@@ -7,19 +7,19 @@
 			<#if includeBractets>{</#if>
                 <#if hasProcedure(conditions[0])>
                 @Override public boolean canUse() {
-                	double x = CustomEntity.this.getX();
-			        double y = CustomEntity.this.getY();
-			        double z = CustomEntity.this.getZ();
-			        Entity entity = CustomEntity.this;
+                	double x = ${name}Entity.this.getX();
+			        double y = ${name}Entity.this.getY();
+			        double z = ${name}Entity.this.getZ();
+			        Entity entity = ${name}Entity.this;
                 	return super.canUse() && <@procedureOBJToConditionCode conditions[0]/>;
                 }
                 </#if>
                 <#if hasProcedure(conditions[1])>
                 @Override public boolean canContinueToUse() {
-                	double x = CustomEntity.this.getX();
-			        double y = CustomEntity.this.getY();
-			        double z = CustomEntity.this.getZ();
-			        Entity entity = CustomEntity.this;
+                	double x = ${name}Entity.this.getX();
+			        double y = ${name}Entity.this.getY();
+			        double z = ${name}Entity.this.getZ();
+			        Entity entity = ${name}Entity.this;
                 	return super.canContinueToUse() && <@procedureOBJToConditionCode conditions[0]/>;
                 }
                 </#if>
