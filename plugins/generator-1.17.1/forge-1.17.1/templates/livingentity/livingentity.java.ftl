@@ -55,7 +55,7 @@ import net.minecraft.world.level.material.Material;
 </#if>
 
 <#if data.spawnThisMob>@Mod.EventBusSubscriber</#if>
-public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements IRangedAttackMob</#if> {
+public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements RangedAttackMob</#if> {
 
 	<#if data.spawnThisMob>
 	private static final Set<ResourceLocation> SPAWN_BIOMES = Set.of(
@@ -174,8 +174,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements I
 
         <#if data.ranged>
             this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.25, 20, 10) {
-				@Override public boolean shouldContinueExecuting() {
-					return this.shouldExecute();
+				@Override public boolean canContinueToUse() {
+					return this.canUse();
 				}
 			});
         </#if>
@@ -519,16 +519,16 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements I
     </#if>
 
     <#if data.ranged>
-	    public void attackEntityWithRangedAttack(LivingEntity target, float flval) {
+	    @Override public void performRangedAttack(LivingEntity target, float flval) {
 			<#if data.rangedItemType == "Default item">
-				${name}ProjectileEntity entityarrow = new ${name}ProjectileEntity(arrow, this, this.level);
-				double d0 = target.getY() + (double) target.getEyeHeight() - 1.1;
+				${name}ProjectileEntity entityarrow = new ${name}ProjectileEntity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE, this, this.level);
+				double d0 = target.getY() + target.getEyeHeight() - 1.1;
 				double d1 = target.getX() - this.getX();
 				double d3 = target.getZ() - this.getZ();
-				entityarrow.shoot(d1, d0 - entityarrow.getY() + (double) MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, 1.6F, 12.0F);
-				world.addEntity(entityarrow);
+				entityarrow.shoot(d1, d0 - entityarrow.getY() + Math.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, 1.6F, 12.0F);
+				level.addFreshEntity(entityarrow);
 			<#else>
-				${data.rangedItemType}Item.shoot(this, target);
+				${data.rangedItemType}Entity.shoot(this, target);
 			</#if>
 		}
     </#if>
@@ -536,7 +536,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements I
 	<#if data.breedable>
         @Override public AgeableEntity func_241840_a(ServerLevel serverWorld, AgeableEntity ageable) {
 			${name}Entity retval = (${name}Entity) entity.create(serverWorld);
-			retval.onInitialSpawn(serverWorld, serverWorld.getDifficultyForLocation(new BlockPos(retval.getPosition())), SpawnReason.BREEDING, (ILivingEntityData)null, (CompoundNBT)null);
+			retval.onInitialSpawn(serverWorld, serverWorld.getDifficultyForLocation(new BlockPos(retval.getPosition())), SpawnReason.BREEDING, (ILivingEntityData) null, (CompoundNBT) null);
 			return retval;
 		}
 

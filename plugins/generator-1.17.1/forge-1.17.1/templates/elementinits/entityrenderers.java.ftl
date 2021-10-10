@@ -49,7 +49,7 @@ package ${package}.init;
 			<#else>
 				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}, ${entity.getModElement().getName()}Renderer::new);
 				<#if entity.hasCustomProjectile()>
-				event.registerEntityRenderer(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE, ThrownItemRenderer::new);
+				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}_PROJECTILE, ThrownItemRenderer::new);
 				</#if>
 			</#if>
 		</#list>

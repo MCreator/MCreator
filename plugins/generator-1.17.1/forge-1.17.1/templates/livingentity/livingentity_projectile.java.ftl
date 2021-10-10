@@ -28,11 +28,11 @@
 -->
 
 <#-- @formatter:off -->
-<#include "../procedures.java.ftl">
+<#include "../mcitems.ftl">
 
 package ${package}.entity;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class) public class ${name}ProjectileEntity extends AbstractArrowEntity implements ItemSupplier {
+@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class) public class ${name}ProjectileEntity extends AbstractArrow implements ItemSupplier {
 
 	public ${name}ProjectileEntity(FMLPlayMessages.SpawnEntity packet, Level world) {
 		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE, world);

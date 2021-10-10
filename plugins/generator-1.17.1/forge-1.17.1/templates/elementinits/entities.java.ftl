@@ -55,7 +55,7 @@ package ${package}.init;
 								.setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
 							<#if entity.immuneToFire>.fireImmune()</#if>.sized(${entity.modelWidth}f, ${entity.modelHeight}f));
 			<#if entity.hasCustomProjectile()>
-			public static final EntityType<${entity.getModElement().getName()}Entity>_PROJECTILE ${entity.getModElement().getRegistryNameUpper()} =
+			public static final EntityType<${entity.getModElement().getName()}ProjectileEntity> ${entity.getModElement().getRegistryNameUpper()}_PROJECTILE =
 					register("entitybullet${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}ProjectileEntity>
 							of(${entity.getModElement().getName()}ProjectileEntity::new, MobCategory.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(64)
 							.setUpdateInterval(1).setCustomClientFactory(${entity.getModElement().getName()}ProjectileEntity::new).sized(0.5f, 0.5f));
