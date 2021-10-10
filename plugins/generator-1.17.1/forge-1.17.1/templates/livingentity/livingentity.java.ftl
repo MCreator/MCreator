@@ -37,21 +37,22 @@ package ${package}.entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.nbt.Tag;
 
 <#assign extendsClass = "PathfinderMob">
 
 <#if data.aiBase != "(none)" >
-	<#assign extendsClass = data.aiBase>
+	<#assign extendsClass = data.aiBase?replace("Enderman", "EnderMan")>
 <#else>
 	<#assign extendsClass = data.mobBehaviourType?replace("Mob", "Monster")?replace("Creature", "PathfinderMob")>
 </#if>
 
 <#if data.breedable>
-	<#assign extendsClass = "AnimalEntity">
+	<#assign extendsClass = "Animal">
 </#if>
 
-<#if data.tameable>
-	<#assign extendsClass = "TameableEntity">
+<#if (data.tameable && data.breedable)>
+	<#assign extendsClass = "TamableAnimal">
 </#if>
 
 <#if data.spawnThisMob>@Mod.EventBusSubscriber</#if>
@@ -115,55 +116,63 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
         </#if>
 
 		<#if data.flyingMob>
-		this.moveController = new FlyingMovementController(this, 10, true);
-		this.navigator = new FlyingPathNavigator(this, this.level);
+		this.moveControl = new FlyingMoveControl(this, 10, true);
 		<#elseif data.waterMob>
-		this.setPathPriority(PathNodeType.WATER, 0);
-		this.moveController = new MovementController(this) {
+		this.setPathfindingMalus(BlockPathTypes.WATER, 0);
+		this.moveControl = new MoveControl(this) {
 			@Override public void tick() {
 			    if (${name}Entity.this.isInWater())
-                    ${name}Entity.this.setMotion(${name}Entity.this.getMotion().add(0, 0.005, 0));
+                    ${name}Entity.this.setDeltaMovement(${name}Entity.this.getDeltaMovement().add(0, 0.005, 0));
 
-				if (this.action == MovementController.Action.MOVE_TO && !${name}Entity.this.getNavigator().noPath()) {
-					double dx = this.posX - ${name}Entity.this.getX();
-					double dy = this.posY - ${name}Entity.this.getY();
-					double dz = this.posZ - ${name}Entity.this.getZ();
+				if (this.operation == MoveControl.Operation.MOVE_TO && !${name}Entity.this.getNavigation().isDone()) {
+					double dx = this.wantedX - ${name}Entity.this.getX();
+					double dy = this.wantedY - ${name}Entity.this.getY();
+					double dz = this.wantedZ - ${name}Entity.this.getZ();
 
-					float f = (float)(MathHelper.atan2(dz, dx) * (double)(180 / Math.PI)) - 90;
-					float f1 = (float)(this.speed * ${name}Entity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+					float f = (float) (Mth.atan2(dz, dx) * (double) (180 / Math.PI)) - 90;
+					float f1 = (float) (this.speedModifier * ${name}Entity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
 
-					${name}Entity.this.rotationYaw = this.limitAngle(${name}Entity.this.rotationYaw, f, 10);
-					${name}Entity.this.renderYawOffset = ${name}Entity.this.rotationYaw;
-					${name}Entity.this.rotationYawHead = ${name}Entity.this.rotationYaw;
+					${name}Entity.this.setYRot(this.rotlerp(${name}Entity.this.getYRot(), f, 10));
+					${name}Entity.this.yBodyRot = ${name}Entity.this.getYRot();
+					${name}Entity.this.yHeadRot = ${name}Entity.this.getYRot();
 
 					if (${name}Entity.this.isInWater()) {
-						${name}Entity.this.setAIMoveSpeed((float)${name}Entity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+						${name}Entity.this.setSpeed((float) ${name}Entity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
 
-						float f2 = - (float) (MathHelper.atan2(dy, MathHelper.sqrt(dx * dx + dz * dz)) * (180F / Math.PI));
-						f2 = MathHelper.clamp(MathHelper.wrapDegrees(f2), -85, 85);
-						${name}Entity.this.rotationPitch = this.limitAngle(${name}Entity.this.rotationPitch, f2, 5);
-						float f3 = MathHelper.cos(${name}Entity.this.rotationPitch * (float) (Math.PI / 180.0));
+						float f2 = - (float) (Mth.atan2(dy, (float) Math.sqrt(dx * dx + dz * dz)) * (180 / Math.PI));
+						f2 = Mth.clamp(Mth.wrapDegrees(f2), -85, 85);
+						${name}Entity.this.setXRot(this.rotlerp(${name}Entity.this.getXRot(), f2, 5));
+						float f3 = Mth.cos(${name}Entity.this.getXRot() * (float) (Math.PI / 180.0));
 
-						${name}Entity.this.setMoveForward(f3 * f1);
-						${name}Entity.this.setMoveVertical((float) (f1 * dy));
+						${name}Entity.this.setZza(f3 * f1);
+						${name}Entity.this.setYya((float) (f1 * dy));
 					} else {
-						${name}Entity.this.setAIMoveSpeed(f1 * 0.05F);
+						${name}Entity.this.setSpeed(f1 * 0.05F);
 					}
 				} else {
-					${name}Entity.this.setAIMoveSpeed(0);
-					${name}Entity.this.setMoveVertical(0);
-					${name}Entity.this.setMoveForward(0);
+					${name}Entity.this.setSpeed(0);
+					${name}Entity.this.setYya(0);
+					${name}Entity.this.setZza(0);
 				}
 			}
 		};
-		this.navigator = new SwimmerPathNavigator(this, this.level);
 		</#if>
 	}
 
 	@Override public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
-	
+
+	<#if data.flyingMob>
+	@Override protected PathNavigation createNavigation(Level world) {
+		return new FlyingPathNavigation(this, world);
+	}
+	<#elseif data.waterMob>
+	@Override protected PathNavigation createNavigation(Level world) {
+		return new WaterBoundPathNavigation(this, world);
+	}
+	</#if>
+
 	<#if data.hasAI>
 	@Override protected void registerGoals() {
 		super.registerGoals();
@@ -362,30 +371,30 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		return super.getCapability(capability, side);
 	}
 
-   	@Override protected void dropInventory() {
-		super.dropInventory();
+   	@Override protected void dropEquipment() {
+		super.dropEquipment();
 		for(int i = 0; i < inventory.getSlots(); ++i) {
 			ItemStack itemstack = inventory.getStackInSlot(i);
 			if (!itemstack.isEmpty() && !EnchantmentHelper.hasVanishingCurse(itemstack)) {
-				this.entityDropItem(itemstack);
+				this.spawnAtLocation(itemstack);
 			}
 		}
 	}
 
-	@Override public void writeAdditional(CompoundNBT compound) {
-    	super.writeAdditional(compound);
+	@Override public void addAdditionalSaveData(CompoundTag compound) {
+    	super.addAdditionalSaveData(compound);
 		compound.put("InventoryCustom", inventory.serializeNBT());
 	}
 
-	@Override public void readAdditional(CompoundNBT compound) {
-    	super.readAdditional(compound);
-		INBT inventoryCustom = compound.get("InventoryCustom");
-		if(inventoryCustom instanceof CompoundNBT)
-			inventory.deserializeNBT((CompoundNBT) inventoryCustom);
+	@Override public void readAdditionalSaveData(CompoundTag compound) {
+    	super.readAdditionalSaveData(compound);
+		Tag inventoryCustom = compound.get("InventoryCustom");
+		if(inventoryCustom instanceof CompoundTag)
+			inventory.deserializeNBT((CompoundTag) inventoryCustom);
     }
     </#if>
 
-	<#if hasProcedure(data.onRightClickedOn) || data.ridable || data.tameable || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
+	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 	@Override public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
 		ItemStack itemstack = sourceentity.getItemInHand(hand);
 		InteractionResult retval = InteractionResult.sidedSuccess(this.level.isClientSide());
@@ -395,24 +404,24 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				if (sourceentity.isSecondaryUseActive()) {
 			</#if>
 				if(sourceentity instanceof ServerPlayer) {
-					NetworkHooks.openGui((ServerPlayer) sourceentity, new INamedContainerProvider() {
+					NetworkHooks.openGui((ServerPlayer) sourceentity, new MenuProvider() {
 
-						@Override public ITextComponent getDisplayName() {
-							return new StringTextComponent("${data.mobName}");
+						@Override public Component getDisplayName() {
+							return new TextComponent("${data.mobName}");
 						}
 
-						@Override public Container createMenu(int id, PlayerInventory inventory, Player player) {
-							PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
-							packetBuffer.writeBlockPos(new BlockPos(sourceentity.getPosition()));
+						@Override public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+							FriendlyByteBuf packetBuffer = new FriendlyByteBuf(Unpooled.buffer());
+							packetBuffer.writeBlockPos(new BlockPos(sourceentity.getX(), sourceentity.getY(), sourceentity.getZ()));
 							packetBuffer.writeByte(0);
-							packetBuffer.writeVarInt(${name}Entity.this.getEntityId());
-							return new ${(data.guiBoundTo)}Gui.GuiContainerMod(id, inventory, packetBuffer);
+							packetBuffer.writeVarInt(${name}Entity.this.getId());
+							return new ${data.guiBoundTo}Menu(id, inventory, packetBuffer);
 						}
 
 					}, buf -> {
-						buf.writeBlockPos(new BlockPos(sourceentity.getPosition()));
+						buf.writeBlockPos(new BlockPos(sourceentity.getX(), sourceentity.getY(), sourceentity.getZ()));
 						buf.writeByte(0);
-						buf.writeVarInt(this.getEntityId());
+						buf.writeVarInt(this.getId());
 					});
 				}
 			<#if data.ridable>
@@ -421,43 +430,43 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			</#if>
 		</#if>
 
-		<#if data.tameable>
+		<#if (data.tameable && data.breedable)>
 			Item item = itemstack.getItem();
 			if (itemstack.getItem() instanceof SpawnEggItem) {
 				retval = super.mobInteract(sourceentity, hand);
 			} else if (this.level.isClientSide()) {
-				retval = (this.isTamed() && this.isOwner(sourceentity) || this.isBreedingItem(itemstack))
+				retval = (this.isTame() && this.isOwnedBy(sourceentity) || this.isFood(itemstack))
 						? InteractionResult.sidedSuccess(this.level.isClientSide()) : InteractionResult.PASS;
 			} else {
-				if (this.isTamed()) {
-					if (this.isOwner(sourceentity)) {
-						if (item.isFood() && this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
-							this.consumeItemFromStack(sourceentity, itemstack);
-							this.heal((float)item.getFood().getHealing());
+				if (this.isTame()) {
+					if (this.isOwnedBy(sourceentity)) {
+						if (item.isEdible() && this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
+							this.usePlayerItem(sourceentity, hand, itemstack);
+							this.heal((float)item.getFoodProperties().getNutrition());
 							retval = InteractionResult.sidedSuccess(this.level.isClientSide());
-						} else if (this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
-							this.consumeItemFromStack(sourceentity, itemstack);
+						} else if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
+							this.usePlayerItem(sourceentity, hand, itemstack);
 							this.heal(4);
 							retval = InteractionResult.sidedSuccess(this.level.isClientSide());
 						} else {
 							retval = super.mobInteract(sourceentity, hand);
 						}
 					}
-				} else if (this.isBreedingItem(itemstack)) {
-					this.consumeItemFromStack(sourceentity, itemstack);
+				} else if (this.isFood(itemstack)) {
+					this.usePlayerItem(sourceentity, hand, itemstack);
 					if (this.random.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, sourceentity)) {
-						this.setTamedBy(sourceentity);
-						this.level.setEntityState(this, (byte) 7);
+						this.tame(sourceentity);
+						this.level.broadcastEntityEvent(this, (byte) 7);
 					} else {
-						this.level.setEntityState(this, (byte) 6);
+						this.level.broadcastEntityEvent(this, (byte) 6);
 					}
 
-					this.enablePersistence();
+					this.setPersistenceRequired();
 					retval = InteractionResult.sidedSuccess(this.level.isClientSide());
 				} else {
 					retval = super.mobInteract(sourceentity, hand);
 					if (retval == InteractionResult.SUCCESS || retval == InteractionResult.CONSUME)
-						this.enablePersistence();
+						this.setPersistenceRequired();
 				}
 			}
 		<#else>
@@ -534,22 +543,14 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if data.breedable>
-        @Override public AgeableEntity func_241840_a(ServerLevel serverWorld, AgeableEntity ageable) {
-			${name}Entity retval = (${name}Entity) entity.create(serverWorld);
-			retval.onInitialSpawn(serverWorld, serverWorld.getDifficultyForLocation(new BlockPos(retval.getPosition())), SpawnReason.BREEDING, (ILivingEntityData) null, (CompoundNBT) null);
+        @Override public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
+			${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.create(serverWorld);
+			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(new BlockPos(retval.getX(), retval.getY(), retval.getZ())), MobSpawnType.BREEDING, null, null);
 			return retval;
 		}
 
-		@Override public boolean isBreedingItem(ItemStack stack) {
-			if (stack == null)
-				return false;
-
-        	<#list data.breedTriggerItems as breedTriggerItem>
-				if (${mappedMCItemToItem(breedTriggerItem)} == stack.getItem())
-					return true;
-            </#list>
-
-			return false;
+		@Override public boolean isFood(ItemStack stack) {
+			return List.of(<#list data.breedTriggerItems as breedTriggerItem>${mappedMCItemToItem(breedTriggerItem)}<#if breedTriggerItem?has_next>,</#if></#list>).contains(stack);
 		}
     </#if>
 
@@ -558,11 +559,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     	return true;
     }
 
-    @Override public boolean isNotColliding(IWorldReader world) {
-		return world.checkNoEntityCollision(this);
+    @Override public boolean checkSpawnObstruction(LevelReader world) {
+		return world.isUnobstructed(this);
 	}
 
-    @Override public boolean isPushedByWater() {
+    @Override public boolean isPushedByFluid() {
 		return false;
     }
 	</#if>
@@ -601,48 +602,48 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	</#if>
 
     <#if data.ridable && (data.canControlForward || data.canControlStrafe)>
-        @Override public void travel(Vector3d dir) {
+        @Override public void travel(Vec3 dir) {
         	<#if data.canControlForward || data.canControlStrafe>
 			Entity entity = this.getPassengers().isEmpty() ? null : (Entity) this.getPassengers().get(0);
-			if (this.isBeingRidden()) {
-				this.rotationYaw = entity.rotationYaw;
-				this.prevRotationYaw = this.rotationYaw;
-				this.rotationPitch = entity.rotationPitch * 0.5F;
-				this.setRotation(this.rotationYaw, this.rotationPitch);
-				this.jumpMovementFactor = this.getAIMoveSpeed() * 0.15F;
-				this.renderYawOffset = entity.rotationYaw;
-				this.rotationYawHead = entity.rotationYaw;
-				this.stepHeight = 1.0F;
+			if (this.isVehicle()) {
+				this.setYRot(entity.getYRot());
+				this.yRotO = this.getYRot();
+				this.setXRot(entity.getXRot() * 0.5F);
+				this.setRot(this.getYRot(), this.getXRot());
+				this.flyingSpeed = this.getSpeed() * 0.15F;
+				this.yBodyRot = entity.getYRot();
+				this.yHeadRot = entity.getYRot();
+				this.maxUpStep = 1.0F;
 
 				if (entity instanceof LivingEntity) {
-					this.setAIMoveSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+					this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
 
 					<#if data.canControlForward>
-						float forward = ((LivingEntity) entity).moveForward;
+						float forward = ((LivingEntity) entity).zza;
 					<#else>
 						float forward = 0;
 					</#if>
 
 					<#if data.canControlStrafe>
-						float strafe = ((LivingEntity) entity).moveStrafing;
+						float strafe = ((LivingEntity) entity).xxa;
 					<#else>
 						float strafe = 0;
 					</#if>
 
-					super.travel(new Vector3d(strafe, 0, forward));
+					super.travel(new Vec3(strafe, 0, forward));
 				}
 
-				this.prevLimbSwingAmount = this.limbSwingAmount;
-				double d1 = this.getX() - this.prevPosX;
-				double d0 = this.getZ() - this.prevPosZ;
-				float f1 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
+				this.animationSpeedOld = this.animationSpeed;
+				double d1 = this.getX() - this.xo;
+				double d0 = this.getZ() - this.zo;
+				float f1 = (float) Math.sqrt(d1 * d1 + d0 * d0) * 4;
 				if (f1 > 1.0F) f1 = 1.0F;
-				this.limbSwingAmount += (f1 - this.limbSwingAmount) * 0.4F;
-				this.limbSwing += this.limbSwingAmount;
+				this.animationSpeed += (f1 - this.animationSpeed) * 0.4F;
+				this.animationPosition += this.animationSpeed;
 				return;
 			}
-			this.stepHeight = 0.5F;
-			this.jumpMovementFactor = 0.02F;
+			this.maxUpStep = 0.5F;
+			this.flyingSpeed = 0.02F;
 			</#if>
 
 			super.travel(dir);
@@ -650,7 +651,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if data.flyingMob>
-	@Override protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+	@Override protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
    	}
 
    	@Override public void setNoGravity(boolean ignored) {
@@ -781,7 +782,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		</#if>
 
 		<#if data.aiBase == "Zombie">
-		builder = builder.add(Attributes.ZOMBIE_SPAWN_REINFORCEMENTS);
+		builder = builder.add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
 		</#if>
 
 		return builder;
