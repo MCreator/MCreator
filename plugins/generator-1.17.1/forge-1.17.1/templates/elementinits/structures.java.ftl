@@ -40,7 +40,7 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Features {
 
-	private static List<ConfiguredFeature<NoneFeatureConfiguration, Feature<NoneFeatureConfiguration>>> REGISTRY = new ArrayList<>();
+	private static Map<Feature<NoneFeatureConfiguration>, ConfiguredFeature<NoneFeatureConfiguration, Feature<NoneFeatureConfiguration>>> REGISTRY = new HashMap<>();
 
 	<#list structures as structure>
 	public static final ConfiguredFeature<NoneFeatureConfiguration, Feature<NoneFeatureConfiguration>> ${structure.getModElement().getRegistryNameUpper()}
@@ -51,13 +51,13 @@ package ${package}.init;
 	private static ConfiguredFeature<NoneFeatureConfiguration, Feature<NoneFeatureConfiguration>> register(Feature<?> feature) {
 		ConfiguredFeature<NoneFeatureConfiguration, Feature<NoneFeatureConfiguration>> retVal = new ConfiguredFeature((Feature<NoneFeatureConfiguration>) feature,
 				NoneFeatureConfiguration.INSTANCE).decorated(FeatureDecorator.NOPE.configured(NoneDecoratorConfiguration.INSTANCE));
-		REGISTRY.add(retVal);
+		REGISTRY.put((Feature<NoneFeatureConfiguration>) feature, retVal);
 		return retVal;
 	}
 
 	@SubscribeEvent public static void registerFeatures(RegistryEvent.Register<Feature<?>> event) {
-		event.getRegistry().registerAll(REGISTRY.stream().map(e -> e.feature()).toArray(Feature[]::new));
-		REGISTRY.forEach(e -> Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation(e.feature().getRegistryName()), e));
+		event.getRegistry().registerAll(REGISTRY.keySet().toArray(new Feature[0]));
+		REGISTRY.forEach((f, c) -> Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, f.getRegistryName(), c));
 	}
 
 	@Mod.EventBusSubscriber public static class BiomeHandler {

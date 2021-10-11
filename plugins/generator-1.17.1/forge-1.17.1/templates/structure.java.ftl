@@ -35,15 +35,16 @@ package ${package}.world.structure;
 
 public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 
+	<#if data.restrictionBiomes?has_content>
 	private static final Set<ResourceLocation> restrictionBiomes = Set.of(
-		<#if data.restrictionBiomes?has_content>
-			<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
 			new ResourceLocation("${restrictionBiome}")<#if restrictionBiome?has_next>,</#if>
-			</#list>
-		</#if>
+		</#list>
 	);
+	</#if>
 
 	public static void addToBiome(BiomeLoadingEvent event) {
+		<#if data.restrictionBiomes?has_content>
 		if (restrictionBiomes.contains(event.getName())) {
 			event.getGeneration().getFeatures(GenerationStep.Decoration.
 					<#if data.spawnLocation=="Ground">SURFACE_STRUCTURES
@@ -52,6 +53,14 @@ public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 					.add(() -> new ${name}Structure(NoneFeatureConfiguration.CODEC).configured(NoneFeatureConfiguration.INSTANCE)
 					.decorated(FeatureDecorator.NOPE.configured(NoneDecoratorConfiguration.INSTANCE)));
 		}
+		<#else>
+		event.getGeneration().getFeatures(GenerationStep.Decoration.
+				<#if data.spawnLocation=="Ground">SURFACE_STRUCTURES
+				<#elseif data.spawnLocation=="Air">RAW_GENERATION
+				<#elseif data.spawnLocation=="Underground">UNDERGROUND_STRUCTURES</#if>)
+				.add(() -> new ${name}Structure(NoneFeatureConfiguration.CODEC).configured(NoneFeatureConfiguration.INSTANCE)
+				.decorated(FeatureDecorator.NOPE.configured(NoneDecoratorConfiguration.INSTANCE)));
+		</#if>
 	}
 
 	public ${name}Structure(Codec<NoneFeatureConfiguration> codec) {
@@ -65,8 +74,8 @@ public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 		int ci = (context.origin().getX() >> 4) << 4;
 		int ck = (context.origin().getZ() >> 4) << 4;
 
-		<#if data.spawnWorldTypes?has_content>
 		boolean dimensionCriteria = false;
+		<#if data.spawnWorldTypes?has_content>
 			<#list data.spawnWorldTypes as worldType>
 				<#if worldType=="Surface">
 				dimensionCriteria |= (level.getLevel().dimension() == Level.OVERWORLD);
@@ -135,7 +144,7 @@ public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 				</#if>
 
 				StructureTemplate structureTemplate = level.getLevel().getStructureManager()
-						.getOrCreate(new ResourceLocation("${modid}", "${data.structure}"));
+						.getOrCreate(new ResourceLocation(${JavaModName}.MODID, "${data.structure}"));
 
 				if (structureTemplate == null)
 					return false;
