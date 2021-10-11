@@ -22,13 +22,10 @@ import net.mcreator.element.parts.Fluid;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
-import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.StringSelectorDialog;
 import net.mcreator.ui.init.L10N;
 
-import javax.swing.*;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FluidListField extends JItemListField<Fluid> {
 
@@ -39,16 +36,8 @@ public class FluidListField extends JItemListField<Fluid> {
 	}
 
 	@Override protected List<Fluid> getElementsToAdd() {
-		JList<String> vlist = new JList<>(ElementUtil.loadAllFluids(frame.getWorkspace()));
-		int option = JOptionPane.showOptionDialog(frame,
-				PanelUtils.northAndCenterElement(L10N.label("dialog.list_field.fluid_message"), new JScrollPane(vlist)),
-				L10N.t("dialog.list_field.fluid_title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
-				null, null);
-
-		if (option == JOptionPane.OK_OPTION && vlist.getSelectedValue() != null) {
-			return vlist.getSelectedValuesList().stream().map(e -> new Fluid(frame.getWorkspace(), e))
-					.collect(Collectors.toList());
-		}
-		return Collections.emptyList();
+		return StringSelectorDialog.openMultiSelectorDialog(frame, ElementUtil::loadAllFluids,
+				L10N.t("dialog.list_field.fluid_title"), L10N.t("dialog.list_field.fluid_message"))
+			.stream().map(e -> new Fluid(frame.getWorkspace(), e)).toList();
 	}
 }
