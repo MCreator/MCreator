@@ -73,8 +73,8 @@ public class ResizeDialog extends MCreatorDialog {
 						versionManager.addRevision(reloc.setUUID(uuid));
 					}
 				}
-				canvas.setSize(Math.max(canvas.getWidth(), layer.getWidth() + Math.max(dx, 0)),
-						Math.max(canvas.getHeight(), layer.getHeight() + Math.max(dy, 0)), uuid);
+				canvas.setSize(Math.max(canvas.getWidth(), layer.getWidth()) + Math.max(-dx, 0),
+						Math.max(canvas.getHeight(), layer.getHeight()) + Math.max(-dy, 0), uuid);
 			} else {
 				versionManager.addRevision(new Modification(canvas, layer));
 			}
