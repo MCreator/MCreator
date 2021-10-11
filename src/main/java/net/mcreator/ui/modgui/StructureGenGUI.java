@@ -41,7 +41,7 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -127,7 +127,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 				FileIO.copyFile(sch, new File(mcreator.getFolderManager().getStructuresDir(), strname));
 				structureSelector.removeAllItems();
 				mcreator.getFolderManager().getStructureList().forEach(structureSelector::addItem);
-				structureSelector.setSelectedItem(FilenameUtils.removeExtension(strname));
+				structureSelector.setSelectedItem(FilenameUtilsPatched.removeExtension(strname));
 			}
 		});
 

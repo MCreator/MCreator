@@ -23,7 +23,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -216,7 +216,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 					setIcon(UIRES.get("18px.warning"));
 				}
 			} else if (value instanceof File) {
-				setText(FilenameUtils.removeExtension(((File) value).getName()));
+				setText(FilenameUtilsPatched.removeExtension(((File) value).getName()));
 			} else {
 				setText(value.toString());
 			}
