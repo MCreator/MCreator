@@ -28,6 +28,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.function.Function;
 
@@ -79,5 +81,13 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 		setLocationRelativeTo(mcreator);
+
+		// Don't add any selected value if the "Close window" button is pressed
+		this.addWindowListener(new WindowAdapter() {
+			@Override public void windowClosing(WindowEvent e) {
+				((ListSelectorDialog<?>) e.getWindow()).list.clearSelection();
+				e.getWindow().dispose();
+			}
+		});
 	}
 }
