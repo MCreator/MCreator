@@ -35,22 +35,23 @@ package ${package}.world.structure;
 
 public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 
-	public static void addToBiome(BiomeLoadingEvent event) {
+	private static final Set<ResourceLocation> restrictionBiomes = Set.of(
 		<#if data.restrictionBiomes?has_content>
-		boolean biomeCriteria = false;
-			<#list data.restrictionBiomes as restrictionBiome>
-				<#if restrictionBiome.canProperlyMap()>
-		biomeCriteria |= (event.getName() == new ResourceLocation("${restrictionBiome}"));
-				</#if>
+			<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+			new ResourceLocation("${restrictionBiome}")<#if restrictionBiome?has_next>,</#if>
 			</#list>
-		if (biomeCriteria)
 		</#if>
+	);
+
+	public static void addToBiome(BiomeLoadingEvent event) {
+		if (restrictionBiomes.contains(event.getName())) {
 			event.getGeneration().getFeatures(GenerationStep.Decoration.
 					<#if data.spawnLocation=="Ground">SURFACE_STRUCTURES
 					<#elseif data.spawnLocation=="Air">RAW_GENERATION
 					<#elseif data.spawnLocation=="Underground">UNDERGROUND_STRUCTURES</#if>)
 					.add(() -> new ${name}Structure(NoneFeatureConfiguration.CODEC).configured(NoneFeatureConfiguration.INSTANCE)
 					.decorated(FeatureDecorator.NOPE.configured(NoneDecoratorConfiguration.INSTANCE)));
+		}
 	}
 
 	public ${name}Structure(Codec<NoneFeatureConfiguration> codec) {
@@ -58,7 +59,7 @@ public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 	}
 
 	@Override public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-		ServerLevel level = (ServerLevel) context.level();
+		WorldGenRegion level = (WorldGenRegion) context.level();
 		Random random = context.random();
 
 		int ci = (context.origin().getX() >> 4) << 4;
@@ -68,13 +69,13 @@ public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 		boolean dimensionCriteria = false;
 			<#list data.spawnWorldTypes as worldType>
 				<#if worldType=="Surface">
-				dimensionCriteria |= (level.dimension() == Level.OVERWORLD);
+				dimensionCriteria |= (level.getLevel().dimension() == Level.OVERWORLD);
 				<#elseif worldType=="Nether">
-				dimensionCriteria |= (level.dimension() == Level.NETHER);
+				dimensionCriteria |= (level.getLevel().dimension() == Level.NETHER);
 				<#elseif worldType=="End">
-				dimensionCriteria |= (level.dimension() == Level.END);
+				dimensionCriteria |= (level.getLevel().dimension() == Level.END);
 				<#else>
-				dimensionCriteria |= (level.dimension() == ResourceKey.create(Registry.DIMENSION_REGISTRY,
+				dimensionCriteria |= (level.getLevel().dimension() == ResourceKey.create(Registry.DIMENSION_REGISTRY,
 						new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")));
 				</#if>
 			</#list>
@@ -88,7 +89,7 @@ public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 			for(int a = 0; a < count; a++) {
 				int i = ci + random.nextInt(16);
 				int k = ck + random.nextInt(16);
-				int j = level.getHeightmapPos(Heightmap.Types.
+				int j = level.getLevel().getHeightmapPos(Heightmap.Types.
 					<#if data.surfaceDetectionType=="First block">WORLD_SURFACE_WG
 					<#elseif data.surfaceDetectionType=="First motion blocking block">OCEAN_FLOOR_WG</#if>,
 					new BlockPos(i, 0, k)).getY();
@@ -125,7 +126,7 @@ public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 
 				BlockPos spawnTo = new BlockPos(x, y, z);
 				<#if hasProcedure(data.generateCondition) || hasProcedure(data.onStructureGenerated)>
-				Level world = level;
+				Level world = level.getLevel();
 				</#if>
 
 				<#if hasProcedure(data.generateCondition)>
@@ -133,12 +134,13 @@ public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 					continue;
 				</#if>
 
-				StructureTemplate structureTemplate = level.getStructureManager().getOrCreate(new ResourceLocation("${modid}" ,"${data.structure}"));
+				StructureTemplate structureTemplate = level.getLevel().getStructureManager()
+						.getOrCreate(new ResourceLocation("${modid}", "${data.structure}"));
 
 				if (structureTemplate == null)
 					return false;
 
-				structureTemplate.placeInWorld(level, spawnTo, spawnTo,
+				structureTemplate.placeInWorld(level.getLevel(), spawnTo, spawnTo,
 						new StructurePlaceSettings()
 								.setRotation(rotation)
 								.setRandom(random)

@@ -38,13 +38,14 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber public class ${JavaModName}Features {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Features {
 
 	private static List<ConfiguredFeature<NoneFeatureConfiguration, Feature<NoneFeatureConfiguration>>> REGISTRY = new ArrayList<>();
 
 	<#list structures as structure>
-	public static final ConfiguredFeature<NoneFeatureConfiguration, Feature<NoneFeatureConfiguration>> ${structure.getModElement().getRegistryNameUpper()} = register(
-			new ${structure.getModElement().getName()}Structure(NoneFeatureConfiguration.CODEC).setRegistryName("${structure.getModElement().getRegistryName()}"));
+	public static final ConfiguredFeature<NoneFeatureConfiguration, Feature<NoneFeatureConfiguration>> ${structure.getModElement().getRegistryNameUpper()}
+			= register(new ${structure.getModElement().getName()}Structure(NoneFeatureConfiguration.CODEC)
+			.setRegistryName(new ResourceLocation(${JavaModName}.MODID, "${structure.getModElement().getRegistryName()}")));
 	</#list>
 
 	private static ConfiguredFeature<NoneFeatureConfiguration, Feature<NoneFeatureConfiguration>> register(Feature<?> feature) {
@@ -56,13 +57,17 @@ package ${package}.init;
 
 	@SubscribeEvent public static void registerFeatures(RegistryEvent.Register<Feature<?>> event) {
 		event.getRegistry().registerAll(REGISTRY.stream().map(e -> e.feature()).toArray(Feature[]::new));
-		REGISTRY.forEach(e -> Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation("${modid}:" + e.feature().getRegistryName()), e));
+		REGISTRY.forEach(e -> Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation(e.feature().getRegistryName()), e));
 	}
 
-	@SubscribeEvent public static void addFeaturesToBiomes(BiomeLoadingEvent event) {
-		<#list structures as structure>
-		${structure.getModElement().getName()}Structure.addToBiome(event);
-		</#list>
+	@Mod.EventBusSubscriber public static class BiomeHandler {
+
+		@SubscribeEvent public static void addFeaturesToBiomes(BiomeLoadingEvent event) {
+			<#list structures as structure>
+			${structure.getModElement().getName()}Structure.addToBiome(event);
+			</#list>
+		}
+
 	}
 
 }
