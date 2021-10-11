@@ -747,7 +747,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 					<#else>
-					Monster::checkMonsterSpawnRules
+					    <#if data.mobBehaviourType == "Mob">
+					        Monster::checkMonsterSpawnRules
+					    <#else>
+					        PathfinderMob::checkMobSpawnRules
+					    </#if>
 					</#if>
 			);
 			</#if>
