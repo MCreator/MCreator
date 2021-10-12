@@ -68,7 +68,7 @@ public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 	}
 
 	@Override public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-		WorldGenRegion level = (WorldGenRegion) context.level();
+		ServerLevel level = ((WorldGenRegion) context.level()).getLevel();
 		Random random = context.random();
 
 		int ci = (context.origin().getX() >> 4) << 4;
@@ -78,13 +78,13 @@ public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 		<#if data.spawnWorldTypes?has_content>
 			<#list data.spawnWorldTypes as worldType>
 				<#if worldType=="Surface">
-				dimensionCriteria |= (level.getLevel().dimension() == Level.OVERWORLD);
+				dimensionCriteria |= (level.dimension() == Level.OVERWORLD);
 				<#elseif worldType=="Nether">
-				dimensionCriteria |= (level.getLevel().dimension() == Level.NETHER);
+				dimensionCriteria |= (level.dimension() == Level.NETHER);
 				<#elseif worldType=="End">
-				dimensionCriteria |= (level.getLevel().dimension() == Level.END);
+				dimensionCriteria |= (level.dimension() == Level.END);
 				<#else>
-				dimensionCriteria |= (level.getLevel().dimension() == ResourceKey.create(Registry.DIMENSION_REGISTRY,
+				dimensionCriteria |= (level.dimension() == ResourceKey.create(Registry.DIMENSION_REGISTRY,
 						new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")));
 				</#if>
 			</#list>
@@ -98,16 +98,11 @@ public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 			for(int a = 0; a < count; a++) {
 				int i = ci + random.nextInt(16);
 				int k = ck + random.nextInt(16);
-				int j = level.getLevel().getHeightmapPos(Heightmap.Types.
-					<#if data.surfaceDetectionType=="First block">WORLD_SURFACE_WG
-					<#elseif data.surfaceDetectionType=="First motion blocking block">OCEAN_FLOOR_WG</#if>,
-					new BlockPos(i, 0, k)).getY();
-
-				<#if data.spawnLocation=="Ground">
-					j -= 1;
-				<#elseif data.spawnLocation=="Air">
-					j += random.nextInt(50) + 16;
-				<#elseif data.spawnLocation=="Underground">
+				Heightmap.Types hMap = Heightmap.Types.
+					<#if data.surfaceDetectionType == "First block">WORLD_SURFACE_WG
+					<#elseif data.surfaceDetectionType == "First motion blocking block">OCEAN_FLOOR_WG</#if>;
+				int j = level.getHeight(hMap, i, k)<#if data.spawnLocation == "Ground"> - 1<#elseif data.spawnLocation == "Air"> + random.nextInt(50) + 16</#if>;
+				<#if data.spawnLocation == "Underground">
 					j = Math.abs(random.nextInt(Math.max(1, j)) - 24);
 				</#if>
 
@@ -135,7 +130,7 @@ public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 
 				BlockPos spawnTo = new BlockPos(x, y, z);
 				<#if hasProcedure(data.generateCondition) || hasProcedure(data.onStructureGenerated)>
-				Level world = level.getLevel();
+				Level world = level;
 				</#if>
 
 				<#if hasProcedure(data.generateCondition)>
@@ -143,24 +138,38 @@ public class ${name}Structure extends Feature<NoneFeatureConfiguration> {
 					continue;
 				</#if>
 
-				StructureTemplate structureTemplate = level.getLevel().getStructureManager()
+				StructureTemplate structureTemplate = level.getStructureManager()
 						.getOrCreate(new ResourceLocation(${JavaModName}.MODID, "${data.structure}"));
 
 				if (structureTemplate == null)
 					return false;
 
-				structureTemplate.placeInWorld(level.getLevel(), spawnTo, spawnTo,
+				<#if hasProcedure(data.onStructureGenerated)>
+				if (structureTemplate.placeInWorld(level, spawnTo, spawnTo,
 						new StructurePlaceSettings()
-								.setRotation(rotation)
-								.setRandom(random)
 								.setMirror(mirror)
+								.setRotation(rotation)
+								.setIgnoreEntities(false)
+								.setRandom(random)
+								.setKeepLiquids(true)
+								.setKnownShape(false)
 								.addProcessor(BlockIgnoreProcessor.
 									<#if data.ignoreBlocks == "AIR_AND_STRUCTURE_BLOCK">STRUCTURE_AND_AIR
-									<#else>${data.ignoreBlocks}</#if>)
-								.setIgnoreEntities(false), random, 3);
-
-				<#if hasProcedure(data.onStructureGenerated)>
-					<@procedureOBJToCode data.onStructureGenerated/>
+									<#else>${data.ignoreBlocks}</#if>), random, 3)) {
+						<@procedureOBJToCode data.onStructureGenerated/>
+				}
+				<#else>
+				structureTemplate.placeInWorld(level, spawnTo, spawnTo,
+						new StructurePlaceSettings()
+								.setMirror(mirror)
+								.setRotation(rotation)
+								.setIgnoreEntities(false)
+								.setRandom(random)
+								.setKeepLiquids(true)
+								.setKnownShape(false)
+								.addProcessor(BlockIgnoreProcessor.
+									<#if data.ignoreBlocks == "AIR_AND_STRUCTURE_BLOCK">STRUCTURE_AND_AIR
+									<#else>${data.ignoreBlocks}</#if>), random, 3);
 				</#if>
 			}
 		}
