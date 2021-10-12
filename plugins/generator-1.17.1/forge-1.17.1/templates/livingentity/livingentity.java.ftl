@@ -750,7 +750,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					    <#if data.mobBehaviourType == "Mob">
 					        Monster::checkMonsterSpawnRules
 					    <#else>
-					        PathfinderMob::checkMobSpawnRules
+					        (entityType, world, reason, pos, random) -> (world.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(world, pos, random) && checkMobSpawnRules(entityType, world, reason, pos, random))
 					    </#if>
 					</#if>
 			);
