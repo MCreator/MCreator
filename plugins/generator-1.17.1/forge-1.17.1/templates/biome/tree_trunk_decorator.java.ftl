@@ -52,32 +52,11 @@ public class ${name}TrunkDecorator extends TrunkVineDecorator {
 
         @Override
         public void place(LevelSimulatedReader levelReader, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> listBlockPos, List<BlockPos> listBlockPos2) {
-            listBlockPos.forEach(bp -> {
+            listBlockPos.forEach(blockpos -> {
                 if (random.nextInt(3) > 0) {
-                    BlockPos blockpos = bp.west();
-                    if (Feature.isAir(levelReader, blockpos)) {
-                        biConsumer.accept(bp, ${mappedBlockToBlockStateCode(data.treeVines)});
-                    }
-                }
-
-                if (random.nextInt(3) > 0) {
-                    BlockPos blockpos1 = bp.east();
-                    if (Feature.isAir(levelReader, blockpos1)) {
-                        biConsumer.accept(bp, ${mappedBlockToBlockStateCode(data.treeVines)});
-                    }
-                }
-
-                if (random.nextInt(3) > 0) {
-                    BlockPos blockpos2 = bp.north();
-                    if (Feature.isAir(levelReader, blockpos2)) {
-                        biConsumer.accept(bp, ${mappedBlockToBlockStateCode(data.treeVines)});
-                    }
-                }
-
-                if (random.nextInt(3) > 0) {
-                    BlockPos blockpos3 = bp.south();
-                    if (Feature.isAir(levelReader, blockpos3)) {
-                        biConsumer.accept(bp, ${mappedBlockToBlockStateCode(data.treeVines)});
+                    BlockPos bp = blockpos.below();
+                    if (Feature.isAir(levelReader, bp)) {
+                        biConsumer.accept(blockpos, ${mappedBlockToBlockStateCode(data.treeVines)});
                     }
                 }
 

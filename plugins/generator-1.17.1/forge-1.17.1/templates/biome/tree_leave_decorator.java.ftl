@@ -54,30 +54,9 @@ public class ${name}LeaveDecorator extends LeaveVineDecorator {
         public void place(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> listBlockPos, List<BlockPos> listBlockPos2) {
             listBlockPos2.forEach((blockpos) -> {
                 if (random.nextInt(4) == 0) {
-                    BlockPos bp = blockpos.west();
+                    BlockPos bp = blockpos.below();
                     if (Feature.isAir(level, bp)) {
                         addVine(level, bp, biConsumer);
-                    }
-                }
-
-                if (random.nextInt(4) == 0) {
-                    BlockPos blockpos1 = blockpos.east();
-                    if (Feature.isAir(level, blockpos1)) {
-                        addVine(level, blockpos1, biConsumer);
-                    }
-                }
-
-                if (random.nextInt(4) == 0) {
-                    BlockPos blockpos2 = blockpos.north();
-                    if (Feature.isAir(level, blockpos2)) {
-                        addVine(level, blockpos2, biConsumer);
-                    }
-                }
-
-                if (random.nextInt(4) == 0) {
-                    BlockPos blockpos3 = blockpos.south();
-                    if (Feature.isAir(level, blockpos3)) {
-                        addVine(level, blockpos3, biConsumer);
                     }
                 }
 
