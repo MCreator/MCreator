@@ -1,4 +1,4 @@
-Это то, сколько предметов в слотах в инвентаре этого блока также может складываться.
+This is how many items in the slots in this block's inventory can stack too.
 
-Имейте в виду, что для определенных элементов установлен другой предел размера стека слотов, поэтому это верхний предел
-слотов, который может быть дополнительно ограничен элементами.
+Keep in mind that there is another slot stack size limit set for the specific items, so this is an upper limit of the
+slots that can be further limited by items.

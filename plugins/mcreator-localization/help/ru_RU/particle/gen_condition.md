@@ -1,4 +1,4 @@
-Тип условия для создания частиц.
+The condition type to spawn particles.
 
-* Всегда: Частицы будут появляться без ограничений. Они всегда будут плодиться.
-* Глобальная логическая переменная: эта переменная будет управлять порождением частиц
+* Always: The particles will spawn without restrictions. They will always spawn.
+* Global logic variable: this variable will control particle spawning

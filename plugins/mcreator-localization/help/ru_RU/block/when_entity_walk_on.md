@@ -1,3 +1,1 @@
-Запускает процедуру, когда сущность проходит по блоку. 
-
-Он не будет вызван, если сущность крадется.
+Triggers a procedure when an entity walks on top of this block.
