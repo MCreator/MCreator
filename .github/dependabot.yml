@@ -11,10 +11,3 @@ updates:
   - KlemenDEV
   labels:
   - dependencies
-  ignore:
-  - dependency-name: commons-io:commons-io
-    versions:
-    - "> 2.6"
-  - dependency-name: org.reflections:reflections
-    versions:
-    - "> 0.9.9, < 0.10"

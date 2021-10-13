@@ -21,7 +21,7 @@ package net.mcreator.element.parts.gui;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,7 +55,7 @@ public class Image extends GUIComponent {
 	}
 
 	public java.awt.Image getImage(Workspace workspace) {
-		return new ImageIcon(workspace.getFolderManager().getOtherTextureFile(FilenameUtils.removeExtension(image))
+		return new ImageIcon(workspace.getFolderManager().getOtherTextureFile(FilenameUtilsPatched.removeExtension(image))
 				.getAbsolutePath()).getImage();
 	}
 

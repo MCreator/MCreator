@@ -22,7 +22,7 @@ import javassist.bytecode.AccessFlag;
 import javassist.bytecode.ConstPool;
 import net.mcreator.generator.Generator;
 import net.mcreator.io.zip.ZipIO;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
@@ -127,7 +127,7 @@ public class ImportTreeBuilder {
 			if (file.isDirectory()) {
 				reloadClassesFromModImpl(file, root, store);
 			} else {
-				String className = FilenameUtils.removeExtension(file.getName());
+				String className = FilenameUtilsPatched.removeExtension(file.getName());
 				addClassToTree(packageName, className, store);
 			}
 		}

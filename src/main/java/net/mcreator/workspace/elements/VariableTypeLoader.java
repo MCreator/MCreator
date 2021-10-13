@@ -24,7 +24,7 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.blockly.BlocklyJavascriptTemplates;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -56,7 +56,7 @@ public class VariableTypeLoader {
 		for (String file : fileNames) {
 			String variableJSON = FileIO.readResourceToString(PluginLoader.INSTANCE, file);
 			VariableType variableType = gson.fromJson(variableJSON, VariableType.class);
-			variableType.setName(FilenameUtils.getBaseName(file));
+			variableType.setName(FilenameUtilsPatched.getBaseName(file));
 
 			VARIABLE_TYPES_LIST.put(variableType, variableType.getName());
 

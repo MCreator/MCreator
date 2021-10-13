@@ -42,7 +42,7 @@ import net.mcreator.util.DesktopUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -306,7 +306,7 @@ public class WorkspaceDialogs {
 				List<File> other = workspace.getFolderManager().getOtherTexturesList();
 				for (File element : other) {
 					if (element.getName().endsWith(".png"))
-						modPicture.addItem(FilenameUtils.removeExtension(element.getName()));
+						modPicture.addItem(FilenameUtilsPatched.removeExtension(element.getName()));
 				}
 			}
 
