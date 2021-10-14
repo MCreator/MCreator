@@ -1,0 +1,1 @@
+Triggers a procedure when an entity walks on top of this block.
