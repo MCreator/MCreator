@@ -56,7 +56,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 	@Override public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
 	}
 
-	public void portalSpawn(Level world, BlockPos pos) {
+	public static void portalSpawn(Level world, BlockPos pos) {
 		Optional<${name}PortalShape> optional = ${name}PortalShape.findEmptyPortalShape(world, pos, Direction.Axis.X);
 		if (optional.isPresent()) {
 			optional.get().createPortalBlocks();

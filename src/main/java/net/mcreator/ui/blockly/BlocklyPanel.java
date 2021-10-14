@@ -77,8 +77,12 @@ public class BlocklyPanel extends JFXPanel {
 
 		this.mcreator = mcreator;
 
-		bridge = new BlocklyJavascriptBridge(mcreator, () -> this.currentXML = (String) executeJavaScriptSynchronously(
-				"Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace, true))"));
+		bridge = new BlocklyJavascriptBridge(mcreator, () -> {
+			String newXml = (String) executeJavaScriptSynchronously(
+					"Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace, true))");
+			if (!newXml.isEmpty())
+				this.currentXML = newXml;
+		});
 
 		if (DISABLE_WEBVIEW)
 			return;
@@ -195,11 +199,11 @@ public class BlocklyPanel extends JFXPanel {
 	}
 
 	public void setXMLDataOnly(String xml) {
-		this.currentXML = xml;
+		this.currentXML = cleanupXML(xml);
 	}
 
 	public void addBlocksFromXML(String xml) {
-		xml = xml.replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r"); // escape single quotes and new lines
+		xml = cleanupXML(xml).replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r"); // escape single quotes and new lines
 		executeJavaScriptSynchronously(
 				"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + xml + "'), workspace)");
 	}
@@ -272,4 +276,9 @@ public class BlocklyPanel extends JFXPanel {
 	public MCreator getMCreator() {
 		return mcreator;
 	}
+
+	private String cleanupXML(String xml) {
+		return xml.replace("xmlns=\"http://www.w3.org/1999/xhtml\"", "");
+	}
+
 }

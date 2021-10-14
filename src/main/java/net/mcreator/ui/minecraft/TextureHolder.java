@@ -22,7 +22,7 @@ import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
 import net.mcreator.util.image.ImageUtils;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,7 +53,7 @@ public class TextureHolder extends VButton {
 		setPreferredSize(new Dimension(this.size, this.size));
 		td.getConfirmButton().addActionListener(event -> {
 			if (td.list.getSelectedValue() != null) {
-				id = FilenameUtils.removeExtension(td.list.getSelectedValue().getName());
+				id = FilenameUtilsPatched.removeExtension(td.list.getSelectedValue().getName());
 				setIcon(new ImageIcon(
 						ImageUtils.resize(new ImageIcon(td.list.getSelectedValue().toString()).getImage(), this.size)));
 				td.setVisible(false);

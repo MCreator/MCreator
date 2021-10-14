@@ -1,1 +1,1 @@
-(world.players().size())
+/*@int*/(world.players().size())
