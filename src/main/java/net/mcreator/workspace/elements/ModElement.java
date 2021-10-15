@@ -42,6 +42,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	private boolean compiles = true;
 	private boolean locked_code = false;
+	private boolean work_in_progress = false;
 
 	private Map<Integer, Integer> ids = new HashMap<>();
 	@Nullable private String registry_name;
@@ -99,6 +100,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.type = other.type;
 		this.compiles = other.compiles;
 		this.locked_code = other.locked_code;
+		this.work_in_progress = other.work_in_progress;
 		this.sortid = other.sortid;
 		this.ids = other.ids;
 		this.registry_name = other.registry_name;
@@ -295,10 +297,20 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		return locked_code;
 	}
 
+	public boolean isWorkInProgress() {
+		return work_in_progress;
+	}
+
 	public void setCodeLock(boolean codeLock) {
 		if (this.getType() == ModElementType.CODE && !codeLock)
 			return;
 		this.locked_code = codeLock;
+	}
+
+	public void setWorkInProgress(boolean wip) {
+		if (this.getType() == ModElementType.CODE && !wip)
+			return;
+		this.work_in_progress = wip;
 	}
 
 	public List<MCItem> getMCItems() {

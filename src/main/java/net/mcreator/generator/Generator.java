@@ -225,9 +225,9 @@ public class Generator implements IGenerator, Closeable {
 
 	public List<GeneratorFile> generateElement(GeneratableElement element, boolean formatAndOrganiseImports)
 			throws TemplateGeneratorException {
-		if (element.getModElement().isCodeLocked()) {
+		if (element.getModElement().isCodeLocked() || element.getModElement().isWorkInProgress()) {
 			LOG.debug("Skipping code generation for mod element: " + element.getModElement().getName()
-					+ " - the code of this element is locked");
+					+ " - the code of this element is locked or marked as work in progress");
 			return Collections.emptyList();
 		}
 

@@ -209,7 +209,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 				AggregatedValidationResult validationResult = new AggregatedValidationResult(errors);
 				if (validationResult.validateIsErrorFree())
-					finishModCreation(true);
+					finishModCreation(true, false);
 				else
 					showErrorsMessage(validationResult);
 			});
@@ -236,15 +236,24 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 				AggregatedValidationResult validationResult = new AggregatedValidationResult(errors);
 				if (validationResult.validateIsErrorFree())
-					finishModCreation(false);
+					finishModCreation(false, false);
 				else
 					showErrorsMessage(validationResult);
 			});
+
+			JButton saveAsWIP = L10N.button("elementgui.save_wip");
+			saveAsWIP.setMargin(new Insets(1, 40, 1, 40));
+			saveAsWIP.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			saveAsWIP.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			saveAsWIP.setFocusPainted(false);
+			saveAsWIP.addActionListener(event -> finishModCreation(true, true));
 
 			add("South", pager);
 
 			JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
 			toolBar.setOpaque(false);
+			if (!editingMode || modElement.isWorkInProgress())
+				toolBar.add(saveAsWIP);
 			toolBar.add(saveOnly);
 			toolBar.add(save);
 			add("North",
@@ -272,7 +281,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			saveOnly.addActionListener(event -> {
 				AggregatedValidationResult validationResult = validatePage(0);
 				if (validationResult.validateIsErrorFree())
-					finishModCreation(false);
+					finishModCreation(false, false);
 				else
 					showErrorsMessage(validationResult);
 			});
@@ -285,13 +294,22 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			save.addActionListener(event -> {
 				AggregatedValidationResult validationResult = validatePage(0);
 				if (validationResult.validateIsErrorFree())
-					finishModCreation(true);
+					finishModCreation(true, false);
 				else
 					showErrorsMessage(validationResult);
 			});
 
+			JButton saveAsWIP = L10N.button("elementgui.save_wip");
+			saveAsWIP.setMargin(new Insets(1, 40, 1, 40));
+			saveAsWIP.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			saveAsWIP.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			saveAsWIP.setFocusPainted(false);
+			saveAsWIP.addActionListener(event -> finishModCreation(true, true));
+
 			JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
 			toolBar.setOpaque(false);
+			if (!editingMode || modElement.isWorkInProgress())
+				toolBar.add(saveAsWIP);
 			toolBar.add(saveOnly);
 			toolBar.add(save);
 
@@ -402,7 +420,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	/**
 	 * This method implements the mod element saving and generation
 	 */
-	private void finishModCreation(boolean closeTab) {
+	private void finishModCreation(boolean closeTab, boolean isWIP) {
 		GE element = getElementFromGUI();
 
 		// if new element, and if we are not in the root folder, specify the folder of the mod element
@@ -429,13 +447,18 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// generate mod base as it may be needed
 		mcreator.getGenerator().generateBase();
 
-		// generate mod element code
-		mcreator.getGenerator().generateElement(element);
 
-		// build if selected and needed
-		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
-				.requiresElementGradleBuild(element))
-			mcreator.actionRegistry.buildWorkspace.doAction();
+		if (!isWIP) {
+			// generate mod element code
+			mcreator.getGenerator().generateElement(element);
+
+			// build if selected and needed
+			if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
+					.requiresElementGradleBuild(element))
+				mcreator.actionRegistry.buildWorkspace.doAction();
+		}
+
+		modElement.setWorkInProgress(isWIP);
 
 		if (this.tabIn != null && closeTab)
 			mcreator.mcreatorTabs.closeTab(tabIn);
@@ -444,7 +467,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					.forEach(e -> e.setIcon(((ModElementGUI<?>) e.getContent()).getViewIcon()));
 
 		if (!editingMode && modElementCreatedListener
-				!= null) // only call this event if listener registered and we are not in editing mode
+				!= null) // only call this event if listener registered, and we are not in editing mode
 			modElementCreatedListener.modElementCreated(element);
 	}
 
