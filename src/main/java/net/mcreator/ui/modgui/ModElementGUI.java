@@ -423,6 +423,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private void finishModCreation(boolean closeTab, boolean isWIP) {
 		GE element = getElementFromGUI();
 
+		// Set the mod element as work in progress or not
+		// If isWIP is true, MCreator will not generate the code
+		modElement.setWorkInProgress(isWIP);
+
 		// if new element, and if we are not in the root folder, specify the folder of the mod element
 		if (!editingMode && !mcreator.mv.currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
 			modElement.setParentFolder(mcreator.mv.currentFolder);
@@ -457,8 +461,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					.requiresElementGradleBuild(element))
 				mcreator.actionRegistry.buildWorkspace.doAction();
 		}
-
-		modElement.setWorkInProgress(isWIP);
 
 		if (this.tabIn != null && closeTab)
 			mcreator.mcreatorTabs.closeTab(tabIn);

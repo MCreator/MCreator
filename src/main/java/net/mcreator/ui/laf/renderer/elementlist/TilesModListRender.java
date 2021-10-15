@@ -91,6 +91,12 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 					} else {
 						dva = TiledImageCache.modTabPurple;
 					}
+				} else if (ma.isWorkInProgress()) {
+					if (dva != null) {
+						dva = ImageUtils.drawOver(dva, TiledImageCache.modTabBlue);
+					} else {
+						dva = TiledImageCache.modTabBlue;
+					}
 				}
 
 				text.add(label);

@@ -557,6 +557,8 @@ import java.util.stream.Collectors;
 		filterPopup.addSeparator();
 		filterPopup.add(
 				new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"), e -> togglefilter("f:locked")));
+		filterPopup.add(
+				new UnregisteredAction(L10N.t("workspace.elements.list.filter_wip"), e -> togglefilter("f:wip")));
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
 				e -> togglefilter("f:err")));
 		filterPopup.addSeparator();
@@ -1485,7 +1487,7 @@ import java.util.stream.Collectors;
 				String pat = m.group(1);
 				if (pat.contains("f:")) {
 					pat = pat.replaceFirst("f:", "");
-					if (pat.equals("locked") || pat.equals("ok") || pat.equals("err"))
+					if (pat.equals("locked") || pat.equals("ok") || pat.equals("err") || pat.equals("wip"))
 						filters.add(pat);
 					for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 						if (pat.equals(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))) {
@@ -1538,6 +1540,8 @@ import java.util.stream.Collectors;
 							switch (f) {
 							case "locked":
 								return item.isCodeLocked();
+							case "wip":
+								return item.isWorkInProgress();
 							case "ok":
 								return item.doesCompile();
 							case "err":

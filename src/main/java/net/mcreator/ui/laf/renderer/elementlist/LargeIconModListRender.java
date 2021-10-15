@@ -75,6 +75,12 @@ public class LargeIconModListRender extends JPanel implements ListCellRenderer<I
 					} else {
 						dva = TiledImageCache.modTabPurple;
 					}
+				} else if (ma.isWorkInProgress()) {
+					if (dva != null) {
+						dva = ImageUtils.drawOver(dva, TiledImageCache.modTabBlue);
+					} else {
+						dva = TiledImageCache.modTabBlue;
+					}
 				}
 			}
 

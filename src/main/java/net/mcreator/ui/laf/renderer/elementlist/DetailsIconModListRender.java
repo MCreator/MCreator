@@ -89,7 +89,9 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 				label3.setText(ma.getType().getReadableName());
 				label4.setText(ma.isCodeLocked() ?
 						L10N.t("workspace.elements.list.locked") :
-						L10N.t("workspace.elements.list.notlocked"));
+						(ma.isWorkInProgress() ?
+								L10N.t("workspace.elements.list.wip") :
+								L10N.t("workspace.elements.list.notlocked")));
 				label5.setText(ma.doesCompile() ?
 						L10N.t("workspace.elements.list.compiles") :
 						L10N.t("workspace.elements.list.compile_errors"));
@@ -103,6 +105,12 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 						dva = ImageUtils.drawOver(dva, TiledImageCache.modTabPurple);
 					} else {
 						dva = TiledImageCache.modTabPurple;
+					}
+				} else if (ma.isWorkInProgress()) {
+					if (dva != null) {
+						dva = ImageUtils.drawOver(dva, TiledImageCache.modTabBlue);
+					} else {
+						dva = TiledImageCache.modTabBlue;
 					}
 				}
 			} else {
