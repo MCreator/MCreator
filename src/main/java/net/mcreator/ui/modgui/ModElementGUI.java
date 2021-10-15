@@ -216,7 +216,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			JButton saveAsWIP = L10N.button("elementgui.save_wip");
 			saveAsWIP.setMargin(new Insets(1, 40, 1, 40));
-			saveAsWIP.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			saveAsWIP.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			saveAsWIP.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 			saveAsWIP.setFocusPainted(false);
 			saveAsWIP.addActionListener(event -> finishModCreation(true, true));
@@ -279,7 +279,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		} else {
 			JButton saveAsWIP = L10N.button("elementgui.save_wip");
 			saveAsWIP.setMargin(new Insets(1, 40, 1, 40));
-			saveAsWIP.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			saveAsWIP.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			saveAsWIP.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 			saveAsWIP.setFocusPainted(false);
 			saveAsWIP.addActionListener(event -> finishModCreation(true, true));
