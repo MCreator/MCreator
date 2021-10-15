@@ -57,26 +57,25 @@ public class ResizeDialog extends MCreatorDialog {
 
 		ok.addActionListener(e -> {
 			layer.resize((int) width.getValue(), (int) height.getValue(), type.isSelected());
-			if (affectCanvas.isSelected() && (
-					(canvas.getWidth() < layer.getWidth() || canvas.getHeight() < layer.getHeight()) || (
-							layer.getX() != 0 || layer.getY() != 0))) {
+			if (affectCanvas.isSelected() && (canvas.getWidth() < (layer.getWidth() + Math.abs(layer.getX()))
+					|| canvas.getHeight() < (layer.getHeight() + Math.abs(layer.getY())))) {
 				UUID uuid = UUID.randomUUID();
 				versionManager.addRevision(new Modification(canvas, layer).setUUID(uuid));
 				int dx = layer.getX();
 				int dy = layer.getY();
-				if (dx < 0 || dy < 0) {
+				if (dx != 0 || dy != 0) {
 					for (Layer lay : canvas) {
 						Relocation reloc = new Relocation(canvas, lay);
-						if (dx < 0)
+						if (dx != 0)
 							lay.setX(lay.getX() - dx);
-						if (dy < 0)
+						if (dy != 0)
 							lay.setY(lay.getY() - dy);
 						reloc.setAfter(lay);
 						versionManager.addRevision(reloc.setUUID(uuid));
 					}
 				}
-				canvas.setSize(Math.max(canvas.getWidth(), layer.getWidth() + layer.getX()) + Math.max(-dx, 0),
-						Math.max(canvas.getHeight(), layer.getHeight() + layer.getY()) + Math.max(-dy, 0), uuid);
+				canvas.setSize(Math.max(canvas.getWidth(), layer.getWidth()),
+						Math.max(canvas.getHeight(), layer.getHeight()), uuid);
 			} else {
 				versionManager.addRevision(new Modification(canvas, layer));
 			}
@@ -107,7 +106,7 @@ public class ResizeDialog extends MCreatorDialog {
 		controls.add(ok, BorderLayout.EAST);
 		add(PanelUtils.maxMargin(settings, 5, true, true, true, true), BorderLayout.CENTER);
 		add(PanelUtils.maxMargin(controls, 5, true, true, true, true), BorderLayout.SOUTH);
-		setSize(450, 150);
+		setSize(400, 150);
 		setResizable(false);
 		setLocationRelativeTo(window);
 	}
