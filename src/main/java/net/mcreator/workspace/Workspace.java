@@ -105,6 +105,14 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return Collections.unmodifiableSet(new LinkedHashSet<>(mod_elements));
 	}
 
+	/**
+	 * @return UNMODIFIABLE! list of non W.I.P mod elements
+	 */
+	public Collection<ModElement> getModElementsNoWIP() {
+		return Collections.unmodifiableSet((Set<? extends ModElement>) mod_elements.stream().filter(me -> !me.isWorkInProgress())
+				.collect(Collectors.toCollection(LinkedHashSet::new)));
+	}
+
 	public Collection<VariableElement> getVariableElements() {
 		return variable_elements;
 	}

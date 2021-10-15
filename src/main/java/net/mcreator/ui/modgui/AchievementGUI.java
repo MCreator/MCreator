@@ -281,7 +281,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 				ElementUtil.loadAllAchievements(mcreator.getWorkspace()));
 
 		ComboBoxUtil.updateComboBoxContents(rewardFunction, ListUtils.merge(Collections.singleton("No function"),
-				mcreator.getWorkspace().getModElements().stream().filter(e -> e.getType() == ModElementType.FUNCTION)
+				mcreator.getWorkspace().getModElementsNoWIP().stream().filter(e -> e.getType() == ModElementType.FUNCTION)
 						.map(ModElement::getName).collect(Collectors.toList())), "No function");
 
 		ComboBoxUtil.updateComboBoxContents(background, ListUtils.merge(Collections.singleton("Default"),

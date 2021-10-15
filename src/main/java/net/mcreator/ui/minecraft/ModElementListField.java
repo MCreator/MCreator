@@ -42,7 +42,7 @@ public class ModElementListField extends JItemListField<String> {
 
 	@Override protected List<String> getElementsToAdd() {
 		JList<String> vlist = new JList<>(
-				frame.getWorkspace().getModElements().stream().filter(e -> e.getType() == this.type)
+				frame.getWorkspace().getModElementsNoWIP().stream().filter(e -> e.getType() == this.type)
 						.map(ModElement::getName).toArray(String[]::new));
 
 		int option = JOptionPane.showOptionDialog(frame, PanelUtils.northAndCenterElement(

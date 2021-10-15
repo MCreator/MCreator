@@ -599,7 +599,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		// this procedure could be in use and new dependencies were added
 		if (isEditingMode() && dependenciesChanged) {
-			for (ModElement element : mcreator.getWorkspace().getModElements()) {
+			for (ModElement element : mcreator.getWorkspace().getModElementsNoWIP()) {
 				// if this mod element is not locked and has procedures, we try to update dependencies
 				// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
 				if (!element.isCodeLocked()) {

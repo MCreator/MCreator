@@ -385,7 +385,7 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		Map<BaseType, List<GeneratableElement>> baseTypeListMap = new HashMap<>();
-		for (ModElement modElement : workspace.getModElements()) {
+		for (ModElement modElement : workspace.getModElementsNoWIP()) {
 			GeneratableElement generatableElement = modElement.getGeneratableElement();
 			if (generatableElement instanceof ICommonType) {
 				Collection<BaseType> baseTypes = ((ICommonType) generatableElement).getBaseTypesProvided();

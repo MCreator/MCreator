@@ -53,7 +53,7 @@ public class ElementOrderEditor {
 			}
 		});
 
-		mcreator.getWorkspace().getModElements().stream().sorted(Comparator.comparingInt(ModElement::getSortID))
+		mcreator.getWorkspace().getModElementsNoWIP().stream().sorted(Comparator.comparingInt(ModElement::getSortID))
 				.forEach(modElement -> {
 					GeneratableElement generatableElement = modElement.getGeneratableElement();
 					if (generatableElement instanceof ITabContainedElement) {
@@ -107,7 +107,7 @@ public class ElementOrderEditor {
 				}
 			}
 
-			for (ModElement element : mcreator.getWorkspace().getModElements()) {
+			for (ModElement element : mcreator.getWorkspace().getModElementsNoWIP()) {
 				if (idmap.get(element) != null)
 					element.setSortID(idmap.get(element));
 				else

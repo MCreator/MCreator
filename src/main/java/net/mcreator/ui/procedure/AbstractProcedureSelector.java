@@ -87,7 +87,7 @@ public abstract class AbstractProcedureSelector extends JPanel {
 
 		procedures.addItem(new CBoxEntry(defaultName, null));
 
-		for (ModElement mod : mcreator.getWorkspace().getModElements()) {
+		for (ModElement mod : mcreator.getWorkspace().getModElementsNoWIP()) {
 			if (mod.getType() == ModElementType.PROCEDURE) {
 				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
 

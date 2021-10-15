@@ -42,7 +42,7 @@ public class ElementUtil {
 	 */
 	public static List<MCItem> loadBlocksAndItemsAndTags(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
-		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
+		workspace.getModElementsNoWIP().forEach(modElement -> elements.addAll(modElement.getMCItems()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
 						.map(e -> (MCItem) e).collect(Collectors.toList()));
@@ -85,7 +85,7 @@ public class ElementUtil {
 	 */
 	public static List<MCItem> loadBlocksAndItems(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
-		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
+		workspace.getModElementsNoWIP().forEach(modElement -> elements.addAll(modElement.getMCItems()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
 						.map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes).collect(Collectors.toList()));
@@ -101,7 +101,7 @@ public class ElementUtil {
 	 */
 	public static List<MCItem> loadBlocks(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
-		workspace.getModElements().stream().filter(element -> element.getType().getBaseType() == BaseType.BLOCK)
+		workspace.getModElementsNoWIP().stream().filter(element -> element.getType().getBaseType() == BaseType.BLOCK)
 				.forEach(modElement -> elements.addAll(modElement.getMCItems()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
@@ -197,7 +197,7 @@ public class ElementUtil {
 	public static String[] loadAllFluids(Workspace workspace) {
 		ArrayList<String> retval = new ArrayList<>();
 
-		for (ModElement modElement : workspace.getModElements()) {
+		for (ModElement modElement : workspace.getModElementsNoWIP()) {
 			if (modElement.getType() == ModElementType.FLUID) {
 				retval.add("CUSTOM:" + modElement.getName());
 				retval.add("CUSTOM:" + modElement.getName() + ":Flowing");
@@ -276,7 +276,7 @@ public class ElementUtil {
 		dimensions.add("Nether");
 		dimensions.add("End");
 
-		for (ModElement mu : workspace.getModElements())
+		for (ModElement mu : workspace.getModElementsNoWIP())
 			if (mu.getType().getBaseType() == BaseType.DIMENSION)
 				dimensions.add("CUSTOM:" + mu.getName());
 
@@ -290,7 +290,7 @@ public class ElementUtil {
 	public static ArrayList<String> loadBasicGUI(Workspace workspace) {
 		ArrayList<String> blocks = new ArrayList<>();
 
-		for (ModElement mu : workspace.getModElements()) {
+		for (ModElement mu : workspace.getModElementsNoWIP()) {
 			if (mu.getType().getBaseType() == BaseType.GUI)
 				blocks.add(mu.getName());
 		}
@@ -300,17 +300,17 @@ public class ElementUtil {
 
 	private static List<DataListEntry> getCustomElements(@Nonnull Workspace workspace,
 			Predicate<ModElement> predicate) {
-		return workspace.getModElements().stream().filter(predicate).map(DataListEntry.Custom::new)
+		return workspace.getModElementsNoWIP().stream().filter(predicate).map(DataListEntry.Custom::new)
 				.collect(Collectors.toList());
 	}
 
 	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, ModElementType<?> type) {
-		return workspace.getModElements().stream().filter(mu -> mu.getType() == type).map(DataListEntry.Custom::new)
+		return workspace.getModElementsNoWIP().stream().filter(mu -> mu.getType() == type).map(DataListEntry.Custom::new)
 				.collect(Collectors.toList());
 	}
 
 	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, BaseType type) {
-		return workspace.getModElements().stream().filter(mu -> mu.getType().getBaseType() == type)
+		return workspace.getModElementsNoWIP().stream().filter(mu -> mu.getType().getBaseType() == type)
 				.map(DataListEntry.Custom::new).collect(Collectors.toList());
 	}
 
