@@ -214,12 +214,23 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					showErrorsMessage(validationResult);
 			});
 
+			JButton saveAsWIP = L10N.button("elementgui.save_wip");
+			saveAsWIP.setMargin(new Insets(1, 40, 1, 40));
+			saveAsWIP.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			saveAsWIP.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			saveAsWIP.setFocusPainted(false);
+			saveAsWIP.addActionListener(event -> finishModCreation(true, true));
+
 			JButton saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			saveOnly.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 			saveOnly.setFocusPainted(false);
 			saveOnly.addActionListener(event -> {
+				// we disable saveAsWIP, so the user can not use it again
+				saveAsWIP.setEnabled(false);
+				saveAsWIP.setToolTipText(L10N.t("elementgui.save_wip.tooltip"));
+
 				List<ValidationGroup> errors = new ArrayList<>();
 
 				int i = 0;
@@ -240,13 +251,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				else
 					showErrorsMessage(validationResult);
 			});
-
-			JButton saveAsWIP = L10N.button("elementgui.save_wip");
-			saveAsWIP.setMargin(new Insets(1, 40, 1, 40));
-			saveAsWIP.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			saveAsWIP.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-			saveAsWIP.setFocusPainted(false);
-			saveAsWIP.addActionListener(event -> finishModCreation(true, true));
 
 			add("South", pager);
 
@@ -273,12 +277,23 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				add("Center", split);
 			}
 		} else {
+			JButton saveAsWIP = L10N.button("elementgui.save_wip");
+			saveAsWIP.setMargin(new Insets(1, 40, 1, 40));
+			saveAsWIP.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			saveAsWIP.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			saveAsWIP.setFocusPainted(false);
+			saveAsWIP.addActionListener(event -> finishModCreation(true, true));
+
 			JButton saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			saveOnly.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 			saveOnly.setFocusPainted(false);
 			saveOnly.addActionListener(event -> {
+				// we disable saveAsWIP, so the user can not use it again
+				saveAsWIP.setEnabled(false);
+				saveAsWIP.setToolTipText(L10N.t("elementgui.save_wip.tooltip"));
+
 				AggregatedValidationResult validationResult = validatePage(0);
 				if (validationResult.validateIsErrorFree())
 					finishModCreation(false, false);
@@ -298,13 +313,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				else
 					showErrorsMessage(validationResult);
 			});
-
-			JButton saveAsWIP = L10N.button("elementgui.save_wip");
-			saveAsWIP.setMargin(new Insets(1, 40, 1, 40));
-			saveAsWIP.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			saveAsWIP.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-			saveAsWIP.setFocusPainted(false);
-			saveAsWIP.addActionListener(event -> finishModCreation(true, true));
 
 			JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
 			toolBar.setOpaque(false);
