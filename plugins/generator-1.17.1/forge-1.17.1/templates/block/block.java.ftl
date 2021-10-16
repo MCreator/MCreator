@@ -114,6 +114,9 @@ public class ${name}Block extends
 			<#if data.hasTransparency>
 				.isRedstoneConductor((bs, br, bp) -> false)
 			</#if>
+			<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube() && data.offsetType != "NONE">
+				.dynamicShape()
+			</#if>
 	</#macro>
 
 	public ${name}Block() {
@@ -228,7 +231,7 @@ public class ${name}Block extends
 		<#if data.isBoundingBoxEmpty()>
 			return VoxelShapes.empty();
 		<#else>
-			<#if !data.disableOffset>Vector3d offset = state.getOffset(world, pos);</#if>
+			<#if !data.disableOffset>Vec3 offset = state.getOffset(world, pos);</#if>
 			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset data.rotationMode/>
 		</#if>
 	}
