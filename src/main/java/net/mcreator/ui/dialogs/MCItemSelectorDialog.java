@@ -30,10 +30,7 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Predicate;
@@ -73,8 +70,8 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		JPanel buttons = new JPanel();
 		JButton cancelButton = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 
-		JButton naprej = L10N.button("dialog.item_selector.use_selected");
-		naprej.addActionListener(e -> {
+		JButton useSelectedButton = L10N.button("dialog.item_selector.use_selected");
+		useSelectedButton.addActionListener(e -> {
 			setVisible(false);
 			if (itemSelectedListener != null)
 				itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
@@ -125,7 +122,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 			});
 		}
 
-		buttons.add(naprej);
+		buttons.add(useSelectedButton);
 
 		add("South", PanelUtils.westAndEastElement(PanelUtils.centerInPanel(cancelButton), buttons));
 
@@ -134,10 +131,14 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 		list.addListSelectionListener(event -> {
 			MCItem bl = list.getSelectedValue();
-			jtf.setText(bl.getReadableName());
+			if (bl != null)
+				jtf.setText(bl.getReadableName());
 		});
 
-		cancelButton.addActionListener(event -> setVisible(false));
+		cancelButton.addActionListener(event -> {
+			list.clearSelection();
+			setVisible(false);
+		});
 
 		ComponentUtils.deriveFont(jtf, 15);
 
@@ -178,6 +179,13 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 		setLocationRelativeTo(mcreator);
+
+		this.addWindowListener(new WindowAdapter() {
+			@Override public void windowClosing(WindowEvent e) {
+				list.clearSelection();
+				dispose();
+			}
+		});
 	}
 
 	public void setItemSelectedListener(ActionListener itemSelectedListener) {

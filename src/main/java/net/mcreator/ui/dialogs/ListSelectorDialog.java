@@ -34,7 +34,8 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * This abstract class provides a default look for searchable list selectors, similar to that of JOptionPane
+ * This abstract class provides a default look for searchable list selectors, similar to that of JOptionPane, but
+ * featuring a search bar.
  * @param <T> The type of elements contained in the list
  */
 public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> {
@@ -85,8 +86,8 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 		// Don't add any selected value if the "Close window" button is pressed
 		this.addWindowListener(new WindowAdapter() {
 			@Override public void windowClosing(WindowEvent e) {
-				((ListSelectorDialog<?>) e.getWindow()).list.clearSelection();
-				e.getWindow().dispose();
+				list.clearSelection();
+				dispose();
 			}
 		});
 	}
