@@ -36,6 +36,23 @@
 
 package ${package}.init;
 
+<#assign hasTransparentBlocks = false>
+<#assign hasTintedBlocks = false>
+<#assign hasTintedBlockItems = false>
+<#list blocks as block>
+    <#if block.getModElement().getTypeString() == "block">
+        <#if block.transparencyType != "SOLID" || block.hasTransparency || block.tintType>
+            <#assign hasTransparentBlocks = true>
+        </#if>
+        <#if block.tintType != "No tint">
+            <#assign hasTintedBlocks = true>
+        </#if>
+        <#if block.tintType != "No tint" && block.isItemTinted>
+            <#assign hasTintedBlockItems = true>
+        </#if>
+    </#if>
+</#list>
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Blocks {
 
     private static final List<Block> REGISTRY = new ArrayList<>();
@@ -56,6 +73,48 @@ package ${package}.init;
 	@SubscribeEvent public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new Block[0]));
 	}
+
+	<#if hasTransparentBlocks || hasTintedBlocks || hasTintedBlockItems>
+	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
+
+        <#if hasTransparentBlocks>
+	    @SubscribeEvent public static void clientSetup(FMLClientSetupEvent event) {
+	    	<#list blocks as block>
+                <#if block.getModElement().getTypeString() == "block">
+                    <#if block.transparencyType != "SOLID" || block.hasTransparency>
+                        ${block.getModElement().getName()}Block.registerRenderLayer();
+                    </#if>
+                </#if>
+            </#list>
+		}
+        </#if>
+
+        <#if hasTintedBlocks>
+        @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
+	    	<#list blocks as block>
+                <#if block.getModElement().getTypeString() == "block">
+                    <#if block.tintType != "No tint">
+                         ${block.getModElement().getName()}Block.blockColorLoad(event);
+                    </#if>
+                </#if>
+            </#list>
+		}
+        </#if>
+
+        <#if hasTintedBlockItems>
+        @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
+	    	<#list blocks as block>
+                <#if block.getModElement().getTypeString() == "block">
+                    <#if block.tintType != "No tint" && block.isItemTinted>
+                         ${block.getModElement().getName()}Block.itemColorLoad(event);
+                    </#if>
+                </#if>
+            </#list>
+		}
+        </#if>
+
+    }
+	</#if>
 
 }
 
