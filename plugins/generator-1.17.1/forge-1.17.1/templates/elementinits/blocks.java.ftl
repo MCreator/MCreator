@@ -90,7 +90,7 @@ package ${package}.init;
         </#if>
 
         <#if hasTintedBlocks>
-        @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
+        @SubscribeEvent public static void blockColorLoad(ColorHandlerEvent.Block event) {
 	    	<#list blocks as block>
                 <#if block.getModElement().getTypeString() == "block">
                     <#if block.tintType != "No tint">
@@ -102,7 +102,7 @@ package ${package}.init;
         </#if>
 
         <#if hasTintedBlockItems>
-        @SubscribeEvent public void itemColorLoad(ColorHandlerEvent.Item event) {
+        @SubscribeEvent public static void itemColorLoad(ColorHandlerEvent.Item event) {
 	    	<#list blocks as block>
                 <#if block.getModElement().getTypeString() == "block">
                     <#if block.tintType != "No tint" && block.isItemTinted>

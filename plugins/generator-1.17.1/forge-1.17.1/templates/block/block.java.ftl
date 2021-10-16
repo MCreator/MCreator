@@ -224,7 +224,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
-	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, ISelectionContext context) {
+	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
 		<#if data.isBoundingBoxEmpty()>
 			return VoxelShapes.empty();
 		<#else>
