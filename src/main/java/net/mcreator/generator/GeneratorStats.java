@@ -26,7 +26,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -92,7 +92,7 @@ public class GeneratorStats {
 		new Thread(() -> {
 			generatorProcedures = PluginLoader.INSTANCE.getResources(
 							generatorConfiguration.getGeneratorName() + ".procedures" , ftlFile).stream()
-					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).filter(e -> !e.startsWith("_"))
+					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName).filter(e -> !e.startsWith("_"))
 					.collect(Collectors.toSet());
 			coverageInfo.put("procedures" , Math.min(
 					(((double) generatorProcedures.size()) / (BlocklyLoader.INSTANCE.getProcedureBlockLoader()
@@ -100,7 +100,7 @@ public class GeneratorStats {
 
 			generatorTriggers = PluginLoader.INSTANCE.getResources(
 							generatorConfiguration.getGeneratorName() + ".triggers" , ftlFile).stream()
-					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).filter(e -> !e.startsWith("_"))
+					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName).filter(e -> !e.startsWith("_"))
 					.collect(Collectors.toSet());
 			coverageInfo.put("triggers" , Math.min(
 					(((double) generatorTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader()
@@ -108,7 +108,7 @@ public class GeneratorStats {
 
 			jsonTriggers = PluginLoader.INSTANCE.getResources(
 							generatorConfiguration.getGeneratorName() + ".jsontriggers" , ftlFile).stream()
-					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).filter(e -> !e.startsWith("_"))
+					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName).filter(e -> !e.startsWith("_"))
 					.collect(Collectors.toSet());
 			coverageInfo.put("jsontriggers" , Math.min(
 					(((double) jsonTriggers.size()) / (BlocklyLoader.INSTANCE.getJSONTriggerLoader().getDefinedBlocks()
@@ -116,7 +116,7 @@ public class GeneratorStats {
 
 			generatorAITasks = PluginLoader.INSTANCE.getResources(
 							generatorConfiguration.getGeneratorName() + ".aitasks" , ftlFile).stream()
-					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
+					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName).collect(Collectors.toSet());
 			coverageInfo.put("aitasks" , Math.min(
 					(((double) generatorAITasks.size()) / BlocklyLoader.INSTANCE.getAITaskBlockLoader()
 							.getDefinedBlocks().size()) * 100, 100));

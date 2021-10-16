@@ -1,5 +1,5 @@
 <#if field$damagesource?has_content>
-${input$entity}.hurt(${generator.map(field$damagesource, "damagesources")},(float)${input$amount});
+${input$entity}.hurt(${generator.map(field$damagesource, "damagesources")},${opt.toFloat(input$amount)});
 <#else>
-${input$entity}.hurt(DamageSource.GENERIC,(float)${input$amount});
+${input$entity}.hurt(DamageSource.GENERIC,${opt.toFloat(input$amount)});
 </#if>

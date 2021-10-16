@@ -26,7 +26,7 @@ import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 
 import java.util.Arrays;
 import java.util.List;
@@ -108,7 +108,7 @@ import java.util.stream.Collectors;
 
 	public String getElementExtension(String elementName) {
 		if (elementName.contains(".")) {
-			return FilenameUtils.getExtension(elementName);
+			return FilenameUtilsPatched.getExtension(elementName);
 		}
 		return elementName;
 	}

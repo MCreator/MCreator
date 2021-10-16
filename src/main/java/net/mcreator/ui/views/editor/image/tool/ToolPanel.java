@@ -109,10 +109,14 @@ public class ToolPanel extends JSplitPane {
 		pencilTool = new PencilTool(canvas, cs, layerPanel, versionManager);
 		register(pencilTool, drawing).setSelected(true);
 
-		addButton(L10N.t("dialog.image_maker.tools.undo"), L10N.t("dialog.image_maker.tools.undo_description"),
-				UIRES.get("img_editor.undo"), e -> versionManager.undo(), general);
-		addButton(L10N.t("dialog.image_maker.tools.redo"), L10N.t("dialog.image_maker.tools.redo_description"),
-				UIRES.get("img_editor.redo"), e -> versionManager.redo(), general);
+		JButton undo = addButton(L10N.t("dialog.image_maker.tools.undo"),
+				L10N.t("dialog.image_maker.tools.undo_description"), UIRES.get("img_editor.undo"),
+				e -> versionManager.undo(), general);
+		undo.setEnabled(false);
+		JButton redo = addButton(L10N.t("dialog.image_maker.tools.redo"),
+				L10N.t("dialog.image_maker.tools.redo_description"), UIRES.get("img_editor.redo"),
+				e -> versionManager.redo(), general);
+		redo.setEnabled(false);
 
 		register(new ShapeTool(canvas, cs, layerPanel, versionManager), drawing);
 		register(new EraserTool(canvas, cs, layerPanel, versionManager), drawing);
@@ -127,6 +131,13 @@ public class ToolPanel extends JSplitPane {
 		register(new MoveTool(canvas, cs, versionManager), constraints);
 		register(new ResizeTool(canvas, cs, versionManager, frame), constraints);
 		register(new ResizeCanvasTool(canvas, cs, versionManager, frame), constraints);
+
+		versionManager.setRevisionListener(() -> {
+			undo.setEnabled(!versionManager.firstRevision());
+			frame.actionRegistry.imageEditorUndo.setEnabled(!versionManager.firstRevision());
+			redo.setEnabled(!versionManager.lastRevision());
+			frame.actionRegistry.imageEditorRedo.setEnabled(!versionManager.lastRevision());
+		});
 
 		toolGroups.add(general);
 		toolGroups.add(drawing);

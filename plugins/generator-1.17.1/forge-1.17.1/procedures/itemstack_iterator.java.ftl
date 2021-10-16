@@ -1,1 +1,1 @@
-/*@ItemStack*/(itemstackiterator)
+/*@ItemStack*/itemstackiterator

@@ -20,7 +20,7 @@ package net.mcreator.workspace;
 
 import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.io.OS;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -76,7 +76,7 @@ public class WorkspaceFolderManager {
 			File[] files = structuresDir.listFiles();
 			for (File file : files != null ? files : new File[0])
 				if (file.getName().endsWith(".nbt"))
-					structures.add(FilenameUtils.removeExtension(file.getName()));
+					structures.add(FilenameUtilsPatched.removeExtension(file.getName()));
 		}
 		return structures;
 	}

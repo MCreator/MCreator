@@ -1,16 +1,10 @@
-if(${input$entity} instanceof ServerPlayer _player) {
-	AbstractContainerMenu _current = _player.containerMenu;
-	if(_current instanceof Supplier) {
-		Object invobj = ((Supplier) _current).get();
-		if(invobj instanceof Map) {
-			ItemStack stack=((Slot) ((Map) invobj).get((int)(${input$slotid}))).getItem();
-    		if(stack != null) {
-    			if(stack.hurt((int) ${input$amount},new Random(),null)){
-    				stack.shrink(1);
-    				stack.setDamageValue(0);
-				}
-    			_current.broadcastChanges();
-    		}
+if(${input$entity} instanceof ServerPlayer _player && _player.containerMenu instanceof Supplier _current && _current.get() instanceof Map _slots) {
+	ItemStack stack=((Slot) _slots.get(${opt.toInt(input$slotid)})).getItem();
+    if(stack != null) {
+    	if(stack.hurt(${opt.toInt(input$amount)},new Random(),null)){
+    		stack.shrink(1);
+    		stack.setDamageValue(0);
 		}
-	}
+    	_player.containerMenu.broadcastChanges();
+    }
 }

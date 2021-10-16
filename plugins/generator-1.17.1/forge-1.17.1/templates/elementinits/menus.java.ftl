@@ -38,7 +38,7 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Menus {
 
-    private static final List<MenuType<?>> REGISTRY = new ArrayList();
+    private static final List<MenuType<?>> REGISTRY = new ArrayList<>();
 
     <#list guis as gui>
     public static final MenuType<${gui.getModElement().getName()}Menu> ${gui.getModElement().getRegistryNameUpper()}
