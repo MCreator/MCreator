@@ -227,6 +227,10 @@ import java.util.stream.Collectors;
 		return guiBoundTo != null && !guiBoundTo.equals("<NONE>") && openGUIOnRightClick;
 	}
 
+	public boolean doesGenerateInWorld() {
+		return spawnWorldTypes.size() > 0;
+	}
+
 	@Override public Model getItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (renderType == 2)
