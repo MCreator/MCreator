@@ -57,7 +57,7 @@ public class ${name}Block extends
 			</#if> {
 
 	<#if data.rotationMode == 1 || data.rotationMode == 3>
-	public static final DirectionProperty FACING = HorizontalDirectionalBlock.HORIZONTAL_FACING;
+	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 	<#elseif data.rotationMode == 2 || data.rotationMode == 4>
 	public static final DirectionProperty FACING = DirectionalBlock.FACING;
 	<#elseif data.rotationMode == 5>
@@ -135,16 +135,16 @@ public class ${name}Block extends
 		);
 
 	    <#if data.rotationMode != 0 || data.isWaterloggable>
-	    this.setDefaultState(this.stateContainer.getBaseState()
+	    this.registerDefaultState(this.stateDefinition.any()
 	                             <#if data.rotationMode == 1 || data.rotationMode == 3>
-	                             .with(FACING, Direction.NORTH)
+	                             .setValue(FACING, Direction.NORTH)
 	                             <#elseif data.rotationMode == 2 || data.rotationMode == 4>
-	                             .with(FACING, Direction.NORTH)
+	                             .setValue(FACING, Direction.NORTH)
 	                             <#elseif data.rotationMode == 5>
-	                             .with(AXIS, Direction.Axis.Y)
+	                             .setValue(AXIS, Direction.Axis.Y)
 	                             </#if>
 	                             <#if data.isWaterloggable>
-	                             .with(WATERLOGGED, false)
+	                             .setValue(WATERLOGGED, false)
 	                             </#if>
 	    );
 		</#if>
@@ -179,7 +179,7 @@ public class ${name}Block extends
 	${mcc.getMethod("net.minecraft.block.WallBlock", "func_235628_a_", "BlockState", "BlockState", "VoxelShape")}
 
 	private static boolean hasHeightForProperty(BlockState state, Property<WallHeight> heightProperty) {
-		return state.get(heightProperty) != WallHeight.NONE;
+		return state.getValue(heightProperty) != WallHeight.NONE;
 	}
 
 	private static boolean compareShapes(VoxelShape shape1, VoxelShape shape2) {
@@ -188,7 +188,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
+	@Override public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
 		super.appendHoverText(itemstack, world, list, flag);
 		<#list data.specialInfo as entry>
 		list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
@@ -197,7 +197,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.displayFluidOverlay>
-	@Override public boolean shouldDisplayFluidOverlay(BlockState state, IBlockDisplayReader world, BlockPos pos, FluidState fluidstate) {
+	@Override public boolean shouldDisplayFluidOverlay(BlockState state, BlockAndTintGetter world, BlockPos pos, FluidState fluidstate) {
 		return true;
 	}
 	</#if>
@@ -210,7 +210,7 @@ public class ${name}Block extends
 
 	<#if data.connectedSides>
 	@Override public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-		return adjacentBlockState.getBlock() == this ? true : super.isSideInvisible(state, adjacentBlockState, side);
+		return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
 	}
 	</#if>
 
@@ -238,7 +238,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.rotationMode != 0>
-	@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	@Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		<#if data.isWaterloggable>
 			<#if data.rotationMode == 5>
 			builder.add(AXIS, WATERLOGGED);
@@ -254,19 +254,19 @@ public class ${name}Block extends
 
 		<#if data.rotationMode != 5>
 		public BlockState rotate(BlockState state, Rotation rot) {
-			return state.with(FACING, rot.rotate(state.get(FACING)));
+			return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 		}
 
 		public BlockState mirror(BlockState state, Mirror mirrorIn) {
-			return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+			return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
 		}
 		<#else>
 		@Override public BlockState rotate(BlockState state, Rotation rot) {
 			if(rot == Rotation.CLOCKWISE_90 || rot == Rotation.COUNTERCLOCKWISE_90) {
-				if ((Direction.Axis) state.get(AXIS) == Direction.Axis.X) {
-					return state.with(AXIS, Direction.Axis.Z);
-				} else if ((Direction.Axis) state.get(AXIS) == Direction.Axis.Z) {
-					return state.with(AXIS, Direction.Axis.X);
+				if ((Direction.Axis) state.getValue(AXIS) == Direction.Axis.X) {
+					return state.setValue(AXIS, Direction.Axis.Z);
+				} else if ((Direction.Axis) state.getValue(AXIS) == Direction.Axis.Z) {
+					return state.setValue(AXIS, Direction.Axis.X);
 				}
 			}
 			return state;
@@ -276,39 +276,39 @@ public class ${name}Block extends
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 	    <#if data.rotationMode == 4>
-	    Direction facing = context.getFace();
+	    Direction facing = context.getClickedFace();
 	    </#if>
 	    <#if data.rotationMode == 5>
-	    Direction.Axis axis = context.getFace().getAxis();
+	    Direction.Axis axis = context.getClickedFace().getAxis();
 	    </#if>
 	    <#if data.isWaterloggable>
-	    boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
+	    boolean flag = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
 	    </#if>;
 		<#if data.rotationMode != 3>
 		return this.defaultBlockState()
 		        <#if data.rotationMode == 1>
-		        .with(FACING, context.getPlacementHorizontalFacing().getOpposite())
+		        .setValue(FACING, context.getHorizontalDirection().getOpposite())
 		        <#elseif data.rotationMode == 2>
-		        .with(FACING, context.getNearestLookingDirection().getOpposite())
+		        .setValue(FACING, context.getNearestLookingDirection().getOpposite())
 	            <#elseif data.rotationMode == 4>
-		        .with(FACING, facing)
+		        .setValue(FACING, facing)
 	            <#elseif data.rotationMode == 5>
-	            .with(AXIS, axis)
+	            .setValue(AXIS, axis)
 		        </#if>
 		        <#if data.isWaterloggable>
-		        .with(WATERLOGGED, flag)
+		        .setValue(WATERLOGGED, flag)
 		        </#if>
 		<#elseif data.rotationMode == 3>
-	    if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
+	    if (context.getClickedFace() == Direction.UP || context.getClickedFace() == Direction.DOWN)
 	        return this.defaultBlockState()
-	                .with(FACING, Direction.NORTH)
+	                .setValue(FACING, Direction.NORTH)
 	                <#if data.isWaterloggable>
-	                .with(WATERLOGGED, flag)
+	                .setValue(WATERLOGGED, flag)
 	                </#if>;
 	    return this.defaultBlockState()
-	            .with(FACING, context.getFace())
+	            .setValue(FACING, context.getClickedFace())
 	            <#if data.isWaterloggable>
-	            .with(WATERLOGGED, flag)
+	            .setValue(WATERLOGGED, flag)
 	            </#if>
 		</#if>;
 	}
@@ -331,29 +331,29 @@ public class ${name}Block extends
 	    <#if data.rotationMode == 0>
 	    @Override
 	    public BlockState getStateForPlacement(BlockPlaceContext context) {
-	    boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
-	        return this.defaultBlockState().with(WATERLOGGED, flag);
+	    boolean flag = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
+	        return this.defaultBlockState().setValue(WATERLOGGED, flag);
 	    }
-	    @Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 	        builder.add(WATERLOGGED);
 	    }
 	    </#if>
 
 	@Override public FluidState getFluidState(BlockState state) {
-	    return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+	    return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 	</#if>
 
 	<#if data.isWaterloggable || hasProcedure(data.placingCondition)>
-	@Override public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
+	@Override public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
 	    <#if data.isWaterloggable>
-		if (state.get(WATERLOGGED)) {
-			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		if (state.getValue(WATERLOGGED)) {
+			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
 		</#if>
 		return <#if hasProcedure(data.placingCondition)>
 		!state.isValidPosition(world, currentPos) ? Blocks.AIR.defaultBlockState() :
-		</#if> super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+		</#if> super.updateShape(state, facing, facingState, world, currentPos, facingPos);
 	}
 	</#if>
 
@@ -453,7 +453,7 @@ public class ${name}Block extends
 		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
 		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 			<#if data.blockBase?has_content && data.blockBase == "Door">
-			if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
+			if(state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
 				return Collections.emptyList();
 			</#if>
 
@@ -465,7 +465,7 @@ public class ${name}Block extends
 		<#elseif data.customDrop?? && !data.customDrop.isEmpty()>
 		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 			<#if data.blockBase?has_content && data.blockBase == "Door">
-			if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
+			if(state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
 				return Collections.emptyList();
 			</#if>
 
@@ -479,12 +479,12 @@ public class ${name}Block extends
 			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			if(!dropsOriginal.isEmpty())
 				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, state.get(TYPE) == SlabType.DOUBLE ? 2 : 1));
+			return Collections.singletonList(new ItemStack(this, state.getValue(TYPE) == SlabType.DOUBLE ? 2 : 1));
 		}
 		<#else>
 		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 			<#if data.blockBase?has_content && data.blockBase == "Door">
-			if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
+			if(state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
 				return Collections.emptyList();
 			</#if>
 
@@ -647,7 +647,7 @@ public class ${name}Block extends
 			double hitX = hit.getHitVec().x;
 			double hitY = hit.getHitVec().y;
 			double hitZ = hit.getHitVec().z;
-			Direction direction = hit.getFace();
+			Direction direction = hit.getClickedFace();
 			<#if hasReturnValue(data.onRightClicked)>
 			ActionResultType result = <@procedureOBJToActionResultTypeCode data.onRightClicked/>;
 			<#else>
@@ -748,7 +748,7 @@ public class ${name}Block extends
 
 			feature = new OreFeature(OreFeatureConfig.CODEC) {
 				@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, OreFeatureConfig config) {
-					RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
+					RegistryKey<World> dimensionType = world.getLevel().getDimensionKey();
 					boolean dimensionCriteria = false;
 
     				<#list data.spawnWorldTypes as worldType>
