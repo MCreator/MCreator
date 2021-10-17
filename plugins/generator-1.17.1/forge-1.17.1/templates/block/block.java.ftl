@@ -48,7 +48,7 @@ public class ${name}Block extends
 			<#elseif data.blockBase?has_content && data.blockBase == "Button">
 				<#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>Wood<#else>Stone</#if>ButtonBlock
 			<#elseif data.blockBase?has_content>
-				${data.blockBase}Block
+				${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")}Block
 			<#else>
 				Block
 			</#if>
@@ -114,7 +114,8 @@ public class ${name}Block extends
 			<#if data.hasTransparency>
 				.isRedstoneConductor((bs, br, bp) -> false)
 			</#if>
-			<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube() && data.offsetType != "NONE">
+			<#if (data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube() && data.offsetType != "NONE")
+					|| (data.blockBase?has_content && data.blockBase == "Stairs")>
 				.dynamicShape()
 			</#if>
 	</#macro>
@@ -153,37 +154,44 @@ public class ${name}Block extends
 	}
 
 	<#if data.blockBase?has_content && data.blockBase == "Fence">
-	@Override public boolean canConnect(BlockState state, boolean checkattach, Direction face) {
+	@Override public boolean connectsTo(BlockState state, boolean checkattach, Direction face) {
 	  boolean flag = state.getBlock() instanceof FenceBlock && state.getMaterial() == this.material;
-	  boolean flag1 = state.getBlock() instanceof FenceGateBlock && FenceGateBlock.isParallel(state, face);
-	  return !cannotAttach(state.getBlock()) && checkattach || flag || flag1;
+	  boolean flag1 = state.getBlock() instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, face);
+	  return !isExceptionForConnection(state) && checkattach || flag || flag1;
 	}
 	<#elseif data.blockBase?has_content && data.blockBase == "Wall">
-	private static final VoxelShape CENTER_POLE_SHAPE = Block.makeCuboidShape(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
-	private static final VoxelShape WALL_CONNECTION_NORTH_SIDE_SHAPE = Block.makeCuboidShape(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 9.0D);
-	private static final VoxelShape WALL_CONNECTION_SOUTH_SIDE_SHAPE = Block.makeCuboidShape(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 16.0D);
-	private static final VoxelShape WALL_CONNECTION_WEST_SIDE_SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
-	private static final VoxelShape WALL_CONNECTION_EAST_SIDE_SHAPE = Block.makeCuboidShape(7.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
+   private static final int WALL_WIDTH = 3;
+   private static final int WALL_HEIGHT = 14;
+   private static final int POST_WIDTH = 4;
+   private static final int POST_COVER_WIDTH = 1;
+   private static final int WALL_COVER_START = 7;
+   private static final int WALL_COVER_END = 9;
+   private static final VoxelShape POST_TEST = Block.box(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
+   private static final VoxelShape NORTH_TEST = Block.box(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 9.0D);
+   private static final VoxelShape SOUTH_TEST = Block.box(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 16.0D);
+   private static final VoxelShape WEST_TEST = Block.box(0.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
+   private static final VoxelShape EAST_TEST = Block.box(7.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
 
-	private boolean shouldConnect(BlockState state, boolean checkattach, Direction face) {
-		boolean flag = state.getBlock() instanceof WallBlock || state.getBlock() instanceof FenceGateBlock && FenceGateBlock.isParallel(state, face);
-		return !cannotAttach(state.getBlock()) && checkattach || flag;
+	@Override ${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "getStateForPlacement", "BlockPlaceContext")}
+	@Override ${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "updateShape", "BlockState", "Direction", "BlockState", "LevelAccessor", "BlockPos", "BlockPos")}
+	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "topUpdate", "LevelReader", "BlockState", "BlockPos", "BlockState")}
+	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "sideUpdate", "LevelReader", "BlockPos", "BlockState", "BlockPos", "BlockState", "Direction")}
+	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "updateShape", "LevelReader", "BlockState", "BlockPos", "BlockState", "boolean", "boolean", "boolean", "boolean")}
+	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "updateSides", "BlockState", "boolean", "boolean", "boolean", "boolean", "VoxelShape")}
+	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "makeWallState", "boolean", "VoxelShape", "VoxelShape")}
+	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "shouldRaisePost", "BlockState", "BlockState", "VoxelShape")}
+
+	private boolean connectsTo(BlockState state, boolean checkattach, Direction face) {
+		boolean flag = state.getBlock() instanceof WallBlock || state.getBlock() instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, face);
+		return !isExceptionForConnection(state) && checkattach || flag;
 	}
-	@Override ${mcc.getMethod("net.minecraft.block.WallBlock", "getStateForPlacement", "BlockPlaceContext")}
-	@Override ${mcc.getMethod("net.minecraft.block.WallBlock", "updatePostPlacement", "BlockState", "Direction", "BlockState", "LevelAccessor", "BlockPos", "BlockPos")}
-	${mcc.getMethod("net.minecraft.block.WallBlock", "func_235625_a_", "LevelReader", "BlockState", "BlockPos", "BlockState")}
-	${mcc.getMethod("net.minecraft.block.WallBlock", "func_235627_a_", "LevelReader", "BlockPos", "BlockState", "BlockPos", "BlockState", "Direction")}
-	${mcc.getMethod("net.minecraft.block.WallBlock", "func_235626_a_", "LevelReader", "BlockState", "BlockPos", "BlockState", "boolean", "boolean", "boolean", "boolean")}
-	${mcc.getMethod("net.minecraft.block.WallBlock", "func_235630_a_", "BlockState", "boolean", "boolean", "boolean", "boolean", "VoxelShape")}
-	${mcc.getMethod("net.minecraft.block.WallBlock", "func_235633_a_", "boolean", "VoxelShape", "VoxelShape")}
-	${mcc.getMethod("net.minecraft.block.WallBlock", "func_235628_a_", "BlockState", "BlockState", "VoxelShape")}
 
-	private static boolean hasHeightForProperty(BlockState state, Property<WallHeight> heightProperty) {
-		return state.getValue(heightProperty) != WallHeight.NONE;
+	private static boolean isConnected(BlockState state, Property<WallSide> heightProperty) {
+		return state.getValue(heightProperty) != WallSide.NONE;
 	}
 
-	private static boolean compareShapes(VoxelShape shape1, VoxelShape shape2) {
-		return !VoxelShapes.compare(shape2, shape1, IBooleanFunction.ONLY_FIRST);
+	private static boolean isCovered(VoxelShape shape1, VoxelShape shape2) {
+		return !Shapes.joinIsNotEmpty(shape2, shape1, BooleanOp.ONLY_FIRST);
 	}
 	</#if>
 
@@ -214,13 +222,13 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if (!data.blockBase?? || data.blockBase == "Leaves") && data.lightOpacity == 0>
+	<#if (!data.blockBase?has_content || data.blockBase == "Leaves") && data.lightOpacity == 0>
 	@Override public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
 		return <#if data.isWaterloggable>state.getFluidState().isEmpty()<#else>true</#if>;
 	}
 	</#if>
 
-	<#if !data.blockBase?? || data.blockBase == "Leaves" || data.lightOpacity != 15>
+	<#if !data.blockBase?has_content || data.blockBase == "Leaves" || data.lightOpacity != 15>
 	@Override public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
 		return ${data.lightOpacity};
 	}
