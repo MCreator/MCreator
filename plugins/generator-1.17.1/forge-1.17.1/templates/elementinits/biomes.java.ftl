@@ -36,6 +36,14 @@
 
 package ${package}.init;
 
+<#assign hasInits = false/>
+<#list biomes as biome>
+    <#if biome.biomeDictionaryTypes?has_content || biome.spawnBiome>
+        <#assign hasInits = true/>
+        <#break>
+    </#if>
+</#list>
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Biomes {
 
     private static final List<Biome> REGISTRY = new ArrayList<>();
@@ -54,6 +62,7 @@ package ${package}.init;
 		event.getRegistry().registerAll(REGISTRY.toArray(new Biome[0]));
 	}
 
+	<#if hasInits>
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 	    <#list biomes as biome>
             <#if biome.biomeDictionaryTypes?has_content || biome.spawnBiome>
@@ -61,6 +70,7 @@ package ${package}.init;
             </#if>
         </#list>
 	}
+    </#if>
 
 }
 
