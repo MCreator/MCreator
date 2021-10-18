@@ -1,6 +1,10 @@
 templates:
   - template: block/block.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlock.java"
+  - template: block/oregen.java.ftl
+    deleteWhenConditionFalse: true
+    condition: doesGenerateInWorld()
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/ores/@NAMEFeature.java"
   - template: block/blockentity.java.ftl
     deleteWhenConditionFalse: true
     condition: hasInventory
