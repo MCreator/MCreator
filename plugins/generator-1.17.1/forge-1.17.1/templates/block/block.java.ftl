@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2021, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -36,11 +37,6 @@
 package ${package}.block;
 
 import net.minecraft.world.level.material.Material;
-
-<#if (data.spawnWorldTypes?size > 0)>
-		MinecraftForge.EVENT_BUS.register(this);
-		FMLJavaModLoadingContext.get().getModEventBus().register(new FeatureRegisterHandler());
-</#if>
 
 public class ${name}Block extends
 			<#if data.hasGravity>
@@ -387,7 +383,7 @@ public class ${name}Block extends
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
-			World world = (World) blockAccess;
+			Level world = (World) blockAccess;
 			return (int) <@procedureOBJToNumberCode data.emittedRedstonePower/>;
 		<#else>
 			return ${data.emittedRedstonePower.getFixedValue()};
@@ -505,13 +501,13 @@ public class ${name}Block extends
 	</#if>
 
 	<#if (hasProcedure(data.onTickUpdate) && !data.tickRandomly) || hasProcedure(data.onBlockAdded) >
-	@Override public void onBlockAdded(BlockState blockstate, World world, BlockPos pos, BlockState oldState, boolean moving) {
-		super.onBlockAdded(blockstate, world, pos, oldState, moving);
+	@Override public void onPlace(BlockState blockstate, Level world, BlockPos pos, BlockState oldState, boolean moving) {
+		super.onPlace(blockstate, world, pos, oldState, moving);
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
 		<#if hasProcedure(data.onTickUpdate) && !data.tickRandomly>
-		world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
+		world.getBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
 	    </#if>
 		<@procedureOBJToCode data.onBlockAdded/>
 	}
@@ -519,12 +515,12 @@ public class ${name}Block extends
 
 	<#if hasProcedure(data.onRedstoneOn) || hasProcedure(data.onRedstoneOff) || hasProcedure(data.onNeighbourBlockChanges)>
 	@Override
-	public void neighborChanged(BlockState blockstate, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
+	public void neighborChanged(BlockState blockstate, Level world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
 		super.neighborChanged(blockstate, world, pos, neighborBlock, fromPos, moving);
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
-		if (world.getRedstonePowerFromNeighbors(new BlockPos(x, y, z)) > 0) {
+		if (world.getBestNeighborSignal(new BlockPos(x, y, z)) > 0) {
 			<@procedureOBJToCode data.onRedstoneOn/>
 		} else {
 			<@procedureOBJToCode data.onRedstoneOff/>
@@ -535,7 +531,7 @@ public class ${name}Block extends
 
 	<#if hasProcedure(data.onTickUpdate)>
 	@Override public void <#if data.tickRandomly && (data.blockBase?has_content && data.blockBase == "Stairs")>randomTick<#else>tick</#if>
-			(BlockState blockstate, ServerWorld world, BlockPos pos, Random random) {
+			(BlockState blockstate, ServerLevel world, BlockPos pos, Random random) {
 		super.<#if data.tickRandomly && (data.blockBase?has_content && data.blockBase == "Stairs")>randomTick<#else>tick</#if>(blockstate, world, pos, random);
 		int x = pos.getX();
 		int y = pos.getY();
@@ -544,16 +540,16 @@ public class ${name}Block extends
 		<@procedureOBJToCode data.onTickUpdate/>
 
 		<#if !data.tickRandomly>
-		world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
+		world.getBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
 		</#if>
 	}
 	</#if>
 
 	<#if hasProcedure(data.onRandomUpdateEvent) || data.spawnParticles>
 	@OnlyIn(Dist.CLIENT) @Override
-	public void animateTick(BlockState blockstate, World world, BlockPos pos, Random random) {
+	public void animateTick(BlockState blockstate, Level world, BlockPos pos, Random random) {
 		super.animateTick(blockstate, world, pos, random);
-		PlayerEntity entity = Minecraft.getInstance().player;
+		Player entity = Minecraft.getInstance().player;
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
@@ -567,7 +563,7 @@ public class ${name}Block extends
 
 	<#if hasProcedure(data.onDestroyedByPlayer)>
 	@Override
-	public boolean removedByPlayer(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity, boolean willHarvest, FluidState fluid) {
+	public boolean removedByPlayer(BlockState blockstate, Level world, BlockPos pos, Player entity, boolean willHarvest, FluidState fluid) {
 		boolean retval = super.removedByPlayer(blockstate, world, pos, entity, willHarvest, fluid);
 		int x = pos.getX();
 		int y = pos.getY();
@@ -578,8 +574,8 @@ public class ${name}Block extends
 	</#if>
 
 	<#if hasProcedure(data.onDestroyedByExplosion)>
-	@Override public void onExplosionDestroy(World world, BlockPos pos, Explosion e) {
-		super.onExplosionDestroy(world, pos, e);
+	@Override public void wasExploded(Level world, BlockPos pos, Explosion e) {
+		super.wasExploded(world, pos, e);
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
@@ -588,8 +584,8 @@ public class ${name}Block extends
 	</#if>
 
 	<#if hasProcedure(data.onStartToDestroy)>
-	@Override public void onBlockClicked(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity) {
-		super.onBlockClicked(blockstate, world, pos, entity);
+	@Override public void attack(BlockState blockstate, Level world, BlockPos pos, Player entity) {
+		super.attack(blockstate, world, pos, entity);
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
@@ -598,8 +594,8 @@ public class ${name}Block extends
 	</#if>
 
 	<#if hasProcedure(data.onEntityCollides)>
-	@Override public void onEntityCollision(BlockState blockstate, World world, BlockPos pos, Entity entity) {
-		super.onEntityCollision(blockstate, world, pos, entity);
+	@Override public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity) {
+		super.entityInside(blockstate, world, pos, entity);
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
@@ -608,20 +604,19 @@ public class ${name}Block extends
 	</#if>
 
 	<#if hasProcedure(data.onEntityWalksOn)>
-	@Override public void onEntityWalk(World world, BlockPos pos, Entity entity) {
-		super.onEntityWalk(world, pos, entity);
+	@Override public void stepOn(Level world, BlockPos pos, BlockState blockstate, Entity entity) {
+		super.stepOn(world, pos, blockstate, entity);
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
-		BlockState blockstate = world.getBlockState(pos);
 		<@procedureOBJToCode data.onEntityWalksOn/>
 	}
 	</#if>
 
 	<#if hasProcedure(data.onBlockPlayedBy)>
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState blockstate, LivingEntity entity, ItemStack itemstack) {
-		super.onBlockPlacedBy(world, pos, blockstate, entity, itemstack);
+	public void setPlacedBy(Level world, BlockPos pos, BlockState blockstate, LivingEntity entity, ItemStack itemstack) {
+		super.setPlacedBy(world, pos, blockstate, entity, itemstack);
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
@@ -631,8 +626,8 @@ public class ${name}Block extends
 
 	<#if hasProcedure(data.onRightClicked) || data.shouldOpenGUIOnRightClick()>
 	@Override
-	public ActionResultType onBlockActivated(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
-		super.onBlockActivated(blockstate, world, pos, entity, hand, hit);
+	public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
+		super.use(blockstate, world, pos, entity, hand, hit);
 
 		int x = pos.getX();
 		int y = pos.getY();
@@ -652,19 +647,19 @@ public class ${name}Block extends
 		</#if>
 
 		<#if hasProcedure(data.onRightClicked)>
-			double hitX = hit.getHitVec().x;
-			double hitY = hit.getHitVec().y;
-			double hitZ = hit.getHitVec().z;
-			Direction direction = hit.getClickedFace();
+			double hitX = hit.getLocation().x;
+			double hitY = hit.getLocation().y;
+			double hitZ = hit.getLocation().z;
+			Direction direction = hit.getDirection();
 			<#if hasReturnValue(data.onRightClicked)>
-			ActionResultType result = <@procedureOBJToActionResultTypeCode data.onRightClicked/>;
+			InteractionResult result = <@procedureOBJToInteractionResultCode data.onRightClicked/>;
 			<#else>
 			<@procedureOBJToCode data.onRightClicked/>
 			</#if>
 		</#if>
 
 		<#if data.shouldOpenGUIOnRightClick() || !hasReturnValue(data.onRightClicked)>
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 		<#else>
 		return result;
 		</#if>
@@ -672,7 +667,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.hasInventory>
-		@Override public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
+		@Override public INamedContainerProvider getContainer(BlockState state, Level worldIn, BlockPos pos) {
 			TileEntity tileEntity = worldIn.getTileEntity(pos);
 			return tileEntity instanceof INamedContainerProvider ? (INamedContainerProvider) tileEntity : null;
 		}
@@ -686,14 +681,14 @@ public class ${name}Block extends
 		}
 
 	    @Override
-		public boolean eventReceived(BlockState state, World world, BlockPos pos, int eventID, int eventParam) {
+		public boolean eventReceived(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
 			super.eventReceived(state, world, pos, eventID, eventParam);
 			TileEntity tileentity = world.getTileEntity(pos);
 			return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
 		}
 
 	    <#if data.inventoryDropWhenDestroyed>
-		@Override public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+		@Override public void onReplaced(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
 		   if (state.getBlock() != newState.getBlock()) {
 		      TileEntity tileentity = world.getTileEntity(pos);
 		      if (tileentity instanceof CustomTileEntity) {
@@ -711,7 +706,7 @@ public class ${name}Block extends
 			return true;
 		}
 
-	    @Override public int getComparatorInputOverride(BlockState blockState, World world, BlockPos pos) {
+	    @Override public int getComparatorInputOverride(BlockState blockState, Level world, BlockPos pos) {
 			TileEntity tileentity = world.getTileEntity(pos);
 			if (tileentity instanceof CustomTileEntity)
 				return Container.calcRedstoneFromInventory((CustomTileEntity) tileentity);
@@ -719,104 +714,6 @@ public class ${name}Block extends
 				return 0;
 		}
 	    </#if>
-	</#if>
-
-	<#if (data.spawnWorldTypes?size > 0)>
-	private static Feature<OreFeatureConfig> feature = null;
-	private static ConfiguredFeature<?, ?> configuredFeature = null;
-
-	private static IRuleTestType<CustomRuleTest> CUSTOM_MATCH = null;
-
-	private static class CustomRuleTest extends RuleTest {
-
-		static final CustomRuleTest INSTANCE = new CustomRuleTest();
-		static final com.mojang.serialization.Codec<CustomRuleTest> codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
-
-		public boolean test(BlockState blockAt, Random random) {
-			boolean blockCriteria = false;
-
-			<#list data.blocksToReplace as replacementBlock>
-			if(blockAt.getBlock() == ${mappedBlockToBlock(replacementBlock)})
-				blockCriteria = true;
-			</#list>
-
-			return blockCriteria;
-		}
-
-		protected IRuleTestType<?> getType() {
-			return CUSTOM_MATCH;
-		}
-
-	}
-
-	private static class FeatureRegisterHandler {
-
-		@SubscribeEvent public void registerFeature(RegistryEvent.Register<Feature<?>> event) {
-			CUSTOM_MATCH = Registry.register(Registry.RULE_TEST, new ResourceLocation("${modid}:${registryname}_match"), () -> CustomRuleTest.codec);
-
-			feature = new OreFeature(OreFeatureConfig.CODEC) {
-				@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, OreFeatureConfig config) {
-					RegistryKey<World> dimensionType = world.getLevel().getDimensionKey();
-					boolean dimensionCriteria = false;
-
-    				<#list data.spawnWorldTypes as worldType>
-						<#if worldType=="Surface">
-							if(dimensionType == World.OVERWORLD)
-								dimensionCriteria = true;
-						<#elseif worldType=="Nether">
-							if(dimensionType == World.THE_NETHER)
-								dimensionCriteria = true;
-						<#elseif worldType=="End">
-							if(dimensionType == World.THE_END)
-								dimensionCriteria = true;
-						<#else>
-							if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
-									new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
-								dimensionCriteria = true;
-						</#if>
-					</#list>
-
-					if(!dimensionCriteria)
-						return false;
-
-					<#if hasProcedure(data.generateCondition)>
-					int x = pos.getX();
-					int y = pos.getY();
-					int z = pos.getZ();
-					if (!<@procedureOBJToConditionCode data.generateCondition/>)
-						return false;
-					</#if>
-
-					return super.generate(world, generator, rand, pos, config);
-				}
-			};
-
-			configuredFeature = feature
-					.withConfiguration(new OreFeatureConfig(CustomRuleTest.INSTANCE, block.defaultBlockState(), ${data.frequencyOnChunk}))
-					.range(${data.maxGenerateHeight})
-					.square()
-					.func_242731_b(${data.frequencyPerChunks});
-
-			event.getRegistry().register(feature.setRegistryName("${registryname}"));
-			Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, new ResourceLocation("${modid}:${registryname}"), configuredFeature);
-		}
-
-	}
-
-	@SubscribeEvent public void addFeatureToBiomes(BiomeLoadingEvent event) {
-		<#if data.restrictionBiomes?has_content>
-				boolean biomeCriteria = false;
-			<#list data.restrictionBiomes as restrictionBiome>
-				<#if restrictionBiome.canProperlyMap()>
-					if (new ResourceLocation("${restrictionBiome}").equals(event.getName()))
-						biomeCriteria = true;
-				</#if>
-			</#list>
-				if (!biomeCriteria)
-					return;
-		</#if>
-		event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> configuredFeature);
-	}
 	</#if>
 
 	<#if data.transparencyType != "SOLID">
