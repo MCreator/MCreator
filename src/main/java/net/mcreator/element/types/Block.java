@@ -305,9 +305,15 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
+		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
+
 		if (doesGenerateInWorld())
-			return List.of(BaseType.BLOCK, BaseType.ITEM, BaseType.FEATURE);
-		return List.of(BaseType.BLOCK, BaseType.ITEM);
+			baseTypes.add(BaseType.FEATURE);
+
+		if(hasInventory)
+			baseTypes.add(BaseType.BLOCKENTITY);
+
+		return baseTypes;
 	}
 
 }

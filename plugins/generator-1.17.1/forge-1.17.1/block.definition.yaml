@@ -8,7 +8,7 @@ templates:
   - template: block/blockentity.java.ftl
     deleteWhenConditionFalse: true
     condition: hasInventory
-    name: "@SRCROOT/@BASEPACKAGEPATH/entity/block/@NAMEBlockEntity.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/entity/@NAMEBlockEntity.java"
 
   # Block item templates
   - template: json/block_item.json.ftl

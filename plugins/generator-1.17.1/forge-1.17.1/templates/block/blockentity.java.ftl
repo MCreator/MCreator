@@ -29,25 +29,14 @@
 -->
 
 <#-- @formatter:off -->
-public class CustomTileEntity extends LockableLootTileEntity implements ISidedInventory {
+package ${package}.block.entity;
 
-		<#if data.hasInventory>
-	private static class TileEntityRegisterHandler {
-		@SubscribeEvent public void registerTileEntity(RegistryEvent.Register<TileEntityType<?>> event) {
-			event.getRegistry().register(TileEntityType.Builder.create(CustomTileEntity::new, block).build(null).setRegistryName("${registryname}"));
-		}
-	}
-        </#if>
-
-<#if data.hasInventory>
-	@ObjectHolder("${modid}:${registryname}")
-	public static final TileEntityType<CustomTileEntity> tileEntityType = null;
-</#if>
+public class ${name}BlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer {
 
 	private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(${data.inventorySize}, ItemStack.EMPTY);
 
-	protected CustomTileEntity() {
-		super(tileEntityType);
+	public ${name}BlockEntity(BlockPos position, BlockState state) {
+		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}, position, state);
 	}
 
 	@Override public void read(BlockState blockState, CompoundNBT compound) {

@@ -59,9 +59,9 @@ package ${package}.init;
 
     <#list blocks as block>
         <#if block.getModElement().getTypeString() == "dimension">
-            public static Block ${block.getModElement().getRegistryNameUpper()}_PORTAL = register(new ${block.getModElement().getName()}PortalBlock());
+            public static final Block ${block.getModElement().getRegistryNameUpper()}_PORTAL = register(new ${block.getModElement().getName()}PortalBlock());
         <#else>
-            public static Block ${block.getModElement().getRegistryNameUpper()} = register(new ${block.getModElement().getName()}Block());
+            public static final Block ${block.getModElement().getRegistryNameUpper()} = register(new ${block.getModElement().getName()}Block());
         </#if>
     </#list>
 

@@ -25,6 +25,7 @@ public enum BaseType {
 	ARMOR,
 	BIOME,
 	BLOCK,
+	BLOCKENTITY,
 	COMMAND,
 	DATAPACK,
 	DIMENSION,
@@ -43,6 +44,9 @@ public enum BaseType {
 	public String getPluralName() {
 		if (this == ENTITY)
 			return "entities";
+
+		if (this == BLOCKENTITY)
+			return "blockentities";
 
 		return name() + "s";
 	}
