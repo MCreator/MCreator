@@ -113,11 +113,13 @@ public class ${name}Item extends RecordItem {
 	<#if hasProcedure(data.onEntitySwing)>
 	@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
 		boolean retval = super.onEntitySwing(itemstack, entity);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		Level world = entity.level;
-		<@procedureOBJToCode data.onEntitySwing/>
+		<@procedureCode data.onEntitySwing, {
+			"x": "entity.getX()",
+			"y": "entity.getY()",
+			"z": "entity.getZ()",
+			"world": "entity.level",
+			"entity": "entity"
+		}/>
 		return retval;
 	}
 	</#if>
