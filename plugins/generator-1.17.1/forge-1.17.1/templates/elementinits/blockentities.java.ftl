@@ -47,7 +47,9 @@ package ${package}.init;
     </#list>
 
 	private static BlockEntityType<?> register(String registryname, Block block, BlockEntityType.BlockEntitySupplier<?> supplier) {
-		return BlockEntityType.Builder.of(supplier, block).build(null).setRegistryName(registryname);
+		BlockEntityType<?> blockEntityType = BlockEntityType.Builder.of(supplier, block).build(null).setRegistryName(registryname);
+		REGISTRY.add(blockEntityType);
+		return blockEntityType;
 	}
 
 	@SubscribeEvent public void registerTileEntity(RegistryEvent.Register<BlockEntityType<?>> event) {
