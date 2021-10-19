@@ -40,10 +40,10 @@ package ${package}.init;
 
 	<#list gamerules as gamerule>
 		<#if gamerule.type == "Number">
-	public static GameRules.Key<GameRules.IntegerValue> ${gamerule.getModElement().getRegistryNameUpper()} = GameRules.register("${gamerule.getModElement().getRegistryName()}",
+	public static final GameRules.Key<GameRules.IntegerValue> ${gamerule.getModElement().getRegistryNameUpper()} = GameRules.register("${gamerule.getModElement().getRegistryName()}",
 				GameRules.Category.${gamerule.category}, create(${gamerule.defaultValueNumber}));
 		<#else>
-	public static GameRules.Key<GameRules.BooleanValue> ${gamerule.getModElement().getRegistryNameUpper()} = GameRules.register("${gamerule.getModElement().getRegistryName()}",
+	public static final GameRules.Key<GameRules.BooleanValue> ${gamerule.getModElement().getRegistryNameUpper()} = GameRules.register("${gamerule.getModElement().getRegistryName()}",
 				GameRules.Category.${gamerule.category}, create(${gamerule.defaultValueLogic}));
 		</#if>
 	</#list>
