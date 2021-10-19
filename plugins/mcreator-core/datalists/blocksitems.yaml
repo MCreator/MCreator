@@ -745,7 +745,7 @@
   type: block
 
 - Blocks.FLOWERING_AZALEA_LEAVES:
-  readable_name: "Azalea Leaves"
+  readable_name: "Flowering Azalea Leaves"
   type: block
 
 - Blocks.SPONGE:
@@ -4587,16 +4587,16 @@
   readable_name: "Deepslate Bricks"
   type: block
 
-- Blocks.DEEPSLATE_BRICKS_STAIRS:
-  readable_name: "Deepslate Bricks Stairs"
+- Blocks.DEEPSLATE_BRICK_STAIRS:
+  readable_name: "Deepslate Brick Stairs"
   type: block
 
-- Blocks.DEEPSLATE_BRICKS_SLAB:
-  readable_name: "Deepslate Bricks Slab"
+- Blocks.DEEPSLATE_BRICK_SLAB:
+  readable_name: "Deepslate Brick Slab"
   type: block
 
-- Blocks.DEEPSLATE_BRICKS_WALL:
-  readable_name: "Deepslate Bricks Wall"
+- Blocks.DEEPSLATE_BRICK_WALL:
+  readable_name: "Deepslate Brick Wall"
   type: block
 
 - Blocks.CHISELED_DEEPSLATE:
@@ -4621,6 +4621,10 @@
 
 - Blocks.RAW_COPPER_BLOCK:
   readable_name: "Raw Copper Block"
+  type: block
+
+- Blocks.LIGHT:
+  readable_name: "Light Block"
   type: block
 
 - Items.DYE:
@@ -6554,7 +6558,7 @@
   type: item
 
 - Items.RAW_GOLD:
-  readable_name: "Raw GOld"
+  readable_name: "Raw Gold"
   type: item
 
 - Items.RAW_COPPER:

@@ -33,19 +33,20 @@ public enum BaseType {
 	FUEL,
 	GUI,
 	ITEM,
-	KEYBIND,
 	OTHER,
-	OVERLAY,
 	PARTICLE,
-	PROCEDURE,
 	POTION,
 	POTIONEFFECT,
-	STRUCTURE,
+	FEATURE,
 	TAB,
-	VILLAGERTRADE,
+	VILLAGERTRADE;
 
-	/* legacy base types */
-	ACHIEVEMENT
+	public String getPluralName() {
+		if (this == ENTITY)
+			return "entities";
+
+		return name() + "s";
+	}
 
 }
 // @formatter:on

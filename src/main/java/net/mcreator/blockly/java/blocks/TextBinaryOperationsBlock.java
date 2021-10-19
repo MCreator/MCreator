@@ -42,9 +42,9 @@ public class TextBinaryOperationsBlock implements IBlockGenerator {
 		}
 		if (a != null && b != null) {
 			master.append("((");
-			master.processOutputBlock(a);
+			master.processOutputBlockWithoutParentheses(a);
 			master.append(").equals(");
-			master.processOutputBlock(b);
+			master.processOutputBlockWithoutParentheses(b);
 			master.append("))");
 		} else {
 			master.append("(true)");

@@ -1,7 +1,8 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
- # 
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2021, Pylo, opensource contributors
+ #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
  # the Free Software Foundation, either version 3 of the License, or
@@ -30,9 +31,13 @@
 <#-- @formatter:off -->
 package ${package}.procedures;
 
-public class ${name}Procedure {
+import net.minecraftforge.eventbus.api.Event;
 
-	${trigger_code}
+<#if trigger_code?has_content>
+${trigger_code}
+<#else>
+public class ${name}Procedure {
+</#if>
 
 	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> execute(Map<String, Object> dependencies) {
 		<#list dependencies as dependency>

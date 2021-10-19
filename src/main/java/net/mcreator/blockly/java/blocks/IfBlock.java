@@ -53,7 +53,7 @@ public class IfBlock implements IBlockGenerator {
 						}
 					}
 					if (condition != null) {
-						master.processOutputBlock(condition);
+						master.processOutputBlockWithoutParentheses(condition);
 					} else {
 						master.append("true");
 						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,

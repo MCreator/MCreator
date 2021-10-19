@@ -20,8 +20,6 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -40,14 +38,12 @@ public class UIRES {
 		ImageIO.setUseCache(false); // we use custom image cache for this
 
 		// preload texutres of the current theme
-		new Reflections("themes." + PreferencesManager.PREFERENCES.hidden.uiTheme + ".images", new ResourcesScanner(),
-				PluginLoader.INSTANCE).getResources(imagePattern).parallelStream()
-				.forEach(element -> getImageFromResourceID(element.replace("/", ".")));
+		PluginLoader.INSTANCE.getResources("themes." + PreferencesManager.PREFERENCES.hidden.uiTheme + ".images",
+				imagePattern).parallelStream().forEach(element -> getImageFromResourceID(element.replace("/", ".")));
 
 		// we also load default textures in non-default theme does not specify all textures
 		if (!PreferencesManager.PREFERENCES.hidden.uiTheme.equals("default_dark")) {
-			new Reflections("themes.default_dark.images", new ResourcesScanner(), PluginLoader.INSTANCE).getResources(
-							imagePattern).parallelStream()
+			PluginLoader.INSTANCE.getResources("themes.default_dark.images", imagePattern).parallelStream()
 					.forEach(element -> getImageFromResourceID(element.replace("/", ".")));
 		}
 

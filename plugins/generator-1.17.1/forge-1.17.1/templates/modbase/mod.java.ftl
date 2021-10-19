@@ -28,14 +28,16 @@ import org.apache.logging.log4j.Logger;
 	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID),
 		() -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 
-	public ${JavaModName}() {
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
+	private static int messageID = 0;
 
+	public ${JavaModName}() {
 		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
 	}
 
-	private void init(FMLCommonSetupEvent event) {
-		<#if w.hasBrewingRecipes()>${JavaModName}BrewingRecipes.load();</#if>
+	public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
+										BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
+		PACKET_HANDLER.registerMessage(messageID, messageType, encoder, decoder, messageConsumer);
+		messageID++;
 	}
 
 }

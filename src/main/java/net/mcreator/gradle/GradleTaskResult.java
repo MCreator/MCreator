@@ -18,22 +18,4 @@
 
 package net.mcreator.gradle;
 
-public class GradleTaskResult {
-
-	private final String taskContents;
-	private final int statusByMCreator;
-
-	public GradleTaskResult(String taskContents, int statusByMCreator) {
-		this.taskContents = taskContents;
-		this.statusByMCreator = statusByMCreator;
-	}
-
-	public String getTaskContents() {
-		return taskContents;
-	}
-
-	public int getStatusByMCreator() {
-		return statusByMCreator;
-	}
-
-}
+public record GradleTaskResult(String taskContents, int statusByMCreator) {}

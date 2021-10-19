@@ -113,7 +113,7 @@ public class GeneratorsTest {
 
 					new MCreator(null, workspace).getGradleConsole()
 							.exec(workspace.getGeneratorConfiguration().getGradleTaskFor("setup_task"), taskResult -> {
-								if (taskResult.getStatusByMCreator() == GradleErrorCodes.STATUS_OK) {
+								if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
 									workspace.getGenerator().reloadGradleCaches();
 								} else {
 									fail("Gradle MDK setup failed!");
