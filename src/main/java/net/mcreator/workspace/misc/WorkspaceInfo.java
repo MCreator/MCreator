@@ -168,17 +168,6 @@ import java.util.stream.Collectors;
 		return hasElementsOfType(ModElementTypeLoader.getModElementType(typestring));
 	}
 
-	public boolean hasBrewingRecipes() {
-		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.RECIPE) {
-				GeneratableElement ge = element.getGeneratableElement();
-				if (ge instanceof Recipe)
-					if (((Recipe) ge).recipeType.equals("Brewing"))
-						return true;
-			}
-		return false;
-	}
-
 	public boolean hasGameRulesOfType(String type) {
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.GAMERULE) {

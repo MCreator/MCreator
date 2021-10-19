@@ -51,7 +51,7 @@ public class ${name}Item extends RecordItem {
 	}
 
 	<#if data.hasGlow>
-	@Override public boolean isFoil(ItemStack itemstack) {
+	@Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
 		return true;
 	}
 	</#if>
