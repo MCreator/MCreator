@@ -48,9 +48,12 @@ public class ${name}Block extends
 			<#else>
 				Block
 			</#if>
-			<#if data.isWaterloggable>
-            implements SimpleWaterloggedBlock
-			</#if> {
+			<#if data.isWaterloggable || data.hasInventory>
+            implements
+				<#if data.isWaterloggable>SimpleWaterloggedBlock</#if>
+				<#if data.hasInventory><#if data.isWaterloggable>,</#if>EntityBlock</#if>
+			</#if>
+{
 
 	<#if data.rotationMode == 1 || data.rotationMode == 3>
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -634,13 +637,13 @@ public class ${name}Block extends
 		int z = pos.getZ();
 
 		<#if data.shouldOpenGUIOnRightClick()>
-			if(entity instanceof ServerPlayerEntity) {
-				NetworkHooks.openGui((ServerPlayerEntity) entity, new INamedContainerProvider() {
-					@Override public ITextComponent getDisplayName() {
-						return new StringTextComponent("${data.name}");
+			if(entity instanceof ServerPlayer) {
+				NetworkHooks.openGui((ServerPlayer) entity, new MenuProvider() {
+					@Override public Component getDisplayName() {
+						return new TextComponent("${data.name}");
 					}
-					@Override public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
-						return new ${(data.guiBoundTo)}Gui.GuiContainerMod(id, inventory, new PacketBuffer(Unpooled.buffer()).writeBlockPos(new BlockPos(x, y, z)));
+					@Override public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+						return new ${data.guiBoundTo}Menu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(new BlockPos(x, y, z)));
 					}
 				}, new BlockPos(x, y, z));
 			}
@@ -667,49 +670,45 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.hasInventory>
-		@Override public INamedContainerProvider getContainer(BlockState state, Level worldIn, BlockPos pos) {
-			TileEntity tileEntity = worldIn.getTileEntity(pos);
-			return tileEntity instanceof INamedContainerProvider ? (INamedContainerProvider) tileEntity : null;
+		@Override public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
+			BlockEntity tileEntity = worldIn.getBlockEntity(pos);
+			return tileEntity instanceof MenuProvider ? (MenuProvider) tileEntity : null;
 		}
 
-		@Override public boolean hasTileEntity(BlockState state) {
-			return true;
-		}
-
-		@Override public TileEntity createTileEntity(BlockState state, BlockGetter world) {
-		    return new CustomTileEntity();
+		@Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		    return new ${name}BlockEntity(pos, state);
 		}
 
 	    @Override
-		public boolean eventReceived(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
-			super.eventReceived(state, world, pos, eventID, eventParam);
-			TileEntity tileentity = world.getTileEntity(pos);
-			return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
+		public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
+			super.triggerEvent(state, world, pos, eventID, eventParam);
+			BlockEntity blockEntity = world.getBlockEntity(pos);
+			return blockEntity == null ? false : blockEntity.triggerEvent(eventID, eventParam);
 		}
 
 	    <#if data.inventoryDropWhenDestroyed>
-		@Override public void onReplaced(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
-		   if (state.getBlock() != newState.getBlock()) {
-		      TileEntity tileentity = world.getTileEntity(pos);
-		      if (tileentity instanceof CustomTileEntity) {
-		         InventoryHelper.dropInventoryItems(world, pos, (CustomTileEntity) tileentity);
-		         world.updateComparatorOutputLevel(pos, this);
-		      }
+		@Override public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+			if (state.getBlock() != newState.getBlock()) {
+				BlockEntity blockEntity = world.getBlockEntity(pos);
+				if (blockEntity instanceof ${name}BlockEntity) {
+					Containers.dropContents(world, pos, (${name}BlockEntity) blockEntity);
+					world.updateNeighbourForOutputSignal(pos, this);
+				}
 
-		      super.onReplaced(state, world, pos, newState, isMoving);
-		   }
+				super.onRemove(state, world, pos, newState, isMoving);
+			}
 		}
 	    </#if>
 
 	    <#if data.inventoryComparatorPower>
-	    @Override public boolean hasComparatorInputOverride(BlockState state) {
+	    @Override public boolean hasAnalogOutputSignal(BlockState state) {
 			return true;
 		}
 
-	    @Override public int getComparatorInputOverride(BlockState blockState, Level world, BlockPos pos) {
-			TileEntity tileentity = world.getTileEntity(pos);
-			if (tileentity instanceof CustomTileEntity)
-				return Container.calcRedstoneFromInventory((CustomTileEntity) tileentity);
+	    @Override public int getAnalogOutputSignal(BlockState blockState, Level world, BlockPos pos) {
+			BlockEntity tileentity = world.getBlockEntity(pos);
+			if (tileentity instanceof ${name}BlockEntity)
+				return AbstractContainerMenu.getRedstoneSignalFromContainer((${name}BlockEntity) tileentity);
 			else
 				return 0;
 		}

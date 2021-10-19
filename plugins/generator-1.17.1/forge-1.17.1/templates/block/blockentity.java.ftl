@@ -39,57 +39,57 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}, position, state);
 	}
 
-	@Override public void read(BlockState blockState, CompoundNBT compound) {
-		super.read(blockState, compound);
+	@Override public void load(CompoundTag compound) {
+		super.load(compound);
 
-		if (!this.checkLootAndRead(compound)) {
-			this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+		if (!this.tryLoadLootTable(compound)) {
+			this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 		}
 
-		ItemStackHelper.loadAllItems(compound, this.stacks);
+		ContainerHelper.loadAllItems(compound, this.stacks);
 
-			<#if data.hasEnergyStorage>
-			if(compound.get("energyStorage") != null)
-				CapabilityEnergy.ENERGY.readNBT(energyStorage, null, compound.get("energyStorage"));
-            </#if>
+		<#if data.hasEnergyStorage>
+		if(compound.get("energyStorage") != null)
+			CapabilityEnergy.ENERGY.readNBT(energyStorage, null, compound.get("energyStorage"));
+		</#if>
 
-			<#if data.isFluidTank>
-			if(compound.get("fluidTank") != null)
-				CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.readNBT(fluidTank, null, compound.get("fluidTank"));
-            </#if>
+		<#if data.isFluidTank>
+		if(compound.get("fluidTank") != null)
+			CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.readNBT(fluidTank, null, compound.get("fluidTank"));
+		</#if>
 	}
 
-	@Override public CompoundNBT write(CompoundNBT compound) {
-		super.write(compound);
+	@Override public CompoundTag save(CompoundTag compound) {
+		super.save(compound);
 
-		if (!this.checkLootAndWrite(compound)) {
-			ItemStackHelper.saveAllItems(compound, this.stacks);
+		if (!this.trySaveLootTable(compound)) {
+			ContainerHelper.saveAllItems(compound, this.stacks);
 		}
 
-           <#if data.hasEnergyStorage>
-		   compound.put("energyStorage", CapabilityEnergy.ENERGY.writeNBT(energyStorage, null));
-           </#if>
+		<#if data.hasEnergyStorage>
+		compound.put("energyStorage", CapabilityEnergy.ENERGY.writeNBT(energyStorage, null));
+		</#if>
 
-           <#if data.isFluidTank>
-		   compound.put("fluidTank", CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.writeNBT(fluidTank, null));
-           </#if>
+		<#if data.isFluidTank>
+		compound.put("fluidTank", CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.writeNBT(fluidTank, null));
+		</#if>
 
 		return compound;
 	}
 
-	@Override public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
+	@Override public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		return new ClientboundBlockEntityDataPacket(this.worldPosition, 0, this.getUpdateTag());
 	}
 
-	@Override public CompoundNBT getUpdateTag() {
-		return this.write(new CompoundNBT());
+	@Override public CompoundTag getUpdateTag() {
+		return this.save(new CompoundTag());
 	}
 
-	@Override public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		this.read(this.getBlockState(), pkt.getNbtCompound());
+	@Override public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+		this.load(pkt.getTag());
 	}
 
-	@Override public int getSizeInventory() {
+	@Override public int getContainerSize() {
 		return stacks.size();
 	}
 
@@ -100,24 +100,24 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		return true;
 	}
 
-	@Override public ITextComponent getDefaultName() {
-		return new StringTextComponent("${registryname}");
+	@Override public Component getDefaultName() {
+		return new TextComponent("${registryname}");
 	}
 
-	@Override public int getInventoryStackLimit() {
+	@Override public int getMaxStackSize() {
 		return ${data.inventoryStackSize};
 	}
 
-	@Override public Container createMenu(int id, PlayerInventory player) {
+	@Override public AbstractContainerMenu createMenu(int id, Inventory inventory) {
 			<#if !data.guiBoundTo?has_content || data.guiBoundTo == "<NONE>" || !(data.guiBoundTo)?has_content>
-				return ChestContainer.createGeneric9X3(id, player, this);
+				return ChestMenu.threeRows(id, inventory);
             <#else>
-				return new ${(data.guiBoundTo)}Gui.GuiContainerMod(id, player, new PacketBuffer(Unpooled.buffer()).writeBlockPos(this.getPos()));
+				return new ${data.guiBoundTo}Menu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(this.worldPosition));
             </#if>
 	}
 
-	@Override public ITextComponent getDisplayName() {
-		return new StringTextComponent("${data.name}");
+	@Override public Component getDisplayName() {
+		return new TextComponent("${data.name}");
 	}
 
 	@Override protected NonNullList<ItemStack> getItems() {
@@ -128,7 +128,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		this.stacks = stacks;
 	}
 
-	@Override public boolean isItemValidForSlot(int index, ItemStack stack) {
+	@Override public boolean canPlaceItem(int index, ItemStack stack) {
 			<#list data.inventoryOutSlotIDs as id>
 			    if (index == ${id})
 					return false;
@@ -138,14 +138,14 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 
 <#-- START: ISidedInventory -->
 	@Override public int[] getSlotsForFace(Direction side) {
-		return IntStream.range(0, this.getSizeInventory()).toArray();
+		return IntStream.range(0, this.getContainerSize()).toArray();
 	}
 
-	@Override public boolean canInsertItem(int index, ItemStack stack, @Nullable Direction direction) {
-		return this.isItemValidForSlot(index, stack);
+	@Override public boolean canPlaceItemThroughFace(int index, ItemStack stack, @Nullable Direction direction) {
+		return this.canPlaceItem(index, stack);
 	}
 
-	@Override public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+	@Override public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
 			<#list data.inventoryInSlotIDs as id>
 			    if (index == ${id})
 					return false;
@@ -213,24 +213,24 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
         </#if>
 
 	@Override public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-		if (!this.removed && facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		if (!this.remove && facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			return handlers[facing.ordinal()].cast();
 
 			<#if data.hasEnergyStorage>
-			if (!this.removed && capability == CapabilityEnergy.ENERGY)
+			if (!this.remove && capability == CapabilityEnergy.ENERGY)
 				return LazyOptional.of(() -> energyStorage).cast();
             </#if>
 
 			<#if data.isFluidTank>
-			if (!this.removed && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+			if (!this.remove && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
 				return LazyOptional.of(() -> fluidTank).cast();
             </#if>
 
 		return super.getCapability(capability, facing);
 	}
 
-	@Override public void remove() {
-		super.remove();
+	@Override public void setRemoved() {
+		super.setRemoved();
 		for(LazyOptional<? extends IItemHandler> handler : handlers)
 			handler.invalidate();
 	}
