@@ -319,7 +319,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#if hasProcedure(data.placingCondition)>
-	@Override public boolean isValidPosition(BlockState blockstate, LevelReader worldIn, BlockPos pos) {
+	@Override public boolean canSurvive(BlockState blockstate, LevelReader worldIn, BlockPos pos) {
 		if (worldIn instanceof LevelAccessor) {
 			LevelAccessor world = (LevelAccessor) worldIn;
 			int x = pos.getX();
@@ -327,7 +327,7 @@ public class ${name}Block extends
 			int z = pos.getZ();
 			return <@procedureOBJToConditionCode data.placingCondition/>;
 		}
-		return super.isValidPosition(blockstate, worldIn, pos);
+		return super.canSurvive(blockstate, worldIn, pos);
 	}
 	</#if>
 
@@ -356,7 +356,7 @@ public class ${name}Block extends
 		}
 		</#if>
 		return <#if hasProcedure(data.placingCondition)>
-		!state.isValidPosition(world, currentPos) ? Blocks.AIR.defaultBlockState() :
+		!state.canSurvive(world, currentPos) ? Blocks.AIR.defaultBlockState() :
 		</#if> super.updateShape(state, facing, facingState, world, currentPos, facingPos);
 	}
 	</#if>
@@ -374,11 +374,11 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.canProvidePower && data.emittedRedstonePower??>
-	@Override public boolean canProvidePower(BlockState state) {
+	@Override public boolean isSignalSource(BlockState state) {
 		return true;
 	}
 
-	@Override public int getWeakPower(BlockState blockstate, BlockGetter blockAccess, BlockPos pos, Direction side) {
+	@Override public int getSignal(BlockState blockstate, BlockGetter blockAccess, BlockPos pos, Direction side) {
 		<#if hasProcedure(data.emittedRedstonePower)>
 			int x = pos.getX();
 			int y = pos.getY();
@@ -410,14 +410,14 @@ public class ${name}Block extends
 	</#if>
 
 	<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-	@Override public MaterialColor getMaterialColor() {
+	@Override public MaterialColor defaultMaterialColor() {
 		return MaterialColor.${generator.map(data.colorOnMap, "mapcolors")};
 	}
 	</#if>
 
 	<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
-	@Override public PathNodeType getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, MobEntity entity) {
-		return PathNodeType.${generator.map(data.aiPathNodeType, "pathnodetypes")};
+	@Override public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
+		return BlockPathTypes.${generator.map(data.aiPathNodeType, "pathnodetypes")};
 	}
 	</#if>
 
@@ -441,7 +441,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.reactionToPushing != "NORMAL">
-	@Override public PushReaction getPushReaction(BlockState state) {
+	@Override public PushReaction getPistonPushReaction(BlockState state) {
 		return PushReaction.${data.reactionToPushing};
 	}
 	</#if>
