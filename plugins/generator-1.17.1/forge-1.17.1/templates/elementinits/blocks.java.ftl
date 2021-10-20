@@ -41,7 +41,7 @@ package ${package}.init;
 <#assign hasTintedBlockItems = false>
 <#list blocks as block>
     <#if block.getModElement().getTypeString() == "block">
-        <#if block.transparencyType != "SOLID" || block.hasTransparency || block.tintType>
+        <#if block.transparencyType != "SOLID" || block.hasTransparency || block.tintType != "No tint">
             <#assign hasTransparentBlocks = true>
         </#if>
         <#if block.tintType != "No tint">
