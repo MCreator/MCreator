@@ -31,11 +31,3 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/recipes/brewing/@NAMEBrewingRecipe.java"
     condition: "recipeType %= Brewing"
     deleteWhenConditionFalse: true
-
-global_templates_trigger_build: false
-global_templates:
-  - template: elementinits/brewingrecipes.java.ftl
-    writer: java
-    condition: hasBrewingRecipes()
-    deleteWhenConditionFalse: true
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBrewingRecipes.java"

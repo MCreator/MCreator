@@ -15,7 +15,7 @@
     <#if rotationMode == 0>
         <@makeBoundingBox positiveBoxes negativeBoxes noOffset "north"/>
     <#elseif rotationMode != 5>
-        switch ((Direction) state.get(FACING)) {
+        switch ((Direction) state.getValue(FACING)) {
             case SOUTH:
             default:
                 <@makeBoundingBox positiveBoxes negativeBoxes noOffset "south"/>
@@ -33,7 +33,7 @@
             </#if>
         }
     <#else>
-        switch ((Direction.Axis) state.get(AXIS)) {
+        switch ((Direction.Axis) state.getValue(AXIS)) {
             case X:
                 <@makeBoundingBox positiveBoxes negativeBoxes noOffset "x"/>
             case Y:
@@ -47,18 +47,33 @@
 
 <#macro makeCuboid box facing>
     <#if facing == "south">
-        box(${16 - box.mx}, ${box.my}, ${16 - box.mz}, ${16 - box.Mx}, ${box.My}, ${16 - box.Mz})
+        box(${min(16 - box.mx, 16 - box.Mx)}, ${min(box.my, box.My)}, ${min(16 - box.mz, 16 - box.Mz)},
+            ${max(16 - box.mx, 16 - box.Mx)}, ${max(box.my, box.My)}, ${max(16 - box.mz, 16 - box.Mz)})
     <#elseif facing == "east">
-        box(${16 - box.mz}, ${box.my}, ${box.mx}, ${16 - box.Mz}, ${box.My}, ${box.Mx})
+        box(${min(16 - box.mz, 16 - box.Mz)}, ${min(box.my, box.My)}, ${min(box.mx, box.Mx)},
+            ${max(16 - box.mz, 16 - box.Mz)}, ${max(box.my, box.My)}, ${max(box.mx, box.Mx)})
     <#elseif facing == "west">
-        box(${box.mz}, ${box.my}, ${16 - box.mx}, ${box.Mz}, ${box.My}, ${16 - box.Mx})
+        box(${min(box.mz, box.Mz)}, ${min(box.my, box.My)}, ${min(16 - box.mx, 16 - box.Mx)},
+            ${max(box.mz, box.Mz)}, ${max(box.my, box.My)}, ${max(16 - box.mx, 16 - box.Mx)})
     <#elseif facing == "up">
-        box(${box.mx}, ${16 - box.mz}, ${box.my}, ${box.Mx}, ${16 - box.Mz}, ${box.My})
+        box(${min(box.mx, box.Mx)}, ${min(16 - box.mz, 16 - box.Mz)}, ${min(box.my, box.My)},
+            ${max(box.mx, box.Mx)}, ${max(16 - box.mz, 16 - box.Mz)}, ${max(box.my, box.My)})
     <#elseif facing == "down" || facing == "z">
-        box(${box.mx}, ${box.mz}, ${16 - box.my}, ${box.Mx}, ${box.Mz}, ${16 - box.My})
+        box(${min(box.mx, box.Mx)}, ${min(box.mz, box.Mz)}, ${min(16 - box.my, 16 - box.My)},
+            ${max(box.mx, box.Mx)}, ${max(box.mz, box.Mz)}, ${max(16 - box.my, 16 - box.My)})
     <#elseif facing == "x">
-        box(${box.my}, ${box.mz}, ${box.mx}, ${box.My}, ${box.Mz}, ${box.Mx})
+        box(${min(box.my, box.My)}, ${min(box.mz, box.Mz)}, ${min(box.mx, box.Mx)},
+            ${max(box.my, box.My)}, ${max(box.mz, box.Mz)}, ${max(box.mx, box.Mx)})
     <#else>
-        box(${box.mx}, ${box.my}, ${box.mz}, ${box.Mx}, ${box.My}, ${box.Mz})
+        box(${min(box.mx, box.Mx)}, ${min(box.my, box.My)}, ${min(box.mz, box.Mz)},
+            ${max(box.mx, box.Mx)}, ${max(box.my, box.My)}, ${max(box.mz, box.Mz)})
     </#if>
 </#macro>
+
+<#function min(a, b)>
+    <#return (a < b)?then(a, b)>
+</#function>
+
+<#function max(a, b)>
+    <#return (a > b)?then(a, b)>
+</#function>
