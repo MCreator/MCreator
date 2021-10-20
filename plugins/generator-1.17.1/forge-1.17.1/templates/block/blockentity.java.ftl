@@ -35,6 +35,8 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 
 	private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(${data.inventorySize}, ItemStack.EMPTY);
 
+	private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
+
 	public ${name}BlockEntity(BlockPos position, BlockState state) {
 		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}, position, state);
 	}
@@ -42,20 +44,19 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	@Override public void load(CompoundTag compound) {
 		super.load(compound);
 
-		if (!this.tryLoadLootTable(compound)) {
+		if (!this.tryLoadLootTable(compound))
 			this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-		}
 
 		ContainerHelper.loadAllItems(compound, this.stacks);
 
 		<#if data.hasEnergyStorage>
-		if(compound.get("energyStorage") != null)
-			CapabilityEnergy.ENERGY.readNBT(energyStorage, null, compound.get("energyStorage"));
+		if(compound.get("energyStorage") instanceof CompoundTag compoundTag)
+			energyStorage.deserializeNBT(compoundTag);
 		</#if>
 
 		<#if data.isFluidTank>
-		if(compound.get("fluidTank") != null)
-			CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.readNBT(fluidTank, null, compound.get("fluidTank"));
+		if(compound.get("fluidTank") instanceof CompoundTag compoundTag)
+			fluidTank.readFromNBT(compoundTag);
 		</#if>
 	}
 
@@ -67,11 +68,11 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		}
 
 		<#if data.hasEnergyStorage>
-		compound.put("energyStorage", CapabilityEnergy.ENERGY.writeNBT(energyStorage, null));
+		compound.put("energyStorage", energyStorage.serializeNBT());
 		</#if>
 
 		<#if data.isFluidTank>
-		compound.put("fluidTank", CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.writeNBT(fluidTank, null));
+		compound.put("fluidTank", fluidTank.writeToNBT(new CompoundTag()));
 		</#if>
 
 		return compound;
@@ -136,7 +137,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		return true;
 	}
 
-<#-- START: ISidedInventory -->
+	<#-- START: ISidedInventory -->
 	@Override public int[] getSlotsForFace(Direction side) {
 		return IntStream.range(0, this.getContainerSize()).toArray();
 	}
@@ -152,65 +153,63 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
             </#list>
 		return true;
 	}
-<#-- END: ISidedInventory -->
+	<#-- END: ISidedInventory -->
 
-	private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
-
-		<#if data.hasEnergyStorage>
-		private final EnergyStorage energyStorage = new EnergyStorage(${data.energyCapacity}, ${data.energyMaxReceive}, ${data.energyMaxExtract}, ${data.energyInitial}) {
-			@Override public int receiveEnergy(int maxReceive, boolean simulate) {
-				int retval = super.receiveEnergy(maxReceive, simulate);
-				if(!simulate) {
-					markDirty();
-					world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
-				}
-				return retval;
+	<#if data.hasEnergyStorage>
+	private final EnergyStorage energyStorage = new EnergyStorage(${data.energyCapacity}, ${data.energyMaxReceive}, ${data.energyMaxExtract}, ${data.energyInitial}) {
+		@Override public int receiveEnergy(int maxReceive, boolean simulate) {
+			int retval = super.receiveEnergy(maxReceive, simulate);
+			if(!simulate) {
+				setChanged();
+				level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
 			}
+			return retval;
+		}
 
-			@Override public int extractEnergy(int maxExtract, boolean simulate) {
-				int retval = super.extractEnergy(maxExtract, simulate);
-				if(!simulate) {
-					markDirty();
-					world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
-				}
-				return retval;
+		@Override public int extractEnergy(int maxExtract, boolean simulate) {
+			int retval = super.extractEnergy(maxExtract, simulate);
+			if(!simulate) {
+				setChanged();
+				level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
+			}
+			return retval;
+		}
+	};
+    </#if>
+
+	<#if data.isFluidTank>
+        <#if data.fluidRestrictions?has_content>
+		private final FluidTank fluidTank = new FluidTank(${data.fluidCapacity}, fs -> {
+			<#list data.fluidRestrictions as fluidRestriction>
+                <#if fluidRestriction.getUnmappedValue().startsWith("CUSTOM:")>
+                    <#if fluidRestriction.getUnmappedValue().endsWith(":Flowing")>
+					if(fs.getFluid() == ${(fluidRestriction.getUnmappedValue().replace("CUSTOM:", "").replace(":Flowing", ""))}Block.flowing) return true;
+                    <#else>
+					if(fs.getFluid() == ${(fluidRestriction.getUnmappedValue().replace("CUSTOM:", ""))}Block.still) return true;
+                    </#if>
+                <#else>
+				if(fs.getFluid() == Fluids.${fluidRestriction}) return true;
+                </#if>
+            </#list>
+
+			return false;
+		}) {
+			@Override protected void onContentsChanged() {
+				super.onContentsChanged();
+				setChanged();
+				level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
+			}
+		};
+        <#else>
+		private final FluidTank fluidTank = new FluidTank(${data.fluidCapacity}) {
+			@Override protected void onContentsChanged() {
+				super.onContentsChanged();
+				setChanged();
+				level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
 			}
 		};
         </#if>
-
-		<#if data.isFluidTank>
-            <#if data.fluidRestrictions?has_content>
-			private final FluidTank fluidTank = new FluidTank(${data.fluidCapacity}, fs -> {
-				<#list data.fluidRestrictions as fluidRestriction>
-                    <#if fluidRestriction.getUnmappedValue().startsWith("CUSTOM:")>
-                        <#if fluidRestriction.getUnmappedValue().endsWith(":Flowing")>
-						if(fs.getFluid() == ${(fluidRestriction.getUnmappedValue().replace("CUSTOM:", "").replace(":Flowing", ""))}Block.flowing) return true;
-                        <#else>
-						if(fs.getFluid() == ${(fluidRestriction.getUnmappedValue().replace("CUSTOM:", ""))}Block.still) return true;
-                        </#if>
-                    <#else>
-					if(fs.getFluid() == Fluids.${fluidRestriction}) return true;
-                    </#if>
-                </#list>
-
-				return false;
-			}) {
-				@Override protected void onContentsChanged() {
-					super.onContentsChanged();
-					markDirty();
-					world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
-				}
-			};
-            <#else>
-			private final FluidTank fluidTank = new FluidTank(${data.fluidCapacity}) {
-				@Override protected void onContentsChanged() {
-					super.onContentsChanged();
-					markDirty();
-					world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
-				}
-			};
-            </#if>
-        </#if>
+    </#if>
 
 	@Override public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
 		if (!this.remove && facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
