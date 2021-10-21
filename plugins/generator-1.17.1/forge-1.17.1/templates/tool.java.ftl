@@ -37,7 +37,7 @@ package ${package}.item;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "Shears">
-public class ${name}Item extends ${data.toolType.replace("Spade", "Shovel")}Item{
+public class ${name}Item extends ${data.toolType.replace("Spade", "Shovel")}Item {
 	public ${name}Item () {
 		super(<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe">
 			new Tier() {
@@ -91,19 +91,55 @@ public class ${name}Item extends ${data.toolType.replace("Spade", "Shovel")}Item
 	}
 
 	<#if data.toolType=="Shears">
-	    @Override public int getEnchantmentValue() {
-            return ${data.enchantability};
-        }
+		@Override public int getEnchantmentValue() {
+    	    return ${data.enchantability};
+    	}
 
-        @Override public float getDestroySpeed(ItemStack stack, BlockState block) {
-        	return ${data.efficiency}f;
-        }
+    	@Override public float getDestroySpeed(ItemStack stack, BlockState block) {
+    		return ${data.efficiency}f;
+    	}
     </#if>
 
-    <@generalProps/>
+    <#if hasProcedure(data.onBlockDestroyedWithTool)>
+    	@Override public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity){
+			boolean retval = super.mineBlock(itemstack,world,blockstate,pos,entity);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+            <@procedureOBJToCode data.onBlockDestroyedWithTool/>
+			return retval;
+		}
+	</#if>
+
+	<#if hasProcedure(data.onEntityHitWith)>
+    	@Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
+			boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
+			Level world = entity.level;
+    		<@procedureOBJToCode data.onEntityHitWith/>
+			return retval;
+		}
+	</#if>
+
+    <#if hasProcedure(data.onRightClickedInAir)>
+    	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+			InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+			ItemStack itemstack = ar.getObject();
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
+    		<@procedureOBJToCode data.onRightClickedInAir/>
+			return ar;
+		}
+	</#if>
+	
+    <@commonMethods/>
 }
 <#elseif data.toolType=="Special">
-public class ${name}Item extends Item{
+public class ${name}Item extends Item {
+
     public ${name}Item() {
 	    super(new Item.Properties()
 		    .tab(${data.creativeTab})
@@ -117,23 +153,47 @@ public class ${name}Item extends Item{
 	}
 
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
-		 <#list data.blocksAffected as restrictionBlock>
-                 if (blockstate.getBlock() == ${mappedBlockToBlock(restrictionBlock)})
-                 	return ${data.efficiency}f;
-             </#list>
-		return 1;
+    	return List.of(
+			<#list data.blocksAffected as restrictionBlock>
+			${mappedBlockToBlock(restrictionBlock)}<#if restrictionBlock?has_next>,</#if>
+			</#list>
+		).contains(blockstate.getBlock()) ? ${data.efficiency}f : 1;
 	}
 
-	@Override
-	public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-		stack.hurtAndBreak(1, entityLiving, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+	@Override public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity entity) {
+		stack.hurtAndBreak(1, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+		<#if hasProcedure(data.onBlockDestroyedWithTool)>
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			<@procedureOBJToCode data.onBlockDestroyedWithTool/>
+		</#if>
 		return true;
 	}
 
-	@Override public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		stack.hurtAndBreak(2, attacker, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+	@Override public boolean hurtEnemy(ItemStack stack, LivingEntity entity, LivingEntity sourceentity) {
+		stack.hurtAndBreak(2, sourceentity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+		<#if hasProcedure(data.onEntityHitWith)>
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
+			Level world = entity.level;
+			<@procedureOBJToCode data.onEntityHitWith/>
+		</#if>
 		return true;
 	}
+	
+    <#if hasProcedure(data.onRightClickedInAir)>
+    	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+			InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+			ItemStack itemstack = ar.getObject();
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
+    		<@procedureOBJToCode data.onRightClickedInAir/>
+			return ar;
+		}
+	</#if>
 
 	@Override public int getEnchantmentValue() {
 		return ${data.enchantability};
@@ -151,11 +211,99 @@ public class ${name}Item extends Item{
    	   return super.getDefaultAttributeModifiers(equipmentSlot);
    	}
 
-    <@generalProps/>
+    <@commonMethods/>
+}
+<#elseif data.toolType=="Fishing rod">
+public class ${name}Item extends FishingRodItem {
+
+	public ${name}Item() {
+		super(new Item.Properties()
+			.tab(${data.creativeTab})
+			.durability(${data.usageCount})
+			<#if data.immuneToFire>
+			.fireResistant()
+			</#if>
+		);
+
+		setRegistryName("${registryname}");
+	}
+
+	<#if data.repairItems?has_content>
+	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
+		return List.of(
+			<#list data.repairItems as repairItem>
+				${mappedMCItemToItem(repairItem)}<#if repairItem?has_next>,</#if>
+			</#list>
+		).contains(repairitem.getItem());
+	}
+	</#if>
+
+	@Override public int getEnchantmentValue() {
+		return ${data.enchantability};
+	}
+
+    <#if hasProcedure(data.onBlockDestroyedWithTool)>
+    	@Override public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity){
+			boolean retval = super.mineBlock(itemstack,world,blockstate,pos,entity);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+            <@procedureOBJToCode data.onBlockDestroyedWithTool/>
+			return retval;
+		}
+	</#if>
+
+	<#if hasProcedure(data.onEntityHitWith)>
+    	@Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
+			boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
+			Level world = entity.level;
+    		<@procedureOBJToCode data.onEntityHitWith/>
+			return retval;
+		}
+	</#if>
+	
+    
+	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+		ItemStack itemstack = entity.getItemInHand(hand);
+		if (entity.fishing != null) {
+			if (!world.isClientSide()) {
+				itemstack.hurtAndBreak(entity.fishing.retrieve(itemstack), entity, i -> i.broadcastBreakEvent(hand));
+			}
+			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FISHING_BOBBER_RETRIEVE, SoundSource.NEUTRAL, 1, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
+			world.gameEvent(entity, GameEvent.FISHING_ROD_REEL_IN, entity);
+		} else {
+			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FISHING_BOBBER_THROW, SoundSource.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
+			if (!world.isClientSide()) {
+				int k = EnchantmentHelper.getFishingSpeedBonus(itemstack);
+				int j = EnchantmentHelper.getFishingLuckBonus(itemstack);
+				world.addFreshEntity(new FishingHook(entity, world, j, k) {
+					 // TODO: custom action
+				});
+			}
+
+			entity.awardStat(Stats.ITEM_USED.get(this));
+			world.gameEvent(entity, GameEvent.FISHING_ROD_CAST, entity);
+		}
+		
+		<#if hasProcedure(data.onRightClickedInAir)>
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
+		<@procedureOBJToCode data.onRightClickedInAir/>
+		</#if>
+
+		return InteractionResultHolder.sidedSuccess(itemstack, world.isClientSide());
+	}
+	
+
+    <@commonMethods/>
 }
 </#if>
 
-<#macro generalProps>
+<#macro commonMethods>
 	<#if data.stayInGridWhenCrafting>
         @Override public boolean hasContainerItem(ItemStack stack) {
         	return true;
@@ -196,18 +344,6 @@ public class ${name}Item extends Item{
     	}
     </#if>
 
-    <#if hasProcedure(data.onRightClickedInAir)>
-    	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
-    		InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
-    		ItemStack itemstack = ar.getObject();
-    		double x = entity.getX();
-    		double y = entity.getY();
-    		double z = entity.getZ();
-    		<@procedureOBJToCode data.onRightClickedInAir/>
-    		return ar;
-    	}
-    </#if>
-
     <#if hasProcedure(data.onRightClickedOnBlock)>
     	@Override public InteractionResult useOn(UseOnContext context) {
     		InteractionResult retval = super.useOn(context);
@@ -229,17 +365,6 @@ public class ${name}Item extends Item{
     	}
     </#if>
 
-    <#if hasProcedure(data.onBlockDestroyedWithTool)>
-    	@Override public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity){
-            boolean retval = super.mineBlock(itemstack,world,blockstate,pos,entity);
-            int x = pos.getX();
-            int y = pos.getY();
-            int z = pos.getZ();
-            <@procedureOBJToCode data.onBlockDestroyedWithTool/>
-            return retval;
-    	}
-    </#if>
-
     <#if hasProcedure(data.onCrafted)>
     	@Override public void onCraftedBy(ItemStack itemstack, Level world, Player entity) {
     		super.onCraftedBy(itemstack, world, entity);
@@ -247,18 +372,6 @@ public class ${name}Item extends Item{
     		double y = entity.getY();
     		double z = entity.getZ();
     		<@procedureOBJToCode data.onCrafted/>
-    	}
-    </#if>
-
-    <#if hasProcedure(data.onEntityHitWith)>
-    	@Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
-    		boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
-    		double x = entity.getX();
-    		double y = entity.getY();
-    		double z = entity.getZ();
-    		Level world = entity.level;
-    		<@procedureOBJToCode data.onEntityHitWith/>
-    		return retval;
     	}
     </#if>
 
@@ -275,8 +388,8 @@ public class ${name}Item extends Item{
     </#if>
 
     <#if hasProcedure(data.onStoppedUsing)>
-    	@Override
-    	public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
+    	@Override public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
+    		super.releaseUsing(itemstack, world, entity, time);
     		double x = entity.getX();
     		double y = entity.getY();
     		double z = entity.getZ();
