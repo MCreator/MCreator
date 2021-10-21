@@ -234,7 +234,7 @@ public class ${name}Block extends
 	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
 	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
 		<#if data.isBoundingBoxEmpty()>
-			return VoxelShapes.empty();
+			return Shapes.empty();
 		<#else>
 			<#if !data.disableOffset>Vec3 offset = state.getOffset(world, pos);</#if>
 			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset data.rotationMode/>
