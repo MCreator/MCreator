@@ -85,7 +85,7 @@ import java.util.List;
 	public boolean hasButtonEvents() {
 		for (GUIComponent component : components)
 			if (component instanceof Button)
-				if (((Button) component).onClick.getName() != null)
+				if (((Button) component).onClick != null && ((Button) component).onClick.getName() != null)
 					return true;
 		return false;
 	}
@@ -93,9 +93,11 @@ import java.util.List;
 	public boolean hasSlotEvents() {
 		for (GUIComponent component : components)
 			if (component instanceof Slot)
-				if (((Slot) component).onSlotChanged.getName() != null
-						|| ((Slot) component).onTakenFromSlot.getName() != null
-						|| ((Slot) component).onStackTransfer.getName() != null)
+				if ((((Slot) component).onSlotChanged != null && ((Slot) component).onSlotChanged.getName() != null)
+						|| (((Slot) component).onTakenFromSlot != null
+						&& ((Slot) component).onTakenFromSlot.getName() != null) || (
+						((Slot) component).onStackTransfer != null
+								&& ((Slot) component).onStackTransfer.getName() != null))
 					return true;
 		return false;
 	}
