@@ -37,6 +37,7 @@
 package ${package}.block;
 
 import net.minecraft.world.level.material.Material;
+import net.minecraft.sounds.SoundEvent;
 
 public class ${name}Block extends
 			<#if data.hasGravity>
@@ -371,8 +372,8 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.isReplaceable>
-	@Override public boolean isReplaceable(BlockState state, BlockPlaceContext context) {
-		return context.getItem().getItem() != this.asItem();
+	@Override public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
+		return context.getItemInHand().getItem() != this.asItem();
 	}
 	</#if>
 
@@ -386,7 +387,7 @@ public class ${name}Block extends
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
-			Level world = (World) blockAccess;
+			Level world = (Level) blockAccess;
 			return (int) <@procedureOBJToNumberCode data.emittedRedstonePower/>;
 		<#else>
 			return ${data.emittedRedstonePower.getFixedValue()};
@@ -407,7 +408,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.creativePickItem?? && !data.creativePickItem.isEmpty()>
-	@Override public ItemStack getPickBlock(BlockState state, RayTraceResult target, BlockGetter world, BlockPos pos, PlayerEntity player) {
+	@Override public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
 		return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
 	}
 	</#if>
