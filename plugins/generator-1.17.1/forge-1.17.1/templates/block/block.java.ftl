@@ -85,9 +85,6 @@ public class ${name}Block extends
 			</#if>
 				.lightLevel(s -> ${data.luminance})
 			<#if data.destroyTool != "Not specified">
-				<#-- TODO: implement this properly: https://gist.github.com/gigaherz/691f528a61f631af90c9426c076a298a -->
-				.harvestLevel(${data.breakHarvestLevel})
-				.harvestTool(ToolType.${data.destroyTool?upper_case})
 				.requiresCorrectToolForDrops()
 			</#if>
 			<#if data.isNotColidable>
@@ -454,6 +451,14 @@ public class ${name}Block extends
 	@Override
 	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
 		return true;
+	}
+	</#if>
+
+	<#if data.destroyTool != "Not specified">
+	@Override public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+		if(player.getInventory().getSelected().getItem() instanceof TieredItem tieredItem)
+			return tieredItem.getTier().getLevel() >= ${data.breakHarvestLevel};
+		return false;
 	}
 	</#if>
 

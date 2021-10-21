@@ -52,7 +52,7 @@ package ${package}.init;
 		return blockEntityType;
 	}
 
-	@SubscribeEvent public void registerTileEntity(RegistryEvent.Register<BlockEntityType<?>> event) {
+	@SubscribeEvent public static void registerTileEntity(RegistryEvent.Register<BlockEntityType<?>> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new BlockEntityType[0]));
 	}
 
