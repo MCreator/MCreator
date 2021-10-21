@@ -10,5 +10,5 @@
 		}
 		return _retval.get();
 	}
-}.getItemStack(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)(${input$slotid})))
+}.getItemStack(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),${opt.toInt(input$slotid)}))
 <#-- @formatter:on -->

@@ -30,13 +30,15 @@ public class NumberBlock implements IBlockGenerator {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null) {
 			String numberText = element.getTextContent();
+			if (!numberText.contains("."))
+				master.append("/*@int*/");
 			if (numberText.contains("-")) {
 				master.append("(" + numberText + ")");
 			} else {
 				master.append(numberText);
 			}
 		} else {
-			master.append("0");
+			master.append("/*@int*/0");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					"Failed to find number block value, using 0 as value."));
 		}

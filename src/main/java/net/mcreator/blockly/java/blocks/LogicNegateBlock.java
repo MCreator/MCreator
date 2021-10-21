@@ -24,7 +24,6 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.XMLUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
 public class LogicNegateBlock implements IBlockGenerator {
@@ -58,8 +57,8 @@ public class LogicNegateBlock implements IBlockGenerator {
 	}
 
 	private static String withoutParentheses(String code) {
-		if (code.contains("instanceof") || StringUtils.containsAny(code, "=><&|^!?"))
+		if (code.contains("instanceof"))
 			return code;
-		return ProcedureCodeOptimizer.removeParentheses(code);
+		return ProcedureCodeOptimizer.removeParentheses(code, "=><&|^!?");
 	}
 }
