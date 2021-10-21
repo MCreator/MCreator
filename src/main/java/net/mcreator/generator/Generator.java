@@ -239,7 +239,7 @@ public class Generator implements IGenerator, Closeable {
 			return Collections.emptyList();
 		}
 
-		List<GeneratorFile> generatorFiles = new ArrayList<>();
+		Set<GeneratorFile> generatorFiles = new HashSet<>();
 
 		// generate all source files
 		List<GeneratorTemplate> generatorTemplateList = getModElementGeneratorTemplatesList(element.getModElement(),
@@ -254,8 +254,12 @@ public class Generator implements IGenerator, Closeable {
 				String code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel,
 						element.getAdditionalTemplateData());
 
-				generatorFiles.add(new GeneratorFile(code, generatorTemplate.getFile(),
-						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer")));
+				GeneratorFile generatorFile = new GeneratorFile(code, generatorTemplate.getFile(),
+						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
+
+				// only preserve the last instance of template for a file
+				generatorFiles.remove(generatorFile);
+				generatorFiles.add(generatorFile);
 			}
 		}
 
@@ -292,7 +296,7 @@ public class Generator implements IGenerator, Closeable {
 		// do additional tasks if mod element has them
 		element.finalizeModElementGeneration();
 
-		return generatorFiles;
+		return new ArrayList<>(generatorFiles);
 	}
 
 	/**
@@ -412,10 +416,11 @@ public class Generator implements IGenerator, Closeable {
 					}
 				}
 			} else {
-				globalTemplatesList.forEach(e -> e.addDataModelEntry(baseType.getPluralName().toLowerCase(Locale.ENGLISH),
-						baseTypeListMap.get(baseType).stream()
-								.sorted(Comparator.comparing(ge -> ge.getModElement().getSortID()))
-								.collect(Collectors.toList())));
+				globalTemplatesList.forEach(
+						e -> e.addDataModelEntry(baseType.getPluralName().toLowerCase(Locale.ENGLISH),
+								baseTypeListMap.get(baseType).stream()
+										.sorted(Comparator.comparing(ge -> ge.getModElement().getSortID()))
+										.collect(Collectors.toList())));
 
 				files.addAll(globalTemplatesList);
 			}
@@ -435,7 +440,7 @@ public class Generator implements IGenerator, Closeable {
 		if (map == null)
 			return new ArrayList<>();
 
-		List<GeneratorTemplate> files = new ArrayList<>();
+		Set<GeneratorTemplate> files = new HashSet<>();
 		List<?> templates = (List<?>) map.get("global_templates");
 		if (templates != null) {
 			for (Object template : templates) {
@@ -452,14 +457,18 @@ public class Generator implements IGenerator, Closeable {
 					continue;
 				}
 
-				files.add(new GeneratorTemplate(new File(name),
-						Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), true, template));
+				GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(name),
+						Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), true, template);
+
+				// only keep the last template for given file
+				files.remove(generatorTemplate);
+				files.add(generatorTemplate);
 
 				templateID.getAndIncrement();
 			}
 		}
 
-		return files;
+		return new ArrayList<>(files);
 	}
 
 	public List<GeneratorTemplate> getModElementGeneratorTemplatesList(ModElement element) {
@@ -480,7 +489,7 @@ public class Generator implements IGenerator, Closeable {
 			return null;
 		}
 
-		List<GeneratorTemplate> files = new ArrayList<>();
+		Set<GeneratorTemplate> files = new HashSet<>();
 		List<?> templates = (List<?>) map.get("templates");
 		if (templates != null) {
 			int templateID = 0;
@@ -521,14 +530,18 @@ public class Generator implements IGenerator, Closeable {
 						excludefile.delete();
 				}
 
-				files.add(new GeneratorTemplate(new File(name),
-						Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), false, template));
+				GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(name),
+						Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), false, template);
+
+				// only preserve the last template for given file
+				files.remove(generatorTemplate);
+				files.add(generatorTemplate);
 
 				templateID++;
 			}
 		}
 
-		return files;
+		return new ArrayList<>(files);
 	}
 
 	public ModElement getModElementThisFileBelongsTo(File file) {
@@ -561,7 +574,7 @@ public class Generator implements IGenerator, Closeable {
 		return null;
 	}
 
-	private void generateFiles(List<GeneratorFile> generatorFiles, boolean formatAndOrganiseImports) {
+	private void generateFiles(Collection<GeneratorFile> generatorFiles, boolean formatAndOrganiseImports) {
 		// first create Java files if they do not exist already
 		// so the imports get properly organised in the next step
 		if (formatAndOrganiseImports) {
