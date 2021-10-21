@@ -26,6 +26,9 @@ import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 @SuppressWarnings("unused") public class Recipe extends NamespacedGeneratableElement {
 
@@ -128,6 +131,52 @@ import java.util.Arrays;
 	}
 
 	private final transient OptimisedRecipe optimisedRecipe;
+
+	public HashMap<?, ?> getEmptyMappings() {
+		return new HashMap<>();
+	}
+
+	public String[][] getRecipeMatrix(Map<String, MItemBlock> mappings) {
+		MItemBlock[][] elements = optimisedRecipe.getOptimisedRecipe();
+		String[][] retVal = new String[elements.length][elements.length];
+		final int[] num = { 0 };
+		mappings.put("esc", new MItemBlock(null, "")); // this way we make sure that optimisation happens
+		for (int r = 0; r < elements.length; r++) {
+			int row = r;
+			for (int c = 0; c < elements[0].length; c++) {
+				int col = c;
+				MItemBlock value = elements[row][col];
+				if (value == null) {
+					retVal[row][col] = " ";
+				} else if (mappings.containsValue(value)) {
+					mappings.forEach((k, v) -> {
+						if (!v.isEmpty() && v.equals(value))
+							retVal[row][col] = k;
+					});
+				} else {
+					String str = value.mapper.getMapping(value.getUnmappedValue(), 1).replace("#", "");
+					String letter = str.substring(0, 1);
+					boolean flag = false;
+					for (int index = 0; index < str.length(); index++) {
+						if (mappings.containsKey(letter.toUpperCase(Locale.ENGLISH))) {
+							letter = str.substring(index + 1, index + 2);
+						} else {
+							flag = true;
+						}
+					}
+					if (!flag) {
+						letter = Integer.toString(num[0]);
+						num[0]++;
+					}
+					String chr = letter.toUpperCase(Locale.ENGLISH);
+					mappings.put(chr, value);
+					retVal[row][col] = chr;
+				}
+			}
+		}
+		mappings.remove("esc");
+		return retVal;
+	}
 
 	public MItemBlock[][] getOptimisedRecipe() {
 		return optimisedRecipe.getOptimisedRecipe();

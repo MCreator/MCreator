@@ -15,16 +15,16 @@
         ],
     <#else>
         "type": "minecraft:crafting_shaped",
-        <#assign recipeArray = data.getOptimisedRecipe()>
-        <#assign rm = [], i = 0>
+        <#assign recipeMappings = data.getEmptyMap()>
+        <#assign recipeArray = data.getRecipeMatrix(recipeMappings)>
         "pattern": [
-        <#list recipeArray as rl>
-        		"<#list rl as re><#if !re.isEmpty()><#assign rm+=["\"${i}\": {${mappedMCItemToIngameItemName(re)}}"]/>${i}<#else> </#if><#assign i+=1></#list>"<#if rl?has_next>,</#if>
+        <#list recipeArray as ar>
+        		"<#list ar as ac>${ac}</#list>"<#if ar?has_next>,</#if>
         </#list>
         ],
         "key": {
-        <#list rm as recipeMapping>
-            ${recipeMapping}<#if recipeMapping?has_next>,</#if>
+        <#list recipeMappings.entrySet() as recipeMapping>
+            "${recipeMapping.getKey()}": {${mappedMCItemToIngameItemName(recipeMapping.getValue())}}<#if recipeMapping?has_next>,</#if>
         </#list>
         },
     </#if>
