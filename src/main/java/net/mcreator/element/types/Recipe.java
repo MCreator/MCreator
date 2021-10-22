@@ -139,18 +139,19 @@ import java.util.Map;
 		MItemBlock[][] elements = getOptimisedRecipe();
 		String[][] retVal = new String[elements.length][elements.length];
 		final int[] num = { 0 };
-		mappings.put("esc", new MItemBlock(null, "")); // this way we make sure that optimisation happens
+		mappings.put("esc", new MItemBlock(null, "")); // this allows us to use this map for preventing duplicates
 		for (int r = 0; r < elements.length; r++) {
 			int row = r;
 			for (int c = 0; c < elements[0].length; c++) {
 				int col = c;
 				MItemBlock value = elements[row][col];
-				if (value == null) {
+				if (value == null || value.isEmpty()) {
 					retVal[row][col] = " ";
 				} else if (mappings.containsValue(value)) {
 					mappings.forEach((k, v) -> {
-						if (!v.isEmpty() && v.equals(value))
+						if (!k.equals("esc") && v.equals(value)) {
 							retVal[row][col] = k;
+						}
 					});
 				} else {
 					String str = value.mapper.getMapping(value.getUnmappedValue(), 1).replace("#", "");
@@ -158,7 +159,7 @@ import java.util.Map;
 					boolean flag = false;
 					for (int index = 0; index < str.length(); index++) {
 						if (mappings.containsKey(letter.toUpperCase(Locale.ENGLISH))) {
-							letter = str.substring(index + 1, index + 2);
+							letter = str.substring(index, index + 1);
 						} else {
 							flag = true;
 						}
