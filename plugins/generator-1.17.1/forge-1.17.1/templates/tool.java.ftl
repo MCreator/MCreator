@@ -264,7 +264,6 @@ public class ${name}Item extends FishingRodItem {
 			return retval;
 		}
 	</#if>
-	
     
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		ItemStack itemstack = entity.getItemInHand(hand);
@@ -280,7 +279,19 @@ public class ${name}Item extends FishingRodItem {
 				int k = EnchantmentHelper.getFishingSpeedBonus(itemstack);
 				int j = EnchantmentHelper.getFishingLuckBonus(itemstack);
 				world.addFreshEntity(new FishingHook(entity, world, j, k) {
-					 // TODO: custom action
+
+					@Override public boolean shouldStopFishing(Player player) {
+						if (!player.isRemoved() && player.isAlive() &&
+								(player.getMainHandItem().is(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}) ||
+								player.getOffhandItem().is(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}))
+								&& !(this.distanceToSqr(player) > 1024)) {
+							return false;
+						} else {
+							this.discard();
+							return true;
+						}
+					}
+
 				});
 			}
 
