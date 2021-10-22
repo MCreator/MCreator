@@ -43,6 +43,8 @@ public class BaseDataModelProvider {
 
 	private static final Logger TEMPLATE_LOG = LogManager.getLogger("Template Generator LOG");
 
+	private final HashMap<?, ?> hashMap = new HashMap<>();
+
 	public BaseDataModelProvider(Generator generator) {
 		this.javaConventions = new JavaConventions();
 		this.generatorWrapper = new GeneratorWrapper(generator);
@@ -70,6 +72,7 @@ public class BaseDataModelProvider {
 		retval.put("thelper", templateHelper);
 		retval.put("Log", TEMPLATE_LOG);
 		retval.put("opt", codeOptimizer);
+		retval.put("hashmap", hashMap);
 		return retval;
 	}
 

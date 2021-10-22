@@ -26,7 +26,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -132,12 +131,12 @@ import java.util.Map;
 
 	private final transient OptimisedRecipe optimisedRecipe;
 
-	public HashMap<?, ?> getEmptyMappings() {
-		return new HashMap<>();
+	public MItemBlock[][] getOptimisedRecipe() {
+		return optimisedRecipe.getOptimisedRecipe();
 	}
 
 	public String[][] getRecipeMatrix(Map<String, MItemBlock> mappings) {
-		MItemBlock[][] elements = optimisedRecipe.getOptimisedRecipe();
+		MItemBlock[][] elements = getOptimisedRecipe();
 		String[][] retVal = new String[elements.length][elements.length];
 		final int[] num = { 0 };
 		mappings.put("esc", new MItemBlock(null, "")); // this way we make sure that optimisation happens
@@ -176,10 +175,6 @@ import java.util.Map;
 		}
 		mappings.remove("esc");
 		return retVal;
-	}
-
-	public MItemBlock[][] getOptimisedRecipe() {
-		return optimisedRecipe.getOptimisedRecipe();
 	}
 
 	private static class OptimisedRecipe {

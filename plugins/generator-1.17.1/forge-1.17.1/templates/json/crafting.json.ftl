@@ -15,7 +15,7 @@
         ],
     <#else>
         "type": "minecraft:crafting_shaped",
-        <#assign recipeMappings = data.getEmptyMap()>
+        <#assign recipeMappings = hashmap>
         <#assign recipeArray = data.getRecipeMatrix(recipeMappings)>
         "pattern": [
         <#list recipeArray as ar>
