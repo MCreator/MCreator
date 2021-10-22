@@ -179,41 +179,11 @@ import java.util.stream.Collectors;
 		return false;
 	}
 
-	public boolean hasBlocksPickaxeMineable() {
+	public boolean hasBlocksMineableWith(String tool) {
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.BLOCK) {
 				if (element.getGeneratableElement() instanceof Block block)
-					if (block.destroyTool.equals("pickaxe"))
-						return true;
-			}
-		return false;
-	}
-
-	public boolean hasBlocksAxeMineable() {
-		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.BLOCK) {
-				if (element.getGeneratableElement() instanceof Block block)
-					if (block.destroyTool.equals("axe"))
-						return true;
-			}
-		return false;
-	}
-
-	public boolean hasBlocksShovelMineable() {
-		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.BLOCK) {
-				if (element.getGeneratableElement() instanceof Block block)
-					if (block.destroyTool.equals("shovel"))
-						return true;
-			}
-		return false;
-	}
-
-	public boolean hasBlocksHoeMineable() {
-		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.BLOCK) {
-				if (element.getGeneratableElement() instanceof Block block)
-					if (block.destroyTool.equals("hoe"))
+					if (block.destroyTool.equals(tool))
 						return true;
 			}
 		return false;

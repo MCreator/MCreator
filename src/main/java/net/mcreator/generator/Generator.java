@@ -29,6 +29,7 @@ import net.mcreator.generator.template.MinecraftCodeProvider;
 import net.mcreator.generator.template.TemplateConditionParser;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.generator.template.base.BaseDataModelProvider;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
@@ -80,6 +81,8 @@ public class Generator implements IGenerator, Closeable {
 	@Nullable private ProjectConnection gradleProjectConnection;
 	@Nullable private GeneratorGradleCache generatorGradleCache;
 
+	private final BaseDataModelProvider baseDataModelProvider;
+
 	public Generator(@Nonnull Workspace workspace) {
 		this.workspace = workspace;
 		this.generatorName = workspace.getWorkspaceSettings().getCurrentGenerator();
@@ -87,6 +90,8 @@ public class Generator implements IGenerator, Closeable {
 		this.LOG = LogManager.getLogger("Generator " + generatorName);
 
 		this.generatorConfiguration = GENERATOR_CACHE.get(generatorName);
+
+		this.baseDataModelProvider = new BaseDataModelProvider(this);
 
 		this.templateGenerator = new TemplateGenerator(generatorConfiguration.getTemplateGeneratorConfiguration(),
 				this);
@@ -139,6 +144,10 @@ public class Generator implements IGenerator, Closeable {
 
 	public MinecraftCodeProvider getMinecraftCodeProvider() {
 		return minecraftCodeProvider;
+	}
+
+	public BaseDataModelProvider getBaseDataModelProvider() {
+		return baseDataModelProvider;
 	}
 
 	public File getGeneratorPackageRoot() {
@@ -348,11 +357,17 @@ public class Generator implements IGenerator, Closeable {
 
 		List<?> templates = generatorConfiguration.getBaseTemplates();
 		for (Object template : templates) {
+			TemplateConditionParser.Operator operator = TemplateConditionParser.Operator.AND;
 			Object conditionRaw = ((Map<?, ?>) template).get("condition");
+			if (conditionRaw == null) {
+				conditionRaw = ((Map<?, ?>) template).get("condition_any");
+				operator = TemplateConditionParser.Operator.OR;
+			}
 
 			String name = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) template).get("name"));
 
-			if (TemplateConditionParser.shoudSkipTemplateBasedOnCondition(conditionRaw, workspace.getWorkspaceInfo())) {
+			if (TemplateConditionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
+					workspace.getWorkspaceInfo(), operator)) {
 				if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
 					if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
 						new File(name).delete(); // if template is skipped, we delete its potential file
@@ -446,10 +461,15 @@ public class Generator implements IGenerator, Closeable {
 			for (Object template : templates) {
 				String name = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) template).get("name"));
 
+				TemplateConditionParser.Operator operator = TemplateConditionParser.Operator.AND;
 				Object conditionRaw = ((Map<?, ?>) template).get("condition");
+				if (conditionRaw == null) {
+					conditionRaw = ((Map<?, ?>) template).get("condition_any");
+					operator = TemplateConditionParser.Operator.OR;
+				}
 
-				if (TemplateConditionParser.shoudSkipTemplateBasedOnCondition(conditionRaw,
-						workspace.getWorkspaceInfo())) {
+				if (TemplateConditionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
+						workspace.getWorkspaceInfo(), operator)) {
 					if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
 						if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
 							new File(name).delete(); // if template is skipped, we delete its potential file
@@ -495,7 +515,13 @@ public class Generator implements IGenerator, Closeable {
 			int templateID = 0;
 			for (Object template : templates) {
 				String rawname = (String) ((Map<?, ?>) template).get("name");
+
+				TemplateConditionParser.Operator operator = TemplateConditionParser.Operator.AND;
 				Object conditionRaw = ((Map<?, ?>) template).get("condition");
+				if (conditionRaw == null) {
+					conditionRaw = ((Map<?, ?>) template).get("condition_any");
+					operator = TemplateConditionParser.Operator.OR;
+				}
 
 				if (conditionRaw != null || GeneratorTokens.containsVariableTokens(rawname)) {
 					if (generatableElement == null) {
@@ -511,7 +537,8 @@ public class Generator implements IGenerator, Closeable {
 						GeneratorTokens.replaceTokens(workspace, rawname.replace("@NAME", element.getName())
 								.replace("@registryname", element.getRegistryName())));
 
-				if (TemplateConditionParser.shoudSkipTemplateBasedOnCondition(conditionRaw, generatableElement)) {
+				if (TemplateConditionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw, generatableElement,
+						operator)) {
 					if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
 						if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
 							new File(name).delete(); // if template is skipped, we delete its potential file
