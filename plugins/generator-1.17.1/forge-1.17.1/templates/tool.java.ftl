@@ -95,14 +95,14 @@ public class ${name}Item extends ${data.toolType.replace("Spade", "Shovel")}Item
     	    return ${data.enchantability};
     	}
 
-    	@Override public float getDestroySpeed(ItemStack stack, BlockState block) {
+    	@Override public float getDestroySpeed(ItemStack stack, BlockState blockstate) {
     		return ${data.efficiency}f;
     	}
     </#if>
 
     <#if hasProcedure(data.onBlockDestroyedWithTool)>
     	@Override public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity){
-			boolean retval = super.mineBlock(itemstack,world,blockstate,pos,entity);
+			boolean retval = super.mineBlock(itemstack, world, blockstate, pos, entity);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -308,7 +308,93 @@ public class ${name}Item extends FishingRodItem {
 
 		return InteractionResultHolder.sidedSuccess(itemstack, world.isClientSide());
 	}
-	
+
+    <@commonMethods/>
+}
+<#elseif data.toolType=="MultiTool">
+public class ${name}Item extends Item {
+
+	public ${name}Item() {
+		super(new Item.Properties()
+				.tab(${data.creativeTab})
+		.durability(${data.usageCount})
+			<#if data.immuneToFire>
+			.fireResistant()
+			</#if>
+		);
+
+		setRegistryName("${registryname}");
+	}
+
+	@Override public boolean isCorrectToolForDrops(BlockState blockstate) {
+		int tier = ${data.harvestLevel};
+		if (tier < 3 && blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL)) {
+			return false;
+		} else if (tier < 2 && blockstate.is(BlockTags.NEEDS_IRON_TOOL)) {
+			return false;
+		} else {
+			return tier < 1 && blockstate.is(BlockTags.NEEDS_STONE_TOOL) ? false : blockstate.is(BlockTags.MINEABLE_WITH_PICKAXE);
+		}
+	}
+
+	@Override public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+		return ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction);
+	}
+
+	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
+		return ${data.efficiency}f;
+	}
+
+	@Override public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity entity) {
+		stack.hurtAndBreak(1, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+		<#if hasProcedure(data.onBlockDestroyedWithTool)>
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			<@procedureOBJToCode data.onBlockDestroyedWithTool/>
+		</#if>
+		return true;
+	}
+
+	@Override public boolean hurtEnemy(ItemStack stack, LivingEntity entity, LivingEntity sourceentity) {
+		stack.hurtAndBreak(2, sourceentity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+		<#if hasProcedure(data.onEntityHitWith)>
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
+			Level world = entity.level;
+			<@procedureOBJToCode data.onEntityHitWith/>
+		</#if>
+		return true;
+	}
+
+    <#if hasProcedure(data.onRightClickedInAir)>
+    	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+			InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+			ItemStack itemstack = ar.getObject();
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
+    		<@procedureOBJToCode data.onRightClickedInAir/>
+			return ar;
+		}
+	</#if>
+
+	@Override public int getEnchantmentValue() {
+		return ${data.enchantability};
+	}
+
+	@Override public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
+		if (equipmentSlot == EquipmentSlot.MAINHAND) {
+			ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+			builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
+			builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 2}f, AttributeModifier.Operation.ADDITION));
+			builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
+			return builder.build();
+		}
+
+		return super.getDefaultAttributeModifiers(equipmentSlot);
+	}
 
     <@commonMethods/>
 }
