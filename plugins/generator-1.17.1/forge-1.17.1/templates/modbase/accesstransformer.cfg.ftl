@@ -1,3 +1,6 @@
+<#if w.hasToolsOfType("Fishing rod")>
+public net.minecraft.world.entity.projectile.FishingHook m_37136_(Lnet/minecraft/world/entity/player/Player;)Z #shouldStopFishing
+</#if>
 <#if w.hasElementsOfType("dimension")>
 public net.minecraft.world.level.levelgen.carver.WorldCarver f_64983_ #replaceableBlocks
 public net.minecraft.client.renderer.DimensionSpecialEffects f_108857_ #EFFECTS

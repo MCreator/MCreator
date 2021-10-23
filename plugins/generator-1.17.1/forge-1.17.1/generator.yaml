@@ -56,6 +56,7 @@ base_templates:
     condition_any:
       - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
       - ${w.hasElementsOfType('dimension')}
+      - ${w.hasToolsOfType('Fishing rod')}
 
 sources_setup_tasks:
   - task: copy_models
