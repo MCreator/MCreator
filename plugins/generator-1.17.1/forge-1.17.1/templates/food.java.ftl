@@ -144,5 +144,6 @@ public class ${name}Item extends Item {
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 
 	<@onDroppedByPlayer data.onDroppedByPlayer/>
+
 }
 <#-- @formatter:on -->

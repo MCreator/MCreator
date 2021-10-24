@@ -127,6 +127,8 @@
 		"entity": "entity",
 		"itemstack": "itemstack"
 	}/>
+	return true;
+}
 </#if>
 </#macro>
 
