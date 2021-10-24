@@ -720,7 +720,7 @@ public class CodeEditorView extends ViewBase {
 
 	public static boolean isFileSupported(String fileName) {
 		return Arrays.asList("java", "info", "txt", "json", "mcmeta", "lang", "gradle", "ini", "conf", "xml",
-						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md")
+						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md", "cfg")
 				.contains(FilenameUtilsPatched.getExtension(fileName));
 	}
 

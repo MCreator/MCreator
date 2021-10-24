@@ -40,39 +40,15 @@ package ${package}.init;
 
 	<#list gamerules as gamerule>
 		<#if gamerule.type == "Number">
-	public static final GameRules.Key<GameRules.IntegerValue> ${gamerule.getModElement().getRegistryNameUpper()} = GameRules.register("${gamerule.getModElement().getRegistryName()}",
-				GameRules.Category.${gamerule.category}, create(${gamerule.defaultValueNumber}));
+	public static final GameRules.Key<GameRules.IntegerValue> ${gamerule.getModElement().getRegistryNameUpper()} =
+				GameRules.register("${gamerule.getModElement().getRegistryName()}",
+				GameRules.Category.${gamerule.category}, GameRules.IntegerValue.create(${gamerule.defaultValueNumber}));
 		<#else>
-	public static final GameRules.Key<GameRules.BooleanValue> ${gamerule.getModElement().getRegistryNameUpper()} = GameRules.register("${gamerule.getModElement().getRegistryName()}",
-				GameRules.Category.${gamerule.category}, create(${gamerule.defaultValueLogic}));
+	public static final GameRules.Key<GameRules.BooleanValue> ${gamerule.getModElement().getRegistryNameUpper()} =
+				GameRules.register("${gamerule.getModElement().getRegistryName()}",
+				GameRules.Category.${gamerule.category}, GameRules.BooleanValue.create(${gamerule.defaultValueLogic}));
 		</#if>
 	</#list>
-
-	<#if w.hasGameRulesOfType("Number")>
-	private static GameRules.Type<GameRules.IntegerValue> create(int defaultValue) {
-		try {
-			Method createGameRuleMethod = ObfuscationReflectionHelper.findMethod(GameRules.IntegerValue.class, "m_46312_", int.class);
-			createGameRuleMethod.setAccessible(true);
-			return (GameRules.Type<GameRules.IntegerValue>) createGameRuleMethod.invoke(null, defaultValue);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	</#if>
-
-	<#if w.hasGameRulesOfType("Logic")>
-	private static GameRules.Type<GameRules.BooleanValue> create(boolean defaultValue) {
-		try {
-			Method createGameRuleMethod = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "m_46250_", boolean.class);
-			createGameRuleMethod.setAccessible(true);
-			return (GameRules.Type<GameRules.BooleanValue>) createGameRuleMethod.invoke(null, defaultValue);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	</#if>
 
 }
 <#-- @formatter:on -->
