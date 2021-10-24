@@ -140,7 +140,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
 		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 			<#if data.plantType == "double">
-			if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
+			if(state.getValue(HALF) != DoubleBlockHalf.LOWER)
 				return Collections.emptyList();
 			</#if>
 
@@ -152,7 +152,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		<#elseif data.customDrop?? && !data.customDrop.isEmpty()>
 		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 			<#if data.plantType == "double">
-			if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
+			if(state.getValue(HALF) != DoubleBlockHalf.LOWER)
 				return Collections.emptyList();
 			</#if>
 
@@ -164,7 +164,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		<#else>
 		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 			<#if data.plantType == "double">
-			if(state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
+			if(state.getValue(HALF) != DoubleBlockHalf.LOWER)
 				return Collections.emptyList();
 			</#if>
 
@@ -223,8 +223,8 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 				<#if (data.canBePlacedOn?size > 0) && hasProcedure(data.placingCondition)> && </#if>
 				<#if hasProcedure(data.placingCondition)> additionalCondition </#if>
 			<#else>
-				if (blockstate.get(HALF) == DoubleBlockHalf.UPPER)
-					return groundState.is(this) && groundState.get(HALF) == DoubleBlockHalf.LOWER;
+				if (blockstate.getValue(HALF) == DoubleBlockHalf.UPPER)
+					return groundState.is(this) && groundState.getValue(HALF) == DoubleBlockHalf.LOWER;
 				else
 					return this.mayPlaceOn(groundState, worldIn, blockpos)
 			</#if>;
@@ -249,7 +249,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 	<#if hasProcedure(data.onTickUpdate)>
 	@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, Random random) {
-		super(blockstate, world, pos, random);
+		super.tick(blockstate, world, pos, random);
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
